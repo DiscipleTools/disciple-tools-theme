@@ -126,6 +126,9 @@ NAVIGATION STYLES
         a {
           background-color: $primary-color;
         }
+        li.active a {
+            background: #005a87;
+        }
     }
 
     a {
@@ -164,6 +167,13 @@ NAVIGATION STYLES
     position: relative;
     top: -5px;
     margin-left:-15px;
+}
+.notification-count-offcanvas {
+    display: none;
+    vertical-align: middle;
+    position: relative;
+    top: 0;
+    margin-left:10px;
 }
 .add-new-items-dropdown {
     background-color: #3f729b;
@@ -713,6 +723,11 @@ html[dir='rtl'] {
         right: -15px;
         left: 0;
         margin-left:-15px;
+    }
+    .notification-count-offcanvas {
+        right: 0;
+        left: 0;
+        margin-left:10px;
     }
     .title-bar-right {
         text-align: left;

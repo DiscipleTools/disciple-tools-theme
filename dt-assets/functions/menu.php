@@ -1,89 +1,99 @@
 <?php
-// Register menus
-//register_nav_menus(
-//    [
-//        //      'main-nav' => __( 'The Main Menu', 'disciple_tools' ),   // Main nav in header
-////        'footer-links' => __( 'Footer Links', 'disciple_tools' ) // Secondary nav in footer
-//    ]
-//);
-
-// The Top Menu
-function disciple_tools_top_nav_desktop() {
-
-    /**
-     * Loads nav bar menu items
-     * @note Main post types (Contacts, Groups, Metrics) fire between 20-30. If you want to add an item before the
-     * main post types, load before 20, if you want to load after the list, load after 30.
-     */
-    $tabs = apply_filters( "desktop_navbar_menu_options", [] );
-    foreach ( $tabs as $tab ) : ?>
-        <li><a href="<?php echo esc_url( $tab["link"] ) ?>"> <?php echo esc_html( $tab["label"] ) ?> </a></li>
-    <?php endforeach;
-
-    //append a non standard menu item at the end
-    do_action( 'dt_top_nav_desktop' );
+/**
+ * This array is the primary structure for the Disciple.Tools navigation
+ *
+ * FILTER: dt_nav
+ * This filter is the top filter for the navigation. If you add_filter and modify this array, you can change any link
+ * icon or title. You can also prepend or append new links to the main or admin sections.
+ *
+ * Note: All sections are build with label, link, icon, and hidden (default false). You can add a link to any section by
+ * adding an array element with these four components.
+ *
+ * `main`
+ * The main section is the main navigation. Usually, contacts, groups, metrics. By adding a submenu element to any of these
+ * you can add a dropdown to them, or you can add a new element by just prepending or appending a new array item. It is
+ * recommended to add your new array item with an associative key, but it is not required.
+ *
+ * `admin`
+ * This section drives the administrative section of the menu. Unlike the main section array order does not effect the
+ * display order, except in the submenus.
+ *
+ * SUB SECTION FILTER: desktop_navbar_menu_options
+ * This filter is a convenience filter allowing especially post types to add a menu item and using the add_filter load order
+ * to order the menu array. The filter is used by post-types. This filter could also be used by plugins to add custom sections.
+ * @see custom-post-type.php file for example usage
+ * @link /dt-posts/custom-post-type.php:111
+ *
+ * SUB SECTION FILTER: dt_nav_add_post_menu
+ * This filter adds menu items to the add new drop down.
+ * @see custom-post-type.php for example usage
+ * @link /dt-posts/custom-post-type.php:124
+ *
+ * @return array
+ */
+function dt_default_menu_array() : array {
+    return apply_filters( "dt_nav", [
+        'main' => apply_filters( 'desktop_navbar_menu_options', [] ),
+        'admin' => [
+            'menu' => [
+                'label' => __( 'Menu', 'disciple_tools' ),
+                'link' => '',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/hamburger.svg',
+                'hidden' => false,
+            ],
+            'site' => [
+                'label' => __( 'Disciple.Tools', 'disciple_tools' ),
+                'link' => site_url(),
+                'icon' => get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png",
+                'hidden' => false,
+            ],
+            'profile' => [
+                'label' => wp_get_current_user()->display_name ?? __( "Profile", "disciple_tools" ),
+                'link' => site_url( '/settings/' ),
+                'icon' => get_template_directory_uri() . "/dt-assets/images/profile.svg",
+                'hidden' => false,
+            ],
+            'add_new' => [
+                'label' => __( "Add New", 'disciple_tools' ),
+                'link' => '',
+                'hidden' => false,
+                'icon' => get_template_directory_uri() . "/dt-assets/images/circle-add-plus.svg",
+                'submenu' => apply_filters( 'dt_nav_add_post_menu', [] ),
+            ],
+            'notifications' => [
+                'label' => __( "Notifications", 'disciple_tools' ),
+                'link' => site_url( '/notifications/' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/bell.svg",
+                'hidden' => false,
+            ],
+            'settings' => [
+                'label' => __( "Settings", 'disciple_tools' ),
+                'link' => site_url( '/settings/' ),
+                'icon' => get_template_directory_uri() . "/dt-assets/images/settings.svg" ,
+                'hidden' => false,
+                'submenu' => [
+                    'settings' => [
+                        'label' => __( "Settings", 'disciple_tools' ),
+                        'link' => site_url( '/settings/' ),
+                        'hidden' => false,
+                    ],
+                    'admin' => [
+                        'label' => __( "Admin", 'disciple_tools' ),
+                        'link' => get_admin_url(),
+                        'hidden' => ( ! current_user_can( 'manage_dt' ) ),
+                    ],
+                    'user_management' => [
+                        'label' => __( "Users", "disciple_tools" ),
+                        'link' => site_url( '/user-management/users/' ),
+                        'hidden' => ( ! ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' ) ) ),
+                    ],
+                    'help' => [
+                        'label' => __( "Help", "disciple_tools" ),
+                        'link' => 'https://disciple.tools/user-docs',
+                        'hidden' => false,
+                    ],
+                ]
+            ],
+        ],
+    ] );
 }
-
-// The Off Canvas Menu
-function disciple_tools_off_canvas_nav() {
-    ?>
-    <ul class="vertical menu sticky is-stuck is-at-top" data-accordion-menu>
-
-        <li class="nav-title">
-            <div>
-                <span class="title"><?php esc_html_e( 'Disciple.Tools', 'disciple_tools' )  ?></span>
-            </div>
-            <hr/>
-        </li>
-        <?php
-
-        /**
-         * Loads offcanvas menu items for mobile
-         * @note Main post types (Contacts, Groups, Metrics) fire between 20-30. If you want to add an item before the
-         * main post types, load before 20, if you want to load after the list, load after 30.
-         */
-        $tabs = apply_filters( "off_canvas_menu_options", [] );
-
-        foreach ( $tabs as $tab ) : ?>
-            <li><a href="<?php echo esc_url( $tab["link"] ) ?>"> <?php echo esc_html( $tab["label"] ) ?> </a></li>
-        <?php endforeach;
-
-        //append a non standard menu item at the end
-        do_action( 'dt_off_canvas_nav' );
-
-        ?>
-        <li>&nbsp;<!-- Spacer--></li>
-        <li>
-            <a href="<?php echo esc_url( site_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications", 'disciple_tools' ); ?></a>
-        </li>
-        <li>
-            <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings", 'disciple_tools' ); ?></a>
-        </li>
-        <?php if ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' ) ) : ?>
-            <li><a href="<?php echo esc_url( site_url( '/user-management/users/' ) ); ?>"><?php esc_html_e( "Users", "disciple_tools" ); ?></a></li>
-        <?php endif; ?>
-        <?php if ( user_can( get_current_user_id(), 'manage_dt' ) ) : ?>
-            <li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin", 'disciple_tools' ); ?></a></li>
-        <?php endif; ?>
-        <li>
-            <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( "Log Off", 'disciple_tools' ); ?></a>
-        </li>
-
-    </ul>
-
-    <?php
-}
-
-// The Footer Menu
-function disciple_tools_footer_links() {
-    wp_nav_menu(
-        [
-            'container'      => 'false',                         // Remove nav container
-            'menu'           => 'Footer Links',       // Nav name
-            'menu_class'     => 'menu',                          // Adding custom nav class
-            'theme_location' => 'footer-links',             // Where it's located in the theme
-            'depth'          => 0,                                   // Limit the depth of the nav
-            'fallback_cb'    => ''                              // Fallback function
-        ]
-    );
-} /* End Footer Menu */

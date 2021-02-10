@@ -103,15 +103,8 @@ class Disciple_Tools_Metrics{
         /**
          * Add Navigation Menu
          */
-        add_action( 'desktop_navbar_menu_options', function ( $tabs ){
-            $tabs[] = [
-                "link" => site_url( '/metrics/' ),
-                "label" => __( "Metrics", "disciple_tools" )
-            ];
-            return $tabs;
-        }, 25 );
-        add_action( 'off_canvas_menu_options', function ( $tabs ){
-            $tabs[] = [
+        add_filter( 'desktop_navbar_menu_options', function ( $tabs ){
+            $tabs['metrics'] = [
                 "link" => site_url( '/metrics/' ),
                 "label" => __( "Metrics", "disciple_tools" )
             ];
