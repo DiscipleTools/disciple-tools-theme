@@ -951,6 +951,11 @@ class Disciple_Tools_Posts
             }
             unset( $query["sort"] );
         }
+        $fields_to_search = [];
+        if ( isset( $query["fields_to_search"] )){
+            $fields_to_search = $query["fields_to_search"];
+            unset( $query ["fields_to_search"] );
+        }
         if ( isset( $query["combine"] )){
             unset( $query["combine"] ); //remove deprecated combine
         }
@@ -965,19 +970,26 @@ class Disciple_Tools_Posts
         if ( !empty( $search )){
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
 
-            $other_search_fields = array_keys( $post_settings["fields"] );
-
             $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
                 OR p.ID IN ( SELECT post_id
                              FROM $wpdb->postmeta
                              WHERE meta_key LIKE 'contact_%'
                              AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
                 )
-                OR p.ID IN ( SELECT comment_post_ID
-                             FROM $wpdb->comments
-                             WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
-                )
             ";
+
+            if ( !empty( $fields_to_search ) ) {
+                if ( in_array( 'all', $fields_to_search ) ) {
+                    $post_query .= "OR p.ID IN ( SELECT comment_post_ID
+                    FROM $wpdb->comments
+                    WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                    )";
+                } else {
+                    foreach ( $fields_to_search as $field ) {
+                        array_push( $other_search_fields, $field );
+                    }
+                }
+            }
             foreach ( $other_search_fields as $field ){
                 $post_query .= " OR p.ID IN ( SELECT post_id
                              FROM $wpdb->postmeta
