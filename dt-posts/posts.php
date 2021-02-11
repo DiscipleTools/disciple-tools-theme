@@ -964,6 +964,9 @@ class Disciple_Tools_Posts
 
         if ( !empty( $search )){
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
+
+            $other_search_fields = array_keys( $post_settings["fields"] );
+
             $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
                 OR p.ID IN ( SELECT post_id
                              FROM $wpdb->postmeta
@@ -979,7 +982,7 @@ class Disciple_Tools_Posts
                 $post_query .= " OR p.ID IN ( SELECT post_id
                              FROM $wpdb->postmeta
                              WHERE meta_key LIKE '" . esc_sql( $field ) . "'
-                             AND meta_value LIKE '%\"" . esc_sql( $search ) . "%'
+                             AND meta_value LIKE '%" . esc_sql( $search ) . "%'
                 ) ";
             }
             $post_query .= " ) ";
@@ -1061,17 +1064,6 @@ class Disciple_Tools_Posts
         if ( is_wp_error( $fields_sql ) ){
             return $fields_sql;
         }
-        // phpcs:disable
-        // WordPress.WP.PreparedSQL.NotPrepared
-        dt_write_log("SELECT SQL_CALC_FOUND_ROWS p.ID, p.post_title, p.post_type, p.post_date
-        FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
-        (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
-        GROUP BY p.ID " . $group_by_sql . "
-        ORDER BY " . $sort_sql . "
-        LIMIT " . esc_sql( $offset ) .", " . $limit . "
-    ");
-
-        dt_write_log( "SELECT DISTINCT post_id FROM {$wpdb->postmeta} WHERE meta_value LIKE '%s'" );
 
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
