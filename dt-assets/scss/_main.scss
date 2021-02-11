@@ -126,6 +126,9 @@ NAVIGATION STYLES
         a {
           background-color: $primary-color;
         }
+        li.active a {
+            background: #005a87;
+        }
     }
 
     a {
@@ -165,6 +168,13 @@ NAVIGATION STYLES
     top: -5px;
     margin-left:-15px;
 }
+.notification-count-offcanvas {
+    display: none;
+    vertical-align: middle;
+    position: relative;
+    top: 0;
+    margin-left:10px;
+}
 .add-new-items-dropdown {
     background-color: #3f729b;
     text-align: left;
@@ -200,6 +210,18 @@ nav.second-bar {
             padding-right: 5px;
         }
         padding: 0.4em 0.75em;
+        margin-top: .2em;
+        margin-bottom: .2em;
+
+        @media screen and (max-width : 639px) {
+            &.follow {
+                padding: 0em .75em;
+                .fi-eye {
+                    font-size: 22px;
+                    line-height: 16px;
+                }
+            }
+        }
     }
     .dropdown.menu>li>a {
         padding-top: 0.4em;
@@ -701,6 +723,11 @@ html[dir='rtl'] {
         right: -15px;
         left: 0;
         margin-left:-15px;
+    }
+    .notification-count-offcanvas {
+        right: 0;
+        left: 0;
+        margin-left:10px;
     }
     .title-bar-right {
         text-align: left;

@@ -433,7 +433,11 @@ window.SHAREDFUNCTIONS = {
     return default_val
   },
   save_json_cookie(cname, json, path = ''){
-    document.cookie = `${cname}=${JSON.stringify(json)};path=/${path}`
+    if ( path ){
+      path = window.location.pathname.split(path)[0] + path
+      path = path.replace(/^\/?([^\/]+(?:\/[^\/]+)*)\/?$/, '/$1'); // add leading and remove trailing slashes
+    }
+    document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`
   },
   formatDate(date, with_time = false) {
     let langcode = document.querySelector('html').getAttribute('lang') ? document.querySelector('html').getAttribute('lang').replace('_', '-') : "en";// get the language attribute from the HTML or default to english if it doesn't exists.

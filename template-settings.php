@@ -48,8 +48,6 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
                 </div>
 
-                <br>
-
             </section>
 
         </div>

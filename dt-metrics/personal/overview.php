@@ -471,7 +471,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             WHERE p.p2p_type = 'groups_to_groups'
         ", 'user-' . $user_id ), ARRAY_A );
 
-        return $results;
+        return dt_queries()->check_tree_health( $results );
     }
 
     public function query_my_contacts_progress( $user_id = null ) {

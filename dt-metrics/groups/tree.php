@@ -94,6 +94,9 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
 
     public function get_group_generations_tree(){
         $query = dt_queries()->tree( 'multiplying_groups_only' );
+        if ( is_wp_error( $query )){
+            return $this->_circular_structure_error( $query );
+        }
         if ( empty( $query ) ) {
             return $this->_no_results();
         }
@@ -132,7 +135,7 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
             {
                 $html .= '<li class="gen-node li-gen-' . esc_html( $gen ) . ' ' . esc_html( $first_section ) . '">';
                 $html .= '<span class="' . esc_html( $menu_data['items'][ $item_id ]['group_status'] ) . ' ' . esc_html( $menu_data['items'][ $item_id ]['group_type'] ) . '">(' . esc_html( $gen ) . ') ';
-                $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ');">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
+                $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ')">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
 
                 $html .= $this->build_group_tree( $item_id, $menu_data, $gen );
 
@@ -144,9 +147,6 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         return $html;
     }
 
-    public function _no_results() {
-        return '<p>'. esc_attr( 'No Results', 'disciple_tools' ) .'</p>';
-    }
 
 }
 new DT_Metrics_Groups_Tree();
