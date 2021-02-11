@@ -841,6 +841,17 @@ jQuery(document).ready(function($) {
     })
   })
 
+  $('.reveal :not(.no-autofocus)').on("open.zf.reveal", function () {
+    console.log("event triggered");
+    const firstField = $(this).find("input").filter(
+      ":not([disabled],[hidden],[opacity=0],.no-autofocus):visible:first"
+    );
+
+    if (firstField.length === 0) {
+      console.error("Couldn't find anything to autofocus on at", firstField);
+    } else firstField.focus();
+  });
+
   //leave at the end of this file
   masonGrid.masonry({
     itemSelector: '.grid-item',
