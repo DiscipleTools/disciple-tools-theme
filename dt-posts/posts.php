@@ -983,8 +983,17 @@ class Disciple_Tools_Posts
                     $post_query .= "OR p.ID IN ( SELECT comment_post_ID
                     FROM $wpdb->comments
                     WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
-                    )";
+                    ) OR p.ID IN ( SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_value LIKE '%" . esc_sql( $search ) . "%'
+                    ) ";
                 } else {
+                    if ( in_array( 'comment', $fields_to_search )) {
+                        $post_query .= " OR p.ID IN ( SELECT comment_post_ID
+                        FROM $wpdb->comments
+                        WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                        ) ";
+                    }
                     foreach ( $fields_to_search as $field ) {
                         array_push( $other_search_fields, $field );
                     }
