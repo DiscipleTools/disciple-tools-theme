@@ -379,7 +379,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
         if ( $post_type === "contacts" ){
             $sections['followup'] = [
-                "label" => "Follow Up",
+                "label" => __( "Follow Up", 'disciple_tools' ),
                 "display_for" => [
                     "type" => [ "access" ],
                 ]

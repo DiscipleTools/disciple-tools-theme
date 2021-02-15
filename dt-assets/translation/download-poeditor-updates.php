@@ -138,3 +138,6 @@ foreach ( $output["result"]["languages"] as $lang ){
     }
 }
 
+echo "done downloading";
+return;
+
