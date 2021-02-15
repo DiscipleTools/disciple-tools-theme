@@ -64,7 +64,7 @@ dt_please_log_in();
                     <label style="margin-right:15px; cursor:pointer">
                         <input type="checkbox" value="all"
                                 <?php echo esc_html( in_array( 'all', $fields_to_search ) ? "checked" : '' ); ?>
-                                <?php echo esc_html( ( empty( $fields_to_search ) ) ? '' : 'checked' ); ?>
+
                                 style="margin:0">
                         <b>Search All Fields</b>
                     </label>
@@ -78,8 +78,8 @@ dt_please_log_in();
                     <li style="" class="">
                         <label style="margin-right:15px; cursor:pointer">
                             <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
-                                    <?php echo esc_html( in_array( $field_key, $fields_to_search ) ? "checked" : '' ); ?>
-                                    <?php echo esc_html( ( empty( $fields_to_search ) ) ? '' : 'checked' ); ?>
+                                    <?php echo esc_html( in_array( $field_key, $fields_to_search ) ? "checked" : '' );
+                                    ?>
                                     style="margin:0">
                             <?php echo esc_html( $field_values["name"] ); ?>
                         </label>

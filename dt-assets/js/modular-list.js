@@ -15,6 +15,7 @@
   let old_filters = JSON.stringify(list_settings.filters)
   let table_header_row = $('.js-list thead .sortable th')
   let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_show_in_table', [] );
+  let fields_to_search = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_search', [] );
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
 
@@ -1043,6 +1044,11 @@
   })
 
   $('#save_advanced_search_choices').on("click", function() {
+    let fields_to_search = [];
+    $('#advanced_search_picker ul li input:checked').each(function( index ) {
+      fields_to_search.push($( this ).val());
+   });
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type );
     if ($("#search-query").val() !== "") {
       $('#search').click();
     } else {
@@ -1056,14 +1062,14 @@
     $('#advanced_search_picker ul li input:checked').each(function( index ) {
       fieldsToSearch.push($( this ).val());
    });
+   window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fieldsToSearch, list_settings.post_type );
+
     let query = {text:searchText}
 
     if (fieldsToSearch.length !== 0) {
       query.fields_to_search = fieldsToSearch;
     }
-    //This is a temporary test
-    // query.fields_to_search = ['all', 'alias', "comment"];
-    // console.log(query);
+
     let labels = [{ id:"search", name:searchText, field: "search"}]
     add_custom_filter(searchText, "search", query, labels);
 
