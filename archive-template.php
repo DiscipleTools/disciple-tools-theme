@@ -35,6 +35,58 @@ dt_please_log_in();
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
                 </a>
+                <a class="button" id="advanced_search">
+                    Advanced Search
+                </a>
+            </div>
+            <div id="advanced_search_picker"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
+                <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields search', 'disciple_tools' ); ?></p>
+                <?php
+                $fields_to_search = [];
+                $all_searchable_fields = $post_settings["fields"];
+                $all_searchable_fields['comment'] = [ 'name' => 'Comments' ];
+                if ( isset( $_COOKIE["fields_to_search"] ) ) {
+                    $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_search"] ) ) ) );
+                    if ( $fields_to_search ){
+                        $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                    }
+                }
+                //order fields alphabetically by Name
+                uasort( $all_searchable_fields, function ( $a, $b ){
+                    return $a['name'] <=> $b['name'];
+                });
+
+                ?>
+                <ul class="ul-no-bullets" style="">
+
+                <li style="" class="">
+                    <label style="margin-right:15px; cursor:pointer">
+                        <input type="checkbox" value="all"
+                                <?php echo esc_html( in_array( 'all', $fields_to_search ) ? "checked" : '' ); ?>
+                                <?php echo esc_html( ( empty( $fields_to_search ) ) ? '' : 'checked' ); ?>
+                                style="margin:0">
+                        <b>Search All Fields</b>
+                    </label>
+                </li>
+
+                <?php foreach ( $all_searchable_fields as $field_key => $field_values ):
+                    if ( !empty( $field_values["hidden"] )){
+                        continue;
+                    }
+                    ?>
+                    <li style="" class="">
+                        <label style="margin-right:15px; cursor:pointer">
+                            <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
+                                    <?php echo esc_html( in_array( $field_key, $fields_to_search ) ? "checked" : '' ); ?>
+                                    <?php echo esc_html( ( empty( $fields_to_search ) ) ? '' : 'checked' ); ?>
+                                    style="margin:0">
+                            <?php echo esc_html( $field_values["name"] ); ?>
+                        </label>
+                    </li>
+                <?php endforeach; ?>
+                </ul>
+                <button class="button" id="save_advanced_search_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
+                <a class="button clear" id="advanced_search_reset" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
             </div>
         </nav>
     </div>
@@ -125,7 +177,7 @@ dt_please_log_in();
                             </button>
                         </span>
                     </div>
-                    <div id="list_column_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+                    <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
                         <?php
                         $fields_to_show_in_table = [];

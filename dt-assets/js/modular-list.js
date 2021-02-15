@@ -1026,11 +1026,48 @@
     }
   })
 
+  $('#advanced_search').on('click', function() {
+    $('#advanced_search_picker').toggle();
+  });
+
+  $('#advanced_search_reset').on('click', function(){
+    let fields_to_search = []
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type )
+
+    //clear all checkboxes
+    $('#advanced_search_picker ul li input:checked').each(function( index ) {
+        $( this ).prop('checked', false);
+    });
+    $('#search').click();
+
+  })
+
+  $('#save_advanced_search_choices').on("click", function() {
+    if ($("#search-query").val() !== "") {
+      $('#search').click();
+    } else {
+      $('#advanced_search_picker').hide();
+    }
+  })
+
   $("#search").on("click", function () {
     let searchText = $("#search-query").val()
+    let fieldsToSearch = [];
+    $('#advanced_search_picker ul li input:checked').each(function( index ) {
+      fieldsToSearch.push($( this ).val());
+   });
     let query = {text:searchText}
+
+    if (fieldsToSearch.length !== 0) {
+      query.fields_to_search = fieldsToSearch;
+    }
+    //This is a temporary test
+    // query.fields_to_search = ['all', 'alias', "comment"];
+    // console.log(query);
     let labels = [{ id:"search", name:searchText, field: "search"}]
-    add_custom_filter(searchText, "search", query, labels)
+    add_custom_filter(searchText, "search", query, labels);
+
+    $('#advanced_search_picker').hide();
   })
 
   $("#search-mobile").on("click", function () {
