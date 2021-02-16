@@ -1031,6 +1031,10 @@
     $('#advanced_search_picker').toggle();
   });
 
+  $('#advanced_search_mobile').on('click', function() {
+    $('#advanced_search_picker_mobile').toggle();
+  });
+
   $('#advanced_search_reset').on('click', function(){
     let fields_to_search = []
     window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type )
@@ -1041,7 +1045,19 @@
     });
     $('#search').click();
 
-  })
+  });
+
+  $('#advanced_search_reset_mobile').on('click', function(){
+    let fields_to_search = []
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type )
+
+    //clear all checkboxes
+    $('#advanced_search_picker_mobile ul li input:checked').each(function( index ) {
+        $( this ).prop('checked', false);
+    });
+    $('#search-mobile').click();
+
+  });
 
   $('#save_advanced_search_choices').on("click", function() {
     let fields_to_search = [];
@@ -1056,6 +1072,18 @@
     }
   })
 
+  $('#save_advanced_search_choices_mobile').on("click", function() {
+    let fields_to_search = [];
+    $('#advanced_search_picker_mobile ul li input:checked').each(function( index ) {
+      fields_to_search.push($( this ).val());
+   });
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type );
+    if ($("#search-query-mobile").val() !== "") {
+      $('#search-mobile').click();
+    } else {
+      $('#advanced_search_picker_mobile').hide();
+    }
+  })
   $("#search").on("click", function () {
     let searchText = $("#search-query").val()
     let fieldsToSearch = [];
@@ -1078,10 +1106,24 @@
 
   $("#search-mobile").on("click", function () {
     let searchText = _.escape( $("#search-query-mobile").val() )
+    let fieldsToSearch = [];
+    $('#advanced_search_picker_mobile ul li input:checked').each(function( index ) {
+      fieldsToSearch.push($( this ).val());
+    });
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fieldsToSearch, list_settings.post_type );
+
     let query = {text:searchText}
+
+    if (fieldsToSearch.length !== 0) {
+      query.fields_to_search = fieldsToSearch;
+    }
+
     let labels = [{ id:"search", name:searchText, field: "search"}]
-    add_custom_filter(searchText, "search", query, labels)
-  })
+    add_custom_filter(searchText, "search", query, labels);
+
+    $('#advanced_search_picker_mobile').hide();
+
+  });
 
   $('.search-input').on('keyup', function (e) {
     if ( e.keyCode === 13 ){
