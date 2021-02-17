@@ -359,16 +359,19 @@ else {
              * Contains all those features that only run if in the Admin panel
              * or those things directly supporting Admin panel features.
              */
-            if ( is_admin() ) {
+            if ( is_admin() || wp_doing_cron() ){
 
-                if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+                if ( !class_exists( 'Puc_v4_Factory' ) ){
                     require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
                 }
+                $theme_folder_name = basename( dirname( __FILE__ ) );
                 Puc_v4_Factory::buildUpdateChecker(
                     'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-theme-version-control.json',
                     __FILE__,
-                    'disciple-tools-theme'
+                    $theme_folder_name
                 );
+            }
+            if ( is_admin() ){
 
                 // Administration
                 require_once( get_template_directory() . '/dt-core/admin/admin-enqueue-scripts.php' ); // Load admin scripts
