@@ -336,8 +336,12 @@
       })
       window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
     }
-  }).on('click', 'tbody tr', function(){
-    window.location = $(this).data('link')
+  }).on('click', 'tbody tr', function(event){
+    if(event.target.href) {
+      console.log('its a link');
+    } else {
+     window.location = $(this).data('link')
+    }
   })
 
   let build_table = (records)=>{
