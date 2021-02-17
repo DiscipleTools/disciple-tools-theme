@@ -86,13 +86,13 @@ msgstr "सह-जिम्मेवार छनौट वा खटाईय�
 
 #: archive-template.php:454
 #: archive-template.php:455
-#: template-settings.php:407
+#: template-settings.php:405
 msgid "No"
 msgstr "हुदैन "
 
 #: archive-template.php:461
 #: archive-template.php:462
-#: template-settings.php:406
+#: template-settings.php:404
 msgid "Yes"
 msgstr "हुन्छ "
 
@@ -109,7 +109,7 @@ msgstr "खालि गर्नुहोस"
 #: template-merge-details.php:122
 #: template-merge-details.php:132
 #: template-merge-details.php:170
-#: template-settings.php:546
+#: template-settings.php:544
 msgid "Save"
 msgstr "सुरक्षित गर्नुहोस "
 
@@ -177,8 +177,8 @@ msgstr "स्थानान्तरण असफल भयो। साईट
 #: template-merge-details.php:121
 #: template-merge-details.php:132
 #: template-merge-details.php:168
-#: template-settings.php:71
-#: template-settings.php:422
+#: template-settings.php:69
+#: template-settings.php:420
 msgid "Edit"
 msgstr "सम्पादन गर्नुहोस "
 
@@ -250,36 +250,35 @@ msgstr "समूहहरु "
 
 #. Template Name of the plugin/theme
 #: dt-metrics/metrics.php:109
-#: dt-metrics/metrics.php:116
 msgid "Metrics"
 msgstr "मेट्रिक्स "
 
 #. Template Name of the plugin/theme
-#: dt-assets/functions/menu.php:57
-#: dt-assets/parts/nav-offcanvas-topbar.php:46
-#: dt-assets/parts/nav-offcanvas-topbar.php:110
+#: dt-assets/functions/menu.php:64
+#: dt-assets/parts/nav-offcanvas.php:48
+#: dt-assets/parts/nav-topbar.php:74
+#: dt-assets/parts/nav-topbar.php:179
 #: template-notifications.php:33
 #: template-settings.php:45
-#: template-settings.php:356
+#: template-settings.php:354
 msgid "Notifications"
 msgstr "सुचनाहरु "
 
 #. Template Name of the plugin/theme
-#: dt-assets/functions/menu.php:60
+#: dt-assets/functions/menu.php:70
+#: dt-assets/functions/menu.php:76
 #: dt-assets/parts/modals/modal-help.php:157
-#: dt-assets/parts/nav-offcanvas-topbar.php:51
-#: dt-assets/parts/nav-offcanvas-topbar.php:123
+#: dt-assets/parts/nav-topbar.php:82
 #: template-notifications.php:59
 msgid "Settings"
 msgstr "सेटिंग्स"
 
-#: dt-assets/functions/menu.php:66
-#: dt-assets/parts/nav-offcanvas-topbar.php:126
+#: dt-assets/functions/menu.php:81
 msgid "Admin"
 msgstr "प्रशान "
 
-#: dt-assets/functions/menu.php:69
-#: dt-assets/parts/nav-offcanvas-topbar.php:136
+#: dt-assets/parts/nav-offcanvas.php:77
+#: dt-assets/parts/nav-topbar.php:202
 msgid "Log Off"
 msgstr "बन्द गर्नुहोस "
 
@@ -326,7 +325,7 @@ msgstr "सामाजिक संजाल "
 #: dt-contacts/base-setup.php:219
 #: dt-core/configuration/config-site-defaults.php:455
 #: dt-groups/base-setup.php:385
-#: template-settings.php:132
+#: template-settings.php:130
 msgid "Address"
 msgstr "ठेगाना "
 
@@ -350,7 +349,7 @@ msgid "Age"
 msgstr "उमेर "
 
 #: dt-contacts/base-setup.php:264
-#: template-settings.php:509
+#: template-settings.php:507
 msgid "Gender"
 msgstr "लिंग "
 
@@ -359,7 +358,7 @@ msgstr "लिंग "
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:145
-#: template-settings.php:88
+#: template-settings.php:86
 msgid "Name"
 msgstr "नाम "
 
@@ -412,8 +411,8 @@ msgstr "समूह शिक्षक/ मण्डली स्थापन�
 
 #: dt-groups/base-setup.php:262
 #: dt-users/template-user-management.php:313
-#: template-settings.php:314
-#: template-settings.php:333
+#: template-settings.php:312
+#: template-settings.php:331
 msgid "Start Date"
 msgstr "सुरु मिति "
 
@@ -423,8 +422,8 @@ msgstr "मण्डली स्थापना मिति "
 
 #: dt-groups/base-setup.php:279
 #: dt-users/template-user-management.php:314
-#: template-settings.php:320
-#: template-settings.php:334
+#: template-settings.php:318
+#: template-settings.php:332
 msgid "End Date"
 msgstr "अन्तिम समय "
 
@@ -571,9 +570,7 @@ msgstr "यो समूह साझेदारी गरिएको छ:"
 msgid "This contact is shared with:"
 msgstr "यस सम्पर्कलाई साझेदारी गरिएको छ:"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:37
-#: dt-assets/parts/nav-offcanvas-topbar.php:100
-#: dt-posts/custom-post-type.php:133
+#: dt-assets/functions/menu.php:57
 msgid "Add New"
 msgstr "नयाँ थप्नुहोस "
 
@@ -581,12 +578,12 @@ msgstr "नयाँ थप्नुहोस "
 msgid "New Contact"
 msgstr "नयाँ सम्पर्क "
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:93
+#: dt-assets/functions/menu.php:51
 #: template-settings.php:42
 msgid "Profile"
 msgstr "प्रोफाइल"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:132
+#: dt-assets/functions/menu.php:91
 msgid "Help"
 msgstr "सहयोग "
 
@@ -629,7 +626,7 @@ msgstr "नपछ्याउनु "
 
 #: dt-contacts/base-setup.php:186
 #: dt-core/configuration/config-site-defaults.php:443
-#: template-settings.php:121
+#: template-settings.php:119
 msgid "Phone"
 msgstr "फोन "
 
@@ -645,7 +642,7 @@ msgstr "घर "
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:469
 #: dt-groups/base-setup.php:732
-#: template-settings.php:154
+#: template-settings.php:152
 msgid "Other"
 msgstr "अन्य "
 
@@ -654,7 +651,7 @@ msgstr "अन्य "
 #: dt-core/configuration/config-site-defaults.php:256
 #: dt-core/configuration/config-site-defaults.php:447
 #: dt-users/user-management.php:158
-#: template-settings.php:108
+#: template-settings.php:106
 msgid "Email"
 msgstr "इमेल "
 
@@ -833,7 +830,7 @@ msgid "To reset your password, visit the following address:"
 msgstr "पासवर्ड पुन बनाउँन, निम्न ठेगानामा हेर्नुहोस ।"
 
 #: dt-users/template-user-management.php:326
-#: template-settings.php:101
+#: template-settings.php:99
 msgid "Roles"
 msgstr "भूमिकाहरू"
 
@@ -1238,6 +1235,7 @@ msgstr "आयोजना अबलोकन "
 msgid "Outreach"
 msgstr "भेटघाट "
 
+#: dt-contacts/access-module.php:382
 #: dt-metrics/combined/critical-path.php:86
 msgid "Follow Up"
 msgstr "पुन: कुराकानी अगाडि बढाउनु"
@@ -1488,44 +1486,44 @@ msgstr "सबै चिन्ह लगाउनुहोस "
 
 #: dt-users/template-user-management.php:296
 #: template-settings.php:44
-#: template-settings.php:301
+#: template-settings.php:299
 msgid "Availability"
 msgstr "उपलब्धता\n"
 ""
 
-#: template-settings.php:69
+#: template-settings.php:67
 msgid "Your Profile"
 msgstr "तपाईंको प्रोफाइल"
 
-#: template-settings.php:82
-#: template-settings.php:442
+#: template-settings.php:80
+#: template-settings.php:440
 msgid "Username"
 msgstr "प्रयोगकर्ता नाम"
 
 #: dt-users/user-management.php:157
-#: template-settings.php:95
-#: template-settings.php:477
+#: template-settings.php:93
+#: template-settings.php:475
 msgid "Nickname (Display Name)"
 msgstr "उपनाम (देखिने नाम)"
 
-#: template-settings.php:143
+#: template-settings.php:141
 msgid "Social"
 msgstr "सामाजिक"
 
-#: template-settings.php:168
+#: template-settings.php:166
 msgid "Language"
 msgstr "भाषा "
 
-#: template-settings.php:174
+#: template-settings.php:172
 msgid "English"
 msgstr "अंग्रेजी "
 
-#: template-settings.php:178
-#: template-settings.php:501
+#: template-settings.php:176
+#: template-settings.php:499
 msgid "Biography"
 msgstr "जीवनी"
 
-#: template-settings.php:362
+#: template-settings.php:360
 msgid "Type of Notification"
 msgstr "सूचनाको प्रकार"
 
@@ -1534,58 +1532,58 @@ msgstr "सूचनाको प्रकार"
 msgid "Web"
 msgstr "वेब(वेब)/ तरंग "
 
-#: template-settings.php:375
+#: template-settings.php:373
 msgid "required"
 msgstr "आवश्यक छ"
 
-#: template-settings.php:398
+#: template-settings.php:396
 msgid "Follow all contacts"
 msgstr "सबै सम्पर्कहरू अनुसरण गर्नुहोस्"
 
-#: template-settings.php:405
+#: template-settings.php:403
 msgid "Enable"
 msgstr "सक्षम गर्नुहोस्"
 
-#: template-settings.php:436
+#: template-settings.php:434
 msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
 msgstr "चेला उपकरण प्रणालीले छविहरू भण्डारण गर्दैन। प्रोफाइल छविहरूका लागि हामी ग्रेवाटर (ग्लोबली मान्यता प्राप्त अवतार) प्रयोग गर्दछौं। यदि तपाईंसँग सुरक्षा चिन्ता छ भने, हामी एक व्यक्तिगत फोटो को उपयोग नगर्न सल्लाह दिन्छौं, बरु तपाईंलाई प्रतिनिधित्व गर्न कार्टुन, अमूर्त, वा उपनाम फोटो छान्नुहोस्।"
 
-#: template-settings.php:437
+#: template-settings.php:435
 msgid "edit image on gravatar.com"
 msgstr "gravatar.com मा छवि सम्पादन गर्नुहोस्"
 
-#: template-settings.php:443
-#: template-settings.php:444
+#: template-settings.php:441
+#: template-settings.php:442
 msgid "Username cannot be changed"
 msgstr "प्रयोगकर्ताकोनाम परिवर्तन गर्न सकिदैन"
 
-#: template-settings.php:111
-#: template-settings.php:448
+#: template-settings.php:109
+#: template-settings.php:446
 msgid "System Email"
 msgstr "\n"
 " इमेल प्रणाली "
 
-#: template-settings.php:449
+#: template-settings.php:447
 msgid "User email can be changed by site administrator."
 msgstr "प्रयोगकर्ताको ईमेल साइट प्रशासक द्वारा परिवर्तन गर्न सकिन्छ।"
 
-#: template-settings.php:456
+#: template-settings.php:454
 msgid "Password"
 msgstr "पासवर्ड"
 
-#: template-settings.php:457
+#: template-settings.php:455
 msgid "Use this email reset form to create a new password."
 msgstr "नयाँ पासवर्ड सिर्जना गर्न यो ईमेल रिसेट फारम प्रयोग गर्नुहोस्।"
 
-#: template-settings.php:459
+#: template-settings.php:457
 msgid "go to password change form"
 msgstr "पासवर्ड परिवर्तन फारममा जानुहोस्"
 
-#: template-settings.php:466
+#: template-settings.php:464
 msgid "First Name"
 msgstr "पहिलो नाम "
 
-#: template-settings.php:472
+#: template-settings.php:470
 msgid "Last Name"
 msgstr "अन्तिम नाम "
 
@@ -1704,7 +1702,7 @@ msgstr "\n"
 msgid "World"
 msgstr "संसार "
 
-#: dt-posts/custom-post-type.php:134
+#: dt-posts/custom-post-type.php:127
 #: template-new-post.php:32
 msgid "New %s"
 msgstr "नयाँ% s"
@@ -1747,24 +1745,24 @@ msgstr "म केवल अवस्थित सम्पर्कहरूम
 msgid "I have too many contacts"
 msgstr "मसँग धेरै सम्पर्कहरू छन्"
 
-#: template-settings.php:304
+#: template-settings.php:302
 msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
 msgstr "तपाई तय गर्नुहोस् जुन तपाईं यात्रा गर्दै हुनुहुन्छ वा अनुपलब्ध हुनुहुन्छ त्यसैले डिस्प्याचरले नयाँ सम्पर्कहरू प्राप्त गर्न तपाईंको उपलब्धता थाहा पाउनेछ"
 
-#: template-settings.php:308
+#: template-settings.php:306
 msgid "Schedule Travel or Dates Unavailable"
 msgstr " यात्रा वा मिति अनुपलब्ध तय गर्नुहोस \n"
 ""
 
-#: template-settings.php:325
+#: template-settings.php:323
 msgid "Add Unavailable dates"
 msgstr "अनुपलब्ध मितिहरू थप्नुहोस्"
 
-#: template-settings.php:339
+#: template-settings.php:337
 msgid "No Travel Scheduled"
 msgstr "कुनै यात्रा निर्धारित छैन"
 
-#: template-settings.php:400
+#: template-settings.php:398
 msgid "You will receive a notification for any update that happens in the system."
 msgstr "तपाईंले प्रणालीमा हुने कुनै पनि अपडेटको लागि सूचना प्राप्त गर्नुहुनेछ।"
 
@@ -2175,7 +2173,7 @@ msgstr "तपाईंको टिप्पणी वा नोट यहा�
 #: dt-groups/base-setup.php:526
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
-#: template-settings.php:264
+#: template-settings.php:262
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "%s खोज्नुहोस "
@@ -2459,7 +2457,7 @@ msgctxt "All records"
 msgid "All %s"
 msgstr "सबै% s"
 
-#: dt-assets/functions/menu.php:34
+#: dt-assets/functions/menu.php:45
 msgid "Disciple.Tools"
 msgstr "चेला। टूलहरू"
 
@@ -2733,12 +2731,11 @@ msgstr "कार्य सिर्जना गर्नुहोस्"
 msgid "Existing tasks for this record:"
 msgstr "यस रेकर्डको लागि अवस्थित कार्यहरू:"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:85
+#: dt-assets/parts/nav-topbar.php:133
 msgid "Theme Update Available!"
 msgstr "थिम अपडेट उपलब्ध छ!"
 
-#: dt-assets/functions/menu.php:63
-#: dt-assets/parts/nav-offcanvas-topbar.php:130
+#: dt-assets/functions/menu.php:86
 #: dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:264
 #: dt-metrics/combined/locations-list.php:257
@@ -3272,7 +3269,7 @@ msgid "Save Roles"
 msgstr "नामुमा शुरक्षित गर्नुहोस "
 
 #: dt-users/template-user-management.php:284
-#: template-settings.php:220
+#: template-settings.php:218
 msgid "Search Locations"
 msgstr "स्थानहरु खोजि गर्नुहोस "
 
@@ -3469,7 +3466,7 @@ msgstr "सम्पर्कहरू अर्को Disciple.Tools साइ�
 #: dt-mapping/geocode-api/mapbox-api.php:286
 #: dt-mapping/geocode-api/mapbox-api.php:321
 #: dt-users/template-user-management.php:272
-#: template-settings.php:205
+#: template-settings.php:203
 msgid "add"
 msgstr "थप्नुहोस्"
 
@@ -3746,7 +3743,7 @@ msgstr "साझेदार "
 msgid "DT Site Name: %s"
 msgstr "डीटी साइटको  नाम:% s"
 
-#: dt-metrics/combined/critical-path.php:169
+#: dt-metrics/charts-base.php:132
 msgid "No Results"
 msgstr "परिणाम छैन्"
 
@@ -3965,28 +3962,28 @@ msgid "View User"
 msgstr "प्रयोगकर्ता हेर्नुहोस्"
 
 #: template-settings.php:43
-#: template-settings.php:197
+#: template-settings.php:195
 msgid "Multiplier Preferences"
 msgstr "गुणक प्राथमिकताहरू"
 
-#: template-settings.php:205
-#: template-settings.php:210
+#: template-settings.php:203
+#: template-settings.php:208
 msgid "Locations you are willing to be responsible for"
 msgstr "स्थानहरू तपाइँ जिम्मेवार हुन इच्छुक हुनुहुन्छ"
 
-#: template-settings.php:233
+#: template-settings.php:231
 msgid "Languages you are comfortable speaking"
 msgstr "भाषाहरू तपाई बोल्न सहज छन्"
 
-#: template-settings.php:254
+#: template-settings.php:252
 msgid "People Groups you wish to serve"
 msgstr "तपाईको सेवा गर्न चाहने व्यक्ति समूह"
 
-#: template-settings.php:277
+#: template-settings.php:275
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "प्रबन्धकबाट सम्पर्कहरू प्राप्त गर्न उपलब्ध छ "
 
-#: template-settings.php:523
+#: template-settings.php:521
 msgid "System Language"
 msgstr "प्रणाली भाषा"
 
@@ -4332,6 +4329,7 @@ msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr ""
 
+#: dt-assets/functions/menu.php:39
 #: template-metrics.php:25
 msgid "Menu"
 msgstr ""

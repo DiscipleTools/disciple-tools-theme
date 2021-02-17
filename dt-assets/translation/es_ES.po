@@ -86,13 +86,13 @@ msgstr "Filtro para subasignado o asignado a"
 
 #: archive-template.php:454
 #: archive-template.php:455
-#: template-settings.php:407
+#: template-settings.php:405
 msgid "No"
 msgstr "No"
 
 #: archive-template.php:461
 #: archive-template.php:462
-#: template-settings.php:406
+#: template-settings.php:404
 msgid "Yes"
 msgstr "Si"
 
@@ -109,7 +109,7 @@ msgstr "Vaciar"
 #: template-merge-details.php:122
 #: template-merge-details.php:132
 #: template-merge-details.php:170
-#: template-settings.php:546
+#: template-settings.php:544
 msgid "Save"
 msgstr "Guardar"
 
@@ -175,8 +175,8 @@ msgstr "Transferencia fallida. Compruebe la configuración de sitio a sitio."
 #: template-merge-details.php:121
 #: template-merge-details.php:132
 #: template-merge-details.php:168
-#: template-settings.php:71
-#: template-settings.php:422
+#: template-settings.php:69
+#: template-settings.php:420
 msgid "Edit"
 msgstr "﻿Editar"
 
@@ -247,36 +247,35 @@ msgstr "Grupos"
 
 #. Template Name of the plugin/theme
 #: dt-metrics/metrics.php:109
-#: dt-metrics/metrics.php:116
 msgid "Metrics"
 msgstr "Métricas"
 
 #. Template Name of the plugin/theme
-#: dt-assets/functions/menu.php:57
-#: dt-assets/parts/nav-offcanvas-topbar.php:46
-#: dt-assets/parts/nav-offcanvas-topbar.php:110
+#: dt-assets/functions/menu.php:64
+#: dt-assets/parts/nav-offcanvas.php:48
+#: dt-assets/parts/nav-topbar.php:74
+#: dt-assets/parts/nav-topbar.php:179
 #: template-notifications.php:33
 #: template-settings.php:45
-#: template-settings.php:356
+#: template-settings.php:354
 msgid "Notifications"
 msgstr "Notificaciones"
 
 #. Template Name of the plugin/theme
-#: dt-assets/functions/menu.php:60
+#: dt-assets/functions/menu.php:70
+#: dt-assets/functions/menu.php:76
 #: dt-assets/parts/modals/modal-help.php:157
-#: dt-assets/parts/nav-offcanvas-topbar.php:51
-#: dt-assets/parts/nav-offcanvas-topbar.php:123
+#: dt-assets/parts/nav-topbar.php:82
 #: template-notifications.php:59
 msgid "Settings"
 msgstr "Configuraciones"
 
-#: dt-assets/functions/menu.php:66
-#: dt-assets/parts/nav-offcanvas-topbar.php:126
+#: dt-assets/functions/menu.php:81
 msgid "Admin"
 msgstr "Administrador"
 
-#: dt-assets/functions/menu.php:69
-#: dt-assets/parts/nav-offcanvas-topbar.php:136
+#: dt-assets/parts/nav-offcanvas.php:77
+#: dt-assets/parts/nav-topbar.php:202
 msgid "Log Off"
 msgstr "Cerrar Sesión"
 
@@ -323,7 +322,7 @@ msgstr "Redes Sociales"
 #: dt-contacts/base-setup.php:219
 #: dt-core/configuration/config-site-defaults.php:455
 #: dt-groups/base-setup.php:385
-#: template-settings.php:132
+#: template-settings.php:130
 msgid "Address"
 msgstr "Dirección"
 
@@ -347,7 +346,7 @@ msgid "Age"
 msgstr "Edad"
 
 #: dt-contacts/base-setup.php:264
-#: template-settings.php:509
+#: template-settings.php:507
 msgid "Gender"
 msgstr "Género"
 
@@ -356,7 +355,7 @@ msgstr "Género"
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:145
-#: template-settings.php:88
+#: template-settings.php:86
 msgid "Name"
 msgstr "Nombre"
 
@@ -409,8 +408,8 @@ msgstr "Entrenador del Grupo / Plantador de Iglesia"
 
 #: dt-groups/base-setup.php:262
 #: dt-users/template-user-management.php:313
-#: template-settings.php:314
-#: template-settings.php:333
+#: template-settings.php:312
+#: template-settings.php:331
 msgid "Start Date"
 msgstr "Fecha de inicio"
 
@@ -420,8 +419,8 @@ msgstr "Fecha de inicio de la iglesia"
 
 #: dt-groups/base-setup.php:279
 #: dt-users/template-user-management.php:314
-#: template-settings.php:320
-#: template-settings.php:334
+#: template-settings.php:318
+#: template-settings.php:332
 msgid "End Date"
 msgstr "Fecha de finalización"
 
@@ -566,9 +565,7 @@ msgstr "Este grupo se comparte con:"
 msgid "This contact is shared with:"
 msgstr "Este contacto se comparte con:"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:37
-#: dt-assets/parts/nav-offcanvas-topbar.php:100
-#: dt-posts/custom-post-type.php:133
+#: dt-assets/functions/menu.php:57
 msgid "Add New"
 msgstr "Añadir Nuevo"
 
@@ -576,12 +573,12 @@ msgstr "Añadir Nuevo"
 msgid "New Contact"
 msgstr "Nuevo Contacto"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:93
+#: dt-assets/functions/menu.php:51
 #: template-settings.php:42
 msgid "Profile"
 msgstr "Perfil"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:132
+#: dt-assets/functions/menu.php:91
 msgid "Help"
 msgstr "Ayuda"
 
@@ -623,7 +620,7 @@ msgstr "Dejar de Seguir"
 
 #: dt-contacts/base-setup.php:186
 #: dt-core/configuration/config-site-defaults.php:443
-#: template-settings.php:121
+#: template-settings.php:119
 msgid "Phone"
 msgstr "Teléfono"
 
@@ -639,7 +636,7 @@ msgstr "Casa"
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:469
 #: dt-groups/base-setup.php:732
-#: template-settings.php:154
+#: template-settings.php:152
 msgid "Other"
 msgstr "Otro"
 
@@ -648,7 +645,7 @@ msgstr "Otro"
 #: dt-core/configuration/config-site-defaults.php:256
 #: dt-core/configuration/config-site-defaults.php:447
 #: dt-users/user-management.php:158
-#: template-settings.php:108
+#: template-settings.php:106
 msgid "Email"
 msgstr "Correo"
 
@@ -828,7 +825,7 @@ msgid "To reset your password, visit the following address:"
 msgstr "Para restablecer tu contraseña, visita la siguiente dirección:"
 
 #: dt-users/template-user-management.php:326
-#: template-settings.php:101
+#: template-settings.php:99
 msgid "Roles"
 msgstr "Roles"
 
@@ -1232,6 +1229,7 @@ msgstr "Descripción del Proyecto"
 msgid "Outreach"
 msgstr "Alcanzamiento"
 
+#: dt-contacts/access-module.php:382
 #: dt-metrics/combined/critical-path.php:86
 msgid "Follow Up"
 msgstr "Seguimiento"
@@ -1481,43 +1479,43 @@ msgstr "Marcar Todo"
 
 #: dt-users/template-user-management.php:296
 #: template-settings.php:44
-#: template-settings.php:301
+#: template-settings.php:299
 msgid "Availability"
 msgstr "Disponibilidad"
 
-#: template-settings.php:69
+#: template-settings.php:67
 msgid "Your Profile"
 msgstr "Tu Perfil"
 
-#: template-settings.php:82
-#: template-settings.php:442
+#: template-settings.php:80
+#: template-settings.php:440
 msgid "Username"
 msgstr "Nombre de Usuario"
 
 #: dt-users/user-management.php:157
-#: template-settings.php:95
-#: template-settings.php:477
+#: template-settings.php:93
+#: template-settings.php:475
 msgid "Nickname (Display Name)"
 msgstr "Sobrenombre (Nombre para su visualización)"
 
-#: template-settings.php:143
+#: template-settings.php:141
 msgid "Social"
 msgstr "Social"
 
-#: template-settings.php:168
+#: template-settings.php:166
 msgid "Language"
 msgstr "Idioma"
 
-#: template-settings.php:174
+#: template-settings.php:172
 msgid "English"
 msgstr "Inglés"
 
-#: template-settings.php:178
-#: template-settings.php:501
+#: template-settings.php:176
+#: template-settings.php:499
 msgid "Biography"
 msgstr "Biografía"
 
-#: template-settings.php:362
+#: template-settings.php:360
 msgid "Type of Notification"
 msgstr "Tipo de Notificación"
 
@@ -1526,57 +1524,57 @@ msgstr "Tipo de Notificación"
 msgid "Web"
 msgstr "Internet"
 
-#: template-settings.php:375
+#: template-settings.php:373
 msgid "required"
 msgstr "requerido"
 
-#: template-settings.php:398
+#: template-settings.php:396
 msgid "Follow all contacts"
 msgstr "Seguir todos los contactos"
 
-#: template-settings.php:405
+#: template-settings.php:403
 msgid "Enable"
 msgstr "Habilitar"
 
-#: template-settings.php:436
+#: template-settings.php:434
 msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
 msgstr "El sistema Disciple Tools no almacena imágenes. Para las imágenes de perfil usamos Gravatar (Avatar Reconocido Globalmente). Si tiene problemas de seguridad, le sugerimos que no utilice una foto personal, sino que elija una caricatura, un resumen o una foto de alias para representarlo."
 
-#: template-settings.php:437
+#: template-settings.php:435
 msgid "edit image on gravatar.com"
 msgstr "editar imagen en gravatar.com"
 
-#: template-settings.php:443
-#: template-settings.php:444
+#: template-settings.php:441
+#: template-settings.php:442
 msgid "Username cannot be changed"
 msgstr "Nombre de usuario no puede ser cambiado"
 
-#: template-settings.php:111
-#: template-settings.php:448
+#: template-settings.php:109
+#: template-settings.php:446
 msgid "System Email"
 msgstr "Correo del Sistema"
 
-#: template-settings.php:449
+#: template-settings.php:447
 msgid "User email can be changed by site administrator."
 msgstr "El administrador del sitio puede cambiar el correo electrónico del usuario."
 
-#: template-settings.php:456
+#: template-settings.php:454
 msgid "Password"
 msgstr "Contraseña"
 
-#: template-settings.php:457
+#: template-settings.php:455
 msgid "Use this email reset form to create a new password."
 msgstr "Usa este formato de correo electrónico para crear una nueva contraseña."
 
-#: template-settings.php:459
+#: template-settings.php:457
 msgid "go to password change form"
 msgstr "ir al formato para cambiar contraseña"
 
-#: template-settings.php:466
+#: template-settings.php:464
 msgid "First Name"
 msgstr "Nombre"
 
-#: template-settings.php:472
+#: template-settings.php:470
 msgid "Last Name"
 msgstr "Apellido"
 
@@ -1699,7 +1697,7 @@ msgstr "Lista"
 msgid "World"
 msgstr "Mundo"
 
-#: dt-posts/custom-post-type.php:134
+#: dt-posts/custom-post-type.php:127
 #: template-new-post.php:32
 msgid "New %s"
 msgstr "Nuevo %s"
@@ -1740,23 +1738,23 @@ msgstr "Solo estoy invirtiendo en contactos existentes"
 msgid "I have too many contacts"
 msgstr "Tengo demasiados contactos"
 
-#: template-settings.php:304
+#: template-settings.php:302
 msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
 msgstr "Establezca las fechas en que viajará o no estará disponible para que el Despachador sepa su disponibilidad para recibir nuevos contactos"
 
-#: template-settings.php:308
+#: template-settings.php:306
 msgid "Schedule Travel or Dates Unavailable"
 msgstr "Programar viajes o fechas no disponibles"
 
-#: template-settings.php:325
+#: template-settings.php:323
 msgid "Add Unavailable dates"
 msgstr "Agregar fechas no disponibles"
 
-#: template-settings.php:339
+#: template-settings.php:337
 msgid "No Travel Scheduled"
 msgstr "No hay viajes programados"
 
-#: template-settings.php:400
+#: template-settings.php:398
 msgid "You will receive a notification for any update that happens in the system."
 msgstr "Recibirá una notificación por cualquier actualización que ocurra en la sistema."
 
@@ -2158,7 +2156,7 @@ msgstr "Escriba su comentario o nota aquí"
 #: dt-groups/base-setup.php:526
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
-#: template-settings.php:264
+#: template-settings.php:262
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "Buscar %s"
@@ -2439,7 +2437,7 @@ msgctxt "All records"
 msgid "All %s"
 msgstr "Todos los %s"
 
-#: dt-assets/functions/menu.php:34
+#: dt-assets/functions/menu.php:45
 msgid "Disciple.Tools"
 msgstr "Disciple.Tools"
 
@@ -2709,12 +2707,11 @@ msgstr "Crear Tarea"
 msgid "Existing tasks for this record:"
 msgstr "Tareas existentes para este registro:"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:85
+#: dt-assets/parts/nav-topbar.php:133
 msgid "Theme Update Available!"
 msgstr "¡Actualización de tema disponible!"
 
-#: dt-assets/functions/menu.php:63
-#: dt-assets/parts/nav-offcanvas-topbar.php:130
+#: dt-assets/functions/menu.php:86
 #: dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:264
 #: dt-metrics/combined/locations-list.php:257
@@ -3243,7 +3240,7 @@ msgid "Save Roles"
 msgstr "Guardar roles"
 
 #: dt-users/template-user-management.php:284
-#: template-settings.php:220
+#: template-settings.php:218
 msgid "Search Locations"
 msgstr "Buscar Ubicaciones"
 
@@ -3433,7 +3430,7 @@ msgstr "Contactos transferidos desde una asociación con otro sitio Disciple.Too
 #: dt-mapping/geocode-api/mapbox-api.php:286
 #: dt-mapping/geocode-api/mapbox-api.php:321
 #: dt-users/template-user-management.php:272
-#: template-settings.php:205
+#: template-settings.php:203
 msgid "add"
 msgstr "añadir"
 
@@ -3707,7 +3704,7 @@ msgstr "Socio"
 msgid "DT Site Name: %s"
 msgstr "Nombre del sitio DT: %s"
 
-#: dt-metrics/combined/critical-path.php:169
+#: dt-metrics/charts-base.php:132
 msgid "No Results"
 msgstr "Sin resultados"
 
@@ -3925,28 +3922,28 @@ msgid "View User"
 msgstr "Ver Usuario"
 
 #: template-settings.php:43
-#: template-settings.php:197
+#: template-settings.php:195
 msgid "Multiplier Preferences"
 msgstr "Preferencias para multiplicadores"
 
-#: template-settings.php:205
-#: template-settings.php:210
+#: template-settings.php:203
+#: template-settings.php:208
 msgid "Locations you are willing to be responsible for"
 msgstr "Ubicaciones por los que estás dispuesto a ser responsables"
 
-#: template-settings.php:233
+#: template-settings.php:231
 msgid "Languages you are comfortable speaking"
 msgstr "Idiomas que se sienta cómodo hablando"
 
-#: template-settings.php:254
+#: template-settings.php:252
 msgid "People Groups you wish to serve"
 msgstr "Grupos Étnicos que desean servir"
 
-#: template-settings.php:277
+#: template-settings.php:275
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "Disponibilidad para recibir los contactos del Despachador"
 
-#: template-settings.php:523
+#: template-settings.php:521
 msgid "System Language"
 msgstr "Idioma del sistema"
 
@@ -4294,6 +4291,7 @@ msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "¿Seguro que quieres eliminar %s?"
 
+#: dt-assets/functions/menu.php:39
 #: template-metrics.php:25
 msgid "Menu"
 msgstr "Menú"

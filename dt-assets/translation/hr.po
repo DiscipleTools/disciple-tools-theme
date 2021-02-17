@@ -86,13 +86,13 @@ msgstr "Filter za drugi-dodijeljen ILI dodijeljen"
 
 #: archive-template.php:454
 #: archive-template.php:455
-#: template-settings.php:407
+#: template-settings.php:405
 msgid "No"
 msgstr "Ne"
 
 #: archive-template.php:461
 #: archive-template.php:462
-#: template-settings.php:406
+#: template-settings.php:404
 msgid "Yes"
 msgstr "Da"
 
@@ -109,7 +109,7 @@ msgstr "Očisti"
 #: template-merge-details.php:122
 #: template-merge-details.php:132
 #: template-merge-details.php:170
-#: template-settings.php:546
+#: template-settings.php:544
 msgid "Save"
 msgstr "Spremi"
 
@@ -175,8 +175,8 @@ msgstr "Prijenos neuspješan. Provjerite podešavanja od stranice do stranice."
 #: template-merge-details.php:121
 #: template-merge-details.php:132
 #: template-merge-details.php:168
-#: template-settings.php:71
-#: template-settings.php:422
+#: template-settings.php:69
+#: template-settings.php:420
 msgid "Edit"
 msgstr "Uredi"
 
@@ -247,36 +247,35 @@ msgstr "Grupe"
 
 #. Template Name of the plugin/theme
 #: dt-metrics/metrics.php:109
-#: dt-metrics/metrics.php:116
 msgid "Metrics"
 msgstr "Metrika"
 
 #. Template Name of the plugin/theme
-#: dt-assets/functions/menu.php:57
-#: dt-assets/parts/nav-offcanvas-topbar.php:46
-#: dt-assets/parts/nav-offcanvas-topbar.php:110
+#: dt-assets/functions/menu.php:64
+#: dt-assets/parts/nav-offcanvas.php:48
+#: dt-assets/parts/nav-topbar.php:74
+#: dt-assets/parts/nav-topbar.php:179
 #: template-notifications.php:33
 #: template-settings.php:45
-#: template-settings.php:356
+#: template-settings.php:354
 msgid "Notifications"
 msgstr "Obavijesti"
 
 #. Template Name of the plugin/theme
-#: dt-assets/functions/menu.php:60
+#: dt-assets/functions/menu.php:70
+#: dt-assets/functions/menu.php:76
 #: dt-assets/parts/modals/modal-help.php:157
-#: dt-assets/parts/nav-offcanvas-topbar.php:51
-#: dt-assets/parts/nav-offcanvas-topbar.php:123
+#: dt-assets/parts/nav-topbar.php:82
 #: template-notifications.php:59
 msgid "Settings"
 msgstr "Postavke"
 
-#: dt-assets/functions/menu.php:66
-#: dt-assets/parts/nav-offcanvas-topbar.php:126
+#: dt-assets/functions/menu.php:81
 msgid "Admin"
 msgstr "Admin"
 
-#: dt-assets/functions/menu.php:69
-#: dt-assets/parts/nav-offcanvas-topbar.php:136
+#: dt-assets/parts/nav-offcanvas.php:77
+#: dt-assets/parts/nav-topbar.php:202
 msgid "Log Off"
 msgstr "Odjavi se"
 
@@ -323,7 +322,7 @@ msgstr "Društvena mreža"
 #: dt-contacts/base-setup.php:219
 #: dt-core/configuration/config-site-defaults.php:455
 #: dt-groups/base-setup.php:385
-#: template-settings.php:132
+#: template-settings.php:130
 msgid "Address"
 msgstr "Adresa"
 
@@ -347,7 +346,7 @@ msgid "Age"
 msgstr "Dob"
 
 #: dt-contacts/base-setup.php:264
-#: template-settings.php:509
+#: template-settings.php:507
 msgid "Gender"
 msgstr "Spol"
 
@@ -356,7 +355,7 @@ msgstr "Spol"
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:145
-#: template-settings.php:88
+#: template-settings.php:86
 msgid "Name"
 msgstr "Ime"
 
@@ -409,8 +408,8 @@ msgstr "Mentor grupe / osnivač crkve"
 
 #: dt-groups/base-setup.php:262
 #: dt-users/template-user-management.php:313
-#: template-settings.php:314
-#: template-settings.php:333
+#: template-settings.php:312
+#: template-settings.php:331
 msgid "Start Date"
 msgstr "Datum početka"
 
@@ -420,8 +419,8 @@ msgstr "Datum početka crkve"
 
 #: dt-groups/base-setup.php:279
 #: dt-users/template-user-management.php:314
-#: template-settings.php:320
-#: template-settings.php:334
+#: template-settings.php:318
+#: template-settings.php:332
 msgid "End Date"
 msgstr "Datum završetka"
 
@@ -566,9 +565,7 @@ msgstr "Ova grupa dijeli se s:"
 msgid "This contact is shared with:"
 msgstr "Ovaj kontakt dijeli se s:"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:37
-#: dt-assets/parts/nav-offcanvas-topbar.php:100
-#: dt-posts/custom-post-type.php:133
+#: dt-assets/functions/menu.php:57
 msgid "Add New"
 msgstr "Dodaj novi"
 
@@ -576,12 +573,12 @@ msgstr "Dodaj novi"
 msgid "New Contact"
 msgstr "Novi kontakt"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:93
+#: dt-assets/functions/menu.php:51
 #: template-settings.php:42
 msgid "Profile"
 msgstr "Profil"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:132
+#: dt-assets/functions/menu.php:91
 msgid "Help"
 msgstr "Pomoć"
 
@@ -623,7 +620,7 @@ msgstr "Prestani pratiti"
 
 #: dt-contacts/base-setup.php:186
 #: dt-core/configuration/config-site-defaults.php:443
-#: template-settings.php:121
+#: template-settings.php:119
 msgid "Phone"
 msgstr "Telefon"
 
@@ -639,7 +636,7 @@ msgstr "Dom"
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:469
 #: dt-groups/base-setup.php:732
-#: template-settings.php:154
+#: template-settings.php:152
 msgid "Other"
 msgstr "Ostalo"
 
@@ -648,7 +645,7 @@ msgstr "Ostalo"
 #: dt-core/configuration/config-site-defaults.php:256
 #: dt-core/configuration/config-site-defaults.php:447
 #: dt-users/user-management.php:158
-#: template-settings.php:108
+#: template-settings.php:106
 msgid "Email"
 msgstr "E-mail"
 
@@ -829,7 +826,7 @@ msgid "To reset your password, visit the following address:"
 msgstr "Za resetiranje lozinke, kliknite na sljedeću stranicu:"
 
 #: dt-users/template-user-management.php:326
-#: template-settings.php:101
+#: template-settings.php:99
 msgid "Roles"
 msgstr "Uloge"
 
@@ -1233,6 +1230,7 @@ msgstr "Pregled projekta"
 msgid "Outreach"
 msgstr "Doseg"
 
+#: dt-contacts/access-module.php:382
 #: dt-metrics/combined/critical-path.php:86
 msgid "Follow Up"
 msgstr "Praćenje"
@@ -1482,43 +1480,43 @@ msgstr "Označi sve"
 
 #: dt-users/template-user-management.php:296
 #: template-settings.php:44
-#: template-settings.php:301
+#: template-settings.php:299
 msgid "Availability"
 msgstr "Dostupnost"
 
-#: template-settings.php:69
+#: template-settings.php:67
 msgid "Your Profile"
 msgstr "Tvoj profil"
 
-#: template-settings.php:82
-#: template-settings.php:442
+#: template-settings.php:80
+#: template-settings.php:440
 msgid "Username"
 msgstr "Korisničko ime"
 
 #: dt-users/user-management.php:157
-#: template-settings.php:95
-#: template-settings.php:477
+#: template-settings.php:93
+#: template-settings.php:475
 msgid "Nickname (Display Name)"
 msgstr "Nadimak (ime za prikaz)"
 
-#: template-settings.php:143
+#: template-settings.php:141
 msgid "Social"
 msgstr "Društveni"
 
-#: template-settings.php:168
+#: template-settings.php:166
 msgid "Language"
 msgstr "Jezik"
 
-#: template-settings.php:174
+#: template-settings.php:172
 msgid "English"
 msgstr "Engleski"
 
-#: template-settings.php:178
-#: template-settings.php:501
+#: template-settings.php:176
+#: template-settings.php:499
 msgid "Biography"
 msgstr "Biografija"
 
-#: template-settings.php:362
+#: template-settings.php:360
 msgid "Type of Notification"
 msgstr "Tip obavijesti"
 
@@ -1527,57 +1525,57 @@ msgstr "Tip obavijesti"
 msgid "Web"
 msgstr "Web"
 
-#: template-settings.php:375
+#: template-settings.php:373
 msgid "required"
 msgstr "obavezno"
 
-#: template-settings.php:398
+#: template-settings.php:396
 msgid "Follow all contacts"
 msgstr "Prati sve kontakte"
 
-#: template-settings.php:405
+#: template-settings.php:403
 msgid "Enable"
 msgstr "Omogući"
 
-#: template-settings.php:436
+#: template-settings.php:434
 msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
 msgstr "Sustav Disciple Tools ne pohranjuje slike. Za slike profila koristimo Gravatar (Globally Recognized Avatar). Ako imate brige oko sigurnosti, predlažemo da ne koristite osobnu fotografiju, već odaberite crtanu, apstraktnu ili lažnu fotografiju koja će vas predstavljati."
 
-#: template-settings.php:437
+#: template-settings.php:435
 msgid "edit image on gravatar.com"
 msgstr "Uredi sliku na gravatar.com"
 
-#: template-settings.php:443
-#: template-settings.php:444
+#: template-settings.php:441
+#: template-settings.php:442
 msgid "Username cannot be changed"
 msgstr "Korisničko ime ne može se promijeniti"
 
-#: template-settings.php:111
-#: template-settings.php:448
+#: template-settings.php:109
+#: template-settings.php:446
 msgid "System Email"
 msgstr "E-mail sustava"
 
-#: template-settings.php:449
+#: template-settings.php:447
 msgid "User email can be changed by site administrator."
 msgstr "Korisničku e-poštu može promijeniti administrator stranice."
 
-#: template-settings.php:456
+#: template-settings.php:454
 msgid "Password"
 msgstr "Lozinka"
 
-#: template-settings.php:457
+#: template-settings.php:455
 msgid "Use this email reset form to create a new password."
 msgstr "Koristite ovaj obrazac za ponovno podešavanje e-pošte da biste napravili novu lozinku."
 
-#: template-settings.php:459
+#: template-settings.php:457
 msgid "go to password change form"
 msgstr "idi na obrazac za promjenu lozinke"
 
-#: template-settings.php:466
+#: template-settings.php:464
 msgid "First Name"
 msgstr "Ime"
 
-#: template-settings.php:472
+#: template-settings.php:470
 msgid "Last Name"
 msgstr "Prezime"
 
@@ -1697,7 +1695,7 @@ msgstr "Popis"
 msgid "World"
 msgstr "Svijet"
 
-#: dt-posts/custom-post-type.php:134
+#: dt-posts/custom-post-type.php:127
 #: template-new-post.php:32
 msgid "New %s"
 msgstr "Novi %s"
@@ -1738,23 +1736,23 @@ msgstr "Ulažem samo u postojeće kontakte."
 msgid "I have too many contacts"
 msgstr "Imam previše kontakata."
 
-#: template-settings.php:304
+#: template-settings.php:302
 msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
 msgstr "Podesi datume putovanja ili nedostupnosti kako bi Dispečer znao tvoju dostupnost za primanje novih kontakata"
 
-#: template-settings.php:308
+#: template-settings.php:306
 msgid "Schedule Travel or Dates Unavailable"
 msgstr "Raspored putovanja ili datumi nedostupnosti"
 
-#: template-settings.php:325
+#: template-settings.php:323
 msgid "Add Unavailable dates"
 msgstr "Dodaj nedostupne datume"
 
-#: template-settings.php:339
+#: template-settings.php:337
 msgid "No Travel Scheduled"
 msgstr "Nema zakazanih putovanja"
 
-#: template-settings.php:400
+#: template-settings.php:398
 msgid "You will receive a notification for any update that happens in the system."
 msgstr "Dobit ćete obavijest o svakom ažuriranju u sustavu."
 
@@ -2154,7 +2152,7 @@ msgstr "Ovdje napišite svoj komentar ili bilješku"
 #: dt-groups/base-setup.php:526
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
-#: template-settings.php:264
+#: template-settings.php:262
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "Pretraži %s"
@@ -2435,7 +2433,7 @@ msgctxt "All records"
 msgid "All %s"
 msgstr "Svi %s"
 
-#: dt-assets/functions/menu.php:34
+#: dt-assets/functions/menu.php:45
 msgid "Disciple.Tools"
 msgstr "Disciple.Tools"
 
@@ -2707,12 +2705,11 @@ msgstr "Napravi zadatak"
 msgid "Existing tasks for this record:"
 msgstr "Postojeći zadaci za ovaj zapis:"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:85
+#: dt-assets/parts/nav-topbar.php:133
 msgid "Theme Update Available!"
 msgstr "Dostupno ažuriranje teme!"
 
-#: dt-assets/functions/menu.php:63
-#: dt-assets/parts/nav-offcanvas-topbar.php:130
+#: dt-assets/functions/menu.php:86
 #: dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:264
 #: dt-metrics/combined/locations-list.php:257
@@ -3242,7 +3239,7 @@ msgid "Save Roles"
 msgstr "Spremi uloge"
 
 #: dt-users/template-user-management.php:284
-#: template-settings.php:220
+#: template-settings.php:218
 msgid "Search Locations"
 msgstr "Traži lokacije"
 
@@ -3439,7 +3436,7 @@ msgstr "Kontakti preneseni iz partnerstva s drugom Disciple.Tools web stranicom.
 #: dt-mapping/geocode-api/mapbox-api.php:286
 #: dt-mapping/geocode-api/mapbox-api.php:321
 #: dt-users/template-user-management.php:272
-#: template-settings.php:205
+#: template-settings.php:203
 msgid "add"
 msgstr "Dodaj"
 
@@ -3713,7 +3710,7 @@ msgstr "partner"
 msgid "DT Site Name: %s"
 msgstr "DT ime stranice: %s"
 
-#: dt-metrics/combined/critical-path.php:169
+#: dt-metrics/charts-base.php:132
 msgid "No Results"
 msgstr "Bez rezultata"
 
@@ -3929,28 +3926,28 @@ msgid "View User"
 msgstr "Pogledaj korisnika"
 
 #: template-settings.php:43
-#: template-settings.php:197
+#: template-settings.php:195
 msgid "Multiplier Preferences"
 msgstr "Postavke mentora učenika"
 
-#: template-settings.php:205
-#: template-settings.php:210
+#: template-settings.php:203
+#: template-settings.php:208
 msgid "Locations you are willing to be responsible for"
 msgstr "Lokacije za koje ste spremni biti odgovorni."
 
-#: template-settings.php:233
+#: template-settings.php:231
 msgid "Languages you are comfortable speaking"
 msgstr "Jezici koje dobro govorite."
 
-#: template-settings.php:254
+#: template-settings.php:252
 msgid "People Groups you wish to serve"
 msgstr "Grupa ljudi kojoj želite služiti."
 
-#: template-settings.php:277
+#: template-settings.php:275
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "Dostupnost za primanje kontakta od Dispečera."
 
-#: template-settings.php:523
+#: template-settings.php:521
 msgid "System Language"
 msgstr "Jezik sustava"
 
@@ -4296,6 +4293,7 @@ msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Jeste li sigurni da želite obrisati %s?"
 
+#: dt-assets/functions/menu.php:39
 #: template-metrics.php:25
 msgid "Menu"
 msgstr "Izbornik"
