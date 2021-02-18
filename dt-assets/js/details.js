@@ -841,6 +841,16 @@ jQuery(document).ready(function($) {
     })
   })
 
+  //autofocus the first input when a modal is opened.
+  $(".reveal").on("open.zf.reveal", function () {
+    const firstField = $(this).find("input").filter(
+      ":not([disabled],[hidden],[opacity=0]):visible:first"
+    );
+    if (firstField.length !== 0) {
+      firstField.focus();
+    }
+  });
+
   //leave at the end of this file
   masonGrid.masonry({
     itemSelector: '.grid-item',
