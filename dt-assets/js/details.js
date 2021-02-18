@@ -841,15 +841,14 @@ jQuery(document).ready(function($) {
     })
   })
 
+  //autofocus the first input when a modal is opened.
   $(".reveal").on("open.zf.reveal", function () {
-    console.log("event triggered");
     const firstField = $(this).find("input").filter(
       ":not([disabled],[hidden],[opacity=0]):visible:first"
     );
-
-    if (firstField.length === 0) {
-      console.error("Couldn't find anything to autofocus on at", firstField);
-    } else firstField.focus();
+    if (firstField.length !== 0) {
+      firstField.focus();
+    }
   });
 
   //leave at the end of this file
