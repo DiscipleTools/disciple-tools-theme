@@ -337,7 +337,7 @@ class Disciple_Tools_Notifications
 
     public static function pretty_timestamp( $timestamp ) {
         /** Get current time */
-        $now = time();
+        $now = current_time( 'timestamp' );
 
         /** Get "this" notification timestamp */
         $notification_date = strtotime( $timestamp );
