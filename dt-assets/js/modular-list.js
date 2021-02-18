@@ -337,10 +337,9 @@
       window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
     }
   }).on('click', 'tbody tr', function(event){
-    if(event.target.href) {
-      console.log('its a link');
-    } else {
-     window.location = $(this).data('link')
+    //open the record if the row is clicked. Give priority to normal browser behavior with links.
+    if(!event.target.href) {
+      window.location = $(this).data('link')
     }
   })
 
