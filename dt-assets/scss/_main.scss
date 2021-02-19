@@ -256,6 +256,16 @@ nav.second-bar .advanced_search {
     padding: 0.15em 0.5em;
     transform: translateX(-10px);
     display: inline-block;
+    position: relative;
+}
+
+.advancedSearch-count {
+    vertical-align: top;
+    position: absolute;
+    font-size: .45em;
+    font-weight: bold;
+    top: 0;
+    left: 1.15rem;
 }
 
 #second-bar-small{

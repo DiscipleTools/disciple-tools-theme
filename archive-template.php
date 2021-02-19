@@ -33,6 +33,24 @@ dt_please_log_in();
                        placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
                 <a class="advanced_search" id="advanced_search" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
+
+                    <?php
+                    $fields_to_search = [];
+                    $all_searchable_fields = $post_settings["fields"];
+                    $all_searchable_fields['comment'] = [ 'name' => 'Comments', 'type' => 'text' ];
+
+                    if ( isset( $_COOKIE["fields_to_search"] ) ) {
+                        $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_search"] ) ) ) );
+                        if ( $fields_to_search ){
+                            $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                        }
+                    }
+                    //order fields alphabetically by Name
+                    uasort( $all_searchable_fields, function ( $a, $b ){
+                        return $a['name'] <=> $b['name'];
+                    });
+                    ?>
+                    <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( "display:none" ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
                 </a>
                 <a class="button" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
@@ -41,23 +59,6 @@ dt_please_log_in();
             </div>
             <div id="advanced_search_picker"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields search', 'disciple_tools' ); ?></p>
-                <?php
-                $fields_to_search = [];
-                $all_searchable_fields = $post_settings["fields"];
-                $all_searchable_fields['comment'] = [ 'name' => 'Comments', 'type' => 'text' ];
-
-                if ( isset( $_COOKIE["fields_to_search"] ) ) {
-                    $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_search"] ) ) ) );
-                    if ( $fields_to_search ){
-                        $fields_to_search = dt_sanitize_array_html( $fields_to_search );
-                    }
-                }
-                //order fields alphabetically by Name
-                uasort( $all_searchable_fields, function ( $a, $b ){
-                    return $a['name'] <=> $b['name'];
-                });
-
-                ?>
                 <ul class="ul-no-bullets" style="">
 
                 <li style="" class="">
@@ -107,28 +108,30 @@ dt_please_log_in();
                    placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
                 <a class="advanced_search" id="advanced_search_mobile" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
+
+                    <?php
+                    $fields_to_search = [];
+                    $all_searchable_fields = $post_settings["fields"];
+                    $all_searchable_fields['comment'] = [ 'name' => 'Comments', 'type' => 'text' ];
+
+                    if ( isset( $_COOKIE["fields_to_search"] ) ) {
+                        $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_search"] ) ) ) );
+                        if ( $fields_to_search ){
+                            $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                        }
+                    }
+                    //order fields alphabetically by Name
+                    uasort( $all_searchable_fields, function ( $a, $b ){
+                        return $a['name'] <=> $b['name'];
+                    });
+
+                    ?>
+                    <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( "display:none" ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
                 </a>
             <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
         </div>
         <div id="advanced_search_picker_mobile"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields search', 'disciple_tools' ); ?></p>
-                <?php
-                $fields_to_search = [];
-                $all_searchable_fields = $post_settings["fields"];
-                $all_searchable_fields['comment'] = [ 'name' => 'Comments', 'type' => 'text' ];
-
-                if ( isset( $_COOKIE["fields_to_search"] ) ) {
-                    $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_search"] ) ) ) );
-                    if ( $fields_to_search ){
-                        $fields_to_search = dt_sanitize_array_html( $fields_to_search );
-                    }
-                }
-                //order fields alphabetically by Name
-                uasort( $all_searchable_fields, function ( $a, $b ){
-                    return $a['name'] <=> $b['name'];
-                });
-
-                ?>
                 <ul class="ul-no-bullets" style="">
 
                 <li style="" class="">

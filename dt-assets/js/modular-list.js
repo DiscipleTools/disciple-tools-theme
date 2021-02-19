@@ -1092,6 +1092,12 @@
    });
    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fieldsToSearch, list_settings.post_type );
 
+   if (fieldsToSearch.length > 0 ) {
+    $('.advancedSearch-count').text(fieldsToSearch.length).css('display', 'inline-block')
+   } else {
+    $('.advancedSearch-count').text('fields_to_search.length').hide();
+   }
+
     let query = {text:searchText}
 
     if (fieldsToSearch.length !== 0) {
@@ -1111,6 +1117,12 @@
       fieldsToSearch.push($( this ).val());
     });
     window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fieldsToSearch, list_settings.post_type );
+
+    if (fieldsToSearch.length > 0 ) {
+      $('.advancedSearch-count').text(fieldsToSearch.length).css('display', 'inline-block')
+     } else {
+      $('.advancedSearch-count').text('fields_to_search.length').hide();
+     }
 
     let query = {text:searchText}
 
