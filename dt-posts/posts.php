@@ -970,17 +970,32 @@ class Disciple_Tools_Posts
         if ( !empty( $search )){
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
 
-            $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
-                OR p.ID IN ( SELECT post_id
-                             FROM $wpdb->postmeta
-                             WHERE meta_key LIKE 'contact_%'
-                             AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
-                )
-            ";
-
+            if ( empty( $fields_to_search ) ) {
+                $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
+                    OR p.ID IN ( SELECT post_id
+                                FROM $wpdb->postmeta
+                                WHERE meta_key LIKE 'contact_%'
+                                AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                    )
+                ";
+            }
             if ( !empty( $fields_to_search ) ) {
+                if ( in_array( 'title', $fields_to_search ) ) {
+                    $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
+                        OR p.ID IN ( SELECT post_id
+                                    FROM $wpdb->postmeta
+                                    WHERE meta_key LIKE 'contact_%'
+                                    AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                        )
+                    ";
+                } else {
+                    $post_query .= "AND ( ";
+                }
                 if ( in_array( 'all', $fields_to_search ) ) {
-                    $post_query .= "OR p.ID IN ( SELECT comment_post_ID
+                    if ( substr( $post_query, -6 ) !== 'AND ( ' ) {
+                        $post_query .= "OR ";
+                    }
+                    $post_query .= "p.ID IN ( SELECT comment_post_ID
                     FROM $wpdb->comments
                     WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
                     ) OR p.ID IN ( SELECT post_id
@@ -989,7 +1004,10 @@ class Disciple_Tools_Posts
                     ) ";
                 } else {
                     if ( in_array( 'comment', $fields_to_search )) {
-                        $post_query .= " OR p.ID IN ( SELECT comment_post_ID
+                        if ( substr( $post_query, -6 ) !== 'AND ( ' ) {
+                            $post_query .= "OR ";
+                        }
+                        $post_query .= " p.ID IN ( SELECT comment_post_ID
                         FROM $wpdb->comments
                         WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
                         ) ";
@@ -1000,7 +1018,10 @@ class Disciple_Tools_Posts
                 }
             }
             foreach ( $other_search_fields as $field ){
-                $post_query .= " OR p.ID IN ( SELECT post_id
+                if ( substr( $post_query, -6 ) !== 'AND ( ' ) {
+                    $post_query .= "OR ";
+                }
+                $post_query .= "p.ID IN ( SELECT post_id
                              FROM $wpdb->postmeta
                              WHERE meta_key LIKE '" . esc_sql( $field ) . "'
                              AND meta_value LIKE '%" . esc_sql( $search ) . "%'
@@ -1088,6 +1109,14 @@ class Disciple_Tools_Posts
 
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
+dt_write_log("
+SELECT SQL_CALC_FOUND_ROWS p.ID, p.post_title, p.post_type, p.post_date
+FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
+(p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
+GROUP BY p.ID " . $group_by_sql . "
+ORDER BY " . $sort_sql . "
+LIMIT " . esc_sql( $offset ) .", " . $limit . "
+");
         $posts = $wpdb->get_results("
             SELECT SQL_CALC_FOUND_ROWS p.ID, p.post_title, p.post_type, p.post_date
             FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
