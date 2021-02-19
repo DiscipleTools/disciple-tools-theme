@@ -66,7 +66,7 @@ dt_please_log_in();
                                 <?php echo esc_html( in_array( 'all', $fields_to_search ) ? "checked" : '' ); ?>
 
                                 style="margin:0">
-                        <b>Search All Fields</b>
+                        <b><?php esc_html_e( 'Search All Fields', 'disciple_tools' ) ?></b>
                     </label>
                 </li>
 
@@ -137,7 +137,7 @@ dt_please_log_in();
                                 <?php echo esc_html( in_array( 'all', $fields_to_search ) ? "checked" : '' ); ?>
 
                                 style="margin:0">
-                        <b>Search All Fields</b>
+                                <b><?php esc_html_e( 'Search All Fields', 'disciple_tools' ) ?></b>
                     </label>
                 </li>
 
