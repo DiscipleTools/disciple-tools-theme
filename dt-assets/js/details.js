@@ -271,14 +271,21 @@ jQuery(document).ready(function($) {
         return parseInt(item.ID) !== parseInt(post_id)
       },
       source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
-      display: "name",
-      templateValue: "{{name}}",
+      display: ["name", "label"],
+      template: function(query, item) {
+        let template = "{{name}}"
+        if(item.label) {
+          template = "{{label}}"
+        }
+        return template;
+      },
+      templateValue: "{{label}}",
       dynamic: true,
       multiselect: {
         matchOn: ["ID"],
         data: function () {
           return (post[field_id] || [] ).map(g=>{
-            return {ID:g.ID, name:g.post_title}
+            return {ID:g.ID, name:g.post_title, label: g.label}
           })
         },
         callback: {
