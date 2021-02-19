@@ -980,7 +980,7 @@ class Disciple_Tools_Posts
                 ";
             }
             if ( !empty( $fields_to_search ) ) {
-                if ( in_array( 'title', $fields_to_search ) ) {
+                if ( in_array( 'name', $fields_to_search ) ) {
                     $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
                         OR p.ID IN ( SELECT post_id
                                     FROM $wpdb->postmeta
