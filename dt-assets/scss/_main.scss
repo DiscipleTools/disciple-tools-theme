@@ -251,12 +251,16 @@ nav.second-bar {
 
 nav.second-bar .advanced_search {
     border: 1px solid #cacaca;
-    border-left: 0;
+    border-inline-start: 0;
     height: 2em;
     padding: 0.15em 0.5em;
     transform: translateX(-10px);
     display: inline-block;
     position: relative;
+}
+
+html[dir='rtl'] nav.second-bar .advanced_search {
+    transform: translateX(14px);
 }
 
 .advancedSearch-count {
