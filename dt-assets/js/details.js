@@ -273,11 +273,11 @@ jQuery(document).ready(function($) {
       source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
       display: ["name", "label"],
       template: function(query, item) {
-        let template = "{{name}}"
+        var labelTemplate = "{{name}}"
         if(item.label) {
-          template = "{{label}}"
+          labelTemplate = "{{label}}"
         }
-        return template;
+        return labelTemplate;
       },
       templateValue: "{{label}}",
       dynamic: true,
