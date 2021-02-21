@@ -82,13 +82,7 @@ dt_please_log_in();
                                     <?php echo esc_html( in_array( $field_key, $fields_to_search ) ? "checked" : '' );
                                     ?>
                                     style="margin:0">
-                            <?php
-                            $locale = get_user_locale();
-                            if ( array_key_exists( "translations", $field_values ) && array_key_exists( $locale, $field_values["translations"] ) ) {
-                                echo esc_html( $field_values["translations"][$locale] );
-                            } else {
-                                echo esc_html( $field_values["name"] );
-                            } ?>
+                                    <?php echo esc_html( $field_values["name"] ); ?>
                         </label>
                     </li>
                 <?php endforeach; ?>
