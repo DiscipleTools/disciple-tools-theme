@@ -37,7 +37,7 @@ dt_please_log_in();
                     <?php
                     $fields_to_search = [];
                     $all_searchable_fields = $post_settings["fields"];
-                    $all_searchable_fields['comment'] = [ 'name' => 'Comments', 'type' => 'text' ];
+                    $all_searchable_fields['comment'] = [ 'name' => __( 'Comments', "disciple_tools" ), 'type' => 'text' ];
 
                     if ( isset( $_COOKIE["fields_to_search"] ) ) {
                         $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_search"] ) ) ) );
@@ -82,7 +82,13 @@ dt_please_log_in();
                                     <?php echo esc_html( in_array( $field_key, $fields_to_search ) ? "checked" : '' );
                                     ?>
                                     style="margin:0">
-                            <?php echo esc_html( $field_values["name"] ); ?>
+                            <?php
+                            $locale = get_user_locale();
+                            if ( array_key_exists( "translations", $field_values ) && array_key_exists( $locale, $field_values["translations"] ) ) {
+                                echo esc_html( $field_values["translations"][$locale] );
+                            } else {
+                                echo esc_html( $field_values["name"] );
+                            } ?>
                         </label>
                     </li>
                 <?php endforeach; ?>
