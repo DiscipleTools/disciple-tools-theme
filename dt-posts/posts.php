@@ -981,6 +981,16 @@ class Disciple_Tools_Posts
             $post_query .= " ) ";
         }
 
+        if ( $post_type === "peoplegroups" ) {
+
+            $locale = get_user_locale();
+
+            $post_query = " OR p.ID IN ( SELECT post_id
+                              FROM $wpdb->postmeta
+                              WHERE meta_key LIKE '" . esc_sql( $locale ) . "'
+                              AND meta_value LIKE '%" . esc_sql( $search ) . "%' )";
+        }
+
         $sort_sql = "";
         if ( $sort === "name" || $sort === "post_title"){
             $sort_sql = "p.post_title  " . $sort_dir;
