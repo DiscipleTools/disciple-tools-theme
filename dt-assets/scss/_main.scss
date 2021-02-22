@@ -245,6 +245,33 @@ nav.second-bar {
     }
 }
 
+.search-input {
+    margin-right: 0;
+}
+
+nav.second-bar .advanced_search {
+    border: 1px solid #cacaca;
+    border-inline-start: 0;
+    height: 2em;
+    padding: 0.15em 0.5em;
+    transform: translateX(-10px);
+    display: inline-block;
+    position: relative;
+}
+
+html[dir='rtl'] nav.second-bar .advanced_search {
+    transform: translateX(14px);
+}
+
+.advancedSearch-count {
+    vertical-align: top;
+    position: absolute;
+    font-size: .45em;
+    font-weight: bold;
+    top: 0;
+    left: 1.15rem;
+}
+
 #second-bar-small{
     // transition: all .2s;
     border-top: none;

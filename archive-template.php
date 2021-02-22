@@ -28,13 +28,67 @@ dt_please_log_in();
                     <span class="hide-for-small-only"><?php esc_html_e( "Filters", 'disciple_tools' ) ?></span>
                 </a>
                 <?php do_action( "archive_template_action_bar_buttons", $post_type ) ?>
-                <input class="search-input" style="max-width:200px;display: inline-block;"
+                <input class="search-input" style="max-width:200px;display:inline-block;margin-right:0;"
                        type="search" id="search-query"
                        placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
+                <a class="advanced_search" id="advanced_search" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
+
+                    <?php
+                    $fields_to_search = [];
+                    $all_searchable_fields = $post_settings["fields"];
+                    $all_searchable_fields['comment'] = [ 'name' => __( 'Comments', "disciple_tools" ), 'type' => 'text' ];
+
+                    if ( isset( $_COOKIE["fields_to_search"] ) ) {
+                        $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_search"] ) ) ) );
+                        if ( $fields_to_search ){
+                            $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                        }
+                    }
+                    //order fields alphabetically by Name
+                    uasort( $all_searchable_fields, function ( $a, $b ){
+                        return $a['name'] <=> $b['name'];
+                    });
+                    ?>
+                    <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( "display:none" ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
+                </a>
                 <a class="button" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
                 </a>
+            </div>
+            <div id="advanced_search_picker"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
+                <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields search', 'disciple_tools' ); ?></p>
+                <ul class="ul-no-bullets" style="">
+
+                <li style="" class="">
+                    <label style="margin-right:15px; cursor:pointer">
+                        <input type="checkbox" value="all"
+                                <?php echo esc_html( in_array( 'all', $fields_to_search ) ? "checked" : '' ); ?>
+
+                                style="margin:0">
+                        <b><?php esc_html_e( 'Search All Fields', 'disciple_tools' ) ?></b>
+                    </label>
+                </li>
+
+                <?php foreach ( $all_searchable_fields as $field_key => $field_values ):
+                    if ( !empty( $field_values["hidden"] ) || $field_values["type"] !== 'text' ){
+                        continue;
+                    }
+                    ?>
+                    <li style="" class="">
+                        <label style="margin-right:15px; cursor:pointer">
+                            <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
+                                    <?php echo esc_html( in_array( $field_key, $fields_to_search ) ? "checked" : '' );
+                                    ?>
+                                    style="margin:0">
+                                    <?php echo esc_html( $field_values["name"] ); ?>
+                        </label>
+                    </li>
+                <?php endforeach; ?>
+                </ul>
+                <button class="button" id="save_advanced_search_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
+                <a class="button clear" id="advanced_search_reset" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
             </div>
         </nav>
     </div>
@@ -50,10 +104,65 @@ dt_please_log_in();
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
-            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile"
+            <input class="search-input-mobile" style="max-width:200px;display:inline-block;margin-bottom:0;margin-right:0;" type="search" id="search-query-mobile"
                    placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
+                <a class="advanced_search" id="advanced_search_mobile" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
+
+                    <?php
+                    $fields_to_search = [];
+                    $all_searchable_fields = $post_settings["fields"];
+                    $all_searchable_fields['comment'] = [ 'name' => 'Comments', 'type' => 'text' ];
+
+                    if ( isset( $_COOKIE["fields_to_search"] ) ) {
+                        $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_search"] ) ) ) );
+                        if ( $fields_to_search ){
+                            $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                        }
+                    }
+                    //order fields alphabetically by Name
+                    uasort( $all_searchable_fields, function ( $a, $b ){
+                        return $a['name'] <=> $b['name'];
+                    });
+
+                    ?>
+                    <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( "display:none" ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
+                </a>
             <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
         </div>
+        <div id="advanced_search_picker_mobile"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
+                <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields search', 'disciple_tools' ); ?></p>
+                <ul class="ul-no-bullets" style="">
+
+                <li style="" class="">
+                    <label style="margin-right:15px; cursor:pointer">
+                        <input type="checkbox" value="all"
+                                <?php echo esc_html( in_array( 'all', $fields_to_search ) ? "checked" : '' ); ?>
+
+                                style="margin:0">
+                                <b><?php esc_html_e( 'Search All Fields', 'disciple_tools' ) ?></b>
+                    </label>
+                </li>
+
+                <?php foreach ( $all_searchable_fields as $field_key => $field_values ):
+                    if ( !empty( $field_values["hidden"] ) || $field_values["type"] !== 'text' ){
+                        continue;
+                    }
+                    ?>
+                    <li style="" class="">
+                        <label style="margin-right:15px; cursor:pointer">
+                            <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
+                                    <?php echo esc_html( in_array( $field_key, $fields_to_search ) ? "checked" : '' );
+                                    ?>
+                                    style="margin:0">
+                            <?php echo esc_html( $field_values["name"] ); ?>
+                        </label>
+                    </li>
+                <?php endforeach; ?>
+                </ul>
+                <button class="button" id="save_advanced_search_choices_mobile" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
+                <a class="button clear" id="advanced_search_reset_mobile" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
+            </div>
     </nav>
     <div id="content" class="archive-template">
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
@@ -125,7 +234,7 @@ dt_please_log_in();
                             </button>
                         </span>
                     </div>
-                    <div id="list_column_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+                    <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
                         <?php
                         $fields_to_show_in_table = [];
