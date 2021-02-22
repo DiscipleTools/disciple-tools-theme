@@ -901,7 +901,7 @@ Please click the following link to confirm the invite:
             return new WP_Error( "no_permissions", "You don't have permissions to create users", [ 'status' => 401 ] );
         }
         $user_email = sanitize_email( wp_unslash( $user_email ) );
-        $user_name = sanitize_user( wp_unslash( $user_name ) );
+        $user_name = sanitize_user( wp_unslash( $user_name ), true );
         $display_name = sanitize_text_field( wp_unslash( $display_name ) );
 
         $user_id = email_exists( $user_email );
