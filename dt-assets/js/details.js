@@ -811,7 +811,11 @@ jQuery(document).ready(function($) {
         }
 
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
-        $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
+        if (field_key == "contact_phone") {
+          $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<a href="tel:${values_html}" title="${values_html}">${values_html}</span>`)
+        } else {
+          $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
+        }
       }
 
     })
