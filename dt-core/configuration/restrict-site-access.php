@@ -304,7 +304,11 @@ add_filter("retrieve_password_title", function( $title) {
 //add_filter( 'wp_handle_upload_prefilter', 'dt_disable_file_upload' ); //this breaks uploading plugins and themes
 
 
-//Filter permissions for super admin users
+/**
+ * Filter permissions for super admin users
+ * return $caps if allowed
+ * add 'do_not_allow' to $caps if not allowed.
+ */
 add_filter( 'map_meta_cap', 'restrict_super_admin', 10, 4 );
 function restrict_super_admin( $caps, $cap, $user_id, $args ){
     if ( is_multisite() && is_super_admin( $user_id ) ){
@@ -314,6 +318,13 @@ function restrict_super_admin( $caps, $cap, $user_id, $args ){
             return array_keys( $a["permissions"] );
         }, $expected_roles );
         $dt_permissions = array_merge( ...array_values( $dt_roles ) );
+        $dt_permission_prefixes = [ "view_any_", "update_any", "delete_any", "access_" ];
+        foreach ( $dt_permission_prefixes as $prefix ){
+            if ( strpos( $cap, $prefix ) !== false ){
+                $dt_permissions[] = $cap;
+            }
+        }
+        //if it is not a D.T permission, continue as normal.
         if ( !in_array( $cap, $dt_permissions, true )){
             return $caps;
         }
