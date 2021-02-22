@@ -11,6 +11,7 @@ class Disciple_Tools_Core_Endpoints {
     private $version = 1;
     private $context = "dt-core";
     private $namespace;
+    private $public_namespace = "dt-public/dt-core/v1";
 
     /**
      * Disciple_Tools_Users_Endpoints constructor.
@@ -28,6 +29,12 @@ class Disciple_Tools_Core_Endpoints {
             $this->namespace, '/settings', [
                 'methods'  => "GET",
                 'callback' => [ $this, 'get_settings' ]
+            ]
+        );
+        register_rest_route(
+            $this->public_namespace, '/settings', [
+                'methods'  => "GET",
+                'callback' => [ $this, 'get_public_settings' ]
             ]
         );
 
@@ -53,6 +60,20 @@ class Disciple_Tools_Core_Endpoints {
         } else {
             return new WP_Error( "get_settings", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
         }
+    }
+
+    /**
+     * Expose settings publicly to world.
+     * To not use unless it is for setting that must be accessed
+     * before the user is logged in.
+     */
+    public function get_public_settings(){
+        $public_settings = [
+            "url" => get_home_url(),
+            "login_settings" => [],
+        ];
+        $public_settings = apply_filters( "dt_core_public_endpoint_settings", $public_settings );
+        return $public_settings;
     }
 
 
