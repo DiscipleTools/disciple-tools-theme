@@ -145,9 +145,9 @@ jQuery(document).ready(function($) {
     const $list = $(`#edit-${field}`)
 
     $list.append(`<div class="input-group">
-            <input type="text" data-field="${_.escape( field )}" class="dt-communication-channel input-group-field" />
+            <input type="text" data-field="${_.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
             <div class="input-group-button">
-            <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${_.escape( field )}" data-key="new" data-field="${_.escape( field )}">&times;</button>
+            <button class="test button alert input-height delete-button-style channel-delete-button delete-button new-${_.escape( field )}" data-key="new" data-field="${_.escape( field )}">&times;</button>
             </div></div>`)
   })
   $(document).on('click', '.channel-delete-button', function(){
@@ -164,7 +164,7 @@ jQuery(document).ready(function($) {
         let list = $(`#edit-${field}`)
         if ( list.children().length === 0 ){
           list.append(`<div class="input-group">
-            <input type="text" data-field="${_.escape( field )}" class="dt-communication-channel input-group-field" />
+            <input type="text" data-field="${_.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
             </div>`)
         }
         $(`#${field}-spinner`).removeClass('active')
@@ -812,7 +812,7 @@ jQuery(document).ready(function($) {
 
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
         if (field_key == "contact_phone") {
-          $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<a href="tel:${values_html}" title="${values_html}">${values_html}</span>`)
+          $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<a dir="auto" href="tel:${values_html}" title="${values_html}">${values_html}</span>`)
         } else {
           $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
         }

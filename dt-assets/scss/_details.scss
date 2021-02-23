@@ -343,6 +343,11 @@ DT comments and activity
     }
 }
 
+html[dir="rtl"] {
+    .input-group-field {
+        text-align: right;
+    }
+}
 
 
 /**
