@@ -272,7 +272,13 @@ jQuery(document).ready(function($) {
       },
       source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
       display: ["name", "label"],
-      templateValue: "{{label}}",
+      templateValue: function() {
+          if (this.items[this.items.length - 1].label) {
+            return "{{label}}"
+          } else {
+            return "{{name}}"
+          }
+      },
       dynamic: true,
       multiselect: {
         matchOn: ["ID"],
@@ -290,8 +296,6 @@ jQuery(document).ready(function($) {
           }
         },
         href: function (item) {
-          console.log(item);
-          console.log(listing_post_type);
           if (listing_post_type === 'peoplegroups') {
             return null;
           } else {
