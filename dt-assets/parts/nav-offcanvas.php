@@ -28,7 +28,7 @@
             <li><a href="<?php echo esc_url( $dt_main_tabs['link'] ) ?>"><?php echo esc_html( $dt_main_tabs['label'] ) ?>&nbsp;</a>
                 <?php
                 if ( isset( $dt_main_tabs['submenu'] ) && ! empty( $dt_main_tabs['submenu'] ) ) : ?>
-                    <ul class="is-active">
+                    <ul class="is-active menu vertical nested">
                         <?php foreach ( $dt_main_tabs['submenu'] as $dt_nav_submenu ) :
                             if ( ! $dt_nav_submenu['hidden'] ?? false ) : ?>
                                 <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>

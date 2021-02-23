@@ -119,21 +119,35 @@ NAVIGATION STYLES
     padding: 0 20px;
     z-index: 999;
 
+    .top-bar-right > .dropdown.menu > li {
+        margin: 0 10px;
+    }
+
     .dropdown.menu {
-        li {
-            margin: 0 10px;
-        }
         a {
           background-color: $primary-color;
         }
-        li.active a {
+        li.active > a {
             background: #005a87;
         }
+    }
+    .top-bar-left {
+        .dropdown.menu a:hover {
+            background-color: #224f72
+        }
+        //make dropdown caret white
+        .dropdown.menu>li.is-dropdown-submenu-parent>a:after {
+            border-color: #fefefe transparent transparent;
+        }
+    }
+    .dropdown.menu .is-submenu-item a:hover {
+        background-color: #224f72
     }
 
     a {
         font-weight: bold;
         padding: 1rem;
+        color: #fefefe;
     }
 
     .image-menu-nav {

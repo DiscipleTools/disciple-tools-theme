@@ -52,7 +52,7 @@ $dt_nav_tabs = dt_default_menu_array();
                         <button>
                             <img title="<?php esc_html( $dt_nav_tabs['admin']['add_new']['label'] ?? '' ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['add_new']['icon'] ?? '' ?? get_template_directory_uri() . "/dt-assets/images/circle-add-plus.svg" ) ?>" style="width:24px;">
                         </button>
-                        <ul class="submenu menu vertical add-new-items-dropdown " style="text-align:left;">
+                        <ul class="submenu menu vertical add-new-items-dropdown is-dropdown-submenu" style="text-align:left;">
                             <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) : ?>
                                 <?php foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) : ?>
                                     <li>
@@ -103,7 +103,7 @@ $dt_nav_tabs = dt_default_menu_array();
                         <?php
                         if ( isset( $dt_main_tabs['submenu'] ) && ! empty( $dt_main_tabs['submenu'] ) ) {
                             ?>
-                            <ul>
+                            <ul class="menu vertical nested is-dropdown-submenu">
                                 <?php
                                 foreach ( $dt_main_tabs['submenu'] as $dt_nav_submenu ) :
                                     if ( ! $dt_nav_submenu['hidden'] ?? false ) : ?>
