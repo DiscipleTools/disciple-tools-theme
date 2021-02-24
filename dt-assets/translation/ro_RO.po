@@ -51,8 +51,8 @@ msgstr "În așteptarea aprobării"
 msgid "View Duplicates"
 msgstr "Vizualizați duplicatele"
 
-#: archive-template.php:36
-#: archive-template.php:55
+#: archive-template.php:57
+#: archive-template.php:131
 msgid "Search"
 msgstr "Căutare"
 
@@ -63,7 +63,7 @@ msgstr "Căutare"
 msgid "Shared with me"
 msgstr "Partajat cu mine"
 
-#: archive-template.php:74
+#: archive-template.php:183
 msgid "Add new filter"
 msgstr "Adăugați un filtru nou"
 
@@ -74,35 +74,35 @@ msgstr "Adăugați un filtru nou"
 msgid "Assigned To"
 msgstr "Atribuit"
 
-#: archive-template.php:438
+#: archive-template.php:547
 #: dt-assets/functions/enqueue-scripts.php:307
 #: dt-posts/custom-post-type.php:161
 msgid "Creation Date"
 msgstr "Data crearii"
 
-#: archive-template.php:429
+#: archive-template.php:538
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Filtru reatribuit SAU atribuit către"
 
-#: archive-template.php:454
-#: archive-template.php:455
+#: archive-template.php:563
+#: archive-template.php:564
 #: template-settings.php:405
 msgid "No"
 msgstr "Nu"
 
-#: archive-template.php:461
-#: archive-template.php:462
+#: archive-template.php:570
+#: archive-template.php:571
 #: template-settings.php:404
 msgid "Yes"
 msgstr "Da"
 
-#: archive-template.php:469
-#: archive-template.php:480
+#: archive-template.php:578
+#: archive-template.php:589
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Elimină"
 
-#: archive-template.php:508
+#: archive-template.php:617
 #: dt-assets/functions/enqueue-scripts.php:272
 #: dt-assets/functions/enqueue-scripts.php:302
 #: template-merge-details.php:102
@@ -137,7 +137,7 @@ msgstr "Asociați cu un alt contact"
 msgid "Following"
 msgstr "Urmărești"
 
-#: archive-template.php:278
+#: archive-template.php:387
 #: dt-assets/functions/details-bar.php:106
 #: dt-contacts/base-setup.php:162
 #: dt-groups/base-setup.php:96
@@ -148,6 +148,7 @@ msgstr "Urmărește"
 msgid "Share"
 msgstr "Distribuie"
 
+#: archive-template.php:40
 #: dt-assets/parts/loop-activity-comment.php:80
 #: dt-assets/parts/loop-activity-comment.php:158
 msgid "Comments"
@@ -201,11 +202,11 @@ msgstr "Sortare după"
 msgid "Date Modified"
 msgstr "Data modificata"
 
-#: archive-template.php:301
+#: archive-template.php:410
 #: dt-contacts/base-setup.php:49
 #: dt-contacts/base-setup.php:252
 #: dt-contacts/dmm-module.php:303
-#: dt-groups/base-setup.php:649
+#: dt-groups/base-setup.php:650
 #: dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/hover-map.php:127
 #: dt-metrics/combined/locations-list.php:120
@@ -225,13 +226,13 @@ msgstr "Data modificata"
 msgid "Contacts"
 msgstr "Contacte"
 
-#: archive-template.php:303
+#: archive-template.php:412
 #: dt-groups/base-setup.php:48
-#: dt-groups/base-setup.php:449
-#: dt-groups/base-setup.php:666
-#: dt-groups/base-setup.php:683
-#: dt-groups/base-setup.php:720
-#: dt-groups/base-setup.php:731
+#: dt-groups/base-setup.php:450
+#: dt-groups/base-setup.php:667
+#: dt-groups/base-setup.php:684
+#: dt-groups/base-setup.php:721
+#: dt-groups/base-setup.php:732
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/hover-map.php:172
 #: dt-metrics/combined/locations-list.php:165
@@ -300,7 +301,7 @@ msgstr "Respinge"
 msgid "This contact represents a user."
 msgstr "Acest contact reprezintă un utilizator."
 
-#: archive-template.php:204
+#: archive-template.php:313
 #: dt-contacts/access-module.php:410
 #: dt-metrics/groups/tree.php:86
 #: dt-metrics/personal/group-tree.php:87
@@ -336,7 +337,7 @@ msgstr "Locații"
 #: dt-contacts/dmm-module.php:187
 #: dt-contacts/dmm-module.php:302
 #: dt-groups/base-setup.php:403
-#: dt-groups/base-setup.php:719
+#: dt-groups/base-setup.php:720
 #: dt-people-groups/people-groups-post-type.php:132
 msgid "People Groups"
 msgstr "Grupuri de oameni"
@@ -350,7 +351,7 @@ msgstr "Vârsta"
 msgid "Gender"
 msgstr "Gen"
 
-#: archive-template.php:343
+#: archive-template.php:452
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
@@ -359,23 +360,23 @@ msgstr "Gen"
 msgid "Name"
 msgstr "Nume"
 
-#: archive-template.php:93
+#: archive-template.php:202
 msgid "Sort"
 msgstr "Sortare"
 
-#: archive-template.php:97
+#: archive-template.php:206
 msgid "Newest"
 msgstr "Noi"
 
-#: archive-template.php:101
+#: archive-template.php:210
 msgid "Oldest"
 msgstr "Vechi"
 
-#: archive-template.php:105
+#: archive-template.php:214
 msgid "Most recently modified"
 msgstr "Modificate recent"
 
-#: archive-template.php:109
+#: archive-template.php:218
 msgid "Least recently modified"
 msgstr "Modificate demult"
 
@@ -398,7 +399,7 @@ msgstr "Repere ale Credinței"
 msgid "Group"
 msgstr "Grupul"
 
-#: archive-template.php:353
+#: archive-template.php:462
 msgid "Loading..."
 msgstr "Se încarcă..."
 
@@ -463,7 +464,7 @@ msgstr "Ștergeți comentariul:"
 #: dt-assets/parts/modals/modal-share.php:50
 #: dt-assets/parts/modals/modal-tasks.php:46
 #: dt-contacts/dmm-module.php:557
-#: dt-groups/base-setup.php:624
+#: dt-groups/base-setup.php:625
 msgid "Close"
 msgstr "Închide"
 
@@ -635,7 +636,7 @@ msgstr "Acasă"
 #: dt-contacts/base-setup.php:448
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:469
-#: dt-groups/base-setup.php:732
+#: dt-groups/base-setup.php:733
 #: template-settings.php:152
 msgid "Other"
 msgstr "Alte"
@@ -835,7 +836,7 @@ msgstr "(fara titlu)"
 
 #: dt-groups/base-setup.php:246
 #: dt-groups/base-setup.php:308
-#: dt-groups/base-setup.php:667
+#: dt-groups/base-setup.php:668
 msgid "Leaders"
 msgstr "Lideri"
 
@@ -1373,11 +1374,11 @@ msgstr "Vizualizați înregistrarea contactului"
 msgid "Updated Needed"
 msgstr "Actualizare Necesară"
 
-#: functions.php:472
+#: functions.php:475
 msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
 msgstr "Această temă a Disciple Tools necesită versiunea PHP 7.0 sau mai mare. Versiunea dvs. actuală este:"
 
-#: functions.php:474
+#: functions.php:477
 msgid "Please upgrade PHP or uninstall this theme"
 msgstr "Vă rugăm să actualizați PHP sau să dezinstalați această temă"
 
@@ -1425,8 +1426,8 @@ msgid "Click merge to continue."
 msgstr "Faceți clic pe îmbinare pentru a continua."
 
 #: dt-groups/base-setup.php:299
-#: dt-groups/base-setup.php:595
-#: dt-groups/base-setup.php:728
+#: dt-groups/base-setup.php:596
+#: dt-groups/base-setup.php:729
 msgid "Member List"
 msgstr "Lista membrilor"
 
@@ -1708,7 +1709,7 @@ msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "% 1 $ s a fost adăugat în locații"
 
-#: dt-groups/base-setup.php:730
+#: dt-groups/base-setup.php:731
 msgid "Four Fields"
 msgstr "Patru Câmpuri"
 
@@ -1824,12 +1825,12 @@ msgstr "Sub-grup"
 msgid "Not Ready"
 msgstr "Nu e gata"
 
-#: archive-template.php:466
+#: archive-template.php:575
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Îceputul intervalului"
 
-#: archive-template.php:476
+#: archive-template.php:585
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Sfârșitul intervalului"
@@ -2119,16 +2120,16 @@ msgstr "Nepartajat cu% s"
 msgid "Quick Actions"
 msgstr "Acțiuni rapide"
 
-#: archive-template.php:420
+#: archive-template.php:529
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Tastați pentru a căuta"
 
-#: archive-template.php:186
+#: archive-template.php:295
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:571
 #: dt-contacts/user-module.php:145
-#: dt-groups/base-setup.php:491
+#: dt-groups/base-setup.php:492
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Căutați utilizatori"
@@ -2145,13 +2146,13 @@ msgid "Write your comment or note here"
 msgstr "Scrieți comentariul sau nota dvs. aici"
 
 #: archive-template.php:33
-#: archive-template.php:54
-#: archive-template.php:262
+#: archive-template.php:108
+#: archive-template.php:371
 #: dt-contacts/base-setup.php:317
 #: dt-core/global-functions.php:419
 #: dt-core/global-functions.php:466
 #: dt-core/global-functions.php:509
-#: dt-groups/base-setup.php:526
+#: dt-groups/base-setup.php:527
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:262
@@ -2220,7 +2221,7 @@ msgctxt "added to the end of a sentence"
 msgid "selected."
 msgstr "selectat."
 
-#: dt-groups/base-setup.php:614
+#: dt-groups/base-setup.php:615
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Adăugați membri din contactele existente"
@@ -2239,7 +2240,7 @@ msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "Nu mai este reatribuit pe % s"
 
-#: dt-groups/base-setup.php:608
+#: dt-groups/base-setup.php:609
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "Pentru a adăuga noi membri, faceți clic pe „Creați” sau „Selectați”."
 
@@ -2247,15 +2248,15 @@ msgstr "Pentru a adăuga noi membri, faceți clic pe „Creați” sau „Select
 msgid "Filters"
 msgstr "Filtre"
 
-#: archive-template.php:358
+#: archive-template.php:467
 msgid "Load More"
 msgstr "Incarca mai mult"
 
-#: archive-template.php:370
+#: archive-template.php:479
 msgid "Filter Name"
 msgstr "Denumirea filtrului"
 
-#: archive-template.php:500
+#: archive-template.php:609
 #: dt-assets/parts/merge-details.php:70
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -2277,7 +2278,7 @@ msgstr "Denumirea filtrului"
 msgid "Cancel"
 msgstr "Anulare"
 
-#: archive-template.php:505
+#: archive-template.php:614
 msgid "Filter Records"
 msgstr "Filtrează înregistrările"
 
@@ -2373,9 +2374,9 @@ msgstr "Nu sunt filtre, creați unul mai jos"
 msgid "No records found matching your filter."
 msgstr "Nu s-au găsit înregistrări care să corespundă filtrului dvs."
 
-#: dt-groups/base-setup.php:1025
-#: dt-groups/base-setup.php:1098
-#: dt-groups/base-setup.php:1106
+#: dt-groups/base-setup.php:1026
+#: dt-groups/base-setup.php:1099
+#: dt-groups/base-setup.php:1107
 #: template-notifications.php:47
 msgctxt "List Filters"
 msgid "All"
@@ -2393,7 +2394,7 @@ msgstr "Numai retribuite"
 msgid "Coached by me"
 msgstr "Antrenat de mine"
 
-#: dt-groups/base-setup.php:1017
+#: dt-groups/base-setup.php:1018
 msgctxt "List Filters"
 msgid "Assigned to me"
 msgstr "Mi-a fost atribuit"
@@ -2965,7 +2966,7 @@ msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
 msgstr "Grupurile de persoane reprezentate de acest grup."
 
-#: dt-groups/base-setup.php:450
+#: dt-groups/base-setup.php:451
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "Grupuri din care face parte acest contact."
@@ -3023,7 +3024,7 @@ msgid "Select the main person who is responsible for reporting on this group."
 msgstr "Selectați persoana principală care este responsabilă pentru raportarea despre acest grup."
 
 #: dt-groups/base-setup.php:201
-#: dt-groups/base-setup.php:729
+#: dt-groups/base-setup.php:730
 msgid "Church Health"
 msgstr "Sănătatea Bisericii"
 
@@ -3101,32 +3102,32 @@ msgid "Sharing the Gospel"
 msgstr "Împărtășirea Evangheliei"
 
 #: dt-groups/base-setup.php:251
-#: dt-groups/base-setup.php:431
+#: dt-groups/base-setup.php:432
 msgid "Church Commitment"
 msgstr "Angajament ca Biserică"
 
-#: dt-groups/base-setup.php:413
+#: dt-groups/base-setup.php:414
 msgid "Unbelievers"
 msgstr "Necredincioșii"
 
-#: dt-groups/base-setup.php:419
+#: dt-groups/base-setup.php:420
 msgid "Believers"
 msgstr "Credincioși"
 
-#: dt-groups/base-setup.php:425
+#: dt-groups/base-setup.php:426
 msgid "Accountable"
 msgstr "Responsabil"
 
-#: dt-groups/base-setup.php:432
+#: dt-groups/base-setup.php:433
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "Este aceasta o biserică - da sau nu?"
 
-#: dt-groups/base-setup.php:437
+#: dt-groups/base-setup.php:438
 msgid "Multiplying"
 msgstr "Multiplicând"
 
-#: dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:439
 msgctxt "Optional Documentation"
 msgid "Number of people helping start other groups. How many members are multiplying?"
 msgstr "Numărul de persoane care ajută la înființarea altor grupuri. Câți membri se multiplică?"
@@ -3344,15 +3345,15 @@ msgstr "Alege o opțiune:"
 msgid "Confirm"
 msgstr "Confirmați"
 
-#: dt-groups/base-setup.php:598
+#: dt-groups/base-setup.php:599
 msgid "Create"
 msgstr "Creați"
 
-#: dt-groups/base-setup.php:603
+#: dt-groups/base-setup.php:604
 msgid "Select"
 msgstr "Selectați"
 
-#: dt-groups/base-setup.php:615
+#: dt-groups/base-setup.php:616
 msgctxt "Add members modal"
 msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
 msgstr "În câmpul „Listă de membri”, tastați numele unui contact existent pentru a-l adăuga la acest grup."
@@ -3552,7 +3553,7 @@ msgstr "2 persoane au nevoie de o actualizare"
 msgid "Quick Action Buttons"
 msgstr "Butoane de Acțiune Rapidă"
 
-#: dt-groups/base-setup.php:650
+#: dt-groups/base-setup.php:651
 #: dt-metrics/groups/tree.php:83
 #: dt-metrics/personal/group-tree.php:84
 msgid "Members"
@@ -3614,17 +3615,17 @@ msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "Grupul s-a angajat să fie biserică."
 
-#: dt-groups/base-setup.php:414
+#: dt-groups/base-setup.php:415
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "Numărul necredincioșilor din acest grup."
 
-#: dt-groups/base-setup.php:420
+#: dt-groups/base-setup.php:421
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "Numărul de credincioși din acest grup."
 
-#: dt-groups/base-setup.php:426
+#: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "Numărul de persoane din grupul de responsabilitate."
@@ -3955,37 +3956,41 @@ msgstr "Disponibilitate pentru a primi contacte de la Dispecerat"
 msgid "System Language"
 msgstr "Limbajul sistemului"
 
-#: archive-template.php:63
+#: archive-template.php:172
 msgctxt "Contacts Filters"
 msgid "%s Filters"
 msgstr " Filtrele % s"
 
-#: archive-template.php:86
+#: archive-template.php:195
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "Lista % s"
 
-#: archive-template.php:117
+#: archive-template.php:226
 msgid "Fields"
 msgstr "Câmpuri"
 
-#: archive-template.php:123
+#: archive-template.php:232
 msgid "Bulk Edit"
 msgstr "Editare masivă"
 
-#: archive-template.php:129
+#: archive-template.php:238
 msgid "Choose which fields to display as columns in the list"
 msgstr "Alegeți câmpurile care să fie afișate în coloane în listă"
 
-#: archive-template.php:162
+#: archive-template.php:90
+#: archive-template.php:163
+#: archive-template.php:271
 msgid "Apply"
 msgstr "Aplică"
 
-#: archive-template.php:163
+#: archive-template.php:91
+#: archive-template.php:164
+#: archive-template.php:272
 msgid "reset to default"
 msgstr "resetare la valorile implicite"
 
-#: archive-template.php:168
+#: archive-template.php:277
 msgid "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "Selectați din listă toate % 1 $ s pe care doriți să le actualizați și actualizați-le mai jos"
 
@@ -3993,7 +3998,7 @@ msgstr "Selectați din listă toate % 1 $ s pe care doriți să le actualizați 
 msgid "Assign To"
 msgstr "Atribuiți la"
 
-#: archive-template.php:250
+#: archive-template.php:359
 msgid "Share with:"
 msgstr "Împărtășiți cu:"
 
@@ -4001,11 +4006,11 @@ msgstr "Împărtășiți cu:"
 msgid "Request Update"
 msgstr "Solicitați actualizarea"
 
-#: archive-template.php:283
+#: archive-template.php:392
 msgid "See More Options"
 msgstr "Vedeți mai multe opțiuni"
 
-#: archive-template.php:284
+#: archive-template.php:393
 msgid "See Fewer Options"
 msgstr "Vedeți mai puține opțiuni"
 
@@ -4174,15 +4179,15 @@ msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "Conectat % s"
 
-#: dt-groups/base-setup.php:684
+#: dt-groups/base-setup.php:685
 msgid "Coaches"
 msgstr "Antrenori"
 
-#: dt-groups/base-setup.php:697
+#: dt-groups/base-setup.php:698
 msgid "Planted by"
 msgstr "Plantat de"
 
-#: dt-groups/base-setup.php:698
+#: dt-groups/base-setup.php:699
 msgid "Planting"
 msgstr "Plantator"
 
@@ -4414,4 +4419,21 @@ msgstr[0] "acum % s  an în urmă\n"
 "Plural: acum  % s ani în urmă"
 msgstr[1] ""
 msgstr[2] ""
+
+#: archive-template.php:34
+#: archive-template.php:35
+#: archive-template.php:109
+#: archive-template.php:110
+msgid "Advanced Search"
+msgstr ""
+
+#: archive-template.php:61
+#: archive-template.php:134
+msgid "Choose which fields search"
+msgstr ""
+
+#: archive-template.php:70
+#: archive-template.php:143
+msgid "Search All Fields"
+msgstr ""
 

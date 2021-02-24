@@ -51,8 +51,8 @@ msgstr "Се чека на потврда за прифаќање"
 msgid "View Duplicates"
 msgstr "Гледајте дупликати"
 
-#: archive-template.php:36
-#: archive-template.php:55
+#: archive-template.php:57
+#: archive-template.php:131
 msgid "Search"
 msgstr "Пребарување"
 
@@ -63,7 +63,7 @@ msgstr "Пребарување"
 msgid "Shared with me"
 msgstr "Споделено со мене"
 
-#: archive-template.php:74
+#: archive-template.php:183
 msgid "Add new filter"
 msgstr "Додај нов филтер"
 
@@ -74,35 +74,35 @@ msgstr "Додај нов филтер"
 msgid "Assigned To"
 msgstr "Доделено на"
 
-#: archive-template.php:438
+#: archive-template.php:547
 #: dt-assets/functions/enqueue-scripts.php:307
 #: dt-posts/custom-post-type.php:161
 msgid "Creation Date"
 msgstr "Дата на креирање"
 
-#: archive-template.php:429
+#: archive-template.php:538
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Филтер за доделени ИЛИ Доделени на"
 
-#: archive-template.php:454
-#: archive-template.php:455
+#: archive-template.php:563
+#: archive-template.php:564
 #: template-settings.php:405
 msgid "No"
 msgstr "Не"
 
-#: archive-template.php:461
-#: archive-template.php:462
+#: archive-template.php:570
+#: archive-template.php:571
 #: template-settings.php:404
 msgid "Yes"
 msgstr "Да"
 
-#: archive-template.php:469
-#: archive-template.php:480
+#: archive-template.php:578
+#: archive-template.php:589
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Избришите"
 
-#: archive-template.php:508
+#: archive-template.php:617
 #: dt-assets/functions/enqueue-scripts.php:272
 #: dt-assets/functions/enqueue-scripts.php:302
 #: template-merge-details.php:102
@@ -137,7 +137,7 @@ msgstr "Спои со друг контакт"
 msgid "Following"
 msgstr "Следење"
 
-#: archive-template.php:278
+#: archive-template.php:387
 #: dt-assets/functions/details-bar.php:106
 #: dt-contacts/base-setup.php:162
 #: dt-groups/base-setup.php:96
@@ -148,6 +148,7 @@ msgstr "Следи"
 msgid "Share"
 msgstr "Сподели"
 
+#: archive-template.php:40
 #: dt-assets/parts/loop-activity-comment.php:80
 #: dt-assets/parts/loop-activity-comment.php:158
 msgid "Comments"
@@ -201,11 +202,11 @@ msgstr "Сортирање според"
 msgid "Date Modified"
 msgstr "Дата на модификација"
 
-#: archive-template.php:301
+#: archive-template.php:410
 #: dt-contacts/base-setup.php:49
 #: dt-contacts/base-setup.php:252
 #: dt-contacts/dmm-module.php:303
-#: dt-groups/base-setup.php:649
+#: dt-groups/base-setup.php:650
 #: dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/hover-map.php:127
 #: dt-metrics/combined/locations-list.php:120
@@ -225,13 +226,13 @@ msgstr "Дата на модификација"
 msgid "Contacts"
 msgstr "Контакти"
 
-#: archive-template.php:303
+#: archive-template.php:412
 #: dt-groups/base-setup.php:48
-#: dt-groups/base-setup.php:449
-#: dt-groups/base-setup.php:666
-#: dt-groups/base-setup.php:683
-#: dt-groups/base-setup.php:720
-#: dt-groups/base-setup.php:731
+#: dt-groups/base-setup.php:450
+#: dt-groups/base-setup.php:667
+#: dt-groups/base-setup.php:684
+#: dt-groups/base-setup.php:721
+#: dt-groups/base-setup.php:732
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/hover-map.php:172
 #: dt-metrics/combined/locations-list.php:165
@@ -300,7 +301,7 @@ msgstr "Одбиј"
 msgid "This contact represents a user."
 msgstr "Овој контакт претставува еден корисник"
 
-#: archive-template.php:204
+#: archive-template.php:313
 #: dt-contacts/access-module.php:410
 #: dt-metrics/groups/tree.php:86
 #: dt-metrics/personal/group-tree.php:87
@@ -336,7 +337,7 @@ msgstr "Локации"
 #: dt-contacts/dmm-module.php:187
 #: dt-contacts/dmm-module.php:302
 #: dt-groups/base-setup.php:403
-#: dt-groups/base-setup.php:719
+#: dt-groups/base-setup.php:720
 #: dt-people-groups/people-groups-post-type.php:132
 msgid "People Groups"
 msgstr "припадност на група"
@@ -350,7 +351,7 @@ msgstr "Возраст"
 msgid "Gender"
 msgstr "Пол"
 
-#: archive-template.php:343
+#: archive-template.php:452
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
@@ -359,23 +360,23 @@ msgstr "Пол"
 msgid "Name"
 msgstr "Име"
 
-#: archive-template.php:93
+#: archive-template.php:202
 msgid "Sort"
 msgstr "подреди"
 
-#: archive-template.php:97
+#: archive-template.php:206
 msgid "Newest"
 msgstr "Најнови"
 
-#: archive-template.php:101
+#: archive-template.php:210
 msgid "Oldest"
 msgstr "Најстари"
 
-#: archive-template.php:105
+#: archive-template.php:214
 msgid "Most recently modified"
 msgstr "Последно променети"
 
-#: archive-template.php:109
+#: archive-template.php:218
 msgid "Least recently modified"
 msgstr "Најодамна променети"
 
@@ -398,7 +399,7 @@ msgstr "Одредници на патот на верата"
 msgid "Group"
 msgstr "Група"
 
-#: archive-template.php:353
+#: archive-template.php:462
 msgid "Loading..."
 msgstr "Се вчитува..."
 
@@ -463,7 +464,7 @@ msgstr "Избриши коментар:"
 #: dt-assets/parts/modals/modal-share.php:50
 #: dt-assets/parts/modals/modal-tasks.php:46
 #: dt-contacts/dmm-module.php:557
-#: dt-groups/base-setup.php:624
+#: dt-groups/base-setup.php:625
 msgid "Close"
 msgstr "Затвори"
 
@@ -635,7 +636,7 @@ msgstr "Дома"
 #: dt-contacts/base-setup.php:448
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:469
-#: dt-groups/base-setup.php:732
+#: dt-groups/base-setup.php:733
 #: template-settings.php:152
 msgid "Other"
 msgstr "Друго"
@@ -834,7 +835,7 @@ msgstr "(нема наслов)"
 
 #: dt-groups/base-setup.php:246
 #: dt-groups/base-setup.php:308
-#: dt-groups/base-setup.php:667
+#: dt-groups/base-setup.php:668
 msgid "Leaders"
 msgstr "Водачи"
 
@@ -1372,11 +1373,11 @@ msgstr "Види го записот за контактот"
 msgid "Updated Needed"
 msgstr "Потребно е ажурирање"
 
-#: functions.php:472
+#: functions.php:475
 msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
 msgstr "Disciple.Tools темата побарува верзија PHP 7.0 или понова. Вашата моментална верзија е:"
 
-#: functions.php:474
+#: functions.php:477
 msgid "Please upgrade PHP or uninstall this theme"
 msgstr "Ве молиме надоградете го PHP или деинсталирајте ја оваа тема"
 
@@ -1424,8 +1425,8 @@ msgid "Click merge to continue."
 msgstr "Кликни спојување за да продолжиш."
 
 #: dt-groups/base-setup.php:299
-#: dt-groups/base-setup.php:595
-#: dt-groups/base-setup.php:728
+#: dt-groups/base-setup.php:596
+#: dt-groups/base-setup.php:729
 msgid "Member List"
 msgstr "Листа на членови"
 
@@ -1707,7 +1708,7 @@ msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "%1$s додадено на локации"
 
-#: dt-groups/base-setup.php:730
+#: dt-groups/base-setup.php:731
 msgid "Four Fields"
 msgstr "Четири полиња"
 
@@ -1823,12 +1824,12 @@ msgstr "Група на деца"
 msgid "Not Ready"
 msgstr "Не е спремно"
 
-#: archive-template.php:466
+#: archive-template.php:575
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Почетна дата"
 
-#: archive-template.php:476
+#: archive-template.php:585
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Крајна дата"
@@ -2118,16 +2119,16 @@ msgstr "Не е споделено со %s"
 msgid "Quick Actions"
 msgstr "Брза акција"
 
-#: archive-template.php:420
+#: archive-template.php:529
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Кликни за пребарување"
 
-#: archive-template.php:186
+#: archive-template.php:295
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:571
 #: dt-contacts/user-module.php:145
-#: dt-groups/base-setup.php:491
+#: dt-groups/base-setup.php:492
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Пребарај корисници"
@@ -2144,13 +2145,13 @@ msgid "Write your comment or note here"
 msgstr "Запиши го твојот коментар или забелешка овде"
 
 #: archive-template.php:33
-#: archive-template.php:54
-#: archive-template.php:262
+#: archive-template.php:108
+#: archive-template.php:371
 #: dt-contacts/base-setup.php:317
 #: dt-core/global-functions.php:419
 #: dt-core/global-functions.php:466
 #: dt-core/global-functions.php:509
-#: dt-groups/base-setup.php:526
+#: dt-groups/base-setup.php:527
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:262
@@ -2219,7 +2220,7 @@ msgctxt "added to the end of a sentence"
 msgid "selected."
 msgstr "избрани."
 
-#: dt-groups/base-setup.php:614
+#: dt-groups/base-setup.php:615
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Додади членови од постоечките контакти"
@@ -2238,7 +2239,7 @@ msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "Повеќе не е под-доделен на %s"
 
-#: dt-groups/base-setup.php:608
+#: dt-groups/base-setup.php:609
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "За додавање на нови членови, кликни „Креирај“ или „Одбери“."
 
@@ -2246,15 +2247,15 @@ msgstr "За додавање на нови членови, кликни „Кр
 msgid "Filters"
 msgstr "Филтри"
 
-#: archive-template.php:358
+#: archive-template.php:467
 msgid "Load More"
 msgstr "Вчитај повеќе"
 
-#: archive-template.php:370
+#: archive-template.php:479
 msgid "Filter Name"
 msgstr "Име на филтер"
 
-#: archive-template.php:500
+#: archive-template.php:609
 #: dt-assets/parts/merge-details.php:70
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -2276,7 +2277,7 @@ msgstr "Име на филтер"
 msgid "Cancel"
 msgstr "Откажи"
 
-#: archive-template.php:505
+#: archive-template.php:614
 msgid "Filter Records"
 msgstr "Записи за филтер"
 
@@ -2372,9 +2373,9 @@ msgstr "Нема филтри, креирај еден подолу"
 msgid "No records found matching your filter."
 msgstr "Нема записи според твојот филтер"
 
-#: dt-groups/base-setup.php:1025
-#: dt-groups/base-setup.php:1098
-#: dt-groups/base-setup.php:1106
+#: dt-groups/base-setup.php:1026
+#: dt-groups/base-setup.php:1099
+#: dt-groups/base-setup.php:1107
 #: template-notifications.php:47
 msgctxt "List Filters"
 msgid "All"
@@ -2392,7 +2393,7 @@ msgstr "Само доделените"
 msgid "Coached by me"
 msgstr "Менторирани од мене"
 
-#: dt-groups/base-setup.php:1017
+#: dt-groups/base-setup.php:1018
 msgctxt "List Filters"
 msgid "Assigned to me"
 msgstr "Доделени на мене"
@@ -2964,7 +2965,7 @@ msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
 msgstr "Припадност на групи претставени од оваа група."
 
-#: dt-groups/base-setup.php:450
+#: dt-groups/base-setup.php:451
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "Групи во кои е зачленет овој контакт"
@@ -3022,7 +3023,7 @@ msgid "Select the main person who is responsible for reporting on this group."
 msgstr "Избери ја главната личност која е одговорна за извештаи од оваа група."
 
 #: dt-groups/base-setup.php:201
-#: dt-groups/base-setup.php:729
+#: dt-groups/base-setup.php:730
 msgid "Church Health"
 msgstr "Состојба на Црквата"
 
@@ -3100,32 +3101,32 @@ msgid "Sharing the Gospel"
 msgstr "Споделување на Евангелието"
 
 #: dt-groups/base-setup.php:251
-#: dt-groups/base-setup.php:431
+#: dt-groups/base-setup.php:432
 msgid "Church Commitment"
 msgstr "Посветеност кон црква"
 
-#: dt-groups/base-setup.php:413
+#: dt-groups/base-setup.php:414
 msgid "Unbelievers"
 msgstr "Неверници"
 
-#: dt-groups/base-setup.php:419
+#: dt-groups/base-setup.php:420
 msgid "Believers"
 msgstr "Верници"
 
-#: dt-groups/base-setup.php:425
+#: dt-groups/base-setup.php:426
 msgid "Accountable"
 msgstr "Отчетност"
 
-#: dt-groups/base-setup.php:432
+#: dt-groups/base-setup.php:433
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "Дали ова е Црква - да или не?"
 
-#: dt-groups/base-setup.php:437
+#: dt-groups/base-setup.php:438
 msgid "Multiplying"
 msgstr "Умножување"
 
-#: dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:439
 msgctxt "Optional Documentation"
 msgid "Number of people helping start other groups. How many members are multiplying?"
 msgstr "Број на луѓе кои помагаат да започнат други групи. Колку членови се умножуваат?"
@@ -3343,15 +3344,15 @@ msgstr "Избери опција:"
 msgid "Confirm"
 msgstr "Потврди"
 
-#: dt-groups/base-setup.php:598
+#: dt-groups/base-setup.php:599
 msgid "Create"
 msgstr "Креирај"
 
-#: dt-groups/base-setup.php:603
+#: dt-groups/base-setup.php:604
 msgid "Select"
 msgstr "Одбери"
 
-#: dt-groups/base-setup.php:615
+#: dt-groups/base-setup.php:616
 msgctxt "Add members modal"
 msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
 msgstr "Во „Листата на членови“ впиши го името на постоечки контакт за да го додадеш на оваа група."
@@ -3539,7 +3540,7 @@ msgstr "2 контакти имаат потреба од ажурирање"
 msgid "Quick Action Buttons"
 msgstr "Копчиња за брза акција"
 
-#: dt-groups/base-setup.php:650
+#: dt-groups/base-setup.php:651
 #: dt-metrics/groups/tree.php:83
 #: dt-metrics/personal/group-tree.php:84
 msgid "Members"
@@ -3601,17 +3602,17 @@ msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "Оваа група е посветена да биде црква."
 
-#: dt-groups/base-setup.php:414
+#: dt-groups/base-setup.php:415
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "Број на неверници во оваа група."
 
-#: dt-groups/base-setup.php:420
+#: dt-groups/base-setup.php:421
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "Број на верници во оваа група."
 
-#: dt-groups/base-setup.php:426
+#: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "Број на луѓе во група за отчетност."
@@ -3942,38 +3943,42 @@ msgstr "Во можност да прима контакти од Диспече
 msgid "System Language"
 msgstr "Системски јазик"
 
-#: archive-template.php:63
+#: archive-template.php:172
 msgctxt "Contacts Filters"
 msgid "%s Filters"
 msgstr "\n"
 "%s Филтри"
 
-#: archive-template.php:86
+#: archive-template.php:195
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "%s Листа"
 
-#: archive-template.php:117
+#: archive-template.php:226
 msgid "Fields"
 msgstr "Полиња"
 
-#: archive-template.php:123
+#: archive-template.php:232
 msgid "Bulk Edit"
 msgstr "Уреди повеќе"
 
-#: archive-template.php:129
+#: archive-template.php:238
 msgid "Choose which fields to display as columns in the list"
 msgstr ""
 
-#: archive-template.php:162
+#: archive-template.php:90
+#: archive-template.php:163
+#: archive-template.php:271
 msgid "Apply"
 msgstr "Примени"
 
-#: archive-template.php:163
+#: archive-template.php:91
+#: archive-template.php:164
+#: archive-template.php:272
 msgid "reset to default"
 msgstr "Рестирај на почетно"
 
-#: archive-template.php:168
+#: archive-template.php:277
 msgid "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
 
@@ -3981,7 +3986,7 @@ msgstr ""
 msgid "Assign To"
 msgstr "Додели на"
 
-#: archive-template.php:250
+#: archive-template.php:359
 msgid "Share with:"
 msgstr "Сподели со:"
 
@@ -3989,11 +3994,11 @@ msgstr "Сподели со:"
 msgid "Request Update"
 msgstr "Побарај ажурирање"
 
-#: archive-template.php:283
+#: archive-template.php:392
 msgid "See More Options"
 msgstr "Види повеќе опции"
 
-#: archive-template.php:284
+#: archive-template.php:393
 msgid "See Fewer Options"
 msgstr "Види помалку опции"
 
@@ -4162,15 +4167,15 @@ msgctxt "Personal records"
 msgid "Connected %s"
 msgstr ""
 
-#: dt-groups/base-setup.php:684
+#: dt-groups/base-setup.php:685
 msgid "Coaches"
 msgstr ""
 
-#: dt-groups/base-setup.php:697
+#: dt-groups/base-setup.php:698
 msgid "Planted by"
 msgstr ""
 
-#: dt-groups/base-setup.php:698
+#: dt-groups/base-setup.php:699
 msgid "Planting"
 msgstr ""
 
@@ -4400,4 +4405,21 @@ msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] ""
 msgstr[1] ""
+
+#: archive-template.php:34
+#: archive-template.php:35
+#: archive-template.php:109
+#: archive-template.php:110
+msgid "Advanced Search"
+msgstr ""
+
+#: archive-template.php:61
+#: archive-template.php:134
+msgid "Choose which fields search"
+msgstr ""
+
+#: archive-template.php:70
+#: archive-template.php:143
+msgid "Search All Fields"
+msgstr ""
 
