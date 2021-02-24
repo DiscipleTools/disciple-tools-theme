@@ -147,7 +147,7 @@ jQuery(document).ready(function($) {
     $list.append(`<div class="input-group">
             <input type="text" data-field="${_.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
             <div class="input-group-button">
-            <button class="test button alert input-height delete-button-style channel-delete-button delete-button new-${_.escape( field )}" data-key="new" data-field="${_.escape( field )}">&times;</button>
+            <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${_.escape( field )}" data-key="new" data-field="${_.escape( field )}">&times;</button>
             </div></div>`)
   })
   $(document).on('click', '.channel-delete-button', function(){
