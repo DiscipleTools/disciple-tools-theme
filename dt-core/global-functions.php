@@ -522,7 +522,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                    type="text"
                                    data-field="<?php echo esc_html( $display_field_id ); ?>"
                                    value="<?php echo esc_html( $field_value["value"] ) ?>"
-                                   class="dt-communication-channel input-group-field" />
+                                   class="dt-communication-channel input-group-field" dir="auto"/>
                             <div class="input-group-button">
                                 <button class="button alert input-height delete-button-style channel-delete-button delete-button new-<?php echo esc_html( $field_key ); ?>" data-field="<?php echo esc_html( $field_key ); ?>" data-key="<?php echo esc_html( $field_value["key"] ); ?>">&times;</button>
                             </div>
@@ -533,7 +533,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <input type="text"
                                     <?php echo esc_html( $required_tag ) ?>
                                    data-field="<?php echo esc_html( $field_key ) ?>"
-                                   class="dt-communication-channel input-group-field" />
+                                   class="dt-communication-channel input-group-field" dir="auto" />
                         </div>
                     <?php endif ?>
                 </div>
