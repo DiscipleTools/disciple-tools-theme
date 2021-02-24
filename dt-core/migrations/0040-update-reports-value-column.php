@@ -9,8 +9,8 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Migration_0040 extends Disciple_Tools_Migration {
     public function up() {
         global $wpdb;
-        $wpdb->query( "ALTER TABLE `wp_70_dt_reports` CHANGE `value` `value` BIGINT(22)  NOT NULL  DEFAULT '0';" );
-        $wpdb->query( "ALTER TABLE `wp_70_dt_reports` ADD INDEX (`value`);" );
+        $wpdb->query( "ALTER TABLE $wpdb->dt_reports CHANGE `value` `value` BIGINT(22)  NOT NULL  DEFAULT '0';" );
+        $wpdb->query( "ALTER TABLE $wpdb->dt_reports ADD INDEX (`value`);" );
     }
 
     public function down() {
