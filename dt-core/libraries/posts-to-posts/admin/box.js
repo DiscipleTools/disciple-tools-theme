@@ -408,7 +408,7 @@
 
       // All ajax requests should be done through this function
       function ajax_request(options, callback) {
-        var params = _.extend({}, options, candidates.attributes, ctype, {
+        var params = window.lodash.extend({}, options, candidates.attributes, ctype, {
           action: 'p2p_box',
           nonce: P2PAdminL10n.nonce
         });

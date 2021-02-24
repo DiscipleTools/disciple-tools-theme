@@ -393,7 +393,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
             }).catch(err=>{
                 console.error(err);
                 $('#submit-merge').toggleClass('loading').attr("disabled", false)
-                $('#merge_errors').html( '<?php esc_html_e( "Sorry, something went wrong", 'disciple_tools' ) ?>: ' + _.escape(_.get(err, 'responseJSON.message', err) ))
+                $('#merge_errors').html( '<?php esc_html_e( "Sorry, something went wrong", 'disciple_tools' ) ?>: ' + window.lodash.escape(window.lodash.get(err, 'responseJSON.message', err) ))
             })
         }
         </script>

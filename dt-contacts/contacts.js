@@ -17,12 +17,12 @@ jQuery(document).ready(function($) {
       template: function (query, item) {
         return `<span class="row">
           <span class="avatar"><img src="{{avatar}}"/> </span>
-          <span>${_.escape( item.name )}</span>
+          <span>${window.lodash.escape( item.name )}</span>
         </span>`
       },
       dynamic: true,
       hint: true,
-      emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
+      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function (node, a, item) {
           jQuery.ajax({
@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
       location.reload();
     }).catch(err=>{
       $(this).removeClass("loading")
-      $('#create-user-errors').html(_.get(err, "responseJSON.message", "Something went wrong"))
+      $('#create-user-errors').html(window.lodash.get(err, "responseJSON.message", "Something went wrong"))
     })
     return false;
   })
@@ -84,8 +84,8 @@ jQuery(document).ready(function($) {
     if ( response.ids && response.ids.length > 0 ){
       $('#admin-bar-issues').html(`
         <button class="center-items" id="duplicates-detected-notice">
-          <img style="height:25px" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-          <strong style="margin:0 5px 2px 5px">${_.escape(window.detailsSettings.translations.duplicates_detected)}</strong>
+          <img style="height:25px" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+          <strong style="margin:0 5px 2px 5px">${window.lodash.escape(window.detailsSettings.translations.duplicates_detected)}</strong>
         </button>
       `)
     }
@@ -102,16 +102,16 @@ jQuery(document).ready(function($) {
 
       let original_contact_html = `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
         <h5 style='font-weight: bold; color: #3f729b;'>
-        <a href="${window.wpApiShare.site_url}/${post_type}/${_.escape(post_id)}" target=_blank>
-        ${ _.escape(post.name) }
-        <span style="font-weight: normal; font-size:16px"> #${post_id} (${_.get(post, "overall_status.label") ||""}) </span>
+        <a href="${window.wpApiShare.site_url}/${post_type}/${window.lodash.escape(post_id)}" target=_blank>
+        ${ window.lodash.escape(post.name) }
+        <span style="font-weight: normal; font-size:16px"> #${post_id} (${window.lodash.get(post, "overall_status.label") ||""}) </span>
         </a>
         </h5>`
-      _.forOwn(window.detailsSettings.post_settings.fields, (field_settings, field_key)=>{
+      window.lodash.forOwn(window.detailsSettings.post_settings.fields, (field_settings, field_key)=>{
         if ( field_settings.type === "communication_channel" && post[field_key] ){
           post[field_key].forEach( contact_info=>{
             if ( contact_info.value !== '' ){
-              original_contact_html +=`<img src='${_.escape(field_settings.icon)}'><span style="margin-right: 15px;">&nbsp;${_.escape(contact_info.value)}</span>`
+              original_contact_html +=`<img src='${window.lodash.escape(field_settings.icon)}'><span style="margin-right: 15px;">&nbsp;${window.lodash.escape(contact_info.value)}</span>`
             }
           })
         }
@@ -134,7 +134,7 @@ jQuery(document).ready(function($) {
       let $duplicates = $('#duplicates_list');
       $duplicates.html("");
 
-      let already_dismissed = _.get(post, 'duplicate_data.override', []).map(id=>parseInt(id))
+      let already_dismissed = window.lodash.get(post, 'duplicate_data.override', []).map(id=>parseInt(id))
 
       let html = ``
       dups_with_data.sort((a, b) => a.points > b.points ? -1:1).forEach((dupe) => {
@@ -154,7 +154,7 @@ jQuery(document).ready(function($) {
         }
       })
       if (dismissed_html) {
-        dismissed_html = `<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:20px 0 0; margin-bottom: 0;'>${_.escape(window.detailsSettings.translations.dismissed_duplicates)}</h4>`
+        dismissed_html = `<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:20px 0 0; margin-bottom: 0;'>${window.lodash.escape(window.detailsSettings.translations.dismissed_duplicates)}</h4>`
           + dismissed_html
         $duplicates.append(dismissed_html);
       }
@@ -162,35 +162,35 @@ jQuery(document).ready(function($) {
   }
   let dup_row = (dupe, dismissed_row = false)=>{
     let html = ``;
-    let dups_on_fields = _.uniq(dupe.fields.map(field=>{
-      return _.get(window.detailsSettings.post_settings, `fields[${field.field}].name`)
+    let dups_on_fields = window.lodash.uniq(dupe.fields.map(field=>{
+      return window.lodash.get(window.detailsSettings.post_settings, `fields[${field.field}].name`)
     }))
     let matched_values = dupe.fields.map(f=>f.value)
     html += `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
       <h5 style='font-weight: bold; color: #3f729b;'>
-      <a href="${window.wpApiShare.site_url}/${post_type}/${_.escape(dupe.ID)}" target=_blank>
-      ${ _.escape(dupe.post.name) }
-      <span style="font-weight: normal; font-size:16px"> #${dupe.ID} (${_.get(dupe.post, "overall_status.label") ||""}) </span>
+      <a href="${window.wpApiShare.site_url}/${post_type}/${window.lodash.escape(dupe.ID)}" target=_blank>
+      ${ window.lodash.escape(dupe.post.name) }
+      <span style="font-weight: normal; font-size:16px"> #${dupe.ID} (${window.lodash.get(dupe.post, "overall_status.label") ||""}) </span>
       </a>
     </h5>`
-    html += `${_.escape(window.detailsSettings.translations.duplicates_on).replace('%s', '<strong>' + _.escape(dups_on_fields.join( ', ')) + '</strong>' )}<br />`
+    html += `${window.lodash.escape(window.detailsSettings.translations.duplicates_on).replace('%s', '<strong>' + window.lodash.escape(dups_on_fields.join( ', ')) + '</strong>' )}<br />`
 
-    _.forOwn(window.detailsSettings.post_settings.fields, (field_settings, field_key)=>{
+    window.lodash.forOwn(window.detailsSettings.post_settings.fields, (field_settings, field_key)=>{
       if ( field_settings.type === "communication_channel" && dupe.post[field_key] ){
         dupe.post[field_key].forEach( contact_info=>{
           if ( contact_info.value !== '' ){
-            html +=`<img src='${_.escape(field_settings.icon)}'><span style="margin-right: 15px; ${matched_values.includes(contact_info.value) ? 'font-weight:bold;' : ''}">&nbsp;${_.escape(contact_info.value)}</span>`
+            html +=`<img src='${window.lodash.escape(field_settings.icon)}'><span style="margin-right: 15px; ${matched_values.includes(contact_info.value) ? 'font-weight:bold;' : ''}">&nbsp;${window.lodash.escape(contact_info.value)}</span>`
           }
         })
       }
     })
     html += `<br>`
     if ( !dismissed_row ){
-      html += `<button class='mergelinks dismiss-duplicate' data-id='${_.escape(dupe.ID)}' style='float: right; padding-left: 10%;'><a>${_.escape(window.detailsSettings.translations.dismiss)}</a></button>`
+      html += `<button class='mergelinks dismiss-duplicate' data-id='${window.lodash.escape(dupe.ID)}' style='float: right; padding-left: 10%;'><a>${window.lodash.escape(window.detailsSettings.translations.dismiss)}</a></button>`
     }
     html += `
-       <button type='submit' class="merge-post" data-dup-id="${_.escape(dupe.ID)}" style='float:right; padding-left: 10%;'>
-          <a>${_.escape(window.detailsSettings.translations.merge)}</a>
+       <button type='submit' class="merge-post" data-dup-id="${window.lodash.escape(dupe.ID)}" style='float:right; padding-left: 10%;'>
+          <a>${window.lodash.escape(window.detailsSettings.translations.merge)}</a>
       </button>
     `
 
@@ -238,7 +238,7 @@ jQuery(document).ready(function($) {
         template: window.TYPEAHEADS.contactListRowTemplate,
         dynamic: true,
         hint: true,
-        emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
+        emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
         callback: {
           onClick: function (node, a, item) {
             $('.confirm-merge-with-contact').show()

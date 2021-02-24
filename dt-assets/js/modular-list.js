@@ -25,7 +25,7 @@
   } catch (e) {
     cached_filter = {}
   }
-  let current_filter = (cached_filter && !_.isEmpty(cached_filter)) ? cached_filter : { query:{} }
+  let current_filter = (cached_filter && !window.lodash.isEmpty(cached_filter)) ? cached_filter : { query:{} }
 
   //set up main filters
   setup_filters()
@@ -36,15 +36,15 @@
   }
 
   //set up custom cached filter
-  if ( cached_filter && !_.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ){
+  if ( cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ){
     cached_filter.query.offset = 0;
     add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
   } else {
     //check select filter
     if ( current_filter.ID ){
       //open the filter tabs
-      $(`#list-filter-tabs [data-id='${_.escape( current_filter.tab )}'] a`).click()
-      let filter_element = $(`input[name=view][data-id="${_.escape( current_filter.ID )}"].js-list-view`)
+      $(`#list-filter-tabs [data-id='${window.lodash.escape( current_filter.tab )}'] a`).click()
+      let filter_element = $(`input[name=view][data-id="${window.lodash.escape( current_filter.ID )}"].js-list-view`)
       if ( filter_element.length ){
         filter_element.prop('checked', true);
       } else {
@@ -56,9 +56,9 @@
   }
 
   //determine list columns
-  if ( _.isEmpty(fields_to_show_in_table)){
-    _.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
-      if (_.get(field_settings, 'show_in_table')===true || _.get(field_settings, 'show_in_table') > 0) {
+  if ( window.lodash.isEmpty(fields_to_show_in_table)){
+    window.lodash.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
+      if (window.lodash.get(field_settings, 'show_in_table')===true || window.lodash.get(field_settings, 'show_in_table') > 0) {
         fields_to_show_in_table.push(field_key)
       }
     })
@@ -92,10 +92,10 @@
     let sort = current_filter.query.sort || null;
     if ( current_view === "custom_filter" ){
       let filterId = checked.data("id")
-      current_filter = _.find(custom_filters, {ID:filterId})
+      current_filter = window.lodash.find(custom_filters, {ID:filterId})
       current_filter.type = current_view
     } else {
-      current_filter = _.find(list_settings.filters.filters, {ID:filter_id}) || _.find(list_settings.filters.filters, {ID:filter_id.toString()}) || current_filter
+      current_filter = window.lodash.find(list_settings.filters.filters, {ID:filter_id}) || window.lodash.find(list_settings.filters.filters, {ID:filter_id.toString()}) || current_filter
       current_filter.type = 'default'
       current_filter.labels = current_filter.labels || [{ id:filter_id, name:current_filter.name}]
     }
@@ -114,11 +114,11 @@
     let html = ``;
     list_settings.filters.tabs.forEach( tab =>{
       html += `
-      <li class="accordion-item" data-accordion-item data-id="${_.escape(tab.key)}">
-        <a href="#" class="accordion-title" data-id="${_.escape(tab.key)}">
-          ${_.escape(tab.label)}
-          <span class="tab-count-span" data-tab="${_.escape(tab.key)}">
-              ${tab.count || tab.count >= 0 ? `(${_.escape(tab.count)})`: ``}
+      <li class="accordion-item" data-accordion-item data-id="${window.lodash.escape(tab.key)}">
+        <a href="#" class="accordion-title" data-id="${window.lodash.escape(tab.key)}">
+          ${window.lodash.escape(tab.label)}
+          <span class="tab-count-span" data-tab="${window.lodash.escape(tab.key)}">
+              ${tab.count || tab.count >= 0 ? `(${window.lodash.escape(tab.count)})`: ``}
           </span>
         </a>
         <div class="accordion-content" data-tab-content>
@@ -128,9 +128,9 @@
                 let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
                 return `
                   <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
-                    <input type="radio" name="view" value="${_.escape(filter.ID)}" data-id="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
-                    <span id="total_filter_label">${_.escape(filter.name)}</span>
-                    <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
+                    <input type="radio" name="view" value="${window.lodash.escape(filter.ID)}" data-id="${window.lodash.escape(filter.ID)}" class="js-list-view" autocomplete="off">
+                    <span id="total_filter_label">${window.lodash.escape(filter.name)}</span>
+                    <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(filter.ID)}">${window.lodash.escape(filter.count )}</span>
                   </label>
                   `
               }
@@ -145,13 +145,13 @@
     let saved_filters_list = $(`#list-filter-tabs [data-id='custom'] .list-views`)
     saved_filters_list.empty()
     if ( list_settings.filters.filters.filter(t=>t.tab==='custom').length === 0 ) {
-      saved_filters_list.html(`<span>${_.escape(list_settings.translations.empty_custom_filters)}</span>`)
+      saved_filters_list.html(`<span>${window.lodash.escape(list_settings.translations.empty_custom_filters)}</span>`)
     }
     list_settings.filters.filters.filter(t=>t.tab==='custom').forEach(filter=>{
       if ( filter && filter.visible === ''){
         return
       }
-      let delete_filter = $(`<span style="float:right" data-filter="${_.escape( filter.ID )}">
+      let delete_filter = $(`<span style="float:right" data-filter="${window.lodash.escape( filter.ID )}">
         <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/trash.svg">
       </span>`)
       delete_filter.on("click", function () {
@@ -159,15 +159,15 @@
         $('#delete-filter-modal').foundation('open');
         filter_to_delete = filter.ID;
       })
-      let edit_filter = $(`<span style="float:right" data-filter="${_.escape( filter.ID )}">
+      let edit_filter = $(`<span style="float:right" data-filter="${window.lodash.escape( filter.ID )}">
           <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/edit.svg">
       </span>`)
       edit_filter.on("click", function () {
         edit_saved_filter( filter )
         filterToEdit = filter.ID;
       })
-      let filterName =  `<span class="filter-list-name" data-filter="${_.escape( filter.ID )}">${_.escape( filter.name )}</span>`
-      const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${_.escape( filter.ID )}" >`)
+      let filterName =  `<span class="filter-list-name" data-filter="${window.lodash.escape( filter.ID )}">${window.lodash.escape( filter.name )}</span>`
+      const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${window.lodash.escape( filter.ID )}" >`)
       .attr("type", "radio")
       .val("saved-filters")
       .on("change", function() {
@@ -190,16 +190,16 @@
       allowAllClosed: true
     });
     if ( selected_tab ){
-      $(`#list-filter-tabs [data-id='${_.escape( selected_tab )}'] a`).click()
+      $(`#list-filter-tabs [data-id='${window.lodash.escape( selected_tab )}'] a`).click()
     }
     if ( selected_filter ){
-      $(`[data-id="${_.escape( selected_filter )}"].js-list-view`).prop('checked', true);
+      $(`[data-id="${window.lodash.escape( selected_filter )}"].js-list-view`).prop('checked', true);
     }
   }
 
   let getFilterCountsPromise = null
   let get_filter_counts = ()=>{
-    if ( getFilterCountsPromise && _.get( getFilterCountsPromise, "readyState") !== 4 ){
+    if ( getFilterCountsPromise && window.lodash.get( getFilterCountsPromise, "readyState") !== 4 ){
       getFilterCountsPromise.abort()
     }
     getFilterCountsPromise = $.ajax({
@@ -214,7 +214,7 @@
         setup_filters()
       }
     }).catch(err => {
-      if ( _.get( err, "statusText" ) !== "abort" ){
+      if ( window.lodash.get( err, "statusText" ) !== "abort" ){
         console.error(err)
       }
     })
@@ -227,19 +227,19 @@
     let filter = current_filter
     if (filter && filter.labels){
       filter.labels.forEach(label=>{
-        html+= `<span class="current-filter ${_.escape( label.field )}">${_.escape( label.name )}</span>`
+        html+= `<span class="current-filter ${window.lodash.escape( label.field )}">${window.lodash.escape( label.name )}</span>`
       })
     } else {
       let query = filter.query
-      _.forOwn( query, query_key=> {
+      window.lodash.forOwn( query, query_key=> {
         if (Array.isArray(query[query_key])) {
 
           query[query_key].forEach(q => {
 
-            html += `<span class="current-filter ${_.escape( query_key )}">${_.escape( q )}</span>`
+            html += `<span class="current-filter ${window.lodash.escape( query_key )}">${window.lodash.escape( q )}</span>`
           })
         } else {
-          html += `<span class="current-filter search">${_.escape( query[query_key] )}</span>`
+          html += `<span class="current-filter search">${window.lodash.escape( query[query_key] )}</span>`
         }
       })
     }
@@ -251,21 +251,21 @@
       } else if (  sortLabel.includes('post_date') ) {
         sortLabel = list_settings.translations.creation_date
       } else  {
-        sortLabel = _.get( list_settings, `post_type_settings.fields[${filter.query.sort}].name`, sortLabel)
+        sortLabel = window.lodash.get( list_settings, `post_type_settings.fields[${filter.query.sort}].name`, sortLabel)
       }
       html += `<span class="current-filter" data-id="sort">
-          ${_.escape( list_settings.translations.sorting_by )}: ${_.escape( sortLabel )}
+          ${window.lodash.escape( list_settings.translations.sorting_by )}: ${window.lodash.escape( sortLabel )}
       </span>`
     }
     currentFilters.html(html)
   }
 
 
-  let sort_field = _.get( current_filter, "query.sort", "name" )
+  let sort_field = window.lodash.get( current_filter, "query.sort", "name" )
   //reset sorting in table header
   table_header_row.removeClass("sorting_asc")
   table_header_row.removeClass("sorting_desc")
-  let header_cell = $(`.js-list thead .sortable th[data-id="${_.escape( sort_field.replace("-", "") )}"]`)
+  let header_cell = $(`.js-list thead .sortable th[data-id="${window.lodash.escape( sort_field.replace("-", "") )}"]`)
   header_cell.addClass(`sorting_${ sort_field.startsWith('-') ? 'desc' : 'asc'}`)
   table_header_row.data("sort", '')
   header_cell.data("sort", 'asc')
@@ -310,8 +310,8 @@
     $('#list_column_picker input:checked').each((index, elem)=>{
       new_selected.push($(elem).val())
     })
-    fields_to_show_in_table = _.intersection( fields_to_show_in_table, new_selected ) // remove unchecked
-    fields_to_show_in_table = _.uniq(_.union( fields_to_show_in_table, new_selected ))
+    fields_to_show_in_table = window.lodash.intersection( fields_to_show_in_table, new_selected ) // remove unchecked
+    fields_to_show_in_table = window.lodash.uniq(window.lodash.union( fields_to_show_in_table, new_selected ))
     window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
     window.location.reload()
   })
@@ -354,35 +354,35 @@
         let values = [];
         if ( field_key === "name" ){
           if ( mobile ){ return }
-          values_html = `<a href="${ _.escape( record.permalink ) }" title="${ _.escape( record.post_title ) }">${ _.escape( record.post_title ) }</a>`
+          values_html = `<a href="${ window.lodash.escape( record.permalink ) }" title="${ window.lodash.escape( record.post_title ) }">${ window.lodash.escape( record.post_title ) }</a>`
         } else if ( list_settings.post_type_settings.fields[field_key] ) {
           let field_settings = list_settings.post_type_settings.fields[field_key]
-          let field_value = _.get( record, field_key, false )
+          let field_value = window.lodash.get( record, field_key, false )
 
           if ( field_value ) {
             if (['text', 'number'].includes(field_settings.type)) {
-              values = [_.escape(field_value)]
+              values = [window.lodash.escape(field_value)]
             } else if (field_settings.type === 'date') {
-              values = [_.escape(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
+              values = [window.lodash.escape(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
             } else if (field_settings.type === 'user_select') {
-              values = [_.escape(field_value.display)]
+              values = [window.lodash.escape(field_value.display)]
             } else if (field_settings.type === 'key_select') {
-              values = [_.escape(field_value.label)]
+              values = [window.lodash.escape(field_value.label)]
             } else if (field_settings.type === 'multi_select') {
               values = field_value.map(v => {
-                return `${_.escape(_.get(field_settings, `default[${v}].label`, v))}`;
+                return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
               })
             } else if ( field_settings.type === "location" ){
               values = field_value.map(v => {
-                return `${_.escape( v.label )}`;
+                return `${window.lodash.escape( v.label )}`;
               })
             } else if ( field_settings.type === "communication_channel" ){
               values = field_value.map(v => {
-                return `${_.escape( v.value )}`;
+                return `${window.lodash.escape( v.value )}`;
               })
             } else if ( field_settings.type === "connection" ){
               values = field_value.map(v => {
-                return `${_.escape( v.post_title )}`;
+                return `${window.lodash.escape( v.post_title )}`;
               })
             } else if ( field_settings.type === "boolean" ){
               values = ['&check;']
@@ -400,7 +400,7 @@
             <td>
               <div class="mobile-list-field-name">
                 <ul>
-                ${_.escape(_.get(list_settings, `post_type_settings.fields[${field_key}].name`, field_key))}
+                ${window.lodash.escape(window.lodash.get(list_settings, `post_type_settings.fields[${field_key}].name`, field_key))}
                 </ul>
               </div>
               <div class="mobile-list-field-value">
@@ -423,7 +423,7 @@
       })
 
       if ( mobile ){
-        table_rows += `<tr data-link="${_.escape(record.permalink)}">
+        table_rows += `<tr data-link="${window.lodash.escape(record.permalink)}">
           <td class="bulk_edit_checkbox">
               <input class="bulk_edit_checkbox" type="checkbox" name="bulk_edit_id" value="${record.ID}">
           </td>
@@ -432,13 +432,13 @@
                 ${index+1}.
               </div>
               <div class="mobile-list-field-value">
-                  <a href="${ _.escape( record.permalink ) }">${ _.escape( record.post_title ) }</a>
+                  <a href="${ window.lodash.escape( record.permalink ) }">${ window.lodash.escape( record.post_title ) }</a>
               </div>
           </td>
           ${ row_fields_html }
         `
       } else {
-        table_rows += `<tr class="dnd-moved" data-link="${_.escape(record.permalink)}">
+        table_rows += `<tr class="dnd-moved" data-link="${window.lodash.escape(record.permalink)}">
           <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
           <td style="white-space: nowrap" >${index+1}.</td>
           ${ row_fields_html }
@@ -446,7 +446,7 @@
       }
     })
     if ( records.length === 0 ){
-      table_rows = `<tr><td colspan="10">${_.escape(list_settings.translations.empty_list)}</td></tr>`
+      table_rows = `<tr><td colspan="10">${window.lodash.escape(list_settings.translations.empty_list)}</td></tr>`
     }
 
     let table_html = `
@@ -468,14 +468,14 @@
     }
 
     window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
-    if ( get_records_promise && _.get(get_records_promise, "readyState") !== 4){
+    if ( get_records_promise && window.lodash.get(get_records_promise, "readyState") !== 4){
       get_records_promise.abort()
     }
     query.fields_to_return = fields_to_show_in_table
     get_records_promise = window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
     get_records_promise.then(response=>{
       if (offset){
-        items = _.unionBy(items, response.posts || [], "ID")
+        items = window.lodash.unionBy(items, response.posts || [], "ID")
       } else  {
         items = response.posts || []
       }
@@ -491,7 +491,7 @@
       loading_spinner.removeClass("active")
     }).catch(err => {
       loading_spinner.removeClass("active")
-      if ( _.get( err, "statusText" ) !== "abort" ) {
+      if ( window.lodash.get( err, "statusText" ) !== "abort" ) {
         console.error(err)
       }
     })
@@ -511,19 +511,19 @@
   function add_custom_filter(name, type, query, labels, load_records = true) {
     query = query || current_filter.query
     let ID = new Date().getTime() / 1000;
-    current_filter = {ID, type, name: _.escape( name ), query:JSON.parse(JSON.stringify(query)), labels:labels}
+    current_filter = {ID, type, name: window.lodash.escape( name ), query:JSON.parse(JSON.stringify(query)), labels:labels}
     custom_filters.push(JSON.parse(JSON.stringify(current_filter)))
 
-    let save_filter = $(`<a style="float:right" data-filter="${_.escape( ID.toString() )}">
-        ${_.escape( list_settings.translations.save )}
+    let save_filter = $(`<a style="float:right" data-filter="${window.lodash.escape( ID.toString() )}">
+        ${window.lodash.escape( list_settings.translations.save )}
     </a>`).on("click", function () {
       $("#filter-name").val(name)
       $('#save-filter-modal').foundation('open');
       filter_to_save = ID;
     })
-    let filterRow = $(`<label class='list-view ${_.escape( ID.toString() )}'>`).append(`
-      <input type="radio" name="view" value="custom_filter" data-id="${_.escape( ID.toString() )}" class="js-list-view" checked autocomplete="off">
-        ${_.escape( name )}
+    let filterRow = $(`<label class='list-view ${window.lodash.escape( ID.toString() )}'>`).append(`
+      <input type="radio" name="view" value="custom_filter" data-id="${window.lodash.escape( ID.toString() )}" class="js-list-view" checked autocomplete="off">
+        ${window.lodash.escape( name )}
     `).append(save_filter)
     $(".custom-filters").append(filterRow)
     if ( load_records ){
@@ -532,15 +532,15 @@
   }
   let get_custom_filter_search_query = ()=>{
     let search_query = []
-    let fields_filtered = _.uniq(new_filter_labels.map(f=>f.field))
+    let fields_filtered = window.lodash.uniq(new_filter_labels.map(f=>f.field))
     fields_filtered.forEach(field=>{
-      let type = _.get(list_settings, `post_type_settings.fields.${field}.type` )
+      let type = window.lodash.get(list_settings, `post_type_settings.fields.${field}.type` )
       if ( type === "connection" || type === "user_select" ){
-        search_query.push( { [field] : _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
+        search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
       }  if ( type === "multi_select" ){
-        search_query.push( {[field] : _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
+        search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
       } if ( type === "location" ){
-        search_query.push({ [field] : _.map( _.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
+        search_query.push({ [field] : window.lodash.map( window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
       } else if ( type === "date" ) {
         let date = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
@@ -578,7 +578,7 @@
   }
   $("#confirm-filter-records").on("click", function () {
     let search_query = get_custom_filter_search_query()
-    let filterName = _.escape( $('#new-filter-name').val() )
+    let filterName = window.lodash.escape( $('#new-filter-name').val() )
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
 
@@ -593,9 +593,9 @@
       }
 
       let source_data =  { data: [] }
-      let field_options = _.get(list_settings, `post_type_settings.fields.${field}.default`, {})
+      let field_options = window.lodash.get(list_settings, `post_type_settings.fields.${field}.default`, {})
       if ( Object.keys(field_options).length > 0 ){
-        _.forOwn(field_options, (val, key)=>{
+        window.lodash.forOwn(field_options, (val, key)=>{
           if ( !val.deleted ){
             source_data.data.push({
               key: key,
@@ -620,7 +620,7 @@
               callback: {
                 done: function (data) {
                   return (data || []).map(tag => {
-                    let label = _.get(field_options, tag + ".label", tag)
+                    let label = window.lodash.get(field_options, tag + ".label", tag)
                     return {value: label, key: tag}
                   })
                 }
@@ -635,7 +635,7 @@
         maxItem: 20,
         searchOnFocus: true,
         template: function (query, item) {
-          return `<span>${_.escape(item.value)}</span>`
+          return `<span>${window.lodash.escape(item.value)}</span>`
         },
         source: source_data,
         display: "value",
@@ -647,14 +647,14 @@
           callback: {
             onCancel: function (node, item) {
               $(`.current-filter[data-id="${item.key}"].${field}`).remove()
-              _.pullAllBy(new_filter_labels, [{id:item.key}], "id")
+              window.lodash.pullAllBy(new_filter_labels, [{id:item.key}], "id")
             }
           }
         },
         callback: {
           onClick: function(node, a, item){
-            let name = _.get(list_settings, `post_type_settings.fields.${field}.name`, field)
-            selected_filters.append(`<span class="current-filter ${_.escape( field )}" data-id="${_.escape( item.key )}">${_.escape( name )}:${_.escape( item.value )}</span>`)
+            let name = window.lodash.get(list_settings, `post_type_settings.fields.${field}.name`, field)
+            selected_filters.append(`<span class="current-filter ${window.lodash.escape( field )}" data-id="${window.lodash.escape( item.key )}">${window.lodash.escape( name )}:${window.lodash.escape( item.value )}</span>`)
             new_filter_labels.push({id:item.key, name:`${name}: ${item.value}`, field})
           },
           onResult: function (node, query, result, resultCount) {
@@ -672,7 +672,7 @@
   let load_post_type_typeaheads = ()=>{
     $(".typeahead__query [data-type='connection']").each((key, el)=>{
       let field_key = $(el).data('field')
-      let post_type = _.get( list_settings, `post_type_settings.fields.${field_key}.post_type`, field_key)
+      let post_type = window.lodash.get( list_settings, `post_type_settings.fields.${field_key}.post_type`, field_key)
       if (!window.Typeahead[`.js-typeahead-${field_key}`]) {
         $.typeahead({
           input: `.js-typeahead-${field_key}`,
@@ -681,7 +681,7 @@
           searchOnFocus: true,
           maxItem: 20,
           template: function (query, item) {
-            return `<span dir="auto">${_.escape(item.name)} (#${_.escape( item.ID )})</span>`
+            return `<span dir="auto">${window.lodash.escape(item.name)} (#${window.lodash.escape( item.ID )})</span>`
           },
           source: TYPEAHEADS.typeaheadPostsSource(post_type),
           display: "name",
@@ -693,7 +693,7 @@
             callback: {
               onCancel: function (node, item) {
                 $(`.current-filter[data-id="${item.ID}"].${field_key}`).remove()
-                _.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
+                window.lodash.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
               }
             }
           },
@@ -707,7 +707,7 @@
             },
             onClick: function (node, a, item) {
               new_filter_labels.push({id: item.ID, name: item.name, field: field_key})
-              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
+              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( item.name )}</span>`)
             }
           }
         });
@@ -726,7 +726,7 @@
           searchOnFocus: true,
           maxItem: 20,
           template: function (query, item) {
-            return `<span dir="auto">${_.escape(item.name)} (#${_.escape( item.ID )})</span>`
+            return `<span dir="auto">${window.lodash.escape(item.name)} (#${window.lodash.escape( item.ID )})</span>`
           },
           source: TYPEAHEADS.typeaheadUserSource(),
           display: "name",
@@ -738,7 +738,7 @@
             callback: {
               onCancel: function (node, item) {
                 $(`.current-filter[data-id="${item.ID}"].${field_key}`).remove()
-                _.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
+                window.lodash.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
               }
             }
           },
@@ -752,7 +752,7 @@
             },
             onClick: function (node, a, item) {
               new_filter_labels.push({id: item.ID, name: item.name, field: field_key})
-              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
+              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( item.name )}</span>`)
             }
           }
         });
@@ -778,8 +778,8 @@
         dropdownFilter: [{
           key: 'group',
           value: 'used',
-          template: _.escape(window.wpApiShare.translations.used_locations),
-          all: _.escape(window.wpApiShare.translations.all_locations)
+          template: window.lodash.escape(window.wpApiShare.translations.used_locations),
+          all: window.lodash.escape(window.wpApiShare.translations.all_locations)
         }],
         source: {
           used: {
@@ -789,7 +789,7 @@
               data: {
                 s: "{{query}}",
                 filter: function () {
-                  return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                  return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
                 }
               },
               beforeSend: function (xhr) {
@@ -815,7 +815,7 @@
           callback: {
             onCancel: function (node, item) {
               $(`.current-filter[data-id="${item.ID}"].location_grid`).remove()
-              _.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
+              window.lodash.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
             }
           }
         },
@@ -835,9 +835,9 @@
             $('#location_grid-result-container').html("");
           },
           onClick: function (node, a, item) {
-            let name = _.get(list_settings, `post_type_settings.fields.location_grid.name`, 'location_grid')
+            let name = window.lodash.get(list_settings, `post_type_settings.fields.location_grid.name`, 'location_grid')
             new_filter_labels.push({id: item.ID, name: `${name}: ${item.name}`, field: "location_grid"})
-            selected_filters.append(`<span class="current-filter location_grid" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
+            selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( name )}:${window.lodash.escape( item.name )}</span>`)
           }
         }
       });
@@ -882,8 +882,8 @@
       let connectionTypeKeys = list_settings.post_type_settings.connection_types
       connectionTypeKeys.push("location_grid")
       new_filter_labels.forEach(label=>{
-        selected_filters.append(`<span class="current-filter ${_.escape( label.field )}" data-id="${_.escape( label.id )}">${_.escape( label.name )}</span>`)
-        let type = _.get(list_settings, `post_type_settings.fields.${label.field}.type`)
+        selected_filters.append(`<span class="current-filter ${window.lodash.escape( label.field )}" data-id="${window.lodash.escape( label.id )}">${window.lodash.escape( label.name )}</span>`)
+        let type = window.lodash.get(list_settings, `post_type_settings.fields.${label.field}.type`)
         if ( type === "key_select" || type === "boolean" ){
           $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
         } else if ( type === "date" ){
@@ -908,7 +908,7 @@
   $('#save-filter-edits').on('click', function () {
     let search_query = get_custom_filter_search_query()
     let filter_id = $('#save-filter-edits').data("filter-id")
-    let filter = _.find(list_settings.filters.filters, {ID:filter_id})
+    let filter = window.lodash.find(list_settings.filters.filters, {ID:filter_id})
     filter.name = $('#new-filter-name').val()
     $(`.filter-list-name[data-filter="${filter_id}"]`).text(filter.name)
     filter.query = search_query
@@ -931,14 +931,14 @@
     let field_key = $(this).data('field');
     let option_id = $(this).val()
     if ($(this).is(":checked")){
-      let field_options = _.get( list_settings, `post_type_settings.fields.${field_key}.default` )
+      let field_options = window.lodash.get( list_settings, `post_type_settings.fields.${field_key}.default` )
       let option_name = field_options[option_id]["label"]
-      let name = _.get(list_settings, `post_type_settings.fields.${field_key}.name`, field_key)
+      let name = window.lodash.get(list_settings, `post_type_settings.fields.${field_key}.name`, field_key)
       new_filter_labels.push({id:$(this).val(), name:`${name}: ${option_name}`, field:field_key})
-      selected_filters.append(`<span class="current-filter ${_.escape( field_key )}" data-id="${_.escape( option_id )}">${_.escape( name )}:${_.escape( option_name )}</span>`)
+      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( name )}:${window.lodash.escape( option_name )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
-      _.pullAllBy(new_filter_labels, [{id:option_id}], "id")
+      window.lodash.pullAllBy(new_filter_labels, [{id:option_id}], "id")
     }
   })
   //watch bool checkboxes
@@ -947,12 +947,12 @@
     let option_id = $(this).val()
     let label = $(this).data('label');
     if ($(this).is(":checked")){
-      let field = _.get( list_settings, `post_type_settings.fields.${field_key}` )
+      let field = window.lodash.get( list_settings, `post_type_settings.fields.${field_key}` )
       new_filter_labels.push({id:$(this).val(), name:`${field.name}: ${label}`, field:field_key})
-      selected_filters.append(`<span class="current-filter ${_.escape( field_key )}" data-id="${_.escape( option_id )}">${_.escape( field.name )}:${_.escape( label )}</span>`)
+      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( field.name )}:${window.lodash.escape( label )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
-      _.pullAllBy(new_filter_labels, [{id:option_id}], "id")
+      window.lodash.pullAllBy(new_filter_labels, [{id:option_id}], "id")
     }
   })
 
@@ -963,9 +963,9 @@
       let id = $(this).data('field')
       let delimiter = $(this).data('delimit')
       let delimiter_label = list_settings.translations[`range_${delimiter}`]
-      let field_name = _.get( list_settings, `post_type_settings.fields.${id}.name` , id)
+      let field_name = window.lodash.get( list_settings, `post_type_settings.fields.${id}.name` , id)
       //remove existing filters
-      _.pullAllBy(new_filter_labels, [{id:`${id}_${delimiter}`}], "id")
+      window.lodash.pullAllBy(new_filter_labels, [{id:`${id}_${delimiter}`}], "id")
       $(`.current-filter[data-id="${id}_${delimiter}"]`).remove()
       //add new filters
       new_filter_labels.push({id:`${id}_${delimiter}`, name:`${field_name} ${delimiter_label}: ${date}`, field:id, date:date})
@@ -983,15 +983,15 @@
   $('#filter-modal .clear-date-picker').on('click', function () {
     let id = $(this).data('for')
     $(`#filter-modal #${id}`).datepicker('setDate', null)
-    _.pullAllBy(new_filter_labels, [{id:`${id}`}], "id")
+    window.lodash.pullAllBy(new_filter_labels, [{id:`${id}`}], "id")
     $(`.current-filter[data-id="${id}"]`).remove()
   })
 
   //save the filter in the user meta
   $(`#confirm-filter-save`).on('click', function () {
     let filterName = $('#filter-name').val()
-    let filter = _.find(custom_filters, {ID:filter_to_save})
-    filter.name = _.escape( filterName )
+    let filter = window.lodash.find(custom_filters, {ID:filter_to_save})
+    filter.name = window.lodash.escape( filterName )
     filter.tab = 'custom'
     if (filter.query){
       list_settings.filters.filters.push(filter)
@@ -1012,17 +1012,17 @@
   //delete a filter
   $(`#confirm-filter-delete`).on('click', function () {
 
-    let filter = _.find(list_settings.filters.filters, {ID:filter_to_delete})
+    let filter = window.lodash.find(list_settings.filters.filters, {ID:filter_to_delete})
     if ( filter && ( filter.visible === true || filter.visible === '1' ) ){
       filter.visible = false;
       API.save_filters(list_settings.post_type,filter).then(()=>{
-        _.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
+        window.lodash.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         $(`#list-filter-tabs [data-id='custom'] a`).click()
       }).catch(err => { console.error(err) })
     } else {
       API.delete_filter(list_settings.post_type, filter_to_delete).then(()=>{
-        _.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
+        window.lodash.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         check_first_filter()
         get_records_for_current_filter()
@@ -1114,7 +1114,7 @@
   })
 
   $("#search-mobile").on("click", function () {
-    let searchText = _.escape( $("#search-query-mobile").val() )
+    let searchText = window.lodash.escape( $("#search-query-mobile").val() )
     let fieldsToSearch = [];
     $('#advanced_search_picker_mobile ul li input:checked').each(function( index ) {
       fieldsToSearch.push($( this ).val());
@@ -1360,18 +1360,18 @@
       return `<div class="assigned-to-row" dir="auto">
         <span>
             <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-            ${_.escape( item.name )}
+            ${window.lodash.escape( item.name )}
         </span>
-        ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
+        ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
         ${ item.update_needed && item.update_needed > 0 ? `<span>
-          <img style="height: 12px;" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-          <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
+          <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+          <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
         </span>` : '' }
       </div>`
     },
     dynamic: true,
     hint: true,
-    emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
+    emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
     callback: {
       onClick: function(node, a, item){
         node.data('bulk_key_assigned_to', `user-${item.ID}`);
@@ -1444,7 +1444,7 @@
     let field_id = $(el).attr('id').replace('_connection', '').replace('bulk_', '');
     let element_id =  $(el).attr('id').replace('_connection', '');
     if (element_id !== "bulk_share") {
-      let listing_post_type = _.get(window.list_settings.post_type_settings.fields[field_id], "post_type", 'contacts')
+      let listing_post_type = window.lodash.get(window.list_settings.post_type_settings.fields[field_id], "post_type", 'contacts')
       $.typeahead({
         input: `.js-typeahead-${element_id}`,
         minLength: 0,
@@ -1513,8 +1513,8 @@
       dropdownFilter: [{
         key: 'group',
         value: 'focus',
-        template: _.escape(window.wpApiShare.translations.regions_of_focus),
-        all: _.escape(window.wpApiShare.translations.all_locations),
+        template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
+        all: window.lodash.escape(window.wpApiShare.translations.all_locations),
       }],
       source: {
         focus: {
@@ -1524,7 +1524,7 @@
             data: {
               s: "{{query}}",
               filter: function () {
-                // return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                // return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
               }
             },
             beforeSend: function (xhr) {
@@ -1559,11 +1559,11 @@
           node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
         },
         onReady() {
-          this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+          this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
           this.container
           .removeClass("filter")
           .find("." + this.options.selector.filterButton)
-          .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+          .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals.location_grid

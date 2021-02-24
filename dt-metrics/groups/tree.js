@@ -14,14 +14,14 @@ jQuery(document).ready(function() {
     let translations = dtMetricsProject.data.translations
 
     chart.empty().html(`
-          <span class="section-header">${_.escape(translations.title_group_tree)}</span><hr>
+          <span class="section-header">${window.lodash.escape(translations.title_group_tree)}</span><hr>
            <div class="grid-x grid-padding-x">
            <div class="cell">
                <span>
-                  <button class="button hollow toggle-singles" id="highlight-active" onclick="highlight_active();">${_.escape(translations.highlight_active)/*Highlight Active*/}</button>
+                  <button class="button hollow toggle-singles" id="highlight-active" onclick="highlight_active();">${window.lodash.escape(translations.highlight_active)/*Highlight Active*/}</button>
                </span>
               <span>
-                  <button class="button hollow toggle-singles" id="highlight-churches" onclick="highlight_churches();">${_.escape(translations.highlight_churches)/*Highlight Churches*/}</button>
+                  <button class="button hollow toggle-singles" id="highlight-churches" onclick="highlight_churches();">${window.lodash.escape(translations.highlight_churches)/*Highlight Churches*/}</button>
               </span>
           </div>
               <div class="cell">
@@ -49,25 +49,25 @@ function open_modal_details( id ) {
 
   modal.empty().html(spinner).foundation('open')
 
-  makeRequest('GET', 'groups/'+_.escape( id ), null, 'dt-posts/v2/' )
+  makeRequest('GET', 'groups/'+window.lodash.escape( id ), null, 'dt-posts/v2/' )
     .then(data => {
       // console.log(data)
       if( data ) {
-        let list = '<dt>'+_.escape( translations.members )+'</dt><ul>'
-        jQuery.each(data.members, function(i, v)  { list += `<li><a href="${_.escape(window.wpApiShare.site_url)}/contacts/${_.escape( data.members[i].ID )}">${_.escape( data.members[i].post_title )}</a></li>` } )
+        let list = '<dt>'+window.lodash.escape( translations.members )+'</dt><ul>'
+        jQuery.each(data.members, function(i, v)  { list += `<li><a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape( data.members[i].ID )}">${window.lodash.escape( data.members[i].post_title )}</a></li>` } )
         list += '</ul>'
         modal.empty().append(`
           <div class="grid-x">
-              <div class="cell"><span class="section-header">${_.escape( data.title )}</span><hr style="max-width:100%;"></div>
+              <div class="cell"><span class="section-header">${window.lodash.escape( data.title )}</span><hr style="max-width:100%;"></div>
               <div class="cell">
                   <dl>
-                      <dd><strong>${_.escape( translations.status ) /*Status*/}: </strong>${_.escape( data.group_status.label )}</dd>
-                      <dd><strong>${_.escape( translations.assigned_to )/*Assigned to*/}: </strong>${_.escape( data.assigned_to['display'] )}</dd>
-                      <dd><strong>${_.escape( translations.total_members ) /*Total Members*/}: </strong>${_.escape( data.member_count )}</dd>
+                      <dd><strong>${window.lodash.escape( translations.status ) /*Status*/}: </strong>${window.lodash.escape( data.group_status.label )}</dd>
+                      <dd><strong>${window.lodash.escape( translations.assigned_to )/*Assigned to*/}: </strong>${window.lodash.escape( data.assigned_to['display'] )}</dd>
+                      <dd><strong>${window.lodash.escape( translations.total_members ) /*Total Members*/}: </strong>${window.lodash.escape( data.member_count )}</dd>
                       ${list}
                   </dl>
               </div>
-              <div class="cell center"><hr><a href="${_.escape(window.wpApiShare.site_url)}/groups/${_.escape( id )}">${translations.view_group /*View Group*/}</a></div>
+              <div class="cell center"><hr><a href="${window.lodash.escape(window.wpApiShare.site_url)}/groups/${window.lodash.escape( id )}">${translations.view_group /*View Group*/}</a></div>
           </div>
           <button class="close-button" data-close aria-label="Close modal" type="button">
               <span aria-hidden="true">&times;</span>

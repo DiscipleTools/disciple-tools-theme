@@ -110,7 +110,7 @@ jQuery(document).ready(function($) {
       window.user_name = $(this).text()
       $(this).parent().prepend(`
           <div class="input-group" id="user-name-input-wrapper">
-              <input type="text" class="input-group-field" style="max-width: 50%;" id="user-name-input" value="${_.escape(window.user_name)}" />
+              <input type="text" class="input-group-field" style="max-width: 50%;" id="user-name-input" value="${window.lodash.escape(window.user_name)}" />
               <div class="input-group-button">
                   <input type="button" class="button hollow" id="reset-user-name" value="Reset">
                   <input type="button" class="button" id="update-user-name" value="Save">
@@ -122,7 +122,7 @@ jQuery(document).ready(function($) {
         $('#user-name-input-wrapper').hide()
       })
       $('#update-user-name').on('click', function(){
-        let new_name = _.escape($('#user-name-input').val())
+        let new_name = window.lodash.escape($('#user-name-input').val())
         if ( window.user_name !== new_name ) {
           update_user(user_id, 'update_nickname', new_name )
             .done(function(data) {
@@ -216,9 +216,9 @@ jQuery(document).ready(function($) {
       let rows = ``
       list.forEach(range=>{
         rows += `<tr>
-        <td>${_.escape(range.start_date)}</td>
-        <td>${_.escape(range.end_date)}</td>
-        <td><button class="button remove_dates_unavailable" data-id="${_.escape(range.id)}">${ _.escape( dt_user_management_localized.translations.remove ) }</button></td>
+        <td>${window.lodash.escape(range.start_date)}</td>
+        <td>${window.lodash.escape(range.end_date)}</td>
+        <td><button class="button remove_dates_unavailable" data-id="${window.lodash.escape(range.id)}">${ window.lodash.escape( dt_user_management_localized.translations.remove ) }</button></td>
       </tr>`
       })
       date_unavailable_table.html(rows)
@@ -245,8 +245,8 @@ jQuery(document).ready(function($) {
           dropdownFilter: [{
             key: 'group',
             value: 'focus',
-            template: _.escape(window.wpApiShare.translations.regions_of_focus),
-            all: _.escape(window.wpApiShare.translations.all_locations),
+            template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
+            all: window.lodash.escape(window.wpApiShare.translations.all_locations),
           }],
           source: {
             focus: {
@@ -256,7 +256,7 @@ jQuery(document).ready(function($) {
                 data: {
                   s: "{{query}}",
                   filter: function () {
-                    return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                    return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
                   }
                 },
                 beforeSend: function (xhr) {
@@ -291,11 +291,11 @@ jQuery(document).ready(function($) {
               update_user( window.current_user_lookup, 'add_location', item.ID)
             },
             onReady(){
-              this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+              this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
               this.container
                 .removeClass("filter")
                 .find("." + this.options.selector.filterButton)
-                .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+                .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
             },
             onResult: function (node, query, result, resultCount) {
               resultCount = typeaheadTotals.location_grid
@@ -353,22 +353,22 @@ jQuery(document).ready(function($) {
     makeRequest( "get", `user?user=${user_id}&section=details`, null , 'user-management/v1/')
       .done(details=>{
         if ( window.current_user_lookup === user_id ) {
-          $("#user_name").html(_.escape(details.display_name))
+          $("#user_name").html(window.lodash.escape(details.display_name))
 
-          $('#status-select').val(_.escape(details.user_status))
+          $('#status-select').val(window.lodash.escape(details.user_status))
           if ( details.user_status !== "0" ){
           }
-          $('#workload-select').val(_.escape(details.workload_status))
+          $('#workload-select').val(window.lodash.escape(details.workload_status))
 
           //stats
-          $('#update_needed_count').html(_.escape(details.update_needed["total"]))
-          $('#needs_accepted_count').html(_.escape(details.needs_accepted["total"]))
-          $('#active_contacts').html(_.escape(details.active_contacts))
-          $('#unread_notifications').html(_.escape(details.unread_notifications))
-          $('#assigned_this_month').text(_.escape(details.assigned_counts.this_month))
-          $('#assigned_last_month').text(_.escape(details.assigned_counts.last_month))
-          $('#assigned_this_year').text(_.escape(details.assigned_counts.this_year))
-          $('#assigned_all_time').text(_.escape(details.assigned_counts.all_time))
+          $('#update_needed_count').html(window.lodash.escape(details.update_needed["total"]))
+          $('#needs_accepted_count').html(window.lodash.escape(details.needs_accepted["total"]))
+          $('#active_contacts').html(window.lodash.escape(details.active_contacts))
+          $('#unread_notifications').html(window.lodash.escape(details.unread_notifications))
+          $('#assigned_this_month').text(window.lodash.escape(details.assigned_counts.this_month))
+          $('#assigned_last_month').text(window.lodash.escape(details.assigned_counts.last_month))
+          $('#assigned_this_year').text(window.lodash.escape(details.assigned_counts.this_year))
+          $('#assigned_all_time').text(window.lodash.escape(details.assigned_counts.all_time))
 
           status_pie_chart( details.contact_statuses )
           setup_user_roles( details );
@@ -381,8 +381,8 @@ jQuery(document).ready(function($) {
           let update_needed_list_html = ``;
           (details.update_needed.contacts||[]).forEach(contact => {
             update_needed_list_html += `<li>
-            <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
-                ${_.escape(contact.post_title)}:  ${_.escape(contact.last_modified_msg)}
+            <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
+                ${window.lodash.escape(contact.post_title)}:  ${window.lodash.escape(contact.last_modified_msg)}
             </a>
           </li>`
           })
@@ -447,7 +447,7 @@ jQuery(document).ready(function($) {
             if ( a.object_note !== '' ) {
               activity_html += `<div>
                 <strong>${moment.unix(a.hist_time).format('YYYY-MM-DD')}</strong>
-                ${_.escape(a.object_note)}
+                ${window.lodash.escape(a.object_note)}
               </div>`
             }
           })
@@ -480,8 +480,8 @@ jQuery(document).ready(function($) {
           response.unaccepted_contacts.forEach(contact => {
             let days = contact.time / 60 / 60 / 24;
             unaccepted_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
-              ${_.escape(contact.name)} has be waiting to be accepted for ${days.toFixed(1)} days
+          <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
+              ${window.lodash.escape(contact.name)} has be waiting to be accepted for ${days.toFixed(1)} days
               </a> </li>`
           })
           $('#unaccepted_contacts').html(unaccepted_contacts_html)
@@ -510,8 +510,8 @@ jQuery(document).ready(function($) {
               .replace('%2$s', moment.unix(contact.date_accepted).format("MMM Do"))
               .replace('%3$s', days.toFixed(1))
             accepted_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
-              ${_.escape(accept_line)}
+          <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
+              ${window.lodash.escape(accept_line)}
           </a> </li>`
           })
           $('#contact_accepts').html(accepted_contacts_html)
@@ -535,12 +535,12 @@ jQuery(document).ready(function($) {
           let unattemped_contacts_html = ``
           response.unattempted_contacts.forEach(contact => {
             let days = contact.time / 60 / 60 / 24;
-            let line = _.escape(dt_user_management_localized.translations.no_contact_attempt_time)
-              .replace('%1$s', _.escape(contact.name))
+            let line = window.lodash.escape(dt_user_management_localized.translations.no_contact_attempt_time)
+              .replace('%1$s', window.lodash.escape(contact.name))
               .replace('%2$s', days.toFixed(1))
             unattemped_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
-              ${_.escape(line)}
+          <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
+              ${window.lodash.escape(line)}
           </a> </li>`
           })
           $('#unattempted_contacts').html(unattemped_contacts_html)
@@ -564,13 +564,13 @@ jQuery(document).ready(function($) {
           response.contact_attempts.forEach(contact => {
             let days = contact.time / 60 / 60 / 24;
             avg_contact_attempt += days
-            let line = _.escape(dt_user_management_localized.translations.contact_attempt_time)
-              .replace('%1$s', _.escape(contact.name))
+            let line = window.lodash.escape(dt_user_management_localized.translations.contact_attempt_time)
+              .replace('%1$s', window.lodash.escape(contact.name))
               .replace('%2$s', moment.unix(contact.date_attempted).format("MMM Do"))
               .replace('%3$s', days.toFixed(1))
             attempted_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
-              ${_.escape(line)}
+          <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
+              ${window.lodash.escape(line)}
           </a> </li>`
           })
           $('#contact_attempts').html(attempted_contacts_html)
@@ -587,7 +587,7 @@ jQuery(document).ready(function($) {
     function setup_user_roles(user_data){
       $('#user_roles_list input').prop('checked', false);
       if ( user_data.roles ){
-        _.forOwn( user_data.roles, role=>{
+        window.lodash.forOwn( user_data.roles, role=>{
           $(`#user_roles_list [value="${role}"]`).prop('checked', true)
           if ( role === "partner" || role === "marketer" ){
             $(`#allowed_sources_options`).show()
@@ -774,15 +774,15 @@ jQuery(document).ready(function($) {
     chart.empty().html(`
 
       <div class="grid-x">
-        <div id="page-title" class="cell"><h3>${ _.escape( dt_user_management_localized.translations.add_new_user ) }</h3></div>
+        <div id="page-title" class="cell"><h3>${ window.lodash.escape( dt_user_management_localized.translations.add_new_user ) }</h3></div>
         <div class="cell medium-6">
           <form data-abide id="new-user-form">
             <div data-abide-error class="alert callout" style="display: none;">
-              <p><i class="fi-alert"></i> ${ _.escape( dt_user_management_localized.translations.there_are_some_errors ) }</p>
+              <p><i class="fi-alert"></i> ${ window.lodash.escape( dt_user_management_localized.translations.there_are_some_errors ) }</p>
             </div>
 
             <dl>
-              <dt>${ _.escape( dt_user_management_localized.translations.contact_to_user ) }</dt>
+              <dt>${ window.lodash.escape( dt_user_management_localized.translations.contact_to_user ) }</dt>
               <dd>
                 <div class="subassigned details">
                     <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
@@ -791,7 +791,7 @@ jQuery(document).ready(function($) {
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-subassigned input-height"
-                                           name="subassigned[query]" placeholder="${ _.escape( dt_user_management_localized.translations.search ) }"
+                                           name="subassigned[query]" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.search ) }"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -803,13 +803,13 @@ jQuery(document).ready(function($) {
             <div id="contact-result"></div>
 
             <dl>
-              <dt>${ _.escape( dt_user_management_localized.translations.nickname ) }</dt>
-              <dd><input type="text" class="input" id="name" placeholder="${ _.escape( dt_user_management_localized.translations.nickname ) }" required /> </dd>
-              <dt>${ _.escape( dt_user_management_localized.translations.email ) }</dt>
-              <dd><input type="email" class="input" id="email" placeholder="${ _.escape( dt_user_management_localized.translations.email ) }" required /> </dd>
+              <dt>${ window.lodash.escape( dt_user_management_localized.translations.nickname ) }</dt>
+              <dd><input type="text" class="input" id="name" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.nickname ) }" required /> </dd>
+              <dt>${ window.lodash.escape( dt_user_management_localized.translations.email ) }</dt>
+              <dd><input type="email" class="input" id="email" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.email ) }" required /> </dd>
             </dl>
 
-            <button type="submit" class="submit button" id="create-user">${ _.escape( dt_user_management_localized.translations.create_user ) }</button> <span class="spinner"></span>
+            <button type="submit" class="submit button" id="create-user">${ window.lodash.escape( dt_user_management_localized.translations.create_user ) }</button> <span class="spinner"></span>
           </form>
 
         </div>
@@ -840,8 +840,8 @@ jQuery(document).ready(function($) {
 
         makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact })
           .done(response=>{
-            result_div.html(`<a href="${_.escape(window.wpApiShare.site_url)}/user-management/user/${_.escape(response)}">
-              ${ _.escape( dt_user_management_localized.translations.view_new_user ) }</a>
+            result_div.html(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response)}">
+              ${ window.lodash.escape( dt_user_management_localized.translations.view_new_user ) }</a>
             `)
             jQuery('#new-user-form').empty()
           })
@@ -851,10 +851,10 @@ jQuery(document).ready(function($) {
               submit_button.prop('disabled', false)
 
               if ( err.responseJSON.code === 'email_exists' ) {
-                result_div.html(`${ _.escape( dt_user_management_localized.translations.email_already_in_system ) }`)
+                result_div.html(`${ window.lodash.escape( dt_user_management_localized.translations.email_already_in_system ) }`)
               }
               else if ( err.responseJSON.code === 'username_exists' ) {
-                result_div.html(`${ _.escape( dt_user_management_localized.translations.username_in_system ) }`)
+                result_div.html(`${ window.lodash.escape( dt_user_management_localized.translations.username_in_system ) }`)
               }
 
             } else {
@@ -886,13 +886,13 @@ jQuery(document).ready(function($) {
             makeRequest('GET', 'contacts/'+item.ID, null, 'dt-posts/v2/' )
               .done(function(response){
                 if ( item.user ) {
-                  jQuery('#contact-result').html(`${_.escape(dt_user_management_localized.translations.already_user)} <a href="${_.escape(window.wpApiShare.site_url)}/user-management/user/${_.escape(response.corresponds_to_user)}">${_.escape(dt_user_management_localized.translations.view_user)}</a>`)
+                  jQuery('#contact-result').html(`${window.lodash.escape(dt_user_management_localized.translations.already_user)} <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${window.lodash.escape(dt_user_management_localized.translations.view_user)}</a>`)
                 } else {
                   window.contact_record = response
                   submit_button.prop('disabled', false)
-                  jQuery('#name').val( _.escape(response.title) )
+                  jQuery('#name').val( window.lodash.escape(response.title) )
                   if ( response.contact_email[0] !== 'undefined' ) {
-                    jQuery('#email').val( _.escape(response.contact_email[0].value) )
+                    jQuery('#email').val( window.lodash.escape(response.contact_email[0].value) )
                   }
 
                 }
