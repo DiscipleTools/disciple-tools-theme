@@ -574,6 +574,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
     /**
      * Returns a completely unique 64 bit hashed key
+     * @since 1.1
      */
     if ( ! function_exists( 'dt_create_unique_key' ) ) {
         function dt_create_unique_key() : string {

@@ -48,7 +48,7 @@ class Disciple_Tools_Reports
                 'post_type' => null,
                 // 'type' => null, // required
                 'subtype' => null,
-                'payload' => [],
+                'payload' => null,
                 'value' => 1,
                 'lng' => null,
                 'lat' => null,
