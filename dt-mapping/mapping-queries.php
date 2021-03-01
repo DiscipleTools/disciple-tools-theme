@@ -378,6 +378,7 @@ class Disciple_Tools_Mapping_Queries {
               g.admin5_grid_id,
               ga5.alt_name as admin5_name,
               g.level,
+              g.level_name,
               g.is_custom_location
             FROM $wpdb->dt_location_grid as g
             LEFT JOIN $wpdb->dt_location_grid as gc ON g.admin0_grid_id=gc.grid_id
