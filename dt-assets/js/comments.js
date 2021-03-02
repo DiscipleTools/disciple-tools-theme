@@ -318,7 +318,7 @@ jQuery(document).ready(function($) {
     let array = []
 
     displayed.forEach(d=>{
-      baptismDateRegex = /\{(\d+)\}+/;
+      let baptismDateRegex = /\{(\d+)\}+/;
 
       if (baptismDateRegex.test(d.object_note)) {
         d.object_note = d.object_note.replace(baptismDateRegex, baptismTimestamptoDate);

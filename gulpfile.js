@@ -121,10 +121,10 @@ gulp.task('scripts', function () {
 
 //Find and replace lodash _. notation with window.lodash 'dt-assets/**/*.js'
 gulp.task('lodash', function(){
-  return gulp.src(['dt-assets/js/*.js'])
+  return gulp.src(['dt-assets/js/*.js', '!dt-assets/js/modernizr-custom.js'])
      .pipe(replace('_.', 'window.lodash.'))
      .pipe(plugin.plumber(function (error) {
-        log.error(error.message);
+        log.error(error);
         this.emit('end');
       }))
       .pipe(plugin.sourcemaps.init())

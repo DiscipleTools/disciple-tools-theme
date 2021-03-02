@@ -65,7 +65,7 @@ function dt_theme_register_style( string $handle, string $rel_src, array $deps =
 function dt_site_scripts() {
 
     dt_theme_enqueue_script( 'modernizr-custom', 'dt-assets/js/modernizr-custom.js', [], true );
-    dt_theme_enqueue_script( 'check-browser-version', 'dt-assets/js/check-browser-version.js', [ 'modernizr-custom' ], true );
+    dt_theme_enqueue_script( 'check-browser-version', 'dt-assets/build/js/check-browser-version.min.js', [ 'modernizr-custom' ], true );
 
     // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
     wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' );
@@ -102,7 +102,7 @@ function dt_site_scripts() {
     $url_path = dt_get_url_path();
     $post_type = $post_type ?: $url_path;
 
-    dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash', 'moment', 'datepicker' ) );
+    dt_theme_enqueue_script( 'shared-functions', 'dt-assets/build/js/shared-functions.min.js', array( 'jquery', 'lodash', 'moment', 'datepicker' ) );
     wp_localize_script(
         'shared-functions', 'wpApiShare', array(
             'root' => esc_url_raw( rest_url() ),
@@ -147,7 +147,7 @@ function dt_site_scripts() {
         )
     );
 
-    dt_theme_enqueue_script( 'dt-notifications', 'dt-assets/js/notifications.js', array( 'jquery' ) );
+    dt_theme_enqueue_script( 'dt-notifications', 'dt-assets/build/js/notifications.min.js', array( 'jquery' ) );
     wp_localize_script(
         'dt-notifications', 'wpApiNotifications', array(
             'root' => esc_url_raw( rest_url() ),
@@ -176,7 +176,7 @@ function dt_site_scripts() {
             dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
-            dt_theme_enqueue_script( 'comments', 'dt-assets/js/comments.js', array(
+            dt_theme_enqueue_script( 'comments', 'dt-assets/build/js/comments.min.js', array(
                 'jquery',
                 'lodash',
                 'shared-functions',
@@ -205,7 +205,7 @@ function dt_site_scripts() {
                     'google_translate_key' => get_option( 'dt_googletranslate_api_key' ),
                 ]
             );
-            dt_theme_enqueue_script( 'details', 'dt-assets/js/details.js', array(
+            dt_theme_enqueue_script( 'details', 'dt-assets/build/js/details.min.js', array(
                 'jquery',
                 'lodash',
                 'shared-functions',
@@ -255,7 +255,7 @@ function dt_site_scripts() {
             $dependencies[] = 'mapping-drill-down';
         }
 
-        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', $dependencies, true );
+        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/build/js/settings.min.js', $dependencies, true );
         wp_localize_script(
             'dt-settings', 'wpApiSettingsPage', array(
                 'root'                  => esc_url_raw( rest_url() ),
@@ -281,7 +281,7 @@ function dt_site_scripts() {
     }
 
     if ( 'view-duplicates' === $url_path ){
-        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/view-duplicates.js', [ 'jquery' ], true );
+        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/build/js/view-duplicates.min.js', [ 'jquery' ], true );
         wp_localize_script(
             'dt-settings', 'view_duplicates_settings', array(
                 'translations'          => apply_filters( 'dt_settings_js_translations', [
@@ -313,7 +313,7 @@ function dt_site_scripts() {
             'range_end' => __( 'end', 'disciple_tools' )
         ];
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
-        dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );
+        dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/build/js/modular-list.min.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );
         wp_localize_script( 'modular-list-js', 'list_settings', array(
             'post_type' => $post_type,
             'post_type_settings' => $post_settings,
@@ -336,7 +336,7 @@ function dt_site_scripts() {
             $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';
         }
-        dt_theme_enqueue_script( 'new-record', 'dt-assets/js/new-record.js', $dependencies, true );
+        dt_theme_enqueue_script( 'new-record', 'dt-assets/build/js/new-record.min.js', $dependencies, true );
 
         wp_localize_script( 'new-record', 'new_record_localized', array(
             'post_type' => $post_type,
