@@ -15,6 +15,8 @@ var gulp = require('gulp'),
   merge = require('merge-stream'),
   postcss = require('gulp-postcss'),
   cssnano = require('cssnano');
+  replace = require('gulp-replace');
+
 
 /**
  * DEFINE GULP VARIABLE VALUES TO MATCH YOUR PROJECT NEEDS
@@ -117,6 +119,24 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest(BUILD_DIRS.scripts));
 });
 
+//Find and replace lodash _. notation with window.lodash 'dt-assets/**/*.js'
+gulp.task('lodash', function(){
+  return gulp.src(['dt-assets/js/*.js'])
+     .pipe(replace('_.', 'window.lodash.'))
+     .pipe(plugin.plumber(function (error) {
+        log.error(error.message);
+        this.emit('end');
+      }))
+      .pipe(plugin.sourcemaps.init())
+      .pipe(plugin.babel({
+        presets: ['env'],
+        compact: true,
+        ignore: ['what-input.js']
+      }))
+     .pipe(rename({ suffix: '.min' }))
+     .pipe(gulp.dest('dt-assets/build/js'));
+});
+
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function () {
   return gulp.src(SOURCE.styles)
@@ -138,7 +158,7 @@ gulp.task('styles', function () {
 });
 
 // Run styles, scripts and foundation-js
-gulp.task('default', gulp.parallel('styles', 'scripts'));
+gulp.task('default', gulp.parallel('styles', 'lodash', 'scripts'));
 
 
 /**
@@ -174,10 +194,12 @@ function reload(done) {
 
 // Watch for file changes without Browser-Sync | run "gulp watch" or "npm run watch"
 gulp.task('watch', function () {
+  console.log(SOURCE.scripts);
   // Watch .scss files
   gulp.watch(SOURCE.styles, gulp.series('styles'));
   // Watch scripts files
-  gulp.watch(SOURCE.scripts, gulp.series('scripts'));
+  gulp.watch(SOURCE.scripts, gulp.series('lodash', 'scripts'));
+  gulp.watch(SOURCE.otherjs, gulp.series('lodash'));
 });
 
 // Watch for file changes with Browser-Sync | run "gulp browsersync" or "npm run browsersync"
@@ -185,7 +207,7 @@ gulp.task('watchWithBrowserSync', function () {
   // Watch .scss files
   gulp.watch(SOURCE.styles, gulp.series('styles', reload));
   // Watch scripts files
-  gulp.watch(SOURCE.scripts, gulp.series('scripts', reload));
+  gulp.watch(SOURCE.scripts, gulp.series('lodash', 'scripts', reload));
   //Watch php files
   gulp.watch(SOURCE.php, gulp.series(reload));
   //Watch other JavaScript files
@@ -193,7 +215,7 @@ gulp.task('watchWithBrowserSync', function () {
 });
 
 // Launch the development environemnt with Browser-Sync
-gulp.task('browsersync', gulp.series(gulp.parallel('styles', 'scripts'), serve, 'watchWithBrowserSync'));
+gulp.task('browsersync', gulp.series(gulp.parallel('lodash', 'styles', 'scripts'), serve, 'watchWithBrowserSync'));
 
 /**
  * OPTIONAL - USE THE FOLLOWING TASK TO RUN BROWSER-SYNC WITH A PROXY ARGUMENT FROM THE COMMAND LINE.
@@ -238,7 +260,7 @@ gulp.task('browsersync-p', function (done) {
    // Watch .scss files
    gulp.watch(SOURCE.styles, gulp.series('styles', reload));
    // Watch scripts files
-   gulp.watch(SOURCE.scripts, gulp.series('scripts', reload));
+   gulp.watch(SOURCE.scripts, gulp.series('lodash', 'scripts', reload));
    // Watch php files
    gulp.watch(SOURCE.php, gulp.series(reload));
    // Watch other JavaScript files
