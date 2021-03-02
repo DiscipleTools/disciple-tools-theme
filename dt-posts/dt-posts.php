@@ -755,7 +755,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $post_type === "peoplegroups" ){
             $list = [];
             $locale = get_user_locale();
-            $i = 0;
+
             foreach ( $posts as $post ) {
                 $translation = get_post_meta( $post->ID, $locale, true );
                 if ($translation !== "") {
@@ -763,13 +763,15 @@ class DT_Posts extends Disciple_Tools_Posts {
                 } else {
                     $label = $post->post_title;
                 }
-
-                $compact[$i] = [
-                "ID" => $post->ID,
-                "name" => $post->post_title,
-                "label" => $label
-                ];
-                $i++;
+                foreach( $compact as $index => &$p ){
+                    if ( $compact[$index]["ID"] === $post->ID ) {
+                        $compact[$index] = [
+                            "ID" => $post->ID,
+                            "name" => $post->post_title,
+                            "label" => $label
+                            ];
+                    }
+                }
             }
         }
 
