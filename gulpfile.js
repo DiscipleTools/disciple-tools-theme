@@ -194,12 +194,11 @@ function reload(done) {
 
 // Watch for file changes without Browser-Sync | run "gulp watch" or "npm run watch"
 gulp.task('watch', function () {
-  console.log(SOURCE.scripts);
   // Watch .scss files
   gulp.watch(SOURCE.styles, gulp.series('styles'));
   // Watch scripts files
-  gulp.watch(SOURCE.scripts, gulp.series('lodash', 'scripts'));
-  gulp.watch(SOURCE.otherjs, gulp.series('lodash'));
+  gulp.watch(SOURCE.scripts, gulp.series('scripts'));
+  gulp.watch(['dt-assets/js/*.js'], gulp.series('lodash'));
 });
 
 // Watch for file changes with Browser-Sync | run "gulp browsersync" or "npm run browsersync"
@@ -207,11 +206,11 @@ gulp.task('watchWithBrowserSync', function () {
   // Watch .scss files
   gulp.watch(SOURCE.styles, gulp.series('styles', reload));
   // Watch scripts files
-  gulp.watch(SOURCE.scripts, gulp.series('lodash', 'scripts', reload));
+  gulp.watch(SOURCE.scripts, gulp.series('scripts', reload));
   //Watch php files
   gulp.watch(SOURCE.php, gulp.series(reload));
   //Watch other JavaScript files
-  gulp.watch(SOURCE.otherjs, gulp.series(reload));
+  gulp.watch(['dt-assets/js/*.js'], gulp.series('lodash', reload));
 });
 
 // Launch the development environemnt with Browser-Sync
@@ -260,11 +259,11 @@ gulp.task('browsersync-p', function (done) {
    // Watch .scss files
    gulp.watch(SOURCE.styles, gulp.series('styles', reload));
    // Watch scripts files
-   gulp.watch(SOURCE.scripts, gulp.series('lodash', 'scripts', reload));
+   gulp.watch(SOURCE.scripts, gulp.series('scripts', reload));
    // Watch php files
    gulp.watch(SOURCE.php, gulp.series(reload));
    // Watch other JavaScript files
-   gulp.watch(SOURCE.otherjs, gulp.series(reload));
+   gulp.watch(['dt-assets/js/*.js'], gulp.series('lodash', reload));
 
   done();
 });
