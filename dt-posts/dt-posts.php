@@ -1102,7 +1102,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $assigned_to_meta = get_post_meta( $post_id, "assigned_to", true );
-        if ( !( current_user_can( 'update_any_' . $post_type ) ||
+        if ( !( self::can_update( $post_type, $post_id ) ||
                 get_current_user_id() === $user_id ||
                 dt_get_user_id_from_assigned_to( $assigned_to_meta ) === get_current_user_id() )
         ){
