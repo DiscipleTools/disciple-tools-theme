@@ -271,16 +271,23 @@ jQuery(document).ready(function($) {
         return parseInt(item.ID) !== parseInt(post_id)
       },
       source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
-      display: "name",
-      templateValue: "{{name}}",
+      display: ["name", "label"],
+      templateValue: function() {
+          if (this.items[this.items.length - 1].label) {
+            return "{{label}}"
+          } else {
+            return "{{name}}"
+          }
+      },
       dynamic: true,
       multiselect: {
         matchOn: ["ID"],
         data: function () {
           return (post[field_id] || [] ).map(g=>{
-            return {ID:g.ID, name:g.post_title}
+            return {ID:g.ID, name:g.post_title, label: g.label}
           })
-        }, callback: {
+        },
+        callback: {
           onCancel: function (node, item) {
             $(`#${field_id}-spinner`).addClass('active')
             API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
@@ -288,7 +295,13 @@ jQuery(document).ready(function($) {
             }).catch(err => { console.error(err) })
           }
         },
-        href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
+        href: function (item) {
+          if (listing_post_type === 'peoplegroups') {
+            return null;
+          } else {
+            return window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`
+          }
+        }
       },
       callback: {
         onClick: function(node, a, item, event){
