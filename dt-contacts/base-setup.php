@@ -299,33 +299,34 @@ class DT_Contacts_Base {
     }
 
     public function dt_details_additional_section( $section, $post_type ){
-        if ( $post_type === "contacts" && $section === "other" ) :
+        if ( $post_type === "contacts" ) :
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
-            ?>
-            <div class="section-subheader">
-                <img class="dt-icon" src="<?php echo esc_url( $contact_fields["tags"]["icon"] ) ?>">
-                <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
-            </div>
-            <div class="tags">
-                <var id="tags-result-container" class="result-container"></var>
-                <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
-                    <div class="typeahead__container">
-                        <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-tags input-height"
-                                       name="tags[query]"
-                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["tags"]['name'] ) )?>"
-                                       autocomplete="off">
-                            </span>
-                            <span class="typeahead__button">
-                                <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
-                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
-                                </button>
-                            </span>
+            if ( isset( $contact_fields["tags"]["tile"] ) && $contact_fields["tags"]["tile"] === $section ) : ?>
+                <div class="section-subheader">
+                    <img class="dt-icon" src="<?php echo esc_url( $contact_fields["tags"]["icon"] ) ?>">
+                    <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
+                </div>
+                <div class="tags">
+                    <var id="tags-result-container" class="result-container"></var>
+                    <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-tags input-height"
+                                           name="tags[query]"
+                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["tags"]['name'] ) )?>"
+                                           autocomplete="off">
+                                </span>
+                                <span class="typeahead__button">
+                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endif; ?>
         <?php endif;
 
     }
