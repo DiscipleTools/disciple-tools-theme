@@ -197,7 +197,7 @@ $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
 /*******************************************************************************************************************
  * MIGRATION ENGINE
  ******************************************************************************************************************/
-add_action( 'after_setup_theme', function (){
+add_action( 'init', function (){
     require_once( 'class-migration-engine.php' );
     try {
         DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
