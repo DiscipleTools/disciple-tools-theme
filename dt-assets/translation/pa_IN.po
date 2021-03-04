@@ -14,7 +14,7 @@ msgstr "ਆਗਿਆ ਤੋਂ ਇਨਕਾਰ"
 
 #: 403.php:25
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "ਮੁਆਫ ਕਰਨਾ, ਤੁਹਾਡੇ ਕੋਲ% 1 $ s ਨੂੰ id% 2 $ s ਨਾਲ ਵੇਖਣ ਦੀ ਅਨੁਮਤੀ ਨਹੀਂ ਹੈ."
+msgstr "ਮੁਆਫ ਕਰਨਾ, ਤੁਹਾਡੇ ਕੋਲ %1$s ਨੂੰ id %2$s ਨਾਲ ਵੇਖਣ ਦੀ ਅਨੁਮਤੀ ਨਹੀਂ ਹੈ."
 
 #: 403.php:26
 msgid "Request permission from your administrator."
@@ -729,7 +729,7 @@ msgstr "ਐਲਰਟ: ਪਿਛਲੇ ਟ੍ਰਾਂਸਫਰ ਤੋਂ ਸੰ�
 #: dt-contacts/contacts.php:1312
 msgctxt "Contact1 is a duplicated and was merged into Contact2"
 msgid "%1$s is a duplicate and was merged into %2$s"
-msgstr "% 1 $ s ਇੱਕ ਡੁਪਲਿਕੇਟ ਹੈ ਅਤੇ% 2 $ s ਵਿੱਚ ਮਿਲਾਇਆ ਗਿਆ ਹੈ"
+msgstr "%1$s ਇੱਕ ਡੁਪਲਿਕੇਟ ਹੈ ਅਤੇ %2$s ਵਿੱਚ ਮਿਲਾਇਆ ਗਿਆ ਹੈ"
 
 #: dt-contacts/duplicates-merging.php:444
 msgctxt "duplicate comment"
@@ -912,7 +912,7 @@ msgstr "ਹਟਾਏ ਗਏ ਉਪ-ਨਿਰਧਾਰਤ% s"
 #: dt-posts/posts.php:289
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
-msgstr "% 1 $ s% 2 $ s ਤੇ ਲੀਡਰ ਵਜੋਂ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ"
+msgstr "%1$s %2$s ਤੇ ਲੀਡਰ ਵਜੋਂ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ"
 
 #: dt-posts/posts.php:290
 msgctxt "contact1 added to leaders"
@@ -922,7 +922,7 @@ msgstr "% s ਨੇਤਾਵਾਂ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤੇ"
 #: dt-posts/posts.php:292
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
-msgstr "% 1 $ s ਨੂੰ% 2 $ s ਤੇ ਨੇਤਾਵਾਂ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਗਿਆ"
+msgstr "%1$s ਨੂੰ %2$s ਤੇ ਨੇਤਾਵਾਂ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਗਿਆ"
 
 #: dt-posts/posts.php:293
 msgctxt "contact1 removed from leaders"
@@ -932,7 +932,7 @@ msgstr "% s ਨੂੰ ਲੀਡਰਾਂ ਤੋਂ ਹਟਾਇਆ"
 #: dt-posts/posts.php:297
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
-msgstr "% 1 $ s% 2 $ s ਤੇ ਕੋਚ ਵਜੋਂ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ"
+msgstr "%1$s %2$s ਤੇ ਕੋਚ ਵਜੋਂ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ"
 
 #: dt-posts/posts.php:298
 msgctxt "contact1 added to coaches"
@@ -942,7 +942,7 @@ msgstr "% s ਕੋਚਾਂ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤੇ ਗਏ"
 #: dt-posts/posts.php:300
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
-msgstr "% 1 $ s ਨੂੰ% 2 $ s ਤੇ ਕੋਚਾਂ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਗਿਆ"
+msgstr "%1$s ਨੂੰ %2$s ਤੇ ਕੋਚਾਂ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਗਿਆ"
 
 #: dt-posts/posts.php:301
 msgctxt "contact1 removed from coaches"
@@ -1009,12 +1009,12 @@ msgstr "ਕੋਈ ਨਹੀਂ"
 #: dt-posts/posts.php:367
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
-msgstr "% 1 $ s ਨੂੰ% 2 $ s ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਗਿਆ"
+msgstr "%1$s ਨੂੰ %2$s ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਗਿਆ"
 
 #: dt-posts/posts.php:370
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
-msgstr "% 1 $ s ਨੂੰ% 2 $ s ਵਿੱਚ ਜੋੜਿਆ ਗਿਆ"
+msgstr "%1$s ਨੂੰ %2$s ਵਿੱਚ ਜੋੜਿਆ ਗਿਆ"
 
 #: dt-posts/posts.php:382
 msgid "yes"
@@ -1027,17 +1027,17 @@ msgstr "ਨਹੀਂ"
 #: dt-posts/posts.php:451
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
-msgstr "% 1 $ s ਜੋੜਿਆ:% 2 $ s"
+msgstr "%1$s ਜੋੜਿਆ: %2$s"
 
 #: dt-posts/posts.php:453
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
-msgstr "% 1 $ s ਨੂੰ% 2 $ s ਤੋਂ% 3 $ s ਵਿੱਚ ਅਪਡੇਟ ਕੀਤਾ ਗਿਆ"
+msgstr "%1$s ਨੂੰ %2$s ਤੋਂ %3$s ਵਿੱਚ ਅਪਡੇਟ ਕੀਤਾ ਗਿਆ"
 
 #: dt-posts/posts.php:455
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
-msgstr "% 1 $ s ਨੂੰ ਮਿਟਾਇਆ:% 2 $ s"
+msgstr "%1$s ਨੂੰ ਮਿਟਾਇਆ: %2$s"
 
 #: dt-posts/dt-posts.php:1219
 msgid "Post already shared with user."
@@ -1276,7 +1276,7 @@ msgstr "ਦੇਖਣ ਜਾਂ ਜਵਾਬ ਦੇਣ ਲਈ ਇੱਥੇ ਕਲ
 #: dt-notifications/notifications-email.php:123
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
-msgstr "% 1 $ s #% 2 $ s ਤੇ ਅਪਡੇਟ ਕਰੋ"
+msgstr "%1$s # %2$s ਤੇ ਅਪਡੇਟ ਕਰੋ"
 
 #: dt-notifications/notifications.php:787
 msgctxt "%s was created and assigned to you."
@@ -1286,7 +1286,7 @@ msgstr "% s ਨੂੰ ਬਣਾਇਆ ਗਿਆ ਅਤੇ ਤੁਹਾਨੂੰ 
 #: dt-notifications/notifications.php:795
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
-msgstr "% 1 $ s% 2 $ s ਨੂੰ% 3 $ s ਨੂੰ ਨਿਰਧਾਰਤ ਕੀਤਾ."
+msgstr "%1$s %2$s ਨੂੰ %3$s ਨੂੰ ਨਿਰਧਾਰਤ ਕੀਤਾ."
 
 #: dt-notifications/notifications.php:798
 #: dt-notifications/notifications.php:805
@@ -1300,37 +1300,37 @@ msgstr "ਸਿਸਟਮ"
 #: dt-notifications/notifications.php:799
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
-msgstr "% 1 $ s ਨੇ% 2 $ s ਤੁਹਾਡੇ ਨਾਲ ਸਾਂਝਾ ਕੀਤਾ."
+msgstr "%1$s ਨੇ %2$s ਤੁਹਾਡੇ ਨਾਲ ਸਾਂਝਾ ਕੀਤਾ."
 
 #: dt-notifications/notifications.php:806
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
-msgstr "% 1 $ s ਨੇ% 2 $ s ਕਹਿਣ ਤੇ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ:% 3 $ s"
+msgstr "%1$s ਨੇ %2$s ਕਹਿਣ ਤੇ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ: %3$s"
 
 #: dt-notifications/notifications.php:813
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
-msgstr "% 1 $ s ਨੇ% 2 $ s ਦੇ ਕਹਿਣ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ:% 3 $ s"
+msgstr "%1$s ਨੇ %2$s ਦੇ ਕਹਿਣ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ: %3$s"
 
 #: dt-notifications/notifications.php:817
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "% 1 $ s ਨੇ ਤੁਹਾਡੇ ਲਈ ਅਧੀਨ ਕੀਤਾ% 2 $ s."
+msgstr "%1$s ਨੇ ਤੁਹਾਡੇ ਲਈ ਅਧੀਨ ਕੀਤਾ %2$s."
 
 #: dt-notifications/notifications.php:827
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
-msgstr "% 1 $ s ਨੇ% 3 $ s ਤੇ ਮੀਲਪੱਥਰ% 2 $ s ਜੋੜਿਆ."
+msgstr "%1$s ਨੇ %3$s ਤੇ ਮੀਲਪੱਥਰ %2$s ਜੋੜਿਆ."
 
 #: dt-notifications/notifications.php:834
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
-msgstr "% 1 $ s% 2 $ s ਤੇ ਸੋਧੇ ਹੋਏ ਸੰਪਰਕ ਵੇਰਵੇ."
+msgstr "%1$s %2$s ਤੇ ਸੋਧੇ ਹੋਏ ਸੰਪਰਕ ਵੇਰਵੇ."
 
 #: dt-notifications/notifications.php:837
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
-msgstr "% 1 $ s ਨੇ:% 2 $ s ਤੇ ਅਸਾਈਨਮੈਂਟ ਅਸਵੀਕਾਰ ਕਰ ਦਿੱਤੀ."
+msgstr "%1$s ਨੇ: %2$s ਤੇ ਅਸਾਈਨਮੈਂਟ ਅਸਵੀਕਾਰ ਕਰ ਦਿੱਤੀ."
 
 #: dt-people-groups/people-groups-post-type.php:131
 msgid "People Group"
@@ -1657,11 +1657,11 @@ msgid "Hi,\n"
 "%4$s"
 msgstr "ਹਾਇ,\n"
 "\n"
-"ਤੁਹਾਨੂੰ '% 1 $ s' ਵਿਚ ਸ਼ਾਮਲ ਹੋਣ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ\n"
-"% 3 $ s ਦੀ ਭੂਮਿਕਾ ਨਾਲ% 2 $ s.\n"
+"ਤੁਹਾਨੂੰ ' %1$s' ਵਿਚ ਸ਼ਾਮਲ ਹੋਣ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ\n"
+"%3$s ਦੀ ਭੂਮਿਕਾ ਨਾਲ %2$s.\n"
 "\n"
 "ਕਿਰਪਾ ਕਰਕੇ ਸੱਦੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨ ਲਈ ਹੇਠ ਦਿੱਤੇ ਲਿੰਕ ਤੇ ਕਲਿਕ ਕਰੋ:\n"
-"% 4 $ s"
+"%4$s"
 
 #. translators: Joining confirmation notification email subject. %s: Site title
 #: dt-users/users.php:884
@@ -1706,7 +1706,7 @@ msgstr "ਨਵਾਂ% s"
 #: dt-posts/posts.php:412
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
-msgstr "% 1 $ s ਟਿਕਾਣਿਆਂ ਤੇ ਜੋੜਿਆ ਗਿਆ"
+msgstr "%1$s ਟਿਕਾਣਿਆਂ ਤੇ ਜੋੜਿਆ ਗਿਆ"
 
 #: dt-groups/base-setup.php:731
 msgid "Four Fields"
@@ -1724,7 +1724,7 @@ msgstr "ਸਾਰੇ ਕਿਰਿਆਸ਼ੀਲ ਸੰਪਰਕਾਂ ਦੀ �
 #: dt-notifications/notifications.php:830
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@% 1 $ s,% 2 $ s ਤੇ ਅਪਡੇਟ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਜਾਂਦੀ ਹੈ."
+msgstr "@ %1$s, %2$s ਤੇ ਅਪਡੇਟ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਜਾਂਦੀ ਹੈ."
 
 #: dt-core/configuration/config-site-defaults.php:478
 msgid "Accepting new contacts"
@@ -1814,7 +1814,7 @@ msgstr "ਉਨ੍ਹਾਂ ਸੰਪਰਕਾਂ ਜਾਂ ਉਪਭੋਗਤਾ
 #: dt-notifications/notifications.php:789
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "ਤੁਹਾਨੂੰ ਨਿਰਧਾਰਤ ਕੀਤਾ ਗਿਆ ਹੈ:% 1 $ s."
+msgstr "ਤੁਹਾਨੂੰ ਨਿਰਧਾਰਤ ਕੀਤਾ ਗਿਆ ਹੈ: %1$s."
 
 #: dt-groups/base-setup.php:350
 msgid "Child Group"
@@ -2057,7 +2057,7 @@ msgstr "ਸਮੂਹ ਸਰਗਰਮੀ ਨਾਲ ਮਿਲ ਰਿਹਾ ਹੈ.
 #: dt-posts/posts.php:409
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "% 1 $ s ਨੂੰ ਟਿਕਾਣੇ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਗਿਆ"
+msgstr "%1$s ਨੂੰ ਟਿਕਾਣੇ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਗਿਆ"
 
 #: dt-posts/posts.php:433
 msgctxt "message"
@@ -2167,7 +2167,7 @@ msgstr "ਇਹ ਇਸ ਸਮੇਂ ਸਿਰਫ 'ਕਿਰਿਆਸ਼ੀਲ' �
 #: dt-posts/posts.php:359
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
-msgstr "% 1 $ s ਨੂੰ% 2 $ s ਵਿੱਚ ਬਦਲਿਆ"
+msgstr "%1$s ਨੂੰ %2$s ਵਿੱਚ ਬਦਲਿਆ"
 
 #: dt-contacts/dmm-module.php:527
 msgid "Who was this contact baptized by and when?"
@@ -3265,17 +3265,17 @@ msgstr "ਅਸੰਗਤ"
 #: dt-users/user-management.php:149
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "% 1 $ s% 2 $ s ਨੂੰ% 3 $ s ਦਿਨਾਂ ਬਾਅਦ ਸਵੀਕਾਰਿਆ ਗਿਆ ਸੀ"
+msgstr "%1$s %2$s ਨੂੰ %3$s ਦਿਨਾਂ ਬਾਅਦ ਸਵੀਕਾਰਿਆ ਗਿਆ ਸੀ"
 
 #: dt-users/user-management.php:150
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "% 1 $ s% 2 $ s ਦਿਨਾਂ ਲਈ ਸੰਪਰਕ ਕੋਸ਼ਿਸ਼ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ"
+msgstr "%1$s %2$s ਦਿਨਾਂ ਲਈ ਸੰਪਰਕ ਕੋਸ਼ਿਸ਼ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ"
 
 #: dt-users/user-management.php:151
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr "% 1 $ s ਨਾਲ ਸੰਪਰਕ ਕਰਨ ਦੀ% 3 $ s ਦਿਨਾਂ ਬਾਅਦ% 2 $ s ਤੇ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ ਗਈ"
+msgstr "%1$s ਨਾਲ ਸੰਪਰਕ ਕਰਨ ਦੀ %3$s ਦਿਨਾਂ ਬਾਅਦ %2$s ਤੇ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ ਗਈ"
 
 #: dt-users/user-management.php:339
 msgctxt "Updated record Bob"
@@ -3323,12 +3323,12 @@ msgstr "ਆਖਰੀ ਅਪਡੇਟ ਤੋਂ% s ਦਿਨ"
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
-msgstr "ਤੁਸੀਂ ਅੱਜ% 1 $ s 'ਤੇ ਇੱਕ ਰੀਮਾਈਂਡਰ ਸੈਟ ਕੀਤਾ"
+msgstr "ਤੁਸੀਂ ਅੱਜ %1$s 'ਤੇ ਇੱਕ ਰੀਮਾਈਂਡਰ ਸੈਟ ਕੀਤਾ"
 
 #: dt-workflows/tasks.php:86
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
-msgstr "ਤੁਸੀਂ ਇਹ ਕਾਰਜ% 1 $ s:% 2 $ s ਤੇ ਸੈੱਟ ਕੀਤਾ ਹੈ"
+msgstr "ਤੁਸੀਂ ਇਹ ਕਾਰਜ %1$s: %2$s ਤੇ ਸੈੱਟ ਕੀਤਾ ਹੈ"
 
 #: dt-contacts/access-module.php:457
 #: dt-contacts/access-module.php:488
@@ -3620,7 +3620,7 @@ msgstr "ਜਵਾਬਦੇਹੀ ਸਮੂਹ ਵਿੱਚ ਲੋਕਾਂ ਦ�
 #: dt-posts/posts.php:281
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
-msgstr "% 1 $ s ਨੂੰ% 2 $ s ਤੇ ਸਮੂਹ ਦੇ ਰੂਪ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ"
+msgstr "%1$s ਨੂੰ %2$s ਤੇ ਸਮੂਹ ਦੇ ਰੂਪ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ"
 
 #: dt-posts/posts.php:282
 msgctxt "Shaikh added to people groups"
@@ -3630,7 +3630,7 @@ msgstr "% s ਲੋਕ ਸਮੂਹਾਂ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤ�
 #: dt-posts/posts.php:284
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
-msgstr "% 1 $ s ਨੂੰ% 2 $ s ਤੇ ਸਮੂਹ ਸਮੂਹਾਂ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਗਿਆ"
+msgstr "%1$s ਨੂੰ %2$s ਤੇ ਸਮੂਹ ਸਮੂਹਾਂ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਗਿਆ"
 
 #: dt-posts/posts.php:285
 msgctxt "Shaikh removed from people groups"
@@ -3653,7 +3653,7 @@ msgstr "ਸੰਪਰਕ"
 #: dt-assets/functions/enqueue-scripts.php:141
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
-msgstr "% 2 $ s ਨਾਲ ਮਿਲਦੇ% 1 $ s ਆਈਟਮਾਂ ਦਿਖਾ ਰਿਹਾ ਹੈ"
+msgstr "%2$s ਨਾਲ ਮਿਲਦੇ %1$s ਆਈਟਮਾਂ ਦਿਖਾ ਰਿਹਾ ਹੈ"
 
 #: dt-metrics/contacts/milestones-map.php:24
 #: dt-metrics/contacts/milestones-map.php:40
@@ -3888,7 +3888,7 @@ msgstr "ਇਹ ਸੰਪਰਕ% s ਨੂੰ ਅੱਗੇ ਦੀ ਪਾਲਣਾ 
 #: dt-contacts/duplicates-merging.php:516
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
-msgstr "ਇਹ ਰਿਕਾਰਡ ਡੁਪਲਿਕੇਟ ਹੈ ਅਤੇ% 2 $ s ਵਿੱਚ ਮਿਲਾਇਆ ਗਿਆ ਹੈ"
+msgstr "ਇਹ ਰਿਕਾਰਡ ਡੁਪਲਿਕੇਟ ਹੈ ਅਤੇ %2$s ਵਿੱਚ ਮਿਲਾਇਆ ਗਿਆ ਹੈ"
 
 #: dt-contacts/access-module.php:1404
 #: dt-contacts/duplicates-merging.php:469
@@ -3899,7 +3899,7 @@ msgstr "ਡੁਪਲਿਕੇਟ ਚੈਕਰ"
 #: dt-contacts/duplicates-merging.php:529
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
-msgstr "% 1 $ s% 2 $ s ਨੂੰ ਇਸ ਰਿਕਾਰਡ ਵਿੱਚ ਮਿਲਾ ਦਿੱਤਾ ਗਿਆ"
+msgstr "%1$s %2$s ਨੂੰ ਇਸ ਰਿਕਾਰਡ ਵਿੱਚ ਮਿਲਾ ਦਿੱਤਾ ਗਿਆ"
 
 #: dt-posts/dt-posts.php:993
 msgid "D.T System"
@@ -3979,7 +3979,7 @@ msgstr "ਡਿਫੌਲਟ ਤੇ ਰੀਸੈਟ ਕਰੋ"
 
 #: archive-template.php:277
 msgid "Select all the  %1$s you want to update from the list, and update them below"
-msgstr "ਉਹ ਸਾਰੇ% 1 $ s ਚੁਣੋ ਜੋ ਤੁਸੀਂ ਸੂਚੀ ਵਿੱਚੋਂ ਅਪਡੇਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ, ਅਤੇ ਉਹਨਾਂ ਨੂੰ ਹੇਠਾਂ ਅਪਡੇਟ ਕਰੋ"
+msgstr "ਉਹ ਸਾਰੇ %1$s ਚੁਣੋ ਜੋ ਤੁਸੀਂ ਸੂਚੀ ਵਿੱਚੋਂ ਅਪਡੇਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ, ਅਤੇ ਉਹਨਾਂ ਨੂੰ ਹੇਠਾਂ ਅਪਡੇਟ ਕਰੋ"
 
 #: archive-template.php:173
 msgid "Assign To"

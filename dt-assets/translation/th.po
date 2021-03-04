@@ -14,7 +14,7 @@ msgstr "ปฏิเสธการอนุญาต"
 
 #: 403.php:25
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "ขออภัยคุณไม่มีสิทธิ์ดู% 1 $ s ด้วย id% 2 $ s"
+msgstr "ขออภัยคุณไม่มีสิทธิ์ดู %1$s ด้วย id %2$s"
 
 #: 403.php:26
 msgid "Request permission from your administrator."
@@ -729,7 +729,7 @@ msgstr "ALERT: รายชื่อติดต่อที่อาจซ้�
 #: dt-contacts/contacts.php:1312
 msgctxt "Contact1 is a duplicated and was merged into Contact2"
 msgid "%1$s is a duplicate and was merged into %2$s"
-msgstr "% 1 $ s เป็นรายการที่ซ้ำกันและรวมเข้ากับ% 2 $ s แล้ว"
+msgstr "%1$s เป็นรายการที่ซ้ำกันและรวมเข้ากับ %2$s แล้ว"
 
 #: dt-contacts/duplicates-merging.php:444
 msgctxt "duplicate comment"
@@ -912,7 +912,7 @@ msgstr "ลบ% s ที่กำหนดย่อยแล้ว"
 #: dt-posts/posts.php:289
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
-msgstr "เพิ่ม% 1 $ s เป็นผู้นำใน% 2 $ s"
+msgstr "เพิ่ม %1$s เป็นผู้นำใน %2$s"
 
 #: dt-posts/posts.php:290
 msgctxt "contact1 added to leaders"
@@ -922,7 +922,7 @@ msgstr "เพิ่ม% s ให้กับผู้นำแล้ว"
 #: dt-posts/posts.php:292
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
-msgstr "% 1 $ s ถูกลบออกจากผู้นำใน% 2 $ s"
+msgstr "%1$s ถูกลบออกจากผู้นำใน %2$s"
 
 #: dt-posts/posts.php:293
 msgctxt "contact1 removed from leaders"
@@ -932,7 +932,7 @@ msgstr "% s ถูกลบออกจากผู้นำ"
 #: dt-posts/posts.php:297
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
-msgstr "% 1 $ s เพิ่มเป็นโค้ชเมื่อ% 2 $ s"
+msgstr "%1$s เพิ่มเป็นโค้ชเมื่อ %2$s"
 
 #: dt-posts/posts.php:298
 msgctxt "contact1 added to coaches"
@@ -942,7 +942,7 @@ msgstr "เพิ่ม% s ให้กับโค้ชแล้ว"
 #: dt-posts/posts.php:300
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
-msgstr "ลบ% 1 $ s ออกจากโค้ชเมื่อ% 2 $ s"
+msgstr "ลบ %1$s ออกจากโค้ชเมื่อ %2$s"
 
 #: dt-posts/posts.php:301
 msgctxt "contact1 removed from coaches"
@@ -1009,12 +1009,12 @@ msgstr "ไม่มีใคร"
 #: dt-posts/posts.php:367
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
-msgstr "ลบ% 1 $ s ออกจาก% 2 $ s แล้ว"
+msgstr "ลบ %1$s ออกจาก %2$s แล้ว"
 
 #: dt-posts/posts.php:370
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
-msgstr "เพิ่ม% 1 $ s ใน% 2 $ s แล้ว"
+msgstr "เพิ่ม %1$s ใน %2$s แล้ว"
 
 #: dt-posts/posts.php:382
 msgid "yes"
@@ -1027,17 +1027,17 @@ msgstr "ไม่"
 #: dt-posts/posts.php:451
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
-msgstr "เพิ่ม% 1 $ s:% 2 $ s"
+msgstr "เพิ่ม %1$s: %2$s"
 
 #: dt-posts/posts.php:453
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
-msgstr "อัปเดต% 1 $ s จาก% 2 $ s เป็น% 3 $ s"
+msgstr "อัปเดต %1$s จาก %2$s เป็น %3$s"
 
 #: dt-posts/posts.php:455
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
-msgstr "ลบ% 1 $ s:% 2 $ s"
+msgstr "ลบ %1$s: %2$s"
 
 #: dt-posts/dt-posts.php:1219
 msgid "Post already shared with user."
@@ -1276,7 +1276,7 @@ msgstr "คลิกที่นี่เพื่อดูหรือตอบ
 #: dt-notifications/notifications-email.php:123
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
-msgstr "อัปเดตเมื่อ% 1 $ s #% 2 $ s"
+msgstr "อัปเดตเมื่อ %1$s # %2$s"
 
 #: dt-notifications/notifications.php:787
 msgctxt "%s was created and assigned to you."
@@ -1286,7 +1286,7 @@ msgstr "สร้างและกำหนด% s ให้กับคุณ�
 #: dt-notifications/notifications.php:795
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
-msgstr "% 1 $ s กำหนด% 2 $ s ให้กับ% 3 $ s"
+msgstr "%1$s กำหนด %2$s ให้กับ %3$s"
 
 #: dt-notifications/notifications.php:798
 #: dt-notifications/notifications.php:805
@@ -1300,37 +1300,37 @@ msgstr "ระบบ"
 #: dt-notifications/notifications.php:799
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
-msgstr "% 1 $ s แบ่งปัน% 2 $ s กับคุณ"
+msgstr "%1$s แบ่งปัน %2$s กับคุณ"
 
 #: dt-notifications/notifications.php:806
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
-msgstr "% 1 $ s พูดถึงคุณใน% 2 $ s ว่า:% 3 $ s"
+msgstr "%1$s พูดถึงคุณใน %2$s ว่า: %3$s"
 
 #: dt-notifications/notifications.php:813
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
-msgstr "% 1 $ s แสดงความคิดเห็นกับ% 2 $ s ว่า% 3 $ s"
+msgstr "%1$s แสดงความคิดเห็นกับ %2$s ว่า %3$s"
 
 #: dt-notifications/notifications.php:817
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "% 1 $ s มอบหมายงานย่อย% 2 $ s ให้คุณ"
+msgstr "%1$s มอบหมายงานย่อย %2$s ให้คุณ"
 
 #: dt-notifications/notifications.php:827
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
-msgstr "% 1 $ s เพิ่มเป้าหมาย% 2 $ s เมื่อ% 3 $ s"
+msgstr "%1$s เพิ่มเป้าหมาย %2$s เมื่อ %3$s"
 
 #: dt-notifications/notifications.php:834
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
-msgstr "% 1 $ s แก้ไขรายละเอียดการติดต่อใน% 2 $ s"
+msgstr "%1$s แก้ไขรายละเอียดการติดต่อใน %2$s"
 
 #: dt-notifications/notifications.php:837
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
-msgstr "% 1 $ s ปฏิเสธงานเมื่อ:% 2 $ s"
+msgstr "%1$s ปฏิเสธงานเมื่อ: %2$s"
 
 #: dt-people-groups/people-groups-post-type.php:131
 msgid "People Group"
@@ -1657,11 +1657,11 @@ msgid "Hi,\n"
 "%4$s"
 msgstr "สวัสดี\n"
 "\n"
-"คุณได้รับเชิญให้เข้าร่วม \"% 1 $ s\" ที่\n"
-"% 2 $ s กับบทบาทของ% 3 $ s\n"
+"คุณได้รับเชิญให้เข้าร่วม \"%1$s\" ที่\n"
+"%2$s กับบทบาทของ %3$s\n"
 "\n"
 "โปรดคลิกลิงก์ต่อไปนี้เพื่อยืนยันคำเชิญ:\n"
-"% 4 $ s"
+"%4$s"
 
 #. translators: Joining confirmation notification email subject. %s: Site title
 #: dt-users/users.php:884
@@ -1706,7 +1706,7 @@ msgstr "ใหม่% s"
 #: dt-posts/posts.php:412
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
-msgstr "เพิ่ม% 1 $ s ในสถานที่แล้ว"
+msgstr "เพิ่ม %1$s ในสถานที่แล้ว"
 
 #: dt-groups/base-setup.php:731
 msgid "Four Fields"
@@ -1724,7 +1724,7 @@ msgstr "ติดตามผู้ติดต่อที่ใช้งาน
 #: dt-notifications/notifications.php:830
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@% 1 $ s ขอให้อัปเดตเมื่อ% 2 $ s"
+msgstr "@ %1$s ขอให้อัปเดตเมื่อ %2$s"
 
 #: dt-core/configuration/config-site-defaults.php:478
 msgid "Accepting new contacts"
@@ -1814,7 +1814,7 @@ msgstr "จำนวนผู้ติดต่อหรือผู้ใช้
 #: dt-notifications/notifications.php:789
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "คุณได้รับมอบหมาย:% 1 $ s"
+msgstr "คุณได้รับมอบหมาย: %1$s"
 
 #: dt-groups/base-setup.php:350
 msgid "Child Group"
@@ -2057,7 +2057,7 @@ msgstr "กลุ่มกำลังประชุมอย่างแข็
 #: dt-posts/posts.php:409
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "ลบ% 1 $ s ออกจากสถานที่แล้ว"
+msgstr "ลบ %1$s ออกจากสถานที่แล้ว"
 
 #: dt-posts/posts.php:433
 msgctxt "message"
@@ -2167,7 +2167,7 @@ msgstr "กำลังแสดงเฉพาะผู้ติดต่อท
 #: dt-posts/posts.php:359
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
-msgstr "% 1 $ s เปลี่ยนเป็น% 2 $ s"
+msgstr "%1$s เปลี่ยนเป็น %2$s"
 
 #: dt-contacts/dmm-module.php:527
 msgid "Who was this contact baptized by and when?"
@@ -3265,17 +3265,17 @@ msgstr "ไม่สอดคล้องกัน"
 #: dt-users/user-management.php:149
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "% 1 $ s ได้รับการยอมรับใน% 2 $ s หลังจาก% 3 $ s วัน"
+msgstr "%1$s ได้รับการยอมรับใน %2$s หลังจาก %3$s วัน"
 
 #: dt-users/user-management.php:150
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "% 1 $ s กำลังรอความพยายามติดต่อเป็นเวลา% 2 $ s วัน"
+msgstr "%1$s กำลังรอความพยายามติดต่อเป็นเวลา %2$s วัน"
 
 #: dt-users/user-management.php:151
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr "พยายามติดต่อกับ% 1 $ s เมื่อ% 2 $ s หลังจาก% 3 $ s วัน"
+msgstr "พยายามติดต่อกับ %1$s เมื่อ %2$s หลังจาก %3$s วัน"
 
 #: dt-users/user-management.php:339
 msgctxt "Updated record Bob"
@@ -3323,12 +3323,12 @@ msgstr "% s วันนับตั้งแต่การอัปเดต�
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
-msgstr "คุณตั้งการแจ้งเตือนสำหรับวันนี้ใน% 1 $ s"
+msgstr "คุณตั้งการแจ้งเตือนสำหรับวันนี้ใน %1$s"
 
 #: dt-workflows/tasks.php:86
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
-msgstr "คุณตั้งค่างานนี้ใน% 1 $ s:% 2 $ s"
+msgstr "คุณตั้งค่างานนี้ใน %1$s: %2$s"
 
 #: dt-contacts/access-module.php:457
 #: dt-contacts/access-module.php:488
@@ -3614,7 +3614,7 @@ msgstr "จำนวนคนในกลุ่มรับผิดชอบ"
 #: dt-posts/posts.php:281
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
-msgstr "เพิ่ม% 1 $ s เป็นกลุ่มคนใน% 2 $ s"
+msgstr "เพิ่ม %1$s เป็นกลุ่มคนใน %2$s"
 
 #: dt-posts/posts.php:282
 msgctxt "Shaikh added to people groups"
@@ -3624,7 +3624,7 @@ msgstr "เพิ่ม% s ลงในกลุ่มคนแล้ว"
 #: dt-posts/posts.php:284
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
-msgstr "ลบ% 1 $ s ออกจากกลุ่มคนใน% 2 $ s"
+msgstr "ลบ %1$s ออกจากกลุ่มคนใน %2$s"
 
 #: dt-posts/posts.php:285
 msgctxt "Shaikh removed from people groups"
@@ -3647,7 +3647,7 @@ msgstr "ติดต่อ"
 #: dt-assets/functions/enqueue-scripts.php:141
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
-msgstr "แสดง% 1 $ s รายการที่ตรงกับ% 2 $ s"
+msgstr "แสดง %1$s รายการที่ตรงกับ %2$s"
 
 #: dt-metrics/contacts/milestones-map.php:24
 #: dt-metrics/contacts/milestones-map.php:40
@@ -3882,7 +3882,7 @@ msgstr "รายชื่อติดต่อนี้ถูกโอนไป
 #: dt-contacts/duplicates-merging.php:516
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
-msgstr "ระเบียนนี้ซ้ำและรวมเข้ากับ% 2 $ s แล้ว"
+msgstr "ระเบียนนี้ซ้ำและรวมเข้ากับ %2$s แล้ว"
 
 #: dt-contacts/access-module.php:1404
 #: dt-contacts/duplicates-merging.php:469
@@ -3893,7 +3893,7 @@ msgstr "ตัวตรวจสอบซ้ำ"
 #: dt-contacts/duplicates-merging.php:529
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
-msgstr "% 1 $ s รวม% 2 $ s เข้ากับเรกคอร์ดนี้"
+msgstr "%1$s รวม %2$s เข้ากับเรกคอร์ดนี้"
 
 #: dt-posts/dt-posts.php:993
 msgid "D.T System"
@@ -3973,7 +3973,7 @@ msgstr "รีเซ็ตเป็นค่าเริ่มต้น"
 
 #: archive-template.php:277
 msgid "Select all the  %1$s you want to update from the list, and update them below"
-msgstr "เลือก% 1 $ s ทั้งหมดที่คุณต้องการอัปเดตจากรายการและอัปเดตด้านล่าง"
+msgstr "เลือก %1$s ทั้งหมดที่คุณต้องการอัปเดตจากรายการและอัปเดตด้านล่าง"
 
 #: archive-template.php:173
 msgid "Assign To"

@@ -3978,7 +3978,7 @@ msgstr "वितथ पर ले जाएं"
 
 #: archive-template.php:277
 msgid "Select all the  %1$s you want to update from the list, and update them below"
-msgstr "सूची से अपडेट करने के लिए सभी% 1 $ s का चयन करें, और उन्हें नीचे अपडेट करें"
+msgstr "सूची से अपडेट करने के लिए सभी %1$s का चयन करें, और उन्हें नीचे अपडेट करें"
 
 #: archive-template.php:173
 msgid "Assign To"
