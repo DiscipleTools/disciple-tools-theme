@@ -22,8 +22,8 @@ jobs:
     # Below borrowed from https://github.com/actions/upload-release-asset
     - name: Build project
       run: |
-        mkdir disciple-tools-theme |
-        cp -r * disciple-tools-theme/ |
+        mkdir disciple-tools-theme
+        cp -r * disciple-tools-theme/
         zip -r disciple-tools-theme.zip disciple-tools-theme
     - name: Create Release
       id: create_release
