@@ -16,6 +16,7 @@ var gulp = require('gulp'),
   postcss = require('gulp-postcss'),
   cssnano = require('cssnano');
   replace = require('gulp-replace');
+  terser = require('gulp-terser');
 
 
 /**
@@ -122,18 +123,14 @@ gulp.task('scripts', function () {
 //Find and replace lodash _. notation with window.lodash 'dt-assets/**/*.js'
 gulp.task('lodash', function(){
   return gulp.src(['dt-assets/js/*.js', '!dt-assets/js/modernizr-custom.js'])
-     .pipe(replace('_.', 'window.lodash.'))
-     .pipe(plugin.plumber(function (error) {
-        log.error(error);
-        this.emit('end');
-      }))
+      .pipe(replace('_.', 'window.lodash.'))
+      .pipe(rename({ suffix: '.min' }))
       .pipe(plugin.sourcemaps.init())
-      .pipe(plugin.babel({
-        presets: ['env'],
-        compact: true,
-        ignore: ['what-input.js']
+      .pipe(terser({
+        keep_fnames: true,
+        mangle: false
       }))
-     .pipe(rename({ suffix: '.min' }))
+      .pipe(plugin.sourcemaps.write('./')) // Creates sourcemap for minified JS
      .pipe(gulp.dest('dt-assets/build/js'));
 });
 
