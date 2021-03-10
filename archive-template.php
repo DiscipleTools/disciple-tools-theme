@@ -58,7 +58,7 @@ dt_please_log_in();
                 </a>
             </div>
             <div id="advanced_search_picker"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
-                <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields search', 'disciple_tools' ); ?></p>
+                <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
                 <ul class="ul-no-bullets" style="">
 
                 <li style="" class="">
@@ -131,7 +131,7 @@ dt_please_log_in();
             <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
         </div>
         <div id="advanced_search_picker_mobile"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
-                <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields search', 'disciple_tools' ); ?></p>
+                <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
                 <ul class="ul-no-bullets" style="">
 
                 <li style="" class="">

@@ -302,31 +302,7 @@ window.TYPEAHEADS = {
       },
     };
   },
-  typeaheadPeopleGroupSource: function (field, url) {
-    return {
-      contacts: {
-        template: "<span>{{label}}</span>",
-        ajax: {
-          url: wpApiShare.root + url,
-          data: {
-            s: "{{query}}",
-          },
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader("X-WP-Nonce", wpApiShare.nonce);
-          },
-          callback: {
-            done: function (data) {
-              if (typeof typeaheadTotals !== "undefined") {
-                typeaheadTotals.field = data.total;
-              }
-              return data.posts;
-            },
-          },
-        },
-      },
-    };
-  },
-  typeaheadUserSource: function (field, ur) {
+  typeaheadUserSource : function (field, url) {
     return {
       users: {
         display: ["name", "user"],
@@ -371,7 +347,7 @@ window.TYPEAHEADS = {
   typeaheadPostsSource: function (post_type, args = {}) {
     return {
       contacts: {
-        display: ["name", "ID"],
+        display: [ "name", "ID", "label" ],
         ajax: {
           url: wpApiShare.root + `dt-posts/v2/${post_type}/compact`,
           data: Object.assign({ s: "{{query}}" }, args),
@@ -414,10 +390,10 @@ window.TYPEAHEADS = {
       ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg">`
       : "";
     let statusStyle = item.status === "closed" ? 'style="color:gray"' : "";
-    return `<span dir="auto" ${statusStyle}>
-      <span class="typeahead-user-row" style="width:20px">${img}</span>
-      ${window.lodash.escape(item.name)}
-      <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
+      return `<span dir="auto" ${statusStyle}>
+        <span class="typeahead-user-row" style="width:20px">${img}</span>
+        ${window.lodash.escape((item.label ? item.label : item.name))}
+        <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
     </span>`;
   },
   share(post_type, id, v2) {

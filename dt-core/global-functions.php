@@ -573,6 +573,21 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
+     * Returns a completely unique 64 bit hashed key
+     * @since 1.1
+     */
+    if ( ! function_exists( 'dt_create_unique_key' ) ) {
+        function dt_create_unique_key() : string {
+            try {
+                $hash = hash( 'sha256', bin2hex( random_bytes( 256 ) ) );
+            } catch ( Exception $exception ) {
+                $hash = hash( 'sha256', bin2hex( rand( 0, 1234567891234567890 ) . microtime() ) );
+            }
+            return $hash;
+        }
+    }
+
+    /**
      * All code above here.
      */
 } // end if ( ! defined( 'DT_FUNCTIONS_READY' ) )

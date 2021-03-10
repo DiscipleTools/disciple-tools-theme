@@ -152,7 +152,7 @@ class Disciple_Tools_People_Groups_Post_Type
             'delete_others_posts' => 'delete_others_peoplegroups',
             'delete_posts'        => 'delete_peoplegroups',
             'edit_posts'          => 'edit_peoplegroups',
-            'edit_others_posts'   => 'edit_others_peoplegroups',
+            'edit_others_posts'   => 'edit_peoplegroups',
             'publish_posts'       => 'publish_peoplegroups',
             'read_private_posts'  => 'read_private_peoplegroups',
         ];

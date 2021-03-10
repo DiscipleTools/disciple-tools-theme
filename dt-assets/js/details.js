@@ -271,16 +271,23 @@ jQuery(document).ready(function($) {
         return parseInt(item.ID) !== parseInt(post_id)
       },
       source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
-      display: "name",
-      templateValue: "{{name}}",
+      display: ["name", "label"],
+      templateValue: function() {
+          if (this.items[this.items.length - 1].label) {
+            return "{{label}}"
+          } else {
+            return "{{name}}"
+          }
+      },
       dynamic: true,
       multiselect: {
         matchOn: ["ID"],
         data: function () {
           return (post[field_id] || [] ).map(g=>{
-            return {ID:g.ID, name:g.post_title}
+            return {ID:g.ID, name:g.post_title, label: g.label}
           })
-        }, callback: {
+        },
+        callback: {
           onCancel: function (node, item) {
             $(`#${field_id}-spinner`).addClass('active')
             API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
@@ -288,7 +295,13 @@ jQuery(document).ready(function($) {
             }).catch(err => { console.error(err) })
           }
         },
-        href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
+        href: function (item) {
+          if (listing_post_type === 'peoplegroups') {
+            return null;
+          } else {
+            return window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`
+          }
+        }
       },
       callback: {
         onClick: function(node, a, item, event){
@@ -705,76 +718,78 @@ jQuery(document).ready(function($) {
   /**
    * Tags
    */
-  $.typeahead({
-    input: '.js-typeahead-tags',
-    minLength: 0,
-    maxItem: 20,
-    searchOnFocus: true,
-    source: {
-      tags: {
-        display: ["name"],
-        ajax: {
-          url: window.wpApiShare.root  + `dt-posts/v2/${post_type}/multi-select-values`,
-          data: {
-            s: "{{query}}",
-            field: "tags"
-          },
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-          },
-          callback: {
-            done: function (data) {
-              return (data || []).map(tag=>{
-                return {name:tag}
-              })
+  if( $('.js-typeahead-tags').length ) {
+    $.typeahead({
+      input: '.js-typeahead-tags',
+      minLength: 0,
+      maxItem: 20,
+      searchOnFocus: true,
+      source: {
+        tags: {
+          display: ["name"],
+          ajax: {
+            url: window.wpApiShare.root + `dt-posts/v2/${post_type}/multi-select-values`,
+            data: {
+              s: "{{query}}",
+              field: "tags"
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                return (data || []).map(tag => {
+                  return {name: tag}
+                })
+              }
             }
           }
         }
-      }
-    },
-    display: "name",
-    templateValue: "{{name}}",
-    dynamic: true,
-    multiselect: {
-      matchOn: ["name"],
-      data: function () {
-        return (post.tags || []).map(t=>{
-          return {name:t}
-        })
-      }, callback: {
-        onCancel: function (node, item) {
-          API.update_post(post_type, post_id, {'tags': {values:[{value:item.name, delete:true}]}})
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["name"],
+        data: function () {
+          return (post.tags || []).map(t => {
+            return {name: t}
+          })
+        }, callback: {
+          onCancel: function (node, item) {
+            API.update_post(post_type, post_id, {'tags': {values: [{value: item.name, delete: true}]}})
+          }
+        }
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          API.update_post(post_type, post_id, {tags: {values: [{value: item.name}]}})
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+          masonGrid.masonry('layout')
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#tags-result-container').html(text);
+          masonGrid.masonry('layout')
+        },
+        onHideLayout: function () {
+          $('#tags-result-container').html("");
+          masonGrid.masonry('layout')
+        },
+        onShowLayout() {
+          masonGrid.masonry('layout')
         }
       }
-    },
-    callback: {
-      onClick: function(node, a, item, event){
-        API.update_post(post_type, post_id, {tags: {values:[{value:item.name}]}})
-        this.addMultiselectItemLayout(item)
-        event.preventDefault()
-        this.hideLayout();
-        this.resetInput();
-        masonGrid.masonry('layout')
-      },
-      onResult: function (node, query, result, resultCount) {
-        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#tags-result-container').html(text);
-        masonGrid.masonry('layout')
-      },
-      onHideLayout: function () {
-        $('#tags-result-container').html("");
-        masonGrid.masonry('layout')
-      },
-      onShowLayout (){
-        masonGrid.masonry('layout')
-      }
-    }
-  });
-  $("#create-tag-return").on("click", function () {
-    let tag = $("#new-tag").val()
-    Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name:tag})
-    API.update_post(post_type, post_id, {tags: {values:[{value:tag}]}})
-  })
+    });
+    $("#create-tag-return").on("click", function () {
+      let tag = $("#new-tag").val()
+      Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name: tag})
+      API.update_post(post_type, post_id, {tags: {values: [{value: tag}]}})
+    })
+  }
 
   function resetDetailsFields(){
     window.lodash.forOwn( field_settings, (field_options, field_key)=>{

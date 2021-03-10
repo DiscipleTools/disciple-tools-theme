@@ -38,6 +38,21 @@ else {
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
         disciple_tools();
+
+
+
+        /**
+         * Load Language Files
+         */
+        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
+    }
+    add_action( 'after_setup_theme', 'dt_theme_loaded', 5 );
+
+
+    /**
+     * Run migrations after theme is loaded
+     */
+    add_action( 'init', function (){
         /**
          * We want to make sure migrations are run on updates.
          *
@@ -49,14 +64,7 @@ else {
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
         }
-
-
-        /**
-         * Load Language Files
-         */
-        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
-    }
-    add_action( 'after_setup_theme', 'dt_theme_loaded', 5 );
+    } );
 
     /**
      * Returns the main instance of Disciple_Tools to prevent the need to use globals.
@@ -141,7 +149,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.1';
+            $this->version = '1.1.1';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';

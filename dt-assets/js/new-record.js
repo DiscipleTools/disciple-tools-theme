@@ -132,12 +132,16 @@ jQuery(function($) {
           accent: true,
           searchOnFocus: true,
           maxItem: 20,
-          template: function (query, item) {
-            return `<span dir="auto">${window.lodash.escape(item.name)} (#${window.lodash.escape( item.ID )})</span>`
+          template: window.TYPEAHEADS.contactListRowTemplate,
+          source: TYPEAHEADS.typeaheadPostsSource(post_type, field_key),
+          display: ["name", "label"],
+          templateValue: function() {
+            if (this.items[this.items.length - 1].label) {
+              return "{{label}}"
+            } else {
+              return "{{name}}"
+            }
           },
-          source: TYPEAHEADS.typeaheadPostsSource(post_type),
-          display: "name",
-          templateValue: "{{name}}",
           dynamic: true,
           multiselect: {
             matchOn: ["ID"],

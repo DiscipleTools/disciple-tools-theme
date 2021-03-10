@@ -30,7 +30,7 @@ function dt_setup_roles_and_permissions(){
             continue;
         }
         $role = get_role( $role_key );
-        if ( isset( $expected_roles[$role_key] ) ){
+        if ( $role && isset( $expected_roles[$role_key] ) ){
             //add permissions to roles
             foreach ( $expected_roles[$role_key]["permissions"] as $cap_key => $cap_grant ){
                 if ( empty( $cap_key ) ){
