@@ -188,10 +188,8 @@ jQuery(document).ready(function($) {
       let key = window.lodash.last(updatedContact[field_key]).key
       $(this).attr('id', key)
       if ( $(this).next('div.input-group-button').length === 1 ) {
-        console.log('present')
         $(this).parent().find('.channel-delete-button').data('key', key)
       } else {
-        console.log('new x')
         $(this).parent().append(`<div class="input-group-button">
             <button class="button alert delete-button-style input-height channel-delete-button delete-button" data-key="${window.lodash.escape( key )}" data-field="${window.lodash.escape( field_key )}">&times;</button>
         </div>`)
@@ -791,6 +789,19 @@ jQuery(document).ready(function($) {
     })
   }
 
+
+  let upgradeUrl = (url)=>{
+    if ( !url.includes("http")){
+      url = "https://" + url
+    }
+    if ( !url.startsWith(window.wpApiShare.template_dir)){
+      url = url.replace( 'http://', 'https://' )
+    }
+    return url
+  }
+
+  let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi
+  let protocolRegex = /^(?:https?:\/\/)?(?:www.)?/gi
   function resetDetailsFields(){
     window.lodash.forOwn( field_settings, (field_options, field_key)=>{
 
@@ -816,19 +827,43 @@ jQuery(document).ready(function($) {
             return window.lodash.escape(v.label);
           }).join(' / ')
         } else if ( field_options.type === 'communication_channel' ){
-          values_html = field_value.map(v=>{
+          field_value.forEach((v, index)=>{
+            if ( index > 0 ){
+              values_html += ', '
+            }
+            let value = _.escape(v.value)
+            if ( field_key === 'contact_phone' ){
+              values_html += `<a dir="auto" href="tel:${value}" title="${value}">${value}</a>`
+            } else if (field_key === "contact_email") {
+              values_html += `<a dir="auto" href="mailto:${value}" title="${value}">${value}</a>`
+            } else {
+              let validURL = new RegExp(urlRegex).exec(value)
+              let prefix = new RegExp(protocolRegex).exec(value)
+              if (validURL && prefix) {
+                let urlToDisplay = ""
+                if (field_options.hide_domain && field_options.hide_domain===true) {
+                  urlToDisplay = validURL[1] || value
+                } else {
+                  urlToDisplay = value.replace(prefix[0], "")
+                }
+                value = upgradeUrl(value)
+                value = `<a href="${_.escape(value)}" target="_blank" >${_.escape(urlToDisplay)}</a>`
+              }
+              values_html += value
+            }
+          })
+          let labels = field_value.map(v=>{
             return window.lodash.escape(v.value);
           }).join(', ')
+          $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${labels}">${values_html}</span>`)
+
         } else if ( ['connection'].includes(field_options.type) ){
           values_html = field_value.map(v=>{
             return window.lodash.escape(v.label);
           }).join(', ')
         }
-
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
-        if (field_key == "contact_phone") {
-          $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<a dir="auto" href="tel:${values_html}" title="${values_html}">${values_html}</span>`)
-        } else {
+        if (field_options.type !== 'communication_channel') {
           $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
         }
       }
