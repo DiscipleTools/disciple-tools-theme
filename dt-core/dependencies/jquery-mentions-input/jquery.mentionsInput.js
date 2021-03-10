@@ -441,7 +441,7 @@
 			if(!settings.allowRepeat) {
 				// Filter items that has already been mentioned
 				var mentionValues = $.map(mentionsCollection, function(index, mention) {
-					return _.get(mention, 'value');
+					return window.lodash.get(mention, 'value');
 				});
 				results = results.filter(function(result) {
 					return !mentionValues.includes(result.name);

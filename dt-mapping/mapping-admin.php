@@ -79,7 +79,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             global $dt_mapping;
             ?>
             <script>
-                let _ = window.lodash
                 function send_update(data) {
                     let options = {
                         type: 'POST',
@@ -1452,13 +1451,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         list_results.append(`<tr>
                             <td>
                                 <a class="open_next_drilldown"
-                                    data-parent="${_.escape( v.parent_id )}"
-                                    data-grid_id="${_.escape( v.grid_id )}"
-                                    style="cursor: pointer;">${_.escape( v.name )}
+                                    data-parent="${window.lodash.escape( v.parent_id )}"
+                                    data-grid_id="${window.lodash.escape( v.grid_id )}"
+                                    style="cursor: pointer;">${window.lodash.escape( v.name )}
                                 </a>
                             </td>
-                            <td>${_.escape( v.population_formatted )}</td>
-                            <td>${_.escape( v.grid_id )}</td>
+                            <td>${window.lodash.escape( v.population_formatted )}</td>
+                            <td>${window.lodash.escape( v.grid_id )}</td>
                         </tr>`)
                     })
 

@@ -4,7 +4,6 @@ let translations = window.mappingModule.mapping_module.translations
 
 let MAPPINGDATA = window.mappingModule.mapping_module
 
-_ = _ || window.lodash
 let openChart = null
 
 let mapFillColor = "rgb(217, 217, 217)"
@@ -42,7 +41,7 @@ function page_mapping_view( rest_endpoints_base = null ) {
         </div>
       </div>
       <hr id="map_hr_1" class="map_hr" style="">
-    
+
       <div id="data_type_list" class="small button-group data_type_list"></div>
 
 
@@ -57,8 +56,8 @@ function page_mapping_view( rest_endpoints_base = null ) {
       </div>
       <hr id="map_hr_2" class="map_hr">
     </div>
-    
-    <span id="refresh_data" class="refresh_data"><a onclick="get_data(true)">${_.escape( translations.refresh_data )}</a></span>
+
+    <span id="refresh_data" class="refresh_data"><a onclick="get_data(true)">${window.lodash.escape( translations.refresh_data )}</a></span>
   `);
 
   if ( MAPPINGDATA.data ){
@@ -87,10 +86,10 @@ function setCommonMapSettings( chart ) {
   // create tool tip
   let toolTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            ${_.escape(translations.population)}: {population}<br>
+                            ${window.lodash.escape(translations.population)}: {population}<br>
                             `;
   jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, vc) {
-    toolTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
+    toolTipContent += `${window.lodash.escape(vc.label)}: {${window.lodash.escape( vc.key )}}<br>`
   })
 
   template.tooltipHTML = toolTipContent
@@ -170,7 +169,7 @@ function setCommonMapSettings( chart ) {
 function setUpData( features, map_data ){
   jQuery.each( features, function(featureIndex, mapFeature ) {
     let grid_id =  mapFeature.properties.grid_id
-    let locationData =  _.get( map_data, `children[${grid_id}]` ) || _.get(map_data, `children[${mapFeature.id}]`)  || _.get( map_data, `${grid_id}.self` );
+    let locationData =  window.lodash.get( map_data, `children[${grid_id}]` ) || window.lodash.get(map_data, `children[${mapFeature.id}]`)  || window.lodash.get( map_data, `${grid_id}.self` );
     if ( locationData ) {
       mapFeature.properties.grid_id = locationData.grid_id
       mapFeature.properties.population = locationData.population
@@ -316,7 +315,7 @@ function location_grid_map( div, grid_id = 'world' ) {
           /* custom columns */
           let focus = MAPPINGDATA.settings.heatmap_focus
           jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
-            v[label.key] = _.get( MAPPINGDATA.data.custom_column_data, `[${v.grid_id}][${labelIndex}]`, 0 )
+            v[label.key] = window.lodash.get( MAPPINGDATA.data.custom_column_data, `[${v.grid_id}][${labelIndex}]`, 0 )
           })
 
           locations.push( v )
@@ -341,10 +340,10 @@ function location_grid_map( div, grid_id = 'world' ) {
 
         let circleTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            ${_.escape(translations.population)}: {population}<br>
+                            ${window.lodash.escape(translations.population)}: {population}<br>
                             `;
         jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, vc) {
-          circleTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
+          circleTipContent += `${window.lodash.escape(vc.label)}: {${window.lodash.escape( vc.key )}}<br>`
         })
         circle.tooltipHTML = circleTipContent
 
@@ -375,10 +374,10 @@ function data_type_list( div ) {
       hollow = ''
     }
     list.append(`
-      <a onclick="heatmap_focus_change( ${_.escape( i )}, '${MAPPINGDATA.settings.current_map}' )" 
-        class="button ${hollow}" 
-        id="${_.escape( v.key )}">
-        ${_.escape( v.label )}
+      <a onclick="heatmap_focus_change( ${window.lodash.escape( i )}, '${MAPPINGDATA.settings.current_map}' )"
+        class="button ${hollow}"
+        id="${window.lodash.escape( v.key )}">
+        ${window.lodash.escape( v.label )}
       </a>
     `)
   })

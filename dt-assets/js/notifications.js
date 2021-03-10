@@ -13,14 +13,14 @@ function get_new_notification_count() {
 setTimeout(get_new_notification_count, 2000)
 
 const notificationRead = notification_id => `
-  <a id="read-button-${_.escape( notification_id )}" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
-      onclick="mark_unread( ${_.escape( notification_id )} )">
+  <a id="read-button-${window.lodash.escape( notification_id )}" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
+      onclick="mark_unread( ${window.lodash.escape( notification_id )} )">
       <!--<i class="fi-minus hollow"></i>-->
    </a>
 `
 const notificationNew = notification_id => `
-  <a id="new-button-${_.escape( notification_id )}" class="new-button button small" style="border-radius:100px; margin: .7em 0 0;"
-     onclick="mark_viewed( ${_.escape( notification_id )} )">
+  <a id="new-button-${window.lodash.escape( notification_id )}" class="new-button button small" style="border-radius:100px; margin: .7em 0 0;"
+     onclick="mark_viewed( ${window.lodash.escape( notification_id )} )">
      <!--<i class="fi-check"></i>-->
   </a>
 `
@@ -68,9 +68,9 @@ function notification_template (id, note, is_new, pretty_time) {
 
         <div class="auto cell">
            ${note}<br>
-           <span><small><strong>${_.escape(pretty_time[0])}</strong> | ${_.escape(pretty_time[1])}</small></span>
+           <span><small><strong>${window.lodash.escape(pretty_time[0])}</strong> | ${window.lodash.escape(pretty_time[1])}</small></span>
         </div>
-        <div class="small-2 medium-1 cell padding-5 ${_.escape( label )}" id="toggle-area-${_.escape( id )}">
+        <div class="small-2 medium-1 cell padding-5 ${window.lodash.escape( label )}" id="toggle-area-${window.lodash.escape( id )}">
             ${button}
         </div>
       </div>
@@ -136,12 +136,12 @@ function get_notifications (all, reset) {
       (all === true && (all_offset === 0 || !all_offset )) ||
       all === false && (new_offset === 0 || !new_offset))
     { // determines if this is the first query (offset 0) and there is nothing returned.
-      jQuery('#notification-list').html(`<div class="cell center empty-notification-message">${_.escape( wpApiNotifications.translations["no-notifications"] )}</div>`)
+      jQuery('#notification-list').html(`<div class="cell center empty-notification-message">${window.lodash.escape( wpApiNotifications.translations["no-notifications"] )}</div>`)
       jQuery('#next-all').hide()
       jQuery('#next-new').hide()
     } else { // therefore if no data is returned, but this is not the first query, then just remove the option to load more content
       if (reset) {
-        jQuery('#notification-list').html(`<div class="cell center empty-notification-message">${_.escape( wpApiNotifications.translations["no-unread"] )}</div>`)
+        jQuery('#notification-list').html(`<div class="cell center empty-notification-message">${window.lodash.escape( wpApiNotifications.translations["no-unread"] )}</div>`)
       }
 
       jQuery('#next-all').hide()

@@ -130,12 +130,12 @@ jQuery( document ).ready( function() {
 	if ( typeof dt_multi_role_sections !== 'undefined' && typeof dt_multi_role_controls !== 'undefined' ) {
 
 		// Loop through the sections and append the template for each.
-		_.each( dt_multi_role_sections, function( data ) {
+		window.lodash.each( dt_multi_role_sections, function( data ) {
 			jQuery( '.members-tab-wrap' ).append( section_template( data ) );
 		} );
 
 		// Loop through the controls and append the template for each.
-		_.each( dt_multi_role_controls, function( data ) {
+		window.lodash.each( dt_multi_role_controls, function( data ) {
 			jQuery( '#members-tab-' + data.section + ' tbody' ).append( control_template( data ) );
 		} );
 	}

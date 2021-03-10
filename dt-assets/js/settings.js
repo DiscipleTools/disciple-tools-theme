@@ -78,8 +78,8 @@ if ( typeof dtMapbox === "undefined" ) {
       dropdownFilter: [{
         key: 'group',
         value: 'focus',
-        template: _.escape(window.wpApiShare.translations.regions_of_focus),
-        all: _.escape(window.wpApiShare.translations.all_locations),
+        template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
+        all: window.lodash.escape(window.wpApiShare.translations.all_locations),
       }],
       source: {
         focus: {
@@ -89,7 +89,7 @@ if ( typeof dtMapbox === "undefined" ) {
             data: {
               s: "{{query}}",
               filter: function () {
-                return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
               }
             },
             beforeSend: function (xhr) {
@@ -124,11 +124,11 @@ if ( typeof dtMapbox === "undefined" ) {
           add_location_grid( item.ID)
         },
         onReady(){
-          this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+          this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
           this.container
             .removeClass("filter")
             .find("." + this.options.selector.filterButton)
-            .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+            .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals.location_grid
@@ -199,14 +199,14 @@ $('#add_unavailable_dates').on('click', function () {
 let display_dates_unavailable = (list = [], first_run )=>{
   let date_unavailable_table = $('#unavailable-list')
   let rows = ``
-  list = _.orderBy( list, [ "start_date" ], "desc")
+  list = window.lodash.orderBy( list, [ "start_date" ], "desc")
   list.forEach(range=>{
     rows += `<tr>
-        <td>${_.escape(range.start_date)}</td>
-        <td>${_.escape(range.end_date)}</td>
+        <td>${window.lodash.escape(range.start_date)}</td>
+        <td>${window.lodash.escape(range.end_date)}</td>
         <td>
-            <button class="button hollow tiny alert remove_dates_unavailable" data-id="${_.escape(range.id)}" style="margin-bottom: 0">
-            <i class="fi-x"></i> ${_.escape( wpApiSettingsPage.translations.delete )}</button>
+            <button class="button hollow tiny alert remove_dates_unavailable" data-id="${window.lodash.escape(range.id)}" style="margin-bottom: 0">
+            <i class="fi-x"></i> ${window.lodash.escape( wpApiSettingsPage.translations.delete )}</button>
         </td>
       </tr>`
   })
@@ -229,7 +229,7 @@ let color_workload_buttons = (name) =>{
   if ( name ){
     let selected = $(`.status-button[name=${name}]`)
     selected.removeClass("hollow")
-    selected.css('background-color', _.get(wpApiSettingsPage, `workload_status_options.${name}.color`))
+    selected.css('background-color', window.lodash.get(wpApiSettingsPage, `workload_status_options.${name}.color`))
     selected.blur()
   }
 }

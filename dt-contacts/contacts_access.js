@@ -4,9 +4,9 @@ let post = window.detailsSettings.post_fields
 
 function setStatus(contact, openModal) {
   let statusSelect = $('#overall_status')
-  let status = _.get(contact, "overall_status.key")
-  let reasonLabel = _.get(contact, `reason_${status}.label`)
-  let statusColor = _.get(window.detailsSettings,
+  let status = window.lodash.get(contact, "overall_status.key")
+  let reasonLabel = window.lodash.get(contact, `reason_${status}.label`)
+  let statusColor = window.lodash.get(window.detailsSettings,
     `post_settings.fields.overall_status.default.${status}.color`
   )
   statusSelect.val(status)
@@ -38,8 +38,8 @@ function setStatus(contact, openModal) {
 
 function updateCriticalPath(key) {
   $('#seeker_path').val(key)
-  let seekerPathKeys = _.keys(post.seeker_path.default)
-  let percentage = (_.indexOf(seekerPathKeys, key) || 0) / (seekerPathKeys.length-1) * 100
+  let seekerPathKeys = window.lodash.keys(post.seeker_path.default)
+  let percentage = (window.lodash.indexOf(seekerPathKeys, key) || 0) / (seekerPathKeys.length-1) * 100
   $('#seeker-progress').css("width", `${percentage}%`)
 }
 
@@ -49,9 +49,9 @@ jQuery(document).ready(function($) {
 
   $( document ).on( 'dt_record_updated', function (e, response, request ){
     post = response
-    _.forOwn(request, (val, key)=>{
+    window.lodash.forOwn(request, (val, key)=>{
       if (key.indexOf("quick_button")>-1){
-        if (_.get(response, "seeker_path.key")){
+        if (window.lodash.get(response, "seeker_path.key")){
           updateCriticalPath(response.seeker_path.key)
         }
       }
@@ -61,7 +61,7 @@ jQuery(document).ready(function($) {
     if ( $('.update-needed').prop("checked") === true ){
       API.get_post("contacts",  post_id ).then(resp=>{
         post = resp
-        record_updated(_.get(resp, "requires_update") === true )
+        record_updated(window.lodash.get(resp, "requires_update") === true )
       }).catch(err => { console.error(err) })
     }
   }, false);
@@ -83,22 +83,22 @@ jQuery(document).ready(function($) {
         return `<div class="assigned-to-row" dir="auto">
           <span>
               <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-              ${_.escape( item.name )}
+              ${window.lodash.escape( item.name )}
           </span>
-          ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
+          ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
           ${ item.update_needed && item.update_needed > 0 ? `<span>
-            <img style="height: 12px;" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-            <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
+            <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+            <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
           </span>` : '' }
         </div>`
       },
       dynamic: true,
       hint: true,
-      emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
+      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function(node, a, item){
           API.update_post('contacts', post_id, {assigned_to: 'user-' + item.ID}).then(function (response) {
-            _.set(post, "assigned_to", response.assigned_to)
+            window.lodash.set(post, "assigned_to", response.assigned_to)
             setStatus(response)
             assigned_to_input.val(post.assigned_to.display)
             assigned_to_input.blur()
@@ -112,7 +112,7 @@ jQuery(document).ready(function($) {
           $('.assigned_to-result-container').html("");
         },
         onReady: function () {
-          if (_.get(post,  "assigned_to.display")){
+          if (window.lodash.get(post,  "assigned_to.display")){
             $('.js-typeahead-assigned_to').val(post.assigned_to.display)
           }
         }

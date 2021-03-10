@@ -13,21 +13,21 @@ jQuery(document).ready(function() {
 
     let html = `
       <div class="cell center">
-          <h3 >${ _.escape( translations.title ) }</h3>
+          <h3 >${ window.lodash.escape( translations.title ) }</h3>
       </div>
       <br><br>
       <div class="grid-x grid-padding-x grid-padding-y">
-        <h3 class="section-header">${ _.escape( translations.title_contacts ) }</h3>
+        <h3 class="section-header">${ window.lodash.escape( translations.title_contacts ) }</h3>
         <div class="cell center callout">
             <div class="grid-x">
                 <div class="medium-4 cell center ">
-                    <h5>${ _.escape( translations.title_waiting_on_accept ) }<br><span id="needs_accepted">0</span></h5>
+                    <h5>${ window.lodash.escape( translations.title_waiting_on_accept ) }<br><span id="needs_accepted">0</span></h5>
                 </div>
                 <div class="medium-4 cell center left-border-grey">
-                    <h5>${ _.escape( translations.title_waiting_on_update ) }<br><span id="updates_needed">0</span></h5>
+                    <h5>${ window.lodash.escape( translations.title_waiting_on_update ) }<br><span id="updates_needed">0</span></h5>
                 </div>
                 <div class="medium-4 cell center left-border-grey">
-                    <h5>${ _.escape( translations.label_active_contacts ) }<br><span id="contacts">0</span></h5>
+                    <h5>${ window.lodash.escape( translations.label_active_contacts ) }<br><span id="contacts">0</span></h5>
                 </div>
             </div>
         </div>`
@@ -37,15 +37,15 @@ jQuery(document).ready(function() {
         </div>`
       }
 
-      html += `<h3 class="section-header" style="margin-top:40px;">${ _.escape( translations.title_groups ) }</h3>
+      html += `<h3 class="section-header" style="margin-top:40px;">${ window.lodash.escape( translations.title_groups ) }</h3>
         <div class="cell">
             <div class="cell center callout">
                 <div class="grid-x">
                     <div class="medium-4 cell center">
-                        <h5>${ _.escape( translations.title_total_groups ) }<br><span id="total_groups">0</span></h5>
+                        <h5>${ window.lodash.escape( translations.title_total_groups ) }<br><span id="total_groups">0</span></h5>
                     </div>
                     <div class="medium-4 cell center left-border-grey">
-                        <h5>${ _.escape( translations.title_teams ) }<br><span id="teams">0</span></h5>
+                        <h5>${ window.lodash.escape( translations.title_teams ) }<br><span id="teams">0</span></h5>
                     </div>
                </div>
             </div>
