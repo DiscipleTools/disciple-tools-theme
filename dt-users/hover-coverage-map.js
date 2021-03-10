@@ -1,5 +1,4 @@
 "use strict";
-_ = _ || window.lodash
 
 jQuery(document).ready(function() {
   let chartDiv = jQuery('#chart')

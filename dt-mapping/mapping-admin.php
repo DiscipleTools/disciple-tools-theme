@@ -79,7 +79,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             global $dt_mapping;
             ?>
             <script>
-                let _ = window.lodash
                 function send_update(data) {
                     let options = {
                         type: 'POST',

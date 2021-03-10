@@ -1,5 +1,4 @@
 "use strict";
-_ = _ || window.lodash
 
 jQuery(document).ready(function() {
   jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${window.wp_js_object.base_slug}-menu`));

@@ -1,5 +1,4 @@
 "use strict";
-_ = _ || window.lodash
 let LISTDATA = null
 
 jQuery(document).ready(function() {
