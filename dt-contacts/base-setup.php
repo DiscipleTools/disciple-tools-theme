@@ -247,6 +247,14 @@ class DT_Contacts_Base {
                 "tile" => "details",
                 "customizable" => false
             ];
+            $fields["contact_other"] = [
+                "name" => __( 'Other Social Links', 'disciple_tools' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/socialmedia.svg",
+                "hide_domain" => false,
+                "type" => "communication_channel",
+                "tile" => "details",
+                "customizable" => false
+            ];
 
             $fields["relation"] = [
                 "name" => sprintf( _x( "Connections to other %s", 'connections to other records', 'disciple_tools' ), __( "Contacts", 'disciple_tools' ) ),
