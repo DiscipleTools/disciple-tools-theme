@@ -831,7 +831,7 @@ jQuery(document).ready(function($) {
             if ( index > 0 ){
               values_html += ', '
             }
-            let value = _.escape(v.value)
+            let value = window.lodash.escape(v.value)
             if ( field_key === 'contact_phone' ){
               values_html += `<a dir="auto" href="tel:${value}" title="${value}">${value}</a>`
             } else if (field_key === "contact_email") {
@@ -847,7 +847,7 @@ jQuery(document).ready(function($) {
                   urlToDisplay = value.replace(prefix[0], "")
                 }
                 value = upgradeUrl(value)
-                value = `<a href="${_.escape(value)}" target="_blank" >${_.escape(urlToDisplay)}</a>`
+                value = `<a href="${window.lodash.escape(value)}" target="_blank" >${window.lodash.escape(urlToDisplay)}</a>`
               }
               values_html += value
             }
