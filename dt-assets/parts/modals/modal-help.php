@@ -1,9 +1,6 @@
 <div class="reveal" id="help-modal" data-reveal>
     <?php
     $current_post_type = get_post_type();
-    if ( empty( $current_post_type ) ){
-        return;
-    }
     $post_fields = DT_Posts::get_post_field_settings( $current_post_type );
 
     /**
@@ -111,7 +108,7 @@
 
     <?php
     $url_path = dt_get_url_path();
-
+dt_write_log( $url_path );
     /**
      * Profile Settings Page
      */
