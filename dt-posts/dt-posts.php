@@ -689,7 +689,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $compact[] = [
                 "ID" => $post->ID,
-                "name" => $post->post_title
+                "name" => wp_specialchars_decode ( $post->post_title )
             ];
         }
 
