@@ -108,7 +108,7 @@
 
     <?php
     $url_path = dt_get_url_path();
-dt_write_log( $url_path );
+
     /**
      * Profile Settings Page
      */
