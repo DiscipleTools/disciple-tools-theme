@@ -182,6 +182,7 @@ class Disciple_Tools_Contacts_Transfer
 
         $args = [
             'method' => 'POST',
+            'timeout' => 20,
             'body' => [
                 'transfer_token' => $site['transfer_token'],
                 'contact_data' => [
