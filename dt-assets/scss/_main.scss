@@ -648,8 +648,9 @@ button.loader {
     margin-bottom: 10px;
 
     .typeahead__image_button {
-        padding-top: 8px;
+        padding-top: 3px;
         padding-bottom: 3px;
+        vertical-align: middle;
 
         img {
             min-width: 15px;

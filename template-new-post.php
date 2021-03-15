@@ -42,7 +42,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                     <div class="type-options">
                         <?php if ( isset( $post_settings["fields"]["type"]["default"] ) ) {
                             uasort( $post_settings["fields"]["type"]["default"], function ( $a, $b ){
-                                return $a['order'] ?? 100 <=> $b['order'] ?? 100;
+                                return ( $a['order'] ?? 100 ) <=> ( $b['order'] ?? 100 );
                             });
                         }
                         foreach ( $post_settings["fields"]["type"]["default"] as $option_key => $type_option ) {
@@ -79,6 +79,9 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                     <div class="form-fields" <?php echo esc_html( $force_type_choice ? "style=display:none" : "" ); ?>>
                         <?php foreach ( $post_settings["fields"] as $field_key => $field_settings ) {
                             if ( !empty( $field_settings["hidden"] ) && empty( $field_settings["custom_display"] ) ){
+                                continue;
+                            }
+                            if ( isset( $field_settings["in_create_form"] ) && $field_settings["in_create_form"] === false ){
                                 continue;
                             }
                             if ( !isset( $field_settings["tile"] ) ){
