@@ -2039,7 +2039,7 @@ class Disciple_Tools_Posts
             "post_type" => $post->post_type,
             "post_date_gmt" => $post->post_date_gmt,
             "post_date" => $post->post_date,
-            "post_title" => $post->post_title,
+            "post_title" => wp_specialchars_decode( $post->post_title ),
             "permalink" => get_permalink( $post->ID )
         ];
         if ( $post->post_type === "peoplegroups" ){
