@@ -26,7 +26,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     dt_print_details_bar(
         true,
         true,
-        current_user_can( "assign_any_contacts" ),
+        isset( $post_settings["requires_update"] ) && current_user_can( "assign_any_contacts" ),
         isset( $dt_post["requires_update"] ) && $dt_post["requires_update"] === true,
         in_array( $current_user_id, $following ),
         isset( $dt_post["assigned_to"]["id"] ) ? $dt_post["assigned_to"]["id"] == $current_user_id : false,

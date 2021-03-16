@@ -532,7 +532,7 @@ class DT_Duplicate_Checker_And_Merging {
 
 
     public function archive_template_action_bar_buttons( string $post_type ){
-        if ( !dt_is_module_enabled( "access_module" ) ){
+        if ( $post_type !== "contacts" || !dt_is_module_enabled( "access_module" ) ){
             return;
         }
         ?>
