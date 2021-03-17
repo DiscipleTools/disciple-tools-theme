@@ -689,7 +689,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $compact[] = [
                 "ID" => $post->ID,
-                "name" => $post->post_title
+                "name" => wp_specialchars_decode ( $post->post_title )
             ];
         }
 
@@ -911,15 +911,19 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "comment_date" => $comment->comment_date,
                 "comment_date_gmt" => $comment->comment_date_gmt,
                 "gravatar" => preg_replace( "/^http:/i", "https:", $url ),
-                "comment_content" => wp_kses( $comment->comment_content, self::$allowable_comment_tags),
+                "comment_content" => $comment->comment_content,
                 "user_id" => $comment->user_id,
                 "comment_type" => $comment->comment_type,
                 "comment_post_ID" => $comment->comment_post_ID
             ];
-            $response_body[] =$c;
+            $response_body[] = $c;
         }
 
         $response_body = apply_filters( "dt_filter_post_comments", $response_body, $post_type, $post_id );
+
+        foreach ( $response_body as &$comment ){
+            $comment["comment_content"] = wp_kses( $comment["comment_content"], self::$allowable_comment_tags);
+        }
 
         return [
             "comments" => $response_body,
