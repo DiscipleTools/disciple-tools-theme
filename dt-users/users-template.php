@@ -160,16 +160,21 @@ function dt_get_team_contacts( $user_id ) {
  *
  * @return array
  */
-function dt_get_site_notification_defaults() {
+function dt_get_site_notification_defaults(){
     $site_options = dt_get_option( 'dt_site_options' );
     $default_notifications = dt_get_site_options_defaults()["notifications"];
-    $notifications = apply_filters( "dt_get_site_notification_options", $site_options["notifications"] );
     //get translated value
-    foreach ($notifications['types'] as $notification_key => $value ){
+    foreach ( $site_options["notifications"]['types'] as $notification_key => &$value ){
         if ( isset( $default_notifications['types'][$notification_key]["label"] ) ){
-            $notifications['types'][$notification_key]["label"] = $default_notifications["types"][$notification_key]["label"];
+            $value["label"] = $default_notifications["types"][$notification_key]["label"];
         }
     }
+    foreach ( $site_options["notifications"]["channels"] as $channel_key => &$channel ){
+        if ( isset( $default_notifications['channels'][$channel_key]["label"] ) ){
+            $channel["label"] = $default_notifications["channels"][$channel_key]["label"];
+        }
+    }
+    $notifications = apply_filters( "dt_get_site_notification_options", $site_options["notifications"] );
 
     return $notifications;
 }
