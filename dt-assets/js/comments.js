@@ -73,7 +73,7 @@ jQuery(document).ready(function($) {
 
       if (field && field.includes("quick_button_")){
         if (window.detailsSettings){
-          field = window.lodash.get(window.detailsSettings,`post_fields[${item.meta_key}].name`)
+          field = window.lodash.get(window.detailsSettings,`post_settings.fields[${item.meta_key}].name`)
         }
         item.action = `<a class="revert-activity dt_tooltip" data-id="${window.lodash.escape( item.histid )}">
           <img class="revert-arrow-img" src="${commentsSettings.template_dir}/dt-assets/images/undo.svg">
