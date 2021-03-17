@@ -332,7 +332,7 @@ function close_all_lists(selection_id) {
               lng: results[0].geometry.location.lng(),
               lat: results[0].geometry.location.lat(),
               level: convert_level( results[0].types[0] ),
-              label: results[0].formatted_address,
+              label: window.mapbox_result_features[selection_id].description || results[0].formatted_address,
               source: 'user'
             }
           ]
