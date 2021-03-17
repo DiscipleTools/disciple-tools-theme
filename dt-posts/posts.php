@@ -1953,6 +1953,11 @@ class Disciple_Tools_Posts
         if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() && isset( $fields['location_grid_meta'] ) ) {
             $ids = dt_get_keys_map( $fields['location_grid'] ?? [], 'id' );
             foreach ( $fields['location_grid_meta'] as $meta ) {
+                foreach ( ( $fields['location_grid'] ?? [] ) as $index => $grid ){
+                    if ( (int) $grid["id"] === (int) $meta["grid_id"] ){
+                        $fields['location_grid'][$index]["matched_search"] = $meta["label"];
+                    }
+                }
                 if ( !in_array( (int) $meta['grid_id'], $ids ) ){
                     $fields['location_grid'][] = [
                         'id' => (int) $meta['grid_id'],

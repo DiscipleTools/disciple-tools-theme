@@ -824,7 +824,7 @@ jQuery(document).ready(function($) {
           }).join(', ')
         } else if ( ['location', 'location_meta' ].includes(field_options.type) ){
           values_html = field_value.map(v=>{
-            return window.lodash.escape(v.label);
+            return window.lodash.escape(v.matched_search || v.label);
           }).join(' / ')
         } else if ( field_options.type === 'communication_channel' ){
           field_value.forEach((v, index)=>{
