@@ -32,7 +32,7 @@ msgstr "Epic 404 - Nu a fost găsit"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "Pagina pe care o căutați nu a fost găsită sau a fost ștearsă"
 
-#: dt-contacts/base-setup.php:286
+#: dt-contacts/base-setup.php:294
 #: dt-groups/base-setup.php:156
 #: dt-users/template-user-management.php:78
 #: dt-users/user-management.php:100
@@ -56,10 +56,10 @@ msgstr "Vizualizați duplicatele"
 msgid "Search"
 msgstr "Căutare"
 
-#: dt-contacts/base-setup.php:538
 #: dt-contacts/base-setup.php:546
-#: dt-contacts/base-setup.php:563
-#: dt-contacts/base-setup.php:564
+#: dt-contacts/base-setup.php:554
+#: dt-contacts/base-setup.php:571
+#: dt-contacts/base-setup.php:572
 msgid "Shared with me"
 msgstr "Partajat cu mine"
 
@@ -128,7 +128,7 @@ msgstr "Creați un utilizator din acest contact"
 msgid "Link to an existing user"
 msgstr "Conectarea unui contact existent la un utilizator"
 
-#: dt-contacts/base-setup.php:356
+#: dt-contacts/base-setup.php:364
 msgid "Merge with another contact"
 msgstr "Asociați cu un alt contact"
 
@@ -204,7 +204,7 @@ msgstr "Data modificata"
 
 #: archive-template.php:410
 #: dt-contacts/base-setup.php:49
-#: dt-contacts/base-setup.php:252
+#: dt-contacts/base-setup.php:260
 #: dt-contacts/dmm-module.php:303
 #: dt-groups/base-setup.php:650
 #: dt-mapping/columns/add-contacts-column.php:59
@@ -265,7 +265,7 @@ msgstr "Notificări"
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
 #: dt-assets/functions/menu.php:76
-#: dt-assets/parts/modals/modal-help.php:157
+#: dt-assets/parts/modals/modal-help.php:154
 #: dt-assets/parts/nav-topbar.php:82
 #: template-notifications.php:59
 msgid "Settings"
@@ -305,7 +305,7 @@ msgstr "Acest contact reprezintă un utilizator."
 #: dt-contacts/access-module.php:411
 #: dt-metrics/groups/tree.php:86
 #: dt-metrics/personal/group-tree.php:87
-#: dt-posts/dt-posts.php:1388
+#: dt-posts/dt-posts.php:1392
 #: dt-users/template-user-management.php:74
 #: dt-users/template-user-management.php:159
 #: single-template.php:78
@@ -327,7 +327,7 @@ msgstr "Rețele sociale"
 msgid "Address"
 msgstr "Adresa"
 
-#: dt-assets/parts/modals/modal-help.php:129
+#: dt-assets/parts/modals/modal-help.php:126
 #: dt-contacts/base-setup.php:212
 #: dt-groups/base-setup.php:367
 #: dt-groups/base-setup.php:377
@@ -346,7 +346,7 @@ msgstr "Grupuri de oameni"
 msgid "Age"
 msgstr "Vârsta"
 
-#: dt-contacts/base-setup.php:264
+#: dt-contacts/base-setup.php:272
 #: template-settings.php:507
 msgid "Gender"
 msgstr "Gen"
@@ -430,7 +430,7 @@ msgid "Submit comment"
 msgstr "Trimite comentariul"
 
 #: dt-assets/parts/loop-activity-comment.php:8
-#: dt-assets/parts/modals/modal-help.php:68
+#: dt-assets/parts/modals/modal-help.php:65
 msgid "Comments and Activity"
 msgstr "Comentarii și activitate"
 
@@ -458,8 +458,8 @@ msgstr "Ștergeți comentariul:"
 #: dt-assets/parts/loop-activity-comment.php:134
 #: dt-assets/parts/loop-activity-comment.php:181
 #: dt-assets/parts/merge-details.php:28
-#: dt-assets/parts/modals/modal-help.php:179
-#: dt-assets/parts/modals/modal-help.php:204
+#: dt-assets/parts/modals/modal-help.php:176
+#: dt-assets/parts/modals/modal-help.php:201
 #: dt-assets/parts/modals/modal-revert.php:15
 #: dt-assets/parts/modals/modal-share.php:50
 #: dt-assets/parts/modals/modal-tasks.php:46
@@ -530,7 +530,7 @@ msgstr "Statutul grupului"
 
 #: dt-contacts/user-module.php:102
 #: single-template.php:340
-#: template-new-post.php:108
+#: template-new-post.php:111
 msgid "This is required"
 msgstr "Acest lucru este necesar"
 
@@ -588,7 +588,7 @@ msgstr "Ajutor"
 msgid "Ongoing Meetings"
 msgstr "Întâlniri în curs"
 
-#: dt-contacts/base-setup.php:275
+#: dt-contacts/base-setup.php:283
 #: dt-groups/base-setup.php:109
 msgid "Requires Update"
 msgstr "Necesită actualizare"
@@ -633,7 +633,7 @@ msgstr "Serviciu"
 msgid "Home"
 msgstr "Acasă"
 
-#: dt-contacts/base-setup.php:449
+#: dt-contacts/base-setup.php:457
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:469
 #: dt-groups/base-setup.php:733
@@ -705,25 +705,25 @@ msgstr "Transferați acest contact către:"
 msgid "Confirm Transfer"
 msgstr "Confirmați transferul"
 
-#: dt-contacts/contacts-transfer.php:207
+#: dt-contacts/contacts-transfer.php:208
 msgid "Unknown error."
 msgstr "Eroare necunoscută."
 
-#: dt-contacts/contacts-transfer.php:216
+#: dt-contacts/contacts-transfer.php:217
 msgid "Minor transfer error."
 msgstr "Eroare de transfer minoră."
 
-#: dt-contacts/contacts-transfer.php:363
-#: dt-contacts/contacts-transfer.php:381
-#: dt-contacts/contacts-transfer.php:398
+#: dt-contacts/contacts-transfer.php:364
+#: dt-contacts/contacts-transfer.php:382
+#: dt-contacts/contacts-transfer.php:399
 msgid "Transfer Bot"
 msgstr "Transfer Bot"
 
-#: dt-contacts/contacts-transfer.php:383
+#: dt-contacts/contacts-transfer.php:384
 msgid "Contact transferred from site"
 msgstr "Contactul a fost transferat de pe site"
 
-#: dt-contacts/contacts-transfer.php:390
+#: dt-contacts/contacts-transfer.php:391
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr "ALERTĂ: Posibil contact duplicat dintr-un transfer anterior."
 
@@ -1040,7 +1040,7 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "Șters %1$s: %2$s"
 
-#: dt-posts/dt-posts.php:1219
+#: dt-posts/dt-posts.php:1223
 msgid "Post already shared with user."
 msgstr "Postare deja trimisă utilizatorului."
 
@@ -1144,7 +1144,7 @@ msgstr "Botezatorii"
 
 #: dt-contacts/access-module.php:291
 #: dt-contacts/base-setup.php:128
-#: dt-contacts/base-setup.php:513
+#: dt-contacts/base-setup.php:521
 #: dt-metrics/metrics.php:80
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1439,7 +1439,7 @@ msgstr "Grupul primar(mamă)"
 msgid "Peer Group"
 msgstr "Grupul de acelaș nivel"
 
-#: template-new-post.php:121
+#: template-new-post.php:124
 msgid "Save and continue editing"
 msgstr "Salvați și continuați editarea"
 
@@ -1859,7 +1859,7 @@ msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
 msgstr "Contactul a fost atribuit cuiva, dar nu a fost încă acceptat de acea persoană."
 
-#: dt-contacts/base-setup.php:287
+#: dt-contacts/base-setup.php:295
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "Contactul progresează și / sau este actualizat continuu."
@@ -1869,7 +1869,7 @@ msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "Acest contact este în prezent în așteptare (adică în vacanță sau nu răspunde)."
 
-#: dt-contacts/base-setup.php:293
+#: dt-contacts/base-setup.php:301
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
 msgstr "Acest contact a făcut cunoscut faptul că nu mai vrea să continue sau ați decis să nu continuați cu el / ea."
@@ -2148,7 +2148,7 @@ msgstr "Scrieți comentariul sau nota dvs. aici"
 #: archive-template.php:33
 #: archive-template.php:108
 #: archive-template.php:371
-#: dt-contacts/base-setup.php:317
+#: dt-contacts/base-setup.php:325
 #: dt-core/global-functions.php:419
 #: dt-core/global-functions.php:466
 #: dt-core/global-functions.php:509
@@ -2264,8 +2264,8 @@ msgstr "Denumirea filtrului"
 #: dt-contacts/access-module.php:476
 #: dt-contacts/access-module.php:507
 #: dt-contacts/access-module.php:535
-#: dt-contacts/base-setup.php:373
-#: dt-contacts/base-setup.php:408
+#: dt-contacts/base-setup.php:381
+#: dt-contacts/base-setup.php:416
 #: dt-contacts/user-module.php:115
 #: dt-contacts/user-module.php:167
 #: single-template.php:345
@@ -2274,7 +2274,7 @@ msgstr "Denumirea filtrului"
 #: template-merge-details.php:121
 #: template-merge-details.php:132
 #: template-merge-details.php:169
-#: template-new-post.php:120
+#: template-new-post.php:123
 msgid "Cancel"
 msgstr "Anulare"
 
@@ -2431,7 +2431,7 @@ msgid "No note set"
 msgstr "Nicio notă setată"
 
 #: dt-assets/functions/enqueue-scripts.php:311
-#: dt-contacts/base-setup.php:488
+#: dt-contacts/base-setup.php:496
 msgctxt "All records"
 msgid "All %s"
 msgstr "Toate % s"
@@ -2447,17 +2447,17 @@ msgstr "Disciple.Tools"
 msgid "Merge"
 msgstr "Combină"
 
-#: dt-assets/parts/modals/modal-help.php:31
+#: dt-assets/parts/modals/modal-help.php:28
 msgctxt "Optional Documentation"
 msgid "User workload status icons legend:"
 msgstr "Legenda prin simboluri de stare a sarcinii de lucru a utilizatorului:"
 
-#: dt-assets/parts/modals/modal-help.php:17
+#: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid "These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
 msgstr "Aceste butoane de acțiune rapidă sunt aici pentru a vă ajuta să actualizați mai repede înregistrarea contactelor și să țineți cont de câte ori a fost efectuată fiecare acțiune."
 
-#: dt-assets/parts/modals/modal-help.php:18
+#: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid "For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.\n"
 "                This action will also change the 'Seeker Path' to 'Contact Attempted'."
@@ -2494,67 +2494,67 @@ msgctxt "Optional Documentation"
 msgid "Connections this group has with other groups in this system."
 msgstr "Conexiuni pe care acest grup le are cu alte grupuri din acest sistem."
 
-#: dt-assets/parts/modals/modal-help.php:52
+#: dt-assets/parts/modals/modal-help.php:49
 msgctxt "Optional Documentation"
 msgid "Four Fields"
 msgstr "Patru Câmpuri"
 
-#: dt-assets/parts/modals/modal-help.php:53
+#: dt-assets/parts/modals/modal-help.php:50
 msgctxt "Optional Documentation"
 msgid "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
 msgstr "Există 5 pătrate în diagrama Patru câmpuri. Începând din cadranul din stânga sus și mergând în sensul acelor de ceasornic, iar al cincilea fiind în mijloc, ele reprezintă:"
 
-#: dt-assets/parts/modals/modal-help.php:69
+#: dt-assets/parts/modals/modal-help.php:66
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
 msgstr "Aici puteți înregistra note de la întâlniri și conversații."
 
-#: dt-assets/parts/modals/modal-help.php:70
+#: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid "Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
 msgstr "Tastați @ și numele unui utilizator pentru a le menționa într-un comentariu. Acest utilizator va primi apoi o notificare."
 
-#: dt-assets/parts/modals/modal-help.php:71
+#: dt-assets/parts/modals/modal-help.php:68
 msgctxt "Optional Documentation"
 msgid "This section also includes the history of activity, such as when the contact or group status became active etc."
 msgstr "Această secțiune include, de asemenea, istoricul activității, cum ar fi când starea contactului sau a grupului a devenit activă etc."
 
-#: dt-assets/parts/modals/modal-help.php:72
+#: dt-assets/parts/modals/modal-help.php:69
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr "Puteți filtra această secțiune fie prin „Toate”, „Comentarii” sau „Activitate”."
 
-#: dt-assets/parts/modals/modal-help.php:83
+#: dt-assets/parts/modals/modal-help.php:80
 msgctxt "Optional Documentation"
 msgid "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter."
 msgstr "Utilizați aceste filtre pentru a vă concentra asupra contactelor sau grupurilor de care sunteți responsabil. Dacă filtrele implicite nu se potrivesc nevoilor dvs., puteți crea propriul filtru personalizat."
 
-#: dt-assets/parts/modals/modal-help.php:88
+#: dt-assets/parts/modals/modal-help.php:85
 msgctxt "Optional Documentation"
 msgid "Contacts List Tile"
 msgstr "Blocul Lista de Contacte "
 
-#: dt-assets/parts/modals/modal-help.php:89
+#: dt-assets/parts/modals/modal-help.php:86
 msgctxt "Optional Documentation"
 msgid "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more."
 msgstr "Lista dvs. de contacte va apărea aici. Ori de câte ori filtrați contactele, lista va fi modificată și în această secțiune. Puteți sorta contactele după cele mai noi, cele mai vechi, cele mai recent modificate și cel mai recent modificate. Dacă aveți o listă lungă de contacte, acestea nu se vor încărca simultan, astfel încât să faceți clic pe butonul „Încărcați mai multe contacte” din partea de jos a listei vă va permite să încărcați mai multe."
 
-#: dt-assets/parts/modals/modal-help.php:94
+#: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid "Groups List Tile"
 msgstr "Blocul Lista de Grupuri"
 
-#: dt-assets/parts/modals/modal-help.php:95
+#: dt-assets/parts/modals/modal-help.php:92
 msgctxt "Optional Documentation"
 msgid "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more."
 msgstr "Lista dvs. de grupuri va apărea aici. Ori de câte ori filtrați grupuri, lista va fi modificată și în această secțiune. Puteți sorta grupurile după cele mai noi, cele mai vechi, cele mai recent modificate și cel mai recent modificate. Dacă aveți o listă lungă de grupuri, acestea nu se vor încărca toate simultan, astfel încât să faceți clic pe butonul „Încărcați mai multe grupuri” din partea de jos a listei vă va permite să încărcați mai mult."
 
-#: dt-assets/parts/modals/modal-help.php:101
+#: dt-assets/parts/modals/modal-help.php:98
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show closed contacts in the list."
 msgstr "Utilizați acest comutator pentru a afișa sau nu a afișa contactele închise în listă."
 
-#: dt-assets/parts/modals/modal-help.php:107
+#: dt-assets/parts/modals/modal-help.php:104
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show inactive groups in the list."
 msgstr "Utilizați acest comutator pentru a afișa sau nu a afișa grupuri inactive din listă."
@@ -2569,114 +2569,114 @@ msgctxt "Optional Documentation"
 msgid "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created."
 msgstr "După ce ați scris numele contactului, completați cât mai multe câmpuri posibile, înainte de a da clic pe „Salvați și continuați editarea”. Pe ecranul următor puteți edita și adăuga mai multe informații despre acest nou contact care tocmai a fost creat."
 
-#: dt-assets/parts/modals/modal-help.php:121
+#: dt-assets/parts/modals/modal-help.php:118
 msgctxt "Optional Documentation"
 msgid "Your Profile"
 msgstr "Profilul tau"
 
-#: dt-assets/parts/modals/modal-help.php:122
+#: dt-assets/parts/modals/modal-help.php:119
 msgctxt "Optional Documentation"
 msgid "In this area you can see your user profile."
 msgstr "În această zonă puteți vedea profilul dvs. de utilizator."
 
-#: dt-assets/parts/modals/modal-help.php:123
+#: dt-assets/parts/modals/modal-help.php:120
 msgctxt "Optional Documentation"
 msgid "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
 msgstr "Nu vi se cere să completați niciunul dintre aceste câmpuri de profil. Acestea sunt opționale pentru a satisface nevoile echipei dvs."
 
-#: dt-assets/parts/modals/modal-help.php:124
+#: dt-assets/parts/modals/modal-help.php:121
 msgctxt "Optional Documentation"
 msgid "By clicking 'Edit', you will be able adjust things like the language that this system operates in."
 msgstr "Dând clic pe „Editați”, veți putea ajusta lucruri precum limba în care funcționează acest sistem."
 
-#: dt-assets/parts/modals/modal-help.php:130
+#: dt-assets/parts/modals/modal-help.php:127
 msgctxt "Optional Documentation"
 msgid "These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
 msgstr "Acestea sunt domeniile de care sunteți responsabil. Dacă faceți clic pe butonul „Adăugați”, va apărea o listă de locații din care să alegeți."
 
-#: dt-assets/parts/modals/modal-help.php:135
+#: dt-assets/parts/modals/modal-help.php:132
 msgctxt "Optional Documentation"
 msgid "Your Notifications"
 msgstr "Notificările dvs."
 
-#: dt-assets/parts/modals/modal-help.php:136
+#: dt-assets/parts/modals/modal-help.php:133
 msgctxt "Optional Documentation"
 msgid "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
 msgstr "Veți primi notificări web și notificări prin e-mail pe baza preferințelor dvs. de notificare. Pentru a vă schimba preferința, faceți clic pe butoanele de comutare."
 
-#: dt-assets/parts/modals/modal-help.php:138
+#: dt-assets/parts/modals/modal-help.php:135
 msgctxt "Optional Documentation"
 msgid "Notifications Turned On: The toggle will appear blue."
 msgstr "Notificări activate: Comutatorul va apărea albastru."
 
-#: dt-assets/parts/modals/modal-help.php:139
+#: dt-assets/parts/modals/modal-help.php:136
 msgctxt "Optional Documentation"
 msgid "Notifications Turned Off: The toggle will appear grey."
 msgstr "Notificări dezactivate: comutatorul va apărea gri."
 
-#: dt-assets/parts/modals/modal-help.php:141
+#: dt-assets/parts/modals/modal-help.php:138
 msgctxt "Optional Documentation"
 msgid "Some of the types of notifications cannot be adjusted because they are required by the system."
 msgstr "Unele dintre tipurile de notificări nu pot fi ajustate deoarece sunt solicitate de sistem."
 
-#: dt-assets/parts/modals/modal-help.php:142
+#: dt-assets/parts/modals/modal-help.php:139
 msgctxt "Optional Documentation"
 msgid "Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
 msgstr "Ajustați dacă doriți să vedeți notificări despre noi comentarii, modificări ale informațiilor de contact, indicatori de referință de contact și valori de sănătate de grup și dacă veți primi o notificare pentru orice actualizare care se întâmplă în sistem."
 
-#: dt-assets/parts/modals/modal-help.php:150
+#: dt-assets/parts/modals/modal-help.php:147
 msgctxt "Optional Documentation"
 msgid "Notifications Page"
 msgstr "Pagina de notificări"
 
-#: dt-assets/parts/modals/modal-help.php:151
+#: dt-assets/parts/modals/modal-help.php:148
 msgctxt "Optional Documentation"
 msgid "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
 msgstr "În această pagină de notificări puteți citi actualizări pentru utilizatori și grupuri. Se afișează notificările despre activitate în înregistrările dvs."
 
-#: dt-assets/parts/modals/modal-help.php:152
+#: dt-assets/parts/modals/modal-help.php:149
 msgctxt "Optional Documentation"
 msgid "All / Unread"
 msgstr "Toate / Necitite"
 
-#: dt-assets/parts/modals/modal-help.php:153
+#: dt-assets/parts/modals/modal-help.php:150
 msgctxt "Optional Documentation"
 msgid "Click the 'All' button to show the full list of all of your notifications."
 msgstr "Faceți clic pe butonul „Toate” pentru a afișa lista completă a tuturor notificărilor dvs."
 
-#: dt-assets/parts/modals/modal-help.php:154
+#: dt-assets/parts/modals/modal-help.php:151
 msgctxt "Optional Documentation"
 msgid "Click the 'Unread' button to show the list of all of your unread notifications."
 msgstr "Faceți clic pe butonul „Necitite” pentru a afișa lista tuturor notificărilor dvs. necitite."
 
-#: dt-assets/parts/modals/modal-help.php:156
+#: dt-assets/parts/modals/modal-help.php:153
 msgctxt "Optional Documentation"
 msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
 msgstr "Dacă nu doriți să faceți clic pe fiecare cerc completat din partea dreaptă a fiecărui rând pentru a indica faptul că notificarea a fost citită, faceți clic pe linkul „Marcați toate ca citite” din partea de sus pentru a ajusta rapid toate mesajele ca fiind citite."
 
-#: dt-assets/parts/modals/modal-help.php:158
+#: dt-assets/parts/modals/modal-help.php:155
 msgctxt "Optional Documentation"
 msgid "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
 msgstr "Faceți clic pe linkul „Setări” pentru a accesa zona de setări a notificărilor pentru a regla dacă doriți să vedeți notificări despre comentarii noi, modificări ale informațiilor de contact, etape de contact și indicatori de sănătate de grup și dacă veți primi o notificare pentru orice actualizare care se întâmplă sistemul."
 
-#: dt-assets/parts/modals/modal-help.php:163
+#: dt-assets/parts/modals/modal-help.php:160
 msgctxt "Optional Documentation"
 msgid "Duplicate Contact page"
 msgstr "Pagină de contact duplicat"
 
-#: dt-assets/parts/modals/modal-help.php:164
+#: dt-assets/parts/modals/modal-help.php:161
 msgctxt "Optional Documentation"
 msgid "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
 msgstr "Această pagină de contact duplicat este locul în care puteți revizui, refuza sau îmbina contactele care au fost preluate de sistem (verificând numele, adresa de e-mail și telefonul acestora) ca fiind duplicate ale altui contact deja existent."
 
-#: dt-assets/parts/modals/modal-help.php:185
-#: dt-assets/parts/modals/modal-help.php:210
+#: dt-assets/parts/modals/modal-help.php:182
+#: dt-assets/parts/modals/modal-help.php:207
 msgctxt "Optional Documentation"
 msgid "Need more help?"
 msgstr "Ai nevoie de mai mult ajutor?"
 
-#: dt-assets/parts/modals/modal-help.php:186
-#: dt-assets/parts/modals/modal-help.php:211
+#: dt-assets/parts/modals/modal-help.php:183
+#: dt-assets/parts/modals/modal-help.php:208
 msgctxt "Optional Documentation"
 msgid "Read the documentation"
 msgstr "Citiți documentația"
@@ -2724,7 +2724,7 @@ msgid "Select the main person who is responsible for reporting on this contact."
 msgstr "Selectați persoana principală care este responsabilă pentru raportarea acestui contact."
 
 #: dt-contacts/access-module.php:153
-#: dt-contacts/base-setup.php:281
+#: dt-contacts/base-setup.php:289
 msgid "Contact Status"
 msgstr "Statutul  Contactului"
 
@@ -2798,11 +2798,11 @@ msgstr "În Biserică / Grup"
 msgid "Starting Churches"
 msgstr "Biserici începătoare"
 
-#: dt-contacts/base-setup.php:267
+#: dt-contacts/base-setup.php:275
 msgid "Male"
 msgstr "Bărbat"
 
-#: dt-contacts/base-setup.php:268
+#: dt-contacts/base-setup.php:276
 msgid "Female"
 msgstr "Femeie"
 
@@ -2927,7 +2927,7 @@ msgctxt "Optional Documentation"
 msgid "A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags."
 msgstr "O modalitate utilă de a grupa elemente conexe și poate ajuta la gruparea contactelor asociate cu caracteristici demne de remarcat. de exemplu. proprietar de afaceri, iubitor de sport. Contactele pot fi, de asemenea, filtrate folosind aceste etichete."
 
-#: dt-contacts/base-setup.php:253
+#: dt-contacts/base-setup.php:261
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Relația pe care o are acest contact cu un alt contact din sistem."
@@ -3334,14 +3334,14 @@ msgstr "Ați setat această sarcină la %1$s: %2$s"
 #: dt-contacts/access-module.php:457
 #: dt-contacts/access-module.php:488
 #: dt-contacts/access-module.php:519
-#: dt-contacts/base-setup.php:387
+#: dt-contacts/base-setup.php:395
 msgid "Choose an option:"
 msgstr "Alege o opțiune:"
 
 #: dt-contacts/access-module.php:479
 #: dt-contacts/access-module.php:510
 #: dt-contacts/access-module.php:538
-#: dt-contacts/base-setup.php:411
+#: dt-contacts/base-setup.php:419
 msgid "Confirm"
 msgstr "Confirmați"
 
@@ -3545,11 +3545,11 @@ msgstr "S"
 msgid "Mark as complete"
 msgstr "Marcați-o ca fiind completată"
 
-#: dt-assets/parts/modals/modal-help.php:37
+#: dt-assets/parts/modals/modal-help.php:34
 msgid "2 contacts need an update"
 msgstr "2 contacte au nevoie de o actualizare"
 
-#: dt-assets/parts/modals/modal-help.php:16
+#: dt-assets/parts/modals/modal-help.php:13
 msgid "Quick Action Buttons"
 msgstr "Butoane de Acțiune Rapidă"
 
@@ -3559,22 +3559,22 @@ msgstr "Butoane de Acțiune Rapidă"
 msgid "Members"
 msgstr "Membri"
 
-#: dt-assets/parts/modals/modal-help.php:82
+#: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid "Default and Custom Filters Tile"
 msgstr "Blocuri de filtre implicite și personalizate"
 
-#: dt-assets/parts/modals/modal-help.php:100
+#: dt-assets/parts/modals/modal-help.php:97
 msgctxt "Optional Documentation"
 msgid "Closed Contacts Switch"
 msgstr "Comutator Contactele Închise"
 
-#: dt-assets/parts/modals/modal-help.php:106
+#: dt-assets/parts/modals/modal-help.php:103
 msgctxt "Optional Documentation"
 msgid "Inactive Groups Switch"
 msgstr "Comutator Grupuri Inactive"
 
-#: dt-assets/parts/modals/modal-help.php:155
+#: dt-assets/parts/modals/modal-help.php:152
 #: template-notifications.php:57
 msgid "Mark all as read"
 msgstr "Marcheaza totul ca fiind citit"
@@ -3583,7 +3583,7 @@ msgstr "Marcheaza totul ca fiind citit"
 msgid "Task Type"
 msgstr "Tipul activității"
 
-#: dt-contacts/base-setup.php:282
+#: dt-contacts/base-setup.php:290
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
 msgstr "Starea Contactului descrie progresul în comunicarea cu contactul."
@@ -3694,15 +3694,15 @@ msgstr "Credincios"
 msgid "Leader"
 msgstr "Lider"
 
-#: dt-contacts/contacts-transfer.php:551
+#: dt-contacts/contacts-transfer.php:552
 msgid "redacted email"
 msgstr "e-mail redactat"
 
-#: dt-contacts/contacts-transfer.php:552
+#: dt-contacts/contacts-transfer.php:553
 msgid "redacted name"
 msgstr "nume redactat"
 
-#: dt-contacts/contacts-transfer.php:553
+#: dt-contacts/contacts-transfer.php:554
 msgid "redacted"
 msgstr "redactat"
 
@@ -3874,7 +3874,7 @@ msgstr "Arborele meu ca Trainer"
 msgid "My Groups Tree"
 msgstr "Arborele grupurilor mele"
 
-#: dt-contacts/base-setup.php:353
+#: dt-contacts/base-setup.php:361
 msgid "See duplicates"
 msgstr "Vedeți duplicatele"
 
@@ -3894,7 +3894,7 @@ msgstr "Nu s-au găsit duplicate."
 msgid "Languages"
 msgstr "Limbi"
 
-#: dt-contacts/contacts-transfer.php:238
+#: dt-contacts/contacts-transfer.php:239
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "Acest contact a fost transferat la % s pentru urmărire ulterioară."
 
@@ -3914,7 +3914,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s a fuzionat cu %2$s în această înregistrare"
 
-#: dt-posts/dt-posts.php:993
+#: dt-posts/dt-posts.php:997
 msgid "D.T System"
 msgstr "D.T System"
 
@@ -4001,10 +4001,6 @@ msgstr "Atribuiți la"
 #: archive-template.php:359
 msgid "Share with:"
 msgstr "Împărtășiți cu:"
-
-#: archive-template.php:269
-msgid "Request Update"
-msgstr "Solicitați actualizarea"
 
 #: archive-template.php:392
 msgid "See More Options"
@@ -4114,30 +4110,30 @@ msgstr "Doar eu"
 msgid "Locations or Address"
 msgstr "Locații sau adresă"
 
-#: dt-contacts/base-setup.php:252
+#: dt-contacts/base-setup.php:260
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Conexiuni cu alte % s"
 
-#: dt-contacts/base-setup.php:348
+#: dt-contacts/base-setup.php:356
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Schimbați tipul % s"
 
-#: dt-contacts/base-setup.php:482
+#: dt-contacts/base-setup.php:490
 msgid "Default Filters"
 msgstr "Filtre implicite"
 
-#: dt-contacts/base-setup.php:492
+#: dt-contacts/base-setup.php:500
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Toate % s care le pot vedea"
 
-#: dt-contacts/base-setup.php:502
+#: dt-contacts/base-setup.php:510
 msgid "My Recently Viewed"
 msgstr "Vizualizate recent"
 
-#: dt-contacts/base-setup.php:507
+#: dt-contacts/base-setup.php:515
 msgid "Last 30 viewed"
 msgstr "Ultimele 30 vizualizate"
 
@@ -4235,7 +4231,7 @@ msgstr "Hărțile contactelor"
 msgid "Groups Maps"
 msgstr "Hărțile grupurilor"
 
-#: dt-posts/dt-posts.php:1389
+#: dt-posts/dt-posts.php:1393
 #: single-template.php:119
 msgid "Details"
 msgstr "Detalii"
@@ -4311,7 +4307,7 @@ msgstr "Meniul"
 msgid "Select the %s type:"
 msgstr "Selectați tipul % s:"
 
-#: template-new-post.php:114
+#: template-new-post.php:117
 msgid "Show all fields"
 msgstr "Afișați toate câmpurile"
 
@@ -4323,26 +4319,26 @@ msgstr "start"
 msgid "end"
 msgstr "Sfârșit"
 
-#: dt-contacts/base-setup.php:341
-#: dt-contacts/base-setup.php:368
+#: dt-contacts/base-setup.php:349
+#: dt-contacts/base-setup.php:376
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "Arhivează % s"
 
-#: dt-contacts/base-setup.php:369
+#: dt-contacts/base-setup.php:377
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Sigur doriți să arhivați % s?"
 
-#: dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:384
 msgid "Archive"
 msgstr "Arhivează"
 
-#: dt-contacts/base-setup.php:616
+#: dt-contacts/base-setup.php:624
 msgid "This %s is archived"
 msgstr "Acest % s este arhivat"
 
-#: dt-contacts/base-setup.php:618
+#: dt-contacts/base-setup.php:626
 msgid "Restore"
 msgstr "Restabiliți"
 
@@ -4361,7 +4357,7 @@ msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "Respingeți toate asemănprile pentru% s"
 
-#: dt-contacts/base-setup.php:291
+#: dt-contacts/base-setup.php:299
 msgid "Archived"
 msgstr "Arhivate"
 
@@ -4412,25 +4408,12 @@ msgstr "Disciple Tools este un sistem de gestionare a Mișcărilor de Multiplica
 msgid "https://github.com/DiscipleTools"
 msgstr "https://github.com/DiscipleTools"
 
-#: dt-notifications/notifications.php:420
-msgid "over %s year ago"
-msgid_plural "over %s years ago"
-msgstr[0] "acum % s  an în urmă\n"
-"Plural: acum  % s ani în urmă"
-msgstr[1] "acum  % s ani în urmă"
-msgstr[2] ""
-
 #: archive-template.php:34
 #: archive-template.php:35
 #: archive-template.php:109
 #: archive-template.php:110
 msgid "Advanced Search"
 msgstr "Căutare avansată"
-
-#: archive-template.php:61
-#: archive-template.php:134
-msgid "Choose which fields search"
-msgstr "Alegeți câmpurile de căutare"
 
 #: archive-template.php:70
 #: archive-template.php:143
@@ -4440,5 +4423,9 @@ msgstr "Căutați în toate câmpurile"
 #: archive-template.php:61
 #: archive-template.php:134
 msgid "Choose which fields to search"
+msgstr ""
+
+#: dt-contacts/base-setup.php:251
+msgid "Other Social Links"
 msgstr ""
 

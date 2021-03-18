@@ -33,7 +33,7 @@ msgstr "Greška 404 - Nije pronađeno"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "Stranica koju ste tražili nije pronađena ili je izbrisana"
 
-#: dt-contacts/base-setup.php:286
+#: dt-contacts/base-setup.php:294
 #: dt-groups/base-setup.php:156
 #: dt-users/template-user-management.php:78
 #: dt-users/user-management.php:100
@@ -57,10 +57,10 @@ msgstr "Pogledajte duplikate"
 msgid "Search"
 msgstr "Potražite"
 
-#: dt-contacts/base-setup.php:538
 #: dt-contacts/base-setup.php:546
-#: dt-contacts/base-setup.php:563
-#: dt-contacts/base-setup.php:564
+#: dt-contacts/base-setup.php:554
+#: dt-contacts/base-setup.php:571
+#: dt-contacts/base-setup.php:572
 msgid "Shared with me"
 msgstr "Podijeljeno sa mnom"
 
@@ -129,7 +129,7 @@ msgstr "Od ovog kontakta napravite korisnika"
 msgid "Link to an existing user"
 msgstr "Povežite sa postojećim korisnikom"
 
-#: dt-contacts/base-setup.php:356
+#: dt-contacts/base-setup.php:364
 msgid "Merge with another contact"
 msgstr "Spojite sa drugim kontaktom"
 
@@ -205,7 +205,7 @@ msgstr "Datum promjenjen"
 
 #: archive-template.php:410
 #: dt-contacts/base-setup.php:49
-#: dt-contacts/base-setup.php:252
+#: dt-contacts/base-setup.php:260
 #: dt-contacts/dmm-module.php:303
 #: dt-groups/base-setup.php:650
 #: dt-mapping/columns/add-contacts-column.php:59
@@ -266,7 +266,7 @@ msgstr "Obavjesti"
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
 #: dt-assets/functions/menu.php:76
-#: dt-assets/parts/modals/modal-help.php:157
+#: dt-assets/parts/modals/modal-help.php:154
 #: dt-assets/parts/nav-topbar.php:82
 #: template-notifications.php:59
 msgid "Settings"
@@ -306,7 +306,7 @@ msgstr "Ovaj kontakt predstavlja korisnika"
 #: dt-contacts/access-module.php:411
 #: dt-metrics/groups/tree.php:86
 #: dt-metrics/personal/group-tree.php:87
-#: dt-posts/dt-posts.php:1388
+#: dt-posts/dt-posts.php:1392
 #: dt-users/template-user-management.php:74
 #: dt-users/template-user-management.php:159
 #: single-template.php:78
@@ -328,7 +328,7 @@ msgstr "Društvene mreže"
 msgid "Address"
 msgstr "Adresa"
 
-#: dt-assets/parts/modals/modal-help.php:129
+#: dt-assets/parts/modals/modal-help.php:126
 #: dt-contacts/base-setup.php:212
 #: dt-groups/base-setup.php:367
 #: dt-groups/base-setup.php:377
@@ -347,7 +347,7 @@ msgstr "Grupe ljudi"
 msgid "Age"
 msgstr "Godine"
 
-#: dt-contacts/base-setup.php:264
+#: dt-contacts/base-setup.php:272
 #: template-settings.php:507
 msgid "Gender"
 msgstr "Spol"
@@ -431,7 +431,7 @@ msgid "Submit comment"
 msgstr "Podnesite komentar"
 
 #: dt-assets/parts/loop-activity-comment.php:8
-#: dt-assets/parts/modals/modal-help.php:68
+#: dt-assets/parts/modals/modal-help.php:65
 msgid "Comments and Activity"
 msgstr "Komentari i aktivnost"
 
@@ -459,8 +459,8 @@ msgstr "Izbrišite komentar:"
 #: dt-assets/parts/loop-activity-comment.php:134
 #: dt-assets/parts/loop-activity-comment.php:181
 #: dt-assets/parts/merge-details.php:28
-#: dt-assets/parts/modals/modal-help.php:179
-#: dt-assets/parts/modals/modal-help.php:204
+#: dt-assets/parts/modals/modal-help.php:176
+#: dt-assets/parts/modals/modal-help.php:201
 #: dt-assets/parts/modals/modal-revert.php:15
 #: dt-assets/parts/modals/modal-share.php:50
 #: dt-assets/parts/modals/modal-tasks.php:46
@@ -531,7 +531,7 @@ msgstr "Status grupe"
 
 #: dt-contacts/user-module.php:102
 #: single-template.php:340
-#: template-new-post.php:108
+#: template-new-post.php:111
 msgid "This is required"
 msgstr "Ovo je obavezno"
 
@@ -589,7 +589,7 @@ msgstr "Pomoć"
 msgid "Ongoing Meetings"
 msgstr "Sastanci u toku"
 
-#: dt-contacts/base-setup.php:275
+#: dt-contacts/base-setup.php:283
 #: dt-groups/base-setup.php:109
 msgid "Requires Update"
 msgstr "Zahtjeva ažuriranje"
@@ -634,7 +634,7 @@ msgstr "Posao"
 msgid "Home"
 msgstr "Dom"
 
-#: dt-contacts/base-setup.php:449
+#: dt-contacts/base-setup.php:457
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:469
 #: dt-groups/base-setup.php:733
@@ -705,25 +705,25 @@ msgstr "Prenesite ovaj kontakt ka:"
 msgid "Confirm Transfer"
 msgstr "Potvrdite prenos"
 
-#: dt-contacts/contacts-transfer.php:207
+#: dt-contacts/contacts-transfer.php:208
 msgid "Unknown error."
 msgstr "Nepoznata greška"
 
-#: dt-contacts/contacts-transfer.php:216
+#: dt-contacts/contacts-transfer.php:217
 msgid "Minor transfer error."
 msgstr "Manja greška pri prenosu"
 
-#: dt-contacts/contacts-transfer.php:363
-#: dt-contacts/contacts-transfer.php:381
-#: dt-contacts/contacts-transfer.php:398
+#: dt-contacts/contacts-transfer.php:364
+#: dt-contacts/contacts-transfer.php:382
+#: dt-contacts/contacts-transfer.php:399
 msgid "Transfer Bot"
 msgstr "Prebacivački bot"
 
-#: dt-contacts/contacts-transfer.php:383
+#: dt-contacts/contacts-transfer.php:384
 msgid "Contact transferred from site"
 msgstr "Kontakt je prenesen sa web lokacije"
 
-#: dt-contacts/contacts-transfer.php:390
+#: dt-contacts/contacts-transfer.php:391
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr "UPOZORENJE: Mogući duplikat iz prošlog prenosa"
 
@@ -1040,7 +1040,7 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "Izbrisan/a je %1$s:%2$s"
 
-#: dt-posts/dt-posts.php:1219
+#: dt-posts/dt-posts.php:1223
 msgid "Post already shared with user."
 msgstr "Objava je već podijeljena sa korisnikom"
 
@@ -1144,7 +1144,7 @@ msgstr "Krstitelji"
 
 #: dt-contacts/access-module.php:291
 #: dt-contacts/base-setup.php:128
-#: dt-contacts/base-setup.php:513
+#: dt-contacts/base-setup.php:521
 #: dt-metrics/metrics.php:80
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1440,7 +1440,7 @@ msgstr "Roditeljska grupa"
 msgid "Peer Group"
 msgstr "Vršnjačka grupa"
 
-#: template-new-post.php:121
+#: template-new-post.php:124
 msgid "Save and continue editing"
 msgstr "Sačuvajte i nastavite uređivati"
 
@@ -1859,7 +1859,7 @@ msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
 msgstr "Kontakt je dodijeljen nekome, ali ta osoba još nije prihvatila."
 
-#: dt-contacts/base-setup.php:287
+#: dt-contacts/base-setup.php:295
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "Kontakt napreduje i / ili se kontinuirano ažurira."
@@ -1869,7 +1869,7 @@ msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "Ovaj kontakt je trenutno na čekanju (tj. Na odmoru ili ne odgovara)."
 
-#: dt-contacts/base-setup.php:293
+#: dt-contacts/base-setup.php:301
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
 msgstr "Ovaj kontakt je dao do znanja da više ne žele nastaviti ili ste odlučili da nećete nastaviti s njim / njom."
@@ -2150,7 +2150,7 @@ msgstr "Napišite svoj komentar ili bilješku ovdje\n"
 #: archive-template.php:33
 #: archive-template.php:108
 #: archive-template.php:371
-#: dt-contacts/base-setup.php:317
+#: dt-contacts/base-setup.php:325
 #: dt-core/global-functions.php:419
 #: dt-core/global-functions.php:466
 #: dt-core/global-functions.php:509
@@ -2278,8 +2278,8 @@ msgstr "Naziv filtra"
 #: dt-contacts/access-module.php:476
 #: dt-contacts/access-module.php:507
 #: dt-contacts/access-module.php:535
-#: dt-contacts/base-setup.php:373
-#: dt-contacts/base-setup.php:408
+#: dt-contacts/base-setup.php:381
+#: dt-contacts/base-setup.php:416
 #: dt-contacts/user-module.php:115
 #: dt-contacts/user-module.php:167
 #: single-template.php:345
@@ -2288,7 +2288,7 @@ msgstr "Naziv filtra"
 #: template-merge-details.php:121
 #: template-merge-details.php:132
 #: template-merge-details.php:169
-#: template-new-post.php:120
+#: template-new-post.php:123
 msgid "Cancel"
 msgstr "Otkažite"
 
@@ -2445,7 +2445,7 @@ msgid "No note set"
 msgstr "Nije postavljena bilješka"
 
 #: dt-assets/functions/enqueue-scripts.php:311
-#: dt-contacts/base-setup.php:488
+#: dt-contacts/base-setup.php:496
 msgctxt "All records"
 msgid "All %s"
 msgstr "Svi %s"
@@ -2461,17 +2461,17 @@ msgstr "Disciple.Tools"
 msgid "Merge"
 msgstr "Spojite"
 
-#: dt-assets/parts/modals/modal-help.php:31
+#: dt-assets/parts/modals/modal-help.php:28
 msgctxt "Optional Documentation"
 msgid "User workload status icons legend:"
 msgstr "Legenda ikona statusa radnog opterećenja korisnika:"
 
-#: dt-assets/parts/modals/modal-help.php:17
+#: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid "These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
 msgstr "Ova dugmad za brzu akciju su ovdje da vam pomognu u bržem ažuriranju zapisa kontakata i broje koliko je puta svaka radnja izvršena."
 
-#: dt-assets/parts/modals/modal-help.php:18
+#: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid "For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.\n"
 "                This action will also change the 'Seeker Path' to 'Contact Attempted'."
@@ -2508,67 +2508,67 @@ msgctxt "Optional Documentation"
 msgid "Connections this group has with other groups in this system."
 msgstr "Veze koje ova grupa ima s drugim grupama u ovom sistemu."
 
-#: dt-assets/parts/modals/modal-help.php:52
+#: dt-assets/parts/modals/modal-help.php:49
 msgctxt "Optional Documentation"
 msgid "Four Fields"
 msgstr "Četiri polja"
 
-#: dt-assets/parts/modals/modal-help.php:53
+#: dt-assets/parts/modals/modal-help.php:50
 msgctxt "Optional Documentation"
 msgid "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
 msgstr "Na dijagramu Četiri polja nalazi se 5 kvadrata. Počevši od gornjeg lijevog kvadrata i idući u smjeru kazaljke na satu, a peti je u sredini, oni označavaju:"
 
-#: dt-assets/parts/modals/modal-help.php:69
+#: dt-assets/parts/modals/modal-help.php:66
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
 msgstr "Ovdje možete snimati bilješke sa sastanaka i razgovora."
 
-#: dt-assets/parts/modals/modal-help.php:70
+#: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid "Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
 msgstr "Upišite @ i ime korisnika da biste ih spomenuli u komentaru. Ovaj korisnik će tada dobiti obavijest."
 
-#: dt-assets/parts/modals/modal-help.php:71
+#: dt-assets/parts/modals/modal-help.php:68
 msgctxt "Optional Documentation"
 msgid "This section also includes the history of activity, such as when the contact or group status became active etc."
 msgstr "Ovaj odjeljak također uključuje povijest aktivnosti, na primjer kada je kontakt ili grupa postala aktivna itd."
 
-#: dt-assets/parts/modals/modal-help.php:72
+#: dt-assets/parts/modals/modal-help.php:69
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr "Ovaj odjeljak možete filtrirati prema „Sve“, „Komentari“ ili „Aktivnost“"
 
-#: dt-assets/parts/modals/modal-help.php:83
+#: dt-assets/parts/modals/modal-help.php:80
 msgctxt "Optional Documentation"
 msgid "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter."
 msgstr "Pomoću ovih filtara usredotočite se na kontakte ili grupe za koje ste odgovorni. Ako zadani filtri ne odgovaraju vašim potrebama, možete stvoriti vlastiti prilagođeni filtar."
 
-#: dt-assets/parts/modals/modal-help.php:88
+#: dt-assets/parts/modals/modal-help.php:85
 msgctxt "Optional Documentation"
 msgid "Contacts List Tile"
 msgstr "Pločica popisa kontakata"
 
-#: dt-assets/parts/modals/modal-help.php:89
+#: dt-assets/parts/modals/modal-help.php:86
 msgctxt "Optional Documentation"
 msgid "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more."
 msgstr "Ovdje će se prikazati vaša lista kontakata. Kad god filtrirate kontakte, lista će se također promijeniti i u ovom odjeljku. Kontakte možete sortirati prema najnovijim, najstarijim, nedavno izmijenjenim i davno izmijenjenim. Ako imate dugački popis kontakata, neće se svi učitati odjednom, pa će vam klik na dugme \"Učitajte više kontakata\" na dnu popisa omogućiti da učitate više."
 
-#: dt-assets/parts/modals/modal-help.php:94
+#: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid "Groups List Tile"
 msgstr "Pločica popisa grupa"
 
-#: dt-assets/parts/modals/modal-help.php:95
+#: dt-assets/parts/modals/modal-help.php:92
 msgctxt "Optional Documentation"
 msgid "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more."
 msgstr "Ovdje će se prikazati vaša lista grupa. Kad god filtrirate grupe, lista će se također promijeniti i u ovom odjeljku. Svoje grupe možete sortirati prema najnovijim, najstarijim, nedavno izmijenjenim i davno izmijenjenim. Ako imate dugački popis grupa, neće se sve učitati odjednom, pa će vam klik na dugme \"Učitajte više grupa\" na dnu popisa omogućiti da učitate više."
 
-#: dt-assets/parts/modals/modal-help.php:101
+#: dt-assets/parts/modals/modal-help.php:98
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show closed contacts in the list."
 msgstr "Koristite ovaj prekidač za prikaz ili prikazivanje zatvorenih kontakata na listi."
 
-#: dt-assets/parts/modals/modal-help.php:107
+#: dt-assets/parts/modals/modal-help.php:104
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show inactive groups in the list."
 msgstr "Koristite ovaj prekidač za prikaz ili ne prikazivanje neaktivnih grupa na popisu."
@@ -2583,114 +2583,114 @@ msgctxt "Optional Documentation"
 msgid "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created."
 msgstr "Nakon što napišete ime kontakta, popunite što više drugih polja prije nego što kliknete 'Spremite i nastavite uređivati'. Na sljedećem ekranu možete urediti i dodati više informacija o ovom novom kontaktu koji je upravo kreiran."
 
-#: dt-assets/parts/modals/modal-help.php:121
+#: dt-assets/parts/modals/modal-help.php:118
 msgctxt "Optional Documentation"
 msgid "Your Profile"
 msgstr "Vaš profil"
 
-#: dt-assets/parts/modals/modal-help.php:122
+#: dt-assets/parts/modals/modal-help.php:119
 msgctxt "Optional Documentation"
 msgid "In this area you can see your user profile."
 msgstr "U ovom području možete vidjeti svoj korisnički profil."
 
-#: dt-assets/parts/modals/modal-help.php:123
+#: dt-assets/parts/modals/modal-help.php:120
 msgctxt "Optional Documentation"
 msgid "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
 msgstr "Nije obavezno ispuniti nijedno od ovih polja profila. Oni su opcioni da zadovolje potrebe vašeg tima."
 
-#: dt-assets/parts/modals/modal-help.php:124
+#: dt-assets/parts/modals/modal-help.php:121
 msgctxt "Optional Documentation"
 msgid "By clicking 'Edit', you will be able adjust things like the language that this system operates in."
 msgstr "Klikom na 'Uredite' moći ćete prilagoditi stvari poput jezika na kojem ovaj sistem djeluje."
 
-#: dt-assets/parts/modals/modal-help.php:130
+#: dt-assets/parts/modals/modal-help.php:127
 msgctxt "Optional Documentation"
 msgid "These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
 msgstr "Ovo su područja za koja ste odgovorni. Klikom na gumb 'Dodajte' pojavit će se lista lokacija koje možete odabrati."
 
-#: dt-assets/parts/modals/modal-help.php:135
+#: dt-assets/parts/modals/modal-help.php:132
 msgctxt "Optional Documentation"
 msgid "Your Notifications"
 msgstr "Vaša obavještenja"
 
-#: dt-assets/parts/modals/modal-help.php:136
+#: dt-assets/parts/modals/modal-help.php:133
 msgctxt "Optional Documentation"
 msgid "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
 msgstr "Primat ćete web obavještenja i obavijesti e-pošte na osnovu svojih postavki obavještavanja. Da biste promijenili željene postavke, kliknite prekidače."
 
-#: dt-assets/parts/modals/modal-help.php:138
+#: dt-assets/parts/modals/modal-help.php:135
 msgctxt "Optional Documentation"
 msgid "Notifications Turned On: The toggle will appear blue."
 msgstr "Obavijesti su uključene: prekidač će izgledati plavo."
 
-#: dt-assets/parts/modals/modal-help.php:139
+#: dt-assets/parts/modals/modal-help.php:136
 msgctxt "Optional Documentation"
 msgid "Notifications Turned Off: The toggle will appear grey."
 msgstr "Obavijesti su isključene: prekidač će izgledati siv."
 
-#: dt-assets/parts/modals/modal-help.php:141
+#: dt-assets/parts/modals/modal-help.php:138
 msgctxt "Optional Documentation"
 msgid "Some of the types of notifications cannot be adjusted because they are required by the system."
 msgstr "Neke se vrste obavijesti ne mogu prilagoditi jer ih sistem zahtijeva."
 
-#: dt-assets/parts/modals/modal-help.php:142
+#: dt-assets/parts/modals/modal-help.php:139
 msgctxt "Optional Documentation"
 msgid "Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
 msgstr "Prilagodite želite li vidjeti obavijesti o novim komentarima, promjenama podataka o kontaktima, mprekretnice kontakta i pokazateljima zdravstvenog stanja grupe i hoćete li primati obavijesti o bilo kakvim ažuriranjima koja se dogode u sistemu."
 
-#: dt-assets/parts/modals/modal-help.php:150
+#: dt-assets/parts/modals/modal-help.php:147
 msgctxt "Optional Documentation"
 msgid "Notifications Page"
 msgstr "Stranica s obavijestima"
 
-#: dt-assets/parts/modals/modal-help.php:151
+#: dt-assets/parts/modals/modal-help.php:148
 msgctxt "Optional Documentation"
 msgid "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
 msgstr "Na ovoj stranici obavijesti možete pročitati ažuriranja korisnicima i grupama. Prikazuje obavijesti o aktivnostima na vašim evidencijama."
 
-#: dt-assets/parts/modals/modal-help.php:152
+#: dt-assets/parts/modals/modal-help.php:149
 msgctxt "Optional Documentation"
 msgid "All / Unread"
 msgstr "Sve / nepročitano"
 
-#: dt-assets/parts/modals/modal-help.php:153
+#: dt-assets/parts/modals/modal-help.php:150
 msgctxt "Optional Documentation"
 msgid "Click the 'All' button to show the full list of all of your notifications."
 msgstr "Kliknite dugme 'Sve' da biste prikazali cijelu listu svih svojih obavijesti."
 
-#: dt-assets/parts/modals/modal-help.php:154
+#: dt-assets/parts/modals/modal-help.php:151
 msgctxt "Optional Documentation"
 msgid "Click the 'Unread' button to show the list of all of your unread notifications."
 msgstr "Kliknite dugme \"Nepročitano\" da biste prikazali listu svih svojih nepročitanih obavijesti."
 
-#: dt-assets/parts/modals/modal-help.php:156
+#: dt-assets/parts/modals/modal-help.php:153
 msgctxt "Optional Documentation"
 msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
 msgstr "Ako ne želite kliknuti svaki popunjeni krug s desne strane svakog reda da biste označili da je obavijest pročitana, kliknite vezu \"Označite sve kao pročitano\" na vrhu da biste brzo prilagodili sve poruke koje su pročitane."
 
-#: dt-assets/parts/modals/modal-help.php:158
+#: dt-assets/parts/modals/modal-help.php:155
 msgctxt "Optional Documentation"
 msgid "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
 msgstr "Kliknite vezu 'Postavke' da biste prešli na područje postavki obavještenja kako biste prilagodili želite li vidjeti obavijesti o novim komentarima, promjenama podataka o kontaktima, prekretnicama kontakta i pokazateljima zdravstvenog stanja grupe i hoćete li primiti obavijest o bilo kojem ažuriranju koje se dogodi u sistemu."
 
-#: dt-assets/parts/modals/modal-help.php:163
+#: dt-assets/parts/modals/modal-help.php:160
 msgctxt "Optional Documentation"
 msgid "Duplicate Contact page"
 msgstr "Duplicirana stranica za kontakt"
 
-#: dt-assets/parts/modals/modal-help.php:164
+#: dt-assets/parts/modals/modal-help.php:161
 msgctxt "Optional Documentation"
 msgid "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
 msgstr "Na ovoj dupliciranoj stranici kontakta možete pregledati, odbiti ili spojiti kontakte koje je sistem preuzeo (provjeravajući njihovo ime, e-poštu i telefon) kao duplikate drugog već postojećeg kontakta."
 
-#: dt-assets/parts/modals/modal-help.php:185
-#: dt-assets/parts/modals/modal-help.php:210
+#: dt-assets/parts/modals/modal-help.php:182
+#: dt-assets/parts/modals/modal-help.php:207
 msgctxt "Optional Documentation"
 msgid "Need more help?"
 msgstr "Trebate više pomoći?"
 
-#: dt-assets/parts/modals/modal-help.php:186
-#: dt-assets/parts/modals/modal-help.php:211
+#: dt-assets/parts/modals/modal-help.php:183
+#: dt-assets/parts/modals/modal-help.php:208
 msgctxt "Optional Documentation"
 msgid "Read the documentation"
 msgstr "Pročitajte dokumentaciju"
@@ -2738,7 +2738,7 @@ msgid "Select the main person who is responsible for reporting on this contact."
 msgstr "Odaberite glavnu osobu koja je odgovorna za izvještavanje o ovom kontaktu."
 
 #: dt-contacts/access-module.php:153
-#: dt-contacts/base-setup.php:281
+#: dt-contacts/base-setup.php:289
 msgid "Contact Status"
 msgstr "Status kontakta"
 
@@ -2812,11 +2812,11 @@ msgstr "U crkvi / grupi"
 msgid "Starting Churches"
 msgstr "Pokretanje crkava"
 
-#: dt-contacts/base-setup.php:267
+#: dt-contacts/base-setup.php:275
 msgid "Male"
 msgstr "Muško"
 
-#: dt-contacts/base-setup.php:268
+#: dt-contacts/base-setup.php:276
 msgid "Female"
 msgstr "Žensko"
 
@@ -2941,7 +2941,7 @@ msgctxt "Optional Documentation"
 msgid "A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags."
 msgstr "Koristan način grupiranja povezanih predmeta i može pomoći u grupiranju kontakata povezanih s vrijednim karakteristikama. Npr. vlasnik preduzeća, zaljubljenik u sport. Kontakti se takođe mogu filtrirati pomoću ovih oznaka."
 
-#: dt-contacts/base-setup.php:253
+#: dt-contacts/base-setup.php:261
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Odnos koji ovaj kontakt ima s drugim kontaktom u sistemu."
@@ -3348,14 +3348,14 @@ msgstr "Ovaj ste zadatak postavili na %1$s: %2$s"
 #: dt-contacts/access-module.php:457
 #: dt-contacts/access-module.php:488
 #: dt-contacts/access-module.php:519
-#: dt-contacts/base-setup.php:387
+#: dt-contacts/base-setup.php:395
 msgid "Choose an option:"
 msgstr "Odaberite opciju:"
 
 #: dt-contacts/access-module.php:479
 #: dt-contacts/access-module.php:510
 #: dt-contacts/access-module.php:538
-#: dt-contacts/base-setup.php:411
+#: dt-contacts/base-setup.php:419
 msgid "Confirm"
 msgstr "Potvrdite"
 
@@ -3560,11 +3560,11 @@ msgstr "Sub"
 msgid "Mark as complete"
 msgstr "Označite kao završeno"
 
-#: dt-assets/parts/modals/modal-help.php:37
+#: dt-assets/parts/modals/modal-help.php:34
 msgid "2 contacts need an update"
 msgstr "2 kontakta trebaju ažuriranje"
 
-#: dt-assets/parts/modals/modal-help.php:16
+#: dt-assets/parts/modals/modal-help.php:13
 msgid "Quick Action Buttons"
 msgstr "Dugmad za brzu akciju"
 
@@ -3574,22 +3574,22 @@ msgstr "Dugmad za brzu akciju"
 msgid "Members"
 msgstr "Članovi"
 
-#: dt-assets/parts/modals/modal-help.php:82
+#: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid "Default and Custom Filters Tile"
 msgstr "Pločica zadanih i prilagođenih filtera"
 
-#: dt-assets/parts/modals/modal-help.php:100
+#: dt-assets/parts/modals/modal-help.php:97
 msgctxt "Optional Documentation"
 msgid "Closed Contacts Switch"
 msgstr "Prekidač zatvorenih kontakata"
 
-#: dt-assets/parts/modals/modal-help.php:106
+#: dt-assets/parts/modals/modal-help.php:103
 msgctxt "Optional Documentation"
 msgid "Inactive Groups Switch"
 msgstr "Prebacivanje neaktivnih grupa"
 
-#: dt-assets/parts/modals/modal-help.php:155
+#: dt-assets/parts/modals/modal-help.php:152
 #: template-notifications.php:57
 msgid "Mark all as read"
 msgstr "Označite sve kao pročitano"
@@ -3598,7 +3598,7 @@ msgstr "Označite sve kao pročitano"
 msgid "Task Type"
 msgstr "Tip zadatka"
 
-#: dt-contacts/base-setup.php:282
+#: dt-contacts/base-setup.php:290
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
 msgstr "Status kontakta opisuje napredak u komunikaciji s kontaktom."
@@ -3709,15 +3709,15 @@ msgstr "Vjernik"
 msgid "Leader"
 msgstr "Vođa"
 
-#: dt-contacts/contacts-transfer.php:551
+#: dt-contacts/contacts-transfer.php:552
 msgid "redacted email"
 msgstr "Redigovana e-pošta"
 
-#: dt-contacts/contacts-transfer.php:552
+#: dt-contacts/contacts-transfer.php:553
 msgid "redacted name"
 msgstr "Redigovano ime"
 
-#: dt-contacts/contacts-transfer.php:553
+#: dt-contacts/contacts-transfer.php:554
 msgid "redacted"
 msgstr "Redigovano"
 
@@ -3903,7 +3903,7 @@ msgid "My Groups Tree"
 msgstr "Stablo mojih grupa\n"
 ""
 
-#: dt-contacts/base-setup.php:353
+#: dt-contacts/base-setup.php:361
 msgid "See duplicates"
 msgstr "Pogledajte duplikate\n"
 ""
@@ -3928,7 +3928,7 @@ msgid "Languages"
 msgstr "Jezici\n"
 ""
 
-#: dt-contacts/contacts-transfer.php:238
+#: dt-contacts/contacts-transfer.php:239
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "Ovaj kontakt je prebačen na %s radi daljnjeg praćenja.\n"
 ""
@@ -3951,7 +3951,7 @@ msgid "%1$s merged %2$s into this record"
 msgstr "%1$s je spojio %2$s u ovaj zapis\n"
 ""
 
-#: dt-posts/dt-posts.php:993
+#: dt-posts/dt-posts.php:997
 msgid "D.T System"
 msgstr "D.T sistem\n"
 ""
@@ -4160,30 +4160,30 @@ msgstr "Samo ja"
 msgid "Locations or Address"
 msgstr "Lokacije ili adresa"
 
-#: dt-contacts/base-setup.php:252
+#: dt-contacts/base-setup.php:260
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Veze s drugim% s"
 
-#: dt-contacts/base-setup.php:348
+#: dt-contacts/base-setup.php:356
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Promijenite% s tip"
 
-#: dt-contacts/base-setup.php:482
+#: dt-contacts/base-setup.php:490
 msgid "Default Filters"
 msgstr "Zadani filtri"
 
-#: dt-contacts/base-setup.php:492
+#: dt-contacts/base-setup.php:500
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Sve% s mogu vidjeti"
 
-#: dt-contacts/base-setup.php:502
+#: dt-contacts/base-setup.php:510
 msgid "My Recently Viewed"
 msgstr "Moji nedavno pregledani"
 
-#: dt-contacts/base-setup.php:507
+#: dt-contacts/base-setup.php:515
 msgid "Last 30 viewed"
 msgstr "Zadnjih 30 pregledanih"
 
@@ -4281,7 +4281,7 @@ msgstr "Kontakti mape"
 msgid "Groups Maps"
 msgstr "Grupe mape"
 
-#: dt-posts/dt-posts.php:1389
+#: dt-posts/dt-posts.php:1393
 #: single-template.php:119
 msgid "Details"
 msgstr "Detalji"
@@ -4357,7 +4357,7 @@ msgstr "Meni"
 msgid "Select the %s type:"
 msgstr "Odaberite tip% s:"
 
-#: template-new-post.php:114
+#: template-new-post.php:117
 msgid "Show all fields"
 msgstr "Prikaži sva polja"
 
@@ -4369,26 +4369,26 @@ msgstr "start"
 msgid "end"
 msgstr "kraj"
 
-#: dt-contacts/base-setup.php:341
-#: dt-contacts/base-setup.php:368
+#: dt-contacts/base-setup.php:349
+#: dt-contacts/base-setup.php:376
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "Arhiva% s"
 
-#: dt-contacts/base-setup.php:369
+#: dt-contacts/base-setup.php:377
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Jeste li sigurni da želite arhivirati% s?"
 
-#: dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:384
 msgid "Archive"
 msgstr "Arhiva"
 
-#: dt-contacts/base-setup.php:616
+#: dt-contacts/base-setup.php:624
 msgid "This %s is archived"
 msgstr "Ovaj% s je arhiviran"
 
-#: dt-contacts/base-setup.php:618
+#: dt-contacts/base-setup.php:626
 msgid "Restore"
 msgstr "Vrati"
 
@@ -4407,7 +4407,7 @@ msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr ""
 
-#: dt-contacts/base-setup.php:291
+#: dt-contacts/base-setup.php:299
 msgid "Archived"
 msgstr ""
 
@@ -4485,5 +4485,9 @@ msgstr ""
 #: archive-template.php:61
 #: archive-template.php:134
 msgid "Choose which fields to search"
+msgstr ""
+
+#: dt-contacts/base-setup.php:251
+msgid "Other Social Links"
 msgstr ""
 
