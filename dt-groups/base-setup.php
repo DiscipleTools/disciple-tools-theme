@@ -391,10 +391,13 @@ class DT_Groups_Base extends DT_Module_Base {
             ];
 
             if ( DT_Mapbox_API::get_key() ){
-                $fields["contact_address"]["hidden"] = true;
+                $fields["contact_address"]["custom_display"] = true;
                 $fields["contact_address"]["mapbox"] = true;
+                unset( $fields["contact_address"]["tile"] );
                 $fields["location_grid"]["mapbox"] = true;
                 $fields["location_grid_meta"]["mapbox"] = true;
+                $fields["location_grid"]["hidden"] = true;
+                $fields["location_grid_meta"]["hidden"] = false;
             }
 
 

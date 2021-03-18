@@ -1314,6 +1314,15 @@ class Disciple_Tools_Mapping_Queries {
         return self::format_results( $results, $post_type );
     }
 
+    public static function get_location_grid_meta_label( $location_grid_meta_id ){
+        global $wpdb;
+        return $wpdb->get_var( $wpdb->prepare( "
+            SELECT label
+            FROM $wpdb->dt_location_grid_meta
+            WHERE grid_meta_id = %d
+        ", esc_sql( $location_grid_meta_id )));
+    }
+
     public static function query_location_grid_meta_totals( $post_type, $query ) {
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
