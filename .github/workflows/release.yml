@@ -23,7 +23,7 @@ jobs:
     - name: Build project
       run: |
         mkdir disciple-tools-theme
-        cp -r * disciple-tools-theme/
+        rsync -Rr --exclude "*.json" --exclude="phpcs.xml" --exclude="tests/" --exclude=".github/" * disciple-tools-theme/
         zip -r disciple-tools-theme.zip disciple-tools-theme
     - name: Create Release
       id: create_release
