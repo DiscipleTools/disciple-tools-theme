@@ -374,7 +374,7 @@ class DT_Groups_Base extends DT_Module_Base {
             ];
 
             $fields['location_grid_meta'] = [
-                'name'        => __( 'Locations', 'disciple_tools' ), //system string does not need translation
+                'name'        => __( 'Locations or Address', 'disciple_tools' ),
                 'type'        => 'location_meta',
                 "tile"      => "details",
                 'mapbox'    => false,
