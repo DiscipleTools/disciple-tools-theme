@@ -11,12 +11,22 @@ jQuery(function($) {
     $(`.form-field.all`).show()
     $(`.form-field.${type}`).show()
     $('#show-shield-banner').show()
+    $('#show-hidden-fields').show();
+    $('#hide-hidden-fields').hide();
     new_post.type = type
   })
   $('#show-hidden-fields').on('click', function (){
     $('.form-field').show()
-    $('#show-shield-banner').hide()
+    $('#show-hidden-fields').hide()
+    $('#hide-hidden-fields').show();
   })
+  $('#hide-hidden-fields').on('click', function () {
+    $('.form-field').hide();
+    $(`.form-field.all`).show();
+    $(`.form-field.${new_post.type}`).show();
+    $('#hide-hidden-fields').hide();
+    $('#show-hidden-fields').show();
+  });
 
   $(".js-create-post-button").removeAttr("disabled");
 
