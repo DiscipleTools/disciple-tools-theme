@@ -294,9 +294,16 @@ $.typeahead({
   accent: true,
   searchOnFocus: true,
   maxItem: 20,
-  source: TYPEAHEADS.typeaheadPeopleGroupSource('people_groups', 'dt/v1/people-groups/compact/'),
+  template: window.TYPEAHEADS.contactListRowTemplate,
+  source: TYPEAHEADS.typeaheadPostsSource("peoplegroups" ),
   display: ["name", "label"],
-  templateValue: "{{name}}",
+  templateValue: function() {
+    if (this.items[this.items.length - 1].label) {
+      return "{{label}}"
+    } else {
+      return "{{name}}"
+    }
+  },
   dynamic: true,
   multiselect: {
     matchOn: ["ID"],
