@@ -98,7 +98,7 @@ class DT_Contacts_User {
                             <label for="user-email">
                                 <?php esc_html_e( "Email", "disciple_tools" ); ?>
                             </label>
-                            <input name="user-email" id="user-email" type="email" value="<?php ( isset( $contact['contact_email'][0]['value'] ) ) ? esc_html_e( $contact['contact_email'][0]['value'], 'disciple_tools' ) : ''; ?>" placeholder="user@example.com" required aria-describedby="email-help-text">
+                            <input name="user-email" id="user-email" type="email" value="<?php echo ( isset( $contact['contact_email'][0]['value'] ) ) ? esc_html( $contact['contact_email'][0]['value'] ) : ''; ?>" placeholder="user@example.com" required aria-describedby="email-help-text">
                             <p class="help-text" id="email-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
                             <label for="user-display">
                                 <?php esc_html_e( "Display Name", "disciple_tools" ); ?>
