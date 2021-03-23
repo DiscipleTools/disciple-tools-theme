@@ -893,6 +893,7 @@ Please click the following link to confirm the invite:
      * @param $user_name
      * @param $user_email
      * @param $display_name
+     * @param string $user_role
      * @param null $corresponds_to_contact
      * @return int|WP_Error
      */

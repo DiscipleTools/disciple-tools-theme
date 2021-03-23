@@ -116,12 +116,17 @@ class DT_Contacts_User {
                                 <?php esc_html_e( "User Role", "disciple_tools" ); ?>
                             </label>
                             <select name="user-user_role">
-                                <?php foreach( $wp_roles->role_names as $role_key => $role_name ):
+                                <?php
+
+                                foreach ( $wp_roles->role_names as $role_key => $role_name ):
+
                                     if ( 'administrator' === $role_key || 'dt_admin' === $role_key ):
                                         continue;
                                     endif;
+
                                 ?>
-                                <option value="<?php echo $role_key; ?>"><?php echo $role_name; ?></option>
+                                <option value="<?php echo esc_attr( $role_key ); ?>"><?php echo esc_html( $role_name ); ?></option>
+
                                 <?php endforeach; ?>
                             </select>
                             <div class="grid-x">
