@@ -124,7 +124,7 @@ class DT_Contacts_User {
                                         continue;
                                     endif;
 
-                                ?>
+                                    ?>
                                 <option value="<?php echo esc_attr( $role_key ); ?>"><?php echo esc_html( $role_name ); ?></option>
 
                                 <?php endforeach; ?>
