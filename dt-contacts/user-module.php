@@ -73,9 +73,10 @@ class DT_Contacts_User {
     }
 
     public static function dt_record_admin_actions( $post_type, $post_id ){
+        global $wp_roles;
         if ( $post_type === "contacts" ){
             $contact = DT_Posts::get_post( $post_type, $post_id );
-            if ( current_user_can( "create_users" )){
+            if ( current_user_can( "create_users" ) ){
                 ?>
                 <li><a data-open="make-user-from-contact-modal">
                         <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/arrow-user.svg' ) ?>"/>
@@ -91,10 +92,15 @@ class DT_Contacts_User {
                             <p><strong><?php echo esc_html_x( "This contact is already connected to a user.", 'Make user modal', 'disciple_tools' ) ?></strong></p>
                         <?php else : ?>
 
-                        <p><?php echo esc_html_x( "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'.", 'Make user modal', 'disciple_tools' ) ?></p>
-                        <p><?php echo esc_html_x( "In the fields below, enter their email address and a 'Display Name' which they can change later.", 'Make user modal', 'disciple_tools' ) ?></p>
+                        <p><?php echo esc_html_x( "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier', but you can change that in the dropdown below.", 'Make user modal', 'disciple_tools' ) ?></p>
+                        <p><?php echo esc_html_x( "In the fields below, enter their username, email address, a 'Display Name' which they can change later and a User Role.", 'Make user modal', 'disciple_tools' ) ?></p>
 
                         <form id="create-user-form">
+                            <label for="user-username">
+                                <?php esc_html_e( "Username", "disciple_tools" ); ?>
+                            </label>
+                            <input name="user-user_login" id="user-user_login" type="text" placeholder="username" required aria-describedby="username-help-text">
+                            <p class="help-text" id="username-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
                             <label for="user-email">
                                 <?php esc_html_e( "Email", "disciple_tools" ); ?>
                             </label>
@@ -106,7 +112,18 @@ class DT_Contacts_User {
                                        value="<?php the_title_attribute(); ?>"
                                        placeholder="<?php esc_html_e( "Display Name", 'disciple_tools' ) ?>">
                             </label>
-
+                            <label for="user-roles">
+                                <?php esc_html_e( "User Role", "disciple_tools" ); ?>
+                            </label>
+                            <select name="user-user_role">
+                                <?php foreach( $wp_roles->role_names as $role_key => $role_name ):
+                                    if ( 'administrator' === $role_key || 'dt_admin' === $role_key ):
+                                        continue;
+                                    endif;
+                                ?>
+                                <option value="<?php echo $role_key; ?>"><?php echo $role_name; ?></option>
+                                <?php endforeach; ?>
+                            </select>
                             <div class="grid-x">
                                 <p id="create-user-errors" style="color: red"></p>
                             </div>

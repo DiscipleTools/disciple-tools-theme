@@ -896,7 +896,7 @@ Please click the following link to confirm the invite:
      * @param null $corresponds_to_contact
      * @return int|WP_Error
      */
-    public static function create_user( $user_name, $user_email, $display_name, $corresponds_to_contact = null ){
+    public static function create_user( $user_name, $user_email, $display_name, $user_role = 'multiplier', $corresponds_to_contact = null ){
         if ( !current_user_can( "create_users" ) ){
             return new WP_Error( "no_permissions", "You don't have permissions to create users", [ 'status' => 401 ] );
         }
@@ -925,13 +925,17 @@ Please click the following link to confirm the invite:
             }
         } else {
 
+            if ( 'dt_admin' === $user_role || 'administrator' === $user_role ) {
+                return new WP_Error( "failed_to_add_user", __( "Error setting user role to administrator or Disciple.Tools Admin.", 'disciple_tools' ) );
+            }
+
             $user_id = register_new_user( $user_name, $user_email );
             if ( is_wp_error( $user_id ) ){
                 return $user_id;
             }
             $user = get_user_by( 'id', $user_id );
             $user->display_name = $display_name;
-            $user->set_role( "multiplier" );
+            $user->set_role( $user_role );
             wp_update_user( $user );
         }
 
