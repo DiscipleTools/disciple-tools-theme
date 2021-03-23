@@ -102,7 +102,23 @@
     sort = sort || current_filter.query.sort;
     current_filter.query.sort = (typeof sort === "string") ? sort : "name"
 
+    clear_search_query()
+
     get_records()
+  }
+
+  function clear_search_query() {
+    // clear query if the current_filter is not a search query with the same text as the search-query
+    const searchLabel = current_filter.labels.find((label) => label.id === 'search')
+    if ( searchLabel && ( searchLabel.name === $("#search-query").val() ||       searchLabel.name === $("#search-query-mobile").val() ) ) {
+      return
+    }
+    if ($("#search-query").val() !== ""){
+      $("#search-query").val("")
+    }
+    if ($("#search-query-mobile").val() !== "") {
+      $("#search-query-mobile").val("")
+    }
   }
 
   function setup_filters(){

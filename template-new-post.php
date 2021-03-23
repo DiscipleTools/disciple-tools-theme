@@ -116,6 +116,9 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                             <a class="button clear" id="show-hidden-fields" style="margin:0;padding:3px 0; width:100%">
                                 <?php esc_html_e( 'Show all fields', 'disciple_tools' ); ?>
                             </a>
+                            <a class="button clear" id="hide-hidden-fields" style="margin:0;padding:3px 0; width:100%">
+                                <?php esc_html_e( 'Hide fields', 'disciple_tools' ); ?>
+                            </a>
                         </div>
 
 
