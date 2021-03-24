@@ -125,7 +125,7 @@ class DT_Contacts_User {
                                     endif;
 
                                     ?>
-                                <option value="<?php echo esc_attr( $role_key ); ?>"><?php echo esc_html( $role_name ); ?></option>
+                                <option value="<?php echo esc_attr( $role_key ); ?>" <?php if ( 'multiplier' === $role_key ): ?> selected <?php endif; ?>><?php echo esc_html( $role_name ); ?></option>
 
                                 <?php endforeach; ?>
                             </select>
