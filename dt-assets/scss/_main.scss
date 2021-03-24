@@ -189,6 +189,7 @@ NAVIGATION STYLES
     top: 0;
     margin-left:10px;
 }
+
 .add-new-items-dropdown {
     background-color: #3f729b;
     text-align: left;
@@ -824,6 +825,30 @@ a.dt-green:hover {
     max-width: 1440px;
     margin-left: auto;
     margin-right: auto;
+}
+
+#notification-dropdown {
+    padding: 0;
+    border: none;
+    background-color: unset;
+    width: 500px;
+
+    .bordered-box {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+}
+@media screen and (max-width: 1024px) {
+    #notification-dropdown {
+        .sized-box {
+            height: 11px;
+        }
+    }
+}
+@media screen and (max-width: 640px) {
+    #notification-dropdown {
+        width: 300px;
+    }
 }
 
 #notification-list {

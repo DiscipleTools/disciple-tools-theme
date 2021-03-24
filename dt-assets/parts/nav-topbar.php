@@ -223,15 +223,18 @@ $dt_nav_tabs = dt_default_menu_array();
 <?php if ( isset( $dt_nav_tabs['admin']['notifications'] ) && ! empty( $dt_nav_tabs['admin']['notifications'] ) ) : ?>
 
     <div class="dropdown-pane" id="notification-dropdown" data-position="bottom" data-alignment="right" data-dropdown >
+
+        <div class="sized-box"></div>
+
         <div class="bordered-box">
 
-            <h3 class="section-header"><?php esc_html_e( "Notifications", "disciple_tools" ); ?><button class="help-button float-right" data-section="notifications-template-help-text">
+            <!-- <h3 class="section-header"><?php esc_html_e( "Notifications", "disciple_tools" ); ?><button class="help-button float-right" data-section="notifications-template-help-text">
                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-            </button></h3>
+            </button></h3> -->
 
             <div class="grid-x">
                 <div class="cell">
-                    <div class="grid-x grid-margin-x " style="border-bottom: 1px solid #ccc;">
+                    <div class="grid-x grid-margin-x">
                         <div class="small-4 medium-5 cell"><span class="badge alert notification-count"
                                                                 style="display:none;">&nbsp;</span>
                             <strong><?php esc_html_e( 'New', 'disciple_tools' )?></strong></div>
@@ -262,7 +265,7 @@ $dt_nav_tabs = dt_default_menu_array();
                 </div>
             </div>
 
-            <div id="notification-list" class="grid-x"><span class="loading-spinner active" style="margin:1em;"></span></div>
+            <div id="notification-list" class="grid-x grid-margin-x" style="border-top: 1px solid #ccc;"><span class="loading-spinner active" style="margin:1em;"></span></div>
 
             <div class="grid-x">
                 <div class="cell">
