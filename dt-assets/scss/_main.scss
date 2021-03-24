@@ -175,7 +175,7 @@ NAVIGATION STYLES
     }
 }
 
-.notification-count {
+.notifications-menu-item .notification-count {
     display: none;
     vertical-align: top;
     position: relative;
@@ -763,7 +763,7 @@ html[dir='rtl'] {
 
         float: right !important;
     }
-    .notification-count {
+    .notifications-menu-item .notification-count {
         right: -15px;
         left: 0;
         margin-left:-15px;
@@ -858,6 +858,9 @@ a.dt-green:hover {
     #notification-list {
         margin: 0rem;
     }
+}
+.new-notification-label {
+    margin-left: 5px;
 }
 @media screen and (max-width: 1024px) {
     #notification-dropdown {

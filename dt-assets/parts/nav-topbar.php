@@ -231,9 +231,10 @@ $dt_nav_tabs = dt_default_menu_array();
             <div class="grid-x header">
                 <div class="cell">
                     <div class="grid-x grid-margin-x align-middle">
-                        <div class="small-3 medium-3 cell"><span class="badge alert notification-count"
-                                                                style="display:none;">&nbsp;</span>
-                            <strong><?php esc_html_e( 'New', 'disciple_tools' )?></strong></div>
+                        <div class="small-3 medium-3 cell grid-x align-middle">
+                            <span class="badge alert notification-count" style="display:none;">&nbsp;</span>
+                            <div class="new-notification-label"><strong><?php esc_html_e( 'New', 'disciple_tools' )?></strong></div>
+                        </div>
                         <div class="small-6 medium-6 cell">
                             <div class="expanded small button-group">
                                 <button id="dropdown-all" type="button"
