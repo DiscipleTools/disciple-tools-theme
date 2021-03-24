@@ -814,6 +814,8 @@ jQuery(document).ready(function($) {
         let values_html = ``
         if ( field_options.type === 'text' ){
           values_html = window.lodash.escape( field_value )
+        } else if ( field_options.type === 'textarea' ){
+          values_html = window.lodash.escape( field_value )
         } else if ( field_options.type === 'date' ){
           values_html = window.lodash.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
         } else if ( field_options.type === 'key_select' ){

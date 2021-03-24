@@ -332,7 +332,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
-     * Accepts types: key_select, multi_select, text, number, date, connection, location, communication_channel
+     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel
      *
      * @param $field_key
      * @param $fields
@@ -345,7 +345,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
         $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'number', 'connection', 'location', 'location_meta', 'communication_channel' ] );
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -440,6 +440,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="text" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
                        value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
+            <?php elseif ( $field_type === "textarea" ) :?>
+                <textarea id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $required_tag ) ?>
+                       class="textarea dt_textarea"><?php echo esc_html( $post[$field_key] ?? "" ) ?></textarea>
             <?php elseif ( $field_type === "number" ) :?>
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="number" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
