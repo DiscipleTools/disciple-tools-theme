@@ -832,21 +832,56 @@ a.dt-green:hover {
     background-color: unset;
     width: 500px;
 
+    .sized-box {
+        height: 6px;
+    }
+
     .bordered-box {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
+        padding: 1rem 0;
+    }
+
+    .header {
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+    }
+
+    .button-group {
+        margin-bottom: 0;
+
+        .button {
+            font-size: 1rem;
+            padding: .5em 1em;
+        }
+    }
+    #notification-list {
+        margin: 0rem;
     }
 }
 @media screen and (max-width: 1024px) {
     #notification-dropdown {
         .sized-box {
-            height: 11px;
+            height: 16px;
         }
     }
 }
 @media screen and (max-width: 640px) {
     #notification-dropdown {
         width: 300px;
+        .button-group {
+            .button {
+                font-size: .75rem;
+                padding: .75em 1em;
+            }
+        }
+        .notification-row .cell {
+            margin-left: 0.7rem;
+            margin-right: 0;
+        }
+        #notification-list {
+            margin-right: -1px;
+        }
     }
 }
 

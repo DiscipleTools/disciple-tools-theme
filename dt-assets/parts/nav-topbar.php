@@ -228,17 +228,13 @@ $dt_nav_tabs = dt_default_menu_array();
 
         <div class="bordered-box">
 
-            <!-- <h3 class="section-header"><?php esc_html_e( "Notifications", "disciple_tools" ); ?><button class="help-button float-right" data-section="notifications-template-help-text">
-                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-            </button></h3> -->
-
-            <div class="grid-x">
+            <div class="grid-x header">
                 <div class="cell">
-                    <div class="grid-x grid-margin-x">
-                        <div class="small-4 medium-5 cell"><span class="badge alert notification-count"
+                    <div class="grid-x grid-margin-x align-middle">
+                        <div class="small-3 medium-3 cell"><span class="badge alert notification-count"
                                                                 style="display:none;">&nbsp;</span>
                             <strong><?php esc_html_e( 'New', 'disciple_tools' )?></strong></div>
-                        <div class="small-4 medium-2 cell">
+                        <div class="small-6 medium-6 cell">
                             <div class="expanded small button-group">
                                 <button id="dropdown-all" type="button"
                                         onclick="toggle_dropdown_buttons('all'); get_notifications( all = true, true, true, 5 );"
@@ -250,15 +246,11 @@ $dt_nav_tabs = dt_default_menu_array();
                                 </button>
                             </div>
                         </div>
-                        <div class="small-4 medium-5 cell" style="text-align:right;">
-                            <span class="hide-for-small-only">
-                                <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark all as read', 'disciple_tools' ) ?></a>  -
-                                <a href="<?php echo esc_url( home_url( '/' ) ); ?>settings/#notifications">
-                                    <?php esc_html_e( 'Settings', 'disciple_tools' )?>
+                        <div class="small-3 medium-3 cell" style="text-align:right;">
+                            <span>
+                                <a id="see-all" href="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['link'] ?? site_url( '/notifications/' ) ); ?>" >
+                                    <?php esc_html_e( 'See All', 'disciple_tools' ) ?>
                                 </a>
-                            </span>
-                            <span class="show-for-small-only">
-                                <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark All', 'disciple_tools' ) ?></a>
                             </span>
                         </div>
                     </div>
@@ -266,18 +258,6 @@ $dt_nav_tabs = dt_default_menu_array();
             </div>
 
             <div id="notification-list" class="grid-x grid-margin-x" style="border-top: 1px solid #ccc;"><span class="loading-spinner active" style="margin:1em;"></span></div>
-
-            <div class="grid-x">
-                <div class="cell">
-                    <div class="grid-x grid-margin-x grid-margin-y">
-                        <div class="small-12 medium-6 medium-offset-3 cell center">
-                            <a id="see-all" href="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['link'] ?? site_url( '/notifications/' ) ); ?>" >
-                                <?php esc_html_e( 'See All', 'disciple_tools' ) ?>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>
