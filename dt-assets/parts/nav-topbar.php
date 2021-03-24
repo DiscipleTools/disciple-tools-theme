@@ -79,10 +79,10 @@ $dt_nav_tabs = dt_default_menu_array();
 
             <!-- notifications -->
             <?php if ( isset( $dt_nav_tabs['admin']['notifications'] ) && ! empty( $dt_nav_tabs['admin']['notifications'] ) ) : ?>
-                <button id="notifications-menu-item" class="button" type="button" data-toggle="notification-dropdown" style="margin-left: 10px; margin-bottom: 0">
+                <a href="#" class="notifications-menu-item" type="button" data-toggle="notification-dropdown" style="margin-left: 15px; margin-bottom: 0">
                     <img title="<?php esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( "Notifications", 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/bell.svg" ); ?>">
                     <span class="badge alert notification-count" style="display:none"></span>
-                </button>
+                </a>
             <?php endif; ?>
 
             <!-- settings -->
@@ -184,10 +184,10 @@ $dt_nav_tabs = dt_default_menu_array();
                 <!--  notifications -->
                 <?php if ( isset( $dt_nav_tabs['admin']['notifications']['hidden'] ) && empty( $dt_nav_tabs['admin']['notifications']['hidden'] ) ) : ?>
                     <li class="image-menu-nav">
-                        <button id="notifications-menu-item" class="button" type="button" data-toggle="notification-dropdown" style="margin-left: 10px; margin-bottom: 0">
+                        <a href="#" class="notifications-menu-item" type="button" data-toggle="notification-dropdown" style="margin-bottom: 0">
                             <img title="<?php esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( "Notifications", 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/bell.svg" ); ?>">
                             <span class="badge alert notification-count" style="display:none"></span>
-                        </button>
+                        </a>
                     </li>
                 <?php endif; // end notifications ?>
 
@@ -222,7 +222,7 @@ $dt_nav_tabs = dt_default_menu_array();
 
 <?php if ( isset( $dt_nav_tabs['admin']['notifications'] ) && ! empty( $dt_nav_tabs['admin']['notifications'] ) ) : ?>
 
-    <div class="dropdown-pane" id="notification-dropdown" data-position="bottom" data-alignment="right" data-dropdown >
+    <div class="dropdown-pane" id="notification-dropdown" data-position="bottom" data-alignment="right" data-dropdown data-hover="true" data-hover-pane="true" >
 
         <div class="sized-box"></div>
 
