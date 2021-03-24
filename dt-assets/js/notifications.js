@@ -125,6 +125,7 @@ function get_notifications (all, reset) {
   // return notifications if query successful
   return makeRequest('post', 'notifications/get_notifications', { all, page, limit }).done(data => {
     if (data) {
+      console.log(data)
       if (reset) {
         jQuery('#notification-list').empty()
       }
