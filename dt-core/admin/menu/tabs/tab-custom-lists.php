@@ -7,7 +7,7 @@
  * @version    0.1.0
  * @since      0.1.0
  * @package    Disciple_Tools
- * @author     Chasm.Solutions & Kingdom.Training
+ * @author     Disciple.Tools
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -38,6 +38,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+
+        
+        require_once get_template_directory() . '/dt-contacts/dmm-module.php';
 
         parent::__construct();
     } // End __construct()
@@ -71,7 +74,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* end Worker Profile */
 
-
             /* Channels */
             $this->box( 'top', __( 'Contact Communication Channels', 'disciple_tools' ) );
             $this->process_channels_box();
@@ -79,6 +81,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* end Channels */
 
+            /* Quick Actions */
+            $this->box( 'top', __( 'Quick Actions', 'disciple_tools' ) );
+            $this->process_quick_actions_box();
+            $this->quick_actions_box();
+            $this->box( 'bottom' );
+            /* end Quick Actions */
 
             /* Languages */
             $this->box( 'top', __( 'Language Options', 'disciple_tools' ) );
@@ -228,7 +236,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
     public function channels_box(){
         $fields = DT_Posts::get_post_field_settings( "contacts", false );
-
         ?>
         <form method="post" name="channels_box">
             <input type="hidden" name="channels_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'channels_box' ) ) ?>" />
@@ -567,7 +574,97 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
         update_option( "dt_working_languages", $languages, false );
     }
+
+
+    /**
+     * UI for Quick Actions
+     */
+    private function quick_actions_box(){
+        $fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
+        ?>
+        <form method="post" name="quick_actions_box" id="quick-actions">
+            <input type="hidden" name="quick_actions_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'quick_actions_box' ) ) ?>" />
+            <table class="widefat">
+                <thead>
+                <tr>
+                    <td><?php esc_html_e( 'Icon', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Name', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Action', 'disciple_tools' ) ?></td>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ( $fields as $field_key => $field_settings ) :
+                        if ( ! isset( $field_settings['section'] ) || substr($field_settings['section'], 0, 13) !== 'quick_buttons' ) {
+                            continue;
+                        }?>
+                        <tr>
+                            <td class="quick-action-menu"><img src="<?php echo esc_html( $field_settings['icon'] ) ?>" ></td>
+                            <td><?php echo esc_html( $field_settings['name'] ) ?></td>
+                            <td><?php if ( $field_settings['section'] === 'quick_buttons_custom' ) { echo '<a href="javascript:delete_quick_action(\''. esc_html( $field_key ) .'\');">'. esc_html( __( "Delete", 'disciple_tools' ) ) .'</a>'; } ?></td>
+                        </tr>
+                    <?php
+                    endforeach;
+                    ?>
+                </tbody>
+            </table>
+            <br><button type="button" onclick="jQuery('#add_quick_action').toggle();" class="button">
+                <?php echo esc_html__( "Add new quick action", 'disciple_tools' ) ?></button>
+            </button>
+            <div id="add_quick_action" style="display:none;">
+                <hr>
+                <p><?php esc_html_e( 'Write quick action name', 'disciple_tools' ); ?></p>
+                <input name="create_custom_quick_action" placeholder="Custom Quick Action" type="text">
+                <button type="submit" class="button"><?php esc_html_e( "Add", 'disciple_tools' ) ?></button>
+            </div>
+        </form>
+        <script>
+            function delete_quick_action( label ) {
+                alert( label );
+            }
+        </script>
+        <?php
+    }
+
+    public function process_quick_actions_box(){
+        // Check nonce
+        if ( ! isset( $_POST['quick_actions_box_nonce'] ) ) {
+            return;
+        }
+
+            // Load custom fields
+            $custom_field_options = dt_get_option( 'dt_field_customizations' );
+            if ( ! isset( $custom_field_options ) ) {
+                update_option( 'dt_field_customizations', [], true );
+            }
+
+            if ( empty( $custom_field_options['contacts'] ) ){
+                update_option( 'dt_field_customizations', [], true );
+            }    
+
+            if ( ! empty( $_POST['create_custom_quick_action'] ) ) {
+                $label = sanitize_text_field( wp_unslash( $_POST['create_custom_quick_action'] ) );
+                $key = dt_create_field_key( 'quick_button_' . $label );
+
+                if ( ! empty( $key ) ) {
+                    if ( isset( $custom_field_options['contacts'][$key] ) ){
+                        self::admin_notice( __( "This quick action already exists", 'disciple_tools' ), "error" );
+                    } else {
+                        $custom_field_options['contacts'][$key] = [
+                            'name'        => $label,
+                            'description' => '',
+                            'type'        => 'number',
+                            'default'     => 0,
+                            'section'     => 'quick_buttons_custom',
+                            'icon'        => get_template_directory_uri() . "/dt-assets/images/follow.svg",
+                            "customizable" => false,
+                        ];
+                        //wp_cache_delete( "contacts_field_settings" );
+                    }
+                }
+            }
+            update_option( 'dt_field_customizations', $custom_field_options, true );
+            self::admin_notice( __( "Quick Action added successfully", 'disciple_tools' ), "success" );
+    }
 }
 Disciple_Tools_Tab_Custom_Lists::instance();
-
-
