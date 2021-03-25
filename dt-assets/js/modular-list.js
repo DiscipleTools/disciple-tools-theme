@@ -376,7 +376,7 @@
           let field_value = window.lodash.get( record, field_key, false )
 
           if ( field_value ) {
-            if (['text', 'number'].includes(field_settings.type)) {
+            if (['text', 'textarea', 'number'].includes(field_settings.type)) {
               values = [window.lodash.escape(field_value)]
             } else if (field_settings.type === 'date') {
               values = [window.lodash.escape(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
