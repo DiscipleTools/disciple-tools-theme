@@ -751,18 +751,15 @@ jQuery(document).ready(function($) {
         if (this.comparedItems.includes(query)) {
           return tagExistsText.replace('%s', query)
         }
+        const that = this
         const liItem = $('<li>')
         const button = $('<button>', {
           text: addNewTagText.replace('%s', query),
         })
         button.on("click", function () {
-          const typeahead = Typeahead[".js-typeahead-tags"]
-          let tag = typeahead.query
-          typeahead.addMultiselectItemLayout({name: tag})
-          API.update_post(post_type, post_id, {tags: {values: [{value: tag}]}})
-          typeahead.hideLayout();
-          typeahead.resetInput();
-          masonGrid.masonry('layout')
+          const tag = that.query
+          const addTag = addTagOnClick.bind(that)
+          addTag(tag)
         })
         liItem.append(button)
         return liItem
@@ -782,12 +779,9 @@ jQuery(document).ready(function($) {
       },
       callback: {
         onClick: function (node, a, item, event) {
-          API.update_post(post_type, post_id, {tags: {values: [{value: item.name}]}})
-          this.addMultiselectItemLayout(item)
           event.preventDefault()
-          this.hideLayout();
-          this.resetInput();
-          masonGrid.masonry('layout')
+          const addTag = addTagOnClick.bind(this)
+          addTag(item.name)
         },
         onResult: function (node, query, result, resultCount) {
           let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -808,6 +802,14 @@ jQuery(document).ready(function($) {
       Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name: tag})
       API.update_post(post_type, post_id, {tags: {values: [{value: tag}]}})
     })
+  }
+
+  function addTagOnClick(tag) {
+    API.update_post(post_type, post_id, {tags: {values: [{value: tag}]}})
+    this.addMultiselectItemLayout({ name: tag})
+    this.hideLayout();
+    this.resetInput();
+    masonGrid.masonry('layout')
   }
 
 
