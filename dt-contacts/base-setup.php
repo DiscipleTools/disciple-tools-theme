@@ -21,6 +21,7 @@ class DT_Contacts_Base {
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         add_action( 'p2p_init', [ $this, 'p2p_init' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 5, 2 );
+        add_filter( 'dt_custom_fields_settings_after_combine', [ $this, 'dt_custom_fields_settings_after_combine' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles_after' ], 100, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
@@ -305,6 +306,26 @@ class DT_Contacts_Base {
                     ]
                 ]
             ];
+        }
+        return $fields;
+    }
+
+    /**
+     * Filter that runs after the default fields and custom settings have been combined
+     * @param $fields
+     * @param $post_type
+     * @return mixed
+     */
+    public function dt_custom_fields_settings_after_combine( $fields, $post_type ){
+        if ( $post_type === "contacts" ){
+            //make sure disabled communication channels also have the hidden field set
+            foreach ( $fields as $field_key => $field_value ){
+                if ( isset( $field_value["type"] ) && $field_value["type"] === "communication_channel" ){
+                    if ( isset( $field_value["enabled"] ) && $field_value["enabled"] === false ){
+                        $fields[$field_key]["hidden"] = true;
+                    }
+                }
+            }
         }
         return $fields;
     }
