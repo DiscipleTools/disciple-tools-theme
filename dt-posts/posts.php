@@ -446,6 +446,7 @@ class Disciple_Tools_Posts
                 } else if ( strpos( $activity->meta_key, "contact_" ) === 0 ) {
                     $channel = explode( '_', $activity->meta_key );
                     $channel_key_count = count( $channel ) - 1;
+                    //handle when a communication channel key has an underscore in it.
                     if ( isset( $channel[1] ) ) {
                         $channel_key = "";
                         for ( $i = 1; $i < $channel_key_count; $i++ ) {
