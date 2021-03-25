@@ -445,8 +445,20 @@ class Disciple_Tools_Posts
                     }
                 } else if ( strpos( $activity->meta_key, "contact_" ) === 0 ) {
                     $channel = explode( '_', $activity->meta_key );
-                    if ( isset( $channel[1] ) && isset( $post_type_settings["channels"][ $channel[1] ] ) ){
-                        $channel = $post_type_settings["channels"][ $channel[1] ];
+                    $channel_key_count = count( $channel ) - 1;
+                    //handle when a communication channel key has an underscore in it.
+                    if ( isset( $channel[1] ) ) {
+                        $channel_key = "";
+                        for ( $i = 1; $i < $channel_key_count; $i++ ) {
+                            if ($channel_key) {
+                                $channel_key = $channel_key . '_' . $channel[$i];
+                            } else {
+                                $channel_key = $channel[$i];
+                            }
+                        }
+                    }
+                    if ( isset( $channel_key ) && isset( $post_type_settings["channels"][ $channel_key ] ) ){
+                        $channel = $post_type_settings["channels"][ $channel_key ];
                         if ( $activity->old_value === "" ){
                             $message = sprintf( _x( 'Added %1$s: %2$s', 'Added Facebook: facebook.com/123', 'disciple_tools' ), $channel["label"] ?? $activity->meta_key, $activity->meta_value );
                         } else if ( $activity->meta_value != "value_deleted" ){

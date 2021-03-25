@@ -13,13 +13,13 @@ function get_new_notification_count() {
 setTimeout(get_new_notification_count, 2000)
 
 const notificationRead = notification_id => `
-  <a id="read-button-${window.lodash.escape( notification_id )}" class="read-button button hollow small" style="border-radius:100px; margin: 0;"
+  <a class="read-button-${window.lodash.escape( notification_id )} read-button button hollow small" style="border-radius:100px; margin: 0;"
       onclick="mark_unread( ${window.lodash.escape( notification_id )} )">
       <!--<i class="fi-minus hollow"></i>-->
    </a>
 `
 const notificationNew = notification_id => `
-  <a id="new-button-${window.lodash.escape( notification_id )}" class="new-button button small" style="border-radius:100px; margin: 0;"
+  <a class="new-button-${window.lodash.escape( notification_id )} new-button button small" style="border-radius:100px; margin: 0;"
      onclick="mark_viewed( ${window.lodash.escape( notification_id )} )">
      <!--<i class="fi-check"></i>-->
   </a>
@@ -28,16 +28,18 @@ const notificationNew = notification_id => `
 function mark_viewed (notification_id) {
   return makeRequest('post', 'notifications/mark_viewed/' + notification_id).done(() => {
     get_new_notification_count()
-    jQuery(`#row-${notification_id} .notification-row`).removeClass("unread-notification-row")
-    jQuery('#toggle-area-'+notification_id).html(notificationRead(notification_id))
+    jQuery(`.row-${notification_id} .notification-row`).removeClass("unread-notification-row")
+    jQuery('.toggle-area-'+notification_id).html(notificationRead(notification_id))
+    // TODO toggle the .new-cell class off
   }).fail(handleAjaxError)
 }
 
 function mark_unread (notification_id) {
   return makeRequest('post', 'notifications/mark_unread/' + notification_id).done(() => {
     get_new_notification_count()
-    jQuery(`#row-${notification_id} .notification-row`).addClass("unread-notification-row")
-    jQuery('#toggle-area-'+notification_id).html(notificationNew(notification_id))
+    jQuery(`.row-${notification_id} .notification-row`).addClass("unread-notification-row")
+    jQuery('.toggle-area-'+notification_id).html(notificationNew(notification_id))
+    // TODO toggle the .new-cell class on
   }).fail(handleAjaxError)
 }
 
@@ -47,6 +49,7 @@ function mark_all_viewed () {
   return makeRequest('post', 'notifications/mark_all_viewed/' + id).done(() => {
     get_new_notification_count()
     jQuery('.new-cell').html(notificationRead(id))
+    // TODO also change the backgrounds of the notifications to indicate their read status?
   }).fail(handleAjaxError)
 }
 
@@ -69,14 +72,14 @@ function notification_template (id, note, is_new, pretty_time) {
 
 
   return `
-    <div class="cell" id="row-${id}">
+  <div class="row-${id} cell" id="">
       <div class="grid-x grid-padding-x grid-padding-y bottom-border notification-row ${is_new ==='1' ? 'unread-notification-row' : ''} ">
 
         <div class="auto cell">
            ${note}<br>
            <span><small><strong>${window.lodash.escape(pretty_time[0])}</strong> | ${window.lodash.escape(pretty_time[1])}</small></span>
         </div>
-        <div class="small-2 medium-1 cell padding-5 grid-x align-center align-middle ${window.lodash.escape( label )}" id="toggle-area-${window.lodash.escape( id )}">
+        <div class="small-2 medium-1 cell padding-5 grid-x align-center align-middle ${window.lodash.escape( label )} toggle-area-${window.lodash.escape( id )}">
             ${button}
         </div>
       </div>
@@ -88,9 +91,8 @@ let all = true
 let all_offset
 let new_offset
 let page
-let limit = 20
 
-function get_notifications (all, reset) {
+function get_notifications (all, reset, dropdown = false, limit = 20) {
   /* Processing the offset of the query request. Using the limit variable to increment the sql offset. */
   if (all === true) {
     new_offset = 0
@@ -128,38 +130,56 @@ function get_notifications (all, reset) {
     page += 1
   }
 
+  const jQueryElementsDict = {
+    'default' : {
+      notificationList: jQuery('.notifications-page #notification-list'),
+      nextAll: jQuery('.notifications-page #next-all'),
+      nextNew: jQuery('.notifications-page #next-new'),
+    },
+    'dropdown': {
+      notificationList: jQuery('#notification-dropdown #notification-list'),
+      nextAll: null,
+      nextNew: null,
+    },
+  }
+
+  const jQueryElements = jQueryElementsDict[dropdown ? 'dropdown' : 'default']
+
   // return notifications if query successful
   return makeRequest('post', 'notifications/get_notifications', { all, page, limit }).done(data => {
     if (data) {
       if (reset) {
-        jQuery('#notification-list').empty()
+        jQueryElements.notificationList.empty()
       }
 
       const groupedData = groupNotificationsByDayAndRecord(data)
 
       groupedData.forEach((dayGroupedByRecord) => {
         Object.entries(dayGroupedByRecord).forEach(([record_title, notifications]) => {
-          jQuery('#notification-list').append(notification_group_header(record_title))
+          jQueryElements.notificationList.append(notification_group_header(record_title))
 
           notifications.forEach((notification) => {
-            jQuery('#notification-list').append(notification_template(notification.id, notification.notification_note, notification.is_new, notification.pretty_time))
+            jQueryElements.notificationList.append(notification_template(notification.id, notification.notification_note, notification.is_new, notification.pretty_time))
           })
         })
       })
+      /* jQuery.each(data, function (i, item) {
+        jQueryElements.notificationList.append(notification_template(data[i].id, data[i].notification_note, data[i].is_new, data[i].pretty_time))
+      }) */
     } else if (
       (all === true && (all_offset === 0 || !all_offset )) ||
       all === false && (new_offset === 0 || !new_offset))
     { // determines if this is the first query (offset 0) and there is nothing returned.
-      jQuery('#notification-list').html(`<div class="cell center empty-notification-message">${window.lodash.escape( wpApiNotifications.translations["no-notifications"] )}</div>`)
-      jQuery('#next-all').hide()
-      jQuery('#next-new').hide()
+      jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( wpApiNotifications.translations["no-notifications"] )}</div>`)
+      jQueryElements.nextAll && jQueryElements.nextAll.hide()
+      jQueryElements.nextNew && jQueryElements.nextNew.hide()
     } else { // therefore if no data is returned, but this is not the first query, then just remove the option to load more content
       if (reset) {
-        jQuery('#notification-list').html(`<div class="cell center empty-notification-message">${window.lodash.escape( wpApiNotifications.translations["no-unread"] )}</div>`)
+        jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( wpApiNotifications.translations["no-unread"] )}</div>`)
       }
 
-      jQuery('#next-all').hide()
-      jQuery('#next-new').hide()
+      jQueryElements.nextAll && jQueryElements.nextAll.hide()
+      jQueryElements.nextNew && jQueryElements.nextNew.hide()
     }
   }).fail(handleAjaxError)
 }
@@ -193,14 +213,24 @@ function groupNotificationsByDayAndRecord(data) {
 
 function toggle_buttons( state ) {
   if ( state === 'all' ) {
-    jQuery('#all').attr('class', 'button')
-    jQuery('#new').attr('class', 'button hollow')
-    jQuery('#next-all').show()
-    jQuery('#next-new').hide()
+    jQuery('.notifications-page #all').attr('class', 'button')
+    jQuery('.notifications-page #new').attr('class', 'button hollow')
+    jQuery('.notifications-page #next-all').show()
+    jQuery('.notifications-page #next-new').hide()
   } else {
-    jQuery('#all').attr('class', 'button hollow')
-    jQuery('#new').attr('class', 'button')
-    jQuery('#next-all').hide()
-    jQuery('#next-new').show()
+    jQuery('.notifications-page #all').attr('class', 'button hollow')
+    jQuery('.notifications-page #new').attr('class', 'button')
+    jQuery('.notifications-page #next-all').hide()
+    jQuery('.notifications-page #next-new').show()
+  }
+}
+
+function toggle_dropdown_buttons( state ) {
+  if ( state === 'all' ) {
+    jQuery('#notification-dropdown #dropdown-all').attr('class', 'button')
+    jQuery('#notification-dropdown #dropdown-new').attr('class', 'button hollow')
+  } else {
+    jQuery('#notification-dropdown #dropdown-all').attr('class', 'button hollow')
+    jQuery('#notification-dropdown #dropdown-new').attr('class', 'button')
   }
 }
