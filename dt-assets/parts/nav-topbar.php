@@ -260,6 +260,18 @@ $dt_nav_tabs = dt_default_menu_array();
 
             <div id="notification-list" class="grid-x grid-margin-x" style="border-top: 1px solid #ccc;"><span class="loading-spinner active" style="margin:1em;"></span></div>
 
+
+            <div class="" style="text-align:center;">
+                <span>
+                    <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark all as read', 'disciple_tools' ) ?></a>  -
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>settings/#notifications">
+                        <?php esc_html_e( 'Settings', 'disciple_tools' )?>
+                    </a>
+                </span=>
+                <!-- <span class="show-for-small-only">
+                    <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark All', 'disciple_tools' ) ?></a>
+                </span> -->
+            </div>
         </div>
     </div>
 
