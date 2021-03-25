@@ -39,7 +39,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
 
-        
         require_once get_template_directory() . '/dt-contacts/dmm-module.php';
 
         parent::__construct();
@@ -595,17 +594,27 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                     <?php
                     foreach ( $fields as $field_key => $field_settings ) :
-                        if ( ! isset( $field_settings['section'] ) || substr($field_settings['section'], 0, 13) !== 'quick_buttons' ) {
+                        if ( ! isset( $field_settings['section'] ) || substr( $field_settings['section'], 0, 13 ) !== 'quick_buttons' ) {
                             continue;
                         }?>
                         <tr>
                             <td class="quick-action-menu"><img src="<?php echo esc_html( $field_settings['icon'] ) ?>" ></td>
-                            <td><?php if ( $field_settings['section'] === 'quick_buttons_custom' ) { echo '<input type="text" name="edit_field[' . esc_html( $field_key ) . ']" value="'. esc_html( $field_settings['name'] ) . '">'; } else { esc_html_e( $field_settings['name'] ); } ?></td>
-                            <td><?php if ( $field_settings['section'] === 'quick_buttons_custom' ) { echo '<button type="submit" name="delete_field" value="' . esc_attr( $field_key ) . '" class="button small">' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button>'; } ?></td>
+                            <td>
+                                <?php
+                                if ( $field_settings['section'] === 'quick_buttons_custom' ) {
+                                    echo '<input type="text" name="edit_field[' . esc_attr( $field_key ) . ']" value="'. esc_html( $field_settings['name'] ) . '">';
+                                } else {
+                                    esc_html_e( $field_settings['name'] );
+                                } ?>
+                            </td>
+                            <td>
+                                <?php
+                                if ( $field_settings['section'] === 'quick_buttons_custom' ) {
+                                    echo '<button type="submit" name="delete_field" value="' . esc_attr( $field_key ) . '" class="button small">' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button>';
+                                } ?>
+                            </td>
                         </tr>
-                    <?php
-                    endforeach;
-                    ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
             <br><button type="button" onclick="jQuery('#add_quick_action').toggle();" class="button">
@@ -638,48 +647,46 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             return;
         }
 
-            // Load custom fields
+        // Load custom fields
+        if ( ! empty( $_POST['create_custom_quick_action'] ) ) {
+            $label = sanitize_text_field( wp_unslash( $_POST['create_custom_quick_action'] ) );
+            $key = dt_create_field_key( 'quick_button_' . $label );
 
-            if ( ! empty( $_POST['create_custom_quick_action'] ) ) {
-                $label = sanitize_text_field( wp_unslash( $_POST['create_custom_quick_action'] ) );
-                $key = dt_create_field_key( 'quick_button_' . $label );
-
-                if ( ! empty( $key ) ) {
-                    if ( isset( $custom_field_options['contacts'][$key] ) ){
-                        self::admin_notice( __( "This quick action already exists", 'disciple_tools' ), "error" );
-                    } else {
-                        $custom_field_options['contacts'][$key] = [
-                            'name'        => $label,
-                            'description' => '',
-                            'type'        => 'number',
-                            'default'     => 0,
-                            'section'     => 'quick_buttons_custom',
-                            'icon'        => get_template_directory_uri() . "/dt-assets/images/follow.svg",
-                            "customizable" => false,
-                        ];                        
-                        $action_message = 'Quick Action added successfully';
-                    }
+            if ( ! empty( $key ) ) {
+                if ( isset( $custom_field_options['contacts'][$key] ) ){
+                    self::admin_notice( __( "This quick action already exists", 'disciple_tools' ), "error" );
+                } else {
+                    $custom_field_options['contacts'][$key] = [
+                        'name'        => $label,
+                        'description' => '',
+                        'type'        => 'number',
+                        'default'     => 0,
+                        'section'     => 'quick_buttons_custom',
+                        'icon'        => get_template_directory_uri() . "/dt-assets/images/follow.svg",
+                        'customizable' => false,
+                    ];
+                    self::admin_notice( __( 'Quick Action added successfully', 'disciple_tools' ), 'success' );
                 }
             }
+        }
 
-            if ( ! empty( $_POST['delete_field'] ) ) {
-                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
-                unset( $custom_field_options['contacts'][ $delete_key ] );
-                $action_message = 'Quick Action deleted successfully';
+        if ( ! empty( $_POST['delete_field'] ) ) {
+            $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
+            unset( $custom_field_options['contacts'][ $delete_key ] );
+            self::admin_notice( __( 'Quick Action deleted successfully', 'disciple_tools' ), 'success' );
+        }
+
+        if ( ! empty( $_POST['edit_field'] ) ) {
+            foreach ( $_POST['edit_field'] as $quick_action_key => $quick_action_new_name ) {
+                $quick_action_key = sanitize_text_field( wp_unslash( $quick_action_key ) );
+                $quick_action_new_name = sanitize_text_field( wp_unslash( $quick_action_new_name ) );
+                $custom_field_options['contacts'][ $quick_action_key ]['name'] = $quick_action_new_name;
+                self::admin_notice( __( 'Quick Action edited successfully', 'disciple_tools' ), 'success' );
             }
+        }
 
-            if ( ! empty( $_POST['edit_field'] ) ) {
-                foreach( $_POST['edit_field'] as $quick_action_key => $quick_action_new_name ) {
-                    $quick_action_key = sanitize_text_field( wp_unslash( $quick_action_key ) );
-                    $quick_action_new_name = sanitize_text_field( wp_unslash( $quick_action_new_name ) );
-                    $custom_field_options['contacts'][ $quick_action_key ]['name'] = $quick_action_new_name;
-                    $action_message = 'Quick Action edited successfully';
-                }
-            }
-
-            wp_cache_delete( "contacts_field_settings" );
-            update_option( 'dt_field_customizations', $custom_field_options, true );
-            self::admin_notice( __( $action_message, 'disciple_tools' ), "success" );
+        wp_cache_delete( "contacts_field_settings" );
+        update_option( 'dt_field_customizations', $custom_field_options, true );
     }
 }
 Disciple_Tools_Tab_Custom_Lists::instance();
