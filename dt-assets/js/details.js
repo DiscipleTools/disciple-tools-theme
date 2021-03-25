@@ -116,7 +116,7 @@ jQuery(document).ready(function($) {
       $(`#${id}-spinner`).removeClass('active')
       $( document ).trigger( "select-field-updated", [ resp, id, val ] );
       if ( $(e.currentTarget).hasClass( "color-select")){
-        $(`#${id}`).css("background-color", _.get(window.detailsSettings, `post_settings.fields[${id}].default[${val}].color`) )
+        $(`#${id}`).css("background-color", window.lodash.get(window.detailsSettings, `post_settings.fields[${id}].default[${val}].color`) )
       }
     }).catch(handleAjaxError)
   })
@@ -145,9 +145,9 @@ jQuery(document).ready(function($) {
     const $list = $(`#edit-${field}`)
 
     $list.append(`<div class="input-group">
-            <input type="text" data-field="${_.escape( field )}" class="dt-communication-channel input-group-field" />
+            <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
             <div class="input-group-button">
-            <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${_.escape( field )}" data-key="new" data-field="${_.escape( field )}">&times;</button>
+            <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
             </div></div>`)
   })
   $(document).on('click', '.channel-delete-button', function(){
@@ -164,7 +164,7 @@ jQuery(document).ready(function($) {
         let list = $(`#edit-${field}`)
         if ( list.children().length === 0 ){
           list.append(`<div class="input-group">
-            <input type="text" data-field="${_.escape( field )}" class="dt-communication-channel input-group-field" />
+            <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
             </div>`)
         }
         $(`#${field}-spinner`).removeClass('active')
@@ -185,15 +185,13 @@ jQuery(document).ready(function($) {
     $(`#${field_key}-spinner`).addClass('active')
     API.update_post(post_type, post_id, { [field_key]: [update]}).then((updatedContact)=>{
       $(`#${field_key}-spinner`).removeClass('active')
-      let key = _.last(updatedContact[field_key]).key
+      let key = window.lodash.last(updatedContact[field_key]).key
       $(this).attr('id', key)
       if ( $(this).next('div.input-group-button').length === 1 ) {
-        console.log('present')
         $(this).parent().find('.channel-delete-button').data('key', key)
       } else {
-        console.log('new x')
         $(this).parent().append(`<div class="input-group-button">
-            <button class="button alert delete-button-style input-height channel-delete-button delete-button" data-key="${_.escape( key )}" data-field="${_.escape( field_key )}">&times;</button>
+            <button class="button alert delete-button-style input-height channel-delete-button delete-button" data-key="${window.lodash.escape( key )}" data-field="${window.lodash.escape( field_key )}">&times;</button>
         </div>`)
       }
       post = updatedContact
@@ -206,15 +204,15 @@ jQuery(document).ready(function($) {
 
   $( document ).on( 'text-input-updated', function (e, newContact, id, val){
     if ( id === "name" ){
-      $("#title").html(_.escape(val))
-      $("#second-bar-name").text(_.escape(val))
+      $("#title").html(window.lodash.escape(val))
+      $("#second-bar-name").text(window.lodash.escape(val))
     }
   })
 
   $( document ).on( 'contenteditable-updated', function (e, newContact, id, val){
     if ( id === "title" ){
-      $("#name").val(_.escape(val))
-      $("#second-bar-name").text(_.escape(val))
+      $("#name").val(window.lodash.escape(val))
+      $("#second-bar-name").text(window.lodash.escape(val))
     }
   })
 
@@ -227,7 +225,7 @@ jQuery(document).ready(function($) {
   $( document ).on( 'dt_record_updated', function (e, response, request ){
     post = response;
     resetDetailsFields()
-    record_updated(_.get(response, "requires_update", false));
+    record_updated(window.lodash.get(response, "requires_update", false));
 
   })
 
@@ -236,7 +234,7 @@ jQuery(document).ready(function($) {
   /**
    * Update Needed
    */
-  $('#update-needed.dt-switch').change(function () {
+  $('.update-needed.dt-switch').change(function () {
     let updateNeeded = $(this).is(':checked')
     API.update_post( post_type, post_id, {"requires_update":updateNeeded}).then(resp=>{
       post = resp
@@ -259,7 +257,7 @@ jQuery(document).ready(function($) {
 
   $('.dt_typeahead').each((key, el)=>{
     let field_id = $(el).attr('id').replace('_connection', '')
-    let listing_post_type = _.get(window.detailsSettings.post_settings.fields[field_id], "post_type", 'contacts')
+    let listing_post_type = window.lodash.get(window.detailsSettings.post_settings.fields[field_id], "post_type", 'contacts')
     $.typeahead({
       input: `.js-typeahead-${field_id}`,
       minLength: 0,
@@ -271,16 +269,23 @@ jQuery(document).ready(function($) {
         return parseInt(item.ID) !== parseInt(post_id)
       },
       source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
-      display: "name",
-      templateValue: "{{name}}",
+      display: ["name", "label"],
+      templateValue: function() {
+          if (this.items[this.items.length - 1].label) {
+            return "{{label}}"
+          } else {
+            return "{{name}}"
+          }
+      },
       dynamic: true,
       multiselect: {
         matchOn: ["ID"],
         data: function () {
           return (post[field_id] || [] ).map(g=>{
-            return {ID:g.ID, name:g.post_title}
+            return {ID:g.ID, name:g.post_title, label: g.label}
           })
-        }, callback: {
+        },
+        callback: {
           onCancel: function (node, item) {
             $(`#${field_id}-spinner`).addClass('active')
             API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
@@ -288,7 +293,13 @@ jQuery(document).ready(function($) {
             }).catch(err => { console.error(err) })
           }
         },
-        href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
+        href: function (item) {
+          if (listing_post_type === 'peoplegroups') {
+            return null;
+          } else {
+            return window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`
+          }
+        }
       },
       callback: {
         onClick: function(node, a, item, event){
@@ -330,9 +341,9 @@ jQuery(document).ready(function($) {
     }
 
     let source_data =  { data: [] }
-    let field_options = _.get(field_settings, `${field}.default`, {})
+    let field_options = window.lodash.get(field_settings, `${field}.default`, {})
     if ( Object.keys(field_options).length > 0 ){
-      _.forOwn(field_options, (val, key)=>{
+      window.lodash.forOwn(field_options, (val, key)=>{
         if ( !val.deleted ){
           source_data.data.push({
             key: key,
@@ -357,7 +368,7 @@ jQuery(document).ready(function($) {
             callback: {
               done: function (data) {
                 return (data || []).map(tag => {
-                  let label = _.get(field_options, tag + ".label", tag)
+                  let label = window.lodash.get(field_options, tag + ".label", tag)
                   return {value: label, key: tag}
                 })
               }
@@ -372,7 +383,7 @@ jQuery(document).ready(function($) {
       maxItem: 20,
       searchOnFocus: true,
       template: function (query, item) {
-        return `<span>${_.escape(item.value)}</span>`
+        return `<span>${window.lodash.escape(item.value)}</span>`
       },
       source: source_data,
       display: "value",
@@ -382,7 +393,7 @@ jQuery(document).ready(function($) {
         matchOn: ["key"],
         data: function (){
           return (post[field] || [] ).map(g=>{
-            return {key:g, value:_.get(field_settings, `${field}.default.${g}.label`, g)}
+            return {key:g, value:window.lodash.get(field_settings, `${field}.default.${g}.label`, g)}
           })
         },
         callback: {
@@ -450,9 +461,9 @@ jQuery(document).ready(function($) {
       return API.update_post( post_type, post_id, { [update_field]: { values: [ { value:newRecord.ID }]}}).then(response=>{
         $(".js-create-record-button").attr("disabled", false).removeClass("loading");
         $(".reveal-after-record-create").show()
-        $("#new-record-link").html(`<a href="${_.escape( newRecord.permalink )}">${_.escape( title )}</a>`)
+        $("#new-record-link").html(`<a href="${window.lodash.escape( newRecord.permalink )}">${window.lodash.escape( title )}</a>`)
         $(".hide-after-record-create").hide()
-        $('#go-to-record').attr('href', _.escape( newRecord.permalink ));
+        $('#go-to-record').attr('href', window.lodash.escape( newRecord.permalink ));
         post = response
         $( document ).trigger( "dt-post-connection-created", [ post, update_field ] );
         if ( Typeahead[`.js-typeahead-${connection_type}`] ){
@@ -464,7 +475,7 @@ jQuery(document).ready(function($) {
     .catch(function(error) {
       $(".js-create-record-button").removeClass("loading").addClass("alert");
       $(".js-create-record .error-text").text(
-        _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
+        window.lodash.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
       );
       console.error(error);
     });
@@ -481,8 +492,8 @@ jQuery(document).ready(function($) {
       dropdownFilter: [{
         key: 'group',
         value: 'focus',
-        template: _.escape(window.wpApiShare.translations.regions_of_focus),
-        all: _.escape(window.wpApiShare.translations.all_locations),
+        template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
+        all: window.lodash.escape(window.wpApiShare.translations.all_locations),
       }],
       source: {
         focus: {
@@ -492,7 +503,7 @@ jQuery(document).ready(function($) {
             data: {
               s: "{{query}}",
               filter: function () {
-                return _.get(window.Typeahead[`.js-typeahead-${field_id}`].filters.dropdown, 'value', 'all')
+                return window.lodash.get(window.Typeahead[`.js-typeahead-${field_id}`].filters.dropdown, 'value', 'all')
               }
             },
             beforeSend: function (xhr) {
@@ -536,11 +547,11 @@ jQuery(document).ready(function($) {
           masonGrid.masonry('layout')
         },
         onReady() {
-          this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+          this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
           this.container
           .removeClass("filter")
           .find("." + this.options.selector.filterButton)
-          .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+          .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals[field_id]
@@ -560,7 +571,11 @@ jQuery(document).ready(function($) {
   $('button.follow').on("click", function () {
     let following = !($(this).data('value') === "following")
     $(this).data("value", following ? "following" : "" )
-    $(this).html( following ? "Following" : "Follow")
+    if ($(this).hasClass('mobile')) {
+      $(this).html( following ? "<i class='fi-eye'></i>" : "<i class='fi-eye'></i>")
+    } else {
+      $(this).html( following ? "Following <i class='fi-eye'></i>" : "Follow <i class='fi-eye'></i>")
+    }
     $(this).toggleClass( "hollow" )
     let update = {
       follow: {values:[{value:window.detailsSettings.current_user_id, delete:!following}]},
@@ -585,30 +600,30 @@ jQuery(document).ready(function($) {
 
 
   let build_task_list = ()=>{
-    let tasks = _.sortBy(post.tasks || [], ['date']).reverse()
+    let tasks = window.lodash.sortBy(post.tasks || [], ['date']).reverse()
     let html = ``
     tasks.forEach(task=>{
       let task_done = ( task.category === "reminder" && task.value.notification === 'notification_sent' )
                       || ( task.category !== "reminder" && task.value.status === 'task_complete' )
       let show_complete_button = task.category !== "reminder" && task.value.status !== 'task_complete'
-      let task_row = `<strong>${_.escape( moment(task.date).format("MMM D YYYY") )}</strong> `
+      let task_row = `<strong>${window.lodash.escape( moment(task.date).format("MMM D YYYY") )}</strong> `
       if ( task.category === "reminder" ){
-        task_row += _.escape( window.detailsSettings.translations.reminder )
+        task_row += window.lodash.escape( window.detailsSettings.translations.reminder )
         if ( task.value.note ){
-          task_row += ' ' + _.escape(task.value.note)
+          task_row += ' ' + window.lodash.escape(task.value.note)
         }
       } else {
-         task_row += _.escape(task.value.note || window.detailsSettings.translations.no_note )
+         task_row += window.lodash.escape(task.value.note || window.detailsSettings.translations.no_note )
       }
       html += `<li>
         <span style="${task_done ? 'text-decoration:line-through' : ''}">
         ${task_row}
-        ${ show_complete_button ? `<button type="button" data-id="${_.escape(task.id)}" class="existing-task-action complete-task">${_.escape(window.detailsSettings.translations.complete).toLowerCase()}</button>` : '' }
-        <button type="button" data-id="${_.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${_.escape(window.detailsSettings.translations.remove).toLowerCase()}</button>
+        ${ show_complete_button ? `<button type="button" data-id="${window.lodash.escape(task.id)}" class="existing-task-action complete-task">${window.lodash.escape(window.detailsSettings.translations.complete).toLowerCase()}</button>` : '' }
+        <button type="button" data-id="${window.lodash.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${window.lodash.escape(window.detailsSettings.translations.remove).toLowerCase()}</button>
       </li>`
     })
     if (!html ){
-      $('#tasks-modal .existing-tasks').html(`<li>${_.escape(window.detailsSettings.translations.no_tasks)}</li>`)
+      $('#tasks-modal .existing-tasks').html(`<li>${window.lodash.escape(window.detailsSettings.translations.no_tasks)}</li>`)
     } else {
       $('#tasks-modal .existing-tasks').html(html)
     }
@@ -692,7 +707,7 @@ jQuery(document).ready(function($) {
       $("#create-task")
       .attr("disabled", false)
       .removeClass("loading");
-      $('.js-add-task-form .error-text').html(_.escape(_.get(err, "responseJSON.message")));
+      $('.js-add-task-form .error-text').html(window.lodash.escape(window.lodash.get(err, "responseJSON.message")));
       console.error(err)
     })
   })
@@ -701,113 +716,156 @@ jQuery(document).ready(function($) {
   /**
    * Tags
    */
-  $.typeahead({
-    input: '.js-typeahead-tags',
-    minLength: 0,
-    maxItem: 20,
-    searchOnFocus: true,
-    source: {
-      tags: {
-        display: ["name"],
-        ajax: {
-          url: window.wpApiShare.root  + `dt-posts/v2/${post_type}/multi-select-values`,
-          data: {
-            s: "{{query}}",
-            field: "tags"
-          },
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-          },
-          callback: {
-            done: function (data) {
-              return (data || []).map(tag=>{
-                return {name:tag}
-              })
+  if( $('.js-typeahead-tags').length ) {
+    $.typeahead({
+      input: '.js-typeahead-tags',
+      minLength: 0,
+      maxItem: 20,
+      searchOnFocus: true,
+      source: {
+        tags: {
+          display: ["name"],
+          ajax: {
+            url: window.wpApiShare.root + `dt-posts/v2/${post_type}/multi-select-values`,
+            data: {
+              s: "{{query}}",
+              field: "tags"
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                return (data || []).map(tag => {
+                  return {name: tag}
+                })
+              }
             }
           }
         }
-      }
-    },
-    display: "name",
-    templateValue: "{{name}}",
-    dynamic: true,
-    multiselect: {
-      matchOn: ["name"],
-      data: function () {
-        return (post.tags || []).map(t=>{
-          return {name:t}
-        })
-      }, callback: {
-        onCancel: function (node, item) {
-          API.update_post(post_type, post_id, {'tags': {values:[{value:item.name, delete:true}]}})
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["name"],
+        data: function () {
+          return (post.tags || []).map(t => {
+            return {name: t}
+          })
+        }, callback: {
+          onCancel: function (node, item) {
+            API.update_post(post_type, post_id, {'tags': {values: [{value: item.name, delete: true}]}})
+          }
+        }
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          API.update_post(post_type, post_id, {tags: {values: [{value: item.name}]}})
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+          masonGrid.masonry('layout')
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#tags-result-container').html(text);
+          masonGrid.masonry('layout')
+        },
+        onHideLayout: function () {
+          $('#tags-result-container').html("");
+          masonGrid.masonry('layout')
+        },
+        onShowLayout() {
+          masonGrid.masonry('layout')
         }
       }
-    },
-    callback: {
-      onClick: function(node, a, item, event){
-        API.update_post(post_type, post_id, {tags: {values:[{value:item.name}]}})
-        this.addMultiselectItemLayout(item)
-        event.preventDefault()
-        this.hideLayout();
-        this.resetInput();
-        masonGrid.masonry('layout')
-      },
-      onResult: function (node, query, result, resultCount) {
-        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#tags-result-container').html(text);
-        masonGrid.masonry('layout')
-      },
-      onHideLayout: function () {
-        $('#tags-result-container').html("");
-        masonGrid.masonry('layout')
-      },
-      onShowLayout (){
-        masonGrid.masonry('layout')
-      }
-    }
-  });
-  $("#create-tag-return").on("click", function () {
-    let tag = $("#new-tag").val()
-    Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name:tag})
-    API.update_post(post_type, post_id, {tags: {values:[{value:tag}]}})
-  })
+    });
+    $("#create-tag-return").on("click", function () {
+      let tag = $("#new-tag").val()
+      Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name: tag})
+      API.update_post(post_type, post_id, {tags: {values: [{value: tag}]}})
+    })
+  }
 
+
+  let upgradeUrl = (url)=>{
+    if ( !url.includes("http")){
+      url = "https://" + url
+    }
+    if ( !url.startsWith(window.wpApiShare.template_dir)){
+      url = url.replace( 'http://', 'https://' )
+    }
+    return url
+  }
+
+  let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi
+  let protocolRegex = /^(?:https?:\/\/)?(?:www.)?/gi
   function resetDetailsFields(){
-    _.forOwn( field_settings, (field_options, field_key)=>{
+    window.lodash.forOwn( field_settings, (field_options, field_key)=>{
 
       if ( field_options.tile === 'details' && !field_options.hidden && post[field_key]){
 
         if ( field_options.only_for_types && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ){
           return
         }
-        let field_value = _.get( post, field_key, false )
+        let field_value = window.lodash.get( post, field_key, false )
         let values_html = ``
         if ( field_options.type === 'text' ){
-          values_html = _.escape( field_value )
+          values_html = window.lodash.escape( field_value )
         } else if ( field_options.type === 'date' ){
-          values_html = _.escape( field_value.formatted )
+          values_html = window.lodash.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
         } else if ( field_options.type === 'key_select' ){
-          values_html = _.escape( field_value.label )
+          values_html = window.lodash.escape( field_value.label )
         } else if ( field_options.type === 'multi_select' ){
           values_html = field_value.map(v=>{
-            return `${_.escape( _.get( field_options, `default[${v}].label`, v ))}`;
+            return `${window.lodash.escape( window.lodash.get( field_options, `default[${v}].label`, v ))}`;
           }).join(', ')
         } else if ( ['location', 'location_meta' ].includes(field_options.type) ){
           values_html = field_value.map(v=>{
-            return _.escape(v.label);
-          }).join(', ')
+            return window.lodash.escape(v.matched_search || v.label);
+          }).join(' / ')
         } else if ( field_options.type === 'communication_channel' ){
-          values_html = field_value.map(v=>{
-            return _.escape(v.value);
+          field_value.forEach((v, index)=>{
+            if ( index > 0 ){
+              values_html += ', '
+            }
+            let value = window.lodash.escape(v.value)
+            if ( field_key === 'contact_phone' ){
+              values_html += `<a dir="auto" href="tel:${value}" title="${value}">${value}</a>`
+            } else if (field_key === "contact_email") {
+              values_html += `<a dir="auto" href="mailto:${value}" title="${value}">${value}</a>`
+            } else {
+              let validURL = new RegExp(urlRegex).exec(value)
+              let prefix = new RegExp(protocolRegex).exec(value)
+              if (validURL && prefix) {
+                let urlToDisplay = ""
+                if (field_options.hide_domain && field_options.hide_domain===true) {
+                  urlToDisplay = validURL[1] || value
+                } else {
+                  urlToDisplay = value.replace(prefix[0], "")
+                }
+                value = upgradeUrl(value)
+                value = `<a href="${window.lodash.escape(value)}" target="_blank" >${window.lodash.escape(urlToDisplay)}</a>`
+              }
+              values_html += value
+            }
+          })
+          let labels = field_value.map(v=>{
+            return window.lodash.escape(v.value);
           }).join(', ')
+          $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${labels}">${values_html}</span>`)
+
         } else if ( ['connection'].includes(field_options.type) ){
           values_html = field_value.map(v=>{
-            return _.escape(v.label);
-          }).join(', ')
+            return window.lodash.escape(v.label);
+          }).join(' / ')
         }
-
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
-        $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
+        if (field_options.type !== 'communication_channel') {
+          $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
+        }
       }
 
     })
@@ -837,6 +895,16 @@ jQuery(document).ready(function($) {
     })
   })
 
+  //autofocus the first input when a modal is opened.
+  $(".reveal").on("open.zf.reveal", function () {
+    const firstField = $(this).find("input").filter(
+      ":not([disabled],[hidden],[opacity=0]):visible:first"
+    );
+    if (firstField.length !== 0) {
+      firstField.focus();
+    }
+  });
+
   //leave at the end of this file
   masonGrid.masonry({
     itemSelector: '.grid-item',
@@ -849,5 +917,5 @@ jQuery(document).ready(function($) {
 // change update needed notification and switch if needed.
 function record_updated(updateNeeded) {
   $('.update-needed-notification').toggle(updateNeeded)
-  $('#update-needed').prop("checked", updateNeeded)
+  $('.update-needed').prop("checked", updateNeeded)
 }

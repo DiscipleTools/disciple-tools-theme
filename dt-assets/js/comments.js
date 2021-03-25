@@ -57,7 +57,7 @@ jQuery(document).ready(function($) {
       user_id: currentContact.post_author,
     }
     activityData.push(createdContactActivityItem)
-    if (_.get(settings, "post_with_fields.initial_comments")){
+    if (window.lodash.get(settings, "post_with_fields.initial_comments")){
       const initialComments = {
         hist_time: createdDate.unix()+1,
         object_note: settings.post_with_fields.initial_comments,
@@ -73,11 +73,11 @@ jQuery(document).ready(function($) {
 
       if (field && field.includes("quick_button_")){
         if (window.detailsSettings){
-          field = _.get(window.detailsSettings,`post_fields[${item.meta_key}].name`)
+          field = window.lodash.get(window.detailsSettings,`post_settings.fields[${item.meta_key}].name`)
         }
-        item.action = `<a class="revert-activity dt_tooltip" data-id="${_.escape( item.histid )}">
+        item.action = `<a class="revert-activity dt_tooltip" data-id="${window.lodash.escape( item.histid )}">
           <img class="revert-arrow-img" src="${commentsSettings.template_dir}/dt-assets/images/undo.svg">
-          <span class="tooltiptext">${_.escape( field || item.meta_key )} </span>
+          <span class="tooltiptext">${window.lodash.escape( field || item.meta_key )} </span>
         </a>`
       } else {
         item.action = ''
@@ -101,7 +101,7 @@ jQuery(document).ready(function($) {
    * to match the behaviour that the user sees when editing the comment in an
    * input with dir=auto set, especially when using a right-to-left language
    * with multiple paragraphs. */
-  let commentTemplate = _.template(`
+  let commentTemplate = window.lodash.template(`
   <div class="activity-block">
     <div>
         <span class="gravatar"><img src="<%- gravatar  %>"/></span>
@@ -110,7 +110,7 @@ jQuery(document).ready(function($) {
       </div>
     <div class="activity-text">
     <% var is_Comment; var has_Comment_ID; %>
-    <% _.forEach(activity, function(a){
+    <% window.lodash.forEach(activity, function(a){
         if (a.comment){ %>
           <% is_Comment = true; %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
@@ -124,11 +124,11 @@ jQuery(document).ready(function($) {
                 <% has_Comment_ID = true %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
                       <img src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
-                      ${_.escape(commentsSettings.translations.edit)}
+                      ${window.lodash.escape(commentsSettings.translations.edit)}
                   </a>
                   <a class="open-delete-comment" data-id="<%- a.comment_ID %>">
                       <img src="${commentsSettings.template_dir}/dt-assets/images/trash-blue.svg">
-                      ${_.escape(commentsSettings.translations.delete)}
+                      ${window.lodash.escape(commentsSettings.translations.delete)}
                   </a>
                <% } %>
             </p>
@@ -138,8 +138,8 @@ jQuery(document).ready(function($) {
     }); %>
     <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate'
     ) { %>
-        <a class="translate-button showTranslation">${_.escape(commentsSettings.translations.translate)}</a>
-        <a class="translate-button hideTranslation hide">${_.escape(commentsSettings.translations.hide_translation)}</a>
+        <a class="translate-button showTranslation">${window.lodash.escape(commentsSettings.translations.translate)}</a>
+        <a class="translate-button hideTranslation hide">${window.lodash.escape(commentsSettings.translations.hide_translation)}</a>
         </div>
     <% } %>
     </div>
@@ -157,7 +157,7 @@ jQuery(document).ready(function($) {
     let translation_bubble = $(this).siblings('.translation-bubble');
     let translation_hide = $(this).siblings('.translate-button.hideTranslation');
 
-    let url = `https://translation.googleapis.com/language/translate/v2?key=${_.escape(commentsSettings.google_translate_key)}`
+    let url = `https://translation.googleapis.com/language/translate/v2?key=${window.lodash.escape(commentsSettings.google_translate_key)}`
     let targetLang;
 
     if (langcode !== "zh-TW") {
@@ -231,7 +231,7 @@ jQuery(document).ready(function($) {
       }
     }).catch(err=>{
       $(this).toggleClass('loading')
-      if (_.get(err, "responseJSON.message")){
+      if (window.lodash.get(err, "responseJSON.message")){
         $('.delete-comment.callout').show()
         $('#delete-comment-error').html(err.responseJSON.message)
       }
@@ -241,7 +241,7 @@ jQuery(document).ready(function($) {
   $(document).on("click", ".open-edit-comment", function () {
     let id = $(this).data("id")
     let comment_type = $(this).data("type");
-    let comment = _.find(comments, {comment_ID:id.toString()})
+    let comment = window.lodash.find(comments, {comment_ID:id.toString()})
 
     let comment_html = comment.comment_content // eg: "Tom &amp; Jerry"
 
@@ -259,9 +259,9 @@ jQuery(document).ready(function($) {
           .replace(/&#039;/g, "'");
     }
 
-    // textarea deos not render HTML, so using _.unescape is safe. Note that
-    // _.unescape will silently ignore invalid HTML, for instance,
-    // _.unescape("Tom & Jerry") will return "Tom & Jerry"
+    // textarea deos not render HTML, so using window.lodash.unescape is safe. Note that
+    // window.lodash.unescape will silently ignore invalid HTML, for instance,
+    // window.lodash.unescape("Tom & Jerry") will return "Tom & Jerry"
     $('#comment-to-edit').val(unescapeHtml(comment_html));
 
     $('#edit_comment_type_selector').val(comment_type);
@@ -284,7 +284,7 @@ jQuery(document).ready(function($) {
       }
     }).catch(err=>{
       $(this).toggleClass('loading')
-      if (_.get(err, "responseJSON.message")){
+      if (window.lodash.get(err, "responseJSON.message")){
         $('.edit-comment.callout').show()
         $('#edit-comment-error').html(err.responseJSON.message)
       }
@@ -307,14 +307,14 @@ jQuery(document).ready(function($) {
     commentsWrapper.empty()
     let displayed = []
     if ( !hiddenTabs.includes("activity")){
-      displayed = _.union(displayed, activity)
+      displayed = window.lodash.union(displayed, activity)
     }
     comments.forEach(comment=>{
       if (!hiddenTabs.includes(comment.comment_type)){
         displayed.push(comment)
       }
     })
-    displayed = _.orderBy(displayed, "date", "desc")
+    displayed = window.lodash.orderBy(displayed, "date", "desc")
     let array = []
 
     displayed.forEach(d=>{
@@ -323,7 +323,7 @@ jQuery(document).ready(function($) {
       if (baptismDateRegex.test(d.object_note)) {
         d.object_note = d.object_note.replace(baptismDateRegex, baptismTimestamptoDate);
       }
-      let first = _.first(array)
+      let first = window.lodash.first(array)
       let name = d.comment_author || d.name
       let gravatar = d.gravatar || ""
       let obj = {
@@ -432,7 +432,7 @@ jQuery(document).ready(function($) {
   let getActivityPromise = null
   function get_all() {
     //abort previous promise if it is not finished.
-    if (getAllPromise && _.get(getAllPromise, "readyState") !== 4){
+    if (getAllPromise && window.lodash.get(getAllPromise, "readyState") !== 4){
       getActivityPromise.abort()
       getCommentsPromise.abort()
     }
@@ -448,7 +448,7 @@ jQuery(document).ready(function($) {
       const activityData = activityDataStatusJQXHR[0].activity;
       prepareData(commentData, activityData)
     }).catch(err => {
-      if ( !_.get( err, "statusText" ) === "abort" ) {
+      if ( !window.lodash.get( err, "statusText" ) === "abort" ) {
         console.error(err);
         jQuery("#errors").append(err.responseText)
       }
@@ -478,7 +478,7 @@ jQuery(document).ready(function($) {
       typesCount[comment.comment_type]++;
     })
     $('#comment-activity-tabs .tabs-title').addClass('hide')
-    _.forOwn(typesCount, (val, key)=>{
+    window.lodash.forOwn(typesCount, (val, key)=>{
       let tab = $(`[data-id="${key}"].tab-button-label`)
       let text = tab.text()
       text = text.substring(0, text.indexOf('(')) || text
@@ -517,7 +517,7 @@ jQuery(document).ready(function($) {
   $('textarea.mention').mentionsInput({
     onDataRequest:function (mode, query, callback) {
       $('#comment-input').addClass('loading-gif')
-      if ( searchUsersPromise && _.get(searchUsersPromise, 'readyState') !== 4 ){
+      if ( searchUsersPromise && window.lodash.get(searchUsersPromise, 'readyState') !== 4 ){
         searchUsersPromise.abort("abortPromise")
       }
       searchUsersPromise = API.search_users(query)
@@ -559,7 +559,7 @@ jQuery(document).ready(function($) {
     API.get_single_activity(postType, postId, id).then(a => {
       let field = a.meta_key
       if (window.detailsSettings.post_settings){
-        field = _.get(window.detailsSettings, `post_settings.fields[${a.meta_key}].name`)
+        field = window.lodash.get(window.detailsSettings, `post_settings.fields[${a.meta_key}].name`)
       }
 
       $(".revert-field").html(field || a.meta_key)

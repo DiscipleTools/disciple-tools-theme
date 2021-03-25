@@ -689,7 +689,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $compact[] = [
                 "ID" => $post->ID,
-                "name" => $post->post_title
+                "name" => wp_specialchars_decode ( $post->post_title )
             ];
         }
 
@@ -749,6 +749,29 @@ class DT_Posts extends Disciple_Tools_Posts {
                         return $a['name'] <=> $b['name'];
                     }
                 });
+            }
+        }
+
+        if ( $post_type === "peoplegroups" ){
+            $list = [];
+            $locale = get_user_locale();
+
+            foreach ( $posts as $post ) {
+                $translation = get_post_meta( $post->ID, $locale, true );
+                if ($translation !== "") {
+                    $label = $translation;
+                } else {
+                    $label = $post->post_title;
+                }
+                foreach( $compact as $index => &$p ){
+                    if ( $compact[$index]["ID"] === $post->ID ) {
+                        $compact[$index] = [
+                            "ID" => $post->ID,
+                            "name" => $post->post_title,
+                            "label" => $label
+                            ];
+                    }
+                }
             }
         }
 
@@ -888,15 +911,19 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "comment_date" => $comment->comment_date,
                 "comment_date_gmt" => $comment->comment_date_gmt,
                 "gravatar" => preg_replace( "/^http:/i", "https:", $url ),
-                "comment_content" => wp_kses( $comment->comment_content, self::$allowable_comment_tags),
+                "comment_content" => $comment->comment_content,
                 "user_id" => $comment->user_id,
                 "comment_type" => $comment->comment_type,
                 "comment_post_ID" => $comment->comment_post_ID
             ];
-            $response_body[] =$c;
+            $response_body[] = $c;
         }
 
         $response_body = apply_filters( "dt_filter_post_comments", $response_body, $post_type, $post_id );
+
+        foreach ( $response_body as &$comment ){
+            $comment["comment_content"] = wp_kses( $comment["comment_content"], self::$allowable_comment_tags);
+        }
 
         return [
             "comments" => $response_body,
@@ -1079,7 +1106,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $assigned_to_meta = get_post_meta( $post_id, "assigned_to", true );
-        if ( !( current_user_can( 'update_any_' . $post_type ) ||
+        if ( !( self::can_update( $post_type, $post_id ) ||
                 get_current_user_id() === $user_id ||
                 dt_get_user_id_from_assigned_to( $assigned_to_meta ) === get_current_user_id() )
         ){
@@ -1361,7 +1388,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $cached;
         }
         $tile_options = dt_get_option( "dt_custom_tiles" );
-        $sections = apply_filters( 'dt_details_additional_tiles', [], $post_type );
+        $default = [
+            "status" => [ "label" => __( "Status", 'disciple_tools' ), "tile_priority" => 10 ],
+            "details" => [ "label" => __( "Details", 'disciple_tools' ), "tile_priority" => 20 ]
+        ];
+        $sections = apply_filters( 'dt_details_additional_tiles', $default, $post_type );
         if ( !isset( $tile_options[$post_type] ) ){
             $tile_options[$post_type] = [];
         }
@@ -1372,22 +1403,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $tile_options[$post_type][$section_id] = [];
             }
         }
-        //tile available on all records
-        if ( !isset( $tile_options[$post_type]["details"] ) ) {
-            $tile_options[$post_type]["details"] = [];
-        }
-        if ( !isset( $tile_options[$post_type]["details"]["label"] ) ) {
-            $tile_options[$post_type]["details"]["label"] = __( "Details", 'disciple_tools' );
-        }
-        //tile available on all records
-        if ( !isset( $tile_options[$post_type]["status"] ) ) {
-            $tile_options[$post_type]["status"] = [];
-        }
-        if ( !isset( $tile_options[$post_type]["status"]["label"] ) ) {
-            $tile_options[$post_type]["status"]["label"] = __( "Status", 'disciple_tools' );
-        }
-        $tile_options[$post_type]["status"]["tile_priority"] = 10;
-        $tile_options[$post_type]["details"]["tile_priority"] = 20;
+
         uasort($tile_options[$post_type], function( $a, $b) {
             return ( $a['tile_priority'] ?? 100 ) <=> ( $b['tile_priority'] ?? 100 );
         });

@@ -42,7 +42,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                     <div class="type-options">
                         <?php if ( isset( $post_settings["fields"]["type"]["default"] ) ) {
                             uasort( $post_settings["fields"]["type"]["default"], function ( $a, $b ){
-                                return $a['order'] ?? 100 <=> $b['order'] ?? 100;
+                                return ( $a['order'] ?? 100 ) <=> ( $b['order'] ?? 100 );
                             });
                         }
                         foreach ( $post_settings["fields"]["type"]["default"] as $option_key => $type_option ) {
@@ -81,6 +81,9 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                             if ( !empty( $field_settings["hidden"] ) && empty( $field_settings["custom_display"] ) ){
                                 continue;
                             }
+                            if ( isset( $field_settings["in_create_form"] ) && $field_settings["in_create_form"] === false ){
+                                continue;
+                            }
                             if ( !isset( $field_settings["tile"] ) ){
                                 continue;
                             }
@@ -112,6 +115,9 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                         <div id="show-shield-banner" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">
                             <a class="button clear" id="show-hidden-fields" style="margin:0;padding:3px 0; width:100%">
                                 <?php esc_html_e( 'Show all fields', 'disciple_tools' ); ?>
+                            </a>
+                            <a class="button clear" id="hide-hidden-fields" style="margin:0;padding:3px 0; width:100%; display: none;">
+                                <?php esc_html_e( 'Hide fields', 'disciple_tools' ); ?>
                             </a>
                         </div>
 

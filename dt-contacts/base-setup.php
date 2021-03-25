@@ -21,6 +21,7 @@ class DT_Contacts_Base {
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         add_action( 'p2p_init', [ $this, 'p2p_init' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 5, 2 );
+        add_filter( 'dt_custom_fields_settings_after_combine', [ $this, 'dt_custom_fields_settings_after_combine' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles_after' ], 100, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
@@ -101,6 +102,7 @@ class DT_Contacts_Base {
 
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );
+        $expected_roles["administrator"]["permissions"]["dt_all_admin_contacts"] = true;
 
         return $expected_roles;
     }
@@ -111,7 +113,7 @@ class DT_Contacts_Base {
                 'name' => __( "Nickname", 'disciple_tools' ),
                 'type' => 'text',
                 'tile' => 'details',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/name.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/nametag.svg",
             ];
             $fields["type"] = [
                 'name'        => __( 'Contact Type', 'disciple_tools' ),
@@ -199,7 +201,7 @@ class DT_Contacts_Base {
 
             // add location fields
             $fields['location_grid'] = [
-                'name'        => __( 'Locations or Address', 'disciple_tools' ),
+                'name'        => __( 'Locations', 'disciple_tools' ),
                 'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location',
                 'mapbox'    => false,
@@ -208,7 +210,7 @@ class DT_Contacts_Base {
                 "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
             ];
             $fields['location_grid_meta'] = [
-                'name'        => __( 'Locations', 'disciple_tools' ), //system string does not need translation
+                'name'        => __( 'Locations or Address', 'disciple_tools' ),
                 'type'        => 'location_meta',
                 "tile"      => "details",
                 'mapbox'    => false,
@@ -225,8 +227,11 @@ class DT_Contacts_Base {
             if ( DT_Mapbox_API::get_key() ){
                 $fields["contact_address"]["custom_display"] = true;
                 $fields["contact_address"]["mapbox"] = true;
+                unset( $fields["contact_address"]["tile"] );
                 $fields["location_grid"]["mapbox"] = true;
+                $fields["location_grid"]["hidden"] = true;
                 $fields["location_grid_meta"]["mapbox"] = true;
+                $fields["location_grid_meta"]["hidden"] = false;
             }
 
             // add social media
@@ -246,6 +251,14 @@ class DT_Contacts_Base {
                 "tile" => "details",
                 "customizable" => false
             ];
+            $fields["contact_other"] = [
+                "name" => __( 'Other Social Links', 'disciple_tools' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/socialmedia.svg",
+                "hide_domain" => false,
+                "type" => "communication_channel",
+                "tile" => "details",
+                "customizable" => false
+            ];
 
             $fields["relation"] = [
                 "name" => sprintf( _x( "Connections to other %s", 'connections to other records', 'disciple_tools' ), __( "Contacts", 'disciple_tools' ) ),
@@ -256,7 +269,7 @@ class DT_Contacts_Base {
                 "p2p_key" => "contacts_to_relation",
                 "tile" => "other",
                 "in_create_form" => [ "placeholder" ],
-                'icon' => get_template_directory_uri() . "/dt-assets/images/connection.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/connection-people.svg",
             ];
 
             $fields['gender'] = [
@@ -297,34 +310,55 @@ class DT_Contacts_Base {
         return $fields;
     }
 
+    /**
+     * Filter that runs after the default fields and custom settings have been combined
+     * @param $fields
+     * @param $post_type
+     * @return mixed
+     */
+    public function dt_custom_fields_settings_after_combine( $fields, $post_type ){
+        if ( $post_type === "contacts" ){
+            //make sure disabled communication channels also have the hidden field set
+            foreach ( $fields as $field_key => $field_value ){
+                if ( isset( $field_value["type"] ) && $field_value["type"] === "communication_channel" ){
+                    if ( isset( $field_value["enabled"] ) && $field_value["enabled"] === false ){
+                        $fields[$field_key]["hidden"] = true;
+                    }
+                }
+            }
+        }
+        return $fields;
+    }
+
     public function dt_details_additional_section( $section, $post_type ){
-        if ( $post_type === "contacts" && $section === "other" ) :
+        if ( $post_type === "contacts" ) :
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
-            ?>
-            <div class="section-subheader">
-                <img class="dt-icon" src="<?php echo esc_url( $contact_fields["tags"]["icon"] ) ?>">
-                <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
-            </div>
-            <div class="tags">
-                <var id="tags-result-container" class="result-container"></var>
-                <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
-                    <div class="typeahead__container">
-                        <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-tags input-height"
-                                       name="tags[query]"
-                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["tags"]['name'] ) )?>"
-                                       autocomplete="off">
-                            </span>
-                            <span class="typeahead__button">
-                                <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
-                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
-                                </button>
-                            </span>
+            if ( isset( $contact_fields["tags"]["tile"] ) && $contact_fields["tags"]["tile"] === $section ) : ?>
+                <div class="section-subheader">
+                    <img class="dt-icon" src="<?php echo esc_url( $contact_fields["tags"]["icon"] ) ?>">
+                    <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
+                </div>
+                <div class="tags">
+                    <var id="tags-result-container" class="result-container"></var>
+                    <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-tags input-height"
+                                           name="tags[query]"
+                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["tags"]['name'] ) )?>"
+                                           autocomplete="off">
+                                </span>
+                                <span class="typeahead__button">
+                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endif; ?>
         <?php endif;
 
     }

@@ -102,6 +102,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             ];
             $fields["faith_status"] =[
                 "name" => __( 'Faith Status', 'disciple_tools' ),
+                'description' => '',
                 'type' => "key_select",
                 "default" => [
                     "seeker"     => [
@@ -139,10 +140,11 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_contacts",
                 "tile" => "other",
-                "icon" => get_template_directory_uri() . '/dt-assets/images/share.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/coaching.svg',
             ];
             $fields['baptism_date'] = [
                 'name' => __( 'Baptism Date', 'disciple_tools' ),
+                'description' => '',
                 'type' => 'date',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/calendar.svg',
                 'tile' => 'details',
@@ -193,9 +195,9 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'tile'     => 'details',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/people-group.svg",
             ];
-
             $fields['quick_button_no_answer'] = [
                 'name'        => __( 'No Answer', 'disciple_tools' ),
+                'description' => '',
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
@@ -311,6 +313,9 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             $tiles["faith"] = [
                 "label" => __( "Faith", 'disciple_tools' )
             ];
+            if ( isset( $tiles["status"] ) && !isset( $tiles["status"]["order"] ) ){
+                $tiles["status"]["order"] = [ "subassigned", "faith_status", "coached_by" ];
+            }
         }
         return $tiles;
     }

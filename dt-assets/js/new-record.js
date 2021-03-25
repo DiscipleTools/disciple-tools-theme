@@ -11,12 +11,22 @@ jQuery(function($) {
     $(`.form-field.all`).show()
     $(`.form-field.${type}`).show()
     $('#show-shield-banner').show()
+    $('#show-hidden-fields').show();
+    $('#hide-hidden-fields').hide();
     new_post.type = type
   })
   $('#show-hidden-fields').on('click', function (){
     $('.form-field').show()
-    $('#show-shield-banner').hide()
+    $('#show-hidden-fields').hide()
+    $('#hide-hidden-fields').show();
   })
+  $('#hide-hidden-fields').on('click', function () {
+    $('.form-field').hide();
+    $(`.form-field.all`).show();
+    $(`.form-field.${new_post.type}`).show();
+    $('#hide-hidden-fields').hide();
+    $('#show-hidden-fields').show();
+  });
 
   $(".js-create-post-button").removeAttr("disabled");
 
@@ -26,9 +36,9 @@ jQuery(function($) {
     const $list = $(`#edit-${listClass}`)
 
     $list.append(`<li style="display: flex">
-              <input type="text" class="dt-communication-channel" data-field="${_.escape( listClass )}"/>
-              <button class="button clear delete-button new-${_.escape( listClass )}" type="button">
-                  <img src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
+              <input type="text" class="dt-communication-channel" data-field="${window.lodash.escape( listClass )}"/>
+              <button class="button clear delete-button new-${window.lodash.escape( listClass )}" type="button">
+                  <img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
               </button>
             </li>`)
   })
@@ -132,19 +142,23 @@ jQuery(function($) {
           accent: true,
           searchOnFocus: true,
           maxItem: 20,
-          template: function (query, item) {
-            return `<span dir="auto">${_.escape(item.name)} (#${_.escape( item.ID )})</span>`
+          template: window.TYPEAHEADS.contactListRowTemplate,
+          source: TYPEAHEADS.typeaheadPostsSource(post_type, field_key),
+          display: ["name", "label"],
+          templateValue: function() {
+            if (this.items[this.items.length - 1].label) {
+              return "{{label}}"
+            } else {
+              return "{{name}}"
+            }
           },
-          source: TYPEAHEADS.typeaheadPostsSource(post_type),
-          display: "name",
-          templateValue: "{{name}}",
           dynamic: true,
           multiselect: {
             matchOn: ["ID"],
             data: [],
             callback: {
               onCancel: function (node, item) {
-                _.pullAllBy(new_post[field_key].values, [{value:item.ID}], "value")
+                window.lodash.pullAllBy(new_post[field_key].values, [{value:item.ID}], "value")
               }
             }
           },
@@ -179,8 +193,8 @@ jQuery(function($) {
           dropdownFilter: [{
             key: 'group',
             value: 'focus',
-            template: _.escape(window.wpApiShare.translations.regions_of_focus),
-            all: _.escape(window.wpApiShare.translations.all_locations),
+            template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
+            all: window.lodash.escape(window.wpApiShare.translations.all_locations),
           }],
           source: {
             focus: {
@@ -190,7 +204,7 @@ jQuery(function($) {
                 data: {
                   s: "{{query}}",
                   filter: function () {
-                    return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                    return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
                   }
                 },
                 beforeSend: function (xhr) {
@@ -215,7 +229,7 @@ jQuery(function($) {
             data: [],
             callback: {
               onCancel: function (node, item) {
-                _.pullAllBy(new_post[field_key].values, [{value:item.ID}], "value")
+                window.lodash.pullAllBy(new_post[field_key].values, [{value:item.ID}], "value")
               }
             }
           },
@@ -232,11 +246,11 @@ jQuery(function($) {
               this.resetInput();
             },
             onReady(){
-              this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+              this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
               this.container
               .removeClass("filter")
               .find("." + this.options.selector.filterButton)
-              .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+              .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
             },
             onResult: function (node, query, result, resultCount) {
               resultCount = typeaheadTotals.location_grid
@@ -263,9 +277,9 @@ jQuery(function($) {
     }
 
     let source_data =  { data: [] }
-    let field_options = _.get(field_settings, `${field}.default`, {})
+    let field_options = window.lodash.get(field_settings, `${field}.default`, {})
     if ( Object.keys(field_options).length > 0 ){
-      _.forOwn(field_options, (val, key)=>{
+      window.lodash.forOwn(field_options, (val, key)=>{
         if ( !val.deleted ){
           source_data.data.push({
             key: key,
@@ -290,7 +304,7 @@ jQuery(function($) {
             callback: {
               done: function (data) {
                 return (data || []).map(tag => {
-                  let label = _.get(field_options, tag + ".label", tag)
+                  let label = window.lodash.get(field_options, tag + ".label", tag)
                   return {value: label, key: tag}
                 })
               }
@@ -305,7 +319,7 @@ jQuery(function($) {
       maxItem: 20,
       searchOnFocus: true,
       template: function (query, item) {
-        return `<span>${_.escape(item.value)}</span>`
+        return `<span>${window.lodash.escape(item.value)}</span>`
       },
       source: source_data,
       display: "value",
@@ -316,7 +330,7 @@ jQuery(function($) {
         data: [],
         callback: {
           onCancel: function (node, item, event) {
-            _.pullAllBy(new_post[field].values, [{value:item.key}], "value")
+            window.lodash.pullAllBy(new_post[field].values, [{value:item.key}], "value")
           }
         }
       },

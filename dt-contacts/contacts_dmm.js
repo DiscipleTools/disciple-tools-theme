@@ -57,7 +57,7 @@ jQuery(document).ready(function($) {
           },
           dynamic: true,
           hint: true,
-          emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
+          emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
           multiselect: {
             matchOn: ["ID"],
             data: function () {
@@ -70,7 +70,7 @@ jQuery(document).ready(function($) {
                 .catch(err => { console.error(err) })
               }
             },
-            href: _.escape( window.wpApiShare.site_url ) + "/contacts/{{ID}}"
+            href: window.lodash.escape( window.wpApiShare.site_url ) + "/contacts/{{ID}}"
           },
           callback: {
             onClick: function (node, a, item) {
@@ -91,7 +91,7 @@ jQuery(document).ready(function($) {
           },
         });
       }
-      if ( _.get(newContact, "baptism_date.timestamp", 0) > 0){
+      if ( window.lodash.get(newContact, "baptism_date.timestamp", 0) > 0){
         modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"));
         modalBaptismDatePicker.val(window.SHAREDFUNCTIONS.formatDate(newContact['baptism_date']["timestamp"]) )
       }
@@ -107,7 +107,7 @@ jQuery(document).ready(function($) {
    */
   $( document ).on( 'dt_record_updated', function (e, response, request ){
     post = response
-    if ( _.get(request, "baptized_by" ) && _.get( response, "baptized_by[0]" ) ) {
+    if ( window.lodash.get(request, "baptized_by" ) && window.lodash.get( response, "baptized_by[0]" ) ) {
       openBaptismModal( response )
     }
   })

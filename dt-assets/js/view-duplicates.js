@@ -12,36 +12,36 @@ let get_duplicates = (limit = 0) => {
     let html = ``
     response.posts_with_matches.forEach(post => {
       let inner_html = ``
-      _.forOwn(post.dups, (dup_values, dup_key) => {
-        inner_html += `<div style="display: flex"><div style="flex-basis: 100px"><strong>${_.escape(dup_key)}</strong></div><div>`;
+      window.lodash.forOwn(post.dups, (dup_values, dup_key) => {
+        inner_html += `<div style="display: flex"><div style="flex-basis: 100px"><strong>${window.lodash.escape(dup_key)}</strong></div><div>`;
         dup_values.forEach(dup => {
-          inner_html += `<a target="_blank" href="contacts/${_.escape(dup.ID)}" style="margin: 0 10px 0 5px">
-            ${_.escape(dup.post_title)}: ${dup.field==="post_title" ? "":_.escape(dup.value)} (#${_.escape(dup.ID)})
+          inner_html += `<a target="_blank" href="contacts/${window.lodash.escape(dup.ID)}" style="margin: 0 10px 0 5px">
+            ${window.lodash.escape(dup.post_title)}: ${dup.field==="post_title" ? "":window.lodash.escape(dup.value)} (#${window.lodash.escape(dup.ID)})
           </a>`;
         })
         inner_html += `</div></div>`
       })
       let channels = post.info.map(info => info.value ? info.value:null).join(", ")
       html += `
-        <div class="bordered-box cell" id="contact_${_.escape(post.ID)}">
-          <a style="color: #3f729b; font-size: 1.5rem;" target="_blank" href="contacts/${_.escape(post.ID)}">
-            ${_.escape(post.post_title)} (#${_.escape(post.ID)})
+        <div class="bordered-box cell" id="contact_${window.lodash.escape(post.ID)}">
+          <a style="color: #3f729b; font-size: 1.5rem;" target="_blank" href="contacts/${window.lodash.escape(post.ID)}">
+            ${window.lodash.escape(post.post_title)} (#${window.lodash.escape(post.ID)})
           </a>
-          <div class="label" style="display:inline-block; background: ${_.escape(post.overall_status.color)}">${_.escape(post.overall_status.label)}</div>
-          <div style="display:inline-block;">${_.escape(channels)}</div>
-          <h4 style="margin-top:20px">${_.escape(window.view_duplicates_settings.translations.matches_found)}</h4>
+          <div class="label" style="display:inline-block; background: ${window.lodash.escape(post.overall_status.color)}">${window.lodash.escape(post.overall_status.label)}</div>
+          <div style="display:inline-block;">${window.lodash.escape(channels)}</div>
+          <h4 style="margin-top:20px">${window.lodash.escape(window.view_duplicates_settings.translations.matches_found)}</h4>
           <div>${inner_html}</div>
 
-          <button class="button hollow dismiss-all loader" data-id="${_.escape(post.ID)}"  style="margin-top:20px">
-            ${_.escape(window.view_duplicates_settings.translations.dismiss_all.replace('%s', post.post_title ))}
+          <button class="button hollow dismiss-all loader" data-id="${window.lodash.escape(post.ID)}"  style="margin-top:20px">
+            ${window.lodash.escape(window.view_duplicates_settings.translations.dismiss_all.replace('%s', post.post_title ))}
           </button>
         </div>
       `
     })
     $('#duplicates-content').append(html)
-    $('#scanned_number').html(_.escape(response.scanned))
+    $('#scanned_number').html(window.lodash.escape(response.scanned))
     let found = $('#duplicates-content .bordered-box').length
-    $('#found_text').html(_.escape(found));
+    $('#found_text').html(window.lodash.escape(found));
     if (found < 100) {
       get_duplicates(response.scanned)
     } else {

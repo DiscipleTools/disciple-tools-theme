@@ -405,11 +405,11 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "location_meta" ){
                     if ( $activity->meta_value === "value_deleted" ){
-                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->old_value );
-                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->old_value );
+                        $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->old_value );
+                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $label ?? $activity->old_value );
                     } else {
-                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->meta_value );
-                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->meta_value );
+                        $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->meta_value );
+                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? $activity->old_value );
                     }
                 }
             } else {
@@ -445,8 +445,20 @@ class Disciple_Tools_Posts
                     }
                 } else if ( strpos( $activity->meta_key, "contact_" ) === 0 ) {
                     $channel = explode( '_', $activity->meta_key );
-                    if ( isset( $channel[1] ) && isset( $post_type_settings["channels"][ $channel[1] ] ) ){
-                        $channel = $post_type_settings["channels"][ $channel[1] ];
+                    $channel_key_count = count( $channel ) - 1;
+                    //handle when a communication channel key has an underscore in it.
+                    if ( isset( $channel[1] ) ) {
+                        $channel_key = "";
+                        for ( $i = 1; $i < $channel_key_count; $i++ ) {
+                            if ($channel_key) {
+                                $channel_key = $channel_key . '_' . $channel[$i];
+                            } else {
+                                $channel_key = $channel[$i];
+                            }
+                        }
+                    }
+                    if ( isset( $channel_key ) && isset( $post_type_settings["channels"][ $channel_key ] ) ){
+                        $channel = $post_type_settings["channels"][ $channel_key ];
                         if ( $activity->old_value === "" ){
                             $message = sprintf( _x( 'Added %1$s: %2$s', 'Added Facebook: facebook.com/123', 'disciple_tools' ), $channel["label"] ?? $activity->meta_key, $activity->meta_value );
                         } else if ( $activity->meta_value != "value_deleted" ){
@@ -951,6 +963,11 @@ class Disciple_Tools_Posts
             }
             unset( $query["sort"] );
         }
+        $fields_to_search = [];
+        if ( isset( $query["fields_to_search"] )){
+            $fields_to_search = $query["fields_to_search"];
+            unset( $query ["fields_to_search"] );
+        }
         if ( isset( $query["combine"] )){
             unset( $query["combine"] ); //remove deprecated combine
         }
@@ -964,21 +981,75 @@ class Disciple_Tools_Posts
 
         if ( !empty( $search )){
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
-            $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
-                OR p.ID IN ( SELECT post_id
-                             FROM $wpdb->postmeta
-                             WHERE meta_key LIKE 'contact_%'
-                             AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
-                )
-            ";
+
+            if ( empty( $fields_to_search ) ) {
+                $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
+                    OR p.ID IN ( SELECT post_id
+                                FROM $wpdb->postmeta
+                                WHERE meta_key LIKE 'contact_%'
+                                AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                    )
+                ";
+            }
+            if ( !empty( $fields_to_search ) ) {
+                if ( in_array( 'name', $fields_to_search ) ) {
+                    $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
+                        OR p.ID IN ( SELECT post_id
+                                    FROM $wpdb->postmeta
+                                    WHERE meta_key LIKE 'contact_%'
+                                    AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                        )
+                    ";
+                } else {
+                    $post_query .= "AND ( ";
+                }
+                if ( in_array( 'all', $fields_to_search ) ) {
+                    if ( substr( $post_query, -6 ) !== 'AND ( ' ) {
+                        $post_query .= "OR ";
+                    }
+                    $post_query .= "p.ID IN ( SELECT comment_post_ID
+                    FROM $wpdb->comments
+                    WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                    ) OR p.ID IN ( SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_value LIKE '%" . esc_sql( $search ) . "%'
+                    ) ";
+                } else {
+                    if ( in_array( 'comment', $fields_to_search )) {
+                        if ( substr( $post_query, -6 ) !== 'AND ( ' ) {
+                            $post_query .= "OR ";
+                        }
+                        $post_query .= " p.ID IN ( SELECT comment_post_ID
+                        FROM $wpdb->comments
+                        WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                        ) ";
+                    }
+                    foreach ( $fields_to_search as $field ) {
+                        array_push( $other_search_fields, $field );
+                    }
+                }
+            }
             foreach ( $other_search_fields as $field ){
-                $post_query .= " OR p.ID IN ( SELECT post_id
+                if ( substr( $post_query, -6 ) !== 'AND ( ' ) {
+                    $post_query .= "OR ";
+                }
+                $post_query .= "p.ID IN ( SELECT post_id
                              FROM $wpdb->postmeta
                              WHERE meta_key LIKE '" . esc_sql( $field ) . "'
-                             AND meta_value LIKE '%\"" . esc_sql( $search ) . "%'
+                             AND meta_value LIKE '%" . esc_sql( $search ) . "%'
                 ) ";
             }
             $post_query .= " ) ";
+
+            if ( $post_type === "peoplegroups" ) {
+
+                $locale = get_user_locale();
+
+                $post_query = " OR p.ID IN ( SELECT post_id
+                                  FROM $wpdb->postmeta
+                                  WHERE meta_key LIKE '" . esc_sql( $locale ) . "'
+                                  AND meta_value LIKE '%" . esc_sql( $search ) . "%' )";
+            }
         }
 
         $sort_sql = "";
@@ -1057,6 +1128,7 @@ class Disciple_Tools_Posts
         if ( is_wp_error( $fields_sql ) ){
             return $fields_sql;
         }
+
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $posts = $wpdb->get_results("
@@ -1893,6 +1965,11 @@ class Disciple_Tools_Posts
         if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() && isset( $fields['location_grid_meta'] ) ) {
             $ids = dt_get_keys_map( $fields['location_grid'] ?? [], 'id' );
             foreach ( $fields['location_grid_meta'] as $meta ) {
+                foreach ( ( $fields['location_grid'] ?? [] ) as $index => $grid ){
+                    if ( (int) $grid["id"] === (int) $meta["grid_id"] ){
+                        $fields['location_grid'][$index]["matched_search"] = $meta["label"];
+                    }
+                }
                 if ( !in_array( (int) $meta['grid_id'], $ids ) ){
                     $fields['location_grid'][] = [
                         'id' => (int) $meta['grid_id'],
@@ -1979,7 +2056,7 @@ class Disciple_Tools_Posts
             "post_type" => $post->post_type,
             "post_date_gmt" => $post->post_date_gmt,
             "post_date" => $post->post_date,
-            "post_title" => $post->post_title,
+            "post_title" => wp_specialchars_decode( $post->post_title ),
             "permalink" => get_permalink( $post->ID )
         ];
         if ( $post->post_type === "peoplegroups" ){

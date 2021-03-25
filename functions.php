@@ -38,6 +38,21 @@ else {
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
         disciple_tools();
+
+
+
+        /**
+         * Load Language Files
+         */
+        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
+    }
+    add_action( 'after_setup_theme', 'dt_theme_loaded', 5 );
+
+
+    /**
+     * Run migrations after theme is loaded
+     */
+    add_action( 'init', function (){
         /**
          * We want to make sure migrations are run on updates.
          *
@@ -49,14 +64,7 @@ else {
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
         }
-
-
-        /**
-         * Load Language Files
-         */
-        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
-    }
-    add_action( 'after_setup_theme', 'dt_theme_loaded', 5 );
+    } );
 
     /**
      * Returns the main instance of Disciple_Tools to prevent the need to use globals.
@@ -141,7 +149,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.0.2';
+            $this->version = '1.1.2';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -359,16 +367,19 @@ else {
              * Contains all those features that only run if in the Admin panel
              * or those things directly supporting Admin panel features.
              */
-            if ( is_admin() ) {
+            if ( is_admin() || wp_doing_cron() ){
 
-                if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+                if ( !class_exists( 'Puc_v4_Factory' ) ){
                     require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
                 }
+                $theme_folder_name = basename( dirname( __FILE__ ) );
                 Puc_v4_Factory::buildUpdateChecker(
                     'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-theme-version-control.json',
                     __FILE__,
-                    'disciple-tools-theme'
+                    $theme_folder_name
                 );
+            }
+            if ( is_admin() ){
 
                 // Administration
                 require_once( get_template_directory() . '/dt-core/admin/admin-enqueue-scripts.php' ); // Load admin scripts

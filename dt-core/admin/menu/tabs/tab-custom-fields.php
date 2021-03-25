@@ -72,7 +72,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $field_key = sanitize_text_field( wp_unslash( $_POST["field_key"] ) ) ?: false;
             }
             $post_type = isset( $_POST['post_type'] ) ? sanitize_text_field( wp_unslash( $_POST["post_type"] ) ) : null;
-            $this->template( 'begin' );
+            $this->template( 'begin', 1 );
 
             if ( !empty( $_GET["field-select"] ) ){
                 $field = explode( "_", sanitize_text_field( wp_unslash( $_GET["field-select"] ) ), 2 );

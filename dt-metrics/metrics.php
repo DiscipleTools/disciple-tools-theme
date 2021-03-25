@@ -36,10 +36,9 @@ class Disciple_Tools_Metrics{
 
 
             // Personal
-            //@todo fix query and re-enable
-            //require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
-            //require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
-            //require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
 
             require_once( get_template_directory() . '/dt-metrics/personal/mapbox-contacts-maps.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/mapbox-groups-maps.php' );
@@ -104,15 +103,8 @@ class Disciple_Tools_Metrics{
         /**
          * Add Navigation Menu
          */
-        add_action( 'desktop_navbar_menu_options', function ( $tabs ){
-            $tabs[] = [
-                "link" => site_url( '/metrics/' ),
-                "label" => __( "Metrics", "disciple_tools" )
-            ];
-            return $tabs;
-        }, 25 );
-        add_action( 'off_canvas_menu_options', function ( $tabs ){
-            $tabs[] = [
+        add_filter( 'desktop_navbar_menu_options', function ( $tabs ){
+            $tabs['metrics'] = [
                 "link" => site_url( '/metrics/' ),
                 "label" => __( "Metrics", "disciple_tools" )
             ];

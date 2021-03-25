@@ -398,6 +398,7 @@ class Disciple_Tools_Queries
 
     public function tree( $query_name, $args = [] ) {
         global $wpdb;
+        $query = [];
 
         switch ( $query_name ) {
 
@@ -429,7 +430,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'baptizer_to_baptized'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'multiplying_baptisms_only':
@@ -461,7 +461,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'baptizer_to_baptized'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'group_all':
@@ -496,7 +495,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'groups_to_groups'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'multiplying_groups_only':
@@ -538,7 +536,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'groups_to_groups'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'coaching_all':
@@ -563,7 +560,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'contacts_to_contacts'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'multiplying_coaching_only':
@@ -595,7 +591,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'contacts_to_contacts'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'user_hero_stats':
@@ -649,13 +644,83 @@ class Disciple_Tools_Queries
                               AND a.post_type = 'locations'
                       ) as total_counties;
                 ");
-                return $query;
                 break;
 
             default:
-                return false;
                 break;
         }
+
+
+        return $this->check_tree_health( $query );
+
+
+    }
+
+    /**
+     * Check the health of a generational tree
+     * Find circular structure looping on itself
+     * Find orphaned groups
+     * @param array $tree
+     * @return array|WP_Error True for healthy tree. WP_Error when there are issues.
+     */
+    public function check_tree_health( array $tree ){
+
+        $nodes = $tree;
+        $not_circular = $this->check_circular_logic( $nodes );
+        if ( is_numeric( $not_circular ) ){
+            return new WP_Error( 500, "Circular tree structure detected with record: " . $not_circular . ".", [ "record" => $not_circular, "link" => get_permalink( $not_circular ) ] );
+        }
+        foreach ( $nodes as $node ){
+            if ( !isset( $node["done"] ) ){
+                return new WP_Error( 500, "Orphaned tree structure detected with record: " . $node['id'] . ".", [ "record" => $node["id"], "link" => get_permalink( $node["id"] ) ] );
+            }
+        }
+        return $tree;
+    }
+
+
+    /**
+     * Check to see if there is any circular logic in the tree
+     * @param $nodes
+     * @param int[] $node_ids
+     * @param array $parents
+     * @return bool|int true if good, int of the record ID if circular tree detected
+     */
+    private function check_circular_logic( &$nodes, $node_ids = [ 0 ], $parents = [] ){
+
+        foreach ( $nodes as &$node ){
+            $parent_id = $node["parent_id"] ?? $node["parentId"];
+            if ( in_array( (int) $parent_id, $node_ids ) ){
+                //if the node is already in the tree
+                if ( in_array( (int) $node["id"], $parents, true )){
+                    return (int) $node["id"]; //return the ID of the node
+                }
+                $node["done"] = true; //lets us look at what nodes where not processed later
+                //continue with children
+                $d = $this->check_circular_logic( $nodes, [ (int) $node["id"] ], array_merge( $parents, [ (int) $node["id"] ] ) );
+                if ( is_numeric( $d ) ){
+                    return $d;
+                }
+            }
+        }
+        return true;
+    }
+
+
+    public function get_node_descendants( $nodes, $node_ids ){
+        $descendants = [];
+        $children = [];
+        foreach ( $nodes as $node ){
+            $parent_id = $node["parent_id"] ?? $node["parentId"];
+            if ( in_array( $parent_id, $node_ids ) ){
+                $descendants[] = $node;
+                $children[] = $node["id"];
+            }
+        }
+        if ( sizeof( $children ) > 0 ){
+            $descendants = array_merge( $descendants, $this->get_node_descendants( $nodes, $children ) );
+        }
+        return $descendants;
     }
 
 }

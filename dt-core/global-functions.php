@@ -88,7 +88,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
-     * The the base site url with, including the subfolder if wp is installed in a subfolder.
+     * The path of the url excluding the subfolder if wp is installed in a subfolder.
+     * https://example.com/sub/contacts/3/?param=true
+     * will return contacts/3/?param=true
      * @return string
      */
     if ( ! function_exists( 'dt_get_url_path' ) ) {
@@ -520,7 +522,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                    type="text"
                                    data-field="<?php echo esc_html( $display_field_id ); ?>"
                                    value="<?php echo esc_html( $field_value["value"] ) ?>"
-                                   class="dt-communication-channel input-group-field" />
+                                   class="dt-communication-channel input-group-field" dir="auto"/>
                             <div class="input-group-button">
                                 <button class="button alert input-height delete-button-style channel-delete-button delete-button new-<?php echo esc_html( $field_key ); ?>" data-field="<?php echo esc_html( $field_key ); ?>" data-key="<?php echo esc_html( $field_value["key"] ); ?>">&times;</button>
                             </div>
@@ -531,7 +533,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <input type="text"
                                     <?php echo esc_html( $required_tag ) ?>
                                    data-field="<?php echo esc_html( $field_key ) ?>"
-                                   class="dt-communication-channel input-group-field" />
+                                   class="dt-communication-channel input-group-field" dir="auto" />
                         </div>
                     <?php endif ?>
                 </div>
@@ -567,6 +569,21 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 return true;
             }
             return false;
+        }
+    }
+
+    /**
+     * Returns a completely unique 64 bit hashed key
+     * @since 1.1
+     */
+    if ( ! function_exists( 'dt_create_unique_key' ) ) {
+        function dt_create_unique_key() : string {
+            try {
+                $hash = hash( 'sha256', bin2hex( random_bytes( 256 ) ) );
+            } catch ( Exception $exception ) {
+                $hash = hash( 'sha256', bin2hex( rand( 0, 1234567891234567890 ) . microtime() ) );
+            }
+            return $hash;
         }
     }
 

@@ -66,6 +66,7 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( isset( $expected_roles["administrator"] ) ){
             $expected_roles["administrator"]["permissions"]['view_any_groups'] = true;
             $expected_roles["administrator"]["permissions"]['update_any_groups'] = true;
+            $expected_roles["administrator"]["permissions"]["dt_all_admin_groups"] = true;
         }
         if ( isset( $expected_roles["dispatcher"] ) ){
             $expected_roles["dispatcher"]["permissions"]['view_any_groups'] = true;
@@ -318,6 +319,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/tallying.svg',
             ];
 
             $fields["parent_groups"] = [
@@ -372,7 +374,7 @@ class DT_Groups_Base extends DT_Module_Base {
             ];
 
             $fields['location_grid_meta'] = [
-                'name'        => __( 'Locations', 'disciple_tools' ), //system string does not need translation
+                'name'        => __( 'Locations or Address', 'disciple_tools' ),
                 'type'        => 'location_meta',
                 "tile"      => "details",
                 'mapbox'    => false,
@@ -389,10 +391,13 @@ class DT_Groups_Base extends DT_Module_Base {
             ];
 
             if ( DT_Mapbox_API::get_key() ){
-                $fields["contact_address"]["hidden"] = true;
+                $fields["contact_address"]["custom_display"] = true;
                 $fields["contact_address"]["mapbox"] = true;
+                unset( $fields["contact_address"]["tile"] );
                 $fields["location_grid"]["mapbox"] = true;
                 $fields["location_grid_meta"]["mapbox"] = true;
+                $fields["location_grid"]["hidden"] = true;
+                $fields["location_grid_meta"]["hidden"] = false;
             }
 
 
@@ -400,10 +405,12 @@ class DT_Groups_Base extends DT_Module_Base {
             $fields["people_groups"] = [
                 "name" => __( 'People Groups', 'disciple_tools' ),
                 'description' => _x( 'The people groups represented by this group.', 'Optional Documentation', 'disciple_tools' ),
+                'icon' => get_template_directory_uri() . "/dt-assets/images/people-group.svg",
                 "type" => "connection",
                 "post_type" => "peoplegroups",
                 "p2p_direction" => "from",
-                "p2p_key" => "groups_to_peoplegroups"
+                "p2p_key" => "groups_to_peoplegroups",
+                "tile" => "details"
             ];
 
             /* 4 fields */
@@ -568,17 +575,29 @@ class DT_Groups_Base extends DT_Module_Base {
             if ( ! empty( $group_preferences['four_fields'] ) ) : ?>
                 <!-- Four Fields -->
                 <section id="four-fields" class="xlarge-6 large-12 medium-6 cell">
+<<<<<<< HEAD
                     
                         <div class="section-body">
                             <!-- start collapse -->
                             <div style="background:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg' ); ?>');background-size: 100% 100%;height: 379px;display: grid;grid-template-columns: 1fr 1fr 1fr;grid-template-rows: auto;justify-items: center;align-items: center;" id="four-fields-inputs">
                                 
+=======
+
+                        <div class="section-body">
+                            <!-- start collapse -->
+                            <div style="background:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg' ); ?>');background-size: 100% 100%;height: 379px;display: grid;grid-template-columns: 1fr 1fr 1fr;grid-template-rows: auto;justify-items: center;align-items: center;" id="four-fields-inputs">
+
+>>>>>>> 02e22e64f112fedacb0beb21dff18580796269db
                             </div>
                             <!-- end collapse -->
                         </div>
                 </section>
             <?php endif; ?>
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 02e22e64f112fedacb0beb21dff18580796269db
 
 
         <?php }

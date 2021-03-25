@@ -48,8 +48,6 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
                 </div>
 
-                <br>
-
             </section>
 
         </div>
@@ -184,17 +182,7 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
                                 <!-- gender -->
                                 <strong style="display: inline-block"><?php echo esc_html( $contact_fields[$field_key]["name"] ) ?></strong>
-                                <span id="gender-spinner" style="display: inline-block" class="loading-spinner"></span>
-
-                                <select class="select-field" id="<?php echo esc_html( $field_key ); ?>" style="width:auto; display: block">
-                                    <?php foreach ($contact_fields[$field_key]["default"] as $option_key => $option_value):
-                                        $selected = $user_field === $option_key; ?>
-                                        <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
-                                            <?php echo esc_html( $option_value["label"] ) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-
+                                <p><?php echo esc_html( $user_field ); ?></p>
                             </div>
                         </div>
 
@@ -508,14 +496,29 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                 ?>
 
                                 <tr>
-                                    <td><label for="description"><?php esc_html_e( 'Description', 'disciple_tools' )?></label></td>
+                                    <td><label for="description"><?php esc_html_e( 'Biography', 'disciple_tools' )?></label></td>
                                     <td><textarea type="text" class="profile-input" id="description"
                                                   name="description"
                                                   rows="5"><?php echo esc_html( $dt_user->description ); ?></textarea>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><label for="description"><?php esc_html_e( 'System Language', 'disciple_tools' )?></label></td>
+                                    <td><label for="gender">
+                                        <?php esc_html_e( 'Gender', 'disciple_tools' ) ?>
+                                    </label></td>
+                                    <td>
+                                        <select class="select-field" id="<?php echo esc_html( $field_key ); ?>" style="width:auto; display: block">
+                                            <?php foreach ($contact_fields[$field_key]["default"] as $option_key => $option_value):
+                                                $selected = $user_field === $option_key; ?>
+                                                <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
+                                                <?php echo esc_html( $option_value["label"] ) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="systemLanguage"><?php esc_html_e( 'System Language', 'disciple_tools' )?></label></td>
                                     <td dir="auto">
                                         <?php
                                         wp_dropdown_languages( array(

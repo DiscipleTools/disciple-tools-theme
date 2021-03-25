@@ -258,9 +258,13 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
             <input type="hidden" name="tile_order_edit_nonce" id="tile_order_edit_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_order_edit' ) ) ?>" />
             <p><strong>Drag</strong> columns to change the order of the tiles. <strong>Drag</strong> field to change field order. Drag field between columns</p>
+            <button type="button" class="button save-drag-changes">Save tile and field order</button>
             <div id="sort-tiles" style="display: inline-block; width: 100%">
 
                 <?php foreach ( $tile_options as $tile_key => $tile ) :
+                    if ( $tile_key === "no_tile" ){
+                        continue;
+                    }
                     //@todo display hidden tile greyed out
                     $disabled_ui = !in_array( $tile_key, [ "status", "details" ] ) ? "draggable-header" : "disabled-drag";
                     ?>
@@ -278,6 +282,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                                         <li class="ui-state-default" id="<?php echo esc_html( $order_key ); ?>">
                                             <span class="ui-icon ui-icon-arrow-4"></span>
                                             <?php echo esc_html( $fields[$order_key]["name"] ); ?>
+                                            <?php echo esc_html( isset( $fields[$order_key]["hidden"] ) && !empty( $fields[$order_key]["hidden"] ) ? "Hidden" : "" ); ?>
                                         </li>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
@@ -296,13 +301,14 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </div>
                 <?php endforeach; ?>
 
-                <div class="sort-tile disabled-drag" id="no-tile" >
+                <div class="sort-tile disabled-drag" id="no_tile" >
                     <div class="field-container">
                         <h3 class="column-header disabled-drag"><span class="ui-icon ui-icon-arrow-4"></span>No Tile / Hidden</h3>
                         <ul class="connectedSortable">
                             <?php foreach ( $fields as $field_key => $field_value ) :
-                                if ( ( empty( $field_value["hidden"] ) && ( isset( $field_value["customizable"] ) && $field_value["customizable"] !== false ) )
-                                    && ( !isset( $field_value["tile"] ) || !in_array( $field_value["tile"], array_keys( $tile_options ) ) ) ) :?>
+                                if ( ( ( empty( $field_value["hidden"] ) && ( isset( $field_value["customizable"] ) && $field_value["customizable"] !== false ) )
+                                    && ( !isset( $field_value["tile"] ) || !in_array( $field_value["tile"], array_keys( $tile_options ) ) ) )
+                                    || ( isset( $field_value["tile"] ) && $field_value["tile"] === "no_tile" ) ) :?>
                                     <li class="ui-state-default" id="<?php echo esc_html( $field_key ); ?>">
                                         <span class="ui-icon ui-icon-arrow-4"></span>
                                         <?php echo esc_html( $field_value["name"] ); ?>
@@ -314,7 +320,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 </div>
             </div>
 
-            <button type="button" class="button" id="save-drag-changes">Save tile and field order</button>
+            <button type="button" class="button save-drag-changes">Save tile and field order</button>
             <?php if ( isset( $_POST["tile_order_edit_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['tile_order_edit_nonce'] ), 'tile_order_edit' ) ) : ?>
                 <span style="vertical-align: bottom; margin: 12px">Changes saved!</span>
             <?php endif; ?>
@@ -339,7 +345,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             if ( !empty( $order ) ){
                 //update order of field in a tile.
                 foreach ( $order as $index => $tile_order ){
-                    if ( $tile_order["key"] !== "no-tile" ){
+                    if ( $tile_order["key"] !== "no_tile" ){
                         if ( !isset( $tile_options[$post_type][$tile_order["key"]] ) ){
                             $tile_options[$post_type][$tile_order["key"]] = [];
                         }
@@ -356,8 +362,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         if ( !isset( $custom_fields[$post_type][$field_key] ) ){
                             $custom_fields[$post_type][$field_key] = [];
                         }
-                        if ( $tile_order["key"] === "no-tile" ){
-                            $custom_fields[$post_type][$field_key]["tile"] = "";
+                        if ( $tile_order["key"] === "no_tile" ){
+                            $custom_fields[$post_type][$field_key]["tile"] = "no_tile";
                         } else {
                             $custom_fields[$post_type][$field_key]["tile"] = $tile_order["key"];
                         }
@@ -679,5 +685,3 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     }
 }
 Disciple_Tools_Tab_Custom_Tiles::instance();
-
-

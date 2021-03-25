@@ -19,10 +19,9 @@ class Disciple_Tools_Post_Type_Template {
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
-        add_action( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
-        add_filter( 'off_canvas_menu_options', [ $this, 'add_navigation_links' ], 20 );
+        add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
+        add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 10, 1 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
-        add_action( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ] );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
@@ -43,15 +42,15 @@ class Disciple_Tools_Post_Type_Template {
         ];
         $capabilities = [
             'create_posts'        => 'do_not_allow',
-            'edit_post'           => 'access_' . $this->post_type,
-            'read_post'           => 'access_' . $this->post_type,
-            'delete_post'         => 'delete_any_' . $this->post_type,
-            'delete_others_posts' => 'delete_any_' . $this->post_type,
-            'delete_posts'        => 'delete_any_' . $this->post_type,
-            'edit_posts'          => 'access_' . $this->post_type,
-            'edit_others_posts'   => 'update_any_' . $this->post_type,
-            'publish_posts'       => 'create_' . $this->post_type,
-            'read_private_posts'  => 'view_any_' . $this->post_type,
+            'edit_post'           => 'dt_all_admin_' . $this->post_type, // needed for bulk edit
+            'read_post'           => 'do_not_allow',
+            'delete_post'         => 'dt_all_admin_' . $this->post_type, // delete individual post
+            'delete_others_posts' => 'do_not_allow',
+            'delete_posts'        => 'dt_all_admin_' . $this->post_type, // bulk delete posts
+            'edit_posts'          => 'dt_all_admin_' . $this->post_type, //menu link in WP Admin
+            'edit_others_posts'   => 'do_not_allow',
+            'publish_posts'       => 'do_not_allow',
+            'read_private_posts'  => 'do_not_allow',
         ];
         $defaults = [
             'label'                 => $this->singular,
@@ -61,15 +60,15 @@ class Disciple_Tools_Post_Type_Template {
             'show_ui'               => true,
             'show_in_menu'          => true,
             'query_var'             => false,
+            'show_in_admin_bar'     => false,
             'rewrite'               => $rewrite,
             'capabilities'          => $capabilities,
             'capability_type'       => $this->post_type,
             'has_archive'           => true, //$archive_slug,
             'hierarchical'          => false,
-            'supports'              => [ 'title', 'comments' ],
+            'supports'              => [ 'title' ],
             'menu_position'         => 5,
             'menu_icon'             => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNOSwxMmMyLjc1NywwLDUtMi4yNDMsNS01VjVjMC0yLjc1Ny0yLjI0My01LTUtNVM0LDIuMjQzLDQsNXYyQzQsOS43NTcsNi4yNDMsMTIsOSwxMnoiPjwvcGF0aD4gPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTE1LjQyMywxNS4xNDVDMTQuMDQyLDE0LjYyMiwxMS44MDYsMTQsOSwxNHMtNS4wNDIsMC42MjItNi40MjQsMS4xNDZDMS4wMzUsMTUuNzI5LDAsMTcuMjMzLDAsMTguODg2VjI0IGgxOHYtNS4xMTRDMTgsMTcuMjMzLDE2Ljk2NSwxNS43MjksMTUuNDIzLDE1LjE0NXoiPjwvcGF0aD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjMiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjgiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTkiIHk9IjEzIiBmaWxsPSIjZmZmZmZmIiB3aWR0aD0iNSIgaGVpZ2h0PSIyIj48L3JlY3Q+PC9nPjwvc3ZnPg==',
-            'show_in_admin_bar'     => true,
             'show_in_nav_menus'     => true,
             'can_export'            => false,
             'exclude_from_search'   => true,
@@ -111,12 +110,27 @@ class Disciple_Tools_Post_Type_Template {
 
     public function add_navigation_links( $tabs ) {
         if ( current_user_can( 'access_' . $this->post_type ) ) {
-            $tabs[] = [
+            $tabs[$this->post_type] = [
                 "link" => site_url( "/$this->post_type/" ),
-                "label" => $this->plural
+                "label" => $this->plural,
+                'icon' => '',
+                'hidden' => false,
+                'submenu' => []
             ];
         }
         return $tabs;
+    }
+
+    public function dt_nav_add_post_menu( $links ){
+        if ( current_user_can( "create_" . $this->post_type ) ){
+            $links[] = [
+                'label' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ),
+                'link' => esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new',
+                'icon' => get_template_directory_uri() . "/dt-assets/images/circle-add-plus.svg",
+                'hidden' => false,
+            ];
+        }
+        return $links;
     }
 
     public function add_template_for_url( $template_for_url ){
@@ -124,20 +138,6 @@ class Disciple_Tools_Post_Type_Template {
         $template_for_url[$this->post_type . '/new'] = 'template-new-post.php';
         return $template_for_url;
     }
-
-    public function dt_nav_add_post_menu(){
-        if ( current_user_can( "create_" . $this->post_type ) ){
-            ?>
-            <li>
-                <a class="add-new-menu-item" href="<?php echo esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new'; ?>">
-                    <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>">
-                    <?php echo sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ) ?>
-                </a>
-            </li>
-            <?php
-        }
-    }
-
 
     public static function get_base_post_type_fields(){
         $fields = [];

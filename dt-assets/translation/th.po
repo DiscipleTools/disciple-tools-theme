@@ -1,0 +1,4412 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Disciple.Tools\n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: 403.php:12
+msgid "Permission denied"
+msgstr "ปฏิเสธการอนุญาต"
+
+#: 403.php:25
+msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
+msgstr "ขออภัยคุณไม่มีสิทธิ์ดู %1$s ด้วย id %2$s"
+
+#: 403.php:26
+msgid "Request permission from your administrator."
+msgstr "ขออนุญาตจากผู้ดูแลระบบของคุณ"
+
+#: 403.php:29
+msgid "Back"
+msgstr "กลับ"
+
+#: 404.php:16
+msgid "Epic 404 - Not Found"
+msgstr "Epic 404 - ไม่พบ"
+
+#: 404.php:20
+msgid "The page you were looking for was not found or was deleted"
+msgstr "ไม่พบเพจที่คุณกำลังค้นหาหรือถูกลบ"
+
+#: dt-contacts/base-setup.php:294
+#: dt-groups/base-setup.php:156
+#: dt-users/template-user-management.php:78
+#: dt-users/user-management.php:100
+msgid "Active"
+msgstr "คล่องแคล่ว"
+
+#: template-notifications.php:42
+msgid "New"
+msgstr "ใหม่"
+
+#: dt-contacts/access-module.php:173
+msgid "Waiting to be accepted"
+msgstr "รอรับได้เลย"
+
+#: dt-contacts/duplicates-merging.php:541
+msgid "View Duplicates"
+msgstr "ดูรายการที่ซ้ำกัน"
+
+#: archive-template.php:57
+#: archive-template.php:131
+msgid "Search"
+msgstr "ค้นหา"
+
+#: dt-contacts/base-setup.php:546
+#: dt-contacts/base-setup.php:554
+#: dt-contacts/base-setup.php:571
+#: dt-contacts/base-setup.php:572
+msgid "Shared with me"
+msgstr "แบ่งปันกับฉัน"
+
+#: archive-template.php:183
+msgid "Add new filter"
+msgstr "เพิ่มตัวกรองใหม่"
+
+#: dt-contacts/access-module.php:101
+#: dt-groups/base-setup.php:124
+#: dt-metrics/groups/tree.php:85
+#: dt-metrics/personal/group-tree.php:86
+msgid "Assigned To"
+msgstr "ได้รับมอบหมายให้"
+
+#: archive-template.php:547
+#: dt-assets/functions/enqueue-scripts.php:307
+#: dt-posts/custom-post-type.php:161
+msgid "Creation Date"
+msgstr "วันที่สร้าง"
+
+#: archive-template.php:538
+msgid "Filter for subassigned OR Assigned To"
+msgstr "กรองสำหรับมอบหมายย่อยหรือมอบหมายให้"
+
+#: archive-template.php:563
+#: archive-template.php:564
+#: template-settings.php:405
+msgid "No"
+msgstr "ไม่"
+
+#: archive-template.php:570
+#: archive-template.php:571
+#: template-settings.php:404
+msgid "Yes"
+msgstr "ใช่"
+
+#: archive-template.php:578
+#: archive-template.php:589
+msgctxt "Clear/empty input"
+msgid "Clear"
+msgstr "ชัดเจน"
+
+#: archive-template.php:617
+#: dt-assets/functions/enqueue-scripts.php:272
+#: dt-assets/functions/enqueue-scripts.php:302
+#: template-merge-details.php:102
+#: template-merge-details.php:122
+#: template-merge-details.php:132
+#: template-merge-details.php:170
+#: template-settings.php:544
+msgid "Save"
+msgstr "บันทึก"
+
+#: dt-assets/functions/details-bar.php:37
+#: dt-assets/functions/details-bar.php:175
+#: dt-core/configuration/config-site-defaults.php:279
+#: dt-users/template-user-management.php:77
+msgid "Update Needed"
+msgstr "จำเป็นต้องอัปเดต"
+
+#: dt-contacts/user-module.php:82
+msgid "Make a user from this contact"
+msgstr "สร้างผู้ใช้จากผู้ติดต่อนี้"
+
+#: dt-contacts/user-module.php:85
+msgid "Link to an existing user"
+msgstr "ลิงก์ไปยังผู้ใช้ที่มีอยู่"
+
+#: dt-contacts/base-setup.php:364
+msgid "Merge with another contact"
+msgstr "รวมกับรายชื่อติดต่ออื่น"
+
+#: dt-assets/functions/details-bar.php:97
+#: dt-assets/functions/details-bar.php:102
+msgid "Following"
+msgstr "กำลังติดตาม"
+
+#: archive-template.php:387
+#: dt-assets/functions/details-bar.php:106
+#: dt-contacts/base-setup.php:162
+#: dt-groups/base-setup.php:96
+msgid "Follow"
+msgstr "ติดตาม"
+
+#: dt-assets/functions/details-bar.php:116
+msgid "Share"
+msgstr "แบ่งปัน"
+
+#: archive-template.php:40
+#: dt-assets/parts/loop-activity-comment.php:80
+#: dt-assets/parts/loop-activity-comment.php:158
+msgid "Comments"
+msgstr "ความคิดเห็น"
+
+#: dt-assets/functions/enqueue-scripts.php:158
+msgid "You don't have any unread notifications"
+msgstr "คุณไม่มีการแจ้งเตือนที่ยังไม่ได้อ่าน"
+
+#: dt-assets/functions/enqueue-scripts.php:159
+msgid "You don't have any notifications"
+msgstr "คุณไม่มีการแจ้งเตือนใด ๆ"
+
+#: dt-assets/functions/enqueue-scripts.php:269
+msgid "delete"
+msgstr "ลบ"
+
+#: dt-assets/functions/enqueue-scripts.php:232
+msgid "Transfer failed. Check site-to-site configuration."
+msgstr "การโอนล้มเหลว ตรวจสอบการกำหนดค่าไซต์ต่อไซต์"
+
+#: dt-assets/functions/enqueue-scripts.php:196
+#: dt-assets/functions/enqueue-scripts.php:303
+#: template-merge-details.php:102
+#: template-merge-details.php:121
+#: template-merge-details.php:132
+#: template-merge-details.php:168
+#: template-settings.php:69
+#: template-settings.php:420
+msgid "Edit"
+msgstr "แก้ไข"
+
+#: dt-assets/functions/enqueue-scripts.php:197
+#: dt-assets/functions/enqueue-scripts.php:222
+#: dt-assets/functions/enqueue-scripts.php:304
+#: dt-assets/parts/loop-activity-comment.php:137
+#: single-template.php:365
+msgid "Delete"
+msgstr "ลบ"
+
+#: dt-assets/functions/enqueue-scripts.php:305
+msgctxt "just copy as they are: _START_ and _TOTAL_"
+msgid "Showing _START_ of _TOTAL_"
+msgstr "กำลังแสดง _START_ จาก _TOTAL_"
+
+#: dt-assets/functions/enqueue-scripts.php:306
+msgid "Sorting By"
+msgstr "เรียงตาม"
+
+#: dt-assets/functions/enqueue-scripts.php:308
+msgid "Date Modified"
+msgstr "วันที่แก้ไข"
+
+#: archive-template.php:410
+#: dt-contacts/base-setup.php:49
+#: dt-contacts/base-setup.php:260
+#: dt-contacts/dmm-module.php:303
+#: dt-groups/base-setup.php:650
+#: dt-mapping/columns/add-contacts-column.php:59
+#: dt-metrics/combined/hover-map.php:127
+#: dt-metrics/combined/locations-list.php:120
+#: dt-metrics/contacts/baptism-tree.php:25
+#: dt-metrics/contacts/coaching-tree.php:25
+#: dt-metrics/contacts/mapbox-maps.php:31
+#: dt-metrics/contacts/milestones-map.php:25
+#: dt-metrics/contacts/milestones.php:24
+#: dt-metrics/contacts/overview.php:23
+#: dt-metrics/contacts/seeker-path.php:26
+#: dt-metrics/contacts/sources.php:25
+#: dt-metrics/groups/overview.php:63
+#: dt-metrics/metrics.php:89
+#: dt-metrics/personal/mapbox-contacts-maps.php:31
+#: dt-metrics/personal/overview.php:62
+#: dt-users/template-user-management.php:232
+msgid "Contacts"
+msgstr "ผู้ติดต่อ"
+
+#: archive-template.php:412
+#: dt-groups/base-setup.php:48
+#: dt-groups/base-setup.php:450
+#: dt-groups/base-setup.php:667
+#: dt-groups/base-setup.php:684
+#: dt-groups/base-setup.php:721
+#: dt-groups/base-setup.php:732
+#: dt-mapping/columns/add-groups-column.php:57
+#: dt-metrics/combined/hover-map.php:172
+#: dt-metrics/combined/locations-list.php:165
+#: dt-metrics/groups/mapbox-maps.php:31
+#: dt-metrics/groups/overview.php:23
+#: dt-metrics/groups/overview.php:64
+#: dt-metrics/groups/tree.php:24
+#: dt-metrics/metrics.php:93
+#: dt-metrics/personal/mapbox-groups-maps.php:31
+#: dt-metrics/personal/overview.php:63
+msgid "Groups"
+msgstr "กลุ่ม"
+
+#. Template Name of the plugin/theme
+#: dt-metrics/metrics.php:109
+msgid "Metrics"
+msgstr "เมตริก"
+
+#. Template Name of the plugin/theme
+#: dt-assets/functions/menu.php:64
+#: dt-assets/parts/nav-offcanvas.php:48
+#: dt-assets/parts/nav-topbar.php:74
+#: dt-assets/parts/nav-topbar.php:179
+#: template-notifications.php:33
+#: template-settings.php:45
+#: template-settings.php:354
+msgid "Notifications"
+msgstr "การแจ้งเตือน"
+
+#. Template Name of the plugin/theme
+#: dt-assets/functions/menu.php:70
+#: dt-assets/functions/menu.php:76
+#: dt-assets/parts/modals/modal-help.php:154
+#: dt-assets/parts/nav-topbar.php:82
+#: template-notifications.php:59
+msgid "Settings"
+msgstr "การตั้งค่า"
+
+#: dt-assets/functions/menu.php:81
+msgid "Admin"
+msgstr "ธุรการ"
+
+#: dt-assets/parts/nav-offcanvas.php:77
+#: dt-assets/parts/nav-topbar.php:202
+msgid "Log Off"
+msgstr "ออกจากระบบ"
+
+#: single-template.php:55
+#: single-template.php:63
+msgid "Please provide an update by posting a comment."
+msgstr "โปรดให้ข้อมูลอัปเดตโดยโพสต์ความคิดเห็น"
+
+#: dt-contacts/access-module.php:606
+msgid "This contact has been assigned to you."
+msgstr "ผู้ติดต่อนี้ได้รับมอบหมายให้คุณ"
+
+#: dt-contacts/access-module.php:607
+msgid "Accept"
+msgstr "ยอมรับ"
+
+#: dt-contacts/access-module.php:608
+msgid "Decline"
+msgstr "ลดลง"
+
+#: dt-assets/parts/contact-details.php:41
+msgid "This contact represents a user."
+msgstr "ผู้ติดต่อนี้เป็นตัวแทนของผู้ใช้"
+
+#: archive-template.php:313
+#: dt-contacts/access-module.php:411
+#: dt-metrics/groups/tree.php:86
+#: dt-metrics/personal/group-tree.php:87
+#: dt-posts/dt-posts.php:1392
+#: dt-users/template-user-management.php:74
+#: dt-users/template-user-management.php:159
+#: single-template.php:78
+msgid "Status"
+msgstr "สถานะ"
+
+#: dt-contacts/dmm-module.php:122
+msgid "Sub-assigned to"
+msgstr "กำหนดย่อยให้กับ"
+
+#: dt-core/configuration/config-site-defaults.php:451
+msgid "Social Media"
+msgstr "สื่อสังคม"
+
+#: dt-contacts/base-setup.php:219
+#: dt-core/configuration/config-site-defaults.php:455
+#: dt-groups/base-setup.php:385
+#: template-settings.php:130
+msgid "Address"
+msgstr "ที่อยู่"
+
+#: dt-assets/parts/modals/modal-help.php:126
+#: dt-contacts/base-setup.php:212
+#: dt-groups/base-setup.php:367
+#: dt-groups/base-setup.php:377
+msgid "Locations"
+msgstr "สถานที่"
+
+#: dt-contacts/dmm-module.php:187
+#: dt-contacts/dmm-module.php:302
+#: dt-groups/base-setup.php:403
+#: dt-groups/base-setup.php:720
+#: dt-people-groups/people-groups-post-type.php:132
+msgid "People Groups"
+msgstr "กลุ่มคน"
+
+#: dt-contacts/access-module.php:194
+msgid "Age"
+msgstr "อายุ"
+
+#: dt-contacts/base-setup.php:272
+#: template-settings.php:507
+msgid "Gender"
+msgstr "เพศ"
+
+#: archive-template.php:452
+#: dt-assets/parts/modals/modal-new-contact.php:7
+#: dt-assets/parts/modals/modal-new-contact.php:9
+#: dt-mapping/mapping.php:305
+#: dt-posts/custom-post-type.php:145
+#: template-settings.php:86
+msgid "Name"
+msgstr "ชื่อ"
+
+#: archive-template.php:202
+msgid "Sort"
+msgstr "จัดเรียง"
+
+#: archive-template.php:206
+msgid "Newest"
+msgstr "ใหม่ล่าสุด"
+
+#: archive-template.php:210
+msgid "Oldest"
+msgstr "เก่าที่สุด"
+
+#: archive-template.php:214
+msgid "Most recently modified"
+msgstr "แก้ไขล่าสุด"
+
+#: archive-template.php:218
+msgid "Least recently modified"
+msgstr "แก้ไขอย่างน้อยที่สุด"
+
+#: dt-contacts/access-module.php:112
+#: dt-metrics/contacts/seeker-path.php:25
+#: dt-metrics/contacts/seeker-path.php:62
+msgid "Seeker Path"
+msgstr "เส้นทางผู้แสวงหา"
+
+#. Could be either Hitos or Pilares
+#: dt-contacts/dmm-module.php:57
+msgid "Faith Milestones"
+msgstr "เหตุการณ์สำคัญด้านศรัทธา"
+
+#: dt-groups/base-setup.php:48
+#: dt-groups/base-setup.php:178
+#: dt-metrics/groups/overview.php:80
+#: dt-metrics/personal/group-tree.php:164
+#: dt-metrics/personal/overview.php:74
+msgid "Group"
+msgstr "กลุ่ม"
+
+#: archive-template.php:462
+msgid "Loading..."
+msgstr "กำลังโหลด ..."
+
+#: dt-groups/base-setup.php:134
+msgid "Group Coach / Church Planter"
+msgstr "โค้ชกลุ่ม / ชาวไร่คริสตจักร"
+
+#: dt-groups/base-setup.php:262
+#: dt-users/template-user-management.php:313
+#: template-settings.php:312
+#: template-settings.php:331
+msgid "Start Date"
+msgstr "วันที่เริ่มต้น"
+
+#: dt-groups/base-setup.php:270
+msgid "Church Start Date"
+msgstr "วันที่เริ่มต้นคริสตจักร"
+
+#: dt-groups/base-setup.php:279
+#: dt-users/template-user-management.php:314
+#: template-settings.php:318
+#: template-settings.php:332
+msgid "End Date"
+msgstr "วันที่สิ้นสุด"
+
+#: dt-assets/parts/loop-activity-comment.php:65
+msgid "Submit comment"
+msgstr "ส่งความเห็น"
+
+#: dt-assets/parts/loop-activity-comment.php:8
+#: dt-assets/parts/modals/modal-help.php:65
+msgid "Comments and Activity"
+msgstr "ความคิดเห็นและกิจกรรม"
+
+#: dt-assets/parts/loop-activity-comment.php:73
+msgid "Showing:"
+msgstr "กำลังแสดง:"
+
+#: dt-assets/parts/loop-activity-comment.php:85
+#: dt-users/template-user-management.php:425
+msgid "Activity"
+msgstr "กิจกรรม"
+
+#: dt-assets/parts/loop-activity-comment.php:114
+msgid "show all"
+msgstr "แสดงทั้งหมด"
+
+#: dt-assets/parts/loop-activity-comment.php:118
+msgid "hide all"
+msgstr "ซ่อนทั้งหมด"
+
+#: dt-assets/parts/loop-activity-comment.php:130
+msgid "Delete Comment:"
+msgstr "ลบความคิดเห็น:"
+
+#: dt-assets/parts/loop-activity-comment.php:134
+#: dt-assets/parts/loop-activity-comment.php:181
+#: dt-assets/parts/merge-details.php:28
+#: dt-assets/parts/modals/modal-help.php:176
+#: dt-assets/parts/modals/modal-help.php:201
+#: dt-assets/parts/modals/modal-revert.php:15
+#: dt-assets/parts/modals/modal-share.php:50
+#: dt-assets/parts/modals/modal-tasks.php:46
+#: dt-contacts/dmm-module.php:557
+#: dt-groups/base-setup.php:625
+msgid "Close"
+msgstr "ปิด"
+
+#: dt-assets/parts/loop-activity-comment.php:144
+#: dt-assets/parts/loop-activity-comment.php:191
+#: template-merge-details.php:396
+msgid "Sorry, something went wrong"
+msgstr "ขอโทษมีบางอย่างผิดพลาด"
+
+#: dt-assets/parts/loop-activity-comment.php:145
+msgid "The comment could not be deleted."
+msgstr "ไม่สามารถลบความคิดเห็นได้"
+
+#: dt-assets/parts/loop-activity-comment.php:150
+msgid "Edit Comment:"
+msgstr "แก้ไขความคิดเห็น:"
+
+#: dt-assets/parts/loop-activity-comment.php:184
+msgid "Update"
+msgstr "อัปเดต"
+
+#: dt-assets/parts/loop-activity-comment.php:192
+msgid "The comment could not be updated."
+msgstr "ไม่สามารถอัปเดตความคิดเห็นได้"
+
+#: dt-assets/parts/merge-details.php:8
+msgid "Duplicate Contacts"
+msgstr "รายชื่อซ้ำ"
+
+#: dt-assets/parts/merge-details.php:10
+msgid "Original Contact"
+msgstr "ติดต่อเดิม"
+
+#: dt-assets/parts/merge-details.php:14
+msgid "Possible Duplicates"
+msgstr "รายการซ้ำที่เป็นไปได้"
+
+#: dt-assets/parts/merge-details.php:16
+msgid "Dismiss All"
+msgstr "ปิดทั้งหมด"
+
+#: dt-assets/functions/enqueue-scripts.php:229
+msgid "Dismiss"
+msgstr "ปิด"
+
+#: dt-assets/parts/modals/modal-filters.php:3
+#: dt-assets/parts/modals/modal-filters.php:12
+msgid "Save Filter"
+msgstr "บันทึกตัวกรอง"
+
+#: dt-assets/parts/modals/modal-filters.php:4
+msgid "What do you want to call this filter?"
+msgstr "คุณต้องการเรียกตัวกรองนี้ว่าอะไร?"
+
+#: dt-assets/parts/modals/modal-filters.php:22
+#: dt-assets/parts/modals/modal-filters.php:31
+msgid "Delete Filter"
+msgstr "ลบตัวกรอง"
+
+#: dt-groups/base-setup.php:146
+msgid "Group Status"
+msgstr "สถานะกลุ่ม"
+
+#: dt-contacts/user-module.php:102
+#: single-template.php:340
+#: template-new-post.php:111
+msgid "This is required"
+msgstr "สิ่งนี้จำเป็น"
+
+#: dt-assets/parts/modals/modal-revert.php:4
+msgid "Revert Activity"
+msgstr "เปลี่ยนกลับกิจกรรม"
+
+#: dt-assets/parts/modals/modal-revert.php:5
+msgid "Field"
+msgstr "ฟิลด์"
+
+#: dt-assets/parts/modals/modal-revert.php:8
+msgid "Current Value"
+msgstr "มูลค่าปัจจุบัน"
+
+#: dt-assets/parts/modals/modal-revert.php:10
+msgid "Old Value"
+msgstr "ค่าเก่า"
+
+#: dt-assets/parts/modals/modal-revert.php:18
+msgid "Revert to old value?"
+msgstr "เปลี่ยนกลับเป็นค่าเดิมไหม"
+
+#: dt-assets/parts/modals/modal-share.php:7
+msgid "Share settings"
+msgstr "แชร์การตั้งค่า"
+
+#: dt-assets/parts/modals/modal-share.php:12
+msgid "This group is shared with:"
+msgstr "กลุ่มนี้แชร์กับ:"
+
+#: dt-assets/parts/modals/modal-share.php:14
+msgid "This contact is shared with:"
+msgstr "ผู้ติดต่อนี้แบ่งปันกับ:"
+
+#: dt-assets/functions/menu.php:57
+msgid "Add New"
+msgstr "เพิ่มใหม่"
+
+#: dt-contacts/access-module.php:158
+msgid "New Contact"
+msgstr "รายชื่อติดต่อใหม่"
+
+#: dt-assets/functions/menu.php:51
+#: template-settings.php:42
+msgid "Profile"
+msgstr "ข้อมูลส่วนตัว"
+
+#: dt-assets/functions/menu.php:91
+msgid "Help"
+msgstr "ช่วยด้วย"
+
+#: dt-contacts/access-module.php:137
+#: dt-metrics/counter.php:139
+msgid "Ongoing Meetings"
+msgstr "การประชุมที่กำลังดำเนินอยู่"
+
+#: dt-contacts/base-setup.php:283
+#: dt-groups/base-setup.php:109
+msgid "Requires Update"
+msgstr "ต้องมีการอัปเดต"
+
+#: dt-contacts/dmm-module.php:82
+#: dt-contacts/dmm-module.php:177
+#: dt-contacts/dmm-module.php:272
+msgid "Baptized"
+msgstr "รับบัพติศมา"
+
+#: dt-contacts/dmm-module.php:145
+msgid "Baptism Date"
+msgstr "วันที่ล้างบาป"
+
+#: dt-contacts/dmm-module.php:152
+#: dt-metrics/counter.php:156
+msgid "Baptism Generation"
+msgstr "การสร้างบัพติศมา"
+
+#: dt-contacts/access-module.php:322
+#: dt-metrics/contacts/sources.php:90
+#: dt-users/users.php:773
+msgid "Sources"
+msgstr "แหล่งที่มา"
+
+#: dt-contacts/base-setup.php:168
+#: dt-groups/base-setup.php:103
+msgid "Un-Follow"
+msgstr "ยกเลิกการติดตาม"
+
+#: dt-contacts/base-setup.php:186
+#: dt-core/configuration/config-site-defaults.php:443
+#: template-settings.php:119
+msgid "Phone"
+msgstr "โทรศัพท์"
+
+#: dt-core/configuration/config-site-defaults.php:468
+msgid "Work"
+msgstr "งาน"
+
+#: dt-core/configuration/config-site-defaults.php:467
+msgid "Home"
+msgstr "บ้าน"
+
+#: dt-contacts/base-setup.php:457
+#: dt-core/configuration/config-site-defaults.php:459
+#: dt-core/configuration/config-site-defaults.php:469
+#: dt-groups/base-setup.php:733
+#: template-settings.php:152
+msgid "Other"
+msgstr "อื่น ๆ"
+
+#: dt-contacts/base-setup.php:194
+#: dt-contacts/user-module.php:99
+#: dt-core/configuration/config-site-defaults.php:256
+#: dt-core/configuration/config-site-defaults.php:447
+#: dt-users/user-management.php:158
+#: template-settings.php:106
+msgid "Email"
+msgstr "อีเมล์"
+
+#: dt-contacts/access-module.php:299
+#: dt-contacts/base-setup.php:235
+msgid "Facebook"
+msgstr "เฟสบุ๊ค"
+
+#: dt-contacts/access-module.php:303
+#: dt-contacts/base-setup.php:243
+msgid "Twitter"
+msgstr "ทวิตเตอร์"
+
+#: dt-contacts/contacts-transfer.php:30
+msgid "Contact Transfer Both Ways"
+msgstr "ติดต่อโอนทั้งสองทาง"
+
+#: dt-contacts/contacts-transfer.php:31
+msgid "Contact Transfer Sending Only"
+msgstr "ติดต่อโอนเงินส่งเท่านั้น"
+
+#: dt-contacts/contacts-transfer.php:32
+msgid "Contact Transfer Receiving Only"
+msgstr "ติดต่อโอนรับเท่านั้น"
+
+#: dt-contacts/contacts-transfer.php:53
+msgid "This contact has been transferred"
+msgstr "โอนผู้ติดต่อนี้แล้ว"
+
+#: dt-contacts/contacts-transfer.php:54
+msgid "This contact has been transferred to"
+msgstr "รายชื่อติดต่อนี้ถูกโอนไปยัง"
+
+#: dt-contacts/contacts-transfer.php:108
+msgid "another site"
+msgstr "ไซต์อื่น"
+
+#: dt-contacts/contacts-transfer.php:118
+msgid "Already transfered to %s"
+msgstr "โอนไปยัง% s แล้ว"
+
+#: dt-contacts/contacts-transfer.php:119
+msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
+msgstr "หมายเหตุ: คุณได้โอนผู้ติดต่อนี้แล้ว การโอนอีกครั้งอาจสร้างรายการที่ซ้ำกัน คุณยังต้องการลบล้างคำเตือนนี้และดำเนินการโอนต่อไปหรือไม่"
+
+#: dt-contacts/contacts-transfer.php:120
+msgid "Override and Continue"
+msgstr "แทนที่และดำเนินการต่อ"
+
+#: dt-contacts/contacts-transfer.php:125
+msgid "Transfer this contact to:"
+msgstr "โอนผู้ติดต่อนี้ไปที่:"
+
+#: dt-contacts/contacts-transfer.php:137
+msgid "Confirm Transfer"
+msgstr "ยืนยันการโอน"
+
+#: dt-contacts/contacts-transfer.php:208
+msgid "Unknown error."
+msgstr "ข้อผิดพลาดที่ไม่รู้จัก."
+
+#: dt-contacts/contacts-transfer.php:217
+msgid "Minor transfer error."
+msgstr "ข้อผิดพลาดเล็กน้อยในการโอน"
+
+#: dt-contacts/contacts-transfer.php:364
+#: dt-contacts/contacts-transfer.php:382
+#: dt-contacts/contacts-transfer.php:399
+msgid "Transfer Bot"
+msgstr "โอนบอท"
+
+#: dt-contacts/contacts-transfer.php:384
+msgid "Contact transferred from site"
+msgstr "โอนผู้ติดต่อจากเว็บไซต์"
+
+#: dt-contacts/contacts-transfer.php:391
+msgid "ALERT: Possible duplicate contact from a previous transfer."
+msgstr "ALERT: รายชื่อติดต่อที่อาจซ้ำกันจากการโอนครั้งก่อน"
+
+#: dt-contacts/contacts.php:1312
+msgctxt "Contact1 is a duplicated and was merged into Contact2"
+msgid "%1$s is a duplicate and was merged into %2$s"
+msgstr "%1$s เป็นรายการที่ซ้ำกันและรวมเข้ากับ %2$s แล้ว"
+
+#: dt-contacts/duplicates-merging.php:444
+msgctxt "duplicate comment"
+msgid "(From Duplicate): %s"
+msgstr "(จากรายการซ้ำ):% s"
+
+#: dt-contacts/base-setup.php:60
+msgid "Strategist"
+msgstr "นักยุทธศาสตร์"
+
+#: dt-contacts/access-module.php:70
+msgid "Dispatcher"
+msgstr "Dispatcher"
+
+#: dt-contacts/access-module.php:54
+msgid "Digital Responder"
+msgstr "Digital Responder"
+
+#: dt-contacts/base-setup.php:70
+msgid "Disciple.Tools Admin"
+msgstr "ผู้ดูแลระบบ Disciple.Tools"
+
+#: dt-contacts/base-setup.php:55
+#: dt-groups/base-setup.php:54
+msgid "Multiplier"
+msgstr "ตัวคูณ"
+
+#: dt-core/configuration/class-roles.php:116
+msgid "Registered"
+msgstr "จดทะเบียน"
+
+#: dt-core/configuration/class-roles.php:157
+msgid "Subscriber"
+msgstr "สมาชิก"
+
+#: dt-core/configuration/config-site-defaults.php:264
+msgid "Newly Assigned Contact"
+msgstr "ผู้ติดต่อที่ได้รับมอบหมายใหม่"
+
+#: dt-core/configuration/config-site-defaults.php:269
+msgid "@Mentions"
+msgstr "@ เมนชั่น"
+
+#: dt-core/configuration/config-site-defaults.php:284
+msgid "Contact Info Changed"
+msgstr "ข้อมูลการติดต่อมีการเปลี่ยนแปลง"
+
+#: dt-core/configuration/config-site-defaults.php:289
+#: dt-core/migrations/0012-typo-rename.php:8
+msgid "Contact Milestones and Group Health metrics"
+msgstr "ติดต่อ Milestones และ Group Health metrics"
+
+#: dt-core/configuration/config-site-defaults.php:314
+msgid "This contact is active but there is no record of anybody contacting them. Please do contact them."
+msgstr "รายชื่อติดต่อนี้ใช้งานอยู่ แต่ไม่มีประวัติว่ามีใครติดต่อพวกเขา โปรดติดต่อพวกเขา"
+
+#: dt-core/configuration/config-site-defaults.php:320
+msgid "Please try connecting with this contact again."
+msgstr "โปรดลองเชื่อมต่อกับผู้ติดต่อนี้อีกครั้ง"
+
+#: dt-core/configuration/config-site-defaults.php:326
+#: dt-core/configuration/config-site-defaults.php:332
+#: dt-core/configuration/config-site-defaults.php:338
+#: dt-core/configuration/config-site-defaults.php:344
+#: dt-core/configuration/config-site-defaults.php:350
+msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
+msgstr "เราไม่เคยได้ยินเกี่ยวกับบุคคลนี้มาระยะหนึ่งแล้ว คุณมีข้อมูลอัปเดตสำหรับผู้ติดต่อนี้หรือไม่"
+
+#: dt-core/configuration/config-site-defaults.php:360
+msgid "We haven't heard about this group in a while. Do you have an update?"
+msgstr "เราไม่เคยได้ยินเกี่ยวกับกลุ่มนี้มาระยะหนึ่งแล้ว คุณมีการอัปเดตหรือไม่?"
+
+#: dt-core/configuration/dt-configuration.php:75
+msgctxt "either rtl or ltr"
+msgid "ltr"
+msgstr "ltr"
+
+#: dt-core/configuration/restrict-site-access.php:288
+msgid "Someone has requested a password reset for the following account:"
+msgstr "มีคนขอรีเซ็ตรหัสผ่านสำหรับบัญชีต่อไปนี้:"
+
+#. translators: %s: user login
+#: dt-core/configuration/restrict-site-access.php:292
+msgid "Username: %s"
+msgstr "ชื่อผู้ใช้:% s"
+
+#: dt-core/configuration/restrict-site-access.php:293
+msgid "If this was a mistake, just ignore this email and nothing will happen."
+msgstr "หากนี่เป็นข้อผิดพลาดโปรดอย่าสนใจอีเมลนี้และจะไม่มีอะไรเกิดขึ้น"
+
+#: dt-core/configuration/restrict-site-access.php:294
+msgid "To reset your password, visit the following address:"
+msgstr "หากต้องการรีเซ็ตรหัสผ่านโปรดไปที่ที่อยู่ต่อไปนี้:"
+
+#: dt-users/template-user-management.php:326
+#: template-settings.php:99
+msgid "Roles"
+msgstr "บทบาท"
+
+#: dt-core/logging/hooks/class-hook-posts.php:28
+msgid "(no title)"
+msgstr "(ไม่มีชื่อเรื่อง)"
+
+#: dt-groups/base-setup.php:246
+#: dt-groups/base-setup.php:308
+#: dt-groups/base-setup.php:668
+msgid "Leaders"
+msgstr "ผู้นำ"
+
+#: dt-posts/posts.php:248
+msgctxt "Baptized contact1"
+msgid "Baptized %s"
+msgstr "บัพติศมา% s"
+
+#: dt-posts/posts.php:249
+msgctxt "Baptized by contact1"
+msgid "Baptized by %s"
+msgstr "รับบัพติศมาโดย% s"
+
+#: dt-posts/posts.php:251
+msgctxt "Did not baptize contact1"
+msgid "Did not baptize %s"
+msgstr "ไม่ได้ล้างบาป% s"
+
+#: dt-posts/posts.php:252
+msgctxt "Not baptized by contact1"
+msgid "Not baptized by %s"
+msgstr "ไม่รับบัพติศมาโดย% s"
+
+#: dt-posts/posts.php:256
+msgctxt "contact1 added to members"
+msgid "%s added to members"
+msgstr "เพิ่ม% s ให้กับสมาชิกแล้ว"
+
+#: dt-posts/posts.php:257
+msgctxt "Added to group group1"
+msgid "Added to group %s"
+msgstr "เพิ่มในกลุ่ม% s แล้ว"
+
+#: dt-posts/posts.php:259
+msgctxt "Removed contact1 from group"
+msgid "Removed %s from group"
+msgstr "ลบ% s ออกจากกลุ่ม"
+
+#: dt-posts/posts.php:260
+msgctxt "Removed from group group1"
+msgid "Removed from group %s"
+msgstr "ลบออกจากกลุ่ม% s"
+
+#: dt-posts/posts.php:265
+msgctxt "Coaching contact1"
+msgid "Coaching %s"
+msgstr "การฝึกสอน% s"
+
+#: dt-posts/posts.php:266
+msgctxt "Coached by contact1"
+msgid "Coached by %s"
+msgstr "ฝึกสอนโดย% s"
+
+#: dt-posts/posts.php:268
+msgctxt "No longer coaching contact1"
+msgid "No longer coaching %s"
+msgstr "ไม่มีการฝึกสอน% s อีกต่อไป"
+
+#: dt-posts/posts.php:273
+msgctxt "Sub-assigned contact1"
+msgid "Sub-assigned %s"
+msgstr "กำหนดย่อย% s"
+
+#: dt-posts/posts.php:274
+msgctxt "Sub-assigned on contact1"
+msgid "Sub-assigned on %s"
+msgstr "กำหนดย่อยเมื่อ% s"
+
+#: dt-posts/posts.php:276
+msgctxt "Removed sub-assigned contact1"
+msgid "Removed sub-assigned %s"
+msgstr "ลบ% s ที่กำหนดย่อยแล้ว"
+
+#: dt-posts/posts.php:289
+msgctxt "contact1 added as leader on group1"
+msgid "%1$s added as leader on %2$s"
+msgstr "เพิ่ม %1$s เป็นผู้นำใน %2$s"
+
+#: dt-posts/posts.php:290
+msgctxt "contact1 added to leaders"
+msgid "%s added to leaders"
+msgstr "เพิ่ม% s ให้กับผู้นำแล้ว"
+
+#: dt-posts/posts.php:292
+msgctxt "contact1 removed from leaders on group1"
+msgid "%1$s removed from leaders on %2$s"
+msgstr "%1$s ถูกลบออกจากผู้นำใน %2$s"
+
+#: dt-posts/posts.php:293
+msgctxt "contact1 removed from leaders"
+msgid "%s removed from leaders"
+msgstr "% s ถูกลบออกจากผู้นำ"
+
+#: dt-posts/posts.php:297
+msgctxt "contact1 added as coach on group1"
+msgid "%1$s added as coach on %2$s"
+msgstr "%1$s เพิ่มเป็นโค้ชเมื่อ %2$s"
+
+#: dt-posts/posts.php:298
+msgctxt "contact1 added to coaches"
+msgid "%s added to coaches"
+msgstr "เพิ่ม% s ให้กับโค้ชแล้ว"
+
+#: dt-posts/posts.php:300
+msgctxt "contact1 removed from coaches on group2"
+msgid "%1$s removed from coaches on %2$s"
+msgstr "ลบ %1$s ออกจากโค้ชเมื่อ %2$s"
+
+#: dt-posts/posts.php:301
+msgctxt "contact1 removed from coaches"
+msgid "%s removed from coaches"
+msgstr "% s ถูกลบออกจากโค้ช"
+
+#: dt-posts/posts.php:305
+msgctxt "group2 added to child groups"
+msgid "%s added to child groups"
+msgstr "เพิ่ม% s ลงในกลุ่มย่อยแล้ว"
+
+#: dt-posts/posts.php:306
+msgctxt "group1 added to parent groups"
+msgid "%s added to parent groups"
+msgstr "เพิ่ม% s ในกลุ่มหลักแล้ว"
+
+#: dt-posts/posts.php:308
+msgctxt "group2 removed from child groups"
+msgid "%s removed from child groups"
+msgstr "ลบ% s ออกจากกลุ่มย่อยแล้ว"
+
+#: dt-posts/posts.php:309
+msgctxt "group1 removed from parent groups"
+msgid "%s removed from parent groups"
+msgstr "ลบ% s ออกจากกลุ่มหลักแล้ว"
+
+#: dt-posts/posts.php:314
+#: dt-posts/posts.php:315
+msgctxt "group1 added to peer groups"
+msgid "%s added to peer groups"
+msgstr "เพิ่ม% s ในกลุ่มที่คล้ายกันแล้ว"
+
+#: dt-posts/posts.php:317
+#: dt-posts/posts.php:318
+msgctxt "group1 removed from peer groups"
+msgid "%s removed from peer groups"
+msgstr "ลบ% s ออกจากกลุ่มเทียบเท่า"
+
+#: dt-posts/posts.php:322
+#: dt-posts/posts.php:323
+#: dt-posts/posts.php:330
+#: dt-posts/posts.php:331
+msgctxt "Connected to contact1"
+msgid "Connected to %s"
+msgstr "เชื่อมต่อกับ% s"
+
+#: dt-posts/posts.php:325
+#: dt-posts/posts.php:326
+#: dt-posts/posts.php:333
+#: dt-posts/posts.php:334
+msgctxt "Removed connection to contact1"
+msgid "Removed connection to %s"
+msgstr "ลบการเชื่อมต่อกับ% s แล้ว"
+
+#: dt-posts/posts.php:354
+msgctxt "Assigned to: User1"
+msgid "Assigned to: %s"
+msgstr "มอบหมายให้:% s"
+
+#: dt-posts/posts.php:354
+msgid "Nobody"
+msgstr "ไม่มีใคร"
+
+#: dt-posts/posts.php:367
+msgctxt "Milestone1 removed from Milestones"
+msgid "%1$s removed from %2$s"
+msgstr "ลบ %1$s ออกจาก %2$s แล้ว"
+
+#: dt-posts/posts.php:370
+msgctxt "Milestone1 added to Milestones"
+msgid "%1$s added to %2$s"
+msgstr "เพิ่ม %1$s ใน %2$s แล้ว"
+
+#: dt-posts/posts.php:382
+msgid "yes"
+msgstr "ใช่"
+
+#: dt-posts/posts.php:384
+msgid "no"
+msgstr "ไม่"
+
+#: dt-posts/posts.php:451
+msgctxt "Added Facebook: facebook.com/123"
+msgid "Added %1$s: %2$s"
+msgstr "เพิ่ม %1$s: %2$s"
+
+#: dt-posts/posts.php:453
+msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
+msgid "Updated %1$s from %2$s to %3$s"
+msgstr "อัปเดต %1$s จาก %2$s เป็น %3$s"
+
+#: dt-posts/posts.php:455
+msgctxt "Deleted Facebook: facebook.com/123"
+msgid "Deleted %1$s: %2$s"
+msgstr "ลบ %1$s: %2$s"
+
+#: dt-posts/dt-posts.php:1223
+msgid "Post already shared with user."
+msgstr "โพสต์แชร์กับผู้ใช้แล้ว"
+
+#: dt-groups/base-setup.php:169
+msgid "Group Type"
+msgstr "ประเภทกลุ่ม"
+
+#: dt-groups/base-setup.php:174
+#: dt-metrics/groups/overview.php:79
+#: dt-metrics/personal/overview.php:73
+msgid "Pre-Group"
+msgstr "กลุ่มพรี"
+
+#: dt-groups/base-setup.php:182
+#: dt-metrics/groups/overview.php:81
+#: dt-metrics/personal/overview.php:75
+msgid "Church"
+msgstr "คริสตจักร"
+
+#: dt-groups/base-setup.php:290
+msgid "Member Count"
+msgstr "จำนวนสมาชิก"
+
+#: dt-mapping/mapping.php:149
+msgid "Map"
+msgstr "แผนที่"
+
+#: dt-metrics/combined/critical-path.php:218
+#: dt-metrics/counter.php:129
+msgid "New Contacts"
+msgstr "รายชื่อใหม่"
+
+#: dt-metrics/counter.php:134
+msgid "First Meetings"
+msgstr "การพบกันครั้งแรก"
+
+#: dt-metrics/counter.php:144
+msgid "Total Baptisms"
+msgstr "บัพติศมาทั้งหมด"
+
+#: dt-metrics/counter.php:149
+msgid "Total Baptizers"
+msgstr "ผู้ให้บัพติศมาทั้งหมด"
+
+#: dt-metrics/counter.php:162
+msgid "Total Churches and Groups"
+msgstr "คริสตจักรและกลุ่มทั้งหมด"
+
+#: dt-metrics/combined/critical-path.php:305
+#: dt-metrics/combined/mapbox-maps.php:83
+#: dt-metrics/counter.php:167
+msgid "Active Groups"
+msgstr "กลุ่มที่ใช้งานอยู่"
+
+#: dt-metrics/combined/critical-path.php:315
+#: dt-metrics/counter.php:172
+msgid "Active Churches"
+msgstr "คริสตจักรที่ใช้งานอยู่"
+
+#: dt-metrics/counter.php:179
+msgid "Church Generation"
+msgstr "การสร้างคริสตจักร"
+
+#: dt-metrics/combined/critical-path.php:339
+#: dt-metrics/counter.php:185
+msgid "Church Planters"
+msgstr "ชาวไร่คริสตจักร"
+
+#. This could be either Hitos or Pilares depending on the context.
+#: dt-metrics/contacts/milestones-map.php:65
+#: dt-metrics/contacts/milestones.php:66
+msgid "Milestones"
+msgstr "เหตุการณ์สำคัญ"
+
+#: dt-metrics/combined/critical-path.php:24
+#: dt-metrics/combined/critical-path.php:55
+#: dt-metrics/combined/critical-path.php:88
+msgid "Critical Path"
+msgstr "เส้นทางที่สำคัญ"
+
+#: dt-metrics/combined/critical-path.php:228
+msgid "Assigned Contacts"
+msgstr "ผู้ติดต่อที่ได้รับมอบหมาย"
+
+#: dt-metrics/combined/critical-path.php:237
+#: dt-metrics/combined/mapbox-maps.php:82
+#: dt-metrics/contacts/overview.php:63
+#: dt-metrics/groups/overview.php:66
+#: dt-metrics/personal/overview.php:68
+#: dt-users/template-user-management.php:163
+msgid "Active Contacts"
+msgstr "ผู้ติดต่อที่ใช้งานอยู่"
+
+#: dt-metrics/combined/critical-path.php:266
+msgid "Baptisms"
+msgstr "บัพติศมา"
+
+#: dt-metrics/combined/critical-path.php:295
+msgid "Baptizers"
+msgstr "ผู้ให้บัพติศมา"
+
+#: dt-contacts/access-module.php:291
+#: dt-contacts/base-setup.php:128
+#: dt-contacts/base-setup.php:521
+#: dt-metrics/metrics.php:80
+#: dt-metrics/personal/baptism-tree.php:26
+#: dt-metrics/personal/coaching-tree.php:26
+#: dt-metrics/personal/group-tree.php:25
+#: dt-metrics/personal/overview.php:23
+msgid "Personal"
+msgstr "ส่วนบุคคล"
+
+#: dt-metrics/personal/overview.php:59
+msgid "My Overview"
+msgstr "ภาพรวมของฉัน"
+
+#: dt-metrics/contacts/overview.php:64
+#: dt-metrics/groups/overview.php:67
+#: dt-metrics/personal/overview.php:60
+msgid "Waiting on Accept"
+msgstr "กำลังรอยอมรับ"
+
+#: dt-metrics/contacts/overview.php:65
+#: dt-metrics/groups/overview.php:68
+#: dt-metrics/personal/overview.php:61
+msgid "Waiting on Update"
+msgstr "กำลังรอการอัปเดต"
+
+#: dt-metrics/contacts/overview.php:66
+#: dt-metrics/groups/overview.php:69
+#: dt-metrics/personal/overview.php:64
+#: dt-metrics/personal/overview.php:69
+msgid "Total Groups"
+msgstr "กลุ่มทั้งหมด"
+
+#: dt-metrics/groups/overview.php:71
+#: dt-metrics/groups/overview.php:78
+#: dt-metrics/personal/overview.php:65
+msgid "Group Types"
+msgstr "ประเภทกลุ่ม"
+
+#: dt-metrics/groups/overview.php:70
+#: dt-metrics/personal/overview.php:66
+msgid "Group and Church Generations"
+msgstr "รุ่นกลุ่มและคริสตจักร"
+
+#: dt-metrics/personal/overview.php:67
+msgid "Lead Teams"
+msgstr "นำทีม"
+
+#: dt-metrics/personal/overview.php:70
+msgid "Follow-up of my active contacts"
+msgstr "การติดตามผู้ติดต่อที่ใช้งานอยู่ของฉัน"
+
+#: dt-metrics/groups/overview.php:74
+#: dt-metrics/personal/overview.php:71
+msgid "Active Group Health Metrics"
+msgstr "เมตริกสุขภาพกลุ่มที่ใช้งานอยู่"
+
+#: dt-metrics/combined/critical-path.php:25
+#: dt-metrics/combined/hover-map.php:26
+#: dt-metrics/combined/locations-list.php:26
+#: dt-metrics/combined/mapbox-maps.php:29
+#: dt-metrics/metrics.php:85
+msgid "Project"
+msgstr "โครงการ"
+
+#: dt-metrics/contacts/overview.php:24
+#: dt-metrics/groups/overview.php:24
+#: dt-metrics/personal/overview.php:22
+msgid "Overview"
+msgstr "ภาพรวม"
+
+#: dt-metrics/contacts/baptism-tree.php:24
+msgid "Baptism Tree"
+msgstr "ต้นไม้ล้างบาป"
+
+#: dt-metrics/contacts/coaching-tree.php:24
+msgid "Coaching Tree"
+msgstr "ต้นไม้ฝึกสอน"
+
+#: dt-metrics/groups/overview.php:61
+msgid "Project Overview"
+msgstr "ภาพรวมโครงการ"
+
+#: dt-metrics/combined/critical-path.php:87
+msgid "Outreach"
+msgstr "การเข้าถึง"
+
+#: dt-contacts/access-module.php:383
+#: dt-metrics/combined/critical-path.php:86
+msgid "Follow Up"
+msgstr "ติดตาม"
+
+#: dt-metrics/contacts/overview.php:62
+#: dt-metrics/groups/overview.php:65
+msgid "All Contacts"
+msgstr "ผู้ติดต่อทั้งหมด"
+
+#: dt-metrics/groups/tree.php:80
+#: dt-metrics/personal/group-tree.php:81
+msgid "Group Generation Tree"
+msgstr "ต้นไม้สร้างกลุ่ม"
+
+#: dt-metrics/contacts/baptism-tree.php:56
+msgid "Baptism Generation Tree"
+msgstr "ต้นไม้รุ่นล้างบาป"
+
+#: dt-metrics/contacts/coaching-tree.php:57
+#: dt-metrics/personal/coaching-tree.php:58
+msgid "Coaching Generation Tree"
+msgstr "ต้นไม้การฝึกสอน"
+
+#: dt-metrics/groups/overview.php:72
+msgid "Teams"
+msgstr "ทีม"
+
+#: dt-metrics/groups/overview.php:75
+msgid "groups"
+msgstr "กลุ่ม"
+
+#: dt-metrics/groups/overview.php:76
+msgid "generations"
+msgstr "ชั่วอายุคน"
+
+#: dt-users/template-user-management.php:64
+msgid "Multipliers"
+msgstr "ตัวคูณ"
+
+#: dt-notifications/notifications-email.php:117
+msgid "Click here to view or reply"
+msgstr "คลิกที่นี่เพื่อดูหรือตอบกลับ"
+
+#: dt-notifications/notifications-email.php:123
+msgctxt "ex: Update on Contact #323"
+msgid "Update on %1$s #%2$s"
+msgstr "อัปเดตเมื่อ %1$s # %2$s"
+
+#: dt-notifications/notifications.php:787
+msgctxt "%s was created and assigned to you."
+msgid "%s was created and assigned to you."
+msgstr "สร้างและกำหนด% s ให้กับคุณแล้ว"
+
+#: dt-notifications/notifications.php:795
+msgctxt "user1 assigned contact1 to user2."
+msgid "%1$s assigned %2$s to %3$s."
+msgstr "%1$s กำหนด %2$s ให้กับ %3$s"
+
+#: dt-notifications/notifications.php:798
+#: dt-notifications/notifications.php:805
+#: dt-notifications/notifications.php:812
+#: dt-notifications/notifications.php:816
+#: dt-notifications/notifications.php:826
+#: dt-notifications/notifications.php:833
+msgid "System"
+msgstr "ระบบ"
+
+#: dt-notifications/notifications.php:799
+msgctxt "User1 shared contact1 with you."
+msgid "%1$s shared %2$s with you."
+msgstr "%1$s แบ่งปัน %2$s กับคุณ"
+
+#: dt-notifications/notifications.php:806
+msgctxt "User1 mentioned you on contact1 saying: test"
+msgid "%1$s mentioned you on %2$s saying: %3$s"
+msgstr "%1$s พูดถึงคุณใน %2$s ว่า: %3$s"
+
+#: dt-notifications/notifications.php:813
+msgctxt "User1 commented on contact1 saying: test"
+msgid "%1$s commented on %2$s saying: %3$s"
+msgstr "%1$s แสดงความคิดเห็นกับ %2$s ว่า %3$s"
+
+#: dt-notifications/notifications.php:817
+msgctxt "User1 subassigned contact1 to you."
+msgid "%1$s subassigned %2$s to you."
+msgstr "%1$s มอบหมายงานย่อย %2$s ให้คุณ"
+
+#: dt-notifications/notifications.php:827
+msgctxt "User1 added milestone Baptizing on contact1."
+msgid "%1$s added milestone %2$s on %3$s."
+msgstr "%1$s เพิ่มเป้าหมาย %2$s เมื่อ %3$s"
+
+#: dt-notifications/notifications.php:834
+msgctxt "User1 modified contact details on contact1."
+msgid "%1$s modified contact details on %2$s."
+msgstr "%1$s แก้ไขรายละเอียดการติดต่อใน %2$s"
+
+#: dt-notifications/notifications.php:837
+msgctxt "User1 declined assignment on: contact1"
+msgid "%1$s declined assignment on: %2$s."
+msgstr "%1$s ปฏิเสธงานเมื่อ: %2$s"
+
+#: dt-people-groups/people-groups-post-type.php:131
+msgid "People Group"
+msgstr "กลุ่มคน"
+
+#: dt-people-groups/people-groups-post-type.php:281
+msgid "Add/Update People Group"
+msgstr "เพิ่ม / อัปเดตกลุ่มบุคคล"
+
+#: dt-people-groups/people-groups-post-type.php:282
+msgid "People Group Details"
+msgstr "รายละเอียดกลุ่มคน"
+
+#: dt-people-groups/people-groups-post-type.php:589
+msgid "Enter the People Group title here"
+msgstr "ป้อนชื่อ People Group ที่นี่"
+
+#: dt-users/users.php:62
+msgid "No permissions to assign"
+msgstr "ไม่มีสิทธิ์ในการมอบหมาย"
+
+#: dt-users/users.php:343
+msgid "Insufficient permissions"
+msgstr "สิทธิ์ไม่เพียงพอ"
+
+#: dt-users/users.php:744
+msgid "Extra Disciple.Tools Information"
+msgstr "ศิษย์พิเศษข้อมูลเครื่องมือ"
+
+#: dt-users/users.php:747
+msgid "Corresponds to Contact"
+msgstr "สอดคล้องกับการติดต่อ"
+
+#: dt-users/users.php:964
+msgid "View contact record"
+msgstr "ดูบันทึกการติดต่อ"
+
+#: dt-workflows/update-required.php:67
+#: dt-workflows/update-required.php:105
+msgid "Updated Needed"
+msgstr "จำเป็นต้องปรับปรุง"
+
+#: functions.php:483
+msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
+msgstr "ธีม Disciple Tools ต้องการ PHP เวอร์ชัน 7.0 หรือสูงกว่า เวอร์ชันปัจจุบันของคุณคือ:"
+
+#: functions.php:485
+msgid "Please upgrade PHP or uninstall this theme"
+msgstr "โปรดอัปเกรด PHP หรือถอนการติดตั้งธีมนี้"
+
+#: header.php:72
+msgid "Javascript must be enabled for this site to function correctly."
+msgstr "ต้องเปิดใช้งาน Javascript เพื่อให้ไซต์นี้ทำงานได้อย่างถูกต้อง"
+
+#: header.php:78
+msgid "You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
+msgstr "ดูเหมือนคุณจะใช้เว็บเบราว์เซอร์ที่ล้าสมัย หากไม่มีเบราว์เซอร์เวอร์ชันล่าสุดอาจทำให้ไซต์นี้ทำงานไม่ถูกต้อง โปรดทราบว่าไม่รองรับ Internet Explorer"
+
+#: header.php:80
+msgid "See what browser you are using."
+msgstr "ดูว่าคุณใช้เบราว์เซอร์อะไร"
+
+#: single-template.php:332
+msgid "Create Tag"
+msgstr "สร้างแท็ก"
+
+#: single-template.php:337
+#: single-template.php:339
+msgid "Tag"
+msgstr "แท็ก"
+
+#: single-template.php:348
+msgid "Create and apply tag"
+msgstr "สร้างและใช้แท็ก"
+
+#: dt-contacts/user-module.php:104
+#: dt-contacts/user-module.php:107
+#: dt-users/template-user-management.php:73
+msgid "Display Name"
+msgstr "ชื่อที่แสดง"
+
+#: dt-contacts/user-module.php:118
+msgid "Create user"
+msgstr "สร้างผู้ใช้"
+
+#: dt-contacts/user-module.php:129
+msgid "Link this contact to an existing user"
+msgstr "เชื่อมโยงผู้ติดต่อนี้กับผู้ใช้ที่มีอยู่"
+
+#: dt-assets/parts/merge-details.php:65
+msgid "Click merge to continue."
+msgstr "คลิกผสานเพื่อดำเนินการต่อ"
+
+#: dt-groups/base-setup.php:299
+#: dt-groups/base-setup.php:596
+#: dt-groups/base-setup.php:729
+msgid "Member List"
+msgstr "รายชื่อสมาชิก"
+
+#: dt-groups/base-setup.php:326
+msgid "Parent Group"
+msgstr "กลุ่มผู้ปกครอง"
+
+#: dt-groups/base-setup.php:338
+msgid "Peer Group"
+msgstr "กลุ่มเพื่อน"
+
+#: template-new-post.php:124
+msgid "Save and continue editing"
+msgstr "บันทึกและแก้ไขต่อ"
+
+#: template-merge-details.php:111
+msgid "Merge Duplicate Contacts"
+msgstr "รวมผู้ติดต่อที่ซ้ำกัน"
+
+#: template-merge-details.php:112
+msgid "When you merge, the master record is updated with the values you choose, and relationships to other items are shifted to the master record"
+msgstr "เมื่อคุณผสานเรกคอร์ดหลักจะถูกอัปเดตด้วยค่าที่คุณเลือกและความสัมพันธ์กับรายการอื่น ๆ จะเลื่อนไปที่เรกคอร์ดหลัก"
+
+#: template-merge-details.php:126
+#: template-merge-details.php:135
+msgid "Status:"
+msgstr "สถานะ:"
+
+#: template-merge-details.php:128
+#: template-merge-details.php:137
+msgid "Select All"
+msgstr "เลือกทั้งหมด"
+
+#: template-merge-details.php:145
+msgid "Master Record"
+msgstr "มาสเตอร์เรคคอร์ด"
+
+#: template-merge-details.php:150
+#: template-merge-details.php:153
+msgid "Use as master"
+msgstr "ใช้เป็นหลัก"
+
+#: template-notifications.php:51
+msgid "Unread"
+msgstr "ยังไม่ได้อ่าน"
+
+#: template-notifications.php:63
+msgid "Mark All"
+msgstr "ทำเครื่องหมายทั้งหมด"
+
+#: dt-users/template-user-management.php:296
+#: template-settings.php:44
+#: template-settings.php:299
+msgid "Availability"
+msgstr "ความพร้อมใช้งาน"
+
+#: template-settings.php:67
+msgid "Your Profile"
+msgstr "โปรไฟล์ของคุณ"
+
+#: template-settings.php:80
+#: template-settings.php:440
+msgid "Username"
+msgstr "ชื่อผู้ใช้"
+
+#: dt-users/user-management.php:157
+#: template-settings.php:93
+#: template-settings.php:475
+msgid "Nickname (Display Name)"
+msgstr "ชื่อเล่น (ชื่อที่ปรากฏ)"
+
+#: template-settings.php:141
+msgid "Social"
+msgstr "สังคม"
+
+#: template-settings.php:166
+msgid "Language"
+msgstr "ภาษา"
+
+#: template-settings.php:172
+msgid "English"
+msgstr "ภาษาอังกฤษ"
+
+#: template-settings.php:176
+#: template-settings.php:499
+msgid "Biography"
+msgstr "ชีวประวัติ"
+
+#: template-settings.php:360
+msgid "Type of Notification"
+msgstr "ประเภทการแจ้งเตือน"
+
+#: dt-contacts/access-module.php:295
+#: dt-core/configuration/config-site-defaults.php:259
+msgid "Web"
+msgstr "เว็บ"
+
+#: template-settings.php:373
+msgid "required"
+msgstr "จำเป็น"
+
+#: template-settings.php:396
+msgid "Follow all contacts"
+msgstr "ติดตามผู้ติดต่อทั้งหมด"
+
+#: template-settings.php:403
+msgid "Enable"
+msgstr "เปิดใช้งาน"
+
+#: template-settings.php:434
+msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+msgstr "Disciple Tools System ไม่เก็บภาพ สำหรับรูปโปรไฟล์เราใช้ Gravatar (Avatar ที่ได้รับการยอมรับทั่วโลก) หากคุณมีข้อกังวลด้านความปลอดภัยขอแนะนำว่าอย่าใช้ภาพถ่ายส่วนตัว แต่ให้เลือกรูปภาพการ์ตูนนามธรรมหรือนามแฝงเพื่อเป็นตัวแทนของคุณ"
+
+#: template-settings.php:435
+msgid "edit image on gravatar.com"
+msgstr "แก้ไขภาพบน gravatar.com"
+
+#: template-settings.php:441
+#: template-settings.php:442
+msgid "Username cannot be changed"
+msgstr "ไม่สามารถเปลี่ยนชื่อผู้ใช้"
+
+#: template-settings.php:109
+#: template-settings.php:446
+msgid "System Email"
+msgstr "อีเมลระบบ"
+
+#: template-settings.php:447
+msgid "User email can be changed by site administrator."
+msgstr "ผู้ดูแลเว็บไซต์สามารถเปลี่ยนแปลงอีเมลของผู้ใช้ได้"
+
+#: template-settings.php:454
+msgid "Password"
+msgstr "รหัสผ่าน"
+
+#: template-settings.php:455
+msgid "Use this email reset form to create a new password."
+msgstr "ใช้แบบฟอร์มรีเซ็ตอีเมลนี้เพื่อสร้างรหัสผ่านใหม่"
+
+#: template-settings.php:457
+msgid "go to password change form"
+msgstr "ไปที่แบบฟอร์มการเปลี่ยนรหัสผ่าน"
+
+#: template-settings.php:464
+msgid "First Name"
+msgstr "ชื่อจริง"
+
+#: template-settings.php:470
+msgid "Last Name"
+msgstr "นามสกุล"
+
+#: template-settings.php:511
+msgid "Description"
+msgstr "คำอธิบาย"
+
+#: dt-notifications/notifications-email.php:118
+msgid "Do not reply directly to this email."
+msgstr "อย่าตอบกลับอีเมลนี้โดยตรง"
+
+#: dt-core/configuration/restrict-site-access.php:236
+msgid "Reset password"
+msgstr "รีเซ็ตรหัสผ่าน"
+
+#: dt-metrics/contacts/sources.php:91
+msgid "Showing contacts created during"
+msgstr "แสดงผู้ติดต่อที่สร้างขึ้นระหว่าง"
+
+#: dt-metrics/contacts/sources.php:92
+msgid "All contacts, by source and status"
+msgstr "ผู้ติดต่อทั้งหมดตามแหล่งที่มาและสถานะ"
+
+#: dt-metrics/contacts/sources.php:93
+msgid "A contact can come from more than one source."
+msgstr "ผู้ติดต่ออาจมาจากแหล่งที่มามากกว่าหนึ่งแห่ง"
+
+#: dt-metrics/contacts/sources.php:96
+msgid "Active contacts, by source and faith milestone"
+msgstr "ผู้ติดต่อที่ใช้งานตามแหล่งที่มาและหลักศรัทธา"
+
+#: dt-metrics/combined/critical-path.php:89
+msgid "Filter Critical Path fields"
+msgstr "กรองฟิลด์ Critical Path"
+
+#: dt-metrics/combined/critical-path.php:90
+msgid "Movement Tracking"
+msgstr "การติดตามการเคลื่อนไหว"
+
+#: dt-metrics/contacts/milestones.php:67
+#: dt-metrics/contacts/seeker-path.php:63
+#: dt-metrics/contacts/sources.php:87
+msgid "Filter contacts to date range:"
+msgstr "กรองรายชื่อไปยังช่วงวันที่:"
+
+#: dt-metrics/contacts/milestones.php:69
+#: dt-metrics/contacts/seeker-path.php:65
+#: dt-metrics/contacts/sources.php:89
+msgid "Filter to date range"
+msgstr "กรองช่วงวันที่"
+
+#: dt-metrics/contacts/sources.php:94
+msgid "Active contacts, by source and seeker path"
+msgstr "ผู้ติดต่อที่ใช้งานตามแหล่งที่มาและเส้นทางผู้ค้นหา"
+
+#: dt-metrics/contacts/sources.php:98
+msgid "A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+msgstr "ผู้ติดต่อสามารถมาจากแหล่งที่มามากกว่าหนึ่งแห่งและสามารถมีหลักศรัทธาได้มากกว่าหนึ่งอย่างในเวลาเดียวกัน"
+
+#: dt-metrics/groups/overview.php:77
+#: dt-metrics/personal/overview.php:76
+msgid "Generation"
+msgstr "เจนเนอเรชั่น"
+
+#: dt-users/users.php:757
+msgid "Add the name of the contact record this user corresponds to."
+msgstr "เพิ่มชื่อของเรกคอร์ดผู้ติดต่อที่ผู้ใช้รายนี้สอดคล้องกับ"
+
+#: dt-users/users.php:758
+msgid "Learn more."
+msgstr "เรียนรู้เพิ่มเติม."
+
+#: dt-users/users.php:873
+msgid "Hi,\n"
+"\n"
+"You've been invited to join '%1$s' at\n"
+"%2$s with the role of %3$s.\n"
+"\n"
+"Please click the following link to confirm the invite:\n"
+"%4$s"
+msgstr "สวัสดี\n"
+"\n"
+"คุณได้รับเชิญให้เข้าร่วม \"%1$s\" ที่\n"
+"%2$s กับบทบาทของ %3$s\n"
+"\n"
+"โปรดคลิกลิงก์ต่อไปนี้เพื่อยืนยันคำเชิญ:\n"
+"%4$s"
+
+#. translators: Joining confirmation notification email subject. %s: Site title
+#: dt-users/users.php:884
+msgid "[%s] Joining Confirmation"
+msgstr "[% s] การเข้าร่วมการยืนยัน"
+
+#: dt-core/configuration/restrict-site-access.php:237
+msgid "Lost your password"
+msgstr "ลืมรหัสผ่าน"
+
+#: dt-mapping/columns/add-churches-column.php:57
+#: dt-metrics/combined/hover-map.php:217
+#: dt-metrics/combined/locations-list.php:210
+msgid "Churches"
+msgstr "คริสตจักร"
+
+#: dt-mapping/mapping-module-config.php:74
+#: dt-mapping/mapping.php:147
+#: dt-mapping/mapping.php:302
+msgid "Mapping"
+msgstr "การทำแผนที่"
+
+#: dt-mapping/mapping.php:304
+msgid "Population"
+msgstr "ประชากร"
+
+#: dt-mapping/mapping.php:150
+msgid "List"
+msgstr "รายการ"
+
+#: dt-mapping/mapping.php:606
+#: dt-mapping/mapping.php:687
+msgid "World"
+msgstr "โลก"
+
+#: dt-posts/custom-post-type.php:127
+#: template-new-post.php:32
+msgid "New %s"
+msgstr "ใหม่% s"
+
+#: dt-posts/posts.php:403
+#: dt-posts/posts.php:412
+msgctxt "Location1 added to locations"
+msgid "%1$s added to locations"
+msgstr "เพิ่ม %1$s ในสถานที่แล้ว"
+
+#: dt-groups/base-setup.php:731
+msgid "Four Fields"
+msgstr "สี่ฟิลด์"
+
+#: dt-mapping/mapping.php:303
+msgid "Refresh Cached Data"
+msgstr "รีเฟรชข้อมูลแคช"
+
+#: dt-metrics/contacts/overview.php:68
+#: dt-metrics/groups/overview.php:73
+msgid "Follow-up of all active contacts"
+msgstr "ติดตามผู้ติดต่อที่ใช้งานอยู่ทั้งหมด"
+
+#: dt-notifications/notifications.php:830
+msgctxt "@Multiplier1, an update is requested on contact1."
+msgid "@%1$s, an update is requested on %2$s."
+msgstr "@ %1$s ขอให้อัปเดตเมื่อ %2$s"
+
+#: dt-core/configuration/config-site-defaults.php:478
+msgid "Accepting new contacts"
+msgstr "รับผู้ติดต่อใหม่"
+
+#: dt-core/configuration/config-site-defaults.php:482
+msgid "I'm only investing in existing contacts"
+msgstr "ฉันลงทุนในรายชื่อติดต่อที่มีอยู่เท่านั้น"
+
+#: dt-core/configuration/config-site-defaults.php:486
+msgid "I have too many contacts"
+msgstr "ฉันมีรายชื่อติดต่อมากเกินไป"
+
+#: template-settings.php:302
+msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+msgstr "กำหนดวันที่ที่คุณจะเดินทางหรือไม่พร้อมให้บริการเพื่อให้ผู้มอบหมายงานทราบว่าคุณพร้อมที่จะรับผู้ติดต่อใหม่"
+
+#: template-settings.php:306
+msgid "Schedule Travel or Dates Unavailable"
+msgstr "กำหนดการเดินทางหรือวันที่ใช้งานไม่ได้"
+
+#: template-settings.php:323
+msgid "Add Unavailable dates"
+msgstr "เพิ่มวันที่ไม่พร้อมใช้งาน"
+
+#: template-settings.php:337
+msgid "No Travel Scheduled"
+msgstr "ไม่มีกำหนดการเดินทาง"
+
+#: template-settings.php:398
+msgid "You will receive a notification for any update that happens in the system."
+msgstr "คุณจะได้รับการแจ้งเตือนสำหรับการอัปเดตใด ๆ ที่เกิดขึ้นในระบบ"
+
+#: dt-assets/parts/modals/modal-help.php:353 template-contacts-new.php:132
+#: template-contacts-new.php:136
+msgid "Initial Comment"
+msgstr "ความคิดเห็นเริ่มต้น"
+
+#: dt-metrics/combined/critical-path.php:219
+msgid "Any new created contact"
+msgstr "ผู้ติดต่อที่สร้างขึ้นใหม่"
+
+#: dt-metrics/combined/critical-path.php:229
+msgid "Number of contacts assigned for a face-to-face visit"
+msgstr "จำนวนผู้ติดต่อที่กำหนดไว้สำหรับการเยี่ยมชมแบบตัวต่อตัว"
+
+#: dt-metrics/combined/critical-path.php:238
+msgid "Number of contacts that had the active status"
+msgstr "จำนวนผู้ติดต่อที่มีสถานะใช้งานอยู่"
+
+#: dt-metrics/combined/critical-path.php:248
+msgid "Number of contacts on %s at the end of the time range"
+msgstr "จำนวนผู้ติดต่อใน% s เมื่อสิ้นสุดช่วงเวลา"
+
+#: dt-metrics/combined/critical-path.php:250
+msgid "Number of contacts where %s was set on the seeker path"
+msgstr "จำนวนผู้ติดต่อที่กำหนด% s บนเส้นทางผู้ค้นหา"
+
+#: dt-metrics/combined/critical-path.php:267
+msgid "Number of baptized contact with a baptism date in date range and baptized by connection"
+msgstr "จำนวนผู้ติดต่อที่รับบัพติศมากับวันที่รับบัพติศมาในช่วงวันที่และรับบัพติศมาโดยการเชื่อมต่อ"
+
+#: dt-metrics/combined/critical-path.php:284
+msgid "Generation %s Baptisms"
+msgstr "รุ่น% s บัพติศมา"
+
+#: dt-metrics/combined/critical-path.php:285
+msgid "Number of generation %s baptisms"
+msgstr "จำนวนรุ่น% s บัพติศมา"
+
+#: dt-metrics/combined/critical-path.php:296
+msgid "Number of contacts or users who have baptized a contact"
+msgstr "จำนวนผู้ติดต่อหรือผู้ใช้ที่รับบัพติศมา"
+
+#: dt-metrics/combined/critical-path.php:328
+msgid "Generation %s Churches"
+msgstr "Generation% s คริสตจักร"
+
+#: dt-metrics/combined/critical-path.php:329
+msgid "Number of generation %s churches at the end of the time range"
+msgstr "จำนวนคริสตจักรรุ่น% s เมื่อสิ้นสุดช่วงเวลา"
+
+#: dt-metrics/combined/critical-path.php:340
+msgid "Number of contacts or users who have started a church and are marked as the church coach"
+msgstr "จำนวนผู้ติดต่อหรือผู้ใช้ที่เริ่มสร้างคริสตจักรและถูกระบุว่าเป็นโค้ชของคริสตจักร"
+
+#: dt-notifications/notifications.php:789
+msgctxt "You have been assigned: contact1."
+msgid "You have been assigned: %1$s."
+msgstr "คุณได้รับมอบหมาย: %1$s"
+
+#: dt-groups/base-setup.php:350
+msgid "Child Group"
+msgstr "กลุ่มเด็ก"
+
+#: dt-contacts/access-module.php:163
+msgid "Not Ready"
+msgstr "ไม่พร้อม"
+
+#: archive-template.php:575
+msgctxt "The start date of a date range"
+msgid "Range Start"
+msgstr "ช่วงเริ่มต้น"
+
+#: archive-template.php:585
+msgctxt "The end date of a date range"
+msgid "Range End"
+msgstr "สิ้นสุดช่วง"
+
+#: dt-assets/functions/enqueue-scripts.php:270
+msgid "Locations you are responsible for"
+msgstr "สถานที่ที่คุณรับผิดชอบ"
+
+#: dt-contacts/access-module.php:159
+msgctxt "Contact Status field description"
+msgid "The contact is new in the system."
+msgstr "ผู้ติดต่อเป็นข้อมูลใหม่ในระบบ"
+
+#: dt-contacts/access-module.php:164
+msgctxt "Contact Status field description"
+msgid "There is not enough information to move forward with the contact at this time."
+msgstr "ไม่มีข้อมูลเพียงพอที่จะดำเนินการต่อกับการติดต่อในขณะนี้"
+
+#: dt-contacts/access-module.php:169
+msgctxt "Contact Status field description"
+msgid "This contact needs to be assigned to a multiplier."
+msgstr "ต้องกำหนดผู้ติดต่อนี้ให้กับตัวคูณ"
+
+#: dt-contacts/access-module.php:174
+msgctxt "Contact Status field description"
+msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
+msgstr "ผู้ติดต่อได้รับมอบหมายให้กับใครบางคน แต่ยังไม่ได้รับการยอมรับจากบุคคลนั้น"
+
+#: dt-contacts/base-setup.php:295
+msgctxt "Contact Status field description"
+msgid "The contact is progressing and/or continually being updated."
+msgstr "ผู้ติดต่อกำลังดำเนินการอยู่และ / หรือได้รับการอัปเดตอย่างต่อเนื่อง"
+
+#: dt-contacts/access-module.php:180
+msgctxt "Contact Status field description"
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
+msgstr "ผู้ติดต่อนี้ถูกระงับอยู่ในขณะนี้ (เช่นลาพักร้อนหรือไม่ตอบกลับ)"
+
+#: dt-contacts/base-setup.php:301
+msgctxt "Contact Status field description"
+msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+msgstr "การติดต่อนี้ทำให้ทราบว่าพวกเขาไม่ต้องการดำเนินการต่ออีกต่อไปหรือคุณตัดสินใจที่จะไม่ดำเนินการต่อกับเขา / เธอ"
+
+#: dt-contacts/access-module.php:113
+msgctxt "Seeker Path field description"
+msgid "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
+msgstr "ตั้งค่าสถานะความก้าวหน้าของคุณกับผู้ติดต่อ นี่คือขั้นตอนที่เกิดขึ้นตามลำดับเฉพาะเพื่อช่วยให้ผู้ติดต่อก้าวไปข้างหน้า"
+
+#: dt-contacts/access-module.php:244
+msgctxt "Reason Paused label"
+msgid "Contact on vacation"
+msgstr "ติดต่อในวันหยุด"
+
+#: dt-contacts/access-module.php:245
+msgctxt "Reason Paused label"
+msgid "Contact not responding"
+msgstr "ผู้ติดต่อไม่ตอบสนอง"
+
+#: dt-contacts/access-module.php:246
+msgctxt "Reason Paused label"
+msgid "Contact not available"
+msgstr "ไม่มีข้อมูลติดต่อ"
+
+#: dt-contacts/access-module.php:247
+msgctxt "Reason Paused label"
+msgid "Contact has little interest/hunger"
+msgstr "การติดต่อมีความสนใจ / หิวเพียงเล็กน้อย"
+
+#: dt-contacts/access-module.php:248
+msgctxt "Reason Paused label"
+msgid "Contact shows no initiative"
+msgstr "การติดต่อไม่แสดงความคิดริเริ่ม"
+
+#: dt-contacts/access-module.php:249
+msgctxt "Reason Paused label"
+msgid "Contact has questionable motives"
+msgstr "การติดต่อมีเหตุจูงใจที่น่าสงสัย"
+
+#: dt-contacts/access-module.php:250
+msgctxt "Reason Paused label"
+msgid "Ball is in the contact's court"
+msgstr "ลูกบอลอยู่ในสนามของผู้ติดต่อ"
+
+#: dt-contacts/access-module.php:251
+msgctxt "Reason Paused label"
+msgid "We want to see if/how the contact responds to automated text messages"
+msgstr "เราต้องการดูว่าผู้ติดต่อตอบสนองต่อข้อความอัตโนมัติหรือไม่"
+
+#: dt-contacts/access-module.php:263
+msgctxt "Reason Closed label"
+msgid "Duplicate"
+msgstr "ทำซ้ำ"
+
+#: dt-contacts/access-module.php:264
+msgctxt "Reason Closed label"
+msgid "Insufficient contact info"
+msgstr "ข้อมูลติดต่อไม่เพียงพอ"
+
+#: dt-contacts/access-module.php:265
+msgctxt "Reason Closed label"
+msgid "Denies submitting contact request"
+msgstr "ปฏิเสธการส่งคำขอการติดต่อ"
+
+#: dt-contacts/access-module.php:267
+msgctxt "Reason Closed label"
+msgid "Only wants to argue or debate"
+msgstr "เพียง แต่ต้องการโต้แย้งหรือถกเถียงเท่านั้น"
+
+#: dt-contacts/access-module.php:268
+msgctxt "Reason Closed label"
+msgid "Just wanted media or book"
+msgstr "แค่ต้องการสื่อหรือหนังสือ"
+
+#: dt-contacts/access-module.php:269
+msgctxt "Reason Closed label"
+msgid "No longer interested"
+msgstr "ไม่สนใจอีกต่อไป"
+
+#: dt-contacts/access-module.php:270
+msgctxt "Reason Closed label"
+msgid "No longer responding"
+msgstr "ไม่ตอบสนองอีกต่อไป"
+
+#: dt-contacts/access-module.php:271
+msgctxt "Reason Closed label"
+msgid "Already in church or connected with others"
+msgstr "อยู่ในคริสตจักรหรือเชื่อมต่อกับผู้อื่นแล้ว"
+
+#: dt-contacts/access-module.php:272
+msgctxt "Reason Closed label"
+msgid "Transferred contact to partner"
+msgstr "โอนผู้ติดต่อไปยังพันธมิตร"
+
+#: dt-contacts/access-module.php:273
+msgctxt "Reason Closed label"
+msgid "Martyred"
+msgstr "พลีชีพ"
+
+#: dt-contacts/access-module.php:274
+msgctxt "Reason Closed label"
+msgid "Moved or relocated"
+msgstr "ย้ายหรือย้ายที่อยู่"
+
+#: dt-contacts/access-module.php:276
+msgctxt "Reason Closed label"
+msgid "Unknown"
+msgstr "ไม่ทราบ"
+
+#: dt-core/configuration/config-site-defaults.php:391
+msgid "Personal Phone"
+msgstr "โทรศัพท์ส่วนตัว"
+
+#: dt-core/configuration/config-site-defaults.php:394
+msgid "Personal phone is private to the team, not for distribution."
+msgstr "โทรศัพท์ส่วนตัวเป็นโทรศัพท์ส่วนตัวสำหรับทีมไม่ใช่เพื่อแจกจ่าย"
+
+#: dt-core/configuration/config-site-defaults.php:398
+msgid "Personal Email"
+msgstr "อีเมลส่วนตัว"
+
+#: dt-core/configuration/config-site-defaults.php:401
+msgid "Personal email is private to the team, not for distribution."
+msgstr "อีเมลส่วนตัวเป็นอีเมลส่วนตัวสำหรับทีมไม่ใช่เพื่อการแจกจ่าย"
+
+#: dt-core/configuration/config-site-defaults.php:405
+msgid "Personal Address"
+msgstr "ที่อยู่ส่วนบุคคล"
+
+#: dt-core/configuration/config-site-defaults.php:408
+msgid "Personal address is private to the team, not for distribution."
+msgstr "ที่อยู่ส่วนบุคคลเป็นส่วนตัวของทีมไม่ใช่เพื่อการแจกจ่าย"
+
+#: dt-core/configuration/config-site-defaults.php:412
+msgid "Work Phone"
+msgstr "โทรศัพท์ที่ทำงาน"
+
+#: dt-core/configuration/config-site-defaults.php:415
+msgid "Work phone is for distribution to contacts and seekers."
+msgstr "โทรศัพท์ที่ทำงานมีไว้สำหรับแจกจ่ายให้กับผู้ติดต่อและผู้แสวงหา"
+
+#: dt-core/configuration/config-site-defaults.php:419
+msgid "Work Email"
+msgstr "อีเมลที่ทำงาน"
+
+#: dt-core/configuration/config-site-defaults.php:422
+msgid "Work email is for distribution to contacts and seekers."
+msgstr "อีเมลที่ทำงานมีไว้สำหรับแจกจ่ายให้กับผู้ติดต่อและผู้หางาน"
+
+#: dt-core/configuration/config-site-defaults.php:426
+msgid "Work Facebook"
+msgstr "ทำงาน Facebook"
+
+#: dt-core/configuration/config-site-defaults.php:429
+msgid "Work Facebook is for distribution to contacts and seekers."
+msgstr "Work Facebook มีไว้สำหรับแจกจ่ายให้กับผู้ติดต่อและผู้แสวงหา"
+
+#: dt-core/configuration/config-site-defaults.php:433
+msgid "Work WhatsApp"
+msgstr "ทำงาน WhatsApp"
+
+#: dt-core/configuration/config-site-defaults.php:436
+msgid "Work WhatsApp is for distribution to contacts and seekers."
+msgstr "Work WhatsApp มีไว้สำหรับแจกจ่ายให้กับผู้ติดต่อและผู้แสวงหา"
+
+#: dt-contacts/access-module.php:307
+msgid "Transfer"
+msgstr "โอน"
+
+#: dt-groups/base-setup.php:147
+msgctxt "field description"
+msgid "Set the current status of the group."
+msgstr "ตั้งค่าสถานะปัจจุบันของกลุ่ม"
+
+#: dt-groups/base-setup.php:152
+msgctxt "field description"
+msgid "The group is no longer meeting."
+msgstr "กลุ่มไม่ได้ประชุมอีกต่อไป"
+
+#: dt-groups/base-setup.php:157
+msgctxt "field description"
+msgid "The group is actively meeting."
+msgstr "กลุ่มกำลังประชุมอย่างแข็งขัน"
+
+#: dt-posts/posts.php:400
+#: dt-posts/posts.php:409
+msgctxt "Location1 removed from locations"
+msgid "%1$s removed from locations"
+msgstr "ลบ %1$s ออกจากสถานที่แล้ว"
+
+#: dt-posts/posts.php:433
+msgctxt "message"
+msgid "verified"
+msgstr "ตรวจสอบแล้ว"
+
+#: dt-posts/posts.php:433
+msgctxt "message"
+msgid "not verified"
+msgstr "ไม่ได้รับการยืนยัน"
+
+#: dt-posts/posts.php:436
+msgctxt "message"
+msgid "invalidated"
+msgstr "ไม่ถูกต้อง"
+
+#: dt-posts/posts.php:436
+msgctxt "message"
+msgid "not invalidated"
+msgstr "ไม่ถูกต้อง"
+
+#: dt-posts/posts.php:459
+msgctxt "message"
+msgid "Name changed to: %s"
+msgstr "เปลี่ยนชื่อเป็น:% s"
+
+#: dt-posts/posts.php:461
+msgctxt "message"
+msgid "Created from Demo Plugin"
+msgstr "สร้างจาก Demo Plugin"
+
+#: dt-posts/posts.php:468
+msgctxt "message"
+msgid "%s declined assignment"
+msgstr "% s ปฏิเสธงาน"
+
+#: dt-posts/posts.php:468
+#: dt-posts/posts.php:471
+msgctxt "message"
+msgid "A user"
+msgstr "ผู้ใช้"
+
+#: dt-posts/posts.php:471
+msgctxt "message"
+msgid "%s accepted assignment"
+msgstr "ยอมรับงานแล้ว% s"
+
+#: dt-posts/posts.php:476
+msgctxt "message"
+msgid "Shared with %s"
+msgstr "แชร์กับ% s"
+
+#: dt-posts/posts.php:478
+msgctxt "message"
+msgid "Unshared with %s"
+msgstr "ยกเลิกการแชร์กับ% s"
+
+#: dt-contacts/dmm-module.php:447
+msgid "Quick Actions"
+msgstr "การดำเนินการด่วน"
+
+#: archive-template.php:529
+msgctxt "input field placeholder"
+msgid "Type to search"
+msgstr "พิมพ์เพื่อค้นหา"
+
+#: archive-template.php:295
+#: dt-assets/parts/modals/modal-share.php:27
+#: dt-contacts/access-module.php:572
+#: dt-contacts/user-module.php:145
+#: dt-groups/base-setup.php:492
+msgctxt "input field placeholder"
+msgid "Search Users"
+msgstr "ค้นหาผู้ใช้"
+
+#: dt-assets/parts/merge-details.php:49
+#: dt-contacts/dmm-module.php:541
+msgctxt "input field placeholder"
+msgid "Search multipliers and contacts"
+msgstr "ค้นหาตัวคูณและผู้ติดต่อ"
+
+#: dt-assets/parts/loop-activity-comment.php:25
+msgctxt "input field placeholder"
+msgid "Write your comment or note here"
+msgstr "เขียนความคิดเห็นหรือบันทึกของคุณที่นี่"
+
+#: archive-template.php:33
+#: archive-template.php:108
+#: archive-template.php:371
+#: dt-contacts/base-setup.php:325
+#: dt-core/global-functions.php:419
+#: dt-core/global-functions.php:466
+#: dt-core/global-functions.php:509
+#: dt-groups/base-setup.php:527
+#: dt-people-groups/people-groups-post-type.php:133
+#: dt-posts/custom-post-type.php:18
+#: template-settings.php:262
+msgctxt "Search 'something'"
+msgid "Search %s"
+msgstr "ค้นหา% s"
+
+#: dt-metrics/contacts/sources.php:95
+#: dt-metrics/contacts/sources.php:97
+msgid "This is displaying only the contacts with an 'active' status right now."
+msgstr "กำลังแสดงเฉพาะผู้ติดต่อที่มีสถานะ 'ใช้งานอยู่' ในขณะนี้"
+
+#: dt-posts/posts.php:359
+msgctxt "field1 changed to 'text'"
+msgid "%1$s changed to %2$s"
+msgstr "%1$s เปลี่ยนเป็น %2$s"
+
+#: dt-contacts/dmm-module.php:527
+msgid "Who was this contact baptized by and when?"
+msgstr "ผู้ติดต่อนี้รับบัพติศมาโดยใครและเมื่อใด"
+
+#: dt-contacts/user-module.php:88
+msgctxt "Make user modal"
+msgid "Make User From Contact"
+msgstr "ทำให้ผู้ใช้จากผู้ติดต่อ"
+
+#: dt-contacts/user-module.php:91
+msgctxt "Make user modal"
+msgid "This contact is already connected to a user."
+msgstr "ผู้ติดต่อนี้เชื่อมต่อกับผู้ใช้แล้ว"
+
+#: dt-contacts/user-module.php:94
+msgctxt "Make user modal"
+msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'."
+msgstr "การดำเนินการนี้จะเชิญผู้ติดต่อนี้ให้เป็นผู้ใช้ระบบนี้ โดยค่าเริ่มต้นพวกเขาจะได้รับบทบาทของ 'ตัวคูณ'"
+
+#: dt-contacts/user-module.php:95
+msgctxt "Make user modal"
+msgid "In the fields below, enter their email address and a 'Display Name' which they can change later."
+msgstr "ในช่องด้านล่างให้ป้อนที่อยู่อีเมลและ \"ชื่อที่แสดง\" ซึ่งสามารถเปลี่ยนแปลงได้ในภายหลัง"
+
+#: dt-contacts/user-module.php:132
+msgid "This contact already represents a user."
+msgstr "ผู้ติดต่อนี้เป็นตัวแทนของผู้ใช้อยู่แล้ว"
+
+#: dt-contacts/user-module.php:136
+msgctxt "Step 1 of link user"
+msgid "To link to an existing user, first, find the user using the field below."
+msgstr "ในการเชื่อมโยงไปยังผู้ใช้ที่มีอยู่ก่อนอื่นให้ค้นหาผู้ใช้โดยใช้ฟิลด์ด้านล่าง"
+
+#: dt-contacts/user-module.php:160
+msgctxt "Step 2 of link user"
+msgid "To finish the linking, merge this contact with the existing user details."
+msgstr "หากต้องการเสร็จสิ้นการเชื่อมโยงให้รวมผู้ติดต่อนี้กับรายละเอียดผู้ใช้ที่มีอยู่"
+
+#: dt-assets/parts/merge-details.php:39
+msgid "Merge Contact"
+msgstr "รวมผู้ติดต่อ"
+
+#: dt-assets/parts/merge-details.php:40
+msgid "Merge this contact with another contact."
+msgstr "รวมผู้ติดต่อนี้กับผู้ติดต่ออื่น"
+
+#: dt-assets/parts/merge-details.php:64
+msgctxt "added to the end of a sentence"
+msgid "selected."
+msgstr "เลือกแล้ว"
+
+#: dt-groups/base-setup.php:615
+msgctxt "Add members modal"
+msgid "Add members from existing contacts"
+msgstr "เพิ่มสมาชิกจากรายชื่อที่มีอยู่"
+
+#: dt-people-groups/people-groups-post-type.php:283
+msgid "Translations"
+msgstr "การแปล"
+
+#: dt-posts/posts.php:269
+msgctxt "No longer coached by contact1"
+msgid "No longer coached by %s"
+msgstr "ไม่มีการฝึกสอนโดย% s อีกต่อไป"
+
+#: dt-posts/posts.php:277
+msgctxt "No longer sub-assigned on contact1"
+msgid "No longer sub-assigned on %s"
+msgstr "ไม่มีการกำหนดย่อยใน% s อีกต่อไป"
+
+#: dt-groups/base-setup.php:609
+msgid "To add new members, click on 'Create' or 'Select'."
+msgstr "ในการเพิ่มสมาชิกใหม่ให้คลิกที่ 'สร้าง' หรือ 'เลือก'"
+
+#: archive-template.php:28
+msgid "Filters"
+msgstr "ฟิลเตอร์"
+
+#: archive-template.php:467
+msgid "Load More"
+msgstr "โหลดเพิ่มเติม"
+
+#: archive-template.php:479
+msgid "Filter Name"
+msgstr "ชื่อตัวกรอง"
+
+#: archive-template.php:609
+#: dt-assets/parts/merge-details.php:70
+#: dt-assets/parts/modals/modal-filters.php:9
+#: dt-assets/parts/modals/modal-filters.php:28
+#: dt-assets/parts/modals/modal-new-contact.php:14
+#: dt-contacts/access-module.php:476
+#: dt-contacts/access-module.php:507
+#: dt-contacts/access-module.php:535
+#: dt-contacts/base-setup.php:381
+#: dt-contacts/base-setup.php:416
+#: dt-contacts/user-module.php:115
+#: dt-contacts/user-module.php:167
+#: single-template.php:345
+#: single-template.php:362
+#: template-merge-details.php:102
+#: template-merge-details.php:121
+#: template-merge-details.php:132
+#: template-merge-details.php:169
+#: template-new-post.php:123
+msgid "Cancel"
+msgstr "ยกเลิก"
+
+#: archive-template.php:614
+msgid "Filter Records"
+msgstr "กรองบันทึก"
+
+#: dt-assets/functions/details-bar.php:90
+#: dt-assets/parts/modals/modal-tasks.php:7
+#: dt-contacts/base-setup.php:174
+#: dt-groups/base-setup.php:115
+msgid "Tasks"
+msgstr "งาน"
+
+#: dt-assets/functions/enqueue-scripts.php:123
+msgctxt "Dates"
+msgid "January"
+msgstr "มกราคม"
+
+#: dt-assets/functions/enqueue-scripts.php:124
+msgctxt "Dates"
+msgid "February"
+msgstr "กุมภาพันธ์"
+
+#: dt-assets/functions/enqueue-scripts.php:125
+msgctxt "Dates"
+msgid "March"
+msgstr "มีนาคม"
+
+#: dt-assets/functions/enqueue-scripts.php:126
+msgctxt "Dates"
+msgid "April"
+msgstr "เมษายน"
+
+#: dt-assets/functions/enqueue-scripts.php:127
+msgctxt "Dates"
+msgid "May"
+msgstr "อาจ"
+
+#: dt-assets/functions/enqueue-scripts.php:128
+msgctxt "Dates"
+msgid "June"
+msgstr "มิถุนายน"
+
+#: dt-assets/functions/enqueue-scripts.php:129
+msgctxt "Dates"
+msgid "July"
+msgstr "กรกฎาคม"
+
+#: dt-assets/functions/enqueue-scripts.php:130
+msgctxt "Dates"
+msgid "August"
+msgstr "สิงหาคม"
+
+#: dt-assets/functions/enqueue-scripts.php:131
+msgctxt "Dates"
+msgid "September"
+msgstr "กันยายน"
+
+#: dt-assets/functions/enqueue-scripts.php:132
+msgctxt "Dates"
+msgid "October"
+msgstr "ตุลาคม"
+
+#: dt-assets/functions/enqueue-scripts.php:133
+msgctxt "Dates"
+msgid "November"
+msgstr "พฤศจิกายน"
+
+#: dt-assets/functions/enqueue-scripts.php:134
+msgctxt "Dates"
+msgid "December"
+msgstr "ธันวาคม"
+
+#: dt-assets/functions/enqueue-scripts.php:136
+msgid "Regions of Focus"
+msgstr "ภูมิภาคที่มุ่งเน้น"
+
+#: dt-assets/functions/enqueue-scripts.php:137
+msgid "All Locations"
+msgstr "สถานที่ทั้งหมด"
+
+#: dt-assets/functions/enqueue-scripts.php:138
+msgid "Used Locations"
+msgstr "สถานที่ที่ใช้"
+
+#: dt-assets/functions/enqueue-scripts.php:139
+msgctxt "Empty list results. Keep {{query}} as is in english"
+msgid "No results found matching \"{{query}}\""
+msgstr "ไม่พบผลลัพธ์ที่ตรงกับ \"{{query}}\""
+
+#: dt-assets/functions/enqueue-scripts.php:309
+msgid "No filters, create one below"
+msgstr "ไม่มีตัวกรองสร้างตัวกรองด้านล่าง"
+
+#: dt-assets/functions/enqueue-scripts.php:310
+msgid "No records found matching your filter."
+msgstr "ไม่พบบันทึกที่ตรงกับตัวกรองของคุณ"
+
+#: dt-groups/base-setup.php:1026
+#: dt-groups/base-setup.php:1099
+#: dt-groups/base-setup.php:1107
+#: template-notifications.php:47
+msgctxt "List Filters"
+msgid "All"
+msgstr "ทั้งหมด"
+
+#: dt-contacts/access-module.php:1079
+#: dt-contacts/access-module.php:1080
+msgid "Subassigned only"
+msgstr "มอบหมายเฉพาะ"
+
+#: dt-contacts/dmm-module.php:408
+#: dt-contacts/dmm-module.php:418
+#: dt-contacts/dmm-module.php:428
+#: dt-contacts/dmm-module.php:429
+msgid "Coached by me"
+msgstr "โค้ชโดยฉัน"
+
+#: dt-groups/base-setup.php:1018
+msgctxt "List Filters"
+msgid "Assigned to me"
+msgstr "มอบหมายให้ฉัน"
+
+#: dt-metrics/combined/critical-path.php:306
+msgid "Groups active at the end of the time range"
+msgstr "กลุ่มที่ใช้งานเมื่อสิ้นสุดช่วงเวลา"
+
+#: dt-metrics/combined/critical-path.php:316
+msgid "Churches active at the end of the time range"
+msgstr "คริสตจักรเปิดใช้งานเมื่อสิ้นสุดช่วงเวลา"
+
+#: dt-users/users.php:621
+msgctxt "List Filters"
+msgid "Custom Filters"
+msgstr "ตัวกรองที่กำหนดเอง"
+
+#: archive-template.php:24
+msgctxt "Create New record"
+msgid "Create New %s"
+msgstr "สร้าง% s ใหม่"
+
+#: dt-assets/functions/enqueue-scripts.php:224
+msgid "No task created"
+msgstr "ไม่มีการสร้างงาน"
+
+#: dt-assets/functions/enqueue-scripts.php:225
+#: dt-assets/parts/modals/modal-tasks.php:17
+msgid "Reminder"
+msgstr "การแจ้งเตือน"
+
+#: dt-assets/functions/enqueue-scripts.php:226
+msgid "No note set"
+msgstr "ไม่ได้ตั้งค่าหมายเหตุ"
+
+#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-contacts/base-setup.php:496
+msgctxt "All records"
+msgid "All %s"
+msgstr "ทั้งหมด% s"
+
+#: dt-assets/functions/menu.php:45
+msgid "Disciple.Tools"
+msgstr "ศิษย์. เครื่องมือ"
+
+#: dt-assets/functions/enqueue-scripts.php:228
+#: dt-assets/parts/merge-details.php:76
+#: dt-contacts/user-module.php:173
+#: template-merge-details.php:183
+msgid "Merge"
+msgstr "ผสาน"
+
+#: dt-assets/parts/modals/modal-help.php:28
+msgctxt "Optional Documentation"
+msgid "User workload status icons legend:"
+msgstr "คำอธิบายไอคอนสถานะปริมาณงานของผู้ใช้:"
+
+#: dt-assets/parts/modals/modal-help.php:14
+msgctxt "Optional Documentation"
+msgid "These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
+msgstr "ปุ่มการดำเนินการด่วนเหล่านี้อยู่ที่นี่เพื่อช่วยคุณในการอัปเดตเรกคอร์ดผู้ติดต่อได้เร็วขึ้นและนับจำนวนครั้งที่ดำเนินการแต่ละอย่าง"
+
+#: dt-assets/parts/modals/modal-help.php:15
+msgctxt "Optional Documentation"
+msgid "For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.\n"
+"                This action will also change the 'Seeker Path' to 'Contact Attempted'."
+msgstr "ตัวอย่างเช่นหากคุณคลิกปุ่ม 'ไม่รับสาย' 4 ครั้งเราจะบันทึกว่าคุณพยายามติดต่อผู้ติดต่อนี้ 4 ครั้ง แต่พวกเขาไม่รับสาย\n"
+"                การดำเนินการนี้จะเปลี่ยน 'เส้นทางผู้ค้นหา' เป็น 'พยายามติดต่อ' ด้วย"
+
+#: dt-assets/parts/modals/modal-help.php:195
+msgctxt "Optional Documentation"
+msgid "If the group/church regularly practices any of the elements listed, then click each element to add them inside the circle."
+msgstr "หากกลุ่ม / คริสตจักรปฏิบัติองค์ประกอบใด ๆ ในรายการเป็นประจำให้คลิกแต่ละองค์ประกอบเพื่อเพิ่มเข้าไปในวงกลม"
+
+#: dt-assets/parts/modals/modal-help.php:196
+msgctxt "Optional Documentation"
+msgid "If the group has committed to be a church, indicate this by clicking the \"Church Commitment\" button to make the dotted line circle solid."
+msgstr "หากกลุ่มมีความมุ่งมั่นที่จะเป็นคริสตจักรให้ระบุสิ่งนี้โดยคลิกปุ่ม \"ความมุ่งมั่นของคริสตจักร\" เพื่อทำให้วงกลมเส้นประทึบ"
+
+#: dt-assets/parts/modals/modal-help.php:202
+msgctxt "Optional Documentation"
+msgid "This is the area where you manage the contacts that are a part of the group."
+msgstr "นี่คือพื้นที่ที่คุณจัดการผู้ติดต่อที่เป็นส่วนหนึ่งของกลุ่ม"
+
+#: dt-assets/parts/modals/modal-help.php:207
+msgctxt "Optional Documentation"
+msgid "To remove a member, click the X icon to the right side of the member name. Click the footprint icon next to the members name to signify that this person is a leader of this group. (Multiple leaders can be assigned to a group)."
+msgstr "หากต้องการลบสมาชิกให้คลิกไอคอน X ทางด้านขวาของชื่อสมาชิก คลิกไอคอนรอยเท้าถัดจากชื่อสมาชิกเพื่อแสดงว่าบุคคลนี้เป็นผู้นำของกลุ่มนี้ (สามารถกำหนดผู้นำหลายคนให้กับกลุ่มได้)"
+
+#: dt-assets/parts/modals/modal-help.php:208
+msgctxt "Optional Documentation"
+msgid "To add new members, click on the 'Create' or 'Select' and click on the name or search for them."
+msgstr "ในการเพิ่มสมาชิกใหม่ให้คลิกที่ปุ่ม \"สร้าง\" หรือ \"เลือก\" และคลิกที่ชื่อหรือค้นหา"
+
+#: dt-assets/parts/modals/modal-help.php:250
+msgctxt "Optional Documentation"
+msgid "Connections this group has with other groups in this system."
+msgstr "การเชื่อมต่อกลุ่มนี้กับกลุ่มอื่นในระบบนี้"
+
+#: dt-assets/parts/modals/modal-help.php:49
+msgctxt "Optional Documentation"
+msgid "Four Fields"
+msgstr "สี่ฟิลด์"
+
+#: dt-assets/parts/modals/modal-help.php:50
+msgctxt "Optional Documentation"
+msgid "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
+msgstr "มี 5 ช่องในแผนภาพ Four Fields เริ่มต้นในรูปสี่เหลี่ยมด้านซ้ายบนและไปตามเข็มนาฬิกาและวงที่ห้าอยู่ตรงกลางพวกเขาหมายถึง:"
+
+#: dt-assets/parts/modals/modal-help.php:66
+msgctxt "Optional Documentation"
+msgid "This is where you can record notes from meetings and conversations."
+msgstr "นี่คือที่ที่คุณสามารถบันทึกบันทึกจากการประชุมและการสนทนา"
+
+#: dt-assets/parts/modals/modal-help.php:67
+msgctxt "Optional Documentation"
+msgid "Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+msgstr "พิมพ์ @ และชื่อของผู้ใช้ที่จะกล่าวถึงในความคิดเห็น จากนั้นผู้ใช้รายนี้จะได้รับการแจ้งเตือน"
+
+#: dt-assets/parts/modals/modal-help.php:68
+msgctxt "Optional Documentation"
+msgid "This section also includes the history of activity, such as when the contact or group status became active etc."
+msgstr "ส่วนนี้ยังรวมถึงประวัติของกิจกรรมเช่นเวลาที่ผู้ติดต่อหรือสถานะกลุ่มเริ่มใช้งานเป็นต้น"
+
+#: dt-assets/parts/modals/modal-help.php:69
+msgctxt "Optional Documentation"
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgstr "คุณสามารถกรองส่วนนี้ตาม \"ทั้งหมด\" \"ความคิดเห็น\" หรือ \"กิจกรรม\""
+
+#: dt-assets/parts/modals/modal-help.php:80
+msgctxt "Optional Documentation"
+msgid "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter."
+msgstr "ใช้ตัวกรองเหล่านี้เพื่อมุ่งเน้นไปที่ผู้ติดต่อหรือกลุ่มที่คุณรับผิดชอบ หากตัวกรองเริ่มต้นไม่ตรงกับความต้องการของคุณคุณสามารถสร้างตัวกรองที่กำหนดเองได้"
+
+#: dt-assets/parts/modals/modal-help.php:85
+msgctxt "Optional Documentation"
+msgid "Contacts List Tile"
+msgstr "ไทล์รายชื่อผู้ติดต่อ"
+
+#: dt-assets/parts/modals/modal-help.php:86
+msgctxt "Optional Documentation"
+msgid "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more."
+msgstr "รายชื่อผู้ติดต่อของคุณจะปรากฏที่นี่ เมื่อใดก็ตามที่คุณกรองรายชื่อรายชื่อในส่วนนี้ก็จะเปลี่ยนไปเช่นกัน คุณสามารถจัดเรียงรายชื่อติดต่อตามใหม่ล่าสุดเก่าที่สุดแก้ไขล่าสุดและแก้ไขล่าสุดน้อยที่สุด หากคุณมีรายชื่อผู้ติดต่อจำนวนมากพวกเขาจะไม่โหลดทั้งหมดพร้อมกันดังนั้นการคลิกปุ่ม \"โหลดผู้ติดต่อเพิ่มเติม\" ที่ด้านล่างของรายการจะช่วยให้คุณโหลดได้มากขึ้น"
+
+#: dt-assets/parts/modals/modal-help.php:91
+msgctxt "Optional Documentation"
+msgid "Groups List Tile"
+msgstr "ไทล์รายการกลุ่ม"
+
+#: dt-assets/parts/modals/modal-help.php:92
+msgctxt "Optional Documentation"
+msgid "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more."
+msgstr "รายชื่อกลุ่มของคุณจะปรากฏที่นี่ เมื่อใดก็ตามที่คุณกรองกลุ่มรายการจะเปลี่ยนไปในส่วนนี้ด้วย คุณสามารถจัดเรียงกลุ่มของคุณตามใหม่ล่าสุดเก่าที่สุดแก้ไขล่าสุดและแก้ไขล่าสุดน้อยที่สุด หากคุณมีรายชื่อกลุ่มจำนวนมากพวกเขาจะไม่โหลดทั้งหมดพร้อมกันดังนั้นการคลิกปุ่ม \"โหลดกลุ่มเพิ่มเติม\" ที่ด้านล่างของรายการจะช่วยให้คุณโหลดได้มากขึ้น"
+
+#: dt-assets/parts/modals/modal-help.php:98
+msgctxt "Optional Documentation"
+msgid "Use this toggle switch to either show or not show closed contacts in the list."
+msgstr "ใช้สวิตช์สลับนี้เพื่อแสดงหรือไม่แสดงรายชื่อที่ปิดอยู่ในรายการ"
+
+#: dt-assets/parts/modals/modal-help.php:104
+msgctxt "Optional Documentation"
+msgid "Use this toggle switch to either show or not show inactive groups in the list."
+msgstr "ใช้สวิตช์สลับนี้เพื่อแสดงหรือไม่แสดงกลุ่มที่ไม่ใช้งานในรายการ"
+
+#: dt-assets/parts/modals/modal-help.php:354
+msgctxt "Optional Documentation"
+msgid "The Initial Comment field is for any extra information. It will be saved as the first comment under the Activity and Comments Tile."
+msgstr "ฟิลด์ข้อคิดเห็นเริ่มต้นสำหรับข้อมูลเพิ่มเติมใด ๆ จะถูกบันทึกเป็นความคิดเห็นแรกในส่วนกิจกรรมและความคิดเห็น"
+
+#: dt-assets/parts/modals/modal-help.php:360
+msgctxt "Optional Documentation"
+msgid "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created."
+msgstr "หลังจากเขียนชื่อผู้ติดต่อแล้วให้กรอกข้อมูลในช่องอื่น ๆ ให้มากที่สุดเท่าที่จะทำได้ก่อนคลิก \"บันทึกและแก้ไขต่อ\" ในหน้าจอถัดไปคุณสามารถแก้ไขและเพิ่มข้อมูลเพิ่มเติมเกี่ยวกับผู้ติดต่อใหม่นี้เพิ่งสร้างขึ้น"
+
+#: dt-assets/parts/modals/modal-help.php:118
+msgctxt "Optional Documentation"
+msgid "Your Profile"
+msgstr "โปรไฟล์ของคุณ"
+
+#: dt-assets/parts/modals/modal-help.php:119
+msgctxt "Optional Documentation"
+msgid "In this area you can see your user profile."
+msgstr "ในพื้นที่นี้คุณสามารถดูโปรไฟล์ผู้ใช้ของคุณ"
+
+#: dt-assets/parts/modals/modal-help.php:120
+msgctxt "Optional Documentation"
+msgid "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
+msgstr "คุณไม่จำเป็นต้องกรอกข้อมูลในฟิลด์โปรไฟล์เหล่านี้ ซึ่งเป็นทางเลือกเพื่อตอบสนองความต้องการของทีมของคุณ"
+
+#: dt-assets/parts/modals/modal-help.php:121
+msgctxt "Optional Documentation"
+msgid "By clicking 'Edit', you will be able adjust things like the language that this system operates in."
+msgstr "เมื่อคลิก 'แก้ไข' คุณจะสามารถปรับเปลี่ยนสิ่งต่างๆเช่นภาษาที่ระบบนี้ใช้งานได้"
+
+#: dt-assets/parts/modals/modal-help.php:127
+msgctxt "Optional Documentation"
+msgid "These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+msgstr "นี่คือพื้นที่ที่คุณต้องรับผิดชอบ การคลิกปุ่ม 'เพิ่ม' จะเป็นการแสดงรายการสถานที่ให้เลือก"
+
+#: dt-assets/parts/modals/modal-help.php:132
+msgctxt "Optional Documentation"
+msgid "Your Notifications"
+msgstr "การแจ้งเตือนของคุณ"
+
+#: dt-assets/parts/modals/modal-help.php:133
+msgctxt "Optional Documentation"
+msgid "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
+msgstr "คุณจะได้รับการแจ้งเตือนทางเว็บและการแจ้งเตือนทางอีเมลตามการตั้งค่าการแจ้งเตือนของคุณ หากต้องการเปลี่ยนค่ากำหนดของคุณให้คลิกปุ่มสลับ"
+
+#: dt-assets/parts/modals/modal-help.php:135
+msgctxt "Optional Documentation"
+msgid "Notifications Turned On: The toggle will appear blue."
+msgstr "การแจ้งเตือนเปิดอยู่: การสลับจะปรากฏเป็นสีน้ำเงิน"
+
+#: dt-assets/parts/modals/modal-help.php:136
+msgctxt "Optional Documentation"
+msgid "Notifications Turned Off: The toggle will appear grey."
+msgstr "การแจ้งเตือนปิดอยู่: การสลับจะปรากฏเป็นสีเทา"
+
+#: dt-assets/parts/modals/modal-help.php:138
+msgctxt "Optional Documentation"
+msgid "Some of the types of notifications cannot be adjusted because they are required by the system."
+msgstr "การแจ้งเตือนบางประเภทไม่สามารถปรับเปลี่ยนได้เนื่องจากจำเป็นโดยระบบ"
+
+#: dt-assets/parts/modals/modal-help.php:139
+msgctxt "Optional Documentation"
+msgid "Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+msgstr "ปรับว่าคุณต้องการดูการแจ้งเตือนเกี่ยวกับความคิดเห็นใหม่การเปลี่ยนแปลงข้อมูลการติดต่อเหตุการณ์สำคัญในการติดต่อและตัวชี้วัดสุขภาพของกลุ่มหรือไม่และคุณจะได้รับการแจ้งเตือนสำหรับการอัปเดตใด ๆ ที่เกิดขึ้นในระบบหรือไม่"
+
+#: dt-assets/parts/modals/modal-help.php:147
+msgctxt "Optional Documentation"
+msgid "Notifications Page"
+msgstr "หน้าการแจ้งเตือน"
+
+#: dt-assets/parts/modals/modal-help.php:148
+msgctxt "Optional Documentation"
+msgid "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
+msgstr "หน้าการแจ้งเตือนนี้เป็นที่ที่คุณสามารถอ่านการอัปเดตสำหรับผู้ใช้และกลุ่ม จะแสดงการแจ้งเตือนเกี่ยวกับกิจกรรมในบันทึกของคุณ"
+
+#: dt-assets/parts/modals/modal-help.php:149
+msgctxt "Optional Documentation"
+msgid "All / Unread"
+msgstr "ทั้งหมด / ยังไม่ได้อ่าน"
+
+#: dt-assets/parts/modals/modal-help.php:150
+msgctxt "Optional Documentation"
+msgid "Click the 'All' button to show the full list of all of your notifications."
+msgstr "คลิกปุ่ม \"ทั้งหมด\" เพื่อแสดงรายการการแจ้งเตือนทั้งหมดของคุณ"
+
+#: dt-assets/parts/modals/modal-help.php:151
+msgctxt "Optional Documentation"
+msgid "Click the 'Unread' button to show the list of all of your unread notifications."
+msgstr "คลิกปุ่ม \"ยังไม่ได้อ่าน\" เพื่อแสดงรายการการแจ้งเตือนที่ยังไม่ได้อ่านทั้งหมดของคุณ"
+
+#: dt-assets/parts/modals/modal-help.php:153
+msgctxt "Optional Documentation"
+msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+msgstr "หากคุณไม่ต้องการคลิกแต่ละช่องที่เต็มไปด้วยวงกลมทางด้านขวาของแต่ละแถวเพื่อระบุว่าได้อ่านการแจ้งเตือนแล้วให้คลิกลิงก์ \"ทำเครื่องหมายทั้งหมดว่าอ่านแล้ว\" ที่ด้านบนเพื่อปรับข้อความทั้งหมดที่มีทั้งหมดอย่างรวดเร็ว ถูกอ่าน"
+
+#: dt-assets/parts/modals/modal-help.php:155
+msgctxt "Optional Documentation"
+msgid "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+msgstr "คลิกลิงก์ \"การตั้งค่า\" เพื่อไปยังพื้นที่การตั้งค่าการแจ้งเตือนเพื่อปรับว่าคุณต้องการดูการแจ้งเตือนเกี่ยวกับความคิดเห็นใหม่การเปลี่ยนแปลงข้อมูลการติดต่อเหตุการณ์สำคัญในการติดต่อและเมตริกสุขภาพกลุ่มหรือไม่และคุณจะได้รับการแจ้งเตือนสำหรับการอัปเดตใด ๆ ที่เกิดขึ้นใน ระบบ."
+
+#: dt-assets/parts/modals/modal-help.php:160
+msgctxt "Optional Documentation"
+msgid "Duplicate Contact page"
+msgstr "หน้าผู้ติดต่อซ้ำ"
+
+#: dt-assets/parts/modals/modal-help.php:161
+msgctxt "Optional Documentation"
+msgid "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
+msgstr "หน้าผู้ติดต่อที่ซ้ำกันนี้เป็นที่ที่คุณสามารถตรวจสอบปฏิเสธหรือรวมผู้ติดต่อที่ระบบเลือกรับ (ตรวจสอบกับชื่ออีเมลและโทรศัพท์ของพวกเขา) เนื่องจากอาจซ้ำกับผู้ติดต่อรายอื่นที่มีอยู่แล้ว"
+
+#: dt-assets/parts/modals/modal-help.php:182
+#: dt-assets/parts/modals/modal-help.php:207
+msgctxt "Optional Documentation"
+msgid "Need more help?"
+msgstr "ต้องการความช่วยเหลือเพิ่มเติมหรือไม่?"
+
+#: dt-assets/parts/modals/modal-help.php:183
+#: dt-assets/parts/modals/modal-help.php:208
+msgctxt "Optional Documentation"
+msgid "Read the documentation"
+msgstr "อ่านเอกสาร"
+
+#: dt-assets/parts/modals/modal-new-contact.php:30
+msgctxt "back to record"
+msgid "Back to %s"
+msgstr "กลับไปที่% s"
+
+#: dt-assets/parts/modals/modal-tasks.php:12
+msgid "Set a reminder or a task with a note and receive a notification on the due date."
+msgstr "ตั้งการเตือนความจำหรืองานที่มีโน้ตและรับการแจ้งเตือนในวันที่ครบกำหนด"
+
+#: dt-assets/parts/modals/modal-tasks.php:22
+msgid "Custom"
+msgstr "กำหนดเอง"
+
+#: dt-assets/parts/modals/modal-tasks.php:28
+msgid "Due Date"
+msgstr "วันครบกำหนด"
+
+#: dt-assets/parts/modals/modal-tasks.php:32
+msgid "Create Task"
+msgstr "สร้างงาน"
+
+#: dt-assets/parts/modals/modal-tasks.php:38
+msgid "Existing tasks for this record:"
+msgstr "งานที่มีอยู่สำหรับบันทึกนี้:"
+
+#: dt-assets/parts/nav-topbar.php:133
+msgid "Theme Update Available!"
+msgstr "มีการอัปเดตธีม!"
+
+#: dt-assets/functions/menu.php:86
+#: dt-mapping/columns/add-users-column.php:56
+#: dt-metrics/combined/hover-map.php:264
+#: dt-metrics/combined/locations-list.php:257
+#: dt-users/template-user-management.php:62
+#: dt-users/user-management.php:90
+msgid "Users"
+msgstr "ผู้ใช้"
+
+#: dt-contacts/access-module.php:102
+msgid "Select the main person who is responsible for reporting on this contact."
+msgstr "เลือกบุคคลหลักที่มีหน้าที่รายงานเกี่ยวกับผู้ติดต่อนี้"
+
+#: dt-contacts/access-module.php:153
+#: dt-contacts/base-setup.php:289
+msgid "Contact Status"
+msgstr "สถานะการติดต่อ"
+
+#: dt-contacts/access-module.php:168
+msgid "Dispatch Needed"
+msgstr "จำเป็นต้องจัดส่ง"
+
+#: dt-contacts/access-module.php:179
+msgid "Paused"
+msgstr "หยุดชั่วคราว"
+
+#: dt-contacts/access-module.php:117
+msgid "Contact Attempt Needed"
+msgstr "ต้องการความพยายามในการติดต่อ"
+
+#: dt-contacts/access-module.php:121
+msgid "Contact Attempted"
+msgstr "พยายามติดต่อ"
+
+#: dt-contacts/access-module.php:125
+#: dt-contacts/dmm-module.php:206
+msgid "Contact Established"
+msgstr "ติดต่อก่อตั้ง"
+
+#: dt-contacts/access-module.php:129
+msgid "First Meeting Scheduled"
+msgstr "กำหนดการประชุมครั้งแรก"
+
+#: dt-contacts/access-module.php:133
+msgid "First Meeting Complete"
+msgstr "การประชุมครั้งแรกเสร็จสมบูรณ์"
+
+#: dt-contacts/access-module.php:141
+msgid "Being Coached"
+msgstr "เป็นโค้ช"
+
+#: dt-contacts/dmm-module.php:58
+msgctxt "Optional Documentation"
+msgid "Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
+msgstr "กำหนดเหตุการณ์สำคัญที่ผู้ติดต่อไปถึงในเส้นทางแห่งศรัทธาของพวกเขา สิ่งเหล่านี้เป็นจุดสำคัญในการเดินทางทางจิตวิญญาณของผู้ติดต่อที่ควรค่าแก่การเฉลิมฉลอง แต่สามารถเกิดขึ้นในลำดับใดก็ได้"
+
+#: dt-contacts/dmm-module.php:62
+msgid "Has Bible"
+msgstr "มีพระคัมภีร์"
+
+#: dt-contacts/dmm-module.php:66
+msgid "Reading Bible"
+msgstr "การอ่านพระคัมภีร์"
+
+#: dt-contacts/dmm-module.php:70
+msgid "States Belief"
+msgstr "ความเชื่อของรัฐ"
+
+#: dt-contacts/dmm-module.php:74
+msgid "Can Share Gospel/Testimony"
+msgstr "สามารถแบ่งปันพระกิตติคุณ / ประจักษ์พยาน"
+
+#: dt-contacts/dmm-module.php:78
+msgid "Sharing Gospel/Testimony"
+msgstr "การแบ่งปันพระกิตติคุณ / ประจักษ์พยาน"
+
+#: dt-contacts/dmm-module.php:86
+msgid "Baptizing"
+msgstr "บัพติศมา"
+
+#: dt-contacts/dmm-module.php:90
+msgid "In Church/Group"
+msgstr "ในคริสตจักร / กลุ่ม"
+
+#: dt-contacts/dmm-module.php:94
+msgid "Starting Churches"
+msgstr "เริ่มต้นคริสตจักร"
+
+#: dt-contacts/base-setup.php:275
+msgid "Male"
+msgstr "ชาย"
+
+#: dt-contacts/base-setup.php:276
+msgid "Female"
+msgstr "หญิง"
+
+#: dt-contacts/access-module.php:198
+msgid "Under 18 years old"
+msgstr "อายุต่ำกว่า 18 ปี"
+
+#: dt-contacts/access-module.php:199
+msgid "18-25 years old"
+msgstr "อายุ 18-25 ปี"
+
+#: dt-contacts/access-module.php:200
+msgid "26-40 years old"
+msgstr "อายุ 26-40 ปี"
+
+#: dt-contacts/access-module.php:201
+msgid "Over 40 years old"
+msgstr "อายุมากกว่า 40 ปี"
+
+#: dt-contacts/access-module.php:208
+msgid "Reason Not Ready"
+msgstr "เหตุผลยังไม่พร้อม"
+
+#: dt-contacts/access-module.php:209
+msgctxt "Optional Documentation"
+msgid "The main reason the contact is not ready to be assigned to a user."
+msgstr "สาเหตุหลักที่ผู้ติดต่อไม่พร้อมที่จะมอบหมายให้กับผู้ใช้"
+
+#: dt-contacts/access-module.php:216
+msgid "Insufficient Contact Information"
+msgstr "ข้อมูลติดต่อไม่เพียงพอ"
+
+#: dt-contacts/access-module.php:219
+msgid "Unknown Location"
+msgstr "ไม่ทราบตำแหน่ง"
+
+#: dt-contacts/access-module.php:222
+msgid "Only wants media"
+msgstr "ต้องการสื่อเท่านั้น"
+
+#: dt-contacts/access-module.php:225
+msgid "Outside Area"
+msgstr "พื้นที่ภายนอก"
+
+#: dt-contacts/access-module.php:228
+msgid "Needs Review"
+msgstr "ต้องการการตรวจสอบ"
+
+#: dt-contacts/access-module.php:231
+msgid "Waiting for Confirmation"
+msgstr "กำลังรอการยืนยัน"
+
+#: dt-contacts/access-module.php:239
+msgid "Reason Paused"
+msgstr "เหตุผลที่หยุดชั่วคราว"
+
+#: dt-contacts/access-module.php:240
+msgctxt "Optional Documentation"
+msgid "A paused contact is one you are not currently interacting with but expect to in the future."
+msgstr "ผู้ติดต่อที่หยุดชั่วคราวคือผู้ติดต่อที่คุณไม่ได้ติดต่อด้วย แต่คาดว่าจะเกิดขึ้นในอนาคต"
+
+#: dt-contacts/access-module.php:258
+msgid "Reason Closed"
+msgstr "เหตุผลที่ปิด"
+
+#: dt-contacts/access-module.php:259
+msgctxt "Optional Documentation"
+msgid "A closed contact is one you can't or don't wish to interact with."
+msgstr "ผู้ติดต่อแบบปิดคือผู้ติดต่อที่คุณไม่สามารถหรือไม่ต้องการโต้ตอบด้วย"
+
+#: dt-contacts/access-module.php:266
+msgctxt "Reason Closed label"
+msgid "Hostile, playing games or self gain"
+msgstr "เป็นศัตรูการเล่นเกมหรือผลประโยชน์ของตนเอง"
+
+#: dt-contacts/access-module.php:283
+msgid "Accepted"
+msgstr "ได้รับการยอมรับ"
+
+#: dt-contacts/access-module.php:323
+msgctxt "Optional Documentation"
+msgid "The website, event or location this contact came from."
+msgstr "เว็บไซต์เหตุการณ์หรือสถานที่ติดต่อนี้มาจาก"
+
+#: dt-contacts/dmm-module.php:198
+msgid "No Answer"
+msgstr "ไม่มีคำตอบ"
+
+#: dt-contacts/dmm-module.php:215
+msgid "Meeting Scheduled"
+msgstr "กำหนดการประชุม"
+
+#: dt-contacts/dmm-module.php:224
+msgid "Meeting Complete"
+msgstr "การประชุมเสร็จสมบูรณ์"
+
+#: dt-contacts/dmm-module.php:233
+msgid "Meeting No-show"
+msgstr "การไม่มาประชุม"
+
+#: dt-contacts/user-module.php:39
+msgid "Corresponds to user"
+msgstr "สอดคล้องกับผู้ใช้"
+
+#: dt-contacts/user-module.php:40
+msgctxt "Optional Documentation"
+msgid "The id of the user this contact corresponds to"
+msgstr "รหัสของผู้ใช้ที่ติดต่อนี้สอดคล้องกับ"
+
+#: dt-contacts/base-setup.php:122
+msgid "User"
+msgstr "ผู้ใช้"
+
+#: dt-contacts/base-setup.php:153
+#: dt-groups/base-setup.php:87
+msgid "Tags"
+msgstr "แท็ก"
+
+#: dt-contacts/base-setup.php:154
+#: dt-groups/base-setup.php:88
+msgctxt "Optional Documentation"
+msgid "A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags."
+msgstr "วิธีที่มีประโยชน์ในการจัดกลุ่มรายการที่เกี่ยวข้องและสามารถช่วยจัดกลุ่มผู้ติดต่อที่เกี่ยวข้องกับลักษณะที่น่าสังเกต เช่น. เจ้าของธุรกิจคนรักกีฬา นอกจากนี้ยังสามารถกรองผู้ติดต่อโดยใช้แท็กเหล่านี้"
+
+#: dt-contacts/base-setup.php:261
+msgctxt "Optional Documentation"
+msgid "Relationship this contact has with another contact in the system."
+msgstr "ความสัมพันธ์ของผู้ติดต่อนี้กับผู้ติดต่ออื่นในระบบ"
+
+#: dt-contacts/dmm-module.php:157
+msgid "Coached by"
+msgstr "ฝึกสอนโดย"
+
+#: dt-contacts/dmm-module.php:158
+msgctxt "Optional Documentation"
+msgid "Who is coaching this contact"
+msgstr "ใครเป็นผู้ฝึกสอนผู้ติดต่อนี้"
+
+#: dt-contacts/dmm-module.php:136
+msgctxt "Optional Documentation"
+msgid "Who is this contact coaching"
+msgstr "ใครเป็นผู้ฝึกสอนการติดต่อนี้"
+
+#: dt-contacts/dmm-module.php:167
+#: dt-contacts/dmm-module.php:271
+msgid "Baptized by"
+msgstr "รับบัพติศมาโดย"
+
+#: dt-contacts/dmm-module.php:168
+msgctxt "Optional Documentation"
+msgid "Who baptized this contact"
+msgstr "ใครรับบัพติศมาที่ติดต่อนี้"
+
+#: dt-contacts/dmm-module.php:178
+msgctxt "Optional Documentation"
+msgid "Who this contact has baptized"
+msgstr "ผู้ติดต่อนี้ได้รับบัพติศมา"
+
+#: dt-groups/base-setup.php:404
+msgctxt "Optional Documentation"
+msgid "The people groups represented by this group."
+msgstr "กลุ่มคนที่แสดงโดยกลุ่มนี้"
+
+#: dt-groups/base-setup.php:451
+msgctxt "Optional Documentation"
+msgid "Groups this contact is a member of."
+msgstr "จัดกลุ่มผู้ติดต่อนี้เป็นสมาชิก"
+
+#: dt-contacts/dmm-module.php:123
+msgid "Contact or User assisting the Assigned To user to follow up with the contact."
+msgstr "ผู้ติดต่อหรือผู้ใช้ที่ให้ความช่วยเหลือผู้ใช้ที่ได้รับมอบหมายในการติดตามผู้ติดต่อ"
+
+#: dt-contacts/base-setup.php:204
+#: dt-groups/base-setup.php:368
+msgctxt "Optional Documentation"
+msgid "The general location where this contact is located."
+msgstr "ตำแหน่งทั่วไปที่ผู้ติดต่อนี้ตั้งอยู่"
+
+#: dt-contacts/contacts.php:1759
+msgctxt "My records"
+msgid "My %s"
+msgstr "% s ของฉัน"
+
+#: dt-core/configuration/restrict-site-access.php:232
+msgid "ERROR: Invalid username/password combination."
+msgstr "ข้อผิดพลาด: ชื่อผู้ใช้ / รหัสผ่านไม่ถูกต้อง"
+
+#: dt-groups/base-setup.php:151
+#: dt-users/user-management.php:103
+msgid "Inactive"
+msgstr "ไม่ได้ใช้งาน"
+
+#: dt-groups/base-setup.php:175
+msgctxt "Optional Documentation"
+msgid "A group predominantly of non-believers."
+msgstr "กลุ่มที่ไม่เชื่อส่วนใหญ่"
+
+#: dt-groups/base-setup.php:179
+msgctxt "Optional Documentation"
+msgid "A group having 3 or more believers but not identifying as church."
+msgstr "กลุ่มที่มีผู้เชื่อ 3 คนขึ้นไป แต่ไม่ได้ระบุว่าเป็นคริสตจักร"
+
+#: dt-groups/base-setup.php:183
+msgctxt "Optional Documentation"
+msgid "A group having 3 or more believers and identifying as church."
+msgstr "กลุ่มที่มีผู้เชื่อ 3 คนขึ้นไปและระบุว่าเป็นคริสตจักร"
+
+#: dt-groups/base-setup.php:186
+msgid "Team"
+msgstr "ทีม"
+
+#: dt-groups/base-setup.php:187
+msgctxt "Optional Documentation"
+msgid "A special group that is not meeting as a church (or trying to become church)."
+msgstr "กลุ่มพิเศษที่ไม่ได้พบกันในฐานะคริสตจักร (หรือพยายามจะเป็นคริสตจักร)"
+
+#: dt-groups/base-setup.php:125
+msgid "Select the main person who is responsible for reporting on this group."
+msgstr "เลือกบุคคลหลักที่มีหน้าที่รายงานเกี่ยวกับกลุ่มนี้"
+
+#: dt-groups/base-setup.php:201
+#: dt-groups/base-setup.php:730
+msgid "Church Health"
+msgstr "สุขภาพของคริสตจักร"
+
+#: dt-groups/base-setup.php:202
+msgctxt "Optional Documentation"
+msgid "Track the progress and health of a group/church."
+msgstr "ติดตามความก้าวหน้าและสุขภาพของกลุ่ม / คริสตจักร"
+
+#: dt-groups/base-setup.php:206
+#: dt-metrics/personal/baptism-tree.php:138
+msgid "Baptism"
+msgstr "บัพติศมา"
+
+#: dt-groups/base-setup.php:207
+msgctxt "Optional Documentation"
+msgid "The group is baptising."
+msgstr "กลุ่มกำลังรับบัพติศมา"
+
+#: dt-groups/base-setup.php:211
+msgid "Bible Study"
+msgstr "ศึกษาพระคัมภีร์"
+
+#: dt-groups/base-setup.php:212
+msgctxt "Optional Documentation"
+msgid "The group is studying the bible."
+msgstr "กลุ่มนี้กำลังศึกษาพระคัมภีร์"
+
+#: dt-groups/base-setup.php:216
+msgid "Communion"
+msgstr "ศีลมหาสนิท"
+
+#: dt-groups/base-setup.php:217
+msgctxt "Optional Documentation"
+msgid "The group is practicing communion."
+msgstr "กลุ่มกำลังฝึกการมีส่วนร่วม"
+
+#: dt-groups/base-setup.php:221
+msgid "Fellowship"
+msgstr "มิตรภาพ"
+
+#: dt-groups/base-setup.php:222
+msgctxt "Optional Documentation"
+msgid "The group is fellowshiping."
+msgstr "กลุ่มกำลังคบหา"
+
+#: dt-groups/base-setup.php:226
+msgid "Giving"
+msgstr "การให้"
+
+#: dt-groups/base-setup.php:227
+msgctxt "Optional Documentation"
+msgid "The group is giving."
+msgstr "กลุ่มกำลังให้."
+
+#: dt-groups/base-setup.php:231
+msgid "Prayer"
+msgstr "สวดมนต์"
+
+#: dt-groups/base-setup.php:232
+msgctxt "Optional Documentation"
+msgid "The group is praying."
+msgstr "กลุ่มกำลังสวดมนต์"
+
+#: dt-groups/base-setup.php:236
+msgid "Praise"
+msgstr "สรรเสริญ"
+
+#: dt-groups/base-setup.php:237
+msgctxt "Optional Documentation"
+msgid "The group is praising."
+msgstr "กลุ่มที่น่ายกย่อง"
+
+#: dt-groups/base-setup.php:241
+msgid "Sharing the Gospel"
+msgstr "การแบ่งปันพระกิตติคุณ"
+
+#: dt-groups/base-setup.php:251
+#: dt-groups/base-setup.php:432
+msgid "Church Commitment"
+msgstr "ความมุ่งมั่นของคริสตจักร"
+
+#: dt-groups/base-setup.php:414
+msgid "Unbelievers"
+msgstr "ผู้ไม่เชื่อ"
+
+#: dt-groups/base-setup.php:420
+msgid "Believers"
+msgstr "ผู้ศรัทธา"
+
+#: dt-groups/base-setup.php:426
+msgid "Accountable"
+msgstr "รับผิดชอบ"
+
+#: dt-groups/base-setup.php:433
+msgctxt "Optional Documentation"
+msgid "Is this a church - yes or no?"
+msgstr "นี่คือคริสตจักรใช่หรือไม่?"
+
+#: dt-groups/base-setup.php:438
+msgid "Multiplying"
+msgstr "การคูณ"
+
+#: dt-groups/base-setup.php:439
+msgctxt "Optional Documentation"
+msgid "Number of people helping start other groups. How many members are multiplying?"
+msgstr "จำนวนคนช่วยเริ่มกลุ่มอื่น ๆ มีสมาชิกคูณกี่คน?"
+
+#: dt-groups/base-setup.php:263
+msgctxt "Optional Documentation"
+msgid "The date this group began meeting."
+msgstr "วันที่กลุ่มนี้เริ่มการประชุม"
+
+#: dt-groups/base-setup.php:271
+msgctxt "Optional Documentation"
+msgid "The date this group first identified as being a church."
+msgstr "วันที่กลุ่มนี้ระบุครั้งแรกว่าเป็นคริสตจักร"
+
+#: dt-groups/base-setup.php:280
+msgctxt "Optional Documentation"
+msgid "The date this group stopped meeting (if applicable)."
+msgstr "วันที่กลุ่มนี้หยุดการประชุม (ถ้ามี)"
+
+#: dt-groups/base-setup.php:327
+msgctxt "Optional Documentation"
+msgid "A group that founded this group."
+msgstr "กลุ่มที่ก่อตั้งกลุ่มนี้"
+
+#: dt-groups/base-setup.php:339
+msgctxt "Optional Documentation"
+msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+msgstr "กลุ่มที่เกี่ยวข้องซึ่งไม่ใช่พ่อแม่หรือลูกที่มีความสัมพันธ์กัน อาจบ่งบอกถึงกลุ่มที่ทำงานร่วมกันกำลังจะรวมแยกกันเมื่อเร็ว ๆ นี้ ฯลฯ"
+
+#: dt-groups/base-setup.php:351
+msgctxt "Optional Documentation"
+msgid "A group that has been birthed out of this group."
+msgstr "กลุ่มที่คลอดออกมาจากกลุ่มนี้"
+
+#: dt-groups/base-setup.php:291
+msgctxt "Optional Documentation"
+msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group."
+msgstr "จำนวนสมาชิกในกลุ่มนี้ ระบบจะอัปเดตโดยอัตโนมัติเมื่อมีการเพิ่มหรือลบสมาชิกใหม่ในรายชื่อสมาชิก เปลี่ยนหมายเลขนี้ด้วยตนเองเพื่อรวมบุคคลที่อาจไม่ได้อยู่ในระบบ แต่เป็นสมาชิกของกลุ่มด้วย"
+
+#: dt-groups/base-setup.php:300
+msgctxt "Optional Documentation"
+msgid "The contacts who are members of this group."
+msgstr "ผู้ติดต่อที่เป็นสมาชิกของกลุ่มนี้"
+
+#: dt-groups/base-setup.php:135
+msgctxt "Optional Documentation"
+msgid "The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
+msgstr "บุคคลที่ปลูกและ / หรือเป็นผู้ฝึกสอนกลุ่มนี้ สามารถกำหนดบุคคลให้เข้าร่วมกลุ่มได้เพียงคนเดียวในขณะที่หลายคนสามารถเป็นโค้ช / ชาวสวนของกลุ่มนี้ได้"
+
+#: dt-metrics/contacts/milestones.php:68
+#: dt-metrics/contacts/seeker-path.php:64
+#: dt-metrics/contacts/sources.php:88
+#: dt-users/template-user-management.php:207
+msgid "All Time"
+msgstr "ตลอดเวลา"
+
+#: dt-users/template-user-management.php:203
+msgid "This Year"
+msgstr "ปีนี้"
+
+#: dt-users/template-user-management.php:197
+msgid "Last Month"
+msgstr "เดือนที่แล้ว"
+
+#: dt-users/template-user-management.php:193
+msgid "This Month"
+msgstr "เดือนนี้"
+
+#: dt-users/template-user-management.php:75
+#: dt-users/template-user-management.php:259
+msgid "Workload Status"
+msgstr "สถานะปริมาณงาน"
+
+#: dt-users/template-user-management.php:76
+msgid "Accept Needed"
+msgstr "ยอมรับที่จำเป็น"
+
+#: dt-users/template-user-management.php:80
+msgid "Last Activity"
+msgstr "กิจกรรมล่าสุด"
+
+#: dt-users/template-user-management.php:116
+msgid "No activity"
+msgstr "ไม่มีกิจกรรม"
+
+#: dt-users/template-user-management.php:140
+msgid "Multiplier Name"
+msgstr "ชื่อตัวคูณ"
+
+#: dt-users/template-user-management.php:175
+msgid "Pending"
+msgstr "รอดำเนินการ"
+
+#: dt-users/template-user-management.php:182
+msgid "Unread Notifications"
+msgstr "การแจ้งเตือนที่ยังไม่ได้อ่าน"
+
+#: dt-users/mapbox-coverage-map.php:76
+#: dt-users/template-user-management.php:248
+msgid "User Status"
+msgstr "สถานะผู้ใช้"
+
+#: dt-users/template-user-management.php:334
+msgid "Click here to see roles documentation"
+msgstr "คลิกที่นี่เพื่อดูเอกสารเกี่ยวกับบทบาท"
+
+#: dt-users/template-user-management.php:362
+msgid "Save Roles"
+msgstr "บันทึกบทบาท"
+
+#: dt-users/template-user-management.php:284
+#: template-settings.php:218
+msgid "Search Locations"
+msgstr "ค้นหาสถานที่"
+
+#: dt-users/template-user-management.php:297
+msgid "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+msgstr "กำหนดวันที่ที่คุณจะไม่พร้อมใช้งานเพื่อให้ Dispatcher ทราบว่าคุณพร้อมที่จะรับผู้ติดต่อใหม่"
+
+#: dt-users/template-user-management.php:308
+msgid "Travel or Away Dates"
+msgstr "การเดินทางหรือวันที่ไม่อยู่"
+
+#: dt-users/template-user-management.php:419
+msgid "Daily Activity"
+msgstr "กิจวัตรประจำวัน"
+
+#: dt-users/user-management.php:101
+msgid "Away"
+msgstr "ห่างออกไป"
+
+#: dt-users/user-management.php:102
+msgid "Inconsistent"
+msgstr "ไม่สอดคล้องกัน"
+
+#: dt-users/user-management.php:149
+msgctxt "Bob was accepted on Jul 8 after 10 days"
+msgid "%1$s was accepted on %2$s after %3$s days"
+msgstr "%1$s ได้รับการยอมรับใน %2$s หลังจาก %3$s วัน"
+
+#: dt-users/user-management.php:150
+msgctxt "Bob waiting for contact for 10 days"
+msgid "%1$s waiting for Contact Attempt for %2$s days"
+msgstr "%1$s กำลังรอความพยายามติดต่อเป็นเวลา %2$s วัน"
+
+#: dt-users/user-management.php:151
+msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
+msgid "Contact with %1$s was attempted on %2$s after %3$s days"
+msgstr "พยายามติดต่อกับ %1$s เมื่อ %2$s หลังจาก %3$s วัน"
+
+#: dt-users/user-management.php:339
+msgctxt "Updated record Bob"
+msgid "Updated contact %s"
+msgstr "อัปเดตผู้ติดต่อ% s"
+
+#: dt-users/user-management.php:342
+msgctxt "Updated record Bob"
+msgid "Updated group %s"
+msgstr "อัปเดตกลุ่ม% s"
+
+#: dt-users/user-management.php:347
+msgctxt "Commented on record Bob"
+msgid "Commented on contact %s"
+msgstr "แสดงความคิดเห็นในผู้ติดต่อ% s"
+
+#: dt-users/user-management.php:350
+msgctxt "Commented on record Bob"
+msgid "Commented on group %s"
+msgstr "แสดงความคิดเห็นในกลุ่ม% s"
+
+#: dt-users/user-management.php:355
+msgctxt "Created record Bob"
+msgid "Created contact %s"
+msgstr "สร้างผู้ติดต่อ% s"
+
+#: dt-users/user-management.php:358
+msgctxt "Created record Bob"
+msgid "Created group %s"
+msgstr "สร้างกลุ่ม% s"
+
+#: dt-users/user-management.php:362
+msgid "Logged In"
+msgstr "เข้าสู่ระบบ"
+
+#: dt-users/user-management.php:365
+msgctxt "Declined assignment on Bob"
+msgid "Declined assignment on %s"
+msgstr "ปฏิเสธการมอบหมายเมื่อ% s"
+
+#: dt-users/user-management.php:313
+msgid "%s days since last update"
+msgstr "% s วันนับตั้งแต่การอัปเดตครั้งล่าสุด"
+
+#: dt-workflows/tasks.php:82
+msgctxt "You set a reminder for today on contact1"
+msgid "You set a reminder for today on %1$s"
+msgstr "คุณตั้งการแจ้งเตือนสำหรับวันนี้ใน %1$s"
+
+#: dt-workflows/tasks.php:86
+msgctxt "You set this task on contact1: task note"
+msgid "You set this task on %1$s: %2$s"
+msgstr "คุณตั้งค่างานนี้ใน %1$s: %2$s"
+
+#: dt-contacts/access-module.php:457
+#: dt-contacts/access-module.php:488
+#: dt-contacts/access-module.php:519
+#: dt-contacts/base-setup.php:395
+msgid "Choose an option:"
+msgstr "เลือกตัวเลือก:"
+
+#: dt-contacts/access-module.php:479
+#: dt-contacts/access-module.php:510
+#: dt-contacts/access-module.php:538
+#: dt-contacts/base-setup.php:419
+msgid "Confirm"
+msgstr "ยืนยัน"
+
+#: dt-groups/base-setup.php:599
+msgid "Create"
+msgstr "สร้าง"
+
+#: dt-groups/base-setup.php:604
+msgid "Select"
+msgstr "เลือก"
+
+#: dt-groups/base-setup.php:616
+msgctxt "Add members modal"
+msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
+msgstr "ในฟิลด์ 'รายชื่อสมาชิก' พิมพ์ชื่อของผู้ติดต่อที่มีอยู่เพื่อเพิ่มพวกเขาในกลุ่มนี้"
+
+#: dt-notifications/notifications.php:382
+msgid "%s minute ago"
+msgid_plural "%s minutes ago"
+msgstr[0] "% s นาทีที่แล้ว"
+
+#: dt-notifications/notifications.php:387
+msgid "%s hour ago"
+msgid_plural "%s hours ago"
+msgstr[0] "% s ชั่วโมงที่แล้ว"
+
+#: dt-notifications/notifications.php:392
+msgid "%s day ago"
+msgid_plural "%s days ago"
+msgstr[0] "% s วันที่แล้ว"
+
+#: dt-notifications/notifications.php:397
+msgid "%s week ago"
+msgid_plural "%s weeks ago"
+msgstr[0] "% s สัปดาห์ที่แล้ว"
+
+#: dt-notifications/notifications.php:402
+msgid "%s month ago"
+msgid_plural "%s months ago"
+msgstr[0] "% s เดือนที่แล้ว"
+
+#: dt-notifications/notifications.php:416
+msgid "%s year ago"
+msgid_plural "%s years ago"
+msgstr[0] "% s ปีที่แล้ว"
+
+#: dt-assets/functions/enqueue-scripts.php:192
+msgid "Created record on {}"
+msgstr "สร้างบันทึกเมื่อ {}"
+
+#: dt-assets/functions/enqueue-scripts.php:198
+msgid "Translate with Google Translate"
+msgstr "แปลด้วย Google Translate"
+
+#: dt-assets/functions/enqueue-scripts.php:199
+msgid "Hide Translation"
+msgstr "ซ่อนคำแปล"
+
+#: dt-assets/functions/enqueue-scripts.php:271
+msgid "Add"
+msgstr "เพิ่ม"
+
+#: dt-assets/parts/loop-activity-comment.php:32
+msgid "Comment"
+msgstr "แสดงความคิดเห็น"
+
+#: dt-assets/parts/loop-activity-comment.php:41
+msgid "Type:"
+msgstr "ประเภท:"
+
+#: dt-assets/parts/loop-activity-comment.php:165
+msgid "Type of Comment"
+msgstr "ประเภทความคิดเห็น"
+
+#: dt-contacts/access-module.php:309
+msgid "Contacts transferred from a partnership with another Disciple.Tools site."
+msgstr "รายชื่อที่โอนมาจากการเป็นหุ้นส่วนกับเว็บไซต์ Disciple.Tools รายอื่น"
+
+#: dt-mapping/geocode-api/mapbox-api.php:286
+#: dt-mapping/geocode-api/mapbox-api.php:321
+#: dt-users/template-user-management.php:272
+#: template-settings.php:203
+msgid "add"
+msgstr "เพิ่ม"
+
+#: dt-posts/posts.php:392
+msgid "%s removed"
+msgstr "ลบ% s แล้ว"
+
+#: dt-users/template-user-management.php:79
+msgid "Location"
+msgstr "สถานที่"
+
+#: dt-users/template-user-management.php:169
+msgid "Updates Needed"
+msgstr "จำเป็นต้องมีการอัปเดต"
+
+#: dt-users/template-user-management.php:189
+msgid "Assignments"
+msgstr "การมอบหมาย"
+
+#: dt-users/template-user-management.php:217
+msgid "Pace"
+msgstr "ก้าว"
+
+#: dt-users/template-user-management.php:218
+msgid "Assigned and not accepted"
+msgstr "ได้รับมอบหมายและไม่ได้รับการยอมรับ"
+
+#: dt-users/template-user-management.php:220
+msgid "Time from assigned to contact accepted for the last 10 contacts"
+msgstr "เวลาจากที่กำหนดให้เป็นผู้ติดต่อที่ยอมรับสำหรับผู้ติดต่อ 10 คนสุดท้าย"
+
+#: dt-users/template-user-management.php:222
+msgid "Accepted with no contact attempt"
+msgstr "ยอมรับโดยไม่พยายามติดต่อ"
+
+#: dt-users/template-user-management.php:224
+msgid "Oldest 10 update needed"
+msgstr "ต้องอัปเดตเก่าที่สุด 10 รายการ"
+
+#: dt-users/template-user-management.php:226
+msgid "Time from assigned to contact attempt for the last 10 contacts"
+msgstr "เวลาจากที่กำหนดให้พยายามติดต่อสำหรับ 10 รายชื่อล่าสุด"
+
+#: dt-users/template-user-management.php:272
+#: dt-users/template-user-management.php:275
+msgid "Location Responsibility"
+msgstr "ความรับผิดชอบของสถานที่"
+
+#: dt-users/template-user-management.php:299
+msgid "Schedule Unavailability"
+msgstr "กำหนดการไม่พร้อมใช้งาน"
+
+#: dt-users/user-management.php:92
+msgid "Add User"
+msgstr "เพิ่มผู้ใช้"
+
+#: dt-users/users.php:917
+msgid "Email already exists and is a user on this site"
+msgstr "มีอีเมลอยู่แล้วและเป็นผู้ใช้ในไซต์นี้"
+
+#: dt-users/users.php:923
+msgid "Failed to add user to site."
+msgstr "เพิ่มผู้ใช้ลงในไซต์ไม่สำเร็จ"
+
+#: dt-assets/functions/enqueue-scripts.php:114
+msgctxt "Abbreviation of Sunday"
+msgid "Su"
+msgstr "สุ"
+
+#: dt-assets/functions/enqueue-scripts.php:115
+msgctxt "Abbreviation of Monday"
+msgid "Mo"
+msgstr "โม"
+
+#: dt-assets/functions/enqueue-scripts.php:116
+msgctxt "Abbreviation of Tuesday"
+msgid "Tu"
+msgstr "ตจว"
+
+#: dt-assets/functions/enqueue-scripts.php:117
+msgctxt "Abbreviation of Wednesday"
+msgid "We"
+msgstr "เรา"
+
+#: dt-assets/functions/enqueue-scripts.php:118
+msgctxt "Abbreviation of Thursday"
+msgid "Th"
+msgstr "ธ"
+
+#: dt-assets/functions/enqueue-scripts.php:119
+msgctxt "Abbreviation of Friday"
+msgid "Fr"
+msgstr "Fr"
+
+#: dt-assets/functions/enqueue-scripts.php:120
+msgctxt "Abbreviation of Saturday"
+msgid "Sa"
+msgstr "สา"
+
+#: dt-assets/functions/enqueue-scripts.php:223
+msgid "Mark as complete"
+msgstr "ทำเครื่องหมายว่าเสร็จสมบูรณ์"
+
+#: dt-assets/parts/modals/modal-help.php:34
+msgid "2 contacts need an update"
+msgstr "ผู้ติดต่อ 2 รายต้องการการอัปเดต"
+
+#: dt-assets/parts/modals/modal-help.php:13
+msgid "Quick Action Buttons"
+msgstr "ปุ่มการดำเนินการด่วน"
+
+#: dt-groups/base-setup.php:651
+#: dt-metrics/groups/tree.php:83
+#: dt-metrics/personal/group-tree.php:84
+msgid "Members"
+msgstr "สมาชิก"
+
+#: dt-assets/parts/modals/modal-help.php:79
+msgctxt "Optional Documentation"
+msgid "Default and Custom Filters Tile"
+msgstr "ไทล์ตัวกรองเริ่มต้นและแบบกำหนดเอง"
+
+#: dt-assets/parts/modals/modal-help.php:97
+msgctxt "Optional Documentation"
+msgid "Closed Contacts Switch"
+msgstr "ปิดสวิตช์รายชื่อ"
+
+#: dt-assets/parts/modals/modal-help.php:103
+msgctxt "Optional Documentation"
+msgid "Inactive Groups Switch"
+msgstr "สวิตช์กลุ่มที่ไม่ใช้งาน"
+
+#: dt-assets/parts/modals/modal-help.php:152
+#: template-notifications.php:57
+msgid "Mark all as read"
+msgstr "ทำเครื่องหมายทั้งหมดว่าอ่านแล้ว"
+
+#: dt-assets/parts/modals/modal-tasks.php:13
+msgid "Task Type"
+msgstr "ประเภทงาน"
+
+#: dt-contacts/base-setup.php:290
+msgctxt "Contact Status field description"
+msgid "The Contact Status describes the progress in communicating with the contact."
+msgstr "สถานะการติดต่ออธิบายความคืบหน้าในการสื่อสารกับผู้ติดต่อ"
+
+#: dt-contacts/base-setup.php:118
+msgid "Contact Type"
+msgstr "ประเภทการติดต่อ"
+
+#: dt-posts/custom-post-type.php:154
+msgid "Last Modified"
+msgstr "แก้ไขล่าสุด"
+
+#: dt-core/configuration/config-site-defaults.php:274
+msgid "New Comments"
+msgstr "ความคิดเห็นใหม่"
+
+#: dt-groups/base-setup.php:242
+msgctxt "Optional Documentation"
+msgid "The group is sharing the gospel."
+msgstr "กลุ่มนี้กำลังแบ่งปันพระกิตติคุณ"
+
+#: dt-groups/base-setup.php:247
+msgctxt "Optional Documentation"
+msgid "The group has leaders."
+msgstr "กลุ่มมีผู้นำ"
+
+#: dt-groups/base-setup.php:252
+msgctxt "Optional Documentation"
+msgid "The group has committed to be church."
+msgstr "กลุ่มมีความมุ่งมั่นที่จะเป็นคริสตจักร"
+
+#: dt-groups/base-setup.php:415
+msgctxt "Optional Documentation"
+msgid "Number of unbelievers in this group."
+msgstr "จำนวนผู้ไม่เชื่อในกลุ่มนี้"
+
+#: dt-groups/base-setup.php:421
+msgctxt "Optional Documentation"
+msgid "Number of believers in this group."
+msgstr "จำนวนผู้เชื่อในกลุ่มนี้"
+
+#: dt-groups/base-setup.php:427
+msgctxt "Optional Documentation"
+msgid "Number of people in accountability group."
+msgstr "จำนวนคนในกลุ่มรับผิดชอบ"
+
+#: dt-posts/posts.php:281
+msgctxt "Shaikh added as people group on contact1"
+msgid "%1$s added as people group on %2$s"
+msgstr "เพิ่ม %1$s เป็นกลุ่มคนใน %2$s"
+
+#: dt-posts/posts.php:282
+msgctxt "Shaikh added to people groups"
+msgid "%s added to people groups"
+msgstr "เพิ่ม% s ลงในกลุ่มคนแล้ว"
+
+#: dt-posts/posts.php:284
+msgctxt "Shaikh removed from people groups on contact1"
+msgid "%1$s removed from people groups on %2$s"
+msgstr "ลบ %1$s ออกจากกลุ่มคนใน %2$s"
+
+#: dt-posts/posts.php:285
+msgctxt "Shaikh removed from people groups"
+msgid "%s removed from people groups"
+msgstr "ลบ% s ออกจากกลุ่มคนแล้ว"
+
+#: dt-users/users.php:755
+msgid "View Contact"
+msgstr "ดูผู้ติดต่อ"
+
+#: template-notifications.php:77
+#: template-notifications.php:80
+msgid "Load more notifications"
+msgstr "โหลดการแจ้งเตือนเพิ่มเติม"
+
+#: dt-contacts/base-setup.php:49
+msgid "Contact"
+msgstr "ติดต่อ"
+
+#: dt-assets/functions/enqueue-scripts.php:141
+msgctxt "Showing 30 items matching bob"
+msgid "Showing %1$s items matching %2$s"
+msgstr "แสดง %1$s รายการที่ตรงกับ %2$s"
+
+#: dt-metrics/contacts/milestones-map.php:24
+#: dt-metrics/contacts/milestones-map.php:40
+msgid "Milestones Map"
+msgstr "แผนที่เหตุการณ์สำคัญ"
+
+#: dt-users/user-management.php:152
+msgid "Unable to update"
+msgstr "ไม่สามารถอัปเดตได้"
+
+#: dt-contacts/access-module.php:275
+msgctxt "Reason Closed label"
+msgid "GDPR request"
+msgstr "คำขอ GDPR"
+
+#: dt-contacts/dmm-module.php:108
+msgid "Seeker"
+msgstr "ผู้แสวงหา"
+
+#: dt-contacts/dmm-module.php:111
+msgid "Believer"
+msgstr "ผู้เชื่อ"
+
+#: dt-contacts/dmm-module.php:114
+msgid "Leader"
+msgstr "หัวหน้า"
+
+#: dt-contacts/contacts-transfer.php:552
+msgid "redacted email"
+msgstr "อีเมลที่แก้ไขแล้ว"
+
+#: dt-contacts/contacts-transfer.php:553
+msgid "redacted name"
+msgstr "ชื่อ redacted"
+
+#: dt-contacts/contacts-transfer.php:554
+msgid "redacted"
+msgstr "redacted"
+
+#: dt-contacts/access-module.php:63
+msgid "Partner"
+msgstr "พันธมิตร"
+
+#. translators: %s: Site name.
+#: dt-core/configuration/restrict-site-access.php:290
+msgid "DT Site Name: %s"
+msgstr "ชื่อไซต์ DT:% s"
+
+#: dt-metrics/charts-base.php:132
+msgid "No Results"
+msgstr "ไม่มีผลลัพธ์"
+
+#: dt-metrics/combined/hover-map.php:25
+#: dt-metrics/combined/hover-map.php:65
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "เลื่อนแผนที่"
+
+#: dt-metrics/combined/locations-list.php:25
+msgid "Locations List"
+msgstr "รายการสถานที่"
+
+#: dt-metrics/groups/tree.php:84
+#: dt-metrics/personal/group-tree.php:85
+msgid "View Record"
+msgstr "ดูบันทึก"
+
+#: dt-metrics/contacts/milestones.php:23
+msgid "Milestones Chart"
+msgstr "แผนภูมิเหตุการณ์สำคัญ"
+
+#: dt-metrics/contacts/overview.php:61
+msgid "Contacts Overview"
+msgstr "ภาพรวมผู้ติดต่อ"
+
+#: dt-metrics/contacts/sources.php:24
+msgid "Sources Chart"
+msgstr "แผนภูมิแหล่งที่มา"
+
+#: dt-metrics/groups/overview.php:62
+msgid "Groups Overview"
+msgstr "ภาพรวมของกลุ่ม"
+
+#: dt-metrics/groups/tree.php:81
+#: dt-metrics/personal/group-tree.php:82
+msgid "Highlight Active"
+msgstr "ไฮไลต์ใช้งานอยู่"
+
+#: dt-metrics/groups/tree.php:82
+#: dt-metrics/personal/group-tree.php:83
+msgid "Highlight Churches"
+msgstr "เน้นคริสตจักร"
+
+#: dt-metrics/groups/tree.php:87
+#: dt-metrics/personal/group-tree.php:88
+msgid "Total Members"
+msgstr "สมาชิกทั้งหมด"
+
+#: dt-metrics/groups/tree.php:88
+#: dt-metrics/personal/group-tree.php:89
+msgid "View Group"
+msgstr "ดูกลุ่ม"
+
+#: dt-metrics/personal/baptism-tree.php:57
+msgid "My Baptism Generation Tree"
+msgstr "ต้นไม้รุ่นล้างบาปของฉัน"
+
+#: dt-metrics/personal/coaching-tree.php:142
+msgid "Disciple"
+msgstr "ศิษย์"
+
+#: dt-metrics/personal/overview.php:72
+msgid "stats as of"
+msgstr "สถิติ ณ วันที่"
+
+#: dt-users/hover-coverage-map.php:85
+#: dt-users/mapbox-coverage-map.php:55
+msgid "Coverage Map"
+msgstr "แผนที่ความครอบคลุม"
+
+#: dt-users/hover-coverage-map.php:140
+msgid "Locations Covered"
+msgstr "สถานที่ที่ครอบคลุม"
+
+#: dt-users/hover-coverage-map.php:191
+msgid "Locations with Active Users"
+msgstr "สถานที่ที่มีผู้ใช้งานอยู่"
+
+#: dt-users/hover-coverage-map.php:242
+msgid "Locations with Inactive Assigned"
+msgstr "สถานที่ที่ไม่ได้ใช้งานมอบหมาย"
+
+#: dt-users/template-user-management.php:370
+msgid "Access by Source"
+msgstr "เข้าถึงตามแหล่งที่มา"
+
+#: dt-users/template-user-management.php:376
+#: dt-users/users.php:780
+msgid "All Sources - gives access to all contacts"
+msgstr "แหล่งที่มาทั้งหมด - ให้การเข้าถึงผู้ติดต่อทั้งหมด"
+
+#: dt-users/template-user-management.php:382
+#: dt-users/users.php:787
+msgid "Custom - Access own contacts and all the contacts of the selected sources below"
+msgstr "กำหนดเอง - เข้าถึงผู้ติดต่อของตัวเองและผู้ติดต่อทั้งหมดของแหล่งที่มาที่เลือกด้านล่าง"
+
+#: dt-users/template-user-management.php:388
+#: dt-users/users.php:794
+msgid "No Sources - only own contacts"
+msgstr "ไม่มีแหล่งที่มา - เฉพาะผู้ติดต่อของตัวเอง"
+
+#: dt-users/template-user-management.php:394
+msgid "Sources List"
+msgstr "รายการแหล่งที่มา"
+
+#: dt-users/template-user-management.php:404
+msgid "Save Allowed Sources"
+msgstr "บันทึกแหล่งที่มาที่อนุญาต"
+
+#: dt-users/user-management.php:153
+msgid "Add New User"
+msgstr "เพิ่มผู้ใช้ใหม่"
+
+#: dt-users/user-management.php:155
+msgid "There are some errors in your form."
+msgstr "มีข้อผิดพลาดบางอย่างในแบบฟอร์มของคุณ"
+
+#: dt-users/user-management.php:156
+msgid "Contact to make a user (optional)"
+msgstr "ติดต่อเพื่อสร้างผู้ใช้ (ไม่บังคับ)"
+
+#: dt-users/user-management.php:159
+msgid "Create User"
+msgstr "สร้างผู้ใช้"
+
+#: dt-users/user-management.php:160
+msgid "Email address is already in the system as a user!"
+msgstr "ที่อยู่อีเมลอยู่ในระบบแล้วในฐานะผู้ใช้!"
+
+#: dt-users/user-management.php:161
+msgid "Username is already in the system as a user!"
+msgstr "ชื่อผู้ใช้อยู่ในระบบแล้วในฐานะผู้ใช้!"
+
+#: dt-users/user-management.php:162
+msgid "Search multipliers and contacts"
+msgstr "ค้นหาตัวคูณและผู้ติดต่อ"
+
+#: dt-users/user-management.php:163
+msgid "Remove"
+msgstr "ลบ"
+
+#: dt-metrics/groups/tree.php:25
+msgid "Groups Tree"
+msgstr "กลุ่มต้นไม้"
+
+#: dt-metrics/personal/baptism-tree.php:25
+msgid "My Baptism Tree"
+msgstr "ต้นไม้ล้างบาปของฉัน"
+
+#: dt-metrics/personal/coaching-tree.php:25
+msgid "My Coaching Tree"
+msgstr "ต้นไม้การฝึกสอนของฉัน"
+
+#: dt-metrics/personal/group-tree.php:26
+msgid "My Groups Tree"
+msgstr "ทรีกลุ่มของฉัน"
+
+#: dt-contacts/base-setup.php:361
+msgid "See duplicates"
+msgstr "ดูรายการที่ซ้ำกัน"
+
+#: dt-assets/functions/enqueue-scripts.php:230
+msgid "Dismissed Duplicates"
+msgstr "ปิดรายการที่ซ้ำกัน"
+
+#: dt-assets/functions/enqueue-scripts.php:231
+msgid "Duplicates on: %s"
+msgstr "รายการซ้ำเมื่อ:% s"
+
+#: dt-assets/parts/merge-details.php:19
+msgid "No duplicates found."
+msgstr "ไม่พบรายการที่ซ้ำกัน"
+
+#: dt-contacts/base-setup.php:178
+msgid "Languages"
+msgstr "ภาษา"
+
+#: dt-contacts/contacts-transfer.php:239
+msgid "This contact was transferred to %s for further follow-up."
+msgstr "รายชื่อติดต่อนี้ถูกโอนไปยัง% s เพื่อติดตามผลเพิ่มเติม"
+
+#: dt-contacts/duplicates-merging.php:516
+msgctxt "This record duplicated and was merged into Contact2"
+msgid "This record is a duplicate and was merged into %2$s"
+msgstr "ระเบียนนี้ซ้ำและรวมเข้ากับ %2$s แล้ว"
+
+#: dt-contacts/access-module.php:1404
+#: dt-contacts/duplicates-merging.php:469
+#: dt-contacts/duplicates-merging.php:520
+msgid "Duplicate Checker"
+msgstr "ตัวตรวจสอบซ้ำ"
+
+#: dt-contacts/duplicates-merging.php:529
+msgctxt "User1 merged Contact1 into this record"
+msgid "%1$s merged %2$s into this record"
+msgstr "%1$s รวม %2$s เข้ากับเรกคอร์ดนี้"
+
+#: dt-posts/dt-posts.php:997
+msgid "D.T System"
+msgstr "ระบบ D.T"
+
+#: dt-users/user-management.php:154
+msgid "View New User"
+msgstr "ดูผู้ใช้ใหม่"
+
+#: dt-users/user-management.php:164
+msgid "This contact is already a user."
+msgstr "ผู้ติดต่อนี้เป็นผู้ใช้อยู่แล้ว"
+
+#: dt-users/user-management.php:165
+msgid "View User"
+msgstr "ดูผู้ใช้"
+
+#: template-settings.php:43
+#: template-settings.php:195
+msgid "Multiplier Preferences"
+msgstr "การตั้งค่าตัวคูณ"
+
+#: template-settings.php:203
+#: template-settings.php:208
+msgid "Locations you are willing to be responsible for"
+msgstr "สถานที่ที่คุณยินดีรับผิดชอบ"
+
+#: template-settings.php:231
+msgid "Languages you are comfortable speaking"
+msgstr "ภาษาที่คุณสะดวกในการพูด"
+
+#: template-settings.php:252
+msgid "People Groups you wish to serve"
+msgstr "กลุ่มคนที่คุณต้องการให้บริการ"
+
+#: template-settings.php:275
+msgid "Availability to receive contacts from the Dispatcher"
+msgstr "ความพร้อมในการรับผู้ติดต่อจาก Dispatcher"
+
+#: template-settings.php:521
+msgid "System Language"
+msgstr "ภาษาของระบบ"
+
+#: archive-template.php:172
+msgctxt "Contacts Filters"
+msgid "%s Filters"
+msgstr "% s ตัวกรอง"
+
+#: archive-template.php:195
+msgctxt "Contacts List"
+msgid "%s List"
+msgstr "% s รายการ"
+
+#: archive-template.php:226
+msgid "Fields"
+msgstr "ฟิลด์"
+
+#: archive-template.php:232
+msgid "Bulk Edit"
+msgstr "แก้ไขเป็นกลุ่ม"
+
+#: archive-template.php:238
+msgid "Choose which fields to display as columns in the list"
+msgstr "เลือกฟิลด์ที่จะแสดงเป็นคอลัมน์ในรายการ"
+
+#: archive-template.php:90
+#: archive-template.php:163
+#: archive-template.php:271
+msgid "Apply"
+msgstr "สมัคร"
+
+#: archive-template.php:91
+#: archive-template.php:164
+#: archive-template.php:272
+msgid "reset to default"
+msgstr "รีเซ็ตเป็นค่าเริ่มต้น"
+
+#: archive-template.php:277
+msgid "Select all the  %1$s you want to update from the list, and update them below"
+msgstr "เลือก %1$s ทั้งหมดที่คุณต้องการอัปเดตจากรายการและอัปเดตด้านล่าง"
+
+#: archive-template.php:173
+msgid "Assign To"
+msgstr "มอบหมายให้"
+
+#: archive-template.php:359
+msgid "Share with:"
+msgstr "ร่วมกับ:"
+
+#: archive-template.php:392
+msgid "See More Options"
+msgstr "ดูตัวเลือกเพิ่มเติม"
+
+#: archive-template.php:393
+msgid "See Fewer Options"
+msgstr "ดูตัวเลือกน้อยลง"
+
+#: dt-assets/functions/details-bar.php:47
+msgid "Admin Actions"
+msgstr "การดำเนินการของผู้ดูแลระบบ"
+
+#: dt-assets/functions/details-bar.php:52
+#: single-template.php:357
+msgctxt "Delete Contact"
+msgid "Delete %s"
+msgstr "ลบ% s"
+
+#: dt-assets/functions/enqueue-scripts.php:227
+msgid "Duplicates Detected"
+msgstr "ตรวจพบรายการซ้ำ"
+
+#: dt-assets/parts/modals/modal-new-contact.php:3
+#: dt-assets/parts/modals/modal-new-contact.php:12
+msgid "Create Record"
+msgstr "สร้างบันทึก"
+
+#: dt-assets/parts/modals/modal-new-contact.php:20
+msgid "Record Created"
+msgstr "สร้างบันทึกแล้ว"
+
+#: dt-assets/parts/modals/modal-new-contact.php:26
+msgid "Edit New Record"
+msgstr "แก้ไขบันทึกใหม่"
+
+#: dt-contacts/access-module.php:92
+msgid "Access"
+msgstr "เข้าไป"
+
+#: dt-contacts/access-module.php:94
+msgid "Someone to follow-up with"
+msgstr "มีคนติดตามด้วย"
+
+#: dt-contacts/access-module.php:95
+msgid "Collaborators"
+msgstr "ผู้ทำงานร่วมกัน"
+
+#: dt-contacts/access-module.php:855
+#: dt-contacts/access-module.php:865
+msgid "My Follow-Up"
+msgstr "การติดตามของฉัน"
+
+#: dt-contacts/access-module.php:866
+#: dt-contacts/access-module.php:887
+#: dt-contacts/access-module.php:910
+#: dt-contacts/access-module.php:934
+msgid "Assigned to me"
+msgstr "มอบหมายให้ฉัน"
+
+#: dt-contacts/access-module.php:867
+#: dt-contacts/access-module.php:888
+#: dt-contacts/access-module.php:911
+#: dt-contacts/access-module.php:935
+msgid "Sub-assigned to me"
+msgstr "ย่อยที่กำหนดให้ฉัน"
+
+#: dt-contacts/access-module.php:971
+msgctxt "All records"
+msgid "Follow-Up %s"
+msgstr "ติดตาม"
+
+#: dt-contacts/access-module.php:979
+msgid "All Follow-Up"
+msgstr "ติดตามผลทั้งหมด"
+
+#: dt-contacts/access-module.php:1398
+msgid "This record might be a duplicate of: "
+msgstr "บันทึกนี้อาจซ้ำกับ: "
+
+#: dt-contacts/base-setup.php:65
+msgid "User Manager"
+msgstr "ผู้จัดการผู้ใช้"
+
+#: dt-contacts/base-setup.php:75
+msgid "Administrator"
+msgstr "ผู้ดูแลระบบ"
+
+#: dt-contacts/base-setup.php:112
+msgid "Nickname"
+msgstr "ชื่อเล่น"
+
+#: dt-contacts/base-setup.php:123
+msgid "Representing a User in the system"
+msgstr "เป็นตัวแทนของผู้ใช้ในระบบ"
+
+#: dt-contacts/base-setup.php:130
+msgid "A friend, family member or acquaintance"
+msgstr "เพื่อนสมาชิกในครอบครัวหรือคนรู้จัก"
+
+#: dt-contacts/base-setup.php:131
+#: dt-contacts/dmm-module.php:54
+msgid "Only me"
+msgstr "แค่ฉัน"
+
+#: dt-contacts/base-setup.php:203
+msgid "Locations or Address"
+msgstr "สถานที่หรือที่อยู่"
+
+#: dt-contacts/base-setup.php:260
+msgctxt "connections to other records"
+msgid "Connections to other %s"
+msgstr "การเชื่อมต่อกับ% s อื่น ๆ"
+
+#: dt-contacts/base-setup.php:356
+msgctxt "Change Record Type"
+msgid "Change %s Type"
+msgstr "เปลี่ยน% s ประเภท"
+
+#: dt-contacts/base-setup.php:490
+msgid "Default Filters"
+msgstr "ตัวกรองเริ่มต้น"
+
+#: dt-contacts/base-setup.php:500
+msgctxt "All records I can view"
+msgid "All %s I can view"
+msgstr "% s ทั้งหมดที่ฉันสามารถดูได้"
+
+#: dt-contacts/base-setup.php:510
+msgid "My Recently Viewed"
+msgstr "ดูล่าสุดของฉัน"
+
+#: dt-contacts/base-setup.php:515
+msgid "Last 30 viewed"
+msgstr "ดูล่าสุด 30 ครั้ง"
+
+#: dt-contacts/dmm-module.php:49
+msgid "Connection"
+msgstr "การเชื่อมต่อ"
+
+#: dt-contacts/dmm-module.php:51
+msgid "Connected to a contact, or generational fruit"
+msgstr "เชื่อมต่อกับผู้ติดต่อหรือผลไม้รุ่น"
+
+#: dt-contacts/dmm-module.php:104
+msgid "Faith Status"
+msgstr "สถานะศรัทธา"
+
+#: dt-contacts/dmm-module.php:135
+msgid "Is Coaching"
+msgstr "คือการฝึกสอน"
+
+#: dt-contacts/dmm-module.php:188
+msgctxt "Optional Documentation"
+msgid "The people groups represented by this contact."
+msgstr "กลุ่มคนที่แสดงโดยผู้ติดต่อนี้"
+
+#: dt-contacts/dmm-module.php:288
+msgid "Sub-assigned by"
+msgstr "ย่อยมอบหมายโดย"
+
+#: dt-contacts/dmm-module.php:289
+msgid "Sub-assigned"
+msgstr "มอบหมายย่อย"
+
+#: dt-contacts/dmm-module.php:312
+msgid "Faith"
+msgstr "ศรัทธา"
+
+#: dt-contacts/dmm-module.php:395
+msgctxt "Personal records"
+msgid "Connected %s"
+msgstr "เชื่อมต่อแล้ว% s"
+
+#: dt-groups/base-setup.php:685
+msgid "Coaches"
+msgstr "โค้ช"
+
+#: dt-groups/base-setup.php:698
+msgid "Planted by"
+msgstr "ปลูกโดย"
+
+#: dt-groups/base-setup.php:699
+msgid "Planting"
+msgstr "การปลูก"
+
+#: dt-mapping/geocode-api/mapbox-api.php:287
+msgid "Use"
+msgstr "ใช้"
+
+#: dt-mapping/geocode-api/mapbox-api.php:288
+msgid "Search Location"
+msgstr "ค้นหาสถานที่"
+
+#: dt-mapping/geocode-api/mapbox-api.php:289
+msgid "Delete Location"
+msgstr "ลบตำแหน่ง"
+
+#: dt-mapping/geocode-api/mapbox-api.php:290
+msgid "Open Mapping"
+msgstr "เปิดการแมป"
+
+#: dt-mapping/geocode-api/mapbox-api.php:291
+msgid "clear"
+msgstr "ชัดเจน"
+
+#: dt-metrics/combined/mapbox-maps.php:28
+msgid "Combined Maps"
+msgstr "แผนที่รวม"
+
+#: dt-metrics/combined/mapbox-maps.php:84
+msgid "Active Users"
+msgstr "ผู้ใช้ที่ใช้งานอยู่"
+
+#: dt-metrics/contacts/mapbox-maps.php:30
+msgid "Access Contact Maps"
+msgstr "เข้าถึงแผนที่ผู้ติดต่อ"
+
+#: dt-metrics/groups/mapbox-maps.php:30
+msgid "Group Maps"
+msgstr "แผนที่กลุ่ม"
+
+#: dt-metrics/personal/mapbox-contacts-maps.php:30
+msgid "Contacts Maps"
+msgstr "แผนที่ผู้ติดต่อ"
+
+#: dt-metrics/personal/mapbox-groups-maps.php:30
+msgid "Groups Maps"
+msgstr "แผนที่กลุ่ม"
+
+#: dt-posts/dt-posts.php:1393
+#: single-template.php:119
+msgid "Details"
+msgstr "รายละเอียด"
+
+#: dt-reports/reports.php:141
+msgid "Added new report"
+msgstr "เพิ่มรายงานใหม่"
+
+#: dt-reports/reports.php:230
+msgid "Updated report"
+msgstr "รายงานที่อัปเดต"
+
+#: dt-users/mapbox-coverage-map.php:77
+msgid "All"
+msgstr "ทั้งหมด"
+
+#: dt-users/mapbox-coverage-map.php:78
+msgctxt "Add user to: France"
+msgid "Add user to: %s"
+msgstr "เพิ่มผู้ใช้ใน:% s"
+
+#: dt-users/mapbox-coverage-map.php:81
+msgid "Responsibility Coverage"
+msgstr "ความครอบคลุมความรับผิดชอบ"
+
+#: header.php:38
+msgid "D.T Record"
+msgstr "D.T บันทึก"
+
+#: single-template.php:53
+#: single-template.php:61
+msgid "This %s needs an update."
+msgstr "% s นี้ต้องการการอัปเดต"
+
+#: dt-assets/functions/details-bar.php:78
+#: dt-assets/functions/details-bar.php:196
+msgid "Record"
+msgstr "บันทึก"
+
+#: dt-assets/functions/details-bar.php:80
+#: dt-assets/functions/details-bar.php:198
+#: template-merge-details.php:127
+#: template-merge-details.php:136
+msgctxt "Created on the 21st of August"
+msgid "Created on %s"
+msgstr "สร้างเมื่อ% s"
+
+#: dt-assets/functions/details-bar.php:82
+#: dt-assets/functions/details-bar.php:200
+msgctxt "(record created) by multiplier1"
+msgid "by %s"
+msgstr "โดย% s"
+
+#: single-template.php:211
+msgid "Edit all details fields"
+msgstr "แก้ไขฟิลด์รายละเอียดทั้งหมด"
+
+#: single-template.php:333
+msgid "Create a tag and apply it to this record."
+msgstr "สร้างแท็กและใช้กับบันทึกนี้"
+
+#: single-template.php:358
+msgctxt "Are you sure you want to delete name?"
+msgid "Are you sure you want to delete %s?"
+msgstr "แน่ใจไหมว่าต้องการลบ% s"
+
+#: dt-assets/functions/menu.php:39
+#: template-metrics.php:25
+msgid "Menu"
+msgstr "เมนู"
+
+#: template-new-post.php:39
+msgid "Select the %s type:"
+msgstr "เลือกประเภท% s:"
+
+#: template-new-post.php:117
+msgid "Show all fields"
+msgstr "แสดงเขตข้อมูลทั้งหมด"
+
+#: dt-assets/functions/enqueue-scripts.php:312
+msgid "start"
+msgstr "เริ่มต้น"
+
+#: dt-assets/functions/enqueue-scripts.php:313
+msgid "end"
+msgstr "จบ"
+
+#: dt-contacts/base-setup.php:349
+#: dt-contacts/base-setup.php:376
+msgctxt "Archive Contact"
+msgid "Archive %s"
+msgstr "เก็บถาวร% s"
+
+#: dt-contacts/base-setup.php:377
+msgctxt "Are you sure you want to archive name?"
+msgid "Are you sure you want to archive %s?"
+msgstr "แน่ใจไหมว่าต้องการเก็บ% s"
+
+#: dt-contacts/base-setup.php:384
+msgid "Archive"
+msgstr "เก็บถาวร"
+
+#: dt-contacts/base-setup.php:624
+msgid "This %s is archived"
+msgstr "เก็บ% s นี้แล้ว"
+
+#: dt-contacts/base-setup.php:626
+msgid "Restore"
+msgstr "คืนค่า"
+
+#: dt-assets/functions/enqueue-scripts.php:140
+msgctxt "Showing 30 items"
+msgid "Showing %s items. Type to find more."
+msgstr "กำลังแสดง% s รายการ พิมพ์เพื่อค้นหาเพิ่มเติม"
+
+#: dt-assets/functions/enqueue-scripts.php:288
+msgctxt "Matches for duplicate contacts found: 230"
+msgid "Matches Found:"
+msgstr "พบรายการที่ตรงกัน:"
+
+#: dt-assets/functions/enqueue-scripts.php:289
+msgctxt "Dismiss all duplicate matches for Bob"
+msgid "Dismiss all matches for %s"
+msgstr "ปิดการแข่งขันทั้งหมดสำหรับ% s"
+
+#: dt-contacts/base-setup.php:299
+msgid "Archived"
+msgstr "เก็บถาวร"
+
+#: dt-groups/base-setup.php:317
+msgid "Leader Count"
+msgstr "จำนวนผู้นำ"
+
+#: dt-groups/base-setup.php:318
+msgctxt "Optional Documentation"
+msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the training."
+msgstr "จำนวนสมาชิกในกลุ่มนี้ ระบบจะอัปเดตโดยอัตโนมัติเมื่อมีการเพิ่มหรือลบสมาชิกใหม่ในรายชื่อสมาชิก เปลี่ยนหมายเลขนี้ด้วยตนเองเพื่อรวมบุคคลที่อาจไม่ได้อยู่ในระบบ แต่เป็นสมาชิกของการฝึกอบรมด้วย"
+
+#: template-view-duplicates.php:21
+msgid "Duplicate Access Contacts"
+msgstr "รายชื่อการเข้าถึงที่ซ้ำกัน"
+
+#: template-view-duplicates.php:27
+msgid "Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
+msgstr "การสแกนหารายการที่ซ้ำกันโดยเริ่มจากผู้ติดต่อที่แก้ไขล่าสุด ผลลัพธ์จะ จำกัด เฉพาะผลการแข่งขันที่ตรงน้อยกว่า 10 รายการ"
+
+#: template-view-duplicates.php:30
+msgctxt "Access contact scanned: 100"
+msgid "Access contacts scanned:"
+msgstr "เข้าถึงรายชื่อที่สแกน:"
+
+#: template-view-duplicates.php:31
+msgctxt "Duplicate contacts found: 100"
+msgid "Duplicates found:"
+msgstr "พบรายการซ้ำ:"
+
+#. Theme Name of the theme
+#: 
+msgid "Disciple Tools"
+msgstr "เครื่องมือศิษย์"
+
+#. Theme URI of the theme
+#: 
+msgid "https://github.com/DiscipleTools/disciple-tools-theme"
+msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
+
+#. Description of the theme
+#: 
+msgid "Disciple Tools is a coalition management system for disciple making movements."
+msgstr "Disciple Tools เป็นระบบการจัดการแนวร่วมสำหรับการเคลื่อนไหวของสาวก"
+
+#. Author URI of the theme
+#: 
+msgid "https://github.com/DiscipleTools"
+msgstr "https://github.com/DiscipleTools"
+
+#: archive-template.php:34
+#: archive-template.php:35
+#: archive-template.php:109
+#: archive-template.php:110
+msgid "Advanced Search"
+msgstr "การค้นหาขั้นสูง"
+
+#: archive-template.php:70
+#: archive-template.php:143
+msgid "Search All Fields"
+msgstr "ค้นหาทุกช่อง"
+
+#: archive-template.php:61
+#: archive-template.php:134
+msgid "Choose which fields to search"
+msgstr ""
+
+#: dt-contacts/base-setup.php:251
+msgid "Other Social Links"
+msgstr ""
+

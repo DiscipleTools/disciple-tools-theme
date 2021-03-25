@@ -378,6 +378,7 @@ class Disciple_Tools_Mapping_Queries {
               g.admin5_grid_id,
               ga5.alt_name as admin5_name,
               g.level,
+              g.level_name,
               g.is_custom_location
             FROM $wpdb->dt_location_grid as g
             LEFT JOIN $wpdb->dt_location_grid as gc ON g.admin0_grid_id=gc.grid_id
@@ -1311,6 +1312,15 @@ class Disciple_Tools_Mapping_Queries {
         //phpcs:enable
 
         return self::format_results( $results, $post_type );
+    }
+
+    public static function get_location_grid_meta_label( $location_grid_meta_id ){
+        global $wpdb;
+        return $wpdb->get_var( $wpdb->prepare( "
+            SELECT label
+            FROM $wpdb->dt_location_grid_meta
+            WHERE grid_meta_id = %d
+        ", esc_sql( $location_grid_meta_id )));
     }
 
     public static function query_location_grid_meta_totals( $post_type, $query ) {

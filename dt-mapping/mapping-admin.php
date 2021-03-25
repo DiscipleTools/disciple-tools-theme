@@ -79,7 +79,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             global $dt_mapping;
             ?>
             <script>
-                let _ = window.lodash
                 function send_update(data) {
                     let options = {
                         type: 'POST',
@@ -1452,13 +1451,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         list_results.append(`<tr>
                             <td>
                                 <a class="open_next_drilldown"
-                                    data-parent="${_.escape( v.parent_id )}"
-                                    data-grid_id="${_.escape( v.grid_id )}"
-                                    style="cursor: pointer;">${_.escape( v.name )}
+                                    data-parent="${window.lodash.escape( v.parent_id )}"
+                                    data-grid_id="${window.lodash.escape( v.grid_id )}"
+                                    style="cursor: pointer;">${window.lodash.escape( v.name )}
                                 </a>
                             </td>
-                            <td>${_.escape( v.population_formatted )}</td>
-                            <td>${_.escape( v.grid_id )}</td>
+                            <td>${window.lodash.escape( v.population_formatted )}</td>
+                            <td>${window.lodash.escape( v.grid_id )}</td>
                         </tr>`)
                     })
 
@@ -1577,8 +1576,50 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 FROM $wpdb->usermeta pm
                 INNER JOIN $wpdb->dt_location_grid as lg ON ( pm.meta_value = lg.grid_id )
                 WHERE meta_key = %s
-                AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta ) AND meta_value >= 100000000",
+                AND umeta_id NOT IN (
+                    SELECT DISTINCT( postmeta_id_location_grid )
+                    FROM $wpdb->dt_location_grid_meta ) AND meta_value >= 100000000",
             $wpdb->prefix . 'location_grid' ) );
+        }
+
+        public function upgrade_records_with_mapbox_meta_query(){
+            // Insert processing with offset
+            global $wpdb;
+            $geocoder = new Location_Grid_Geocoder();
+            $query = $wpdb->get_results( $wpdb->prepare( "
+                SELECT *
+                FROM $wpdb->postmeta
+                WHERE meta_key = 'location_grid'
+                  AND meta_id NOT IN (
+                    SELECT DISTINCT( postmeta_id_location_grid )
+                    FROM $wpdb->dt_location_grid_meta
+                  )
+                  AND meta_value >= 100000000
+                LIMIT %d",
+                100
+            ), ARRAY_A);
+
+            if ( ! empty( $query ) ) {
+                foreach ( $query as $row ) {
+                    $grid = $geocoder->query_by_grid_id( $row["meta_value"] );
+                    if ( $grid ) {
+                        $location_meta_grid = [];
+
+                        Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                        $location_meta_grid['post_id'] = $row['post_id'];
+                        $location_meta_grid['post_type'] = get_post_type( $row['post_id'] );
+                        $location_meta_grid['grid_id'] = $row['meta_value'];
+                        $location_meta_grid['lng'] = $grid["longitude"];
+                        $location_meta_grid['lat'] = $grid["latitude"];
+                        $location_meta_grid['level'] = $grid["level_name"];
+                        $location_meta_grid['label'] = $geocoder->_format_full_name( $grid );
+
+                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $row['post_id'], $location_meta_grid, $row['meta_id'] );
+
+                        echo esc_html( $location_meta_grid['label'] ) . '<br>';
+                    }
+                }
+            }
         }
 
         public function box_mapbox_post_upgrade() {
@@ -1611,7 +1652,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </tr>
 
             <?php
-            $limit = 100;
             $loop_again = '0';
             $count = -1;
             if ( isset( $_GET['upgrade_database'] )
@@ -1633,43 +1673,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <span><img src="<?php echo esc_url( trailingslashit( get_stylesheet_directory_uri() ) ) ?>spinner.svg" width="22px" alt="spinner "/></span><br>
                         <?php
 
-                        // Insert processing with offset
-                        global $wpdb;
-                        $geocoder = new Location_Grid_Geocoder();
-                        $query = $wpdb->get_results( $wpdb->prepare( "
-                            SELECT *
-                            FROM $wpdb->postmeta
-                            WHERE meta_key = 'location_grid'
-                              AND meta_id NOT IN (
-                                SELECT DISTINCT( postmeta_id_location_grid )
-                                FROM $wpdb->dt_location_grid_meta
-                              )
-                              AND meta_value >= 100000000
-                            LIMIT %d",
-                            $limit
-                        ), ARRAY_A);
-
-                        if ( ! empty( $query ) ) {
-                            foreach ( $query as $row ) {
-                                $grid = $geocoder->query_by_grid_id( $row["meta_value"] );
-                                if ( $grid ) {
-                                    $location_meta_grid = [];
-
-                                    Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
-                                    $location_meta_grid['post_id'] = $row['post_id'];
-                                    $location_meta_grid['post_type'] = get_post_type( $row['post_id'] );
-                                    $location_meta_grid['grid_id'] = $row['meta_value'];
-                                    $location_meta_grid['lng'] = $grid["longitude"];
-                                    $location_meta_grid['lat'] = $grid["latitude"];
-                                    $location_meta_grid['level'] = $grid["level_name"];
-                                    $location_meta_grid['label'] = $geocoder->_format_full_name( $grid );
-
-                                    $potential_error = Location_Grid_Meta::add_location_grid_meta( $row['post_id'], $location_meta_grid, $row['meta_id'] );
-
-                                    echo esc_html( $location_meta_grid['label'] ) . '<br>';
-                                }
-                            }
-                        }
+                        $this->upgrade_records_with_mapbox_meta_query();
 
 
                         ?>
@@ -1686,6 +1690,46 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </tbody>
             </table>
             <?php
+        }
+
+
+        public function upgrade_users_with_mapbox_meta_query(){
+            // Insert processing with offset
+            global $wpdb;
+            $geocoder = new Location_Grid_Geocoder();
+            $query = $wpdb->get_results( $wpdb->prepare( "
+                SELECT *
+                FROM $wpdb->usermeta
+                WHERE meta_key = %s
+                AND umeta_id NOT IN (
+                    SELECT DISTINCT( postmeta_id_location_grid )
+                    FROM $wpdb->dt_location_grid_meta)
+                AND meta_value >= 100000000
+                LIMIT %d",
+                $wpdb->prefix . 'location_grid',
+                100
+            ), ARRAY_A);
+            if ( ! empty( $query ) ) {
+                foreach ( $query as $row ) {
+                    $grid = $geocoder->query_by_grid_id( $row["meta_value"] );
+                    if ( $grid ) {
+                        $location_meta_grid = [];
+
+                        Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                        $location_meta_grid['post_id'] = $row['user_id'];
+                        $location_meta_grid['post_type'] = 'users';
+                        $location_meta_grid['grid_id'] = $row['meta_value'];
+                        $location_meta_grid['lng'] = $grid["longitude"];
+                        $location_meta_grid['lat'] = $grid["latitude"];
+                        $location_meta_grid['level'] = $grid["level_name"];
+                        $location_meta_grid['label'] = $geocoder->_format_full_name( $grid );
+
+                        $potential_error = Location_Grid_Meta::add_user_location_grid_meta( $row['user_id'], $location_meta_grid, $row['umeta_id'] );
+
+                        echo esc_html( $location_meta_grid['label'] ) . '<br>';
+                    }
+                }
+            }
         }
 
         public function box_mapbox_user_upgrade() {
@@ -1716,7 +1760,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </tr>
 
                 <?php
-                $limit = 100;
                 $loop_again = false;
                 $count = -1;
                 if ( isset( $_GET['upgrade_user_database'] )
@@ -1734,41 +1777,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <span><img src="<?php echo esc_url( trailingslashit( get_stylesheet_directory_uri() ) ) ?>spinner.svg" width="22px" alt="spinner "/></span><br>
                         <?php
 
-                        // Insert processing with offset
-                        global $wpdb;
-                        $geocoder = new Location_Grid_Geocoder();
-                        $query = $wpdb->get_results( $wpdb->prepare( "
-                            SELECT *
-                            FROM $wpdb->usermeta
-                            WHERE meta_key = %s
-                            AND umeta_id NOT IN (
-                                SELECT DISTINCT( postmeta_id_location_grid )
-                                FROM $wpdb->dt_location_grid_meta)
-                            LIMIT %d",
-                            $wpdb->prefix . 'location_grid',
-                            $limit
-                        ), ARRAY_A);
-                        if ( ! empty( $query ) ) {
-                            foreach ( $query as $row ) {
-                                $grid = $geocoder->query_by_grid_id( $row["meta_value"] );
-                                if ( $grid ) {
-                                    $location_meta_grid = [];
-
-                                    Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
-                                    $location_meta_grid['post_id'] = $row['user_id'];
-                                    $location_meta_grid['post_type'] = 'users';
-                                    $location_meta_grid['grid_id'] = $row['meta_value'];
-                                    $location_meta_grid['lng'] = $grid["longitude"];
-                                    $location_meta_grid['lat'] = $grid["latitude"];
-                                    $location_meta_grid['level'] = $grid["level_name"];
-                                    $location_meta_grid['label'] = $geocoder->_format_full_name( $grid );
-
-                                    $potential_error = Location_Grid_Meta::add_user_location_grid_meta( $row['user_id'], $location_meta_grid, $row['umeta_id'] );
-
-                                    echo esc_html( $location_meta_grid['label'] ) . '<br>';
-                                }
-                            }
-                        }
+                        $this->upgrade_users_with_mapbox_meta_query();
 
                         $loop_again = ( $count >= 100 );
                         ?>

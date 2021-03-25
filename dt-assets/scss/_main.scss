@@ -119,18 +119,35 @@ NAVIGATION STYLES
     padding: 0 20px;
     z-index: 999;
 
+    .top-bar-right > .dropdown.menu > li {
+        margin: 0 10px;
+    }
+
     .dropdown.menu {
-        li {
-            margin: 0 10px;
-        }
         a {
           background-color: $primary-color;
         }
+        li.active > a {
+            background: #005a87;
+        }
+    }
+    .top-bar-left {
+        .dropdown.menu a:hover {
+            background-color: #224f72
+        }
+        //make dropdown caret white
+        .dropdown.menu>li.is-dropdown-submenu-parent>a:after {
+            border-color: #fefefe transparent transparent;
+        }
+    }
+    .dropdown.menu .is-submenu-item a:hover {
+        background-color: #224f72
     }
 
     a {
         font-weight: bold;
         padding: 1rem;
+        color: #fefefe;
     }
 
     .image-menu-nav {
@@ -158,12 +175,19 @@ NAVIGATION STYLES
     }
 }
 
-.notification-count {
+.notifications-menu-item .notification-count {
     display: none;
     vertical-align: top;
     position: relative;
     top: -5px;
     margin-left:-15px;
+}
+.notification-count-offcanvas {
+    display: none;
+    vertical-align: middle;
+    position: relative;
+    top: 0;
+    margin-left:10px;
 }
 .add-new-items-dropdown {
     background-color: #3f729b;
@@ -200,6 +224,18 @@ nav.second-bar {
             padding-right: 5px;
         }
         padding: 0.4em 0.75em;
+        margin-top: .2em;
+        margin-bottom: .2em;
+
+        @media screen and (max-width : 639px) {
+            &.follow {
+                padding: 0em .75em;
+                .fi-eye {
+                    font-size: 22px;
+                    line-height: 16px;
+                }
+            }
+        }
     }
     .dropdown.menu>li>a {
         padding-top: 0.4em;
@@ -221,6 +257,33 @@ nav.second-bar {
             vertical-align: middle;
         }
     }
+}
+
+.search-input {
+    margin-right: 0;
+}
+
+nav.second-bar .advanced_search {
+    border: 1px solid #cacaca;
+    border-inline-start: 0;
+    height: 2em;
+    padding: 0.15em 0.5em;
+    transform: translateX(-10px);
+    display: inline-block;
+    position: relative;
+}
+
+html[dir='rtl'] nav.second-bar .advanced_search {
+    transform: translateX(14px);
+}
+
+.advancedSearch-count {
+    vertical-align: top;
+    position: absolute;
+    font-size: .45em;
+    font-weight: bold;
+    top: 0;
+    left: 1.15rem;
 }
 
 #second-bar-small{
@@ -585,10 +648,13 @@ button.loader {
     margin-bottom: 10px;
 
     .typeahead__image_button {
-        padding-top: 8px;
+        padding-top: 3px;
         padding-bottom: 3px;
+        vertical-align: middle;
 
         img {
+            min-width: 15px;
+            min-height: 15px;
             width: 20px;
             height: 20px;
         }
@@ -697,10 +763,15 @@ html[dir='rtl'] {
 
         float: right !important;
     }
-    .notification-count {
+    .notifications-menu-item .notification-count {
         right: -15px;
         left: 0;
         margin-left:-15px;
+    }
+    .notification-count-offcanvas {
+        right: 0;
+        left: 0;
+        margin-left:10px;
     }
     .title-bar-right {
         text-align: left;
@@ -753,6 +824,68 @@ a.dt-green:hover {
     max-width: 1440px;
     margin-left: auto;
     margin-right: auto;
+}
+
+#notification-dropdown {
+    padding: 0;
+    border: none;
+    background-color: unset;
+    width: 500px;
+
+    .sized-box {
+        height: 6px;
+    }
+
+    .bordered-box {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        padding: 1rem 0;
+    }
+
+    .header {
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+    }
+
+    .button-group {
+        margin-bottom: 0;
+
+        .button {
+            font-size: 1rem;
+            padding: .5em 1em;
+        }
+    }
+    #notification-list {
+        margin: 0rem;
+    }
+}
+.new-notification-label {
+    margin-left: 5px;
+}
+@media screen and (max-width: 1024px) {
+    #notification-dropdown {
+        .sized-box {
+            height: 16px;
+        }
+    }
+}
+@media screen and (max-width: 640px) {
+    #notification-dropdown {
+        width: 300px;
+        .button-group {
+            .button {
+                font-size: .75rem;
+                padding: .75em 1em;
+            }
+        }
+        .notification-row .cell {
+            margin-left: 0.7rem;
+            margin-right: 0;
+        }
+        #notification-list {
+            margin-right: -1px;
+        }
+    }
 }
 
 #notification-list {
