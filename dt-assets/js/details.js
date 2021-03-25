@@ -746,6 +746,28 @@ jQuery(document).ready(function($) {
       },
       display: "name",
       templateValue: "{{name}}",
+      emptyTemplate: function(query) {
+        console.log(query)
+        console.log(this)
+        if (this.comparedItems.includes(query)) {
+          return `"${query}" is already in the list`
+        }
+        const liItem = $('<li>')
+        const button = $('<button>', {
+          text: `Add new tag "${query}"`,
+        })
+        button.on("click", function () {
+          const typeahead = Typeahead[".js-typeahead-tags"]
+          let tag = typeahead.query
+          typeahead.addMultiselectItemLayout({name: tag})
+          API.update_post(post_type, post_id, {tags: {values: [{value: tag}]}})
+          typeahead.hideLayout();
+          typeahead.resetInput();
+          masonGrid.masonry('layout')
+        })
+        liItem.append(button)
+        return liItem
+      },
       dynamic: true,
       multiselect: {
         matchOn: ["name"],
