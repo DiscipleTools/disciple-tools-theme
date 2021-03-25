@@ -359,6 +359,11 @@ class Disciple_Tools_Posts
                         $message = sprintf( _x( '%1$s changed to %2$s', "field1 changed to 'text'", 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
                     }
                 }
+                if ( $fields[$activity->meta_key]["type"] === "textarea"){
+                    if ( !empty( $activity->meta_value ) ){
+                        $message = sprintf( _x( '%1$s changed to %2$s', "field1 changed to 'text'", 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
+                    }
+                }
                 if ( $fields[$activity->meta_key]["type"] === "multi_select" ){
                     $value = $activity->meta_value;
                     if ( $activity->meta_value == "value_deleted" ){
