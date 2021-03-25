@@ -747,14 +747,13 @@ jQuery(document).ready(function($) {
       display: "name",
       templateValue: "{{name}}",
       emptyTemplate: function(query) {
-        console.log(query)
-        console.log(this)
+        const { addNewTagText, tagExistsText} = this.node[0].dataset
         if (this.comparedItems.includes(query)) {
-          return `"${query}" is already in the list`
+          return tagExistsText.replace('%s', query)
         }
         const liItem = $('<li>')
         const button = $('<button>', {
-          text: `Add new tag "${query}"`,
+          text: addNewTagText.replace('%s', query),
         })
         button.on("click", function () {
           const typeahead = Typeahead[".js-typeahead-tags"]

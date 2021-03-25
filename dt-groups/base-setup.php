@@ -529,7 +529,9 @@ class DT_Groups_Base extends DT_Module_Base {
                                 <input class="js-typeahead-tags input-height"
                                        name="tags[query]"
                                        placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields["tags"]['name'] ) )?>"
-                                       autocomplete="off">
+                                       autocomplete="off"
+                                       data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
+                                       data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
                             </span>
                             <span class="typeahead__button">
                                 <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
