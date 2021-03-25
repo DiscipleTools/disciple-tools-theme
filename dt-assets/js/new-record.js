@@ -91,7 +91,7 @@ jQuery(function($) {
         new_post[$(entry).attr('id')] = $(entry).val()
       }
     })
-    $('.textarea').each((index, entry)=>{
+    $('.dt_textarea').each((index, entry)=>{
       if ( $(entry).val() ){
         new_post[$(entry).attr('id')] = $(entry).val()
       }
