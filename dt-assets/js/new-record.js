@@ -91,6 +91,11 @@ jQuery(function($) {
         new_post[$(entry).attr('id')] = $(entry).val()
       }
     })
+    $('.textarea').each((index, entry)=>{
+      if ( $(entry).val() ){
+        new_post[$(entry).attr('id')] = $(entry).val()
+      }
+    });
     $('.dt-communication-channel').each((index, entry)=>{
       let channel = $(entry).data('field')
       if ( !new_post[channel]){
