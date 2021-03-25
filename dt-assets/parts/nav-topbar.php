@@ -21,6 +21,15 @@ $dt_nav_tabs = dt_default_menu_array();
 
 
 ?>
+
+<script>
+
+    jQuery(document).ready(function () {
+        get_notifications(false, true, dropdown = true, limit = 5);
+    });
+
+</script>
+
 <!--  /* TOP LEFT SIDE MENU AREA */ -->
 <div data-sticky-container>
     <div class="title-bar hide-for-large" data-sticky data-responsive-toggle="top-bar-menu" data-margin-top="0" data-sticky-on="medium">
@@ -70,7 +79,7 @@ $dt_nav_tabs = dt_default_menu_array();
 
             <!-- notifications -->
             <?php if ( isset( $dt_nav_tabs['admin']['notifications'] ) && ! empty( $dt_nav_tabs['admin']['notifications'] ) ) : ?>
-                <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>" style="margin-left: 10px">
+                <a href="#" class="notifications-menu-item" type="button" data-toggle="notification-dropdown" style="margin-left: 15px; margin-bottom: 0">
                     <img title="<?php esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( "Notifications", 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/bell.svg" ); ?>">
                     <span class="badge alert notification-count" style="display:none"></span>
                 </a>
@@ -175,8 +184,8 @@ $dt_nav_tabs = dt_default_menu_array();
                 <!--  notifications -->
                 <?php if ( isset( $dt_nav_tabs['admin']['notifications']['hidden'] ) && empty( $dt_nav_tabs['admin']['notifications']['hidden'] ) ) : ?>
                     <li class="image-menu-nav">
-                        <a href="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['link'] ?? site_url( '/notifications/' ) ); ?>">
-                            <img title="<?php echo esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( "Notifications", 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/bell.svg" ) ?>">
+                        <a href="#" class="notifications-menu-item" type="button" data-toggle="notification-dropdown" style="margin-bottom: 0">
+                            <img title="<?php esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( "Notifications", 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/bell.svg" ); ?>">
                             <span class="badge alert notification-count" style="display:none"></span>
                         </a>
                     </li>
@@ -210,3 +219,60 @@ $dt_nav_tabs = dt_default_menu_array();
         </div>
     </div>
 </div>
+
+<?php if ( isset( $dt_nav_tabs['admin']['notifications'] ) && ! empty( $dt_nav_tabs['admin']['notifications'] ) ) : ?>
+
+    <div class="dropdown-pane" id="notification-dropdown" data-position="bottom" data-alignment="right" data-dropdown data-hover="true" data-hover-pane="true" >
+
+        <div class="sized-box"></div>
+
+        <div class="bordered-box">
+
+            <div class="grid-x header">
+                <div class="cell">
+                    <div class="grid-x grid-margin-x align-middle">
+                        <div class="small-3 medium-3 cell grid-x align-middle">
+                            <span class="badge alert notification-count" style="display:none;">&nbsp;</span>
+                            <div class="new-notification-label"><strong><?php esc_html_e( 'New', 'disciple_tools' )?></strong></div>
+                        </div>
+                        <div class="small-6 medium-6 cell">
+                            <div class="expanded small button-group">
+                                <button id="dropdown-all" type="button"
+                                        onclick="toggle_dropdown_buttons('all'); get_notifications( all = true, true, true, 5 );"
+                                        class="button hollow"><?php echo esc_html_x( 'All', 'List Filters', 'disciple_tools' ) ?>
+                                </button>
+                                <button id="dropdown-new" type="button"
+                                        onclick="toggle_dropdown_buttons('new'); get_notifications( all = false, true, true, 5 );"
+                                        class="button"><?php esc_html_e( 'Unread', 'disciple_tools' )?>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="small-3 medium-3 cell" style="text-align:right;">
+                            <span>
+                                <a id="see-all" href="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['link'] ?? site_url( '/notifications/' ) ); ?>" >
+                                    <?php esc_html_e( 'See All', 'disciple_tools' ) ?>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="notification-list" class="grid-x grid-margin-x" style="border-top: 1px solid #ccc;"><span class="loading-spinner active" style="margin:1em;"></span></div>
+
+
+            <div class="" style="text-align:center;">
+                <span>
+                    <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark all as read', 'disciple_tools' ) ?></a>  -
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>settings/#notifications">
+                        <?php esc_html_e( 'Settings', 'disciple_tools' )?>
+                    </a>
+                </span=>
+                <!-- <span class="show-for-small-only">
+                    <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark All', 'disciple_tools' ) ?></a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+
+<?php endif; ?>
