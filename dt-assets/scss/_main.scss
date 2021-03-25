@@ -838,6 +838,17 @@ a.dt-green:hover {
     .unread-notification-row {
         background-color: rgba(63, 114, 155, 0.19);
     }
+
+    .notification-group-header {
+        background-color: $dark-gray;
+        color: white;
+        font-weight: 600;
+        padding: 0.7rem
+    }
+}
+
+.notifications-page #notification-list {
+    margin: 0 -10px;
 }
 
 /* keeps buttons from touching each other */
