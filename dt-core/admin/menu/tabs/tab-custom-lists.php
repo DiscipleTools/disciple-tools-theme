@@ -676,7 +676,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     wp_cache_delete( "contacts_field_settings" );
                     self::admin_notice( __( 'Quick Action added successfully', 'disciple_tools' ), 'success' );
                     return;
-                } 
+                }
             } else {
                 wp_die( 'Quick Action Update Error: Key is missing' );
             }
@@ -685,7 +685,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         // Delete Quick Action
         if ( ! empty( $_POST['delete_field'] ) ) {
             $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
-            
+
             unset( $custom_field_options['contacts'][ $delete_key ] );
             update_option( 'dt_field_customizations', $custom_field_options, true );
 
