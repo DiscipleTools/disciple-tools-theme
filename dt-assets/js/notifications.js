@@ -13,13 +13,13 @@ function get_new_notification_count() {
 setTimeout(get_new_notification_count, 2000)
 
 const notificationRead = notification_id => `
-  <a id="" class="read-button-${window.lodash.escape( notification_id )} read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
+  <a class="read-button-${window.lodash.escape( notification_id )} read-button button hollow small" style="border-radius:100px; margin: 0;"
       onclick="mark_unread( ${window.lodash.escape( notification_id )} )">
       <!--<i class="fi-minus hollow"></i>-->
    </a>
 `
 const notificationNew = notification_id => `
-  <a id="" class="new-button-${window.lodash.escape( notification_id )} new-button button small" style="border-radius:100px; margin: .7em 0 0;"
+  <a class="new-button-${window.lodash.escape( notification_id )} new-button button small" style="border-radius:100px; margin: 0;"
      onclick="mark_viewed( ${window.lodash.escape( notification_id )} )">
      <!--<i class="fi-check"></i>-->
   </a>
@@ -53,6 +53,12 @@ function mark_all_viewed () {
   }).fail(handleAjaxError)
 }
 
+const notification_group_header = (record_title) => `
+<div class="cell notification-group-header">
+    ${window.lodash.escape( record_title )}
+</div>
+`
+
 function notification_template (id, note, is_new, pretty_time) {
   let button = ``
   let label = `` // used by the mark_all_viewed()
@@ -66,14 +72,14 @@ function notification_template (id, note, is_new, pretty_time) {
 
 
   return `
-    <div class="row-${id} cell" id="">
-      <div class="grid-x grid-margin-x grid-padding-y bottom-border notification-row ${is_new ==='1' ? 'unread-notification-row' : ''} ">
+  <div class="row-${id} cell" id="">
+      <div class="grid-x grid-padding-x grid-padding-y bottom-border notification-row ${is_new ==='1' ? 'unread-notification-row' : ''} ">
 
         <div class="auto cell">
            ${note}<br>
            <span><small><strong>${window.lodash.escape(pretty_time[0])}</strong> | ${window.lodash.escape(pretty_time[1])}</small></span>
         </div>
-        <div class="small-2 medium-1 cell padding-5 toggle-area-${window.lodash.escape( id )} ${window.lodash.escape( label )}" id="">
+        <div class="small-2 medium-1 cell padding-5 grid-x align-center align-middle ${window.lodash.escape( label )} toggle-area-${window.lodash.escape( id )}">
             ${button}
         </div>
       </div>
@@ -146,9 +152,20 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
         jQueryElements.notificationList.empty()
       }
 
-      jQuery.each(data, function (i, item) {
-        jQueryElements.notificationList.append(notification_template(data[i].id, data[i].notification_note, data[i].is_new, data[i].pretty_time))
+      const groupedData = groupNotificationsByDayAndRecord(data)
+
+      groupedData.forEach((dayGroupedByRecord) => {
+        Object.entries(dayGroupedByRecord).forEach(([record_title, notifications]) => {
+          jQueryElements.notificationList.append(notification_group_header(record_title))
+
+          notifications.forEach((notification) => {
+            jQueryElements.notificationList.append(notification_template(notification.id, notification.notification_note, notification.is_new, notification.pretty_time))
+          })
+        })
       })
+      /* jQuery.each(data, function (i, item) {
+        jQueryElements.notificationList.append(notification_template(data[i].id, data[i].notification_note, data[i].is_new, data[i].pretty_time))
+      }) */
     } else if (
       (all === true && (all_offset === 0 || !all_offset )) ||
       all === false && (new_offset === 0 || !new_offset))
@@ -165,6 +182,33 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
       jQueryElements.nextNew && jQueryElements.nextNew.hide()
     }
   }).fail(handleAjaxError)
+}
+
+function groupNotificationsByDayAndRecord(data) {
+
+  function getDate(dateString) {
+    if (!dateString) return ''
+    return dateString.split(' ')[0];
+  }
+
+  const sortedByDayAndRecord = []
+  let currentDay = ''
+  let daysNotifications = {}
+  data.forEach(notif => {
+    // data is already in date order, so we can go day by day
+    const date = getDate(notif.date_notified)
+    if (date !== currentDay ) {
+      currentDay = date
+      daysNotifications = {}
+      sortedByDayAndRecord.push(daysNotifications)
+    }
+    if (!daysNotifications[notif.post_title]) {
+      daysNotifications[notif.post_title] = []
+    }
+    daysNotifications[notif.post_title].push(notif)
+  });
+
+  return sortedByDayAndRecord
 }
 
 function toggle_buttons( state ) {

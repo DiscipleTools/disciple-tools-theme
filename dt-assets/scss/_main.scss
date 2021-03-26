@@ -826,6 +826,27 @@ a.dt-green:hover {
     margin-right: auto;
 }
 
+#notification-list {
+    .read-button {
+        padding: 0.85em;
+    }
+
+    .new-button {
+        padding: 0.85em;
+    }
+
+    .unread-notification-row {
+        background-color: rgba(63, 114, 155, 0.19);
+    }
+
+    .notification-group-header {
+        background-color: #3f729b;
+        color: white;
+        font-weight: 600;
+        padding: 0.7rem
+    }
+}
+
 #notification-dropdown {
     padding: 0;
     border: none;
@@ -858,6 +879,9 @@ a.dt-green:hover {
     #notification-list {
         margin: 0rem;
     }
+    .notification-group-header {
+        padding: 0.3rem 0.7rem
+    }
 }
 .new-notification-label {
     margin-left: 5px;
@@ -888,18 +912,8 @@ a.dt-green:hover {
     }
 }
 
-#notification-list {
-    .read-button {
-        padding: 0.85em;
-    }
-
-    .new-button {
-        padding: 0.85em;
-    }
-
-    .unread-notification-row {
-        background-color: rgba(63, 114, 155, 0.19);
-    }
+.notifications-page #notification-list {
+    margin: 0 -10px;
 }
 
 /* keeps buttons from touching each other */
