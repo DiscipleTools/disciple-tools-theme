@@ -195,7 +195,7 @@ DT comments and activity
             right: 0;
             bottom: 0;
             left: 0;
-            z-index: 9;
+            z-index: 8;
             display: block;
             cursor: default;
             content: " ";
@@ -203,6 +203,7 @@ DT comments and activity
         }
         .reactions__dropdown {
             width: auto;
+            z-index: 9;
             border-radius: 6px;
             box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
             transform: translate(-20px, 5px);
@@ -224,6 +225,18 @@ DT comments and activity
                 border-bottom: 8px solid #cacaca;
             }
         }
+        .add-reaction {
+            margin: 0 0.2rem;
+        }
+        .add-reaction:hover {
+            transform: scale(1.2);
+            transition: all 0.1s ease;
+        }
+    }
+
+    .emoji {
+        width: 1.4rem;
+        height: 1.4rem;
     }
 
     .comment-controls {
