@@ -20,13 +20,13 @@ function dt_print_details_bar(
 ) {
     $dt_post_type     = get_post_type();
     $post_id          = get_the_ID();
-    $post_settings    = DT_Posts::get_post_settings($dt_post_type);
-    $dt_post          = DT_Posts::get_post($dt_post_type, $post_id);
-    $shared_with      = DT_Posts::get_shared_with($dt_post['post_type'], $post_id);
+    $post_settings    = DT_Posts::get_post_settings( $dt_post_type );
+    $dt_post          = DT_Posts::get_post( $dt_post_type, $post_id );
+    $shared_with      = DT_Posts::get_shared_with( $dt_post['post_type'], $post_id );
     $shared_with_text = '';
 
     foreach ( $shared_with as $shared ) {
-        $shared_with_text .= sprintf( ', %s', $shared[ 'display_name' ] );
+        $shared_with_text .= sprintf( ', %s', $shared['display_name'] );
     }
     ?>
 
@@ -119,7 +119,7 @@ function dt_print_details_bar(
                         <div class="cell shrink center-items ">
                             <button class="center-items open-share">
                                 <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                                <span data-tooltip title="<?php esc_html_e( ltrim($shared_with_text, ','), 'disciple_tools' ) ?>" style="margin:0 10px 2px 10px"><?php esc_html_e( "Share (".count($shared_with).")", "disciple_tools" ); ?></span>
+                                <span data-tooltip title="<?php esc_html_e( ltrim( $shared_with_text, ',' ), 'disciple_tools' ) ?>" style="margin:0 10px 2px 10px"><?php esc_html_e( sprintf( "Share (%s)", count( $shared_with ) ), "disciple_tools" ); ?></span>
                             </button>
                         </div>
                         <?php endif; ?>
