@@ -366,7 +366,14 @@ jQuery(document).ready(function($) {
     document.querySelectorAll('.reactions__dropdown').forEach((element) => {
       const commentId = element.dataset.commentId
       const emojis = emojiButtons()
-      element.appendChild(emojis)
+      const reactionForm = `
+      <form class="pick-reaction-form" method="POST" action="${window.wpApiShare.root}/dt-posts/v2/${postType}/${postId}/comments/${commentId}/react" >
+        <input type="hidden" name="user_id" value="${commentsSettings.current_user_id}"/>
+        ${emojis}
+      </form>
+      `
+      element.innerHTML = reactionForm 
+
     })
     document.querySelectorAll('#comments-wrapper [data-toggle]').forEach((element) => {
       const dropdownId = $(element).data('toggle')
@@ -391,14 +398,15 @@ jQuery(document).ready(function($) {
     emojiContainer.classList.add('reactions-emoji-container')
     let emojis = ''
     reactions.forEach((reaction) => {
+      const reactionValue = reaction.alias.toUpperCase().replace(' ', '_')
       emojis += `
-      <button class="add-reaction" type="submit">
+      <button class="add-reaction" type="submit" name="reaction" value="${reactionValue} reaction">
         <img class="emoji" alt="${reaction.name}" src="${reaction.path}">
       </button>
       `
     })
     emojiContainer.innerHTML = emojis
-    return emojiContainer
+    return emojiContainer.outerHTML
   }
 
   function baptismTimestamptoDate(match, timestamp) {

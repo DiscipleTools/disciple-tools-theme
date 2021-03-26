@@ -230,6 +230,20 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+        //toggle comment reaction
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments/(?P<comment_id>\d+)/react', [
+                [
+                    "methods"  => "POST",
+                    "callback" => [ $this, 'toggle_comment_reaction' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
+                        "comment_id" => $arg_schemas["comment_id"],
+                    ]
+                ]
+            ]
+        );
         //get_activity
         register_rest_route(
             $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/activity', [
@@ -535,6 +549,13 @@ class Disciple_Tools_Posts_Endpoints {
     public function delete_comment( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $result = DT_Posts::delete_post_comment( $url_params["comment_id"] );
+        return $result;
+    }
+
+    public function toggle_comment_reaction( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        $post_params = $request->get_body_params();
+        $result = DT_Posts::toggle_post_comment_reaction( $url_params["comment_id"], $post_params["user_id"], $post_params["reaction"] );
         return $result;
     }
 
