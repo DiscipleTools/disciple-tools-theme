@@ -751,14 +751,13 @@ jQuery(document).ready(function($) {
         if (this.comparedItems.includes(query)) {
           return tagExistsText.replace('%s', query)
         }
-        const that = this
         const liItem = $('<li>')
         const button = $('<button>', {
           text: addNewTagText.replace('%s', query),
         })
+        const tag = this.query
+        const addTag = addTagOnClick.bind(this)
         button.on("click", function () {
-          const tag = that.query
-          const addTag = addTagOnClick.bind(that)
           addTag(tag)
         })
         liItem.append(button)
