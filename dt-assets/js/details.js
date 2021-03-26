@@ -753,6 +753,7 @@ jQuery(document).ready(function($) {
         }
         const liItem = $('<li>')
         const button = $('<button>', {
+          class: "button primary",
           text: addNewTagText.replace('%s', query),
         })
         const tag = this.query
