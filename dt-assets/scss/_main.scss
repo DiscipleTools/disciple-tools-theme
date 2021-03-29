@@ -175,7 +175,7 @@ NAVIGATION STYLES
     }
 }
 
-.notification-count {
+.notifications-menu-item .notification-count {
     display: none;
     vertical-align: top;
     position: relative;
@@ -763,7 +763,7 @@ html[dir='rtl'] {
 
         float: right !important;
     }
-    .notification-count {
+    .notifications-menu-item .notification-count {
         right: -15px;
         left: 0;
         margin-left:-15px;
@@ -838,6 +838,82 @@ a.dt-green:hover {
     .unread-notification-row {
         background-color: rgba(63, 114, 155, 0.19);
     }
+
+    .notification-group-header {
+        background-color: #3f729b;
+        color: white;
+        font-weight: 600;
+        padding: 0.7rem
+    }
+}
+
+#notification-dropdown {
+    padding: 0;
+    border: none;
+    background-color: unset;
+    width: 500px;
+
+    .sized-box {
+        height: 6px;
+    }
+
+    .bordered-box {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        padding: 1rem 0;
+    }
+
+    .header {
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+    }
+
+    .button-group {
+        margin-bottom: 0;
+
+        .button {
+            font-size: 1rem;
+            padding: .5em 1em;
+        }
+    }
+    #notification-list {
+        margin: 0rem;
+    }
+    .notification-group-header {
+        padding: 0.3rem 0.7rem
+    }
+}
+.new-notification-label {
+    margin-left: 5px;
+}
+@media screen and (max-width: 1024px) {
+    #notification-dropdown {
+        .sized-box {
+            height: 16px;
+        }
+    }
+}
+@media screen and (max-width: 640px) {
+    #notification-dropdown {
+        width: 300px;
+        .button-group {
+            .button {
+                font-size: .75rem;
+                padding: .75em 1em;
+            }
+        }
+        .notification-row .cell {
+            margin-left: 0.7rem;
+            margin-right: 0;
+        }
+        #notification-list {
+            margin-right: -1px;
+        }
+    }
+}
+
+.notifications-page #notification-list {
+    margin: 0 -10px;
 }
 
 /* keeps buttons from touching each other */

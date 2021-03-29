@@ -302,7 +302,12 @@ class Disciple_Tools_Notifications
         $user_id = get_current_user_id();
 
         $result = $wpdb->get_results( $wpdb->prepare(
-            "SELECT * FROM `$wpdb->dt_notifications`
+            "SELECT 
+                n.*,
+                p.post_title
+             FROM `$wpdb->dt_notifications` AS n
+             INNER JOIN `$wpdb->posts` AS p
+                ON n.post_id = p.ID
              WHERE user_id = %d
              AND is_new LIKE %s
              ORDER BY date_notified
