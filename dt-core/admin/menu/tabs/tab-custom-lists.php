@@ -682,25 +682,23 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             if ( empty( $key ) ) {
                 wp_die( 'Quick Action Update Error: Key is missing' );
             } else {
-                if ( isset( $custom_field_options['contacts'][$key] ) ) {
-                    self::admin_notice( __( 'This quick action already exists', 'disciple_tools' ), 'error' );
-                } else {
-                    $custom_field_options['contacts'][$key] = [
-                        'name'        => $label,
-                        'description' => '',
-                        'type'        => 'number',
-                        'default'     => 0,
-                        'section'     => 'quick_buttons_custom',
-                        'icon'        => $icon_url,
-                        'customizable' => false,
-                    ];
+                // Add new Quick Action
+                $key = dt_create_field_key( $key, true );
+                $custom_field_options['contacts'][$key] = [
+                    'name'        => $label,
+                    'description' => '',
+                    'type'        => 'number',
+                    'default'     => 0,
+                    'section'     => 'quick_buttons_custom',
+                    'icon'        => $icon_url,
+                    'customizable' => false,
+                ];
 
-                    update_option( 'dt_field_customizations', $custom_field_options, true );
-                    wp_cache_delete( "contacts_field_settings" );
+                update_option( 'dt_field_customizations', $custom_field_options, true );
+                wp_cache_delete( "contacts_field_settings" );
 
-                    self::admin_notice( __( 'Quick Action added successfully', 'disciple_tools' ), 'success' );
-                    return;
-                }
+                self::admin_notice( __( 'Quick Action added successfully', 'disciple_tools' ), 'success' );
+                return;
             }
         }
 
