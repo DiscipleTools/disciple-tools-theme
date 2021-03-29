@@ -746,6 +746,24 @@ jQuery(document).ready(function($) {
       },
       display: "name",
       templateValue: "{{name}}",
+      emptyTemplate: function(query) {
+        const { addNewTagText, tagExistsText} = this.node[0].dataset
+        if (this.comparedItems.includes(query)) {
+          return tagExistsText.replace('%s', query)
+        }
+        const liItem = $('<li>')
+        const button = $('<button>', {
+          class: "button primary",
+          text: addNewTagText.replace('%s', query),
+        })
+        const tag = this.query
+        const addTag = addTagOnClick.bind(this)
+        button.on("click", function () {
+          addTag(tag)
+        })
+        liItem.append(button)
+        return liItem
+      },
       dynamic: true,
       multiselect: {
         matchOn: ["name"],
@@ -761,12 +779,9 @@ jQuery(document).ready(function($) {
       },
       callback: {
         onClick: function (node, a, item, event) {
-          API.update_post(post_type, post_id, {tags: {values: [{value: item.name}]}})
-          this.addMultiselectItemLayout(item)
           event.preventDefault()
-          this.hideLayout();
-          this.resetInput();
-          masonGrid.masonry('layout')
+          const addTag = addTagOnClick.bind(this)
+          addTag(item.name)
         },
         onResult: function (node, query, result, resultCount) {
           let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -787,6 +802,14 @@ jQuery(document).ready(function($) {
       Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name: tag})
       API.update_post(post_type, post_id, {tags: {values: [{value: tag}]}})
     })
+  }
+
+  function addTagOnClick(tag) {
+    API.update_post(post_type, post_id, {tags: {values: [{value: tag}]}})
+    this.addMultiselectItemLayout({ name: tag})
+    this.hideLayout();
+    this.resetInput();
+    masonGrid.masonry('layout')
   }
 
 
