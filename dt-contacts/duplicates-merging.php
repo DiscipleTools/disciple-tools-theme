@@ -575,6 +575,13 @@ class DT_Duplicate_Checker_And_Merging {
         ", esc_sql( $limit ) ), ARRAY_A );
 
 
+        $total = $wpdb->get_var("
+            SELECT count(posts.ID)
+            FROM $wpdb->posts posts
+            INNER JOIN $wpdb->postmeta type ON ( posts.ID = type.post_id and type.meta_key = 'type' AND type.meta_value = 'access' )
+            WHERE posts.post_type = 'contacts'
+        " );
+
         //search for duplicates on each post
         foreach ( $recent_contacts as &$contact ){
             $dups = self::query_for_duplicate_searches_v2( "contacts", $contact["ID"] );
@@ -614,7 +621,8 @@ class DT_Duplicate_Checker_And_Merging {
 
         return [
             "scanned" => $limit + 100,
-            "posts_with_matches" => $return
+            "posts_with_matches" => $return,
+            "reached_the_end" => $limit > $total,
         ];
     }
 
