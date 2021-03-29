@@ -39,8 +39,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
 
-        require_once get_template_directory() . '/dt-contacts/dmm-module.php';
-
         parent::__construct();
     } // End __construct()
 
@@ -586,8 +584,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             <table class="widefat">
                 <thead>
                 <tr>
-                    <td><?php esc_html_e( 'Icon', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Name', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Icon link (must be https)', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></td>
                 </tr>
                 </thead>
@@ -598,15 +596,17 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             continue;
                         }?>
                         <tr>
-                            <td class="quick-action-menu"><img src="<?php echo esc_html( $field_settings['icon'] ) ?>" ></td>
                             <td>
                                 <?php
                                 if ( $field_settings['section'] === 'quick_buttons_custom' ) {
                                     echo '<input type="text" name="edit_field[' . esc_attr( $field_key ) . ']" value="'. esc_html( $field_settings['name'] ) . '">';
+                                    $input_box_enabled = true;
                                 } else {
                                     echo esc_html( $field_settings['name'] );
+                                    $input_box_enabled = false;
                                 } ?>
                             </td>
+                            <td class="quick-action-menu"><input type="text" name="edit_field_icon" value="<?php echo esc_html( $field_settings['icon'] ) ?>" <?php if ( ! $input_box_enabled ) { esc_html_e( 'disabled' ); } ?>></td>
                             <td>
                                 <?php
                                 if ( $field_settings['section'] === 'quick_buttons_custom' ) {
@@ -622,9 +622,18 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             <button type="submit" style="float:right;" class="button"><?php echo esc_html( __( 'Save', 'disciple_tools' ) ) ?></button>
             <div id="add_quick_action" style="display:none;">
                 <hr>
-                <p><?php esc_html_e( 'Write quick action name', 'disciple_tools' ); ?></p>
-                <input name="add_custom_quick_action" placeholder="Custom Quick Action" type="text">
-                <button type="submit" class="button"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></button>
+                <label for="add_custom_quick_action_label">Name:</label>
+                <input name="add_custom_quick_action_label" placeholder="Custom Quick Action" type="text">
+                <br>
+                <br>
+                <div class="menuitem">
+                    <label for="default">Default Icon:</label>
+                    <input type="radio" name="icon" value="default" checked><img src="<?php echo esc_html( get_template_directory_uri() );?>/dt-assets/images/follow.svg"></div>
+                    <br>
+                    <label for="custom">Custom Icon:</label>
+                    <input type="radio" name="icon" value="custom">
+                    <input name="add_custom_quick_action_icon" type="text">
+                    <button type="submit" class="button"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></button>
             </div>
         </form>
         <?php
@@ -655,9 +664,16 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         }
 
         // Add a new custom field
-        if ( ! empty( $_POST['add_custom_quick_action'] ) ) {
-            $label = sanitize_text_field( wp_unslash( $_POST['add_custom_quick_action'] ) );
+        if ( ! empty( $_POST['add_custom_quick_action_label'] ) ) {
+            $label = sanitize_text_field( wp_unslash( $_POST['add_custom_quick_action_label'] ) );
             $key = dt_create_field_key( 'quick_button_' . $label );
+
+            // Check quick action icon
+            if ( ! empty( $_POST['add_custom_quick_action_icon'] ) ) {
+                $icon_url = sanitize_text_field( wp_unslash( $_POST["add_custom_quick_action_icon"] ) );
+            } else {
+                $icon_url = get_template_directory_uri() . '/dt-assets/images/follow.svg';
+            }
 
             if ( empty( $label ) ) {
                 wp_die( 'Quick Action Update Error: Label is missing' );
@@ -675,7 +691,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         'type'        => 'number',
                         'default'     => 0,
                         'section'     => 'quick_buttons_custom',
-                        'icon'        => get_template_directory_uri() . '/dt-assets/images/follow.svg',
+                        'icon'        => $icon_url,
                         'customizable' => false,
                     ];
 
@@ -703,10 +719,16 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         // Rename Quick Action
         if ( ! empty( $_POST['edit_field'] ) ) {
             $quick_action_edits = dt_recursive_sanitize_array( $_POST['edit_field'] );
+            if ( isset( $_POST['edit_field_icon'] ) ) {
+                $edit_field_icon = sanitize_text_field( wp_unslash( $_POST['edit_field_icon'] ) );
+            } else {
+                $edit_field_icon = get_template_directory_uri() . '/dt-assets/images/follow.svg';
+            }
             foreach ( $quick_action_edits as $quick_action_key => $quick_action_new_name ) {
                 $quick_action_key = sanitize_text_field( wp_unslash( $quick_action_key ) );
                 $quick_action_new_name = sanitize_text_field( wp_unslash( $quick_action_new_name ) );
                 $custom_field_options['contacts'][ $quick_action_key ]['name'] = $quick_action_new_name;
+                $custom_field_options['contacts'][ $quick_action_key ]['icon'] = $edit_field_icon;
             }
 
             update_option( 'dt_field_customizations', $custom_field_options, true );
