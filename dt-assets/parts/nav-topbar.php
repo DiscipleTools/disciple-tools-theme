@@ -258,7 +258,7 @@ $dt_nav_tabs = dt_default_menu_array();
                 </div>
             </div>
 
-            <div id="notification-list" class="grid-x grid-margin-x" style="border-top: 1px solid #ccc;"><span class="loading-spinner active" style="margin:1em;"></span></div>
+            <div id="notification-list" class="grid-x" style="border-top: 1px solid #ccc;"><span class="loading-spinner active" style="margin:1em;"></span></div>
 
 
             <div class="" style="text-align:center;">

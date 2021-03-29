@@ -48,7 +48,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     LEFT JOIN $wpdb->postmeta AS requires_update_field ON ($wpdb->posts.ID = requires_update_field.post_id AND requires_update_field.meta_key = 'requires_update' )
                     LEFT JOIN $wpdb->postmeta AS overall_status_field ON ( $wpdb->posts.ID = overall_status_field.post_id AND overall_status_field.meta_key = 'overall_status')
                     LEFT JOIN $wpdb->postmeta AS seeker_path_field ON ( $wpdb->posts.ID = seeker_path_field.post_id AND seeker_path_field.meta_key = 'seeker_path' )
-                    INNER JOIN $wpdb->postmeta AS type_field ON ( $wpdb->posts.ID = type_field.meta_key = 'type' AND type_field.meta_value = 'access' )
+                    INNER JOIN $wpdb->postmeta AS type_field ON ( $wpdb->posts.ID = type_field.post_id AND type_field.meta_key = 'type' AND type_field.meta_value = 'access' )
                     WHERE ( requires_update_field.meta_value = '' OR requires_update_field.meta_value = '0' OR requires_update_field.meta_key IS NULL )
                     AND overall_status_field.meta_value = %s
                     AND seeker_path_field.meta_value = %s
