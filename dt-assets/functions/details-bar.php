@@ -118,8 +118,8 @@ function dt_print_details_bar(
                         <?php if ( $share_button ): ?>
                         <div class="cell shrink center-items ">
                             <button class="center-items open-share">
-                                <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                                <span data-tooltip title="<?php esc_html_e( ltrim( $shared_with_text, ',' ), 'disciple_tools' ) ?>" style="margin:0 10px 2px 10px"><?php esc_html_e( sprintf( "Share (%s)", count( $shared_with ) ), "disciple_tools" ); ?></span>
+                                <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ); ?>">
+                                <span data-tooltip title="<?php echo esc_html( sprintf( '%s', ltrim( $shared_with_text, ',' ) ) ); ?>" style="margin:0 10px 2px 10px"><?php echo sprintf( 'Share (%s)', esc_html( count( $shared_with ) ) ); ?></span>
                             </button>
                         </div>
                         <?php endif; ?>
