@@ -25,7 +25,7 @@ jQuery(document).ready(function($) {
     $(`#${id}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
       $(`#${id}-spinner`).removeClass('active')
-      $( document ).trigger( "text-input-updated", [ newPost, id, val ] );
+      $( document ).trigger( "textarea-updated", [ newPost, id, val ] );
     }).catch(handleAjaxError)
   })
 
@@ -813,6 +813,8 @@ jQuery(document).ready(function($) {
         let field_value = window.lodash.get( post, field_key, false )
         let values_html = ``
         if ( field_options.type === 'text' ){
+          values_html = window.lodash.escape( field_value )
+        } else if ( field_options.type === 'textarea' ){
           values_html = window.lodash.escape( field_value )
         } else if ( field_options.type === 'date' ){
           values_html = window.lodash.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )

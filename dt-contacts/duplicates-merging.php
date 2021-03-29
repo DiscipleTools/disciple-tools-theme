@@ -378,6 +378,9 @@ class DT_Duplicate_Checker_And_Merging {
             if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                 $update[$key] = $fields;
             }
+            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "textarea" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                $update[$key] = $fields;
+            }
             if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "number" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                 $update[$key] = $fields;
             }

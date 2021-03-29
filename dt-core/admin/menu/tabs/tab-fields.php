@@ -92,7 +92,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
         $fields = $post_settings["fields"];
 
 
-        $types = [ "text", "date", 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'post_user_meta', 'number', 'communication_channel' ];
+        $types = [ "text", "textarea", "date", 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'post_user_meta', 'number', 'communication_channel' ];
         foreach ( $types as $type ){
             ?>
             <h3>Field type: <?php echo esc_html( $type ) ?></h3>
