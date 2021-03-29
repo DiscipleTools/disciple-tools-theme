@@ -33,14 +33,15 @@ msgstr "Napaka 404 – Ni najdeno"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "Strani, ki ste jo iskali, ni bilo mogoče najti ali pa je bila izbrisana"
 
-#: dt-contacts/base-setup.php:294
+#: dt-contacts/base-setup.php:298
 #: dt-groups/base-setup.php:156
 #: dt-users/template-user-management.php:78
 #: dt-users/user-management.php:100
 msgid "Active"
 msgstr "Aktivno"
 
-#: template-notifications.php:42
+#: dt-assets/parts/nav-topbar.php:236
+#: template-notifications.php:43
 msgid "New"
 msgstr "Novo"
 
@@ -57,10 +58,10 @@ msgstr "Ogled dvojnikov"
 msgid "Search"
 msgstr "Iskanje"
 
-#: dt-contacts/base-setup.php:546
-#: dt-contacts/base-setup.php:554
-#: dt-contacts/base-setup.php:571
-#: dt-contacts/base-setup.php:572
+#: dt-contacts/base-setup.php:570
+#: dt-contacts/base-setup.php:578
+#: dt-contacts/base-setup.php:595
+#: dt-contacts/base-setup.php:596
 msgid "Shared with me"
 msgstr "V skupni rabi z mano"
 
@@ -75,35 +76,35 @@ msgstr "Dodaj nov filter"
 msgid "Assigned To"
 msgstr "Dodeljeno"
 
-#: archive-template.php:547
+#: archive-template.php:559
 #: dt-assets/functions/enqueue-scripts.php:307
 #: dt-posts/custom-post-type.php:161
 msgid "Creation Date"
 msgstr "Datum nastanka"
 
-#: archive-template.php:538
+#: archive-template.php:550
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Filter za dodeljeno ALI Dodeljeno"
 
-#: archive-template.php:563
-#: archive-template.php:564
+#: archive-template.php:575
+#: archive-template.php:576
 #: template-settings.php:405
 msgid "No"
 msgstr "Ne"
 
-#: archive-template.php:570
-#: archive-template.php:571
+#: archive-template.php:582
+#: archive-template.php:583
 #: template-settings.php:404
 msgid "Yes"
 msgstr "Da"
 
-#: archive-template.php:578
-#: archive-template.php:589
+#: archive-template.php:590
+#: archive-template.php:601
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Prazno"
 
-#: archive-template.php:617
+#: archive-template.php:629
 #: dt-assets/functions/enqueue-scripts.php:272
 #: dt-assets/functions/enqueue-scripts.php:302
 #: template-merge-details.php:102
@@ -121,15 +122,15 @@ msgstr "Shrani"
 msgid "Update Needed"
 msgstr "Potrebna je posodobitev"
 
-#: dt-contacts/user-module.php:82
+#: dt-contacts/user-module.php:83
 msgid "Make a user from this contact"
 msgstr "Naredi uporabnika iz tega stika"
 
-#: dt-contacts/user-module.php:85
+#: dt-contacts/user-module.php:86
 msgid "Link to an existing user"
 msgstr "Povezava do obstoječega uporabnika"
 
-#: dt-contacts/base-setup.php:364
+#: dt-contacts/base-setup.php:388
 msgid "Merge with another contact"
 msgstr "Združi z drugim stikom"
 
@@ -140,7 +141,7 @@ msgstr "Sledim"
 
 #: archive-template.php:387
 #: dt-assets/functions/details-bar.php:106
-#: dt-contacts/base-setup.php:162
+#: dt-contacts/base-setup.php:163
 #: dt-groups/base-setup.php:96
 msgid "Follow"
 msgstr "Sledi"
@@ -203,11 +204,11 @@ msgstr "Razvrščanje po"
 msgid "Date Modified"
 msgstr "Datum spremembe"
 
-#: archive-template.php:410
-#: dt-contacts/base-setup.php:49
-#: dt-contacts/base-setup.php:260
-#: dt-contacts/dmm-module.php:303
-#: dt-groups/base-setup.php:650
+#: archive-template.php:422
+#: dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:264
+#: dt-contacts/dmm-module.php:305
+#: dt-groups/base-setup.php:654
 #: dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/hover-map.php:127
 #: dt-metrics/combined/locations-list.php:120
@@ -227,13 +228,13 @@ msgstr "Datum spremembe"
 msgid "Contacts"
 msgstr "Stiki"
 
-#: archive-template.php:412
+#: archive-template.php:424
 #: dt-groups/base-setup.php:48
-#: dt-groups/base-setup.php:450
-#: dt-groups/base-setup.php:667
-#: dt-groups/base-setup.php:684
-#: dt-groups/base-setup.php:721
-#: dt-groups/base-setup.php:732
+#: dt-groups/base-setup.php:454
+#: dt-groups/base-setup.php:671
+#: dt-groups/base-setup.php:688
+#: dt-groups/base-setup.php:725
+#: dt-groups/base-setup.php:736
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/hover-map.php:172
 #: dt-metrics/combined/locations-list.php:165
@@ -255,8 +256,8 @@ msgstr "Statistika"
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:64
 #: dt-assets/parts/nav-offcanvas.php:48
-#: dt-assets/parts/nav-topbar.php:74
-#: dt-assets/parts/nav-topbar.php:179
+#: dt-assets/parts/nav-topbar.php:83
+#: dt-assets/parts/nav-topbar.php:188
 #: template-notifications.php:33
 #: template-settings.php:45
 #: template-settings.php:354
@@ -267,8 +268,9 @@ msgstr "Obvestila"
 #: dt-assets/functions/menu.php:70
 #: dt-assets/functions/menu.php:76
 #: dt-assets/parts/modals/modal-help.php:154
-#: dt-assets/parts/nav-topbar.php:82
-#: template-notifications.php:59
+#: dt-assets/parts/nav-topbar.php:91
+#: dt-assets/parts/nav-topbar.php:268
+#: template-notifications.php:62
 msgid "Settings"
 msgstr "Nastavitve"
 
@@ -277,7 +279,7 @@ msgid "Admin"
 msgstr "Skrbnik"
 
 #: dt-assets/parts/nav-offcanvas.php:77
-#: dt-assets/parts/nav-topbar.php:202
+#: dt-assets/parts/nav-topbar.php:211
 msgid "Log Off"
 msgstr "Odjava"
 
@@ -313,7 +315,7 @@ msgstr "Ta stik predstavlja uporabnika."
 msgid "Status"
 msgstr "Stanje"
 
-#: dt-contacts/dmm-module.php:122
+#: dt-contacts/dmm-module.php:123
 msgid "Sub-assigned to"
 msgstr "Dodeljeno za"
 
@@ -321,7 +323,7 @@ msgstr "Dodeljeno za"
 msgid "Social Media"
 msgstr "Družabna omrežja"
 
-#: dt-contacts/base-setup.php:219
+#: dt-contacts/base-setup.php:220
 #: dt-core/configuration/config-site-defaults.php:455
 #: dt-groups/base-setup.php:385
 #: template-settings.php:130
@@ -329,16 +331,15 @@ msgid "Address"
 msgstr "Naslov"
 
 #: dt-assets/parts/modals/modal-help.php:126
-#: dt-contacts/base-setup.php:212
+#: dt-contacts/base-setup.php:204
 #: dt-groups/base-setup.php:367
-#: dt-groups/base-setup.php:377
 msgid "Locations"
 msgstr "Lokacije"
 
-#: dt-contacts/dmm-module.php:187
-#: dt-contacts/dmm-module.php:302
-#: dt-groups/base-setup.php:403
-#: dt-groups/base-setup.php:720
+#: dt-contacts/dmm-module.php:189
+#: dt-contacts/dmm-module.php:304
+#: dt-groups/base-setup.php:406
+#: dt-groups/base-setup.php:724
 #: dt-people-groups/people-groups-post-type.php:132
 msgid "People Groups"
 msgstr "Skupine ljudi"
@@ -347,12 +348,12 @@ msgstr "Skupine ljudi"
 msgid "Age"
 msgstr "Starost"
 
-#: dt-contacts/base-setup.php:272
+#: dt-contacts/base-setup.php:276
 #: template-settings.php:507
 msgid "Gender"
 msgstr "Spol"
 
-#: archive-template.php:452
+#: archive-template.php:464
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
@@ -400,7 +401,7 @@ msgstr "Verske prelomnice"
 msgid "Group"
 msgstr "Skupina"
 
-#: archive-template.php:462
+#: archive-template.php:474
 msgid "Loading..."
 msgstr "Nalaganje ..."
 
@@ -464,8 +465,8 @@ msgstr "Izbriši komentar:"
 #: dt-assets/parts/modals/modal-revert.php:15
 #: dt-assets/parts/modals/modal-share.php:50
 #: dt-assets/parts/modals/modal-tasks.php:46
-#: dt-contacts/dmm-module.php:557
-#: dt-groups/base-setup.php:625
+#: dt-contacts/dmm-module.php:559
+#: dt-groups/base-setup.php:629
 msgid "Close"
 msgstr "Zapri"
 
@@ -529,7 +530,8 @@ msgstr "Izbriši filter"
 msgid "Group Status"
 msgstr "Stanje skupine"
 
-#: dt-contacts/user-module.php:102
+#: dt-contacts/user-module.php:103
+#: dt-contacts/user-module.php:108
 #: single-template.php:340
 #: template-new-post.php:111
 msgid "This is required"
@@ -589,22 +591,22 @@ msgstr "Pomoč"
 msgid "Ongoing Meetings"
 msgstr "Seje v teku"
 
-#: dt-contacts/base-setup.php:283
+#: dt-contacts/base-setup.php:287
 #: dt-groups/base-setup.php:109
 msgid "Requires Update"
 msgstr "Potrebna posodobitev"
 
 #: dt-contacts/dmm-module.php:82
-#: dt-contacts/dmm-module.php:177
-#: dt-contacts/dmm-module.php:272
+#: dt-contacts/dmm-module.php:179
+#: dt-contacts/dmm-module.php:274
 msgid "Baptized"
 msgstr "Krščen"
 
-#: dt-contacts/dmm-module.php:145
+#: dt-contacts/dmm-module.php:146
 msgid "Baptism Date"
 msgstr "Datum krsta"
 
-#: dt-contacts/dmm-module.php:152
+#: dt-contacts/dmm-module.php:154
 #: dt-metrics/counter.php:156
 msgid "Baptism Generation"
 msgstr "Generacija krsta"
@@ -615,12 +617,12 @@ msgstr "Generacija krsta"
 msgid "Sources"
 msgstr "Viri"
 
-#: dt-contacts/base-setup.php:168
+#: dt-contacts/base-setup.php:169
 #: dt-groups/base-setup.php:103
 msgid "Un-Follow"
 msgstr "Prenehaj slediti"
 
-#: dt-contacts/base-setup.php:186
+#: dt-contacts/base-setup.php:187
 #: dt-core/configuration/config-site-defaults.php:443
 #: template-settings.php:119
 msgid "Phone"
@@ -634,16 +636,16 @@ msgstr "Delo"
 msgid "Home"
 msgstr "Doma"
 
-#: dt-contacts/base-setup.php:457
+#: dt-contacts/base-setup.php:481
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:469
-#: dt-groups/base-setup.php:733
+#: dt-groups/base-setup.php:737
 #: template-settings.php:152
 msgid "Other"
 msgstr "Drugo"
 
-#: dt-contacts/base-setup.php:194
-#: dt-contacts/user-module.php:99
+#: dt-contacts/base-setup.php:195
+#: dt-contacts/user-module.php:105
 #: dt-core/configuration/config-site-defaults.php:256
 #: dt-core/configuration/config-site-defaults.php:447
 #: dt-users/user-management.php:158
@@ -652,12 +654,12 @@ msgid "Email"
 msgstr "E-pošta"
 
 #: dt-contacts/access-module.php:299
-#: dt-contacts/base-setup.php:235
+#: dt-contacts/base-setup.php:239
 msgid "Facebook"
 msgstr "Facebook"
 
 #: dt-contacts/access-module.php:303
-#: dt-contacts/base-setup.php:243
+#: dt-contacts/base-setup.php:247
 msgid "Twitter"
 msgstr "Twitter"
 
@@ -737,7 +739,7 @@ msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(Iz dvojnika): %s"
 
-#: dt-contacts/base-setup.php:60
+#: dt-contacts/base-setup.php:61
 msgid "Strategist"
 msgstr "Strateg"
 
@@ -749,11 +751,11 @@ msgstr "Dispečer"
 msgid "Digital Responder"
 msgstr "Digitalni odzivnik"
 
-#: dt-contacts/base-setup.php:70
+#: dt-contacts/base-setup.php:71
 msgid "Disciple.Tools Admin"
 msgstr "Disciple. Tools Skrbnik"
 
-#: dt-contacts/base-setup.php:55
+#: dt-contacts/base-setup.php:56
 #: dt-groups/base-setup.php:54
 msgid "Multiplier"
 msgstr "Množitelj"
@@ -836,7 +838,7 @@ msgstr "(brez naslova)"
 
 #: dt-groups/base-setup.php:246
 #: dt-groups/base-setup.php:308
-#: dt-groups/base-setup.php:668
+#: dt-groups/base-setup.php:672
 msgid "Leaders"
 msgstr "Vodje"
 
@@ -1025,17 +1027,17 @@ msgstr "da"
 msgid "no"
 msgstr "ne"
 
-#: dt-posts/posts.php:451
+#: dt-posts/posts.php:463
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
 msgstr "Dodano %1$s: %2$s"
 
-#: dt-posts/posts.php:453
+#: dt-posts/posts.php:465
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
 msgstr "Posodobljeno %1$s iz %2$s na %3$s"
 
-#: dt-posts/posts.php:455
+#: dt-posts/posts.php:467
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "Izbrisano %1$s: %2$s"
@@ -1143,8 +1145,8 @@ msgid "Baptizers"
 msgstr "Krstniki"
 
 #: dt-contacts/access-module.php:291
-#: dt-contacts/base-setup.php:128
-#: dt-contacts/base-setup.php:521
+#: dt-contacts/base-setup.php:129
+#: dt-contacts/base-setup.php:545
 #: dt-metrics/metrics.php:80
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1279,56 +1281,56 @@ msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
 msgstr "Posodobitev %1$s #%2$s"
 
-#: dt-notifications/notifications.php:787
+#: dt-notifications/notifications.php:792
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
 msgstr "%s je bil/-a ustvarjen/-a in dodeljen/-a vam."
 
-#: dt-notifications/notifications.php:795
+#: dt-notifications/notifications.php:800
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
 msgstr "%1$s je dodelil/-a %2$s %3$s."
 
-#: dt-notifications/notifications.php:798
-#: dt-notifications/notifications.php:805
-#: dt-notifications/notifications.php:812
-#: dt-notifications/notifications.php:816
-#: dt-notifications/notifications.php:826
-#: dt-notifications/notifications.php:833
+#: dt-notifications/notifications.php:803
+#: dt-notifications/notifications.php:810
+#: dt-notifications/notifications.php:817
+#: dt-notifications/notifications.php:821
+#: dt-notifications/notifications.php:831
+#: dt-notifications/notifications.php:838
 msgid "System"
 msgstr "Sistem"
 
-#: dt-notifications/notifications.php:799
+#: dt-notifications/notifications.php:804
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
 msgstr "%1$s je dal/-a %2$s v skupno rabo z vami."
 
-#: dt-notifications/notifications.php:806
+#: dt-notifications/notifications.php:811
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr "%1$s vas je omenil/-a pri %2$s: %3$s"
 
-#: dt-notifications/notifications.php:813
+#: dt-notifications/notifications.php:818
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
 msgstr "%1$s je komentiral/-a osebo %2$s in rekel/-a: %3$s"
 
-#: dt-notifications/notifications.php:817
+#: dt-notifications/notifications.php:822
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
 msgstr "%1$s vam je dodelil/-a %2$s."
 
-#: dt-notifications/notifications.php:827
+#: dt-notifications/notifications.php:832
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
 msgstr "%1$s je dodal/-a prelomnico %2$s na %3$s."
 
-#: dt-notifications/notifications.php:834
+#: dt-notifications/notifications.php:839
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
 msgstr "%1$s je spremenil/-a kontaktne podatke za %2$s."
 
-#: dt-notifications/notifications.php:837
+#: dt-notifications/notifications.php:842
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s je zavrnil/-a nalogo dne: %2$s."
@@ -1365,7 +1367,7 @@ msgstr "Več informacij o Disciple.Tools"
 msgid "Corresponds to Contact"
 msgstr "Ustreza stiku"
 
-#: dt-users/users.php:964
+#: dt-users/users.php:969
 msgid "View contact record"
 msgstr "Ogled zapisa stika"
 
@@ -1407,17 +1409,17 @@ msgstr "Oznaka"
 msgid "Create and apply tag"
 msgstr "Ustvari in uporabi oznako"
 
-#: dt-contacts/user-module.php:104
-#: dt-contacts/user-module.php:107
+#: dt-contacts/user-module.php:110
+#: dt-contacts/user-module.php:113
 #: dt-users/template-user-management.php:73
 msgid "Display Name"
 msgstr "Prikazno ime"
 
-#: dt-contacts/user-module.php:118
+#: dt-contacts/user-module.php:140
 msgid "Create user"
 msgstr "Ustvari uporabnika"
 
-#: dt-contacts/user-module.php:129
+#: dt-contacts/user-module.php:151
 msgid "Link this contact to an existing user"
 msgstr "Poveži ta stik z obstoječim uporabnikom"
 
@@ -1426,8 +1428,8 @@ msgid "Click merge to continue."
 msgstr "Za nadaljevanje kliknite spajanje."
 
 #: dt-groups/base-setup.php:299
-#: dt-groups/base-setup.php:596
-#: dt-groups/base-setup.php:729
+#: dt-groups/base-setup.php:600
+#: dt-groups/base-setup.php:733
 msgid "Member List"
 msgstr "Seznam članov"
 
@@ -1439,7 +1441,7 @@ msgstr "Starševska skupina"
 msgid "Peer Group"
 msgstr "Vrstniki"
 
-#: template-new-post.php:124
+#: template-new-post.php:127
 msgid "Save and continue editing"
 msgstr "Shranite in nadaljujte z urejanjem"
 
@@ -1470,11 +1472,13 @@ msgstr "Glavni zapis"
 msgid "Use as master"
 msgstr "Uporabi kot glavni zapis"
 
-#: template-notifications.php:51
+#: dt-assets/parts/nav-topbar.php:246
+#: template-notifications.php:54
 msgid "Unread"
 msgstr "Neprebrano"
 
-#: template-notifications.php:63
+#: dt-assets/parts/nav-topbar.php:272
+#: template-notifications.php:66
 msgid "Mark All"
 msgstr "Označi vse"
 
@@ -1488,6 +1492,7 @@ msgstr "Razpoložljivost"
 msgid "Your Profile"
 msgstr "Tvoj profil"
 
+#: dt-contacts/user-module.php:100
 #: template-settings.php:80
 #: template-settings.php:440
 msgid "Username"
@@ -1709,7 +1714,7 @@ msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "%1$s dodano na lokacije"
 
-#: dt-groups/base-setup.php:731
+#: dt-groups/base-setup.php:735
 msgid "Four Fields"
 msgstr "Štiri polja"
 
@@ -1722,7 +1727,7 @@ msgstr "Osveži predpomnjene podatke"
 msgid "Follow-up of all active contacts"
 msgstr "Nadaljevanje vseh aktivnih stikov"
 
-#: dt-notifications/notifications.php:830
+#: dt-notifications/notifications.php:835
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@%1$s, zahtevana je posodobitev %2$s."
@@ -1812,7 +1817,7 @@ msgstr "Število generacij %s cerkva na koncu časovnega obdobja"
 msgid "Number of contacts or users who have started a church and are marked as the church coach"
 msgstr "Število stikov ali uporabnikov, ki so ustanovili cerkev in so označeni kot cerkveni trener"
 
-#: dt-notifications/notifications.php:789
+#: dt-notifications/notifications.php:794
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "Dodeljeno vam je bilo: %1$s."
@@ -1825,12 +1830,12 @@ msgstr "Otroška skupina"
 msgid "Not Ready"
 msgstr "Ni pripravljen"
 
-#: archive-template.php:575
+#: archive-template.php:587
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Začetek časovnega obdobja"
 
-#: archive-template.php:585
+#: archive-template.php:597
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Konec časovnega obdobja"
@@ -1859,7 +1864,7 @@ msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
 msgstr "Stik je bil nekomu dodeljen , vendar ga ta oseba še ni sprejela."
 
-#: dt-contacts/base-setup.php:295
+#: dt-contacts/base-setup.php:299
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "Stik napreduje in/ali se redno posodablja."
@@ -1869,7 +1874,7 @@ msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "Ta stik je trenutno na čakanju (tj. na počitnicah ali se ne odziva)."
 
-#: dt-contacts/base-setup.php:301
+#: dt-contacts/base-setup.php:305
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
 msgstr "Ta stik je dal vedeti, da ne želi več nadaljevati ali ste se vi odločili, da z njim/njo ne boste nadaljevali ."
@@ -2080,47 +2085,47 @@ msgctxt "message"
 msgid "not invalidated"
 msgstr "ni razveljavljeno"
 
-#: dt-posts/posts.php:459
+#: dt-posts/posts.php:471
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "Ime spremenjeno v: %s"
 
-#: dt-posts/posts.php:461
+#: dt-posts/posts.php:473
 msgctxt "message"
 msgid "Created from Demo Plugin"
 msgstr "Ustvarjeno iz predstavitvenega vtičnika"
 
-#: dt-posts/posts.php:468
+#: dt-posts/posts.php:480
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "%s je zavrnil dodelitev"
 
-#: dt-posts/posts.php:468
-#: dt-posts/posts.php:471
+#: dt-posts/posts.php:480
+#: dt-posts/posts.php:483
 msgctxt "message"
 msgid "A user"
 msgstr "Uporabnik"
 
-#: dt-posts/posts.php:471
+#: dt-posts/posts.php:483
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "%s je sprejel nalogo"
 
-#: dt-posts/posts.php:476
+#: dt-posts/posts.php:488
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "V skupni rabi s/z %s"
 
-#: dt-posts/posts.php:478
+#: dt-posts/posts.php:490
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "Neuporaba s/z %s"
 
-#: dt-contacts/dmm-module.php:447
+#: dt-contacts/dmm-module.php:449
 msgid "Quick Actions"
 msgstr "Hitra dejanja"
 
-#: archive-template.php:529
+#: archive-template.php:541
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Vnesi za iskanje"
@@ -2128,14 +2133,14 @@ msgstr "Vnesi za iskanje"
 #: archive-template.php:295
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:572
-#: dt-contacts/user-module.php:145
-#: dt-groups/base-setup.php:492
+#: dt-contacts/user-module.php:167
+#: dt-groups/base-setup.php:496
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Iskanje uporabnikov"
 
 #: dt-assets/parts/merge-details.php:49
-#: dt-contacts/dmm-module.php:541
+#: dt-contacts/dmm-module.php:543
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "Iskanje multiplikatorjev in stikov"
@@ -2148,11 +2153,11 @@ msgstr "Napišite svoj komentar ali opombo tukaj"
 #: archive-template.php:33
 #: archive-template.php:108
 #: archive-template.php:371
-#: dt-contacts/base-setup.php:325
+#: dt-contacts/base-setup.php:349
 #: dt-core/global-functions.php:419
 #: dt-core/global-functions.php:466
-#: dt-core/global-functions.php:509
-#: dt-groups/base-setup.php:527
+#: dt-core/global-functions.php:510
+#: dt-groups/base-setup.php:531
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:262
@@ -2170,16 +2175,16 @@ msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "%1$s spremenjeno v %2$s"
 
-#: dt-contacts/dmm-module.php:527
+#: dt-contacts/dmm-module.php:529
 msgid "Who was this contact baptized by and when?"
 msgstr "Kdo je ta stik krstil in kdaj?"
 
-#: dt-contacts/user-module.php:88
+#: dt-contacts/user-module.php:89
 msgctxt "Make user modal"
 msgid "Make User From Contact"
 msgstr "Naredite uporabnika iz stika"
 
-#: dt-contacts/user-module.php:91
+#: dt-contacts/user-module.php:92
 msgctxt "Make user modal"
 msgid "This contact is already connected to a user."
 msgstr "Ta stik je že povezan z uporabnikom."
@@ -2194,16 +2199,16 @@ msgctxt "Make user modal"
 msgid "In the fields below, enter their email address and a 'Display Name' which they can change later."
 msgstr "V spodnja polja vnesite njihov e-poštni naslov in »Prikazno ime«, ki ga bodo lahko pozneje spremenili."
 
-#: dt-contacts/user-module.php:132
+#: dt-contacts/user-module.php:154
 msgid "This contact already represents a user."
 msgstr "Ta stik že predstavlja uporabnika."
 
-#: dt-contacts/user-module.php:136
+#: dt-contacts/user-module.php:158
 msgctxt "Step 1 of link user"
 msgid "To link to an existing user, first, find the user using the field below."
 msgstr "Če se želite povezati z obstoječim uporabnikom, ga najprej poiščite s pomočjo spodnjega polja."
 
-#: dt-contacts/user-module.php:160
+#: dt-contacts/user-module.php:182
 msgctxt "Step 2 of link user"
 msgid "To finish the linking, merge this contact with the existing user details."
 msgstr "Če želite končati povezavo, spojite ta stik z obstoječimi podatki o uporabniku."
@@ -2221,7 +2226,7 @@ msgctxt "added to the end of a sentence"
 msgid "selected."
 msgstr "izbrano."
 
-#: dt-groups/base-setup.php:615
+#: dt-groups/base-setup.php:619
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Dodajte člane iz obstoječih stikov"
@@ -2240,7 +2245,7 @@ msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "Ni več dodeljeno za %s"
 
-#: dt-groups/base-setup.php:609
+#: dt-groups/base-setup.php:613
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "Če želite dodati nove člane, kliknite »Ustvari« ali »Izberi«."
 
@@ -2248,15 +2253,15 @@ msgstr "Če želite dodati nove člane, kliknite »Ustvari« ali »Izberi«."
 msgid "Filters"
 msgstr "Filtri"
 
-#: archive-template.php:467
+#: archive-template.php:479
 msgid "Load More"
 msgstr "Naloži več"
 
-#: archive-template.php:479
+#: archive-template.php:491
 msgid "Filter Name"
 msgstr "Ime filtra"
 
-#: archive-template.php:609
+#: archive-template.php:621
 #: dt-assets/parts/merge-details.php:70
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -2264,27 +2269,27 @@ msgstr "Ime filtra"
 #: dt-contacts/access-module.php:476
 #: dt-contacts/access-module.php:507
 #: dt-contacts/access-module.php:535
-#: dt-contacts/base-setup.php:381
-#: dt-contacts/base-setup.php:416
-#: dt-contacts/user-module.php:115
-#: dt-contacts/user-module.php:167
+#: dt-contacts/base-setup.php:405
+#: dt-contacts/base-setup.php:440
+#: dt-contacts/user-module.php:137
+#: dt-contacts/user-module.php:189
 #: single-template.php:345
 #: single-template.php:362
 #: template-merge-details.php:102
 #: template-merge-details.php:121
 #: template-merge-details.php:132
 #: template-merge-details.php:169
-#: template-new-post.php:123
+#: template-new-post.php:126
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: archive-template.php:614
+#: archive-template.php:626
 msgid "Filter Records"
 msgstr "Filtriraj zapise"
 
 #: dt-assets/functions/details-bar.php:90
 #: dt-assets/parts/modals/modal-tasks.php:7
-#: dt-contacts/base-setup.php:174
+#: dt-contacts/base-setup.php:175
 #: dt-groups/base-setup.php:115
 msgid "Tasks"
 msgstr "Naloge"
@@ -2374,10 +2379,11 @@ msgstr "Brez filtrov, ustvarite ga spodaj"
 msgid "No records found matching your filter."
 msgstr "Najden ni noben zapis, ki se ujema z vašim filtrom."
 
-#: dt-groups/base-setup.php:1026
-#: dt-groups/base-setup.php:1099
-#: dt-groups/base-setup.php:1107
-#: template-notifications.php:47
+#: dt-assets/parts/nav-topbar.php:242
+#: dt-groups/base-setup.php:1030
+#: dt-groups/base-setup.php:1103
+#: dt-groups/base-setup.php:1111
+#: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "Vsi"
@@ -2387,14 +2393,14 @@ msgstr "Vsi"
 msgid "Subassigned only"
 msgstr "Samo dodeljen"
 
-#: dt-contacts/dmm-module.php:408
-#: dt-contacts/dmm-module.php:418
-#: dt-contacts/dmm-module.php:428
-#: dt-contacts/dmm-module.php:429
+#: dt-contacts/dmm-module.php:410
+#: dt-contacts/dmm-module.php:420
+#: dt-contacts/dmm-module.php:430
+#: dt-contacts/dmm-module.php:431
 msgid "Coached by me"
 msgstr "Jaz sem treniral"
 
-#: dt-groups/base-setup.php:1018
+#: dt-groups/base-setup.php:1022
 msgctxt "List Filters"
 msgid "Assigned to me"
 msgstr "Dodeljeno meni"
@@ -2431,7 +2437,7 @@ msgid "No note set"
 msgstr "Ni nastavljenih opomb"
 
 #: dt-assets/functions/enqueue-scripts.php:311
-#: dt-contacts/base-setup.php:496
+#: dt-contacts/base-setup.php:520
 msgctxt "All records"
 msgid "All %s"
 msgstr "Vsi %s"
@@ -2442,7 +2448,7 @@ msgstr "Disciple. Tools"
 
 #: dt-assets/functions/enqueue-scripts.php:228
 #: dt-assets/parts/merge-details.php:76
-#: dt-contacts/user-module.php:173
+#: dt-contacts/user-module.php:195
 #: template-merge-details.php:183
 msgid "Merge"
 msgstr "Spoji"
@@ -2708,7 +2714,7 @@ msgstr "Ustvari nalogo"
 msgid "Existing tasks for this record:"
 msgstr "Obstoječe naloge za ta zapis:"
 
-#: dt-assets/parts/nav-topbar.php:133
+#: dt-assets/parts/nav-topbar.php:142
 msgid "Theme Update Available!"
 msgstr "Na voljo je posodobitev teme!"
 
@@ -2726,7 +2732,7 @@ msgid "Select the main person who is responsible for reporting on this contact."
 msgstr "Izberite glavno osebo, ki je odgovorna za poročanje o tem stiku."
 
 #: dt-contacts/access-module.php:153
-#: dt-contacts/base-setup.php:289
+#: dt-contacts/base-setup.php:293
 msgid "Contact Status"
 msgstr "Stanje stika"
 
@@ -2747,7 +2753,7 @@ msgid "Contact Attempted"
 msgstr "Poskus kontakta vzpostavljen"
 
 #: dt-contacts/access-module.php:125
-#: dt-contacts/dmm-module.php:206
+#: dt-contacts/dmm-module.php:208
 msgid "Contact Established"
 msgstr "Vzpostavljen kontakt"
 
@@ -2800,11 +2806,11 @@ msgstr "V cerkvi/skupini"
 msgid "Starting Churches"
 msgstr "Ustanavlja cerkve"
 
-#: dt-contacts/base-setup.php:275
+#: dt-contacts/base-setup.php:279
 msgid "Male"
 msgstr "Moški"
 
-#: dt-contacts/base-setup.php:276
+#: dt-contacts/base-setup.php:280
 msgid "Female"
 msgstr "Ženska"
 
@@ -2889,19 +2895,19 @@ msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "Spletno mesto, dogodek ali lokacija, s katere je prišel ta stik."
 
-#: dt-contacts/dmm-module.php:198
+#: dt-contacts/dmm-module.php:199
 msgid "No Answer"
 msgstr "Ni odgovora"
 
-#: dt-contacts/dmm-module.php:215
+#: dt-contacts/dmm-module.php:217
 msgid "Meeting Scheduled"
 msgstr "Načrtovan sestanek"
 
-#: dt-contacts/dmm-module.php:224
+#: dt-contacts/dmm-module.php:226
 msgid "Meeting Complete"
 msgstr "Sestanek končan"
 
-#: dt-contacts/dmm-module.php:233
+#: dt-contacts/dmm-module.php:235
 msgid "Meeting No-show"
 msgstr "Se ni udeležil/-a sestanka"
 
@@ -2914,70 +2920,70 @@ msgctxt "Optional Documentation"
 msgid "The id of the user this contact corresponds to"
 msgstr "ID uporabnika za ta stik"
 
-#: dt-contacts/base-setup.php:122
+#: dt-contacts/base-setup.php:123
 msgid "User"
 msgstr "Uporabnik"
 
-#: dt-contacts/base-setup.php:153
+#: dt-contacts/base-setup.php:154
 #: dt-groups/base-setup.php:87
 msgid "Tags"
 msgstr "Oznake"
 
-#: dt-contacts/base-setup.php:154
+#: dt-contacts/base-setup.php:155
 #: dt-groups/base-setup.php:88
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags."
 msgstr "Koristen način združevanja sorodnih predmetov in lahko pomaga pri združevanju stikov, povezanih z omembe vrednimi lastnostmi, npr. podjetnik, ljubitelj športa. Stike lahko filtrirate tudi s pomočjo teh oznak."
 
-#: dt-contacts/base-setup.php:261
+#: dt-contacts/base-setup.php:265
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Razmerje tega stika z drugim stikom v sistemu."
 
-#: dt-contacts/dmm-module.php:157
+#: dt-contacts/dmm-module.php:159
 msgid "Coached by"
 msgstr "Trener:"
 
-#: dt-contacts/dmm-module.php:158
+#: dt-contacts/dmm-module.php:160
 msgctxt "Optional Documentation"
 msgid "Who is coaching this contact"
 msgstr "Kdo trenira ta stik"
 
-#: dt-contacts/dmm-module.php:136
+#: dt-contacts/dmm-module.php:137
 msgctxt "Optional Documentation"
 msgid "Who is this contact coaching"
 msgstr "Koga trenira stik"
 
-#: dt-contacts/dmm-module.php:167
-#: dt-contacts/dmm-module.php:271
+#: dt-contacts/dmm-module.php:169
+#: dt-contacts/dmm-module.php:273
 msgid "Baptized by"
 msgstr "Krščen od"
 
-#: dt-contacts/dmm-module.php:168
+#: dt-contacts/dmm-module.php:170
 msgctxt "Optional Documentation"
 msgid "Who baptized this contact"
 msgstr "Kdo je krstil ta stik"
 
-#: dt-contacts/dmm-module.php:178
+#: dt-contacts/dmm-module.php:180
 msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
 msgstr "Koga je ta stik krstil"
 
-#: dt-groups/base-setup.php:404
+#: dt-groups/base-setup.php:407
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
 msgstr "Skupine ljudi, ki jih zastopa ta skupina."
 
-#: dt-groups/base-setup.php:451
+#: dt-groups/base-setup.php:455
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "Skupine, katerih član je ta stik."
 
-#: dt-contacts/dmm-module.php:123
+#: dt-contacts/dmm-module.php:124
 msgid "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr "Stik ali uporabnik, ki dodeljenemu uporabniku pomaga pri nadaljnjem stiku."
 
-#: dt-contacts/base-setup.php:204
+#: dt-contacts/base-setup.php:205
 #: dt-groups/base-setup.php:368
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
@@ -3026,7 +3032,7 @@ msgid "Select the main person who is responsible for reporting on this group."
 msgstr "Izberite glavno osebo, ki je odgovorna za poročanje o tej skupini."
 
 #: dt-groups/base-setup.php:201
-#: dt-groups/base-setup.php:730
+#: dt-groups/base-setup.php:734
 msgid "Church Health"
 msgstr "Zdravje cerkve"
 
@@ -3104,32 +3110,32 @@ msgid "Sharing the Gospel"
 msgstr "Delitev evangelija"
 
 #: dt-groups/base-setup.php:251
-#: dt-groups/base-setup.php:432
+#: dt-groups/base-setup.php:436
 msgid "Church Commitment"
 msgstr "Cerkvena zaveza"
 
-#: dt-groups/base-setup.php:414
+#: dt-groups/base-setup.php:418
 msgid "Unbelievers"
 msgstr "Neverniki"
 
-#: dt-groups/base-setup.php:420
+#: dt-groups/base-setup.php:424
 msgid "Believers"
 msgstr "Verniki"
 
-#: dt-groups/base-setup.php:426
+#: dt-groups/base-setup.php:430
 msgid "Accountable"
 msgstr "Odgovorno"
 
-#: dt-groups/base-setup.php:433
+#: dt-groups/base-setup.php:437
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "Je to cerkev – da ali ne?"
 
-#: dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:442
 msgid "Multiplying"
 msgstr "Množenje"
 
-#: dt-groups/base-setup.php:439
+#: dt-groups/base-setup.php:443
 msgctxt "Optional Documentation"
 msgid "Number of people helping start other groups. How many members are multiplying?"
 msgstr "Število ljudi, ki pomaga pri ustanavljanju drugih skupin. Koliko članov se množi?"
@@ -3336,31 +3342,31 @@ msgstr "To nalogo ste nastavili v %1$s: %2$s"
 #: dt-contacts/access-module.php:457
 #: dt-contacts/access-module.php:488
 #: dt-contacts/access-module.php:519
-#: dt-contacts/base-setup.php:395
+#: dt-contacts/base-setup.php:419
 msgid "Choose an option:"
 msgstr "Izberi možnost:"
 
 #: dt-contacts/access-module.php:479
 #: dt-contacts/access-module.php:510
 #: dt-contacts/access-module.php:538
-#: dt-contacts/base-setup.php:419
+#: dt-contacts/base-setup.php:443
 msgid "Confirm"
 msgstr "Potrdi"
 
-#: dt-groups/base-setup.php:599
+#: dt-groups/base-setup.php:603
 msgid "Create"
 msgstr "Ustvari"
 
-#: dt-groups/base-setup.php:604
+#: dt-groups/base-setup.php:608
 msgid "Select"
 msgstr "Izberi"
 
-#: dt-groups/base-setup.php:616
+#: dt-groups/base-setup.php:620
 msgctxt "Add members modal"
 msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
 msgstr "V polje »Seznam članov« vnesite ime obstoječega stika, da ga dodate v to skupino."
 
-#: dt-notifications/notifications.php:382
+#: dt-notifications/notifications.php:387
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "pred %s minuto"
@@ -3368,7 +3374,7 @@ msgstr[1] "Pred %s minutama"
 msgstr[2] "Pred %s minutami"
 msgstr[3] "drugo"
 
-#: dt-notifications/notifications.php:387
+#: dt-notifications/notifications.php:392
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "pred %s uro"
@@ -3376,7 +3382,7 @@ msgstr[1] "pred %s urama"
 msgstr[2] "pred %s urami"
 msgstr[3] "drugo"
 
-#: dt-notifications/notifications.php:392
+#: dt-notifications/notifications.php:397
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "pred %s dnevom"
@@ -3384,7 +3390,7 @@ msgstr[1] "pred %s dnevoma"
 msgstr[2] "pred %s dnevi"
 msgstr[3] "drugo"
 
-#: dt-notifications/notifications.php:397
+#: dt-notifications/notifications.php:402
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "pred %s tednom"
@@ -3392,7 +3398,7 @@ msgstr[1] "pred %s tednoma"
 msgstr[2] "pred %s tedni"
 msgstr[3] "drugo"
 
-#: dt-notifications/notifications.php:402
+#: dt-notifications/notifications.php:407
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "pred %s mesecem"
@@ -3400,7 +3406,7 @@ msgstr[1] "pred %s mesecema"
 msgstr[2] "pred %s meseci"
 msgstr[3] "drugo"
 
-#: dt-notifications/notifications.php:416
+#: dt-notifications/notifications.php:421
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "pred %s letom"
@@ -3500,11 +3506,11 @@ msgstr "Nerazpoložljivost urnika"
 msgid "Add User"
 msgstr "Dodaj uporabnika"
 
-#: dt-users/users.php:917
+#: dt-users/users.php:918
 msgid "Email already exists and is a user on this site"
 msgstr "E-poštni naslov že obstaja in je uporabnik tega spletnega mesta"
 
-#: dt-users/users.php:923
+#: dt-users/users.php:924
 msgid "Failed to add user to site."
 msgstr "Uporabnika ni bilo mogoče dodati na spletno mesto."
 
@@ -3555,7 +3561,7 @@ msgstr "Dva stika potrebujeta posodobitev"
 msgid "Quick Action Buttons"
 msgstr "Gumbi za hitro ukrepanje"
 
-#: dt-groups/base-setup.php:651
+#: dt-groups/base-setup.php:655
 #: dt-metrics/groups/tree.php:83
 #: dt-metrics/personal/group-tree.php:84
 msgid "Members"
@@ -3577,7 +3583,8 @@ msgid "Inactive Groups Switch"
 msgstr "Stikalo neaktivnih skupin"
 
 #: dt-assets/parts/modals/modal-help.php:152
-#: template-notifications.php:57
+#: dt-assets/parts/nav-topbar.php:266
+#: template-notifications.php:60
 msgid "Mark all as read"
 msgstr "označi vse kot prebrano"
 
@@ -3585,12 +3592,12 @@ msgstr "označi vse kot prebrano"
 msgid "Task Type"
 msgstr "Vrsta naloge"
 
-#: dt-contacts/base-setup.php:290
+#: dt-contacts/base-setup.php:294
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
 msgstr "Status stika opisuje napredek pri komunikaciji s stikom."
 
-#: dt-contacts/base-setup.php:118
+#: dt-contacts/base-setup.php:119
 msgid "Contact Type"
 msgstr "Vrsta stika"
 
@@ -3617,17 +3624,17 @@ msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "Skupina se je zavezala, da bo cerkev."
 
-#: dt-groups/base-setup.php:415
+#: dt-groups/base-setup.php:419
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "Število nevernikov v tej skupini."
 
-#: dt-groups/base-setup.php:421
+#: dt-groups/base-setup.php:425
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "Število vernikov v tej skupini."
 
-#: dt-groups/base-setup.php:427
+#: dt-groups/base-setup.php:431
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "Število odgovornih v skupini"
@@ -3656,12 +3663,12 @@ msgstr "%s odstranjenih iz skupin ljudi"
 msgid "View Contact"
 msgstr "Ogled stika"
 
-#: template-notifications.php:77
 #: template-notifications.php:80
+#: template-notifications.php:83
 msgid "Load more notifications"
 msgstr "Naloži več obvestil"
 
-#: dt-contacts/base-setup.php:49
+#: dt-contacts/base-setup.php:50
 msgid "Contact"
 msgstr "Stik"
 
@@ -3684,15 +3691,15 @@ msgctxt "Reason Closed label"
 msgid "GDPR request"
 msgstr "Zahteva GDPR"
 
-#: dt-contacts/dmm-module.php:108
+#: dt-contacts/dmm-module.php:109
 msgid "Seeker"
 msgstr "Iskalec"
 
-#: dt-contacts/dmm-module.php:111
+#: dt-contacts/dmm-module.php:112
 msgid "Believer"
 msgstr "Vernik"
 
-#: dt-contacts/dmm-module.php:114
+#: dt-contacts/dmm-module.php:115
 msgid "Leader"
 msgstr "Vodja"
 
@@ -3876,7 +3883,7 @@ msgstr "Moje trenersko drevo"
 msgid "My Groups Tree"
 msgstr "Drevo mojih skupin"
 
-#: dt-contacts/base-setup.php:361
+#: dt-contacts/base-setup.php:385
 msgid "See duplicates"
 msgstr "Pokaži dvojnike"
 
@@ -3892,7 +3899,7 @@ msgstr "Dvojniki na: %s"
 msgid "No duplicates found."
 msgstr "Ni dvojnikov."
 
-#: dt-contacts/base-setup.php:178
+#: dt-contacts/base-setup.php:179
 msgid "Languages"
 msgstr "Jeziki"
 
@@ -4083,59 +4090,60 @@ msgstr ""
 msgid "This record might be a duplicate of: "
 msgstr ""
 
-#: dt-contacts/base-setup.php:65
+#: dt-contacts/base-setup.php:66
 msgid "User Manager"
 msgstr ""
 
-#: dt-contacts/base-setup.php:75
+#: dt-contacts/base-setup.php:76
 msgid "Administrator"
 msgstr ""
 
-#: dt-contacts/base-setup.php:112
+#: dt-contacts/base-setup.php:113
 msgid "Nickname"
 msgstr ""
 
-#: dt-contacts/base-setup.php:123
+#: dt-contacts/base-setup.php:124
 msgid "Representing a User in the system"
 msgstr ""
 
-#: dt-contacts/base-setup.php:130
+#: dt-contacts/base-setup.php:131
 msgid "A friend, family member or acquaintance"
 msgstr ""
 
-#: dt-contacts/base-setup.php:131
+#: dt-contacts/base-setup.php:132
 #: dt-contacts/dmm-module.php:54
 msgid "Only me"
 msgstr ""
 
-#: dt-contacts/base-setup.php:203
+#: dt-contacts/base-setup.php:213
+#: dt-groups/base-setup.php:377
 msgid "Locations or Address"
 msgstr ""
 
-#: dt-contacts/base-setup.php:260
+#: dt-contacts/base-setup.php:264
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr ""
 
-#: dt-contacts/base-setup.php:356
+#: dt-contacts/base-setup.php:380
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr ""
 
-#: dt-contacts/base-setup.php:490
+#: dt-contacts/base-setup.php:514
 msgid "Default Filters"
 msgstr ""
 
-#: dt-contacts/base-setup.php:500
+#: dt-contacts/base-setup.php:524
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr ""
 
-#: dt-contacts/base-setup.php:510
+#: dt-contacts/base-setup.php:534
 msgid "My Recently Viewed"
 msgstr ""
 
-#: dt-contacts/base-setup.php:515
+#: dt-contacts/base-setup.php:539
 msgid "Last 30 viewed"
 msgstr ""
 
@@ -4151,41 +4159,41 @@ msgstr ""
 msgid "Faith Status"
 msgstr ""
 
-#: dt-contacts/dmm-module.php:135
+#: dt-contacts/dmm-module.php:136
 msgid "Is Coaching"
 msgstr ""
 
-#: dt-contacts/dmm-module.php:188
+#: dt-contacts/dmm-module.php:190
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this contact."
 msgstr ""
 
-#: dt-contacts/dmm-module.php:288
+#: dt-contacts/dmm-module.php:290
 msgid "Sub-assigned by"
 msgstr ""
 
-#: dt-contacts/dmm-module.php:289
+#: dt-contacts/dmm-module.php:291
 msgid "Sub-assigned"
 msgstr ""
 
-#: dt-contacts/dmm-module.php:312
+#: dt-contacts/dmm-module.php:314
 msgid "Faith"
 msgstr ""
 
-#: dt-contacts/dmm-module.php:395
+#: dt-contacts/dmm-module.php:397
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr ""
 
-#: dt-groups/base-setup.php:685
+#: dt-groups/base-setup.php:689
 msgid "Coaches"
 msgstr ""
 
-#: dt-groups/base-setup.php:698
+#: dt-groups/base-setup.php:702
 msgid "Planted by"
 msgstr ""
 
-#: dt-groups/base-setup.php:699
+#: dt-groups/base-setup.php:703
 msgid "Planting"
 msgstr ""
 
@@ -4321,26 +4329,26 @@ msgstr ""
 msgid "end"
 msgstr ""
 
-#: dt-contacts/base-setup.php:349
-#: dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:373
+#: dt-contacts/base-setup.php:400
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr ""
 
-#: dt-contacts/base-setup.php:377
+#: dt-contacts/base-setup.php:401
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr ""
 
-#: dt-contacts/base-setup.php:384
+#: dt-contacts/base-setup.php:408
 msgid "Archive"
 msgstr ""
 
-#: dt-contacts/base-setup.php:624
+#: dt-contacts/base-setup.php:648
 msgid "This %s is archived"
 msgstr ""
 
-#: dt-contacts/base-setup.php:626
+#: dt-contacts/base-setup.php:650
 msgid "Restore"
 msgstr ""
 
@@ -4359,7 +4367,7 @@ msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr ""
 
-#: dt-contacts/base-setup.php:299
+#: dt-contacts/base-setup.php:303
 msgid "Archived"
 msgstr ""
 
@@ -4427,7 +4435,41 @@ msgstr ""
 msgid "Choose which fields to search"
 msgstr ""
 
-#: dt-contacts/base-setup.php:251
+#: dt-contacts/base-setup.php:255
 msgid "Other Social Links"
+msgstr ""
+
+#: dt-assets/parts/nav-topbar.php:253
+msgid "See All"
+msgstr ""
+
+#: dt-contacts/user-module.php:95
+msgctxt "Make user modal"
+msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier', but you can change that in the dropdown below."
+msgstr ""
+
+#: dt-contacts/user-module.php:96
+msgctxt "Make user modal"
+msgid "In the fields below, enter their username, email address, a 'Display Name' which they can change later and a User Role."
+msgstr ""
+
+#: dt-contacts/user-module.php:116
+msgid "User Role"
+msgstr ""
+
+#: dt-notifications/notifications.php:425
+msgid "over %s year ago"
+msgid_plural "over %s years ago"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: dt-users/users.php:930
+msgid "Error setting user role to administrator or Disciple.Tools Admin."
+msgstr ""
+
+#: template-new-post.php:120
+msgid "Hide fields"
 msgstr ""
 
