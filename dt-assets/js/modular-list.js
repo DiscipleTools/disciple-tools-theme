@@ -496,7 +496,7 @@
         items = response.posts || []
       }
       window.records_list = response // adds global access to current list for plugins
-
+      window.SHAREDFUNCTIONS.save_json_cookie(`records_list`, response);
       $('#bulk_edit_master_checkbox').prop("checked", false); //unchecks the bulk edit master checkbox when the list reloads.
 
       $('#load-more').toggle(items.length !== parseInt( response.total ))

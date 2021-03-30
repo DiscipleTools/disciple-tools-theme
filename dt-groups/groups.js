@@ -1,10 +1,13 @@
 "use strict"
 jQuery(document).ready(function($) {
 
-  let post_id = window.detailsSettings.post_id
-  let post_type = window.detailsSettings.post_type
-  let post = window.detailsSettings.post_fields
+  let post_id        = window.detailsSettings.post_id
+  let post_type      = window.detailsSettings.post_type
+  let post           = window.detailsSettings.post_fields
   let field_settings = window.detailsSettings.post_settings.fields
+  let records_list   = window.SHAREDFUNCTIONS.get_json_cookie(`records_list`);
+  let current_record = -1;
+  let next_record    = -1;
 
   /* Church Metrics */
   let health_keys = Object.keys(field_settings.health_metrics.default)
@@ -245,5 +248,29 @@ jQuery(document).ready(function($) {
       $('#end_date').val(window.SHAREDFUNCTIONS.formatDate( new_group.end_date.timestamp) )
     }
   })
+
+  if ( records_list.hasOwnProperty('posts') && records_list.posts.length > 0) {
+    $.each(records_list.posts, function(record_id, record_array) {
+      if (post_id === record_array.ID) {
+        current_record = record_id;
+        next_record    = record_id+1;
+      }
+    });
+
+    if ( current_record === 0 || typeof(records_list.posts[current_record-1]) === 'undefined') {
+      $(document).find('.prev_record').hide();
+    } else {
+      $(document).find('.prev_record').attr('href', records_list.posts[current_record-1].permalink);
+    }
+
+    if (typeof (records_list.posts[next_record]) !== 'undefined') {
+      $(document).find('.next_record').attr('href', records_list.posts[next_record].permalink);
+    } else {
+      $(document).find('.next_record').hide();
+    }
+    $('#navigation-section').removeAttr('style');
+  } else {
+    $('#navigation-section').removeAttr('style').attr('style', 'display: none;');
+  }
 
 })
