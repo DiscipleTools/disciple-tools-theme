@@ -584,6 +584,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             <table class="widefat">
                 <thead>
                 <tr>
+                    <td></td>
                     <td><?php esc_html_e( 'Name', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Icon link (must be https)', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></td>
@@ -597,6 +598,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         }?>
                         <tr>
                             <td>
+                                <img src="<?php echo esc_attr( $field_settings['icon'] ); ?>" class="quick-action-menu">
+                            </td>
+                            <td>
                                 <?php
                                 if ( $field_settings['section'] === 'quick_buttons_custom' ) {
                                     echo '<input type="text" name="edit_field[' . esc_attr( $field_key ) . ']" value="'. esc_html( $field_settings['name'] ) . '">';
@@ -606,7 +610,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     $input_box_enabled = false;
                                 } ?>
                             </td>
-                            <td class="quick-action-menu"><input type="text" name="edit_field_icon" value="<?php echo esc_html( $field_settings['icon'] ) ?>" <?php if ( ! $input_box_enabled ) { esc_html_e( 'disabled' ); } ?>></td>
+                            <td class="quick-action-menu"><input type="text" name="edit_field_icon" value="<?php echo esc_html( $field_settings['icon'] ) ?>"></td>
                             <td>
                                 <?php
                                 if ( $field_settings['section'] === 'quick_buttons_custom' ) {
@@ -630,7 +634,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <label for="default">Default Icon:</label>
                     <input type="radio" name="icon" value="default" checked><img src="<?php echo esc_html( get_template_directory_uri() );?>/dt-assets/images/follow.svg"></div>
                     <br>
-                    <label for="custom">Custom Icon:</label>
+                    <label for="custom">Custom Icon URL:</label>
                     <input type="radio" name="icon" value="custom">
                     <input name="add_custom_quick_action_icon" type="text">
                     <button type="submit" class="button"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></button>
