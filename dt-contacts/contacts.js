@@ -317,7 +317,9 @@ jQuery(document).ready(function($) {
     } else {
       $(document).find('.next_record').hide();
     }
-
+    $('#navigation-section').removeAttr('style');
+  } else {
+    $('#navigation-section').removeAttr('style').attr('style', 'display: none;');
   }
 
 })
