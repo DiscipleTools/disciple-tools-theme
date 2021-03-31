@@ -901,7 +901,7 @@ jQuery(document).ready(function($) {
   $('#delete-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
     API.delete_post( post_type, post_id ).then(()=>{
-      window.location = '/' + post_type
+      window.location = window.wpApiShare.site_url + '/' + post_type
     })
   })
   $('#archive-record').on('click', function(){
