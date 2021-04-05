@@ -7,6 +7,10 @@ jQuery(document).ready(function($) {
   window.post_type_fields = field_settings
   let rest_api = window.API
   let typeaheadTotals = {}
+  let current_record = -1;
+  let next_record    = -1;
+  let records_list   = window.SHAREDFUNCTIONS.get_json_cookie('records_list');
+
 
   window.masonGrid = $('.grid') // responsible for resizing and moving the tiles
 
@@ -904,6 +908,34 @@ jQuery(document).ready(function($) {
       firstField.focus();
     }
   });
+
+  if (records_list.length > 0) {
+    $.each(records_list, function(record_id, post_id_array) {
+      if (post_id === post_id_array.ID) {
+        current_record = record_id;
+        next_record    = record_id+1;
+      }
+    });
+
+    if ( current_record === 0 || typeof(records_list[current_record-1]) === 'undefined') {
+      $(document).find('.prev_record').hide();
+    } else {
+      rest_api.get_post(records_list[current_record-1].POST_TYPE, records_list[current_record-1].ID).then((postResponse) =>{
+        $(document).find('.prev_record').attr('href', postResponse.permalink);
+      }).catch(handleAjaxError);
+    }
+
+    if (typeof (records_list[next_record]) !== 'undefined') {
+      rest_api.get_post(records_list[next_record].POST_TYPE, records_list[next_record].ID).then((postResponse) =>{
+        $(document).find('.next_record').attr('href', postResponse.permalink);
+      }).catch(handleAjaxError);
+    } else {
+      $(document).find('.next_record').hide();
+    }
+    $(document).find('#navigation-section').removeAttr('style');
+  } else {
+    $(document).find('#navigation-section').removeAttr('style').attr('style', 'display: none;');
+  }
 
   //leave at the end of this file
   masonGrid.masonry({
