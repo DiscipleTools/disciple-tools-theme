@@ -74,7 +74,7 @@ function dt_print_details_bar(
                             <?php else : ?>
                                 <?php
                                     $gender = isset( $dt_post["gender"] ) ? $dt_post["gender"]["key"] : "male";?>
-                                <i class="fi-torso<?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                                <i class="fi-torso<?php echo esc_html( ( $dt_post_type == 'groups' ) ? 's-all' : "" );?><?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ); ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                             <?php endif; ?>
                             <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                             <br>
@@ -191,7 +191,7 @@ function dt_print_details_bar(
                     <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                 <?php else : ?>
                     <?php $gender = isset( $dt_post["gender"] ) ? $dt_post["gender"]["key"] : "male";?>
-                    <i class="fi-torso<?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                    <i class="fi-torso<?php echo esc_html( ( $dt_post_type == 'groups' ) ? 's-all' : "" );?><?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ); ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                 <?php endif; ?>
                 <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
             </div>
