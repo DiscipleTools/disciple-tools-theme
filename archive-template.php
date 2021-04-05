@@ -394,12 +394,24 @@ dt_please_log_in();
                                 </a>
                             </span>
                             <div id="bulk_more" class="grid-x grid-margin-x" style="display:none;">
-                                <?php foreach ( $field_options as $field_option => $value ) {
-                                    if ( $field_option !== 'subassigned' && $field_option !== 'assigned_to' && $field_option !== 'overall_status' && $field_option !== 'tags' && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) ) { ?>
-                                        <div class="cell small-12 medium-<?php echo esc_attr( ( $field_option === "milestones" ) ? "12" : ( $field_option === "health_metrics" ? "12" : "4" ) ) ?>">
-                                        <?php $field_options[$field_option]["custom_display"] = false ?>
-                                        <?php render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
+
+                                <?php
+                                //custom display for location field.
+                                if ( isset( $field_options["location_grid"] ) ){
+                                    $modified_options = $field_options;
+                                    $modified_options["location_grid"]["hidden"] = false; ?>
+                                    <div class="cell small-12 medium-4">
+                                        <?php render_field_for_display( "location_grid", $modified_options, null, false, false, "bulk_" ); ?>
                                     </div>
+                                    <?php
+                                }
+                                $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status','tags' ];
+                                foreach ( $field_options as $field_option => $value ) {
+                                    if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) ) { ?>
+                                        <div class="cell small-12 medium-<?php echo esc_attr( $value["type"] === "multi_select" ? "12" : "4" ) ?>">
+                                            <?php $field_options[$field_option]["custom_display"] = false;
+                                            render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
+                                        </div>
                                     <?php }
                                 }?>
                             </div>
@@ -487,7 +499,7 @@ dt_please_log_in();
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [];
-                    $allowed_types = [ "user_select", "multi_select", "key_select", "boolean", "date", "location", "connection" ];
+                    $allowed_types = [ "user_select", "multi_select", "key_select", "boolean", "date", "location", "location_meta", "connection" ];
                     //order fields alphabetically by Name
                     uasort( $field_options, function ( $a, $b ){
                         return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
@@ -513,7 +525,7 @@ dt_please_log_in();
                 <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
                         $is_multi_select = isset( $field_options[$field] ) && $field_options[$field]["type"] == "multi_select";
-                        if ( isset( $field_options[$field] ) && ( $field_options[$field]["type"] === "connection" || $field_options[$field]["type"] === "location" || $field_options[$field]["type"] === "user_select" || $is_multi_select ) ) : ?>
+                        if ( isset( $field_options[$field] ) && ( $field_options[$field]["type"] === "connection" || $field_options[$field]["type"] === "location" || $field_options[$field]["type"] === "location_meta" || $field_options[$field]["type"] === "user_select" || $is_multi_select ) ) : ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
                                 <div class="section-header"><?php echo esc_html( $field_options[$field]["name"] ) ?></div>
                                 <div class="<?php echo esc_html( $field );?>  <?php echo esc_html( $is_multi_select ? "multi_select" : "" ) ?> details" >

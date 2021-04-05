@@ -21,6 +21,7 @@ class DT_Contacts_Base {
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         add_action( 'p2p_init', [ $this, 'p2p_init' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 5, 2 );
+        add_filter( 'dt_custom_fields_settings_after_combine', [ $this, 'dt_custom_fields_settings_after_combine' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles_after' ], 100, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
@@ -309,6 +310,26 @@ class DT_Contacts_Base {
         return $fields;
     }
 
+    /**
+     * Filter that runs after the default fields and custom settings have been combined
+     * @param $fields
+     * @param $post_type
+     * @return mixed
+     */
+    public function dt_custom_fields_settings_after_combine( $fields, $post_type ){
+        if ( $post_type === "contacts" ){
+            //make sure disabled communication channels also have the hidden field set
+            foreach ( $fields as $field_key => $field_value ){
+                if ( isset( $field_value["type"] ) && $field_value["type"] === "communication_channel" ){
+                    if ( isset( $field_value["enabled"] ) && $field_value["enabled"] === false ){
+                        $fields[$field_key]["hidden"] = true;
+                    }
+                }
+            }
+        }
+        return $fields;
+    }
+
     public function dt_details_additional_section( $section, $post_type ){
         if ( $post_type === "contacts" ) :
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
@@ -326,7 +347,9 @@ class DT_Contacts_Base {
                                     <input class="js-typeahead-tags input-height"
                                            name="tags[query]"
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["tags"]['name'] ) )?>"
-                                           autocomplete="off">
+                                           autocomplete="off"
+                                           data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
+                                           data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
                                 </span>
                                 <span class="typeahead__button">
                                     <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">

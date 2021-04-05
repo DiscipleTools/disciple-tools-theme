@@ -723,6 +723,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="key_select"><?php esc_html_e( "Dropdown", 'disciple_tools' ) ?></option>
                             <option value="multi_select"><?php esc_html_e( "Multi Select", 'disciple_tools' ) ?></option>
                             <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
+                            <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
                             <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
                         </select>
                     </td>
@@ -760,6 +761,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( "Dropdown: Select an option for a dropdown list", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Multi Select: A field like the milestones to track items like course progress", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Text: This is just a normal text field", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Text Area: This is just a multi-line text area", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Date: A field that uses a date picker to choose dates (like baptism date)", 'disciple_tools' ) ?></li>
         </ul>
         <?php
@@ -808,6 +810,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $new_field = [
                     'name'        => $post_submission["new_field_name"],
                     'type'        => 'text',
+                    'default'     => '',
+                    'tile'     => $field_tile,
+                    'customizable' => 'all'
+                ];
+            } elseif ( $field_type === "textarea" ){
+                $new_field = [
+                    'name'        => $post_submission["new_field_name"],
+                    'type'        => 'textarea',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all'

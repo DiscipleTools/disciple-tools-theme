@@ -37,9 +37,12 @@ get_header(); ?>
                 <div class="grid-x">
                     <div class="cell">
                         <div class="grid-x grid-margin-x " style="border-bottom: 1px solid #ccc;">
-                            <div class="small-4 medium-5 cell"><span class="badge alert notification-count"
-                                                                     style="display:none;">&nbsp;</span>
-                                <strong><?php esc_html_e( 'New', 'disciple_tools' )?></strong></div>
+                            <div class="small-4 medium-5 cell">
+                                <div class="grid-x align-middle">
+                                    <span class="badge alert notification-count" style="display:none;">&nbsp;</span>
+                                    <div class="new-notification-label"><strong><?php esc_html_e( 'New', 'disciple_tools' )?></strong></div>
+                                </div>
+                            </div>
                             <div class="small-4 medium-2 cell">
                                 <div class="expanded small button-group">
                                     <button id="all" type="button"

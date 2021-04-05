@@ -166,6 +166,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
             // get url, create parts array and sanitize
             $url_path = self::get_url_path();
+            $url_path = strtok( $url_path, '?' ); //allow get parameters
             $parts = explode( '/', $url_path );
             $parts = array_map( 'sanitize_key', wp_unslash( $parts ) );
 

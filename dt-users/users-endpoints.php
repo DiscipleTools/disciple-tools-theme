@@ -208,7 +208,8 @@ class Disciple_Tools_Users_Endpoints
         $params = $request->get_params();
 
         if ( isset( $params["user-email"], $params["user-display"] ) ){
-            return Disciple_Tools_Users::create_user( $params["user-email"], $params["user-email"], $params["user-display"], $params["corresponds_to_contact"] ?? null );
+            $user_login = $params["user-user_login"] ?? $params["user-email"];
+            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $params["user-user_role"] ?? 'multiplier', $params["corresponds_to_contact"] ?? null );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
