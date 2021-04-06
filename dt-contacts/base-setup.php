@@ -28,7 +28,7 @@ class DT_Contacts_Base {
         add_action( 'dt_record_admin_actions', [ $this, "dt_record_admin_actions" ], 10, 2 );
         add_action( 'dt_record_footer', [ $this, "dt_record_footer" ], 10, 2 );
         add_action( 'dt_record_notifications_section', [ $this, "dt_record_notifications_section" ], 10, 2 );
-
+        add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 10, 3 );
 
         // hooks
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
@@ -654,5 +654,15 @@ class DT_Contacts_Base {
             </section>
         <?php endif;
 
+    }
+    public function dt_record_icon( $icon, $post_type, $dt_post ){
+        if ($post_type == 'contacts') {
+            $gender = isset( $dt_post["gender"] ) ? $dt_post["gender"]["key"] : "male";
+            $icon = 'fi-torso';
+            if ($gender == 'female') {
+                $icon = $icon.'-'.$gender;
+            }
+        }
+        return $icon;
     }
 }
