@@ -10,6 +10,11 @@
  * @author     Disciple.Tools
  */
 
+
+/**
+ * @todo First custom quick action gets erased on ENTER key down if icon input text is focused
+ */
+
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
@@ -604,13 +609,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                 <?php
                                 if ( $field_settings['section'] === 'quick_buttons_custom' ) {
                                     echo '<input type="text" name="edit_field[' . esc_attr( $field_key ) . ']" value="'. esc_html( $field_settings['name'] ) . '">';
-                                    $input_box_enabled = true;
                                 } else {
                                     echo esc_html( $field_settings['name'] );
-                                    $input_box_enabled = false;
+                                    echo '<input type="hidden" name="edit_field[' . esc_attr( $field_key ) . ']" value="'. esc_html( $field_settings['name'] ) . '">';
                                 } ?>
                             </td>
-                            <td class="quick-action-menu"><input type="text" name="edit_field_icon" value="<?php echo esc_html( $field_settings['icon'] ) ?>"></td>
+                            <td class="quick-action-menu"><input type="text" name="edit_field_icon[<?php echo esc_attr( $field_key ); ?>]" value="<?php echo esc_html( $field_settings['icon'] ) ?>"></td>
                             <td>
                                 <?php
                                 if ( $field_settings['section'] === 'quick_buttons_custom' ) {
@@ -632,7 +636,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <br>
                 <div class="menuitem">
                     <label for="default">Default Icon:</label>
-                    <input type="radio" name="icon" value="default" checked><img src="<?php echo esc_html( get_template_directory_uri() );?>/dt-assets/images/follow.svg"></div>
+                    <input type="radio" name="icon" value="default" checked><img src="<?php echo esc_html( get_template_directory_uri() ); ?>/dt-assets/images/follow.svg"></div>
                     <br>
                     <label for="custom">Custom Icon URL:</label>
                     <input type="radio" name="icon" value="custom">
@@ -718,19 +722,26 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             return;
         }
 
-        // Rename Quick Action
+        // Edit Quick Action
         if ( ! empty( $_POST['edit_field'] ) ) {
+            
             $quick_action_edits = dt_recursive_sanitize_array( $_POST['edit_field'] );
+
+            
             if ( isset( $_POST['edit_field_icon'] ) ) {
-                $edit_field_icon = sanitize_text_field( wp_unslash( $_POST['edit_field_icon'] ) );
+                $edit_field_icon = dt_recursive_sanitize_array( $_POST['edit_field_icon'] );
             } else {
                 $edit_field_icon = get_template_directory_uri() . '/dt-assets/images/follow.svg';
             }
+
             foreach ( $quick_action_edits as $quick_action_key => $quick_action_new_name ) {
                 $quick_action_key = sanitize_text_field( wp_unslash( $quick_action_key ) );
                 $quick_action_new_name = sanitize_text_field( wp_unslash( $quick_action_new_name ) );
                 $custom_field_options['contacts'][ $quick_action_key ]['name'] = $quick_action_new_name;
-                $custom_field_options['contacts'][ $quick_action_key ]['icon'] = $edit_field_icon;
+            }
+            
+            foreach ( $edit_field_icon as $key => $value ) {
+                $custom_field_options['contacts'][ $key ]['icon'] = $value;
             }
 
             update_option( 'dt_field_customizations', $custom_field_options, true );
