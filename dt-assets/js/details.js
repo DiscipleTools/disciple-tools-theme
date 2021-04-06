@@ -918,23 +918,23 @@ jQuery(document).ready(function($) {
     });
 
     if ( current_record === 0 || typeof(records_list[current_record-1]) === 'undefined') {
-      $(document).find('.prev_record').hide();
+      $(document).find('.navigation-left').hide();
     } else {
       rest_api.get_post(records_list[current_record-1].POST_TYPE, records_list[current_record-1].ID).then((postResponse) =>{
-        $(document).find('.prev_record').attr('href', postResponse.permalink);
+        $(document).find('.navigation-left').attr('href', postResponse.permalink);
       }).catch(handleAjaxError);
     }
 
     if (typeof (records_list[next_record]) !== 'undefined') {
       rest_api.get_post(records_list[next_record].POST_TYPE, records_list[next_record].ID).then((postResponse) =>{
-        $(document).find('.next_record').attr('href', postResponse.permalink);
+        $(document).find('.navigation-right').attr('href', postResponse.permalink);
       }).catch(handleAjaxError);
     } else {
       $(document).find('.next_record').hide();
     }
-    $(document).find('#navigation-section').removeAttr('style');
+    $(document).find('.navigation-right').removeAttr('style');
   } else {
-    $(document).find('#navigation-section').removeAttr('style').attr('style', 'display: none;');
+    $(document).find('.navigation-right').removeAttr('style').attr('style', 'display: none;');
   }
 
   //leave at the end of this file

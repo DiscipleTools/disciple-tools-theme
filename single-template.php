@@ -319,10 +319,6 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                          id="comment-activity-section">
                     <?php get_template_part( 'dt-assets/parts/loop', 'activity-comment' ); ?>
                 </section>
-                <section class="navigation-section cell"
-                         id="navigation-section" style="display: none;">
-                    <div class="bordered-box"><a href="#" class="prev_record">Prev </a> <a href="#" class="next_record">Next </a></div>
-                </section>
             </aside>
 
         </div>

@@ -40,6 +40,11 @@ function dt_print_details_bar(
                             <?php } ?>
                         </div>
                         <div class="cell grid-x shrink center-items">
+                            <a class="section-chevron navigation-left" href="javascript:void(0)">
+                                <img width="25" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" ) ?>">
+                            </a>
+                        </div>
+                        <div class="cell grid-x shrink center-items">
                             <ul class="dropdown menu" data-dropdown-menu dropdownmenu-arrow-color="white">
                                 <li style="border-radius: 5px">
                                     <a class="button menu-white-dropdown-arrow"
@@ -117,6 +122,11 @@ function dt_print_details_bar(
                             </button>
                         </div>
                         <?php endif; ?>
+                        <div class="cell shrink center-items">
+                            <a href="javascript:void(0)" class="navigation-right section-chevron">
+                                <img width="25" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" ) ?>">
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
