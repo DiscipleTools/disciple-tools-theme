@@ -104,7 +104,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             //install plugin
             $this->install_plugin( sanitize_text_field( wp_unslash( $_POST["install"] ) ) );
             exit;
-        } elseif ( isset( $_POST["deactivate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer('portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
+        } elseif ( isset( $_POST["deactivate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
             //deactivate the plugin
             deactivate_plugins( sanitize_text_field( wp_unslash( $_POST["deactivate"] ) ), true );
             exit;
