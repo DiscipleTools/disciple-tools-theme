@@ -724,10 +724,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
         // Edit Quick Action
         if ( ! empty( $_POST['edit_field'] ) ) {
-            
+
             $quick_action_edits = dt_recursive_sanitize_array( $_POST['edit_field'] );
 
-            
             if ( isset( $_POST['edit_field_icon'] ) ) {
                 $edit_field_icon = dt_recursive_sanitize_array( $_POST['edit_field_icon'] );
             } else {
@@ -739,7 +738,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $quick_action_new_name = sanitize_text_field( wp_unslash( $quick_action_new_name ) );
                 $custom_field_options['contacts'][ $quick_action_key ]['name'] = $quick_action_new_name;
             }
-            
+
             foreach ( $edit_field_icon as $key => $value ) {
                 $custom_field_options['contacts'][ $key ]['icon'] = $value;
             }
