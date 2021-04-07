@@ -29,6 +29,8 @@ class DT_Groups_Base extends DT_Module_Base {
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
+        add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 10, 3 );
+
         // hooks
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
@@ -1184,5 +1186,10 @@ class DT_Groups_Base extends DT_Module_Base {
         }
     }
 
-
+    public function dt_record_icon( $icon, $post_type, $contact_id ){
+        if ($post_type == 'groups') {
+            $icon = 'fi-torsos-all';
+        }
+        return $icon;
+    }
 }

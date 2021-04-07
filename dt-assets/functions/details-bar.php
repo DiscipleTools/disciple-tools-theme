@@ -68,13 +68,13 @@ function dt_print_details_bar(
                     </div>
                     <div class="cell small-4 center hide-for-small-only">
                             <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
+                            $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
+
                              $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
                             if ( !empty( $picture ) ) : ?>
                                 <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                             <?php else : ?>
-                                <?php
-                                    $gender = isset( $dt_post["gender"] ) ? $dt_post["gender"]["key"] : "male";?>
-                                <i class="fi-torso<?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                                <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                             <?php endif; ?>
                             <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                             <br>
@@ -190,8 +190,7 @@ function dt_print_details_bar(
                 if ( !empty( $picture ) ) : ?>
                     <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                 <?php else : ?>
-                    <?php $gender = isset( $dt_post["gender"] ) ? $dt_post["gender"]["key"] : "male";?>
-                    <i class="fi-torso<?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                    <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                 <?php endif; ?>
                 <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
             </div>
