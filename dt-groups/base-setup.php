@@ -1116,6 +1116,17 @@ class DT_Groups_Base extends DT_Module_Base {
                 ],
                 "count" => $total_all
             ];
+            $filters["filters"][] = [
+                'ID' => 'recent',
+                'tab' => 'all',
+                'name' => __( "My Recently Viewed", 'disciple_tools' ),
+                'query' => [
+                    'dt_recent' => true
+                ],
+                'labels' => [
+                    [ "id" => 'recent', 'name' => __( "Last 30 viewed", 'disciple_tools' ) ]
+                ]
+            ];
 
             foreach ( $fields["group_status"]["default"] as $status_key => $status_value ) {
                 if ( isset( $status_counts[$status_key] ) ){
