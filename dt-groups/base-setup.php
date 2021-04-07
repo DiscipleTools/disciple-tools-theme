@@ -464,6 +464,15 @@ class DT_Groups_Base extends DT_Module_Base {
                 'create-icon' => get_template_directory_uri() . "/dt-assets/images/add-group.svg",
                 "show_in_table" => 35
             ];
+            $fields["group_leader"] = [
+                "name" => __( "Leader of Group", 'disciple_tools' ),
+                "type" => "connection",
+                "p2p_direction" => "to",
+                "p2p_key" => "groups_to_leaders",
+                "post_type" => "groups",
+                "tile" => "no_tile",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/foot.svg",
+            ];
         }
         return $fields;
     }
@@ -825,6 +834,24 @@ class DT_Groups_Base extends DT_Module_Base {
             }
             if ( isset( $fields["group_status"] ) && empty( $fields["end_date"] ) && empty( $existing_group["end_date"] ) && $fields["group_status"] === 'inactive' ){
                 $fields["end_date"] = time();
+            }
+        }
+        if ( $post_type === "contacts" ){
+            if ( isset( $fields["group_leader"]["values"] ) ){
+                $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
+                foreach ( $fields["group_leader"]["values"] as $leader ){
+                    $is_in_group = false;
+                    foreach ( $existing_contact["groups"] as $group ){
+                        if ( (int) $group["ID"] === (int) $leader["value"] ){
+                            $is_in_group = true;
+                        }
+                    }
+                    if ( !$is_in_group && empty( $leader["delete"] ) ){
+                        $fields["groups"]["values"][] = [
+                            "value" => $leader["value"]
+                        ];
+                    }
+                }
             }
         }
         return $fields;
