@@ -346,6 +346,7 @@ else {
              */
             require_once( get_template_directory() . '/dt-reports/reports.php' );
             require_once( get_template_directory() . '/dt-reports/magic-url-class.php' );
+            require_once( get_template_directory() . '/dt-reports/magic-url-base.php' );
 
             /**
              * Workflows
