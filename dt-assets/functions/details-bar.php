@@ -41,7 +41,12 @@ function dt_print_details_bar(
                         </div>
                         <div class="cell grid-x shrink center-items">
                             <a class="section-chevron navigation-left" href="javascript:void(0)">
-                                <img width="25" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" ) ?>">
+                                <img width="25" height="20" alt="previous record" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" ) ?>">
+                            </a>
+                        </div>
+                        <div class="cell shrink center-items">
+                            <a href="javascript:void(0)" class="navigation-right section-chevron">
+                                <img width="25" height="20" alt="next record" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" ) ?>">
                             </a>
                         </div>
                         <div class="cell grid-x shrink center-items">
@@ -122,11 +127,6 @@ function dt_print_details_bar(
                             </button>
                         </div>
                         <?php endif; ?>
-                        <div class="cell shrink center-items">
-                            <a href="javascript:void(0)" class="navigation-right section-chevron">
-                                <img width="25" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" ) ?>">
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -141,6 +141,17 @@ function dt_print_details_bar(
         <?php if ( $comment_button ): ?>
             <div class="container-width">
             <div class="grid-x align-center" style="align-items: center">
+                <div class="cell shrink center-items">
+                    <a class="section-chevron navigation-left" href="javascript:void(0)">
+                        <img width="15" height="10" alt="previous record" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" ) ?>">
+                    </a>
+                </div>
+                <div class="cell shrink center-items">
+                    <a href="javascript:void(0)" class="navigation-right section-chevron">
+                        <img width="15" height="10" alt="next record" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" ) ?>">
+                    </a>
+                </div>
+
                 <div class="cell shrink">
                     <button  id="nav-view-comments" class="center-items">
                         <a href="#comment-activity-section" class="center-items" style="color:black">
