@@ -37,7 +37,31 @@ function dt_print_details_bar(
             <div class="container-width">
 
                 <div class="grid-x grid-margin-x">
-                    <div class="cell small-4 grid-x grid-margin-x">
+                    <div class="cell small-4" style="padding-left:1rem">
+                        <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
+                        $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
+
+                        $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
+                        if ( !empty( $picture ) ) : ?>
+                            <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
+                        <?php else : ?>
+                            <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                        <?php endif; ?>
+                        <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
+                        <br>
+                        <?php do_action( 'dt_post_record_name_tagline' ); ?>
+                        <span style="font-size: 10px; display: inline-block; ">
+                            <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
+                                <a data-open="contact-type-modal" style="font-size: 10px; margin-left: 0"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                            <?php endif; ?>
+                            <?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), $dt_post["post_date"]["formatted"] ) );
+                            if ( $dt_post["post_author_display_name"] ):
+                                echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
+                            endif; ?>
+                            </span>
+                    </div>
+
+                    <div class="cell small-8 align-right grid-x">
                         <div class="cell grid-x shrink center-items">
                             <?php if ( $show_update_needed ){ ?>
                                 <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
@@ -45,51 +69,6 @@ function dt_print_details_bar(
                                 <label class="dt-switch" for="update-needed-large" style="vertical-align: top;"></label>
                             <?php } ?>
                         </div>
-                        <div class="cell grid-x shrink center-items">
-                            <ul class="dropdown menu" data-dropdown-menu dropdownmenu-arrow-color="white">
-                                <li style="border-radius: 5px">
-                                    <a class="button menu-white-dropdown-arrow"
-                                       style="background-color: #00897B; color: white;">
-                                        <?php esc_html_e( "Admin Actions", 'disciple_tools' ) ?></a>
-                                    <ul class="menu is-dropdown-submenu">
-                                        <?php if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ) : ?>
-                                            <li><a data-open="delete-record-modal">
-                                                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ) ?>"/>
-                                                    <?php echo esc_html( sprintf( _x( "Delete %s", "Delete Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )["label_singular"] ) ) ?></a></li>
-                                        <?php endif; ?>
-                                        <?php do_action( 'dt_record_admin_actions', $dt_post_type, $post_id ); ?>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="cell grid-x shrink center-items">
-                            <span id="admin-bar-issues"></span>
-                        </div>
-                    </div>
-                    <div class="cell small-4 center hide-for-small-only">
-                            <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
-                            $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
-
-                             $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
-                            if ( !empty( $picture ) ) : ?>
-                                <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
-                            <?php else : ?>
-                                <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
-                            <?php endif; ?>
-                            <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
-                            <br>
-                            <?php do_action( 'dt_post_record_name_tagline' ); ?>
-                            <span style="font-size: 10px; display: inline-block; ">
-                            <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
-                                <a data-open="contact-type-modal" style="font-size: 10px"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
-                            <?php endif; ?>
-                                <?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), $dt_post["post_date"]["formatted"] ) );
-                                if ( $dt_post["post_author_display_name"] ):
-                                    echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
-                                endif; ?>
-                            </span>
-                    </div>
-                    <div class="cell small-4 align-right grid-x grid-margin-x">
                         <?php if ( $task ) : ?>
                         <div class="cell shrink center-items">
                             <button class="button open-set-task">
@@ -123,6 +102,23 @@ function dt_print_details_bar(
                             </button>
                         </div>
                         <?php endif; ?>
+                        <div class="cell grid-x shrink center-items">
+                            <ul class="dropdown menu" data-dropdown-menu dropdownmenu-arrow-color="white">
+                                <li style="border-radius: 5px">
+                                    <a class="button menu-white-dropdown-arrow"
+                                       style="background-color: #00897B; color: white;">
+                                        <?php esc_html_e( "Admin Actions", 'disciple_tools' ) ?></a>
+                                    <ul class="menu is-dropdown-submenu">
+                                        <?php if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ) : ?>
+                                            <li><a data-open="delete-record-modal">
+                                                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ) ?>"/>
+                                                    <?php echo esc_html( sprintf( _x( "Delete %s", "Delete Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )["label_singular"] ) ) ?></a></li>
+                                        <?php endif; ?>
+                                        <?php do_action( 'dt_record_admin_actions', $dt_post_type, $post_id ); ?>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -26,7 +26,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     dt_print_details_bar(
         true,
         true,
-        isset( $post_settings["requires_update"] ) && current_user_can( "assign_any_contacts" ),
+        isset( $post_settings["fields"]["requires_update"] ) && current_user_can( "assign_any_contacts" ),
         isset( $dt_post["requires_update"] ) && $dt_post["requires_update"] === true,
         in_array( $current_user_id, $following ),
         isset( $dt_post["assigned_to"]["id"] ) ? $dt_post["assigned_to"]["id"] == $current_user_id : false,
@@ -120,6 +120,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             <button class="help-button-tile" data-tile="details">
                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                             </button>
+                            <div class="details-title-section"></div>
                             <button class="section-chevron chevron_down show-details-section">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                             </button>
