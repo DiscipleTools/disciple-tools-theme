@@ -923,16 +923,18 @@ jQuery(document).ready(function($) {
       rest_api.get_post(records_list[current_record-1].POST_TYPE, records_list[current_record-1].ID).then((postResponse) =>{
         $(document).find('.navigation-left').attr('href', postResponse.permalink);
       }).catch(handleAjaxError);
+      $(document).find('.navigation-left').removeAttr('style');
     }
 
     if (typeof (records_list[next_record]) !== 'undefined') {
       rest_api.get_post(records_list[next_record].POST_TYPE, records_list[next_record].ID).then((postResponse) =>{
         $(document).find('.navigation-right').attr('href', postResponse.permalink);
       }).catch(handleAjaxError);
+      $(document).find('.navigation-right').removeAttr('style');
     } else {
-      $(document).find('.next_record').hide();
+      $(document).find('.navigation-right').hide();
     }
-    $(document).find('.navigation-right').removeAttr('style');
+
   } else {
     $(document).find('.navigation-right').removeAttr('style').attr('style', 'display: none;');
   }
