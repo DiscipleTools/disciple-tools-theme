@@ -149,7 +149,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.2.0';
+            $this->version = '1.3.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -346,6 +346,7 @@ else {
              */
             require_once( get_template_directory() . '/dt-reports/reports.php' );
             require_once( get_template_directory() . '/dt-reports/magic-url-class.php' );
+            require_once( get_template_directory() . '/dt-reports/magic-url-base.php' );
 
             /**
              * Workflows

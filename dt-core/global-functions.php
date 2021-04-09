@@ -566,12 +566,18 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * Test if module is enabled
      */
     if ( ! function_exists( 'dt_is_module_enabled' ) ) {
-        function dt_is_module_enabled( string $module_key ) : bool {
+        function dt_is_module_enabled( string $module_key, $check_prereqs = false ) : bool {
             $modules = dt_get_option( "dt_post_type_modules" );
-            if ( isset( $modules[$module_key] ) && isset( $modules[$module_key]["enabled"] ) && ! empty( $modules[$module_key]["enabled"] ) ){
-                return true;
+            $module_enabled = isset( $modules[$module_key]["enabled"] ) && !empty( $modules[$module_key]["enabled"] );
+            if ( $module_enabled && $check_prereqs ){
+                foreach ( $modules[$module_key]["prerequisites"] as $prereq ){
+                    $prereq_enabled = isset( $modules[$prereq]["enabled"] ) ? $modules[$prereq]["enabled"] : false;
+                    if ( !$prereq_enabled ){
+                        return false;
+                    }
+                }
             }
-            return false;
+            return $module_enabled;
         }
     }
 
