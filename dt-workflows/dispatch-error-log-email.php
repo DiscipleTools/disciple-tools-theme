@@ -1,39 +1,37 @@
 <?php
 
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
-if (!wp_next_scheduled('dispatch-error-log-email')) {
-    wp_schedule_event(time(), 'daily', 'dispatch-error-log-email');
+if ( ! wp_next_scheduled( 'dispatch-error-log-email' ) ) {
+    wp_schedule_event( time(), 'daily', 'dispatch-error-log-email' );
 }
-add_action('dispatch-error-log-email', 'find_new_error_logs');
+add_action( 'dispatch-error-log-email', 'find_new_error_logs' );
 
-function find_new_error_logs()
-{
+function find_new_error_logs() {
     global $wpdb, $wp;
 
     // Fetch deltas following on from last run.
-    $deltas = $wpdb->get_results("SELECT hist_time, object_type, object_name, object_note FROM wp_dt_activity_log WHERE (action = 'error_log') AND (hist_time > " . strtotime('-24 hour') . ") ORDER BY hist_time DESC");
+    $deltas = $wpdb->get_results( "SELECT hist_time, object_type, object_name, object_note FROM wp_dt_activity_log WHERE (action = 'error_log') AND (hist_time > " . strtotime( '-24 hour' ) . ") ORDER BY hist_time DESC" );
 
-    $count = count($deltas);
-    if ($count > 0) {
+    $count = count( $deltas );
+    if ( $count > 0 ) {
 
         // Build error logs url.
-        $logs_url = home_url($wp->request) . "/wp-admin/admin.php?page=dt_utilities&tab=logs";
+        $logs_url = home_url( $wp->request ) . "/wp-admin/admin.php?page=dt_utilities&tab=logs";
 
         // Build and dispatch notification email.
-        $email_to = get_bloginfo('admin_email');
+        $email_to      = get_bloginfo( 'admin_email' );
         $email_subject = "DT - Error Logs Detected";
-        $email_body = build_email_body($count, $deltas, $logs_url);
-        $email_headers = array('Content-Type: text/html; charset=UTF-8');
-        wp_mail($email_to, $email_subject, $email_body, $email_headers);
+        $email_body    = build_email_body( $count, $deltas, $logs_url );
+        $email_headers = array( 'Content-Type: text/html; charset=UTF-8' );
+        wp_mail( $email_to, $email_subject, $email_body, $email_headers );
     }
 }
 
-function build_email_body($count, $deltas, $logs_url)
-{
-    $summary = build_email_body_logs_summary($deltas);
+function build_email_body( $count, $deltas, $logs_url ) {
+    $summary = build_email_body_logs_summary( $deltas );
 
     return <<<HTML
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -122,19 +120,21 @@ function build_email_body($count, $deltas, $logs_url)
 HTML;
 }
 
-function build_email_body_logs_summary($deltas)
-{
-    $summary = "";
+function build_email_body_logs_summary( $deltas ) {
+    $summary       = "";
     $summary_limit = 5;
     $summary_count = 0;
 
-    foreach ($deltas as $delta) {
+    foreach ( $deltas as $delta ) {
         $summary .= '<tr>
-                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 14px;">' . date("Y-m-d h:i:sa", esc_attr($delta->hist_time)) . '</td>
-                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 14px;">' . esc_attr($delta->object_note) . '</td>
+                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 14px;">' . date( "Y-m-d h:i:sa", esc_attr( $delta->hist_time ) ) . '</td>
+                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 14px;">' . esc_attr( $delta->object_note ) . '</td>
             </tr>';
 
-        if ($summary_count++ >= $summary_limit) break;
+        if ( $summary_count ++ >= $summary_limit ) {
+            break;
+        }
     }
+
     return $summary;
 }
