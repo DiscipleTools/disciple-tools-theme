@@ -89,6 +89,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             $title = $fields["name"];
             unset( $fields["name"] );
         }
+        if ( empty( $title ) ){
+            return new WP_Error( __FUNCTION__, "Name/Title field can not be empty", [ 'status' => 400 ] );
+        }
 
         $post_date = null;
         if ( isset( $fields["post_date"] )){
@@ -267,7 +270,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $initial_fields = $fields;
         $post = get_post( $post_id );
         if ( !$post ) {
-            return new WP_Error( __FUNCTION__, "post does not exist" );
+            return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 404 ] );
         }
 
         $existing_post = self::get_post( $post_type, $post_id, false, false );
@@ -289,6 +292,9 @@ class DT_Posts extends Disciple_Tools_Posts {
         //set title
         if ( isset( $fields["title"] ) || isset( $fields["name"] ) ) {
             $title = $fields["title"] ?? $fields["name"];
+            if ( empty( $title ) ){
+                return new WP_Error( __FUNCTION__, "Name/Title field can not be empty", [ 'status' => 400 ] );
+            }
             if ( $existing_post["name"] != $title ) {
                 wp_update_post( [
                     'ID' => $post_id,
