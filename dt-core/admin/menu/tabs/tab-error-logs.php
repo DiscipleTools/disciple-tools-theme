@@ -106,7 +106,7 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
         global $wpdb;
 
         // Obtain list of recent error logs
-        $logs = $wpdb->get_results( $wpdb->prepare( "SELECT hist_time, meta_key, meta_value, object_note FROM $wpdb->dt_activity_log WHERE action = 'error_log' ORDER BY hist_time DESC LIMIT 20" ) );
+        $logs = $wpdb->get_results( "SELECT hist_time, meta_key, meta_value, object_note FROM $wpdb->dt_activity_log WHERE action = 'error_log' ORDER BY hist_time DESC LIMIT 20" );
 
         $this->box( 'top', 'Error Logs', [ "col_span" => 4 ] );
 
@@ -138,7 +138,7 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
             $key_value = array();
 
             foreach ( array_keys( $meta_value ) as $key ) {
-                array_push( $key_value, $key . ": " . $meta_value[ $key ] );
+                array_push( $key_value, $key . ": " . $this->format_meta_value( $meta_value[ $key ] ) );
             }
 
             return implode( ", ", $key_value );
