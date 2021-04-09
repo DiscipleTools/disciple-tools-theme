@@ -497,6 +497,19 @@
       }
       window.records_list = response // adds global access to current list for plugins
 
+      // save
+      if (response.hasOwnProperty('posts') && response.posts.length > 0) {
+        let records_list_ids_and_type = [];
+
+        $.each(response.posts, function(id, post_object ) {
+          records_list_ids_and_type.push({ ID: post_object.ID, POST_TYPE: post_object.post_type});
+        });
+
+        window.SHAREDFUNCTIONS.save_json_cookie(`records_list`, records_list_ids_and_type, list_settings.post_type);
+
+      }
+
+
       $('#bulk_edit_master_checkbox').prop("checked", false); //unchecks the bulk edit master checkbox when the list reloads.
 
       $('#load-more').toggle(items.length !== parseInt( response.total ))

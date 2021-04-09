@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
-  let post_id = window.detailsSettings.post_id
-  let post_type = window.detailsSettings.post_type
-  let post = window.detailsSettings.post_fields
+  let post_id        = window.detailsSettings.post_id
+  let post_type      = window.detailsSettings.post_type
+  let post           = window.detailsSettings.post_fields
 
   /**
    * User-select
