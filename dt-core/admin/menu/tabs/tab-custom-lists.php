@@ -583,6 +583,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
     private function quick_actions_box(){
         $fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], "contacts" );
         ?>
         <form method="post" name="quick_actions_box" id="quick-actions">
             <input type="hidden" name="quick_actions_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'quick_actions_box' ) ) ?>" />
@@ -607,7 +608,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             </td>
                             <td>
                                 <?php
-                                if ( $field_settings['section'] === 'quick_buttons_custom' ) {
+                                if ( !isset( $default_fields[$field_key] ) ) {
                                     echo '<input type="text" name="edit_field[' . esc_attr( $field_key ) . ']" value="'. esc_html( $field_settings['name'] ) . '">';
                                 } else {
                                     echo esc_html( $field_settings['name'] );
@@ -617,7 +618,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             <td class="quick-action-menu"><input type="text" name="edit_field_icon[<?php echo esc_attr( $field_key ); ?>]" value="<?php echo esc_html( $field_settings['icon'] ) ?>"></td>
                             <td>
                                 <?php
-                                if ( $field_settings['section'] === 'quick_buttons_custom' ) {
+                                if ( !isset( $default_fields[$field_key] ) ){
                                     echo '<button type="submit" name="delete_field" value="' . esc_attr( $field_key ) . '" class="button small">' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button>';
                                 } ?>
                             </td>
@@ -697,7 +698,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     'description' => '',
                     'type'        => 'number',
                     'default'     => 0,
-                    'section'     => 'quick_buttons_custom',
+                    'section'     => 'quick_buttons',
                     'icon'        => $icon_url,
                     'customizable' => false,
                 ];
