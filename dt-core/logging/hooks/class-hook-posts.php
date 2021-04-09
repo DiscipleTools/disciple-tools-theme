@@ -353,14 +353,14 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         if ( ! empty( $wp_error ) ) {
             $activity = [
                 'action'         => 'error_log',
-                'object_type'    => $code,
+                'object_type'    => '',
                 'object_subtype' => '',
                 'object_id'      => 0,
-                'object_name'    => $data->status,
+                'object_name'    => '',
                 'object_note'    => $message,
                 'meta_id'        => '',
-                'meta_key'       => '',
-                'meta_value'     => '',
+                'meta_key'       => $code,
+                'meta_value'     => maybe_serialize( $data ),
                 'meta_parent'    => '',
                 'hist_time'      => time() - 1,
             ];

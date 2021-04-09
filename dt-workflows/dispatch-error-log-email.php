@@ -12,8 +12,15 @@ add_action( 'dispatch-error-log-email', 'find_new_error_logs' );
 function find_new_error_logs() {
     global $wpdb, $wp;
 
+    // Stop if email dispatch feature if disabled.
+    if ( ! boolval( get_option( 'dt_error_log_dispatch_emails' ) ) ) {
+        return;
+    }
+
     // Fetch deltas following on from last run.
-    $deltas = $wpdb->get_results( "SELECT hist_time, object_type, object_name, object_note FROM wp_dt_activity_log WHERE (action = 'error_log') AND (hist_time > " . strtotime( '-24 hour' ) . ") ORDER BY hist_time DESC" );
+    $deltas = $wpdb->get_results( $wpdb->prepare( "SELECT hist_time, meta_key, meta_value, object_note FROM $wpdb->dt_activity_log WHERE (action = 'error_log') AND (hist_time > %s) ORDER BY hist_time DESC",
+        esc_attr( strtotime( '-24 hour' ) )
+    ) );
 
     $count = count( $deltas );
     if ( $count > 0 ) {
@@ -30,7 +37,7 @@ function find_new_error_logs() {
     }
 }
 
-function build_email_body( $count, $deltas, $logs_url ) {
+function build_email_body( $count, $deltas, $logs_url ): string {
     $summary = build_email_body_logs_summary( $deltas );
 
     return <<<HTML
@@ -120,14 +127,14 @@ function build_email_body( $count, $deltas, $logs_url ) {
 HTML;
 }
 
-function build_email_body_logs_summary( $deltas ) {
+function build_email_body_logs_summary( $deltas ): string {
     $summary       = "";
     $summary_limit = 5;
     $summary_count = 0;
 
     foreach ( $deltas as $delta ) {
         $summary .= '<tr>
-                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 14px;">' . date( "Y-m-d h:i:sa", esc_attr( $delta->hist_time ) ) . '</td>
+                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 14px;">' . esc_attr( gmdate( "Y-m-d h:i:sa", esc_attr( $delta->hist_time ) ) ) . '</td>
                 <td style="color: #153643; font-family: Arial, sans-serif; font-size: 14px;">' . esc_attr( $delta->object_note ) . '</td>
             </tr>';
 
