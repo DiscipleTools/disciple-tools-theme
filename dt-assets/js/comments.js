@@ -398,9 +398,9 @@ jQuery(document).ready(function($) {
     emojiContainer.classList.add('reactions-emoji-container')
     let emojis = ''
     reactions.forEach((reaction) => {
-      const reactionValue = reaction.alias.toUpperCase().replace(' ', '_')
+      const reactionValue = `reaction_${reaction.alias.toLowerCase().replace(' ', '_')}`
       emojis += `
-      <button class="add-reaction" type="submit" name="reaction" value="${reactionValue} reaction">
+      <button class="add-reaction" type="submit" name="reaction" value="${reactionValue}">
         <img class="emoji" alt="${reaction.name}" src="${reaction.path}">
       </button>
       `

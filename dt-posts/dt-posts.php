@@ -874,19 +874,17 @@ class DT_Posts extends Disciple_Tools_Posts {
     {
         // TODO check permissions to be able to add a reaction to this comment
 
-        $encoded_user_id = json_encode(["user_id" => $user_id]);
-
         // If the reaction exists for this user, then delete it
         $reactions = get_comment_meta($comment_id, $reaction);
         foreach ($reactions as $reaction_user_id) {
-            if ($reaction_user_id == $encoded_user_id) {
+            if ($reaction_user_id == $user_id) {
                 delete_comment_meta($comment_id, $reaction, $reaction_user_id);
                 return true;
             }
         }
 
         // otherwise add it.
-        add_comment_meta($comment_id, $reaction, $encoded_user_id);
+        add_comment_meta($comment_id, $reaction, $user_id);
         return $reactions;
     }
 
