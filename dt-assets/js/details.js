@@ -17,6 +17,9 @@ jQuery(document).ready(function($) {
   $('input.text-input').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
+    if ( $(this).prop('required') && val === ''){
+      return;
+    }
     $(`#${id}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
       $(`#${id}-spinner`).removeClass('active')
@@ -138,6 +141,9 @@ jQuery(document).ready(function($) {
   $('.dt_contenteditable').on('blur', function(){
     const id = $(this).attr('id')
     let val = $(this).text();
+    if ( id === "title" && val === '' ){
+      return;
+    }
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
       $( document ).trigger( "contenteditable-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
