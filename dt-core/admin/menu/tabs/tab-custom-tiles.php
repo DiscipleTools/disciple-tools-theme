@@ -85,7 +85,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
             $this->box( 'top', __( 'Edit Tiles', 'disciple_tools' ) );
-            $this->post_type_select();
+            $this->post_type_select( $post_type );
             $this->box( 'bottom' );
 
 
@@ -146,14 +146,15 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             }
 
 
+            global $wp_post_types;
             if ( $post_type ){
-                $this->box( 'top', "Sort Tiles and Fields" );
+                $this->box( 'top', "Sort Tiles and Fields for " . esc_html( $wp_post_types[$post_type]->label ) );
                 $this->edit_post_type_tiles( $post_type );
                 $this->box( 'bottom' );
             }
 
             if ( $post_type ){
-                $this->box( 'top', __( 'Create or update tiles', 'disciple_tools' ) );
+                $this->box( 'top', 'Create or update tiles for ' . esc_html( $wp_post_types[$post_type]->label ) );
                 $this->tile_select( $post_type );
                 $this->box( 'bottom' );
             }
@@ -186,7 +187,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     }
 
 
-    private function post_type_select(){
+    private function post_type_select( $selected_post_type ){
         global $wp_post_types;
         $post_types = DT_Posts::get_post_types();
         ?>
@@ -199,7 +200,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <?php foreach ( $post_types as $post_type ) : ?>
-                            <button type="submit" name="post_type" class="button" value="<?php echo esc_html( $post_type ); ?>"><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></button>
+                            <button type="submit" name="post_type" class="button <?php echo esc_html( $selected_post_type === $post_type ? 'button-primary' : '' ); ?>" value="<?php echo esc_html( $post_type ); ?>">
+                                <?php echo esc_html( $wp_post_types[$post_type]->label ); ?>
+                            </button>
                         <?php endforeach; ?>
                     </td>
                 </tr>
@@ -282,7 +285,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                                         <li class="ui-state-default" id="<?php echo esc_html( $order_key ); ?>">
                                             <span class="ui-icon ui-icon-arrow-4"></span>
                                             <?php echo esc_html( $fields[$order_key]["name"] ); ?>
-                                            <?php echo esc_html( isset( $fields[$order_key]["hidden"] ) && !empty( $fields[$order_key]["hidden"] ) ? "Hidden" : "" ); ?>
+                                            <span style="color:lightcoral"><?php echo esc_html( isset( $fields[$order_key]["hidden"] ) && !empty( $fields[$order_key]["hidden"] ) ? "(Hidden)" : "" ); ?></span>
                                         </li>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
