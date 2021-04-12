@@ -134,7 +134,8 @@ $dt_nav_tabs = dt_default_menu_array();
                 <!-- core update -->
                 <?php
                 if ( current_user_can( "update_core" ) ){
-                    $update = maybe_unserialize( get_site_option( "puc_external_updates_theme-disciple-tools-theme", "" ) );
+                    $theme = wp_get_theme();
+                    $update = maybe_unserialize( get_site_option( "puc_external_updates_theme-" . $theme->get_stylesheet(), "" ) );
                     if ( !empty( $update ) && isset( $update->update->version ) && version_compare( $update->update->version, wp_get_theme()->version, '>' ) ) : ?>
                         <li class="image-menu-nav">
                             <a href="<?php echo esc_url( network_admin_url( 'update-core.php' ) ); ?>">
