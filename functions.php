@@ -62,7 +62,7 @@ else {
             require_once( get_template_directory() . '/dt-core/configuration/class-migration-engine.php' );
             Disciple_Tools_Migration_Engine::migrate( Disciple_Tools_Migration_Engine::$migration_number );
         } catch ( Throwable $e ) {
-            new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
+            new WP_Error( 'migration_error', 'Migration engine failed to migrate.', [ "message" => $e->getMessage() ] );
         }
     } );
 
