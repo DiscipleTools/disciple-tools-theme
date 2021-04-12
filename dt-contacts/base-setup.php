@@ -301,7 +301,7 @@ class DT_Contacts_Base {
                     ],
                     "closed" => [
                         "label" => __( "Archived", 'disciple_tools' ),
-                        "color" => "#F43636",
+                        "color" => "#808080",
                         "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", "Contact Status field description", 'disciple_tools' ),
                     ]
                 ]

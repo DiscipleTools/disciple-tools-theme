@@ -152,7 +152,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     'inactive' => [
                         'label' => __( 'Inactive', 'disciple_tools' ),
                         'description' => _x( 'The group is no longer meeting.', 'field description', 'disciple_tools' ),
-                        'color' => "#F43636"
+                        'color' => "#808080"
                     ],
                     'active'   => [
                         'label' => __( 'Active', 'disciple_tools' ),
