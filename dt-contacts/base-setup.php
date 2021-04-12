@@ -603,7 +603,7 @@ class DT_Contacts_Base {
 
 
     public function scripts(){
-        if ( is_singular( "contacts" ) ){
+        if ( is_singular( "contacts" ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
             wp_enqueue_script( 'dt_contacts', get_template_directory_uri() . '/dt-contacts/contacts.js', [
                 'jquery',
             ], filemtime( get_theme_file_path() . '/dt-contacts/contacts.js' ), true );
