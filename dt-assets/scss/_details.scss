@@ -186,52 +186,6 @@ DT comments and activity
         .comment-text {
             min-height: 1em;
         }
-        .reactions__button {
-            color: $dark-gray;
-        }
-        .reactions__button[open]::before {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            z-index: 8;
-            display: block;
-            cursor: default;
-            content: " ";
-            background: transparent;
-        }
-        .reactions__dropdown {
-            width: auto;
-            z-index: 9;
-            border-radius: 6px;
-            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
-            transform: translate(-20px, 5px);
-
-            &::after {
-                content: '';
-                position: absolute;
-                top: -14px;
-                left: 20px;
-                border: 7px solid transparent;
-                border-bottom: 7px solid white;
-            }
-            &::before {
-                content: '';
-                position: absolute;
-                top: -16px;
-                left: 19px;
-                border: 8px solid transparent;
-                border-bottom: 8px solid #cacaca;
-            }
-        }
-        .add-reaction {
-            margin: 0 0.2rem;
-        }
-        .add-reaction:hover {
-            transform: scale(1.2);
-            transition: all 0.1s ease;
-        }
     }
 
     .emoji {
@@ -249,6 +203,55 @@ DT comments and activity
         object path {
             fill: red;
         }
+    }
+
+
+    .reactions__button {
+        color: $dark-gray;
+    }
+    .reactions__button[open]::before {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 8;
+        display: block;
+        cursor: default;
+        content: " ";
+        background: transparent;
+    }
+    .reactions__dropdown {
+        width: auto;
+        left: 80px;
+        z-index: 9;
+        border-radius: 6px;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
+        transform: translate(-20px, 5px);
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: -14px;
+            right: 103px;
+            border: 7px solid transparent;
+            border-bottom: 7px solid white;
+        }
+        &::before {
+            content: '';
+            position: absolute;
+            top: -16px;
+            right: 102px;
+            border: 8px solid transparent;
+            border-bottom: 8px solid #cacaca;
+        }
+    }
+    .add-reaction {
+        margin: 0 0.2rem;
+    }
+    .add-reaction:hover {
+        transform: scale(1.2);
+        transition: all 0.1s ease;
     }
 
     .comment-bubble, .comment-controls {
