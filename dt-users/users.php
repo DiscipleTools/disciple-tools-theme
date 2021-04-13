@@ -487,17 +487,25 @@ class Disciple_Tools_Users
             if ( isset( $data["corresponds_to_contact"] ) ){
                 $corresponds_to_contact = $data["corresponds_to_contact"];
                 update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-                DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
-                    "corresponds_to_user" => $user_id
+                $contact = DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
+                    "corresponds_to_user" => $user_id,
+                    "type" => "user"
                 ], false, true );
+                $user = get_user_by( 'id', $user_id );
+                $user->display_name = $contact["title"];
+                wp_update_user( $user );
             }
         }
         if ( isset( $_POST["corresponds_to_contact_id"] ) && !empty( $_POST["corresponds_to_contact_id"] ) ) {
             $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
             update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-            DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
-                "corresponds_to_user" => $user_id
+            $contact = DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
+                "corresponds_to_user" => $user_id,
+                "type" => "user"
             ], false, true );
+            $user = get_user_by( 'id', $user_id );
+            $user->display_name = $contact["title"];
+            wp_update_user( $user );
         }
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
         if ( empty( $corresponds_to_contact ) ){
@@ -816,7 +824,7 @@ class Disciple_Tools_Users
     }
 
 
-    public function dt_contact_merged( $master_id, $non_master_id){
+    public function dt_contact_merged( $master_id, $non_master_id ){
         //check to make sure both contacts don't point to a user
         $corresponds_to_user = get_post_meta( $master_id, "corresponds_to_user", true );
         if ( $corresponds_to_user ){
@@ -829,14 +837,21 @@ class Disciple_Tools_Users
             if ( $dup_corresponds_to_contact ){
                 delete_post_meta( $non_master_id, "corresponds_to_user" );
             }
+            //update the user display name to the new contact name
+            $user = get_user_by( 'id', $corresponds_to_user );
+            $user->display_name = get_the_title( $master_id );
+            wp_update_user( $user );
         }
 
+
+        //make sure only one contact keeps the user type
         $master_contact_type = get_post_meta( $master_id, "type", true );
-        if ( $master_contact_type === "user"){
-            $non_master_contact_type = get_post_meta( $non_master_id, "type", true );
-            if ( !empty( $non_master_contact_type ) && $non_master_contact_type != "user" ){
-                update_post_meta( $master_id, "type", $non_master_contact_type );
-            }
+        $non_master_contact_type = get_post_meta( $non_master_id, "type", true );
+        if ( $master_contact_type === "user" || $non_master_contact_type === "user" ){
+            //default to previous type or personal if both were user.
+            $type = $master_contact_type !== "user" ? $master_contact_type : ( $non_master_contact_type !== "user" ? $non_master_contact_type : "personal" );
+            update_post_meta( $master_id, "type", "user" );
+            update_post_meta( $non_master_id, "type", $type );
         }
     }
 
