@@ -653,9 +653,9 @@ class DT_Posts extends Disciple_Tools_Posts {
 
                 ", $current_user->ID, $action, $post_type, $field_settings[$args["field_key"]]["p2p_key"], $field_type, $post_type ), OBJECT );
 
-                $post_ids = array_map( function( $post ) { return $post->ID; }, $posts );
+                $post_ids = array_map( function( $post ) { return (int) $post->ID; }, $posts );
                 foreach ( $posts_2 as $p ){
-                    if ( !in_array( $p->ID, $post_ids ) ){
+                    if ( !in_array( (int) $p->ID, $post_ids, true ) ){
                         $posts[] = $p;
                     }
                 }
@@ -683,7 +683,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $post_ids = array_map(
             function( $post ) {
-                return $post->ID;
+                return (int) $post->ID;
             },
             $posts
         );
@@ -711,7 +711,8 @@ class DT_Posts extends Disciple_Tools_Posts {
             foreach ( $users_interacted_with as $user ) {
                 $post_id = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
                 if ( $post_id ){
-                    if ( !in_array( $post_id, $post_ids ) ) {
+                    if ( !in_array( $post_id, $post_ids, true ) ) {
+                        $post_ids[] = $post_id;
                         $compact[] = [
                             "ID" => $post_id,
                             "name" => $user["name"],
