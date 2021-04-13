@@ -37,7 +37,7 @@ function dt_print_details_bar(
             <div class="container-width">
 
                 <div class="grid-x grid-margin-x">
-                    <div class="cell small-4 grid-x grid-margin-x">
+                    <div class="cell small-5 grid-x grid-margin-x">
                         <div class="cell grid-x shrink center-items">
                             <?php if ( $show_update_needed ){ ?>
                                 <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
@@ -76,7 +76,7 @@ function dt_print_details_bar(
                             <span id="admin-bar-issues"></span>
                         </div>
                     </div>
-                    <div class="cell small-4 center hide-for-small-only">
+                    <div class="cell small-2 center hide-for-small-only">
                             <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
                             $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
 
@@ -99,7 +99,7 @@ function dt_print_details_bar(
                                 endif; ?>
                             </span>
                     </div>
-                    <div class="cell small-4 align-right grid-x grid-margin-x">
+                    <div class="cell small-5 align-right grid-x grid-margin-x">
                         <?php if ( $task ) : ?>
                         <div class="cell shrink center-items">
                             <button class="button open-set-task">
