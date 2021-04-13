@@ -603,7 +603,7 @@ jQuery(document).ready(function($) {
   $('.open-share').on("click", function(){
     $('#share-contact-modal').foundation('open');
     if  (!shareTypeahead) {
-      shareTypeahead = TYPEAHEADS.share(post_type, post_id, !['contacts', 'groups'].includes(window.detailsSettings.post_type ) )
+      shareTypeahead = TYPEAHEADS.share(post_type, post_id )
     }
   })
 

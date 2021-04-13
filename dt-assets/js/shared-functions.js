@@ -396,14 +396,23 @@ window.TYPEAHEADS = {
         <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
     </span>`;
   },
-  share(post_type, id, v2) {
+  share(post_type, id) {
     return $.typeahead({
       input: ".js-typeahead-share",
       minLength: 0,
       maxItem: 0,
       accent: true,
       searchOnFocus: true,
-      source: this.typeaheadSource("share", "dt/v1/users/get_users"),
+      template: function (query, item) {
+        return `<div class="" dir="auto">
+          <div>
+              <span class="avatar"><img style="vertical-align: text-bottom" src="${window.lodash.escape( item.avatar )}"/></span>
+              {{name}} (#${window.lodash.escape( item.ID )})
+          </div>
+        </div>`
+      },
+      source: this.typeaheadUserSource(),
+      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
       display: "name",
       templateValue: "{{name}}",
       dynamic: true,
@@ -414,7 +423,7 @@ window.TYPEAHEADS = {
           return window.API.get_shared(post_type, id).then((sharedResult) => {
             return deferred.resolve(
               sharedResult.map((g) => {
-                return { ID: g.user_id, name: g.display_name };
+                return { ID: g.user_id, name: g.display_name, avatar: g.avatar };
               })
             );
           });
@@ -426,6 +435,7 @@ window.TYPEAHEADS = {
               Typeahead[".js-typeahead-share"].addMultiselectItemLayout({
                 ID: item.ID,
                 name: item.name,
+                avatar: item.avatar
               });
               $("#share-result-container").html(
                 window.lodash.get(err, "responseJSON.message")
