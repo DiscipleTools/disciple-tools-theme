@@ -951,16 +951,14 @@ jQuery(document).ready(function($) {
     if ( current_record === 0 || typeof(records_list[current_record-1]) === 'undefined') {
       $(document).find('.navigation-left').hide();
     } else {
-      rest_api.get_post(records_list[current_record-1].POST_TYPE, records_list[current_record-1].ID).then((postResponse) =>{
-        $(document).find('.navigation-left').attr('href', postResponse.permalink);
-      }).catch(handleAjaxError);
+      let link = window.wpApiShare.site_url + '/' + window.detailsSettings.post_type + '/' + records_list[current_record-1].ID
+      $(document).find('.navigation-left').attr('href', link);
       $(document).find('.navigation-left').removeAttr('style');
     }
 
     if (typeof (records_list[next_record]) !== 'undefined') {
-      rest_api.get_post(records_list[next_record].POST_TYPE, records_list[next_record].ID).then((postResponse) =>{
-        $(document).find('.navigation-right').attr('href', postResponse.permalink);
-      }).catch(handleAjaxError);
+      let link = window.wpApiShare.site_url + '/' + window.detailsSettings.post_type + '/' + records_list[next_record].ID
+      $(document).find('.navigation-right').attr('href', link);
       $(document).find('.navigation-right').removeAttr('style');
     } else {
       $(document).find('.navigation-right').hide();
