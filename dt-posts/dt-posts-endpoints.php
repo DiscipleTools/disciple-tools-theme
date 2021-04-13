@@ -1,5 +1,5 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -46,34 +46,34 @@ class Disciple_Tools_Posts_Endpoints {
      */
     public function add_api_routes() {
         $arg_schemas = [
-            "post_type" => [
-                "description" => "The post type",
-                "type" => 'post_type',
-                "required" => true,
+            "post_type"    => [
+                "description"       => "The post type",
+                "type"              => 'post_type',
+                "required"          => true,
                 "validate_callback" => [ $this, "prefix_validate_args" ]
             ],
-            "id" => [
-                "description" => "The id of the post",
-                "type" => 'integer',
-                "required" => true,
+            "id"           => [
+                "description"       => "The id of the post",
+                "type"              => 'integer',
+                "required"          => true,
                 "validate_callback" => [ $this, "prefix_validate_args" ]
             ],
-            "comment_id" => [
-                "description" => "The id of the comment",
-                "type" => 'integer',
-                "required" => true,
+            "comment_id"   => [
+                "description"       => "The id of the comment",
+                "type"              => 'integer',
+                "required"          => true,
                 "validate_callback" => [ $this, "prefix_validate_args" ]
             ],
-            "date" => [
-                "description" => "The date the comment was made",
-                'type' => 'string',
-                'required' => false,
+            "date"         => [
+                "description"       => "The date the comment was made",
+                'type'              => 'string',
+                'required'          => false,
                 "validate_callback" => [ $this, "prefix_validate_args" ]
             ],
             "comment_type" => [
-                "description" => "The type of the comment",
-                'type' => 'string',
-                'required' => false,
+                "description"       => "The type of the comment",
+                'type'              => 'string',
+                'required'          => false,
                 "validate_callback" => [ $this, "prefix_validate_args" ]
             ]
         ];
@@ -84,7 +84,7 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "POST",
                     "callback" => [ $this, 'create_post' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
                     ]
                 ]
@@ -96,9 +96,9 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_post' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
+                        "id"        => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -109,9 +109,9 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "POST",
                     "callback" => [ $this, 'update_post' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
+                        "id"        => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -122,9 +122,9 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "DELETE",
                     "callback" => [ $this, 'delete_post' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
+                        "id"        => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -136,7 +136,7 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_list' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
                     ]
                 ]
@@ -148,11 +148,11 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_posts_for_typeahead' ],
-                    "args" => [
-                        "s" => [
-                            "description" => "The text to search for",
-                            "type" => 'string',
-                            "required" => false,
+                    "args"     => [
+                        "s"         => [
+                            "description"       => "The text to search for",
+                            "type"              => 'string',
+                            "required"          => false,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
                         "post_type" => $arg_schemas["post_type"],
@@ -167,9 +167,9 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_comments' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
+                        "id"        => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -180,16 +180,16 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "POST",
                     "callback" => [ $this, 'add_comment' ],
-                    "args" => [
-                        "comment" => [
-                            "description" => "The comment text",
-                            "type" => 'string',
-                            "required" => true,
+                    "args"     => [
+                        "comment"      => [
+                            "description"       => "The comment text",
+                            "type"              => 'string',
+                            "required"          => true,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
-                        "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
-                        "date" => $arg_schemas["date"],
+                        "post_type"    => $arg_schemas["post_type"],
+                        "id"           => $arg_schemas["id"],
+                        "date"         => $arg_schemas["date"],
                         'comment_type' => $arg_schemas["comment_type"]
                     ]
                 ]
@@ -201,16 +201,16 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "POST",
                     "callback" => [ $this, 'update_comment' ],
-                    "args" => [
-                        "comment" => [
-                            "description" => "The comment text",
-                            "type" => 'string',
-                            "required" => true,
+                    "args"     => [
+                        "comment"      => [
+                            "description"       => "The comment text",
+                            "type"              => 'string',
+                            "required"          => true,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
-                        "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
-                        "comment_id" => $arg_schemas["comment_id"],
+                        "post_type"    => $arg_schemas["post_type"],
+                        "id"           => $arg_schemas["id"],
+                        "comment_id"   => $arg_schemas["comment_id"],
                         'comment_type' => $arg_schemas["comment_type"]
                     ]
                 ]
@@ -222,9 +222,9 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "DELETE",
                     "callback" => [ $this, 'delete_comment' ],
-                    "args" => [
-                        "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
+                    "args"     => [
+                        "post_type"  => $arg_schemas["post_type"],
+                        "id"         => $arg_schemas["id"],
                         "comment_id" => $arg_schemas["comment_id"],
                     ]
                 ]
@@ -236,9 +236,9 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_activity' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
+                        "id"        => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -249,13 +249,13 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_single_activity' ],
-                    "args" => [
-                        "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
+                    "args"     => [
+                        "post_type"   => $arg_schemas["post_type"],
+                        "id"          => $arg_schemas["id"],
                         "activity_id" => [
-                            "description" => "The id of the activity",
-                            "type" => 'integer',
-                            "required" => true,
+                            "description"       => "The id of the activity",
+                            "type"              => 'integer',
+                            "required"          => true,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ]
                     ]
@@ -268,9 +268,9 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_shares' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
+                        "id"        => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -281,15 +281,15 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "POST",
                     "callback" => [ $this, 'add_share' ],
-                    "args" => [
-                        "user_id" => [
-                            "description" => "The ID of the user to share the record with",
-                            "type" => 'integer',
-                            "required" => true,
+                    "args"     => [
+                        "user_id"   => [
+                            "description"       => "The ID of the user to share the record with",
+                            "type"              => 'integer',
+                            "required"          => true,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
                         "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
+                        "id"        => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -301,15 +301,15 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "DELETE",
                     "callback" => [ $this, 'remove_share' ],
-                    "args" => [
-                        "user_id" => [
-                            "description" => "The ID of the user to unshared the record with",
-                            "type" => 'integer',
-                            "required" => true,
+                    "args"     => [
+                        "user_id"   => [
+                            "description"       => "The ID of the user to unshared the record with",
+                            "type"              => 'integer',
+                            "required"          => true,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
                         "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
+                        "id"        => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -320,9 +320,9 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_following' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
-                        "id" => $arg_schemas["id"],
+                        "id"        => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -333,18 +333,18 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_multi_select_values' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
-                        "field" => [
-                            "description" => "The field key",
-                            "type" => 'string',
-                            "required" => true,
+                        "field"     => [
+                            "description"       => "The field key",
+                            "type"              => 'string',
+                            "required"          => true,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
-                        "s" => [
-                            "description" => "Filter values to this query",
-                            "type" => 'string',
-                            "required" => false,
+                        "s"         => [
+                            "description"       => "Filter values to this query",
+                            "type"              => 'string',
+                            "required"          => false,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
                     ]
@@ -357,7 +357,7 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_post_settings' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
                     ]
                 ]
@@ -369,8 +369,28 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "POST",
                     "callback" => [ $this, 'get_post_field_settings' ],
-                    "args" => [
+                    "args"     => [
                         "post_type" => $arg_schemas["post_type"],
+                    ]
+                ]
+            ]
+        );
+
+        //Request Record Access
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/request_record_access', [
+                [
+                    "methods"  => "POST",
+                    "callback" => [ $this, 'request_record_access' ],
+                    "args"     => [
+                        "user_id"   => [
+                            "description"       => "The ID of the user requesting record access",
+                            "type"              => 'integer',
+                            "required"          => true,
+                            "validate_callback" => [ $this, "prefix_validate_args" ]
+                        ],
+                        "post_type" => $arg_schemas["post_type"],
+                        "id"        => $arg_schemas["id"]
                     ]
                 ]
             ]
@@ -385,7 +405,7 @@ class Disciple_Tools_Posts_Endpoints {
      *
      * @return string|WP_Error
      */
-    public function prefix_validate_args( $value, $request, $param ){
+    public function prefix_validate_args( $value, $request, $param ) {
         $attributes = $request->get_attributes();
 
         if ( isset( $attributes['args'][ $param ] ) ) {
@@ -397,9 +417,9 @@ class Disciple_Tools_Posts_Endpoints {
             if ( 'integer' === $argument['type'] && ! is_numeric( $value ) ) {
                 return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not of type %2$s', $param, 'integer' ), array( 'status' => 400 ) );
             }
-            if ( 'post_type' === $argument['type'] ){
+            if ( 'post_type' === $argument['type'] ) {
                 $post_types = DT_Posts::get_post_types();
-                if ( !in_array( $value, $post_types ) ){
+                if ( ! in_array( $value, $post_types ) ) {
                     return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not a valid post type', $value ), array( 'status' => 400 ) );
                 }
             }
@@ -412,100 +432,113 @@ class Disciple_Tools_Posts_Endpoints {
         // If we got this far then the data is valid.
         return true;
     }
+
     public static function prefix_validate_args_static( $value, $request, $param ) {
         return self::instance()->prefix_validate_args( $value, $request, $param );
     }
 
-    public function create_post( WP_REST_Request $request ){
-        $fields = $request->get_json_params() ?? $request->get_body_params();
+    public function create_post( WP_REST_Request $request ) {
+        $fields     = $request->get_json_params() ?? $request->get_body_params();
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
-        $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
-        $post = DT_Posts::create_post( $url_params["post_type"], $fields, $silent );
+        $silent     = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
+        $post       = DT_Posts::create_post( $url_params["post_type"], $fields, $silent );
+
         return $post;
     }
 
-    public function get_post( WP_REST_Request $request ){
+    public function get_post( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
+
         return DT_Posts::get_post( $url_params["post_type"], $url_params["id"] );
     }
 
 
-    public function update_post( WP_REST_Request $request ){
-        $fields = $request->get_json_params() ?? $request->get_body_params();
+    public function update_post( WP_REST_Request $request ) {
+        $fields     = $request->get_json_params() ?? $request->get_body_params();
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
-        $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
+        $silent     = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
+
         return DT_Posts::update_post( $url_params["post_type"], $url_params["id"], $fields, $silent );
     }
 
-    public function delete_post( WP_REST_Request $request ){
+    public function delete_post( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
+
         return DT_Posts::delete_post( $url_params["post_type"], $url_params["id"] );
     }
 
-    public function get_list( WP_REST_Request $request ){
+    public function get_list( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
         $get_params = $request->get_json_params() ?? $request->get_query_params();
+
         return DT_Posts::list_posts( $url_params["post_type"], $get_params );
     }
 
-    public function get_posts_for_typeahead( WP_REST_Request $request ){
+    public function get_posts_for_typeahead( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
-        $search = isset( $get_params['s'] ) ? $get_params['s'] : '';
+        $search     = isset( $get_params['s'] ) ? $get_params['s'] : '';
+
         return DT_Posts::get_viewable_compact( $url_params["post_type"], $search, $get_params );
     }
 
 
-    public function get_activity( WP_REST_Request $request ){
+    public function get_activity( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
+
         return DT_Posts::get_post_activity( $url_params["post_type"], $url_params["id"], $get_params );
     }
 
-    public function get_single_activity( WP_REST_Request $request ){
+    public function get_single_activity( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
+
         return DT_Posts::get_post_single_activity( $url_params["post_type"], $url_params["id"], $url_params["activity_id"] );
     }
 
-    public function get_shares( WP_REST_Request $request ){
+    public function get_shares( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
+
         return DT_Posts::get_shared_with( $url_params["post_type"], $url_params["id"] );
     }
 
-    public function add_share( WP_REST_Request $request ){
+    public function add_share( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
-        $body = $request->get_json_params() ?? $request->get_body_params();
+        $body       = $request->get_json_params() ?? $request->get_body_params();
+
         return DT_Posts::add_shared( $url_params["post_type"], $url_params["id"], $body['user_id'] );
     }
 
-    public function remove_share( WP_REST_Request $request ){
+    public function remove_share( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
-        $body = $request->get_json_params() ?? $request->get_body_params();
+        $body       = $request->get_json_params() ?? $request->get_body_params();
+
         return DT_Posts::remove_shared( $url_params["post_type"], $url_params["id"], $body['user_id'] );
     }
 
-    public function get_comments( WP_REST_Request $request ){
+    public function get_comments( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
+
         return DT_Posts::get_post_comments( $url_params["post_type"], $url_params["id"], true, "all", [
             "offset" => $get_params['offset'] ?? 0,
             "number" => $get_params["number"] ?? ''
         ] );
     }
 
-    public function add_comment( WP_REST_Request $request ){
+    public function add_comment( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
-        $body = $request->get_json_params() ?? $request->get_body_params();
-        $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
-        $args = [];
-        if ( isset( $body["date"] ) ){
+        $body       = $request->get_json_params() ?? $request->get_body_params();
+        $silent     = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
+        $args       = [];
+        if ( isset( $body["date"] ) ) {
             $args["comment_date"] = $body["date"];
         }
         $type = 'comment';
-        if ( isset( $body["comment_type"] ) ){
+        if ( isset( $body["comment_type"] ) ) {
             $type = $body["comment_type"];
         }
 
@@ -517,11 +550,11 @@ class Disciple_Tools_Posts_Endpoints {
         }
     }
 
-    public function update_comment( WP_REST_Request $request ){
+    public function update_comment( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
-        $body = $request->get_json_params() ?? $request->get_body_params();
-        $type = 'comment';
-        if ( isset( $body["comment_type"] ) ){
+        $body       = $request->get_json_params() ?? $request->get_body_params();
+        $type       = 'comment';
+        if ( isset( $body["comment_type"] ) ) {
             $type = $body["comment_type"];
         }
         $result = DT_Posts::update_post_comment( $url_params["comment_id"], $body["comment"], true, $type );
@@ -532,33 +565,37 @@ class Disciple_Tools_Posts_Endpoints {
         }
     }
 
-    public function delete_comment( WP_REST_Request $request ){
+    public function delete_comment( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
-        $result = DT_Posts::delete_post_comment( $url_params["comment_id"] );
+        $result     = DT_Posts::delete_post_comment( $url_params["comment_id"] );
+
         return $result;
     }
 
     public function get_following( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
+
         return DT_Posts::get_users_following_post( $url_params["post_type"], $url_params["id"] );
     }
 
-    public function get_multi_select_values( WP_REST_Request $request ){
+    public function get_multi_select_values( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
-        $search = isset( $get_params['s'] ) ? $get_params['s'] : '';
+        $search     = isset( $get_params['s'] ) ? $get_params['s'] : '';
+
         return DT_Posts::get_multi_select_options( $url_params["post_type"], $get_params["field"], $search );
     }
 
-    public function get_post_settings( WP_REST_Request $request ){
+    public function get_post_settings( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
-        if ( ! ( DT_Posts::can_access( $url_params["post_type"] ) || DT_Posts::can_create( $url_params["post_type"] ) ) ){
+        if ( ! ( DT_Posts::can_access( $url_params["post_type"] ) || DT_Posts::can_create( $url_params["post_type"] ) ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read " . $url_params["post_type"], [ 'status' => 403 ] );
         }
+
         return DT_Posts::get_post_settings( $url_params["post_type"] );
     }
 
-    public function get_post_field_settings( WP_REST_Request $request ){
+    public function get_post_field_settings( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
 
         /**
@@ -571,10 +608,18 @@ class Disciple_Tools_Posts_Endpoints {
         $valid_token = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
         if ( ! $valid_token ) {
             dt_write_log( $valid_token );
+
             return new WP_Error( __METHOD__, 'Invalid transfer token' );
         }
 
         return DT_Posts::get_post_field_settings( $url_params["post_type"] );
+    }
+
+    public function request_record_access( WP_REST_Request $request ): string {
+        $url_params = $request->get_url_params();
+        $body       = $request->get_json_params() ?? $request->get_body_params();
+
+        return DT_Posts::request_record_access( $url_params["post_type"], $url_params["id"], $body["user_id"] );
     }
 
 }

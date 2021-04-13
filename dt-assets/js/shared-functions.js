@@ -121,7 +121,7 @@ window.API = {
     makeRequestOnPosts(
       "POST",
       `${post_type}/${postId}/comments/${comment_ID}`,
-      { comment: comment_content, comment_type: commentType }
+      {comment: comment_content, comment_type: commentType}
     ),
 
   get_comments: (post_type, postId) =>
@@ -157,10 +157,10 @@ window.API = {
   get_filters: () => makeRequest("GET", "users/get_filters"),
 
   save_filters: (post_type, filter) =>
-    makeRequest("POST", "users/save_filters", { filter, post_type }),
+    makeRequest("POST", "users/save_filters", {filter, post_type}),
 
   delete_filter: (post_type, id) =>
-    makeRequest("DELETE", "users/save_filters", { id, post_type }),
+    makeRequest("DELETE", "users/save_filters", {id, post_type}),
 
   get_duplicates_on_post: (post_type, postId, args) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}/all_duplicates`, args),
@@ -172,6 +172,11 @@ window.API = {
       contact_id: contactId,
       site_post_id: siteId,
     }),
+
+  request_record_access: (post_type, postId, userId) =>
+    makeRequestOnPosts("POST", `${post_type}/${postId}/request_record_access`, {
+      user_id: userId,
+    })
 };
 
 function handleAjaxError(err) {
@@ -302,7 +307,7 @@ window.TYPEAHEADS = {
       },
     };
   },
-  typeaheadUserSource : function (field, url) {
+  typeaheadUserSource: function (field, url) {
     return {
       users: {
         display: ["name", "user"],
@@ -347,10 +352,10 @@ window.TYPEAHEADS = {
   typeaheadPostsSource: function (post_type, args = {}) {
     return {
       contacts: {
-        display: [ "name", "ID", "label" ],
+        display: ["name", "ID", "label"],
         ajax: {
           url: wpApiShare.root + `dt-posts/v2/${post_type}/compact`,
-          data: Object.assign({ s: "{{query}}" }, args),
+          data: Object.assign({s: "{{query}}"}, args),
           beforeSend: function (xhr) {
             xhr.setRequestHeader("X-WP-Nonce", wpApiShare.nonce);
           },
@@ -390,7 +395,7 @@ window.TYPEAHEADS = {
       ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg">`
       : "";
     let statusStyle = item.status === "closed" ? 'style="color:gray"' : "";
-      return `<span dir="auto" ${statusStyle}>
+    return `<span dir="auto" ${statusStyle}>
         <span class="typeahead-user-row" style="width:20px">${img}</span>
         ${window.lodash.escape((item.label ? item.label : item.name))}
         <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
@@ -414,7 +419,7 @@ window.TYPEAHEADS = {
           return window.API.get_shared(post_type, id).then((sharedResult) => {
             return deferred.resolve(
               sharedResult.map((g) => {
-                return { ID: g.user_id, name: g.display_name };
+                return {ID: g.user_id, name: g.display_name};
               })
             );
           });
@@ -489,7 +494,8 @@ window.SHAREDFUNCTIONS = {
     let cookie = this.getCookie(cname);
     try {
       default_val = JSON.parse(cookie);
-    } catch (e) {}
+    } catch (e) {
+    }
     return default_val;
   },
   save_json_cookie(cname, json, path = "") {
@@ -507,7 +513,7 @@ window.SHAREDFUNCTIONS = {
       //This is a check so that we use the gergorian (Western) calendar if the users locale is Farsi. This is the calendar used primarily by Farsi speakers outside of Iran, and is easily understood by those inside.
       langcode = `${langcode}-u-ca-gregory`;
     }
-    const options = { year: "numeric", month: "long", day: "numeric" };
+    const options = {year: "numeric", month: "long", day: "numeric"};
     if (with_time) {
       options.hour = "numeric";
       options.minute = "numeric";

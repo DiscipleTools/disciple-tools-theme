@@ -161,6 +161,13 @@ function dt_site_scripts() {
         )
     );
 
+    dt_theme_enqueue_script( 'dt-request-record-access', 'dt-assets/js/request-record-access.js', array( 'jquery' ) );
+    wp_localize_script( 'dt-request-record-access', 'detailsSettings', [
+        'post_type' => $post_type,
+        'post_id' => get_the_ID(),
+        'current_user_id' => get_current_user_id()
+    ]);
+
     dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
     dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
 
