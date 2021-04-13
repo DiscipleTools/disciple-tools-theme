@@ -367,6 +367,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $namespace, '/contacts/(?P<id>\d+)/accept', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'accept_contact' ],
+                "permission_callback" => '__return_true',
             ]
         );
     }

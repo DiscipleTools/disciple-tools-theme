@@ -91,6 +91,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                 [
                     'methods'  => "GET",
                     'callback' => [ $this, 'system_map_endpoint' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );

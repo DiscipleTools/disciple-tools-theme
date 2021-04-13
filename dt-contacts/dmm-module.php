@@ -490,6 +490,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             $namespace, '/contacts/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
                 "methods"  => "GET",
                 "callback" => [ $this, 'revert_activity' ],
+                'permission_callback' => '__return_true',
             ]
         );
     }

@@ -59,6 +59,7 @@ class DT_User_Management
                 [
                     'methods'  => "GET",
                     'callback' => [ $this, 'get_user_endpoint' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -67,6 +68,7 @@ class DT_User_Management
                 [
                     'methods'  => "POST",
                     'callback' => [ $this, 'update_settings_on_user' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -75,6 +77,7 @@ class DT_User_Management
                 [
                     'methods'  => "GET",
                     'callback' => [ $this, 'get_users_endpoints' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
