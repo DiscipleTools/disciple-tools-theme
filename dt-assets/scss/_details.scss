@@ -222,6 +222,10 @@ DT comments and activity
         border: 1px solid transparent;
         cursor: pointer;
 
+        * {
+            pointer-events: none;
+        }
+
         .emoji {
             height: 1rem;
             width: 1rem;

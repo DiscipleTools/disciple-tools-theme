@@ -143,7 +143,7 @@ jQuery(document).ready(function($) {
                     if (users.length > 1) reactionTitle = reactionTitle.replace('{{users}}', users.slice(0, users.length - 1).map((user) => user.name).join(', '))
                     const hasOwnReaction = users.map((user) => user.user_id).includes(commentsSettings.current_user_id)
                   %>
-                    <div class="comment-reaction" title="<%- reactionTitle %>" data-own-reaction="<%- hasOwnReaction %>">
+                    <div class="comment-reaction" title="<%- reactionTitle %>" data-own-reaction="<%- hasOwnReaction %>" data-reaction-value="<%- reactionKey %>" data-comment-id="<%- a.comment_ID %>">
                       <img class="emoji" src="<%- reactionMeta.path %>" >
                       <span><%- users.length %></span>
                     </div>
@@ -385,7 +385,6 @@ jQuery(document).ready(function($) {
         activity: array
       }))
     }
-    document.querySelector
     document.querySelectorAll('.reactions__dropdown').forEach((element) => {
       const commentId = element.dataset.commentId
       const emojis = emojiButtons()
@@ -415,6 +414,14 @@ jQuery(document).ready(function($) {
           dropdownElement.style.visibility = 'hidden'
           dropdownElement.style.display = 'none'
         }
+      })
+    })
+    document.querySelectorAll('.comment-reaction').forEach((element) => {
+      element.addEventListener('click', (e) => {
+        const commentId = e.target.dataset.commentId
+        const userId = commentsSettings.current_user_id
+        const reaction = e.target.dataset.reactionValue
+        rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction)
       })
     })
   }
