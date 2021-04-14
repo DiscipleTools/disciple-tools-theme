@@ -109,17 +109,26 @@ jQuery(document).ready(function($) {
         <span class="comment-date"> <%- date %> </span>
       </div>
     <div class="activity-text">
-    <% var is_Comment; var has_Comment_ID; %>
-    <% window.lodash.forEach(activity, function(a){
+      <% var is_Comment; var has_Comment_ID; %>
+      <% window.lodash.forEach(activity, function(a){
         if (a.comment){ %>
           <% is_Comment = true; %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
               <div class="comment-text" title="<%- date %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
+              <div class="comment-reactions">
+                <% Object.entries(a.reactions).forEach(([reactionKey, users]) => {
+                  const reactionAlias = reactionKey.replace(/reaction_/, '')
+                  console.log(reactionKey, users, reactionAlias)
+                  const reactionMeta = commentsSettings.reaction_options[reactionAlias]
+                %>
+                  <div class="comment-reaction"><img class="emoji" src="<%- reactionMeta.path %>" ><span><%- users.length %></span></div>
+                <% }) %>
+              </>
             </div>
             <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
               <div class="translation-bubble" dir=auto></div>
             <% } %>
-            <p class="comment-controls">
+            <p  class="comment-controls">
                <% if ( a.is_own_comment ) { %>
                 <% has_Comment_ID = true %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
@@ -131,11 +140,14 @@ jQuery(document).ready(function($) {
                       ${window.lodash.escape(commentsSettings.translations.delete)}
                   </a>
                <% } %>
-              <button class="icon-button reactions__button" aria-label="Add your reaction" aria-haspopup="menu" role="button" data-toggle="react-to-<%- a.comment_ID %>">
-                <svg class="octicon octicon-smiley" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zM5 8a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zM5.32 9.636a.75.75 0 011.038.175l.007.009c.103.118.22.222.35.31.264.178.683.37 1.285.37.602 0 1.02-.192 1.285-.371.13-.088.247-.192.35-.31l.007-.008a.75.75 0 111.222.87l-.614-.431c.614.43.614.431.613.431v.001l-.001.002-.002.003-.005.007-.014.019a1.984 1.984 0 01-.184.213c-.16.166-.338.316-.53.445-.63.418-1.37.638-2.127.629-.946 0-1.652-.308-2.126-.63a3.32 3.32 0 01-.715-.657l-.014-.02-.005-.006-.002-.003v-.002h-.001l.613-.432-.614.43a.75.75 0 01.183-1.044h.001z"></path></svg>
-              </button>
-              <div class="dropdown-pane reactions__dropdown" data-position="bottom" data-alignment="right" id="react-to-<%- a.comment_ID %>" data-comment-id="<%- a.comment_ID %>" data-dropdown></div>
-            </p>
+                <span class="reaction-controls">
+                  <button class="icon-button reactions__button" aria-label="Add your reaction" aria-haspopup="menu" role="button" data-toggle="react-to-<%- a.comment_ID %>">
+                    <svg class="octicon octicon-smiley" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zM5 8a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zM5.32 9.636a.75.75 0 011.038.175l.007.009c.103.118.22.222.35.31.264.178.683.37 1.285.37.602 0 1.02-.192 1.285-.371.13-.088.247-.192.35-.31l.007-.008a.75.75 0 111.222.87l-.614-.431c.614.43.614.431.613.431v.001l-.001.002-.002.003-.005.007-.014.019a1.984 1.984 0 01-.184.213c-.16.166-.338.316-.53.445-.63.418-1.37.638-2.127.629-.946 0-1.652-.308-2.126-.63a3.32 3.32 0 01-.715-.657l-.014-.02-.005-.006-.002-.003v-.002h-.001l.613-.432-.614.43a.75.75 0 01.183-1.044h.001z"></path></svg>
+                  </button>
+                  <div class="dropdown-pane reactions__dropdown" data-position="bottom" data-alignment="right" id="react-to-<%- a.comment_ID %>" data-comment-id="<%- a.comment_ID %>" data-dropdown></div>
+                </span>
+              </p>
+
         <% } else { %>
             <p class="activity-bubble" title="<%- date %>">  <%- a.text %> <% print(a.action) %> </p>
         <%  }
@@ -339,7 +351,8 @@ jQuery(document).ready(function($) {
         comment_ID : d.comment_ID,
         is_own_comment: d.user_id === commentsSettings.current_user_id,
         comment_type : d.comment_type,
-        action: d.action
+        action: d.action,
+        reactions: d.comment_reactions,
       }
 
       let diff = first ? first.date.diff(obj.date, "hours") : 0
@@ -363,6 +376,7 @@ jQuery(document).ready(function($) {
         activity: array
       }))
     }
+    document.querySelector
     document.querySelectorAll('.reactions__dropdown').forEach((element) => {
       const commentId = element.dataset.commentId
       const emojis = emojiButtons()
@@ -397,8 +411,8 @@ jQuery(document).ready(function($) {
     const emojiContainer = document.createElement('div')
     emojiContainer.classList.add('reactions-emoji-container')
     let emojis = ''
-    reactions.forEach((reaction) => {
-      const reactionValue = `reaction_${reaction.alias.toLowerCase().replace(' ', '_')}`
+    Object.entries(reactions).forEach(([alias, reaction]) => {
+      const reactionValue = `reaction_${alias}`
       emojis += `
       <button class="add-reaction" type="submit" name="reaction" value="${reactionValue}">
         <img class="emoji" alt="${reaction.name}" src="${reaction.path}">

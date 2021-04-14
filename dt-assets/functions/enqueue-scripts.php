@@ -200,6 +200,9 @@ function dt_site_scripts() {
                     ],
                     'current_user_id' => get_current_user_id(),
                     'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
+                    /**
+                     * reaction aliases must be lowercase with no spaces
+                     */
                     'reaction_options' => apply_filters( 'dt_comments_reaction_options', dt_get_site_custom_lists( 'comment_reaction_options' ) ),
                     'comments' => DT_Posts::get_post_comments( $post_type, $post["ID"] ),
                     'activity' => DT_Posts::get_post_activity( $post_type, $post["ID"] ),

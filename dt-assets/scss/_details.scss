@@ -194,6 +194,8 @@ DT comments and activity
     }
 
     .comment-controls {
+        display: flex;
+
         a {
             font-size: 12px;
         }
@@ -204,8 +206,41 @@ DT comments and activity
             fill: red;
         }
     }
+    .comment-reactions {
+        display: flex;
+        margin-bottom: 0.5rem;
 
+        * + * {
+            margin-left: 4px;
+        }
+    }
 
+    .comment-reaction {
+        background-color: #f8f8f8;
+        border-radius: 100px;
+        padding: 0.1rem 0.5rem;
+        display: flex;
+        align-items: center;
+        border: 1px solid transparent;
+
+        .emoji {
+            height: 1rem;
+            width: 1rem;
+        }
+
+        span {
+            font-size: 0.8rem;
+        }
+
+        &:hover {
+            border-color: $dark-gray;
+        }
+    }
+
+    .reaction-controls {
+        position: relative;
+        margin-left: 10px;
+    }
     .reactions__button {
         color: $dark-gray;
     }

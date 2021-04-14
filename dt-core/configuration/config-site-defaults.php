@@ -461,13 +461,14 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         ],
     ];
 
+    // alias's must be lower case with no spaces
     $fields['comment_reaction_options'] = [
-            [ 'alias' => 'thumbs up', 'name' => __( "thumbs up", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png' ],
-            [ 'alias' => 'heart', 'name' => __( "heart", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/2764.png' ],
-            [ 'alias' => 'laugh', 'name' => __( "laugh", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f604.png' ],
-            [ 'alias' => 'wow', 'name' => __( "wow", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f62e.png' ],
-            [ 'alias' => 'sad', 'name' => __( "sad", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f615.png' ],
-            [ 'alias' => 'angry', 'name' => __( "angry", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f620.png' ],
+            "thumbs_up" => [ 'name' => __( "thumbs up", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png' ],
+            "heart" => [ 'name' => __( "heart", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/2764.png' ],
+            "laugh" => [ 'name' => __( "laugh", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f604.png' ],
+            "wow" => [ 'name' => __( "wow", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f62e.png' ],
+            "sad" => [ 'name' => __( "sad", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f615.png' ],
+            "angry" => [ 'name' => __( "angry", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f620.png' ],
         ];
 
     $fields['sources'] = [];
