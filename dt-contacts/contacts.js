@@ -82,10 +82,10 @@ jQuery(document).ready(function($) {
    */
   window.makeRequestOnPosts( "GET", `${post_type}/${post_id}/duplicates` ).then(response => {
     if ( response.ids && response.ids.length > 0 ){
-      $('#admin-bar-issues').html(`
-        <button class="center-items" id="duplicates-detected-notice">
-          <img style="height:25px" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-          <strong style="margin:0 5px 2px 5px">${window.lodash.escape(window.detailsSettings.translations.duplicates_detected)}</strong>
+      $('.details-title-section').html(`
+        <button class="button hollow center-items" id="duplicates-detected-notice" style="margin-bottom: 0; padding: .5em .5em; ">
+          <img style="height:20px" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+          <strong>${window.lodash.escape(window.detailsSettings.translations.duplicates_detected)}</strong>
         </button>
       `)
     }

@@ -291,7 +291,7 @@ html[dir='rtl'] nav.second-bar .advanced_search {
     border-top: none;
     &.is-stuck {
         border-top: .5rem solid $primary-color;
-        .grid-x {
+        .mobile-nav-actions {
             display: none;
         }
         #record-tagline {
@@ -932,8 +932,8 @@ a.dt-green:hover {
     margin-left: 3px;
 }
 .help-button-tile {
-    margin-right: 3px;
-    margin-left: 3px;
+    margin-right: 6px;
+    margin-left: 6px;
 }
 .help-button-field {
     margin-right: 3px;

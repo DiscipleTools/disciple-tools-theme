@@ -949,23 +949,23 @@ jQuery(document).ready(function($) {
     });
 
     if ( current_record === 0 || typeof(records_list[current_record-1]) === 'undefined') {
-      $(document).find('.navigation-left').hide();
+      $(document).find('.navigation-previous').hide();
     } else {
       let link = window.wpApiShare.site_url + '/' + window.detailsSettings.post_type + '/' + records_list[current_record-1].ID
-      $(document).find('.navigation-left').attr('href', link);
-      $(document).find('.navigation-left').removeAttr('style');
+      $(document).find('.navigation-previous').attr('href', link);
+      $(document).find('.navigation-previous').removeAttr('style');
     }
 
     if (typeof (records_list[next_record]) !== 'undefined') {
       let link = window.wpApiShare.site_url + '/' + window.detailsSettings.post_type + '/' + records_list[next_record].ID
-      $(document).find('.navigation-right').attr('href', link);
-      $(document).find('.navigation-right').removeAttr('style');
+      $(document).find('.navigation-next').attr('href', link);
+      $(document).find('.navigation-next').removeAttr('style');
     } else {
-      $(document).find('.navigation-right').hide();
+      $(document).find('.navigation-next').hide();
     }
 
   } else {
-    $(document).find('.navigation-right').removeAttr('style').attr('style', 'display: none;');
+    $(document).find('.navigation-next').removeAttr('style').attr('style', 'display: none;');
   }
 
   //leave at the end of this file
