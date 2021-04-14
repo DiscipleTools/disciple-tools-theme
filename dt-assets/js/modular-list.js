@@ -502,7 +502,7 @@
         let records_list_ids_and_type = [];
 
         $.each(response.posts, function(id, post_object ) {
-          records_list_ids_and_type.push({ ID: post_object.ID, POST_TYPE: post_object.post_type});
+          records_list_ids_and_type.push({ ID: post_object.ID });
         });
 
         window.SHAREDFUNCTIONS.save_json_cookie(`records_list`, records_list_ids_and_type, list_settings.post_type);

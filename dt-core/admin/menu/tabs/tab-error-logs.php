@@ -144,7 +144,7 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
             return implode( ", ", $key_value );
         }
 
-        return $meta_value;
+        return $meta_value ?? '';
     }
 }
 
