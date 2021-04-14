@@ -192,7 +192,7 @@ function handleAjaxError(err) {
 
 jQuery(document)
   .ajaxComplete((event, xhr, settings) => {
-    if ( xhr && xhr.responseJSON && settings.type === "POST" ) {
+    if (xhr && xhr.responseJSON) {
       // Event that a contact record has been updated
       if ( xhr.responseJSON.ID && xhr.responseJSON.post_type ) {
         let request = settings.data ? JSON.parse(settings.data) : {};

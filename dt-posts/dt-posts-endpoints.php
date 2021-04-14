@@ -599,9 +599,8 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function request_record_access( WP_REST_Request $request ): string {
         $url_params = $request->get_url_params();
-        $body       = $request->get_json_params() ?? $request->get_body_params();
 
-        return DT_Posts::request_record_access( $url_params["post_type"], $url_params["id"], $body["user_id"] );
+        return DT_Posts::request_record_access( $url_params["post_type"], $url_params["id"] );
     }
 
 }

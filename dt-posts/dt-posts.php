@@ -1428,15 +1428,14 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @param string $post_type
      * @param int $post_id
-     * @param int $user_id -- Requesting user
      *
      * @return false|int|WP_Error
      */
-    public static function request_record_access( string $post_type, int $post_id, int $user_id ) {
+    public static function request_record_access( string $post_type, int $post_id ) {
 
         // Sanity checks
-        if ( ! in_array( $post_type, self::get_post_types() ) ) {
-            return new WP_Error( __FUNCTION__, "Post type does not exist", [ 'status' => 403 ] );
+        if ( ! self::can_access( $post_type ) ) {
+            return new WP_Error( __FUNCTION__, sprintf( "You do not have access to these %s", $post_type ), [ 'status' => 403 ] );
         }
 
         $existing_post = self::get_post( $post_type, $post_id, false, false );
@@ -1445,20 +1444,14 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         // Fetch associated names
+        $user_id = get_current_user_id();
+
         $requester_name = dt_get_user_display_name( $user_id );
         $post_settings  = self::get_post_settings( $post_type );
-        $owner_id       = 0;
-        $owner_name     = '';
 
-        if ( $post_type === 'groups' ) {
-            $owner_id   = dt_get_user_id_from_assigned_to( get_post_meta( $post_id, "assigned_to", true ) );
-            $owner_name = ( dt_get_assigned_name( $post_id, true ) . " " ) ?? "";
-        } elseif ( $post_type === 'contacts' ) {
-            $owner_id   = intval( $existing_post['post_author'] );
-            $owner_name = ( $existing_post['post_author_display_name'] . " " ) ?? "";
-        } else {
-            return new WP_Error( __FUNCTION__, "Unable to complete record access request!", [ 'status' => 403 ] );
-        }
+        $is_assigned_to = ( ! empty( get_post_meta( $post_id, "assigned_to", true ) ) );
+        $owner_id       = ( $is_assigned_to ) ? dt_get_user_id_from_assigned_to( get_post_meta( $post_id, "assigned_to", true ) ) : intval( $existing_post['post_author'] );
+        $owner_name     = ( $is_assigned_to ) ? ( dt_get_assigned_name( $post_id, true ) . " " ) ?? "" : ( $existing_post['post_author_display_name'] . " " ) ?? "";
 
         // Post comment
         $comment_html = sprintf( esc_html__( '@[%1$s](%2$s) - @[%3$s](%4$s) has requested access to %5$s [%6$s](%7$s), please share record accordingly.', 'disciple_tools' ), esc_html( $owner_name ), esc_html( $owner_id ), esc_html( $requester_name ), esc_html( $user_id ), esc_html( $post_settings['label_singular'] ), esc_html( $existing_post['name'] ), esc_html( $post_id ) );
