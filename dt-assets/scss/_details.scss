@@ -206,10 +206,24 @@ DT comments and activity
     }
     .comment-reactions {
         display: flex;
-        margin-right: 4px;
 
-        * + * {
-            margin-left: 4px;
+        * {
+            margin-right: 4px;
+        }
+    }
+
+    .comment-reaction,
+    .reactions__button {
+        background-color: #f8f8f8;
+        border-radius: 100px;
+        padding: 0.1rem 0.5rem;
+        display: flex;
+        align-items: center;
+        border: 1px solid transparent;
+        cursor: pointer;
+
+        &:hover {
+            border-color: $dark-gray;
         }
     }
 
@@ -244,10 +258,8 @@ DT comments and activity
             }
         }
 
-        &:hover {
-            border-color: $dark-gray;
-        }
-
+        // if this is on the .reactions-button as well, then the dropdown click
+        // anywhere to close functionality breaks.
         &:active {
             transform: scale(0.9);
         }
@@ -257,24 +269,30 @@ DT comments and activity
         position: relative;
         display: flex;
         align-items: center;
+    }
+    .add-reaction-svg {
+        position: relative;
+        display: flex;
 
         &::before {
-            content: '+';
-            pointer-events: none;
-            position: absolute;
-            right: -4px;
-            top: -3px;
-            font-size: 0.8rem;
-            background-color: white;
-            border-radius: 100px;
-            padding: 0 0.1rem;
-            line-height: 0.8rem;
-            font-weight: 600;
-            text-align: center;
+        content: '+';
+        pointer-events: none;
+        position: absolute;
+        right: -7px;
+        top: 3px;
+        font-size: 0.8rem;
+        background-color: white;
+        border-radius: 100px;
+        padding: 0 0.1rem;
+        line-height: 0.8rem;
+        font-weight: 600;
+        text-align: center;
         }
     }
     .reactions__button {
         color: $dark-gray;
+        height: 100%;
+        padding-right: 0.7rem;
     }
     .reactions__button[open]::before {
         position: fixed;
@@ -290,8 +308,8 @@ DT comments and activity
     }
     .reactions__dropdown {
         width: 215px;
-        left: 0px;
-        top: 25px;
+        left: 8px;
+        top: 30px;
         z-index: 9;
         border-radius: 6px;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
@@ -324,6 +342,7 @@ DT comments and activity
 
     .comment-controls {
         display: flex;
+        justify-content: space-between;
     }
 
     .edit-comment-controls {
