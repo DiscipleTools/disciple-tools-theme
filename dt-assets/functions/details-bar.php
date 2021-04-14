@@ -71,7 +71,6 @@ function dt_print_details_bar(
                                 <a class="section-chevron navigation-previous" style="max-width: 1rem; display: none;" href="javascript:void(0)">
                                     <img style="max-width: 1rem;" width="25" height="20" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
                                     $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                                    dt_write_log( $dir );
                                     if ( $dir == 'rtl' ) {
                                         echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" );
                                     } else {
