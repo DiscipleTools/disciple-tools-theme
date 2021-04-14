@@ -193,9 +193,7 @@ DT comments and activity
         height: 1.4rem;
     }
 
-    .comment-controls {
-        display: flex;
-
+    .edit-comment-controls {
         a {
             font-size: 12px;
         }
@@ -222,6 +220,7 @@ DT comments and activity
         display: flex;
         align-items: center;
         border: 1px solid transparent;
+        cursor: pointer;
 
         .emoji {
             height: 1rem;
@@ -235,11 +234,31 @@ DT comments and activity
         &:hover {
             border-color: $dark-gray;
         }
+
+        &:active {
+            transform: scale(0.9);
+        }
     }
 
     .reaction-controls {
         position: relative;
-        margin-left: 10px;
+        display: flex;
+        align-items: center;
+
+        &::before {
+            content: '+';
+            pointer-events: none;
+            position: absolute;
+            right: -4px;
+            top: -3px;
+            font-size: 0.8rem;
+            background-color: white;
+            border-radius: 100px;
+            padding: 0 0.1rem;
+            line-height: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+        }
     }
     .reactions__button {
         color: $dark-gray;
@@ -257,8 +276,9 @@ DT comments and activity
         background: transparent;
     }
     .reactions__dropdown {
-        width: auto;
-        left: 80px;
+        width: 215px;
+        left: 0px;
+        top: 25px;
         z-index: 9;
         border-radius: 6px;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
@@ -268,7 +288,7 @@ DT comments and activity
             content: '';
             position: absolute;
             top: -14px;
-            right: 103px;
+            left: 20px;
             border: 7px solid transparent;
             border-bottom: 7px solid white;
         }
@@ -276,7 +296,7 @@ DT comments and activity
             content: '';
             position: absolute;
             top: -16px;
-            right: 102px;
+            left: 19px;
             border: 8px solid transparent;
             border-bottom: 8px solid #cacaca;
         }
@@ -287,6 +307,14 @@ DT comments and activity
     .add-reaction:hover {
         transform: scale(1.2);
         transition: all 0.1s ease;
+    }
+
+    .comment-controls {
+        display: flex;
+    }
+
+    .edit-comment-controls {
+        margin-right: 10px;
     }
 
     .comment-bubble, .comment-controls {
