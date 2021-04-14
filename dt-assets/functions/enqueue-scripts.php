@@ -161,13 +161,6 @@ function dt_site_scripts() {
         )
     );
 
-    dt_theme_enqueue_script( 'dt-request-record-access', 'dt-assets/js/request-record-access.js', array( 'jquery' ) );
-    wp_localize_script( 'dt-request-record-access', 'detailsSettings', [
-        'post_type' => $post_type,
-        'post_id' => get_the_ID(),
-        'current_user_id' => get_current_user_id()
-    ]);
-
     dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
     dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
 
@@ -352,3 +345,25 @@ function dt_site_scripts() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );
+
+/**
+ * Template script loader
+ */
+function dt_template_scripts( $slug, $name, $templates, $args ) {
+
+    $post_type = get_post_type();
+    $url_path  = dt_get_url_path();
+    $post_type = $post_type ?: $url_path;
+
+    // 403
+    if ( isset( $slug ) && ( $slug === '403' ) ) {
+        dt_theme_enqueue_script( 'dt-request-record-access', 'dt-assets/js/request-record-access.js', array( 'jquery' ) );
+        wp_localize_script( 'dt-request-record-access', 'detailsSettings', [
+            'post_type'       => $post_type,
+            'post_id'         => get_the_ID(),
+            'current_user_id' => get_current_user_id()
+        ] );
+    }
+}
+add_action( 'get_template_part', 'dt_template_scripts', 999, 4 );
+
