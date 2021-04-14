@@ -140,7 +140,8 @@ jQuery(document).ready(function($) {
                     const reactionMeta = commentsSettings.reaction_options[reactionAlias]
                     let reactionTitle = users.length === 1 ? commentsSettings.translations.reaction_title_1 : commentsSettings.translations.reaction_title_many
                     reactionTitle = reactionTitle.replace('{{user}}', users[users.length - 1]).replace('{{emojiName}}', reactionMeta.name)
-                    if (users.length > 1) reactionTitle = reactionTitle.replace('{{users}}', users.slice(0, users.length - 2).join(', '))
+                    console.log(reactionTitle, users)
+                    if (users.length > 1) reactionTitle = reactionTitle.replace('{{users}}', users.slice(0, users.length - 1).join(', '))
                   %>
                     <div class="comment-reaction" title="<%- reactionTitle %>">
                       <img class="emoji" src="<%- reactionMeta.path %>" >
