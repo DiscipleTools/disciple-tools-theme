@@ -364,14 +364,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_parent'    => '',
                 'hist_time'      => time() - 1,
             ];
-            if ( ! get_current_user_id() ) {
-                $user = wp_get_current_user();
-                if ( $user->display_name ) {
-                    if ( isset( $user->site_key ) ) {
-                        $activity["user_caps"] = $user->site_key;
-                    }
-                }
-            }
 
             dt_activity_insert( $activity );
         }
