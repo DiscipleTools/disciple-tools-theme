@@ -555,7 +555,7 @@ class Disciple_Tools_Posts_Endpoints {
     public function toggle_comment_reaction( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $post_params = $request->get_json_params();
-        $result = DT_Posts::toggle_post_comment_reaction( $url_params["comment_id"], $post_params["user_id"], $post_params["reaction"] );
+        $result = DT_Posts::toggle_post_comment_reaction( $url_params['post_type'], $url_params['id'], $url_params["comment_id"], $post_params["user_id"], $post_params["reaction"] );
         return $result;
     }
 
