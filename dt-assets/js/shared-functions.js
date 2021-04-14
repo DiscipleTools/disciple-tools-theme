@@ -128,11 +128,10 @@ window.API = {
     makeRequestOnPosts("GET", `${post_type}/${postId}/comments`),
 
   toggle_comment_reaction: (postType, postId, commentId, userId, reaction) => {
-    console.log(postType, postId, commentId, userId, reaction)
     makeRequestOnPosts(
       "POST",
       `${postType}/${postId}/comments/${commentId}/react`,
-      { user_id: userId, reaction: reaction}
+      { user_id: userId, reaction: reaction }
     )
   },
 
