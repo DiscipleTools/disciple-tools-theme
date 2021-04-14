@@ -343,7 +343,8 @@ class Disciple_Tools_Users
             return new WP_Error( 'no_permission', __( "Insufficient permissions", 'disciple_tools' ), [ 'status' => 403 ] );
         }
         $contact_id = get_user_option( "corresponds_to_contact", $user_id );
-        if ( !empty( $contact_id )){
+
+        if ( !empty( $contact_id ) && get_post( $contact_id ) ){
             return (int) $contact_id;
         }
         $args = [
@@ -430,8 +431,8 @@ class Disciple_Tools_Users
 //                wp_set_current_user( $current_user_id );
                 if ( !is_wp_error( $new_user_contact )){
                     update_user_option( $user_id, "corresponds_to_contact", $new_user_contact["ID"] );
+                    return $new_user_contact["ID"];
                 }
-                return $new_user_contact["ID"];
             } else {
                 $contact = get_post( $corresponds_to_contact );
                 if ( $contact && $contact->post_title != $user->display_name && $user->display_name != $user->user_login ){
