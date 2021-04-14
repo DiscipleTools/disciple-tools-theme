@@ -48,7 +48,7 @@ class Disciple_Tools_Posts_Endpoints {
         $arg_schemas = [
             "post_type" => [
                 "description" => "The post type",
-                "type" => 'post_type',
+                "type" => 'string',
                 "required" => true,
                 "validate_callback" => [ $this, "prefix_validate_args" ]
             ],
@@ -397,7 +397,7 @@ class Disciple_Tools_Posts_Endpoints {
             if ( 'integer' === $argument['type'] && ! is_numeric( $value ) ) {
                 return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not of type %2$s', $param, 'integer' ), array( 'status' => 400 ) );
             }
-            if ( 'post_type' === $argument['type'] ){
+            if ( $param === 'post_type' ){
                 $post_types = DT_Posts::get_post_types();
                 if ( !in_array( $value, $post_types ) ){
                     return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not a valid post type', $value ), array( 'status' => 400 ) );
