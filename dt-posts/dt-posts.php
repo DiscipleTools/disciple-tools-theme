@@ -1464,8 +1464,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         $comment_html = sprintf( esc_html__( '@[%1$s](%2$s) - @[%3$s](%4$s) has requested access to %5$s [%6$s](%7$s), please share record accordingly.', 'disciple_tools' ), esc_html( $owner_name ), esc_html( $owner_id ), esc_html( $requester_name ), esc_html( $user_id ), esc_html( $post_settings['label_singular'] ), esc_html( $existing_post['name'] ), esc_html( $post_id ) );
 
         return self::add_post_comment( $post_type, $post_id, $comment_html, "comment", [
-            "user_id"        => $owner_id,
-            "comment_author" => $requester_name
+            "user_id"        => 0,
+            "comment_author" => __( "Access Request", 'disciple_tools' )
         ], false, false );
     }
 
