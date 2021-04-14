@@ -919,7 +919,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         // the username
         $comments_meta = $wpdb->get_results( $wpdb->prepare(
             "SELECT
-                m.comment_id, m.meta_key, u.display_name
+                m.comment_id, m.meta_key, u.display_name, u.ID
             FROM
                 `$wpdb->comments` AS c
             JOIN
@@ -942,7 +942,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             if (!array_key_exists($meta->meta_key, $comments_meta_dict[$meta->comment_id])) {
                 $comments_meta_dict[$meta->comment_id][$meta->meta_key] = [];
             }
-            $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = $meta->display_name;
+            $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
+                'name' => $meta->display_name,
+                'user_id' => $meta->ID,
+            ];
         }
 
         $response_body = [];

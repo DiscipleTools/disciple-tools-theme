@@ -139,11 +139,11 @@ jQuery(document).ready(function($) {
                     const reactionAlias = reactionKey.replace(/reaction_/, '')
                     const reactionMeta = commentsSettings.reaction_options[reactionAlias]
                     let reactionTitle = users.length === 1 ? commentsSettings.translations.reaction_title_1 : commentsSettings.translations.reaction_title_many
-                    reactionTitle = reactionTitle.replace('{{user}}', users[users.length - 1]).replace('{{emojiName}}', reactionMeta.name)
-                    console.log(reactionTitle, users)
-                    if (users.length > 1) reactionTitle = reactionTitle.replace('{{users}}', users.slice(0, users.length - 1).join(', '))
+                    reactionTitle = reactionTitle.replace('{{user}}', users[users.length - 1].name).replace('{{emojiName}}', reactionMeta.name)
+                    if (users.length > 1) reactionTitle = reactionTitle.replace('{{users}}', users.slice(0, users.length - 1).map((user) => user.name).join(', '))
+                    const hasOwnReaction = users.map((user) => user.user_id).includes(commentsSettings.current_user_id)
                   %>
-                    <div class="comment-reaction" title="<%- reactionTitle %>">
+                    <div class="comment-reaction" title="<%- reactionTitle %>" data-own-reaction="<%- hasOwnReaction %>">
                       <img class="emoji" src="<%- reactionMeta.path %>" >
                       <span><%- users.length %></span>
                     </div>

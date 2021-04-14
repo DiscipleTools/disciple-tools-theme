@@ -231,6 +231,15 @@ DT comments and activity
             font-size: 0.8rem;
         }
 
+        &[data-own-reaction="true"] {
+            border-color: #3f729b;
+            background-color: #def1ff;
+
+            &:hover {
+                border-color: #3f729b;
+            }
+        }
+
         &:hover {
             border-color: $dark-gray;
         }
