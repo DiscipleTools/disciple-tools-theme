@@ -30,19 +30,21 @@ function dt_print_details_bar(
     }
     ?>
 
-    <div data-sticky-container class="show-for-medium" style="z-index: 9">
+    <div data-sticky-container class="show-for-medium details-second-bar" style="z-index: 9">
         <nav role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
              class="second-bar" id="second-bar-large">
             <div class="container-width">
 
                 <div class="grid-x grid-margin-x">
-                    <div class="cell small-4 grid-x grid-margin-x">
+                    <div class="cell small-4 grid-x">
                         <div class="cell grid-x shrink center-items">
                             <?php if ( $show_update_needed ){ ?>
-                                <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
-                                <input type="checkbox" id="update-needed-large" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
-                                <label class="dt-switch" for="update-needed-large" style="vertical-align: top;"></label>
+                                <div style="margin-inline-start:10px;margin-inline-end:5px">
+                                    <span><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
+                                    <input type="checkbox" id="update-needed-large" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
+                                    <label class="dt-switch" for="update-needed-large" style="vertical-align: top;"></label>
+                                </div>
                             <?php } ?>
                         </div>
                         <div class="cell grid-x shrink center-items">
@@ -69,7 +71,7 @@ function dt_print_details_bar(
                     <div class="cell small-3 large-4 center hide-for-small-only grid-x">
                             <div class="cell medium-2 large-1 center-items align-left">
                                 <a class="section-chevron navigation-previous" style="max-width: 1rem; display: none;" href="javascript:void(0)">
-                                    <img style="max-width: 1rem;" width="25" height="20" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
+                                    <img style="max-width: 1rem; height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
                                     $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
                                     if ( $dir == 'rtl' ) {
                                         echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" );
@@ -103,7 +105,7 @@ function dt_print_details_bar(
                         </div>
                         <div class="cell medium-2 large-1 center-items align-right">
                             <a href="javascript:void(0)" style="display: none;" class="navigation-next section-chevron">
-                                <img style="max-width: 1rem;" width="25" height="20" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
+                                <img style="max-width: 1rem; height: 20px" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
                                 $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
                                 if ( $dir == 'rtl' ) {
                                     echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" );
@@ -113,7 +115,7 @@ function dt_print_details_bar(
                             </a>
                         </div>
                     </div>
-                    <div class="cell small-5 large-4 align-right grid-x grid-margin-x">
+                    <div class="cell small-5 large-4 align-right grid-x">
                         <?php if ( $task ) : ?>
                         <div class="cell shrink center-items">
                             <button class="button open-set-task">
@@ -153,7 +155,7 @@ function dt_print_details_bar(
         </nav>
     </div>
 
-    <div data-sticky-container class="show-for-small-only" style="z-index: 9">
+    <div data-sticky-container class="show-for-small-only details-second-bar" style="z-index: 9">
     <?php if ( $comment_button || $share_button ): ?>
     <nav role="navigation"
         data-sticky data-options="marginTop:0;" data-sticky-on="small" data-top-anchor="95" style="width:100%; border-color: <?php echo esc_html( $type_color ); ?>"
@@ -211,7 +213,7 @@ function dt_print_details_bar(
             <div class="grid-x">
                 <div class="cell small-1 center-items">
                     <a class="section-chevron navigation-previous" style="display: none;" href="javascript:void(0)">
-                        <img width="15" height="10" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
+                        <img style="height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
                         $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
                         if ( $dir == 'rtl' ) {
                             echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" );
@@ -244,7 +246,7 @@ function dt_print_details_bar(
                 </div>
                 <div class="cell small-1 center-items">
                     <a href="javascript:void(0)" style="display: none;" class="navigation-next section-chevron">
-                        <img width="15" height="10" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
+                        <img style="height: 20px" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
                         $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
                         if ( $dir == 'rtl' ) {
                             echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" );
