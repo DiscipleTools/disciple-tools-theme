@@ -376,7 +376,7 @@
           let field_value = window.lodash.get( record, field_key, false )
 
           if ( field_value ) {
-            if (['text', 'number'].includes(field_settings.type)) {
+            if (['text', 'textarea', 'number'].includes(field_settings.type)) {
               values = [window.lodash.escape(field_value)]
             } else if (field_settings.type === 'date') {
               values = [window.lodash.escape(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
@@ -497,6 +497,19 @@
       }
       window.records_list = response // adds global access to current list for plugins
 
+      // save
+      if (response.hasOwnProperty('posts') && response.posts.length > 0) {
+        let records_list_ids_and_type = [];
+
+        $.each(response.posts, function(id, post_object ) {
+          records_list_ids_and_type.push({ ID: post_object.ID });
+        });
+
+        window.SHAREDFUNCTIONS.save_json_cookie(`records_list`, records_list_ids_and_type, list_settings.post_type);
+
+      }
+
+
       $('#bulk_edit_master_checkbox').prop("checked", false); //unchecks the bulk edit master checkbox when the list reloads.
 
       $('#load-more').toggle(items.length !== parseInt( response.total ))
@@ -553,10 +566,10 @@
       let type = window.lodash.get(list_settings, `post_type_settings.fields.${field}.type` )
       if ( type === "connection" || type === "user_select" ){
         search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
-      }  if ( type === "multi_select" ){
+      } else if ( type === "multi_select" ){
         search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
-      } if ( type === "location" ){
-        search_query.push({ [field] : window.lodash.map( window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
+      } else if ( type === "location" || type === "location_meta" ){
+        search_query.push({ 'location_grid' : window.lodash.map( window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
       } else if ( type === "date" ) {
         let date = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
@@ -784,9 +797,13 @@
     });
 
   let loadLocationTypeahead = ()=> {
-    if (!window.Typeahead['.js-typeahead-location_grid']) {
+    let key = 'location_grid'
+    if ( $('.js-typeahead-location_grid_meta').length){
+      key = 'location_grid_meta';
+    }
+    if ( !window.Typeahead[`.js-typeahead-${key}`]) {
       $.typeahead({
-        input: '.js-typeahead-location_grid',
+        input: `.js-typeahead-${window.lodash.escape(key)}`,
         minLength: 0,
         accent: true,
         searchOnFocus: true,
@@ -805,7 +822,7 @@
               data: {
                 s: "{{query}}",
                 filter: function () {
-                  return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                  return window.lodash.get(window.Typeahead[`.js-typeahead-${key}`].filters.dropdown, 'value', 'all')
                 }
               },
               beforeSend: function (xhr) {
@@ -841,18 +858,18 @@
             $('#location_grid-result-container').html(text);
           },
           onReady(){
-            this.filters.dropdown = {key: "group", value: "used", template: "Used Locations"}
+            this.filters.dropdown = {key: "group", value: "used", template: window.lodash.escape(window.wpApiShare.translations.used_locations)}
             this.container
             .removeClass("filter")
             .find("." + this.options.selector.filterButton)
-            .html("Used Locations");
+            .html(window.lodash.escape(window.wpApiShare.translations.used_locations));
           },
           onHideLayout: function () {
             $('#location_grid-result-container').html("");
           },
           onClick: function (node, a, item) {
             let name = window.lodash.get(list_settings, `post_type_settings.fields.location_grid.name`, 'location_grid')
-            new_filter_labels.push({id: item.ID, name: `${name}: ${item.name}`, field: "location_grid"})
+            new_filter_labels.push({id: item.ID, name: `${name}: ${item.name}`, field: key, type: 'location_grid'})
             selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( name )}:${window.lodash.escape( item.name )}</span>`)
           }
         }
@@ -1364,45 +1381,47 @@
 
 
   let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`)
-  $.typeahead({
-    input: '.js-typeahead-bulk_assigned_to',
-    minLength: 0,
-    maxItem: 0,
-    accent: true,
-    searchOnFocus: true,
-    source: TYPEAHEADS.typeaheadUserSource(),
-    templateValue: "{{name}}",
-    template: function (query, item) {
-      return `<div class="assigned-to-row" dir="auto">
+  if( bulk_assigned_to_input.length ) {
+    $.typeahead({
+      input: '.js-typeahead-bulk_assigned_to',
+      minLength: 0,
+      maxItem: 0,
+      accent: true,
+      searchOnFocus: true,
+      source: TYPEAHEADS.typeaheadUserSource(),
+      templateValue: "{{name}}",
+      template: function (query, item) {
+        return `<div class="assigned-to-row" dir="auto">
         <span>
             <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-            ${window.lodash.escape( item.name )}
+            ${window.lodash.escape(item.name)}
         </span>
-        ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
-        ${ item.update_needed && item.update_needed > 0 ? `<span>
-          <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+        ${item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>`:''}
+        ${item.update_needed && item.update_needed > 0 ? `<span>
+          <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
           <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
-        </span>` : '' }
+        </span>`:''}
       </div>`
-    },
-    dynamic: true,
-    hint: true,
-    emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
-    callback: {
-      onClick: function(node, a, item){
-        node.data('bulk_key_assigned_to', `user-${item.ID}`);
       },
-      onResult: function (node, query, result, resultCount) {
-        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#bulk_assigned_to-result-container').html(text);
+      dynamic: true,
+      hint: true,
+      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+      callback: {
+        onClick: function (node, a, item) {
+          node.data('bulk_key_assigned_to', `user-${item.ID}`);
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#bulk_assigned_to-result-container').html(text);
+        },
+        onHideLayout: function () {
+          $('.bulk_assigned_to-result-container').html("");
+        },
+        onReady: function () {
+        }
       },
-      onHideLayout: function () {
-        $('.bulk_assigned_to-result-container').html("");
-      },
-      onReady: function () {
-      }
-    },
-  });
+    });
+  }
 
 
   /**
@@ -1521,7 +1540,7 @@
     let field_id = 'location_grid';
     let typeaheadTotals = {};
     $.typeahead({
-      input: '.js-typeahead-location_grid',
+      input: '.js-typeahead-bulk_location_grid',
       minLength: 0,
       accent: true,
       searchOnFocus: true,

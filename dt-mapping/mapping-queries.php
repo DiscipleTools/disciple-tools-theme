@@ -928,17 +928,45 @@ class Disciple_Tools_Mapping_Queries {
         // WordPress.WP.PreparedSQL.NotPrepared
         $location_grid = $wpdb->get_results( $wpdb->prepare( "
             SELECT SQL_CALC_FOUND_ROWS
-            DISTINCT( g.grid_id ),
+            DISTINCT( g.grid_id ), g.level,
             CASE
                 WHEN g.level = 0
                   THEN g.alt_name
                 WHEN g.level = 1
-                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1), ' > ',
-                g.alt_name )
-                WHEN g.level >= 2
-                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1), ' > ',
-                (SELECT a1.alt_name FROM $wpdb->dt_location_grid AS a1 WHERE a1.grid_id = g.admin1_grid_id LIMIT 1), ' > ',
-                g.alt_name )
+                  THEN CONCAT(
+                    g.alt_name, ' > ',
+                    (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1)
+                  )
+                WHEN g.level = 2
+                  THEN CONCAT(
+                    g.alt_name, ' > ',
+                    (SELECT a1.alt_name FROM $wpdb->dt_location_grid AS a1 WHERE a1.grid_id = g.admin1_grid_id LIMIT 1), ' > ',
+                    (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1)
+                  )
+                WHEN g.level = 3
+                  THEN CONCAT(
+                    g.alt_name, ' > ',
+                    (SELECT a2.alt_name FROM $wpdb->dt_location_grid AS a2 WHERE a2.grid_id = g.admin2_grid_id LIMIT 1), ' > ',
+                    (SELECT a1.alt_name FROM $wpdb->dt_location_grid AS a1 WHERE a1.grid_id = g.admin1_grid_id LIMIT 1), ' > ',
+                    (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1)
+                  )
+                WHEN g.level = 4
+                  THEN CONCAT(
+                    g.alt_name, ' > ',
+                    (SELECT a3.alt_name FROM $wpdb->dt_location_grid AS a3 WHERE a3.grid_id = g.admin3_grid_id LIMIT 1), ' > ',
+                    (SELECT a2.alt_name FROM $wpdb->dt_location_grid AS a2 WHERE a2.grid_id = g.admin2_grid_id LIMIT 1), ' > ',
+                    (SELECT a1.alt_name FROM $wpdb->dt_location_grid AS a1 WHERE a1.grid_id = g.admin1_grid_id LIMIT 1), ' > ',
+                    (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1)
+                  )
+                WHEN g.level >= 5
+                  THEN CONCAT(
+                    g.alt_name, ' > ',
+                    (SELECT a4.alt_name FROM $wpdb->dt_location_grid AS a4 WHERE a4.grid_id = g.admin4_grid_id LIMIT 1), ' > ',
+                    (SELECT a3.alt_name FROM $wpdb->dt_location_grid AS a3 WHERE a3.grid_id = g.admin3_grid_id LIMIT 1), ' > ',
+                    (SELECT a2.alt_name FROM $wpdb->dt_location_grid AS a2 WHERE a2.grid_id = g.admin2_grid_id LIMIT 1), ' > ',
+                    (SELECT a1.alt_name FROM $wpdb->dt_location_grid AS a1 WHERE a1.grid_id = g.admin1_grid_id LIMIT 1), ' > ',
+                    (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1)
+                  )
                 ELSE g.alt_name
             END as label
             FROM $wpdb->dt_location_grid as g

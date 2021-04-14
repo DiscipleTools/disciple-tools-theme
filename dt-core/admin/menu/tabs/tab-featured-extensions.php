@@ -43,6 +43,18 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     });
             }
 
+            function deactivate(plug) {
+                jQuery("#wpbody-content").replaceWith("<p><?php esc_html_e( 'deactivating', 'disciple_tools' ) ?>...</p>");
+                jQuery.post("",
+                    {
+                        deactivate: plug,
+                        _ajax_nonce: "<?php echo esc_attr( $nonce ); ?>"
+                    },
+                    function (data, status) {
+                        location.reload();
+                    });
+            }
+
             function activate(plug) {
                 jQuery("#wpbody-content").replaceWith("<p><?php esc_html_e( 'activating', 'disciple_tools' ) ?>...</p>");
                 jQuery.post("",
@@ -91,6 +103,10 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             //check for admin or multisite super admin
             //install plugin
             $this->install_plugin( sanitize_text_field( wp_unslash( $_POST["install"] ) ) );
+            exit;
+        } elseif ( isset( $_POST["deactivate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
+            //deactivate the plugin
+            deactivate_plugins( sanitize_text_field( wp_unslash( $_POST["deactivate"] ) ), true );
             exit;
         }
         $active_plugins = get_option( 'active_plugins' );
@@ -142,7 +158,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                                 <?php
                             } else {
                                 ?>
-                                <p><?php echo esc_html__( 'Activated', 'disciple_tools' ) ?></p>
+                                <button class="button"
+                                        onclick="deactivate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Deactivate', 'disciple_tools' ) ?></button>
                                 <?php
                             }
                             ?>

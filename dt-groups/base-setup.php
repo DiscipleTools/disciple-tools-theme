@@ -29,6 +29,8 @@ class DT_Groups_Base extends DT_Module_Base {
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
+        add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 10, 3 );
+
         // hooks
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
@@ -150,7 +152,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     'inactive' => [
                         'label' => __( 'Inactive', 'disciple_tools' ),
                         'description' => _x( 'The group is no longer meeting.', 'field description', 'disciple_tools' ),
-                        'color' => "#F43636"
+                        'color' => "#808080"
                     ],
                     'active'   => [
                         'label' => __( 'Active', 'disciple_tools' ),
@@ -462,6 +464,15 @@ class DT_Groups_Base extends DT_Module_Base {
                 'create-icon' => get_template_directory_uri() . "/dt-assets/images/add-group.svg",
                 "show_in_table" => 35
             ];
+            $fields["group_leader"] = [
+                "name" => __( "Leader of Group", 'disciple_tools' ),
+                "type" => "connection",
+                "p2p_direction" => "to",
+                "p2p_key" => "groups_to_leaders",
+                "post_type" => "groups",
+                "tile" => "no_tile",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/foot.svg",
+            ];
         }
         return $fields;
     }
@@ -529,7 +540,9 @@ class DT_Groups_Base extends DT_Module_Base {
                                 <input class="js-typeahead-tags input-height"
                                        name="tags[query]"
                                        placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields["tags"]['name'] ) )?>"
-                                       autocomplete="off">
+                                       autocomplete="off"
+                                       data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
+                                       data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
                             </span>
                             <span class="typeahead__button">
                                 <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
@@ -823,6 +836,24 @@ class DT_Groups_Base extends DT_Module_Base {
                 $fields["end_date"] = time();
             }
         }
+        if ( $post_type === "contacts" ){
+            if ( isset( $fields["group_leader"]["values"] ) ){
+                $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
+                foreach ( $fields["group_leader"]["values"] as $leader ){
+                    $is_in_group = false;
+                    foreach ( $existing_contact["groups"] as $group ){
+                        if ( (int) $group["ID"] === (int) $leader["value"] ){
+                            $is_in_group = true;
+                        }
+                    }
+                    if ( !$is_in_group && empty( $leader["delete"] ) ){
+                        $fields["groups"]["values"][] = [
+                            "value" => $leader["value"]
+                        ];
+                    }
+                }
+            }
+        }
         return $fields;
     }
 
@@ -1114,6 +1145,17 @@ class DT_Groups_Base extends DT_Module_Base {
                 ],
                 "count" => $total_all
             ];
+            $filters["filters"][] = [
+                'ID' => 'recent',
+                'tab' => 'all',
+                'name' => __( "My Recently Viewed", 'disciple_tools' ),
+                'query' => [
+                    'dt_recent' => true
+                ],
+                'labels' => [
+                    [ "id" => 'recent', 'name' => __( "Last 30 viewed", 'disciple_tools' ) ]
+                ]
+            ];
 
             foreach ( $fields["group_status"]["default"] as $status_key => $status_value ) {
                 if ( isset( $status_counts[$status_key] ) ){
@@ -1174,7 +1216,7 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     public function scripts(){
-        if ( is_singular( "groups" ) ){
+        if ( is_singular( "groups" ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
             wp_enqueue_script( 'dt_groups', get_template_directory_uri() . '/dt-groups/groups.js', [
                 'jquery',
                 'details'
@@ -1182,5 +1224,10 @@ class DT_Groups_Base extends DT_Module_Base {
         }
     }
 
-
+    public function dt_record_icon( $icon, $post_type, $contact_id ){
+        if ($post_type == 'groups') {
+            $icon = 'fi-torsos-all';
+        }
+        return $icon;
+    }
 }

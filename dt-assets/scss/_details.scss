@@ -600,8 +600,8 @@ select.color-select {
         display: flex;
     }
     .section-chevron {
-        margin-left:auto;
-        margin-right:0;
+        margin-inline-start:auto;
+        margin-inline-end:0;
         img {
             vertical-align: middle; width:20px
         }
@@ -650,4 +650,15 @@ select.color-select {
     color: $primary-color;
     margin: 0 5px;
   }
+}
+
+
+.details-second-bar {
+    span { font-size: 12px; }
+    button, a {
+        font-size: 12px;
+    }
+    .title {
+        font-size: 15px
+    }
 }

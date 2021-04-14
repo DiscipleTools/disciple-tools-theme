@@ -332,7 +332,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
-     * Accepts types: key_select, multi_select, text, number, date, connection, location, communication_channel
+     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel
      *
      * @param $field_key
      * @param $fields
@@ -345,7 +345,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
         $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'number', 'connection', 'location', 'location_meta', 'communication_channel' ] );
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -440,6 +440,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="text" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
                        value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
+            <?php elseif ( $field_type === "textarea" ) :?>
+                <textarea id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $required_tag ) ?>
+                       class="textarea dt_textarea"><?php echo esc_html( $post[$field_key] ?? "" ) ?></textarea>
             <?php elseif ( $field_type === "number" ) :?>
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="number" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
@@ -478,7 +481,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
                     </div>
                 </div>
-            <?php elseif ( $field_type === "location" || $field_type === "location_meta" ) :?>
+            <?php elseif ( $field_type === "location_meta" ) : ?>
                 <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
                     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
                         <input id="mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off"/>
@@ -495,25 +498,25 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </script>
                 <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>
                     <div id="mapbox-wrapper"></div>
-                <?php else : ?>
-                    <div class="dt_location_grid" data-id="<?php echo esc_html( $field_key ); ?>">
-                        <var id="<?php echo esc_html( $field_key ); ?>-result-container" class="result-container"></var>
-                        <div id="<?php echo esc_html( $field_key ); ?>_t" name="form-<?php echo esc_html( $field_key ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
-                            <div class="typeahead__container">
-                                <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-<?php echo esc_html( $field_key ); ?> input-height"
-                                               data-field="<?php echo esc_html( $display_field_id ); ?>"
-                                               data-field_type="location"
-                                               name="<?php echo esc_html( $field_key ); ?>[query]"
-                                               placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                               autocomplete="off" />
-                                    </span>
-                                </div>
+                <?php endif; ?>
+            <?php elseif ( $field_type === "location" ) :?>
+                <div class="dt_location_grid" data-id="<?php echo esc_html( $field_key ); ?>">
+                    <var id="<?php echo esc_html( $field_key ); ?>-result-container" class="result-container"></var>
+                    <div id="<?php echo esc_html( $field_key ); ?>_t" name="form-<?php echo esc_html( $field_key ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
+                                           data-field="<?php echo esc_html( $display_field_id ); ?>"
+                                           data-field_type="location"
+                                           name="<?php echo esc_html( $field_key ); ?>[query]"
+                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                                           autocomplete="off" />
+                                </span>
                             </div>
                         </div>
                     </div>
-                <?php endif; ?>
+                </div>
             <?php elseif ( $field_type === "communication_channel" ) : ?>
                 <div id="edit-<?php echo esc_html( $field_key ) ?>" >
                     <?php foreach ( $post[$field_key] ?? [] as $field_value ) : ?>
@@ -563,12 +566,18 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * Test if module is enabled
      */
     if ( ! function_exists( 'dt_is_module_enabled' ) ) {
-        function dt_is_module_enabled( string $module_key ) : bool {
+        function dt_is_module_enabled( string $module_key, $check_prereqs = false ) : bool {
             $modules = dt_get_option( "dt_post_type_modules" );
-            if ( isset( $modules[$module_key] ) && isset( $modules[$module_key]["enabled"] ) && ! empty( $modules[$module_key]["enabled"] ) ){
-                return true;
+            $module_enabled = isset( $modules[$module_key]["enabled"] ) && !empty( $modules[$module_key]["enabled"] );
+            if ( $module_enabled && $check_prereqs ){
+                foreach ( $modules[$module_key]["prerequisites"] as $prereq ){
+                    $prereq_enabled = isset( $modules[$prereq]["enabled"] ) ? $modules[$prereq]["enabled"] : false;
+                    if ( !$prereq_enabled ){
+                        return false;
+                    }
+                }
             }
-            return false;
+            return $module_enabled;
         }
     }
 

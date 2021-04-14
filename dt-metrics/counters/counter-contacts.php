@@ -277,6 +277,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                     SELECT MAX( hist_time ) as hist_time, object_id
                     FROM  $wpdb->dt_activity_log
                     WHERE meta_key = 'seeker_path'
+                    AND meta_value != 'none'
                     AND hist_time < %d
                     GROUP BY object_id
                 ) as b ON (

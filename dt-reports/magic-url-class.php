@@ -166,6 +166,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
             // get url, create parts array and sanitize
             $url_path = self::get_url_path();
+            $url_path = strtok( $url_path, '?' ); //allow get parameters
             $parts = explode( '/', $url_path );
             $parts = array_map( 'sanitize_key', wp_unslash( $parts ) );
 
@@ -222,6 +223,69 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         return false;
                     }
                 }
+                return $elements;
+            }
+            return false;
+        }
+
+        public function parse_wp_rest_url_parts( $public_key ){
+            // get required url elements
+            $all_types = $this->registered_types();
+            $root = $this->root;
+            $types = self::list_types();
+
+            // get url, create parts array and sanitize
+            $url_path = self::get_url_path();
+            $url_path = strtok( $url_path, '?' ); //allow get parameters
+            $parts = explode( '/', $url_path );
+            $parts = array_map( 'sanitize_key', wp_unslash( $parts ) );
+
+            // test :
+            // correct root
+            // approved type
+            if ( isset( $parts[0] ) && "wp-json" === $parts[0] && isset( $parts[1] ) && $root === $parts[1] && isset( $parts[3] ) && isset( $types[$parts[3]] ) ){
+                $elements = [
+                    'root' => '',
+                    'type' => '',
+                    'meta_key' => '',
+                    'public_key' => '',
+                    'action' => '',
+                    'post_id' => '',
+                ];
+                if ( isset( $parts[1] ) && ! empty( $parts[1] ) ){
+                    $elements['root'] = $parts[1];
+
+                    // test for valid root
+                    if ( ! isset( $all_types[$elements['root']] ) ) {
+                        return false;
+                    }
+                }
+                if ( isset( $parts[3] ) && ! empty( $parts[3] ) ){
+                    $elements['type'] = $parts[3];
+
+                    // test for valid type
+                    if ( ! isset( $all_types[$elements['root']][$elements['type']] ) ) {
+                        return false;
+                    }
+                }
+                if ( !empty( $public_key ) ){
+                    $elements['public_key'] = $public_key;
+
+                    // test that meta_key is set
+                    if ( ! isset( $types[$elements['type']]['meta_key'] ) ) {
+                        return false;
+                    }
+                    $elements['meta_key'] = $types[$elements['type']]['meta_key'];
+
+                    // get post_id
+                    $post_id = self::get_post_id( $elements['meta_key'], $public_key );
+                    if ( ! $post_id ){ // fail if no post id for public key
+                        return false;
+                    } else {
+                        $elements['post_id'] = $post_id;
+                    }
+                }
+
                 return $elements;
             }
             return false;

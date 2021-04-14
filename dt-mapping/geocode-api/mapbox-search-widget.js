@@ -43,7 +43,13 @@ function write_results_box() {
         lgm_results.append(`<div class="input-group">
                               <input type="text" class="dt-communication-channel input-group-field" id="${window.lodash.escape( v.key )}" value="${window.lodash.escape( v.value )}" data-field="contact_address" />
                               <div class="input-group-button">
-                                <button type="button" class="button success delete-button-style open-mapping-address-modal" title="${ window.lodash.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}" data-id="${window.lodash.escape( v.key )}" data-field="contact_address" data-key="${window.lodash.escape( v.key )}"><i class="fi-map"></i></button>
+                                <button type="button" class="button success delete-button-style open-mapping-address-modal"
+                                    title="${ window.lodash.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}"
+                                    data-id="${window.lodash.escape( v.key )}"
+                                    data-field="contact_address"
+                                    data-key="${window.lodash.escape( v.key )}">
+                                    <i class="fi-pencil"></i>
+                                </button>
                                 <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${ window.lodash.escape( dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.key )}" data-field="contact_address" data-key="${window.lodash.escape( v.key )}">&times;</button>
                               </div>
                             </div>`)

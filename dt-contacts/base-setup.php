@@ -28,7 +28,7 @@ class DT_Contacts_Base {
         add_action( 'dt_record_admin_actions', [ $this, "dt_record_admin_actions" ], 10, 2 );
         add_action( 'dt_record_footer', [ $this, "dt_record_footer" ], 10, 2 );
         add_action( 'dt_record_notifications_section', [ $this, "dt_record_notifications_section" ], 10, 2 );
-
+        add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 10, 3 );
 
         // hooks
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
@@ -180,6 +180,7 @@ class DT_Contacts_Base {
                 'type' => 'multi_select',
                 'default' => dt_get_option( "dt_working_languages" ) ?: [],
                 'icon' => get_template_directory_uri() . "/dt-assets/images/languages.svg",
+                "tile" => "no_tile"
             ];
 
             //add communication channels
@@ -301,7 +302,7 @@ class DT_Contacts_Base {
                     ],
                     "closed" => [
                         "label" => __( "Archived", 'disciple_tools' ),
-                        "color" => "#F43636",
+                        "color" => "#808080",
                         "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", "Contact Status field description", 'disciple_tools' ),
                     ]
                 ]
@@ -347,7 +348,9 @@ class DT_Contacts_Base {
                                     <input class="js-typeahead-tags input-height"
                                            name="tags[query]"
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["tags"]['name'] ) )?>"
-                                           autocomplete="off">
+                                           autocomplete="off"
+                                           data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
+                                           data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
                                 </span>
                                 <span class="typeahead__button">
                                     <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
@@ -601,7 +604,7 @@ class DT_Contacts_Base {
 
 
     public function scripts(){
-        if ( is_singular( "contacts" ) ){
+        if ( is_singular( "contacts" ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
             wp_enqueue_script( 'dt_contacts', get_template_directory_uri() . '/dt-contacts/contacts.js', [
                 'jquery',
             ], filemtime( get_theme_file_path() . '/dt-contacts/contacts.js' ), true );
@@ -652,5 +655,15 @@ class DT_Contacts_Base {
             </section>
         <?php endif;
 
+    }
+    public function dt_record_icon( $icon, $post_type, $dt_post ){
+        if ($post_type == 'contacts') {
+            $gender = isset( $dt_post["gender"] ) ? $dt_post["gender"]["key"] : "male";
+            $icon = 'fi-torso';
+            if ($gender == 'female') {
+                $icon = $icon.'-'.$gender;
+            }
+        }
+        return $icon;
     }
 }
