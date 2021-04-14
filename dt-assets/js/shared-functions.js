@@ -194,7 +194,7 @@ jQuery(document)
   .ajaxComplete((event, xhr, settings) => {
     if (xhr && xhr.responseJSON) {
       // Event that a contact record has been updated
-      if ( xhr.responseJSON.ID && xhr.responseJSON.post_type ) {
+      if (xhr.responseJSON.ID && xhr.responseJSON.post_type) {
         let request = settings.data ? JSON.parse(settings.data) : {};
         $(document).trigger("dt_record_updated", [xhr.responseJSON, request]);
       }
@@ -401,23 +401,14 @@ window.TYPEAHEADS = {
         <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
     </span>`;
   },
-  share(post_type, id) {
+  share(post_type, id, v2) {
     return $.typeahead({
       input: ".js-typeahead-share",
       minLength: 0,
       maxItem: 0,
       accent: true,
       searchOnFocus: true,
-      template: function (query, item) {
-        return `<div class="" dir="auto">
-          <div>
-              <span class="avatar"><img style="vertical-align: text-bottom" src="${window.lodash.escape( item.avatar )}"/></span>
-              {{name}} (#${window.lodash.escape( item.ID )})
-          </div>
-        </div>`
-      },
-      source: this.typeaheadUserSource(),
-      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+      source: this.typeaheadSource("share", "dt/v1/users/get_users"),
       display: "name",
       templateValue: "{{name}}",
       dynamic: true,
@@ -428,7 +419,7 @@ window.TYPEAHEADS = {
           return window.API.get_shared(post_type, id).then((sharedResult) => {
             return deferred.resolve(
               sharedResult.map((g) => {
-                return { ID: g.user_id, name: g.display_name, avatar: g.avatar };
+                return { ID: g.user_id, name: g.display_name };
               })
             );
           });
@@ -440,7 +431,6 @@ window.TYPEAHEADS = {
               Typeahead[".js-typeahead-share"].addMultiselectItemLayout({
                 ID: item.ID,
                 name: item.name,
-                avatar: item.avatar
               });
               $("#share-result-container").html(
                 window.lodash.get(err, "responseJSON.message")
