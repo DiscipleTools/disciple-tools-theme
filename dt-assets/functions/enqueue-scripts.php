@@ -197,6 +197,8 @@ function dt_site_scripts() {
                         "delete" => strtolower( __( "Delete", "disciple_tools" ) ),
                         "translate" => __( "Translate with Google Translate", "disciple_tools" ),
                         "hide_translation" => __( "Hide Translation", "disciple_tools" ),
+                        "reaction_title_1" => _x( '{{user}} reacted with {{emojiName}} emoji', 'Bob reacted with heart emoji (dont translate words in brackets)', 'disciple_tools' ),
+                        "reaction_title_many" => _x( '{{users}} and {{user}} reacted with {{emojiName}} emoji', 'Bob, Bill and Ben reacted with heart emoji (dont translate words in brackets)', 'disciple_tools' ),
                     ],
                     'current_user_id' => get_current_user_id(),
                     'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),

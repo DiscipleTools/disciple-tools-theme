@@ -117,11 +117,17 @@ jQuery(document).ready(function($) {
               <div class="comment-text" title="<%- date %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
               <div class="comment-reactions">
                 <% Object.entries(a.reactions).forEach(([reactionKey, users]) => {
+                  if (users.length === 0) return
                   const reactionAlias = reactionKey.replace(/reaction_/, '')
-                  console.log(reactionKey, users, reactionAlias)
                   const reactionMeta = commentsSettings.reaction_options[reactionAlias]
+                  let reactionTitle = users.length === 1 ? commentsSettings.translations.reaction_title_1 : commentsSettings.translations.reaction_title_many
+                  reactionTitle = reactionTitle.replace('{{user}}', users[users.length - 1]).replace('{{emojiName}}', reactionMeta.name)
+                  if (users.length > 1) reactionTitle = reactionTitle.replace('{{users}}', users.slice(0, users.length - 2).join(', '))
                 %>
-                  <div class="comment-reaction"><img class="emoji" src="<%- reactionMeta.path %>" ><span><%- users.length %></span></div>
+                  <div class="comment-reaction" title="<%- reactionTitle %>">
+                    <img class="emoji" src="<%- reactionMeta.path %>" >
+                    <span><%- users.length %></span>
+                  </div>
                 <% }) %>
               </>
             </div>
