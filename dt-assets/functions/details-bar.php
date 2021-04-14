@@ -162,7 +162,7 @@ function dt_print_details_bar(
         class="second-bar" id="second-bar-small">
         <?php if ( $comment_button ): ?>
             <div class="container-width">
-            <div class="grid-x align-center" style="align-items: center">
+            <div class="grid-x align-center mobile-nav-actions" style="align-items: center">
                 <div class="cell shrink">
                     <button  id="nav-view-comments" class="center-items">
                         <a href="#comment-activity-section" class="center-items" style="color:black">
