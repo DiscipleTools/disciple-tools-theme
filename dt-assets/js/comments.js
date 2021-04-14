@@ -388,14 +388,18 @@ jQuery(document).ready(function($) {
     document.querySelectorAll('.reactions__dropdown').forEach((element) => {
       const commentId = element.dataset.commentId
       const emojis = emojiButtons()
-      const reactionForm = `
-      <form class="pick-reaction-form" method="POST" action="${window.wpApiShare.root}/dt-posts/v2/${postType}/${postId}/comments/${commentId}/react" >
-        <input type="hidden" name="user_id" value="${commentsSettings.current_user_id}"/>
+      const reactionForm = document.createElement('form')
+      reactionForm.classList.add('pick-reaction-form')
+      reactionForm.innerHTML = `
         ${emojis}
-      </form>
       `
-      element.innerHTML = reactionForm 
-
+      reactionForm.addEventListener('submit', (e) => {
+        e.preventDefault()
+        const userId = commentsSettings.current_user_id
+        const reaction = e.submitter.value
+        rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction)
+      })
+      element.appendChild(reactionForm)
     })
     document.querySelectorAll('#comments-wrapper [data-toggle]').forEach((element) => {
       const dropdownId = $(element).data('toggle')
