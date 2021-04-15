@@ -1657,17 +1657,42 @@ class Disciple_Tools_Posts
         if ( !$current_user_id ){
             return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
         }
+        //Find the id if a row exists that has the same user_id same post_id and same meta_key
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $all_user_meta = $wpdb->get_results( $wpdb->prepare( "
+            SELECT *
+            FROM $wpdb->dt_post_user_meta um
+            WHERE um.post_id = %d
+            AND user_id = %d
+            AND um.meta_key = %s
+        ", array($post_id, $current_user_id, $meta_key) ), ARRAY_A);
 
-        $create = $wpdb->insert( $wpdb->dt_post_user_meta,
-            [
-                "user_id" => $current_user_id,
-                "post_id" => $post_id,
-                "meta_key" => $meta_key,
-                "meta_value" => $meta_value,
-            ]
-        );
-        if ( !$create ){
-            return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
+        if ( $all_user_meta ) {
+            $update = $wpdb->update( $wpdb->dt_post_user_meta,
+                array( 'meta_value' => $meta_value ),
+                [
+                    "id"       => $all_user_meta[0]['id'],
+                    "user_id"  => $current_user_id,
+                    "post_id"  => $post_id,
+                    "meta_key" => $meta_key,
+                ]
+            );
+            if ( !$update ) {
+                return new WP_Error( __FUNCTION__, "Something wrong on field: " . $meta_key, [ 'status' => 500 ] );
+            }
+        } else {
+            $create = $wpdb->insert( $wpdb->dt_post_user_meta,
+                [
+                    "user_id" => $current_user_id,
+                    "post_id" => $post_id,
+                    "meta_key" => $meta_key,
+                    "meta_value" => $meta_value,
+                ]
+            );
+            if ( !$create ){
+                return new WP_Error( __FUNCTION__, "Something wrong on field: " . $meta_key, [ 'status' => 500 ] );
+            }
         }
     }
     /**
