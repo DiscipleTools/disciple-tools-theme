@@ -371,7 +371,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                  */
                 $already_handled = apply_filters( 'dt_post_updated_custom_handled_meta', [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel" ], $post_type );
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
-                    if ( $post_settings["fields"][$field_key]['private'] ) {
+                    if ( isset( $post_settings["fields"][$field_key]['private'] ) ) {
                         self::update_private_post_meta( $post_id, $field_key, $field_value );
                     } else {
                         update_post_meta( $post_id, $field_key, $field_value );
