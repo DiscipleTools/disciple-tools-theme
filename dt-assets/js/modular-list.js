@@ -26,7 +26,6 @@
     cached_filter = {}
   }
   let current_filter = (cached_filter && !window.lodash.isEmpty(cached_filter)) ? cached_filter : { query:{} }
-
   //set up main filters
   setup_filters()
 
