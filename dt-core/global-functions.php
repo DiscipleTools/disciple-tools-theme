@@ -344,6 +344,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
         $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
         $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
+        $is_private = ( isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true ) ? true : false;
+        if ( $is_private ) {
+            $post[$field_key] = array_slice( $post[$field_key], -1 )[0]['value'];
+        }
+
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
