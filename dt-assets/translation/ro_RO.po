@@ -32,14 +32,14 @@ msgstr "Epic 404 - Nu a fost găsit"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "Pagina pe care o căutați nu a fost găsită sau a fost ștearsă"
 
-#: dt-contacts/base-setup.php:298
+#: dt-contacts/base-setup.php:299
 #: dt-groups/base-setup.php:158
 #: dt-users/template-user-management.php:78
 #: dt-users/user-management.php:100
 msgid "Active"
 msgstr "Active"
 
-#: dt-assets/parts/nav-topbar.php:236
+#: dt-assets/parts/nav-topbar.php:237
 #: template-notifications.php:43
 msgid "New"
 msgstr "Nou"
@@ -57,10 +57,10 @@ msgstr "Vizualizați duplicatele"
 msgid "Search"
 msgstr "Căutare"
 
-#: dt-contacts/base-setup.php:572
-#: dt-contacts/base-setup.php:580
-#: dt-contacts/base-setup.php:597
+#: dt-contacts/base-setup.php:573
+#: dt-contacts/base-setup.php:581
 #: dt-contacts/base-setup.php:598
+#: dt-contacts/base-setup.php:599
 msgid "Shared with me"
 msgstr "Partajat cu mine"
 
@@ -114,8 +114,8 @@ msgstr "Elimină"
 msgid "Save"
 msgstr "Salvați"
 
-#: dt-assets/functions/details-bar.php:43
-#: dt-assets/functions/details-bar.php:181
+#: dt-assets/functions/details-bar.php:44
+#: dt-assets/functions/details-bar.php:207
 #: dt-core/configuration/config-site-defaults.php:279
 #: dt-users/template-user-management.php:77
 msgid "Update Needed"
@@ -129,23 +129,23 @@ msgstr "Creați un utilizator din acest contact"
 msgid "Link to an existing user"
 msgstr "Conectarea unui contact existent la un utilizator"
 
-#: dt-contacts/base-setup.php:390
+#: dt-contacts/base-setup.php:391
 msgid "Merge with another contact"
 msgstr "Asociați cu un alt contact"
 
-#: dt-assets/functions/details-bar.php:103
-#: dt-assets/functions/details-bar.php:108
+#: dt-assets/functions/details-bar.php:129
+#: dt-assets/functions/details-bar.php:134
 msgid "Following"
 msgstr "Urmărești"
 
 #: archive-template.php:387
-#: dt-assets/functions/details-bar.php:112
+#: dt-assets/functions/details-bar.php:138
 #: dt-contacts/base-setup.php:163
 #: dt-groups/base-setup.php:98
 msgid "Follow"
 msgstr "Urmărește"
 
-#: dt-assets/functions/details-bar.php:122
+#: dt-assets/functions/details-bar.php:148
 msgid "Share"
 msgstr "Distribuie"
 
@@ -186,7 +186,7 @@ msgstr "Editați  ×"
 #: dt-assets/functions/enqueue-scripts.php:222
 #: dt-assets/functions/enqueue-scripts.php:304
 #: dt-assets/parts/loop-activity-comment.php:137
-#: single-template.php:365
+#: single-template.php:366
 msgid "Delete"
 msgstr "Șterge"
 
@@ -205,8 +205,8 @@ msgstr "Data modificata"
 
 #: archive-template.php:422
 #: dt-contacts/base-setup.php:50
-#: dt-contacts/base-setup.php:264
-#: dt-contacts/dmm-module.php:305
+#: dt-contacts/base-setup.php:265
+#: dt-contacts/dmm-module.php:317
 #: dt-groups/base-setup.php:667
 #: dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/hover-map.php:127
@@ -256,7 +256,7 @@ msgstr "Indicatori"
 #: dt-assets/functions/menu.php:64
 #: dt-assets/parts/nav-offcanvas.php:48
 #: dt-assets/parts/nav-topbar.php:83
-#: dt-assets/parts/nav-topbar.php:188
+#: dt-assets/parts/nav-topbar.php:189
 #: template-notifications.php:33
 #: template-settings.php:45
 #: template-settings.php:354
@@ -268,7 +268,7 @@ msgstr "Notificări"
 #: dt-assets/functions/menu.php:76
 #: dt-assets/parts/modals/modal-help.php:154
 #: dt-assets/parts/nav-topbar.php:91
-#: dt-assets/parts/nav-topbar.php:268
+#: dt-assets/parts/nav-topbar.php:269
 #: template-notifications.php:62
 msgid "Settings"
 msgstr "Setări"
@@ -278,7 +278,7 @@ msgid "Admin"
 msgstr "Administrator"
 
 #: dt-assets/parts/nav-offcanvas.php:77
-#: dt-assets/parts/nav-topbar.php:211
+#: dt-assets/parts/nav-topbar.php:212
 msgid "Log Off"
 msgstr "Ieși din cont"
 
@@ -307,7 +307,7 @@ msgstr "Acest contact reprezintă un utilizator."
 #: dt-contacts/access-module.php:411
 #: dt-metrics/groups/tree.php:86
 #: dt-metrics/personal/group-tree.php:87
-#: dt-posts/dt-posts.php:1392
+#: dt-posts/dt-posts.php:1399
 #: dt-users/template-user-management.php:74
 #: dt-users/template-user-management.php:159
 #: single-template.php:78
@@ -322,7 +322,7 @@ msgstr "Reatribuit către"
 msgid "Social Media"
 msgstr "Rețele sociale"
 
-#: dt-contacts/base-setup.php:220
+#: dt-contacts/base-setup.php:221
 #: dt-core/configuration/config-site-defaults.php:455
 #: dt-groups/base-setup.php:387
 #: template-settings.php:130
@@ -330,13 +330,13 @@ msgid "Address"
 msgstr "Adresa"
 
 #: dt-assets/parts/modals/modal-help.php:126
-#: dt-contacts/base-setup.php:204
+#: dt-contacts/base-setup.php:205
 #: dt-groups/base-setup.php:369
 msgid "Locations"
 msgstr "Locații"
 
-#: dt-contacts/dmm-module.php:189
-#: dt-contacts/dmm-module.php:304
+#: dt-contacts/dmm-module.php:201
+#: dt-contacts/dmm-module.php:316
 #: dt-groups/base-setup.php:408
 #: dt-groups/base-setup.php:737
 #: dt-people-groups/people-groups-post-type.php:132
@@ -347,7 +347,7 @@ msgstr "Grupuri de oameni"
 msgid "Age"
 msgstr "Vârsta"
 
-#: dt-contacts/base-setup.php:276
+#: dt-contacts/base-setup.php:277
 #: template-settings.php:507
 msgid "Gender"
 msgstr "Gen"
@@ -464,7 +464,7 @@ msgstr "Ștergeți comentariul:"
 #: dt-assets/parts/modals/modal-revert.php:15
 #: dt-assets/parts/modals/modal-share.php:50
 #: dt-assets/parts/modals/modal-tasks.php:46
-#: dt-contacts/dmm-module.php:559
+#: dt-contacts/dmm-module.php:571
 #: dt-groups/base-setup.php:642
 msgid "Close"
 msgstr "Închide"
@@ -531,7 +531,7 @@ msgstr "Statutul grupului"
 
 #: dt-contacts/user-module.php:103
 #: dt-contacts/user-module.php:108
-#: single-template.php:340
+#: single-template.php:341
 #: template-new-post.php:111
 msgid "This is required"
 msgstr "Acest lucru este necesar"
@@ -590,22 +590,22 @@ msgstr "Ajutor"
 msgid "Ongoing Meetings"
 msgstr "Întâlniri în curs"
 
-#: dt-contacts/base-setup.php:287
+#: dt-contacts/base-setup.php:288
 #: dt-groups/base-setup.php:111
 msgid "Requires Update"
 msgstr "Necesită actualizare"
 
 #: dt-contacts/dmm-module.php:82
-#: dt-contacts/dmm-module.php:179
-#: dt-contacts/dmm-module.php:274
+#: dt-contacts/dmm-module.php:191
+#: dt-contacts/dmm-module.php:286
 msgid "Baptized"
 msgstr "Botezat"
 
-#: dt-contacts/dmm-module.php:146
+#: dt-contacts/dmm-module.php:158
 msgid "Baptism Date"
 msgstr "Data botezului"
 
-#: dt-contacts/dmm-module.php:154
+#: dt-contacts/dmm-module.php:166
 #: dt-metrics/counter.php:156
 msgid "Baptism Generation"
 msgstr "Generație de Ucenici Botezați"
@@ -621,7 +621,7 @@ msgstr "Surse"
 msgid "Un-Follow"
 msgstr "Nu mai urmăriți"
 
-#: dt-contacts/base-setup.php:187
+#: dt-contacts/base-setup.php:188
 #: dt-core/configuration/config-site-defaults.php:443
 #: template-settings.php:119
 msgid "Phone"
@@ -635,7 +635,7 @@ msgstr "Serviciu"
 msgid "Home"
 msgstr "Acasă"
 
-#: dt-contacts/base-setup.php:483
+#: dt-contacts/base-setup.php:484
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:469
 #: dt-groups/base-setup.php:750
@@ -643,7 +643,7 @@ msgstr "Acasă"
 msgid "Other"
 msgstr "Alte"
 
-#: dt-contacts/base-setup.php:195
+#: dt-contacts/base-setup.php:196
 #: dt-contacts/user-module.php:105
 #: dt-core/configuration/config-site-defaults.php:256
 #: dt-core/configuration/config-site-defaults.php:447
@@ -653,12 +653,12 @@ msgid "Email"
 msgstr "Email"
 
 #: dt-contacts/access-module.php:299
-#: dt-contacts/base-setup.php:239
+#: dt-contacts/base-setup.php:240
 msgid "Facebook"
 msgstr "Facebook"
 
 #: dt-contacts/access-module.php:303
-#: dt-contacts/base-setup.php:247
+#: dt-contacts/base-setup.php:248
 msgid "Twitter"
 msgstr "\n"
 "Twitter"
@@ -805,6 +805,10 @@ msgstr "Nu am auzit de această persoană de ceva vreme. Aveți o actualizare pe
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "Nu am mai auzit de acest grup de ceva vreme. Aveți o actualizare?"
 
+#: dt-assets/functions/details-bar.php:75
+#: dt-assets/functions/details-bar.php:109
+#: dt-assets/functions/details-bar.php:217
+#: dt-assets/functions/details-bar.php:250
 #: dt-core/configuration/dt-configuration.php:75
 msgctxt "either rtl or ltr"
 msgid "ltr"
@@ -832,7 +836,7 @@ msgstr "Pentru a vă reseta parola, vizitați următoarea adresă:"
 msgid "Roles"
 msgstr "Roluri"
 
-#: dt-core/logging/hooks/class-hook-posts.php:28
+#: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
 msgstr "(fara titlu)"
 
@@ -1042,7 +1046,7 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "Șters %1$s: %2$s"
 
-#: dt-posts/dt-posts.php:1223
+#: dt-posts/dt-posts.php:1230
 msgid "Post already shared with user."
 msgstr "Postare deja trimisă utilizatorului."
 
@@ -1146,7 +1150,7 @@ msgstr "Botezatorii"
 
 #: dt-contacts/access-module.php:291
 #: dt-contacts/base-setup.php:129
-#: dt-contacts/base-setup.php:547
+#: dt-contacts/base-setup.php:548
 #: dt-metrics/metrics.php:80
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1376,11 +1380,11 @@ msgstr "Vizualizați contactul înregistrat"
 msgid "Updated Needed"
 msgstr "Actualizare Necesară"
 
-#: functions.php:484
+#: functions.php:485
 msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
 msgstr "Această temă a Disciple Tools necesită versiunea PHP 7.0 sau mai mare. Versiunea dvs. actuală este:"
 
-#: functions.php:486
+#: functions.php:487
 msgid "Please upgrade PHP or uninstall this theme"
 msgstr "Vă rugăm să actualizați PHP sau să dezinstalați această temă"
 
@@ -1396,16 +1400,16 @@ msgstr "Se pare că utilizați un browser web învechit. Fără cea mai actualiz
 msgid "See what browser you are using."
 msgstr "Vedeți ce browser utilizați."
 
-#: single-template.php:332
+#: single-template.php:333
 msgid "Create Tag"
 msgstr "Creați etichetă"
 
-#: single-template.php:337
-#: single-template.php:339
+#: single-template.php:338
+#: single-template.php:340
 msgid "Tag"
 msgstr "Etichetă"
 
-#: single-template.php:348
+#: single-template.php:349
 msgid "Create and apply tag"
 msgstr "Creați și aplicați etichetă"
 
@@ -1472,12 +1476,12 @@ msgstr "Înregistrarea originală"
 msgid "Use as master"
 msgstr "Folosiți ca original"
 
-#: dt-assets/parts/nav-topbar.php:246
+#: dt-assets/parts/nav-topbar.php:247
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "Necitit"
 
-#: dt-assets/parts/nav-topbar.php:272
+#: dt-assets/parts/nav-topbar.php:273
 #: template-notifications.php:66
 msgid "Mark All"
 msgstr "Marchează-le pe toate"
@@ -1864,7 +1868,7 @@ msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
 msgstr "Contactul a fost atribuit cuiva, dar nu a fost încă acceptat de acea persoană."
 
-#: dt-contacts/base-setup.php:299
+#: dt-contacts/base-setup.php:300
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "Contactul progresează și / sau este actualizat continuu."
@@ -1874,7 +1878,7 @@ msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "Acest contact este în prezent în așteptare (adică în vacanță sau nu răspunde)."
 
-#: dt-contacts/base-setup.php:305
+#: dt-contacts/base-setup.php:306
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
 msgstr "Acest contact a făcut cunoscut faptul că nu mai vrea să continue sau ați decis să nu continuați cu el / ea."
@@ -2121,7 +2125,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "Nepartajat cu % s"
 
-#: dt-contacts/dmm-module.php:449
+#: dt-contacts/dmm-module.php:461
 msgid "Quick Actions"
 msgstr "Acțiuni rapide"
 
@@ -2140,7 +2144,7 @@ msgid "Search Users"
 msgstr "Căutați utilizatori"
 
 #: dt-assets/parts/merge-details.php:49
-#: dt-contacts/dmm-module.php:543
+#: dt-contacts/dmm-module.php:555
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "Căutați multiplicatori și contacte"
@@ -2153,7 +2157,7 @@ msgstr "Scrieți comentariul sau nota dvs. aici"
 #: archive-template.php:33
 #: archive-template.php:108
 #: archive-template.php:371
-#: dt-contacts/base-setup.php:349
+#: dt-contacts/base-setup.php:350
 #: dt-core/global-functions.php:419
 #: dt-core/global-functions.php:469
 #: dt-core/global-functions.php:513
@@ -2176,7 +2180,7 @@ msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "%1$s s-a schimbat în %2$s"
 
-#: dt-contacts/dmm-module.php:529
+#: dt-contacts/dmm-module.php:541
 msgid "Who was this contact baptized by and when?"
 msgstr "De cine și când a fost botezat acest contact?"
 
@@ -2270,12 +2274,12 @@ msgstr "Denumirea filtrului"
 #: dt-contacts/access-module.php:476
 #: dt-contacts/access-module.php:507
 #: dt-contacts/access-module.php:535
-#: dt-contacts/base-setup.php:407
-#: dt-contacts/base-setup.php:442
+#: dt-contacts/base-setup.php:408
+#: dt-contacts/base-setup.php:443
 #: dt-contacts/user-module.php:137
 #: dt-contacts/user-module.php:189
-#: single-template.php:345
-#: single-template.php:362
+#: single-template.php:346
+#: single-template.php:363
 #: template-merge-details.php:102
 #: template-merge-details.php:121
 #: template-merge-details.php:132
@@ -2288,7 +2292,7 @@ msgstr "Anulare"
 msgid "Filter Records"
 msgstr "Filtrează înregistrările"
 
-#: dt-assets/functions/details-bar.php:96
+#: dt-assets/functions/details-bar.php:122
 #: dt-assets/parts/modals/modal-tasks.php:7
 #: dt-contacts/base-setup.php:175
 #: dt-groups/base-setup.php:117
@@ -2380,7 +2384,7 @@ msgstr "Nu sunt filtre, creați unul mai jos"
 msgid "No records found matching your filter."
 msgstr "Nu s-au găsit înregistrări care să corespundă filtrului dvs."
 
-#: dt-assets/parts/nav-topbar.php:242
+#: dt-assets/parts/nav-topbar.php:243
 #: dt-groups/base-setup.php:1061
 #: dt-groups/base-setup.php:1134
 #: dt-groups/base-setup.php:1142
@@ -2394,10 +2398,10 @@ msgstr "Toate"
 msgid "Subassigned only"
 msgstr "Numai reatribuite"
 
-#: dt-contacts/dmm-module.php:410
-#: dt-contacts/dmm-module.php:420
-#: dt-contacts/dmm-module.php:430
-#: dt-contacts/dmm-module.php:431
+#: dt-contacts/dmm-module.php:422
+#: dt-contacts/dmm-module.php:432
+#: dt-contacts/dmm-module.php:442
+#: dt-contacts/dmm-module.php:443
 msgid "Coached by me"
 msgstr "Antrenați de mine"
 
@@ -2438,7 +2442,7 @@ msgid "No note set"
 msgstr "Nicio notă setată"
 
 #: dt-assets/functions/enqueue-scripts.php:311
-#: dt-contacts/base-setup.php:522
+#: dt-contacts/base-setup.php:523
 msgctxt "All records"
 msgid "All %s"
 msgstr "Toate % s"
@@ -2713,7 +2717,7 @@ msgstr "Creați o sarcină"
 msgid "Existing tasks for this record:"
 msgstr "Sarcinile existente pentru această înregistrare:"
 
-#: dt-assets/parts/nav-topbar.php:142
+#: dt-assets/parts/nav-topbar.php:143
 msgid "Theme Update Available!"
 msgstr "Actualizare temă disponibilă!"
 
@@ -2731,7 +2735,7 @@ msgid "Select the main person who is responsible for reporting on this contact."
 msgstr "Selectați persoana principală care este responsabilă pentru raportarea acestui contact."
 
 #: dt-contacts/access-module.php:153
-#: dt-contacts/base-setup.php:293
+#: dt-contacts/base-setup.php:294
 msgid "Contact Status"
 msgstr "Statutul  Contactului"
 
@@ -2752,7 +2756,7 @@ msgid "Contact Attempted"
 msgstr "Contactare încercată"
 
 #: dt-contacts/access-module.php:125
-#: dt-contacts/dmm-module.php:208
+#: dt-contacts/dmm-module.php:220
 msgid "Contact Established"
 msgstr "Contact stabilit"
 
@@ -2805,11 +2809,11 @@ msgstr "În Biserică / Grup"
 msgid "Starting Churches"
 msgstr "Biserici începătoare"
 
-#: dt-contacts/base-setup.php:279
+#: dt-contacts/base-setup.php:280
 msgid "Male"
 msgstr "Bărbat"
 
-#: dt-contacts/base-setup.php:280
+#: dt-contacts/base-setup.php:281
 msgid "Female"
 msgstr "Femeie"
 
@@ -2894,19 +2898,19 @@ msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "Site-ul web, evenimentul sau locația din care provine acest contact."
 
-#: dt-contacts/dmm-module.php:199
+#: dt-contacts/dmm-module.php:211
 msgid "No Answer"
 msgstr "Nici un raspuns"
 
-#: dt-contacts/dmm-module.php:217
+#: dt-contacts/dmm-module.php:229
 msgid "Meeting Scheduled"
 msgstr "Întâlnire programată"
 
-#: dt-contacts/dmm-module.php:226
+#: dt-contacts/dmm-module.php:238
 msgid "Meeting Complete"
 msgstr "Întâlnire finalizată"
 
-#: dt-contacts/dmm-module.php:235
+#: dt-contacts/dmm-module.php:247
 msgid "Meeting No-show"
 msgstr "Neprezentare la Întâlnire"
 
@@ -2934,36 +2938,36 @@ msgctxt "Optional Documentation"
 msgid "A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags."
 msgstr "O modalitate utilă de a grupa elemente conexe și poate ajuta la gruparea contactelor asociate cu caracteristici demne de remarcat. de exemplu. proprietar de afaceri, iubitor de sport. Contactele pot fi, de asemenea, filtrate folosind aceste etichete."
 
-#: dt-contacts/base-setup.php:265
+#: dt-contacts/base-setup.php:266
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Relația pe care o are acest contact cu un alt contact din sistem."
 
-#: dt-contacts/dmm-module.php:159
+#: dt-contacts/dmm-module.php:171
 msgid "Coached by"
 msgstr "Antrenat de"
 
-#: dt-contacts/dmm-module.php:160
+#: dt-contacts/dmm-module.php:172
 msgctxt "Optional Documentation"
 msgid "Who is coaching this contact"
 msgstr "Cine antrenează acest contact"
 
-#: dt-contacts/dmm-module.php:137
+#: dt-contacts/dmm-module.php:149
 msgctxt "Optional Documentation"
 msgid "Who is this contact coaching"
 msgstr "Cine este antrenat de acest contact"
 
-#: dt-contacts/dmm-module.php:169
-#: dt-contacts/dmm-module.php:273
+#: dt-contacts/dmm-module.php:181
+#: dt-contacts/dmm-module.php:285
 msgid "Baptized by"
 msgstr "Botezat de"
 
-#: dt-contacts/dmm-module.php:170
+#: dt-contacts/dmm-module.php:182
 msgctxt "Optional Documentation"
 msgid "Who baptized this contact"
 msgstr "Cine a botezat acest contact"
 
-#: dt-contacts/dmm-module.php:180
+#: dt-contacts/dmm-module.php:192
 msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
 msgstr "Pe cine a botezat acest contact"
@@ -2982,7 +2986,7 @@ msgstr "Grupuri din care face parte acest contact."
 msgid "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr "Contactul sau utilizatorul care asistă utilizatorul Atribuit  să urmărească contactul."
 
-#: dt-contacts/base-setup.php:205
+#: dt-contacts/base-setup.php:206
 #: dt-groups/base-setup.php:370
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
@@ -3341,14 +3345,14 @@ msgstr "Ați setat această sarcină la %1$s: %2$s"
 #: dt-contacts/access-module.php:457
 #: dt-contacts/access-module.php:488
 #: dt-contacts/access-module.php:519
-#: dt-contacts/base-setup.php:421
+#: dt-contacts/base-setup.php:422
 msgid "Choose an option:"
 msgstr "Alege o opțiune:"
 
 #: dt-contacts/access-module.php:479
 #: dt-contacts/access-module.php:510
 #: dt-contacts/access-module.php:538
-#: dt-contacts/base-setup.php:445
+#: dt-contacts/base-setup.php:446
 msgid "Confirm"
 msgstr "Confirmați"
 
@@ -3582,7 +3586,7 @@ msgid "Inactive Groups Switch"
 msgstr "Comutator Grupuri Inactive"
 
 #: dt-assets/parts/modals/modal-help.php:152
-#: dt-assets/parts/nav-topbar.php:266
+#: dt-assets/parts/nav-topbar.php:267
 #: template-notifications.php:60
 msgid "Mark all as read"
 msgstr "Marcheaza totul ca fiind citit"
@@ -3591,7 +3595,7 @@ msgstr "Marcheaza totul ca fiind citit"
 msgid "Task Type"
 msgstr "Tipul activității"
 
-#: dt-contacts/base-setup.php:294
+#: dt-contacts/base-setup.php:295
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
 msgstr "Starea Contactului descrie progresul în comunicarea cu contactul."
@@ -3882,7 +3886,7 @@ msgstr "Arborele meu ca Trainer"
 msgid "My Groups Tree"
 msgstr "Arborele grupurilor mele"
 
-#: dt-contacts/base-setup.php:387
+#: dt-contacts/base-setup.php:388
 msgid "See duplicates"
 msgstr "Vedeți duplicatele"
 
@@ -3922,7 +3926,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s a fuzionat cu %2$s în această înregistrare"
 
-#: dt-posts/dt-posts.php:997
+#: dt-posts/dt-posts.php:1004
 msgid "D.T System"
 msgstr "D.T System"
 
@@ -4018,12 +4022,12 @@ msgstr "Vedeți mai multe opțiuni"
 msgid "See Fewer Options"
 msgstr "Vedeți mai puține opțiuni"
 
-#: dt-assets/functions/details-bar.php:53
+#: dt-assets/functions/details-bar.php:55
 msgid "Admin Actions"
 msgstr "Acțiuni Admin"
 
-#: dt-assets/functions/details-bar.php:58
-#: single-template.php:357
+#: dt-assets/functions/details-bar.php:60
+#: single-template.php:358
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "Ștergeți % s"
@@ -4114,36 +4118,36 @@ msgstr "Un prieten, un membru al familiei sau un cunoscut"
 msgid "Only me"
 msgstr "Doar eu"
 
-#: dt-contacts/base-setup.php:213
+#: dt-contacts/base-setup.php:214
 #: dt-groups/base-setup.php:379
 msgid "Locations or Address"
 msgstr "Locații sau adresă"
 
-#: dt-contacts/base-setup.php:264
+#: dt-contacts/base-setup.php:265
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Conexiuni cu alte % s"
 
-#: dt-contacts/base-setup.php:382
+#: dt-contacts/base-setup.php:383
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Schimbați tipul % s"
 
-#: dt-contacts/base-setup.php:516
+#: dt-contacts/base-setup.php:517
 msgid "Default Filters"
 msgstr "Filtre implicite"
 
-#: dt-contacts/base-setup.php:526
+#: dt-contacts/base-setup.php:527
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Toate % s care le pot vedea"
 
-#: dt-contacts/base-setup.php:536
+#: dt-contacts/base-setup.php:537
 #: dt-groups/base-setup.php:1151
 msgid "My Recently Viewed"
 msgstr "Vizualizate recent"
 
-#: dt-contacts/base-setup.php:541
+#: dt-contacts/base-setup.php:542
 #: dt-groups/base-setup.php:1156
 msgid "Last 30 viewed"
 msgstr "Ultimele 30 vizualizate"
@@ -4160,28 +4164,28 @@ msgstr "Conectat la un contact sau e în arborele generațional"
 msgid "Faith Status"
 msgstr "Statutul Credinței"
 
-#: dt-contacts/dmm-module.php:136
+#: dt-contacts/dmm-module.php:148
 msgid "Is Coaching"
 msgstr "Este Trainer"
 
-#: dt-contacts/dmm-module.php:190
+#: dt-contacts/dmm-module.php:202
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this contact."
 msgstr "Grupurile de persoane reprezentate de acest contact."
 
-#: dt-contacts/dmm-module.php:290
+#: dt-contacts/dmm-module.php:302
 msgid "Sub-assigned by"
 msgstr "Reatribuit de"
 
-#: dt-contacts/dmm-module.php:291
+#: dt-contacts/dmm-module.php:303
 msgid "Sub-assigned"
 msgstr "Reatribuit"
 
-#: dt-contacts/dmm-module.php:314
+#: dt-contacts/dmm-module.php:326
 msgid "Faith"
 msgstr "Credinţă"
 
-#: dt-contacts/dmm-module.php:397
+#: dt-contacts/dmm-module.php:409
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "% s conectate "
@@ -4242,7 +4246,7 @@ msgstr "Hărțile contactelor"
 msgid "Groups Maps"
 msgstr "Hărțile grupurilor"
 
-#: dt-posts/dt-posts.php:1393
+#: dt-posts/dt-posts.php:1400
 #: single-template.php:119
 msgid "Details"
 msgstr "Detalii"
@@ -4277,34 +4281,34 @@ msgstr "D.T Înregistrare"
 msgid "This %s needs an update."
 msgstr "Acestă % s are nevoie de o actualizare."
 
-#: dt-assets/functions/details-bar.php:84
-#: dt-assets/functions/details-bar.php:201
+#: dt-assets/functions/details-bar.php:98
+#: dt-assets/functions/details-bar.php:238
 msgid "Record"
 msgstr "Înregistrare"
 
-#: dt-assets/functions/details-bar.php:86
-#: dt-assets/functions/details-bar.php:203
+#: dt-assets/functions/details-bar.php:100
+#: dt-assets/functions/details-bar.php:240
 #: template-merge-details.php:127
 #: template-merge-details.php:136
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "Creat la% s"
 
-#: dt-assets/functions/details-bar.php:88
-#: dt-assets/functions/details-bar.php:205
+#: dt-assets/functions/details-bar.php:102
+#: dt-assets/functions/details-bar.php:242
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "de % s"
 
-#: single-template.php:211
+#: single-template.php:212
 msgid "Edit all details fields"
 msgstr "Editați toate câmpurile de detalii"
 
-#: single-template.php:333
+#: single-template.php:334
 msgid "Create a tag and apply it to this record."
 msgstr "Creați o etichetă și aplicați-o la această înregistrare."
 
-#: single-template.php:358
+#: single-template.php:359
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Sigur doriți să ștergeți % s?"
@@ -4330,26 +4334,26 @@ msgstr "start"
 msgid "end"
 msgstr "Sfârșit"
 
-#: dt-contacts/base-setup.php:375
-#: dt-contacts/base-setup.php:402
+#: dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:403
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "Arhivează % s"
 
-#: dt-contacts/base-setup.php:403
+#: dt-contacts/base-setup.php:404
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Sigur doriți să arhivați % s?"
 
-#: dt-contacts/base-setup.php:410
+#: dt-contacts/base-setup.php:411
 msgid "Archive"
 msgstr "Arhivează"
 
-#: dt-contacts/base-setup.php:650
+#: dt-contacts/base-setup.php:651
 msgid "This %s is archived"
 msgstr "Acest % s este arhivat"
 
-#: dt-contacts/base-setup.php:652
+#: dt-contacts/base-setup.php:653
 msgid "Restore"
 msgstr "Restabiliți"
 
@@ -4368,7 +4372,7 @@ msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "Respingeți toate asemănprile pentru% s"
 
-#: dt-contacts/base-setup.php:303
+#: dt-contacts/base-setup.php:304
 msgid "Archived"
 msgstr "Arhivate"
 
@@ -4436,11 +4440,11 @@ msgstr "Căutați în toate câmpurile"
 msgid "Choose which fields to search"
 msgstr ""
 
-#: dt-contacts/base-setup.php:255
+#: dt-contacts/base-setup.php:256
 msgid "Other Social Links"
 msgstr ""
 
-#: dt-assets/parts/nav-topbar.php:253
+#: dt-assets/parts/nav-topbar.php:254
 msgid "See All"
 msgstr ""
 
@@ -4473,17 +4477,35 @@ msgstr ""
 msgid "Hide fields"
 msgstr ""
 
-#: dt-contacts/base-setup.php:351
+#: dt-contacts/base-setup.php:352
 #: dt-groups/base-setup.php:544
 msgid "Add new tag \"%s\""
 msgstr ""
 
-#: dt-contacts/base-setup.php:352
+#: dt-contacts/base-setup.php:353
 #: dt-groups/base-setup.php:545
 msgid "Tag \"%s\" is already being used"
 msgstr ""
 
 #: dt-groups/base-setup.php:468
 msgid "Leader of Group"
+msgstr ""
+
+#: dt-assets/functions/details-bar.php:74
+#: dt-assets/functions/details-bar.php:216
+msgid "Previous record"
+msgstr ""
+
+#: dt-assets/functions/details-bar.php:108
+#: dt-assets/functions/details-bar.php:249
+msgid "Next record"
+msgstr ""
+
+#: dt-contacts/dmm-module.php:135
+msgid "Sub-assigned on other Contacts"
+msgstr ""
+
+#: dt-contacts/dmm-module.php:136
+msgid "Contacts this contacts is subassigned on"
 msgstr ""
 
