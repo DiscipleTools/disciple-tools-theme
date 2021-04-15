@@ -133,8 +133,8 @@ jQuery(document).ready(function($) {
                   const reactionMeta = commentsSettings.reaction_options[reactionAlias]
                   if (!reactionMeta) return // there is no reaction matching this alias, maybe the reactions have been changed
                   let reactionTitle = users.length === 1 ? commentsSettings.translations.reaction_title_1 : commentsSettings.translations.reaction_title_many
-                  reactionTitle = reactionTitle.replace('{{user}}', users[users.length - 1].name).replace('{{emojiName}}', reactionMeta.name)
-                  if (users.length > 1) reactionTitle = reactionTitle.replace('{{users}}', users.slice(0, users.length - 1).map((user) => user.name).join(', '))
+                  reactionTitle = reactionTitle.replace('%1$s', users[users.length - 1].name).replace('%2$s', reactionMeta.name)
+                  if (users.length > 1) reactionTitle = reactionTitle.replace('%3$s', users.slice(0, users.length - 1).map((user) => user.name).join(', '))
                   const hasOwnReaction = users.map((user) => user.user_id).includes(commentsSettings.current_user_id)
                 %>
                   <div class="comment-reaction" title="<%- reactionTitle %>" data-own-reaction="<%- hasOwnReaction %>" data-reaction-value="<%- reactionKey %>" data-comment-id="<%- a.comment_ID %>">
