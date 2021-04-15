@@ -120,29 +120,27 @@ jQuery(document).ready(function($) {
               <div class="translation-bubble" dir=auto></div>
             <% } %>
             <div  class="comment-controls">
-              <div style="display:flex;">
-                <div class="comment-reactions">
-                  <% Object.entries(a.reactions).forEach(([reactionKey, users]) => {
-                    if (users.length === 0) return
-                    const reactionAlias = reactionKey.replace(/reaction_/, '')
-                    const reactionMeta = commentsSettings.reaction_options[reactionAlias]
-                    let reactionTitle = users.length === 1 ? commentsSettings.translations.reaction_title_1 : commentsSettings.translations.reaction_title_many
-                    reactionTitle = reactionTitle.replace('{{user}}', users[users.length - 1].name).replace('{{emojiName}}', reactionMeta.name)
-                    if (users.length > 1) reactionTitle = reactionTitle.replace('{{users}}', users.slice(0, users.length - 1).map((user) => user.name).join(', '))
-                    const hasOwnReaction = users.map((user) => user.user_id).includes(commentsSettings.current_user_id)
-                  %>
-                    <div class="comment-reaction" title="<%- reactionTitle %>" data-own-reaction="<%- hasOwnReaction %>" data-reaction-value="<%- reactionKey %>" data-comment-id="<%- a.comment_ID %>">
-                      <img class="emoji" src="<%- reactionMeta.path %>" >
-                      <span><%- users.length %></span>
-                    </div>
-                  <% }) %>
-                </div>
+              <div class="comment-reactions">
                 <div class="reaction-controls">
                   <button class="icon-button reactions__button" aria-label="Add your reaction" aria-haspopup="menu" role="button" data-toggle="react-to-<%- a.comment_ID %>">
                     <span class="add-reaction-svg"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zM5 8a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zM5.32 9.636a.75.75 0 011.038.175l.007.009c.103.118.22.222.35.31.264.178.683.37 1.285.37.602 0 1.02-.192 1.285-.371.13-.088.247-.192.35-.31l.007-.008a.75.75 0 111.222.87l-.614-.431c.614.43.614.431.613.431v.001l-.001.002-.002.003-.005.007-.014.019a1.984 1.984 0 01-.184.213c-.16.166-.338.316-.53.445-.63.418-1.37.638-2.127.629-.946 0-1.652-.308-2.126-.63a3.32 3.32 0 01-.715-.657l-.014-.02-.005-.006-.002-.003v-.002h-.001l.613-.432-.614.43a.75.75 0 01.183-1.044h.001z"></path></svg>
                   </button>
                   <div class="dropdown-pane reactions__dropdown" data-position="bottom" data-alignment="right" id="react-to-<%- a.comment_ID %>" data-comment-id="<%- a.comment_ID %>" data-dropdown></div>
                 </div>
+                <% Object.entries(a.reactions).forEach(([reactionKey, users]) => {
+                  if (users.length === 0) return
+                  const reactionAlias = reactionKey.replace(/reaction_/, '')
+                  const reactionMeta = commentsSettings.reaction_options[reactionAlias]
+                  let reactionTitle = users.length === 1 ? commentsSettings.translations.reaction_title_1 : commentsSettings.translations.reaction_title_many
+                  reactionTitle = reactionTitle.replace('{{user}}', users[users.length - 1].name).replace('{{emojiName}}', reactionMeta.name)
+                  if (users.length > 1) reactionTitle = reactionTitle.replace('{{users}}', users.slice(0, users.length - 1).map((user) => user.name).join(', '))
+                  const hasOwnReaction = users.map((user) => user.user_id).includes(commentsSettings.current_user_id)
+                %>
+                  <div class="comment-reaction" title="<%- reactionTitle %>" data-own-reaction="<%- hasOwnReaction %>" data-reaction-value="<%- reactionKey %>" data-comment-id="<%- a.comment_ID %>">
+                    <img class="emoji" src="<%- reactionMeta.path %>" >
+                    <span><%- users.length %></span>
+                  </div>
+                <% }) %>
               </div>
               <% if ( a.is_own_comment ) { %>
                 <% has_Comment_ID = true %>

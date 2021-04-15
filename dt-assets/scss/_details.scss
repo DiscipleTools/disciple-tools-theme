@@ -206,14 +206,13 @@ DT comments and activity
     }
     .comment-reactions {
         display: flex;
-
-        * {
-            margin-right: 4px;
-        }
+        flex-wrap: wrap;
     }
 
     .comment-reaction,
     .reactions__button {
+        margin-top: 4px;
+        margin-right: 4px;
         background-color: #f8f8f8;
         border-radius: 100px;
         padding: 0.1rem 0.5rem;
@@ -247,6 +246,7 @@ DT comments and activity
 
         span {
             font-size: 0.8rem;
+            padding-left: 4px;
         }
 
         &[data-own-reaction="true"] {
@@ -309,7 +309,7 @@ DT comments and activity
     .reactions__dropdown {
         width: 215px;
         left: 8px;
-        top: 30px;
+        top: -70px;
         z-index: 9;
         border-radius: 6px;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
@@ -318,18 +318,18 @@ DT comments and activity
         &::after {
             content: '';
             position: absolute;
-            top: -14px;
+            bottom: -14px;
             left: 20px;
             border: 7px solid transparent;
-            border-bottom: 7px solid white;
+            border-top: 7px solid white;
         }
         &::before {
             content: '';
             position: absolute;
-            top: -16px;
+            bottom: -16px;
             left: 19px;
             border: 8px solid transparent;
-            border-bottom: 8px solid #cacaca;
+            border-top: 8px solid #cacaca;
         }
     }
     .add-reaction {
@@ -343,10 +343,12 @@ DT comments and activity
     .comment-controls {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
     }
 
     .edit-comment-controls {
         margin-right: 10px;
+        margin-top: 4px;
     }
 
     .comment-bubble, .comment-controls {
