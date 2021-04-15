@@ -240,7 +240,8 @@ class Disciple_Tools_Posts_Endpoints {
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
                         "comment_id" => $arg_schemas["comment_id"],
-                    ]
+                    ],
+                    "permission_callback" => '__return_true',
                 ]
             ]
         );
