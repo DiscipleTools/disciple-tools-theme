@@ -1454,7 +1454,10 @@ class DT_Posts extends Disciple_Tools_Posts {
         $owner_name     = ( $is_assigned_to ) ? ( dt_get_assigned_name( $post_id, true ) . " " ) ?? "" : ( $existing_post['post_author_display_name'] . " " ) ?? "";
 
         // Post comment
-        $comment_html = sprintf( esc_html__( '@[%1$s](%2$s) - @[%3$s](%4$s) has requested access to %5$s [%6$s](%7$s), please share record accordingly.', 'disciple_tools' ), esc_html( $owner_name ), esc_html( $owner_id ), esc_html( $requester_name ), esc_html( $user_id ), esc_html( $post_settings['label_singular'] ), esc_html( $existing_post['name'] ), esc_html( $post_id ) );
+        $comment_html = sprintf(
+            esc_html_x( '@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access.', '@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access.', 'disciple_tools' ),
+            esc_html( $owner_name ), esc_html( $owner_id ), esc_html( $requester_name ), esc_html( $post_settings['label_singular'] ), esc_html( $existing_post['name'] ), esc_html( $post_id )
+        );
 
         return self::add_post_comment( $post_type, $post_id, $comment_html, "comment", [
             "user_id"        => 0,

@@ -18,12 +18,10 @@ jQuery(document).ready(function ($) {
 
     // Post request
     rest_api.request_record_access(postType, postId, currentUserId).then(data => {
-      console.log(data)
-
       $('#request-record-access-modal-button').toggleClass('loading');
       $('#request-record-access-modal').foundation('close');
 
-      history.back();
+     window.location = window.wpApiShare.site_url + '/' + postType
 
     }).catch(err => {
 
