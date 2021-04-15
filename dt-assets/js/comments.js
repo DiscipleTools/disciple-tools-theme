@@ -368,7 +368,7 @@ jQuery(document).ready(function($) {
         is_own_comment: d.user_id === commentsSettings.current_user_id,
         comment_type : d.comment_type,
         action: d.action,
-        reactions: d.comment_reactions,
+        reactions: d.comment_reactions || {},
       }
 
       let diff = first ? first.date.diff(obj.date, "hours") : 0
