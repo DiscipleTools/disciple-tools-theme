@@ -230,6 +230,8 @@ DT comments and activity
         background-color: #f8f8f8;
         border-radius: 100px;
         padding: 0.1rem 0.5rem;
+        font-size: 0.9rem;
+        line-height: 0.9rem;
         display: flex;
         align-items: center;
         border: 1px solid transparent;
@@ -244,9 +246,9 @@ DT comments and activity
             width: 1rem;
         }
 
-        span {
-            font-size: 0.8rem;
+        span + span {
             padding-left: 4px;
+            font-size: 0.8rem;
         }
 
         &[data-own-reaction="true"] {
