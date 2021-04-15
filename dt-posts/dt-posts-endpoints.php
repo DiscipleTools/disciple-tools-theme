@@ -382,13 +382,8 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     "methods"  => "POST",
                     "callback" => [ $this, 'request_record_access' ],
+                    "permission_callback" => "__return_true",
                     "args"     => [
-                        "user_id"   => [
-                            "description"       => "The ID of the user requesting record access",
-                            "type"              => 'integer',
-                            "required"          => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
                         "post_type" => $arg_schemas["post_type"],
                         "id"        => $arg_schemas["id"]
                     ]
