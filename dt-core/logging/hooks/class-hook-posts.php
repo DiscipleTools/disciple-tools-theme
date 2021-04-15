@@ -351,6 +351,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
      */
     public function hooks_error_post( $code, $message, $data, $wp_error ) {
         if ( ! empty( $wp_error ) ) {
+            $current_migration = get_option( 'dt_migration_number' ) > 40;
+            if ( empty( $current_migration ) || intval( $current_migration ) < 40 ){
+                return;
+            }
             $activity = [
                 'action'         => 'error_log',
                 'object_type'    => '',
