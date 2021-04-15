@@ -86,7 +86,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "callback" => [ $this, 'create_post' ],
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -99,7 +100,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -112,7 +114,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -125,7 +128,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -138,7 +142,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "callback" => [ $this, 'get_list' ],
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -156,7 +161,8 @@ class Disciple_Tools_Posts_Endpoints {
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
                         "post_type" => $arg_schemas["post_type"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -170,7 +176,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -191,7 +198,8 @@ class Disciple_Tools_Posts_Endpoints {
                         "id" => $arg_schemas["id"],
                         "date" => $arg_schemas["date"],
                         'comment_type' => $arg_schemas["comment_type"]
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -212,7 +220,8 @@ class Disciple_Tools_Posts_Endpoints {
                         "id" => $arg_schemas["id"],
                         "comment_id" => $arg_schemas["comment_id"],
                         'comment_type' => $arg_schemas["comment_type"]
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -226,7 +235,8 @@ class Disciple_Tools_Posts_Endpoints {
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
                         "comment_id" => $arg_schemas["comment_id"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -239,7 +249,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -258,7 +269,8 @@ class Disciple_Tools_Posts_Endpoints {
                             "required" => true,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ]
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -271,7 +283,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -290,7 +303,8 @@ class Disciple_Tools_Posts_Endpoints {
                         ],
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -310,7 +324,8 @@ class Disciple_Tools_Posts_Endpoints {
                         ],
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -323,7 +338,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -347,7 +363,8 @@ class Disciple_Tools_Posts_Endpoints {
                             "required" => false,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -359,7 +376,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "callback" => [ $this, 'get_post_settings' ],
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -371,7 +389,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "callback" => [ $this, 'get_post_field_settings' ],
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );

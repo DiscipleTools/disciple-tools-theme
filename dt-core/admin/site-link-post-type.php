@@ -1200,6 +1200,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     [
                         'methods'  => WP_REST_Server::CREATABLE,
                         'callback' => [ $this, 'site_link_check' ],
+                        'permission_callback' => '__return_true',
                     ],
                 ]
             );
@@ -1207,7 +1208,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 $namespace, '/sites/site_link_server_check', [
                     [
                         'methods' => WP_REST_Server::CREATABLE,
-                        'callback' => [ $this, 'site_link_server_check' ]
+                        'callback' => [ $this, 'site_link_server_check' ],
+                        'permission_callback' => '__return_true',
                     ],
                 ]
             );
@@ -1215,7 +1217,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 $namespace, '/sites/server_ip', [
                     [
                         'methods' => WP_REST_Server::READABLE,
-                        'callback' => [ $this, 'server_ip' ]
+                        'callback' => [ $this, 'server_ip' ],
+                        'permission_callback' => '__return_true',
                     ],
                 ]
             );
