@@ -1639,6 +1639,38 @@ class Disciple_Tools_Posts
 
 
     /**
+     * Function to update private post user meta
+     * @param $post_id
+     * @param $meta_key
+     * @param $meta_valye
+     */
+    public static function update_private_post_meta( $post_id, $meta_key, $meta_value) {
+        global $wpdb;
+        // expected_slashed ($meta_key)
+        $raw_meta_key = $meta_key;
+        $meta_key     = wp_unslash( $meta_key );
+        $passed_value = $meta_value;
+        $meta_value   = wp_unslash( $meta_value );
+        $meta_value   = sanitize_meta( $meta_key, $meta_value, "post", "" );
+
+        $current_user_id = get_current_user_id();
+        if ( !$current_user_id ){
+            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
+        }
+
+        $create = $wpdb->insert( $wpdb->dt_post_user_meta,
+            [
+                "user_id" => $current_user_id,
+                "post_id" => $post_id,
+                "meta_key" => $meta_key,
+                "meta_value" => $meta_value,
+            ]
+        );
+        if ( !$create ){
+            return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
+        }
+    }
+    /**
      * Helper function to create a unique metakey for contact channels.
      *
      * @param $channel_key
