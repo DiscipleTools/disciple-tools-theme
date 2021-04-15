@@ -172,6 +172,11 @@ window.API = {
       contact_id: contactId,
       site_post_id: siteId,
     }),
+
+  request_record_access: (post_type, postId, userId) =>
+    makeRequestOnPosts("POST", `${post_type}/${postId}/request_record_access`, {
+      user_id: userId,
+    })
 };
 
 function handleAjaxError(err) {

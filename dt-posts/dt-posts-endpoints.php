@@ -394,6 +394,21 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+
+        //Request Record Access
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/request_record_access', [
+                [
+                    "methods"  => "POST",
+                    "callback" => [ $this, 'request_record_access' ],
+                    "permission_callback" => "__return_true",
+                    "args"     => [
+                        "post_type" => $arg_schemas["post_type"],
+                        "id"        => $arg_schemas["id"]
+                    ]
+                ]
+            ]
+        );
     }
 
     /**
@@ -594,6 +609,12 @@ class Disciple_Tools_Posts_Endpoints {
         }
 
         return DT_Posts::get_post_field_settings( $url_params["post_type"] );
+    }
+
+    public function request_record_access( WP_REST_Request $request ): string {
+        $url_params = $request->get_url_params();
+
+        return DT_Posts::request_record_access( $url_params["post_type"], $url_params["id"] );
     }
 
 }
