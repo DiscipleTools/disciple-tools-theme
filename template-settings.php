@@ -215,19 +215,19 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                             </thead>
                             <tbody>
                             <?php foreach ( $apps_list as $app_key => $app_value ) :
-                                $key = get_user_option( $app_key );
-                                $link = false;
-                                if ( $key ) {
-                                    $link = trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] ) . $key;
+                                $app_user_key = get_user_option( $app_key );
+                                $app_link = false;
+                                if ( $app_user_key ) {
+                                    $app_link = trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] ) . $app_user_key;
                                 }
                                 ?>
                                 <tr>
                                     <td class="tall-3"><?php echo esc_html( $app_value["label"] )?></td>
                                     <td class="tall-3"><?php echo esc_html( $app_value["description"] )?></td>
-                                    <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo $app_value['url_base'] ?>"><?php echo ( $link ) ? '<a href="'.$link.'">link</a>' : '' ; ?></td>
+                                    <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url_raw( $app_value['url_base'] ) ?>"><?php echo ( $app_link ) ? '<a href="'.esc_url_raw( $app_link ).'">'. esc_html_e( 'link', 'disciple_tools' ) .'</a>' : ''; ?></td>
                                     <td class="tall-3">
                                         <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
-                                               onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] )  ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
+                                               onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
                                         <label class="switch-paddle" for="follow_all">
                                             <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
                                             <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>

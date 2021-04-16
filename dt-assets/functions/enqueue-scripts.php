@@ -270,6 +270,7 @@ function dt_site_scripts() {
                     'responsible_for_locations' => __( "Locations you are responsible for", 'disciple_tools' ),
                     'add' => __( 'Add', 'disciple_tools' ),
                     'save' => __( 'Save', 'disciple_tools' ),
+                    'link' => __( 'link', 'disciple_tools' ),
                 ] ),
                 'google_translate_api_key' => get_option( 'dt_googletranslate_api_key' ),
                 'custom_data'           => apply_filters( 'dt_settings_js_data', [] ), // nest associated array

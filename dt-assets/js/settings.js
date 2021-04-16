@@ -13,7 +13,7 @@ function app_switch (app_key = null) {
         jQuery('#app_link_' + app_key).empty()
       } else {
         let u = a.data('url-base')
-        a.empty().html(`<a href="${u}${data}">link</a>`)
+        a.empty().html(`<a href="${u}${data}">${wpApiSettingsPage.translations.link}</a>`)
       }
     })
     .fail(function (err) {

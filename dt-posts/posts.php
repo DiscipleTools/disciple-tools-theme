@@ -888,7 +888,7 @@ class Disciple_Tools_Posts
                              * post user meta
                              */
                             if ( !in_array( $table_key, $args["joins_fields"] ) ){
-                                $values =  dt_array_to_sql( $query_value );
+                                $values = dt_array_to_sql( $query_value );
                                 $args["joins_fields"][] = $table_key;
                                 $args["joins_sql"] .= " JOIN (
                                     SELECT *
