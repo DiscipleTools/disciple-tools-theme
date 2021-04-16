@@ -197,7 +197,7 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                         <button class="help-button float-right" data-section="apps-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         </button>
-                        <span class="section-header"><?php esc_html_e( 'Apps', 'disciple_tools' )?></span>
+                        <span class="section-header"><?php esc_html_e( 'Your Apps', 'disciple_tools' )?></span>
                         <hr/>
 
                         <?php
