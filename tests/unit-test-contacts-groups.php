@@ -18,7 +18,8 @@ class PostsTest extends WP_UnitTestCase {
         "requires_update" => true,
         "nickname" => "Bob the builder",
         "contact_phone" => [ "values" => [ [ "value" => "798456780" ] ] ],
-        "contact_email" => [ "values" => [ [ "value" => "bob@example.com" ] ] ]
+        "contact_email" => [ "values" => [ [ "value" => "bob@example.com" ] ] ],
+        "tags" => [ "values" => [ [ "value" => "tag1" ] ] ],
     ];
 
     public $sample_group = [
@@ -45,6 +46,7 @@ class PostsTest extends WP_UnitTestCase {
         $this->assertSame( "798456780", $contact1['contact_phone'][0]["value"] );
         $this->assertSame( "1", $contact1['assigned_to']["id"] );
         $this->assertSame( "Bob's group", $contact1['groups'][0]["post_title"] );
+        $this->assertSame( "tag1", $contact1['tags'][0] );
 
     }
 
