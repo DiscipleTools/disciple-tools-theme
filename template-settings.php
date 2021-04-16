@@ -306,7 +306,7 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                 <?php esc_html_e( "Schedule Travel or Dates Unavailable", 'disciple_tools' ) ?>
                             </strong>
                         </p>
-                        <div style="display: flex; justify-content: flex-start; align-items: flex-end">
+                        <div style="display: flex; justify-content: flex-start; align-items: center">
                             <div style="flex-shrink: 1">
                                 <div class="section-subheader cell">
                                     <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
@@ -319,8 +319,8 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                 </div>
                                 <div class="end_date"><input type="text" class="date-picker" id="end_date" autocomplete="off"></div>
                             </div>
-                            <div>
-                                <button id="add_unavailable_dates" class="button" disabled><?php esc_html_e( "Add Unavailable dates", 'disciple_tools' ) ?></button>
+                            <div style="display: flex;">
+                                <button id="add_unavailable_dates" class="button" disabled style="margin: 0;"><?php esc_html_e( "Add Unavailable dates", 'disciple_tools' ) ?></button>
                                 <div id="add_unavailable_dates_spinner" style="display: inline-block" class="loading-spinner"></div>
                             </div>
                         </div>

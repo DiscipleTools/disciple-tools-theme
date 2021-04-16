@@ -75,6 +75,7 @@ class DT_Metrics_Seeker_Path_Chart extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'seeker_path_endpoint' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );

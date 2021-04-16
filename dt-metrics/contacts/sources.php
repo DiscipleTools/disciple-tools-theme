@@ -107,12 +107,14 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
             $namespace, '/sources_chart_data', [
                 'methods'  => 'GET',
                 'callback' => [ $this, 'api_sources_chart_data' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $namespace, '/sources_chart_data', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'api_sources_chart_data' ],
+                'permission_callback' => '__return_true',
             ]
         );
     }

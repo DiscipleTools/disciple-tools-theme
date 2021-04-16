@@ -63,7 +63,14 @@ class Disciple_Tools_Activity_Log_API {
                 'field_type'     => ''
             ]
         );
-        $user = wp_get_current_user();
+        // only get the current user if the global user object is set.
+        // this avoids an infinite loop where the `determine_current_user` filter
+        // keeps on trying to insert activity when an error is thrown.
+        global $current_user;
+        $user = null;
+        if ( !empty( $current_user ) ){
+            $user = wp_get_current_user();
+        }
         if ( $user ) {
             $args['user_caps'] = strtolower( key( $user->caps ) );
             if ( empty( $args['user_id'] ) ) {

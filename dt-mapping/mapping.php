@@ -317,6 +317,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         $endpoint['namespace'], $endpoint['route'], [
                             'methods'  => $endpoint['method'],
                             'callback' => [ $this, $key ],
+                            'permission_callback' => '__return_true',
                         ]
                     );
                 }

@@ -225,14 +225,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             return;
         }
 
-        if ( in_array( $field_key, $core_fields ) ){
-            ?>
-            <p>
-                <strong>This is a core field. <a href="<?php echo esc_url( admin_url() ) ?>edit.php?page=dt_options&tab=custom-lists#<?php echo esc_attr( $field_key ) ?>"  class="">Go to Custom Lists page to edit.</a></strong>
-            </p>
-            <?php
-            return;
-        }
 
         $defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
 
@@ -365,7 +357,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         <br>
 
             <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
-                ?>
+                if ( in_array( $field_key, $core_fields ) ){
+                    ?>
+                    <p>
+                        <strong>This is a core field. <a href="<?php echo esc_url( admin_url() ) ?>edit.php?page=dt_options&tab=custom-lists#<?php echo esc_attr( $field_key ) ?>"  class="">Go to Custom Lists page to edit options.</a></strong>
+                    </p>
+                    <?php
+                    return;
+                } ?>
 
                 <h3><?php esc_html_e( "Field Options", 'disciple_tools' ) ?></h3>
                 <table id="add_option" style="">
