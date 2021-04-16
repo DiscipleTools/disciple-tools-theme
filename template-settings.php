@@ -228,15 +228,20 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                             } else {
                                 foreach ( $apps_list as $app_key => $app_value ) :
                                     $app_user_key = get_user_option( $app_key );
+                                    $app_url_base = trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] );
                                     $app_link = false;
                                     if ( $app_user_key ) {
-                                        $app_link = trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] ) . $app_user_key;
+                                        $app_link = $app_url_base . $app_user_key;
                                     }
                                     ?>
                                     <tr>
                                         <td class="tall-3"><?php echo esc_html( $app_value["label"] )?></td>
                                         <td class="tall-3"><?php echo esc_html( $app_value["description"] )?></td>
-                                        <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url_raw( $app_value['url_base'] ) ?>"><?php echo ( $app_link ) ? '<a href="'.esc_url_raw( $app_link ).'">'. esc_html_e( 'link', 'disciple_tools' ) .'</a>' : ''; ?></td>
+                                        <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url( $app_url_base ) ?>">
+                                            <?php if ( $app_link ) { ?>
+                                                <a href="<?php echo esc_url( $app_link ) ?>"><?php esc_html_e( 'link', 'disciple_tools' ) ?></a>
+                                            <?php } ?>
+                                        </td>
                                         <td class="tall-3">
                                             <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
                                                    onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
