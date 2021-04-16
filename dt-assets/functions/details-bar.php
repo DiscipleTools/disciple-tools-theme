@@ -37,11 +37,7 @@ function dt_print_details_bar(
             <div class="container-width">
 
                 <div class="grid-x grid-margin-x">
-<<<<<<< HEAD
-                    <div class="cell small-5 grid-x grid-margin-x">
-=======
                     <div class="cell small-4 grid-x">
->>>>>>> 1aa237d3075355676fbbaab1210cf3fa57753654
                         <div class="cell grid-x shrink center-items">
                             <?php if ( $show_update_needed ){ ?>
                                 <div style="margin-inline-start:10px;margin-inline-end:5px">
@@ -72,9 +68,6 @@ function dt_print_details_bar(
                             <span id="admin-bar-issues"></span>
                         </div>
                     </div>
-<<<<<<< HEAD
-                    <div class="cell small-2 center hide-for-small-only">
-=======
                     <div class="cell small-3 large-4 center hide-for-small-only grid-x">
                             <div class="cell medium-2 large-1 center-items align-left">
                                 <a class="section-chevron navigation-previous" style="max-width: 1rem; display: none;" href="javascript:void(0)">
@@ -88,7 +81,6 @@ function dt_print_details_bar(
                                 </a>
                             </div>
                             <div class="cell small-8">
->>>>>>> 1aa237d3075355676fbbaab1210cf3fa57753654
                             <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
                             $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
 
@@ -123,11 +115,7 @@ function dt_print_details_bar(
                             </a>
                         </div>
                     </div>
-<<<<<<< HEAD
-                    <div class="cell small-5 align-right grid-x grid-margin-x">
-=======
                     <div class="cell small-5 large-4 align-right grid-x">
->>>>>>> 1aa237d3075355676fbbaab1210cf3fa57753654
                         <?php if ( $task ) : ?>
                         <div class="cell shrink center-items">
                             <button class="button open-set-task">
