@@ -40,6 +40,7 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
                     <ul class="menu vertical expanded" data-smooth-scroll data-offset="100">
                         <li><a href="#profile"><?php esc_html_e( 'Profile', 'disciple_tools' )?></a></li>
+                        <li><a href="#apps"><?php esc_html_e( 'Apps', 'disciple_tools' )?></a></li>
                         <li><a href="#multiplier"><?php esc_html_e( 'Multiplier Preferences', 'disciple_tools' )?></a></li>
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
                         <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
@@ -188,6 +189,58 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
                     </div> <!-- End Profile -->
                 </div>
+
+                <!-- Begin Apps-->
+                <div class="small-12 cell">
+
+                    <div class="bordered-box cell" id="apps" data-magellan-target="apps">
+                        <button class="help-button float-right" data-section="apps-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
+                        <span class="section-header"><?php esc_html_e( 'Apps', 'disciple_tools' )?></span>
+                        <hr/>
+
+                        <?php
+                        $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
+                        ?>
+
+                        <table class="form-table">
+                            <thead>
+                            <tr>
+                                <td><?php esc_html_e( 'App Name', 'disciple_tools' )?></td>
+                                <td><?php esc_html_e( 'App Description', 'disciple_tools' )?></td>
+                                <td><?php esc_html_e( 'App Link', 'disciple_tools' )?></td>
+                                <td><?php esc_html_e( 'App Activation', 'disciple_tools' )?></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ( $apps_list as $app_key => $app_value ) :
+                                $key = get_user_option( $app_key );
+                                $link = false;
+                                if ( $key ) {
+                                    $link = trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] ) . $key;
+                                }
+                                ?>
+                                <tr>
+                                    <td class="tall-3"><?php echo esc_html( $app_value["label"] )?></td>
+                                    <td class="tall-3"><?php echo esc_html( $app_value["description"] )?></td>
+                                    <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo $app_value['url_base'] ?>"><?php echo ( $link ) ? '<a href="'.$link.'">link</a>' : '' ; ?></td>
+                                    <td class="tall-3">
+                                        <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
+                                               onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] )  ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
+                                        <label class="switch-paddle" for="follow_all">
+                                            <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
+                                            <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
+                                            <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- End Apps -->
 
 
                 <!-- Multiplier Interests -->
