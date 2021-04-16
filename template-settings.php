@@ -24,6 +24,12 @@ $translations = dt_get_translations();
 
 $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
+/**
+ * Filter for adding user apps to the settings area.
+ * An app leverages the magic link structure
+ */
+$apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
+
 ?>
 
 <?php get_header(); ?>
@@ -40,7 +46,9 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
                     <ul class="menu vertical expanded" data-smooth-scroll data-offset="100">
                         <li><a href="#profile"><?php esc_html_e( 'Profile', 'disciple_tools' )?></a></li>
-                        <li><a href="#apps"><?php esc_html_e( 'Apps', 'disciple_tools' )?></a></li>
+                        <?php if ( ! empty( $apps_list ) ) : ?>
+                            <li><a href="#apps"><?php esc_html_e( 'Apps', 'disciple_tools' )?></a></li>
+                        <?php endif; ?>
                         <li><a href="#multiplier"><?php esc_html_e( 'Multiplier Preferences', 'disciple_tools' )?></a></li>
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
                         <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
@@ -190,20 +198,13 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                     </div> <!-- End Profile -->
                 </div>
 
+                <?php if ( ! empty( $apps_list ) ) : ?>
                 <!-- Begin Apps-->
                 <div class="small-12 cell">
 
                     <div class="bordered-box cell" id="apps" data-magellan-target="apps">
-                        <button class="help-button float-right" data-section="apps-help-text">
-                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                        </button>
                         <span class="section-header"><?php esc_html_e( 'Your Apps', 'disciple_tools' )?></span>
                         <hr/>
-
-                        <?php
-                        $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
-                        ?>
-
                         <table class="form-table">
                             <thead>
                             <tr>
@@ -214,33 +215,48 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                             </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ( $apps_list as $app_key => $app_value ) :
-                                $app_user_key = get_user_option( $app_key );
-                                $app_link = false;
-                                if ( $app_user_key ) {
-                                    $app_link = trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] ) . $app_user_key;
-                                }
+                            <?php
+
+                            if ( empty( $apps_list ) ) {
                                 ?>
                                 <tr>
-                                    <td class="tall-3"><?php echo esc_html( $app_value["label"] )?></td>
-                                    <td class="tall-3"><?php echo esc_html( $app_value["description"] )?></td>
-                                    <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url_raw( $app_value['url_base'] ) ?>"><?php echo ( $app_link ) ? '<a href="'.esc_url_raw( $app_link ).'">'. esc_html_e( 'link', 'disciple_tools' ) .'</a>' : ''; ?></td>
-                                    <td class="tall-3">
-                                        <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
-                                               onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
-                                        <label class="switch-paddle" for="follow_all">
-                                            <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
-                                            <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
-                                            <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
-                                        </label>
+                                    <td colspan="4">
+                                        <?php echo esc_html__( 'No apps installed', 'disciple_tools' ); ?>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                                <?php
+                            } else {
+                                foreach ( $apps_list as $app_key => $app_value ) :
+                                    $app_user_key = get_user_option( $app_key );
+                                    $app_link = false;
+                                    if ( $app_user_key ) {
+                                        $app_link = trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] ) . $app_user_key;
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td class="tall-3"><?php echo esc_html( $app_value["label"] )?></td>
+                                        <td class="tall-3"><?php echo esc_html( $app_value["description"] )?></td>
+                                        <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url_raw( $app_value['url_base'] ) ?>"><?php echo ( $app_link ) ? '<a href="'.esc_url_raw( $app_link ).'">'. esc_html_e( 'link', 'disciple_tools' ) .'</a>' : ''; ?></td>
+                                        <td class="tall-3">
+                                            <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
+                                                   onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
+                                            <label class="switch-paddle" for="follow_all">
+                                                <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
+                                                <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
+                                                <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                endforeach;
+                            }
+                            ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <!-- End Apps -->
+                <?php endif; ?>
 
 
                 <!-- Multiplier Interests -->
