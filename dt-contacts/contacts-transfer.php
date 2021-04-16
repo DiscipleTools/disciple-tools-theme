@@ -67,12 +67,14 @@ class Disciple_Tools_Contacts_Transfer
             $namespace, '/contacts/transfer', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'contact_transfer_endpoint' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $namespace, '/contacts/receive-transfer', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'receive_transfer_endpoint' ],
+                'permission_callback' => '__return_true',
             ]
         );
         //deprecated
@@ -80,6 +82,7 @@ class Disciple_Tools_Contacts_Transfer
             'dt-public/v1', '/contact/transfer', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'public_contact_transfer' ],
+                'permission_callback' => '__return_true',
             ]
         );
     }

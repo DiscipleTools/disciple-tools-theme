@@ -398,6 +398,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     [
                         'methods'  => WP_REST_Server::READABLE,
                         'callback' => [ $this, 'api_create_key' ],
+                        'permission_callback' => '__return_true',
                     ],
                 ]
             );

@@ -94,6 +94,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
                 [
                     'methods'  => "GET",
                     'callback' => [ $this, 'milestones_map_endpoint' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );

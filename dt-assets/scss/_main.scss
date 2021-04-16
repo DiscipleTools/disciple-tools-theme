@@ -291,7 +291,7 @@ html[dir='rtl'] nav.second-bar .advanced_search {
     border-top: none;
     &.is-stuck {
         border-top: .5rem solid $primary-color;
-        .grid-x {
+        .mobile-nav-actions {
             display: none;
         }
         #record-tagline {

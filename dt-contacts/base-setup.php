@@ -180,6 +180,7 @@ class DT_Contacts_Base {
                 'type' => 'multi_select',
                 'default' => dt_get_option( "dt_working_languages" ) ?: [],
                 'icon' => get_template_directory_uri() . "/dt-assets/images/languages.svg",
+                "tile" => "no_tile"
             ];
 
             //add communication channels
