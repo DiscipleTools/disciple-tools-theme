@@ -1933,13 +1933,17 @@ class Disciple_Tools_Posts
                         }
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' ) {
-                    $multi_select_values = [];
-                    foreach ( $value as $value_key ){
-                        if ( !empty( $value_key ) && isset( $field_settings[$key]["default"][$value_key] ) ){
-                            $multi_select_values[] = $value_key;
+                    if ( $key === "tags" ){
+                        $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
+                    } else {
+                        $multi_select_values = [];
+                        foreach ( $value as $value_key ){
+                            if ( !empty( $value_key ) && isset( $field_settings[$key]["default"][$value_key] ) ){
+                                $multi_select_values[] = $value_key;
+                            }
                         }
+                        $fields[$key] = $multi_select_values;
                     }
-                    $fields[$key] = $multi_select_values;
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'boolean' ) {
                     $fields[$key] = $value[0] === "1";
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
