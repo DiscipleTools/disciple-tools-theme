@@ -442,7 +442,7 @@ jQuery(document).ready(function($) {
       const reactionValue = `reaction_${alias}`
       emojis += `
       <button class="add-reaction" type="submit" name="reaction" value="${reactionValue}">
-        <img class="emoji" alt="${reaction.name}" src="${reaction.path}">
+        <img class="emoji" alt="${window.lodash.escape(reaction.name)}" src="${window.lodash.escape(reaction.path)}">
       </button>
       `
     })
