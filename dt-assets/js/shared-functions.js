@@ -184,7 +184,11 @@ window.API = {
   request_record_access: (post_type, postId, userId) =>
     makeRequestOnPosts("POST", `${post_type}/${postId}/request_record_access`, {
       user_id: userId,
-    })
+    }),
+
+  advanced_search: (search_query) => makeRequest("GET", `search`, {
+    query: search_query
+  }, 'dt-search/v1/')
 };
 
 function handleAjaxError(err) {
