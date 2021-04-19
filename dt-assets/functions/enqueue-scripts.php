@@ -100,7 +100,7 @@ function dt_site_scripts() {
 
     $post_type = get_post_type();
     $url_path = dt_get_url_path();
-    $post_type = $post_type ?: dt_get_post_type();
+    $post_type = $post_type ?: $url_path;
 
     dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash', 'moment', 'datepicker' ) );
     wp_localize_script(
@@ -293,9 +293,10 @@ function dt_site_scripts() {
         );
     }
 
-
     //list page
-    if ( in_array( $post_type, $post_types ) ){
+    if ( in_array( $url_path, $post_types ) ){
+        $post_type = $url_path;
+
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $translations = [
             'save' => __( 'Save', 'disciple_tools' ),
