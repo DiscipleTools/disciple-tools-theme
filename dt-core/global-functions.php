@@ -393,7 +393,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         $active_color = $fields[$field_key]["default"][ $current_key ]["color"];
                     }
                 }
-                if ( isset( $post[$field_key] ) && $is_private ) {
+                if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] )) {
                     $post[$field_key]["key"] = array_slice( $post[$field_key], -1 )[0]['value'];
                 }
                 ?>
@@ -443,7 +443,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php } ?>
             <?php elseif ( $field_type === "text" ) :?>
                 <?php
-                if ( isset( $post[$field_key] ) && $is_private ) {
+                if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] )) {
                     $post[$field_key] = array_slice( $post[$field_key], -1 )[0]['value'];
                 }
                 ?>
@@ -452,7 +452,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                        value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
             <?php elseif ( $field_type === "textarea" ) :?>
                 <?php
-                if ( isset( $post[$field_key] ) && $is_private ) {
+                if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] ) ) {
                     $post[$field_key] = array_slice( $post[$field_key], -1 )[0]['value'];
                 }
                 ?>
@@ -460,7 +460,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                        class="textarea dt_textarea"><?php echo esc_html( $post[$field_key] ?? "" ) ?></textarea>
             <?php elseif ( $field_type === "number" ) :?>
                 <?php
-                if ( isset( $post[$field_key] ) && $is_private ) {
+                if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] )) {
                     $post[$field_key] = array_slice( $post[$field_key], -1 )[0]['value'];
                 }
                 ?>
@@ -469,8 +469,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                        value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
             <?php elseif ( $field_type === "date" ) :?>
                 <?php
-                if ( isset( $post[$field_key] ) && $is_private ) {
-                    $post[$field_key] = array_slice( $post[$field_key], -1 )[0]['value'];
+                if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] )) {
+                    $timestamp = array_slice( $post[$field_key], -1 )[0]['value'];
+                    $formatted_date = dt_format_date( $timestamp );
+
+                    $post[$field_key]['timestamp'] = $timestamp;
+                    $post[$field_key]['formatted'] = $formatted_date;
                 }
                 ?>
                 <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
