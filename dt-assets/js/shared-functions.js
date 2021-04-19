@@ -514,6 +514,10 @@ window.SHAREDFUNCTIONS = {
     }
     document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
   },
+  uriEncodeFilter(field, id, name) {
+    const filterLabel = { field, id, name }
+    return encodeURI(JSON.stringify(filterLabel))
+  },
   formatDate(date, with_time = false) {
     let langcode = document.querySelector("html").getAttribute("lang")
       ? document.querySelector("html").getAttribute("lang").replace("_", "-")
