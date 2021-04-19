@@ -964,9 +964,11 @@ Please click the following link to confirm the invite:
      */
     public function dt_edit_user_row_actions( $actions, $user ){
         $contact_id = self::get_contact_for_user( $user->ID );
-        if ( $contact_id ){
-            $link = get_permalink( $contact_id );
-            $actions["view"] = '<a href="' . $link . '" aria-label="View contact">' . __( "View contact record", 'disciple_tools' ) . '</a>';
+        $link = get_permalink( $contact_id );
+        if ( $contact_id && $link ){
+            $actions["view"] = '<a href="' . $link . '" aria-label="View contact">' . esc_html( __( "View contact record", 'disciple_tools' ) ) . '</a>';
+        } else {
+            unset( $actions["view"] );
         }
         return $actions;
     }
