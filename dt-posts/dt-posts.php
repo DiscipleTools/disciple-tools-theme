@@ -144,7 +144,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $location_meta[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
-            if ( $field_type === "post_user_meta" ){
+            if ( $field_type === "task" ){
                 $post_user_meta[$field_key] = $field_value;
                 unset( $fields[ $field_key ] );
             }
