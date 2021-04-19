@@ -294,8 +294,8 @@ function dt_site_scripts() {
     }
 
     //list page
-    if ( in_array( $url_path, $post_types ) ){
-        $post_type = $url_path;
+    if ( !get_post_type() && in_array( dt_get_post_type(), $post_types ) ){
+        $post_type = dt_get_post_type();
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $translations = [
