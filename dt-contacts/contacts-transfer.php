@@ -289,8 +289,6 @@ class Disciple_Tools_Contacts_Transfer
      * @return array|WP_Error
      */
     public static function receive_transferred_contact( $params ) {
-        dt_write_log( __METHOD__ );
-
         // set variables
         $contact_data = $params['contact_data'];
         $post_args = $contact_data['post'];
@@ -461,11 +459,7 @@ class Disciple_Tools_Contacts_Transfer
                     'error' => $result->get_error_message(),
                 ];
             } else {
-                return [
-                    'status' => 'OK',
-                    'error' => $result['errors'],
-                    'created_id' => $result['created_id'],
-                ];
+                return $result;
             }
         } else {
             return [
@@ -531,11 +525,7 @@ class Disciple_Tools_Contacts_Transfer
                     'error' => $result->get_error_message(),
                 ];
             } else {
-                return [
-                    'status' => 'OK',
-                    'error' => $result['errors'],
-                    'created_id' => $result['created_id'],
-                ];
+                return $result;
             }
         } else {
             return [
