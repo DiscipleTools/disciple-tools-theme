@@ -785,7 +785,12 @@ jQuery(document).ready(function($) {
           onCancel: function (node, item) {
             API.update_post(post_type, post_id, {'tags': {values: [{value: item.name, delete: true}]}})
           }
-        }
+        },
+        href: function (item) {
+          const postType = window.wpApiShare.post_type
+          const encodedFilterLabel = window.SHAREDFUNCTIONS.uriEncodeFilter('tags', item.name, `Tags: ${item.name}`)
+          return window.wpApiShare.site_url + `/${postType}?fieldQuery=${encodedFilterLabel}`
+        },
       },
       callback: {
         onClick: function (node, a, item, event) {
