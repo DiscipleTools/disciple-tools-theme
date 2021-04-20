@@ -877,6 +877,25 @@ class DT_Posts extends Disciple_Tools_Posts {
         return wp_delete_comment( $comment_id );
     }
 
+    public static function toggle_post_comment_reaction( string $post_type, int $post_id, int $comment_id, int $user_id, string $reaction)
+    {
+        if ( !self::can_update( $post_type, $post_id ) ) {
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
+        }
+        // If the reaction exists for this user, then delete it
+        $reactions = get_comment_meta($comment_id, $reaction);
+        foreach ($reactions as $reaction_user_id) {
+            if ($reaction_user_id == $user_id) {
+                delete_comment_meta($comment_id, $reaction, $reaction_user_id);
+                return true;
+            }
+        }
+
+        // otherwise add it.
+        add_comment_meta($comment_id, $reaction, $user_id);
+        return $reactions;
+    }
+
     /**
      * Get post comments
      *
@@ -889,6 +908,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|int|WP_Error
      */
     public static function get_post_comments( string $post_type, int $post_id, bool $check_permissions = true, string $type = "all", array $args = [] ) {
+        global $wpdb;
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read post", [ 'status' => 403 ] );
         }
@@ -903,6 +923,38 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $comments = get_comments( $comments_query );
 
+        // add in getting the meta data for the comments JOINed with the user table to get
+        // the username
+        $comments_meta = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                m.comment_id, m.meta_key, u.display_name, u.ID
+            FROM
+                `$wpdb->comments` AS c
+            JOIN
+                `$wpdb->commentmeta` AS m
+            ON c.comment_ID = m.comment_id
+            JOIN
+                `$wpdb->users` AS u
+            ON m.meta_value = u.ID
+            WHERE
+                c.comment_post_ID = %s
+                AND m.meta_key LIKE 'reaction%'",
+            $post_id
+        ) );
+
+        $comments_meta_dict = [];
+        foreach ($comments_meta as $meta) {
+            if (!array_key_exists($meta->comment_id, $comments_meta_dict)) {
+                $comments_meta_dict[$meta->comment_id] = [];
+            }
+            if (!array_key_exists($meta->meta_key, $comments_meta_dict[$meta->comment_id])) {
+                $comments_meta_dict[$meta->comment_id][$meta->meta_key] = [];
+            }
+            $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
+                'name' => $meta->display_name,
+                'user_id' => $meta->ID,
+            ];
+        }
 
         $response_body = [];
         foreach ( $comments as $comment ){
@@ -921,7 +973,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "comment_content" => $comment->comment_content,
                 "user_id" => $comment->user_id,
                 "comment_type" => $comment->comment_type,
-                "comment_post_ID" => $comment->comment_post_ID
+                "comment_post_ID" => $comment->comment_post_ID,
+                "comment_reactions" => array_key_exists($comment->comment_ID, $comments_meta_dict) ? $comments_meta_dict[$comment->comment_ID] :  [],
             ];
             $response_body[] = $c;
         }
@@ -1341,6 +1394,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                                     }
                                 }
                                 $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
+                                foreach ( $fields[$key]["default"] as $option_key => $option_value ){
+                                    if ( !isset( $option_value["label"] ) ){
+                                        //fields without a label are not valid
+                                        unset( $fields[$key]["default"][$option_key] );
+                                    }
+                                }
                             }
                         }
                         foreach ( $langs as $lang => $val ) {
@@ -1354,7 +1413,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                         if ( isset( $field["order"] ) ) {
                             $with_order = [];
                             foreach ( $field["order"] as $ordered_key ) {
-                                $with_order[ $ordered_key ] = [];
+                                if ( isset( $fields[$key]["default"][$ordered_key] ) ){
+                                    $with_order[ $ordered_key ] = [];
+                                }
                             }
                             foreach ( $fields[ $key ]["default"] as $option_key => $option_value ) {
                                 $with_order[ $option_key ] = $option_value;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 dt_please_log_in();
 
 ( function () {
-    $post_type = dt_get_url_path();
+    $post_type = dt_get_post_type();
     if ( !current_user_can( 'access_' . $post_type ) ) {
         wp_safe_redirect( '/settings' );
         exit();
