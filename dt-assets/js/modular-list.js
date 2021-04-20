@@ -18,6 +18,7 @@
   let fields_to_search = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_search', [] );
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
+  let clearSearchButton = $('.search-input__clear-button')
 
   let items = []
   try {
@@ -1173,16 +1174,23 @@
 
   });
 
-  $('.search-input').on('keyup', function (e) {
+  $('.search-input--desktop').on('keyup', function (e) {
+    clearSearchButton.css({'display': this.value.length ? 'flex' : 'none'})
     if ( e.keyCode === 13 ){
       $("#search").trigger("click")
     }
   })
 
-  $('.search-input-mobile').on('keyup', function (e) {
+  $('.search-input--mobile').on('keyup', function (e) {
+    clearSearchButton.css({'display': this.value.length ? 'flex' : 'none'})
     if ( e.keyCode === 13 ){
       $("#search-mobile").trigger("click")
     }
+  })
+
+  clearSearchButton.on('click', function () {
+    $('.search-input').val('')
+    clearSearchButton.css({'display': 'none'})
   })
 
   //toggle show search input on mobile
