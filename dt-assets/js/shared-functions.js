@@ -516,7 +516,7 @@ window.SHAREDFUNCTIONS = {
   },
   uriEncodeFilter(field, id, name) {
     const filterLabel = { field, id, name }
-    return encodeURI(JSON.stringify(filterLabel))
+    return encodeURIComponent(JSON.stringify(filterLabel))
   },
   formatDate(date, with_time = false) {
     let langcode = document.querySelector("html").getAttribute("lang")
