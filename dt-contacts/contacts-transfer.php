@@ -317,8 +317,9 @@ class Disciple_Tools_Contacts_Transfer
         $post_args['meta_input'] = $meta_input;
 
         // update user elements
-        $post_args['post_author'] = dt_get_base_user( true );
-        $post_args['meta_input']['assigned_to'] = "user-" . dt_get_base_user( true );
+        $base_user = dt_get_base_user( false );
+        $post_args['post_author'] = $base_user->ID;
+        $post_args['meta_input']['assigned_to'] = "user-" . $base_user->ID;
         $post_args['meta_input']['overall_status'] = "unassigned";
         $post_args['meta_input']['sources'] = "transfer";
 
@@ -377,13 +378,11 @@ class Disciple_Tools_Contacts_Transfer
         }
 
         // Add transfer record comment
-        $transfer_comment = wp_insert_comment([
-                'user_id' => 0,
-                'comment_post_ID' => $post_id,
-                'comment_author' => __( 'Transfer Bot', 'disciple_tools' ),
-                'comment_approved' => 1,
-                'comment_content' => __( 'Contact transferred from site', 'disciple_tools' ) . ' "' . esc_html( get_the_title( $site_link_post_id ) ) . '"',
-        ]);
+        $comment = '@[' . $base_user->display_name . '](' . $base_user->ID . '), ' . __( 'Contact transferred from site', 'disciple_tools' ) . ' "' . esc_html( get_the_title( $site_link_post_id ) ) . '"';
+        $transfer_comment = DT_Posts::add_post_comment( 'contacts', $post_id, $comment, 'comment', [
+            "user_id" => 0,
+            'comment_author' => __( 'Transfer Bot', 'disciple_tools' ),
+        ], false );
         if ( is_wp_error( $transfer_comment ) ) {
             $errors->add( 'comment_insert_fail', 'Comment insert fail for transfer notation.' );
         }
