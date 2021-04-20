@@ -1394,6 +1394,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                                     }
                                 }
                                 $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
+                                foreach ( $fields[$key]["default"] as $option_key => $option_value ){
+                                    if ( !isset( $option_value["label"] ) ){
+                                        //fields without a label are not valid
+                                        unset( $fields[$key]["default"][$option_key] );
+                                    }
+                                }
                             }
                         }
                         foreach ( $langs as $lang => $val ) {
@@ -1407,7 +1413,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                         if ( isset( $field["order"] ) ) {
                             $with_order = [];
                             foreach ( $field["order"] as $ordered_key ) {
-                                $with_order[ $ordered_key ] = [];
+                                if ( isset( $fields[$key]["default"][$ordered_key] ) ){
+                                    $with_order[ $ordered_key ] = [];
+                                }
                             }
                             foreach ( $fields[ $key ]["default"] as $option_key => $option_value ) {
                                 $with_order[ $option_key ] = $option_value;
