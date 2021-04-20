@@ -197,9 +197,18 @@ function dt_site_scripts() {
                         "delete" => strtolower( __( "Delete", "disciple_tools" ) ),
                         "translate" => __( "Translate with Google Translate", "disciple_tools" ),
                         "hide_translation" => __( "Hide Translation", "disciple_tools" ),
+                        "reaction_title_1" => _x( '%1$s reacted with %2$s emoji', 'Bob reacted with heart emoji', 'disciple_tools' ),
+                        "reaction_title_many" => _x( '%3$s and %1$s reacted with %2$s emoji', 'Bob, Bill and Ben reacted with heart emoji', 'disciple_tools' ),
                     ],
                     'current_user_id' => get_current_user_id(),
                     'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
+                    /**
+                     * Reaction aliases must be lowercase with no spaces.
+                     * The emoji takes precedence if a path to an image is also given.
+                     *
+                     * Returned assosciative array must be of the form [ 'reaction_alias' => [ 'name' => 'reaction_translateable_name', 'path' => 'optional_path_to_reaction_image', 'emoji' => 'copy_and_pasted_text_emoji' ], ... ]
+                     */
+                    'reaction_options' => apply_filters( 'dt_comments_reaction_options', dt_get_site_custom_lists( 'comment_reaction_options' ) ),
                     'comments' => DT_Posts::get_post_comments( $post_type, $post["ID"] ),
                     'activity' => DT_Posts::get_post_activity( $post_type, $post["ID"] ),
                     'google_translate_key' => get_option( 'dt_googletranslate_api_key' ),
