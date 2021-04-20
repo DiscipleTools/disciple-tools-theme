@@ -137,7 +137,7 @@ class Disciple_Tools_Contacts_Transfer
                 </div>
 
                 <div class="cell" id="transfer_button_div" style="display:none;">
-                    <button id="transfer_confirm_button" class="button" type="button"><?php esc_html_e( 'Confirm Transfer', 'disciple_tools' ) ?></button> <span id="transfer_spinner"></span>
+                    <button id="transfer_confirm_button" class="button loader" type="button"><?php esc_html_e( 'Confirm Transfer', 'disciple_tools' ) ?></button> <span id="transfer_spinner"></span>
                 </div>
             </div>
 
