@@ -261,14 +261,44 @@ nav.second-bar {
 
 .search-input {
     margin-right: 0;
+    max-width: 200px;
+    display: inline-block;
+}
+
+.search-input__clear-button {
+    color: #3f729b;
+    font-weight: bold;
+    border: 1px solid #cacaca;
+    border-left: unset;
+    padding: 0 0.5rem;
+    display: none;
+    cursor: pointer;
+    align-items: center;
+}
+
+.search-wrapper {
+    display: inline-flex;
+    max-height: 30px;
+    transform: translateY(1px);
+}
+
+.text-input-wrapper {
+    display: inline-flex;
+    width: 200px;    
+
+    input {
+        padding: 0;
+        margin: 0 !important;
+        font: inherit;
+        height: 100%;
+    }
 }
 
 nav.second-bar .advanced_search {
     border: 1px solid #cacaca;
     border-inline-start: 0;
-    height: 2em;
     padding: 0.15em 0.5em;
-    transform: translateX(-10px);
+    transform: translateX(-5px);
     display: inline-block;
     position: relative;
 }
