@@ -113,10 +113,8 @@
     const url = new URL(window.location)
 
     let filters = []
-    let filterName
     try {
       filters = get_encoded_query_param_filters(url)
-      filterName = url.searchParams.get('filterName')
     } catch (error) {
       // the uri is corrupted
     }
@@ -127,7 +125,7 @@
     /* Creating object the same shape as cached_filter */
     let query_custom_filter = {
       ID: Date.now() / 1000,
-      name: filterName || 'Custom Filter',
+      name: 'Custom Filter',
       type: 'custom_filter',
       labels: [],
       query: {},
@@ -149,7 +147,7 @@
   }
 
   function get_encoded_query_param_filters(url) {
-    const filters = url.searchParams.getAll('filterLabel')
+    const filters = url.searchParams.getAll('fieldQuery')
     return filters.map((filter) =>JSON.parse(decodeURI(filter)))
   }
 
