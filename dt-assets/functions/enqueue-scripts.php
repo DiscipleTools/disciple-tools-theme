@@ -100,7 +100,7 @@ function dt_site_scripts() {
 
     $post_type = get_post_type();
     $url_path = dt_get_url_path();
-    $post_type = $post_type ?: $url_path;
+    $post_type = $post_type ?: dt_get_post_type();
 
     dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash', 'moment', 'datepicker' ) );
     wp_localize_script(
@@ -294,8 +294,7 @@ function dt_site_scripts() {
     }
 
     //list page
-    if ( !get_post_type() && in_array( dt_get_post_type(), $post_types ) ){
-        $post_type = dt_get_post_type();
+    if ( !get_post_type() && in_array( $post_type, $post_types ) ){
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $translations = [
@@ -328,7 +327,6 @@ function dt_site_scripts() {
     }
 
     if ( strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types ) ){
-        $post_type = str_replace( "/new", "", $url_path );
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){
@@ -352,8 +350,7 @@ add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );
 function dt_template_scripts( $slug, $name, $templates, $args ) {
 
     $post_type = get_post_type();
-    $url_path  = dt_get_url_path();
-    $post_type = $post_type ?: $url_path;
+    $post_type = $post_type ?: dt_get_post_type();
 
     // 403
     if ( isset( $slug ) && ( $slug === '403' ) ) {
