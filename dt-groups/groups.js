@@ -78,12 +78,17 @@ jQuery(document).ready(function($) {
       const contactStatusHTML = ( member.data && member.data.overall_status ) 
         ? `<i class="fi-torso small" style="color: ${member.data.overall_status.color}" title="${member.data.overall_status.label}"></i>`
         : '<i class="fi-torso small"></i>'
-      console.log(member)
+      const milestonesHTML = member.data.milestones.reduce((htmlString, milestone) => {
+        return milestone.image
+          ? htmlString + `<img src="${milestone.image}" alt="${milestone.label}" title="${milestone.label}" class="dt-icon">`
+          : ''
+      }, '')
       let memberHTML = `<div class="member-row" style="" data-id="${window.lodash.escape( member.ID )}">
           <div style="flex-grow: 1" class="member-status">
               ${contactStatusHTML}
               <a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape( member.ID )}">${window.lodash.escape(member.post_title)}</a>
               ${leaderHTML}
+              ${milestonesHTML}
           </div>
           <button class="button clear make-leader member-row-actions" data-id="${window.lodash.escape( member.ID )}">
             <i class="fi-foot small"></i>

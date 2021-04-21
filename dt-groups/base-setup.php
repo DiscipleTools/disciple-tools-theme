@@ -933,6 +933,7 @@ class DT_Groups_Base extends DT_Module_Base {
         // for each member
         $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
         $overall_status_settings = $field_settings["overall_status"]["default"];
+        $milestone_settings = $field_settings["milestones"]["default"];
 
         $defaults = [
             'baptized',
@@ -979,12 +980,12 @@ class DT_Groups_Base extends DT_Module_Base {
             ];
             foreach ($member_data as $meta) {
                 if ( $meta->meta_key === 'milestones' && in_array( $meta->meta_value, $default_milestone_keys, true ) ) {
-                    $data["milestones"][] = str_replace( 'milestone_', '', $meta->meta_value );
+                    $data["milestones"][] = $milestone_settings[$meta->meta_value];
                 } elseif ( $meta->meta_key === 'overall_status' ) {
                     $data["overall_status"] = $overall_status_settings[$meta->meta_value];
                 }
             }
-            $data["milestones"] = array_unique( $data["milestones"] );
+            $data["milestones"] = array_unique( $data["milestones"], SORT_REGULAR );
             $fields["members"][$key]["data"] = $data;
         }
 

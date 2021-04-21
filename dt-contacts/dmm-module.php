@@ -60,39 +60,48 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "default" => [
                     "milestone_has_bible"     => [
                         "label" => __( 'Has Bible', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "image" => "",
                     ],
                     "milestone_reading_bible" => [
                         "label" => __( 'Reading Bible', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "image" => "",
                     ],
                     "milestone_belief"        => [
                         "label" => __( 'States Belief', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "image" => "",
                     ],
                     "milestone_can_share"     => [
                         "label" => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "image" => "",
                     ],
                     "milestone_sharing"       => [
                         "label" => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "image" => "",
                     ],
                     "milestone_baptized"      => [
                         "label" => __( 'Baptized', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "image" => get_template_directory_uri() . '/dt-assets/images/baptism.svg'
                     ],
                     "milestone_baptizing"     => [
                         "label" => __( 'Baptizing', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "image" => "",
                     ],
                     "milestone_in_group"      => [
                         "label" => __( 'In Church/Group', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "image" => "",
                     ],
                     "milestone_planting"      => [
                         "label" => __( 'Starting Churches', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "image" => "",
                     ],
                 ],
                 "customizable" => "add_only",
