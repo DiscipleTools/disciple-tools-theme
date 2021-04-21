@@ -413,7 +413,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] )) {
                     $new_post_data = array();
                     foreach ( $post[$field_key] as $private_field_value ) {
-                        array_push( $new_post_data, $private_field_value["value"] );
+                        if ( isset( $private_field_value["value"] ) ) {
+                            array_push( $new_post_data, $private_field_value["value"] );
+                        }
                     }
                     $post[$field_key] = $new_post_data;
                 }

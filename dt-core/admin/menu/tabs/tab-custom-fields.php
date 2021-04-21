@@ -249,6 +249,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Default Name", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Custom Name", 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( "Private Field", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Tile", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Description", 'disciple_tools' ) ?></td>
@@ -273,6 +274,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php if ( isset( $defaults[$field_key] ) && !empty( $name ) ) : ?>
                         <button title="submit" class="button" name="delete_custom_label">Remove Label</button>
                         <?php endif; ?>
+                    </td>
+                    <td>
+                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>></input>
                     </td>
                     <td>
                         <button class="button small expand_translations">
@@ -561,6 +565,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
             if ( isset( $post_submission["delete_custom_label"], $custom_field["name"] ) ){
                 unset( $custom_field["name"] );
+            }
+            //field privacy
+            if ( isset( $post_submission["field_private"] ) && $post_submission["field_private"] ) {
+                $custom_field["private"] = true;
+            } else if ( !isset( $post_submission["field_private"] ) || !$post_submission["field_private"] ) {
+                $custom_field["private"] = false;
             }
             if ( isset( $post_submission["field_description"] ) && $post_submission["field_description"] != ( $custom_field["description"] ?? "" ) ){
                 $custom_field["description"] = $post_submission["field_description"];

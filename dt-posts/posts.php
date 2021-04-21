@@ -1336,7 +1336,7 @@ class Disciple_Tools_Posts
                 foreach ( $field["values"] as $value ){
                     if ( isset( $value["value"] )){
                         if ( isset( $value["delete"] ) && $value["delete"] == true ){
-                            if ( isset( $field_settings[$field_key]['private'] ) && isset( $field_settings[ $field_key ] ) ) {
+                            if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
                                 if ( !$current_user_id ){
                                     return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
                                 }
@@ -1359,7 +1359,7 @@ class Disciple_Tools_Posts
                             $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
 
                             if ( !in_array( $value["value"], $existing_array ) ){
-                                if ( isset( $field_settings[$field_key]['private'] ) && isset( $field_settings[ $field_key ] ) ) {
+                                if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
                                     if ( !$current_user_id ){
                                         return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
                                     }
@@ -1674,7 +1674,7 @@ class Disciple_Tools_Posts
                 }
             }
 
-            if ( isset( $field_settings[$field_key]['private'] ) && isset( $field_settings[ $field_key ] ) && ( $field_settings[ $field_key ]["type"] === "text" || $field_settings[ $field_key ]["type"] === "textarea" || $field_settings[ $field_key ]["type"] === "date" || $field_settings[ $field_key ]["type"] === "key_select" || $field_settings[ $field_key ]["type"] === "boolean" ) ) {
+            if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && ( $field_settings[ $field_key ]["type"] === "text" || $field_settings[ $field_key ]["type"] === "textarea" || $field_settings[ $field_key ]["type"] === "date" || $field_settings[ $field_key ]["type"] === "key_select" || $field_settings[ $field_key ]["type"] === "boolean" ) ) {
                 $field_value = $fields[$field_key];
 
                 $current_user_id = get_current_user_id();
