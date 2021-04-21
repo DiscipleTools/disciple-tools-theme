@@ -406,6 +406,8 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
     public static function get_post( string $post_type, int $post_id, bool $use_cache = true, bool $check_permissions = true, bool $silent = false ){
+        global $wpdb;
+
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read $post_type with ID $post_id", [ 'status' => 403 ] );
         }
@@ -445,15 +447,35 @@ class DT_Posts extends Disciple_Tools_Posts {
         $author = get_user_by( "ID", $wp_post->post_author );
         $fields["post_author_display_name"] = $author ? $author->display_name : "";
 
+        // self::get_all_private_fields( $field_settings, $post_id, $fields );
 
-        self::adjust_post_custom_fields( $post_type, $post_id, $fields );
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $all_user_meta = $wpdb->get_results( $wpdb->prepare( "
+            SELECT *
+            FROM $wpdb->dt_post_user_meta um
+            WHERE um.post_id = %s
+            AND user_id = %s
+        ", $post_id, $current_user_id ), ARRAY_A);
+        // phpcs:disable
+
+
+        $all_post_user_meta =[];
+        foreach ( $all_user_meta as $index => $meta_row ){
+            if ( !isset( $all_post_user_meta[$meta_row["post_id"]] ) ) {
+                $all_post_user_meta[$meta_row["post_id"]] = [];
+            }
+            $all_post_user_meta[$meta_row["post_id"]][] = $meta_row;
+        }
+
+        self::adjust_post_custom_fields( $post_type, $post_id, $fields, [], NULL, $all_post_user_meta[$post_id] ?? null );
         $fields["name"] = wp_specialchars_decode( $wp_post->post_title );
         $fields["title"] = wp_specialchars_decode( $wp_post->post_title );
 
         $fields = apply_filters( 'dt_after_get_post_fields_filter', $fields, $post_type );
         wp_cache_set( "post_" . $current_user_id . '_' . $post_id, $fields );
-        return $fields;
 
+        return $fields;
     }
 
 
