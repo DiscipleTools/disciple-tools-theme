@@ -75,10 +75,13 @@ jQuery(document).ready(function($) {
       if( member.leader ){
         leaderHTML = `<i class="fi-foot small leader"></i>`
       }
+      const contactStatusHTML = ( member.data && member.data.overall_status ) 
+        ? `<i class="fi-torso small" style="color: ${member.data.overall_status.color}" title="${member.data.overall_status.label}"></i>`
+        : '<i class="fi-torso small"></i>'
       console.log(member)
       let memberHTML = `<div class="member-row" style="" data-id="${window.lodash.escape( member.ID )}">
           <div style="flex-grow: 1" class="member-status">
-              <i class="fi-torso small"></i>
+              ${contactStatusHTML}
               <a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape( member.ID )}">${window.lodash.escape(member.post_title)}</a>
               ${leaderHTML}
           </div>
