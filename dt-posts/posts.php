@@ -1321,6 +1321,9 @@ class Disciple_Tools_Posts
     }
 
     public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, array $existing_contact = null ){
+        global $wpdb;
+        $current_user_id = get_current_user_id();
+
         foreach ( $fields as $field_key => $field ){
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "multi_select" ) ){
                 if ( !isset( $field["values"] )){
@@ -1333,11 +1336,47 @@ class Disciple_Tools_Posts
                 foreach ( $field["values"] as $value ){
                     if ( isset( $value["value"] )){
                         if ( isset( $value["delete"] ) && $value["delete"] == true ){
-                            delete_post_meta( $post_id, $field_key, $value["value"] );
+                            if ( isset( $field_settings[$field_key]['private'] ) && isset( $field_settings[ $field_key ] ) ) {
+                                if ( !$current_user_id ){
+                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
+                                }
+
+                                //delete user meta
+                                $delete = $wpdb->query( $wpdb->prepare( "
+                                DELETE FROM $wpdb->dt_post_user_meta
+                                WHERE user_id = %s
+                                    AND post_id = %s
+                                    AND meta_key =  %s
+                                    AND meta_value = %s",$current_user_id, $post_id, $field_key, $value['value'] ) );
+                                if ( !$delete ){
+                                    return new WP_Error( __FUNCTION__, "Something wrong deleting post user meta on field: " . $field_key, [ 'status' => 500 ] );
+                                }
+                            } else {
+                                delete_post_meta( $post_id, $field_key, $value["value"] );
+                            }
                         } else {
+                            //save private multiselect fields to the dt_post_user_meta table
                             $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
+
                             if ( !in_array( $value["value"], $existing_array ) ){
-                                add_post_meta( $post_id, $field_key, $value["value"] );
+                                if ( isset( $field_settings[$field_key]['private'] ) && isset( $field_settings[ $field_key ] ) ) {
+                                    if ( !$current_user_id ){
+                                        return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
+                                    }
+                                    $insert = [];
+                                    $insert = $wpdb->insert(        $wpdb->dt_post_user_meta, [
+                                        "user_id"  => $current_user_id,
+                                        "post_id"  => $post_id,
+                                        "meta_key" => $field_key,
+                                        "meta_value" => $value['value']
+                                        ]
+                                    );
+                                    if ( !$insert ) {
+                                        return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
+                                    }
+                                } else {
+                                    add_post_meta( $post_id, $field_key, $value["value"] );
+                                }
                             }
                         }
                     } else {
