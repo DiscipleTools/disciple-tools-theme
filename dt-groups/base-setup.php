@@ -924,7 +924,10 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     // add members meta to post details
-    public function dt_after_get_post_fields_filter( $fields, $post_type ) {
+    public function dt_after_get_post_fields_filter( $fields, $details_post_type ) {
+        if ( $details_post_type !== $this->post_type ) {
+            return $fields;
+        }
         global $wpdb;
         // loop through the members array, and get the overall_status and milestones meta data
         // for each member
@@ -938,26 +941,45 @@ class DT_Groups_Base extends DT_Module_Base {
             return "milestone_$milestone";
         }, $default_milestones);
 
+        $members_post_ids = [];
+        foreach ($fields["members"] as $member) {
+            $member_id = $member['ID'];
+            $members_post_ids[] = "post_id = $member_id";
+        }
+        $members_or_string = implode( ' OR ', $members_post_ids );
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+        SELECT *
+        FROM $wpdb->postmeta AS pm
+        WHERE
+            ( %1s )
+            AND
+            (
+                meta_key = 'milestones'
+                OR meta_key = 'overall_status'
+            )
+        ORDER BY pm.post_id ASC
+        ", $members_or_string ) );
+
+        $results_by_post_id = [];
+        foreach ($results as $result) {
+            if ( !key_exists( $result->post_id, $results_by_post_id ) ) {
+                $results_by_post_id[$result->post_id] = [];
+            }
+            $results_by_post_id[$result->post_id][] = $result;
+        }
+
         foreach ($fields["members"] as $key => $member) {
-            $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT *
-            FROM $wpdb->postmeta
-            WHERE
-                post_id = %s
-                AND
-                (
-                    meta_key = 'milestones'
-                    OR meta_key = 'overall_status'
-                )
-            ", $member["ID"] ));
+            $member_id = $member["ID"];
+            $member_data = key_exists( $member_id, $results_by_post_id ) ? $results_by_post_id[$member_id] : [];
             $data = [
                 "milestones" => [],
             ];
-            foreach ($results as $result) {
-                if ( $result->meta_key === 'milestones' && in_array( $result->meta_value, $default_milestone_keys, true ) ) {
-                    $data["milestones"][] = str_replace( 'milestone_', '', $result->meta_value );
+            foreach ($member_data as $meta) {
+                if ( $meta->meta_key === 'milestones' && in_array( $meta->meta_value, $default_milestone_keys, true ) ) {
+                    $data["milestones"][] = str_replace( 'milestone_', '', $meta->meta_value );
                 } else {
-                    $data["overall_status"] = $result->meta_value;
+                    $data["overall_status"] = $meta->meta_value;
                 }
             }
             $data["milestones"] = array_unique( $data["milestones"] );
