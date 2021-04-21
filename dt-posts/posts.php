@@ -1357,26 +1357,23 @@ class Disciple_Tools_Posts
                         } else {
                             //save private multiselect fields to the dt_post_user_meta table
                             $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
-
-                            if ( !in_array( $value["value"], $existing_array ) ){
-                                if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
-                                    if ( !$current_user_id ){
-                                        return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
-                                    }
-                                    $insert = [];
-                                    $insert = $wpdb->insert(        $wpdb->dt_post_user_meta, [
-                                        "user_id"  => $current_user_id,
-                                        "post_id"  => $post_id,
-                                        "meta_key" => $field_key,
-                                        "meta_value" => $value['value']
-                                        ]
-                                    );
-                                    if ( !$insert ) {
-                                        return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
-                                    }
-                                } else {
-                                    add_post_meta( $post_id, $field_key, $value["value"] );
+                            if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
+                                if ( !$current_user_id ){
+                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
                                 }
+                                $insert = [];
+                                $insert = $wpdb->insert(        $wpdb->dt_post_user_meta, [
+                                    "user_id"  => $current_user_id,
+                                    "post_id"  => $post_id,
+                                    "meta_key" => $field_key,
+                                    "meta_value" => $value['value']
+                                    ]
+                                );
+                                if ( !$insert ) {
+                                    return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
+                                }
+                            } else if ( !in_array( $value["value"], $existing_array ) ){
+                                    add_post_meta( $post_id, $field_key, $value["value"] );
                             }
                         }
                     } else {
