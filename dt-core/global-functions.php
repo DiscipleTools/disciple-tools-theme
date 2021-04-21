@@ -410,6 +410,13 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <?php endforeach; ?>
                 </select>
             <?php elseif ( $field_type === "multi_select" ) :
+                if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] )) {
+                    $new_post_data = array();
+                    foreach ( $post[$field_key] as $private_field_value ) {
+                        array_push( $new_post_data, $private_field_value["value"] );
+                    }
+                    $post[$field_key] = $new_post_data;
+                }
                 if ( isset( $fields[$field_key]["display"] ) && $fields[$field_key]["display"] === "typeahead" ){
                     ?>
                     <div class="multi_select">

@@ -1347,7 +1347,7 @@ class Disciple_Tools_Posts
                                 WHERE user_id = %s
                                     AND post_id = %s
                                     AND meta_key =  %s
-                                    AND meta_value = %s",$current_user_id, $post_id, $field_key, $value['value'] ) );
+                                    AND meta_value = %s", $current_user_id, $post_id, $field_key, $value['value'] ) );
                                 if ( !$delete ){
                                     return new WP_Error( __FUNCTION__, "Something wrong deleting post user meta on field: " . $field_key, [ 'status' => 500 ] );
                                 }
