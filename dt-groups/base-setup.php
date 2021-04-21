@@ -925,7 +925,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
     // add members meta to post details
     public function dt_after_get_post_fields_filter( $fields, $details_post_type ) {
-        if ( $details_post_type !== $this->post_type ) {
+        if ( $details_post_type !== $this->post_type || empty( $fields["members"] ) ) {
             return $fields;
         }
         global $wpdb;
