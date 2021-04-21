@@ -38,6 +38,7 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 10, 2 );
         add_action( "dt_post_created", [ $this, "dt_post_created" ], 10, 3 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
+        add_filter( "dt_after_get_post_fields_filter", [ $this, "dt_after_get_post_fields_filter" ], 10, 2 );
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
@@ -920,6 +921,50 @@ class DT_Groups_Base extends DT_Module_Base {
                 self::check_requires_update( $post_id );
             }
         }
+    }
+
+    // add members meta to post details
+    public function dt_after_get_post_fields_filter( $fields, $post_type ) {
+        global $wpdb;
+        // loop through the members array, and get the overall_status and milestones meta data
+        // for each member
+
+        $defaults = [
+            'baptized',
+        ];
+        $default_milestones = apply_filters( 'dt_members_extra_data', $defaults );
+
+        $default_milestone_keys = array_map( function ( $milestone ) {
+            return "milestone_$milestone";
+        }, $default_milestones);
+
+        foreach ($fields["members"] as $key => $member) {
+            $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT *
+            FROM $wpdb->postmeta
+            WHERE
+                post_id = %s
+                AND
+                (
+                    meta_key = 'milestones'
+                    OR meta_key = 'overall_status'
+                )
+            ", $member["ID"] ));
+            $data = [
+                "milestones" => [],
+            ];
+            foreach ($results as $result) {
+                if ( $result->meta_key === 'milestones' && in_array( $result->meta_value, $default_milestone_keys, true ) ) {
+                    $data["milestones"][] = str_replace( 'milestone_', '', $result->meta_value );
+                } else {
+                    $data["overall_status"] = $result->meta_value;
+                }
+            }
+            $data["milestones"] = array_unique( $data["milestones"] );
+            $fields["members"][$key]["data"] = $data;
+        }
+
+        return $fields;
     }
 
     // filter at the start of post creation

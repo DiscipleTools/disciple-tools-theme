@@ -75,6 +75,7 @@ jQuery(document).ready(function($) {
       if( member.leader ){
         leaderHTML = `<i class="fi-foot small leader"></i>`
       }
+      console.log(member)
       let memberHTML = `<div class="member-row" style="" data-id="${window.lodash.escape( member.ID )}">
           <div style="flex-grow: 1" class="member-status">
               <i class="fi-torso small"></i>
