@@ -61,7 +61,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     "milestone_has_bible"     => [
                         "label" => __( 'Has Bible', 'disciple_tools' ),
                         "description" => '',
-                        "image" => "",
+                        "image" => get_template_directory_uri() . '/dt-assets/images/bible.svg',
                     ],
                     "milestone_reading_bible" => [
                         "label" => __( 'Reading Bible', 'disciple_tools' ),
@@ -86,12 +86,12 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     "milestone_baptized"      => [
                         "label" => __( 'Baptized', 'disciple_tools' ),
                         "description" => '',
-                        "image" => get_template_directory_uri() . '/dt-assets/images/baptism.svg'
+                        "image" => get_template_directory_uri() . '/dt-assets/images/baptism.svg',
                     ],
                     "milestone_baptizing"     => [
                         "label" => __( 'Baptizing', 'disciple_tools' ),
                         "description" => '',
-                        "image" => "",
+                        "image" => get_template_directory_uri() . '/dt-assets/images/child.svg',
                     ],
                     "milestone_in_group"      => [
                         "label" => __( 'In Church/Group', 'disciple_tools' ),

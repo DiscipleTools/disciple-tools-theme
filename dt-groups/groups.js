@@ -80,8 +80,8 @@ jQuery(document).ready(function($) {
         : '<i class="fi-torso small"></i>'
       const milestonesHTML = member.data.milestones.reduce((htmlString, milestone) => {
         return milestone.image
-          ? htmlString + `<img src="${milestone.image}" alt="${milestone.label}" title="${milestone.label}" class="dt-icon">`
-          : ''
+          ? htmlString + `<img class="dt-icon" src="${milestone.image}" alt="${milestone.label}" title="${milestone.label}">`
+          : htmlString
       }, '')
       let memberHTML = `<div class="member-row" style="" data-id="${window.lodash.escape( member.ID )}">
           <div style="flex-grow: 1" class="member-status">

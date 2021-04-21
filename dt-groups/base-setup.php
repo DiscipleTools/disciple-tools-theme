@@ -935,15 +935,17 @@ class DT_Groups_Base extends DT_Module_Base {
         $overall_status_settings = $field_settings["overall_status"]["default"];
         $milestone_settings = $field_settings["milestones"]["default"];
 
-        $defaults = [
+        $defaults_to_display = [
             'baptized',
+            'has_bible',
         ];
-        $default_milestones = apply_filters( 'dt_members_extra_data', $defaults );
+        $default_milestones_to_display = apply_filters( 'dt_members_extra_data', $defaults_to_display );
 
         $default_milestone_keys = array_map( function ( $milestone ) {
             return "milestone_$milestone";
-        }, $default_milestones);
+        }, $default_milestones_to_display);
 
+        // set up the MySQL OR string to get multiple posts at once
         $members_post_ids = [];
         foreach ($fields["members"] as $member) {
             $member_id = $member['ID'];
@@ -964,6 +966,7 @@ class DT_Groups_Base extends DT_Module_Base {
         ORDER BY pm.post_id ASC
         ", $members_or_string ) );
 
+        // order the results by id in a lookup array
         $results_by_post_id = [];
         foreach ($results as $result) {
             if ( !key_exists( $result->post_id, $results_by_post_id ) ) {
@@ -972,6 +975,7 @@ class DT_Groups_Base extends DT_Module_Base {
             $results_by_post_id[$result->post_id][] = $result;
         }
 
+        // pump the member metadata into the members array of the post
         foreach ($fields["members"] as $key => $member) {
             $member_id = $member["ID"];
             $member_data = key_exists( $member_id, $results_by_post_id ) ? $results_by_post_id[$member_id] : [];
@@ -985,7 +989,14 @@ class DT_Groups_Base extends DT_Module_Base {
                     $data["overall_status"] = $overall_status_settings[$meta->meta_value];
                 }
             }
-            $data["milestones"] = array_unique( $data["milestones"], SORT_REGULAR );
+            // uniqueify the milestones array
+            $data["milestones"] = array_reduce( $data["milestones"], function ($array, $milestone ) {
+                if ( !in_array( $milestone, $array, true ) ) {
+                    $array[] = $milestone;
+                    return $array;
+                }
+                return $array;
+            }, []);
             $fields["members"][$key]["data"] = $data;
         }
 
