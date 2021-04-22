@@ -1680,8 +1680,6 @@ class Disciple_Tools_Posts
                 }
 
                 //Find the id if a row exists that has the same user_id same post_id and same meta_key
-                // phpcs:disable
-                // WordPress.WP.PreparedSQL.NotPrepared
                 $all_user_meta = $wpdb->get_results( $wpdb->prepare( "
                 SELECT *
                 FROM $wpdb->dt_post_user_meta um
