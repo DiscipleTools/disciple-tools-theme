@@ -302,7 +302,7 @@ class Disciple_Tools_Notifications
         $user_id = get_current_user_id();
 
         $result = $wpdb->get_results( $wpdb->prepare(
-            "SELECT 
+            "SELECT
                 n.*,
                 p.post_title
              FROM `$wpdb->dt_notifications` AS n
@@ -814,7 +814,7 @@ class Disciple_Tools_Notifications
             $comment = get_comment( $notification["secondary_item_id"] );
             $comment_content = $comment ? self::format_comment( $comment->comment_content ) : "";
             $comment_content = "\r\n\r\n " . $comment_content;
-            $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
+            $display_name = $source_user ? $source_user->display_name : ( $comment->comment_author ?: __( "System", "disciple_tools" ) );
             $notification_note = sprintf( esc_html_x( '%1$s commented on %2$s saying: %3$s', 'User1 commented on contact1 saying: test', 'disciple_tools' ), $display_name, $link, $comment_content );
         } elseif ( $notification["notification_name"] === "subassigned" ){
             $source_user = get_userdata( $notification["source_user_id"] );
