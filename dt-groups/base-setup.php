@@ -990,7 +990,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 }
             }
             // uniqueify the milestones array
-            $data["milestones"] = array_reduce( $data["milestones"], function ($array, $milestone ) {
+            $data["milestones"] = array_reduce( $data["milestones"], function ( $array, $milestone ){
                 if ( !in_array( $milestone, $array, true ) ) {
                     $array[] = $milestone;
                     return $array;
