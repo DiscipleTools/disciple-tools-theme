@@ -81,7 +81,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     "milestone_sharing"       => [
                         "label" => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
                         "description" => '',
-                        "image" => get_template_directory_uri() . "/dt-assets/images/sharing.png",
+                        "image" => get_template_directory_uri() . "/dt-assets/images/connection-people.svg",
                     ],
                     "milestone_baptized"      => [
                         "label" => __( 'Baptized', 'disciple_tools' ),
