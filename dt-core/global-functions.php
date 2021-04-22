@@ -445,8 +445,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                 "selected-select-button" : "empty-select-button"; ?>
                             <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $display_field_id ); ?>"
                                     class="<?php echo esc_html( $field_key ) . '_select' ?> dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                <?php if ( !empty( $option_value["image"] ) ) { ?>
-                                    <img class="dt-icon" src="<?php echo esc_html( $option_value["image"] ) ?>" >
+                                <?php if ( !empty( $option_value["icon"] ) ) { ?>
+                                    <img class="dt-icon" src="<?php echo esc_html( $option_value["icon"] ) ?>" >
                                 <?php } ?>
                                 <?php echo esc_html( $option_value["label"] ) ?>
                             </button>
