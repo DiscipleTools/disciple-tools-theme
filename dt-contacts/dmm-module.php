@@ -99,7 +99,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                         "icon" => get_template_directory_uri() . "/dt-assets/images/group-type.svg",
                     ],
                     "milestone_planting"      => [
-                        "label" => __( 'Starting Churches', 'disciple_tools' ),
+                    "label" => __( 'Starting Churches', 'disciple_tools' ),
                         "description" => '',
                         "icon" => get_template_directory_uri() . "/dt-assets/images/stream.svg",
                     ],
