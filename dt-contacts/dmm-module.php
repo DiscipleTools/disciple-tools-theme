@@ -66,17 +66,17 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     "milestone_reading_bible" => [
                         "label" => __( 'Reading Bible', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/reading.png",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/reading.svg",
                     ],
                     "milestone_belief"        => [
                         "label" => __( 'States Belief', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/speak.png",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/speak.svg",
                     ],
                     "milestone_can_share"     => [
                         "label" => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/can-share.png",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/can-share.svg",
                     ],
                     "milestone_sharing"       => [
                         "label" => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
