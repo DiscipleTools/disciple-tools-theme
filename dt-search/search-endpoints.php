@@ -39,6 +39,10 @@ class DT_Search_Endpoints {
      * @return array|WP_Error
      */
     public function search( WP_REST_Request $request ): array {
-        return DT_Search_Posts::query( urldecode( $request->get_param( 'query' ) ) );
+        $query     = urldecode( $request->get_param( 'query' ) );
+        $post_type = $request->get_param( 'post_type' );
+        $offset    = intval( $request->get_param( 'offset' ) );
+
+        return DT_Search_Posts::query( $query, $post_type, $offset );
     }
 }

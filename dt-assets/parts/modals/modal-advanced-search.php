@@ -35,23 +35,23 @@
                     <div class="advanced-search-modal-results"
                          style="height: 300px; overflow-x: scroll; overflow-y: scroll;"></div>
                 </td>
-                <td style="alignment: right; vertical-align: top;">
-                    <img class="dt-icon"
-                         src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>"
-                         alt="<?php esc_html_e( 'Filter Search Results', 'disciple_tools' ) ?>"/> Filter Types
-                    <br><br>
-                    <ul>
-                        <?php
-                        $search_post_types = DT_Posts::get_post_types();
-                        foreach ( $search_post_types as $search_post_type ) {
-                            $post_settings = DT_Posts::get_post_settings( $search_post_type );
-                            $name          = $post_settings['label_plural'];
-                            if ( ! empty( $name ) ) {
-                                echo '<li>' . esc_html( $name ) . '</li>';
-                            }
+                <td style="min-width: 150px; alignment: right; vertical-align: top;">
+
+                    <input id="all" type="radio" class="advanced-search-modal-post-types"
+                           name="advanced-search-modal-post-types" value="all" checked>
+                    <label style="font-size: 10pt; color: #4a4a4a" for="all">All</label><br>
+
+                    <?php
+                    $search_post_types = DT_Posts::get_post_types();
+                    foreach ( $search_post_types as $search_post_type ) {
+                        $post_settings = DT_Posts::get_post_settings( $search_post_type );
+                        $name          = $post_settings['label_plural'];
+                        if ( ! empty( $name ) && ( $search_post_type !== 'peoplegroups' ) ) {
+                            echo '<input id="' . esc_html( $search_post_type ) . '" type="radio" class="advanced-search-modal-post-types" name="advanced-search-modal-post-types" value="' . esc_html( $search_post_type ) . '"><label style="font-size: 10pt; color: #4a4a4a" for="' . esc_html( $search_post_type ) . '">' . esc_html( $name ) . '</label><br>';
                         }
-                        ?>
-                    </ul>
+                    }
+                    ?>
+
                 </td>
             </tr>
             </tbody>
@@ -66,3 +66,13 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
+
+<style>
+    .advanced-search-modal-results-table tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .advanced-search-modal-results-table tr {
+        cursor: pointer;
+    }
+</style>

@@ -20,34 +20,78 @@ jQuery(document).ready(function ($) {
     execute_search_query();
   })
 
+  $(document).on("click", '.advanced-search-modal-results-table-row-clickable', function (e) {
+    let post_type = e.currentTarget.querySelector("#advanced-search-modal-results-table-row-hidden-post-type").getAttribute("value");
+    let post_id = e.currentTarget.querySelector("#advanced-search-modal-results-table-row-hidden-post-id").getAttribute("value");
+    display_record(post_type, post_id);
+  })
+
+  $(document).on("click", '.advanced-search-modal-post-types', function (e) {
+    // console.log($('input[name=advanced-search-modal-post-types]:checked').val());
+  })
+
+  $(document).on("click", '.advanced-search-modal-results-table-row-section-head-load-more', function (e) {
+    execute_search_query_by_offset(e, $(this));
+  })
+
+  function execute_search_query_by_offset(evt, current_section_head) {
+    let query = $('.advanced-search-modal-form-input').val();
+    let offset = evt.currentTarget.parentNode.parentNode.querySelector("#advanced-search-modal-results-table-row-section-head-hidden-offset").getAttribute("value");
+    let post_type = evt.currentTarget.parentNode.parentNode.querySelector("#advanced-search-modal-results-table-row-section-head-hidden-post-type").getAttribute("value");
+
+    rest_api.advanced_search(encodeURI(query), post_type, offset).then(api_data => {
+      /*
+       * As by offset search is on a per post_type basis, there should
+       * only be a single result element returned.
+       */
+
+      if (api_data && (parseInt(api_data['total_hits']) > 0)) {
+        let results = api_data['hits'];
+
+        // Update global hits count
+        let results_total = $('.advanced-search-modal-results-total');
+        let new_global_hits_count = parseInt(results_total.html()) + parseInt(api_data['total_hits']);
+        results_total.html(new_global_hits_count);
+
+        // Update section offset value
+        evt.currentTarget.parentNode.parentNode.querySelector("#advanced-search-modal-results-table-row-section-head-hidden-offset").setAttribute("value", results[0]['offset']);
+
+        // Insert latest finds...!
+        results[0]['posts'].forEach(function (post) {
+          current_section_head.closest('tr').after(build_result_table_row(post)).next('tr').slideDown('fast');
+        });
+      } else {
+        // Hide more search option when there are no further hits to be returned.
+        evt.currentTarget.style.display = 'none';
+      }
+
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+
   function reset_widgets() {
     $('.advanced-search-modal-form-input').val('');
     $('.advanced-search-modal-results-div').slideUp('fast');
-    $('.advanced-search-modal-results').slideUp('fast').html('');
+    $('.advanced-search-modal-results').html('');
   }
 
   function execute_search_query() {
     let query = $('.advanced-search-modal-form-input').val();
+    let selected_post_type = $('input[name=advanced-search-modal-post-types]:checked').val();
 
     if (query.trim() === "") {
       return;
     }
 
-    $('.advanced-search-modal-results').slideUp('fast', function (data) {
-      $('.advanced-search-modal-results-div').slideDown('fast', function (data) {
-
-        rest_api.advanced_search(encodeURI(query)).then(api_data => {
-          console.log(api_data);
-
-          display_results(api_data, function () {
-            $('.advanced-search-modal-results').slideDown('slow');
-          })
-
-        }).catch(error => {
-          console.log(error);
-
-        });
-
+    // Dispatch search query and display api response accordingly
+    $('.advanced-search-modal-results-div').slideDown('fast', function (data) {
+      rest_api.advanced_search(encodeURI(query), selected_post_type, 0).then(api_data => {
+        display_results(api_data, function () {
+          $('.advanced-search-modal-results').slideDown('fast');
+        })
+      }).catch(error => {
+        console.log(error);
       });
     });
   }
@@ -57,17 +101,24 @@ jQuery(document).ready(function ($) {
     let total_hits = api_data['total_hits'];
     let results_html = "";
 
-    // Update hits count
+    // Update global hits count
     $('.advanced-search-modal-results-total').html(total_hits);
 
     // Iterate through results, displaying accordingly
-    results_html += '<table style="border: none;"><tbody style="border: none;">';
+    results_html += '<table class="advanced-search-modal-results-table" style="border: none;"><tbody style="border: none;">';
     results.forEach(function (result) {
+
+      results_html += '<tr style="background: #f5f5f5;">';
+      results_html += '<td style="text-align: left; vertical-align: bottom;"><a class="advanced-search-modal-results-table-row-section-head-load-more"><img style="display: inline-block;" class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/search.svg" alt="Fetch More"/></a></td>';
+      results_html += '<td style="text-align: right;">';
+      results_html += '<b>' + result['post_type'] + '</b></td>';
+      results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-offset" value="' + result['offset'] + '">';
+      results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-post-type" value="' + result['post_type'] + '">';
+      results_html += '</td>';
+      results_html += '</tr>';
+
       result['posts'].forEach(function (post) {
-        results_html += '<tr>';
-        results_html += '<td style="min-width: 250px;">' + post['post_title'] + '</td>';
-        results_html += '<td><img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/visibility.svg" alt="View Record"/></td>';
-        results_html += '</tr>';
+        results_html += build_result_table_row(post);
       });
     });
     results_html += '</tbody></table>';
@@ -77,6 +128,49 @@ jQuery(document).ready(function ($) {
 
     // Callback
     callback();
+  }
+
+  function build_result_table_row(post) {
+    // Determine hidden values
+    let hidden_post_id = post['ID'];
+    let hidden_post_type = post['post_type'];
+
+    // Determine available hit types
+    let is_post_hit = (post['post_hit'] && (post['post_hit'] === 'Y'));
+    let is_comment_hit = (post['comment_hit'] && (post['comment_hit'] === 'Y'));
+    let is_meta_hit = (post['meta_hit'] && (post['meta_hit'] === 'Y'));
+    let is_default_hit = (!is_post_hit && !is_comment_hit && !is_meta_hit);
+
+    let results_html = '<tr class="advanced-search-modal-results-table-row-clickable">';
+
+    results_html += '<td style="min-width: 250px;"><b>' + post['post_title'] + '</b><br><span style="font-size: 10pt; color: #4a4a4a">';
+
+    if (is_comment_hit) {
+      results_html += (String(post['comment_hit_content']).length > 100) ? String(post['comment_hit_content']).substring(0, 100) + "..." : post['comment_hit_content'];
+    } else if (is_meta_hit) {
+      results_html += post['meta_hit_value'];
+    }
+    results_html += '</span>';
+
+    results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-hidden-post-id" value="' + hidden_post_id + '">';
+    results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-hidden-post-type" value="' + hidden_post_type + '">';
+
+    results_html += '</td>';
+
+    // Determine hit type icon to be displayed
+    results_html += '<td style="min-width: 50px; text-align: right;">';
+    results_html += (is_post_hit || is_default_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
+    results_html += (is_comment_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
+    results_html += (is_meta_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/dots.svg" alt="Meta Hit"/>&nbsp;' : '';
+    results_html += '</td>';
+
+    results_html += '</tr>';
+
+    return results_html;
+  }
+
+  function display_record(post_type, post_id) {
+    window.location = window.wpApiShare.site_url + '/' + post_type + "/" + post_id;
   }
 })
 

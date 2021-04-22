@@ -8,25 +8,33 @@ class DT_Search_Posts extends DT_Posts {
         parent::__construct();
     }
 
-    public static function query( string $query ): array {
-        return self::query_exec( $query );
+    public static function query( $query, $post_type, $offset ): array {
+        return self::query_exec( $query, $post_type, $offset );
     }
 
-    private static function query_exec( string $query ): array {
+    private static function query_exec( $query, $post_type, $offset ): array {
 
         $query_results = array();
         $total_hits    = 0;
 
-        // Search across all post types with access permission
-        $post_types = DT_Posts::get_post_types();
+        // Search across post types based on incoming filter request
+        $post_types = ( $post_type === 'all' ) ? DT_Posts::get_post_types() : [ $post_type ];
 
-        // todo: just for now, as the intention is to have sql search across multiple post types within a single transaction.
         foreach ( $post_types as $post_type ) {
             try {
-                $type_results = self::search_by_post( $post_type, [ 'text' => $query ] );
-                if ( ! empty( $type_results ) && ( intval( $type_results['total'] ) > 0 ) ) {
-                    array_push( $query_results, $type_results );
-                    $total_hits += intval( $type_results['total'] );
+                if ( $post_type !== 'peoplegroups' ) {
+                    $type_results = self::search_by_post( $post_type, [
+                            'text'             => $query,
+                            'offset'           => $offset,
+                            'limit'            => 20,
+                            'sort'             => '',
+                            'fields_to_search' => [ 'all' ]
+                        ]
+                    );
+                    if ( ! empty( $type_results ) && ( intval( $type_results['total'] ) > 0 ) ) {
+                        array_push( $query_results, $type_results );
+                        $total_hits += intval( $type_results['total'] );
+                    }
                 }
             } catch ( Exception $e ) {
                 $e->getMessage();
@@ -62,23 +70,18 @@ class DT_Search_Posts extends DT_Posts {
             unset( $query["text"] );
         }
         $offset = 0;
-        /*
         if ( isset( $query["offset"] ) ) {
             $offset = esc_sql( sanitize_text_field( $query["offset"] ) );
             unset( $query["offset"] );
         }
-        */
         $limit = 100;
-        /*
         if ( isset( $query["limit"] ) ) {
             $limit = esc_sql( sanitize_text_field( $query["limit"] ) );
             $limit = MIN( $limit, 1000 );
             unset( $query["limit"] );
         }
-        */
         $sort     = "";
         $sort_dir = "asc";
-        /*
         if ( isset( $query["sort"] ) ) {
             $sort = esc_sql( sanitize_text_field( $query["sort"] ) );
             if ( strpos( $sort, "-" ) === 0 ) {
@@ -87,24 +90,13 @@ class DT_Search_Posts extends DT_Posts {
             }
             unset( $query["sort"] );
         }
-        */
         $fields_to_search = [];
-        /*
         if ( isset( $query["fields_to_search"] ) ) {
             $fields_to_search = $query["fields_to_search"];
             unset( $query ["fields_to_search"] );
         }
-        if ( isset( $query["combine"] ) ) {
-            unset( $query["combine"] ); //remove deprecated combine
-        }
 
-        if ( isset( $query["fields"] ) ) {
-            $query = $query["fields"];
-        }
-        */
-        $joins      = "";
         $post_query = "";
-
         if ( ! empty( $search ) ) {
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
 
@@ -133,9 +125,9 @@ class DT_Search_Posts extends DT_Posts {
                     if ( substr( $post_query, - 6 ) !== 'AND ( ' ) {
                         $post_query .= "OR ";
                     }
-                    $post_query .= "p.ID IN ( SELECT comment_post_ID
+                    $post_query .= "( p.post_title LIKE '%" . esc_sql( $search ) . "%' ) OR p.ID IN ( SELECT comment_post_ID
                     FROM $wpdb->comments
-                    WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                    WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
                     ) OR p.ID IN ( SELECT post_id
                     FROM $wpdb->postmeta
                     WHERE meta_value LIKE '%" . esc_sql( $search ) . "%'
@@ -171,69 +163,14 @@ class DT_Search_Posts extends DT_Posts {
 
                 $locale = get_user_locale();
 
-                $post_query = " OR p.ID IN ( SELECT post_id
+                $post_query = " AND (p.post_title LIKE '%" . esc_sql( $search ) . "%' OR p.ID IN ( SELECT post_id
                                   FROM $wpdb->postmeta
                                   WHERE meta_key LIKE '" . esc_sql( $locale ) . "'
-                                  AND meta_value LIKE '%" . esc_sql( $search ) . "%' )";
+                                  AND meta_value LIKE '%" . esc_sql( $search ) . "%' ))";
             }
         }
 
         $sort_sql = "";
-        /*
-        if ( $sort === "name" || $sort === "post_title" ) {
-            $sort_sql = "p.post_title  " . $sort_dir;
-        } elseif ( $sort === "post_date" ) {
-            $sort_sql = "p.post_date  " . $sort_dir;
-        }
-        if ( empty( $sort ) && isset( $query["name"][0] ) ) {
-            $sort_sql = "( p.post_title = '" . esc_sql( $query["name"][0] ) . "' ) desc, p.post_title asc";
-        }
-
-        if ( empty( $sort_sql ) && isset( $sort, $post_fields[ $sort ] ) ) {
-            if ( $post_fields[ $sort ]["type"] === "key_select" ) {
-                $keys     = array_keys( $post_fields[ $sort ]["default"] );
-                $joins    = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "CASE ";
-                foreach ( $keys as $index => $key ) {
-                    $sort_sql .= "WHEN ( sort.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
-                }
-                $sort_sql .= "else 98 end ";
-                $sort_sql .= $sort_dir;
-            } elseif ( $post_fields[ $sort ]["type"] === "multi_select" && ! empty( $post_fields[ $sort ]["default"] ) ) {
-                $sort_sql = "CASE ";
-                $joins    = "";
-                $keys     = array_reverse( array_keys( $post_fields[ $sort ]["default"] ) );
-                foreach ( $keys as $index => $key ) {
-                    $alias    = $sort . '_' . esc_sql( $key );
-                    $joins    .= "LEFT JOIN $wpdb->postmeta as $alias ON
-                    ( p.ID = $alias.post_id AND $alias.meta_key = '$sort' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
-                    $sort_sql .= "WHEN ( $alias.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
-                }
-                $sort_sql .= "else 1000 end ";
-                $sort_sql .= $sort_dir;
-            } elseif ( $post_fields[ $sort ]["type"] === "connection" ) {
-                if ( isset( $post_fields[ $sort ]["p2p_key"], $post_fields[ $sort ]["p2p_direction"] ) ) {
-                    if ( $post_fields[ $sort ]["p2p_direction"] === "from" ) {
-                        $joins = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = p.ID AND sort.p2p_type = '" . esc_sql( $post_fields[ $sort ]["p2p_key"] ) . "' )
-                        LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
-                    } else {
-                        $joins = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_to = p.ID AND sort.p2p_type = '" . esc_sql( $post_fields[ $sort ]["p2p_key"] ) . "' )
-                        LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_from)";
-                    }
-                    $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
-                }
-            } elseif ( $post_fields[ $sort ]["type"] === "communication_channel" ) {
-                $joins    = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key LIKE '{$sort}%' AND sort.meta_key NOT LIKE '%_details' AND sort.meta_id = ( SELECT meta_id FROM $wpdb->postmeta pm_sort  where pm_sort.post_id = p.ID AND pm_sort.meta_key LIKE '{$sort}%' AND sort.meta_key NOT LIKE '%_details' LIMIT 1 ))";
-                $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', sort.meta_value * 1 $sort_dir, sort.meta_value $sort_dir";
-            } elseif ( $post_fields[ $sort ]["type"] === "location" ) {
-                $joins    = "LEFT JOIN $wpdb->postmeta sort ON ( sort.post_id = p.ID AND sort.meta_key = '$sort' AND sort.meta_id = ( SELECT meta_id FROM $wpdb->postmeta pm_sort where pm_sort.post_id = p.ID AND pm_sort.meta_key = '$sort' LIMIT 1 ) )";
-                $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
-            } else {
-                $joins    = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
-            }
-        }
-        */
         if ( empty( $sort_sql ) ) {
             $sort_sql = "p.post_title asc";
         }
@@ -257,41 +194,72 @@ class DT_Search_Posts extends DT_Posts {
             return $fields_sql;
         }
 
+        // Adjust hit columns, accordingly
+        $like_query_sql       = "'%" . esc_sql( $search ) . "%'";
+        $additional_hits_cols = ", if(p.post_title LIKE " . $like_query_sql . ", 'Y', 'N') post_hit, if(post_type_comments.comment_content LIKE " . $like_query_sql . ", 'Y', 'N') comment_hit, if(post_type_meta.meta_value LIKE " . $like_query_sql . ", 'Y', 'N') meta_hit, if(post_type_comments.comment_content LIKE " . $like_query_sql . ", post_type_comments.comment_content, '') comment_hit_content, if(post_type_meta.meta_value LIKE " . $like_query_sql . ", post_type_meta.meta_value, '') meta_hit_value";
+        $group_by_sql         = ", p.post_title, p.post_date, post_hit, comment_hit, meta_hit, comment_hit_content, meta_hit_value";
+
+        if ( $post_type === "peoplegroups" ) {
+            $additional_hits_cols = "";
+            $group_by_sql         = "";
+
+        } elseif ( $post_type === "contacts" ) {
+            $fields_sql["joins_sql"] = "LEFT JOIN " . $wpdb->comments . " as post_type_comments ON ( post_type_comments.comment_post_ID = p.ID ) LEFT JOIN " . $wpdb->dt_share . " as field_shared_with ON ( field_shared_with.post_id = p.ID ) LEFT JOIN " . $wpdb->postmeta . " as post_type_meta ON ( post_type_meta.post_id = p.ID AND ((post_type_meta.meta_key LIKE 'contact_%') OR (post_type_meta.meta_key LIKE 'nickname')) )";
+            $fields_sql["where_sql"] = "( ( field_shared_with.user_id IN ( '1' ) ) OR ( ( post_type_meta.meta_value LIKE '%' ) ) )";
+
+        } else {
+            $fields_sql["joins_sql"] = "LEFT JOIN " . $wpdb->comments . " as post_type_comments ON ( post_type_comments.comment_post_ID = p.ID ) LEFT JOIN " . $wpdb->postmeta . " as post_type_meta ON ( post_type_meta.post_id = p.ID )";
+            $fields_sql["where_sql"] = "";
+        }
+
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
-        $posts = $wpdb->get_results( "
-            SELECT SQL_CALC_FOUND_ROWS p.ID, p.post_title, p.post_type, p.post_date
-            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
+        $query_sql = "
+            SELECT SQL_CALC_FOUND_ROWS p.ID, p.post_title, p.post_type, p.post_date" . $additional_hits_cols . "
+            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
             (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
             GROUP BY p.ID " . $group_by_sql . "
             ORDER BY " . $sort_sql . "
-            LIMIT " . esc_sql( $offset ) . ", " . $limit . "
-        ", OBJECT );
+            LIMIT " . esc_sql( $offset ) . ", " . $limit;
+        $posts     = $wpdb->get_results( $query_sql, OBJECT );
 
         if ( empty( $posts ) && ! empty( $wpdb->last_error ) ) {
             return new WP_Error( __FUNCTION__, "Sorry, we had a query issue.", [ 'status' => 500 ] );
         }
-
-        // phpcs:enable
-        $total_rows = $wpdb->get_var( "SELECT found_rows();" );
 
         //search by post_id
         if ( is_numeric( $search ) ) {
             $post = get_post( $search );
             if ( $post && self::can_view( $post_type, $post->ID ) ) {
                 $posts[] = $post;
-                $total_rows ++;
             }
         }
-        //decode special characters in post titles
+
+        $post_hits = array();
+
+        //remove duplicated non-hits
         foreach ( $posts as $post ) {
-            $post->post_title = wp_specialchars_decode( $post->post_title );
+            if ( isset( $post->post_hit ) && isset( $post->comment_hit ) && isset( $post->meta_hit ) ) {
+                if ( ! ( ( $post->post_hit === 'N' ) && ( $post->comment_hit === 'N' ) && ( $post->meta_hit === 'N' ) ) ) {
+                    $post_hits[] = $post;
+                }
+            } else {
+                $post_hits[] = $post;
+            }
         }
+
+        //decode special characters in post titles
+        foreach ( $post_hits as $hit ) {
+            $hit->post_title = wp_specialchars_decode( $hit->post_title );
+        }
+
+        $post_hits_count = count( $post_hits );
 
         return [
             "post_type" => $post_type,
-            "posts" => $posts,
-            "total" => $total_rows
+            "posts"     => $post_hits,
+            "total"     => $post_hits_count,
+            "offset"    => intval( $offset ) + intval( $post_hits_count ) + 1
         ];
     }
 }
