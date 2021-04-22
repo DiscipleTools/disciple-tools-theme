@@ -2092,6 +2092,9 @@ class Disciple_Tools_Posts
                 ), ARRAY_A );
             }
             foreach ( $post_user_meta as $m ){
+                if ( !isset( $field_settings[$m['meta_key']]['type'] ) ){
+                    continue;
+                }
                 if ( !isset( $fields[ $m["meta_key"] ] ) ) {
                     $fields[$m["meta_key"]] = [];
                 }

@@ -461,6 +461,9 @@ class DT_Posts extends Disciple_Tools_Posts {
         $all_post_user_meta =[];
 
         foreach ( $all_user_meta as $index => $meta_row ){
+            if ( !isset( $field_settings[$meta_row['meta_key']]['type'] ) ){
+                continue;
+            }
             if ( !isset( $all_post_user_meta[$meta_row["post_id"]] ) ){
                 $all_post_user_meta[$meta_row["post_id"]] = [];
             }
