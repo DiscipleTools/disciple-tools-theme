@@ -371,7 +371,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                  */
                 $already_handled = apply_filters( 'dt_post_updated_custom_handled_meta', [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel" ], $post_type );
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
-                    if ( isset( $post_settings["fields"][$field_key]['private'] ) ) {
+                    if ( isset( $post_settings["fields"][$field_key]['private'] ) && $post_settings["fields"][$field_key]['private'] ) {
                         self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $fields, [] );
                     } else {
                         update_post_meta( $post_id, $field_key, $field_value );
@@ -447,8 +447,6 @@ class DT_Posts extends Disciple_Tools_Posts {
         $author = get_user_by( "ID", $wp_post->post_author );
         $fields["post_author_display_name"] = $author ? $author->display_name : "";
 
-        // self::get_all_private_fields( $field_settings, $post_id, $fields );
-
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $all_user_meta = $wpdb->get_results( $wpdb->prepare( "
@@ -461,11 +459,16 @@ class DT_Posts extends Disciple_Tools_Posts {
 
 
         $all_post_user_meta =[];
+
         foreach ( $all_user_meta as $index => $meta_row ){
-            if ( !isset( $all_post_user_meta[$meta_row["post_id"]] ) ) {
+            if ( !isset( $all_post_user_meta[$meta_row["post_id"]] ) ){
                 $all_post_user_meta[$meta_row["post_id"]] = [];
             }
-            $all_post_user_meta[$meta_row["post_id"]][] = $meta_row;
+            if ($field_settings[$meta_row['meta_key']]['type'] === 'task') {
+                $all_post_user_meta[$meta_row["post_id"]][] = $meta_row;
+            } else if (isset( $field_settings[$meta_row['meta_key']]['private'] ) && $field_settings[$meta_row['meta_key']]['private']) {
+                $all_post_user_meta[$meta_row["post_id"]][] = $meta_row;
+            }
         }
 
         self::adjust_post_custom_fields( $post_type, $post_id, $fields, [], NULL, $all_post_user_meta[$post_id] ?? null );

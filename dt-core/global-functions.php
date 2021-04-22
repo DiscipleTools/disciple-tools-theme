@@ -345,7 +345,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
         $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
         $is_private = ( isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true ) ? true : false;
-
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
@@ -392,9 +391,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     if ( isset( $fields[$field_key]["default"][ $current_key ]["color"] ) ){
                         $active_color = $fields[$field_key]["default"][ $current_key ]["color"];
                     }
-                }
-                if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] )) {
-                    $post[$field_key]["key"] = array_slice( $post[$field_key], -1 )[0]['value'];
                 }
                 ?>
                 <select class="select-field <?php echo esc_html( $color_select ? "color-select" : "" ); ?>" id="<?php echo esc_html( $display_field_id ); ?>" style="<?php echo esc_html( $color_select ? ( "background-color: " . $active_color ) : "" ); ?>">
@@ -451,41 +447,17 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
                 <?php } ?>
             <?php elseif ( $field_type === "text" ) :?>
-                <?php
-                if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] )) {
-                    $post[$field_key] = array_slice( $post[$field_key], -1 )[0]['value'];
-                }
-                ?>
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="text" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
                        value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
             <?php elseif ( $field_type === "textarea" ) :?>
-                <?php
-                if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] ) ) {
-                    $post[$field_key] = array_slice( $post[$field_key], -1 )[0]['value'];
-                }
-                ?>
                 <textarea id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $required_tag ) ?>
                        class="textarea dt_textarea"><?php echo esc_html( $post[$field_key] ?? "" ) ?></textarea>
             <?php elseif ( $field_type === "number" ) :?>
-                <?php
-                if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] )) {
-                    $post[$field_key] = array_slice( $post[$field_key], -1 )[0]['value'];
-                }
-                ?>
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="number" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
                        value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
             <?php elseif ( $field_type === "date" ) :?>
-                <?php
-                if ( isset( $post[$field_key] ) && $is_private && is_array( $post[$field_key] )) {
-                    $timestamp = array_slice( $post[$field_key], -1 )[0]['value'];
-                    $formatted_date = dt_format_date( $timestamp );
-
-                    $post[$field_key]['timestamp'] = $timestamp;
-                    $post[$field_key]['formatted'] = $formatted_date;
-                }
-                ?>
                 <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
                     <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
                            value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' ) ?>" >

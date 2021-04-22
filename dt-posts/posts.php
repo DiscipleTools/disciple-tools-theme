@@ -2095,12 +2095,45 @@ class Disciple_Tools_Posts
                 if ( !isset( $fields[ $m["meta_key"] ] ) ) {
                     $fields[$m["meta_key"]] = [];
                 }
-                $fields[$m["meta_key"]][] = [
-                    "id" => $m["id"],
-                    "value" => maybe_unserialize( $m["meta_value"] ),
-                    "date" => $m["date"],
-                    "category" => $m["category"]
-                ];
+                if ( $field_settings[$m['meta_key']]['type'] === 'task' ) {
+                    $fields[$m["meta_key"]][] = [
+                        "id" => $m["id"],
+                        "value" => maybe_unserialize( $m["meta_value"] ),
+                        "date" => $m["date"],
+                        "category" => $m["category"]
+                    ];
+                } else if ( isset( $field_settings[$m['meta_key']]['private'] ) && $field_settings[$m['meta_key']]['private'] ) {
+
+                    if ( $field_settings[$m['meta_key']]['type'] === 'multi_select' ) {
+                        dt_write_log('IS MUTLISELECT');
+                        $new_post_data = array();
+
+                        foreach ( $fields[$m["meta_key"]] as $private_field_value ) {
+                            if ( isset( $private_field_value["value"] ) ) {
+                                array_push( $new_post_data, $private_field_value["value"] );
+                            }
+                        }
+                        $fields[$m["meta_key"]] = $new_post_data;
+
+                    } else  if ( $field_settings[$m['meta_key']]['type'] === 'key_select' ) {
+                        if ( !is_array( $fields[$m["meta_key"]] ) ) {
+                            $fields[$m["meta_key"]] = [];
+                        }
+                        $key = $m['meta_value'];
+                        $label = $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'];
+                        $fields[$m["meta_key"]] = array( 'key' => $key, 'label' => $label  );
+
+                    } else  if ( $field_settings[$m['meta_key']]['type'] === 'date' ) {
+                        $timestamp = $m['meta_value'];
+                        $formatted_date = dt_format_date( $timestamp );
+
+                        $fields[$m["meta_key"]]['timestamp'] = $timestamp;
+                        $fields[$m["meta_key"]]['formatted'] = $formatted_date;
+
+                    } else {
+                        $fields[$m["meta_key"]] = maybe_unserialize( $m["meta_value"] );
+                    }
+                }
             }
         }
 
