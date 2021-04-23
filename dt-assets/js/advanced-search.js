@@ -113,7 +113,7 @@ jQuery(document).ready(function ($) {
     results.forEach(function (result) {
 
       results_html += '<tr style="background: #f5f5f5; padding: 0px;">';
-      results_html += '<td style="text-align: left; padding: 10px;"><a style="margin: 0px; padding: 2px 5px 2px 5px; max-height: 20px; min-height: 20px;" class="button advanced-search-modal-results-table-row-section-head-load-more">' + fetch_more_text + '</a></td>';
+      results_html += '<td style="text-align: left; padding: 10px;"><a style="margin: 0px; padding: 2px 5px 2px 5px; max-height: 20px; min-height: 20px;" class="button hollow advanced-search-modal-results-table-row-section-head-load-more">' + fetch_more_text + '</a></td>';
       results_html += '<td style="text-align: right;">';
       results_html += '<b>' + result['post_type'] + '</b></td>';
       results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-offset" value="' + result['offset'] + '">';
@@ -165,7 +165,7 @@ jQuery(document).ready(function ($) {
     results_html += '<td style="min-width: 50px; text-align: right;">';
     results_html += (is_post_hit || is_default_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
     results_html += (is_comment_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
-    results_html += (is_meta_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/dots.svg" alt="Meta Hit"/>&nbsp;' : '';
+    results_html += (is_meta_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/socialmedia.svg" alt="Meta Hit"/>&nbsp;' : '';
     results_html += '</td>';
 
     results_html += '</tr>';
