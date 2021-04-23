@@ -10,6 +10,11 @@
 add_action( 'init', "dt_setup_roles_and_permissions" );
 
 function dt_setup_roles_and_permissions(){
+    $default_role = get_option( 'default_role' );
+    if ( $default_role === "subscriber" || empty( $default_role ) ){
+        update_option( 'default_role', 'multiplier' );
+    }
+
     $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
     $dt_roles = array_map( function ( $a ){
         return array_keys( $a["permissions"] );
