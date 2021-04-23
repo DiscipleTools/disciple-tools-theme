@@ -653,9 +653,9 @@ class DT_Posts extends Disciple_Tools_Posts {
 
                 ", $current_user->ID, $action, $post_type, $field_settings[$args["field_key"]]["p2p_key"], $field_type, $post_type ), OBJECT );
 
-                $post_ids = array_map( function( $post ) { return $post->ID; }, $posts );
+                $post_ids = array_map( function( $post ) { return (int) $post->ID; }, $posts );
                 foreach ( $posts_2 as $p ){
-                    if ( !in_array( $p->ID, $post_ids ) ){
+                    if ( !in_array( (int) $p->ID, $post_ids, true ) ){
                         $posts[] = $p;
                     }
                 }
@@ -683,7 +683,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $post_ids = array_map(
             function( $post ) {
-                return $post->ID;
+                return (int) $post->ID;
             },
             $posts
         );
@@ -711,7 +711,8 @@ class DT_Posts extends Disciple_Tools_Posts {
             foreach ( $users_interacted_with as $user ) {
                 $post_id = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
                 if ( $post_id ){
-                    if ( !in_array( $post_id, $post_ids ) ) {
+                    if ( !in_array( $post_id, $post_ids, true ) ) {
+                        $post_ids[] = $post_id;
                         $compact[] = [
                             "ID" => $post_id,
                             "name" => $user["name"],
@@ -876,6 +877,25 @@ class DT_Posts extends Disciple_Tools_Posts {
         return wp_delete_comment( $comment_id );
     }
 
+    public static function toggle_post_comment_reaction( string $post_type, int $post_id, int $comment_id, int $user_id, string $reaction)
+    {
+        if ( !self::can_update( $post_type, $post_id ) ) {
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
+        }
+        // If the reaction exists for this user, then delete it
+        $reactions = get_comment_meta($comment_id, $reaction);
+        foreach ($reactions as $reaction_user_id) {
+            if ($reaction_user_id == $user_id) {
+                delete_comment_meta($comment_id, $reaction, $reaction_user_id);
+                return true;
+            }
+        }
+
+        // otherwise add it.
+        add_comment_meta($comment_id, $reaction, $user_id);
+        return $reactions;
+    }
+
     /**
      * Get post comments
      *
@@ -888,6 +908,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|int|WP_Error
      */
     public static function get_post_comments( string $post_type, int $post_id, bool $check_permissions = true, string $type = "all", array $args = [] ) {
+        global $wpdb;
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read post", [ 'status' => 403 ] );
         }
@@ -902,6 +923,38 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $comments = get_comments( $comments_query );
 
+        // add in getting the meta data for the comments JOINed with the user table to get
+        // the username
+        $comments_meta = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                m.comment_id, m.meta_key, u.display_name, u.ID
+            FROM
+                `$wpdb->comments` AS c
+            JOIN
+                `$wpdb->commentmeta` AS m
+            ON c.comment_ID = m.comment_id
+            JOIN
+                `$wpdb->users` AS u
+            ON m.meta_value = u.ID
+            WHERE
+                c.comment_post_ID = %s
+                AND m.meta_key LIKE 'reaction%'",
+            $post_id
+        ) );
+
+        $comments_meta_dict = [];
+        foreach ($comments_meta as $meta) {
+            if (!array_key_exists($meta->comment_id, $comments_meta_dict)) {
+                $comments_meta_dict[$meta->comment_id] = [];
+            }
+            if (!array_key_exists($meta->meta_key, $comments_meta_dict[$meta->comment_id])) {
+                $comments_meta_dict[$meta->comment_id][$meta->meta_key] = [];
+            }
+            $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
+                'name' => $meta->display_name,
+                'user_id' => $meta->ID,
+            ];
+        }
 
         $response_body = [];
         foreach ( $comments as $comment ){
@@ -920,7 +973,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "comment_content" => $comment->comment_content,
                 "user_id" => $comment->user_id,
                 "comment_type" => $comment->comment_type,
-                "comment_post_ID" => $comment->comment_post_ID
+                "comment_post_ID" => $comment->comment_post_ID,
+                "comment_reactions" => array_key_exists($comment->comment_ID, $comments_meta_dict) ? $comments_meta_dict[$comment->comment_ID] :  [],
             ];
             $response_body[] = $c;
         }
@@ -1340,6 +1394,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                                     }
                                 }
                                 $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
+                                foreach ( $fields[$key]["default"] as $option_key => $option_value ){
+                                    if ( !isset( $option_value["label"] ) ){
+                                        //fields without a label are not valid
+                                        unset( $fields[$key]["default"][$option_key] );
+                                    }
+                                }
                             }
                         }
                         foreach ( $langs as $lang => $val ) {
@@ -1353,7 +1413,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                         if ( isset( $field["order"] ) ) {
                             $with_order = [];
                             foreach ( $field["order"] as $ordered_key ) {
-                                $with_order[ $ordered_key ] = [];
+                                if ( isset( $fields[$key]["default"][$ordered_key] ) ){
+                                    $with_order[ $ordered_key ] = [];
+                                }
                             }
                             foreach ( $fields[ $key ]["default"] as $option_key => $option_value ) {
                                 $with_order[ $option_key ] = $option_value;
@@ -1421,6 +1483,48 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         wp_cache_set( $post_type . "_tile_options", $tile_options[$post_type] );
         return $tile_options[$post_type];
+    }
+
+    /**
+     * Request record access
+     *
+     * @param string $post_type
+     * @param int $post_id
+     *
+     * @return false|int|WP_Error
+     */
+    public static function request_record_access( string $post_type, int $post_id ) {
+
+        // Sanity checks
+        if ( ! self::can_access( $post_type ) ) {
+            return new WP_Error( __FUNCTION__, sprintf( "You do not have access to these %s", $post_type ), [ 'status' => 403 ] );
+        }
+
+        $existing_post = self::get_post( $post_type, $post_id, false, false );
+        if ( ! $existing_post ) {
+            return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 404 ] );
+        }
+
+        // Fetch associated names
+        $user_id = get_current_user_id();
+
+        $requester_name = dt_get_user_display_name( $user_id );
+        $post_settings  = self::get_post_settings( $post_type );
+
+        $is_assigned_to = ( ! empty( get_post_meta( $post_id, "assigned_to", true ) ) );
+        $owner_id       = ( $is_assigned_to ) ? dt_get_user_id_from_assigned_to( get_post_meta( $post_id, "assigned_to", true ) ) : intval( $existing_post['post_author'] );
+        $owner_name     = ( $is_assigned_to ) ? ( dt_get_assigned_name( $post_id, true ) . " " ) ?? "" : ( $existing_post['post_author_display_name'] . " " ) ?? "";
+
+        // Post comment
+        $comment_html = sprintf(
+            esc_html_x( '@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access.', '@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access.', 'disciple_tools' ),
+            esc_html( $owner_name ), esc_html( $owner_id ), esc_html( $requester_name ), esc_html( $post_settings['label_singular'] ), esc_html( $existing_post['name'] ), esc_html( $post_id )
+        );
+
+        return self::add_post_comment( $post_type, $post_id, $comment_html, "comment", [
+            "user_id"        => 0,
+            "comment_author" => __( "Access Request", 'disciple_tools' )
+        ], false, false );
     }
 
 }

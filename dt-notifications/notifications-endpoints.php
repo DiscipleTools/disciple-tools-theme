@@ -63,6 +63,7 @@ class Disciple_Tools_Notifications_Endpoints
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'mark_viewed' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -72,6 +73,7 @@ class Disciple_Tools_Notifications_Endpoints
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'mark_all_viewed' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -81,6 +83,7 @@ class Disciple_Tools_Notifications_Endpoints
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'get_notifications' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -90,6 +93,7 @@ class Disciple_Tools_Notifications_Endpoints
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'get_new_notifications_count' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -99,6 +103,7 @@ class Disciple_Tools_Notifications_Endpoints
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'mark_unread' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );

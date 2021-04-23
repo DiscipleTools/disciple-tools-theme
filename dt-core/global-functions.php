@@ -106,6 +106,20 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( ! function_exists( 'dt_get_post_type' ) ) {
+        /**
+         * The post type as found in the url returned by dt_get_url_path
+         * https://example.com/sub/contacts/3/?param=true
+         * will return 'contacts'
+         * @return string
+         */
+        function dt_get_post_type() {
+            $url_path = dt_get_url_path();
+            $url_path_with_no_query_string = explode( '?', $url_path )[0];
+            return explode( '/', $url_path_with_no_query_string )[0];
+        }
+    }
+
     if ( ! function_exists( 'dt_array_to_sql' ) ) {
         function dt_array_to_sql( $values) {
             if (empty( $values )) {
@@ -431,7 +445,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                 "selected-select-button" : "empty-select-button"; ?>
                             <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $display_field_id ); ?>"
                                     class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                <?php echo esc_html( $fields[$field_key]["default"][$option_key]["label"] ) ?>
+                                <?php if ( !empty( $option_value["icon"] ) ) { ?>
+                                    <img class="dt-icon" src="<?php echo esc_html( $option_value["icon"] ) ?>" >
+                                <?php } ?>
+                                <?php echo esc_html( $option_value["label"] ) ?>
                             </button>
                         <?php endforeach; ?>
                     </div>

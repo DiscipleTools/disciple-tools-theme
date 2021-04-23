@@ -67,12 +67,14 @@ class Disciple_Tools_Contacts_Transfer
             $namespace, '/contacts/transfer', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'contact_transfer_endpoint' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $namespace, '/contacts/receive-transfer', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'receive_transfer_endpoint' ],
+                'permission_callback' => '__return_true',
             ]
         );
         //deprecated
@@ -80,6 +82,7 @@ class Disciple_Tools_Contacts_Transfer
             'dt-public/v1', '/contact/transfer', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'public_contact_transfer' ],
+                'permission_callback' => '__return_true',
             ]
         );
     }
@@ -134,7 +137,7 @@ class Disciple_Tools_Contacts_Transfer
                 </div>
 
                 <div class="cell" id="transfer_button_div" style="display:none;">
-                    <button id="transfer_confirm_button" class="button" type="button"><?php esc_html_e( 'Confirm Transfer', 'disciple_tools' ) ?></button> <span id="transfer_spinner"></span>
+                    <button id="transfer_confirm_button" class="button loader" type="button"><?php esc_html_e( 'Confirm Transfer', 'disciple_tools' ) ?></button> <span id="transfer_spinner"></span>
                 </div>
             </div>
 
@@ -286,8 +289,6 @@ class Disciple_Tools_Contacts_Transfer
      * @return array|WP_Error
      */
     public static function receive_transferred_contact( $params ) {
-        dt_write_log( __METHOD__ );
-
         // set variables
         $contact_data = $params['contact_data'];
         $post_args = $contact_data['post'];
@@ -316,8 +317,9 @@ class Disciple_Tools_Contacts_Transfer
         $post_args['meta_input'] = $meta_input;
 
         // update user elements
-        $post_args['post_author'] = dt_get_base_user( true );
-        $post_args['meta_input']['assigned_to'] = "user-" . dt_get_base_user( true );
+        $base_user = dt_get_base_user( false );
+        $post_args['post_author'] = $base_user->ID;
+        $post_args['meta_input']['assigned_to'] = "user-" . $base_user->ID;
         $post_args['meta_input']['overall_status'] = "unassigned";
         $post_args['meta_input']['sources'] = "transfer";
 
@@ -376,13 +378,11 @@ class Disciple_Tools_Contacts_Transfer
         }
 
         // Add transfer record comment
-        $transfer_comment = wp_insert_comment([
-                'user_id' => 0,
-                'comment_post_ID' => $post_id,
-                'comment_author' => __( 'Transfer Bot', 'disciple_tools' ),
-                'comment_approved' => 1,
-                'comment_content' => __( 'Contact transferred from site', 'disciple_tools' ) . ' "' . esc_html( get_the_title( $site_link_post_id ) ) . '"',
-        ]);
+        $comment = '@[' . $base_user->display_name . '](' . $base_user->ID . '), ' . __( 'Contact transferred from site', 'disciple_tools' ) . ' "' . esc_html( get_the_title( $site_link_post_id ) ) . '"';
+        $transfer_comment = DT_Posts::add_post_comment( 'contacts', $post_id, $comment, 'comment', [
+            "user_id" => 0,
+            'comment_author' => __( 'Transfer Bot', 'disciple_tools' ),
+        ], false );
         if ( is_wp_error( $transfer_comment ) ) {
             $errors->add( 'comment_insert_fail', 'Comment insert fail for transfer notation.' );
         }
@@ -458,11 +458,7 @@ class Disciple_Tools_Contacts_Transfer
                     'error' => $result->get_error_message(),
                 ];
             } else {
-                return [
-                    'status' => 'OK',
-                    'error' => $result['errors'],
-                    'created_id' => $result['created_id'],
-                ];
+                return $result;
             }
         } else {
             return [
@@ -528,11 +524,7 @@ class Disciple_Tools_Contacts_Transfer
                     'error' => $result->get_error_message(),
                 ];
             } else {
-                return [
-                    'status' => 'OK',
-                    'error' => $result['errors'],
-                    'created_id' => $result['created_id'],
-                ];
+                return $result;
             }
         } else {
             return [

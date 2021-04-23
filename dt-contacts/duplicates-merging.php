@@ -34,7 +34,8 @@ class DT_Duplicate_Checker_And_Merging {
                     "callback" => [ $this, 'get_ids_of_non_dismissed_duplicates_endpoint' ],
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -46,7 +47,8 @@ class DT_Duplicate_Checker_And_Merging {
                     "callback" => [ $this, 'get_all_duplicates_on_post_endpoint' ],
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -58,7 +60,8 @@ class DT_Duplicate_Checker_And_Merging {
                     "callback" => [ $this, 'dismiss_post_duplicate_endpoint' ],
                     "args" => [
                         "post_type" => $arg_schemas["post_type"],
-                    ]
+                    ],
+                    'permission_callback' => '__return_true',
                 ]
             ]
         );
@@ -67,6 +70,7 @@ class DT_Duplicate_Checker_And_Merging {
             $this->namespace, '/(?P<post_type>\w+)/merge', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'merge_posts_endpoint' ],
+                'permission_callback' => '__return_true',
             ]
         );
         //Merge Posts
@@ -74,6 +78,7 @@ class DT_Duplicate_Checker_And_Merging {
             $this->namespace, '/(?P<post_type>\w+)/all-duplicates', [
                 "methods"  => "GET",
                 "callback" => [ $this, 'get_access_duplicates' ],
+                'permission_callback' => '__return_true',
             ]
         );
     }

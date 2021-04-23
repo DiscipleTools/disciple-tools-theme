@@ -117,6 +117,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'points_geojson' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -125,6 +126,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
                 [
                     'methods'  => "POST",
                     'callback' => [ $this, 'grid_totals' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -133,6 +135,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
                 [
                     'methods'  => "POST",
                     'callback' => [ $this, 'get_user_list' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );

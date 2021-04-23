@@ -116,6 +116,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'critical_path_by_year' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -124,6 +125,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'critical_path_activity_callback' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );

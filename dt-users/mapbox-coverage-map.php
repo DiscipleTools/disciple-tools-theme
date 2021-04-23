@@ -114,6 +114,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
                 [
                     'methods'  => "POST",
                     'callback' => [ $this, 'grid_totals' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -122,6 +123,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
                 [
                     'methods'  => "POST",
                     'callback' => [ $this, 'get_user_list' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
