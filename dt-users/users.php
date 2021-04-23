@@ -32,6 +32,8 @@ class Disciple_Tools_Users
         add_action( 'add_user_to_blog', [ &$this, 'user_register_hook' ] );
         add_action( 'user_register', [ &$this, 'user_register_hook' ] ); // used on non multisite?
         add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
+        add_action( 'signup_user_meta', [ $this, 'signup_user_meta' ], 10, 1 );
+        add_action( 'wpmu_activate_user', [ $this, 'wpmu_activate_user' ], 10, 3 );
 
         //invite user and edit user page modifications
         add_action( "user_new_form", [ &$this, "custom_user_profile_fields" ] );
@@ -466,6 +468,33 @@ class Disciple_Tools_Users
         }
     }
 
+    /*
+     * Multisite only
+     * Save who added the user so that their contact record can later be shared.
+     */
+    public function signup_user_meta( $meta ){
+        $current_user_id = get_current_user_id();
+        if ( $current_user_id ){
+            $meta["invited_by"] = $current_user_id;
+        }
+        return $meta;
+    }
+
+    /**
+     * Multisite only
+     * Share the newly added user-contact with the admin who added the user.
+     * @param $user_id
+     * @param $password
+     * @param $meta
+     */
+    public function wpmu_activate_user( $user_id, $password, $meta ){
+        if ( isset( $meta["invited_by"] ) && !empty( $meta["invited_by"] ) ){
+            $contact_id = get_user_option( "corresponds_to_contact", $user_id );
+            if ( $contact_id && !is_wp_error( $contact_id )){
+                DT_Posts::add_shared( "contacts", $contact_id, $meta["invited_by"], null, false, false );
+            }
+        }
+    }
 
     /**
      * User register hook
