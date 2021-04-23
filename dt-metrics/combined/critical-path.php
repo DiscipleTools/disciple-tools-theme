@@ -34,17 +34,6 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
-    public function has_permission(){
-        $permissions = $this->permissions;
-        $pass = count( $permissions ) === 0;
-        foreach ( $this->permissions as $permission ){
-            if ( current_user_can( $permission ) ){
-                $pass = true;
-            }
-        }
-        return $pass;
-    }
-
     public function add_url( $template_for_url ) {
         $template_for_url['metrics/critical-path'] = 'template-metrics.php';
         return $template_for_url;
