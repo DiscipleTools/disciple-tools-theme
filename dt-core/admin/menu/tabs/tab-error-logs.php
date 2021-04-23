@@ -71,7 +71,7 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
         if ( isset( $_POST['email_error_logs_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['email_error_logs_nonce'] ) ), 'email_error_logs_nonce' ) ) {
             update_option( 'dt_error_log_dispatch_emails', isset( $_POST['dispatch_error_log_emails'] ) ? 1 : 0 );
             update_option( 'dt_error_log_display_count', isset( $_POST['number_of_error_logs_to_display'] ) ? intval( $_POST['number_of_error_logs_to_display'] ) : 20 );
-            update_option( 'dt_error_log_enforce_retention_policy', isset( $_POST['enforce_retention_policy'] ) ? 1 : 0 );
+            update_option( 'dt_error_log_enforce_retention_policy', isset( $_POST['enforce_retention_policy'] ) ? 0 : 1 );
             update_option( 'dt_error_log_retention_period_count', isset( $_POST['retention_period_days'] ) ? intval( $_POST['retention_period_days'] ) : 30 );
         }
     }
@@ -86,7 +86,7 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
     }
 
     private function is_enforce_retention_policy_enabled(): bool {
-        return boolval( get_option( 'dt_error_log_enforce_retention_policy' ) );
+        return ! boolval( get_option( 'dt_error_log_enforce_retention_policy' ) );
     }
 
     private function fetch_retention_period_count(): int {

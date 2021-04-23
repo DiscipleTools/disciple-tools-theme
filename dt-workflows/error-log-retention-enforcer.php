@@ -11,7 +11,7 @@ add_action( 'error_log_retention_enforcer', 'enforce_error_log_retention_policy'
 
 function enforce_error_log_retention_policy() {
     // Stop if enforce retention policy feature if disabled.
-    if ( ! boolval( get_option( 'dt_error_log_enforce_retention_policy' ) ) ) {
+    if ( boolval( get_option( 'dt_error_log_enforce_retention_policy' ) ) ) {
         return;
     }
 
