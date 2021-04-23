@@ -41,6 +41,7 @@ class Disciple_Tools_Counter
         require_once( 'counters/counter-contacts.php' );
         require_once( 'counters/counter-outreach.php' );
         require_once( 'counters/counter-locations.php' );
+        require_once( 'counters/counter-post-stats.php' );
     } // End __construct
 
     /**
