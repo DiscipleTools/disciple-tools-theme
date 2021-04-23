@@ -14,6 +14,9 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/combined/time-charts.js'; // should be full file name plus extension
     public $permissions = [ 'access_contacts', 'view_project_metrics' ];
+    public $post_type_select_options = [];
+    public $post_field_select_options = [];
+    public $post_field_types_filter = [ 'date', /* 'key_select', 'multi_select', */ /* 'connection', 'number' */ ]; // connection and number would be interesting for additions to groups, and quick button usage
 
     public function __construct() {
         parent::__construct();
@@ -31,7 +34,33 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
         }
 
+        // $post_types = DT_Posts::get_post_types(); // This is only giving [ 'peoplegroups' ] at the moment
+        $post_types = [ 'contacts', 'groups', 'peoplegroups' ];
+        $post_type_options = [];
+        foreach ($post_types as $post_type) {
+            $post_type_options[$post_type] = DT_Posts::get_label_for_post_type( $post_type );
+        }
+
+        $field_settings = $this->get_field_settings( $post_types[0] );
+        $this->post_field_select_options = $field_settings;
+
+        $this->post_type_select_options = apply_filters( 'dt_time_chart_select_options', $post_type_options );
+
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+    }
+
+    public function get_field_settings( $post_type ) {
+        $post_field_settings = DT_Posts::get_post_field_settings( $post_type );
+
+        $field_settings = [];
+
+        foreach ($post_field_settings as $key => $setting) {
+            if ( in_array( $setting['type'], $this->post_field_types_filter ) ) {
+                $field_settings[$key] = $setting['name'];
+            }
+        }
+        asort( $field_settings );
+        return $field_settings;
     }
 
     public function scripts() {
@@ -59,7 +88,15 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
                 'data'               => [],
-                'translations'       => [],
+                'translations'       => [
+                    "title_time_charts" => __( 'Time Charts', 'disciple_tools' ),
+                    "post_type_select_label" => __( 'Post Type', 'disciple_tools' ),
+                    "post_field_select_label" => __( 'Post Field', 'disciple_tools' ),
+                ],
+                'select_options' => [
+                    'post_type_select_options' => $this->post_type_select_options,
+                    'post_field_select_options' => $this->post_field_select_options,
+                ],
             ]
         );
     }
