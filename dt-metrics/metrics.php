@@ -70,6 +70,7 @@ class Disciple_Tools_Metrics{
                 require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
                 if ( !empty( $modules["access_module"]["enabled"] ) ){
                     require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );
+                    require_once( get_template_directory() . '/dt-metrics/combined/time-charts.php' );
                 }
             }
 
