@@ -364,13 +364,6 @@ else {
             new Disciple_Tools_Core_Endpoints();
 
             /**
-             * dt-search
-             */
-            require_once( get_template_directory() . '/dt-search/search-endpoints.php' );
-            $this->endpoints['advanced_search'] = new DT_Search_Endpoints();
-            require_once( get_template_directory() . '/dt-search/search-posts.php' );
-
-            /**
              * Admin panel
              * Contains all those features that only run if in the Admin panel
              * or those things directly supporting Admin panel features.

@@ -7,16 +7,15 @@
             <tr style="border: none;">
                 <td style="vertical-align: middle;">
                     <input class="advanced-search-modal-form-input"
-                           style="max-width:540px;display:inline-block;margin-right:0;"
+                           style="min-width:450px;display:inline-block;margin-right:0;"
                            type="search" id="advanced-search-modal-form-query"
                            placeholder="<?php esc_html_e( 'Search Query...', 'disciple_tools' ) ?>">
                 </td>
                 <td style="vertical-align: middle;">
-                    <a class="advanced-search-modal-form-button" id="advanced-search-modal-form-button"
-                       title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
-                        <img class="dt-icon"
-                             src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"
-                             alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>"/>
+                    <a class="button advanced-search-modal-form-button" id="advanced-search-modal-form-button"
+                       style="padding: 10px 5px 5px; max-height: 40px; min-height: 40px; max-width: 40px; min-width: 40px;">
+                        <img style="max-height: 20px; min-height: 20px; max-width: 20px; min-width: 20px;"
+                             src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>">
                     </a>
                 </td>
             </tr>
@@ -33,7 +32,7 @@
             <tr style="border: none;">
                 <td style="min-width: 400px; vertical-align: top;">
                     <div class="advanced-search-modal-results"
-                         style="height: 300px; overflow-x: scroll; overflow-y: scroll;"></div>
+                         style="height: 300px; overflow-x: hidden; overflow-y: scroll; text-align: center;"></div>
                 </td>
                 <td style="min-width: 150px; alignment: right; vertical-align: top;">
 

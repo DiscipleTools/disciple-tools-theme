@@ -2,6 +2,7 @@ jQuery(document).ready(function ($) {
 
   let rest_api = window.API
   let template_dir_uri = window.advanced_search_settings.template_dir_uri;
+  let fetch_more_text = window.advanced_search_settings.fetch_more_text;
 
   // Open the advanced search modal
   $(document).on("click", '.advanced-search-nav-button', function () {
@@ -27,7 +28,7 @@ jQuery(document).ready(function ($) {
   })
 
   $(document).on("click", '.advanced-search-modal-post-types', function (e) {
-    // console.log($('input[name=advanced-search-modal-post-types]:checked').val());
+    execute_search_query();
   })
 
   $(document).on("click", '.advanced-search-modal-results-table-row-section-head-load-more', function (e) {
@@ -73,7 +74,7 @@ jQuery(document).ready(function ($) {
   function reset_widgets() {
     $('.advanced-search-modal-form-input').val('');
     $('.advanced-search-modal-results-div').slideUp('fast');
-    $('.advanced-search-modal-results').html('');
+    $('.advanced-search-modal-results').html('').fadeOut('fast');
   }
 
   function execute_search_query() {
@@ -86,12 +87,15 @@ jQuery(document).ready(function ($) {
 
     // Dispatch search query and display api response accordingly
     $('.advanced-search-modal-results-div').slideDown('fast', function (data) {
-      rest_api.advanced_search(encodeURI(query), selected_post_type, 0).then(api_data => {
-        display_results(api_data, function () {
-          $('.advanced-search-modal-results').slideDown('fast');
-        })
-      }).catch(error => {
-        console.log(error);
+      let spinner = '<span class="loading-spinner active"></span>';
+      $('.advanced-search-modal-results').html(spinner).fadeIn('slow', function () {
+        rest_api.advanced_search(encodeURI(query), selected_post_type, 0).then(api_data => {
+          display_results(api_data, function () {
+            $('.advanced-search-modal-results').fadeIn('fast');
+          });
+        }).catch(error => {
+          console.log(error);
+        });
       });
     });
   }
@@ -108,8 +112,8 @@ jQuery(document).ready(function ($) {
     results_html += '<table class="advanced-search-modal-results-table" style="border: none;"><tbody style="border: none;">';
     results.forEach(function (result) {
 
-      results_html += '<tr style="background: #f5f5f5;">';
-      results_html += '<td style="text-align: left; vertical-align: bottom;"><a class="advanced-search-modal-results-table-row-section-head-load-more"><img style="display: inline-block;" class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/search.svg" alt="Fetch More"/></a></td>';
+      results_html += '<tr style="background: #f5f5f5; padding: 0px;">';
+      results_html += '<td style="text-align: left; padding: 10px;"><a style="margin: 0px; padding: 2px 5px 2px 5px; max-height: 20px; min-height: 20px;" class="button advanced-search-modal-results-table-row-section-head-load-more">' + fetch_more_text + '</a></td>';
       results_html += '<td style="text-align: right;">';
       results_html += '<b>' + result['post_type'] + '</b></td>';
       results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-offset" value="' + result['offset'] + '">';
@@ -124,10 +128,10 @@ jQuery(document).ready(function ($) {
     results_html += '</tbody></table>';
 
     // Update results table
-    $('.advanced-search-modal-results').html(results_html);
-
-    // Callback
-    callback();
+    $('.advanced-search-modal-results').fadeOut('fast', function () {
+      $('.advanced-search-modal-results').html(results_html);
+      callback();
+    });
   }
 
   function build_result_table_row(post) {
@@ -143,7 +147,7 @@ jQuery(document).ready(function ($) {
 
     let results_html = '<tr class="advanced-search-modal-results-table-row-clickable">';
 
-    results_html += '<td style="min-width: 250px;"><b>' + post['post_title'] + '</b><br><span style="font-size: 10pt; color: #4a4a4a">';
+    results_html += '<td style="min-width: 250px; text-align: left;"><b>' + post['post_title'] + '</b><br><span style="font-size: 10pt; color: #4a4a4a">';
 
     if (is_comment_hit) {
       results_html += (String(post['comment_hit_content']).length > 100) ? String(post['comment_hit_content']).substring(0, 100) + "..." : post['comment_hit_content'];

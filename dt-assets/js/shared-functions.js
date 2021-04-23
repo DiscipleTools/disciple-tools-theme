@@ -186,11 +186,11 @@ window.API = {
       user_id: userId,
     }),
 
-  advanced_search: (search_query, post_type, offset) => makeRequest("GET", `search`, {
+  advanced_search: (search_query, post_type, offset) => makeRequest("GET", `advanced_search`, {
     query: search_query,
     post_type: post_type,
     offset: offset
-  }, 'dt-search/v1/')
+  }, 'dt-posts/v2/posts/search/')
 };
 
 function handleAjaxError(err) {
