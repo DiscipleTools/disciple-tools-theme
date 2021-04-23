@@ -1977,7 +1977,7 @@ class Disciple_Tools_Posts
                         }
                         $fields["address"][] = $details;
                     }
-                } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" ) {
+                } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
                     if ( empty( $value[0] ) ) {
                         unset( $fields[$key] );
                         continue;
@@ -1990,7 +1990,7 @@ class Disciple_Tools_Posts
                     } else {
                         $label = $value[0];
                     }
-//                        $label = $field_settings[ $key ]["default"][ $value[0] ]["label"] ?? $value[0];
+
                     $fields[$key] = [
                         "key" => $value[0],
                         "label" => $label
@@ -2012,7 +2012,7 @@ class Disciple_Tools_Posts
                             }
                         }
                     }
-                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' ) {
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
                     if ( $key === "tags" ){
                         $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
                     } else {
@@ -2103,16 +2103,10 @@ class Disciple_Tools_Posts
                         "category" => $m["category"]
                     ];
                 } else if ( isset( $field_settings[$m['meta_key']]['private'] ) && $field_settings[$m['meta_key']]['private'] ) {
-
                     if ( $field_settings[$m['meta_key']]['type'] === 'multi_select' ) {
-                        $new_post_data = array();
+                        if ( !is_array( $fields[$m["meta_key"]] ) ) { $fields[$m["meta_key"]] = []; }
 
-                        foreach ( $fields[$m["meta_key"]] as $private_field_value ) {
-                            if ( isset( $private_field_value["value"] ) ) {
-                                array_push( $new_post_data, $private_field_value["value"] );
-                            }
-                        }
-                        $fields[$m["meta_key"]] = $new_post_data;
+                        array_push( $fields[$m["meta_key"]], $m["meta_value"] );
 
                     } else if ( $field_settings[$m['meta_key']]['type'] === 'key_select' ){
                         if ( !is_array( $fields[$m["meta_key"]] ) ) {
