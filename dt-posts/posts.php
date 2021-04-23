@@ -1686,7 +1686,7 @@ class Disciple_Tools_Posts
                 WHERE um.post_id = %d
                 AND user_id = %d
                 AND um.meta_key = %s
-                ", array($post_id, $current_user_id, $field_key) ), ARRAY_A);
+                ", array( $post_id, $current_user_id, $field_key ) ), ARRAY_A );
 
                 if ( $all_user_meta ) {
                     $update = $wpdb->update( $wpdb->dt_post_user_meta,
@@ -1714,7 +1714,6 @@ class Disciple_Tools_Posts
                         return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
                     }
                 }
-
             }
         }
     }
@@ -2106,7 +2105,6 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field_settings[$m['meta_key']]['private'] ) && $field_settings[$m['meta_key']]['private'] ) {
 
                     if ( $field_settings[$m['meta_key']]['type'] === 'multi_select' ) {
-                        dt_write_log('IS MUTLISELECT');
                         $new_post_data = array();
 
                         foreach ( $fields[$m["meta_key"]] as $private_field_value ) {
@@ -2116,7 +2114,7 @@ class Disciple_Tools_Posts
                         }
                         $fields[$m["meta_key"]] = $new_post_data;
 
-                    } else  if ( $field_settings[$m['meta_key']]['type'] === 'key_select' ) {
+                    } else if ( $field_settings[$m['meta_key']]['type'] === 'key_select' ){
                         if ( !is_array( $fields[$m["meta_key"]] ) ) {
                             $fields[$m["meta_key"]] = [];
                         }
@@ -2124,7 +2122,7 @@ class Disciple_Tools_Posts
                         $label = $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'];
                         $fields[$m["meta_key"]] = array( 'key' => $key, 'label' => $label  );
 
-                    } else  if ( $field_settings[$m['meta_key']]['type'] === 'date' ) {
+                    } else if ( $field_settings[$m['meta_key']]['type'] === 'date' ){
                         $timestamp = $m['meta_value'];
                         $formatted_date = dt_format_date( $timestamp );
 
