@@ -320,9 +320,6 @@ dt_please_log_in();
                                         <div class="section-subheader">
                                             <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
                                             <?php esc_html_e( "Status", 'disciple_tools' ) ?>
-                                            <button class="help-button" data-section="overall-status-help-text">
-                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                            </button>
                                         </div>
                                         <select id="overall_status" class="select-field">
                                             <option></option>
