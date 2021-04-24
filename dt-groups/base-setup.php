@@ -38,6 +38,7 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 10, 2 );
         add_action( "dt_post_created", [ $this, "dt_post_created" ], 10, 3 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
+        add_filter( "dt_after_get_post_fields_filter", [ $this, "dt_after_get_post_fields_filter" ], 10, 2 );
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
@@ -920,6 +921,86 @@ class DT_Groups_Base extends DT_Module_Base {
                 self::check_requires_update( $post_id );
             }
         }
+    }
+
+    // add members meta to post details
+    public function dt_after_get_post_fields_filter( $fields, $details_post_type ) {
+        if ( $details_post_type !== $this->post_type || empty( $fields["members"] ) ) {
+            return $fields;
+        }
+        global $wpdb;
+        // loop through the members array, and get the overall_status and milestones meta data
+        // for each member
+        $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
+        $overall_status_settings = $field_settings["overall_status"]["default"];
+        $milestone_settings = $field_settings["milestones"]["default"];
+
+        $defaults_to_display = [
+            'baptized',
+            'has_bible',
+        ];
+        $default_milestones_to_display = apply_filters( 'dt_members_extra_data', $defaults_to_display );
+
+        $default_milestone_keys = array_map( function ( $milestone ) {
+            return "milestone_$milestone";
+        }, $default_milestones_to_display);
+
+        // set up the MySQL OR string to get multiple posts at once
+        $members_post_ids = [];
+        foreach ($fields["members"] as $member) {
+            $member_id = $member['ID'];
+            $members_post_ids[] = "post_id = $member_id";
+        }
+        $members_or_string = implode( ' OR ', $members_post_ids );
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+        SELECT *
+        FROM $wpdb->postmeta AS pm
+        WHERE
+            ( %1s )
+            AND
+            (
+                meta_key = 'milestones'
+                OR meta_key = 'overall_status'
+            )
+        ORDER BY pm.post_id ASC
+        ", $members_or_string ) );
+
+        // order the results by id in a lookup array
+        $results_by_post_id = [];
+        foreach ($results as $result) {
+            if ( !key_exists( $result->post_id, $results_by_post_id ) ) {
+                $results_by_post_id[$result->post_id] = [];
+            }
+            $results_by_post_id[$result->post_id][] = $result;
+        }
+
+        // pump the member metadata into the members array of the post
+        foreach ($fields["members"] as $key => $member) {
+            $member_id = $member["ID"];
+            $member_data = key_exists( $member_id, $results_by_post_id ) ? $results_by_post_id[$member_id] : [];
+            $data = [
+                "milestones" => [],
+            ];
+            foreach ($member_data as $meta) {
+                if ( $meta->meta_key === 'milestones' && in_array( $meta->meta_value, $default_milestone_keys, true ) ) {
+                    $data["milestones"][] = $milestone_settings[$meta->meta_value];
+                } elseif ( $meta->meta_key === 'overall_status' ) {
+                    $data["overall_status"] = $overall_status_settings[$meta->meta_value];
+                }
+            }
+            // uniqueify the milestones array
+            $data["milestones"] = array_reduce( $data["milestones"], function ( $array, $milestone ){
+                if ( !in_array( $milestone, $array, true ) ) {
+                    $array[] = $milestone;
+                    return $array;
+                }
+                return $array;
+            }, []);
+            $fields["members"][$key]["data"] = $data;
+        }
+
+        return $fields;
     }
 
     // filter at the start of post creation

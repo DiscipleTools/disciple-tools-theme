@@ -461,6 +461,16 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         ],
     ];
 
+    // alias's must be lower case with no spaces
+    $fields['comment_reaction_options'] = [
+            "thumbs_up" => [ 'name' => __( "thumbs up", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png', 'emoji' => '👍' ],
+            "heart" => [ 'name' => __( "heart", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/2764.png', 'emoji' => '❤️'],
+            "laugh" => [ 'name' => __( "laugh", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f604.png', 'emoji' => '😄' ],
+            "wow" => [ 'name' => __( "wow", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f62e.png', 'emoji' => '😮' ],
+            "sad" => [ 'name' => __( "sad", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f615.png', 'emoji' => '😟' ],
+            "angry" => [ 'name' => __( "angry", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f620.png', 'emoji' => '😠' ],
+        ];
+
     $fields['sources'] = [];
 
     $fields["contact_address_types"] = [

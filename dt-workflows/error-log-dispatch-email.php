@@ -4,10 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
-if ( ! wp_next_scheduled( 'dispatch-error-log-email' ) ) {
-    wp_schedule_event( time(), 'daily', 'dispatch-error-log-email' );
+if ( ! wp_next_scheduled( 'error_log_dispatch_email' ) ) {
+    wp_schedule_event( time(), 'daily', 'error_log_dispatch_email' );
 }
-add_action( 'dispatch-error-log-email', 'find_new_error_logs' );
+add_action( 'error_log_dispatch_email', 'find_new_error_logs' );
 
 function find_new_error_logs() {
     global $wpdb, $wp;
