@@ -4,6 +4,8 @@ jQuery(function() {
     }
 })
 
+const view = 'month'
+
 function escapeObject(obj) {
     return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
         return [ key, window.lodash.escape(value)]
@@ -17,7 +19,12 @@ function projectTimeCharts() {
         title_time_charts,
         post_type_select_label,
         post_field_select_label,
+        total_label,
+        added_label,
+        tooltip_label,
     } = escapeObject(dtMetricsProject.translations)
+
+    const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
 
     const postTypeOptions = escapeObject(dtMetricsProject.select_options.post_type_select_options)
     const postFieldOptions = escapeObject(dtMetricsProject.select_options.post_field_select_options)
@@ -41,6 +48,74 @@ function projectTimeCharts() {
             </select>
         </section>
         <hr>
+        <section class="timechart"></section>
     `
 
+    const chartSection = document.querySelector('.timechart')
+
+
+    am4core.useTheme(am4themes_animated);
+
+    const chart = am4core.create(chartSection, am4charts.XYChart)
+    const data = view === 'month' ? formatMonthData() : null
+
+    const categoryAxis = chart.xAxes.push( new am4charts.CategoryAxis() )
+    categoryAxis.dataFields.category = "month"
+
+    const valueAxis = chart.yAxes.push( new am4charts.ValueAxis() )
+
+    const columnSeries = chart.series.push( new am4charts.ColumnSeries() )
+    columnSeries.name = total_label
+    columnSeries.dataFields.valueY = 'cumulativeTotal'
+    columnSeries.dataFields.categoryX = view === 'month' ? 'month' : 'year'
+    columnSeries.columns.template.tooltipText = `[#fff font-size: 15px]${tooltipLabel}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
+    columnSeries.columns.template.propertyFields.fillOpacity = "fillOpacity";
+    columnSeries.columns.template.propertyFields.stroke = "stroke";
+    columnSeries.columns.template.propertyFields.strokeWidth = "strokeWidth";
+    columnSeries.columns.template.propertyFields.strokeDasharray = "columnDash";
+    columnSeries.tooltip.label.textAlign = "middle";
+
+    let lineSeries = chart.series.push(new am4charts.LineSeries());
+    lineSeries.name = added_label
+    lineSeries.dataFields.valueY = "count";
+    lineSeries.dataFields.categoryX = "month";
+
+    lineSeries.stroke = am4core.color("#fdd400");
+    lineSeries.strokeWidth = 3;
+    lineSeries.propertyFields.strokeDasharray = "lineDash";
+    lineSeries.tooltip.label.textAlign = "middle";
+
+    let bullet = lineSeries.bullets.push(new am4charts.Bullet());
+    bullet.fill = am4core.color("#fdd400"); // tooltips grab fill from parent by default
+    bullet.tooltipText = `[#fff font-size: 15px]${tooltipLabel}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
+    let circle = bullet.createChild(am4core.Circle);
+    circle.radius = 4;
+    circle.fill = am4core.color("#fff");
+    circle.strokeWidth = 3;
+
+    chart.data = data
+}
+
+function formatMonthData() {
+    const monthLabels = window.wpApiShare.translations.month_labels
+    const monthlyData = window.dtMetricsProject.data
+
+    let cumulativeTotal = 0
+    const formattedMonthlyData = monthLabels.map((monthLabel, i) => {
+        const monthNumber = i + 1
+
+        const monthData = monthlyData.find((mData) => mData.month === String(monthNumber) )
+        const count = monthData ? parseInt(monthData.count) : 0
+        cumulativeTotal = cumulativeTotal + count
+
+        return {
+            'month': monthLabel,
+            'count': count,
+            'cumulativeTotal': cumulativeTotal
+        }
+    })        
+        // search for monthNumber in data
+        // if there, add count to cumulative
+
+    return formattedMonthlyData
 }

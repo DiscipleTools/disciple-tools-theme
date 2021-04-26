@@ -46,20 +46,7 @@ class Disciple_Tools_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         if ( in_array( $field, $post_fields, true ) ) {
             return $post_fields;
         } else {
-            // get all posts within the year given that
             $results = $wpdb->get_results(
-                $wpdb->prepare( "
-                    SELECT * FROM $wpdb->posts AS p
-                    INNER JOIN $wpdb->postmeta AS pm
-                        ON p.ID = pm.post_id
-                    WHERE pm.meta_key = %s
-                        AND pm.meta_value >= %s
-                        AND pm.meta_value <= %s
-                ", $field, $start, $end
-                )
-            );
-
-            $results2 = $wpdb->get_results(
                 $wpdb->prepare( "
                     SELECT 
                         MONTH( FROM_UNIXTIME( pm.meta_value ) ) AS month,
@@ -67,19 +54,19 @@ class Disciple_Tools_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     FROM $wpdb->posts AS p
                     INNER JOIN $wpdb->postmeta AS pm
                         ON p.ID = pm.post_id
-                    WHERE pm.meta_key = %s
+                    WHERE p.post_type = %s
+                        AND pm.meta_key = %s
                         AND pm.meta_value >= %s
                         AND pm.meta_value <= %s
                     GROUP BY MONTH( FROM_UNIXTIME( pm.meta_value ) )
                     ORDER BY MONTH( FROM_UNIXTIME( pm.meta_value ) )
-                ", $field, $start, $end
+                ", $post_type, $field, $start, $end
                 )
             );
 
-            return $results2;
+            return $results;
         }
 
         return [];
     }
-
 }

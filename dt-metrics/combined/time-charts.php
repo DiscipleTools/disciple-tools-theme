@@ -72,6 +72,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, false, true );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, false, true );
+        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4', true );
 
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
             'moment',
@@ -79,6 +80,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             'jquery-ui-core',
             'amcharts-core',
             'amcharts-charts',
+            'amcharts-animated',
             'datepicker',
             'wp-i18n'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
@@ -95,6 +97,9 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     "title_time_charts" => __( 'Time Charts', 'disciple_tools' ),
                     "post_type_select_label" => __( 'Post Type', 'disciple_tools' ),
                     "post_field_select_label" => __( 'Post Field', 'disciple_tools' ),
+                    "total_label" => __( 'Total', 'disciple_tools' ),
+                    "added_label" => __( 'Added', 'disciple_tools' ),
+                    "tooltip_label" => _x( '%1$s in %2$s', 'Total in January', 'disciple_tools' ),
                 ],
                 'select_options' => [
                     'post_type_select_options' => $this->post_type_select_options,
