@@ -92,7 +92,13 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 'nonce'              => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
-                'data'               => $this->get_stats_by_month( $this->post_types[0], array_key_first( $this->field_settings ), gmdate( "Y" ) ),
+                'state'              => [
+                    'chart_view' => 'month',
+                    'post_type' => $this->post_types[0],
+                    'field' => array_key_first( $this->field_settings ),
+                    'year' => gmdate( "Y" ),
+                ],
+                'data'               => [],
                 'translations'       => [
                     "title_time_charts" => __( 'Time Charts', 'disciple_tools' ),
                     "post_type_select_label" => __( 'Post Type', 'disciple_tools' ),
@@ -109,6 +115,29 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 'field_settings' => $this->field_settings,
             ]
         );
+    }
+
+    public function add_api_routes() {
+        $version   = '1';
+        $namespace = 'dt/v' . $version;
+
+        register_rest_route(
+            $namespace, '/metrics/time_metrics_by_month/(?P<post_type>\w+)/(?P<field>\w+)/(?P<year>\d+)', [
+                [
+                    'methods'  => WP_REST_Server::READABLE,
+                    'callback' => [ $this, 'time_metrics_by_month' ],
+                    'permission_callback' => '__return_true',
+                ],
+            ]
+        );
+    }
+
+    public function time_metrics_by_month( WP_REST_Request $request ) {
+        if ( !$this->has_permission() ) {
+            return new WP_Error( "time_metrics_by_month", "Missing Permissions", [ 'status' => 400 ] );
+        }
+        $url_params = $request->get_url_params();
+        return $this->get_stats_by_month( $url_params['post_type'], $url_params['field'], $url_params['year'] );
     }
 
     public function get_stats_by_month( $post_type, $field, $year ) {

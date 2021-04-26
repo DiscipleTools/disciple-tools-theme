@@ -184,7 +184,10 @@ window.API = {
   request_record_access: (post_type, postId, userId) =>
     makeRequestOnPosts("POST", `${post_type}/${postId}/request_record_access`, {
       user_id: userId,
-    })
+    }),
+
+  getTimeMetricsByMonth: (postType, field, year) =>
+    makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`)
 };
 
 function handleAjaxError(err) {
