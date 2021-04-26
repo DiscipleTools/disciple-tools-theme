@@ -73,6 +73,7 @@ jQuery(document).ready(function ($) {
 
   function reset_widgets() {
     $('.advanced-search-modal-form-input').val('');
+    $('.advanced-search-modal-results-total').html('');
     $('.advanced-search-modal-results-div').slideUp('fast');
     $('.advanced-search-modal-results').html('').fadeOut('fast');
   }
@@ -109,15 +110,15 @@ jQuery(document).ready(function ($) {
     $('.advanced-search-modal-results-total').html(total_hits);
 
     // Iterate through results, displaying accordingly
-    results_html += '<table class="advanced-search-modal-results-table" style="border: none;"><tbody style="border: none;">';
+    results_html += '<table class="advanced-search-modal-results-table"><tbody>';
     results.forEach(function (result) {
 
-      results_html += '<tr style="background: #f5f5f5; padding: 0px;">';
-      results_html += '<td style="text-align: left; padding: 10px;"><a style="margin: 0px; padding: 2px 5px 2px 5px; max-height: 20px; min-height: 20px;" class="button hollow advanced-search-modal-results-table-row-section-head-load-more">' + fetch_more_text + '</a></td>';
-      results_html += '<td style="text-align: right;">';
+      results_html += '<tr>';
+      results_html += '<td class="advanced-search-modal-results-table-section-head-options"><a class="advanced-search-modal-results-table-row-section-head-load-more button hollow">' + fetch_more_text + '</a></td>';
+      results_html += '<td class="advanced-search-modal-results-table-section-head-post-type">';
       results_html += '<b>' + result['post_type'] + '</b></td>';
-      results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-offset" value="' + result['offset'] + '">';
-      results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-post-type" value="' + result['post_type'] + '">';
+      results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-offset" value="' + window.lodash.escape(result['offset']) + '">';
+      results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-post-type" value="' + window.lodash.escape(result['post_type']) + '">';
       results_html += '</td>';
       results_html += '</tr>';
 
@@ -129,7 +130,13 @@ jQuery(document).ready(function ($) {
 
     // Update results table
     $('.advanced-search-modal-results').fadeOut('fast', function () {
-      $('.advanced-search-modal-results').html(results_html);
+      let results_div = $('.advanced-search-modal-results');
+
+      // Reposition scrollbar to avoid blank views following a previous large result set
+      results_div.scrollTop();
+
+      // Update html and execute specified callback()
+      results_div.html(results_html);
       callback();
     });
   }
@@ -147,7 +154,7 @@ jQuery(document).ready(function ($) {
 
     let results_html = '<tr class="advanced-search-modal-results-table-row-clickable">';
 
-    results_html += '<td style="min-width: 250px; text-align: left;"><b>' + post['post_title'] + '</b><br><span style="font-size: 10pt; color: #4a4a4a">';
+    results_html += '<td class="advanced-search-modal-results-table-col-hits"><b>' + post['post_title'] + '</b><br><span>';
 
     if (is_comment_hit) {
       results_html += (String(post['comment_hit_content']).length > 100) ? String(post['comment_hit_content']).substring(0, 100) + "..." : post['comment_hit_content'];
@@ -156,13 +163,13 @@ jQuery(document).ready(function ($) {
     }
     results_html += '</span>';
 
-    results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-hidden-post-id" value="' + hidden_post_id + '">';
-    results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-hidden-post-type" value="' + hidden_post_type + '">';
+    results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-hidden-post-id" value="' + window.lodash.escape(hidden_post_id) + '">';
+    results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-hidden-post-type" value="' + window.lodash.escape(hidden_post_type) + '">';
 
     results_html += '</td>';
 
     // Determine hit type icon to be displayed
-    results_html += '<td style="min-width: 50px; text-align: right;">';
+    results_html += '<td class="advanced-search-modal-results-table-col-hits-type">';
     results_html += (is_post_hit || is_default_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
     results_html += (is_comment_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
     results_html += (is_meta_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/socialmedia.svg" alt="Meta Hit"/>&nbsp;' : '';

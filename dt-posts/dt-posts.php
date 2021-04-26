@@ -1554,10 +1554,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 if ( $post_type !== 'peoplegroups' ) {
                     $type_results = self::advanced_search_by_post( $post_type, [
                             'text'             => $query,
-                            'offset'           => $offset,
-                            'limit'            => 20,
-                            'sort'             => '',
-                            'fields_to_search' => [ 'all' ]
+                            'offset'           => $offset
                         ]
                     );
                     if ( ! empty( $type_results ) && ( intval( $type_results['total'] ) > 0 ) ) {
@@ -1576,8 +1573,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
     }
 
-    private static function advanced_search_by_post( string $post_type, array $query, bool $check_permissions = true ) {
-        if ( $check_permissions && ! self::can_access( $post_type ) ) {
+    private static function advanced_search_by_post( string $post_type, array $query ) {
+        if ( ! self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, "You do not have access to these", [ 'status' => 403 ] );
         }
         $post_types = self::get_post_types();
@@ -1590,9 +1587,6 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         global $wpdb;
 
-        $post_settings = self::get_post_settings( $post_type );
-        $post_fields   = $post_settings["fields"];
-
         $search = "";
         if ( isset( $query["text"] ) ) {
             $search = sanitize_text_field( $query["text"] );
@@ -1603,154 +1597,34 @@ class DT_Posts extends Disciple_Tools_Posts {
             $offset = esc_sql( sanitize_text_field( $query["offset"] ) );
             unset( $query["offset"] );
         }
-        $limit = 100;
-        if ( isset( $query["limit"] ) ) {
-            $limit = esc_sql( sanitize_text_field( $query["limit"] ) );
-            $limit = MIN( $limit, 1000 );
-            unset( $query["limit"] );
-        }
-        $sort     = "";
-        $sort_dir = "asc";
-        if ( isset( $query["sort"] ) ) {
-            $sort = esc_sql( sanitize_text_field( $query["sort"] ) );
-            if ( strpos( $sort, "-" ) === 0 ) {
-                $sort_dir = "desc";
-                $sort     = str_replace( "-", "", $sort );
-            }
-            unset( $query["sort"] );
-        }
-        $fields_to_search = [];
-        if ( isset( $query["fields_to_search"] ) ) {
-            $fields_to_search = $query["fields_to_search"];
-            unset( $query ["fields_to_search"] );
-        }
-
-        $post_query = "";
-        if ( ! empty( $search ) ) {
-            $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
-
-            if ( empty( $fields_to_search ) ) {
-                $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
-                    OR p.ID IN ( SELECT post_id
-                                FROM $wpdb->postmeta
-                                WHERE meta_key LIKE 'contact_%'
-                                AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
-                    )
-                ";
-            }
-            if ( ! empty( $fields_to_search ) ) {
-                if ( in_array( 'name', $fields_to_search ) ) {
-                    $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
-                        OR p.ID IN ( SELECT post_id
-                                    FROM $wpdb->postmeta
-                                    WHERE meta_key LIKE 'contact_%'
-                                    AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
-                        )
-                    ";
-                } else {
-                    $post_query .= "AND ( ";
-                }
-                if ( in_array( 'all', $fields_to_search ) ) {
-                    if ( substr( $post_query, - 6 ) !== 'AND ( ' ) {
-                        $post_query .= "OR ";
-                    }
-                    $post_query .= "( p.post_title LIKE '%" . esc_sql( $search ) . "%' ) OR p.ID IN ( SELECT comment_post_ID
-                    FROM $wpdb->comments
-                    WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
-                    ) OR p.ID IN ( SELECT post_id
-                    FROM $wpdb->postmeta
-                    WHERE meta_value LIKE '%" . esc_sql( $search ) . "%'
-                    ) ";
-                } else {
-                    if ( in_array( 'comment', $fields_to_search ) ) {
-                        if ( substr( $post_query, - 6 ) !== 'AND ( ' ) {
-                            $post_query .= "OR ";
-                        }
-                        $post_query .= " p.ID IN ( SELECT comment_post_ID
-                        FROM $wpdb->comments
-                        WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
-                        ) ";
-                    }
-                    foreach ( $fields_to_search as $field ) {
-                        array_push( $other_search_fields, $field );
-                    }
-                }
-            }
-            foreach ( $other_search_fields as $field ) {
-                if ( substr( $post_query, - 6 ) !== 'AND ( ' ) {
-                    $post_query .= "OR ";
-                }
-                $post_query .= "p.ID IN ( SELECT post_id
-                             FROM $wpdb->postmeta
-                             WHERE meta_key LIKE '" . esc_sql( $field ) . "'
-                             AND meta_value LIKE '%" . esc_sql( $search ) . "%'
-                ) ";
-            }
-            $post_query .= " ) ";
-
-            if ( $post_type === "peoplegroups" ) {
-
-                $locale = get_user_locale();
-
-                $post_query = " AND (p.post_title LIKE '%" . esc_sql( $search ) . "%' OR p.ID IN ( SELECT post_id
-                                  FROM $wpdb->postmeta
-                                  WHERE meta_key LIKE '" . esc_sql( $locale ) . "'
-                                  AND meta_value LIKE '%" . esc_sql( $search ) . "%' ))";
-            }
-        }
-
-        $sort_sql = "";
-        if ( empty( $sort_sql ) ) {
-            $sort_sql = "p.post_title asc";
-        }
-
-        $group_by_sql = "";
-        if ( strpos( $sort_sql, 'sort.meta_value' ) !== false ) {
-            $group_by_sql = ", sort.meta_value";
-        }
-
-        $permissions = [
-            "shared_with" => [ "me" ]
-        ];
-        $permissions = apply_filters( "dt_filter_access_permissions", $permissions, $post_type );
-
-        if ( $check_permissions && ! empty( $permissions ) ) {
-            $query[] = $permissions;
-        }
+        $limit = 20;
 
         $fields_sql = self::fields_to_sql( $post_type, $query );
         if ( is_wp_error( $fields_sql ) ) {
             return $fields_sql;
         }
 
-        // Adjust hit columns, accordingly
-        $like_query_sql       = "'%" . esc_sql( $search ) . "%'";
-        $additional_hits_cols = ", if(p.post_title LIKE " . $like_query_sql . ", 'Y', 'N') post_hit, if(post_type_comments.comment_content LIKE " . $like_query_sql . ", 'Y', 'N') comment_hit, if(post_type_meta.meta_value LIKE " . $like_query_sql . ", 'Y', 'N') meta_hit, if(post_type_comments.comment_content LIKE " . $like_query_sql . ", post_type_comments.comment_content, '') comment_hit_content, if(post_type_meta.meta_value LIKE " . $like_query_sql . ", post_type_meta.meta_value, '') meta_hit_value";
-        $group_by_sql         = ", p.post_title, p.post_date, post_hit, comment_hit, meta_hit, comment_hit_content, meta_hit_value";
+        // Prepare sql and execute search query
+        $esc_like_search_sql = esc_sql( "%" . $wpdb->esc_like( $search ) . "%" );
 
-        if ( $post_type === "peoplegroups" ) {
-            $additional_hits_cols = "";
-            $group_by_sql         = "";
+        $posts = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID, p.post_title, p.post_type, p.post_date, if(p.post_title LIKE %s, 'Y', 'N') post_hit, if(post_type_comments.comment_content LIKE %s, 'Y', 'N') comment_hit, if(post_type_meta.meta_value LIKE %s, 'Y', 'N') meta_hit, if(post_type_comments.comment_content LIKE %s, post_type_comments.comment_content, '') comment_hit_content, if(post_type_meta.meta_value LIKE %s, post_type_meta.meta_value, '') meta_hit_value
+            FROM $wpdb->posts p
 
-        } elseif ( $post_type === "contacts" ) {
-            $fields_sql["joins_sql"] = "LEFT JOIN " . $wpdb->comments . " as post_type_comments ON ( post_type_comments.comment_post_ID = p.ID ) LEFT JOIN " . $wpdb->dt_share . " as field_shared_with ON ( field_shared_with.post_id = p.ID ) LEFT JOIN " . $wpdb->postmeta . " as post_type_meta ON ( post_type_meta.post_id = p.ID AND ((post_type_meta.meta_key LIKE 'contact_%') OR (post_type_meta.meta_key LIKE 'nickname')) )";
-            $fields_sql["where_sql"] = "( ( field_shared_with.user_id IN ( '1' ) ) OR ( ( post_type_meta.meta_value LIKE '%' ) ) )";
+                LEFT JOIN " . $wpdb->comments . " as post_type_comments ON ( post_type_comments.comment_post_ID = p.ID AND comment_content LIKE %s )
+                LEFT JOIN " . $wpdb->dt_share . " as field_shared_with ON ( field_shared_with.post_id = p.ID )
+                LEFT JOIN " . $wpdb->postmeta . " as post_type_meta ON ( post_type_meta.post_id = p.ID AND ((post_type_meta.meta_key LIKE %s) OR (post_type_meta.meta_key LIKE 'nickname')) AND (post_type_meta.meta_key NOT LIKE %s) )
 
-        } else {
-            $fields_sql["joins_sql"] = "LEFT JOIN " . $wpdb->comments . " as post_type_comments ON ( post_type_comments.comment_post_ID = p.ID ) LEFT JOIN " . $wpdb->postmeta . " as post_type_meta ON ( post_type_meta.post_id = p.ID )";
-            $fields_sql["where_sql"] = "";
-        }
+                WHERE (p.post_status = 'publish') AND p.post_type = %s AND ( ( p.post_title LIKE %s )
+                OR post_type_comments.comment_id IS NOT NULL
+                OR p.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_value LIKE %s ) )
 
-        // phpcs:disable
-        // WordPress.WP.PreparedSQL.NotPrepared
-        $query_sql = "
-            SELECT SQL_CALC_FOUND_ROWS p.ID, p.post_title, p.post_type, p.post_date" . $additional_hits_cols . "
-            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
-            (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
-            GROUP BY p.ID " . $group_by_sql . "
-            ORDER BY " . $sort_sql . "
-            LIMIT " . esc_sql( $offset ) . ", " . $limit;
-        $posts     = $wpdb->get_results( $query_sql, OBJECT );
+                GROUP BY p.ID, p.post_title, p.post_date, post_hit, comment_hit, meta_hit, comment_hit_content, meta_hit_value
+                ORDER BY p.post_title asc LIMIT %d, %d",
+            $esc_like_search_sql, $esc_like_search_sql, $esc_like_search_sql, $esc_like_search_sql, $esc_like_search_sql,
+            $esc_like_search_sql, $wpdb->esc_like( 'contact_' ) . "%", $wpdb->esc_like( 'contact_' ) . "%" . $wpdb->esc_like( '_details' ),
+            esc_sql( $post_type ),
+            $esc_like_search_sql, $esc_like_search_sql,
+        $offset, $limit ), OBJECT );
 
         if ( empty( $posts ) && ! empty( $wpdb->last_error ) ) {
             return new WP_Error( __FUNCTION__, "Sorry, we had a query issue.", [ 'status' => 500 ] );
@@ -1782,8 +1656,8 @@ class DT_Posts extends Disciple_Tools_Posts {
             $hit->post_title = wp_specialchars_decode( $hit->post_title );
         }
 
+        //capture hits count and adjust future offsets
         $post_hits_count = count( $post_hits );
-
         return [
             "post_type" => $post_type,
             "posts"     => $post_hits,
