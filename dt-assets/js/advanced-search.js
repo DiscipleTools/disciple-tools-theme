@@ -52,10 +52,10 @@ jQuery(document).ready(function ($) {
         // Update global hits count
         let results_total = $('.advanced-search-modal-results-total');
         let new_global_hits_count = parseInt(results_total.html()) + parseInt(api_data['total_hits']);
-        results_total.html(new_global_hits_count);
+        results_total.html(window.lodash.escape(new_global_hits_count));
 
         // Update section offset value
-        evt.currentTarget.parentNode.parentNode.querySelector("#advanced-search-modal-results-table-row-section-head-hidden-offset").setAttribute("value", results[0]['offset']);
+        evt.currentTarget.parentNode.parentNode.querySelector("#advanced-search-modal-results-table-row-section-head-hidden-offset").setAttribute("value", window.lodash.escape(results[0]['offset']));
 
         // Insert latest finds...!
         results[0]['posts'].forEach(function (post) {
@@ -107,16 +107,16 @@ jQuery(document).ready(function ($) {
     let results_html = "";
 
     // Update global hits count
-    $('.advanced-search-modal-results-total').html(total_hits);
+    $('.advanced-search-modal-results-total').html(window.lodash.escape(total_hits));
 
     // Iterate through results, displaying accordingly
     results_html += '<table class="advanced-search-modal-results-table"><tbody>';
     results.forEach(function (result) {
 
       results_html += '<tr>';
-      results_html += '<td class="advanced-search-modal-results-table-section-head-options"><a class="advanced-search-modal-results-table-row-section-head-load-more button hollow">' + fetch_more_text + '</a></td>';
+      results_html += '<td class="advanced-search-modal-results-table-section-head-options"><a class="advanced-search-modal-results-table-row-section-head-load-more button hollow">' + window.lodash.escape(fetch_more_text) + '</a></td>';
       results_html += '<td class="advanced-search-modal-results-table-section-head-post-type">';
-      results_html += '<b>' + result['post_type'] + '</b></td>';
+      results_html += '<b>' + window.lodash.escape(result['post_type']) + '</b></td>';
       results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-offset" value="' + window.lodash.escape(result['offset']) + '">';
       results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-post-type" value="' + window.lodash.escape(result['post_type']) + '">';
       results_html += '</td>';
@@ -154,12 +154,12 @@ jQuery(document).ready(function ($) {
 
     let results_html = '<tr class="advanced-search-modal-results-table-row-clickable">';
 
-    results_html += '<td class="advanced-search-modal-results-table-col-hits"><b>' + post['post_title'] + '</b><br><span>';
+    results_html += '<td class="advanced-search-modal-results-table-col-hits"><b>' + window.lodash.escape(post['post_title']) + '</b><br><span>';
 
     if (is_comment_hit) {
-      results_html += (String(post['comment_hit_content']).length > 100) ? String(post['comment_hit_content']).substring(0, 100) + "..." : post['comment_hit_content'];
+      results_html += window.lodash.escape((String(post['comment_hit_content']).length > 100) ? String(post['comment_hit_content']).substring(0, 100) + "..." : post['comment_hit_content']);
     } else if (is_meta_hit) {
-      results_html += post['meta_hit_value'];
+      results_html += window.lodash.escape(post['meta_hit_value']);
     }
     results_html += '</span>';
 
@@ -170,9 +170,9 @@ jQuery(document).ready(function ($) {
 
     // Determine hit type icon to be displayed
     results_html += '<td class="advanced-search-modal-results-table-col-hits-type">';
-    results_html += (is_post_hit || is_default_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
-    results_html += (is_comment_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
-    results_html += (is_meta_hit) ? '<img class="dt-icon" src="' + template_dir_uri + '/dt-assets/images/socialmedia.svg" alt="Meta Hit"/>&nbsp;' : '';
+    results_html += (is_post_hit || is_default_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
+    results_html += (is_comment_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
+    results_html += (is_meta_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/socialmedia.svg" alt="Meta Hit"/>&nbsp;' : '';
     results_html += '</td>';
 
     results_html += '</tr>';

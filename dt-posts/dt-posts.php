@@ -1614,7 +1614,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 LEFT JOIN " . $wpdb->dt_share . " as field_shared_with ON ( field_shared_with.post_id = p.ID )
                 LEFT JOIN " . $wpdb->postmeta . " as post_type_meta ON ( post_type_meta.post_id = p.ID AND ((post_type_meta.meta_key LIKE %s) OR (post_type_meta.meta_key LIKE 'nickname')) AND (post_type_meta.meta_key NOT LIKE %s) )
 
-                WHERE (p.post_status = 'publish') AND p.post_type = %s AND ( ( p.post_title LIKE %s )
+                WHERE (field_shared_with.user_id IN (%d)) AND (p.post_status = 'publish') AND p.post_type = %s AND ( ( p.post_title LIKE %s )
                 OR post_type_comments.comment_id IS NOT NULL
                 OR p.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_value LIKE %s ) )
 
@@ -1622,8 +1622,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 ORDER BY p.post_title asc LIMIT %d, %d",
             $esc_like_search_sql, $esc_like_search_sql, $esc_like_search_sql, $esc_like_search_sql, $esc_like_search_sql,
             $esc_like_search_sql, $wpdb->esc_like( 'contact_' ) . "%", $wpdb->esc_like( 'contact_' ) . "%" . $wpdb->esc_like( '_details' ),
-            esc_sql( $post_type ),
-            $esc_like_search_sql, $esc_like_search_sql,
+            get_current_user_id(), esc_sql( $post_type ), $esc_like_search_sql,
+            $esc_like_search_sql,
         $offset, $limit ), OBJECT );
 
         if ( empty( $posts ) && ! empty( $wpdb->last_error ) ) {
