@@ -640,7 +640,7 @@ class DT_Contacts_Base {
     }
 
     public function dt_record_notifications_section( $post_type, $dt_post ){
-        if ( $post_type === "contacts" && ( $dt_post["type"]["key"] === "personal" || $dt_post["type"]["key"] === "placeholder" ) ):
+        if ( $post_type === "contacts" ):
             $post_settings = DT_Posts::get_post_settings( $post_type );
             ?>
             <!-- archived -->
