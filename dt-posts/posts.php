@@ -888,12 +888,14 @@ class Disciple_Tools_Posts
                              * post user meta
                              */
                             if ( !in_array( $table_key, $args["joins_fields"] ) ){
+                                $user_id = get_current_user_id();
                                 $values = dt_array_to_sql( $query_value );
                                 $args["joins_fields"][] = $table_key;
                                 $args["joins_sql"] .= " JOIN (
                                     SELECT *
                                     FROM $wpdb->dt_post_user_meta as pum
                                     WHERE pum.meta_key = '$query_key'
+                                    AND pum.user_id = $user_id
                                     AND pum.category IN ($values)
                                 ) as $table_key ON ( $table_key.post_id = p.ID )";
                             }
