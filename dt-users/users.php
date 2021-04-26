@@ -878,10 +878,9 @@ class Disciple_Tools_Users
         $master_contact_type = get_post_meta( $master_id, "type", true );
         $non_master_contact_type = get_post_meta( $non_master_id, "type", true );
         if ( $master_contact_type === "user" || $non_master_contact_type === "user" ){
-            //default to previous type or personal if both were user.
-            $type = $master_contact_type !== "user" ? $master_contact_type : ( $non_master_contact_type !== "user" ? $non_master_contact_type : "personal" );
+            //keep both records as type "user"
             update_post_meta( $master_id, "type", "user" );
-            update_post_meta( $non_master_id, "type", $type );
+            update_post_meta( $non_master_id, "type", "user" );
         }
     }
 
