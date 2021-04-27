@@ -210,7 +210,7 @@ else {
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
 
-                $url_path = strtok( dt_get_url_path(), '?' ); //allow get parameters
+                $url_path = untrailingslashit( dt_get_url_path( true ) ); //allow get parameters
 
                 if ( isset( $template_for_url[ $url_path ] ) && dt_please_log_in() ) {
                     $template_filename = locate_template( $template_for_url[ $url_path ], true );
