@@ -276,7 +276,9 @@ class Disciple_Tools_Contacts_Transfer
             $errors->add( __METHOD__, $result->get_error_message() );
         }
 
-        dt_write_log( $errors );
+        if ( $errors->has_errors() ){
+            dt_write_log( $errors );
+        }
 
         return true;
     }
@@ -360,20 +362,32 @@ class Disciple_Tools_Contacts_Transfer
          * Insert comments
          */
         if ( ! empty( $comment_data ) ) {
-            foreach ( $comment_data as $comment ) {
-                // set variables
-                $comment['comment_post_ID'] = $post_id;
-                $comment['comment_author'] = __( 'Transfer Bot', 'disciple_tools' ) . ' (' . $comment['user_id'] . ')';
-                $comment['user_id'] = 0;
-                $comment['comment_approved'] = 1;
-                unset( $comment['comment_ID'] );
+            global $wpdb;
+            $sql = "INSERT INTO $wpdb->comments (comment_post_ID, comment_author, comment_author_email, comment_date, comment_date_gmt, comment_content, comment_approved, comment_type, comment_parent, user_id) VALUES ";
 
-                // insert
-                $comment_id = wp_insert_comment( $comment );
-                if ( is_wp_error( $comment_id ) ) {
-                    $errors->add( 'comment_insert_fail', 'Comment insert fail for '. $comment['comment_ID'] );
-                    return $errors;
-                }
+            foreach ( $comment_data as $comment ) {
+                $comment = dt_recursive_sanitize_array( $comment );
+                $comment['comment_author'] = __( 'Transfer Bot', 'disciple_tools' ) . ' (' . $comment['user_id'] . ')';
+
+                $sql .= "( '"
+                    . esc_sql( $post_id ) . "', '"
+                    . esc_sql( $comment['comment_author'] ) . "', '"
+                    . esc_sql( $comment['comment_author_email'] ) . "', '"
+                    . esc_sql( $comment['comment_date'] ) . "', '"
+                    . esc_sql( $comment['comment_date_gmt'] ) . "', '"
+                    .  esc_sql( $comment['comment_content'] ) . "', '"
+                    . 1 . "', '"
+                    . esc_sql( $comment['comment_type'] ) . "', '"
+                    . esc_sql( $comment['comment_parent'] ) . "', '"
+                    . 0 . "' ),";
+            }
+            $sql .= ";";
+            $sql = str_replace( ",;", ";", $sql ); // remove last comma
+
+            $insert_comments = $wpdb->query( $sql ); // @phpcs:ignore
+            if ( empty( $insert_comments ) || is_wp_error( $insert_comments ) ) {
+                $errors->add( 'comment_insert_fail', 'Failed to insert comments' );
+                return $errors;
             }
         }
 
