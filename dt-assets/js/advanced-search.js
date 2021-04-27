@@ -35,6 +35,11 @@ jQuery(document).ready(function ($) {
     execute_search_query_by_offset(e, $(this));
   })
 
+  // Mobile view - Toggle searchable post types display
+  $(document).on("click", '.advanced-search-modal-results-post-types-view-at-top-collapsible-button', function () {
+    $('.advanced-search-modal-results-post-types-view-at-top-collapsible-content').slideToggle('fast');
+  })
+
   function execute_search_query_by_offset(evt, current_section_head) {
     let query = $('.advanced-search-modal-form-input').val();
     let offset = evt.currentTarget.parentNode.parentNode.querySelector("#advanced-search-modal-results-table-row-section-head-hidden-offset").getAttribute("value");

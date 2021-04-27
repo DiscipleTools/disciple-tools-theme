@@ -1354,11 +1354,13 @@ img.dt-blue-icon {
 
 .advanced-search-modal-results-div-col-results-list {
     min-width: 400px;
+    max-width: 400px;
     vertical-align: top;
 }
 
 .advanced-search-modal-results-div-col-post-type {
     min-width: 150px;
+    max-width: 150px;
     alignment: right;
     vertical-align: top;
 
@@ -1426,4 +1428,124 @@ img.dt-blue-icon {
 .advanced-search-modal-results-table-col-hits-type {
     min-width: 50px;
     text-align: right;
+}
+
+.advanced-search-modal-results-post-types-view-at-top {
+    display: none;
+}
+
+.advanced-search-modal-results-post-types-view-at-side {
+    display: inline;
+}
+
+@media screen and (max-width: 640px) {
+    .advanced-search-modal-form-input {
+        min-width: 250px;
+        display: inline-block;
+        margin-right: 0;
+    }
+
+    .advanced-search-modal-results-div-col-results-list {
+        min-width: 300px;
+        max-width: 300px;
+        vertical-align: top;
+    }
+
+    .advanced-search-modal-results-div-col-post-type {
+        min-width: 0px;
+        max-width: 0px;
+    }
+
+    .advanced-search-modal-results-table-col-hits {
+        min-width: 250px;
+        text-align: left;
+
+        span {
+            font-size: 10pt;
+            color: #4a4a4a;
+        }
+    }
+
+    .advanced-search-modal-results-table-col-hits-type {
+        min-width: 50px;
+        text-align: right;
+    }
+
+    .advanced-search-modal-results-post-types-view-at-top {
+        display: inline;
+
+        label {
+            font-size: 10pt;
+            color: #4a4a4a;
+        }
+
+        .advanced-search-modal-results-post-types-view-at-top-collapsible-button {
+            min-width: 350px;
+            max-width: 350px;
+        }
+
+        .advanced-search-modal-results-post-types-view-at-top-collapsible-content {
+            display: none;
+        }
+    }
+
+    .advanced-search-modal-results-post-types-view-at-side {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .advanced-search-modal-form-input {
+        min-width: 150px;
+        display: inline-block;
+        margin-right: 0;
+    }
+
+    .advanced-search-modal-results-div-col-results-list {
+        min-width: 250px;
+        max-width: 250px;
+        vertical-align: top;
+    }
+
+    .advanced-search-modal-results-div-col-post-type {
+        min-width: 0px;
+        max-width: 0px;
+    }
+
+    .advanced-search-modal-results-table-col-hits {
+        min-width: 200px;
+        text-align: left;
+
+        span {
+            font-size: 10pt;
+            color: #4a4a4a;
+        }
+    }
+
+    .advanced-search-modal-results-table-col-hits-type {
+        min-width: 50px;
+        text-align: right;
+    }
+
+    .advanced-search-modal-results-post-types-view-at-top {
+        display: inline;
+
+        label {
+            font-size: 10pt;
+            color: #4a4a4a;
+        }
+
+        .advanced-search-modal-results-post-types-view-at-top-collapsible-button {
+            min-width: 300px;
+            max-width: 300px;
+        }
+
+        .advanced-search-modal-results-post-types-view-at-top-collapsible-content {
+            display: none;
+        }
+    }
+
+    .advanced-search-modal-results-post-types-view-at-side {
+        display: none;
+    }
 }
