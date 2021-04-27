@@ -32,7 +32,7 @@ class Disciple_Tools_Counter_Post_Stats extends Disciple_Tools_Counter_Base
     public static function get_date_field_by_month( string $post_type, string $field, int $year ) {
         global $wpdb;
 
-        // sanitise input
+        // TODO: sanitise input
         // is post_type in the available post_types
         // is the field in the fieldSettings list
         // is the year <= current year
@@ -40,10 +40,7 @@ class Disciple_Tools_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $start = mktime( 0, 0, 0, 1, 1, $year );
         $end = mktime( 24, 60, 60, 12, 31, $year );
 
-        // first we need to know if the $field is in the post, or postmeta before we can do a query
-        $post_fields = $wpdb->get_col( "DESC $wpdb->posts", 0 );
-
-        if ( in_array( $field, $post_fields, true ) ) {
+        if ( self::isPostField( $field ) ) {
             return $wpdb->get_results(
                 $wpdb->prepare( "
                     SELECT
@@ -80,5 +77,66 @@ class Disciple_Tools_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         }
 
         return [];
+    }
+
+    /**
+     * Return count of posts by date field with stats counted by
+     * year
+     */
+    public static function get_date_field_by_year( string $post_type, string $field ) {
+        global $wpdb;
+
+        // TODO: sanitise input
+        // is post_type in the available post_types
+        // is the field in the fieldSettings list
+        // is the year <= current year
+
+        $current_year = gmdate( "Y" );
+        $start = 0;
+        $end = mktime( 24, 60, 60, 12, 31, $current_year );
+
+        if ( self::isPostField( $field ) ) {
+            return $wpdb->get_results(
+                $wpdb->prepare( "
+                    SELECT
+                        YEAR( %1s ) AS year,
+                        COUNT( %1s ) AS count
+                    FROM $wpdb->posts
+                    WHERE post_type = %s
+                        AND %1s >= %s
+                        AND %1s <= %s
+                    GROUP BY YEAR( %1s )
+                    ORDER BY YEAR( %1s )
+                ", $field, $field, $post_type, $field, gmdate( 'Y-m-d H:i:s', $start ), $field, gmdate( 'Y-m-d H:i:s', $end ), $field, $field )
+            );
+        } else {
+            $results = $wpdb->get_results(
+                $wpdb->prepare( "
+                    SELECT 
+                        YEAR( FROM_UNIXTIME( pm.meta_value ) ) AS year,
+                        COUNT( pm.meta_value ) AS count
+                    FROM $wpdb->posts AS p
+                    INNER JOIN $wpdb->postmeta AS pm
+                        ON p.ID = pm.post_id
+                    WHERE p.post_type = %s
+                        AND pm.meta_key = %s
+                        AND pm.meta_value >= %s
+                        AND pm.meta_value <= %s
+                    GROUP BY YEAR( FROM_UNIXTIME( pm.meta_value ) )
+                    ORDER BY YEAR( FROM_UNIXTIME( pm.meta_value ) )
+                ", $post_type, $field, $start, $end
+                )
+            );
+
+            return $results;
+        }
+
+        return [];
+    }
+
+    private static function isPostField( $field ) {
+        global $wpdb;
+        $post_fields = $wpdb->get_col( "DESC $wpdb->posts", 0 );
+        return in_array( $field, $post_fields, true );
     }
 }

@@ -20,11 +20,16 @@ function projectTimeCharts() {
         total_label,
         added_label,
         tooltip_label,
+        date_select_label,
+        all_time,
     } = escapeObject(dtMetricsProject.translations)
 
     const {
         chart_view: view,
     } = dtMetricsProject.state
+
+    const now = new Date()
+    const year = now.getUTCFullYear()
 
     const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
 
@@ -45,6 +50,13 @@ function projectTimeCharts() {
             <select class="select-field" id="post-field-select">
                 ${ buildFieldSelectOptions() }
             </select>
+            <label class="section-subheader" for="date-select">${date_select_label}</label>
+            <select class="select-field" id="date-select">
+                <option value="${year}">${year}</option>
+                <option value="${year - 1}">${year - 1}</option>
+                <option value="${year - 2}">${year - 2}</option>
+                <option value="all-time">${all_time}</option>
+            </select>
         </section>
         <hr>
         <section id="chartdiv" class="timechart"></section>
@@ -52,10 +64,11 @@ function projectTimeCharts() {
 
     const chartSection = document.querySelector('#chartdiv')
     chartSection.addEventListener('datachange', () => {
-        createChart(view, { total_label, tooltipLabel, added_label})
+        const currentView = dtMetricsProject.state.chart_view
+        createChart(currentView, { total_label, tooltipLabel, added_label})
     })
     if (view === 'month') {
-        getMonthData()
+        getData()
     }
 
     const fieldSelectElement = document.querySelector('#post-field-select')
@@ -78,7 +91,14 @@ function projectTimeCharts() {
 
     fieldSelectElement.addEventListener('change', (e) => {
         dtMetricsProject.state.field = e.target.value
-        getMonthData()
+        getData()
+    })
+
+    document.querySelector('#date-select').addEventListener('change', (e) => {
+        const year = e.target.value
+        dtMetricsProject.state.year = year
+        dtMetricsProject.state.chart_view = year === 'all-time' ? 'year' : 'month'
+        getData()
     })
 }
 
@@ -90,7 +110,6 @@ function buildFieldSelectOptions() {
 }
 
 function createChart(view, { total_label, tooltipLabel, added_label}) {
-
     const chartSection = document.querySelector('#chartdiv')
     am4core.useTheme(am4themes_animated);
     am4core.options.autoDispose = true
@@ -135,13 +154,19 @@ function createChart(view, { total_label, tooltipLabel, added_label}) {
     chart.data = data
 }
 
-function getMonthData() {
+function getData() {
     const { post_type: postType, field, year } = dtMetricsProject.state
-    const data = window.API.getTimeMetricsByMonth(postType, field, year)
+
+    const isAllTime = year === 'all-time'
+    const data = isAllTime
+        ? window.API.getTimeMetricsByYear(postType, field)
+        : window.API.getTimeMetricsByMonth(postType, field, year)
 
     data.promise()
         .then((data) => {
-            window.dtMetricsProject.data = formatMonthData(data)
+            window.dtMetricsProject.data = isAllTime 
+                ? formatYearData(data)
+                : formatMonthData(data)
             const dataChangeEvent = new Event('datachange')
             const chartElement = document.querySelector('#chartdiv')
             chartElement.dispatchEvent(dataChangeEvent)
@@ -150,6 +175,30 @@ function getMonthData() {
             console.log(error)
         })
 
+}
+
+function formatYearData(yearlyData) {
+    if (yearlyData.length === 0) return yearlyData
+
+    let cumulativeTotal = 0
+    const minYear = parseInt(yearlyData[0].year)
+    const maxYear = parseInt(yearlyData[yearlyData.length - 1].year)
+
+    const formattedYearlyData = []
+    let i = 0
+    for (let year = minYear; year < maxYear + 1; year++, i++) {
+        const yearData = yearlyData.find((data) => data.year === String(year) )
+        const count = yearData ? parseInt(yearData.count) : 0
+        cumulativeTotal += count
+        formattedYearlyData[i] = {
+            year: String(year),
+            count: count,
+            cumulativeTotal,
+        }
+    }
+    console.log(formattedYearlyData)
+
+    return formattedYearlyData
 }
 
 function formatMonthData(monthlyData) {

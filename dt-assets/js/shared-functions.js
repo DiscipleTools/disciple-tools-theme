@@ -186,6 +186,9 @@ window.API = {
       user_id: userId,
     }),
 
+  getTimeMetricsByYear: (postType, field, year) =>
+    makeRequest('GET', `metrics/time_metrics_by_year/${postType}/${field}`),
+
   getTimeMetricsByMonth: (postType, field, year) =>
     makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`),
 

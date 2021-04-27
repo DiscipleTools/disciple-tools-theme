@@ -92,6 +92,8 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     "total_label" => __( 'Total', 'disciple_tools' ),
                     "added_label" => __( 'Added', 'disciple_tools' ),
                     "tooltip_label" => _x( '%1$s in %2$s', 'Total in January', 'disciple_tools' ),
+                    "date_select_label" => __( 'Date', 'disciple_tools' ),
+                    "all_time" => __( 'All time', 'disciple_tools' ),
                 ],
                 'select_options' => [
                     'post_type_select_options' => $this->post_type_select_options,
@@ -118,6 +120,16 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         );
 
         register_rest_route(
+            $namespace, '/metrics/time_metrics_by_year/(?P<post_type>\w+)/(?P<field>\w+)', [
+                [
+                    'methods'  => WP_REST_Server::READABLE,
+                    'callback' => [ $this, 'time_metrics_by_year' ],
+                    'permission_callback' => '__return_true',
+                ],
+            ]
+        );
+
+        register_rest_route(
             $namespace, '/metrics/field_settings/(?P<post_type>\w+)', [
                 [
                     'methods'  => WP_REST_Server::READABLE,
@@ -136,6 +148,14 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         return $this->get_stats_by_month( $url_params['post_type'], $url_params['field'], $url_params['year'] );
     }
 
+    public function time_metrics_by_year( WP_REST_Request $request ) {
+        if ( !$this->has_permission() ) {
+            return new WP_Error( "time_metrics_by_year", "Missing Permissions", [ 'status' => 400 ] );
+        }
+        $url_params = $request->get_url_params();
+        return $this->get_stats_by_year( $url_params['post_type'], $url_params['field'] );
+    }
+
     public function field_settings( WP_REST_Request $request ) {
         if ( !$this->has_permission() ) {
             return new WP_Error( "get_field_settings", "Missing Permissions", [ 'status' => 400 ] );
@@ -146,6 +166,10 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
     public function get_stats_by_month( $post_type, $field, $year ) {
         return Disciple_Tools_Counter_Post_Stats::get_date_field_by_month( $post_type, $field, $year );
+    }
+
+    public function get_stats_by_year( $post_type, $field ) {
+        return Disciple_Tools_Counter_Post_Stats::get_date_field_by_year( $post_type, $field );
     }
 
     public function get_field_settings( $post_type ) {
