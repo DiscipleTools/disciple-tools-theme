@@ -424,7 +424,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 </select>
             <?php elseif ( $field_type === "tags" ) : ?>
                 <div class="tags">
-                    <var id="tags-result-container" class="result-container"></var>
+                    <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
                     <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
@@ -450,7 +450,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 if ( isset( $fields[$field_key]["display"] ) && $fields[$field_key]["display"] === "typeahead" ){
                     ?>
                     <div class="multi_select">
-                        <var id="tags-result-container" class="result-container"></var>
+                        <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
                         <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
                             <div class="typeahead__container">
                                 <div class="typeahead__field">
