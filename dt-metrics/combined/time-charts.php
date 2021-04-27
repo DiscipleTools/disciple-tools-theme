@@ -36,8 +36,8 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
         }
 
-        // $post_types = DT_Posts::get_post_types(); // This is only giving [ 'peoplegroups' ] at the moment
-        $post_types = [ 'contacts', 'groups', 'peoplegroups' ];
+        $post_types = DT_Posts::get_post_types();
+        $post_types = array_values( array_diff( $post_types, [ "peoplegroups" ] ) ); //skip people groups for now.
         $this->post_types = $post_types;
         $post_type_options = [];
         foreach ($post_types as $post_type) {
