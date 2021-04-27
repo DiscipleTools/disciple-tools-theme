@@ -47,15 +47,15 @@ class Disciple_Tools_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             return $wpdb->get_results(
                 $wpdb->prepare( "
                     SELECT
-                        MONTH( $field ) AS month,
-                        COUNT( $field ) AS count
+                        MONTH( %1s ) AS month,
+                        COUNT( %1s ) AS count
                     FROM $wpdb->posts
                     WHERE post_type = %s
-                        AND $field >= %s
-                        AND $field <= %s
-                    GROUP BY MONTH( $field )
-                    ORDER BY MONTH( $field )
-                ", $post_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
+                        AND %1s >= %s
+                        AND %1s <= %s
+                    GROUP BY MONTH( %1s )
+                    ORDER BY MONTH( %1s )
+                ", $field, $field, $post_type, $field, gmdate( 'Y-m-d H:i:s', $start ), $field, gmdate( 'Y-m-d H:i:s', $end ), $field, $field )
             );
         } else {
             $results = $wpdb->get_results(
