@@ -28,31 +28,29 @@ function write_results_box() {
 
     if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
       jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
-        lgm_results.append(`<div class="input-group">
-                              <input type="text" class="active-location input-group-field" id="location-${window.lodash.escape( v.grid_meta_id )}" value="${window.lodash.escape( v.label )}" readonly />
-                              <div class="input-group-button">
-                                <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${ window.lodash.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}" data-id="${window.lodash.escape( v.grid_meta_id )}"><i class="fi-map"></i></button>
-                                <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${ window.lodash.escape( dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.grid_meta_id )}">&times;</button>
-                              </div>
-                            </div>`)
-      })
-    }
-
-    if ( dtMapbox.post.contact_address !== undefined && dtMapbox.post.contact_address.length !== 0 ) {
-      jQuery.each( dtMapbox.post.contact_address, function(i,v) {
-        lgm_results.append(`<div class="input-group">
-                              <input type="text" class="dt-communication-channel input-group-field" id="${window.lodash.escape( v.key )}" value="${window.lodash.escape( v.value )}" data-field="contact_address" />
-                              <div class="input-group-button">
-                                <button type="button" class="button success delete-button-style open-mapping-address-modal"
-                                    title="${ window.lodash.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}"
-                                    data-id="${window.lodash.escape( v.key )}"
-                                    data-field="contact_address"
-                                    data-key="${window.lodash.escape( v.key )}">
-                                    <i class="fi-pencil"></i>
-                                </button>
-                                <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${ window.lodash.escape( dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.key )}" data-field="contact_address" data-key="${window.lodash.escape( v.key )}">&times;</button>
-                              </div>
-                            </div>`)
+        if ( v.grid_meta_id ){
+          lgm_results.append(`<div class="input-group">
+            <input type="text" class="active-location input-group-field" id="location-${window.lodash.escape( v.grid_meta_id )}" value="${window.lodash.escape( v.label )}" readonly />
+            <div class="input-group-button">
+              <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${ window.lodash.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}" data-id="${window.lodash.escape( v.grid_meta_id )}"><i class="fi-map"></i></button>
+              <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${ window.lodash.escape( dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.grid_meta_id )}">&times;</button>
+            </div>
+          </div>`)
+        } else {
+          lgm_results.append(`<div class="input-group">
+            <input type="text" class="dt-communication-channel input-group-field" id="${window.lodash.escape( v.key )}" value="${window.lodash.escape( v.label )}" data-field="contact_address" />
+            <div class="input-group-button">
+              <button type="button" class="button success delete-button-style open-mapping-address-modal"
+                  title="${ window.lodash.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}"
+                  data-id="${window.lodash.escape( v.key )}"
+                  data-field="contact_address"
+                  data-key="${window.lodash.escape( v.key )}">
+                  <i class="fi-pencil"></i>
+              </button>
+              <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${ window.lodash.escape( dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.key )}" data-field="contact_address" data-key="${window.lodash.escape( v.key )}">&times;</button>
+            </div>
+          </div>`)
+        }
       })
     }
 
