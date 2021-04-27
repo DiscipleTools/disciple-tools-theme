@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Class Disciple_Tools_Counter_Post_Stats
  */
-class Disciple_Tools_Counter_Post_Stats extends Disciple_Tools_Counter_Base
+class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 {
 
     /**
@@ -31,11 +31,6 @@ class Disciple_Tools_Counter_Post_Stats extends Disciple_Tools_Counter_Base
      */
     public static function get_date_field_by_month( string $post_type, string $field, int $year ) {
         global $wpdb;
-
-        // TODO: sanitise input
-        // is post_type in the available post_types
-        // is the field in the fieldSettings list
-        // is the year <= current year
 
         $start = mktime( 0, 0, 0, 1, 1, $year );
         $end = mktime( 24, 60, 60, 12, 31, $year );
@@ -85,11 +80,6 @@ class Disciple_Tools_Counter_Post_Stats extends Disciple_Tools_Counter_Base
      */
     public static function get_date_field_by_year( string $post_type, string $field ) {
         global $wpdb;
-
-        // TODO: sanitise input
-        // is post_type in the available post_types
-        // is the field in the fieldSettings list
-        // is the year <= current year
 
         $current_year = gmdate( "Y" );
         $start = 0;

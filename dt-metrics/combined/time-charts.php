@@ -145,6 +145,15 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return new WP_Error( "time_metrics_by_month", "Missing Permissions", [ 'status' => 400 ] );
         }
         $url_params = $request->get_url_params();
+        $post_type = $url_params['post_type'];
+        $field = $url_params['field'];
+        $year = $url_params['year'];
+
+        $error = $this->checkInput( $post_type, $field, $year );
+        if ( $error ) {
+            return $error;
+        }
+
         return $this->get_stats_by_month( $url_params['post_type'], $url_params['field'], $url_params['year'] );
     }
 
@@ -153,6 +162,14 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return new WP_Error( "time_metrics_by_year", "Missing Permissions", [ 'status' => 400 ] );
         }
         $url_params = $request->get_url_params();
+        $post_type = $url_params['post_type'];
+        $field = $url_params['field'];
+
+        $error = $this->checkInput( $post_type, $field );
+        if ( $error ) {
+            return $error;
+        }
+
         return $this->get_stats_by_year( $url_params['post_type'], $url_params['field'] );
     }
 
@@ -165,11 +182,11 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     }
 
     public function get_stats_by_month( $post_type, $field, $year ) {
-        return Disciple_Tools_Counter_Post_Stats::get_date_field_by_month( $post_type, $field, $year );
+        return DT_Counter_Post_Stats::get_date_field_by_month( $post_type, $field, $year );
     }
 
     public function get_stats_by_year( $post_type, $field ) {
-        return Disciple_Tools_Counter_Post_Stats::get_date_field_by_year( $post_type, $field );
+        return DT_Counter_Post_Stats::get_date_field_by_year( $post_type, $field );
     }
 
     public function get_field_settings( $post_type ) {
@@ -184,6 +201,19 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         }
         asort( $field_settings );
         return $field_settings;
+    }
+
+    private function checkInput( $post_type, $field, $year = null ) {
+        $current_year = gmdate( "Y" );
+        if ( !in_array( $post_type, $this->post_types, true ) ) {
+            return new WP_Error( 'time_metrics_by_month', 'not a suitable post type', [ 'status' => 400 ] );
+        }
+        if ( !array_key_exists( $field, $this->get_field_settings( $post_type ) ) ) {
+            return new WP_Error( 'time_metrics_by_month', 'not a suitable post type', [ 'status' => 400 ] );
+        }
+        if ( $year !== null && $year > $current_year ) {
+            return new WP_Error( 'time_metrics_by_month', 'year is in the future', [ 'status' => 400 ] );
+        }
     }
 }
 new DT_Metrics_Time_Charts();
