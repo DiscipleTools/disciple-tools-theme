@@ -95,10 +95,11 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                                 continue;
                             }
 
+                            $tag_type = $tag['type'];
                             $tag_old = $tag['old'];
                             $tag_new = $tag['new'];
 
-                            $retval = self::process_edit_tag( $tag_old, $tag_new );
+                            $retval = self::process_edit_tag( $tag_type, $tag_old, $tag_new );
 
                             if ( $retval ) {
                                 self::admin_notice( "Tag '$tag_old' is now called '$tag_new'.", 'success' );
@@ -167,12 +168,26 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     private function get_all_tags() {
         global $wpdb;
 
-        $results = $wpdb->get_col("
-            SELECT DISTINCT meta_value
-            FROM $wpdb->postmeta
-            WHERE meta_key = 'tags'
-            ORDER BY meta_value ASC;" );
+        $tag_fields = [];
+        $post_types = DT_Posts::get_post_types();
+        foreach ($post_types as $post_type) {
+            $post_fields = DT_Posts::get_post_field_settings( $post_type );
 
+            foreach ($post_fields as $key => $post_field) {
+                if ($post_field['type'] === 'tags') {
+                    $tag_fields[] = $key;
+                }
+            }
+        }
+
+        $sql = $wpdb->prepare("
+            SELECT DISTINCT meta_value, meta_key
+            FROM $wpdb->postmeta
+            WHERE meta_key in (" .
+                implode(', ', array_fill(0, count($tag_fields), '%s')) . ")
+            ORDER BY meta_value ASC;", $tag_fields );
+
+        $results = $wpdb->get_results($sql, 'ARRAY_A');
         return $results;
     }
 
@@ -210,6 +225,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                         <option>Bulk actions</option>
                         <option>Delete</option>
                     </select></td>
+                <td><?php esc_html_e( "Type", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Tag name", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "New name", 'disciple_tools' ) ?></td>
             </td>
@@ -223,10 +239,14 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
             for ( $i = 0; $i <= $tags_amount - 1; $i++): ?>
                 <tr>
                     <td style="vertical-align: middle">
-                        <input type="checkbox" name="checkbox_delete_tag[<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i] ); ?>]" value="<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i] ); ?>">
+                        <input type="checkbox" name="checkbox_delete_tag[<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i]['meta_value'] ); ?>]" value="<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i]['meta_value'] ); ?>">
                     </td>
                     <td>
-                        <input type="text" name="<?php echo esc_html( "tags[$i][old]" ?? "tags[$i]" ); ?>" value="<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i] ); ?>" readonly>
+                        <input type="hidden" name="<?php echo esc_html( "tags[$i][type]" ); ?>" value="<?php echo esc_html( $tags[$i]['type'] ?? $tags[$i]['meta_key'] ); ?>" readonly>
+                        <?php echo esc_html( $tags[$i]['type'] ?? $tags[$i]['meta_key'] ); ?>
+                    </td>
+                    <td>
+                        <input type="text" name="<?php echo esc_html( "tags[$i][old]" ); ?>" value="<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i]['meta_value'] ); ?>" readonly>
                     </td>
                     <td>
                         <input type="text" name="<?php echo esc_html( "tags[$i][new]" ?? '' ); ?>">
@@ -245,7 +265,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     /*
      * Save tag changes to database
      */
-    private function process_edit_tag( string $tag_old, string $tag_new ) {
+    private function process_edit_tag( string $tag_type, string $tag_old, string $tag_new ) {
         if ( !isset( $_POST['tag_edit_nonce'] ) || !wp_verify_nonce( sanitize_key( $_POST['tag_edit_nonce'] ), 'tag_edit' ) ) {
             return;
         }
@@ -259,7 +279,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                     'meta_value' => esc_sql( $tag_new ),
                 ],
                 [
-                    'meta_key' => 'tags',
+                    'meta_key' => esc_sql( $tag_type ),
                     'meta_value' => esc_sql( $tag_old ),
                 ]
             );
