@@ -105,8 +105,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile'        => 'status',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/assigned-to.svg",
                 "show_in_table" => 25,
-                "only_for_types" => [ "access" ],
-                "custom_display" => true
+                "only_for_types" => [ "access", "user" ]
             ];
             $fields['seeker_path'] = [
                 'name'        => __( 'Seeker Path', 'disciple_tools' ),
@@ -563,25 +562,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                     </button>
                 </div>
 
-                <div class="assigned_to details">
-                    <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
-                    <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead">
-                        <div class="typeahead__container" style="margin-bottom: 0">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-assigned_to input-height" dir="auto"
-                                           name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
-                                           autocomplete="off">
-                                </span>
-                                <span class="typeahead__button">
-                                    <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
-                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <p>
                     <span id="reason_assigned_to">
                         <?php if ( isset( $contact["reason_assigned_to"]["label"] ) ) : ?>
