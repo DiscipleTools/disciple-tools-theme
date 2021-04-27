@@ -226,6 +226,7 @@ class DT_Contacts_Base {
             if ( DT_Mapbox_API::get_key() ){
                 $fields["contact_address"]["custom_display"] = true;
                 $fields["contact_address"]["mapbox"] = true;
+                $fields["contact_address"]["hidden"] = true;
                 unset( $fields["contact_address"]["tile"] );
                 $fields["location_grid"]["mapbox"] = true;
                 $fields["location_grid"]["hidden"] = true;
@@ -602,7 +603,7 @@ class DT_Contacts_Base {
     }
 
     public function dt_record_notifications_section( $post_type, $dt_post ){
-        if ( $post_type === "contacts" && ( $dt_post["type"]["key"] === "personal" || $dt_post["type"]["key"] === "placeholder" ) ):
+        if ( $post_type === "contacts" ):
             $post_settings = DT_Posts::get_post_settings( $post_type );
             ?>
             <!-- archived -->

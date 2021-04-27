@@ -102,12 +102,12 @@
   /**
    * Looks for all query params called 'filter' (allows for multiple filters to be applied)
    * from url like base_url?filter=foo&filter=bar
-   * 
+   *
    * filter values are exected to be created by encodeURI(JSON.stringify({ id, name, field }))
-   * where the id, name and field are the relevant field and id to search for. (filters with 
+   * where the id, name and field are the relevant field and id to search for. (filters with
    * incorrect fields will be removed)
-   * 
-   * If any part of the filter doesn't decode or JSON.parse properly the function returns 
+   *
+   * If any part of the filter doesn't decode or JSON.parse properly the function returns
    * no filter.
    */
   function create_custom_filter_from_query_params() {
@@ -459,7 +459,7 @@
               values = field_value.map(v => {
                 return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
               })
-            } else if ( field_settings.type === "location" ){
+            } else if ( field_settings.type === "location" || field_settings.type === "location_meta" ){
               values = field_value.map(v => {
                 return `${window.lodash.escape( v.label )}`;
               })
