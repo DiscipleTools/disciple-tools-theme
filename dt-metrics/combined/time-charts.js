@@ -23,16 +23,12 @@ function projectTimeCharts() {
     } = escapeObject(dtMetricsProject.translations)
 
     const {
-        post_type: postType,
-        field,
         chart_view: view,
-        year,
     } = dtMetricsProject.state
 
     const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
 
     const postTypeOptions = escapeObject(dtMetricsProject.select_options.post_type_select_options)
-    const postFieldOptions = escapeObject(dtMetricsProject.select_options.post_field_select_options)
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
 
@@ -47,9 +43,7 @@ function projectTimeCharts() {
             </select>
             <label class="section-subheader" for="post-field-select">${post_field_select_label}</label>
             <select class="select-field" id="post-field-select">
-                ${ Object.entries(postFieldOptions).map(([value, label]) => `
-                    <option value="${value}"> ${label} </option>
-                `) }
+                ${ buildFieldSelectOptions() }
             </select>
         </section>
         <hr>
@@ -61,14 +55,45 @@ function projectTimeCharts() {
         createChart(view, { total_label, tooltipLabel, added_label})
     })
     if (view === 'month') {
-        getMonthData(chartSection, postType, field, year)
+        getMonthData()
     }
+
+    const fieldSelectElement = document.querySelector('#post-field-select')
+
+    document.querySelector('#post-type-select').addEventListener('change', (e) => {
+        const postType = e.target.value
+        dtMetricsProject.state.post_type = postType
+        window.API
+            .getFieldSettings(postType)
+            .promise()
+            .then((data) => {
+                dtMetricsProject.select_options.post_field_select_options = data
+                fieldSelectElement.innerHTML = buildFieldSelectOptions()
+                fieldSelectElement.dispatchEvent( new Event('change') )
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    })
+
+    fieldSelectElement.addEventListener('change', (e) => {
+        dtMetricsProject.state.field = e.target.value
+        getMonthData()
+    })
+}
+
+function buildFieldSelectOptions() {
+    const postFieldOptions = escapeObject(dtMetricsProject.select_options.post_field_select_options)
+    return Object.entries(postFieldOptions).map(([value, label]) => `
+        <option value="${value}"> ${label} </option>
+    `)
 }
 
 function createChart(view, { total_label, tooltipLabel, added_label}) {
 
     const chartSection = document.querySelector('#chartdiv')
     am4core.useTheme(am4themes_animated);
+    am4core.options.autoDispose = true
 
     const chart = am4core.create(chartSection, am4charts.XYChart)
     const data = dtMetricsProject.data
@@ -110,15 +135,16 @@ function createChart(view, { total_label, tooltipLabel, added_label}) {
     chart.data = data
 }
 
-function getMonthData(element, postType, field, year) {
+function getMonthData() {
+    const { post_type: postType, field, year } = dtMetricsProject.state
     const data = window.API.getTimeMetricsByMonth(postType, field, year)
 
     data.promise()
         .then((data) => {
-            console.log(data)
             window.dtMetricsProject.data = formatMonthData(data)
             const dataChangeEvent = new Event('datachange')
-            element.dispatchEvent(dataChangeEvent)
+            const chartElement = document.querySelector('#chartdiv')
+            chartElement.dispatchEvent(dataChangeEvent)
         })
         .catch((error) => {
             console.log(error)

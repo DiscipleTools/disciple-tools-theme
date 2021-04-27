@@ -52,20 +52,6 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
-    public function get_field_settings( $post_type ) {
-        $post_field_settings = DT_Posts::get_post_field_settings( $post_type );
-
-        $field_settings = [];
-
-        foreach ($post_field_settings as $key => $setting) {
-            if ( in_array( $setting['type'], $this->post_field_types_filter ) ) {
-                $field_settings[$key] = $setting['name'];
-            }
-        }
-        asort( $field_settings );
-        return $field_settings;
-    }
-
     public function scripts() {
         wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', array(), false, true );
         wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
@@ -130,6 +116,16 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 ],
             ]
         );
+
+        register_rest_route(
+            $namespace, '/metrics/field_settings/(?P<post_type>\w+)', [
+                [
+                    'methods'  => WP_REST_Server::READABLE,
+                    'callback' => [ $this, 'field_settings' ],
+                    'permission_callback' => '__return_true',
+                ],
+            ]
+        );
     }
 
     public function time_metrics_by_month( WP_REST_Request $request ) {
@@ -140,8 +136,30 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         return $this->get_stats_by_month( $url_params['post_type'], $url_params['field'], $url_params['year'] );
     }
 
+    public function field_settings( WP_REST_Request $request ) {
+        if ( !$this->has_permission() ) {
+            return new WP_Error( "get_field_settings", "Missing Permissions", [ 'status' => 400 ] );
+        }
+        $url_params = $request->get_url_params();
+        return $this->get_field_settings( $url_params['post_type'] );
+    }
+
     public function get_stats_by_month( $post_type, $field, $year ) {
         return Disciple_Tools_Counter_Post_Stats::get_date_field_by_month( $post_type, $field, $year );
+    }
+
+    public function get_field_settings( $post_type ) {
+        $post_field_settings = DT_Posts::get_post_field_settings( $post_type );
+
+        $field_settings = [];
+
+        foreach ($post_field_settings as $key => $setting) {
+            if ( in_array( $setting['type'], $this->post_field_types_filter ) ) {
+                $field_settings[$key] = $setting['name'];
+            }
+        }
+        asort( $field_settings );
+        return $field_settings;
     }
 }
 new DT_Metrics_Time_Charts();
