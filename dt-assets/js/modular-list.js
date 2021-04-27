@@ -455,6 +455,10 @@
               values = field_value.map(v => {
                 return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
               })
+            } else if (field_settings.type === 'tags') {
+              values = field_value.map(v => {
+                return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
+              })
             } else if ( field_settings.type === "location" ){
               values = field_value.map(v => {
                 return `${window.lodash.escape( v.label )}`;
@@ -634,6 +638,8 @@
       if ( type === "connection" || type === "user_select" ){
         search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
       } else if ( type === "multi_select" ){
+        search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
+      } else if ( type === "tags" ){
         search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
       } else if ( type === "location" || type === "location_meta" ){
         search_query.push({ 'location_grid' : window.lodash.map( window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
@@ -992,6 +998,8 @@
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
         } else if ( type === "multi_select" ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
+        } else if ( type === "tags" ){
+          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.id})
         } else if ( type === "user_select" ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
         }

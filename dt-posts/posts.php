@@ -644,7 +644,7 @@ class Disciple_Tools_Posts
                         }
                     } else {
                         // add postmeta join fields
-                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'boolean', 'date', 'number', 'user_select' ] ) ){
+                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'number', 'user_select' ] ) ){
                             if ( !in_array( $table_key, $args["joins_fields"] ) ){
                                 $args["joins_fields"][] = $table_key;
                                 $args["joins_sql"] .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key = '" . esc_sql( $query_key ) . "' )";
@@ -652,9 +652,9 @@ class Disciple_Tools_Posts
                         }
 
 
-                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'boolean', 'date', 'user_select' ] ) ){
+                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'user_select' ] ) ){
                             /**
-                             * key_select, multi_select, boolean, date
+                             * key_select, multi_select, tags, boolean, date
                              */
                             $index = -1;
                             $query_for_null_values = false;
@@ -701,6 +701,13 @@ class Disciple_Tools_Posts
                                 }
                                 if ( $field_type === "multi_select" ){
                                     if ( $equality === "!=" && $field_type === "multi_select" ){
+                                        $where_sql .= ( $index > 0 ? $connector : " " ) . "not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = p.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
+                                    } else {
+                                        $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
+                                    }
+                                }
+                                if ( $field_type === "tags" ){
+                                    if ( $equality === "!=" ){
                                         $where_sql .= ( $index > 0 ? $connector : " " ) . "not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = p.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
                                     } else {
                                         $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
