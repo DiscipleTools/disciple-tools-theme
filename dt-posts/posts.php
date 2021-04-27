@@ -375,6 +375,17 @@ class Disciple_Tools_Posts
                         $message = sprintf( _x( '%1$s added to %2$s', 'Milestone1 added to Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]["name"] );
                     }
                 }
+                if ( $fields[$activity->meta_key]["type"] === "tags" ){
+                    $value = $activity->meta_value;
+                    if ( $activity->meta_value == "value_deleted" ){
+                        $value = $activity->old_value;
+                        $label = $fields[$activity->meta_key]["default"][$value]["label"] ?? $value;
+                        $message = sprintf( _x( '%1$s removed from %2$s', 'Milestone1 removed from Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]["name"] );
+                    } else {
+                        $label = $fields[$activity->meta_key]["default"][$value]["label"] ?? $value;
+                        $message = sprintf( _x( '%1$s added to %2$s', 'Milestone1 added to Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]["name"] );
+                    }
+                }
                 if ( $fields[$activity->meta_key]["type"] === "key_select" ){
                     if ( isset( $fields[$activity->meta_key]["default"][$activity->meta_value]["label"] ) ){
                         $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value]["label"] ?? $activity->meta_value;
@@ -1322,7 +1333,7 @@ class Disciple_Tools_Posts
 
     public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, array $existing_contact = null ){
         foreach ( $fields as $field_key => $field ){
-            if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "multi_select" ) ){
+            if ( isset( $field_settings[$field_key] ) && ( in_array( $field_settings[$field_key]["type"], ["multi_select", "tags"] ) ) ){
                 if ( !isset( $field["values"] )){
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
@@ -1932,6 +1943,8 @@ class Disciple_Tools_Posts
                             }
                         }
                     }
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'tags' ) {
+                    $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' ) {
                     if ( $key === "tags" ){
                         $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
