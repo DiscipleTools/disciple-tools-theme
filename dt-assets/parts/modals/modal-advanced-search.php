@@ -24,7 +24,7 @@
         <table>
             <tbody>
             <tr>
-                <td colspan="2">Record Hits: <span class="advanced-search-modal-results-total"></span></td>
+                <td colspan="2"><?php esc_html_e( 'Record Hits:', 'disciple_tools' ); ?> <span class="advanced-search-modal-results-total"></span></td>
             </tr>
             <tr>
                 <td class="advanced-search-modal-results-div-col-results-list">
@@ -34,7 +34,7 @@
 
                     <input id="all" type="radio" class="advanced-search-modal-post-types"
                            name="advanced-search-modal-post-types" value="all" checked>
-                    <label for="all">All</label><br>
+                    <label for="all"><?php esc_html_e( 'All', 'disciple_tools' ); ?></label><br>
 
                     <?php
                     $search_post_types = DT_Posts::get_post_types();
