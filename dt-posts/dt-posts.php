@@ -1599,32 +1599,39 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $limit = 20;
 
+        $permissions = [
+            "shared_with" => [ "me" ]
+        ];
+
+        $permissions = apply_filters( "dt_filter_access_permissions", $permissions, $post_type );
+
+        if ( ! empty( $permissions ) ) {
+            $query[] = $permissions;
+        }
+
         $fields_sql = self::fields_to_sql( $post_type, $query );
         if ( is_wp_error( $fields_sql ) ) {
             return $fields_sql;
         }
 
         // Prepare sql and execute search query
-        $esc_like_search_sql = esc_sql( "%" . $wpdb->esc_like( $search ) . "%" );
-
-        $posts = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID, p.post_title, p.post_type, p.post_date, if(p.post_title LIKE %s, 'Y', 'N') post_hit, if(post_type_comments.comment_content LIKE %s, 'Y', 'N') comment_hit, if(post_type_meta.meta_value LIKE %s, 'Y', 'N') meta_hit, if(post_type_comments.comment_content LIKE %s, post_type_comments.comment_content, '') comment_hit_content, if(post_type_meta.meta_value LIKE %s, post_type_meta.meta_value, '') meta_hit_value
+        $esc_like_search_sql = "'%" . esc_sql( $search ) . "%'";
+        $permissions_joins_sql = $fields_sql["joins_sql"];
+        $permissions_where_sql = empty( $fields_sql["where_sql"] ) ? "" : ( $fields_sql["where_sql"] . " AND " );
+        $sql = "SELECT p.ID, p.post_title, p.post_type, p.post_date, if(p.post_title LIKE " . $esc_like_search_sql . ", 'Y', 'N') post_hit, if(post_type_comments.comment_content LIKE " . $esc_like_search_sql . ", 'Y', 'N') comment_hit, if(adv_search_post_meta.meta_value LIKE " . $esc_like_search_sql . ", 'Y', 'N') meta_hit, if(post_type_comments.comment_content LIKE " . $esc_like_search_sql . ", post_type_comments.comment_content, '') comment_hit_content, if(adv_search_post_meta.meta_value LIKE " . $esc_like_search_sql . ", adv_search_post_meta.meta_value, '') meta_hit_value
             FROM $wpdb->posts p
-
-                LEFT JOIN " . $wpdb->comments . " as post_type_comments ON ( post_type_comments.comment_post_ID = p.ID AND comment_content LIKE %s )
-                LEFT JOIN " . $wpdb->dt_share . " as field_shared_with ON ( field_shared_with.post_id = p.ID )
-                LEFT JOIN " . $wpdb->postmeta . " as post_type_meta ON ( post_type_meta.post_id = p.ID AND ((post_type_meta.meta_key LIKE %s) OR (post_type_meta.meta_key LIKE 'nickname')) AND (post_type_meta.meta_key NOT LIKE %s) )
-
-                WHERE (field_shared_with.user_id IN (%d)) AND (p.post_status = 'publish') AND p.post_type = %s AND ( ( p.post_title LIKE %s )
+                LEFT JOIN $wpdb->comments as post_type_comments ON ( post_type_comments.comment_post_ID = p.ID AND comment_content LIKE " . $esc_like_search_sql . " )
+                LEFT JOIN $wpdb->postmeta as adv_search_post_meta ON ( adv_search_post_meta.post_id = p.ID AND ((adv_search_post_meta.meta_key LIKE 'contact_%') OR (adv_search_post_meta.meta_key LIKE 'nickname')) AND (adv_search_post_meta.meta_key NOT LIKE 'contact_%_details') ) " .
+                $permissions_joins_sql .
+                " WHERE " . $permissions_where_sql . " (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' AND ( ( p.post_title LIKE " . $esc_like_search_sql . " )
                 OR post_type_comments.comment_id IS NOT NULL
-                OR p.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_value LIKE %s ) )
-
+                OR p.ID IN ( SELECT post_id FROM " . $wpdb->postmeta . " WHERE meta_value LIKE " . $esc_like_search_sql . " ) )
                 GROUP BY p.ID, p.post_title, p.post_date, post_hit, comment_hit, meta_hit, comment_hit_content, meta_hit_value
-                ORDER BY p.post_title asc LIMIT %d, %d",
-            $esc_like_search_sql, $esc_like_search_sql, $esc_like_search_sql, $esc_like_search_sql, $esc_like_search_sql,
-            $esc_like_search_sql, $wpdb->esc_like( 'contact_' ) . "%", $wpdb->esc_like( 'contact_' ) . "%" . $wpdb->esc_like( '_details' ),
-            get_current_user_id(), esc_sql( $post_type ), $esc_like_search_sql,
-            $esc_like_search_sql,
-        $offset, $limit ), OBJECT );
+                ORDER BY p.post_title asc LIMIT " . $offset . ", " . $limit;
+
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $posts = $wpdb->get_results( $sql, OBJECT );
 
         if ( empty( $posts ) && ! empty( $wpdb->last_error ) ) {
             return new WP_Error( __FUNCTION__, "Sorry, we had a query issue.", [ 'status' => 500 ] );
@@ -1665,7 +1672,6 @@ class DT_Posts extends Disciple_Tools_Posts {
             "offset"    => intval( $offset ) + intval( $post_hits_count ) + 1
         ];
     }
-
 }
 
 
