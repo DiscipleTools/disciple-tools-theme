@@ -116,8 +116,8 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                             return;
                         }
                         foreach ( self::dt_recursive_sanitize_array_field( $_POST, 'checkbox_delete_tag' ) as $delete_tag ) {
-                            [ $delete_tag_type, $delete_tag_value ] = explode( ':', esc_html( $delete_tag ) );
-                            self::process_delete_tag( $delete_tag_type, $delete_tag_value );
+                            $parts = explode( ':', esc_html( $delete_tag ) );
+                            self::process_delete_tag( $parts[0], $parts[1] );
                         }
                     }
                 }
