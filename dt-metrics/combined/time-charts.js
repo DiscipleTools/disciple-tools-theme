@@ -65,12 +65,8 @@ function projectTimeCharts() {
     const chartSection = document.querySelector('#chartdiv')
     chartSection.addEventListener('datachange', () => {
         const currentView = dtMetricsProject.state.chart_view
-        createChart(currentView, { total_label, tooltipLabel, added_label})
+        createChart(currentView, { total_label, tooltipLabel, added_label, all_time })
     })
-    if (view === 'month') {
-        getData()
-    }
-
     const fieldSelectElement = document.querySelector('#post-field-select')
 
     document.querySelector('#post-type-select').addEventListener('change', (e) => {
@@ -91,6 +87,7 @@ function projectTimeCharts() {
 
     fieldSelectElement.addEventListener('change', (e) => {
         dtMetricsProject.state.field = e.target.value
+        dtMetricsProject.state.fieldType = dtMetricsProject.field_settings[e.target.value]?.type
         getData()
     })
 
@@ -100,6 +97,9 @@ function projectTimeCharts() {
         dtMetricsProject.state.chart_view = year === 'all-time' ? 'year' : 'month'
         getData()
     })
+
+    // trigger the first get of data on page load
+    fieldSelectElement.dispatchEvent( new Event('change') )
 }
 
 function buildFieldSelectOptions() {
@@ -109,7 +109,8 @@ function buildFieldSelectOptions() {
     `)
 }
 
-function createChart(view, { total_label, tooltipLabel, added_label}) {
+function createChart(view, { total_label, tooltipLabel, added_label, all_time }) {
+    const { year } = dtMetricsProject.state
     const chartSection = document.querySelector('#chartdiv')
     am4core.useTheme(am4themes_animated);
     am4core.options.autoDispose = true
@@ -119,6 +120,7 @@ function createChart(view, { total_label, tooltipLabel, added_label}) {
 
     const categoryAxis = chart.xAxes.push( new am4charts.CategoryAxis() )
     categoryAxis.dataFields.category = view
+    categoryAxis.title.text = year === 'all-time' ? all_time : String(year)
 
     const valueAxis = chart.yAxes.push( new am4charts.ValueAxis() )
 
@@ -177,6 +179,12 @@ function getData() {
 
 }
 
+/**
+ * Formats the metric data by filling in any blank years and calculating
+ * cumulative counts for the charts
+ * 
+ * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
+ */
 function formatYearData(yearlyData) {
     if (yearlyData.length === 0) return yearlyData
 
@@ -196,12 +204,17 @@ function formatYearData(yearlyData) {
             cumulativeTotal,
         }
     }
-    console.log(formattedYearlyData)
 
     return formattedYearlyData
 }
 
-function formatMonthData(monthlyData) {
+/**
+ * Formats the metric data by filling in any blank months and calculating
+ * cumulative counts for the charts
+ * 
+ * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
+ */
+ function formatMonthData(monthlyData) {
     const monthLabels = window.wpApiShare.translations.month_labels
 
     let cumulativeTotal = 0
@@ -217,9 +230,7 @@ function formatMonthData(monthlyData) {
             'count': count,
             'cumulativeTotal': cumulativeTotal
         }
-    })        
-        // search for monthNumber in data
-        // if there, add count to cumulative
+    })
 
     return formattedMonthlyData
 }

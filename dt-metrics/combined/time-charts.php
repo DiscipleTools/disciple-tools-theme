@@ -18,7 +18,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     public $field_settings = [];
     public $post_type_select_options = [];
     public $post_field_select_options = [];
-    public $post_field_types_filter = [ 'date', /* 'key_select', 'multi_select', */ /* 'connection', 'number' */ ]; // connection and number would be interesting for additions to groups, and quick button usage
+    public $post_field_types_filter = [ 'date', 'multi_select', /* 'key_select', */ /* 'connection', 'number' */ ]; // connection and number would be interesting for additions to groups, and quick button usage
 
     public function __construct() {
         parent::__construct();
@@ -44,8 +44,8 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             $post_type_options[$post_type] = DT_Posts::get_label_for_post_type( $post_type );
         }
 
-        $this->field_settings = $this->get_field_settings( $post_types[0] );
-        $this->post_field_select_options = $this->field_settings;
+        $this->field_settings = DT_Posts::get_post_field_settings( $post_types[0] );
+        $this->post_field_select_options = $this->get_field_settings( $post_types[0] );
 
         $this->post_type_select_options = apply_filters( 'dt_time_chart_select_options', $post_type_options );
 
@@ -81,7 +81,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 'state'              => [
                     'chart_view' => 'month',
                     'post_type' => $this->post_types[0],
-                    'field' => array_key_first( $this->field_settings ),
+                    'field' => array_key_first( $this->post_field_select_options ),
                     'year' => gmdate( "Y" ),
                 ],
                 'data'               => [],
@@ -182,11 +182,19 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     }
 
     public function get_stats_by_month( $post_type, $field, $year ) {
-        return DT_Counter_Post_Stats::get_date_field_by_month( $post_type, $field, $year );
+        if ( $this->field_settings[$field]['type'] === 'date' ) {
+            return DT_Counter_Post_Stats::get_date_field_by_month( $post_type, $field, $year );
+        } elseif ( $this->field_settings[$field]['type'] === 'multi_select' ) {
+            return DT_Counter_Post_Stats::get_multi_field_by_month( $post_type, $field, $year );
+        }
     }
 
     public function get_stats_by_year( $post_type, $field ) {
-        return DT_Counter_Post_Stats::get_date_field_by_year( $post_type, $field );
+        if ( $this->field_settings[$field]['type'] === 'date' ) {
+            return DT_Counter_Post_Stats::get_date_field_by_year( $post_type, $field );
+        } elseif ( $this->field_settings[$field]['type'] === 'multi_select' ) {
+            return DT_Counter_Post_Stats::get_multi_field_by_year( $post_type, $field );
+        }
     }
 
     public function get_field_settings( $post_type ) {
@@ -195,6 +203,9 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         $field_settings = [];
 
         foreach ($post_field_settings as $key => $setting) {
+            if ( array_key_exists( 'hidden', $setting ) && $setting['hidden'] === true ) {
+                continue;
+            }
             if ( in_array( $setting['type'], $this->post_field_types_filter ) ) {
                 $field_settings[$key] = $setting['name'];
             }
