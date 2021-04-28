@@ -1340,7 +1340,7 @@ class Disciple_Tools_Posts
 
     public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, array $existing_contact = null ){
         foreach ( $fields as $field_key => $field ){
-            if ( isset( $field_settings[$field_key] ) && ( in_array( $field_settings[$field_key]["type"], ["multi_select", "tags"] ) ) ){
+            if ( isset( $field_settings[$field_key] ) && ( in_array( $field_settings[$field_key]["type"], [ "multi_select", "tags" ] ) ) ){
                 if ( !isset( $field["values"] )){
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }

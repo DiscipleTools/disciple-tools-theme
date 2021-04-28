@@ -116,7 +116,8 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                             return;
                         }
                         foreach ( self::dt_recursive_sanitize_array_field( $_POST, 'checkbox_delete_tag' ) as $delete_tag ) {
-                            self::process_delete_tag( esc_html( $delete_tag ) );
+                            $parts = explode( ':', esc_html( $delete_tag ) );
+                            self::process_delete_tag( $parts[0], $parts[1] );
                         }
                     }
                 }
@@ -180,14 +181,12 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
             }
         }
 
-        $sql = $wpdb->prepare("
+        $results = $wpdb->get_results( $wpdb->prepare("
             SELECT DISTINCT meta_value, meta_key
             FROM $wpdb->postmeta
             WHERE meta_key in (" .
-                implode(', ', array_fill(0, count($tag_fields), '%s')) . ")
-            ORDER BY meta_value ASC;", $tag_fields );
-
-        $results = $wpdb->get_results($sql, 'ARRAY_A');
+            implode( ', ', array_fill( 0, count( $tag_fields ), '%s' ) ) . ")
+            ORDER BY meta_value ASC;", $tag_fields ), 'ARRAY_A' );
         return $results;
     }
 
@@ -195,10 +194,13 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     /*
      * Delete tag from database
      */
-    private function process_delete_tag( string $tag_delete ) {
+    private function process_delete_tag( string $tag_type, string $tag_delete ) {
         global $wpdb;
 
-            $retval = $wpdb->delete( $wpdb->postmeta, [ 'meta_value' => esc_sql( $tag_delete ) ] );
+            $retval = $wpdb->delete( $wpdb->postmeta, [
+                'meta_key' => esc_sql( $tag_type ),
+                'meta_value' => esc_sql( $tag_delete ),
+            ] );
 
         if ( $retval ) {
                 self::admin_notice( "Tag '" . esc_html( $tag_delete ) . "' deleted successfully ", 'success' );
@@ -239,7 +241,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
             for ( $i = 0; $i <= $tags_amount - 1; $i++): ?>
                 <tr>
                     <td style="vertical-align: middle">
-                        <input type="checkbox" name="checkbox_delete_tag[<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i]['meta_value'] ); ?>]" value="<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i]['meta_value'] ); ?>">
+                        <input type="checkbox" name="checkbox_delete_tag[<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i]['meta_value'] ); ?>]" value="<?php echo esc_html( ( $tags[$i]['type'] ?? $tags[$i]['meta_key'] ) . ':' . ( $tags[$i]['old'] ?? $tags[$i]['meta_value'] ) ); ?>">
                     </td>
                     <td>
                         <input type="hidden" name="<?php echo esc_html( "tags[$i][type]" ); ?>" value="<?php echo esc_html( $tags[$i]['type'] ?? $tags[$i]['meta_key'] ); ?>" readonly>

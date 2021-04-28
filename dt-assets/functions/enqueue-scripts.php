@@ -302,8 +302,10 @@ function dt_site_scripts() {
         );
     }
 
+    $is_new_post = strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types );
+
     //list page
-    if ( !get_post_type() && in_array( $post_type, $post_types ) ){
+    if ( !get_post_type() && in_array( $post_type, $post_types ) && !$is_new_post ){
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $translations = [
@@ -335,7 +337,7 @@ function dt_site_scripts() {
         }
     }
 
-    if ( strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types ) ){
+    if ($is_new_post){
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){

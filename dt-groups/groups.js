@@ -75,13 +75,13 @@ jQuery(document).ready(function($) {
       if( member.leader ){
         leaderHTML = `<i class="fi-foot small leader"></i>`
       }
-      const contactStatusHTML = ( member.data && member.data.overall_status ) 
+      const contactStatusHTML = ( member.data && member.data.overall_status )
         ? `<i class="fi-torso small" style="color: ${window.lodash.escape( member.data.overall_status.color )}" title="${window.lodash.escape( member.data.overall_status.label )}"></i>`
         : '<i class="fi-torso small"></i>'
-      
+
       const milestonesHTML = member.data.milestones.reduce((htmlString, milestone) => {
-        return milestone.image
-          ? htmlString + `<img class="dt-icon" src="${window.lodash.escape( milestone.image )}" alt="${window.lodash.escape( milestone.label )}" title="${window.lodash.escape( milestone.label )}">`
+        return milestone.icon
+          ? htmlString + `<img class="dt-icon" src="${window.lodash.escape( milestone.icon )}" alt="${window.lodash.escape( milestone.label )}" title="${window.lodash.escape( milestone.label )}">`
           : htmlString
       }, '')
       let memberHTML = `<div class="member-row" style="" data-id="${window.lodash.escape( member.ID )}">
