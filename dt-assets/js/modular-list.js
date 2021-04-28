@@ -19,6 +19,7 @@
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
+  window.post_type_fields = list_settings.post_type_settings.fields
 
   let items = []
   try {
