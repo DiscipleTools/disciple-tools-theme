@@ -84,14 +84,6 @@ class Disciple_Tools_Contacts_Transfer
                 'permission_callback' => '__return_true',
             ]
         );
-        //deprecated
-        register_rest_route(
-            'dt-public/v1', '/contact/transfer', [
-                "methods"  => "POST",
-                "callback" => [ $this, 'public_contact_transfer' ],
-                'permission_callback' => '__return_true',
-            ]
-        );
     }
 
     /**
@@ -500,68 +492,6 @@ class Disciple_Tools_Contacts_Transfer
         } else {
             return false;
         }
-    }
-
-    public function public_contact_transfer( WP_REST_Request $request ){
-
-        $params = $this->process_token( $request );
-        if ( is_wp_error( $params ) ) {
-            return [
-                'status' => 'FAIL',
-                'error' => 'Transfer token error.'
-            ];
-        }
-
-        if ( ! current_user_can( 'create_contacts' ) ) {
-            return [
-                'status' => 'FAIL',
-                'error' => 'Permission error.'
-            ];
-        }
-
-        if ( isset( $params['contact_data'] ) ) {
-            $result = self::receive_transferred_contact( $params );
-            if ( is_wp_error( $result ) ) {
-                return [
-                    'status' => 'FAIL',
-                    'error' => $result->get_error_message(),
-                ];
-            } else {
-                return $result;
-            }
-        } else {
-            return [
-                'status' => 'FAIL',
-                'error' => 'Missing required parameter'
-            ];
-        }
-    }
-
-    /**
-     * Public key processing utility. Use this at the beginning of public endpoints
-     *
-     * @param WP_REST_Request $request
-     *
-     * @return array|WP_Error
-     */
-    public function process_token( WP_REST_Request $request ) {
-
-        $params = $request->get_params();
-
-        // required token parameter challenge
-        if ( ! isset( $params['transfer_token'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing parameters.' );
-        }
-
-        $valid_token = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-
-        // required valid token challenge
-        if ( ! $valid_token ) {
-            dt_write_log( $valid_token );
-            return new WP_Error( __METHOD__, 'Invalid transfer token' );
-        }
-
-        return $params;
     }
 
     public function contact_transfer_endpoint( WP_REST_Request $request ){
