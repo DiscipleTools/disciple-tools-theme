@@ -37,7 +37,15 @@ jQuery(document).ready(function ($) {
 
   // Mobile view - Toggle searchable post types display
   $(document).on("click", '.advanced-search-modal-results-post-types-view-at-top-collapsible-button', function () {
-    $('.advanced-search-modal-results-post-types-view-at-top-collapsible-content').slideToggle('fast');
+    let collapsible_button = $('.advanced-search-modal-results-post-types-view-at-top-collapsible-button');
+    let collapsible_content = $('.advanced-search-modal-results-post-types-view-at-top-collapsible-content');
+
+    collapsible_content.slideToggle('fast', function () {
+      let img = window.lodash.escape(template_dir_uri) + '/dt-assets/images/';
+      img += collapsible_content.is(':visible') ? 'chevron_up.svg' : 'chevron_down.svg';
+
+      collapsible_button.find('img').attr('src', img);
+    });
   })
 
   function execute_search_query_by_offset(evt, current_section_head) {
@@ -81,11 +89,18 @@ jQuery(document).ready(function ($) {
     $('.advanced-search-modal-results-total').html('');
     $('.advanced-search-modal-results-div').slideUp('fast');
     $('.advanced-search-modal-results').html('').fadeOut('fast');
+    $('input[name=advanced-search-modal-post-types-at-side][value=all]').prop('checked', true);
+
+    // Mobile view
+    $('.advanced-search-modal-results-post-types-view-at-top-collapsible-content').slideUp('fast');
+    $('.advanced-search-modal-results-post-types-view-at-top-collapsible-button').find('img').attr('src', window.lodash.escape(template_dir_uri) + '/dt-assets/images/chevron_down.svg');
+    $('input[name=advanced-search-modal-post-types-at-top][value=all]').prop('checked', true);
   }
 
   function execute_search_query() {
     let query = $('.advanced-search-modal-form-input').val();
-    let selected_post_type = $('input[name=advanced-search-modal-post-types]:checked').val();
+    let collapsible_button = $('.advanced-search-modal-results-post-types-view-at-top-collapsible-button'); // Mobile view indicator
+    let selected_post_type = $(collapsible_button.is(':visible') ? "input[name=advanced-search-modal-post-types-at-top]:checked" : "input[name=advanced-search-modal-post-types-at-side]:checked").val();
 
     if (query.trim() === "") {
       return;
