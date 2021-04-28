@@ -77,6 +77,13 @@ class Disciple_Tools_Contacts_Transfer
                 'permission_callback' => '__return_true',
             ]
         );
+        register_rest_route(
+            $namespace, '/contacts/receive-transfer/comments', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'receive_transfer_comments_endpoint' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
         //deprecated
         register_rest_route(
             'dt-public/v1', '/contact/transfer', [
@@ -351,7 +358,10 @@ class Disciple_Tools_Contacts_Transfer
         $post_args['meta_input']['sources'] = "transfer";
 
         $possible_duplicate = false;
-        $duplicate_post_id = self::duplicate_check( $contact_data['transfer_foreign_key'] );
+        $duplicate_post_id = false;
+        if ( isset( $contact_data['transfer_foreign_key'] ) ){
+            $duplicate_post_id = self::duplicate_check( $contact_data['transfer_foreign_key'] );
+        }
         if ( isset( $post_args['meta_input']['reason_closed'] ) && 'transfer' === $post_args['meta_input']['reason_closed'] ) {
             $possible_duplicate = true;
             unset( $post_args['meta_input']['reason_closed'] );
@@ -360,7 +370,7 @@ class Disciple_Tools_Contacts_Transfer
         // add transfer elements
         $post_args['meta_input']['transfer_id'] = $post_args['ID'];
         $post_args['meta_input']['transfer_guid'] = $post_args['guid'];
-        $post_args['meta_input']['transfer_foreign_key'] = $contact_data['transfer_foreign_key'] ?: Site_Link_System::generate_token();
+        $post_args['meta_input']['transfer_foreign_key'] = isset( $contact_data['transfer_foreign_key'] ) ? $contact_data['transfer_foreign_key'] : Site_Link_System::generate_token();
         $post_args['meta_input']['transfer_site_link_post_id'] = $site_link_post_id;
 
         unset( $post_args['guid'] );
@@ -387,32 +397,9 @@ class Disciple_Tools_Contacts_Transfer
          * Insert comments
          */
         if ( ! empty( $comment_data ) ) {
-            global $wpdb;
-            $sql = "INSERT INTO $wpdb->comments (comment_post_ID, comment_author, comment_author_email, comment_date, comment_date_gmt, comment_content, comment_approved, comment_type, comment_parent, user_id) VALUES ";
-
-            foreach ( $comment_data as $comment ) {
-                $comment = dt_recursive_sanitize_array( $comment );
-                $comment['comment_author'] = __( 'Transfer Bot', 'disciple_tools' ) . ' (' . $comment['user_id'] . ')';
-
-                $sql .= "( '"
-                    . esc_sql( $post_id ) . "', '"
-                    . esc_sql( $comment['comment_author'] ) . "', '"
-                    . esc_sql( $comment['comment_author_email'] ) . "', '"
-                    . esc_sql( $comment['comment_date'] ) . "', '"
-                    . esc_sql( $comment['comment_date_gmt'] ) . "', '"
-                    .  esc_sql( $comment['comment_content'] ) . "', '"
-                    . 1 . "', '"
-                    . esc_sql( $comment['comment_type'] ) . "', '"
-                    . esc_sql( $comment['comment_parent'] ) . "', '"
-                    . 0 . "' ),";
-            }
-            $sql .= ";";
-            $sql = str_replace( ",;", ";", $sql ); // remove last comma
-
-            $insert_comments = $wpdb->query( $sql ); // @phpcs:ignore
-            if ( empty( $insert_comments ) || is_wp_error( $insert_comments ) ) {
-                $errors->add( 'comment_insert_fail', 'Failed to insert comments' );
-                return $errors;
+            $insert_comments = self::insert_bulk_comments( $comment_data, $post_id );
+            if ( is_wp_error( $insert_comments ) ){
+                $errors->add( $insert_comments->get_error_code(), $insert_comments->get_error_message() );
             }
         }
 
@@ -451,6 +438,49 @@ class Disciple_Tools_Contacts_Transfer
             'created_id' => $post_id
         ];
     }
+
+    private static function insert_bulk_comments( $comments, $post_id ){
+        if ( ! empty( $comments ) ) {
+            global $wpdb;
+
+            $hunk = array_chunk( $comments, 200 );
+            foreach ( $hunk as $group ){
+                if ( empty( $group ) ){
+                    continue;
+                }
+                $sql = "INSERT INTO $wpdb->comments (comment_post_ID, comment_author, comment_author_email, comment_date, comment_date_gmt, comment_content, comment_approved, comment_type, comment_parent, user_id) VALUES ";
+
+                foreach ( $group as $comment ){
+                    $comment = dt_recursive_sanitize_array( $comment );
+                    $comment['comment_author'] = __( 'Transfer Bot', 'disciple_tools' ) . ' (' . ( $comment['user_id'] ?? 0 ) . ')';
+
+
+                    $sql .= $wpdb->prepare( "( %d, %s, %s, %s, %s, %s, %d, %s, %d, %d ),",
+                        $post_id,
+                        $comment['comment_author'] ?? '',
+                        $comment['comment_author_email'] ?? '',
+                        $comment['comment_date'],
+                        $comment['comment_date_gmt'],
+                        $comment['comment_content'] ?? '',
+                        1,
+                        $comment['comment_type'] ?? 'comment',
+                        $comment['comment_parent'] ?? 0,
+                        0
+                    );
+                }
+                $sql .= ";";
+                $sql = str_replace( ",;", ";", $sql ); // remove last comma
+
+                $insert_comments = $wpdb->query( $sql ); // @phpcs:ignore
+                if ( empty( $insert_comments ) || is_wp_error( $insert_comments ) ) {
+                    return new WP_Error( __FUNCTION__, 'Failed to insert comments' );
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * @param $transfer_foreign_key
@@ -571,6 +601,33 @@ class Disciple_Tools_Contacts_Transfer
                 'error' => 'Missing required parameter'
             ];
         }
+    }
+
+    public function receive_transfer_comments_endpoint( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( ! current_user_can( 'create_contacts' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions' );
+        }
+        if ( !isset( $params["comments"], $params['transfer_foreign_key'] ) ){
+            return new WP_Error( __METHOD__, 'Missing comments or transfer_foreign_key', [ "status" => 400 ] );
+        }
+
+        global $wpdb;
+        $post_id = $wpdb->get_var( $wpdb->prepare( "
+            SELECT post_id
+            FROM $wpdb->postmeta
+            WHERE meta_value = %s
+              AND meta_key = 'transfer_foreign_key'
+              AND post_id = %s
+            LIMIT 1", $params['transfer_foreign_key'], $params['post_id'] )
+        );
+
+        if ( empty( $post_id ) ){
+            return new WP_Error( __METHOD__, 'Could not find post to update', [ "status" => 404 ] );
+        }
+
+        $insert_comments = self::insert_bulk_comments( $params["comments"], $post_id );
+        return $insert_comments;
     }
 }
 Disciple_Tools_Contacts_Transfer::instance();
