@@ -183,6 +183,9 @@ class Disciple_Tools_Contacts_Transfer
         }
         $contact = DT_Posts::get_post( "contacts", $contact_id );
 
+        $comments = dt_get_comments_with_redacted_user_data( $contact_id );
+        $comment_chunks = array_chunk( $comments, 200 );
+
         $args = [
             'method' => 'POST',
             'timeout' => 20,
@@ -191,7 +194,7 @@ class Disciple_Tools_Contacts_Transfer
                 'contact_data' => [
                     'post' => $post_data,
                     'postmeta' => $postmeta_data,
-                    'comments' => dt_get_comments_with_redacted_user_data( $contact_id ),
+                    'comments' => isset( $comment_chunks[0] ) ? $comment_chunks[0] : [],
                     'people_groups' => $contact['people_groups'],
                     'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
                 ],
@@ -211,6 +214,28 @@ class Disciple_Tools_Contacts_Transfer
             $errors->add( 'transfer', $result_body->error ?? __( 'Unknown error.', 'disciple_tools' ) );
             return $errors;
         }
+
+        if ( sizeof( $comment_chunks ) > 1 && isset( $result_body->transfer_foreign_key, $result_body->created_id ) ){
+            $size = sizeof( $comment_chunks );
+            for ( $i = 1; $i < $size; $i++ ){
+
+                $args = [
+                    'method' => 'POST',
+                    'timeout' => 20,
+                    'body' => [
+                        'post_id' => $result_body->created_id,
+                        'comments' => $comment_chunks[$i],
+                        'transfer_foreign_key' => $result_body->transfer_foreign_key
+                    ],
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $site['transfer_token'],
+                    ],
+                ];
+
+                $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/receive-transfer/comments', $args );
+            }
+        }
+
 
         if ( ! empty( $result_body->error ) ) {
             foreach ( $result_body->error->errors as $key => $value ) {
@@ -551,7 +576,11 @@ class Disciple_Tools_Contacts_Transfer
 Disciple_Tools_Contacts_Transfer::instance();
 
 function dt_get_comments_with_redacted_user_data( $post_id ) {
-    $comments = get_comments( [ 'post_id' => $post_id ] );
+    $comments = DT_Posts::get_post_comments( "contacts", $post_id );
+    if ( is_wp_error( $comments ) || !isset( $comments["comments"] ) ){
+        return [];
+    }
+    $comments = $comments["comments"];
     if ( empty( $comments ) ) {
         return $comments;
     }
@@ -562,7 +591,7 @@ function dt_get_comments_with_redacted_user_data( $post_id ) {
     $users = get_users();
 
     foreach ( $comments as $index => $comment ) {
-        $comment_content = $comment->comment_content;
+        $comment_content = $comment["comment_content"];
 
         // replace non-@mention references to login names, display names, or user emails
         foreach ( $users as $user ) {
@@ -592,7 +621,7 @@ function dt_get_comments_with_redacted_user_data( $post_id ) {
         // replace duplicate notes
         $comment_content = str_replace( site_url(), '#', $comment_content );
 
-        $comments[$index]->comment_content = $comment_content;
+        $comments[$index]["comment_content"] = $comment_content;
     }
 
     return $comments;
