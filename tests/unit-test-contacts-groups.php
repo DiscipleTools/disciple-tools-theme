@@ -29,27 +29,6 @@ class PostsTest extends WP_UnitTestCase {
         "member_count" => 5
     ];
 
-
-    public function test_expected_fields(){
-        $user_id = wp_create_user( "dispatcher1", "test", "test2@example.com" );
-        wp_set_current_user( $user_id );
-        $current_user = wp_get_current_user();
-        $current_user->set_role( 'dispatcher' );
-        $group1 = DT_Posts::create_post( "groups", $this->sample_group );
-        $this->sample_contact["groups"] = [ "values" => [ [ "value" => $group1["ID"] ] ] ];
-        $contact1 = DT_Posts::create_post( 'contacts', $this->sample_contact );
-        $this->assertSame( 'Bob', $contact1['title'] );
-        $this->assertSame( 'Bob', $contact1['name'] );
-        $this->assertSame( 'Bob the builder', $contact1['nickname'] );
-        $this->assertSame( 'France', $contact1['location_grid'][0]["label"] );
-        $this->assertSame( (int) '1546214400', (int) $contact1["baptism_date"]["timestamp"] );
-        $this->assertSame( "798456780", $contact1['contact_phone'][0]["value"] );
-        $this->assertSame( "1", $contact1['assigned_to']["id"] );
-        $this->assertSame( "Bob's group", $contact1['groups'][0]["post_title"] );
-        $this->assertSame( "tag1", $contact1['tags'][0] );
-
-    }
-
     public function test_member_count(){
         $user_id = wp_create_user( "user3", "test", "test3@example.com" );
         wp_set_current_user( $user_id );
