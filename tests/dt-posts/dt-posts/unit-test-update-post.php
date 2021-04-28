@@ -3,7 +3,7 @@
 /**
  * @testdox DT_Posts::update_post
  */
-class DT_Posts__DT_Posts__Update_Post extends WP_UnitTestCase {
+class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
     public static $sample_contact = [
         'title' => 'Bob',
@@ -37,11 +37,10 @@ class DT_Posts__DT_Posts__Update_Post extends WP_UnitTestCase {
         $initial_count = sizeof( self::$contact['tags'] );
         $result = DT_Posts::update_post( 'contacts', self::$contact["ID"], [
             'tags' => [
-                "values" => [ [
-                    "value" => "tag2",
-                ], [
-                    "value" => "tag3",
-                ] ],
+                "values" => [
+                    [ "value" => "tag2", ],
+                    [ "value" => "tag3", ],
+                ],
             ], //@phpcs:ignore
         ], true, false );
 
@@ -58,10 +57,9 @@ class DT_Posts__DT_Posts__Update_Post extends WP_UnitTestCase {
         $initial_count = sizeof( self::$contact['tags'] );
         $result = DT_Posts::update_post( 'contacts', self::$contact["ID"], [
             'tags' => [
-                "values" => [ [
-                    "value" => "tagToDelete",
-                    "delete" => true,
-                ] ],
+                "values" => [
+                    [ "value" => "tagToDelete", "delete" => true, ],
+                ],
             ], //@phpcs:ignore
         ], true, false );
 
@@ -76,11 +74,10 @@ class DT_Posts__DT_Posts__Update_Post extends WP_UnitTestCase {
         //force values with update
         $result = DT_Posts::update_post( 'contacts', self::$contact["ID"], [
             'tags' => [
-                "values" => [ [
-                    "value" => "tag98",
-                ], [
-                    "value" => "tag99",
-                ] ],
+                "values" => [
+                    [ "value" => "tag98", ],
+                    [ "value" => "tag99", ],
+                ],
                 "force_values" => true,
             ], //@phpcs:ignore
         ], true, false );

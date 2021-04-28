@@ -3,7 +3,7 @@
 /**
  * @testdox DT_Posts::create_post
  */
-class DT_Posts__DT_Posts__Create_Post extends WP_UnitTestCase {
+class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
     public $sample_contact = [
         'title' => 'Bob',

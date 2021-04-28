@@ -101,7 +101,7 @@ $ composer install
 ```
 PHP Code Sniffer
 
-  Run `./tests/test_phpcs.sh` to see list of PHP format errors
+  Run `./vendor/bin/phpcs` to see list of PHP format errors
 
   Run ```./vendor/bin/phpcbf``` to auto-fix all possible format errors
 
