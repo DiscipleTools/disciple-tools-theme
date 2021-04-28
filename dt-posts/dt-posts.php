@@ -140,6 +140,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $multi_select_fields[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
+            if ( $field_type === "tags" ){
+                $multi_select_fields[$field_key] = $field_value;
+                unset( $fields[$field_key] );
+            }
             if ( $field_type === "location_meta" || $field_type === "location" ){
                 $location_meta[$field_key] = $field_value;
                 unset( $fields[$field_key] );
@@ -369,7 +373,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                  * field type included, so that it can be skipped here and handled later through the
                  * dt_post_updated action.
                  */
-                $already_handled = apply_filters( 'dt_post_updated_custom_handled_meta', [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel" ], $post_type );
+                $already_handled = apply_filters( 'dt_post_updated_custom_handled_meta', [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel", "tags" ], $post_type );
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
                     update_post_meta( $post_id, $field_key, $field_value );
                 }

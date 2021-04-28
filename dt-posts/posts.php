@@ -375,6 +375,17 @@ class Disciple_Tools_Posts
                         $message = sprintf( _x( '%1$s added to %2$s', 'Milestone1 added to Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]["name"] );
                     }
                 }
+                if ( $fields[$activity->meta_key]["type"] === "tags" ){
+                    $value = $activity->meta_value;
+                    if ( $activity->meta_value == "value_deleted" ){
+                        $value = $activity->old_value;
+                        $label = $fields[$activity->meta_key]["default"][$value]["label"] ?? $value;
+                        $message = sprintf( _x( '%1$s removed from %2$s', 'Milestone1 removed from Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]["name"] );
+                    } else {
+                        $label = $fields[$activity->meta_key]["default"][$value]["label"] ?? $value;
+                        $message = sprintf( _x( '%1$s added to %2$s', 'Milestone1 added to Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]["name"] );
+                    }
+                }
                 if ( $fields[$activity->meta_key]["type"] === "key_select" ){
                     if ( isset( $fields[$activity->meta_key]["default"][$activity->meta_value]["label"] ) ){
                         $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value]["label"] ?? $activity->meta_value;
@@ -633,7 +644,7 @@ class Disciple_Tools_Posts
                         }
                     } else {
                         // add postmeta join fields
-                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'boolean', 'date', 'number', 'user_select' ] ) ){
+                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'number', 'user_select' ] ) ){
                             if ( !in_array( $table_key, $args["joins_fields"] ) ){
                                 $args["joins_fields"][] = $table_key;
                                 $args["joins_sql"] .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key = '" . esc_sql( $query_key ) . "' )";
@@ -641,9 +652,9 @@ class Disciple_Tools_Posts
                         }
 
 
-                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'boolean', 'date', 'user_select' ] ) ){
+                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'user_select' ] ) ){
                             /**
-                             * key_select, multi_select, boolean, date
+                             * key_select, multi_select, tags, boolean, date
                              */
                             $index = -1;
                             $query_for_null_values = false;
@@ -690,6 +701,13 @@ class Disciple_Tools_Posts
                                 }
                                 if ( $field_type === "multi_select" ){
                                     if ( $equality === "!=" && $field_type === "multi_select" ){
+                                        $where_sql .= ( $index > 0 ? $connector : " " ) . "not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = p.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
+                                    } else {
+                                        $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
+                                    }
+                                }
+                                if ( $field_type === "tags" ){
+                                    if ( $equality === "!=" ){
                                         $where_sql .= ( $index > 0 ? $connector : " " ) . "not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = p.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
                                     } else {
                                         $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
@@ -1322,7 +1340,7 @@ class Disciple_Tools_Posts
 
     public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, array $existing_contact = null ){
         foreach ( $fields as $field_key => $field ){
-            if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "multi_select" ) ){
+            if ( isset( $field_settings[$field_key] ) && ( in_array( $field_settings[$field_key]["type"], [ "multi_select", "tags" ] ) ) ){
                 if ( !isset( $field["values"] )){
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
@@ -1932,6 +1950,8 @@ class Disciple_Tools_Posts
                             }
                         }
                     }
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'tags' ) {
+                    $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' ) {
                     if ( $key === "tags" ){
                         $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values

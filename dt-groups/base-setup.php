@@ -89,10 +89,9 @@ class DT_Groups_Base extends DT_Module_Base {
             $fields['tags'] = [
                 'name'        => __( 'Tags', 'disciple_tools' ),
                 'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'multi_select',
+                'type'        => 'tags',
                 'default'     => [],
                 'tile'        => 'other',
-                'custom_display' => true,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/tag.svg'
             ];
             $fields["follow"] = [
@@ -523,38 +522,6 @@ class DT_Groups_Base extends DT_Module_Base {
                     <?php render_field_for_display( "coaches", $group_fields, $group, true ); ?>
                 </div>
         <?php }
-
-        // Display 'Other' tile
-        if ( $post_type === "groups" && $section === "other" ) :
-            $fields = DT_Posts::get_post_field_settings( $post_type );
-            ?>
-            <div class="section-subheader">
-                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag.svg' ) ?>"/>
-                <?php echo esc_html( $fields["tags"]["name"] ) ?>
-            </div>
-            <div class="tags">
-                <var id="tags-result-container" class="result-container"></var>
-                <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
-                    <div class="typeahead__container">
-                        <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-tags input-height"
-                                       name="tags[query]"
-                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields["tags"]['name'] ) )?>"
-                                       autocomplete="off"
-                                       data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
-                                       data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
-                            </span>
-                            <span class="typeahead__button">
-                                <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
-                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php endif;
 
         // Display 'Health Metrics' tile
         if ( $post_type === "groups" && $section === "health-metrics" ) {
