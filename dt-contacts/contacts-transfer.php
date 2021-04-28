@@ -77,11 +77,10 @@ class Disciple_Tools_Contacts_Transfer
                 'permission_callback' => '__return_true',
             ]
         );
-        //deprecated
         register_rest_route(
-            'dt-public/v1', '/contact/transfer', [
+            $namespace, '/contacts/receive-transfer/comments', [
                 "methods"  => "POST",
-                "callback" => [ $this, 'public_contact_transfer' ],
+                "callback" => [ $this, 'receive_transfer_comments_endpoint' ],
                 'permission_callback' => '__return_true',
             ]
         );
@@ -183,6 +182,9 @@ class Disciple_Tools_Contacts_Transfer
         }
         $contact = DT_Posts::get_post( "contacts", $contact_id );
 
+        $comments = dt_get_comments_with_redacted_user_data( $contact_id );
+        $comment_chunks = array_chunk( $comments, 200 );
+
         $args = [
             'method' => 'POST',
             'timeout' => 20,
@@ -191,7 +193,7 @@ class Disciple_Tools_Contacts_Transfer
                 'contact_data' => [
                     'post' => $post_data,
                     'postmeta' => $postmeta_data,
-                    'comments' => dt_get_comments_with_redacted_user_data( $contact_id ),
+                    'comments' => isset( $comment_chunks[0] ) ? $comment_chunks[0] : [],
                     'people_groups' => $contact['people_groups'],
                     'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
                 ],
@@ -211,6 +213,28 @@ class Disciple_Tools_Contacts_Transfer
             $errors->add( 'transfer', $result_body->error ?? __( 'Unknown error.', 'disciple_tools' ) );
             return $errors;
         }
+
+        if ( sizeof( $comment_chunks ) > 1 && isset( $result_body->transfer_foreign_key, $result_body->created_id ) ){
+            $size = sizeof( $comment_chunks );
+            for ( $i = 1; $i < $size; $i++ ){
+
+                $args = [
+                    'method' => 'POST',
+                    'timeout' => 20,
+                    'body' => [
+                        'post_id' => $result_body->created_id,
+                        'comments' => $comment_chunks[$i],
+                        'transfer_foreign_key' => $result_body->transfer_foreign_key
+                    ],
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $site['transfer_token'],
+                    ],
+                ];
+
+                $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/receive-transfer/comments', $args );
+            }
+        }
+
 
         if ( ! empty( $result_body->error ) ) {
             foreach ( $result_body->error->errors as $key => $value ) {
@@ -276,7 +300,9 @@ class Disciple_Tools_Contacts_Transfer
             $errors->add( __METHOD__, $result->get_error_message() );
         }
 
-        dt_write_log( $errors );
+        if ( $errors->has_errors() ){
+            dt_write_log( $errors );
+        }
 
         return true;
     }
@@ -324,7 +350,10 @@ class Disciple_Tools_Contacts_Transfer
         $post_args['meta_input']['sources'] = "transfer";
 
         $possible_duplicate = false;
-        $duplicate_post_id = self::duplicate_check( $contact_data['transfer_foreign_key'] );
+        $duplicate_post_id = false;
+        if ( isset( $contact_data['transfer_foreign_key'] ) ){
+            $duplicate_post_id = self::duplicate_check( $contact_data['transfer_foreign_key'] );
+        }
         if ( isset( $post_args['meta_input']['reason_closed'] ) && 'transfer' === $post_args['meta_input']['reason_closed'] ) {
             $possible_duplicate = true;
             unset( $post_args['meta_input']['reason_closed'] );
@@ -333,7 +362,7 @@ class Disciple_Tools_Contacts_Transfer
         // add transfer elements
         $post_args['meta_input']['transfer_id'] = $post_args['ID'];
         $post_args['meta_input']['transfer_guid'] = $post_args['guid'];
-        $post_args['meta_input']['transfer_foreign_key'] = $contact_data['transfer_foreign_key'] ?: Site_Link_System::generate_token();
+        $post_args['meta_input']['transfer_foreign_key'] = isset( $contact_data['transfer_foreign_key'] ) ? $contact_data['transfer_foreign_key'] : Site_Link_System::generate_token();
         $post_args['meta_input']['transfer_site_link_post_id'] = $site_link_post_id;
 
         unset( $post_args['guid'] );
@@ -360,20 +389,9 @@ class Disciple_Tools_Contacts_Transfer
          * Insert comments
          */
         if ( ! empty( $comment_data ) ) {
-            foreach ( $comment_data as $comment ) {
-                // set variables
-                $comment['comment_post_ID'] = $post_id;
-                $comment['comment_author'] = __( 'Transfer Bot', 'disciple_tools' ) . ' (' . $comment['user_id'] . ')';
-                $comment['user_id'] = 0;
-                $comment['comment_approved'] = 1;
-                unset( $comment['comment_ID'] );
-
-                // insert
-                $comment_id = wp_insert_comment( $comment );
-                if ( is_wp_error( $comment_id ) ) {
-                    $errors->add( 'comment_insert_fail', 'Comment insert fail for '. $comment['comment_ID'] );
-                    return $errors;
-                }
+            $insert_comments = self::insert_bulk_comments( $comment_data, $post_id );
+            if ( is_wp_error( $insert_comments ) ){
+                $errors->add( $insert_comments->get_error_code(), $insert_comments->get_error_message() );
             }
         }
 
@@ -413,6 +431,49 @@ class Disciple_Tools_Contacts_Transfer
         ];
     }
 
+    private static function insert_bulk_comments( $comments, $post_id ){
+        if ( ! empty( $comments ) ) {
+            global $wpdb;
+
+            $hunk = array_chunk( $comments, 200 );
+            foreach ( $hunk as $group ){
+                if ( empty( $group ) ){
+                    continue;
+                }
+                $sql = "INSERT INTO $wpdb->comments (comment_post_ID, comment_author, comment_author_email, comment_date, comment_date_gmt, comment_content, comment_approved, comment_type, comment_parent, user_id) VALUES ";
+
+                foreach ( $group as $comment ){
+                    $comment = dt_recursive_sanitize_array( $comment );
+                    $comment['comment_author'] = __( 'Transfer Bot', 'disciple_tools' ) . ' (' . ( $comment['user_id'] ?? 0 ) . ')';
+
+
+                    $sql .= $wpdb->prepare( "( %d, %s, %s, %s, %s, %s, %d, %s, %d, %d ),",
+                        $post_id,
+                        $comment['comment_author'] ?? '',
+                        $comment['comment_author_email'] ?? '',
+                        $comment['comment_date'],
+                        $comment['comment_date_gmt'],
+                        $comment['comment_content'] ?? '',
+                        1,
+                        $comment['comment_type'] ?? 'comment',
+                        $comment['comment_parent'] ?? 0,
+                        0
+                    );
+                }
+                $sql .= ";";
+                $sql = str_replace( ",;", ";", $sql ); // remove last comma
+
+                $insert_comments = $wpdb->query( $sql ); // @phpcs:ignore
+                if ( empty( $insert_comments ) || is_wp_error( $insert_comments ) ) {
+                    return new WP_Error( __FUNCTION__, 'Failed to insert comments' );
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+
     /**
      * @param $transfer_foreign_key
      *
@@ -431,68 +492,6 @@ class Disciple_Tools_Contacts_Transfer
         } else {
             return false;
         }
-    }
-
-    public function public_contact_transfer( WP_REST_Request $request ){
-
-        $params = $this->process_token( $request );
-        if ( is_wp_error( $params ) ) {
-            return [
-                'status' => 'FAIL',
-                'error' => 'Transfer token error.'
-            ];
-        }
-
-        if ( ! current_user_can( 'create_contacts' ) ) {
-            return [
-                'status' => 'FAIL',
-                'error' => 'Permission error.'
-            ];
-        }
-
-        if ( isset( $params['contact_data'] ) ) {
-            $result = self::receive_transferred_contact( $params );
-            if ( is_wp_error( $result ) ) {
-                return [
-                    'status' => 'FAIL',
-                    'error' => $result->get_error_message(),
-                ];
-            } else {
-                return $result;
-            }
-        } else {
-            return [
-                'status' => 'FAIL',
-                'error' => 'Missing required parameter'
-            ];
-        }
-    }
-
-    /**
-     * Public key processing utility. Use this at the beginning of public endpoints
-     *
-     * @param WP_REST_Request $request
-     *
-     * @return array|WP_Error
-     */
-    public function process_token( WP_REST_Request $request ) {
-
-        $params = $request->get_params();
-
-        // required token parameter challenge
-        if ( ! isset( $params['transfer_token'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing parameters.' );
-        }
-
-        $valid_token = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-
-        // required valid token challenge
-        if ( ! $valid_token ) {
-            dt_write_log( $valid_token );
-            return new WP_Error( __METHOD__, 'Invalid transfer token' );
-        }
-
-        return $params;
     }
 
     public function contact_transfer_endpoint( WP_REST_Request $request ){
@@ -533,11 +532,42 @@ class Disciple_Tools_Contacts_Transfer
             ];
         }
     }
+
+    public function receive_transfer_comments_endpoint( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( ! current_user_can( 'create_contacts' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions' );
+        }
+        if ( !isset( $params["comments"], $params['transfer_foreign_key'] ) ){
+            return new WP_Error( __METHOD__, 'Missing comments or transfer_foreign_key', [ "status" => 400 ] );
+        }
+
+        global $wpdb;
+        $post_id = $wpdb->get_var( $wpdb->prepare( "
+            SELECT post_id
+            FROM $wpdb->postmeta
+            WHERE meta_value = %s
+              AND meta_key = 'transfer_foreign_key'
+              AND post_id = %s
+            LIMIT 1", $params['transfer_foreign_key'], $params['post_id'] )
+        );
+
+        if ( empty( $post_id ) ){
+            return new WP_Error( __METHOD__, 'Could not find post to update', [ "status" => 404 ] );
+        }
+
+        $insert_comments = self::insert_bulk_comments( $params["comments"], $post_id );
+        return $insert_comments;
+    }
 }
 Disciple_Tools_Contacts_Transfer::instance();
 
 function dt_get_comments_with_redacted_user_data( $post_id ) {
-    $comments = get_comments( [ 'post_id' => $post_id ] );
+    $comments = DT_Posts::get_post_comments( "contacts", $post_id );
+    if ( is_wp_error( $comments ) || !isset( $comments["comments"] ) ){
+        return [];
+    }
+    $comments = $comments["comments"];
     if ( empty( $comments ) ) {
         return $comments;
     }
@@ -548,7 +578,7 @@ function dt_get_comments_with_redacted_user_data( $post_id ) {
     $users = get_users();
 
     foreach ( $comments as $index => $comment ) {
-        $comment_content = $comment->comment_content;
+        $comment_content = $comment["comment_content"];
 
         // replace non-@mention references to login names, display names, or user emails
         foreach ( $users as $user ) {
@@ -578,7 +608,7 @@ function dt_get_comments_with_redacted_user_data( $post_id ) {
         // replace duplicate notes
         $comment_content = str_replace( site_url(), '#', $comment_content );
 
-        $comments[$index]->comment_content = $comment_content;
+        $comments[$index]["comment_content"] = $comment_content;
     }
 
     return $comments;
