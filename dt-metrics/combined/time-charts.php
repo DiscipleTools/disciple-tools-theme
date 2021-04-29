@@ -44,8 +44,8 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             $post_type_options[$post_type] = DT_Posts::get_label_for_post_type( $post_type );
         }
 
-        $this->field_settings = DT_Posts::get_post_field_settings( $post_types[0] );
-        $this->post_field_select_options = $this->get_field_settings( $post_types[0] );
+        $this->field_settings = $this->get_field_settings( $post_types[0] );
+        $this->post_field_select_options = $this->create_select_options_from_field_settings( $this->field_settings );
 
         $this->post_type_select_options = apply_filters( 'dt_time_chart_select_options', $post_type_options );
 
@@ -207,11 +207,19 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 continue;
             }
             if ( in_array( $setting['type'], $this->post_field_types_filter ) ) {
-                $field_settings[$key] = $setting['name'];
+                $field_settings[$key] = $setting;
             }
         }
-        asort( $field_settings );
         return $field_settings;
+    }
+
+    public function create_select_options_from_field_settings( $field_settings ) {
+        $select_options = [];
+        foreach ($field_settings as $key => $setting) {
+            $select_options[$key] = $setting['name'];
+        }
+        asort( $select_options );
+        return $select_options;
     }
 
     private function checkInput( $post_type, $field, $year = null ) {

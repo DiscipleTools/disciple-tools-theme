@@ -77,7 +77,7 @@ function projectTimeCharts() {
             .getFieldSettings(postType)
             .promise()
             .then((data) => {
-                dtMetricsProject.select_options.post_field_select_options = data
+                dtMetricsProject.field_settings = data
                 fieldSelectElement.innerHTML = buildFieldSelectOptions()
                 fieldSelectElement.dispatchEvent( new Event('change') )
             })
@@ -108,8 +108,18 @@ function projectTimeCharts() {
 }
 
 function buildFieldSelectOptions() {
-    const postFieldOptions = escapeObject(dtMetricsProject.select_options.post_field_select_options)
-    return Object.entries(postFieldOptions).map(([value, label]) => `
+    const unescapedOptions = Object.entries(dtMetricsProject.field_settings)
+        .reduce((options, [ key, setting ]) => {
+            options[key] = setting.name
+            return options
+        }, {})
+    const postFieldOptions = escapeObject(unescapedOptions)
+    const sortedOptions = Object.entries(postFieldOptions).sort(([key1, value1], [key2, value2]) => {
+        if (value1 < value2) return -1
+        if (value1 = value2) return 0
+        if (value1 > value2) return 1
+    })
+    return sortedOptions.map(([value, label]) => `
         <option value="${value}"> ${label} </option>
     `)
 }
