@@ -1002,7 +1002,24 @@ class Disciple_Tools_Posts
 
         $joins = "";
         $post_query = "";
-
+        // START: [digital responders location based contact listing]
+        // Need to filter the contacts according to Digital Responder location
+        $loggedInUserRoleArray =  dt_get_user_role_names( get_current_user_id());
+        // check that user with single role assign as Digital Responder
+        if(count($loggedInUserRoleArray)==1 && $loggedInUserRoleArray['marketer'] == 'Digital Responder'){
+            // Fetch the Logged in DR location is is responsible
+            $loggedInUserlocationGridArray = Disciple_Tools_Users::get_user_location( get_current_user_id() );
+            foreach ($loggedInUserlocationGridArray['location_grid'] as $data){
+                if($data['id'] == 1){ // in case of world need to skipp the check, so digital responder with world loaction can access all the contacts under site
+                    break;
+                }
+                $locationGrid[] = $data['id']; // add the location of the logged in user as digital responder
+            }
+            if(isset($locationGrid)){
+                $query[]['location_grid'] = $locationGrid;
+            }
+        }
+        // END: [digital responders location based contact listing]
         if ( !empty( $search )){
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
 
