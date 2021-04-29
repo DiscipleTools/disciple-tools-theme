@@ -187,7 +187,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'custom_display' => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/status.svg",
                 "show_in_table" => 10,
-                "only_for_types" => [ "access" ]
+                "only_for_types" => [ "access" ],
+                "select_cannot_be_empty" => true
             ];
 
             $fields["reason_unassignable"] = [
