@@ -368,7 +368,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php endif;
                 echo esc_html( $fields[$field_key]["name"] );
                 ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
-                <?php if ( $field_type === "communication_channel" ) : ?>
+                <?php if ( $is_private ) : ?>
+                    <i class="fi-lock small" title="<?php _x( "Private Field: Only can see it's content", 'disciple_tools' )?>"></i>
+                <?php endif;
+                if ( $field_type === "communication_channel" ) : ?>
                     <button data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
