@@ -698,6 +698,9 @@ class Disciple_Tools_Posts
                                 }
                                 if ( $field_type === "key_select" ){
                                     $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
+                                    if ( $value === "none" ){
+                                        $where_sql .= " OR $table_key.meta_value IS NULL ";
+                                    }
                                 }
                                 if ( $field_type === "multi_select" ){
                                     if ( $equality === "!=" && $field_type === "multi_select" ){

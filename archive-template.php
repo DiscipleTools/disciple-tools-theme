@@ -569,7 +569,11 @@ dt_please_log_in();
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $field_options[$field]["default"] as $option_key => $option_value ) :
-                                            $label = $option_value["label"] ?? ""?>
+                                            $label = $option_value["label"] ?? "";
+                                            if ( empty( $label ) && ( $option_key === "" || $option_key === "none" ) ){
+                                                $label = __( "None Set", "disciple_tools" );
+                                            }
+                                            ?>
                                             <div class="key_select_options">
                                                 <label style="cursor: pointer">
                                                     <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"

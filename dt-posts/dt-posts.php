@@ -1427,6 +1427,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                             $fields[ $key ]["default"] = $with_order;
                         }
                     }
+                    if ( $field_type === "key_select" ){
+                        if ( !isset( $fields[$key]["default"]["none"] ) ){
+                            $none = [ "none" => [ "label" => __( "None Set", "disciple_tools" ) ] ];
+                            $fields[$key]["default"] = dt_array_merge_recursive_distinct( $none, $fields[$key]["default"] );
+                        }
+                    }
                 }
             }
         }

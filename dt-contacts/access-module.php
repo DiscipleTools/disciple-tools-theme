@@ -190,20 +190,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "only_for_types" => [ "access" ]
             ];
 
-            $fields['age'] = [
-                'name'        => __( 'Age', 'disciple_tools' ),
-                'type'        => 'key_select',
-                'default'     => [
-                    'not-set' => [ "label" => '' ],
-                    '<19'     => [ "label" => __( 'Under 18 years old', 'disciple_tools' ) ],
-                    '<26'     => [ "label" => __( '18-25 years old', 'disciple_tools' ) ],
-                    '<41'     => [ "label" => __( '26-40 years old', 'disciple_tools' ) ],
-                    '>41'     => [ "label" => __( 'Over 40 years old', 'disciple_tools' ) ],
-                ],
-                'tile'     => 'details',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg",
-                "only_for_types" => [ "access" ]
-            ];
             $fields["reason_unassignable"] = [
                 'name'        => __( 'Reason Not Ready', 'disciple_tools' ),
                 'description' => _x( 'The main reason the contact is not ready to be assigned to a user.', 'Optional Documentation', 'disciple_tools' ),
