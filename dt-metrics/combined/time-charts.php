@@ -18,7 +18,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     public $field_settings = [];
     public $post_type_select_options = [];
     public $post_field_select_options = [];
-    public $post_field_types_filter = [ 'date', 'multi_select', /* 'key_select', */ /* 'connection', 'number' */ ]; // connection and number would be interesting for additions to groups, and quick button usage
+    public $post_field_types_filter = [ 'date', 'multi_select', /* 'key_select', */ /* 'connection', 'boolean', 'tag' */ ]; // connection and number would be interesting for additions to groups, and quick button usage
 
     public function __construct() {
         parent::__construct();

@@ -4,6 +4,8 @@ jQuery(function() {
     }
 })
 
+const CUMULATIVE_PREFIX = 'cumulative_'
+
 function escapeObject(obj) {
     return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
         return [ key, window.lodash.escape(value)]
@@ -64,8 +66,7 @@ function projectTimeCharts() {
 
     const chartSection = document.querySelector('#chartdiv')
     chartSection.addEventListener('datachange', () => {
-        const currentView = dtMetricsProject.state.chart_view
-        createChart(currentView, { total_label, tooltipLabel, added_label, all_time })
+        createChart()
     })
     const fieldSelectElement = document.querySelector('#post-field-select')
 
@@ -87,7 +88,11 @@ function projectTimeCharts() {
 
     fieldSelectElement.addEventListener('change', (e) => {
         dtMetricsProject.state.field = e.target.value
-        dtMetricsProject.state.fieldType = dtMetricsProject.field_settings[e.target.value]?.type
+        if (!dtMetricsProject.field_settings[e.target.value]) {
+            console.error(e.target.value, 'not found in', dtMetricsProject.field_settings)
+            return
+        }
+        dtMetricsProject.state.fieldType = dtMetricsProject.field_settings[e.target.value].type
         getData()
     })
 
@@ -109,8 +114,12 @@ function buildFieldSelectOptions() {
     `)
 }
 
-function createChart(view, { total_label, tooltipLabel, added_label, all_time }) {
-    const { year } = dtMetricsProject.state
+function createChart() {
+    const { year, fieldType, chart_view: view } = dtMetricsProject.state
+    const {
+        all_time,
+    } = escapeObject(dtMetricsProject.translations)
+
     const chartSection = document.querySelector('#chartdiv')
     am4core.useTheme(am4themes_animated);
     am4core.options.autoDispose = true
@@ -124,11 +133,32 @@ function createChart(view, { total_label, tooltipLabel, added_label, all_time })
 
     const valueAxis = chart.yAxes.push( new am4charts.ValueAxis() )
 
+    chart.data = data
+
+    if (fieldType === 'date') {
+        createCumulativeChart(chart)
+    } else if (fieldType === 'multi_select') {
+        const keys = getDataKeys(data)
+        const totalKeys = keys.filter((key) => !key.includes('cumulative_') )
+        const cumulativeKeys = keys.filter((key) => key.includes('cumulative_') )
+        createStackedChart(chart, cumulativeKeys)
+    }
+
+}
+
+function createCumulativeChart(chart) {
+    const {
+        total_label,
+        added_label,
+        tooltip_label,
+    } = escapeObject(dtMetricsProject.translations)
+    const { chart_view: view } = dtMetricsProject.state
+
     const columnSeries = chart.series.push( new am4charts.ColumnSeries() )
     columnSeries.name = total_label
     columnSeries.dataFields.valueY = 'cumulativeTotal'
     columnSeries.dataFields.categoryX = view
-    columnSeries.columns.template.tooltipText = `[#fff font-size: 15px]${tooltipLabel}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
+    columnSeries.columns.template.tooltipText = `[#fff font-size: 15px]${tooltip_label}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
     columnSeries.columns.template.propertyFields.fillOpacity = "fillOpacity";
     columnSeries.columns.template.propertyFields.stroke = "stroke";
     columnSeries.columns.template.propertyFields.strokeWidth = "strokeWidth";
@@ -147,13 +177,44 @@ function createChart(view, { total_label, tooltipLabel, added_label, all_time })
 
     let bullet = lineSeries.bullets.push(new am4charts.Bullet());
     bullet.fill = am4core.color("#fdd400"); // tooltips grab fill from parent by default
-    bullet.tooltipText = `[#fff font-size: 15px]${tooltipLabel}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
+    bullet.tooltipText = `[#fff font-size: 15px]${tooltip_label}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
     let circle = bullet.createChild(am4core.Circle);
     circle.radius = 4;
     circle.fill = am4core.color("#fff");
     circle.strokeWidth = 3;
+}
 
-    chart.data = data
+function createStackedChart(chart, keys) {
+    const { field } = dtMetricsProject.state
+
+    const createSeries = (field, name) => {
+        const series = chart.series.push( new am4charts.ColumnSeries())
+        series.dataFields.valueY = field
+        series.dataFields.categoryX = "month"
+        series.name = name // get the name from the field_settings defaults labels if exists
+        series.columns.template.tooltipText = '{name}: [bold]{valueY}[/]'
+        series.stacked = true
+    }
+
+    // create the series for each key name in the data arrays
+    // then get the labels from field_settings, if they exist
+    const fieldLabels = keys.map((key) => {
+        const fieldSettings = dtMetricsProject.field_settings[field]
+        const defaultSettings = fieldSettings ? fieldSettings.default : []
+
+        const newKey = isCumulativeKey(key) ? key.replace(CUMULATIVE_PREFIX, '') : key
+        const label = defaultSettings[newKey] ? defaultSettings[newKey].label : newKey
+        return {
+            field: key,
+            label: label,
+        }
+    })
+    // then loop over the keys and labels and create the stacked series
+    fieldLabels.forEach(({ field, label }) => {
+        createSeries(field, label)
+    })
+
+    chart.legend = new am4charts.Legend()
 }
 
 function getData() {
@@ -169,9 +230,8 @@ function getData() {
             window.dtMetricsProject.data = isAllTime 
                 ? formatYearData(data)
                 : formatMonthData(data)
-            const dataChangeEvent = new Event('datachange')
             const chartElement = document.querySelector('#chartdiv')
-            chartElement.dispatchEvent(dataChangeEvent)
+            chartElement.dispatchEvent( new Event('datachange') )
         })
         .catch((error) => {
             console.log(error)
@@ -214,12 +274,33 @@ function formatYearData(yearlyData) {
  * 
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
- function formatMonthData(monthlyData) {
+function formatMonthData(monthlyData) {
+    const { fieldType } = dtMetricsProject.state
+
+    if (fieldType === 'date') {
+        return formatSimpleMonthData(monthlyData)
+    } else if (fieldType === 'multi_select') {
+        return formatCompoundMonthData(monthlyData)
+    }
+}
+
+function isInFuture(monthNumber) {
+    const { year } = dtMetricsProject.state
+    const now = new Date()
+    return now.getUTCFullYear() === parseInt(year) && monthNumber > now.getMonth() + 1
+}
+
+function formatSimpleMonthData(monthlyData) {
     const monthLabels = window.wpApiShare.translations.month_labels
 
     let cumulativeTotal = 0
     const formattedMonthlyData = monthLabels.map((monthLabel, i) => {
         const monthNumber = i + 1
+        if (isInFuture(monthNumber)) {
+            return {
+                month: monthLabel,
+            }
+        }
 
         const monthData = monthlyData.find((mData) => mData.month === String(monthNumber) )
         const count = monthData ? parseInt(monthData.count) : 0
@@ -233,4 +314,70 @@ function formatYearData(yearlyData) {
     })
 
     return formattedMonthlyData
+}
+
+function formatCompoundMonthData(monthlyData) {
+    const monthLabels = window.wpApiShare.translations.month_labels
+    const keys = getDataKeys(monthlyData)
+
+    const cumulativeTotals = {}
+    const cumulativeKeys = {}
+    keys.forEach((key) => {
+        const cumulativeKey = `${CUMULATIVE_PREFIX}${key}`
+        cumulativeKeys[key] = cumulativeKey
+    })
+    const formattedMonthlyData = monthLabels.map((monthLabel, i) => {
+        const monthNumber = i + 1
+        if ( isInFuture(monthNumber) ) {
+            return {
+                month: monthLabel,
+            }
+        }
+
+        const monthData = monthlyData.find((mData) => mData.month === String(monthNumber)) || {}
+
+        // add onto previous data to get cumulative totals
+        // each key always has a value >= 0
+        keys.forEach((key) => {
+            const count = monthData[key] ? parseInt(monthData[key]) : 0
+            const cumulativeKey = cumulativeKeys[key]
+            if (!cumulativeTotals[cumulativeKey] && count > 0) {
+                cumulativeTotals[cumulativeKey] = count
+                return
+            } else if (cumulativeTotals[cumulativeKey] && count > 0) {
+                cumulativeTotals[cumulativeKey] = cumulativeTotals[cumulativeKey] + count
+            }
+        })
+
+        return {
+            ...monthData,
+            ...cumulativeTotals,
+            month: monthLabel,
+        }
+    })
+
+    return formattedMonthlyData
+}
+
+function getDataKeys(data) {
+    if (data.length === 0) return []
+
+    let dataWithKeys = {}
+    // loop over all data and merge them all to make sure we get an object with the keys in
+    // (as some months/years might be empty)
+    data.forEach((d) => {
+        dataWithKeys = {
+            ...dataWithKeys,
+            ...d,
+        }
+    })
+    const keys = Object.keys(dataWithKeys).filter((key) => key !== 'month' && key !== 'year' )
+    if (Object.keys(keys).length === 0) {
+        return []
+    }
+    return keys
+}
+
+function isCumulativeKey(key) {
+    return key.includes(CUMULATIVE_PREFIX)
 }

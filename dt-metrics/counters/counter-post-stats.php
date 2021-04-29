@@ -156,7 +156,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         }
 
         $count_dynamic_values = array_map( function ( $value ) {
-            return "COUNT( CASE WHEN log.meta_value = '$value' THEN log.meta_value END ) AS $value";
+            return "COUNT( CASE WHEN log.meta_value = '$value' THEN log.meta_value END ) AS `$value`";
         }, $multi_values);
         $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
 
