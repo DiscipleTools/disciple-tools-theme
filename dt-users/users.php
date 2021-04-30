@@ -32,6 +32,8 @@ class Disciple_Tools_Users
         add_action( 'add_user_to_blog', [ &$this, 'user_register_hook' ] );
         add_action( 'user_register', [ &$this, 'user_register_hook' ] ); // used on non multisite?
         add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
+        add_action( 'signup_user_meta', [ $this, 'signup_user_meta' ], 10, 1 );
+        add_action( 'wpmu_activate_user', [ $this, 'wpmu_activate_user' ], 10, 3 );
 
         //invite user and edit user page modifications
         add_action( "user_new_form", [ &$this, "custom_user_profile_fields" ] );
@@ -343,7 +345,8 @@ class Disciple_Tools_Users
             return new WP_Error( 'no_permission', __( "Insufficient permissions", 'disciple_tools' ), [ 'status' => 403 ] );
         }
         $contact_id = get_user_option( "corresponds_to_contact", $user_id );
-        if ( !empty( $contact_id )){
+
+        if ( !empty( $contact_id ) && get_post( $contact_id ) ){
             return (int) $contact_id;
         }
         $args = [
@@ -430,8 +433,8 @@ class Disciple_Tools_Users
 //                wp_set_current_user( $current_user_id );
                 if ( !is_wp_error( $new_user_contact )){
                     update_user_option( $user_id, "corresponds_to_contact", $new_user_contact["ID"] );
+                    return $new_user_contact["ID"];
                 }
-                return $new_user_contact["ID"];
             } else {
                 $contact = get_post( $corresponds_to_contact );
                 if ( $contact && $contact->post_title != $user->display_name && $user->display_name != $user->user_login ){
@@ -465,6 +468,33 @@ class Disciple_Tools_Users
         }
     }
 
+    /*
+     * Multisite only
+     * Save who added the user so that their contact record can later be shared.
+     */
+    public function signup_user_meta( $meta ){
+        $current_user_id = get_current_user_id();
+        if ( $current_user_id ){
+            $meta["invited_by"] = $current_user_id;
+        }
+        return $meta;
+    }
+
+    /**
+     * Multisite only
+     * Share the newly added user-contact with the admin who added the user.
+     * @param $user_id
+     * @param $password
+     * @param $meta
+     */
+    public function wpmu_activate_user( $user_id, $password, $meta ){
+        if ( isset( $meta["invited_by"] ) && !empty( $meta["invited_by"] ) ){
+            $contact_id = get_user_option( "corresponds_to_contact", $user_id );
+            if ( $contact_id && !is_wp_error( $contact_id )){
+                DT_Posts::add_shared( "contacts", $contact_id, $meta["invited_by"], null, false, false );
+            }
+        }
+    }
 
     /**
      * User register hook
@@ -487,17 +517,25 @@ class Disciple_Tools_Users
             if ( isset( $data["corresponds_to_contact"] ) ){
                 $corresponds_to_contact = $data["corresponds_to_contact"];
                 update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-                DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
-                    "corresponds_to_user" => $user_id
+                $contact = DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
+                    "corresponds_to_user" => $user_id,
+                    "type" => "user"
                 ], false, true );
+                $user = get_user_by( 'id', $user_id );
+                $user->display_name = $contact["title"];
+                wp_update_user( $user );
             }
         }
         if ( isset( $_POST["corresponds_to_contact_id"] ) && !empty( $_POST["corresponds_to_contact_id"] ) ) {
             $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
             update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-            DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
-                "corresponds_to_user" => $user_id
+            $contact = DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
+                "corresponds_to_user" => $user_id,
+                "type" => "user"
             ], false, true );
+            $user = get_user_by( 'id', $user_id );
+            $user->display_name = $contact["title"];
+            wp_update_user( $user );
         }
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
         if ( empty( $corresponds_to_contact ) ){
@@ -816,7 +854,7 @@ class Disciple_Tools_Users
     }
 
 
-    public function dt_contact_merged( $master_id, $non_master_id){
+    public function dt_contact_merged( $master_id, $non_master_id ){
         //check to make sure both contacts don't point to a user
         $corresponds_to_user = get_post_meta( $master_id, "corresponds_to_user", true );
         if ( $corresponds_to_user ){
@@ -829,14 +867,20 @@ class Disciple_Tools_Users
             if ( $dup_corresponds_to_contact ){
                 delete_post_meta( $non_master_id, "corresponds_to_user" );
             }
+            //update the user display name to the new contact name
+            $user = get_user_by( 'id', $corresponds_to_user );
+            $user->display_name = get_the_title( $master_id );
+            wp_update_user( $user );
         }
 
+
+        //make sure only one contact keeps the user type
         $master_contact_type = get_post_meta( $master_id, "type", true );
-        if ( $master_contact_type === "user"){
-            $non_master_contact_type = get_post_meta( $non_master_id, "type", true );
-            if ( !empty( $non_master_contact_type ) && $non_master_contact_type != "user" ){
-                update_post_meta( $master_id, "type", $non_master_contact_type );
-            }
+        $non_master_contact_type = get_post_meta( $non_master_id, "type", true );
+        if ( $master_contact_type === "user" || $non_master_contact_type === "user" ){
+            //keep both records as type "user"
+            update_post_meta( $master_id, "type", "user" );
+            update_post_meta( $non_master_id, "type", "user" );
         }
     }
 

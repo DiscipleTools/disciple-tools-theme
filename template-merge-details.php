@@ -149,9 +149,8 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
                     <input type="hidden" name="contact2" value="<?php echo esc_html( $dt_duplicate_contact["ID"] ); ?>">
                     <input type="radio" required name="master-record" value="<?php echo esc_html( $dt_current_id ); ?>"> <?php esc_html_e( "Use as master", 'disciple_tools' ) ?>
                   </div>
-                  <div class="merge-column">
-                    <input type="radio" required name="master-record" value="<?php echo esc_html( $dt_duplicate_contact["ID"] ); ?>"> <?php esc_html_e( "Use as master", 'disciple_tools' ) ?>
-
+                  <div class="merge-column blueBackground">
+                    <input type="radio" checked required name="master-record" value="<?php echo esc_html( $dt_duplicate_contact["ID"] ); ?>"> <?php esc_html_e( "Use as master", 'disciple_tools' ) ?>
                   </div>
                 </div>
 
@@ -174,7 +173,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
                                         <div class='empty'></div>
                                     <?php endif; ?>
                                 </div>
-                             <?php } ?>
+                            <?php } ?>
                         </div>
                     <?php endforeach;
                 } ?>

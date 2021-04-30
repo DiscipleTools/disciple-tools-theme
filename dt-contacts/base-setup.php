@@ -24,7 +24,6 @@ class DT_Contacts_Base {
         add_filter( 'dt_custom_fields_settings_after_combine', [ $this, 'dt_custom_fields_settings_after_combine' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles_after' ], 100, 2 );
-        add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'dt_record_admin_actions', [ $this, "dt_record_admin_actions" ], 10, 2 );
         add_action( 'dt_record_footer', [ $this, "dt_record_footer" ], 10, 2 );
         add_action( 'dt_record_notifications_section', [ $this, "dt_record_notifications_section" ], 10, 2 );
@@ -153,10 +152,9 @@ class DT_Contacts_Base {
             $fields['tags'] = [
                 'name'        => __( 'Tags', 'disciple_tools' ),
                 'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'multi_select',
+                'type'        => 'tags',
                 'default'     => [],
                 'tile'        => 'other',
-                'custom_display' => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/tag.svg",
             ];
             $fields["follow"] = [
@@ -228,6 +226,7 @@ class DT_Contacts_Base {
             if ( DT_Mapbox_API::get_key() ){
                 $fields["contact_address"]["custom_display"] = true;
                 $fields["contact_address"]["mapbox"] = true;
+                $fields["contact_address"]["hidden"] = true;
                 unset( $fields["contact_address"]["tile"] );
                 $fields["location_grid"]["mapbox"] = true;
                 $fields["location_grid"]["hidden"] = true;
@@ -329,41 +328,6 @@ class DT_Contacts_Base {
             }
         }
         return $fields;
-    }
-
-    public function dt_details_additional_section( $section, $post_type ){
-        if ( $post_type === "contacts" ) :
-            $contact_fields = DT_Posts::get_post_field_settings( $post_type );
-            if ( isset( $contact_fields["tags"]["tile"] ) && $contact_fields["tags"]["tile"] === $section ) : ?>
-                <div class="section-subheader">
-                    <img class="dt-icon" src="<?php echo esc_url( $contact_fields["tags"]["icon"] ) ?>">
-                    <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
-                </div>
-                <div class="tags">
-                    <var id="tags-result-container" class="result-container"></var>
-                    <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-tags input-height"
-                                           name="tags[query]"
-                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["tags"]['name'] ) )?>"
-                                           autocomplete="off"
-                                           data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
-                                           data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
-                                </span>
-                                <span class="typeahead__button">
-                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
-                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-        <?php endif;
-
     }
 
     public static function dt_record_admin_actions( $post_type, $post_id ){
@@ -639,7 +603,7 @@ class DT_Contacts_Base {
     }
 
     public function dt_record_notifications_section( $post_type, $dt_post ){
-        if ( $post_type === "contacts" && ( $dt_post["type"]["key"] === "personal" || $dt_post["type"]["key"] === "placeholder" ) ):
+        if ( $post_type === "contacts" ):
             $post_settings = DT_Posts::get_post_settings( $post_type );
             ?>
             <!-- archived -->

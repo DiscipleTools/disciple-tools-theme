@@ -19,6 +19,7 @@
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
+  window.post_type_fields = list_settings.post_type_settings.fields
 
   let items = []
   try {
@@ -102,12 +103,12 @@
   /**
    * Looks for all query params called 'filter' (allows for multiple filters to be applied)
    * from url like base_url?filter=foo&filter=bar
-   * 
+   *
    * filter values are exected to be created by encodeURI(JSON.stringify({ id, name, field }))
-   * where the id, name and field are the relevant field and id to search for. (filters with 
+   * where the id, name and field are the relevant field and id to search for. (filters with
    * incorrect fields will be removed)
-   * 
-   * If any part of the filter doesn't decode or JSON.parse properly the function returns 
+   *
+   * If any part of the filter doesn't decode or JSON.parse properly the function returns
    * no filter.
    */
   function create_custom_filter_from_query_params() {
@@ -455,7 +456,11 @@
               values = field_value.map(v => {
                 return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
               })
-            } else if ( field_settings.type === "location" ){
+            } else if (field_settings.type === 'tags') {
+              values = field_value.map(v => {
+                return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
+              })
+            } else if ( field_settings.type === "location" || field_settings.type === "location_meta" ){
               values = field_value.map(v => {
                 return `${window.lodash.escape( v.label )}`;
               })
@@ -634,6 +639,8 @@
       if ( type === "connection" || type === "user_select" ){
         search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
       } else if ( type === "multi_select" ){
+        search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
+      } else if ( type === "tags" ){
         search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
       } else if ( type === "location" || type === "location_meta" ){
         search_query.push({ 'location_grid' : window.lodash.map( window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
@@ -992,6 +999,8 @@
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
         } else if ( type === "multi_select" ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
+        } else if ( type === "tags" ){
+          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.id})
         } else if ( type === "user_select" ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
         }

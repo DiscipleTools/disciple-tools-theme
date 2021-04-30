@@ -54,6 +54,13 @@ $dt_nav_tabs = dt_default_menu_array();
 
         <div class="title-bar-right">
 
+            <!-- advanced search -->
+            <?php if ( isset( $dt_nav_tabs['admin']['advanced_search'] ) && ! empty( $dt_nav_tabs['admin']['advanced_search'] ) ) : ?>
+                <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>" style="margin-left: 10px">
+                    <img title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
+                </a>
+            <?php endif; // end advanced search ?>
+
             <!-- add new-->
             <?php if ( isset( $dt_nav_tabs['admin']['add_new'] ) && ! empty( $dt_nav_tabs['admin']['add_new'] ) ) : ?>
                 <ul class="dropdown menu" data-dropdown-menu style="display:inline-block; margin-left: 10px">
@@ -157,6 +164,16 @@ $dt_nav_tabs = dt_default_menu_array();
                         </a>
                     </li>
                 <?php endif; // end profile ?>
+
+
+                <!-- advanced search -->
+                <?php if ( isset( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) && empty( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) ) : ?>
+                    <li class="image-menu-nav">
+                        <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
+                            <img title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
+                        </a>
+                    </li>
+                <?php endif; // end advanced search ?>
 
 
                 <!-- add new -->
@@ -277,3 +294,6 @@ $dt_nav_tabs = dt_default_menu_array();
     </div>
 
 <?php endif; ?>
+
+<!-- Load advanced search model template part -->
+<?php get_template_part( 'dt-assets/parts/modals/modal', 'advanced-search' ); ?>

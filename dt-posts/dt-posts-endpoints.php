@@ -424,6 +424,15 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+
+        //Advanced Search
+        register_rest_route(
+            $this->namespace . '/posts/search', '/advanced_search', [
+                'methods'             => 'GET',
+                'callback'            => [ $this, 'advanced_search' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
     }
 
     /**
@@ -448,7 +457,8 @@ class Disciple_Tools_Posts_Endpoints {
             }
             if ( $param === 'post_type' ){
                 $post_types = DT_Posts::get_post_types();
-                if ( !in_array( $value, $post_types ) ){
+                // Support advanced search all post type option
+                if ( ( $value !== 'all' ) && ! in_array( $value, $post_types ) ) {
                     return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not a valid post type', $value ), array( 'status' => 400 ) );
                 }
             }
@@ -639,4 +649,11 @@ class Disciple_Tools_Posts_Endpoints {
         return DT_Posts::request_record_access( $url_params["post_type"], $url_params["id"] );
     }
 
+    public function advanced_search( WP_REST_Request $request ): array {
+        $query     = urldecode( $request->get_param( 'query' ) );
+        $post_type = $request->get_param( 'post_type' );
+        $offset    = intval( $request->get_param( 'offset' ) );
+
+        return DT_Posts::advanced_search( $query, $post_type, $offset );
+    }
 }

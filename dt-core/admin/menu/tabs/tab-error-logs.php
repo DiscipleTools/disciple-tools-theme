@@ -58,7 +58,6 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
 
             $this->process_settings();
             $this->display_settings();
-
             $this->display_logs();
 
             $this->template( 'right_column' );
@@ -68,23 +67,36 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
         endif;
     }
 
+    private function process_settings() {
+        if ( isset( $_POST['email_error_logs_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['email_error_logs_nonce'] ) ), 'email_error_logs_nonce' ) ) {
+            update_option( 'dt_error_log_dispatch_emails', isset( $_POST['dispatch_error_log_emails'] ) ? 1 : 0 );
+            update_option( 'dt_error_log_display_count', isset( $_POST['number_of_error_logs_to_display'] ) ? intval( $_POST['number_of_error_logs_to_display'] ) : 20 );
+            update_option( 'dt_error_log_enforce_retention_policy', isset( $_POST['enforce_retention_policy'] ) ? 0 : 1 );
+            update_option( 'dt_error_log_retention_period_count', isset( $_POST['retention_period_days'] ) ? intval( $_POST['retention_period_days'] ) : 30 );
+        }
+    }
+
+    private function is_dispatch_emails_enabled(): bool {
+        return boolval( get_option( 'dt_error_log_dispatch_emails' ) );
+    }
+
     private function fetch_display_count(): int {
         $display_count_option = get_option( 'dt_error_log_display_count' );
         return ( $display_count_option > 0 ) ? intval( $display_count_option ) : 20;
     }
 
-    private function process_settings() {
-        if ( isset( $_POST['email_error_logs_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['email_error_logs_nonce'] ) ), 'email_error_logs_nonce' ) ) {
-            update_option( 'dt_error_log_dispatch_emails', isset( $_POST['dispatch_error_log_emails'] ) ? 1 : 0 );
-            update_option( 'dt_error_log_display_count', isset( $_POST['number_of_error_logs_to_display'] ) ? intval( $_POST['number_of_error_logs_to_display'] ) : 20 );
-        }
+    private function is_enforce_retention_policy_enabled(): bool {
+        return ! boolval( get_option( 'dt_error_log_enforce_retention_policy' ) );
+    }
+
+    private function fetch_retention_period_count(): int {
+        $retention_period_count = get_option( 'dt_error_log_retention_period_count' );
+        return ( $retention_period_count > 0 ) ? intval( $retention_period_count ) : 30;
     }
 
     private function display_settings() {
 
         $this->box( 'top', 'Logging Settings', [ "col_span" => 4 ] );
-
-        $checked = boolval( get_option( 'dt_error_log_dispatch_emails' ) ) ? 'checked' : '';
 
         ?>
         <form method="POST">
@@ -94,7 +106,7 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
                 <tr>
                     <td align="right">
                         <input type="checkbox" id="dispatch_error_log_emails"
-                               name="dispatch_error_log_emails" <?php echo esc_html( $checked ) ?> />
+                               name="dispatch_error_log_emails" <?php echo esc_html( $this->is_dispatch_emails_enabled() ? 'checked' : '' ) ?> />
                     </td>
                     <td>Dispatch Error Log Notification Emails</td>
                 </tr>
@@ -104,6 +116,20 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
                                name="number_of_error_logs_to_display" value="<?php echo esc_html( $this->fetch_display_count() ) ?>"/>
                     </td>
                     <td>Number Of Error Logs To Be Displayed</td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <input type="checkbox" id="enforce_retention_policy"
+                               name="enforce_retention_policy" <?php echo esc_html( $this->is_enforce_retention_policy_enabled() ? 'checked' : '' ) ?> />
+                    </td>
+                    <td>Enforce Error Log Retention Policy</td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <input type="number" id="retention_period_days"
+                               name="retention_period_days" value="<?php echo esc_html( $this->fetch_retention_period_count() ) ?>"/>
+                    </td>
+                    <td>Retention Period (Days)</td>
                 </tr>
             </table>
             <br>
@@ -119,7 +145,13 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
         global $wpdb;
 
         // Obtain list of recent error logs
-        $logs = $wpdb->get_results( $wpdb->prepare( "SELECT hist_time, meta_key, meta_value, object_note FROM $wpdb->dt_activity_log WHERE action = 'error_log' ORDER BY hist_time DESC LIMIT %d", $this->fetch_display_count() ) );
+        $logs = $wpdb->get_results( $wpdb->prepare( "
+SELECT act.hist_time, if(act.user_id > 0, usr.display_name, '') user, act.meta_key, act.meta_value, act.object_note
+FROM $wpdb->dt_activity_log act
+LEFT JOIN $wpdb->users AS usr ON (usr.ID = act.user_id)
+WHERE (act.action = 'error_log')
+ORDER BY act.hist_time
+DESC LIMIT %d", $this->fetch_display_count() ) );
 
         $this->box( 'top', 'Error Logs', [ "col_span" => 4 ] );
 
@@ -127,6 +159,7 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
         <table class="widefat striped">
             <tr>
                 <th>Timestamp</th>
+                <th>User</th>
                 <th>Key</th>
                 <th>Value</th>
                 <th>Note</th>
@@ -136,6 +169,7 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
             foreach ( $logs as $log ) {
                 echo '<tr>';
                 echo '<td>' . esc_attr( gmdate( "Y-m-d h:i:sa", esc_attr( $log->hist_time ) ) ) . '</td>';
+                echo '<td>' . esc_attr( $log->user ) . '</td>';
                 echo '<td>' . esc_attr( $log->meta_key ) . '</td>';
                 echo '<td>' . esc_attr( $this->format_meta_value( maybe_unserialize( $log->meta_value ) ) ) . '</td>';
                 echo '<td>' . esc_attr( $log->object_note ) . '</td>';
