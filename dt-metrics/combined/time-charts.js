@@ -33,8 +33,6 @@ function projectTimeCharts() {
     const now = new Date()
     const year = now.getUTCFullYear()
 
-    const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
-
     const postTypeOptions = escapeObject(dtMetricsProject.select_options.post_type_select_options)
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
@@ -167,11 +165,13 @@ function createCumulativeChart(chart) {
     } = escapeObject(dtMetricsProject.translations)
     const { chart_view: view } = dtMetricsProject.state
 
+    const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
+
     const columnSeries = chart.series.push( new am4charts.ColumnSeries() )
     columnSeries.name = total_label
     columnSeries.dataFields.valueY = 'cumulativeTotal'
     columnSeries.dataFields.categoryX = view
-    columnSeries.columns.template.tooltipText = `[#fff font-size: 15px]${tooltip_label}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
+    columnSeries.columns.template.tooltipText = `[#fff font-size: 15px]${tooltipLabel}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
     columnSeries.columns.template.propertyFields.fillOpacity = "fillOpacity";
     columnSeries.columns.template.propertyFields.stroke = "stroke";
     columnSeries.columns.template.propertyFields.strokeWidth = "strokeWidth";
@@ -190,7 +190,7 @@ function createCumulativeChart(chart) {
 
     let bullet = lineSeries.bullets.push(new am4charts.Bullet());
     bullet.fill = am4core.color("#fdd400"); // tooltips grab fill from parent by default
-    bullet.tooltipText = `[#fff font-size: 15px]${tooltip_label}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
+    bullet.tooltipText = `[#fff font-size: 15px]${tooltipLabel}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
     let circle = bullet.createChild(am4core.Circle);
     circle.radius = 4;
     circle.fill = am4core.color("#fff");
