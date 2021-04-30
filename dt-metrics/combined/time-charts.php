@@ -18,7 +18,8 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     public $field_settings = [];
     public $post_type_select_options = [];
     public $post_field_select_options = [];
-    public $post_field_types_filter = [ 'date', 'multi_select', /* 'key_select', */ /* 'connection', 'boolean', 'tag' */ ]; // connection and number would be interesting for additions to groups, and quick button usage
+    public $post_field_types_filter = [ 'date', 'tags', 'multi_select', /* 'key_select', */ /* 'connection', 'boolean', */ ]; // connection and number would be interesting for additions to groups, and quick button usage
+    public $multi_fields = [ 'tags', 'multi_select', 'key_select' ];
 
     public function __construct() {
         parent::__construct();
@@ -99,6 +100,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     'post_type_select_options' => $this->post_type_select_options,
                     'post_field_select_options' => $this->post_field_select_options,
                 ],
+                'multi_fields' => $this->multi_fields,
                 'fields_type_filter' => $this->post_field_types_filter,
                 'field_settings' => $this->field_settings,
             ]
@@ -187,7 +189,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         $field_settings = $this->get_field_settings( $post_type );
         if ( $field_settings[$field]['type'] === 'date' ) {
             return DT_Counter_Post_Stats::get_date_field_by_month( $post_type, $field, $year );
-        } elseif ( $field_settings[$field]['type'] === 'multi_select' ) {
+        } elseif ( in_array( $field_settings[$field]['type'], $this->multi_fields ) ) {
             return DT_Counter_Post_Stats::get_multi_field_by_month( $post_type, $field, $year );
         } else {
             return [];
@@ -198,7 +200,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         $field_settings = $this->get_field_settings( $post_type );
         if ( $field_settings[$field]['type'] === 'date' ) {
             return DT_Counter_Post_Stats::get_date_field_by_year( $post_type, $field );
-        } elseif ( $field_settings[$field]['type'] === 'multi_select' ) {
+        } elseif ( in_array( $field_settings[$field]['type'], $this->multi_fields ) ) {
             return DT_Counter_Post_Stats::get_multi_field_by_year( $post_type, $field );
         } else {
             return [];

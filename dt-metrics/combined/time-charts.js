@@ -148,7 +148,7 @@ function createChart() {
 
     if (fieldType === 'date') {
         createCumulativeChart(chart)
-    } else if (fieldType === 'multi_select') {
+    } else if ( dtMetricsProject.multi_fields.includes(fieldType)) {
         const keys = getDataKeys(data)
         const totalKeys = keys.filter((key) => !key.includes('cumulative_') )
         const cumulativeKeys = keys.filter((key) => key.includes('cumulative_') )
@@ -278,7 +278,7 @@ function formatYearData(yearlyData) {
 
     if (fieldType === 'date') {
         return formatSimpleYearData(yearlyData)
-    } else if (fieldType === 'multi_select') {
+    } else if ( dtMetricsProject.multi_fields.includes(fieldType)) {
         return formatCompoundYearData(yearlyData)
     }
 }
@@ -345,7 +345,7 @@ function formatMonthData(monthlyData) {
 
     if (fieldType === 'date') {
         return formatSimpleMonthData(monthlyData)
-    } else if (fieldType === 'multi_select') {
+    } else if ( dtMetricsProject.multi_fields.includes(fieldType)) {
         return formatCompoundMonthData(monthlyData)
     }
 }
