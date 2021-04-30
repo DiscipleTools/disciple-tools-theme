@@ -61,7 +61,10 @@ function projectTimeCharts() {
             </select>
         </section>
         <hr>
-        <section id="chartdiv" class="timechart"></section>
+        <section>
+            <div id="chartdiv" class="timechart"></div>
+            <div id="legenddiv" ></div>
+        </section>
     `
 
     const chartSection = document.querySelector('#chartdiv')
@@ -224,7 +227,22 @@ function createStackedChart(chart, keys) {
         createSeries(field, label)
     })
 
+    const legendContainer = am4core.create('legenddiv', am4core.Container)
+    legendContainer.width = am4core.percent(100)
+    legendContainer.height = am4core.percent(100)
     chart.legend = new am4charts.Legend()
+    chart.legend.parent = legendContainer
+
+    const resizeLegend = (e) => {
+        document.getElementById('legenddiv').style.height = `${chart.legend.contentHeight}px`
+    }
+
+    chart.events.on('datavalidated', resizeLegend)
+    chart.events.on('maxsizechanged', resizeLegend)
+
+    chart.legend.events.on('datavalidated', resizeLegend)
+    chart.legend.events.on('maxsizechanged', resizeLegend)
+
 }
 
 function getData() {
