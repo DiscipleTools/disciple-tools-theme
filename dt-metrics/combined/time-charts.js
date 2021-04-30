@@ -117,7 +117,7 @@ function buildFieldSelectOptions() {
     const postFieldOptions = escapeObject(unescapedOptions)
     const sortedOptions = Object.entries(postFieldOptions).sort(([key1, value1], [key2, value2]) => {
         if (value1 < value2) return -1
-        if (value1 = value2) return 0
+        if (value1 === value2) return 0
         if (value1 > value2) return 1
     })
     return sortedOptions.map(([value, label]) => `
