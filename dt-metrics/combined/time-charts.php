@@ -142,8 +142,10 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
     public function time_metrics_by_month( WP_REST_Request $request ) {
         if ( !$this->has_permission() ) {
-            return new WP_Error( "time_metrics_by_month", "Missing Permissions", [ 'status' => 400 ] );
+            wp_send_json_error( new WP_Error( "time_metrics_by_month", "Missing Permissions", [ 'status' => 400 ] ) );
         }
+
+
         $url_params = $request->get_url_params();
         $post_type = $url_params['post_type'];
         $field = $url_params['field'];
@@ -151,7 +153,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
         $error = $this->checkInput( $post_type, $field, $year );
         if ( $error ) {
-            return $error;
+            wp_send_json_error( $error );
         }
 
         return $this->get_stats_by_month( $url_params['post_type'], $url_params['field'], $url_params['year'] );
@@ -159,7 +161,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
     public function time_metrics_by_year( WP_REST_Request $request ) {
         if ( !$this->has_permission() ) {
-            return new WP_Error( "time_metrics_by_year", "Missing Permissions", [ 'status' => 400 ] );
+            wp_send_json_error( new WP_Error( "time_metrics_by_year", "Missing Permissions", [ 'status' => 400 ] ) );
         }
         $url_params = $request->get_url_params();
         $post_type = $url_params['post_type'];
@@ -167,7 +169,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
         $error = $this->checkInput( $post_type, $field );
         if ( $error ) {
-            return $error;
+            wp_send_json_error( $error );
         }
 
         return $this->get_stats_by_year( $url_params['post_type'], $url_params['field'] );
@@ -175,25 +177,31 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
     public function field_settings( WP_REST_Request $request ) {
         if ( !$this->has_permission() ) {
-            return new WP_Error( "get_field_settings", "Missing Permissions", [ 'status' => 400 ] );
+            wp_send_json_error( new WP_Error( "get_field_settings", "Missing Permissions", [ 'status' => 400 ] ) );
         }
         $url_params = $request->get_url_params();
         return $this->get_field_settings( $url_params['post_type'] );
     }
 
     public function get_stats_by_month( $post_type, $field, $year ) {
-        if ( $this->field_settings[$field]['type'] === 'date' ) {
+        $field_settings = $this->get_field_settings( $post_type );
+        if ( $field_settings[$field]['type'] === 'date' ) {
             return DT_Counter_Post_Stats::get_date_field_by_month( $post_type, $field, $year );
-        } elseif ( $this->field_settings[$field]['type'] === 'multi_select' ) {
+        } elseif ( $field_settings[$field]['type'] === 'multi_select' ) {
             return DT_Counter_Post_Stats::get_multi_field_by_month( $post_type, $field, $year );
+        } else {
+            return [];
         }
     }
 
     public function get_stats_by_year( $post_type, $field ) {
-        if ( $this->field_settings[$field]['type'] === 'date' ) {
+        $field_settings = $this->get_field_settings( $post_type );
+        if ( $field_settings[$field]['type'] === 'date' ) {
             return DT_Counter_Post_Stats::get_date_field_by_year( $post_type, $field );
-        } elseif ( $this->field_settings[$field]['type'] === 'multi_select' ) {
+        } elseif ( $field_settings[$field]['type'] === 'multi_select' ) {
             return DT_Counter_Post_Stats::get_multi_field_by_year( $post_type, $field );
+        } else {
+            return [];
         }
     }
 
