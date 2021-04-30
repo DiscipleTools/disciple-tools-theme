@@ -1385,13 +1385,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <td><input type="text" id="location-latitude" value=""></td>
                         <td><a class="button update-button" data-field="latitude">Update</a></td>
                         <td></td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td>Longitude</td>
                         <td><input type="text" id="location-longitude" value=""></td>
                         <td><a class="button update-button" data-field="longitude">Update</a></td>
-                        <td></td>
                         <td></td>
                     </tr>
                 </table>
@@ -1485,8 +1483,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                   //udate location
                   let grid_id = current.selected
                   let update = send_update({key: field, value: value, grid_id: grid_id})
-
+                  
                   update.done(function (data) {
+                    jQuery('.location-name-title').html(value)
+                    jQuery("button[id='world']")[1].innerHTML = value
                     jQuery('#update-location-spinner').hide()
                   }).fail(()=>{
                     jQuery('#update-location-spinner').hide()
@@ -1510,7 +1510,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 })
                 jQuery(document).on('click', '.open_next_drilldown', function(){
                   let gnid = jQuery(this).data('grid_id')
-                  DRILLDOWN.get_drill_down( 'location_grids', gnid  );
+                  DRILLDOWN.get_drill_down( 'location_grids', gnid, false );
                 })
                 jQuery('#save-sub-location-button').on('click', function () {
                     jQuery('#new-location-spinner').show()
@@ -1532,7 +1532,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                       jQuery('#new-location-spinner').hide()
                     })
                 })
-                window.DRILLDOWN.get_drill_down('location_grids')
+                jQuery('#delete-sub-location-button').on('click', function () {
+                    jQuery('#delete-location-spinner').show()
+                })
+                window.DRILLDOWN.get_drill_down('location_grids', false )
             </script>
 
             <?php
