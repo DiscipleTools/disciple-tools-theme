@@ -141,18 +141,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         } else {
             // there are no defaults hardcoded, so we will need to get them
             // from the metadata
-            $results = $wpdb->get_results(
-                $wpdb->prepare( "
-                    SELECT
-                        DISTINCT( meta_value ) AS value
-                    FROM $wpdb->postmeta
-                    WHERE
-                        meta_key = %s
-                ", $field )
-            );
-            $multi_values = array_map( function ( $result ) {
-                return $result->value;
-            }, $results );
+            $multi_values = self::get_meta_values( $field );
         }
 
         $count_dynamic_values = array_map( function ( $value ) {
@@ -192,7 +181,77 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
     }
 
     public static function get_multi_field_by_year( $post_type, $field ) {
-        # code...
+        global $wpdb;
+
+        $current_year = gmdate( "Y" );
+        $start = 0;
+        $end = mktime( 24, 60, 60, 12, 31, $current_year );
+
+        // get possible values of multi select field
+        $multi_values = [];
+
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        $default_values = array_key_exists( $field, $field_settings ) ? $field_settings[$field]['default'] : [];
+
+        if ( !empty( $default_values ) ) {
+            $multi_values = array_keys( $default_values );
+        } else {
+            // there are no defaults hardcoded, so we will need to get them
+            // from the metadata
+            $multi_values = self::get_meta_values( $field );
+        }
+
+        $count_dynamic_values = array_map( function ( $value ) {
+            return "COUNT( CASE WHEN log.meta_value = '$value' THEN log.meta_value END ) AS `$value`";
+        }, $multi_values);
+        $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
+
+        $results = $wpdb->get_results(
+            // phpcs:disable
+            $wpdb->prepare( "
+                SELECT 
+                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year,
+                    $count_dynamic_values_query
+                FROM $wpdb->posts AS p
+                JOIN $wpdb->postmeta AS pm
+                    ON p.ID = pm.post_id
+                JOIN $wpdb->dt_activity_log AS log
+                    ON log.object_id = p.ID
+                WHERE p.post_type = %s
+                    AND pm.meta_key = %s
+                    AND log.meta_value = pm.meta_value
+                    AND log.hist_time = (
+                        SELECT MAX( log2.hist_time )
+                        FROM $wpdb->dt_activity_log AS log2
+                        WHERE log.meta_value = log2.meta_value
+                            AND log.object_id = log2.object_id
+                    )
+                    AND log.hist_time >= %s
+                    AND log.hist_time <= %s
+                GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+                ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+            ", $post_type, $field, $start, $end )
+            // phpcs:enable
+        );
+
+        return $results;
+    }
+
+    private static function get_meta_values( $field ) {
+        global $wpdb;
+        $results = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT
+                    DISTINCT( meta_value ) AS value
+                FROM $wpdb->postmeta
+                WHERE
+                    meta_key = %s
+            ", $field )
+        );
+        $meta_values = array_map( function ( $result ) {
+            return $result->value;
+        }, $results );
+        return $meta_values;
     }
 
     private static function isPostField( $field ) {

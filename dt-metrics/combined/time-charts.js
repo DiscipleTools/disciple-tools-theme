@@ -198,13 +198,13 @@ function createCumulativeChart(chart) {
 }
 
 function createStackedChart(chart, keys) {
-    const { field } = dtMetricsProject.state
+    const { field, chart_view } = dtMetricsProject.state
 
     const createSeries = (field, name) => {
         const series = chart.series.push( new am4charts.ColumnSeries())
         series.dataFields.valueY = field
-        series.dataFields.categoryX = "month"
-        series.name = name // get the name from the field_settings defaults labels if exists
+        series.dataFields.categoryX = chart_view
+        series.name = name
         series.columns.template.tooltipText = '{name}: [bold]{valueY}[/]'
         series.stacked = true
     }
@@ -274,6 +274,16 @@ function getData() {
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
 function formatYearData(yearlyData) {
+    const { fieldType } = dtMetricsProject.state
+
+    if (fieldType === 'date') {
+        return formatSimpleYearData(yearlyData)
+    } else if (fieldType === 'multi_select') {
+        return formatCompoundYearData(yearlyData)
+    }
+}
+
+function formatSimpleYearData(yearlyData) {
     if (yearlyData.length === 0) return yearlyData
 
     let cumulativeTotal = 0
@@ -290,6 +300,34 @@ function formatYearData(yearlyData) {
             year: String(year),
             count: count,
             cumulativeTotal,
+        }
+    }
+
+    return formattedYearlyData
+}
+
+function formatCompoundYearData(yearlyData) {
+    if (yearlyData.length === 0) return yearlyData
+
+    const keys = getDataKeys(yearlyData)
+
+    let cumulativeTotals = {}
+    const cumulativeKeys = makeCumulativeKeys(keys)
+
+    const minYear = parseInt(yearlyData[0].year)
+    const maxYear = parseInt(yearlyData[yearlyData.length - 1].year)
+
+    const formattedYearlyData = []
+    let i = 0
+    for (let year = minYear; year < maxYear + 1; year++, i++) {
+        const yearData = yearlyData.find((data) => data.year === String(year) )
+
+        cumulativeTotals = calculateCumulativeTotals(keys, yearData, cumulativeTotals, cumulativeKeys)
+
+        formattedYearlyData[i] = {
+            ...yearData,
+            ...cumulativeTotals,
+            year: String(year),
         }
     }
 
@@ -348,12 +386,9 @@ function formatCompoundMonthData(monthlyData) {
     const monthLabels = window.wpApiShare.translations.month_labels
     const keys = getDataKeys(monthlyData)
 
-    const cumulativeTotals = {}
-    const cumulativeKeys = {}
-    keys.forEach((key) => {
-        const cumulativeKey = `${CUMULATIVE_PREFIX}${key}`
-        cumulativeKeys[key] = cumulativeKey
-    })
+    let cumulativeTotals = {}
+    const cumulativeKeys = makeCumulativeKeys(keys)
+
     const formattedMonthlyData = monthLabels.map((monthLabel, i) => {
         const monthNumber = i + 1
         if ( isInFuture(monthNumber) ) {
@@ -363,19 +398,7 @@ function formatCompoundMonthData(monthlyData) {
         }
 
         const monthData = monthlyData.find((mData) => mData.month === String(monthNumber)) || {}
-
-        // add onto previous data to get cumulative totals
-        // each key always has a value >= 0
-        keys.forEach((key) => {
-            const count = monthData[key] ? parseInt(monthData[key]) : 0
-            const cumulativeKey = cumulativeKeys[key]
-            if (!cumulativeTotals[cumulativeKey] && count > 0) {
-                cumulativeTotals[cumulativeKey] = count
-                return
-            } else if (cumulativeTotals[cumulativeKey] && count > 0) {
-                cumulativeTotals[cumulativeKey] = cumulativeTotals[cumulativeKey] + count
-            }
-        })
+        cumulativeTotals = calculateCumulativeTotals(keys, monthData, cumulativeTotals, cumulativeKeys)
 
         return {
             ...monthData,
@@ -385,6 +408,32 @@ function formatCompoundMonthData(monthlyData) {
     })
 
     return formattedMonthlyData
+}
+
+function makeCumulativeKeys(keys) {
+    const cumulativeKeys = {}
+    keys.forEach((key) => {
+        const cumulativeKey = `${CUMULATIVE_PREFIX}${key}`
+        cumulativeKeys[key] = cumulativeKey
+    })
+    return cumulativeKeys
+}
+
+function calculateCumulativeTotals(keys, data, cumulativeTotals, cumulativeKeys) {
+    // add onto previous data to get cumulative totals
+    // each key always has a value >= 0
+    keys.forEach((key) => {
+        const count = data[key] ? parseInt(data[key]) : 0
+        const cumulativeKey = cumulativeKeys[key]
+        if (!cumulativeTotals[cumulativeKey] && count > 0) {
+            cumulativeTotals[cumulativeKey] = count
+            return
+        } else if (cumulativeTotals[cumulativeKey] && count > 0) {
+            cumulativeTotals[cumulativeKey] = cumulativeTotals[cumulativeKey] + count
+        }
+    })
+
+    return cumulativeTotals
 }
 
 function getDataKeys(data) {
