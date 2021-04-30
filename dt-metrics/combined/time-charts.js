@@ -5,6 +5,7 @@ jQuery(function() {
 })
 
 const CUMULATIVE_PREFIX = 'cumulative_'
+const graphTypes = ['stacked', 'line']
 
 function escapeObject(obj) {
     return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
@@ -59,15 +60,25 @@ function projectTimeCharts() {
             </select>
         </section>
         <hr>
-        <section>
-            <div id="chartdiv" class="timechart"></div>
-            <div id="legenddiv" ></div>
+        <section id="chart-area">
+            <section id="stacked-chart" style="height: 0px">
+                <div class="timechart"></div>
+                <div class="legend"></div>
+            </section>
+            <section id="cumulative-chart" style="height: 0px">
+                <div class="timechart"></div>
+                <div class="legend"></div>
+            </section>
+            <section id="additions-chart" style="height: 0px">
+                <div class="timechart"></div>
+                <div class="legend"></div>
+            </section>
         </section>
     `
 
-    const chartSection = document.querySelector('#chartdiv')
+    const chartSection = document.querySelector('#chart-area')
     chartSection.addEventListener('datachange', () => {
-        createChart()
+        createCharts()
     })
     const fieldSelectElement = document.querySelector('#post-field-select')
 
@@ -125,17 +136,140 @@ function buildFieldSelectOptions() {
     `)
 }
 
-function createChart() {
-    const { year, fieldType, chart_view: view } = dtMetricsProject.state
+function createCharts() {
+    const { fieldType } = dtMetricsProject.state
+    const {
+        added_label,
+        total_label,
+    } = escapeObject(dtMetricsProject.translations)
+    const data = dtMetricsProject.data
+
+    // if date field create cumulative and addition charts
+    if (fieldType === 'date') {
+        clearChart('stacked-chart')
+        createChart('cumulative-chart', ['cumulative_count'], {
+            customLabel: total_label,
+        })
+        createChart('additions-chart', ['count'], {
+            customLabel: added_label,
+            graphType: 'line'
+        })
+    } else if ( dtMetricsProject.multi_fields.includes(fieldType)) {
+        const keys = getDataKeys(data)
+        const totalKeys = keys.filter((key) => !key.includes('cumulative_') )
+        const cumulativeKeys = keys.filter((key) => key.includes('cumulative_') )
+        createChart('stacked-chart', cumulativeKeys)
+        createChart('cumulative-chart', cumulativeKeys, {
+            single: true,
+        })
+        createChart('additions-chart', totalKeys, {
+            single: true,
+            graphType: 'line',
+        })
+    }
+    // if multi field create stacked cumulative chart, cumulative and addition chart
+}
+
+function clearChart(id) {
+    const chartSection = document.getElementById(id)
+    chartSection.innerHTML = `
+    <div class="timechart"></div>
+    <div class="legend"></div>
+    `
+    hideChart(id)
+}
+
+function hideChart(id) {
+    const chartSection = document.getElementById(id)
+    chartSection.style.height = '0px'
+}
+
+function showChart(id) {
+    const chartSection = document.getElementById(id)
+    chartSection.style.height = null
+}
+
+function createChart(id, keys, options) {
+    const defaultOptions = { 
+        single: false,
+        graphType: 'stacked',
+        customLabel: ''
+    }
+    const { single, graphType, customLabel } = { ...defaultOptions, ...options }
+    const { field } = dtMetricsProject.state
+
+    if (!graphTypes.includes(graphType)) {
+        throw new Error(`graphType ${graphType} not found in ${graphTypes}`)
+    }
+
+    showChart(id)
+    const chart = initialiseChart(id)
+
+    // create the series for each key name in the data arrays
+    // then get the labels from field_settings, if they exist
+    const fieldLabels = keys.map((key) => {
+        const fieldSettings = dtMetricsProject.field_settings[field]
+        const defaultSettings = fieldSettings && fieldSettings.default ? fieldSettings.default : []
+
+        const newKey = isCumulativeKey(key) ? key.replace(CUMULATIVE_PREFIX, '') : key
+        const label = defaultSettings[newKey] ? defaultSettings[newKey].label : newKey
+        return {
+            field: key,
+            label: customLabel === '' ? label : customLabel,
+        }
+    })
+    // then loop over the keys and labels and create the stacked series
+    const series = fieldLabels.map(({ field, label }) => {
+        if (graphType === 'stacked') {
+            return createColumnSeries(chart, field, label)
+        } else if (graphType === 'line') {
+            return createLineSeries(chart, field, label)
+        }
+    })
+
+    if (single) {
+        hideOtherSeries(series)
+    }
+
+    const chartSection = document.getElementById(id)
+    const legendDiv = chartSection.querySelector('.legend')
+
+    const legendContainer = am4core.create(legendDiv, am4core.Container)
+    legendContainer.width = am4core.percent(100)
+    legendContainer.height = am4core.percent(100)
+    chart.legend = new am4charts.Legend()
+    chart.legend.parent = legendContainer
+
+    const resizeLegend = (e) => {
+        const legendStyle = legendDiv.computedStyle || window.getComputedStyle(legendDiv)
+        const paddingTop = parseInt(legendStyle.paddingTop)
+        const paddingBottom = parseInt(legendStyle.paddingBottom)
+        const newHeight = chart.legend.contentHeight + paddingTop + paddingBottom
+        legendDiv.style.height = `${newHeight}px`
+        legendDiv.style.paddingBottom = '10px'
+    }
+
+    chart.events.on('datavalidated', resizeLegend)
+    chart.events.on('maxsizechanged', resizeLegend)
+
+    chart.legend.events.on('datavalidated', resizeLegend)
+    chart.legend.events.on('maxsizechanged', resizeLegend)
+
+}
+
+function initialiseChart(id) {
+    const { year, chart_view: view } = dtMetricsProject.state
     const {
         all_time,
     } = escapeObject(dtMetricsProject.translations)
 
-    const chartSection = document.querySelector('#chartdiv')
     am4core.useTheme(am4themes_animated);
     am4core.options.autoDispose = true
 
-    const chart = am4core.create(chartSection, am4charts.XYChart)
+    const chartSection = document.getElementById(id)
+    const timechartDiv = chartSection.querySelector('.timechart')
+
+    const chart = am4core.create(timechartDiv, am4charts.XYChart)
     const data = dtMetricsProject.data
 
     const categoryAxis = chart.xAxes.push( new am4charts.CategoryAxis() )
@@ -146,103 +280,65 @@ function createChart() {
 
     chart.data = data
 
-    if (fieldType === 'date') {
-        createCumulativeChart(chart)
-    } else if ( dtMetricsProject.multi_fields.includes(fieldType)) {
-        const keys = getDataKeys(data)
-        const totalKeys = keys.filter((key) => !key.includes('cumulative_') )
-        const cumulativeKeys = keys.filter((key) => key.includes('cumulative_') )
-        createStackedChart(chart, cumulativeKeys)
-    }
-
+    return chart
 }
 
-function createCumulativeChart(chart) {
-    const {
-        total_label,
-        added_label,
-        tooltip_label,
-    } = escapeObject(dtMetricsProject.translations)
-    const { chart_view: view } = dtMetricsProject.state
+function createColumnSeries(chart, field, name) {
+    const { chart_view } = dtMetricsProject.state
+    const { tooltip_label } = escapeObject(dtMetricsProject.translations)
 
     const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
 
-    const columnSeries = chart.series.push( new am4charts.ColumnSeries() )
-    columnSeries.name = total_label
-    columnSeries.dataFields.valueY = 'cumulativeTotal'
-    columnSeries.dataFields.categoryX = view
-    columnSeries.columns.template.tooltipText = `[#fff font-size: 15px]${tooltipLabel}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
-    columnSeries.columns.template.propertyFields.fillOpacity = "fillOpacity";
-    columnSeries.columns.template.propertyFields.stroke = "stroke";
-    columnSeries.columns.template.propertyFields.strokeWidth = "strokeWidth";
-    columnSeries.columns.template.propertyFields.strokeDasharray = "columnDash";
-    columnSeries.tooltip.label.textAlign = "middle";
+    const series = chart.series.push( new am4charts.ColumnSeries())
+    series.dataFields.valueY = field
+    series.dataFields.categoryX = chart_view
+    series.name = name
+    series.columns.template.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 15px]{valueY}[/] [#fff]{additional}[/]`
+    series.stacked = true
 
+    return series
+}
+
+function createLineSeries(chart, field, name) {
+    const { chart_view } = dtMetricsProject.state
+    const { tooltip_label } = escapeObject(dtMetricsProject.translations)
+    const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
+    
     let lineSeries = chart.series.push(new am4charts.LineSeries());
-    lineSeries.name = added_label
-    lineSeries.dataFields.valueY = "count";
-    lineSeries.dataFields.categoryX = view
+    lineSeries.name = name
+    lineSeries.dataFields.valueY = field;
+    lineSeries.dataFields.categoryX = chart_view
 
-    lineSeries.stroke = am4core.color("#fdd400");
+//    lineSeries.stroke = am4core.color("#fdd400");
     lineSeries.strokeWidth = 3;
     lineSeries.propertyFields.strokeDasharray = "lineDash";
     lineSeries.tooltip.label.textAlign = "middle";
 
     let bullet = lineSeries.bullets.push(new am4charts.Bullet());
-    bullet.fill = am4core.color("#fdd400"); // tooltips grab fill from parent by default
-    bullet.tooltipText = `[#fff font-size: 15px]${tooltipLabel}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]`
+//    bullet.fill = am4core.color("#fdd400"); // tooltips grab fill from parent by default
+    bullet.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 15px]{valueY}[/] [#fff]{additional}[/]`
     let circle = bullet.createChild(am4core.Circle);
     circle.radius = 4;
     circle.fill = am4core.color("#fff");
     circle.strokeWidth = 3;
+
+    return lineSeries
 }
 
-function createStackedChart(chart, keys) {
-    const { field, chart_view } = dtMetricsProject.state
-
-    const createSeries = (field, name) => {
-        const series = chart.series.push( new am4charts.ColumnSeries())
-        series.dataFields.valueY = field
-        series.dataFields.categoryX = chart_view
-        series.name = name
-        series.columns.template.tooltipText = '{name}: [bold]{valueY}[/]'
-        series.stacked = true
-    }
-
-    // create the series for each key name in the data arrays
-    // then get the labels from field_settings, if they exist
-    const fieldLabels = keys.map((key) => {
-        const fieldSettings = dtMetricsProject.field_settings[field]
-        const defaultSettings = fieldSettings ? fieldSettings.default : []
-
-        const newKey = isCumulativeKey(key) ? key.replace(CUMULATIVE_PREFIX, '') : key
-        const label = defaultSettings[newKey] ? defaultSettings[newKey].label : newKey
-        return {
-            field: key,
-            label: label,
-        }
+function hideOtherSeries(series) {
+    if (series.length <= 1) return
+    series.forEach((serie) => {
+        serie.hide()
     })
-    // then loop over the keys and labels and create the stacked series
-    fieldLabels.forEach(({ field, label }) => {
-        createSeries(field, label)
+    series.forEach((serie) => {
+        serie.events.on('shown', () => {
+            const otherSeries = series.filter((otherSerie) => serie !== otherSerie )
+            otherSeries.forEach((otherSerie) => {
+                otherSerie.hide()
+            })
+        })
     })
-
-    const legendContainer = am4core.create('legenddiv', am4core.Container)
-    legendContainer.width = am4core.percent(100)
-    legendContainer.height = am4core.percent(100)
-    chart.legend = new am4charts.Legend()
-    chart.legend.parent = legendContainer
-
-    const resizeLegend = (e) => {
-        document.getElementById('legenddiv').style.height = `${chart.legend.contentHeight}px`
-    }
-
-    chart.events.on('datavalidated', resizeLegend)
-    chart.events.on('maxsizechanged', resizeLegend)
-
-    chart.legend.events.on('datavalidated', resizeLegend)
-    chart.legend.events.on('maxsizechanged', resizeLegend)
-
+    series[0].show()
 }
 
 function getData() {
@@ -258,7 +354,7 @@ function getData() {
             window.dtMetricsProject.data = isAllTime 
                 ? formatYearData(data)
                 : formatMonthData(data)
-            const chartElement = document.querySelector('#chartdiv')
+            const chartElement = document.querySelector('#chart-area')
             chartElement.dispatchEvent( new Event('datachange') )
         })
         .catch((error) => {
@@ -299,7 +395,7 @@ function formatSimpleYearData(yearlyData) {
         formattedYearlyData[i] = {
             year: String(year),
             count: count,
-            cumulativeTotal,
+            cumulative_count: cumulativeTotal,
         }
     }
 
@@ -375,7 +471,7 @@ function formatSimpleMonthData(monthlyData) {
         return {
             'month': monthLabel,
             'count': count,
-            'cumulativeTotal': cumulativeTotal
+            'cumulative_count': cumulativeTotal
         }
     })
 
