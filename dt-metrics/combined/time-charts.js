@@ -54,6 +54,7 @@ function projectTimeCharts() {
                 <option value="${year - 2}">${year - 2}</option>
                 <option value="all-time">${all_time}</option>
             </select>
+            <div class="loading-spinner"></div>
         </section>
         <hr>
         <section id="chart-area">
@@ -267,6 +268,7 @@ function initialiseChart(id) {
     categoryAxis.title.text = year === 'all-time' ? all_time : String(year)
 
     const valueAxis = chart.yAxes.push( new am4charts.ValueAxis() )
+    valueAxis.maxPrecision = 0
 
     chart.data = data
 
@@ -339,6 +341,8 @@ function getData() {
         ? window.API.getTimeMetricsByYear(postType, field)
         : window.API.getTimeMetricsByMonth(postType, field, year)
 
+    const loadingSpinner = document.querySelector('.loading-spinner')
+    loadingSpinner.classList.add('active')    
     data.promise()
         .then((data) => {
             window.dtMetricsProject.data = isAllTime 
@@ -346,11 +350,12 @@ function getData() {
                 : formatMonthData(data)
             const chartElement = document.querySelector('#chart-area')
             chartElement.dispatchEvent( new Event('datachange') )
+            loadingSpinner.classList.remove('active')
         })
         .catch((error) => {
             console.log(error)
+            loadingSpinner.classList.remove('active')
         })
-
 }
 
 /**
