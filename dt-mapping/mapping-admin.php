@@ -1486,7 +1486,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                   
                   update.done(function (data) {
                     jQuery('.location-name-title').html(value)
-                    jQuery("button[id='world']")[1].innerHTML = value
+                    jQuery('button.geocode-link').not('.hollow')[0].innerHTML = value
                     jQuery('#update-location-spinner').hide()
                   }).fail(()=>{
                     jQuery('#update-location-spinner').hide()
