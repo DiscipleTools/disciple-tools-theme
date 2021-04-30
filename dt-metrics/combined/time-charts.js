@@ -20,16 +20,12 @@ function projectTimeCharts() {
         title_time_charts,
         post_type_select_label,
         post_field_select_label,
-        total_label,
-        added_label,
-        tooltip_label,
         date_select_label,
         all_time,
+        stacked_chart_title,
+        cumulative_chart_title,
+        additions_chart_title,
     } = escapeObject(dtMetricsProject.translations)
-
-    const {
-        chart_view: view,
-    } = dtMetricsProject.state
 
     const now = new Date()
     const year = now.getUTCFullYear()
@@ -61,15 +57,18 @@ function projectTimeCharts() {
         </section>
         <hr>
         <section id="chart-area">
-            <section id="stacked-chart" style="height: 0px">
+            <section id="stacked-chart" style="display: none">
+                <h2>${stacked_chart_title}</h2>
                 <div class="timechart"></div>
                 <div class="legend"></div>
             </section>
-            <section id="cumulative-chart" style="height: 0px">
+            <section id="cumulative-chart" style="display: none">
+                <h2>${cumulative_chart_title}</h2>
                 <div class="timechart"></div>
                 <div class="legend"></div>
             </section>
-            <section id="additions-chart" style="height: 0px">
+            <section id="additions-chart" style="display: none">
+                <h2>${additions_chart_title}</h2>
                 <div class="timechart"></div>
                 <div class="legend"></div>
             </section>
@@ -146,7 +145,7 @@ function createCharts() {
 
     // if date field create cumulative and addition charts
     if (fieldType === 'date') {
-        clearChart('stacked-chart')
+        hideChart('stacked-chart')
         createChart('cumulative-chart', ['cumulative_count'], {
             customLabel: total_label,
         })
@@ -170,23 +169,14 @@ function createCharts() {
     // if multi field create stacked cumulative chart, cumulative and addition chart
 }
 
-function clearChart(id) {
-    const chartSection = document.getElementById(id)
-    chartSection.innerHTML = `
-    <div class="timechart"></div>
-    <div class="legend"></div>
-    `
-    hideChart(id)
-}
-
 function hideChart(id) {
     const chartSection = document.getElementById(id)
-    chartSection.style.height = '0px'
+    chartSection.style.display = 'none'
 }
 
 function showChart(id) {
     const chartSection = document.getElementById(id)
-    chartSection.style.height = null
+    chartSection.style.display = 'block'
 }
 
 function createChart(id, keys, options) {
