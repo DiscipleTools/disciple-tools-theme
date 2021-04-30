@@ -1891,29 +1891,19 @@ class Disciple_Tools_Posts
                 $key_without_ramdomizers = null;
                 if ( strpos( $key, "contact_" ) === 0 ){
                     $exploded = explode( '_', $key );
-                    $key_without_ramdomizers = $exploded[0] . '_' . $exploded[1];
+                    if ( strpos( $key, "_details" ) !== false ){
+                        $key_without_ramdomizers = str_replace( '_' . $exploded[sizeof( $exploded ) - 2] .'_details', "", $key );
+                    } else {
+                        $key_without_ramdomizers = str_replace( '_' . $exploded[sizeof( $exploded ) - 1], "", $key );
+                    }
                 }
 
                 if ( strpos( $key, "contact_" ) === 0 && isset( $field_settings[$key_without_ramdomizers]["type"] ) && $field_settings[$key_without_ramdomizers]["type"] === "communication_channel" ) {
                     if ( strpos( $key, "details" ) === false ) {
-                        $type = explode( '_', $key )[1];
+                        $type = str_replace( "contact_", "", $key_without_ramdomizers );
                         if ( empty( $fields_to_return ) || in_array( 'contact_' . $type, $fields_to_return ) ) {
                             $fields["contact_" . $type][] = self::format_post_contact_details( $field_settings, $meta_fields, $type, $key, $value[0] );
                         }
-                    }
-                } elseif ( strpos( $key, "address" ) === 0 ) {
-                    if ( strpos( $key, "_details" ) === false ) {
-
-                        $details = [];
-                        if ( isset( $meta_fields[$key . '_details'][0] ) ) {
-                            $details = maybe_unserialize( $meta_fields[$key . '_details'][0] );
-                        }
-                        $details["value"] = $value[0];
-                        $details["key"] = $key;
-                        if ( isset( $details["type"], $field_settings['contact_'.$details["type"]]["name"] ) ) {
-                            $details["type_label"] = $field_settings['contact_' . $details["type"]]["name"];
-                        }
-                        $fields["address"][] = $details;
                     }
                 } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" ) {
                     if ( empty( $value[0] ) ) {
