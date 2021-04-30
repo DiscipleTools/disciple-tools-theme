@@ -148,12 +148,15 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             return "COUNT( CASE WHEN log.meta_value = '$value' THEN log.meta_value END ) AS `$value`";
         }, $multi_values);
         $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
+        if ( strlen( $count_dynamic_values_query ) !== 0 ) {
+            $count_dynamic_values_query = ", $count_dynamic_values_query";
+        }
 
         $results = $wpdb->get_results(
             // phpcs:disable
             $wpdb->prepare( "
                 SELECT 
-                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month,
+                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
                     $count_dynamic_values_query
                 FROM $wpdb->posts AS p
                 JOIN $wpdb->postmeta AS pm
@@ -205,12 +208,15 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             return "COUNT( CASE WHEN log.meta_value = '$value' THEN log.meta_value END ) AS `$value`";
         }, $multi_values);
         $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
+        if ( strlen( $count_dynamic_values_query ) !== 0 ) {
+            $count_dynamic_values_query = ", $count_dynamic_values_query";
+        }
 
         $results = $wpdb->get_results(
             // phpcs:disable
             $wpdb->prepare( "
                 SELECT 
-                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year,
+                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
                     $count_dynamic_values_query
                 FROM $wpdb->posts AS p
                 JOIN $wpdb->postmeta AS pm
