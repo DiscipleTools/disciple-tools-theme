@@ -84,6 +84,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     'post_type' => $this->post_types[0],
                     'field' => array_key_first( $this->post_field_select_options ),
                     'year' => gmdate( "Y" ),
+                    'earliest_year' => $this->get_earliest_year( $this->post_types[0] ),
                 ],
                 'data'               => [],
                 'translations'       => [
@@ -226,6 +227,10 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         return $field_settings;
     }
 
+    public function get_earliest_year() {
+        return DT_Counter_Post_Stats::get_earliest_year();
+    }
+
     public function create_select_options_from_field_settings( $field_settings ) {
         $select_options = [];
         foreach ($field_settings as $key => $setting) {
@@ -241,7 +246,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return new WP_Error( 'time_metrics_by_month', 'not a suitable post type', [ 'status' => 400 ] );
         }
         if ( !array_key_exists( $field, $this->get_field_settings( $post_type ) ) ) {
-            return new WP_Error( 'time_metrics_by_month', 'not a suitable post type', [ 'status' => 400 ] );
+            return new WP_Error( 'time_metrics_by_month', 'not a suitable post type field', [ 'status' => 400 ] );
         }
         if ( $year !== null && $year > $current_year ) {
             return new WP_Error( 'time_metrics_by_month', 'year is in the future', [ 'status' => 400 ] );

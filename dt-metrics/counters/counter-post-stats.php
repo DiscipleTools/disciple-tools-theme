@@ -243,6 +243,28 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         return $results;
     }
 
+    /**
+     * Get the year of the earliest post in the db.
+     *
+     * This can then be used in date pickers etc.
+     */
+    public static function get_earliest_year() {
+        global $wpdb;
+        $result = $wpdb->get_var("
+                SELECT
+                    YEAR( post_date ) AS year
+                FROM
+                    $wpdb->posts
+                ORDER BY post_date ASC
+                LIMIT 1
+            " );
+
+        $current_year = gmdate( "Y" );
+        $year = $result ? intval( $result ) : intval( $current_year );
+
+        return $year;
+    }
+
     private static function get_meta_values( $field ) {
         global $wpdb;
         $results = $wpdb->get_results(

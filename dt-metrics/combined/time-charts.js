@@ -49,10 +49,7 @@ function projectTimeCharts() {
             </select>
             <label class="section-subheader" for="date-select">${date_select_label}</label>
             <select class="select-field" id="date-select">
-                <option value="${year}">${year}</option>
-                <option value="${year - 1}">${year - 1}</option>
-                <option value="${year - 2}">${year - 2}</option>
-                <option value="all-time">${all_time}</option>
+                ${ buildDateSelectOptions(all_time) }
             </select>
             <div class="loading-spinner"></div>
         </section>
@@ -134,6 +131,20 @@ function buildFieldSelectOptions() {
     return sortedOptions.map(([value, label]) => `
         <option value="${value}"> ${label} </option>
     `)
+}
+
+function buildDateSelectOptions(allTimeLabel) {
+    const { earliest_year } = dtMetricsProject.state
+
+    const now = new Date()
+    const currentYear = now.getUTCFullYear()
+
+    let options = ''
+    for (let year = earliest_year; year < currentYear + 1; year++) {
+        options += `<option value="${year}">${year}</option>`
+    }
+    options += `<option value="all-time">${allTimeLabel}</option>`
+    return options
 }
 
 function createCharts() {
