@@ -4,7 +4,7 @@ declare(strict_types=1);
 dt_please_log_in();
 
 ( function () {
-    $post_type = dt_get_url_path();
+    $post_type = dt_get_post_type();
     if ( !current_user_can( 'access_' . $post_type ) ) {
         wp_safe_redirect( '/settings' );
         exit();
@@ -28,30 +28,35 @@ dt_please_log_in();
                     <span class="hide-for-small-only"><?php esc_html_e( "Filters", 'disciple_tools' ) ?></span>
                 </a>
                 <?php do_action( "archive_template_action_bar_buttons", $post_type ) ?>
-                <input class="search-input" style="max-width:200px;display:inline-block;margin-right:0;"
-                       type="search" id="search-query"
-                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
-                <a class="advanced_search" id="advanced_search" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
-
-                    <?php
-                    $fields_to_search = [];
-                    $all_searchable_fields = $post_settings["fields"];
-                    $all_searchable_fields['comment'] = [ 'name' => __( 'Comments', "disciple_tools" ), 'type' => 'text' ];
-
-                    if ( isset( $_COOKIE["fields_to_search"] ) ) {
-                        $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_search"] ) ) ) );
-                        if ( $fields_to_search ){
-                            $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                <div class="search-wrapper">
+                    <span class="text-input-wrapper">
+                        <input class="search-input search-input--desktop" style="margin-right: 0;"
+                               type="text" id="search-query" name="search"
+                               placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
+                        <div class="search-input__clear-button" title="<?php echo esc_html( __( "Clear", 'disciple_tools' ) ) ?>">
+                            <span>&times;</span>
+                        </div>
+                    </span>
+                    <a class="advanced_search" id="advanced_search" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
+                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
+                        <?php
+                        $fields_to_search = [];
+                        $all_searchable_fields = $post_settings["fields"];
+                        $all_searchable_fields['comment'] = [ 'name' => __( 'Comments', "disciple_tools" ), 'type' => 'text' ];
+                        if ( isset( $_COOKIE["fields_to_search"] ) ) {
+                            $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_search"] ) ) ) );
+                            if ( $fields_to_search ){
+                                $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                            }
                         }
-                    }
-                    //order fields alphabetically by Name
-                    uasort( $all_searchable_fields, function ( $a, $b ){
-                        return $a['name'] <=> $b['name'];
-                    });
-                    ?>
-                    <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( "display:none" ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
-                </a>
+                        //order fields alphabetically by Name
+                        uasort( $all_searchable_fields, function ( $a, $b ){
+                            return $a['name'] <=> $b['name'];
+                        });
+                        ?>
+                        <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( "display:none" ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
+                    </a>
+                </div>
                 <a class="button" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
@@ -95,7 +100,7 @@ dt_please_log_in();
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact-white.svg' ) ?>"/>
+            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
         </a>
         <a class="button" data-open="filter-modal">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
@@ -104,16 +109,20 @@ dt_please_log_in();
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
-            <input class="search-input-mobile" style="max-width:200px;display:inline-block;margin-bottom:0;margin-right:0;" type="search" id="search-query-mobile"
-                   placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
+            <div class="search-wrapper">
+                <span class="text-input-wrapper">
+                    <input class="search-input search-input--mobile" name="search" type="text" id="search-query-mobile"
+                        placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
+                    <div class="search-input__clear-button" title="<?php echo esc_html( __( "Clear", 'disciple_tools' ) ) ?>">
+                        <span>&times;</span>
+                    </div>
+                </span>
                 <a class="advanced_search" id="advanced_search_mobile" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
-
                     <?php
                     $fields_to_search = [];
                     $all_searchable_fields = $post_settings["fields"];
                     $all_searchable_fields['comment'] = [ 'name' => 'Comments', 'type' => 'text' ];
-
                     if ( isset( $_COOKIE["fields_to_search"] ) ) {
                         $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_search"] ) ) ) );
                         if ( $fields_to_search ){
@@ -124,11 +133,11 @@ dt_please_log_in();
                     uasort( $all_searchable_fields, function ( $a, $b ){
                         return $a['name'] <=> $b['name'];
                     });
-
                     ?>
                     <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( "display:none" ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
                 </a>
-            <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
+                <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
+            </div>
         </div>
         <div id="advanced_search_picker_mobile"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
@@ -311,7 +320,7 @@ dt_please_log_in();
                                         <div class="section-subheader">
                                             <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
                                             <?php esc_html_e( "Status", 'disciple_tools' ) ?>
-                                            <button class="help-button" data-section="overall-status-help-text">
+                                            <button class="help-button-field" data-section="overall_status-help-text">
                                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                             </button>
                                         </div>
@@ -499,7 +508,7 @@ dt_please_log_in();
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [];
-                    $allowed_types = [ "user_select", "multi_select", "key_select", "boolean", "date", "location", "location_meta", "connection" ];
+                    $allowed_types = [ "user_select", "multi_select", "key_select", "boolean", "date", "location", "location_meta", "connection", "tags" ];
                     //order fields alphabetically by Name
                     uasort( $field_options, function ( $a, $b ){
                         return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
@@ -524,7 +533,7 @@ dt_please_log_in();
 
                 <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
-                        $is_multi_select = isset( $field_options[$field] ) && $field_options[$field]["type"] == "multi_select";
+                        $is_multi_select = isset( $field_options[$field] ) && ( in_array( $field_options[$field]["type"], [ "multi_select", "tags" ] ) );
                         if ( isset( $field_options[$field] ) && ( $field_options[$field]["type"] === "connection" || $field_options[$field]["type"] === "location" || $field_options[$field]["type"] === "location_meta" || $field_options[$field]["type"] === "user_select" || $is_multi_select ) ) : ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
                                 <div class="section-header"><?php echo esc_html( $field_options[$field]["name"] ) ?></div>

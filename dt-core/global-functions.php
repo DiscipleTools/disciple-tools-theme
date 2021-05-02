@@ -94,15 +94,33 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @return string
      */
     if ( ! function_exists( 'dt_get_url_path' ) ) {
-        function dt_get_url_path() {
+        function dt_get_url_path( $ignore_query_parameters = false ) {
             if ( isset( $_SERVER["HTTP_HOST"] ) ) {
                 $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
                 if ( isset( $_SERVER["REQUEST_URI"] ) ) {
                     $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
                 }
-                return trim( str_replace( get_site_url(), "", $url ), '/' );
+                $url = trim( str_replace( get_site_url(), "", $url ), '/' );
+                if ( $ignore_query_parameters ){
+                    return strtok( $url, '?' ); //allow get parameters
+                }
+                return $url;
             }
             return '';
+        }
+    }
+
+    if ( ! function_exists( 'dt_get_post_type' ) ) {
+        /**
+         * The post type as found in the url returned by dt_get_url_path
+         * https://example.com/sub/contacts/3/?param=true
+         * will return 'contacts'
+         * @return string
+         */
+        function dt_get_post_type() {
+            $url_path = dt_get_url_path();
+            $url_path_with_no_query_string = explode( '?', $url_path )[0];
+            return explode( '/', $url_path_with_no_query_string )[0];
         }
     }
 
@@ -332,7 +350,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
-     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel
+     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags
      *
      * @param $field_key
      * @param $fields
@@ -346,7 +364,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
         $is_private = ( isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true ) ? true : false;
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel' ] );
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -408,11 +426,35 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </option>
                     <?php endforeach; ?>
                 </select>
+            <?php elseif ( $field_type === "tags" ) : ?>
+                <div class="tags">
+                    <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
+                    <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
+                                           data-field="<?php echo esc_html( $display_field_id );?>"
+                                           name="<?php echo esc_html( $display_field_id ); ?>[query]"
+                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                                           autocomplete="off"
+                                           data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
+                                           data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
+                                </span>
+                                <span class="typeahead__button">
+                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $display_field_id );?>">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <?php elseif ( $field_type === "multi_select" ) :
                 if ( isset( $fields[$field_key]["display"] ) && $fields[$field_key]["display"] === "typeahead" ){
                     ?>
                     <div class="multi_select">
-                        <var id="tags-result-container" class="result-container"></var>
+                        <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
                         <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
                             <div class="typeahead__container">
                                 <div class="typeahead__field">
@@ -435,7 +477,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                 "selected-select-button" : "empty-select-button"; ?>
                             <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $display_field_id ); ?>"
                                     class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                <?php echo esc_html( $fields[$field_key]["default"][$option_key]["label"] ) ?>
+                                <?php if ( !empty( $option_value["icon"] ) ) { ?>
+                                    <img class="dt-icon" src="<?php echo esc_html( $option_value["icon"] ) ?>" >
+                                <?php } ?>
+                                <?php echo esc_html( $option_value["label"] ) ?>
                             </button>
                         <?php endforeach; ?>
                     </div>

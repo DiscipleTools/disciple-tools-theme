@@ -240,6 +240,21 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+        //toggle comment reaction
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments/(?P<comment_id>\d+)/react', [
+                [
+                    "methods"  => "POST",
+                    "callback" => [ $this, 'toggle_comment_reaction' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
+                        "comment_id" => $arg_schemas["comment_id"],
+                    ],
+                    "permission_callback" => '__return_true',
+                ]
+            ]
+        );
         //get_activity
         register_rest_route(
             $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/activity', [
@@ -409,6 +424,15 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+
+        //Advanced Search
+        register_rest_route(
+            $this->namespace . '/posts/search', '/advanced_search', [
+                'methods'             => 'GET',
+                'callback'            => [ $this, 'advanced_search' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
     }
 
     /**
@@ -433,7 +457,8 @@ class Disciple_Tools_Posts_Endpoints {
             }
             if ( $param === 'post_type' ){
                 $post_types = DT_Posts::get_post_types();
-                if ( !in_array( $value, $post_types ) ){
+                // Support advanced search all post type option
+                if ( ( $value !== 'all' ) && ! in_array( $value, $post_types ) ) {
                     return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not a valid post type', $value ), array( 'status' => 400 ) );
                 }
             }
@@ -572,6 +597,13 @@ class Disciple_Tools_Posts_Endpoints {
         return $result;
     }
 
+    public function toggle_comment_reaction( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        $post_params = $request->get_json_params();
+        $result = DT_Posts::toggle_post_comment_reaction( $url_params['post_type'], $url_params['id'], $url_params["comment_id"], $post_params["user_id"], $post_params["reaction"] );
+        return $result;
+    }
+
     public function get_following( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
         return DT_Posts::get_users_following_post( $url_params["post_type"], $url_params["id"] );
@@ -617,4 +649,11 @@ class Disciple_Tools_Posts_Endpoints {
         return DT_Posts::request_record_access( $url_params["post_type"], $url_params["id"] );
     }
 
+    public function advanced_search( WP_REST_Request $request ): array {
+        $query     = urldecode( $request->get_param( 'query' ) );
+        $post_type = $request->get_param( 'post_type' );
+        $offset    = intval( $request->get_param( 'offset' ) );
+
+        return DT_Posts::advanced_search( $query, $post_type, $offset );
+    }
 }

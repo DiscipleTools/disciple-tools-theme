@@ -331,6 +331,17 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "in_create_form" => [ "access" ]
             ];
 
+            $fields['campaigns'] = [
+                'name' => __( 'Campaigns', 'disciple_tools' ),
+                'description' => _x( 'Marketing campaigns or access activities that this contact interacted with.', 'Optional Documentation', 'disciple_tools' ),
+                'tile' => 'details',
+                'type'        => 'tags',
+                'default'     => [],
+                'icon' => get_template_directory_uri() . "/dt-assets/images/megaphone.svg",
+                'only_for_types' => [ 'access' ],
+                'in_create_form' => [ 'access' ]
+            ];
+
             if ( empty( $fields["contact_phone"]['in_create_form'] ) ){
                 $fields["contact_phone"]['in_create_form'] = [ 'access' ];
             } elseif ( is_array( $fields["contact_phone"]['in_create_form'] ) ){
@@ -1305,7 +1316,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $requires_update = get_post_meta( $contact_id, "requires_update", true );
             if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1"){
                 //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
-                if ( DT_Posts::can_view_all( 'contacts' ) ){
+                if ( current_user_can( 'dt_all_access_contacts' ) ){
                     if ( dt_get_user_id_from_assigned_to( get_post_meta( $contact_id, "assigned_to", true ) ) === get_current_user_id() ){
                         update_post_meta( $contact_id, "requires_update", false );
                     }

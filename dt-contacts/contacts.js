@@ -269,8 +269,7 @@ jQuery(document).ready(function($) {
    * Transfer Contact
    */
   $('#transfer_confirm_button').on('click',function() {
-    let status_spinner = $('#transfer_spinner')
-    status_spinner.append(`<img src="${window.wpApiShare.spinner_url}" width="20px" />`)
+    $(this).addClass('loading')
     let siteId = $('#transfer_contact').val()
     if ( ! siteId ) {
       return;
@@ -289,6 +288,7 @@ jQuery(document).ready(function($) {
           location.reload();
         }
       }).catch(err=> {
+        $(this).removeClass('loading')
         jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + window.detailsSettings.translations.transfer_error)
         console.error(err)
       })

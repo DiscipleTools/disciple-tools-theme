@@ -18,6 +18,8 @@
   let fields_to_search = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_search', [] );
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
+  let clearSearchButton = $('.search-input__clear-button')
+  window.post_type_fields = list_settings.post_type_settings.fields
 
   let items = []
   try {
@@ -25,7 +27,17 @@
   } catch (e) {
     cached_filter = {}
   }
-  let current_filter = (cached_filter && !window.lodash.isEmpty(cached_filter)) ? cached_filter : { query:{} }
+
+  const query_param_custom_filter = create_custom_filter_from_query_params()
+
+  let current_filter
+  if (query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter)) {
+    current_filter = query_param_custom_filter
+  } else if (cached_filter && !window.lodash.isEmpty(cached_filter)) {
+    current_filter = cached_filter
+  } else {
+    current_filter =  { query:{} }
+  }
 
   //set up main filters
   setup_filters()
@@ -36,7 +48,10 @@
   }
 
   //set up custom cached filter
-  if ( cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ){
+  if ( query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter) && query_param_custom_filter.type === "custom_filter" ){
+    query_param_custom_filter.query.offset = 0;
+    add_custom_filter(query_param_custom_filter.name, "default", query_param_custom_filter.query, query_param_custom_filter.labels, false)
+  } else if ( cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ) {
     cached_filter.query.offset = 0;
     add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
   } else {
@@ -84,6 +99,59 @@
       get_records_for_current_filter()
     }
   })
+
+  /**
+   * Looks for all query params called 'filter' (allows for multiple filters to be applied)
+   * from url like base_url?filter=foo&filter=bar
+   *
+   * filter values are exected to be created by encodeURI(JSON.stringify({ id, name, field }))
+   * where the id, name and field are the relevant field and id to search for. (filters with
+   * incorrect fields will be removed)
+   *
+   * If any part of the filter doesn't decode or JSON.parse properly the function returns
+   * no filter.
+   */
+  function create_custom_filter_from_query_params() {
+    const url = new URL(window.location)
+
+    let filters = []
+    try {
+      filters = get_encoded_query_param_filters(url)
+    } catch (error) {
+      // the uri is corrupted
+    }
+    /* make sure filter fields are in the list of allowed fields */
+    filters = filters.filter(({ field }) => Object.keys(window.list_settings.post_type_settings.fields).includes(field))
+    if (filters.length == 0) return {}
+
+    /* Creating object the same shape as cached_filter */
+    let query_custom_filter = {
+      ID: Date.now() / 1000,
+      name: 'Custom Filter',
+      type: 'custom_filter',
+      labels: [],
+      query: {},
+    }
+
+    const labels = [ ...filters ]
+    const query = { fields: [], offset: 0, sort: 'name'}
+    let labelsSortedByField = {}
+    labels.forEach(({field, id}) => {
+      if (!labelsSortedByField[field]) labelsSortedByField[field] = []
+      labelsSortedByField[field].push(id)
+    })
+    query.fields = Object.entries(labelsSortedByField).map(([key, ids]) => ({[key]: ids}))
+
+    query_custom_filter.labels = labels
+    query_custom_filter.query = query
+
+    return query_custom_filter
+  }
+
+  function get_encoded_query_param_filters(url) {
+    const filters = url.searchParams.getAll('fieldQuery')
+    return filters.map((filter) =>JSON.parse(decodeURI(filter)))
+  }
 
   function get_records_for_current_filter(){
     let checked = $(".js-list-view:checked")
@@ -388,7 +456,11 @@
               values = field_value.map(v => {
                 return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
               })
-            } else if ( field_settings.type === "location" ){
+            } else if (field_settings.type === 'tags') {
+              values = field_value.map(v => {
+                return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
+              })
+            } else if ( field_settings.type === "location" || field_settings.type === "location_meta" ){
               values = field_value.map(v => {
                 return `${window.lodash.escape( v.label )}`;
               })
@@ -567,6 +639,8 @@
       if ( type === "connection" || type === "user_select" ){
         search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
       } else if ( type === "multi_select" ){
+        search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
+      } else if ( type === "tags" ){
         search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
       } else if ( type === "location" || type === "location_meta" ){
         search_query.push({ 'location_grid' : window.lodash.map( window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
@@ -925,6 +999,8 @@
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
         } else if ( type === "multi_select" ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
+        } else if ( type === "tags" ){
+          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.id})
         } else if ( type === "user_select" ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
         }
@@ -1173,16 +1249,23 @@
 
   });
 
-  $('.search-input').on('keyup', function (e) {
+  $('.search-input--desktop').on('keyup', function (e) {
+    clearSearchButton.css({'display': this.value.length ? 'flex' : 'none'})
     if ( e.keyCode === 13 ){
       $("#search").trigger("click")
     }
   })
 
-  $('.search-input-mobile').on('keyup', function (e) {
+  $('.search-input--mobile').on('keyup', function (e) {
+    clearSearchButton.css({'display': this.value.length ? 'flex' : 'none'})
     if ( e.keyCode === 13 ){
       $("#search-mobile").trigger("click")
     }
+  })
+
+  clearSearchButton.on('click', function () {
+    $('.search-input').val('')
+    clearSearchButton.css({'display': 'none'})
   })
 
   //toggle show search input on mobile

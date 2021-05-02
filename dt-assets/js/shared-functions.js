@@ -127,6 +127,14 @@ window.API = {
   get_comments: (post_type, postId) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}/comments`),
 
+  toggle_comment_reaction: (postType, postId, commentId, userId, reaction) => {
+    makeRequestOnPosts(
+      "POST",
+      `${postType}/${postId}/comments/${commentId}/react`,
+      { user_id: userId, reaction: reaction }
+    )
+  },
+
   get_activity: (post_type, postId) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}/activity`),
 
@@ -176,7 +184,13 @@ window.API = {
   request_record_access: (post_type, postId, userId) =>
     makeRequestOnPosts("POST", `${post_type}/${postId}/request_record_access`, {
       user_id: userId,
-    })
+    }),
+
+  advanced_search: (search_query, post_type, offset) => makeRequest("GET", `advanced_search`, {
+    query: search_query,
+    post_type: post_type,
+    offset: offset
+  }, 'dt-posts/v2/posts/search/')
 };
 
 function handleAjaxError(err) {
@@ -513,6 +527,10 @@ window.SHAREDFUNCTIONS = {
       path = path.replace(/^\/?([^\/]+(?:\/[^\/]+)*)\/?$/, "/$1"); // add leading and remove trailing slashes
     }
     document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
+  },
+  uriEncodeFilter(field, id, name) {
+    const filterLabel = { field, id, name }
+    return encodeURIComponent(JSON.stringify(filterLabel))
   },
   formatDate(date, with_time = false) {
     let langcode = document.querySelector("html").getAttribute("lang")

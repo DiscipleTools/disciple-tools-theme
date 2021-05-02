@@ -1,6 +1,6 @@
 <div class="reveal" id="help-modal" data-reveal>
     <?php
-    $current_post_type = get_post_type();
+    $current_post_type = get_post_type() ?: dt_get_post_type();
     $post_fields = DT_Posts::get_post_field_settings( $current_post_type );
 
     /**
