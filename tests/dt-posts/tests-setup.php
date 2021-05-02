@@ -99,9 +99,9 @@ add_filter( 'dt_custom_fields_settings', function( $fields, $post_type ){
         'name' => "Random Options",
         'type' => "multi_select",
         "default" => [
-            "one" => [ "label" => "option 1" ],
-            "two" => [ "label" => "option 2" ],
-            "three" => [ "label" => "option 3" ],
+            "one_private" => [ "label" => "option 1" ],
+            "two_private" => [ "label" => "option 2" ],
+            "three_private" => [ "label" => "option 3" ],
         ],
         "tile" => "a_beautiful_tile",
         'private'   => true
@@ -120,9 +120,9 @@ add_filter( 'dt_custom_fields_settings', function( $fields, $post_type ){
         'name' => "Random Options",
         'type' => "key_select",
         "default" => [
-            "one" => [ "label" => "option 1" ],
-            "two" => [ "label" => "option 2" ],
-            "three" => [ "label" => "option 3" ],
+            "one_private" => [ "label" => "option 1" ],
+            "two_private" => [ "label" => "option 2" ],
+            "three_private" => [ "label" => "option 3" ],
         ],
         "tile" => "a_beautiful_tile",
         'private'   => true
