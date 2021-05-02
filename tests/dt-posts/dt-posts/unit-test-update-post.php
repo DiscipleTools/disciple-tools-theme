@@ -44,16 +44,23 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertSame( $result["title"], $update_values['title'] );
         $this->assertSame( (int) $result["number_test"], (int) $update_values['number_test'] ); //@todo returned value should be an int
         $this->assertSame( $result["text_test"], $update_values['text_test'] );
+        $this->assertSame( $result["text_test_private"], $update_values['text_test_private'] );
         $this->assertSame( $result["contact_communication_channel_test"][0]["value"], $update_values['contact_communication_channel_test']["values"][0]["value"] );
         $this->assertSame( $result["user_select_test"], "user-" . $update_values['user_select_test'] );
         $this->assertSame( $result["array_test"], $update_values['array_test'] );
         $this->assertSame( (int) $result["location_test"][0]["id"], (int) $update_values['location_test']["values"][0]["value"] ); //@todo returned value should be an int
         $this->assertSame( (int) $result["date_test"]["timestamp"], strtotime( $update_values['date_test'] ) ); //@todo returned value should be an int
+        $this->assertSame( (int) $result["date_test_private"]["timestamp"], strtotime( $update_values['date_test_private'] ) ); //@todo returned value should be an int
         $this->assertSame( $result["boolean_test"], $update_values['boolean_test'] );
+        $this->assertSame( $result["boolean_test_private"], $update_values['boolean_test_private'] );
         $this->assertSame( $result["multi_select_test"][0], $update_values['multi_select_test']["values"][0]["value"] );
         $this->assertSame( $result["multi_select_test"][1], $update_values['multi_select_test']["values"][1]["value"] );
+        $this->assertSame( $result["multi_select_test_private"][0], $update_values['multi_select_test_private']["values"][0]["value"] );
+        $this->assertSame( $result["multi_select_test_private"][1], $update_values['multi_select_test_private']["values"][1]["value"] );
         $this->assertSame( $result["key_select_test"]["key"], $update_values['key_select_test'] );
+        $this->assertSame( $result["key_select_test_private"]["key"], $update_values['key_select_test_private'] );
         $this->assertSame( $result["tags_test"][0], $update_values['tags_test']["values"][0]["value"] );
+        $this->assertSame( $result["tags_test_private"][0], $update_values['tags_test_private']["values"][0]["value"] );
     }
 
     /**
