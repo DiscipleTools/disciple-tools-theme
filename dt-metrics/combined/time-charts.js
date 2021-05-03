@@ -140,7 +140,7 @@ function buildDateSelectOptions(allTimeLabel) {
     const currentYear = now.getUTCFullYear()
 
     let options = ''
-    for (let year = earliest_year; year < currentYear + 1; year++) {
+    for (let year = currentYear; year > earliest_year - 1; year--) {
         options += `<option value="${year}">${year}</option>`
     }
     options += `<option value="all-time">${allTimeLabel}</option>`
@@ -353,7 +353,7 @@ function getData() {
         : window.API.getTimeMetricsByMonth(postType, field, year)
 
     const loadingSpinner = document.querySelector('.loading-spinner')
-    loadingSpinner.classList.add('active')    
+    loadingSpinner.classList.add('active')
     data.promise()
         .then((data) => {
             window.dtMetricsProject.data = isAllTime 
