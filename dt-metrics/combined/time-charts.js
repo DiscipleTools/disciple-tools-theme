@@ -240,6 +240,8 @@ function createChart(id, keys, options) {
     legendContainer.width = am4core.percent(100)
     legendContainer.height = am4core.percent(100)
     chart.legend = new am4charts.Legend()
+    chart.legend.minHeight = 36
+    chart.legend.scrollable = true
     chart.legend.parent = legendContainer
 
     const resizeLegend = (e) => {
