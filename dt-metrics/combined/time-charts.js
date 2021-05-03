@@ -221,16 +221,25 @@ function createChart(id, keys, options) {
         }
     })
     // then loop over the keys and labels and create the stacked series
+    let firstSerie = true
     const series = fieldLabels.map(({ field, label }) => {
         if (graphType === 'stacked') {
+            if (single && !firstSerie) {
+                return createColumnSeries(chart, field, label, true)
+            }
+            firstSerie = false
             return createColumnSeries(chart, field, label)
         } else if (graphType === 'line') {
+            if (single && !firstSerie) {
+                return createLineSeries(chart, field, label, true)
+            }
+            firstSerie = false
             return createLineSeries(chart, field, label)
         }
     })
 
     if (single) {
-        hideOtherSeries(series)
+        addHideOtherSeriesEventHandlers(series)
     }
 
     const chartSection = document.getElementById(id)
@@ -259,6 +268,7 @@ function createChart(id, keys, options) {
     chart.legend.events.on('datavalidated', resizeLegend)
     chart.legend.events.on('maxsizechanged', resizeLegend)
 
+    return series
 }
 
 function initialiseChart(id) {
@@ -267,7 +277,6 @@ function initialiseChart(id) {
         all_time,
     } = escapeObject(dtMetricsProject.translations)
 
-    am4core.useTheme(am4themes_animated);
     am4core.options.autoDispose = true
 
     const chartSection = document.getElementById(id)
@@ -288,7 +297,7 @@ function initialiseChart(id) {
     return chart
 }
 
-function createColumnSeries(chart, field, name) {
+function createColumnSeries(chart, field, name, hidden = false) {
     const { chart_view } = dtMetricsProject.state
     const { tooltip_label } = escapeObject(dtMetricsProject.translations)
 
@@ -300,11 +309,14 @@ function createColumnSeries(chart, field, name) {
     series.name = name
     series.columns.template.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 15px]{valueY}[/] [#fff]{additional}[/]`
     series.stacked = true
+    if (hidden) {
+        series.hide()
+    }
 
     return series
 }
 
-function createLineSeries(chart, field, name) {
+function createLineSeries(chart, field, name, hidden = false) {
     const { chart_view } = dtMetricsProject.state
     const { tooltip_label } = escapeObject(dtMetricsProject.translations)
     const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
@@ -318,6 +330,9 @@ function createLineSeries(chart, field, name) {
     lineSeries.strokeWidth = 3;
     lineSeries.propertyFields.strokeDasharray = "lineDash";
     lineSeries.tooltip.label.textAlign = "middle";
+    if (hidden) {
+        lineSeries.hide()
+    }
 
     let bullet = lineSeries.bullets.push(new am4charts.Bullet());
 //    bullet.fill = am4core.color("#fdd400"); // tooltips grab fill from parent by default
@@ -330,11 +345,8 @@ function createLineSeries(chart, field, name) {
     return lineSeries
 }
 
-function hideOtherSeries(series) {
+function addHideOtherSeriesEventHandlers(series) {
     if (series.length <= 1) return
-    series.forEach((serie) => {
-        serie.hide()
-    })
     series.forEach((serie) => {
         serie.events.on('shown', () => {
             const otherSeries = series.filter((otherSerie) => serie !== otherSerie )
@@ -343,7 +355,6 @@ function hideOtherSeries(series) {
             })
         })
     })
-    series[0].show()
 }
 
 function getData() {
