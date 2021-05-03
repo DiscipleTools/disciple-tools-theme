@@ -155,7 +155,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $results = $wpdb->get_results(
             // phpcs:disable
             $wpdb->prepare( "
-                SELECT 
+                SELECT
                     MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
                     $count_dynamic_values_query
                 FROM $wpdb->posts AS p
@@ -163,6 +163,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     ON p.ID = pm.post_id
                 JOIN $wpdb->dt_activity_log AS log
                     ON log.object_id = p.ID
+                    AND log.meta_key = %s
                 WHERE p.post_type = %s
                     AND pm.meta_key = %s
                     AND log.meta_value = pm.meta_value
@@ -170,13 +171,17 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                         SELECT MAX( log2.hist_time )
                         FROM $wpdb->dt_activity_log AS log2
                         WHERE log.meta_value = log2.meta_value
-                            AND log.object_id = log2.object_id
+                        AND log.object_id = log2.object_id
+                        AND log2.hist_time >= %s
+                        AND log2.hist_time <= %s
+                        AND log2.meta_key = %s
                     )
+                    AND log.object_type = %s
                     AND log.hist_time >= %s
                     AND log.hist_time <= %s
                 GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) )
                 ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
-            ", $post_type, $field, $start, $end )
+            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
             // phpcs:enable
         );
 
@@ -215,7 +220,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $results = $wpdb->get_results(
             // phpcs:disable
             $wpdb->prepare( "
-                SELECT 
+                SELECT
                     YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
                     $count_dynamic_values_query
                 FROM $wpdb->posts AS p
@@ -223,6 +228,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     ON p.ID = pm.post_id
                 JOIN $wpdb->dt_activity_log AS log
                     ON log.object_id = p.ID
+                    AND log.meta_key = %s
                 WHERE p.post_type = %s
                     AND pm.meta_key = %s
                     AND log.meta_value = pm.meta_value
@@ -230,13 +236,17 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                         SELECT MAX( log2.hist_time )
                         FROM $wpdb->dt_activity_log AS log2
                         WHERE log.meta_value = log2.meta_value
-                            AND log.object_id = log2.object_id
+                        AND log.object_id = log2.object_id
+                        AND log2.hist_time >= %s
+                        AND log2.hist_time <= %s
+                        AND log2.meta_key = %s
                     )
+                    AND log.object_type = %s
                     AND log.hist_time >= %s
                     AND log.hist_time <= %s
                 GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) )
                 ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
-            ", $post_type, $field, $start, $end )
+            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
             // phpcs:enable
         );
 
