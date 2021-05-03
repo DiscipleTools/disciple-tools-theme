@@ -726,9 +726,11 @@ jQuery(document).ready(function($) {
   /**
    * Tags
    */
-  if( $('.js-typeahead-tags').length ) {
+  $('.tags .typeahead__query input').each((key, input)=>{
+    let field = $(input).data('field') || 'tags'
+    let typeahead_name = `.js-typeahead-${field}`
     $.typeahead({
-      input: '.js-typeahead-tags',
+      input: typeahead_name,
       minLength: 0,
       maxItem: 20,
       searchOnFocus: true,
@@ -739,7 +741,7 @@ jQuery(document).ready(function($) {
             url: window.wpApiShare.root + `dt-posts/v2/${post_type}/multi-select-values`,
             data: {
               s: "{{query}}",
-              field: "tags"
+              field: field
             },
             beforeSend: function (xhr) {
               xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
@@ -769,7 +771,7 @@ jQuery(document).ready(function($) {
         const tag = this.query
         const addTag = addTagOnClick.bind(this)
         button.on("click", function () {
-          addTag(tag)
+          addTag(field, tag)
         })
         liItem.append(button)
         return liItem
@@ -777,34 +779,36 @@ jQuery(document).ready(function($) {
       dynamic: true,
       multiselect: {
         matchOn: ["name"],
-        data: function () {
-          return (post.tags || []).map(t => {
+        data: function (){
+          return (post[field] || [] ).map(t=>{
             return {name: t}
           })
-        }, callback: {
-          onCancel: function (node, item) {
-            API.update_post(post_type, post_id, {'tags': {values: [{value: item.name, delete: true}]}})
-          }
         },
-        href: function (item) {
-          const postType = window.wpApiShare.post_type
-          const encodedFilterLabel = window.SHAREDFUNCTIONS.uriEncodeFilter('tags', item.name, `Tags: ${item.name}`)
-          return window.wpApiShare.site_url + `/${postType}?fieldQuery=${encodedFilterLabel}`
+        callback: {
+          onCancel: function (node, item, event) {
+            $(`#${field}-spinner`).addClass('active')
+            API.update_post(post_type, post_id, {[field]: {values:[{value:item.name, delete:true}]}}).then((new_post)=>{
+              $(`#${field}-spinner`).removeClass('active')
+              this.hideLayout();
+              this.resetInput();
+              $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
+            }).catch(err => { console.error(err) })
+          }
         },
       },
       callback: {
         onClick: function (node, a, item, event) {
           event.preventDefault()
           const addTag = addTagOnClick.bind(this)
-          addTag(item.name)
+          addTag(field, item.name)
         },
         onResult: function (node, query, result, resultCount) {
           let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-          $('#tags-result-container').html(text);
+          $(`#${field}-result-container`).html(text);
           masonGrid.masonry('layout')
         },
         onHideLayout: function () {
-          $('#tags-result-container').html("");
+          $(`#${field}-result-container`).html("");
           masonGrid.masonry('layout')
         },
         onShowLayout() {
@@ -812,21 +816,30 @@ jQuery(document).ready(function($) {
         }
       }
     });
-    $("#create-tag-return").on("click", function () {
-      let tag = $("#new-tag").val()
-      Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name: tag})
-      API.update_post(post_type, post_id, {tags: {values: [{value: tag}]}})
-    })
-  }
+  })
 
-  function addTagOnClick(tag) {
-    API.update_post(post_type, post_id, {tags: {values: [{value: tag}]}})
-    this.addMultiselectItemLayout({ name: tag})
-    this.hideLayout();
-    this.resetInput();
-    masonGrid.masonry('layout')
-  }
+  $(".create-new-tag").on("click", function () {
+    let field = $(this).data("field");
+    $("#create-tag-modal").data("field", field)
 
+  });
+  $("#create-tag-return").on("click", function () {
+    let field = $("#create-tag-modal").data("field");
+    let tag = $("#new-tag").val()
+    Typeahead['.js-typeahead-' + field].addMultiselectItemLayout({name: tag})
+    API.update_post(post_type, post_id, {[field]: {values: [{value: tag}]}})
+  })
+
+  function addTagOnClick(field, tag) {
+    $(`#${field}-spinner`).addClass('active')
+    API.update_post(post_type, post_id, {[field]: {values:[{"value":tag}]}}).then(new_post=>{
+      $(`#${field}-spinner`).removeClass('active')
+      this.addMultiselectItemLayout({name: tag})
+      this.hideLayout();
+      this.resetInput();
+      masonGrid.masonry('layout')
+    }).catch(err => { console.error(err) })
+  }
 
   let upgradeUrl = (url)=>{
     if ( !url.includes("http")){

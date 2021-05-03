@@ -53,6 +53,12 @@ function dt_default_menu_array() : array {
                 'icon' => get_template_directory_uri() . "/dt-assets/images/profile.svg",
                 'hidden' => false,
             ],
+            'advanced_search' => [
+                'label' => __( "Advanced Search", "disciple_tools" ),
+                'link' => '#',
+                'icon' => get_template_directory_uri() . "/dt-assets/images/search-white.svg",
+                'hidden' => false,
+            ],
             'add_new' => [
                 'label' => __( "Add New", 'disciple_tools' ),
                 'link' => '',

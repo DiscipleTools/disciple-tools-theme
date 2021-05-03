@@ -375,6 +375,17 @@ class Disciple_Tools_Posts
                         $message = sprintf( _x( '%1$s added to %2$s', 'Milestone1 added to Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]["name"] );
                     }
                 }
+                if ( $fields[$activity->meta_key]["type"] === "tags" ){
+                    $value = $activity->meta_value;
+                    if ( $activity->meta_value == "value_deleted" ){
+                        $value = $activity->old_value;
+                        $label = $fields[$activity->meta_key]["default"][$value]["label"] ?? $value;
+                        $message = sprintf( _x( '%1$s removed from %2$s', 'Milestone1 removed from Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]["name"] );
+                    } else {
+                        $label = $fields[$activity->meta_key]["default"][$value]["label"] ?? $value;
+                        $message = sprintf( _x( '%1$s added to %2$s', 'Milestone1 added to Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]["name"] );
+                    }
+                }
                 if ( $fields[$activity->meta_key]["type"] === "key_select" ){
                     if ( isset( $fields[$activity->meta_key]["default"][$activity->meta_value]["label"] ) ){
                         $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value]["label"] ?? $activity->meta_value;
@@ -633,7 +644,7 @@ class Disciple_Tools_Posts
                         }
                     } else {
                         // add postmeta join fields
-                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'boolean', 'date', 'number', 'user_select' ] ) ){
+                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'number', 'user_select' ] ) ){
                             if ( !in_array( $table_key, $args["joins_fields"] ) ){
                                 $args["joins_fields"][] = $table_key;
                                 $args["joins_sql"] .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key = '" . esc_sql( $query_key ) . "' )";
@@ -641,9 +652,9 @@ class Disciple_Tools_Posts
                         }
 
 
-                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'boolean', 'date', 'user_select' ] ) ){
+                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'user_select' ] ) ){
                             /**
-                             * key_select, multi_select, boolean, date
+                             * key_select, multi_select, tags, boolean, date
                              */
                             $index = -1;
                             $query_for_null_values = false;
@@ -690,6 +701,13 @@ class Disciple_Tools_Posts
                                 }
                                 if ( $field_type === "multi_select" ){
                                     if ( $equality === "!=" && $field_type === "multi_select" ){
+                                        $where_sql .= ( $index > 0 ? $connector : " " ) . "not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = p.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
+                                    } else {
+                                        $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
+                                    }
+                                }
+                                if ( $field_type === "tags" ){
+                                    if ( $equality === "!=" ){
                                         $where_sql .= ( $index > 0 ? $connector : " " ) . "not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = p.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
                                     } else {
                                         $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
@@ -1338,7 +1356,7 @@ class Disciple_Tools_Posts
 
     public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, array $existing_contact = null ){
         foreach ( $fields as $field_key => $field ){
-            if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "multi_select" ) ){
+            if ( isset( $field_settings[$field_key] ) && ( in_array( $field_settings[$field_key]["type"], [ "multi_select", "tags" ] ) ) ){
                 if ( !isset( $field["values"] )){
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
@@ -1889,29 +1907,19 @@ class Disciple_Tools_Posts
                 $key_without_ramdomizers = null;
                 if ( strpos( $key, "contact_" ) === 0 ){
                     $exploded = explode( '_', $key );
-                    $key_without_ramdomizers = $exploded[0] . '_' . $exploded[1];
+                    if ( strpos( $key, "_details" ) !== false ){
+                        $key_without_ramdomizers = str_replace( '_' . $exploded[sizeof( $exploded ) - 2] .'_details', "", $key );
+                    } else {
+                        $key_without_ramdomizers = str_replace( '_' . $exploded[sizeof( $exploded ) - 1], "", $key );
+                    }
                 }
 
                 if ( strpos( $key, "contact_" ) === 0 && isset( $field_settings[$key_without_ramdomizers]["type"] ) && $field_settings[$key_without_ramdomizers]["type"] === "communication_channel" ) {
                     if ( strpos( $key, "details" ) === false ) {
-                        $type = explode( '_', $key )[1];
+                        $type = str_replace( "contact_", "", $key_without_ramdomizers );
                         if ( empty( $fields_to_return ) || in_array( 'contact_' . $type, $fields_to_return ) ) {
                             $fields["contact_" . $type][] = self::format_post_contact_details( $field_settings, $meta_fields, $type, $key, $value[0] );
                         }
-                    }
-                } elseif ( strpos( $key, "address" ) === 0 ) {
-                    if ( strpos( $key, "_details" ) === false ) {
-
-                        $details = [];
-                        if ( isset( $meta_fields[$key . '_details'][0] ) ) {
-                            $details = maybe_unserialize( $meta_fields[$key . '_details'][0] );
-                        }
-                        $details["value"] = $value[0];
-                        $details["key"] = $key;
-                        if ( isset( $details["type"], $field_settings['contact_'.$details["type"]]["name"] ) ) {
-                            $details["type_label"] = $field_settings['contact_' . $details["type"]]["name"];
-                        }
-                        $fields["address"][] = $details;
                     }
                 } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" ) {
                     if ( empty( $value[0] ) ) {
@@ -1948,6 +1956,8 @@ class Disciple_Tools_Posts
                             }
                         }
                     }
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'tags' ) {
+                    $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' ) {
                     if ( $key === "tags" ){
                         $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
@@ -1994,19 +2004,26 @@ class Disciple_Tools_Posts
             }
         }
 
-        if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() && isset( $fields['location_grid_meta'] ) ) {
-            $ids = dt_get_keys_map( $fields['location_grid'] ?? [], 'id' );
-            foreach ( $fields['location_grid_meta'] as $meta ) {
-                foreach ( ( $fields['location_grid'] ?? [] ) as $index => $grid ){
-                    if ( (int) $grid["id"] === (int) $meta["grid_id"] ){
-                        $fields['location_grid'][$index]["matched_search"] = $meta["label"];
+        if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() ) {
+            if ( isset( $fields['location_grid_meta'] )){
+                $ids = dt_get_keys_map( $fields['location_grid'] ?? [], 'id' );
+                foreach ( $fields['location_grid_meta'] as $meta ) {
+                    foreach ( ( $fields['location_grid'] ?? [] ) as $index => $grid ){
+                        if ( (int) $grid["id"] === (int) $meta["grid_id"] ){
+                            $fields['location_grid'][$index]["matched_search"] = $meta["label"];
+                        }
+                    }
+                    if ( !in_array( (int) $meta['grid_id'], $ids ) ){
+                        $fields['location_grid'][] = [
+                            'id' => (int) $meta['grid_id'],
+                            'label' => $meta['label']
+                        ];
                     }
                 }
-                if ( !in_array( (int) $meta['grid_id'], $ids ) ){
-                    $fields['location_grid'][] = [
-                        'id' => (int) $meta['grid_id'],
-                        'label' => $meta['label']
-                    ];
+            }
+            foreach ( $meta_fields as $key => $value ){
+                if ( strpos( $key, "contact_address" ) === 0 && strpos( $key, "_details" ) === false ){
+                    $fields['location_grid_meta'][] = [ "label" => $value, "key" => $key ];
                 }
             }
         }
