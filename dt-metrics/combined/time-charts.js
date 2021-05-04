@@ -51,7 +51,7 @@ function projectTimeCharts() {
             <select class="select-field" id="date-select">
                 ${ buildDateSelectOptions(all_time) }
             </select>
-            <div class="loading-spinner"></div>
+            <div id="chart-loading-spinner" class="loading-spinner active"></div>
         </section>
         <hr>
         <section id="chart-area">
@@ -74,8 +74,10 @@ function projectTimeCharts() {
     `
 
     const chartSection = document.querySelector('#chart-area')
+    const loadingSpinner = document.querySelector('#chart-loading-spinner')
     chartSection.addEventListener('datachange', () => {
         createCharts()
+        loadingSpinner.classList.remove('active')
     })
     const fieldSelectElement = document.querySelector('#post-field-select')
 
