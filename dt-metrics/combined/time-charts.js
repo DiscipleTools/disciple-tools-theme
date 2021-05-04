@@ -208,7 +208,7 @@ function createChart(id, keys, options) {
     }
 
     showChart(id)
-    const chart = initialiseChart(id)
+    const [ chart, valueAxis ] = initialiseChart(id)
 
     // create the series for each key name in the data arrays
     // then get the labels from field_settings, if they exist
@@ -235,6 +235,14 @@ function createChart(id, keys, options) {
             label: customLabel === '' ? label : customLabel,
         }
     })
+
+    if (single) {
+        chart.events.on("ready", () => {
+            const [ min, max ] = getMinMaxValuesOfDataForKey(keys[0])
+            if (0 === max) return
+            valueAxis.zoomToValues(0, max)
+        })
+    }
     // then loop over the keys and labels and create the stacked series
     let firstSerie = true
     const series = fieldLabels.map(({ field, label }) => {
@@ -309,7 +317,7 @@ function initialiseChart(id) {
 
     chart.data = data
 
-    return chart
+    return [ chart, valueAxis ]
 }
 
 function createColumnSeries(chart, field, name, hidden = false) {
@@ -358,6 +366,29 @@ function createLineSeries(chart, field, name, hidden = false) {
     circle.strokeWidth = 3;
 
     return lineSeries
+}
+
+function getMinMaxValuesOfDataForKey(key) {
+    const data = dtMetricsProject.data
+    let min = 0
+    let max = 0
+
+    data.forEach(timePeriodData => {
+        const dataStr = timePeriodData[key]
+        if (!dataStr || dataStr.length === 0) return
+        dataVal = parseInt(dataStr)
+
+        if (dataVal < min) {
+            min = dataVal
+            return
+        } else if (dataVal > max) {
+            max = dataVal
+            return
+        } else {
+            return
+        }
+    });
+    return [ min, max ]
 }
 
 function addHideOtherSeriesEventHandlers(series) {
