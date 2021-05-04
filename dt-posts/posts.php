@@ -1891,29 +1891,19 @@ class Disciple_Tools_Posts
                 $key_without_ramdomizers = null;
                 if ( strpos( $key, "contact_" ) === 0 ){
                     $exploded = explode( '_', $key );
-                    $key_without_ramdomizers = $exploded[0] . '_' . $exploded[1];
+                    if ( strpos( $key, "_details" ) !== false ){
+                        $key_without_ramdomizers = str_replace( '_' . $exploded[sizeof( $exploded ) - 2] .'_details', "", $key );
+                    } else {
+                        $key_without_ramdomizers = str_replace( '_' . $exploded[sizeof( $exploded ) - 1], "", $key );
+                    }
                 }
 
                 if ( strpos( $key, "contact_" ) === 0 && isset( $field_settings[$key_without_ramdomizers]["type"] ) && $field_settings[$key_without_ramdomizers]["type"] === "communication_channel" ) {
                     if ( strpos( $key, "details" ) === false ) {
-                        $type = explode( '_', $key )[1];
+                        $type = str_replace( "contact_", "", $key_without_ramdomizers );
                         if ( empty( $fields_to_return ) || in_array( 'contact_' . $type, $fields_to_return ) ) {
                             $fields["contact_" . $type][] = self::format_post_contact_details( $field_settings, $meta_fields, $type, $key, $value[0] );
                         }
-                    }
-                } elseif ( strpos( $key, "address" ) === 0 ) {
-                    if ( strpos( $key, "_details" ) === false ) {
-
-                        $details = [];
-                        if ( isset( $meta_fields[$key . '_details'][0] ) ) {
-                            $details = maybe_unserialize( $meta_fields[$key . '_details'][0] );
-                        }
-                        $details["value"] = $value[0];
-                        $details["key"] = $key;
-                        if ( isset( $details["type"], $field_settings['contact_'.$details["type"]]["name"] ) ) {
-                            $details["type_label"] = $field_settings['contact_' . $details["type"]]["name"];
-                        }
-                        $fields["address"][] = $details;
                     }
                 } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" ) {
                     if ( empty( $value[0] ) ) {
@@ -1998,19 +1988,21 @@ class Disciple_Tools_Posts
             }
         }
 
-        if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() && isset( $fields['location_grid_meta'] ) ) {
-            $ids = dt_get_keys_map( $fields['location_grid'] ?? [], 'id' );
-            foreach ( $fields['location_grid_meta'] as $meta ) {
-                foreach ( ( $fields['location_grid'] ?? [] ) as $index => $grid ){
-                    if ( (int) $grid["id"] === (int) $meta["grid_id"] ){
-                        $fields['location_grid'][$index]["matched_search"] = $meta["label"];
+        if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() ) {
+            if ( isset( $fields['location_grid_meta'] )){
+                $ids = dt_get_keys_map( $fields['location_grid'] ?? [], 'id' );
+                foreach ( $fields['location_grid_meta'] as $meta ) {
+                    foreach ( ( $fields['location_grid'] ?? [] ) as $index => $grid ){
+                        if ( (int) $grid["id"] === (int) $meta["grid_id"] ){
+                            $fields['location_grid'][$index]["matched_search"] = $meta["label"];
+                        }
                     }
-                }
-                if ( !in_array( (int) $meta['grid_id'], $ids ) ){
-                    $fields['location_grid'][] = [
-                        'id' => (int) $meta['grid_id'],
-                        'label' => $meta['label']
-                    ];
+                    if ( !in_array( (int) $meta['grid_id'], $ids ) ){
+                        $fields['location_grid'][] = [
+                            'id' => (int) $meta['grid_id'],
+                            'label' => $meta['label']
+                        ];
+                    }
                 }
             }
             foreach ( $meta_fields as $key => $value ){
