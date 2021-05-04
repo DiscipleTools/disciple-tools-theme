@@ -350,7 +350,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     FROM $wpdb->posts
                     WHERE post_type = %s
                         AND %1s <= %s
-                ", $field, $field, $post_type, $field, gmdate( 'Y-m-d H:i:s', $timestamp ) )
+                ", $field, $post_type, $field, gmdate( 'Y-m-d H:i:s', $timestamp ) )
             );
         }
 
