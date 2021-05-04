@@ -18,7 +18,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     public $field_settings = [];
     public $post_type_select_options = [];
     public $post_field_select_options = [];
-    public $post_field_types_filter = [ 'date', 'tags', 'multi_select', 'key_select' /* , 'connection', 'boolean', */ ]; // connection and number would be interesting for additions to groups, and quick button usage
+    public $post_field_types_filter = [ 'date', 'tags', 'multi_select', 'key_select', 'connection', /*  'boolean', */ ]; // connection and number would be interesting for additions to groups, and quick button usage
     public $multi_fields = [ 'tags', 'multi_select', 'key_select' ];
 
     public function __construct() {
@@ -198,6 +198,9 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return DT_Counter_Post_Stats::get_date_field_by_month( $post_type, $field, $year );
         } elseif ( in_array( $field_settings[$field]['type'], $this->multi_fields ) ) {
             return DT_Counter_Post_Stats::get_multi_field_by_month( $post_type, $field, $year );
+        } elseif ( $field_settings[$field]['type'] === 'connection' ) {
+            $connection_type = $field_settings[$field]['p2p_key'];
+            return DT_Counter_Post_Stats::get_connection_field_by_month( $connection_type, $year );
         } else {
             return [];
         }
@@ -209,6 +212,9 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return DT_Counter_Post_Stats::get_date_field_by_year( $post_type, $field );
         } elseif ( in_array( $field_settings[$field]['type'], $this->multi_fields ) ) {
             return DT_Counter_Post_Stats::get_multi_field_by_year( $post_type, $field );
+        } elseif ( $field_settings[$field]['type'] === 'connection' ) {
+            $connection_type = $field_settings[$field]['p2p_key'];
+            return DT_Counter_Post_Stats::get_connection_field_by_year( $connection_type );
         } else {
             return [];
         }

@@ -158,7 +158,7 @@ function createCharts() {
     const data = dtMetricsProject.data
 
     // if date field create cumulative and addition charts
-    if (fieldType === 'date') {
+    if (fieldType === 'date' || fieldType === 'connection') {
         hideChart('stacked-chart')
         createChart('cumulative-chart', ['cumulative_count'], {
             customLabel: total_label,
@@ -398,7 +398,7 @@ function getData() {
 function formatYearData(yearlyData) {
     const { fieldType } = dtMetricsProject.state
 
-    if (fieldType === 'date') {
+    if (fieldType === 'date' || fieldType === 'connection') {
         return formatSimpleYearData(yearlyData)
     } else if ( dtMetricsProject.multi_fields.includes(fieldType)) {
         return formatCompoundYearData(yearlyData)
@@ -465,7 +465,7 @@ function formatCompoundYearData(yearlyData) {
 function formatMonthData(monthlyData) {
     const { fieldType } = dtMetricsProject.state
 
-    if (fieldType === 'date') {
+    if (fieldType === 'date' || fieldType === 'connection') {
         return formatSimpleMonthData(monthlyData)
     } else if ( dtMetricsProject.multi_fields.includes(fieldType)) {
         return formatCompoundMonthData(monthlyData)

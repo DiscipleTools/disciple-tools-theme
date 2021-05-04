@@ -276,6 +276,66 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         ];
     }
 
+    public static function get_connection_field_by_month( $connection_type, $year ) {
+        global $wpdb;
+
+        $start = mktime( 0, 0, 0, 1, 1, $year );
+        $end = mktime( 24, 60, 60, 12, 31, $year );
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT
+                    COUNT( meta.meta_value ) AS count,
+                    MONTH( meta.meta_value ) AS month
+                FROM $wpdb->p2p AS p2p
+                JOIN $wpdb->p2pmeta AS meta
+                    ON p2p.p2p_id = meta.p2p_id
+                WHERE p2p.p2p_type = %s
+                    AND meta.meta_key = 'date'
+                    AND meta.meta_value >= %s
+                    AND meta.meta_value <= %s
+                GROUP BY MONTH( meta.meta_value )
+                ORDER BY MONTH( meta.meta_value )
+            ", $connection_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
+        );
+
+        $cumulative_offset = self::get_connection_field_cumulative_offset( $connection_type, $start );
+
+        return [
+            'data' => $results,
+            'cumulative_offset' => $cumulative_offset,
+        ];
+    }
+
+    public static function get_connection_field_by_year( $connection_type ) {
+        global $wpdb;
+
+        $current_year = gmdate( "Y" );
+        $start = 0;
+        $end = mktime( 24, 60, 60, 12, 31, $current_year );
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT
+                    COUNT( meta.meta_value ) AS count,
+                    YEAR( meta.meta_value ) AS year
+                FROM $wpdb->p2p AS p2p
+                JOIN $wpdb->p2pmeta AS meta
+                    ON p2p.p2p_id = meta.p2p_id
+                WHERE p2p.p2p_type = %s
+                    AND meta.meta_key = 'date'
+                    AND meta.meta_value >= %s
+                    AND meta.meta_value <= %s
+                GROUP BY YEAR( meta.meta_value )
+                ORDER BY YEAR( meta.meta_value )
+            ", $connection_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
+        );
+
+        return [
+            'data' => $results,
+        ];
+    }
+
     /**
      * Get the year of the earliest post in the db.
      *
@@ -394,5 +454,24 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         );
 
         return $results;
+    }
+
+    private static function get_connection_field_cumulative_offset( $connection_type, $timestamp ) {
+        global $wpdb;
+
+        $total = $wpdb->get_var(
+            $wpdb->prepare( "
+                SELECT
+                    COUNT( meta.meta_value ) AS count
+                FROM $wpdb->p2p AS p2p
+                JOIN $wpdb->p2pmeta AS meta
+                    ON p2p.p2p_id = meta.p2p_id
+                WHERE p2p.p2p_type = %s
+                    AND meta.meta_key = 'date'
+                    AND meta.meta_value <= %s
+            ", $connection_type, gmdate( 'Y-m-d H:i:s', $timestamp ) )
+        );
+
+        return $total ? intval( $total ) : 0;
     }
 }
