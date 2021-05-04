@@ -200,7 +200,8 @@ function createChart(id, keys, options) {
         customLabel: ''
     }
     const { single, graphType, customLabel } = { ...defaultOptions, ...options }
-    const { field } = dtMetricsProject.state
+    const { field, fieldType } = dtMetricsProject.state
+    const { true_label, false_label } = escapeObject(dtMetricsProject.translations)
 
     if (!graphTypes.includes(graphType)) {
         throw new Error(`graphType ${graphType} not found in ${graphTypes}`)
@@ -216,7 +217,19 @@ function createChart(id, keys, options) {
         const defaultSettings = fieldSettings && fieldSettings.default ? fieldSettings.default : []
 
         const newKey = isCumulativeKey(key) ? key.replace(CUMULATIVE_PREFIX, '') : key
-        const label = defaultSettings[newKey] ? defaultSettings[newKey].label : newKey
+
+        let label = ''
+        if (defaultSettings[newKey]) {
+            label = defaultSettings[newKey].label
+        } else if ( fieldType === 'boolean' ) {
+            if (newKey === '1') {
+                label = true_label
+            } else {
+                label = false_label
+            }
+        } else {
+            label = newKey
+        }
         return {
             field: key,
             label: customLabel === '' ? label : customLabel,

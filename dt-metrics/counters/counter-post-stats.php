@@ -160,8 +160,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             $multi_values = self::get_meta_values( $field );
         }
 
-        $cumulative_offset = self::get_multi_field_cumulative_offsets( $post_type, $field, $start, $multi_values );
-
+        // Build dynamic sql for counting meta_values
         $count_dynamic_values = array_map( function ( $value ) {
             return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . "`";
         }, $multi_values);
@@ -202,6 +201,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
             // phpcs:enable
         );
+
+        $cumulative_offset = self::get_multi_field_cumulative_offsets( $post_type, $field, $start, $multi_values );
 
         return [
             'data' => $results,

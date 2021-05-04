@@ -18,8 +18,20 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     public $field_settings = [];
     public $post_type_select_options = [];
     public $post_field_select_options = [];
-    public $post_field_types_filter = [ 'date', 'tags', 'multi_select', 'key_select', 'connection', /*  'boolean', */ ]; // connection and number would be interesting for additions to groups, and quick button usage
-    public $multi_fields = [ 'tags', 'multi_select', 'key_select' ];
+    public $post_field_types_filter = [
+        'date',
+        'tags',
+        'multi_select',
+        'key_select',
+        'connection',
+        'boolean',
+    ]; // connection and number would be interesting for additions to groups, and quick button usage
+    public $multi_fields = [
+        'tags',
+        'multi_select',
+        'key_select',
+        'boolean',
+    ];
 
     public function __construct() {
         parent::__construct();
@@ -102,6 +114,8 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     "stacked_chart_title" => __( 'All cumulative totals', 'disciple_tools' ),
                     "cumulative_chart_title" => __( 'Single cumulative totals', 'disciple_tools' ),
                     "additions_chart_title" => __( 'Number added', 'disciple_tools' ),
+                    "true_label" => __( 'Yes', 'disciple_tools' ),
+                    "false_label" => __( 'No', 'disciple_tools' ),
                 ],
                 'select_options' => [
                     'post_type_select_options' => $this->post_type_select_options,
