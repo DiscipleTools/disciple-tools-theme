@@ -145,7 +145,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         }
 
         $count_dynamic_values = array_map( function ( $value ) {
-            return "COUNT( CASE WHEN log.meta_value = '$value' THEN log.meta_value END ) AS `$value`";
+            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . "`";
         }, $multi_values);
         $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
         if ( strlen( $count_dynamic_values_query ) !== 0 ) {
@@ -210,7 +210,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         }
 
         $count_dynamic_values = array_map( function ( $value ) {
-            return "COUNT( CASE WHEN log.meta_value = '$value' THEN log.meta_value END ) AS `$value`";
+            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . "`";
         }, $multi_values);
         $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
         if ( strlen( $count_dynamic_values_query ) !== 0 ) {
