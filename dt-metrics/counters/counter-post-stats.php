@@ -35,8 +35,11 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $start = mktime( 0, 0, 0, 1, 1, $year );
         $end = mktime( 24, 60, 60, 12, 31, $year );
 
+        $results = [];
+        $cumulative_offset = 0;
+
         if ( self::isPostField( $field ) ) {
-            return $wpdb->get_results(
+            $results = $wpdb->get_results(
                 $wpdb->prepare( "
                     SELECT
                         MONTH( %1s ) AS month,
@@ -49,6 +52,13 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     ORDER BY MONTH( %1s )
                 ", $field, $field, $post_type, $field, gmdate( 'Y-m-d H:i:s', $start ), $field, gmdate( 'Y-m-d H:i:s', $end ), $field, $field )
             );
+
+            $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start );
+
+            return [
+                'data' => $results,
+                'cumulative_offset' => $cumulative_offset,
+            ];
         } else {
             $results = $wpdb->get_results(
                 $wpdb->prepare( "
@@ -68,10 +78,14 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 )
             );
 
-            return $results;
+            $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
+
         }
 
-        return [];
+        return [
+            'data' => $results,
+            'cumulative_offset' => $cumulative_offset,
+        ];
     }
 
     /**
@@ -85,8 +99,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
+        $results = [];
+
         if ( self::isPostField( $field ) ) {
-            return $wpdb->get_results(
+            $results = $wpdb->get_results(
                 $wpdb->prepare( "
                     SELECT
                         YEAR( %1s ) AS year,
@@ -117,11 +133,11 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ", $post_type, $field, $start, $end
                 )
             );
-
-            return $results;
         }
 
-        return [];
+        return [
+            'data' => $results,
+        ];
     }
 
     public static function get_multi_field_by_month( $post_type, $field, $year ) {
@@ -143,6 +159,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             // from the metadata
             $multi_values = self::get_meta_values( $field );
         }
+
+        $cumulative_offset = self::get_multi_field_cumulative_offsets( $post_type, $field, $start, $multi_values );
 
         $count_dynamic_values = array_map( function ( $value ) {
             return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . "`";
@@ -185,7 +203,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             // phpcs:enable
         );
 
-        return $results;
+        return [
+            'data' => $results,
+            'cumulative_offset' => $cumulative_offset,
+        ];
     }
 
     public static function get_multi_field_by_year( $post_type, $field ) {
@@ -250,7 +271,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             // phpcs:enable
         );
 
-        return $results;
+        return [
+            'data' => $results,
+        ];
     }
 
     /**
@@ -296,5 +319,78 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         global $wpdb;
         $post_fields = $wpdb->get_col( "DESC $wpdb->posts", 0 );
         return in_array( $field, $post_fields, true );
+    }
+
+    private static function get_date_field_cumulative_offset( $post_type, $field, $timestamp, $meta = false ) {
+        global $wpdb;
+
+        $total = 0;
+
+        if ( $meta ) {
+            $total = $wpdb->get_var(
+                $wpdb->prepare( "
+                    SELECT 
+                        COUNT( pm.meta_value ) AS count
+                    FROM $wpdb->posts AS p
+                    INNER JOIN $wpdb->postmeta AS pm
+                        ON p.ID = pm.post_id
+                    WHERE p.post_type = %s
+                        AND pm.meta_key = %s
+                        AND pm.meta_value <= %s
+                ", $post_type, $field, $timestamp
+                )
+            );
+        } else {
+            $total = $wpdb->get_var(
+                $wpdb->prepare( "
+                    SELECT
+                        COUNT( %1s ) AS total
+                    FROM $wpdb->posts
+                    WHERE post_type = %s
+                        AND %1s <= %s
+                ", $field, $field, $post_type, $field, gmdate( 'Y-m-d H:i:s', $timestamp ) )
+            );
+        }
+
+        return intval( $total );
+    }
+
+    private static function get_multi_field_cumulative_offsets( $post_type, $field, $timestamp, $multi_values ) {
+        global $wpdb;
+
+        $count_dynamic_values = array_map( function ( $value ) {
+            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . "`";
+        }, $multi_values);
+        $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
+
+        $results = $wpdb->get_row(
+            // phpcs:disable
+            $wpdb->prepare( "
+                SELECT
+                    $count_dynamic_values_query
+                FROM $wpdb->posts AS p
+                JOIN $wpdb->postmeta AS pm
+                    ON p.ID = pm.post_id
+                JOIN $wpdb->dt_activity_log AS log
+                    ON log.object_id = p.ID
+                    AND log.meta_key = %s
+                WHERE p.post_type = %s
+                    AND pm.meta_key = %s
+                    AND log.meta_value = pm.meta_value
+                    AND log.hist_time = (
+                        SELECT MAX( log2.hist_time )
+                        FROM $wpdb->dt_activity_log AS log2
+                        WHERE log.meta_value = log2.meta_value
+                        AND log.object_id = log2.object_id
+                        AND log2.hist_time <= %s
+                        AND log2.meta_key = %s
+                    )
+                    AND log.object_type = %s
+                    AND log.hist_time <= %s
+            ", $field, $post_type, $field, $timestamp, $field, $post_type, $timestamp )
+            // phpcs:enable
+        );
+
+        return $results;
     }
 }

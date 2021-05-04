@@ -368,18 +368,23 @@ function getData() {
         : window.API.getTimeMetricsByMonth(postType, field, year)
 
     const loadingSpinner = document.querySelector('.loading-spinner')
+    const chartElement = document.querySelector('#chart-area')
     loadingSpinner.classList.add('active')
     data.promise()
-        .then((data) => {
+        .then(({ data, cumulative_offset }) => {
+            if ( !data ) {
+                throw new Error('no data object returned')
+            }
+            window.dtMetricsProject.cumulative_offset = cumulative_offset
             window.dtMetricsProject.data = isAllTime 
                 ? formatYearData(data)
                 : formatMonthData(data)
-            const chartElement = document.querySelector('#chart-area')
             chartElement.dispatchEvent( new Event('datachange') )
             loadingSpinner.classList.remove('active')
         })
         .catch((error) => {
             console.log(error)
+            chartElement.dispatchEvent( new Event('datachange') )
             loadingSpinner.classList.remove('active')
         })
 }
@@ -476,7 +481,7 @@ function isInFuture(monthNumber) {
 function formatSimpleMonthData(monthlyData) {
     const monthLabels = window.wpApiShare.translations.month_labels
 
-    let cumulativeTotal = 0
+    let cumulativeTotal = window.dtMetricsProject.cumulative_offset
     const formattedMonthlyData = monthLabels.map((monthLabel, i) => {
         const monthNumber = i + 1
         if (isInFuture(monthNumber)) {
@@ -503,8 +508,12 @@ function formatCompoundMonthData(monthlyData) {
     const monthLabels = window.wpApiShare.translations.month_labels
     const keys = getDataKeys(monthlyData)
 
+    const cumulative_offsets = window.dtMetricsProject.cumulative_offset
     let cumulativeTotals = {}
     const cumulativeKeys = makeCumulativeKeys(keys)
+
+    // initialise the totals with the offset data
+    cumulativeTotals = calculateCumulativeTotals(keys, cumulative_offsets, cumulativeTotals, cumulativeKeys )
 
     const formattedMonthlyData = monthLabels.map((monthLabel, i) => {
         const monthNumber = i + 1
