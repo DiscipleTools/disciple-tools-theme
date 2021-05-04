@@ -344,14 +344,21 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
     public static function get_earliest_year() {
         global $wpdb;
         $result = $wpdb->get_var("
-                SELECT
-                    YEAR( FROM_UNIXTIME( meta_value ) ) AS year
-                FROM
-                    $wpdb->dt_activity_log
-                WHERE
-                    field_type = 'date'
-                ORDER BY meta_value ASC
-                LIMIT 1
+                SELECT MIN( year )
+                FROM (
+                    SELECT
+                        MIN( YEAR( FROM_UNIXTIME( log.meta_value ) ) ) AS year
+                    FROM
+                        $wpdb->dt_activity_log AS log
+                    WHERE log.field_type = 'date'
+                        AND log.meta_value != 'value_deleted'
+                    UNION
+                    SELECT
+                        MIN( YEAR( p2pmeta.meta_value ) ) AS year
+                    FROM
+                        $wpdb->p2pmeta AS p2pmeta
+                    WHERE p2pmeta.meta_key = 'date'
+                ) AS subQuery
             " );
 
         $current_year = gmdate( "Y" );
