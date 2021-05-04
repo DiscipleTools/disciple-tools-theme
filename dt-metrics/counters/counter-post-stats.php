@@ -285,10 +285,12 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         global $wpdb;
         $result = $wpdb->get_var("
                 SELECT
-                    YEAR( post_date ) AS year
+                    YEAR( FROM_UNIXTIME( meta_value ) ) AS year
                 FROM
-                    $wpdb->posts
-                ORDER BY post_date ASC
+                    $wpdb->dt_activity_log
+                WHERE
+                    field_type = 'date'
+                ORDER BY meta_value ASC
                 LIMIT 1
             " );
 
@@ -329,7 +331,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         if ( $meta ) {
             $total = $wpdb->get_var(
                 $wpdb->prepare( "
-                    SELECT 
+                    SELECT
                         COUNT( pm.meta_value ) AS count
                     FROM $wpdb->posts AS p
                     INNER JOIN $wpdb->postmeta AS pm

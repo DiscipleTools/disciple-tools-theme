@@ -72,6 +72,9 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             'wp-i18n'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
+
+        $post_type = $this->post_types[0];
+        $field = array_key_first( $this->post_field_select_options );
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
                 'root'               => esc_url_raw( rest_url() ),
@@ -81,10 +84,10 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 'current_user_id'    => get_current_user_id(),
                 'state'              => [
                     'chart_view' => 'month',
-                    'post_type' => $this->post_types[0],
-                    'field' => array_key_first( $this->post_field_select_options ),
+                    'post_type' => $post_type,
+                    'field' => $field,
                     'year' => gmdate( "Y" ),
-                    'earliest_year' => $this->get_earliest_year( $this->post_types[0] ),
+                    'earliest_year' => $this->get_earliest_year(),
                 ],
                 'data'               => [],
                 'translations'       => [
