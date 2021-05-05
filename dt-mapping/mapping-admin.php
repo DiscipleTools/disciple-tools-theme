@@ -1447,7 +1447,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     list_results.empty()
 
                     jQuery.each( selection.list, function (i, v) {
-                        list_results.append(`<tr>
+                        var row = 
+                        `<tr>
                             <td>
                                 <a class="open_next_drilldown"
                                     data-parent="${window.lodash.escape( v.parent_id )}"
@@ -1457,8 +1458,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             </td>
                             <td>${window.lodash.escape( v.population_formatted )}</td>
                             <td>${window.lodash.escape( v.grid_id )}</td>
-                            <td><a class="button delete-button" data-grid_id="${window.lodash.escape( v.grid_id ) }">Delete</a></td>
-                        </tr>`)
+                            <td>`;
+                            if( v.is_custom_location === "1" ) {
+                                row += `<a class="button delete-button" data-grid_id="${window.lodash.escape( v.grid_id ) }">Delete</a>`;
+                            } 
+                        row += `</td>
+                            </tr>`;
+                        list_results.append( row );
                     })
 
                     function delete_sublocation( grid_id ) {
