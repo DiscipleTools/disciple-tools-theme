@@ -1486,8 +1486,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     jQuery(".delete-button").on("click", function () {
                         jQuery('#update-location-spinner').show()
                         let grid_id = jQuery( this ).data( 'grid_id' ).toString();
+                        let current_id = jQuery( '.geocode-select' )[0].id
                         let del_sublocation = delete_sublocation( grid_id );
-                        jQuery('#update-location-spinner').hide()
+                        jQuery('#update-location-spinner').hide();
+                        DRILLDOWN.get_drill_down( 'location_grids', current_id, false );
                     });
 
                     jQuery('.location-name-title').html(selection.selected_name)
@@ -1563,10 +1565,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     }).fail(()=>{
                       jQuery('#new-location-spinner').hide()
                     })
-                })
-
-                jQuery('#delete-sub-location-button').on('click', function () {
-                    jQuery('#delete-location-spinner').show()
                 })
 
                 window.DRILLDOWN.get_drill_down('location_grids', false )
