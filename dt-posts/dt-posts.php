@@ -136,12 +136,21 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields[$field_key] );
             }
             $field_type = $post_settings["fields"][$field_key]["type"] ?? '';
+            $is_private = $post_settings["fields"][$field_key]["private"] ?? '';
             if ( $field_type === "multi_select" ){
-                $multi_select_fields[$field_key] = $field_value;
+                if ( $is_private ) {
+                    $post_user_meta[$field_key] = $field_value;
+                } else {
+                    $multi_select_fields[$field_key] = $field_value;
+                }
                 unset( $fields[$field_key] );
             }
             if ( $field_type === "tags" ){
-                $multi_select_fields[$field_key] = $field_value;
+                if ( $is_private ) {
+                    $post_user_meta[$field_key] = $field_value;
+                } else {
+                    $multi_select_fields[$field_key] = $field_value;
+                }
                 unset( $fields[$field_key] );
             }
             if ( $field_type === "location_meta" || $field_type === "location" ){
@@ -153,10 +162,19 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields[ $field_key ] );
             }
             if ( $field_type === 'date' && !is_numeric( $field_value )){
-                $fields[$field_key] = strtotime( $field_value );
+                if ( $is_private ) {
+                    $post_user_meta[$field_key] = strtotime( $field_value );
+                    unset( $fields[ $field_key ] );
+                } else {
+                    $fields[$field_key] = strtotime( $field_value );
+                }
             }
             if ( $field_type === 'key_select' && !is_string( $field_value ) ){
                 return new WP_Error( __FUNCTION__, "key_select value must in string format: $field_key, received $field_value", [ 'status' => 400 ] );
+            }
+            if ( $field_type === 'key_select' && $is_private ) {
+                $post_user_meta[$field_key] = $field_value;
+                unset( $fields[ $field_key ] );
             }
             if ( $field_type === 'user_select' ) {
                 if ( is_numeric( $field_value ) ){

@@ -41,8 +41,6 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertNotWPError( $result );
 
 
-        echo( strtotime( $update_values['date_test_private'] ) );
-
         //setting values on each field type
         //@todo connection field
         $this->assertSame( $result["title"], $update_values['title'] );
