@@ -1402,6 +1402,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <th>Name</th>
                         <th>Population</th>
                         <th>ID</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="list_results">
@@ -1456,8 +1457,32 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             </td>
                             <td>${window.lodash.escape( v.population_formatted )}</td>
                             <td>${window.lodash.escape( v.grid_id )}</td>
+                            <td><a class="button delete-button" data-grid_id="${window.lodash.escape( v.grid_id ) }">Delete</a></td>
                         </tr>`)
                     })
+
+                    function delete_sublocation( grid_id ) {
+                            let options = {
+                            type: 'POST',
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            url: `<?php echo esc_url_raw( rest_url() )  ?>dt/v1/mapping_module/delete_sublocation`,
+                            beforeSend: xhr => {
+                                xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>');
+                            }
+                        }
+                        if ( grid_id ) {
+                            options.data = JSON.stringify( { grid_id } );
+                        }
+                        return jQuery.ajax(options);
+                    }
+
+                    jQuery(".delete-button").on("click", function () {
+                        jQuery('#update-location-spinner').show()
+                        let grid_id = jQuery( this ).data( 'grid_id' ).toString();
+                        let del_sublocation = delete_sublocation( grid_id );
+                        jQuery('#update-location-spinner').hide()
+                    });
 
                     jQuery('.location-name-title').html(selection.selected_name)
                     if ( selection.self ){
@@ -1476,6 +1501,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     }
 
                 }
+
                 jQuery(".update-button").on("click", function () {
                   jQuery('#update-location-spinner').show()
                   let field = jQuery(this).data('field')
@@ -1532,9 +1558,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                       jQuery('#new-location-spinner').hide()
                     })
                 })
+
                 jQuery('#delete-sub-location-button').on('click', function () {
                     jQuery('#delete-location-spinner').show()
                 })
+
                 window.DRILLDOWN.get_drill_down('location_grids', false )
             </script>
 
