@@ -1704,8 +1704,15 @@ class Disciple_Tools_Posts
             }
 
             if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && ( $field_settings[ $field_key ]["type"] === "text" || $field_settings[ $field_key ]["type"] === "textarea" || $field_settings[ $field_key ]["type"] === "date" || $field_settings[ $field_key ]["type"] === "key_select" || $field_settings[ $field_key ]["type"] === "boolean" || $field_settings[ $field_key ]["type"] === "number" ) ) {
+                if ( $field_settings[ $field_key ]["type"] === "boolean" ){
+                    if ( $fields[$field_key] === "1" || $fields[$field_key] === "yes" || $fields[$field_key] === "true" ){
+                        $field_value = true;
+                    } elseif ( $fields[$field_key] === "0" || $fields[$field_key] === "no" || $fields[$field_key] === "false" || $fields[$field_key] === false ){
+                        $field_value = false;
+                    }
+                }
                 if ( $field_settings[ $field_key ]["type"] === "date" ) {
-                    $field_value = strtotime( $fields[$field_key] );
+                    $field_value = $fields[$field_key];
                 } else {
                     $field_value = $fields[$field_key];
                 }
