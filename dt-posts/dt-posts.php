@@ -138,19 +138,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             $field_type = $post_settings["fields"][$field_key]["type"] ?? '';
             $is_private = $post_settings["fields"][$field_key]["private"] ?? '';
             if ( $field_type === "multi_select" ){
-                if ( $is_private ) {
-                    $post_user_meta[$field_key] = $field_value;
-                } else {
-                    $multi_select_fields[$field_key] = $field_value;
-                }
+                $multi_select_fields[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
             if ( $field_type === "tags" ){
-                if ( $is_private ) {
-                    $post_user_meta[$field_key] = $field_value;
-                } else {
-                    $multi_select_fields[$field_key] = $field_value;
-                }
+                $multi_select_fields[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
             if ( $field_type === "location_meta" || $field_type === "location" ){
