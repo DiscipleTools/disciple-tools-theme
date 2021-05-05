@@ -443,10 +443,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function delete_sublocation( WP_REST_Request $request ) {
-            
+
             $params = $request->get_params();
             $grid_id = $params['grid_id'];
-            
+
             // Check if grid_id is a custom geo
             global $wpdb;
             $response = $wpdb->get_var( $wpdb->prepare("
@@ -457,13 +457,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             if ( $response == 0 ) {
                 return new WP_Error( __METHOD__, 'Grid ID does not correspond to a custom sublocation.', [ 'status' => 400 ] );
-            } 
-            
+            }
+
             // Delete sublocation
             $response_del = $wpdb->delete( $wpdb->dt_location_grid, [ 'grid_id' => $grid_id ] );
-            
+
             if ( ! $response_del ) {
-                return new WP_Error( __METHOD__, 'Error deleting custom sublocation.', [ 'status' => 400 ] );                
+                return new WP_Error( __METHOD__, 'Error deleting custom sublocation.', [ 'status' => 400 ] );
             }
         }
 
