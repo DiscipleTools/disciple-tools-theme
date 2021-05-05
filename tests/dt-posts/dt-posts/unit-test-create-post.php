@@ -52,6 +52,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     }
 
     public function test_create_on_custom_fields(){
+        $user_id = wp_create_user( "dispatcher3", "test", "test3@example.com" );
+        wp_set_current_user( $user_id );
         $create_values = dt_test_get_sample_record_fields();
         $result = DT_Posts::create_post( "contacts", $create_values, true, false );
         $this->assertNotWPError( $result );
@@ -73,7 +75,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertSame( $result["multi_select_test"][1], $create_values['multi_select_test']["values"][1]["value"] );
         $this->assertSame( $result["multi_select_test_private"][0], $create_values['multi_select_test_private']["values"][0]["value"] );
         $this->assertSame( $result["multi_select_test_private"][1], $create_values['multi_select_test_private']["values"][1]["value"] );
-        $this->assertSame( $result["key_select_test"]["key"], $create_values['key_select_test_private'] );
+        $this->assertSame( $result["key_select_test"]["key"], $create_values['key_select_test'] );
         $this->assertSame( $result["key_select_test_private"]["key"], $create_values['key_select_test_private'] );
         $this->assertSame( $result["tags_test"][0], $create_values['tags_test']["values"][0]["value"] );
         $this->assertSame( $result["tags_test_private"][0], $create_values['tags_test_private']["values"][0]["value"] );

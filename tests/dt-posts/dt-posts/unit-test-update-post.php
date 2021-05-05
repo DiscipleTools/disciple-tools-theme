@@ -34,6 +34,9 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     }
 
     public function test_update_on_custom_fields(){
+        print_r( strtotime( $update_values['date_test_private'] ) );
+        $user_id = wp_create_user( "dispatcher3", "test", "test3@example.com" );
+        wp_set_current_user( $user_id );
         $update_values = dt_test_get_sample_record_fields();
         $result = DT_Posts::update_post( "contacts", self::$contact["ID"], $update_values, true, false );
         $this->assertNotWPError( $result );
