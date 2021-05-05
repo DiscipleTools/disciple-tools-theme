@@ -212,7 +212,11 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                     $object_note = 'Added ' . $this->_key_name( $meta_key, $fields ) . ': ' . $this->_value_name( $meta_key, $meta_value, $fields );
                 }
             } else if ( $deleted ) {
-                $object_note = $this->_key_name( $meta_key, $fields ) . ' "' . ( $this->_value_name( $meta_key, empty( $prev_value ) ? $meta_value : $prev_value, $fields ) ) . '" deleted ';
+                if ( $meta_key === 'location_grid_meta' ) {
+                    $object_note = $prev[0]->object_note ?? '';
+                } else {
+                    $object_note = $this->_key_name( $meta_key, $fields ) . ' "' . ( $this->_value_name( $meta_key, empty( $prev_value ) ? $meta_value : $prev_value, $fields ) ) . '" deleted ';
+                }
             } else {
                 $object_note = $this->_key_name( $meta_key, $fields ) . ' changed ' .
                                ( isset( $prev_value ) ? 'from "' . $this->_value_name( $meta_key, $prev_value, $fields ) . '"' : '' ) .
