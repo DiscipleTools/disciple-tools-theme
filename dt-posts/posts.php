@@ -858,7 +858,11 @@ class Disciple_Tools_Posts
                             if ( !in_array( $table_key, $args["joins_fields"] ) ){
                                 $args["joins_fields"][] = $table_key;
                                 $extra = $field_type === 'communication_channel' ? '%' : '';
-                                $args["joins_sql"] .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key LIKE '" . esc_sql( $query_key . $extra ) . "' AND $table_key.meta_key NOT LIKE '%_details' )";
+                                if ( isset( $field_settings[$query_key]['private'] ) && $field_settings[$query_key]['private'] ) {
+                                    $args["joins_sql"] .= " LEFT JOIN $wpdb->dt_post_user_meta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key LIKE '" . esc_sql( $query_key . $extra ) . "' AND $table_key.meta_key NOT LIKE '%_details' )";
+                                } else {
+                                    $args["joins_sql"] .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key LIKE '" . esc_sql( $query_key . $extra ) . "' AND $table_key.meta_key NOT LIKE '%_details' )";
+                                }
                             }
                             $index = -1;
                             $connector = " OR ";
