@@ -646,8 +646,13 @@ class Disciple_Tools_Posts
                         // add postmeta join fields
                         if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'number', 'user_select' ] ) ){
                             if ( !in_array( $table_key, $args["joins_fields"] ) ){
-                                $args["joins_fields"][] = $table_key;
-                                $args["joins_sql"] .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key = '" . esc_sql( $query_key ) . "' )";
+                                if ( isset( $field_settings[$query_key]['private'] ) && $field_settings[$query_key]['private'] ) {
+                                    $args["joins_fields"][] = $table_key;
+                                    $args["joins_sql"] .= " LEFT JOIN $wpdb->dt_post_user_meta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key = '" . esc_sql( $query_key ) . "' )";
+                                } else {
+                                    $args["joins_fields"][] = $table_key;
+                                    $args["joins_sql"] .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key = '" . esc_sql( $query_key ) . "' )";
+                                }
                             }
                         }
 
@@ -1031,12 +1036,17 @@ class Disciple_Tools_Posts
                     if ( substr( $post_query, -6 ) !== 'AND ( ' ) {
                         $post_query .= "OR ";
                     }
+                    $user_id = get_current_user_id();
                     $post_query .= "p.ID IN ( SELECT comment_post_ID
                     FROM $wpdb->comments
                     WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
                     ) OR p.ID IN ( SELECT post_id
                     FROM $wpdb->postmeta
                     WHERE meta_value LIKE '%" . esc_sql( $search ) . "%'
+                    ) OR p.ID IN ( SELECT post_id
+                    FROM $wpdb->dt_post_user_meta
+                    WHERE user_id = $user_id
+                    AND meta_value LIKE '%" . esc_sql( $search ) . "%'
                     ) ";
                 } else {
                     if ( in_array( 'comment', $fields_to_search )) {
