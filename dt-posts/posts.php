@@ -1712,7 +1712,12 @@ class Disciple_Tools_Posts
                     }
                 }
                 if ( $field_settings[ $field_key ]["type"] === "date" ) {
-                    $field_value = $fields[$field_key];
+                    if ( ( (string) (int) $fields[$field_key] === $fields[$field_key] ) && ( $fields[$field_key] <= PHP_INT_MAX ) && ( $fields[$field_key] >= ~PHP_INT_MAX ) ) {
+                        $field_value = strtotime( $fields[$field_key] );
+                    } else {
+                        $field_value = $fields[$field_key];
+                    }
+                    dt_write_log( $field_value );
                 } else {
                     $field_value = $fields[$field_key];
                 }
