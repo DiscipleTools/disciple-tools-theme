@@ -1704,7 +1704,11 @@ class Disciple_Tools_Posts
             }
 
             if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && ( $field_settings[ $field_key ]["type"] === "text" || $field_settings[ $field_key ]["type"] === "textarea" || $field_settings[ $field_key ]["type"] === "date" || $field_settings[ $field_key ]["type"] === "key_select" || $field_settings[ $field_key ]["type"] === "boolean" || $field_settings[ $field_key ]["type"] === "number" ) ) {
-                $field_value = $fields[$field_key];
+                if ( $field_settings[ $field_key ]["type"] === "date" ) {
+                    $field_value = strtotime( $fields[$field_key] );
+                } else {
+                    $field_value = $fields[$field_key];
+                }
 
                 $current_user_id = get_current_user_id();
                 if ( !$current_user_id ){
@@ -2048,7 +2052,7 @@ class Disciple_Tools_Posts
                             }
                         }
                     }
-                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'tags' ) {
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'tags' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
                     $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
                     if ( $key === "tags" ){
@@ -2149,6 +2153,11 @@ class Disciple_Tools_Posts
                     ];
                 } else if ( isset( $field_settings[$m['meta_key']]['private'] ) && $field_settings[$m['meta_key']]['private'] ) {
                     if ( $field_settings[$m['meta_key']]['type'] === 'multi_select' ) {
+                        if ( !is_array( $fields[$m["meta_key"]] ) ) { $fields[$m["meta_key"]] = []; }
+
+                        array_push( $fields[$m["meta_key"]], $m["meta_value"] );
+
+                    } else if ( $field_settings[$m['meta_key']]['type'] === 'tags' ) {
                         if ( !is_array( $fields[$m["meta_key"]] ) ) { $fields[$m["meta_key"]] = []; }
 
                         array_push( $fields[$m["meta_key"]], $m["meta_value"] );
