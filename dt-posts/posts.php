@@ -2073,7 +2073,7 @@ class Disciple_Tools_Posts
                         }
                         $fields[$key] = $multi_select_values;
                     }
-                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'boolean' ) {
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'boolean' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ){
                     $fields[$key] = $value[0] === "1";
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
                     $fields[$key] = maybe_unserialize( $value[0] );
@@ -2184,6 +2184,13 @@ class Disciple_Tools_Posts
                         $fields[$m["meta_key"]]['timestamp'] = $timestamp;
                         $fields[$m["meta_key"]]['formatted'] = $formatted_date;
 
+                    } else if ( $field_settings[$m['meta_key']]['type'] === 'boolean' ){
+                        if ( $m["meta_value"] === "1" || $m["meta_value"] === "yes" || $m["meta_value"] === "true" ){
+                            $m["meta_value"] = true;
+                        } elseif ( $m["meta_value"] === "0" || $m["meta_value"] === "no" || $m["meta_value"] === "false" || $m["meta_value"] === false ){
+                            $m["meta_value"] = false;
+                        }
+                        $fields[$m["meta_key"]] = $m["meta_value"];
                     } else {
                         $fields[$m["meta_key"]] = maybe_unserialize( $m["meta_value"] );
                     }
