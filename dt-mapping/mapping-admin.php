@@ -1486,13 +1486,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     jQuery(".delete-button").on("click", function () {
                         jQuery('#update-location-spinner').show()
                         let grid_id = jQuery( this ).data( 'grid_id' ).toString();
-                        let current_id = jQuery('button.geocode-link').not('.hollow').data('grid_id')
+                        let current_id = current.selected
                         let del_sublocation = delete_sublocation( grid_id );
                         del_sublocation.done( function ( data ) {
                             DRILLDOWN.get_drill_down( 'location_grids', current_id, false );
                             jQuery('#update-location-spinner').hide();
                         }).fail( () => {
-                            console.log('something failed.');
                             jQuery('#update-location-spinner').hide();
                         })
                     });
@@ -1518,7 +1517,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 jQuery(".update-button").on("click", function () {
                   jQuery('#update-location-spinner').show()
                   let field = jQuery(this).data('field')
-                  let value = jQuery(`#location-${field}`).val()
+                  let value = current.selected_name
                   //udate location
                   let grid_id = current.selected
                   let update = send_update({key: field, value: value, grid_id: grid_id})
@@ -1540,6 +1539,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                   let update = send_update({key: field, reset: true, grid_id: grid_id})
 
                   update.done(function (data) {
+                    DRILLDOWN.get_drill_down( 'location_grids', current.selected, false );
+                    let value = current.selected_name
+                    jQuery('.location-name-title').html(value)
+                    jQuery('button.geocode-link').not('.hollow')[0].innerHTML = value
                     jQuery('#update-location-spinner').hide()
                     if (data) {
                       jQuery(`#location-${field}`).val(data.value)
