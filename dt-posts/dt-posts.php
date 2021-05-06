@@ -485,8 +485,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             WHERE um.post_id = %s
             AND user_id = %s
         ", $post_id, $current_user_id ), ARRAY_A);
-        // phpcs:disable
-
+        // phpcs:enable
 
         $all_post_user_meta =[];
 
@@ -504,7 +503,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        self::adjust_post_custom_fields( $post_type, $post_id, $fields, [], NULL, $all_post_user_meta[$post_id] ?? null );
+        self::adjust_post_custom_fields( $post_type, $post_id, $fields, [], null, $all_post_user_meta[$post_id] ?? null );
         $fields["name"] = wp_specialchars_decode( $wp_post->post_title );
         $fields["title"] = wp_specialchars_decode( $wp_post->post_title );
 
@@ -588,7 +587,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             AND user_id = %s
             AND um.meta_key IN ( $field_keys_sql )
         ", $user_id ), ARRAY_A);
-        // phpcs:disable
+        // phpcs:enable
 
         foreach ( $all_post_meta as $index => $meta_row ) {
             if ( !isset( $all_posts[$meta_row["post_id"]] ) ) {
@@ -667,7 +666,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $send_quick_results = false;
         if ( empty( $search_string ) ){
-            $field_settings = DT_Posts::get_post_field_settings( $post_type );
+            $field_settings = self::get_post_field_settings( $post_type );
             //find the most recent posts viewed by the user from the activity log
             $posts = $wpdb->get_results( $wpdb->prepare( "
                 SELECT *
@@ -715,7 +714,9 @@ class DT_Posts extends Disciple_Tools_Posts {
 
                 ", $current_user->ID, $action, $post_type, $field_settings[$args["field_key"]]["p2p_key"], $field_type, $post_type ), OBJECT );
 
-                $post_ids = array_map( function( $post ) { return (int) $post->ID; }, $posts );
+                $post_ids = array_map(
+                    function( $post ) { return (int) $post->ID; }, $posts
+                );
                 foreach ( $posts_2 as $p ){
                     if ( !in_array( (int) $p->ID, $post_ids, true ) ){
                         $posts[] = $p;
@@ -757,7 +758,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $compact[] = [
                 "ID" => $post->ID,
-                "name" => wp_specialchars_decode ( $post->post_title )
+                "name" => wp_specialchars_decode( $post->post_title )
             ];
         }
 
@@ -789,6 +790,9 @@ class DT_Posts extends Disciple_Tools_Posts {
         //set user field if the contact is a user.
         if ( $post_type === "contacts" ){
             $post_ids_sql = dt_array_to_sql( $post_ids );
+
+            // phpcs:disable
+            // WordPress.WP.PreparedSQL.NotPrepared
             $user_post_ids = $wpdb->get_results( "
                 SELECT post_id, meta_value
                 FROM $wpdb->postmeta pm
@@ -796,8 +800,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                 AND meta_key = 'corresponds_to_user'
                 ", ARRAY_A
             );
-            foreach( $user_post_ids as $res ){
-                foreach( $compact as $index => &$p ){
+            // phpcs:enable
+
+            foreach ( $user_post_ids as $res ){
+                foreach ( $compact as $index => &$p ){
                     if ( $p["ID"] === $res["post_id"] ){
                         $compact[$index]['user'] = true;
                     }
@@ -832,7 +838,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 } else {
                     $label = $post->post_title;
                 }
-                foreach( $compact as $index => &$p ){
+                foreach ( $compact as $index => &$p ){
                     if ( $compact[$index]["ID"] === $post->ID ) {
                         $compact[$index] = [
                             "ID" => $post->ID,
@@ -879,7 +885,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $comments as $comment ){
             $comment_data = [
                 'comment_post_ID'      => $post_id,
-                'comment_content'      => wp_kses($comment, self::$allowable_comment_tags),
+                'comment_content'      => wp_kses( $comment, self::$allowable_comment_tags ),
                 'user_id'              => $user_id,
                 'comment_author'       => $args["comment_author"] ?? $user->display_name,
                 'comment_author_url'   => $args["comment_author_url"] ?? "",
@@ -939,22 +945,21 @@ class DT_Posts extends Disciple_Tools_Posts {
         return wp_delete_comment( $comment_id );
     }
 
-    public static function toggle_post_comment_reaction( string $post_type, int $post_id, int $comment_id, int $user_id, string $reaction)
-    {
+    public static function toggle_post_comment_reaction( string $post_type, int $post_id, int $comment_id, int $user_id, string $reaction ){
         if ( !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         // If the reaction exists for this user, then delete it
-        $reactions = get_comment_meta($comment_id, $reaction);
+        $reactions = get_comment_meta( $comment_id, $reaction );
         foreach ($reactions as $reaction_user_id) {
             if ($reaction_user_id == $user_id) {
-                delete_comment_meta($comment_id, $reaction, $reaction_user_id);
+                delete_comment_meta( $comment_id, $reaction, $reaction_user_id );
                 return true;
             }
         }
 
         // otherwise add it.
-        add_comment_meta($comment_id, $reaction, $user_id);
+        add_comment_meta( $comment_id, $reaction, $user_id );
         return $reactions;
     }
 
@@ -987,6 +992,8 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         // add in getting the meta data for the comments JOINed with the user table to get
         // the username
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
         $comments_meta = $wpdb->get_results( $wpdb->prepare(
             "SELECT
                 m.comment_id, m.meta_key, u.display_name, u.ID
@@ -1003,13 +1010,14 @@ class DT_Posts extends Disciple_Tools_Posts {
                 AND m.meta_key LIKE 'reaction%'",
             $post_id
         ) );
+        // phpcs:enable
 
         $comments_meta_dict = [];
         foreach ($comments_meta as $meta) {
-            if (!array_key_exists($meta->comment_id, $comments_meta_dict)) {
+            if ( !array_key_exists( $meta->comment_id, $comments_meta_dict ) ) {
                 $comments_meta_dict[$meta->comment_id] = [];
             }
-            if (!array_key_exists($meta->meta_key, $comments_meta_dict[$meta->comment_id])) {
+            if ( !array_key_exists( $meta->meta_key, $comments_meta_dict[$meta->comment_id] ) ) {
                 $comments_meta_dict[$meta->comment_id][$meta->meta_key] = [];
             }
             $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
@@ -1036,7 +1044,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "user_id" => $comment->user_id,
                 "comment_type" => $comment->comment_type,
                 "comment_post_ID" => $comment->comment_post_ID,
-                "comment_reactions" => array_key_exists($comment->comment_ID, $comments_meta_dict) ? $comments_meta_dict[$comment->comment_ID] :  [],
+                "comment_reactions" => array_key_exists( $comment->comment_ID, $comments_meta_dict ) ? $comments_meta_dict[$comment->comment_ID] : [],
             ];
             $response_body[] = $c;
         }
@@ -1044,7 +1052,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $response_body = apply_filters( "dt_filter_post_comments", $response_body, $post_type, $post_id );
 
         foreach ( $response_body as &$comment ){
-            $comment["comment_content"] = wp_kses( $comment["comment_content"], self::$allowable_comment_tags);
+            $comment["comment_content"] = wp_kses( $comment["comment_content"], self::$allowable_comment_tags );
         }
 
         return [
