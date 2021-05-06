@@ -175,6 +175,18 @@ class DT_Posts extends Disciple_Tools_Posts {
                     return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
             }
+            if ( $field_type === 'boolean' && $is_private ) {
+                $post_user_meta[$field_key] = $field_value;
+                unset( $fields[ $field_key ] );
+            }
+            if ( $field_type === 'text' && $is_private ) {
+                $post_user_meta[$field_key] = $field_value;
+                unset( $fields[ $field_key ] );
+            }
+            if ( $field_type === 'textarea' && $is_private ) {
+                $post_user_meta[$field_key] = $field_value;
+                unset( $fields[ $field_key ] );
+            }
         }
         /**
          * Create the post
