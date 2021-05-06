@@ -1523,7 +1523,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                   let update = send_update({key: field, value: value, grid_id: grid_id})
 
                   update.done(function (data) {
-                    let new_value = current.selected_name
                     jQuery('.location-name-title').html(value)
                     jQuery('button.geocode-link').not('.hollow')[0].innerHTML = value
                     jQuery('#update-location-spinner').hide()
