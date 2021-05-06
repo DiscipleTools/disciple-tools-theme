@@ -23,7 +23,7 @@ let rebuild_drill_down = ( response, bindFunction, grid_id )=>{
             let disabled = !response[i+2]
 
             // create button
-            html += `<li><button id="${window.lodash.escape( section.parent )}" type="button" ${disabled ? "disabled" : ""}
+            html += `<li><button id="${window.lodash.escape( section.parent )}" data-grid_id="${window.lodash.escape( section.selected )}" type="button" ${disabled ? "disabled" : ""}
                 onclick="DRILLDOWN.get_drill_down( '${window.lodash.escape( bindFunction )}', '${window.lodash.escape( section.selected )}', false )"
                 class="button ${hollowClass} geocode-link">${window.lodash.escape( section.selected_name )}</button></li>`
 

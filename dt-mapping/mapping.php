@@ -443,6 +443,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function delete_sublocation( WP_REST_Request $request ) {
+            if ( ! $this->permissions ) {
+                return new WP_Error( 'permissions', 'No permissions for the action.', [ 'status' => 401 ] );
+            }
 
             $params = $request->get_params();
             $grid_id = $params['grid_id'];
@@ -464,6 +467,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             if ( ! $response_del ) {
                 return new WP_Error( __METHOD__, 'Error deleting custom sublocation.', [ 'status' => 400 ] );
+            } else {
+                return 'Deleted successfully.';
             }
         }
 

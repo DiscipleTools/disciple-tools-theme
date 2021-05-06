@@ -1486,10 +1486,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     jQuery(".delete-button").on("click", function () {
                         jQuery('#update-location-spinner').show()
                         let grid_id = jQuery( this ).data( 'grid_id' ).toString();
-                        let current_id = jQuery( '.geocode-select' )[0].id
+                        let current_id = jQuery('button.geocode-link').not('.hollow').data('grid_id')
                         let del_sublocation = delete_sublocation( grid_id );
-                        jQuery('#update-location-spinner').hide();
-                        DRILLDOWN.get_drill_down( 'location_grids', current_id, false );
+                        del_sublocation.done( function ( data ) {
+                            DRILLDOWN.get_drill_down( 'location_grids', current_id, false );
+                            jQuery('#update-location-spinner').hide();
+                        }).fail( () => {
+                            console.log('something failed.');
+                            jQuery('#update-location-spinner').hide();
+                        })
                     });
 
                     jQuery('.location-name-title').html(selection.selected_name)
@@ -1526,6 +1531,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     jQuery('#update-location-spinner').hide()
                   })
                 })
+
                 jQuery(".reset-button").on("click", function () {
                   jQuery('#update-location-spinner').show()
                   let field = jQuery(this).data('field')
@@ -1546,6 +1552,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                   let gnid = jQuery(this).data('grid_id')
                   DRILLDOWN.get_drill_down( 'location_grids', gnid, false );
                 })
+
                 jQuery('#save-sub-location-button').on('click', function () {
                     jQuery('#new-location-spinner').show()
                     let data = {}
