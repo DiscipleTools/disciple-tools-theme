@@ -65,7 +65,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
      * @param $tab
      */
     public function content( $tab ) {
-        if ( 'custom-fields' == $tab ) :
+        global $wp_post_types;
+
+        if ( $tab == 'custom-fields' ) :
             $show_add_field = false;
             $field_key = false;
             if ( isset( $_POST['field_key'] ) ){
@@ -73,6 +75,28 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
             $post_type = isset( $_POST['post_type'] ) ? sanitize_text_field( wp_unslash( $_POST["post_type"] ) ) : null;
             $this->template( 'begin', 1 );
+
+            $this->box( 'top', __( 'Edit Fields', 'disciple_tools' ) );
+            $this->post_type_select( $post_type );
+            $this->box( 'bottom' );
+
+            /**
+             * Post Type Select
+             */
+            if ( isset( $_POST['post_type_select_nonce'] ) ){
+                if ( !wp_verify_nonce( sanitize_key( $_POST['post_type_select_nonce'] ), 'post_type_select' ) ) {
+                    return;
+                }
+                if ( isset( $_POST["post_type"] ) ){
+                    $post_type = sanitize_key( $_POST["post_type"] );
+                }
+            
+            $this->box( 'top', __( 'Add new fields or modify existing ones on ', 'disciple_tools' ) . $wp_post_types[$post_type]->label );
+            $this->field_select();
+            $this->box( 'bottom' );
+
+            }
+
 
             if ( !empty( $_GET["field-select"] ) ){
                 $field = explode( "_", sanitize_text_field( wp_unslash( $_GET["field-select"] ) ), 2 );
@@ -122,12 +146,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
                 $this->process_edit_field( $post_submission );
             }
-
-            $this->box( 'top', __( 'Add new fields or modify existing ones on Contacts or Groups', 'disciple_tools' ) );
-            $this->field_select();
-            $this->box( 'bottom' );
-
-
             if ( empty( $field_key ) && $show_add_field ){
                 $this->box( 'top', __( "Create new field", 'disciple_tools' ) );
                 $this->add_field();
@@ -145,11 +163,35 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         endif;
     }
 
+    private function post_type_select( $selected_post_type ) {
+        global $wp_post_types;
+        $post_types = DT_Posts::get_post_types();
+        ?>
+        <form method="post">
+            <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
+            <table>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label for="tile-select"><?php esc_html_e( "For what post type?", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <?php foreach ( $post_types as $post_type ) : ?>
+                            <button type="submit" name="post_type" class="button <?php echo esc_html( $selected_post_type === $post_type ? 'button-primary' : '' ); ?>" value="<?php echo esc_html( $post_type ); ?>">
+                                <?php echo esc_html( $wp_post_types[$post_type]->label ); ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </td>
+                </tr>
+            </table>
+            <br>
+        </form>
+        <?php
+    }
+
     private function field_select(){
         global $wp_post_types;
         $select_options = [];
-        $post_types = DT_Posts::get_post_types();
-        foreach ( $post_types as $post_type ){
+        $post_type = isset( $_POST['post_type'] ) ? sanitize_text_field( wp_unslash( $_POST["post_type"] ) ) : null;
             $select_options[$post_type] = [];
             $fields = $this->get_post_fields( $post_type );
             uasort($fields, function( $a, $b) {
@@ -162,7 +204,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     }
                 }
             }
-        }
 
         ?>
         <form method="get">
@@ -177,7 +218,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                         <select id="field-select" name="field-select">
                             <option></option>
-                            <?php foreach ( $post_types as $post_type ) : ?>
                                 <option disabled>---<?php echo esc_html( $wp_post_types[$post_type]->label ); ?> Fields---</option>
                                 <?php foreach ( $select_options[$post_type] as $option_key => $option_value ) : ?>
 
@@ -186,7 +226,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <span> - (<?php echo esc_html( $option_key ) ?>)</span>
                                 </option>
                                 <?php endforeach; ?>
-                            <?php endforeach; ?>
                         </select>
                         <button type="submit" class="button" name="field_selected"><?php esc_html_e( "Select", 'disciple_tools' ) ?></button>
                     </td>
