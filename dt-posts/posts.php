@@ -2185,6 +2185,7 @@ class Disciple_Tools_Posts
                         $fields[$m["meta_key"]]['formatted'] = $formatted_date;
 
                     } else if ( $field_settings[$m['meta_key']]['type'] === 'boolean' ){
+
                         if ( $m["meta_value"] === "1" || $m["meta_value"] === "yes" || $m["meta_value"] === "true" ){
                             $m["meta_value"] = true;
                         } elseif ( $m["meta_value"] === "0" || $m["meta_value"] === "no" || $m["meta_value"] === "false" || $m["meta_value"] === false ){
