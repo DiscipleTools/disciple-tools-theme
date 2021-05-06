@@ -1517,12 +1517,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 jQuery(".update-button").on("click", function () {
                   jQuery('#update-location-spinner').show()
                   let field = jQuery(this).data('field')
-                  let value = current.selected_name
+                  let value = jQuery(`#location-${field}`).val()
                   //udate location
                   let grid_id = current.selected
                   let update = send_update({key: field, value: value, grid_id: grid_id})
 
                   update.done(function (data) {
+                    let new_value = current.selected_name
                     jQuery('.location-name-title').html(value)
                     jQuery('button.geocode-link').not('.hollow')[0].innerHTML = value
                     jQuery('#update-location-spinner').hide()
