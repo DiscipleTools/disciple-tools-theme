@@ -191,6 +191,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $post_user_meta[$field_key] = $field_value;
                 unset( $fields[ $field_key ] );
             }
+            if ( $is_private ) {
+                unset( $fields[ $field_key ] );
+            }
         }
         /**
          * Create the post
