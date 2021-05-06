@@ -139,7 +139,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
 
         $result = DT_Posts::get_post( "contacts", $result["ID"], true, true );
-        //Second user should not see values set by first user
+        //Second user should not see private values in the contact created by the first user
         $this->assertSame( $result["title"], $create_values['title'] );
         $this->assertSame( $result["text_test"], $create_values['text_test'] );
         $this->assertArrayNotHasKey( "text_test_private", $result );
@@ -159,6 +159,22 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertSame( $result["tags_test"][0], $create_values['tags_test']["values"][0]["value"] );
         $this->assertArrayNotHasKey( "tags_test_private", $result );
         $this->assertSame( (int) $result["number_test"], (int) $create_values['number_test'] ); //@todo returned value should be an int
-        $this->assertNotSame( (int) $result["number_test_private"], (int) $create_values['number_test_private'] ); //@todo returned value should be an int
+        $this->assertArrayNotHasKey( "number_test_private", $result );
+
+        //Second user should not see private values in the contact updated by the first user
+        $contact2 = DT_Posts::create_post( "contacts", [ "title" => "empty" ], true, true );
+        DT_Posts::add_shared( "contacts", $contact2["ID"], $user_id, null, false, false );
+        wp_set_current_user( $user_id );
+        $res = DT_Posts::update_post( "contacts", $contact2["ID"], $create_values );
+        wp_set_current_user( $second_id );
+        $contact2 = DT_Posts::get_post( "contacts", $contact2["ID"], false, true );
+        $this->assertSame( $contact2["title"], $create_values['title'] );
+        $this->assertArrayNotHasKey( "text_test_private", $contact2 );
+        $this->assertArrayNotHasKey( "date_test_private", $contact2 );
+        $this->assertArrayNotHasKey( "boolean_test_private", $contact2 );
+        $this->assertArrayNotHasKey( "multi_select_test_private", $contact2 );
+        $this->assertArrayNotHasKey( "key_select_test_private", $contact2 );
+        $this->assertArrayNotHasKey( "tags_test_private", $contact2 );
+        $this->assertArrayNotHasKey( "number_test_private", $contact2 );
     }
 }
