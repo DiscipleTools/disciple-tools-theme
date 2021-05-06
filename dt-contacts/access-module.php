@@ -330,6 +330,17 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "in_create_form" => [ "access" ]
             ];
 
+            $fields['campaigns'] = [
+                'name' => __( 'Campaigns', 'disciple_tools' ),
+                'description' => _x( 'Marketing campaigns or access activities that this contact interacted with.', 'Optional Documentation', 'disciple_tools' ),
+                'tile' => 'details',
+                'type'        => 'tags',
+                'default'     => [],
+                'icon' => get_template_directory_uri() . "/dt-assets/images/megaphone.svg",
+                'only_for_types' => [ 'access' ],
+                'in_create_form' => [ 'access' ]
+            ];
+
             if ( empty( $fields["contact_phone"]['in_create_form'] ) ){
                 $fields["contact_phone"]['in_create_form'] = [ 'access' ];
             } elseif ( is_array( $fields["contact_phone"]['in_create_form'] ) ){

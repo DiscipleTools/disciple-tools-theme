@@ -942,6 +942,11 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 if ( $admin5_name ) {
                     $label = $admin5_name . ', ' . $admin1_name . ', ' . $admin0_name;
                 }
+                //make sure custom locations are included in the label
+                if ( isset( $row["is_custom_location"] ) && !empty( $row["is_custom_location"] ) ){
+                    $name = ( isset( $row["alt_name"] ) && !empty( $row["alt_name"] ) ) ? $row["alt_name"] : ( $row["name"] ?? '' );
+                    $label = $name . ', ' . $label;
+                }
             }
 
             return $label;
