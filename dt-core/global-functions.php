@@ -349,6 +349,22 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         return $merged;
     }
 
+    function dt_field_enabled_for_record_type( $field, $post ){
+        if ( !isset( $post["type"]["key"] ) ){
+            return true;
+        }
+        // if only_for_type is not set, then the field is available on all types
+        if ( !isset( $field["only_for_types"] ) ){
+            return true;
+        } else if ( $field["only_for_types"] === true ){
+            return true;
+        } else if ( is_array( $field["only_for_types"] ) && in_array( $post["type"]["key"], $field["only_for_types"], true ) ){
+            //if the type is in the "only_for_types"
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags, user_select
      *
@@ -367,8 +383,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
-            $enabled_for_type = !isset( $fields[$field_key]["only_for_types"] ) || empty( $fields[$field_key]["only_for_types"] ) || ( isset( $post["type"]["key"] ) && in_array( $post["type"]["key"], $fields[$field_key]["only_for_types"] ) );
-            if ( !$enabled_for_type ){
+            if ( !dt_field_enabled_for_record_type( $fields[$field_key], $post ) ){
                 return;
             }
 

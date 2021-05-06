@@ -397,7 +397,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             && empty( $contact_fields[$field_key]["hidden"] )
             ){
             $contact = $post;
-            if ( !isset( $contact["type"]["key"] ) || $contact["type"]["key"] !== "access" ){
+            if ( !dt_field_enabled_for_record_type( $contact_fields[$field_key], $post ) ){
                 return;
             }
             $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
@@ -538,37 +538,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?php
-        }
-
-        if ( isset( $post["post_type"] ) && $post["post_type"] === "contacts" && $field_key === "assigned_to"
-            && isset( $contact_fields[$field_key] ) && !empty( $contact_fields[$field_key]["custom_display"] )
-            && empty( $contact_fields[$field_key]["hidden"] )
-        ){
-            $contact = $post;
-            if ( !isset( $contact["type"]["key"] ) || $contact["type"]["key"] !== "access" ){
-                return;
-            }
-            $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
-            ?>
-                <div class="section-subheader">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                    <?php echo esc_html( $contact_fields["assigned_to"]["name"] )?>
-                    <button class="help-button" data-section="assigned-to-help-text">
-                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                    </button>
-                </div>
-
-
-                <p>
-                    <span id="reason_assigned_to">
-                        <?php if ( isset( $contact["reason_assigned_to"]["label"] ) ) : ?>
-                            (<?php echo esc_html( $contact["reason_assigned_to"]["label"] ); ?>)
-                        <?php endif; ?>
-                    </span>
-                </p>
-
-
             <?php
         }
 

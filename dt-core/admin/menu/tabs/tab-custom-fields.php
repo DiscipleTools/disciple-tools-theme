@@ -533,9 +533,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <h3><?php echo esc_html( sprintf( __( 'Visible on %s records', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?></h3>
 
             <p><?php echo esc_html( sprintf( __( 'This field will show up on %s records of type:', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?></p>
-            <?php foreach ( $post_fields["type"]["default"] as $type_key => $type ) : ?>
+            <?php foreach ( $post_fields["type"]["default"] as $type_key => $type ) :
+                $checked = isset( $field["only_for_types"] ) && !empty( $field["only_for_types"] ) && ( $field["only_for_types"] === true || in_array( $type_key, $field["only_for_types"], true ) )
+                ?>
                 <label style="margin-right:10px">
-                    <input type="checkbox" name="field_type[]" value="<?php echo esc_html( $type_key ); ?>" <?php checked( empty( $field["only_for_types"] ) || in_array( $type_key, $field["only_for_types"], true ) ) ?>>
+                    <input type="checkbox" name="field_type[]" value="<?php echo esc_html( $type_key ); ?>" <?php checked( $checked ) ?>>
                     <?php echo esc_html( $type["label"] ); ?>
                 </label>
             <?php endforeach; ?>
@@ -579,7 +581,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $post_submission["save_types"], $post_submission["field_type"] ) ){
             $types = $post_fields["type"]["default"];
             if ( sizeof( $post_submission["field_type"] ) === sizeof( $types ) ){
-                $field_customizations[$post_type][$field_key]["only_for_types"] = [];
+                $field_customizations[$post_type][$field_key]["only_for_types"] = true;
             } else {
                 $field_customizations[$post_type][$field_key]["only_for_types"] = $post_submission["field_type"];
             }
