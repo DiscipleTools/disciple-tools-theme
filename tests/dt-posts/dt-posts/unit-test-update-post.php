@@ -45,7 +45,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertSame( (int) $result["number_test"], (int) $update_values['number_test'] ); //@todo returned value should be an int
         $this->assertSame( $result["text_test"], $update_values['text_test'] );
         $this->assertSame( $result["contact_communication_channel_test"][0]["value"], $update_values['contact_communication_channel_test']["values"][0]["value"] );
-        $this->assertSame( $result["user_select_test"], $update_values['user_select_test']["id"] );
+        $this->assertSame( $result["user_select_test"]["id"], $update_values['user_select_test'] );
         $this->assertSame( $result["array_test"], $update_values['array_test'] );
         $this->assertSame( (int) $result["location_test"][0]["id"], (int) $update_values['location_test']["values"][0]["value"] ); //@todo returned value should be an int
         $this->assertSame( (int) $result["date_test"]["timestamp"], strtotime( $update_values['date_test'] ) ); //@todo returned value should be an int
