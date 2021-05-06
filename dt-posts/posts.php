@@ -1923,7 +1923,7 @@ class Disciple_Tools_Posts
                         "key" => $value[0],
                         "label" => $label
                     ];
-                } elseif ( $key === "assigned_to" ) {
+                } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'user_select' ) {
                     if ( $value ) {
                         $meta_array = explode( '-', $value[0] ); // Separate the type and id
                         $type = $meta_array[0]; // Build variables

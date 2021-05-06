@@ -608,6 +608,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" dir="auto"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                                           data-field_type="user_select"
+                                           data-field="<?php echo esc_html( $field_key ); ?>"
                                            autocomplete="off">
                                 </span>
                                 <span class="typeahead__button">
