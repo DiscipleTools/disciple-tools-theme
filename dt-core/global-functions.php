@@ -367,10 +367,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
-            if ( isset( $post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
-                if ( !in_array( $post['type']["key"], $fields[$field_key]["only_for_types"] ) ){
-                    return;
-                }
+            $enabled_for_type = !isset( $fields[$field_key]["only_for_types"] ) || empty( $fields[$field_key]["only_for_types"] ) || ( isset( $post["type"]["key"] ) && in_array( $post["type"]["key"], $fields[$field_key]["only_for_types"] ) );
+            if ( !$enabled_for_type ){
+                return;
             }
 
             $display_field_id = $field_key;
