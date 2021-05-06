@@ -17,6 +17,13 @@ add_filter( 'dt_custom_fields_settings', function( $fields, $post_type ){
         'default'     => 0,
         'tile'      => 'a_beautiful_tile',
     ];
+    $fields['number_test_private'] = [
+        'name'        => __( 'Number field private', 'disciple_tools' ),
+        'type'        => 'number',
+        'default'     => 0,
+        'tile'        => 'a_beautiful_tile',
+        'private'     => true
+    ];
     $fields['text_test'] = [
         'name'        => __( 'Text', 'disciple_tools' ),
         'type'        => 'text',
@@ -156,6 +163,7 @@ function dt_test_get_sample_record_fields(){
     return [
         'title' => 'Custom Record',
         'number_test' => 101,
+        'number_test_private' => 102,
         'text_test' => "Some Random Text",
         'text_test_private' => "Some Random Private Text",
         'contact_communication_channel_test' => [ "values" => [ [ "value" => "haha, you would love to contact me" ] ] ],

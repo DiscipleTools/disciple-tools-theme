@@ -61,6 +61,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         //setting values on each field type
         $this->assertSame( $result["title"], $create_values['title'] );
         $this->assertSame( (int) $result["number_test"], (int) $create_values['number_test'] ); //@todo returned value should be an int
+        $this->assertSame( (int) $result["number_test_private"], (int) $create_values['number_test_private'] ); //@todo returned value should be an int
         $this->assertSame( $result["text_test"], $create_values['text_test'] );
         $this->assertSame( $result["text_test_private"], $create_values['text_test_private'] );
         $this->assertSame( $result["contact_communication_channel_test"][0]["value"], $create_values['contact_communication_channel_test']["values"][0]["value"] );
