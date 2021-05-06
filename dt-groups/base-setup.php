@@ -290,7 +290,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
             $fields["member_count"] = [
                 'name' => __( 'Member Count', 'disciple_tools' ),
-                'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group.', 'Optional Documentation', 'disciple_tools' ),
+                'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',
@@ -317,7 +317,6 @@ class DT_Groups_Base extends DT_Module_Base {
             ];
             $fields["leader_count"] = [
                 'name' => __( 'Leader Count', 'disciple_tools' ),
-                'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the training.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',

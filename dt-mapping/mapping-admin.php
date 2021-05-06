@@ -1564,11 +1564,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                       jQuery('#new-location-spinner').hide()
                     })
                 })
-
-                jQuery('#delete-sub-location-button').on('click', function () {
-                    jQuery('#delete-location-spinner').show()
-                })
-
                 window.DRILLDOWN.get_drill_down('location_grids', false )
             </script>
 
