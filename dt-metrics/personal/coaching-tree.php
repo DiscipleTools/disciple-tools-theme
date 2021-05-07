@@ -55,7 +55,7 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
     public function data() {
         return [
             'translations' => [
-                'title_coaching_tree' => __( 'Coaching Generation Tree', 'disciple_tools' ),
+                'title_coaching_tree' => __( 'My Coaching Generation Tree', 'disciple_tools' ),
             ],
         ];
     }

@@ -79,7 +79,7 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
     public function data() {
         return [
             'translations' => [
-                'title_group_tree' => __( 'Group Generation Tree', 'disciple_tools' ),
+                'title_group_tree' => __( 'My Group Generation Tree', 'disciple_tools' ),
                 'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
                 'highlight_churches' => __( 'Highlight Churches', 'disciple_tools' ),
                 'members' => __( 'Members', 'disciple_tools' ),
@@ -178,5 +178,3 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
 
 }
 new DT_Metrics_Personal_Groups_Tree();
-
-
