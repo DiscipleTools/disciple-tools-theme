@@ -426,14 +426,22 @@ class Disciple_Tools_Posts
                         if ( !$label || $label === '' ) {
                             $label = $activity->object_note;
                         }
-                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $label ?? $activity->old_value );
+                        if ( strpos( $label, 'Locations or Address' ) !== false ) {
+                            $message = __( 'location removed', 'disciple_tools' );
+                        } else {
+                            $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $label ?? $activity->old_value );
+                        }
                     } else {
                         $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->meta_value );
                         // if the meta address has been deleted, then get the address from the object note
                         if ( !$label || $label === '' ) {
                             $label = $activity->object_note;
                         }
-                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? $activity->old_value );
+                        if ( strpos( $label, 'Locations or Address' ) !== false ) {
+                            $message = __( 'location added', 'disciple_tools' );
+                        } else {
+                            $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? $activity->old_value );
+                        }
                     }
                 }
             } else {
