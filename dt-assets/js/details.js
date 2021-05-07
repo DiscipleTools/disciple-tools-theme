@@ -10,6 +10,13 @@ jQuery(document).ready(function($) {
 
   window.masonGrid = $('.grid') // responsible for resizing and moving the tiles
 
+  const detailsBarCreatedOnElements = document.querySelectorAll('.details-bar-created-on')
+  detailsBarCreatedOnElements.forEach((element) => {
+    const postDate = post.post_date.timestamp
+    const formattedDate = window.SHAREDFUNCTIONS.formatDate(postDate)
+    element.innerHTML = window.detailsSettings.translations.created_on.replace('%s', formattedDate)
+  })
+
   $('input.text-input').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
