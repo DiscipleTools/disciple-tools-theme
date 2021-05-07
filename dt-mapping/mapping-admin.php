@@ -1539,12 +1539,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                   let update = send_update({key: field, reset: true, grid_id: grid_id})
 
                   update.done(function (data) {
-                    DRILLDOWN.get_drill_down( 'location_grids', current.selected, false );
-                    let value = current.selected_name
-                    jQuery('.location-name-title').html(value)
-                    jQuery('button.geocode-link').not('.hollow')[0].innerHTML = value
                     jQuery('#update-location-spinner').hide()
                     if (data) {
+                    let value = data.value
+                    jQuery('.location-name-title').html(value)
+                    jQuery("button[id='world']")[1].innerHTML = value
                       jQuery(`#location-${field}`).val(data.value)
                     }
                   }).fail(()=>{

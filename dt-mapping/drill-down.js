@@ -1,5 +1,5 @@
 "use strict";
-let rebuild_drill_down = ( response, bindFunction, grid_id )=>{
+let rebuild_drill_down = ( response, bindFunction, grid_id, cached = true )=>{
     let drill_down = jQuery('#'+bindFunction)
 
     let final_list = [];
@@ -23,8 +23,8 @@ let rebuild_drill_down = ( response, bindFunction, grid_id )=>{
             let disabled = !response[i+2]
 
             // create button
-            html += `<li><button id="${window.lodash.escape( section.parent )}" data-grid_id="${window.lodash.escape( section.selected )}" type="button" ${disabled ? "disabled" : ""}
-                onclick="DRILLDOWN.get_drill_down( '${window.lodash.escape( bindFunction )}', '${window.lodash.escape( section.selected )}', false )"
+            html += `<li><button id="${window.lodash.escape( section.parent )}" type="button" ${disabled ? "disabled" : ""}
+                onclick="DRILLDOWN.get_drill_down( '${window.lodash.escape( bindFunction )}', '${window.lodash.escape( section.selected )}', ${cached} )"
                 class="button ${hollowClass} geocode-link">${window.lodash.escape( section.selected_name )}</button></li>`
 
             current_selection = section
@@ -92,7 +92,7 @@ window.DRILLDOWN = {
         let rest = window.drilldownModule.settings.endpoints.get_drilldown_endpoint
         
         if ( cached && window.drilldownModule.drilldown && window.drilldownModule.drilldown[grid_id] ){
-            rebuild_drill_down( window.drilldownModule.drilldown[grid_id], bindFunction, grid_id )
+            rebuild_drill_down( window.drilldownModule.drilldown[grid_id], bindFunction, grid_id, cached )
         } else {
             return jQuery.ajax({
                 type: rest.method,
@@ -106,7 +106,7 @@ window.DRILLDOWN = {
             })
             .then( function( response ) {
                 window.drilldownModule.drilldown[grid_id] = response
-                rebuild_drill_down( response, bindFunction, grid_id )
+                rebuild_drill_down( response, bindFunction, grid_id, cached )
                 
     
             }) // end success statement
