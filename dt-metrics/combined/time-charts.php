@@ -39,7 +39,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return;
         }
 
-        $this->title = __( 'Time Charts', 'disciple_tools' );
+        $this->title = __( 'Fields over Time Charts', 'disciple_tools' );
         $this->base_title = __( 'Project', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
@@ -103,9 +103,9 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 ],
                 'data'               => [],
                 'translations'       => [
-                    "title_time_charts" => __( 'Time Charts', 'disciple_tools' ),
+                    "title_time_charts" => __( 'Fields over Time Charts', 'disciple_tools' ),
                     "post_type_select_label" => __( 'Post Type', 'disciple_tools' ),
-                    "post_field_select_label" => __( 'Post Field', 'disciple_tools' ),
+                    "post_field_select_label" => __( 'Field', 'disciple_tools' ),
                     "total_label" => __( 'Total', 'disciple_tools' ),
                     "added_label" => __( 'Added', 'disciple_tools' ),
                     "tooltip_label" => _x( '%1$s in %2$s', 'Total in January', 'disciple_tools' ),
