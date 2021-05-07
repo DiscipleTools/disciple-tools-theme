@@ -1086,7 +1086,8 @@
       `)
     },
     changeMonth: true,
-    changeYear: true
+    changeYear: true,
+    yearRange: "-20:+10",
   })
 
   $('#filter-modal .clear-date-picker').on('click', function () {
