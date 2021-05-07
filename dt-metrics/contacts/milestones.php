@@ -79,6 +79,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'milestones_endpoint' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );

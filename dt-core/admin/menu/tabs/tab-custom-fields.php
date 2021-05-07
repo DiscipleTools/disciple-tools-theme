@@ -225,14 +225,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             return;
         }
 
-        if ( in_array( $field_key, $core_fields ) ){
-            ?>
-            <p>
-                <strong>This is a core field. <a href="<?php echo esc_url( admin_url() ) ?>edit.php?page=dt_options&tab=custom-lists#<?php echo esc_attr( $field_key ) ?>"  class="">Go to Custom Lists page to edit.</a></strong>
-            </p>
-            <?php
-            return;
-        }
 
         $defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
 
@@ -365,7 +357,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         <br>
 
             <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
-                ?>
+                if ( in_array( $field_key, $core_fields ) ){
+                    ?>
+                    <p>
+                        <strong>This is a core field. <a href="<?php echo esc_url( admin_url() ) ?>edit.php?page=dt_options&tab=custom-lists#<?php echo esc_attr( $field_key ) ?>"  class="">Go to Custom Lists page to edit options.</a></strong>
+                    </p>
+                    <?php
+                    return;
+                } ?>
 
                 <h3><?php esc_html_e( "Field Options", 'disciple_tools' ) ?></h3>
                 <table id="add_option" style="">
@@ -722,7 +721,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option></option>
                             <option value="key_select"><?php esc_html_e( "Dropdown", 'disciple_tools' ) ?></option>
                             <option value="multi_select"><?php esc_html_e( "Multi Select", 'disciple_tools' ) ?></option>
+                            <option value="tags"><?php esc_html_e( "Tags", 'disciple_tools' ) ?></option>
                             <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
+                            <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
                             <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
                         </select>
                     </td>
@@ -759,7 +760,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         <ul style="list-style: disc; padding-left:40px">
             <li><?php esc_html_e( "Dropdown: Select an option for a dropdown list", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Multi Select: A field like the milestones to track items like course progress", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Tags: A field allowing entry of any custom tags or values", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Text: This is just a normal text field", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Text Area: This is just a multi-line text area", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Date: A field that uses a date picker to choose dates (like baptism date)", 'disciple_tools' ) ?></li>
         </ul>
         <?php
@@ -796,6 +799,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'tile' => $field_tile,
                     'customizable' => 'all'
                 ];
+            } elseif ( $field_type === "tags" ){
+                $new_field = [
+                    'name' => $post_submission["new_field_name"],
+                    'default' => [],
+                    'type' => 'tags',
+                    'tile' => $field_tile,
+                    'customizable' => 'all'
+                ];
             } elseif ( $field_type === "date" ){
                 $new_field = [
                     'name'        => $post_submission["new_field_name"],
@@ -808,6 +819,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $new_field = [
                     'name'        => $post_submission["new_field_name"],
                     'type'        => 'text',
+                    'default'     => '',
+                    'tile'     => $field_tile,
+                    'customizable' => 'all'
+                ];
+            } elseif ( $field_type === "textarea" ){
+                $new_field = [
+                    'name'        => $post_submission["new_field_name"],
+                    'type'        => 'textarea',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all'

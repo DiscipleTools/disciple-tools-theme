@@ -29,6 +29,7 @@ class Disciple_Tools_Users_Endpoints
             $this->namespace, '/users/get_users', [
                 'methods'  => 'GET',
                 'callback' => [ $this, 'get_users' ],
+                'permission_callback' => '__return_true',
             ]
         );
 
@@ -36,79 +37,92 @@ class Disciple_Tools_Users_Endpoints
             $this->namespace, '/users/switch_preference', [
                 'methods'  => WP_REST_Server::CREATABLE,
                 'callback' => [ $this, 'switch_preference' ],
+                'permission_callback' => '__return_true',
             ]
         );
 
         register_rest_route(
             $this->namespace, '/users/get_filters', [
                 'methods' => "GET",
-                'callback' => [ $this, 'get_user_filters' ]
+                'callback' => [ $this, 'get_user_filters' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/users/save_filters', [
                 'methods' => "POST",
-                'callback' => [ $this, 'save_user_filter' ]
+                'callback' => [ $this, 'save_user_filter' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/users/save_filters', [
                 'methods' => "DELETE",
-                'callback' => [ $this, 'delete_user_filter' ]
+                'callback' => [ $this, 'delete_user_filter' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/users/change_password', [
                 'methods' => "POST",
-                'callback' => [ $this, 'change_password' ]
+                'callback' => [ $this, 'change_password' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/users/disable_product_tour', [
                 'methods' => "GET",
-                'callback' => [ $this, 'disable_product_tour' ]
+                'callback' => [ $this, 'disable_product_tour' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/users/create', [
                 'methods' => "POST",
-                'callback' => [ $this, 'create_user' ]
+                'callback' => [ $this, 'create_user' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/users/contact-id', [
                 'methods' => "GET",
-                'callback' => [ $this, 'get_user_contact_id' ]
+                'callback' => [ $this, 'get_user_contact_id' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/users/current_locations', [
                 'methods' => "GET",
-                'callback' => [ $this, 'get_current_locations' ]
+                'callback' => [ $this, 'get_current_locations' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/users/user_location', [
                 'methods' => "POST",
-                'callback' => [ $this, 'add_user_location' ]
+                'callback' => [ $this, 'add_user_location' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/users/user_location', [
                 'methods' => "DELETE",
-                'callback' => [ $this, 'delete_user_location' ]
+                'callback' => [ $this, 'delete_user_location' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/user/update', [
                 'methods' => "POST",
-                'callback' => [ $this, 'update_user' ]
+                'callback' => [ $this, 'update_user' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/user/my', [
                 'methods' => "GET",
-                'callback' => [ $this, 'get_my_info' ]
+                'callback' => [ $this, 'get_my_info' ],
+                'permission_callback' => '__return_true',
             ]
         );
     }
@@ -207,8 +221,9 @@ class Disciple_Tools_Users_Endpoints
     public function create_user( WP_REST_Request $request ){
         $params = $request->get_params();
 
-        if ( isset( $params["user-user_login"], $params["user-email"], $params["user-display"], $params["user-user_role"] ) ){
-            return Disciple_Tools_Users::create_user( $params["user-user_login"], $params["user-email"], $params["user-display"], $params["user-user_role"], $params["corresponds_to_contact"] ?? null );
+        if ( isset( $params["user-email"], $params["user-display"] ) ){
+            $user_login = $params["user-user_login"] ?? $params["user-email"];
+            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $params["user-user_role"] ?? 'multiplier', $params["corresponds_to_contact"] ?? null );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }

@@ -24,12 +24,33 @@ get_header();
                             $dt_id = GET_THE_ID();
                             echo sprintf( esc_html__( 'Sorry, you don\'t have permission to view the %1$s with id %2$s.', 'disciple_tools' ), esc_html( $dt_post_type ), esc_html( $dt_id ) ) . ' ';
                             echo esc_html__( 'Request permission from your administrator.', 'disciple_tools' );
-                            // @todo Add a request for permission form here, which could leave a comment on the record, and notify the owner of the record to share the record.
+                            echo '<br><br><button id="request-record-access-button" class="button loader open-request-record-access-button-modal">' . esc_html__( 'Request Record Access Permission', 'disciple_tools' ) . '</button>';
                         }
-                        echo '<p><a href="javascript:history.back(1);">'. esc_html__( 'Back', 'disciple_tools' ) .'</a></p>';
+                        echo '<br><br><a href="javascript:history.back(1);">' . esc_html__( 'Back', 'disciple_tools' ) . '</a>';
+                        echo '<div id="request-record-access-error" class="error">';
                         ?>
                     </p>
                 </section> <!-- end article section -->
+                <div class="reveal" id="request-record-access-modal" data-reveal xmlns="http://www.w3.org/1999/html">
+
+                    <h3><?php echo esc_html__( 'Request Record Access', 'disciple_tools' ) ?></h3>
+
+                    <form class="request-record-access-form">
+                        <p><?php echo esc_html__( 'Record owner to be notified of access request. Are you happy to proceed?', 'disciple_tools' ); ?></p>
+
+                        <button class="button loader" type="submit" id="request-record-access-modal-button">
+                            <?php echo esc_html__( 'Submit Request', 'disciple_tools' ); ?>
+                        </button>
+                        <button class="button loader" data-close aria-label="Close reveal" type="button">
+                            <?php echo esc_html__( 'Cancel', 'disciple_tools' ) ?>
+                        </button>
+                    </form>
+
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
             </div>
 
         </div> <!-- end #inner-content -->

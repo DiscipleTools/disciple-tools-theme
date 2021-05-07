@@ -59,6 +59,7 @@ class DT_User_Management
                 [
                     'methods'  => "GET",
                     'callback' => [ $this, 'get_user_endpoint' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -67,6 +68,7 @@ class DT_User_Management
                 [
                     'methods'  => "POST",
                     'callback' => [ $this, 'update_settings_on_user' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -75,6 +77,7 @@ class DT_User_Management
                 [
                     'methods'  => "GET",
                     'callback' => [ $this, 'get_users_endpoints' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -661,7 +664,10 @@ class DT_User_Management
                 if ( !current_user_can( 'promote_users' ) ) {
                     return false;
                 }
-                $can_not_promote_to_roles = [ 'administrator' ];
+                $can_not_promote_to_roles = [];
+                if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
+                    $can_not_promote_to_roles = [ 'administrator' ];
+                }
                 if ( !current_user_can( 'manage_dt' ) ){
                     $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
                 }

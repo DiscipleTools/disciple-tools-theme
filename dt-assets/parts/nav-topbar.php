@@ -54,6 +54,13 @@ $dt_nav_tabs = dt_default_menu_array();
 
         <div class="title-bar-right">
 
+            <!-- advanced search -->
+            <?php if ( isset( $dt_nav_tabs['admin']['advanced_search'] ) && ! empty( $dt_nav_tabs['admin']['advanced_search'] ) ) : ?>
+                <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>" style="margin-left: 10px">
+                    <img title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
+                </a>
+            <?php endif; // end advanced search ?>
+
             <!-- add new-->
             <?php if ( isset( $dt_nav_tabs['admin']['add_new'] ) && ! empty( $dt_nav_tabs['admin']['add_new'] ) ) : ?>
                 <ul class="dropdown menu" data-dropdown-menu style="display:inline-block; margin-left: 10px">
@@ -134,7 +141,8 @@ $dt_nav_tabs = dt_default_menu_array();
                 <!-- core update -->
                 <?php
                 if ( current_user_can( "update_core" ) ){
-                    $update = maybe_unserialize( get_site_option( "puc_external_updates_theme-disciple-tools-theme", "" ) );
+                    $theme = wp_get_theme();
+                    $update = maybe_unserialize( get_site_option( "puc_external_updates_theme-" . $theme->get_stylesheet(), "" ) );
                     if ( !empty( $update ) && isset( $update->update->version ) && version_compare( $update->update->version, wp_get_theme()->version, '>' ) ) : ?>
                         <li class="image-menu-nav">
                             <a href="<?php echo esc_url( network_admin_url( 'update-core.php' ) ); ?>">
@@ -156,6 +164,16 @@ $dt_nav_tabs = dt_default_menu_array();
                         </a>
                     </li>
                 <?php endif; // end profile ?>
+
+
+                <!-- advanced search -->
+                <?php if ( isset( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) && empty( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) ) : ?>
+                    <li class="image-menu-nav">
+                        <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
+                            <img title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
+                        </a>
+                    </li>
+                <?php endif; // end advanced search ?>
 
 
                 <!-- add new -->
@@ -258,7 +276,7 @@ $dt_nav_tabs = dt_default_menu_array();
                 </div>
             </div>
 
-            <div id="notification-list" class="grid-x grid-margin-x" style="border-top: 1px solid #ccc;"><span class="loading-spinner active" style="margin:1em;"></span></div>
+            <div id="notification-list" class="grid-x" style="border-top: 1px solid #ccc;"><span class="loading-spinner active" style="margin:1em;"></span></div>
 
 
             <div class="" style="text-align:center;">
@@ -276,3 +294,6 @@ $dt_nav_tabs = dt_default_menu_array();
     </div>
 
 <?php endif; ?>
+
+<!-- Load advanced search model template part -->
+<?php get_template_part( 'dt-assets/parts/modals/modal', 'advanced-search' ); ?>

@@ -42,7 +42,7 @@ let get_duplicates = (limit = 0) => {
     $('#scanned_number').html(window.lodash.escape(response.scanned))
     let found = $('#duplicates-content .bordered-box').length
     $('#found_text').html(window.lodash.escape(found));
-    if (found < 100) {
+    if (found < 100 && !response.reached_the_end) {
       get_duplicates(response.scanned)
     } else {
       $('.loading-spinner').removeClass("active")

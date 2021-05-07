@@ -18,6 +18,8 @@
   let fields_to_search = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_search', [] );
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
+  let clearSearchButton = $('.search-input__clear-button')
+  window.post_type_fields = list_settings.post_type_settings.fields
 
   let items = []
   try {
@@ -25,7 +27,17 @@
   } catch (e) {
     cached_filter = {}
   }
-  let current_filter = (cached_filter && !window.lodash.isEmpty(cached_filter)) ? cached_filter : { query:{} }
+
+  const query_param_custom_filter = create_custom_filter_from_query_params()
+
+  let current_filter
+  if (query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter)) {
+    current_filter = query_param_custom_filter
+  } else if (cached_filter && !window.lodash.isEmpty(cached_filter)) {
+    current_filter = cached_filter
+  } else {
+    current_filter =  { query:{} }
+  }
 
   //set up main filters
   setup_filters()
@@ -36,7 +48,10 @@
   }
 
   //set up custom cached filter
-  if ( cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ){
+  if ( query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter) && query_param_custom_filter.type === "custom_filter" ){
+    query_param_custom_filter.query.offset = 0;
+    add_custom_filter(query_param_custom_filter.name, "default", query_param_custom_filter.query, query_param_custom_filter.labels, false)
+  } else if ( cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ) {
     cached_filter.query.offset = 0;
     add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
   } else {
@@ -84,6 +99,59 @@
       get_records_for_current_filter()
     }
   })
+
+  /**
+   * Looks for all query params called 'filter' (allows for multiple filters to be applied)
+   * from url like base_url?filter=foo&filter=bar
+   *
+   * filter values are exected to be created by encodeURI(JSON.stringify({ id, name, field }))
+   * where the id, name and field are the relevant field and id to search for. (filters with
+   * incorrect fields will be removed)
+   *
+   * If any part of the filter doesn't decode or JSON.parse properly the function returns
+   * no filter.
+   */
+  function create_custom_filter_from_query_params() {
+    const url = new URL(window.location)
+
+    let filters = []
+    try {
+      filters = get_encoded_query_param_filters(url)
+    } catch (error) {
+      // the uri is corrupted
+    }
+    /* make sure filter fields are in the list of allowed fields */
+    filters = filters.filter(({ field }) => Object.keys(window.list_settings.post_type_settings.fields).includes(field))
+    if (filters.length == 0) return {}
+
+    /* Creating object the same shape as cached_filter */
+    let query_custom_filter = {
+      ID: Date.now() / 1000,
+      name: 'Custom Filter',
+      type: 'custom_filter',
+      labels: [],
+      query: {},
+    }
+
+    const labels = [ ...filters ]
+    const query = { fields: [], offset: 0, sort: 'name'}
+    let labelsSortedByField = {}
+    labels.forEach(({field, id}) => {
+      if (!labelsSortedByField[field]) labelsSortedByField[field] = []
+      labelsSortedByField[field].push(id)
+    })
+    query.fields = Object.entries(labelsSortedByField).map(([key, ids]) => ({[key]: ids}))
+
+    query_custom_filter.labels = labels
+    query_custom_filter.query = query
+
+    return query_custom_filter
+  }
+
+  function get_encoded_query_param_filters(url) {
+    const filters = url.searchParams.getAll('fieldQuery')
+    return filters.map((filter) =>JSON.parse(decodeURI(filter)))
+  }
 
   function get_records_for_current_filter(){
     let checked = $(".js-list-view:checked")
@@ -376,7 +444,7 @@
           let field_value = window.lodash.get( record, field_key, false )
 
           if ( field_value ) {
-            if (['text', 'number'].includes(field_settings.type)) {
+            if (['text', 'textarea', 'number'].includes(field_settings.type)) {
               values = [window.lodash.escape(field_value)]
             } else if (field_settings.type === 'date') {
               values = [window.lodash.escape(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
@@ -388,7 +456,11 @@
               values = field_value.map(v => {
                 return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
               })
-            } else if ( field_settings.type === "location" ){
+            } else if (field_settings.type === 'tags') {
+              values = field_value.map(v => {
+                return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
+              })
+            } else if ( field_settings.type === "location" || field_settings.type === "location_meta" ){
               values = field_value.map(v => {
                 return `${window.lodash.escape( v.label )}`;
               })
@@ -497,6 +569,19 @@
       }
       window.records_list = response // adds global access to current list for plugins
 
+      // save
+      if (response.hasOwnProperty('posts') && response.posts.length > 0) {
+        let records_list_ids_and_type = [];
+
+        $.each(response.posts, function(id, post_object ) {
+          records_list_ids_and_type.push({ ID: post_object.ID });
+        });
+
+        window.SHAREDFUNCTIONS.save_json_cookie(`records_list`, records_list_ids_and_type, list_settings.post_type);
+
+      }
+
+
       $('#bulk_edit_master_checkbox').prop("checked", false); //unchecks the bulk edit master checkbox when the list reloads.
 
       $('#load-more').toggle(items.length !== parseInt( response.total ))
@@ -553,10 +638,12 @@
       let type = window.lodash.get(list_settings, `post_type_settings.fields.${field}.type` )
       if ( type === "connection" || type === "user_select" ){
         search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
-      }  if ( type === "multi_select" ){
+      } else if ( type === "multi_select" ){
         search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
-      } if ( type === "location" ){
-        search_query.push({ [field] : window.lodash.map( window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
+      } else if ( type === "tags" ){
+        search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
+      } else if ( type === "location" || type === "location_meta" ){
+        search_query.push({ 'location_grid' : window.lodash.map( window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
       } else if ( type === "date" ) {
         let date = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
@@ -784,9 +871,13 @@
     });
 
   let loadLocationTypeahead = ()=> {
-    if (!window.Typeahead['.js-typeahead-location_grid']) {
+    let key = 'location_grid'
+    if ( $('.js-typeahead-location_grid_meta').length){
+      key = 'location_grid_meta';
+    }
+    if ( !window.Typeahead[`.js-typeahead-${key}`]) {
       $.typeahead({
-        input: '.js-typeahead-location_grid',
+        input: `.js-typeahead-${window.lodash.escape(key)}`,
         minLength: 0,
         accent: true,
         searchOnFocus: true,
@@ -805,7 +896,7 @@
               data: {
                 s: "{{query}}",
                 filter: function () {
-                  return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                  return window.lodash.get(window.Typeahead[`.js-typeahead-${key}`].filters.dropdown, 'value', 'all')
                 }
               },
               beforeSend: function (xhr) {
@@ -841,18 +932,18 @@
             $('#location_grid-result-container').html(text);
           },
           onReady(){
-            this.filters.dropdown = {key: "group", value: "used", template: "Used Locations"}
+            this.filters.dropdown = {key: "group", value: "used", template: window.lodash.escape(window.wpApiShare.translations.used_locations)}
             this.container
             .removeClass("filter")
             .find("." + this.options.selector.filterButton)
-            .html("Used Locations");
+            .html(window.lodash.escape(window.wpApiShare.translations.used_locations));
           },
           onHideLayout: function () {
             $('#location_grid-result-container').html("");
           },
           onClick: function (node, a, item) {
             let name = window.lodash.get(list_settings, `post_type_settings.fields.location_grid.name`, 'location_grid')
-            new_filter_labels.push({id: item.ID, name: `${name}: ${item.name}`, field: "location_grid"})
+            new_filter_labels.push({id: item.ID, name: `${name}: ${item.name}`, field: key, type: 'location_grid'})
             selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( name )}:${window.lodash.escape( item.name )}</span>`)
           }
         }
@@ -908,6 +999,8 @@
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
         } else if ( type === "multi_select" ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
+        } else if ( type === "tags" ){
+          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.id})
         } else if ( type === "user_select" ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
         }
@@ -1156,16 +1249,23 @@
 
   });
 
-  $('.search-input').on('keyup', function (e) {
+  $('.search-input--desktop').on('keyup', function (e) {
+    clearSearchButton.css({'display': this.value.length ? 'flex' : 'none'})
     if ( e.keyCode === 13 ){
       $("#search").trigger("click")
     }
   })
 
-  $('.search-input-mobile').on('keyup', function (e) {
+  $('.search-input--mobile').on('keyup', function (e) {
+    clearSearchButton.css({'display': this.value.length ? 'flex' : 'none'})
     if ( e.keyCode === 13 ){
       $("#search-mobile").trigger("click")
     }
+  })
+
+  clearSearchButton.on('click', function () {
+    $('.search-input').val('')
+    clearSearchButton.css({'display': 'none'})
   })
 
   //toggle show search input on mobile
@@ -1364,45 +1464,47 @@
 
 
   let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`)
-  $.typeahead({
-    input: '.js-typeahead-bulk_assigned_to',
-    minLength: 0,
-    maxItem: 0,
-    accent: true,
-    searchOnFocus: true,
-    source: TYPEAHEADS.typeaheadUserSource(),
-    templateValue: "{{name}}",
-    template: function (query, item) {
-      return `<div class="assigned-to-row" dir="auto">
+  if( bulk_assigned_to_input.length ) {
+    $.typeahead({
+      input: '.js-typeahead-bulk_assigned_to',
+      minLength: 0,
+      maxItem: 0,
+      accent: true,
+      searchOnFocus: true,
+      source: TYPEAHEADS.typeaheadUserSource(),
+      templateValue: "{{name}}",
+      template: function (query, item) {
+        return `<div class="assigned-to-row" dir="auto">
         <span>
             <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-            ${window.lodash.escape( item.name )}
+            ${window.lodash.escape(item.name)}
         </span>
-        ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
-        ${ item.update_needed && item.update_needed > 0 ? `<span>
-          <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+        ${item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>`:''}
+        ${item.update_needed && item.update_needed > 0 ? `<span>
+          <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
           <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
-        </span>` : '' }
+        </span>`:''}
       </div>`
-    },
-    dynamic: true,
-    hint: true,
-    emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
-    callback: {
-      onClick: function(node, a, item){
-        node.data('bulk_key_assigned_to', `user-${item.ID}`);
       },
-      onResult: function (node, query, result, resultCount) {
-        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#bulk_assigned_to-result-container').html(text);
+      dynamic: true,
+      hint: true,
+      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+      callback: {
+        onClick: function (node, a, item) {
+          node.data('bulk_key_assigned_to', `user-${item.ID}`);
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#bulk_assigned_to-result-container').html(text);
+        },
+        onHideLayout: function () {
+          $('.bulk_assigned_to-result-container').html("");
+        },
+        onReady: function () {
+        }
       },
-      onHideLayout: function () {
-        $('.bulk_assigned_to-result-container').html("");
-      },
-      onReady: function () {
-      }
-    },
-  });
+    });
+  }
 
 
   /**
@@ -1521,7 +1623,7 @@
     let field_id = 'location_grid';
     let typeaheadTotals = {};
     $.typeahead({
-      input: '.js-typeahead-location_grid',
+      input: '.js-typeahead-bulk_location_grid',
       minLength: 0,
       accent: true,
       searchOnFocus: true,

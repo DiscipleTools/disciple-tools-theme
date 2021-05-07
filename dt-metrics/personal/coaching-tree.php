@@ -68,6 +68,7 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'tree' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );

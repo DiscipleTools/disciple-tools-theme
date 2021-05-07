@@ -127,6 +127,14 @@ window.API = {
   get_comments: (post_type, postId) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}/comments`),
 
+  toggle_comment_reaction: (postType, postId, commentId, userId, reaction) => {
+    makeRequestOnPosts(
+      "POST",
+      `${postType}/${postId}/comments/${commentId}/react`,
+      { user_id: userId, reaction: reaction }
+    )
+  },
+
   get_activity: (post_type, postId) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}/activity`),
 
@@ -172,6 +180,17 @@ window.API = {
       contact_id: contactId,
       site_post_id: siteId,
     }),
+
+  request_record_access: (post_type, postId, userId) =>
+    makeRequestOnPosts("POST", `${post_type}/${postId}/request_record_access`, {
+      user_id: userId,
+    }),
+
+  advanced_search: (search_query, post_type, offset) => makeRequest("GET", `advanced_search`, {
+    query: search_query,
+    post_type: post_type,
+    offset: offset
+  }, 'dt-posts/v2/posts/search/')
 };
 
 function handleAjaxError(err) {
@@ -187,9 +206,9 @@ function handleAjaxError(err) {
 
 jQuery(document)
   .ajaxComplete((event, xhr, settings) => {
-    if (xhr && xhr.responseJSON) {
+    if ( xhr && xhr.responseJSON && settings.type === "POST" ) {
       // Event that a contact record has been updated
-      if (xhr.responseJSON.ID && xhr.responseJSON.post_type) {
+      if ( xhr.responseJSON.ID && xhr.responseJSON.post_type ) {
         let request = settings.data ? JSON.parse(settings.data) : {};
         $(document).trigger("dt_record_updated", [xhr.responseJSON, request]);
       }
@@ -396,14 +415,23 @@ window.TYPEAHEADS = {
         <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
     </span>`;
   },
-  share(post_type, id, v2) {
+  share(post_type, id) {
     return $.typeahead({
       input: ".js-typeahead-share",
       minLength: 0,
       maxItem: 0,
       accent: true,
       searchOnFocus: true,
-      source: this.typeaheadSource("share", "dt/v1/users/get_users"),
+      template: function (query, item) {
+        return `<div class="" dir="auto">
+          <div>
+              <span class="avatar"><img style="vertical-align: text-bottom" src="${window.lodash.escape( item.avatar )}"/></span>
+              {{name}} (#${window.lodash.escape( item.ID )})
+          </div>
+        </div>`
+      },
+      source: this.typeaheadUserSource(),
+      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
       display: "name",
       templateValue: "{{name}}",
       dynamic: true,
@@ -414,7 +442,7 @@ window.TYPEAHEADS = {
           return window.API.get_shared(post_type, id).then((sharedResult) => {
             return deferred.resolve(
               sharedResult.map((g) => {
-                return { ID: g.user_id, name: g.display_name };
+                return { ID: g.user_id, name: g.display_name, avatar: g.avatar };
               })
             );
           });
@@ -426,6 +454,7 @@ window.TYPEAHEADS = {
               Typeahead[".js-typeahead-share"].addMultiselectItemLayout({
                 ID: item.ID,
                 name: item.name,
+                avatar: item.avatar
               });
               $("#share-result-container").html(
                 window.lodash.get(err, "responseJSON.message")
@@ -498,6 +527,10 @@ window.SHAREDFUNCTIONS = {
       path = path.replace(/^\/?([^\/]+(?:\/[^\/]+)*)\/?$/, "/$1"); // add leading and remove trailing slashes
     }
     document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
+  },
+  uriEncodeFilter(field, id, name) {
+    const filterLabel = { field, id, name }
+    return encodeURIComponent(JSON.stringify(filterLabel))
   },
   formatDate(date, with_time = false) {
     let langcode = document.querySelector("html").getAttribute("lang")

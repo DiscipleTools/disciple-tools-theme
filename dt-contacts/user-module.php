@@ -11,7 +11,9 @@ class DT_Contacts_User {
     } // End instance()
 
     public function __construct() {
-//        add_action( 'p2p_init', [ $this, 'p2p_init' ] );
+
+        add_filter( "dt_can_view_permission", [ $this, 'can_update_permission_filter' ], 10, 3 );
+        add_filter( "dt_can_update_permission", [ $this, 'can_update_permission_filter' ], 10, 3 );
 
         //setup fields
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 20, 2 );
@@ -202,5 +204,18 @@ class DT_Contacts_User {
                  </div>
             <?php }
         }
+    }
+
+    // filter for access to a specific record
+    public function can_update_permission_filter( $has_permission, $post_id, $post_type ){
+        if ( $post_type === "contacts" ){
+            if ( current_user_can( 'promote_users' ) ){
+                $contact_type = get_post_meta( $post_id, "type", true );
+                if ( $contact_type === "user" ){
+                    return true;
+                }
+            }
+        }
+        return $has_permission;
     }
 }

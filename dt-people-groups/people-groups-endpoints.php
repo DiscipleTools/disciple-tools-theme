@@ -62,30 +62,35 @@ class Disciple_Tools_People_Groups_Endpoints
             $this->namespace, '/people-groups/compact', [
                 'methods'  => 'GET',
                 'callback' => [ $this, 'get_people_groups_compact' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/people-groups/search_csv', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'search_csv' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/people-groups/search_csv_by_rop3', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'search_csv_by_rop3' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/people-groups/add_single_people_group', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'add_single_people_group' ],
+                'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
             $this->namespace, '/people-groups/link_or_update', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'link_or_update' ],
+                'permission_callback' => '__return_true',
             ]
         );
     }

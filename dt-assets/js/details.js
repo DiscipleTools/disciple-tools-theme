@@ -7,6 +7,10 @@ jQuery(document).ready(function($) {
   window.post_type_fields = field_settings
   let rest_api = window.API
   let typeaheadTotals = {}
+  let current_record = -1;
+  let next_record    = -1;
+  let records_list   = window.SHAREDFUNCTIONS.get_json_cookie('records_list');
+
 
   window.masonGrid = $('.grid') // responsible for resizing and moving the tiles
 
@@ -20,6 +24,9 @@ jQuery(document).ready(function($) {
   $('input.text-input').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
+    if ( $(this).prop('required') && val === ''){
+      return;
+    }
     $(`#${id}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
       $(`#${id}-spinner`).removeClass('active')
@@ -32,7 +39,7 @@ jQuery(document).ready(function($) {
     $(`#${id}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
       $(`#${id}-spinner`).removeClass('active')
-      $( document ).trigger( "text-input-updated", [ newPost, id, val ] );
+      $( document ).trigger( "textarea-updated", [ newPost, id, val ] );
     }).catch(handleAjaxError)
   })
 
@@ -141,6 +148,9 @@ jQuery(document).ready(function($) {
   $('.dt_contenteditable').on('blur', function(){
     const id = $(this).attr('id')
     let val = $(this).text();
+    if ( id === "title" && val === '' ){
+      return;
+    }
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
       $( document ).trigger( "contenteditable-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
@@ -600,7 +610,7 @@ jQuery(document).ready(function($) {
   $('.open-share').on("click", function(){
     $('#share-contact-modal').foundation('open');
     if  (!shareTypeahead) {
-      shareTypeahead = TYPEAHEADS.share(post_type, post_id, !['contacts', 'groups'].includes(window.detailsSettings.post_type ) )
+      shareTypeahead = TYPEAHEADS.share(post_type, post_id )
     }
   })
 
@@ -723,9 +733,11 @@ jQuery(document).ready(function($) {
   /**
    * Tags
    */
-  if( $('.js-typeahead-tags').length ) {
+  $('.tags .typeahead__query input').each((key, input)=>{
+    let field = $(input).data('field') || 'tags'
+    let typeahead_name = `.js-typeahead-${field}`
     $.typeahead({
-      input: '.js-typeahead-tags',
+      input: typeahead_name,
       minLength: 0,
       maxItem: 20,
       searchOnFocus: true,
@@ -736,7 +748,7 @@ jQuery(document).ready(function($) {
             url: window.wpApiShare.root + `dt-posts/v2/${post_type}/multi-select-values`,
             data: {
               s: "{{query}}",
-              field: "tags"
+              field: field
             },
             beforeSend: function (xhr) {
               xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
@@ -753,35 +765,57 @@ jQuery(document).ready(function($) {
       },
       display: "name",
       templateValue: "{{name}}",
+      emptyTemplate: function(query) {
+        const { addNewTagText, tagExistsText} = this.node[0].dataset
+        if (this.comparedItems.includes(query)) {
+          return tagExistsText.replace('%s', query)
+        }
+        const liItem = $('<li>')
+        const button = $('<button>', {
+          class: "button primary",
+          text: addNewTagText.replace('%s', query),
+        })
+        const tag = this.query
+        const addTag = addTagOnClick.bind(this)
+        button.on("click", function () {
+          addTag(field, tag)
+        })
+        liItem.append(button)
+        return liItem
+      },
       dynamic: true,
       multiselect: {
         matchOn: ["name"],
-        data: function () {
-          return (post.tags || []).map(t => {
+        data: function (){
+          return (post[field] || [] ).map(t=>{
             return {name: t}
           })
-        }, callback: {
-          onCancel: function (node, item) {
-            API.update_post(post_type, post_id, {'tags': {values: [{value: item.name, delete: true}]}})
+        },
+        callback: {
+          onCancel: function (node, item, event) {
+            $(`#${field}-spinner`).addClass('active')
+            API.update_post(post_type, post_id, {[field]: {values:[{value:item.name, delete:true}]}}).then((new_post)=>{
+              $(`#${field}-spinner`).removeClass('active')
+              this.hideLayout();
+              this.resetInput();
+              $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
+            }).catch(err => { console.error(err) })
           }
-        }
+        },
       },
       callback: {
         onClick: function (node, a, item, event) {
-          API.update_post(post_type, post_id, {tags: {values: [{value: item.name}]}})
-          this.addMultiselectItemLayout(item)
           event.preventDefault()
-          this.hideLayout();
-          this.resetInput();
-          masonGrid.masonry('layout')
+          const addTag = addTagOnClick.bind(this)
+          addTag(field, item.name)
         },
         onResult: function (node, query, result, resultCount) {
           let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-          $('#tags-result-container').html(text);
+          $(`#${field}-result-container`).html(text);
           masonGrid.masonry('layout')
         },
         onHideLayout: function () {
-          $('#tags-result-container').html("");
+          $(`#${field}-result-container`).html("");
           masonGrid.masonry('layout')
         },
         onShowLayout() {
@@ -789,13 +823,30 @@ jQuery(document).ready(function($) {
         }
       }
     });
-    $("#create-tag-return").on("click", function () {
-      let tag = $("#new-tag").val()
-      Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name: tag})
-      API.update_post(post_type, post_id, {tags: {values: [{value: tag}]}})
-    })
-  }
+  })
 
+  $(".create-new-tag").on("click", function () {
+    let field = $(this).data("field");
+    $("#create-tag-modal").data("field", field)
+
+  });
+  $("#create-tag-return").on("click", function () {
+    let field = $("#create-tag-modal").data("field");
+    let tag = $("#new-tag").val()
+    Typeahead['.js-typeahead-' + field].addMultiselectItemLayout({name: tag})
+    API.update_post(post_type, post_id, {[field]: {values: [{value: tag}]}})
+  })
+
+  function addTagOnClick(field, tag) {
+    $(`#${field}-spinner`).addClass('active')
+    API.update_post(post_type, post_id, {[field]: {values:[{"value":tag}]}}).then(new_post=>{
+      $(`#${field}-spinner`).removeClass('active')
+      this.addMultiselectItemLayout({name: tag})
+      this.hideLayout();
+      this.resetInput();
+      masonGrid.masonry('layout')
+    }).catch(err => { console.error(err) })
+  }
 
   let upgradeUrl = (url)=>{
     if ( !url.includes("http")){
@@ -820,6 +871,8 @@ jQuery(document).ready(function($) {
         let field_value = window.lodash.get( post, field_key, false )
         let values_html = ``
         if ( field_options.type === 'text' ){
+          values_html = window.lodash.escape( field_value )
+        } else if ( field_options.type === 'textarea' ){
           values_html = window.lodash.escape( field_value )
         } else if ( field_options.type === 'date' ){
           values_html = window.lodash.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
@@ -883,7 +936,7 @@ jQuery(document).ready(function($) {
   $('#delete-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
     API.delete_post( post_type, post_id ).then(()=>{
-      window.location = '/' + post_type
+      window.location = window.wpApiShare.site_url + '/' + post_type
     })
   })
   $('#archive-record').on('click', function(){
@@ -911,6 +964,34 @@ jQuery(document).ready(function($) {
       firstField.focus();
     }
   });
+
+  if (records_list.length > 0) {
+    $.each(records_list, function(record_id, post_id_array) {
+      if (post_id === post_id_array.ID) {
+        current_record = record_id;
+        next_record    = record_id+1;
+      }
+    });
+
+    if ( current_record === 0 || typeof(records_list[current_record-1]) === 'undefined') {
+      $(document).find('.navigation-previous').hide();
+    } else {
+      let link = window.wpApiShare.site_url + '/' + window.detailsSettings.post_type + '/' + records_list[current_record-1].ID
+      $(document).find('.navigation-previous').attr('href', link);
+      $(document).find('.navigation-previous').removeAttr('style');
+    }
+
+    if (typeof (records_list[next_record]) !== 'undefined') {
+      let link = window.wpApiShare.site_url + '/' + window.detailsSettings.post_type + '/' + records_list[next_record].ID
+      $(document).find('.navigation-next').attr('href', link);
+      $(document).find('.navigation-next').removeAttr('style');
+    } else {
+      $(document).find('.navigation-next').hide();
+    }
+
+  } else {
+    $(document).find('.navigation-next').removeAttr('style').attr('style', 'display: none;');
+  }
 
   //leave at the end of this file
   masonGrid.masonry({

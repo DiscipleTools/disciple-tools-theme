@@ -29,6 +29,8 @@ class DT_Groups_Base extends DT_Module_Base {
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
+        add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 10, 3 );
+
         // hooks
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
@@ -36,6 +38,7 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 10, 2 );
         add_action( "dt_post_created", [ $this, "dt_post_created" ], 10, 3 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
+        add_filter( "dt_after_get_post_fields_filter", [ $this, "dt_after_get_post_fields_filter" ], 10, 2 );
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
@@ -86,10 +89,9 @@ class DT_Groups_Base extends DT_Module_Base {
             $fields['tags'] = [
                 'name'        => __( 'Tags', 'disciple_tools' ),
                 'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'multi_select',
+                'type'        => 'tags',
                 'default'     => [],
                 'tile'        => 'other',
-                'custom_display' => true,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/tag.svg'
             ];
             $fields["follow"] = [
@@ -150,7 +152,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     'inactive' => [
                         'label' => __( 'Inactive', 'disciple_tools' ),
                         'description' => _x( 'The group is no longer meeting.', 'field description', 'disciple_tools' ),
-                        'color' => "#F43636"
+                        'color' => "#808080"
                     ],
                     'active'   => [
                         'label' => __( 'Active', 'disciple_tools' ),
@@ -288,7 +290,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
             $fields["member_count"] = [
                 'name' => __( 'Member Count', 'disciple_tools' ),
-                'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group.', 'Optional Documentation', 'disciple_tools' ),
+                'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',
@@ -315,7 +317,6 @@ class DT_Groups_Base extends DT_Module_Base {
             ];
             $fields["leader_count"] = [
                 'name' => __( 'Leader Count', 'disciple_tools' ),
-                'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the training.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',
@@ -462,6 +463,15 @@ class DT_Groups_Base extends DT_Module_Base {
                 'create-icon' => get_template_directory_uri() . "/dt-assets/images/add-group.svg",
                 "show_in_table" => 35
             ];
+            $fields["group_leader"] = [
+                "name" => __( "Leader of Group", 'disciple_tools' ),
+                "type" => "connection",
+                "p2p_direction" => "to",
+                "p2p_key" => "groups_to_leaders",
+                "post_type" => "groups",
+                "tile" => "no_tile",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/foot.svg",
+            ];
         }
         return $fields;
     }
@@ -511,36 +521,6 @@ class DT_Groups_Base extends DT_Module_Base {
                     <?php render_field_for_display( "coaches", $group_fields, $group, true ); ?>
                 </div>
         <?php }
-
-        // Display 'Other' tile
-        if ( $post_type === "groups" && $section === "other" ) :
-            $fields = DT_Posts::get_post_field_settings( $post_type );
-            ?>
-            <div class="section-subheader">
-                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag.svg' ) ?>"/>
-                <?php echo esc_html( $fields["tags"]["name"] ) ?>
-            </div>
-            <div class="tags">
-                <var id="tags-result-container" class="result-container"></var>
-                <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
-                    <div class="typeahead__container">
-                        <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-tags input-height"
-                                       name="tags[query]"
-                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields["tags"]['name'] ) )?>"
-                                       autocomplete="off">
-                            </span>
-                            <span class="typeahead__button">
-                                <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
-                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php endif;
 
         // Display 'Health Metrics' tile
         if ( $post_type === "groups" && $section === "health-metrics" ) {
@@ -823,6 +803,24 @@ class DT_Groups_Base extends DT_Module_Base {
                 $fields["end_date"] = time();
             }
         }
+        if ( $post_type === "contacts" ){
+            if ( isset( $fields["group_leader"]["values"] ) ){
+                $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
+                foreach ( $fields["group_leader"]["values"] as $leader ){
+                    $is_in_group = false;
+                    foreach ( $existing_contact["groups"] as $group ){
+                        if ( (int) $group["ID"] === (int) $leader["value"] ){
+                            $is_in_group = true;
+                        }
+                    }
+                    if ( !$is_in_group && empty( $leader["delete"] ) ){
+                        $fields["groups"]["values"][] = [
+                            "value" => $leader["value"]
+                        ];
+                    }
+                }
+            }
+        }
         return $fields;
     }
 
@@ -889,6 +887,86 @@ class DT_Groups_Base extends DT_Module_Base {
                 self::check_requires_update( $post_id );
             }
         }
+    }
+
+    // add members meta to post details
+    public function dt_after_get_post_fields_filter( $fields, $details_post_type ) {
+        if ( $details_post_type !== $this->post_type || empty( $fields["members"] ) ) {
+            return $fields;
+        }
+        global $wpdb;
+        // loop through the members array, and get the overall_status and milestones meta data
+        // for each member
+        $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
+        $overall_status_settings = $field_settings["overall_status"]["default"];
+        $milestone_settings = $field_settings["milestones"]["default"];
+
+        $defaults_to_display = [
+            'baptized',
+            'has_bible',
+        ];
+        $default_milestones_to_display = apply_filters( 'dt_members_extra_data', $defaults_to_display );
+
+        $default_milestone_keys = array_map( function ( $milestone ) {
+            return "milestone_$milestone";
+        }, $default_milestones_to_display);
+
+        // set up the MySQL OR string to get multiple posts at once
+        $members_post_ids = [];
+        foreach ($fields["members"] as $member) {
+            $member_id = $member['ID'];
+            $members_post_ids[] = "post_id = $member_id";
+        }
+        $members_or_string = implode( ' OR ', $members_post_ids );
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+        SELECT *
+        FROM $wpdb->postmeta AS pm
+        WHERE
+            ( %1s )
+            AND
+            (
+                meta_key = 'milestones'
+                OR meta_key = 'overall_status'
+            )
+        ORDER BY pm.post_id ASC
+        ", $members_or_string ) );
+
+        // order the results by id in a lookup array
+        $results_by_post_id = [];
+        foreach ($results as $result) {
+            if ( !key_exists( $result->post_id, $results_by_post_id ) ) {
+                $results_by_post_id[$result->post_id] = [];
+            }
+            $results_by_post_id[$result->post_id][] = $result;
+        }
+
+        // pump the member metadata into the members array of the post
+        foreach ($fields["members"] as $key => $member) {
+            $member_id = $member["ID"];
+            $member_data = key_exists( $member_id, $results_by_post_id ) ? $results_by_post_id[$member_id] : [];
+            $data = [
+                "milestones" => [],
+            ];
+            foreach ($member_data as $meta) {
+                if ( $meta->meta_key === 'milestones' && in_array( $meta->meta_value, $default_milestone_keys, true ) ) {
+                    $data["milestones"][] = $milestone_settings[$meta->meta_value];
+                } elseif ( $meta->meta_key === 'overall_status' ) {
+                    $data["overall_status"] = $overall_status_settings[$meta->meta_value];
+                }
+            }
+            // uniqueify the milestones array
+            $data["milestones"] = array_reduce( $data["milestones"], function ( $array, $milestone ){
+                if ( !in_array( $milestone, $array, true ) ) {
+                    $array[] = $milestone;
+                    return $array;
+                }
+                return $array;
+            }, []);
+            $fields["members"][$key]["data"] = $data;
+        }
+
+        return $fields;
     }
 
     // filter at the start of post creation
@@ -1114,6 +1192,17 @@ class DT_Groups_Base extends DT_Module_Base {
                 ],
                 "count" => $total_all
             ];
+            $filters["filters"][] = [
+                'ID' => 'recent',
+                'tab' => 'all',
+                'name' => __( "My Recently Viewed", 'disciple_tools' ),
+                'query' => [
+                    'dt_recent' => true
+                ],
+                'labels' => [
+                    [ "id" => 'recent', 'name' => __( "Last 30 viewed", 'disciple_tools' ) ]
+                ]
+            ];
 
             foreach ( $fields["group_status"]["default"] as $status_key => $status_value ) {
                 if ( isset( $status_counts[$status_key] ) ){
@@ -1174,7 +1263,7 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     public function scripts(){
-        if ( is_singular( "groups" ) ){
+        if ( is_singular( "groups" ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
             wp_enqueue_script( 'dt_groups', get_template_directory_uri() . '/dt-groups/groups.js', [
                 'jquery',
                 'details'
@@ -1182,5 +1271,10 @@ class DT_Groups_Base extends DT_Module_Base {
         }
     }
 
-
+    public function dt_record_icon( $icon, $post_type, $contact_id ){
+        if ($post_type == 'groups') {
+            $icon = 'fi-torsos-all';
+        }
+        return $icon;
+    }
 }
