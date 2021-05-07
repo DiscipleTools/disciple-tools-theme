@@ -84,7 +84,7 @@ function projectTimeCharts() {
     document.querySelector('#post-type-select').addEventListener('change', (e) => {
         const postType = e.target.value
         dtMetricsProject.state.post_type = postType
-        window.API
+        window.METRICS
             .getFieldSettings(postType)
             .promise()
             .then((data) => {
@@ -220,7 +220,7 @@ function createChart(id, keys, options) {
 
         let label = ''
         if (defaultSettings[newKey]) {
-            label = defaultSettings[newKey].label
+            label = window.lodash.escape( defaultSettings[newKey].label )
         } else if ( fieldType === 'boolean' ) {
             if (newKey === '1') {
                 label = true_label
@@ -408,8 +408,8 @@ function getData() {
 
     const isAllTime = year === 'all-time'
     const data = isAllTime
-        ? window.API.getTimeMetricsByYear(postType, field)
-        : window.API.getTimeMetricsByMonth(postType, field, year)
+        ? window.METRICS.getTimeMetricsByYear(postType, field)
+        : window.METRICS.getTimeMetricsByMonth(postType, field, year)
 
     const loadingSpinner = document.querySelector('.loading-spinner')
     const chartElement = document.querySelector('#chart-area')

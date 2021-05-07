@@ -186,15 +186,6 @@ window.API = {
       user_id: userId,
     }),
 
-  getTimeMetricsByYear: (postType, field, year) =>
-    makeRequest('GET', `metrics/time_metrics_by_year/${postType}/${field}`),
-
-  getTimeMetricsByMonth: (postType, field, year) =>
-    makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`),
-
-  getFieldSettings: (postType) =>
-    makeRequest('GET', `metrics/field_settings/${postType}`),
-
   advanced_search: (search_query, post_type, offset) => makeRequest("GET", `advanced_search`, {
     query: search_query,
     post_type: post_type,
@@ -648,6 +639,16 @@ window.METRICS = {
       }
     );
   },
+
+  getTimeMetricsByYear: (postType, field, year) =>
+    makeRequest('GET', `metrics/time_metrics_by_year/${postType}/${field}`),
+
+  getTimeMetricsByMonth: (postType, field, year) =>
+    makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`),
+
+  getFieldSettings: (postType) =>
+    makeRequest('GET', `metrics/field_settings/${postType}`),
+
 };
 
 // nonce timeout fix
