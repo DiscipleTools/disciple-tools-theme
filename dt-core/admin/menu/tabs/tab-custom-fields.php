@@ -534,7 +534,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
             <p><?php echo esc_html( sprintf( __( 'This field will show up on %s records of type:', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?></p>
             <?php foreach ( $post_fields["type"]["default"] as $type_key => $type ) :
-                $checked = isset( $field["only_for_types"] ) && !empty( $field["only_for_types"] ) && ( $field["only_for_types"] === true || in_array( $type_key, $field["only_for_types"], true ) )
+                $checked = dt_field_enabled_for_record_type( $field, [ "type" => [ "key" => $type_key ] ] );
                 ?>
                 <label style="margin-right:10px">
                     <input type="checkbox" name="field_type[]" value="<?php echo esc_html( $type_key ); ?>" <?php checked( $checked ) ?>>
@@ -578,9 +578,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $field_customizations = dt_get_option( "dt_field_customizations" );
         $field_key = $post_submission["field_key"];
 
-        if ( isset( $post_submission["save_types"], $post_submission["field_type"] ) ){
+        if ( isset( $post_submission["save_types"] ) ){
             $types = $post_fields["type"]["default"];
-            if ( sizeof( $post_submission["field_type"] ) === sizeof( $types ) ){
+            if ( !isset( $post_submission["field_type"] ) ){
+                $field_customizations[$post_type][$field_key]["only_for_types"] = false;
+            } else if ( sizeof( $post_submission["field_type"] ) === sizeof( $types ) ){
                 $field_customizations[$post_type][$field_key]["only_for_types"] = true;
             } else {
                 $field_customizations[$post_type][$field_key]["only_for_types"] = $post_submission["field_type"];
@@ -597,7 +599,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $create_form_options = isset( $post_submission["create_form_options"] ) ? $post_submission["create_form_options"] : false;
 
             if ( !isset( $post_submission["create_form_options"] ) ){
-                $field_customizations[$post_type][$field_key]["in_create_form"] = false;
+                $field_customizations[$post_type][$field_key]["in_create_form"] = [ 'hidden' ];
             } else if ( sizeof( $create_form_options ) === count( $non_hidden_types ) ){
                 $field_customizations[$post_type][$field_key]["in_create_form"] = true;
             } else {
