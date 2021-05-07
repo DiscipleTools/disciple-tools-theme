@@ -84,7 +84,7 @@ function projectTimeCharts() {
     document.querySelector('#post-type-select').addEventListener('change', (e) => {
         const postType = e.target.value
         dtMetricsProject.state.post_type = postType
-        window.API
+        window.METRICS
             .getFieldSettings(postType)
             .promise()
             .then((data) => {
@@ -408,8 +408,8 @@ function getData() {
 
     const isAllTime = year === 'all-time'
     const data = isAllTime
-        ? window.API.getTimeMetricsByYear(postType, field)
-        : window.API.getTimeMetricsByMonth(postType, field, year)
+        ? window.METRICS.getTimeMetricsByYear(postType, field)
+        : window.METRICS.getTimeMetricsByMonth(postType, field, year)
 
     const loadingSpinner = document.querySelector('.loading-spinner')
     const chartElement = document.querySelector('#chart-area')
