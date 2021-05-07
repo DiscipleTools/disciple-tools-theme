@@ -134,7 +134,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $date_format = get_option( 'date_format' );
             $time_format = get_option( 'time_format' );
             if ($format === 'short') {
-                $format = $date_format;
+                // $format = $date_format;
+                // formatting it with internationally understood date, as there was a
+                // struggle getting dates to show in user's selected language and not
+                // in the site language.
+                $format = 'Y-m-d';
             } else if ($format === 'long') {
                 $format = $date_format . ' ' . $time_format;
             }
