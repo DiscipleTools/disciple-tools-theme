@@ -480,15 +480,12 @@ class DT_Posts extends Disciple_Tools_Posts {
         $author = get_user_by( "ID", $wp_post->post_author );
         $fields["post_author_display_name"] = $author ? $author->display_name : "";
 
-        // phpcs:disable
-        // WordPress.WP.PreparedSQL.NotPrepared
         $all_user_meta = $wpdb->get_results( $wpdb->prepare( "
             SELECT *
             FROM $wpdb->dt_post_user_meta um
             WHERE um.post_id = %s
             AND user_id = %s
         ", $post_id, $current_user_id ), ARRAY_A);
-        // phpcs:enable
 
         $all_post_user_meta =[];
 
