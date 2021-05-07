@@ -171,7 +171,8 @@ class DT_Contacts_Base {
             ];
             $fields['tasks'] = [
                 'name' => __( 'Tasks', 'disciple_tools' ),
-                'type' => 'post_user_meta',
+                'type' => 'task',
+                'private' => true
             ];
             $fields["languages"] = [
                 'name' => __( 'Languages', 'disciple_tools' ),

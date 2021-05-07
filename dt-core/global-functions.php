@@ -362,6 +362,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
         $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
         $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
+        $is_private = ( isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true ) ? true : false;
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
@@ -385,7 +386,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php endif;
                 echo esc_html( $fields[$field_key]["name"] );
                 ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
-                <?php if ( $field_type === "communication_channel" ) : ?>
+                <?php if ( $is_private ) : ?>
+                    <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
+                <?php endif;
+                if ( $field_type === "communication_channel" ) : ?>
                     <button data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>

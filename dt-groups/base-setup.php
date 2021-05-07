@@ -115,7 +115,8 @@ class DT_Groups_Base extends DT_Module_Base {
             ];
             $fields['tasks'] = [
                 'name' => __( 'Tasks', 'disciple_tools' ),
-                'type' => 'post_user_meta',
+                'type' => 'task',
+                'private' => true
             ];
             $fields["duplicate_data"] = [
                 "name" => 'Duplicates', //system string does not need translation
