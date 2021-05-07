@@ -11,6 +11,15 @@ jQuery(document).ready(function($) {
 
   /* List Table */
   function write_users_list(){
+    const lastActivityElements =  document.querySelectorAll('.last_activity')
+    lastActivityElements.forEach((element) => {
+      const timestamp = element.dataset.sort
+      if (timestamp.length > 0) {
+        // concatenating formatted date to preserve possible alert
+        element.innerHTML = element.innerHTML + window.SHAREDFUNCTIONS.formatDate(timestamp)
+      }
+    })
+
     let multipliers_table = $('#multipliers_table').DataTable({
       "paging":   false,
       "order": [[ 1, "asc" ]],
