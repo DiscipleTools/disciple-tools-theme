@@ -71,13 +71,16 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $show_add_field = false;
             $field_key = false;
             if ( isset( $_POST['field_key'] ) ){
-                $field_key = sanitize_text_field( wp_unslash( $_POST[ 'field_key' ] ) );
+                $field_key = sanitize_text_field( wp_unslash( $_POST['field_key'] ) );
+
             } else {
                 $field_key = false;
             }
 
-            if ( isset ( $_POST['post_type'] ) ) {
-                $post_type = sanitize_text_field( wp_unslash( $_POST[ 'post_type' ] ) );
+            if ( isset( $_POST['post_type'] ) ) {
+                $post_type = sanitize_text_field( wp_unslash( $_POST['post_type'] ) );
+            } else if ( isset( $_GET['post_type'] ) ) {
+                $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
             } else if ( isset( $_GET['show_add_new_field'] ) ) {
                 $post_type = sanitize_text_field( wp_unslash( $_GET['show_add_new_field'] ) );
             } else {
@@ -100,11 +103,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 if ( isset( $_POST["post_type"] ) ){
                     $post_type = sanitize_key( $_POST["post_type"] );
                 }
-            
-            $this->box( 'top', __( 'Add new fields or modify existing ones on ', 'disciple_tools' ) . $wp_post_types[$post_type]->label );
-            $this->field_select();
-            $this->box( 'bottom' );
 
+                $this->box( 'top', __( 'Add new fields or modify existing ones on ', 'disciple_tools' ) . $wp_post_types[$post_type]->label );
+                $this->field_select();
+                $this->box( 'bottom' );
             }
 
 
@@ -113,7 +115,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $field_key = $field[1];
                 $post_type = $field[0];
             }
-            if ( isset( $_GET['field_select_nonce'] ) ){
+            if ( isset( $_GET['field_select_nonce'] ) ) {
                 if ( !wp_verify_nonce( sanitize_key( $_GET['field_select_nonce'] ), 'field_select' ) ) {
                     return;
                 }
@@ -161,7 +163,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $this->add_field();
                 $this->box( 'bottom' );
             }
-            if ( $post_type && isset( $this->get_post_fields( $post_type )[$field_key] ) ){
+            if ( $post_type && isset( $this->get_post_fields( $post_type )[$field_key] ) ) {
                 $this->box( 'top', $this->get_post_fields( $post_type )[$field_key]["name"] );
                 $this->edit_field( $field_key, $post_type );
                 $this->box( 'bottom' );
@@ -201,25 +203,45 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     private function field_select(){
         global $wp_post_types;
         $select_options = [];
-        $post_type = isset( $_POST['post_type'] ) ? sanitize_text_field( wp_unslash( $_POST["post_type"] ) ) : null;
+
+        if ( empty( $_POST['post_type_select_nonce'] ) ) {
+            return;
+        }
+
+        if ( !wp_verify_nonce( sanitize_key( $_POST['post_type_select_nonce'] ), 'post_type_select' ) ) {
+            return;
+        }
+
+        if ( isset( $_POST['post_type'] ) ) {
+            $post_type = sanitize_text_field( wp_unslash( $_POST['post_type'] ) );
+        } else {
+            $post_type = null;
+        }
+
+        if ( isset( $_GET['post_type'] ) ) {
+            $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
+        }
+
             $select_options[$post_type] = [];
             $fields = $this->get_post_fields( $post_type );
             uasort($fields, function( $a, $b) {
                 return $a['name'] <=> $b['name'];
             });
-            if ( $fields ){
-                foreach ( $fields as $field_key => $field_value ){
-                    if ( ( isset( $field_value["customizable"] ) && $field_value["customizable"] !== false ) || ( !isset( $field_value["customizable"] ) && empty( $field_value["hidden"] ) ) ){
-                        $select_options[ $post_type ][ $field_key ] = $field_value;
-                    }
+
+        if ( $fields ){
+            foreach ( $fields as $field_key => $field_value ){
+                if ( ( isset( $field_value["customizable"] ) && $field_value["customizable"] !== false ) || ( !isset( $field_value["customizable"] ) && empty( $field_value["hidden"] ) ) ){
+                    $select_options[ $post_type ][ $field_key ] = $field_value;
                 }
             }
+        }
 
         ?>
         <form method="get">
             <input type="hidden" name="field_select_nonce" id="field_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_select' ) ) ?>" />
             <input type="hidden" name="page" value="dt_options" />
             <input type="hidden" name="tab" value="custom-fields" />
+            <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type ); ?>" />
             <table>
                 <tr>
                     <td style="vertical-align: middle">
@@ -733,7 +755,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     private function add_field(){
         global $wp_post_types;
         $post_types = DT_Posts::get_post_types();
-        $post_type = sanitize_text_field( wp_unslash( $_GET['show_add_new_field'] ) );        
+        if ( empty( $_GET['show_add_new_field'] ) ) {
+            return;
+        }
+        $post_type = sanitize_text_field( wp_unslash( $_GET['show_add_new_field'] ) );
         $tile_options = DT_Posts::get_post_tiles( $post_type );
         ?>
         <form method="post">
