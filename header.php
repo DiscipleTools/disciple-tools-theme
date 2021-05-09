@@ -31,9 +31,11 @@
 
         <title>
         <?php
+        $instance_name = get_bloginfo( 'name' );
         if ( is_single() ) {
             if ( DT_Posts::can_view( get_post_type(), GET_THE_ID() ) ){
-                single_post_title( '', true );
+                $title_string = single_post_title( '' ) . ' - ' . ucwords( get_post_type() );
+                echo esc_html( $title_string . ' - ' .$instance_name );
             } else {
                 echo esc_html( __( "D.T Record", 'disciple_tools' ) );
             }
@@ -41,7 +43,7 @@
             echo post_type_archive_title();
         } else {
             $title_string = ucwords( str_replace( '/', ' - ', dt_get_url_path() ) );
-            echo esc_html( $title_string );
+            echo esc_html( $title_string . ' - ' . $instance_name );
         }
         ?>
         </title>
