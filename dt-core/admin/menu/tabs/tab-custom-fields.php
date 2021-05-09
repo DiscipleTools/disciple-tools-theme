@@ -249,6 +249,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Default Name", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Custom Name", 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( "Private Field", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Tile", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Description", 'disciple_tools' ) ?></td>
@@ -273,6 +274,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php if ( isset( $defaults[$field_key] ) && !empty( $name ) ) : ?>
                         <button title="submit" class="button" name="delete_custom_label">Remove Label</button>
                         <?php endif; ?>
+                    </td>
+                    <td>
+                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>></input>
                     </td>
                     <td>
                         <button class="button small expand_translations">
@@ -562,6 +566,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             if ( isset( $post_submission["delete_custom_label"], $custom_field["name"] ) ){
                 unset( $custom_field["name"] );
             }
+            //field privacy
+            if ( isset( $post_submission["field_private"] ) && $post_submission["field_private"] ) {
+                $custom_field["private"] = true;
+            } else if ( !isset( $post_submission["field_private"] ) || !$post_submission["field_private"] ) {
+                $custom_field["private"] = false;
+            }
             if ( isset( $post_submission["field_description"] ) && $post_submission["field_description"] != ( $custom_field["description"] ?? "" ) ){
                 $custom_field["description"] = $post_submission["field_description"];
             }
@@ -730,6 +740,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 </tr>
                 <tr>
                     <td style="vertical-align: middle">
+                        <label><?php esc_html_e( "Private Field", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <input name="new_field_private" id="new_field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
                         <label><?php esc_html_e( "Tile", 'disciple_tools' ) ?></label>
                     </td>
                     <td>
@@ -765,6 +783,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( "Text Area: This is just a multi-line text area", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Date: A field that uses a date picker to choose dates (like baptism date)", 'disciple_tools' ) ?></li>
         </ul>
+        <?php esc_html_e( "Private Field:", 'disciple_tools' ) ?>
+        <ul style="list-style: disc; padding-left:40px">
+            <li><?php esc_html_e( "The content of private fields can only be seen by the user who creates it and will not be shared with other DT users.", 'disciple_tools' ) ?></li>
+        </ul>
         <?php
     }
 
@@ -774,8 +796,16 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $field_type = $post_submission["new_field_type"];
             $field_tile = $post_submission["new_field_tile"] ?? '';
             $field_key = dt_create_field_key( $post_submission["new_field_name"] );
+
             if ( !$field_key ){
                 return false;
+            }
+
+            //field privacy
+            if ( isset( $post_submission["new_field_private"] ) && $post_submission["new_field_private"] ) {
+                $field_private = true;
+            } else {
+                $field_private = false;
             }
             $post_fields = $this->get_post_fields( $post_type );
             if ( isset( $post_fields[ $field_key ] )){
@@ -789,7 +819,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'default' => [],
                     'type' => 'key_select',
                     'tile' => $field_tile,
-                    'customizable' => 'all'
+                    'customizable' => 'all',
+                    'private' => $field_private
                 ];
             } elseif ( $field_type === "multi_select" ){
                 $new_field = [
@@ -797,7 +828,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'default' => [],
                     'type' => 'multi_select',
                     'tile' => $field_tile,
-                    'customizable' => 'all'
+                    'customizable' => 'all',
+                    'private' => $field_private
                 ];
             } elseif ( $field_type === "tags" ){
                 $new_field = [
@@ -813,7 +845,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'type'        => 'date',
                     'default'     => '',
                     'tile'     => $field_tile,
-                    'customizable' => 'all'
+                    'customizable' => 'all',
+                    'private' => $field_private
                 ];
             } elseif ( $field_type === "text" ){
                 $new_field = [
@@ -821,7 +854,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'type'        => 'text',
                     'default'     => '',
                     'tile'     => $field_tile,
-                    'customizable' => 'all'
+                    'customizable' => 'all',
+                    'private' => $field_private
                 ];
             } elseif ( $field_type === "textarea" ){
                 $new_field = [
@@ -829,7 +863,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'type'        => 'textarea',
                     'default'     => '',
                     'tile'     => $field_tile,
-                    'customizable' => 'all'
+                    'customizable' => 'all',
+                    'private' => $field_private
                 ];
             }
 
