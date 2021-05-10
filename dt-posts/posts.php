@@ -433,11 +433,7 @@ class Disciple_Tools_Posts
                         if ( !$label || $label === '' ) {
                             $label = $activity->object_note;
                         }
-                        if ( strpos( $label, 'Locations or Address' ) !== false ) {
-                            $message = __( 'location added', 'disciple_tools' );
-                        } else {
-                            $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? $activity->old_value );
-                        }
+                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? $activity->old_value );
                     }
                 }
             } else {
