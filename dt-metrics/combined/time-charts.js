@@ -7,6 +7,15 @@ jQuery(function() {
 const CUMULATIVE_PREFIX = 'cumulative_'
 const graphTypes = ['stacked', 'line']
 
+const getTimeMetricsByYear = (postType, field) =>
+makeRequest('GET', `metrics/time_metrics_by_year/${postType}/${field}`)
+
+const getTimeMetricsByMonth = (postType, field, year) =>
+makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`)
+
+const getFieldSettings = (postType) =>
+makeRequest('GET', `metrics/field_settings/${postType}`)
+
 function escapeObject(obj) {
     return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
         return [ key, window.lodash.escape(value)]
@@ -26,9 +35,6 @@ function projectTimeCharts() {
         cumulative_chart_title,
         additions_chart_title,
     } = escapeObject(dtMetricsProject.translations)
-
-    const now = new Date()
-    const year = now.getUTCFullYear()
 
     const postTypeOptions = escapeObject(dtMetricsProject.select_options.post_type_select_options)
 
@@ -84,8 +90,7 @@ function projectTimeCharts() {
     document.querySelector('#post-type-select').addEventListener('change', (e) => {
         const postType = e.target.value
         dtMetricsProject.state.post_type = postType
-        window.METRICS
-            .getFieldSettings(postType)
+        getFieldSettings(postType)
             .promise()
             .then((data) => {
                 dtMetricsProject.field_settings = data
@@ -408,8 +413,8 @@ function getData() {
 
     const isAllTime = year === 'all-time'
     const data = isAllTime
-        ? window.METRICS.getTimeMetricsByYear(postType, field)
-        : window.METRICS.getTimeMetricsByMonth(postType, field, year)
+        ? getTimeMetricsByYear(postType, field)
+        : getTimeMetricsByMonth(postType, field, year)
 
     const loadingSpinner = document.querySelector('.loading-spinner')
     const chartElement = document.querySelector('#chart-area')

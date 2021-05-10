@@ -640,15 +640,6 @@ window.METRICS = {
     );
   },
 
-  getTimeMetricsByYear: (postType, field, year) =>
-    makeRequest('GET', `metrics/time_metrics_by_year/${postType}/${field}`),
-
-  getTimeMetricsByMonth: (postType, field, year) =>
-    makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`),
-
-  getFieldSettings: (postType) =>
-    makeRequest('GET', `metrics/field_settings/${postType}`),
-
 };
 
 // nonce timeout fix
