@@ -335,7 +335,11 @@
       } else if (  sortLabel.includes('post_date') ) {
         sortLabel = list_settings.translations.creation_date
       } else  {
-        sortLabel = window.lodash.get( list_settings, `post_type_settings.fields[${filter.query.sort}].name`, sortLabel)
+
+        // remove leading dash from sort filter key when reverse sorting
+        const leadingDashSearch = new RegExp('^-')
+        const querySortKey = (sortLabel.search(leadingDashSearch) > -1) ? sortLabel.replace(leadingDashSearch, '') : sortLabel
+        sortLabel = window.lodash.get( list_settings, `post_type_settings.fields[${querySortKey}].name`, sortLabel)
       }
       html += `<span class="current-filter" data-id="sort">
           ${window.lodash.escape( list_settings.translations.sorting_by )}: ${window.lodash.escape( sortLabel )}
