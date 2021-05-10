@@ -290,6 +290,13 @@ class DT_Contacts_Base {
                 'default'     => false,
             ];
 
+            $fields['favorite'] = [
+                'name'        => __( 'Favorite', 'disciple_tools' ),
+                'type'        => 'boolean',
+                'default'     => false,
+                'private'     => true
+            ];
+
             $fields["overall_status"] = [
                 "name" => __( "Contact Status", 'disciple_tools' ),
                 'description' => _x( 'The Contact Status describes the progress in communicating with the contact.', "Contact Status field description", 'disciple_tools' ),
