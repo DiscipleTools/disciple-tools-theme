@@ -930,7 +930,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'default' => [],
                     'type' => 'tags',
                     'tile' => $field_tile,
-                    'customizable' => 'all'
+                    'customizable' => 'all',
+                    'private' => $field_private
                 ];
             } elseif ( $field_type === "date" ){
                 $new_field = [
