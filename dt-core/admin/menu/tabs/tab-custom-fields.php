@@ -214,13 +214,17 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         if ( isset( $_POST['post_type'] ) ) {
             $post_type = sanitize_text_field( wp_unslash( $_POST['post_type'] ) );
+            if ( isset( $_GET['field-select'] ) ) {
+                $_GET['field-select'] = null;
+            }
+            if ( isset( $_GET['field_selected'] ) ) {
+                $_GET['field_selected'] = null;
+            }
         } else {
             $post_type = null;
         }
 
-        if ( isset( $_GET['post_type'] ) ) {
-            $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
-        }
+
 
             $select_options[$post_type] = [];
             $fields = $this->get_post_fields( $post_type );
@@ -241,7 +245,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <input type="hidden" name="field_select_nonce" id="field_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_select' ) ) ?>" />
             <input type="hidden" name="page" value="dt_options" />
             <input type="hidden" name="tab" value="custom-fields" />
-            <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type ); ?>" />
             <table>
                 <tr>
                     <td style="vertical-align: middle">
