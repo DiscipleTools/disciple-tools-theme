@@ -144,7 +144,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertSame( $result["text_test"], $create_values['text_test'] );
         $this->assertArrayNotHasKey( "text_test_private", $result );
         $this->assertSame( $result["contact_communication_channel_test"][0]["value"], $create_values['contact_communication_channel_test']["values"][0]["value"] );
-        $this->assertSame( $result["user_select_test"], "user-" . $create_values['user_select_test'] );
+        $this->assertSame( $result["user_select_test"]["id"], $create_values['user_select_test'] );
         $this->assertSame( $result["array_test"], $create_values['array_test'] );
         $this->assertSame( (int) $result["location_test"][0]["id"], (int) $create_values['location_test']["values"][0]["value"] ); //@todo returned value should be an int
         $this->assertSame( (int) $result["date_test"]["timestamp"], strtotime( $create_values['date_test'] ) ); //@todo returned value should be an int
