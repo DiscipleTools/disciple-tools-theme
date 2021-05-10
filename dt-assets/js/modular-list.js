@@ -985,6 +985,11 @@
   $("#filter-modal input.dt_date_picker").on('blur', function (e) {
     // delay the blur so that if the user has clicked we get the correct date from the input
     setTimeout(() => {
+      if (!e.target.value) {
+        const clearButton = $(this).prev('.clear-date-picker')
+        clearButton.click()
+        return
+      }
       $(this).datepicker('setDate', e.target.value)
       $('.ui-datepicker-current-day').click()
     }, 100);
