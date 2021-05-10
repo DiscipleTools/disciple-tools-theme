@@ -18,7 +18,7 @@ jQuery(document).ready(function($) {
   detailsBarCreatedOnElements.forEach((element) => {
     const postDate = post.post_date.timestamp
     const formattedDate = window.SHAREDFUNCTIONS.formatDate(postDate)
-    element.innerHTML = window.detailsSettings.translations.created_on.replace('%s', formattedDate)
+    element.innerHTML = window.lodash.escape( window.detailsSettings.translations.created_on.replace('%s', formattedDate) )
   })
 
   $('input.text-input').change(function(){
