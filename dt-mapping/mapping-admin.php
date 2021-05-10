@@ -1385,13 +1385,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <td><input type="text" id="location-latitude" value=""></td>
                         <td><a class="button update-button" data-field="latitude">Update</a></td>
                         <td></td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td>Longitude</td>
                         <td><input type="text" id="location-longitude" value=""></td>
                         <td><a class="button update-button" data-field="longitude">Update</a></td>
-                        <td></td>
                         <td></td>
                     </tr>
                 </table>
@@ -1404,6 +1402,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <th>Name</th>
                         <th>Population</th>
                         <th>ID</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="list_results">
@@ -1448,7 +1447,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     list_results.empty()
 
                     jQuery.each( selection.list, function (i, v) {
-                        list_results.append(`<tr>
+                        var row = 
+                        `<tr>
                             <td>
                                 <a class="open_next_drilldown"
                                     data-parent="${window.lodash.escape( v.parent_id )}"
@@ -1458,8 +1458,43 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             </td>
                             <td>${window.lodash.escape( v.population_formatted )}</td>
                             <td>${window.lodash.escape( v.grid_id )}</td>
-                        </tr>`)
+                            <td>`;
+                            if( v.is_custom_location === "1" ) {
+                                row += `<a class="button delete-button" data-grid_id="${window.lodash.escape( v.grid_id ) }">Delete</a>`;
+                            } 
+                        row += `</td>
+                            </tr>`;
+                        list_results.append( row );
                     })
+
+                    function delete_sublocation( grid_id ) {
+                            let options = {
+                            type: 'POST',
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            url: `<?php echo esc_url_raw( rest_url() )  ?>dt/v1/mapping_module/delete_sublocation`,
+                            beforeSend: xhr => {
+                                xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>');
+                            }
+                        }
+                        if ( grid_id ) {
+                            options.data = JSON.stringify( { grid_id } );
+                        }
+                        return jQuery.ajax(options);
+                    }
+
+                    jQuery(".delete-button").on("click", function () {
+                        jQuery('#update-location-spinner').show()
+                        let grid_id = jQuery( this ).data( 'grid_id' ).toString();
+                        let current_id = current.selected
+                        let del_sublocation = delete_sublocation( grid_id );
+                        del_sublocation.done( function ( data ) {
+                            DRILLDOWN.get_drill_down( 'location_grids', current_id, false );
+                            jQuery('#update-location-spinner').hide();
+                        }).fail( () => {
+                            jQuery('#update-location-spinner').hide();
+                        })
+                    });
 
                     jQuery('.location-name-title').html(selection.selected_name)
                     if ( selection.self ){
@@ -1478,6 +1513,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     }
 
                 }
+
                 jQuery(".update-button").on("click", function () {
                   jQuery('#update-location-spinner').show()
                   let field = jQuery(this).data('field')
@@ -1487,11 +1523,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                   let update = send_update({key: field, value: value, grid_id: grid_id})
 
                   update.done(function (data) {
+                    jQuery('.location-name-title').html(value)
+                    jQuery('button.geocode-link').not('.hollow')[0].innerHTML = value
                     jQuery('#update-location-spinner').hide()
                   }).fail(()=>{
                     jQuery('#update-location-spinner').hide()
                   })
                 })
+
                 jQuery(".reset-button").on("click", function () {
                   jQuery('#update-location-spinner').show()
                   let field = jQuery(this).data('field')
@@ -1502,6 +1541,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                   update.done(function (data) {
                     jQuery('#update-location-spinner').hide()
                     if (data) {
+                    let value = data.value
+                    jQuery('.location-name-title').html(value)
+                    jQuery("button[id='world']")[1].innerHTML = value
                       jQuery(`#location-${field}`).val(data.value)
                     }
                   }).fail(()=>{
@@ -1510,8 +1552,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 })
                 jQuery(document).on('click', '.open_next_drilldown', function(){
                   let gnid = jQuery(this).data('grid_id')
-                  DRILLDOWN.get_drill_down( 'location_grids', gnid  );
+                  DRILLDOWN.get_drill_down( 'location_grids', gnid, false );
                 })
+
                 jQuery('#save-sub-location-button').on('click', function () {
                     jQuery('#new-location-spinner').show()
                     let data = {}
@@ -1532,7 +1575,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                       jQuery('#new-location-spinner').hide()
                     })
                 })
-                window.DRILLDOWN.get_drill_down('location_grids')
+
+                window.DRILLDOWN.get_drill_down('location_grids', false )
             </script>
 
             <?php

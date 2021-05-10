@@ -418,6 +418,7 @@ class DT_User_Management
                 $daily_activity[] = [
                     "day" => dt_format_date( $current ),
                     "weekday" => gmdate( 'l', $current ),
+                    "weekday_number" => gmdate( 'N', $current ),
                     "week_start" => gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $current ) . ' days', $current ) ),
                     "activity_count" => $activity,
                     "activity" => $activity > 0 ? 1 : 0

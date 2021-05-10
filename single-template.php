@@ -99,7 +99,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             }
 
                             $field = $post_settings["fields"][$field_key];
-                            if ( isset( $field["tile"] ) && $field["tile"] === 'status' && !( isset( $field["only_for_types"], $dt_post["type"]["key"] ) && !in_array( $dt_post["type"]["key"], $field["only_for_types"] ) ) && empty( $field["hidden"] ) ) {
+                            $enabled_for_type = dt_field_enabled_for_record_type( $field, $dt_post );
+                            if ( isset( $field["tile"] ) && $field["tile"] === 'status' && $enabled_for_type && empty( $field["hidden"] ) ) {
                                 ?>
                                 <div class="cell small-12 medium-4">
                                     <?php render_field_for_display( $field_key, $post_settings["fields"], $dt_post, true ); ?>
@@ -185,10 +186,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 }
 
                                 $field = $post_settings["fields"][$field_key];
-                                if ( isset( $dt_post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
-                                    if ( !in_array( $dt_post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
-                                        return;
-                                    }
+                                if ( !dt_field_enabled_for_record_type( $field, $dt_post ) ) {
+                                    continue;
                                 }
 
                                 if ( isset( $field["tile"] ) && $field["tile"] === 'details'){
@@ -231,9 +230,9 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                         continue;
                                     }
                                     $field = $post_settings["fields"][$field_key];
+                                    $enabled_for_type = dt_field_enabled_for_record_type( $field, $dt_post );
                                     if ( isset( $post_settings["fields"][$field_key]["hidden"] ) && true === $post_settings["fields"][$field_key]["hidden"]
-                                        || ( isset( $field["only_for_types"], $dt_post["type"]["key"] ) && !in_array( $dt_post["type"]["key"], $field["only_for_types"] ) )
-                                        ){
+                                        || !$enabled_for_type ){
                                         continue;
                                     }
 
