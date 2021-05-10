@@ -180,12 +180,12 @@ class DT_Duplicate_Checker_And_Merging {
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
 
         $exact_query = self::query_for_duplicate_searches( $post_type, $post_id, true );
-        $exact_query["fields"] = array_merge( $exact_query["fields"], [ "overall_status" ] );
+        $exact_query["fields"] = array_merge( $exact_query["fields"], [ "overall_status", "reason_closed" ] );
         $search_query = [ $exact_query["query"], "fields_to_return" => $exact_query["fields"]];
         $exact_duplicates = DT_Posts::list_posts( $post_type, $search_query );
 
         $fuzzy_query = self::query_for_duplicate_searches( $post_type, $post_id, false );
-        $fuzzy_query["fields"] = array_merge( $fuzzy_query["fields"], [ "overall_status" ] );
+        $fuzzy_query["fields"] = array_merge( $fuzzy_query["fields"], [ "overall_status", "reason_closed" ] );
 
         $search_query = [ $fuzzy_query["query"], "fields_to_return" => $fuzzy_query["fields"]];
         $possible_duplicates = DT_Posts::list_posts( $post_type, $search_query );
