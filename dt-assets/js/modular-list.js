@@ -982,6 +982,19 @@
     $('#save-filter-edits').hide()
   })
 
+  $("#filter-modal input.dt_date_picker").on('blur', function (e) {
+    // delay the blur so that if the user has clicked we get the correct date from the input
+    setTimeout(() => {
+      if (!e.target.value) {
+        const clearButton = $(this).prev('.clear-date-picker')
+        clearButton.click()
+        return
+      }
+      $(this).datepicker('setDate', e.target.value)
+      $('.ui-datepicker-current-day').click()
+    }, 100);
+  })
+
   let edit_saved_filter = function( filter ){
     $('#filter-modal').foundation('open');
     typeaheads_loaded.then(()=>{
@@ -1086,7 +1099,8 @@
       `)
     },
     changeMonth: true,
-    changeYear: true
+    changeYear: true,
+    yearRange: "-20:+10",
   })
 
   $('#filter-modal .clear-date-picker').on('click', function () {

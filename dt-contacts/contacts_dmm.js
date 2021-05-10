@@ -38,7 +38,8 @@ jQuery(document).ready(function($) {
       }).catch(handleAjaxError)
     },
     changeMonth: true,
-    changeYear: true
+    changeYear: true,
+    yearRange: "-20:+10",
   })
   let openBaptismModal = function( newContact ){
     if ( !post.baptism_date || !(post.milestones || []).includes('milestone_baptized') || (post.baptized_by || []).length === 0 ){
