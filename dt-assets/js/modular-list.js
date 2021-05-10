@@ -982,6 +982,14 @@
     $('#save-filter-edits').hide()
   })
 
+  $("#filter-modal input.dt_date_picker").on('blur', function (e) {
+    // delay the blur so that if the user has clicked we get the correct date from the input
+    setTimeout(() => {
+      $(this).datepicker('setDate', e.target.value)
+      $('.ui-datepicker-current-day').click()
+    }, 100);
+  })
+
   let edit_saved_filter = function( filter ){
     $('#filter-modal').foundation('open');
     typeaheads_loaded.then(()=>{
