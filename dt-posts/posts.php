@@ -901,22 +901,6 @@ class Disciple_Tools_Posts
                             } else {
                                 $where_sql .= " $table_key.meta_value $equality " . esc_sql( $value );
                             }
-                        } else if ( in_array( $field_type, [ 'post_user_meta' ] ) ){
-                            /**
-                             * post user meta
-                             */
-                            if ( !in_array( $table_key, $args["joins_fields"] ) ){
-                                $user_id = get_current_user_id();
-                                $values = dt_array_to_sql( $query_value );
-                                $args["joins_fields"][] = $table_key;
-                                $args["joins_sql"] .= " JOIN (
-                                    SELECT *
-                                    FROM $wpdb->dt_post_user_meta as pum
-                                    WHERE pum.meta_key = '$query_key'
-                                    AND pum.user_id = $user_id
-                                    AND pum.category IN ($values)
-                                ) as $table_key ON ( $table_key.post_id = p.ID )";
-                            }
                         } else {
                             return new WP_Error( __FUNCTION__, "you can not filter $field_type fields", [ 'status' => 400 ] );
                         }
