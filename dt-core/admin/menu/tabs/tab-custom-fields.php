@@ -685,7 +685,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
             $field_customizations[$post_type][$field_key] = $custom_field;
-            dt_write_log($custom_field);
             update_option( "dt_field_customizations", $field_customizations );
             wp_cache_delete( $post_type . "_field_settings" );
         }
