@@ -490,7 +490,6 @@
           }
           return `<li>${v}</li>`
         }).join('')
-console.log(values_html);
         if ( $(window).width() < mobile_breakpoint ){
           row_fields_html += `
             <td>
