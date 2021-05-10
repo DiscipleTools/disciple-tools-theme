@@ -11,6 +11,15 @@ jQuery(document).ready(function($) {
 
   /* List Table */
   function write_users_list(){
+    const lastActivityElements =  document.querySelectorAll('.last_activity')
+    lastActivityElements.forEach((element) => {
+      const timestamp = element.dataset.sort
+      if (timestamp.length > 0) {
+        // concatenating formatted date to preserve possible alert
+        element.innerHTML = element.innerHTML + window.SHAREDFUNCTIONS.formatDate(timestamp)
+      }
+    })
+
     let multipliers_table = $('#multipliers_table').DataTable({
       "paging":   false,
       "order": [[ 1, "asc" ]],
@@ -462,7 +471,16 @@ jQuery(document).ready(function($) {
     makeRequest( "get", `user?user=${user_id}&section=days_active`, null , 'user-management/v1/')
       .done(days=>{
         if ( window.current_user_lookup === user_id ) {
-          day_activity_chart(days.days_active)
+          const daysActiveTranslated = days.days_active.map((day) => {
+            // translations start week with Sun, php gmdate starts week with Monday
+            const weekNumber = parseInt(day.weekday_number) === 7 ? 0 : parseInt(day.weekday_number)
+            const translatedWeekDay = window.wpApiShare.translations.days_of_the_week[weekNumber]
+            return {
+              ...day,
+              weekday: translatedWeekDay ? translatedWeekDay : day.weekday
+            }
+          })
+          day_activity_chart(daysActiveTranslated)
         }
       }).catch((e)=>{
       console.log( 'error in days active')

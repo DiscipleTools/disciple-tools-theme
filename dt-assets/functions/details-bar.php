@@ -97,8 +97,8 @@ function dt_print_details_bar(
                             <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
                                 <a data-open="contact-type-modal" style="font-size: 10px"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
                             <?php endif; ?>
-                                <?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), $dt_post["post_date"]["formatted"] ) );
-                                if ( $dt_post["post_author_display_name"] ):
+                                <span class="details-bar-created-on"></span>
+                                <?php if ( $dt_post["post_author_display_name"] ):
                                     echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
                                 endif; ?>
                             </span>
@@ -210,6 +210,7 @@ function dt_print_details_bar(
                     <?php } ?>
                 </div>
             </div>
+
             <div class="grid-x">
                 <div class="cell small-1 center-items">
                     <a class="section-chevron navigation-previous" style="display: none;" href="javascript:void(0)">
@@ -237,8 +238,8 @@ function dt_print_details_bar(
                         <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
                             <a data-open="contact-type-modal" style="font-size: 10px"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
                         <?php endif; ?>
-                            <?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), $dt_post["post_date"]["formatted"] ) );
-                            if ( $dt_post["post_author_display_name"] ):
+                        <span class="details-bar-created-on"></span>
+                            <?php if ( $dt_post["post_author_display_name"] ):
                                 echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
                             endif; ?>
                         </span>
