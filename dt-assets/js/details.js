@@ -271,6 +271,66 @@ jQuery(document).ready(function($) {
     })
   })
 
+  /**
+   * user select typeahead
+   */
+  $('.dt_user_select').each((key, el)=>{
+    let field_key = $(el).attr('id')
+    let user_input = $(`.js-typeahead-${field_key}`)
+    $.typeahead({
+      input: `.js-typeahead-${field_key}`,
+      minLength: 0,
+      maxItem: 0,
+      accent: true,
+      searchOnFocus: true,
+      source: TYPEAHEADS.typeaheadUserSource(),
+      templateValue: "{{name}}",
+      template: function (query, item) {
+        return `<div class="assigned-to-row" dir="auto">
+          <span>
+              <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+              ${window.lodash.escape( item.name )}
+          </span>
+          ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
+          ${ item.update_needed && item.update_needed > 0 ? `<span>
+            <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+            <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+          </span>` : '' }
+        </div>`
+      },
+      dynamic: true,
+      hint: true,
+      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+      callback: {
+        onClick: function(node, a, item){
+          API.update_post('contacts', post_id, {[field_key]: 'user-' + item.ID}).then(function (response) {
+            window.lodash.set(post, field_key, response[field_key])
+            setStatus(response)
+            user_input.val(post.assigned_to.display)
+            user_input.blur()
+          }).catch(err => { console.error(err) })
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $(`#${field_key}-result-container`).html(text);
+        },
+        onHideLayout: function () {
+          $(`.${field_key}-result-container`).html("");
+        },
+        onReady: function () {
+          if (window.lodash.get(post,  `${field_key}.display`)){
+            $(`.js-typeahead-${field_key}`).val(post[field_key].display)
+          }
+        }
+      },
+    });
+    $(`.search_${field_key}`).on('click', function () {
+      user_input.val("")
+      user_input.trigger('input.typeahead')
+      user_input.focus()
+    })
+  })
+
 
   $('.dt_typeahead').each((key, el)=>{
     let field_id = $(el).attr('id').replace('_connection', '')
@@ -865,7 +925,7 @@ jQuery(document).ready(function($) {
 
       if ( field_options.tile === 'details' && !field_options.hidden && post[field_key]){
 
-        if ( field_options.only_for_types && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ){
+        if ( field_options.only_for_types && ( field_options.only_for_types === true || field_options.only_for_types.length > 0 && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ) ){
           return
         }
         let field_value = window.lodash.get( post, field_key, false )
