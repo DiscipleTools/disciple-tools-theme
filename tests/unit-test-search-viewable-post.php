@@ -269,6 +269,13 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $res = DT_Posts::search_viewable_post( "contacts", [ "overall_status" => "active" ], false );
         $this->assertWPError( $res );
 
+        //check that the paused contact doesn't show up in the "none" search
+        $res = DT_Posts::search_viewable_post( "contacts", [ "overall_status" => [ 'none' ] ], false );
+        $this->assertNotContains( $paused["ID"], self::map_ids( $res["posts"] ) );
+        delete_post_meta( $paused["ID"], "overall_status" );
+        //check that the contact does show up in the "none" search not that the meta is removed
+        $res = DT_Posts::search_viewable_post( "contacts", [ "overall_status" => [ 'none' ] ], false );
+        $this->assertContains( $paused["ID"], self::map_ids( $res["posts"] ) );
 
         /*
          * multi_select
