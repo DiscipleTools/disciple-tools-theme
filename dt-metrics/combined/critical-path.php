@@ -34,22 +34,13 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
-    public function has_permission(){
-        $permissions = $this->permissions;
-        $pass = count( $permissions ) === 0;
-        foreach ( $this->permissions as $permission ){
-            if ( current_user_can( $permission ) ){
-                $pass = true;
-            }
-        }
-        return $pass;
-    }
-
+    // TODO is this function being used anywhere?
     public function add_url( $template_for_url ) {
         $template_for_url['metrics/critical-path'] = 'template-metrics.php';
         return $template_for_url;
     }
 
+    // TODO is this function being used anywhere?
     public function add_menu( $content ) {
         $content .= '
             <li><a href="' . site_url( '/metrics/critical-path/' ) . '">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a></li>

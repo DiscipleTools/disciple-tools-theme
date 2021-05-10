@@ -24,7 +24,7 @@ function project_critical_path() {
   jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
 
   chartDiv.empty().html(`
-    <div class="section-header">${ translations.title_critical_path }</div>
+    <div class="section-header">${ window.lodash.escape( translations.title_critical_path ) }</div>
     <div class="date_range_picker">
         <i class="fi-calendar"></i>&nbsp;
         <span>${moment().format("YYYY")}</span>
@@ -37,7 +37,7 @@ function project_critical_path() {
     <div id="ongoingChart" style="width:90%;"></div>
     <!--<div id="chartdiv" style="height: 800px; width:100%;"></div>-->
     <br>
-    <h4>${ translations.filter_critical_path }</h4>
+    <h4>${ window.lodash.escape( translations.filter_critical_path ) }</h4>
     <div id="field_selector" style="display: flex; flex-wrap: wrap"> </div>
   `)
 

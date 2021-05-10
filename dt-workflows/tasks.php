@@ -15,7 +15,7 @@ function set_task_notifications(){
     global $wpdb;
 
     $tasks = $wpdb->get_results("
-        SELECT * 
+        SELECT *
         FROM $wpdb->dt_post_user_meta pum
         WHERE pum.date <= NOW()
         AND meta_key = 'tasks'
@@ -49,7 +49,7 @@ function set_task_notifications(){
                 'notification_note'   => $val["note"],
                 'date_notified'       => current_time( 'mysql' ),
                 'is_new'              => 1,
-                'field_key'           => 'post_user_meta',
+                'field_key'           => 'task',
                 'field_value'         => $task["id"],
             ];
             do_action( 'send_notification_on_channels', $task["user_id"], $notification, 'tasks', [] );
