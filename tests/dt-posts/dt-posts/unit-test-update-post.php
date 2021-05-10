@@ -147,7 +147,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertSame( $result["user_select_test"]["id"], $create_values['user_select_test'] );
         $this->assertSame( $result["array_test"], $create_values['array_test'] );
         $this->assertSame( (int) $result["location_test"][0]["id"], (int) $create_values['location_test']["values"][0]["value"] ); //@todo returned value should be an int
-        $this->assertSame( (int) $result["date_test"]["timestamp"], strtotime( $create_values['date_test'] ) ); //@todo returned value should be an int
+        $this->assertSame( $result["date_test"]["timestamp"], strtotime( $create_values['date_test'] ) );
         $this->assertArrayNotHasKey( "date_test_private", $result );
         $this->assertSame( $result["boolean_test"], $create_values['boolean_test'] );
         $this->assertArrayNotHasKey( "boolean_test_private", $result );
@@ -158,7 +158,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertArrayNotHasKey( "key_select_test_private", $result );
         $this->assertSame( $result["tags_test"][0], $create_values['tags_test']["values"][0]["value"] );
         $this->assertArrayNotHasKey( "tags_test_private", $result );
-        $this->assertSame( (int) $result["number_test"], (int) $create_values['number_test'] ); //@todo returned value should be an int
+        $this->assertSame( $result["number_test"], $create_values['number_test'] );
         $this->assertArrayNotHasKey( "number_test_private", $result );
 
         //Second user should not see private values in the contact updated by the first user
