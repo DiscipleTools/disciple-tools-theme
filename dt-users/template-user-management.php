@@ -111,13 +111,12 @@ $user_management_options = DT_User_Management::user_management_options();
                                     }
                                     ?>
                                 </td>
-                                <td data-sort="<?php echo esc_html( $user["last_activity"] ?? "" ) ?>">
+                                <td class="last_activity" data-sort="<?php echo esc_html( $user["last_activity"] ?? "" ) ?>">
                                     <?php if ( !isset( $user["last_activity"] ) ) :
                                         esc_html_e( "No activity", 'disciple_tools' );
                                     elseif ( $user["last_activity"] < time() - 60 * 60 * 24 * 90 ) : ?>
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" alt="alert" />
                                     <?php endif; ?>
-                                    <?php echo esc_html( dt_format_date( $user["last_activity"] ?? "" ) ) ?>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
