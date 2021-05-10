@@ -2042,7 +2042,7 @@ class Disciple_Tools_Posts
                         "key" => $value[0],
                         "label" => $label
                     ];
-                } elseif ( $key === "assigned_to" ) {
+                } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'user_select' ) {
                     if ( $value ) {
                         $meta_array = explode( '-', $value[0] ); // Separate the type and id
                         $type = $meta_array[0]; // Build variables
@@ -2077,10 +2077,12 @@ class Disciple_Tools_Posts
                     $fields[$key] = $value[0] === "1";
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
                     $fields[$key] = maybe_unserialize( $value[0] );
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'number' ) {
+                    $fields[$key] = maybe_unserialize( $value[0] ) + 0;
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
                     if ( isset( $value[0] ) && !empty( $value[0] ) ){
                         $fields[$key] = [
-                            "timestamp" => is_numeric( $value[0] ) ? $value[0] : dt_format_date( $value[0], "U" ),
+                            "timestamp" => is_numeric( $value[0] ) ? (int) $value[0] : dt_format_date( $value[0], "U" ),
                             "formatted" => dt_format_date( $value[0] ),
                         ];
                     }
@@ -2181,8 +2183,11 @@ class Disciple_Tools_Posts
                         $timestamp = $m['meta_value'];
                         $formatted_date = dt_format_date( $timestamp );
 
-                        $fields[$m["meta_key"]]['timestamp'] = $timestamp;
+                        $fields[$m["meta_key"]]['timestamp'] = (int) $timestamp;
                         $fields[$m["meta_key"]]['formatted'] = $formatted_date;
+
+                    } else if ( $field_settings[$m['meta_key']]['type'] === 'number' ){
+                        $fields[$m["meta_key"]] = $m['meta_value'] + 0;
 
                     } else if ( $field_settings[$m['meta_key']]['type'] === 'boolean' ){
                         if ( $m["meta_value"] === "1" || $m["meta_value"] === "yes" || $m["meta_value"] === "true" ){

@@ -284,6 +284,20 @@ class DT_Contacts_Base {
                 "icon" => get_template_directory_uri() . "/dt-assets/images/gender.svg",
             ];
 
+            $fields['age'] = [
+                'name'        => __( 'Age', 'disciple_tools' ),
+                'type'        => 'key_select',
+                'default'     => [
+                    'not-set' => [ "label" => '' ],
+                    '<19'     => [ "label" => __( 'Under 18 years old', 'disciple_tools' ) ],
+                    '<26'     => [ "label" => __( '18-25 years old', 'disciple_tools' ) ],
+                    '<41'     => [ "label" => __( '26-40 years old', 'disciple_tools' ) ],
+                    '>41'     => [ "label" => __( 'Over 40 years old', 'disciple_tools' ) ],
+                ],
+                'tile'     => 'details',
+                'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg",
+            ];
+
             $fields['requires_update'] = [
                 'name'        => __( 'Requires Update', 'disciple_tools' ),
                 'type'        => 'boolean',
