@@ -961,11 +961,11 @@ class Disciple_Tools_Mapping_Queries {
                 WHEN g.level >= 5
                   THEN CONCAT(
                     g.alt_name, ' > ',
-                    (SELECT a4.alt_name FROM $wpdb->dt_location_grid AS a4 WHERE a4.grid_id = g.admin4_grid_id LIMIT 1), ' > ',
-                    (SELECT a3.alt_name FROM $wpdb->dt_location_grid AS a3 WHERE a3.grid_id = g.admin3_grid_id LIMIT 1), ' > ',
-                    (SELECT a2.alt_name FROM $wpdb->dt_location_grid AS a2 WHERE a2.grid_id = g.admin2_grid_id LIMIT 1), ' > ',
-                    (SELECT a1.alt_name FROM $wpdb->dt_location_grid AS a1 WHERE a1.grid_id = g.admin1_grid_id LIMIT 1), ' > ',
-                    (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1)
+                    if ( g.admin4_grid_id, CONCAT( (SELECT a4.alt_name FROM $wpdb->dt_location_grid AS a4 WHERE a4.grid_id = g.admin4_grid_id LIMIT 1), ' > ' ), '' ),
+                    if ( g.admin3_grid_id, CONCAT( (SELECT a3.alt_name FROM $wpdb->dt_location_grid AS a3 WHERE a3.grid_id = g.admin3_grid_id LIMIT 1), ' > ' ), '' ),
+                    if ( g.admin2_grid_id, CONCAT( (SELECT a2.alt_name FROM $wpdb->dt_location_grid AS a2 WHERE a2.grid_id = g.admin2_grid_id LIMIT 1), ' > ' ), '' ),
+                    if ( g.admin1_grid_id, CONCAT( (SELECT a1.alt_name FROM $wpdb->dt_location_grid AS a1 WHERE a1.grid_id = g.admin1_grid_id LIMIT 1), ' > ' ), '' ),
+                    if ( g.admin0_grid_id, (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1), '' )
                   )
                 ELSE g.alt_name
             END as label

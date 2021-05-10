@@ -97,13 +97,16 @@ jQuery(function($) {
       }
     });
     $('.dt-communication-channel').each((index, entry)=>{
-      let channel = $(entry).data('field')
-      if ( !new_post[channel]){
-        new_post[channel] =[]
+      let val = $(entry).val()
+      if ( val.length > 0 ){
+        let channel = $(entry).data('field')
+        if ( !new_post[channel]){
+          new_post[channel] =[]
+        }
+        new_post[channel].push({
+          value: $(entry).val()
+        })
       }
-      new_post[channel].push({
-        value: $(entry).val()
-      })
     })
     $('.selected-select-button').each((index, entry)=>{
       let optionKey = $(entry).attr('id')
@@ -267,6 +270,50 @@ jQuery(function($) {
             }
           }
         });
+      } else if ( field_type === "user_select" ){
+        $.typeahead({
+          input: `.js-typeahead-${field_key}`,
+          minLength: 0,
+          maxItem: 0,
+          accent: true,
+          searchOnFocus: true,
+          source: TYPEAHEADS.typeaheadUserSource(),
+          templateValue: "{{name}}",
+          template: function (query, item) {
+            return `<div class="assigned-to-row" dir="auto">
+              <span>
+                  <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+                  ${window.lodash.escape( item.name )}
+              </span>
+              ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
+              ${ item.update_needed && item.update_needed > 0 ? `<span>
+                <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+                <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+              </span>` : '' }
+            </div>`
+          },
+          dynamic: true,
+          hint: true,
+          emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+          callback: {
+            onClick: function(node, a, item){
+              new_post[field_key] = item.ID
+            },
+            onResult: function (node, query, result, resultCount) {
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $(`#${field_key}-result-container`).html(text);
+            },
+            onHideLayout: function () {
+              $(`.${field_key}-result-container`).html("");
+            }
+          },
+        });
+        let user_input = $(`.js-typeahead-${field_key}`)
+        $(`.search_${field_key}`).on('click', function () {
+          user_input.val("")
+          user_input.trigger('input.typeahead')
+          user_input.focus()
+        })
       }
     }
   })

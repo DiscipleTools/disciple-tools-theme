@@ -152,7 +152,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $date_format = get_option( 'date_format' );
             $time_format = get_option( 'time_format' );
             if ($format === 'short') {
-                $format = $date_format;
+                // $format = $date_format;
+                // formatting it with internationally understood date, as there was a
+                // struggle getting dates to show in user's selected language and not
+                // in the site language.
+                $format = 'Y-m-d';
             } else if ($format === 'long') {
                 $format = $date_format . ' ' . $time_format;
             }
@@ -349,8 +353,24 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         return $merged;
     }
 
+    function dt_field_enabled_for_record_type( $field, $post ){
+        if ( !isset( $post["type"]["key"] ) ){
+            return true;
+        }
+        // if only_for_type is not set, then the field is available on all types
+        if ( !isset( $field["only_for_types"] ) ){
+            return true;
+        } else if ( $field["only_for_types"] === true ){
+            return true;
+        } else if ( is_array( $field["only_for_types"] ) && in_array( $post["type"]["key"], $field["only_for_types"], true ) ){
+            //if the type is in the "only_for_types"
+            return true;
+        }
+        return false;
+    }
+
     /**
-     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags
+     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags, user_select
      *
      * @param $field_key
      * @param $fields
@@ -362,15 +382,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
         $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
         $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
+        $is_private = ( isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true ) ? true : false;
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags' ] );
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
-            if ( isset( $post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
-                if ( !in_array( $post['type']["key"], $fields[$field_key]["only_for_types"] ) ){
-                    return;
-                }
+            if ( !dt_field_enabled_for_record_type( $fields[$field_key], $post ) ){
+                return;
             }
 
             $display_field_id = $field_key;
@@ -385,7 +404,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php endif;
                 echo esc_html( $fields[$field_key]["name"] );
                 ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
-                <?php if ( $field_type === "communication_channel" ) : ?>
+                <?php if ( $is_private ) : ?>
+                    <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
+                <?php endif;
+                if ( $field_type === "communication_channel" ) : ?>
                     <button data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
@@ -586,6 +608,28 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                    class="dt-communication-channel input-group-field" dir="auto" />
                         </div>
                     <?php endif ?>
+                </div>
+            <?php elseif ( $field_type === "user_select" ) : ?>
+                <div id="<?php echo esc_html( $field_key ); ?>" class="<?php echo esc_html( $display_field_id ); ?> dt_user_select">
+                    <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container <?php echo esc_html( $display_field_id ); ?>-result-container"></var>
+                    <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-<?php echo esc_html( $display_field_id ); ?>" class="scrollable-typeahead">
+                        <div class="typeahead__container" style="margin-bottom: 0">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" dir="auto"
+                                           name="<?php echo esc_html( $display_field_id ); ?>[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                                           data-field_type="user_select"
+                                           data-field="<?php echo esc_html( $field_key ); ?>"
+                                           autocomplete="off">
+                                </span>
+                                <span class="typeahead__button">
+                                    <button type="button" class="search_<?php echo esc_html( $display_field_id ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $display_field_id ); ?>_t">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             <?php endif;
         }

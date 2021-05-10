@@ -171,7 +171,8 @@ class DT_Contacts_Base {
             ];
             $fields['tasks'] = [
                 'name' => __( 'Tasks', 'disciple_tools' ),
-                'type' => 'post_user_meta',
+                'type' => 'task',
+                'private' => true
             ];
             $fields["languages"] = [
                 'name' => __( 'Languages', 'disciple_tools' ),
@@ -295,6 +296,20 @@ class DT_Contacts_Base {
                 'tile'     => 'details',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg",
                 "only_for_types" => [ "access" ]
+            ];
+
+            $fields['age'] = [
+                'name'        => __( 'Age', 'disciple_tools' ),
+                'type'        => 'key_select',
+                'default'     => [
+                    'not-set' => [ "label" => '' ],
+                    '<19'     => [ "label" => __( 'Under 18 years old', 'disciple_tools' ) ],
+                    '<26'     => [ "label" => __( '18-25 years old', 'disciple_tools' ) ],
+                    '<41'     => [ "label" => __( '26-40 years old', 'disciple_tools' ) ],
+                    '>41'     => [ "label" => __( 'Over 40 years old', 'disciple_tools' ) ],
+                ],
+                'tile'     => 'details',
+                'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg",
             ];
 
             $fields['requires_update'] = [
