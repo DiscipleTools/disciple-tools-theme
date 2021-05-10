@@ -78,11 +78,18 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
 
             if ( isset( $_POST['post_type'] ) ) {
-                $post_type = sanitize_text_field( wp_unslash( $_POST['post_type'] ) );
+                if ( isset( $_POST['delete'] ) ) {
+                    $post_type = null;
+                } else {
+                    $post_type = sanitize_text_field( wp_unslash( $_POST['post_type'] ) );
+                }
             } else if ( isset( $_GET['post_type'] ) ) {
                 $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
             } else if ( isset( $_GET['show_add_new_field'] ) ) {
                 $post_type = sanitize_text_field( wp_unslash( $_GET['show_add_new_field'] ) );
+            } else if ( isset( $_GET['field-select'] ) ) {
+                $post_type = sanitize_text_field( wp_unslash( $_GET['field-select'] ) );
+                $post_type = explode( '_', $post_type )[0];
             } else {
                 $post_type = null;
             }
@@ -214,6 +221,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         if ( isset( $_POST['post_type'] ) ) {
             $post_type = sanitize_text_field( wp_unslash( $_POST['post_type'] ) );
+            /*
+             * Check if residual $_GET params still exist and remove them
+             * so the user starts navigation from the first step
+             */
             if ( isset( $_GET['field-select'] ) ) {
                 $_GET['field-select'] = null;
             }
@@ -566,7 +577,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <tr style="background-color: #eee">
                                 <td><?php echo esc_html( $key ) ?></td>
                                 <td><?php echo esc_html( $label ) ?></td>
-                                <td></td>
+                                <td colspan="5"></td>
                                 <td>
                                     <button type="submit" name="restore_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Restore", 'disciple_tools' ) ?></button>
                                 </td>
