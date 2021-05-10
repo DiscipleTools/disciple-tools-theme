@@ -352,7 +352,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     FROM
                         $wpdb->dt_activity_log AS log
                     WHERE log.field_type = 'date'
-                        AND log.meta_value REGEXP '^[0-9]+$'
+                        AND log.meta_value REGEXP '^[1-9][0-9]+$'
                     UNION
                     SELECT
                         MIN( YEAR( p2pmeta.meta_value ) ) AS year
