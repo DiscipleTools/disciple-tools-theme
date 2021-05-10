@@ -685,6 +685,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
             $field_customizations[$post_type][$field_key] = $custom_field;
+            dt_write_log($custom_field);
             update_option( "dt_field_customizations", $field_customizations );
             wp_cache_delete( $post_type . "_field_settings" );
         }
@@ -792,6 +793,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
     private function process_add_field( $post_submission ){
         if ( isset( $post_submission["new_field_name"], $post_submission["new_field_type"], $post_submission["post_type"] ) ){
+            dt_write_log($post_submission);
             $post_type = $post_submission["post_type"];
             $field_type = $post_submission["new_field_type"];
             $field_tile = $post_submission["new_field_tile"] ?? '';
@@ -837,7 +839,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'default' => [],
                     'type' => 'tags',
                     'tile' => $field_tile,
-                    'customizable' => 'all'
+                    'customizable' => 'all',
+                    'private' => $field_private
                 ];
             } elseif ( $field_type === "date" ){
                 $new_field = [
