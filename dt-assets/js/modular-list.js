@@ -689,6 +689,21 @@
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
 
+  $('.all-connections').on("click", function () {
+    const tabsPanel = $(this).closest('.tabs-panel')
+    const field = tabsPanel.length === 1 ? tabsPanel[0].id : ''
+    const typeaheadQueryElement = tabsPanel.find('.typeahead__query')
+    const typeahead = tabsPanel.find(`.js-typeahead-${field}`)
+
+    if ($(this).prop('checked') === true) {
+      typeahead.prop('disabled', true)
+      typeaheadQueryElement.addClass('disabled')
+    } else {
+      typeahead.prop('disabled', false)
+      typeaheadQueryElement.removeClass('disabled')
+    }
+  })
+
 
   let load_multi_select_typeaheads = async function load_multi_select_typeaheads() {
     for (let input of $(".multi_select .typeahead__query input")) {
@@ -971,6 +986,12 @@
     })
     $("#filter-modal input:checked").each(function () {
       $(this).prop('checked', false)
+    })
+    $("#filter-modal input:disabled").each(function () {
+      $(this).prop('disabled', false)
+    })
+    $('#filter-modal .typeahead__query.disabled').each(function () {
+      $(this).removeClass('disabled')
     })
     selected_filters.empty();
     $(".typeahead__query input").each(function () {
