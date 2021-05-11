@@ -804,7 +804,7 @@ jQuery(document).ready(function($) {
       })
       $('.button.favorite').removeClass('selected');
     }
-  };
+  }
 
   favorite_check(window.detailsSettings.post_fields);
 
