@@ -206,9 +206,17 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         if ( ! empty( $fields ) && ! $object_note ) { // Build object note if contact, group, location, else ignore object note
             if ( $new ) {
-                $object_note = 'Added ' . $this->_key_name( $meta_key, $fields ) . ': ' . $this->_value_name( $meta_key, $meta_value, $fields );
+                if ( $meta_key === 'location_grid_meta' ) {
+                    $object_note = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $meta_value );
+                } else {
+                    $object_note = 'Added ' . $this->_key_name( $meta_key, $fields ) . ': ' . $this->_value_name( $meta_key, $meta_value, $fields );
+                }
             } else if ( $deleted ) {
-                $object_note = $this->_key_name( $meta_key, $fields ) . ' "' . ( $this->_value_name( $meta_key, empty( $prev_value ) ? $meta_value : $prev_value, $fields ) ) . '" deleted ';
+                if ( $meta_key === 'location_grid_meta' ) {
+                    $object_note = $prev[0]->object_note ?? '';
+                } else {
+                    $object_note = $this->_key_name( $meta_key, $fields ) . ' "' . ( $this->_value_name( $meta_key, empty( $prev_value ) ? $meta_value : $prev_value, $fields ) ) . '" deleted ';
+                }
             } else {
                 $object_note = $this->_key_name( $meta_key, $fields ) . ' changed ' .
                                ( isset( $prev_value ) ? 'from "' . $this->_value_name( $meta_key, $prev_value, $fields ) . '"' : '' ) .

@@ -184,11 +184,7 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                             "post_id" => $post_id,
                             "grid_meta_id" => $value
                         ]);
-                        $wpdb->delete($wpdb->postmeta, [
-                            "post_id" => $post_id,
-                            "meta_key" => "location_grid_meta",
-                            "meta_value" => $value
-                        ]);
+                        delete_post_meta( $post_id, "location_grid_meta", $value );
                         $status = true;
                         break;
 
