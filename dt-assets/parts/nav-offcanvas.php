@@ -74,6 +74,8 @@
             <li><a href="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ?? '' ); ?>"><?php echo esc_html( $dt_nav_tabs['admin']['settings']['submenu']['admin']['label'] ?? '' ); ?></a></li>
         <?php endif; ?>
 
+        <li><a href="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['submenu']['help']['link'] ?? '' ); ?>"><?php echo esc_html( $dt_nav_tabs['admin']['settings']['submenu']['help']['label'] ?? '' ); ?></a></li>
+
         <li><a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( 'Log Off', 'disciple_tools' )?></a></li>
 
     </ul>

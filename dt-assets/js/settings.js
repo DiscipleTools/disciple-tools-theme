@@ -200,7 +200,8 @@ let dateFields = [ "start_date", "end_date" ]
       },
       dateFormat: 'yy-mm-dd',
       changeMonth: true,
-      changeYear: true
+      changeYear: true,
+      yearRange: "-20:+10",
     })
   })
 
