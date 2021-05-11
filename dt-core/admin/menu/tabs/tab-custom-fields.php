@@ -66,7 +66,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
      */
     public function content( $tab ) {
         global $wp_post_types;
-        
+
         if ( 'custom-fields' == $tab ) :
             $show_add_field = false;
             $field_key = false;
@@ -74,7 +74,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $field_key = sanitize_text_field( wp_unslash( $_POST['field_key'] ) ) ?: false;
             }
 
-            /* 
+            /*
              * Check for post types
              */
             if ( isset( $_POST['post_type'] ) ) {
@@ -195,7 +195,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             </table>
             <br>
         </form>
-    <?php
+        <?php
     }
 
     private function field_select( $selected_post_type ){
@@ -828,7 +828,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     private function add_field( $post_type ){
         global $wp_post_types;
         $post_type = sanitize_text_field( wp_unslash( $post_type ) );
-        $tile_options = DT_Posts::get_post_tiles( $post_type );;
+        $tile_options = DT_Posts::get_post_tiles( $post_type );
         ?>
         <form method="post">
             <input type="hidden" name="field_add_nonce" id="field_add_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_add' ) ) ?>" />
