@@ -240,7 +240,6 @@ function dt_site_scripts() {
                     'duplicates_on' => __( "Duplicates on: %s", 'disciple_tools' ),
                     'transfer_error' => __( 'Transfer failed. Check site-to-site configuration.', 'disciple_tools' ),
                     'created_on' => _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ),
-                    'reason_closed' => __( 'Reason closed:', 'disciple_tools' ),
                 ]
             ]);
 
