@@ -326,7 +326,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php endif; ?>
                     </td>
                     <td>
-                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>></input>
+                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?> <?php echo esc_html( ( isset( $defaults[$field_key] ) ) ? "disabled" : '' ); ?>></input>
                     </td>
                     <td>
                         <button class="button small expand_translations">
