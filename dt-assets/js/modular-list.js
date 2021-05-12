@@ -641,7 +641,12 @@
     fields_filtered.forEach(field=>{
       let type = window.lodash.get(list_settings, `post_type_settings.fields.${field}.type` )
       if ( type === "connection" || type === "user_select" ){
-        search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
+        const allConnections = $(`#${field} .all-connections`)
+        if (type === "connection" && allConnections.prop('checked') === true) {
+          search_query.push( { [field] : ['*'] } )
+        } else {
+          search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
+        }
       } else if ( type === "multi_select" ){
         search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
       } else if ( type === "tags" ){
@@ -681,6 +686,7 @@
         search_query.combine = [ "subassigned" ] // to select checkbox in filter modal
       }
     }
+
     return search_query
   }
   $("#confirm-filter-records").on("click", function () {
@@ -693,14 +699,27 @@
     const tabsPanel = $(this).closest('.tabs-panel')
     const field = tabsPanel.length === 1 ? tabsPanel[0].id : ''
     const typeaheadQueryElement = tabsPanel.find('.typeahead__query')
+    const typeaheadCancelButtons = tabsPanel.find('.typeahead__cancel-button')
     const typeahead = tabsPanel.find(`.js-typeahead-${field}`)
 
     if ($(this).prop('checked') === true) {
       typeahead.prop('disabled', true)
       typeaheadQueryElement.addClass('disabled')
+      // remove the current filters and leave anything in the typeahead as it is
+      removeAllFilterLabels(field)
+      const fieldLabel = list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : ''
+      const filterName = `${window.lodash.escape( fieldLabel )}: ${window.lodash.escape( list_settings.translations.all )}`
+      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field )}" data-id="*">${filterName}</span>`)
+      new_filter_labels.push({id: '*', name: filterName, field: field})
     } else {
       typeahead.prop('disabled', false)
       typeaheadQueryElement.removeClass('disabled')
+      removeFilterLabels('*', field)
+      // clear the typeahead by manually clicking each selected item.
+      // This is done at this point as it triggers the typeahead to open which we don't want just after we have disabled it.
+      typeaheadCancelButtons.each(function () {
+        $(this).trigger('click', { botClick: true })
+      })
     }
   })
 
@@ -813,9 +832,8 @@
             matchOn: ["ID"],
             data: [],
             callback: {
-              onCancel: function (node, item) {
-                $(`.current-filter[data-id="${item.ID}"].${field_key}`).remove()
-                window.lodash.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
+              onCancel: function (node, item, event) {
+                removeFilterLabels(item.ID, field_key)
               }
             }
           },
@@ -835,6 +853,20 @@
         });
       }
     })
+  }
+
+  const removeFilterLabels = (id, field_key) => {
+    $(`.current-filter[data-id="${id}"].${field_key}`).remove()
+    window.lodash.pullAllBy(new_filter_labels, [{id: id}], "id")
+  }
+
+  const removeAllFilterLabels = (field_key) => {
+    // get all id's for this field_key
+    let ids = []
+    document.querySelectorAll(`.current-filter.${field_key}`).forEach((element) => {
+      ids.push(element.dataset.id)
+    })
+    ids.forEach((id) => removeFilterLabels(id, field_key))
   }
 
   let load_user_select_typeaheads = ()=>{
