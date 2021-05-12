@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * @version    0.1.0
  * @since      0.1.0
  * @package    Disciple_Tools
- * @author     Prykon
+ * @author     Disciple.Tools
  */
 
 

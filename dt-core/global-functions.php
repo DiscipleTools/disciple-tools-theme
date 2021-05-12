@@ -67,7 +67,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
          *          Also supports WP installations in subfolders
          *
          * @returns boolean
-         * @author matzeeable
+         * @author Disciple.Tools
          */
         function dt_is_rest( $namespace = null ) {
             $prefix = rest_get_url_prefix();

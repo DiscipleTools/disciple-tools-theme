@@ -4,7 +4,7 @@
  *
  * @package  Disciple_Tools
  * @category Theme
- * @author   Chasm.Solutions & Kingdom.Training
+ * @author   Disciple.Tools
  * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {

@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * All functionality pertaining to post types in Disciple_Tools.
  *
  * @package    Disciple_Tools
- * @author     Chasm.Solutions & Kingdom.Training
+ * @author     Disciple.Tools
  * @since      0.1.0
  */
 class Disciple_Tools_People_Groups_Post_Type
