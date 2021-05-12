@@ -47,6 +47,7 @@
     "scripts": "gulp scripts",
     "styles": "gulp styles",
     "watch": "gulp watch",
+    "test": "phpunit",
     "browsersync": "gulp browsersync",
     "update-foundation": "npm install foundation-sites"
   },
