@@ -61,6 +61,11 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $res = DT_Posts::search_viewable_post( "contacts", [ "groups" => [] ], false );
         $this->assertContains( $empty_contact["ID"], $this->map_ids( $res["posts"] ) );
         $this->assertNotContains( $contact1["ID"], $this->map_ids( $res["posts"] ) );
+        // search for all posts with a value set for field x
+        $res = DT_Posts::search_viewable_post( "contacts", [ "groups" => [ '*' ] ], false );
+        $this->assertNotContains( $sample_contact["ID"], $this->map_ids( $res["posts"] ) );
+        $this->assertContains( $contact1["ID"], $this->map_ids( $res["posts"] ) );
+        $this->assertContains( $contact2["ID"], $this->map_ids( $res["posts"] ) );
         //bad request
         $res = DT_Posts::search_viewable_post( "contacts", [ "groups" => $group1["ID"] ], false );
         $this->assertWPError( $res );
