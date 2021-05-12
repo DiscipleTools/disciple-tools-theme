@@ -695,7 +695,7 @@
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
 
-  $('.all-connections').on("click", function () {
+  function allConnectionsClickHandler() {
     const tabsPanel = $(this).closest('.tabs-panel')
     const field = tabsPanel.length === 1 ? tabsPanel[0].id : ''
     const typeaheadQueryElement = tabsPanel.find('.typeahead__query')
@@ -721,7 +721,9 @@
         $(this).trigger('click', { botClick: true })
       })
     }
-  })
+  }
+
+  $('.all-connections').on("click", allConnectionsClickHandler)
 
 
   let load_multi_select_typeaheads = async function load_multi_select_typeaheads() {
@@ -1055,10 +1057,9 @@
   let edit_saved_filter = function( filter ){
     $('#filter-modal').foundation('open');
     typeaheads_loaded.then(()=>{
-      new_filter_labels = filter.labels
       let connectionTypeKeys = list_settings.post_type_settings.connection_types
       connectionTypeKeys.push("location_grid")
-      new_filter_labels.forEach(label=>{
+      filter.labels.forEach(label=>{
         selected_filters.append(`<span class="current-filter ${window.lodash.escape( label.field )}" data-id="${window.lodash.escape( label.id )}">${window.lodash.escape( label.name )}</span>`)
         let type = window.lodash.get(list_settings, `post_type_settings.fields.${label.field}.type`)
         if ( type === "key_select" || type === "boolean" ){
@@ -1066,7 +1067,14 @@
         } else if ( type === "date" ){
           $(`#filter-modal #${label.field}-options #${label.id}`).datepicker('setDate', label.date)
         } else if ( connectionTypeKeys.includes( label.field ) ){
-          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
+          if (label.id === '*') {
+            const fieldAllConnectionsElement = document.querySelector(`#filter-modal #${label.field} .all-connections`)
+            const boundAllConnectionsClickHandler = allConnectionsClickHandler.bind(fieldAllConnectionsElement)
+            $(fieldAllConnectionsElement).prop('checked', true)
+            boundAllConnectionsClickHandler()
+          } else {
+            Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
+          }
         } else if ( type === "multi_select" ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
         } else if ( type === "tags" ){
@@ -1075,6 +1083,8 @@
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
         }
       })
+      // moved this below the forEach as the global new_filter_labels was messing with the loop.
+      new_filter_labels = filter.labels
       ;(filter.query.combine || []).forEach(c=>{
         $(`#combine_${c}`).prop('checked', true)
       })
