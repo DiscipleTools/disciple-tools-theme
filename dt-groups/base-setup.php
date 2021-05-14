@@ -444,8 +444,12 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type' => 'text',
                 'default' => ''
             ];
-
-
+            $fields['favorite'] = [
+                'name'        => __( 'Favorite', 'disciple_tools' ),
+                'type'        => 'boolean',
+                'default'     => false,
+                'private'     => true
+            ];
 
         }
 
