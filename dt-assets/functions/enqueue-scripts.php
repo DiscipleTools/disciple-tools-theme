@@ -100,7 +100,7 @@ function dt_site_scripts() {
 
     $post_type = get_post_type();
     $url_path = dt_get_url_path();
-    $post_type = $post_type ?: $url_path;
+    $post_type = $post_type ?: dt_get_post_type();
 
     dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash', 'moment', 'datepicker' ) );
     wp_localize_script(
@@ -197,9 +197,18 @@ function dt_site_scripts() {
                         "delete" => strtolower( __( "Delete", "disciple_tools" ) ),
                         "translate" => __( "Translate with Google Translate", "disciple_tools" ),
                         "hide_translation" => __( "Hide Translation", "disciple_tools" ),
+                        "reaction_title_1" => _x( '%1$s reacted with %2$s emoji', 'Bob reacted with heart emoji', 'disciple_tools' ),
+                        "reaction_title_many" => _x( '%3$s and %1$s reacted with %2$s emoji', 'Bob, Bill and Ben reacted with heart emoji', 'disciple_tools' ),
                     ],
                     'current_user_id' => get_current_user_id(),
                     'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
+                    /**
+                     * Reaction aliases must be lowercase with no spaces.
+                     * The emoji takes precedence if a path to an image is also given.
+                     *
+                     * Returned assosciative array must be of the form [ 'reaction_alias' => [ 'name' => 'reaction_translateable_name', 'path' => 'optional_path_to_reaction_image', 'emoji' => 'copy_and_pasted_text_emoji' ], ... ]
+                     */
+                    'reaction_options' => apply_filters( 'dt_comments_reaction_options', dt_get_site_custom_lists( 'comment_reaction_options' ) ),
                     'comments' => DT_Posts::get_post_comments( $post_type, $post["ID"] ),
                     'activity' => DT_Posts::get_post_activity( $post_type, $post["ID"] ),
                     'google_translate_key' => get_option( 'dt_googletranslate_api_key' ),
@@ -230,6 +239,7 @@ function dt_site_scripts() {
                     'dismissed_duplicates' => __( "Dismissed Duplicates", 'disciple_tools' ),
                     'duplicates_on' => __( "Duplicates on: %s", 'disciple_tools' ),
                     'transfer_error' => __( 'Transfer failed. Check site-to-site configuration.', 'disciple_tools' ),
+                    'created_on' => _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ),
                 ]
             ]);
 
@@ -270,6 +280,7 @@ function dt_site_scripts() {
                     'responsible_for_locations' => __( "Locations you are responsible for", 'disciple_tools' ),
                     'add' => __( 'Add', 'disciple_tools' ),
                     'save' => __( 'Save', 'disciple_tools' ),
+                    'link' => __( 'link', 'disciple_tools' ),
                 ] ),
                 'google_translate_api_key' => get_option( 'dt_googletranslate_api_key' ),
                 'custom_data'           => apply_filters( 'dt_settings_js_data', [] ), // nest associated array
@@ -293,10 +304,11 @@ function dt_site_scripts() {
         );
     }
 
+    $is_new_post = strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types );
 
     //list page
-    if ( in_array( $url_path, $post_types ) ){
-        $post_type = $url_path;
+    if ( !get_post_type() && in_array( $post_type, $post_types ) && !$is_new_post ){
+
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $translations = [
             'save' => __( 'Save', 'disciple_tools' ),
@@ -327,8 +339,7 @@ function dt_site_scripts() {
         }
     }
 
-    if ( strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types ) ){
-        $post_type = str_replace( "/new", "", $url_path );
+    if ($is_new_post){
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){
@@ -343,5 +354,32 @@ function dt_site_scripts() {
             'post_type_settings' => $post_settings
         ) );
     }
+
+    dt_theme_enqueue_script( 'dt-advanced-search', 'dt-assets/js/advanced-search.js', array( 'jquery' ) );
+    wp_localize_script( 'dt-advanced-search', 'advanced_search_settings', array(
+        'template_dir_uri' => esc_html( get_template_directory_uri() ),
+        'fetch_more_text' => __( 'load more', 'disciple_tools' ) // Support translations
+    ) );
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );
+
+/**
+ * Template script loader
+ */
+function dt_template_scripts( $slug, $name, $templates, $args ) {
+
+    $post_type = get_post_type();
+    $post_type = $post_type ?: dt_get_post_type();
+
+    // 403
+    if ( isset( $slug ) && ( $slug === '403' ) ) {
+        dt_theme_enqueue_script( 'dt-request-record-access', 'dt-assets/js/request-record-access.js', array( 'jquery' ) );
+        wp_localize_script( 'dt-request-record-access', 'detailsSettings', [
+            'post_type'       => $post_type,
+            'post_id'         => get_the_ID(),
+            'current_user_id' => get_current_user_id()
+        ] );
+    }
+}
+add_action( 'get_template_part', 'dt_template_scripts', 999, 4 );
+

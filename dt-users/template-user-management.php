@@ -111,20 +111,19 @@ $user_management_options = DT_User_Management::user_management_options();
                                     }
                                     ?>
                                 </td>
-                                <td data-sort="<?php echo esc_html( $user["last_activity"] ?? "" ) ?>">
+                                <td class="last_activity" data-sort="<?php echo esc_html( $user["last_activity"] ?? "" ) ?>">
                                     <?php if ( !isset( $user["last_activity"] ) ) :
                                         esc_html_e( "No activity", 'disciple_tools' );
                                     elseif ( $user["last_activity"] < time() - 60 * 60 * 24 * 90 ) : ?>
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" alt="alert" />
                                     <?php endif; ?>
-                                    <?php echo esc_html( dt_format_date( $user["last_activity"] ?? "" ) ) ?>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
-                    <div class="center" style="margin-top:1em;"><a href="?refresh=true">refresh list data</a></div>
+                    <div class="center" style="margin-top:1em;"><a href="">refresh list data</a></div>
                     <?php endif; ?>
                     </div><!-- Container for charts -->
                 </div>
@@ -329,6 +328,8 @@ $user_management_options = DT_User_Management::user_management_options();
 
                                     $dt_roles = dt_multi_role_get_editable_role_names();
                                     $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+                                    $upgrade_to_admin_disabled = !is_super_admin() && !dt_current_user_has_role( 'administrator' );
+
                                     ?>
 
                                     <p> <a href="https://disciple.tools/user-docs/getting-started-info/roles/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
@@ -336,11 +337,11 @@ $user_management_options = DT_User_Management::user_management_options();
                                     <ul id="user_roles_list" class="no-bullet">
                                         <?php foreach ( $dt_roles as $role_key => $name ) : ?>
                                             <li>
-                                                <label style="color:<?php echo esc_html( $role_key === 'administrator' ? 'grey' : 'inherit' ); ?>">
+                                                <label style="color:<?php echo esc_html( $role_key === 'administrator' && $upgrade_to_admin_disabled ? 'grey' : 'inherit' ); ?>">
                                                     <input type="checkbox" name="dt_multi_role_user_roles[]"
                                                            value="<?php echo esc_attr( $role_key ); ?>"
                                                         <?php checked( in_array( $role_key, $user_roles ) ); ?>
-                                                        <?php disabled( $role_key === 'administrator' ); ?> />
+                                                        <?php disabled( $upgrade_to_admin_disabled && $role_key === 'administrator' ); ?> />
                                                     <strong>
                                                     <?php
                                                     if ( isset( $expected_roles[$role_key]["label"] ) && !empty( $expected_roles[$role_key]["label"] ) ){

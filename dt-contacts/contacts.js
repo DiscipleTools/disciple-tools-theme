@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
-  let post_id = window.detailsSettings.post_id
-  let post_type = window.detailsSettings.post_type
-  let post = window.detailsSettings.post_fields
+  let post_id        = window.detailsSettings.post_id
+  let post_type      = window.detailsSettings.post_type
+  let post           = window.detailsSettings.post_fields
 
   /**
    * User-select
@@ -82,10 +82,10 @@ jQuery(document).ready(function($) {
    */
   window.makeRequestOnPosts( "GET", `${post_type}/${post_id}/duplicates` ).then(response => {
     if ( response.ids && response.ids.length > 0 ){
-      $('#admin-bar-issues').html(`
-        <button class="center-items" id="duplicates-detected-notice">
-          <img style="height:25px" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-          <strong style="margin:0 5px 2px 5px">${window.lodash.escape(window.detailsSettings.translations.duplicates_detected)}</strong>
+      $('.details-title-section').html(`
+        <button class="button hollow center-items" id="duplicates-detected-notice" style="margin-bottom: 0; padding: .5em .5em; ">
+          <img style="height:20px" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+          <strong>${window.lodash.escape(window.detailsSettings.translations.duplicates_detected)}</strong>
         </button>
       `)
     }
@@ -185,6 +185,10 @@ jQuery(document).ready(function($) {
       }
     })
     html += `<br>`
+    if (dupe.post.overall_status.key === 'closed' && dupe.post.reason_closed) {
+      html += `${window.lodash.escape(window.detailsSettings.post_settings.fields.reason_closed.name)}: <strong>${window.lodash.escape(dupe.post.reason_closed.label)}</strong>`
+      html += `<br>`
+    }
     if ( !dismissed_row ){
       html += `<button class='mergelinks dismiss-duplicate' data-id='${window.lodash.escape(dupe.ID)}' style='float: right; padding-left: 10%;'><a>${window.lodash.escape(window.detailsSettings.translations.dismiss)}</a></button>`
     }
@@ -269,8 +273,7 @@ jQuery(document).ready(function($) {
    * Transfer Contact
    */
   $('#transfer_confirm_button').on('click',function() {
-    let status_spinner = $('#transfer_spinner')
-    status_spinner.append(`<img src="${window.wpApiShare.spinner_url}" width="20px" />`)
+    $(this).addClass('loading')
     let siteId = $('#transfer_contact').val()
     if ( ! siteId ) {
       return;
@@ -289,6 +292,7 @@ jQuery(document).ready(function($) {
           location.reload();
         }
       }).catch(err=> {
+        $(this).removeClass('loading')
         jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + window.detailsSettings.translations.transfer_error)
         console.error(err)
       })

@@ -59,6 +59,7 @@ class DT_User_Management
                 [
                     'methods'  => "GET",
                     'callback' => [ $this, 'get_user_endpoint' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -67,6 +68,7 @@ class DT_User_Management
                 [
                     'methods'  => "POST",
                     'callback' => [ $this, 'update_settings_on_user' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -75,6 +77,7 @@ class DT_User_Management
                 [
                     'methods'  => "GET",
                     'callback' => [ $this, 'get_users_endpoints' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -415,6 +418,7 @@ class DT_User_Management
                 $daily_activity[] = [
                     "day" => dt_format_date( $current ),
                     "weekday" => gmdate( 'l', $current ),
+                    "weekday_number" => gmdate( 'N', $current ),
                     "week_start" => gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $current ) . ' days', $current ) ),
                     "activity_count" => $activity,
                     "activity" => $activity > 0 ? 1 : 0
@@ -661,7 +665,10 @@ class DT_User_Management
                 if ( !current_user_can( 'promote_users' ) ) {
                     return false;
                 }
-                $can_not_promote_to_roles = [ 'administrator' ];
+                $can_not_promote_to_roles = [];
+                if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
+                    $can_not_promote_to_roles = [ 'administrator' ];
+                }
                 if ( !current_user_can( 'manage_dt' ) ){
                     $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
                 }

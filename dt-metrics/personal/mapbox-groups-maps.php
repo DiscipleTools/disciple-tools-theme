@@ -77,6 +77,7 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'cluster_geojson' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -85,6 +86,7 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'get_grid_totals' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -93,6 +95,7 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'get_list_by_grid_id' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );
@@ -101,6 +104,7 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'points_geojson' ],
+                    'permission_callback' => '__return_true',
                 ],
             ]
         );

@@ -317,6 +317,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         $endpoint['namespace'], $endpoint['route'], [
                             'methods'  => $endpoint['method'],
                             'callback' => [ $this, $key ],
+                            'permission_callback' => '__return_true',
                         ]
                     );
                 }
@@ -346,6 +347,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $endpoints['modify_location_endpoint'] = [
                 'namespace' => $this->namespace,
                 'route' => '/mapping_module/modify_location',
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'method' => 'POST',
+            ];
+            $endpoints['delete_sublocation'] = [
+                'namespace' => $this->namespace,
+                'route' => '/mapping_module/delete_sublocation',
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'method' => 'POST',
             ];
@@ -433,6 +440,36 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $params = $request->get_params();
 
             return DT_Mapping_Module_Admin::instance()->process_rest_edits( $params );
+        }
+
+        public function delete_sublocation( WP_REST_Request $request ) {
+            if ( ! $this->permissions ) {
+                return new WP_Error( 'permissions', 'No permissions for the action.', [ 'status' => 401 ] );
+            }
+
+            $params = $request->get_params();
+            $grid_id = $params['grid_id'];
+
+            // Check if grid_id is a custom geo
+            global $wpdb;
+            $response = $wpdb->get_var( $wpdb->prepare("
+                SELECT is_custom_location
+                FROM $wpdb->dt_location_grid
+                WHERE grid_id = %s;
+                ", $grid_id ) );
+
+            if ( $response == 0 ) {
+                return new WP_Error( __METHOD__, 'Grid ID does not correspond to a custom sublocation.', [ 'status' => 400 ] );
+            }
+
+            // Delete sublocation
+            $response_del = $wpdb->delete( $wpdb->dt_location_grid, [ 'grid_id' => $grid_id ] );
+
+            if ( ! $response_del ) {
+                return new WP_Error( __METHOD__, 'Error deleting custom sublocation.', [ 'status' => 400 ] );
+            } else {
+                return 'Deleted successfully.';
+            }
         }
 
         public function search_location_grid_by_name( WP_REST_Request $request ){

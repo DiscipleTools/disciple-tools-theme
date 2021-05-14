@@ -105,8 +105,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile'        => 'status',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/assigned-to.svg",
                 "show_in_table" => 25,
-                "only_for_types" => [ "access" ],
-                "custom_display" => true
+                "only_for_types" => [ "access", "user" ]
             ];
             $fields['seeker_path'] = [
                 'name'        => __( 'Seeker Path', 'disciple_tools' ),
@@ -190,20 +189,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "only_for_types" => [ "access" ]
             ];
 
-            $fields['age'] = [
-                'name'        => __( 'Age', 'disciple_tools' ),
-                'type'        => 'key_select',
-                'default'     => [
-                    'not-set' => [ "label" => '' ],
-                    '<19'     => [ "label" => __( 'Under 18 years old', 'disciple_tools' ) ],
-                    '<26'     => [ "label" => __( '18-25 years old', 'disciple_tools' ) ],
-                    '<41'     => [ "label" => __( '26-40 years old', 'disciple_tools' ) ],
-                    '>41'     => [ "label" => __( 'Over 40 years old', 'disciple_tools' ) ],
-                ],
-                'tile'     => 'details',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg",
-                "only_for_types" => [ "access" ]
-            ];
             $fields["reason_unassignable"] = [
                 'name'        => __( 'Reason Not Ready', 'disciple_tools' ),
                 'description' => _x( 'The main reason the contact is not ready to be assigned to a user.', 'Optional Documentation', 'disciple_tools' ),
@@ -331,6 +316,17 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "in_create_form" => [ "access" ]
             ];
 
+            $fields['campaigns'] = [
+                'name' => __( 'Campaigns', 'disciple_tools' ),
+                'description' => _x( 'Marketing campaigns or access activities that this contact interacted with.', 'Optional Documentation', 'disciple_tools' ),
+                'tile' => 'details',
+                'type'        => 'tags',
+                'default'     => [],
+                'icon' => get_template_directory_uri() . "/dt-assets/images/megaphone.svg",
+                'only_for_types' => [ 'access' ],
+                'in_create_form' => [ 'access' ]
+            ];
+
             if ( empty( $fields["contact_phone"]['in_create_form'] ) ){
                 $fields["contact_phone"]['in_create_form'] = [ 'access' ];
             } elseif ( is_array( $fields["contact_phone"]['in_create_form'] ) ){
@@ -367,6 +363,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $namespace, '/contacts/(?P<id>\d+)/accept', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'accept_contact' ],
+                "permission_callback" => '__return_true',
             ]
         );
     }
@@ -400,7 +397,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             && empty( $contact_fields[$field_key]["hidden"] )
             ){
             $contact = $post;
-            if ( !isset( $contact["type"]["key"] ) || $contact["type"]["key"] !== "access" ){
+            if ( !dt_field_enabled_for_record_type( $contact_fields[$field_key], $post ) ){
                 return;
             }
             $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
@@ -541,55 +538,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?php
-        }
-
-        if ( isset( $post["post_type"] ) && $post["post_type"] === "contacts" && $field_key === "assigned_to"
-            && isset( $contact_fields[$field_key] ) && !empty( $contact_fields[$field_key]["custom_display"] )
-            && empty( $contact_fields[$field_key]["hidden"] )
-        ){
-            $contact = $post;
-            if ( !isset( $contact["type"]["key"] ) || $contact["type"]["key"] !== "access" ){
-                return;
-            }
-            $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
-            ?>
-                <div class="section-subheader">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                    <?php echo esc_html( $contact_fields["assigned_to"]["name"] )?>
-                    <button class="help-button" data-section="assigned-to-help-text">
-                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                    </button>
-                </div>
-
-                <div class="assigned_to details">
-                    <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
-                    <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead">
-                        <div class="typeahead__container" style="margin-bottom: 0">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-assigned_to input-height" dir="auto"
-                                           name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
-                                           autocomplete="off">
-                                </span>
-                                <span class="typeahead__button">
-                                    <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
-                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p>
-                    <span id="reason_assigned_to">
-                        <?php if ( isset( $contact["reason_assigned_to"]["label"] ) ) : ?>
-                            (<?php echo esc_html( $contact["reason_assigned_to"]["label"] ); ?>)
-                        <?php endif; ?>
-                    </span>
-                </p>
-
-
             <?php
         }
 
@@ -1218,13 +1166,10 @@ class DT_Contacts_Access extends DT_Module_Base {
     }
 
     public function scripts(){
-        if ( is_singular( "contacts" ) ){
-            $contact = DT_Posts::get_post( "contacts", get_the_ID() );
-            if ( !is_wp_error( $contact ) && isset( $contact["type"]["key"] ) && $contact["type"]["key"] === "access" ){
-                wp_enqueue_script( 'dt_contacts_access', get_template_directory_uri() . '/dt-contacts/contacts_access.js', [
-                    'jquery',
-                ], filemtime( get_theme_file_path() . '/dt-contacts/contacts_access.js' ), true );
-            }
+        if ( is_singular( "contacts" ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
+            wp_enqueue_script( 'dt_contacts_access', get_template_directory_uri() . '/dt-contacts/contacts_access.js', [
+                'jquery',
+            ], filemtime( get_theme_file_path() . '/dt-contacts/contacts_access.js' ), true );
         }
     }
 
@@ -1304,7 +1249,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $requires_update = get_post_meta( $contact_id, "requires_update", true );
             if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1"){
                 //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
-                if ( DT_Posts::can_view_all( 'contacts' ) ){
+                if ( current_user_can( 'dt_all_access_contacts' ) ){
                     if ( dt_get_user_id_from_assigned_to( get_post_meta( $contact_id, "assigned_to", true ) ) === get_current_user_id() ){
                         update_post_meta( $contact_id, "requires_update", false );
                     }

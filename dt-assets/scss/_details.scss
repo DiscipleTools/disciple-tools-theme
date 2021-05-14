@@ -29,6 +29,12 @@
         color:white;
     }
 }
+.dt_multi_select {
+    .dt-icon {
+        margin-right: 5px;
+    }
+}
+
 .submitting-select-button {
     opacity: .5;
 }
@@ -188,7 +194,12 @@ DT comments and activity
         }
     }
 
-    .comment-controls {
+    .emoji {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+
+    .edit-comment-controls {
         a {
             font-size: 12px;
         }
@@ -198,6 +209,155 @@ DT comments and activity
         object path {
             fill: red;
         }
+    }
+    .comment-reactions {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .comment-reaction,
+    .reactions__button {
+        margin-top: 4px;
+        margin-right: 4px;
+        background-color: #f8f8f8;
+        border-radius: 100px;
+        padding: 0.1rem 0.5rem;
+        display: flex;
+        align-items: center;
+        border: 1px solid transparent;
+        cursor: pointer;
+
+        &:hover {
+            border-color: $dark-gray;
+        }
+    }
+
+    .comment-reaction {
+        background-color: #f8f8f8;
+        border-radius: 100px;
+        padding: 0.1rem 0.5rem;
+        height: 1.6rem;
+        font-size: 0.9rem;
+        line-height: 0.9rem;
+        display: flex;
+        align-items: center;
+        border: 1px solid transparent;
+        cursor: pointer;
+
+        * {
+            pointer-events: none;
+        }
+
+        .emoji {
+            height: 1rem;
+            width: 1rem;
+        }
+
+        span + span {
+            padding-left: 4px;
+            font-size: 0.8rem;
+        }
+
+        &[data-own-reaction="true"] {
+            border-color: #3f729b;
+            background-color: #def1ff;
+
+            &:hover {
+                border-color: #3f729b;
+            }
+        }
+
+        // if this is on the .reactions-button as well, then the dropdown click
+        // anywhere to close functionality breaks.
+        &:active {
+            transform: scale(0.9);
+        }
+    }
+
+    .reaction-controls {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .add-reaction-svg {
+        position: relative;
+        display: flex;
+
+        &::before {
+        content: '+';
+        pointer-events: none;
+        position: absolute;
+        right: -7px;
+        top: 3px;
+        font-size: 0.8rem;
+        background-color: white;
+        border-radius: 100px;
+        padding: 0 0.1rem;
+        line-height: 0.8rem;
+        font-weight: 600;
+        text-align: center;
+        }
+    }
+    .reactions__button {
+        color: $dark-gray;
+        height: 100%;
+        padding-right: 0.7rem;
+    }
+    .reactions__button[open]::before {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 8;
+        display: block;
+        cursor: default;
+        content: " ";
+        background: transparent;
+    }
+    .reactions__dropdown {
+        width: 215px;
+        left: 8px;
+        bottom: 35px;
+        z-index: 9;
+        border-radius: 6px;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
+        transform: translate(-20px, 5px);
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: 20px;
+            border: 7px solid transparent;
+            border-top: 7px solid white;
+        }
+        &::before {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 19px;
+            border: 8px solid transparent;
+            border-top: 8px solid #cacaca;
+        }
+    }
+    .add-reaction {
+        margin: 0 0.2rem;
+    }
+    .add-reaction:hover {
+        transform: scale(1.2);
+        transition: all 0.1s ease;
+    }
+
+    .comment-controls {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .edit-comment-controls {
+        margin-right: 10px;
+        margin-top: 4px;
     }
 
     .comment-bubble, .comment-controls {
@@ -387,6 +547,10 @@ Groups
         i {
             padding: 0 2px;
         }
+        .dt-icon {
+            vertical-align: text-top;
+            margin-right: 5px;
+        }
     }
 }
 .members-header {
@@ -451,8 +615,8 @@ select.color-select {
         display: flex;
     }
     .section-chevron {
-        margin-left:auto;
-        margin-right:0;
+        margin-inline-start:auto;
+        margin-inline-end:0;
         img {
             vertical-align: middle; width:20px
         }
@@ -501,4 +665,20 @@ select.color-select {
     color: $primary-color;
     margin: 0 5px;
   }
+}
+
+
+.details-second-bar {
+    span { font-size: 12px; }
+    button, a {
+        font-size: 12px;
+    }
+    .title {
+        font-size: 15px
+    }
+}
+
+//user select field
+.dt_user_select {
+    margin-bottom:15px;
 }

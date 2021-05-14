@@ -99,7 +99,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             }
 
                             $field = $post_settings["fields"][$field_key];
-                            if ( isset( $field["tile"] ) && $field["tile"] === 'status' && !( isset( $field["only_for_types"], $dt_post["type"]["key"] ) && !in_array( $dt_post["type"]["key"], $field["only_for_types"] ) ) && empty( $field["hidden"] ) ) {
+                            $enabled_for_type = dt_field_enabled_for_record_type( $field, $dt_post );
+                            if ( isset( $field["tile"] ) && $field["tile"] === 'status' && $enabled_for_type && empty( $field["hidden"] ) ) {
                                 ?>
                                 <div class="cell small-12 medium-4">
                                     <?php render_field_for_display( $field_key, $post_settings["fields"], $dt_post, true ); ?>
@@ -120,6 +121,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             <button class="help-button-tile" data-tile="details">
                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                             </button>
+                            <div class="details-title-section"></div>
                             <button class="section-chevron chevron_down show-details-section">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                             </button>
@@ -184,10 +186,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 }
 
                                 $field = $post_settings["fields"][$field_key];
-                                if ( isset( $dt_post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
-                                    if ( !in_array( $dt_post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
-                                        return;
-                                    }
+                                if ( !dt_field_enabled_for_record_type( $field, $dt_post ) ) {
+                                    continue;
                                 }
 
                                 if ( isset( $field["tile"] ) && $field["tile"] === 'details'){
@@ -229,11 +229,13 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                     if ( !isset( $post_settings["fields"][$field_key] ) ){
                                         continue;
                                     }
-                                    if ( isset( $post_settings["fields"][$field_key]["hidden"] ) && true === $post_settings["fields"][$field_key]["hidden"] ){
+                                    $field = $post_settings["fields"][$field_key];
+                                    $enabled_for_type = dt_field_enabled_for_record_type( $field, $dt_post );
+                                    if ( isset( $post_settings["fields"][$field_key]["hidden"] ) && true === $post_settings["fields"][$field_key]["hidden"]
+                                        || !$enabled_for_type ){
                                         continue;
                                     }
 
-                                    $field = $post_settings["fields"][$field_key];
                                     if ( isset( $field["tile"] ) && $field["tile"] === 'details'){ ?>
                                         <div class="cell small-12 medium-6">
                                             <?php render_field_for_display( $field_key, $post_settings["fields"], $dt_post ); ?>

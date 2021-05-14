@@ -60,39 +60,48 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "default" => [
                     "milestone_has_bible"     => [
                         "label" => __( 'Has Bible', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/bible.svg",
                     ],
                     "milestone_reading_bible" => [
                         "label" => __( 'Reading Bible', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/reading.svg",
                     ],
                     "milestone_belief"        => [
                         "label" => __( 'States Belief', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/speak.svg",
                     ],
                     "milestone_can_share"     => [
                         "label" => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/can-share.svg",
                     ],
                     "milestone_sharing"       => [
                         "label" => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/connection-people.svg",
                     ],
                     "milestone_baptized"      => [
                         "label" => __( 'Baptized', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/baptism.svg",
                     ],
                     "milestone_baptizing"     => [
                         "label" => __( 'Baptizing', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/child.svg",
                     ],
                     "milestone_in_group"      => [
                         "label" => __( 'In Church/Group', 'disciple_tools' ),
-                        "description" => ''
+                        "description" => '',
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/group-type.svg",
                     ],
                     "milestone_planting"      => [
-                        "label" => __( 'Starting Churches', 'disciple_tools' ),
-                        "description" => ''
+                    "label" => __( 'Starting Churches', 'disciple_tools' ),
+                        "description" => '',
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/stream.svg",
                     ],
                 ],
                 "customizable" => "add_only",
@@ -127,6 +136,18 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_subassigned",
                 "tile" => "status",
+                "custom_display" => false,
+                'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
+            ];
+
+            $fields["subassigned_on"] = [
+                "name" => __( "Sub-assigned on other Contacts", 'disciple_tools' ),
+                "description" => __( "Contacts this contacts is subassigned on", 'disciple_tools' ),
+                "type" => "connection",
+                "post_type" => "contacts",
+                "p2p_direction" => "from",
+                "p2p_key" => "contacts_to_subassigned",
+                "tile" => "no_tile",
                 "custom_display" => false,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
             ];
@@ -478,7 +499,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
     }
 
     public function scripts(){
-        if ( is_singular( "contacts" ) ){
+        if ( is_singular( "contacts" ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
             wp_enqueue_script( 'dt_contacts_dmm', get_template_directory_uri() . '/dt-contacts/contacts_dmm.js', [
                 'jquery',
             ], filemtime( get_theme_file_path() . '/dt-contacts/contacts_dmm.js' ), true );
@@ -490,6 +511,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             $namespace, '/contacts/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
                 "methods"  => "GET",
                 "callback" => [ $this, 'revert_activity' ],
+                'permission_callback' => '__return_true',
             ]
         );
     }

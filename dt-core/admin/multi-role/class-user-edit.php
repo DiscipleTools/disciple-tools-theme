@@ -79,7 +79,7 @@ final class Disciple_Tools_Admin_User_Edit {
         $editable_roles = dt_multi_role_get_editable_role_names();
 
         $can_not_promote_to_roles = [];
-        if ( !dt_current_user_has_role( 'administrator' ) ){
+        if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
             $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ "administrator" ] );
         }
         if ( !current_user_can( 'manage_dt' ) ){
@@ -160,7 +160,7 @@ final class Disciple_Tools_Admin_User_Edit {
         $user = new WP_User( $user_id );
 
         $can_not_promote_to_roles = [];
-        if ( !dt_current_user_has_role( 'administrator' ) ){
+        if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
             $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ "administrator" ] );
         }
         if ( !current_user_can( 'manage_dt' ) ){

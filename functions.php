@@ -62,7 +62,7 @@ else {
             require_once( get_template_directory() . '/dt-core/configuration/class-migration-engine.php' );
             Disciple_Tools_Migration_Engine::migrate( Disciple_Tools_Migration_Engine::$migration_number );
         } catch ( Throwable $e ) {
-            new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
+            new WP_Error( 'migration_error', 'Migration engine failed to migrate.', [ "message" => $e->getMessage() ] );
         }
     } );
 
@@ -149,7 +149,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.3.0';
+            $this->version = '1.5.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -210,7 +210,7 @@ else {
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
 
-                $url_path = strtok( dt_get_url_path(), '?' ); //allow get parameters
+                $url_path = untrailingslashit( dt_get_url_path( true ) ); //allow get parameters
 
                 if ( isset( $template_for_url[ $url_path ] ) && dt_please_log_in() ) {
                     $template_filename = locate_template( $template_for_url[ $url_path ], true );
@@ -402,6 +402,7 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-fields.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-error-logs.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-metrics.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-reports.php' );

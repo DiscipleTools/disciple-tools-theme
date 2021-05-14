@@ -1,9 +1,9 @@
 "use strict"
 jQuery(document).ready(function($) {
 
-  let post_id = window.detailsSettings.post_id
-  let post_type = window.detailsSettings.post_type
-  let post = window.detailsSettings.post_fields
+  let post_id        = window.detailsSettings.post_id
+  let post_type      = window.detailsSettings.post_type
+  let post           = window.detailsSettings.post_fields
   let field_settings = window.detailsSettings.post_settings.fields
 
   /* Church Metrics */
@@ -75,11 +75,21 @@ jQuery(document).ready(function($) {
       if( member.leader ){
         leaderHTML = `<i class="fi-foot small leader"></i>`
       }
+      const contactStatusHTML = ( member.data && member.data.overall_status )
+        ? `<i class="fi-torso small" style="color: ${window.lodash.escape( member.data.overall_status.color )}" title="${window.lodash.escape( member.data.overall_status.label )}"></i>`
+        : '<i class="fi-torso small"></i>'
+
+      const milestonesHTML = member.data.milestones.reduce((htmlString, milestone) => {
+        return milestone.icon
+          ? htmlString + `<img class="dt-icon" src="${window.lodash.escape( milestone.icon )}" alt="${window.lodash.escape( milestone.label )}" title="${window.lodash.escape( milestone.label )}">`
+          : htmlString
+      }, '')
       let memberHTML = `<div class="member-row" style="" data-id="${window.lodash.escape( member.ID )}">
           <div style="flex-grow: 1" class="member-status">
-              <i class="fi-torso small"></i>
+              ${contactStatusHTML}
               <a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape( member.ID )}">${window.lodash.escape(member.post_title)}</a>
               ${leaderHTML}
+              ${milestonesHTML}
           </div>
           <button class="button clear make-leader member-row-actions" data-id="${window.lodash.escape( member.ID )}">
             <i class="fi-foot small"></i>

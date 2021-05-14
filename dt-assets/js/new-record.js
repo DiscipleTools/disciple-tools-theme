@@ -97,13 +97,16 @@ jQuery(function($) {
       }
     });
     $('.dt-communication-channel').each((index, entry)=>{
-      let channel = $(entry).data('field')
-      if ( !new_post[channel]){
-        new_post[channel] =[]
+      let val = $(entry).val()
+      if ( val.length > 0 ){
+        let channel = $(entry).data('field')
+        if ( !new_post[channel]){
+          new_post[channel] =[]
+        }
+        new_post[channel].push({
+          value: $(entry).val()
+        })
       }
-      new_post[channel].push({
-        value: $(entry).val()
-      })
     })
     $('.selected-select-button').each((index, entry)=>{
       let optionKey = $(entry).attr('id')
@@ -267,6 +270,50 @@ jQuery(function($) {
             }
           }
         });
+      } else if ( field_type === "user_select" ){
+        $.typeahead({
+          input: `.js-typeahead-${field_key}`,
+          minLength: 0,
+          maxItem: 0,
+          accent: true,
+          searchOnFocus: true,
+          source: TYPEAHEADS.typeaheadUserSource(),
+          templateValue: "{{name}}",
+          template: function (query, item) {
+            return `<div class="assigned-to-row" dir="auto">
+              <span>
+                  <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+                  ${window.lodash.escape( item.name )}
+              </span>
+              ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
+              ${ item.update_needed && item.update_needed > 0 ? `<span>
+                <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+                <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+              </span>` : '' }
+            </div>`
+          },
+          dynamic: true,
+          hint: true,
+          emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+          callback: {
+            onClick: function(node, a, item){
+              new_post[field_key] = item.ID
+            },
+            onResult: function (node, query, result, resultCount) {
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $(`#${field_key}-result-container`).html(text);
+            },
+            onHideLayout: function () {
+              $(`.${field_key}-result-container`).html("");
+            }
+          },
+        });
+        let user_input = $(`.js-typeahead-${field_key}`)
+        $(`.search_${field_key}`).on('click', function () {
+          user_input.val("")
+          user_input.trigger('input.typeahead')
+          user_input.focus()
+        })
       }
     }
   })
@@ -362,4 +409,112 @@ jQuery(function($) {
     });
   }
 
+  /**
+   * Tags
+   */
+  $('.tags .typeahead__query input').each((key, input)=>{
+    let field = $(input).data('field') || 'tags'
+    let typeahead_name = `.js-typeahead-${field}`
+    const post_type = window.new_record_localized.post_type
+    $.typeahead({
+      input: typeahead_name,
+      minLength: 0,
+      maxItem: 20,
+      searchOnFocus: true,
+      source: {
+        tags: {
+          display: ["value"],
+          ajax: {
+            url: window.wpApiShare.root + `dt-posts/v2/${post_type}/multi-select-values`,
+            data: {
+              s: "{{query}}",
+              field: field
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                return (data || []).map(tag => {
+                  return {value: tag}
+                })
+              }
+            }
+          }
+        }
+      },
+      display: "value",
+      templateValue: "{{value}}",
+      emptyTemplate: function(query) {
+        const { addNewTagText, tagExistsText} = this.node[0].dataset
+        if (this.comparedItems.includes(query)) {
+          return tagExistsText.replace('%s', query)
+        }
+        const liItem = $('<li>')
+        const button = $('<button>', {
+          class: "button primary",
+          text: addNewTagText.replace('%s', query),
+        })
+        const tag = this.query
+        const typeahead = this
+        button.on("click", function (event) {
+          if ( !new_post[field] ){
+            new_post[field] = { values: [] }
+          }
+          new_post[field].values.push({value:tag})
+          typeahead.addMultiselectItemLayout({value: tag})
+          event.preventDefault()
+          typeahead.hideLayout();
+          typeahead.resetInput();
+        })
+        liItem.append(button)
+        return liItem
+      },
+      dynamic: true,
+      multiselect: {
+        matchOn: ["value"],
+        data: [],
+        callback: {
+          onCancel: function (node, item) {
+            window.lodash.pullAllBy(new_post[field_key].values, [{value:item.ID}], "value")
+          }
+        },
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          if ( !new_post[field] ){
+            new_post[field] = { values: [] }
+          }
+          new_post[field].values.push({value:item.value})
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $(`#${field}-result-container`).html(text);
+        },
+        onHideLayout: function () {
+          $(`#${field}-result-container`).html("");
+        },
+      }
+    });
+  })
+
+  $('.js-create-post').on('click', '.create-new-tag', function () {
+    let field = $(this).data("field");
+    $("#create-tag-modal").data("field", field)
+
+  });
+  $("#create-tag-return").on("click", function () {
+    let field = $("#create-tag-modal").data("field");
+    let tag = $("#new-tag").val()
+    $('#new-tag').val("")
+    if ( !new_post[field] ){
+      new_post[field] = { values: [] }
+    }
+    new_post[field].values.push({value: tag})
+    Typeahead['.js-typeahead-' + field].addMultiselectItemLayout({value: tag})
+  })
 });
