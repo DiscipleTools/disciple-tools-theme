@@ -98,6 +98,10 @@ function dt_site_scripts() {
     wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
     wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
 
+    wp_register_script( 'shepherd', 'https://cdn.jsdelivr.net/npm/shepherd.js@5.0.1/dist/js/shepherd.js', false, '5.0.1', true );
+    wp_register_script( 'shepherd', 'https://cdn.jsdelivr.net/npm/shepherd.js@5.0.1/dist/js/shepherd.js', false, '5.0.1', true );
+    dt_theme_enqueue_script( 'setup-shepherd', 'dt-assets/js/setup-shepherd.js', array( 'shepherd' ), true );
+
     $post_type = get_post_type();
     $url_path = dt_get_url_path();
     $post_type = $post_type ?: dt_get_post_type();
@@ -265,7 +269,7 @@ function dt_site_scripts() {
             $dependencies[] = 'mapping-drill-down';
         }
 
-        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', $dependencies, true );
+        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/bb', $dependencies, true );
         wp_localize_script(
             'dt-settings', 'wpApiSettingsPage', array(
                 'root'                  => esc_url_raw( rest_url() ),
