@@ -152,6 +152,7 @@ function dt_site_scripts() {
             'url_path' => $url_path,
             'post_type_modules' => dt_get_option( "dt_post_type_modules" ),
             'tiles' => DT_Posts::get_post_tiles( $post_type ),
+            'completed_tours' => get_user_meta( get_current_user_id(), 'dt_product_tour' ),
         )
     );
 
