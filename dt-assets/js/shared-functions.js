@@ -569,6 +569,16 @@ window.SHAREDFUNCTIONS = {
     );
     return results !== null ? results[1] || 0 : false;
   },
+  /**
+   * Lodash escape all string values in a simple key, value object.
+   *
+   * @param obj Must be a simple map of key, value pairs. E.g. a translation mapping.
+   */
+  escapeObject(obj) {
+    return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
+        return [ key, window.lodash.escape(value)]
+    }))
+  }
 };
 
 window.METRICS = {

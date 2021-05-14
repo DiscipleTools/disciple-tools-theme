@@ -11,6 +11,21 @@ const tour = new Shepherd.Tour({
     useModalOverlay: true,
 });
 
+const escapeObject = window.SHAREDFUNCTIONS.escapeObject
+
+const {
+    done: doneLabel,
+    next: nextLabel,
+    back: backLabel,
+    close_tour: closeTourLabel,
+} = escapeObject(window.wpApiShare.translations)
+
+const {
+    create_post_tour,
+    filter_posts_tour,
+    view_posts_tour,
+} = escapeObject(window.list_settings.translations)
+
 function createStep(selector, position, shepherdOptions = {}, options = {}) {
     const defaultOptions = {
         firstStep: false,
@@ -25,6 +40,7 @@ function createStep(selector, position, shepherdOptions = {}, options = {}) {
         },
         cancelIcon: {
             enabled: true,
+            label: closeTourLabel,
         },
         beforeShowPromise: function () {
             return new Promise(function (resolve) {
@@ -38,11 +54,11 @@ function createStep(selector, position, shepherdOptions = {}, options = {}) {
         ...shepherdOptions,
         buttons: [
             {
-                text: opts.firstStep ? 'Done' : 'Back',
+                text: opts.firstStep ? doneLabel : backLabel,
                 action: opts.firstStep ? tour.cancel : tour.back
             },
             {
-                text: 'Next',
+                text: nextLabel,
                 action: tour.next,
             }
         ],
@@ -51,19 +67,19 @@ function createStep(selector, position, shepherdOptions = {}, options = {}) {
 
 createStep('.create-post-desktop', 'bottom', {
     id: 'create-contact',
-    text: 'Click here to create a new contact.',
+    text: create_post_tour,
 }, {
     firstStep: true,
 });
 
 createStep('.filter-posts-desktop', 'bottom', {
     id: 'filter-contacts',
-    text: 'You can filter to find contacts you need.',
+    text: filter_posts_tour,
 });
 
 createStep('#records-table', 'top-start', {
     id: 'view-contacts',
-    text: 'Contacts appear here and can be clicked on to view more.',
+    text: view_posts_tour,
 });
 
 tour.start()

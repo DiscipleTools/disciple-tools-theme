@@ -98,9 +98,9 @@ function dt_site_scripts() {
     wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
     wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
 
-    wp_register_script( 'shepherd', 'https://cdn.jsdelivr.net/npm/shepherd.js@5.0.1/dist/js/shepherd.js', false, '5.0.1', true );
-    wp_register_script( 'shepherd', 'https://cdn.jsdelivr.net/npm/shepherd.js@5.0.1/dist/js/shepherd.js', false, '5.0.1', true );
-    dt_theme_enqueue_script( 'setup-shepherd', 'dt-assets/js/setup-shepherd.js', array( 'shepherd' ), true );
+    wp_register_script( 'tour', 'https://cdn.jsdelivr.net/npm/shepherd.js@5.0.1/dist/js/shepherd.js', false, '5.0.1', true );
+    wp_register_script( 'tour', 'https://cdn.jsdelivr.net/npm/shepherd.js@5.0.1/dist/js/shepherd.js', false, '5.0.1', true );
+    dt_theme_enqueue_script( 'setup-tour', 'dt-assets/js/setup-tour.js', array( 'modular-list-js', 'shared-functions', 'tour' ), true );
 
     $post_type = get_post_type();
     $url_path = dt_get_url_path();
@@ -143,6 +143,10 @@ function dt_site_scripts() {
                 'no_records_found' => _x( 'No results found matching "{{query}}"', "Empty list results. Keep {{query}} as is in english", 'disciple_tools' ),
                 'showing_x_items' => _x( 'Showing %s items. Type to find more.', 'Showing 30 items', 'disciple_tools' ),
                 'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
+                'done' => __( 'Done', 'disciple_tools' ),
+                'next' => __( 'Next', 'disciple_tools' ),
+                'back' => __( 'Back', 'disciple_tools' ),
+                'close_tour' => __( 'Close Tour', 'disciple_tools' ),
             ],
             'post_type' => $post_type,
             'url_path' => $url_path,
@@ -326,7 +330,10 @@ function dt_site_scripts() {
             'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
             'filter_all' => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), $post_settings["label_plural"] ),
             'range_start' => __( 'start', 'disciple_tools' ),
-            'range_end' => __( 'end', 'disciple_tools' )
+            'range_end' => __( 'end', 'disciple_tools' ),
+            'create_post_tour' => sprintf( _x( "Click here to create a new %s", 'Click here to create a new contact', 'disciple_tools' ), $post_settings["label_singular"] ),
+            'filter_posts_tour' => sprintf( _x( "You can filter to find %s you need.", 'You can filter to find contacts you need.', 'disciple_tools' ), $post_settings["label_plural"] ),
+            'view_posts_tour' => sprintf( _x( "%s appear here and can be clicked on to view more.", 'Contacts appear here and can be clicked on to view more.', 'disciple_tools' ), $post_settings["label_plural"] ),
         ];
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
         dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );
