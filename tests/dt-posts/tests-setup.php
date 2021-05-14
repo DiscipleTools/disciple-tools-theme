@@ -162,7 +162,7 @@ add_filter( 'dt_custom_fields_settings', function( $fields, $post_type ){
 function dt_test_get_sample_record_fields(){
     return [
         'title' => 'Custom Record',
-        'number_test' => 101,
+        'number_test' => 1013.3,
         'number_test_private' => 102,
         'text_test' => "Some Random Text",
         'text_test_private' => "Some Random Private Text",

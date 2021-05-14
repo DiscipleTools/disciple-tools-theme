@@ -4,6 +4,25 @@ jQuery(document).ready(function() {
 
 })
 
+function app_switch (app_key = null) {
+  let a = jQuery('#app_link_' + app_key)
+  a.empty().html(`<span class="loading-spinner active"></span>`)
+  makeRequest('post', 'users/app_switch', { app_key })
+    .done(function(data) {
+      if ('removed' === data) {
+        jQuery('#app_link_' + app_key).empty()
+      } else {
+        let u = a.data('url-base')
+        a.empty().html(`<a href="${u}${data}">${wpApiSettingsPage.translations.link}</a>`)
+      }
+    })
+    .fail(function (err) {
+      console.log("error");
+      console.log(err);
+      a.empty().html(`error`)
+    });
+}
+
 /**
  * Password reset
  *
@@ -181,7 +200,8 @@ let dateFields = [ "start_date", "end_date" ]
       },
       dateFormat: 'yy-mm-dd',
       changeMonth: true,
-      changeYear: true
+      changeYear: true,
+      yearRange: "-20:+10",
     })
   })
 

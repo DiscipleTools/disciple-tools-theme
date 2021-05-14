@@ -65,13 +65,27 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
      * @param $tab
      */
     public function content( $tab ) {
+        global $wp_post_types;
+
         if ( 'custom-fields' == $tab ) :
             $show_add_field = false;
             $field_key = false;
             if ( isset( $_POST['field_key'] ) ){
-                $field_key = sanitize_text_field( wp_unslash( $_POST["field_key"] ) ) ?: false;
+                $field_key = sanitize_text_field( wp_unslash( $_POST['field_key'] ) ) ?: false;
             }
-            $post_type = isset( $_POST['post_type'] ) ? sanitize_text_field( wp_unslash( $_POST["post_type"] ) ) : null;
+
+            /*
+             * Check for post types
+             */
+            if ( isset( $_POST['post_type'] ) ) {
+                $post_type = sanitize_text_field( wp_unslash( $_POST['post_type'] ) );
+                $_GET = null; // Prioritize $_POST over $_GET in order to avoid conflicts when switching post types
+            } else if ( isset( $_GET['post_type'] ) ) {
+                $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
+            } else {
+                $post_type = null;
+            }
+
             $this->template( 'begin', 1 );
 
             if ( !empty( $_GET["field-select"] ) ){
@@ -105,7 +119,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $post_submission[sanitize_text_field( wp_unslash( $key ) )] = sanitize_text_field( wp_unslash( $value ) );
                 }
                 $field_key = $this->process_add_field( $post_submission );
-                $post_type = $post_submission["post_type"];
+                $post_type = $post_submission['post_type'];
                 $show_add_field = $field_key === false;
             }
             /*
@@ -115,22 +129,37 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 if ( !wp_verify_nonce( sanitize_key( $_POST['field_edit_nonce'] ), 'field_edit' ) ) {
                     return;
                 }
-                $post_submission = [];
-
-                foreach ( $_POST as $key => $value ){
-                    $post_submission[sanitize_text_field( wp_unslash( $key ) )] = sanitize_text_field( wp_unslash( $value ) );
-                }
+                $post_submission = dt_recursive_sanitize_array( $_POST );
                 $this->process_edit_field( $post_submission );
             }
 
-            $this->box( 'top', __( 'Add new fields or modify existing ones on Contacts or Groups', 'disciple_tools' ) );
-            $this->field_select();
+            /*
+             * Process Extra fields
+             */
+            if ( isset( $_POST["field_extras_nonce"] ) ){
+                if ( !wp_verify_nonce( sanitize_key( $_POST['field_extras_nonce'] ), 'field_extras' ) ) {
+                    return;
+                }
+                $post_submission = dt_recursive_sanitize_array( $_POST );
+
+                $this->process_extra_field( $post_submission );
+            }
+
+            $this->box( 'top', __( 'Edit Fields', 'disciple_tools' ) );
+            $this->post_type_select( $post_type );
             $this->box( 'bottom' );
 
+            if ( empty( $post_type ) ) {
+                return;
+            }
+
+            $this->box( 'top', __( 'Add new fields or modify existing ones on ', 'disciple_tools' ) . $wp_post_types[$post_type]->label );
+            $this->field_select( $post_type );
+            $this->box( 'bottom' );
 
             if ( empty( $field_key ) && $show_add_field ){
                 $this->box( 'top', __( "Create new field", 'disciple_tools' ) );
-                $this->add_field();
+                $this->add_field( $post_type );
                 $this->box( 'bottom' );
             }
             if ( $post_type && isset( $this->get_post_fields( $post_type )[$field_key] ) ){
@@ -145,21 +174,43 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         endif;
     }
 
-    private function field_select(){
+    private function post_type_select( $selected_post_type ) {
+        global $wp_post_types;
+        $post_types = DT_Posts::get_post_types();
+        ?>
+        <form method="post">
+            <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
+            <table>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label for="tile-select"><?php esc_html_e( "For what post type?", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <?php foreach ( $post_types as $post_type ) : ?>
+                            <button type="submit" name="post_type" class="button <?php echo esc_html( $selected_post_type === $post_type ? 'button-primary' : '' ); ?>" value="<?php echo esc_html( $post_type ); ?>">
+                                <?php echo esc_html( $wp_post_types[$post_type]->label ); ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </td>
+                </tr>
+            </table>
+            <br>
+        </form>
+        <?php
+    }
+
+    private function field_select( $selected_post_type ){
         global $wp_post_types;
         $select_options = [];
-        $post_types = DT_Posts::get_post_types();
-        foreach ( $post_types as $post_type ){
-            $select_options[$post_type] = [];
-            $fields = $this->get_post_fields( $post_type );
-            uasort($fields, function( $a, $b) {
-                return $a['name'] <=> $b['name'];
-            });
-            if ( $fields ){
-                foreach ( $fields as $field_key => $field_value ){
-                    if ( ( isset( $field_value["customizable"] ) && $field_value["customizable"] !== false ) || ( !isset( $field_value["customizable"] ) && empty( $field_value["hidden"] ) ) ){
-                        $select_options[ $post_type ][ $field_key ] = $field_value;
-                    }
+        $selected_post_type = sanitize_text_field( wp_unslash( $selected_post_type ) );
+        $fields = $this->get_post_fields( $selected_post_type );
+        uasort($fields, function( $a, $b) {
+            return $a['name'] <=> $b['name'];
+        });
+        if ( $fields ){
+            foreach ( $fields as $field_key => $field_value ){
+                if ( ( isset( $field_value["customizable"] ) && $field_value["customizable"] !== false ) || ( !isset( $field_value["customizable"] ) && empty( $field_value["hidden"] ) ) ) {
+                    $select_options[ $field_key ] = $field_value;
                 }
             }
         }
@@ -169,6 +220,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <input type="hidden" name="field_select_nonce" id="field_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_select' ) ) ?>" />
             <input type="hidden" name="page" value="dt_options" />
             <input type="hidden" name="tab" value="custom-fields" />
+            <input type="hidden" name="post_type" value="<?php echo esc_attr( $selected_post_type ); ?>" />
             <table>
                 <tr>
                     <td style="vertical-align: middle">
@@ -177,16 +229,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                         <select id="field-select" name="field-select">
                             <option></option>
-                            <?php foreach ( $post_types as $post_type ) : ?>
-                                <option disabled>---<?php echo esc_html( $wp_post_types[$post_type]->label ); ?> Fields---</option>
-                                <?php foreach ( $select_options[$post_type] as $option_key => $option_value ) : ?>
+                                <option disabled>---<?php echo esc_html( $wp_post_types[$selected_post_type]->label ); ?> Fields---</option>
+                                <?php foreach ( $select_options as $option_key => $option_value ) : ?>
 
-                                <option value="<?php echo esc_html( $post_type . '_' . $option_key ) ?>">
+                                <option value="<?php echo esc_html( $selected_post_type . '_' . $option_key ) ?>">
                                     <?php echo esc_html( $option_value["name"] ?? $option_key ) ?>
                                     <span> - (<?php echo esc_html( $option_key ) ?>)</span>
                                 </option>
                                 <?php endforeach; ?>
-                            <?php endforeach; ?>
                         </select>
                         <button type="submit" class="button" name="field_selected"><?php esc_html_e( "Select", 'disciple_tools' ) ?></button>
                     </td>
@@ -225,7 +275,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             return;
         }
 
-
+        $post_settings = DT_Posts::get_post_settings( $post_type );
         $defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
 
         $field_options = $field["default"] ?? [];
@@ -360,169 +410,252 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         <br>
 
-            <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
-                if ( in_array( $field_key, $core_fields ) ){
-                    ?>
-                    <p>
-                        <strong>This is a core field. <a href="<?php echo esc_url( admin_url() ) ?>edit.php?page=dt_options&tab=custom-lists#<?php echo esc_attr( $field_key ) ?>"  class="">Go to Custom Lists page to edit options.</a></strong>
-                    </p>
-                    <?php
-                    return;
-                } ?>
+        <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
+            if ( in_array( $field_key, $core_fields ) ){
+                ?>
+                <p>
+                    <strong>This is a core field. <a href="<?php echo esc_url( admin_url() ) ?>edit.php?page=dt_options&tab=custom-lists#<?php echo esc_attr( $field_key ) ?>"  class="">Go to Custom Lists page to edit options.</a></strong>
+                </p>
+                <?php
+                return;
+            } ?>
 
-                <h3><?php esc_html_e( "Field Options", 'disciple_tools' ) ?></h3>
-                <table id="add_option" style="">
-                    <tr>
-                        <td style="vertical-align: middle">
-                            <?php esc_html_e( "Add new option", 'disciple_tools' ) ?>
-                        </td>
-                        <td>
-                            <input type="text" name="add_option" placeholder="label" />
-                            <button type="submit" class="button"><?php echo esc_html( __( 'Add', 'disciple_tools' ) ) ?></button>
-                        </td>
-                    </tr>
-                </table>
-                <br>
-                <table class="widefat">
-                    <thead>
-                    <tr>
-                        <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Default Label", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Custom Label", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Description", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ( $field_options as $key => $option ) :
+            <h3><?php esc_html_e( "Field Options", 'disciple_tools' ) ?></h3>
+            <table id="add_option" style="">
+                <tr>
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Add new option", 'disciple_tools' ) ?>
+                    </td>
+                    <td>
+                        <input type="text" name="add_option" placeholder="label" />
+                        <button type="submit" class="button"><?php echo esc_html( __( 'Add', 'disciple_tools' ) ) ?></button>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <table class="widefat">
+                <thead>
+                <tr>
+                    <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( "Default Label", 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( "Custom Label", 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( "Description", 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ( $field_options as $key => $option ) :
 
-                        if ( !( isset( $option["deleted"] ) && $option["deleted"] == true ) ):
-                            $label = $option["label"] ?? "";
-                            $in_defaults = isset( $defaults[$field_key]["default"][$key] );
-                            ?>
-                            <tr>
-                                <td>
-                                    <?php echo esc_html( $key ) ?>
-                                </td>
-                                <td>
-                                    <?php if ( !empty( $defaults[$field_key]["default"][$key]["label"] ) ) : ?>
-                                        <?php echo esc_html( $defaults[$field_key]["default"][$key]["label"] ); ?> <br>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-
-                                    <?php $name = ( isset( $defaults[$field_key]["default"][$key]["label"] ) && $label === $defaults[$field_key]["default"][$key]["label"] ) ? '' : $label ?>
-                                    <input name="field_option_<?php echo esc_html( $key )?>" type="text" value="<?php echo esc_html( $name ) ?>"/>
-                                    <?php if ( isset( $defaults[$field_key]["default"][$key]["label"] ) && !empty( $name ) ) : ?>
-                                    <button title="submit" class="button" name="delete_option_label" value="<?php echo esc_html( $key ) ?>">Remove Label</button>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <button class="button small expand_translations">
-                                        <?php
-                                        $number_of_translations = 0;
-                                        foreach ( $langs as $lang => $val ){
-                                            if ( !empty( $field["default"][$key]["translations"][$val['language']] ) ){
-                                                $number_of_translations++;
-                                            }
-                                        }
-                                        ?>
-                                        <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
-                                        (<?php echo esc_html( $number_of_translations ); ?>)
-                                    </button>
-                                    <div class="translation_container hide">
-                                        <table>
-                                            <?php foreach ( $langs as $lang => $val ) : ?>
-                                                <tr>
-                                                    <td><label for="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                                    <td><input name="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $field["default"][$key]["translations"][$val['language']] ?? "" );?>"/></td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </table>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <?php if ( !$first ) : ?>
-                                        <button type="submit" name="move_up" value="<?php echo esc_html( $key ) ?>" class="button small" >↑</button>
-                                        <button type="submit" name="move_down" value="<?php echo esc_html( $key ) ?>" class="button small" >↓</button>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php if ( ( isset( $field["customizable"] ) && ( $field["customizable"] === "all" || ( $field["customizable"] === 'add_only' && !$in_defaults ) ) )
-                                        || !isset( $field["default"][$key] ) ) : ?>
-                                    <button type="submit" name="delete_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Hide", 'disciple_tools' ) ?></button>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php $description = isset( $field["default"][$key]["description"] ) ? $field["default"][$key]["description"] : ""; ?>
-                                    <input name="option_description_<?php echo esc_html( $key )?>" type="text" value="<?php echo esc_html( $description ) ?>">
-                                </td>
-                                <td>
-                                    <button class="button small expand_translations">
-                                        <?php
-                                        $number_of_translations = 0;
-                                        foreach ( $langs as $lang => $val ){
-                                            if ( !empty( $field["default"][$key]["description_translations"][$val['language']] ) ){
-                                                $number_of_translations++;
-                                            }
-                                        }
-                                        ?>
-                                        <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
-                                        (<?php echo esc_html( $number_of_translations ); ?>)
-                                    </button>
-                                    <div class="translation_container hide">
-                                        <table>
-                                            <?php foreach ( $langs as $lang => $val ) : ?>
-                                                <tr>
-                                                    <td><label for="option_description_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                                    <td><input name="option_description_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $field["default"][$key]["description_translations"][$val['language']] ?? "" );?>"/></td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </table>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php $first = false;
-                        endif;
-                    endforeach; ?>
-    <!--                <tr style="padding-top:10px; border-top:solid black;"><td>Deleted options:</td></tr>-->
-                    <?php foreach ( $field_options as $key => $option ) :
+                    if ( !( isset( $option["deleted"] ) && $option["deleted"] == true ) ):
                         $label = $option["label"] ?? "";
-                        if ( isset( $option["deleted"] ) && $option["deleted"] == true ): ?>
-                            <tr style="background-color: #eee">
-                                <td><?php echo esc_html( $key ) ?></td>
-                                <td><?php echo esc_html( $label ) ?></td>
-                                <td></td>
-                                <td>
-                                    <button type="submit" name="restore_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Restore", 'disciple_tools' ) ?></button>
-                                </td>
-                            </tr>
-                        <?php endif;
-                    endforeach; ?>
-                    </tbody>
-                </table>
+                        $in_defaults = isset( $defaults[$field_key]["default"][$key] );
+                        ?>
+                        <tr>
+                            <td>
+                                <?php echo esc_html( $key ) ?>
+                            </td>
+                            <td>
+                                <?php if ( !empty( $defaults[$field_key]["default"][$key]["label"] ) ) : ?>
+                                    <?php echo esc_html( $defaults[$field_key]["default"][$key]["label"] ); ?> <br>
+                                <?php endif; ?>
+                            </td>
+                            <td>
 
-                <br>
-    <!--            <button type="button" onclick="jQuery('#add_seeker_path').toggle();" class="button">--><?php //esc_html_e( "Add", 'disciple_tools' ) ?><!--</button>-->
-                <button type="submit" style="float:right;" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
+                                <?php $name = ( isset( $defaults[$field_key]["default"][$key]["label"] ) && $label === $defaults[$field_key]["default"][$key]["label"] ) ? '' : $label ?>
+                                <input name="field_option_<?php echo esc_html( $key )?>" type="text" value="<?php echo esc_html( $name ) ?>"/>
+                                <?php if ( isset( $defaults[$field_key]["default"][$key]["label"] ) && !empty( $name ) ) : ?>
+                                <button title="submit" class="button" name="delete_option_label" value="<?php echo esc_html( $key ) ?>">Remove Label</button>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <button class="button small expand_translations">
+                                    <?php
+                                    $number_of_translations = 0;
+                                    foreach ( $langs as $lang => $val ){
+                                        if ( !empty( $field["default"][$key]["translations"][$val['language']] ) ){
+                                            $number_of_translations++;
+                                        }
+                                    }
+                                    ?>
+                                    <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                                    (<?php echo esc_html( $number_of_translations ); ?>)
+                                </button>
+                                <div class="translation_container hide">
+                                    <table>
+                                        <?php foreach ( $langs as $lang => $val ) : ?>
+                                            <tr>
+                                                <td><label for="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
+                                                <td><input name="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $field["default"][$key]["translations"][$val['language']] ?? "" );?>"/></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </table>
+                                </div>
+                            </td>
+
+                            <td>
+                                <?php if ( !$first ) : ?>
+                                    <button type="submit" name="move_up" value="<?php echo esc_html( $key ) ?>" class="button small" >↑</button>
+                                    <button type="submit" name="move_down" value="<?php echo esc_html( $key ) ?>" class="button small" >↓</button>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if ( ( isset( $field["customizable"] ) && ( $field["customizable"] === "all" || ( $field["customizable"] === 'add_only' && !$in_defaults ) ) )
+                                    || !isset( $field["default"][$key] ) ) : ?>
+                                <button type="submit" name="delete_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Hide", 'disciple_tools' ) ?></button>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php $description = isset( $field["default"][$key]["description"] ) ? $field["default"][$key]["description"] : ""; ?>
+                                <input name="option_description_<?php echo esc_html( $key )?>" type="text" value="<?php echo esc_html( $description ) ?>">
+                            </td>
+                            <td>
+                                <button class="button small expand_translations">
+                                    <?php
+                                    $number_of_translations = 0;
+                                    foreach ( $langs as $lang => $val ){
+                                        if ( !empty( $field["default"][$key]["description_translations"][$val['language']] ) ){
+                                            $number_of_translations++;
+                                        }
+                                    }
+                                    ?>
+                                    <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                                    (<?php echo esc_html( $number_of_translations ); ?>)
+                                </button>
+                                <div class="translation_container hide">
+                                    <table>
+                                        <?php foreach ( $langs as $lang => $val ) : ?>
+                                            <tr>
+                                                <td><label for="option_description_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
+                                                <td><input name="option_description_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $field["default"][$key]["description_translations"][$val['language']] ?? "" );?>"/></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php $first = false;
+                    endif;
+                endforeach; ?>
+                <?php foreach ( $field_options as $key => $option ) :
+                    $label = $option["label"] ?? "";
+                    if ( isset( $option["deleted"] ) && $option["deleted"] == true ): ?>
+                        <tr style="background-color: #eee">
+                            <td><?php echo esc_html( $key ) ?></td>
+                            <td><?php echo esc_html( $label ) ?></td>
+                            <td colspan="5"></td>
+                            <td>
+                                <button type="submit" name="restore_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Restore", 'disciple_tools' ) ?></button>
+                            </td>
+                        </tr>
+                    <?php endif;
+                endforeach; ?>
+                </tbody>
+            </table>
+
+            <br>
+            <button type="submit" style="float:right;" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
 
 
-            <?php } else { ?>
+        <?php } ?>
+        </form>
 
+        <br>
+        <?php
+        /**
+         * Visibility controls
+         */
+        ?>
+        <?php if ( isset( $post_fields["type"]["default"] ) ) : ?>
+            <form method="post" name="field_extras_form">
+            <input type="hidden" name="field_key" value="<?php echo esc_html( $field_key )?>">
+            <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
+            <input type="hidden" name="field-select" value="<?php echo esc_html( $post_type . "_" . $field_key )?>">
+            <input type="hidden" name="field_select_nonce" id="field_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_select' ) ) ?>" />
+            <input type="hidden" name="field_extras_nonce" id="field_extras_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_extras' ) ) ?>" />
+            <!-- field visibility on record -->
+            <h3><?php echo esc_html( sprintf( __( 'Visible on %s records', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?></h3>
 
-        <?php }
+            <p><?php echo esc_html( sprintf( __( 'This field will show up on %s records of type:', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?></p>
+            <?php foreach ( $post_fields["type"]["default"] as $type_key => $type ) :
+                $checked = dt_field_enabled_for_record_type( $field, [ "type" => [ "key" => $type_key ] ] );
+                ?>
+                <label style="margin-right:10px">
+                    <input type="checkbox" name="field_type[]" value="<?php echo esc_html( $type_key ); ?>" <?php checked( $checked ) ?>>
+                    <?php echo esc_html( $type["label"] ); ?>
+                </label>
+            <?php endforeach; ?>
+            <br>
+            <br>
+            <button type="submit" name="save_types" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
 
-    }
+            <!-- create record form -->
+            <h3><?php echo esc_html( sprintf( __( 'Visible when creating %s', 'disciple_tools' ), strtolower( $post_settings["label_plural"] ) ) ) ?></h3>
+            <p> <?php echo esc_html( sprintf( __( 'When creating a %1$s, this field will be displayed at the top (in the non hidden section), for these %2$s types:', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ), strtolower( $post_settings["label_singular"] ) ) ) ?></p>
+            <?php foreach ( $post_fields["type"]["default"] as $type_key => $type ) :
+                if ( !empty( $type["hidden"] ) ){
+                    continue;
+                }
+                $checked = isset( $field["in_create_form"] ) && !empty( $field["in_create_form"] ) && ( $field["in_create_form"] === true || in_array( $type_key, $field["in_create_form"], true ) )
+                ?>
+                <label style="margin-right:10px">
+                    <input name="create_form_options[]" type="checkbox" <?php checked( $checked ) ?> value="<?php echo esc_html( $type_key ); ?>">
+                    <?php echo esc_html( $type["label"] ); ?>
+                </label>
+            <?php endforeach; ?>
+            <br>
+            <br>
+            <button type="submit" name="save_create_form" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
+            </form>
+        <?php endif; ?>
+    <?php }
 
     private static function moveElement( &$array, $a, $b ) {
         $out = array_splice( $array, $a, 1 );
         array_splice( $array, $b, 0, $out );
     }
 
+
+    private function process_extra_field( $post_submission ){
+        $post_type = $post_submission["post_type"];
+        $post_fields = $this->get_post_fields( $post_type );
+        $field_customizations = dt_get_option( "dt_field_customizations" );
+        $field_key = $post_submission["field_key"];
+
+        if ( isset( $post_submission["save_types"] ) ){
+            $types = $post_fields["type"]["default"];
+            if ( !isset( $post_submission["field_type"] ) ){
+                $field_customizations[$post_type][$field_key]["only_for_types"] = false;
+            } else if ( sizeof( $post_submission["field_type"] ) === sizeof( $types ) ){
+                $field_customizations[$post_type][$field_key]["only_for_types"] = true;
+            } else {
+                $field_customizations[$post_type][$field_key]["only_for_types"] = $post_submission["field_type"];
+            }
+            update_option( "dt_field_customizations", $field_customizations );
+            wp_cache_delete( $post_type . "_field_settings" );
+        }
+
+        if ( isset( $post_submission["save_create_form"] ) ){
+            $types_options = $post_fields["type"]["default"];
+            $non_hidden_types = array_filter( $types_options, function ( $type ){
+                return !isset( $type["hidden"] ) || empty( $type["hidden"] );
+            });
+            $create_form_options = isset( $post_submission["create_form_options"] ) ? $post_submission["create_form_options"] : false;
+
+            if ( !isset( $post_submission["create_form_options"] ) ){
+                $field_customizations[$post_type][$field_key]["in_create_form"] = [ 'hidden' ];
+            } else if ( sizeof( $create_form_options ) === count( $non_hidden_types ) ){
+                $field_customizations[$post_type][$field_key]["in_create_form"] = true;
+            } else {
+                $field_customizations[$post_type][$field_key]["in_create_form"] = $create_form_options;
+            }
+
+            update_option( "dt_field_customizations", $field_customizations );
+            wp_cache_delete( $post_type . "_field_settings" );
+        }
+    }
 
     private function process_edit_field( $post_submission ){
         //save values
@@ -572,6 +705,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             } else if ( !isset( $post_submission["field_private"] ) || !$post_submission["field_private"] ) {
                 $custom_field["private"] = false;
             }
+            //field description
             if ( isset( $post_submission["field_description"] ) && $post_submission["field_description"] != ( $custom_field["description"] ?? "" ) ){
                 $custom_field["description"] = $post_submission["field_description"];
             }
@@ -588,10 +722,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
 
-
+            //field tile
             if ( isset( $post_submission["tile_select"] ) ){
                 $custom_field["tile"] = $post_submission["tile_select"];
             }
+            // key_select and multi_options
             if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" )){
                 $field_options = $field["default"];
                 foreach ( $post_submission as $key => $val ){
@@ -691,14 +826,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     }
 
 
-    private function add_field(){
+    private function add_field( $post_type ){
         global $wp_post_types;
-        $post_types = DT_Posts::get_post_types();
-        $tile_options = [];
-        foreach ( $post_types as $post_type ){
-            $tile_options[ $post_type ] = DT_Posts::get_post_tiles( $post_type );
-        }
-
+        $post_type = sanitize_text_field( wp_unslash( $post_type ) );
+        $tile_options = DT_Posts::get_post_tiles( $post_type );
         ?>
         <form method="post">
             <input type="hidden" name="field_add_nonce" id="field_add_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_add' ) ) ?>" />
@@ -708,11 +839,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php esc_html_e( "Page type", 'disciple_tools' ) ?>
                     </td>
                     <td>
-                        <select name="post_type">
-                            <?php foreach ( $post_types as $post_type ) : ?>
-                                <option value="<?php echo esc_html( $post_type ); ?>"><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <b><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></b>
+                        <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type ); ?>">
                     </td>
                 <tr>
                     <td style="vertical-align: middle">
@@ -753,14 +881,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                         <select name="new_field_tile">
                             <option><?php esc_html_e( "No tile", 'disciple_tools' ) ?></option>
-                            <?php foreach ( $post_types as $post_type ) : ?>
                                 <option disabled>---<?php echo esc_html( $wp_post_types[$post_type]->label ); ?> tiles---</option>
-                                <?php foreach ( $tile_options[$post_type] as $option_key => $option_value ) : ?>
+                                <?php foreach ( $tile_options as $option_key => $option_value ) : ?>
                                     <option value="<?php echo esc_html( $option_key ) ?>">
                                         <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
                                     </option>
                                 <?php endforeach; ?>
-                            <?php endforeach; ?>
                         </select>
                     </td>
                 </tr>
@@ -837,7 +963,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'default' => [],
                     'type' => 'tags',
                     'tile' => $field_tile,
-                    'customizable' => 'all'
+                    'customizable' => 'all',
+                    'private' => $field_private
                 ];
             } elseif ( $field_type === "date" ){
                 $new_field = [
@@ -892,5 +1019,4 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     }
 }
 Disciple_Tools_Tab_Custom_Fields::instance();
-
 

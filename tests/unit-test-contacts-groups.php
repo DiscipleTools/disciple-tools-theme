@@ -42,7 +42,7 @@ class PostsTest extends WP_UnitTestCase {
             "members" => [ "values" => [ [ "value" => $contact1["ID"] ] ] ]
         ] );
         $this->assertSame( sizeof( $group1['members'] ), 1 );
-        $this->assertSame( $group1["member_count"], '1' );
+        $this->assertSame( $group1["member_count"], 1 );
         //create contact2 with group1 in groups
         $contact2_fields = [
             'title' => 'contact 2',
@@ -53,7 +53,7 @@ class PostsTest extends WP_UnitTestCase {
         $contact1 = DT_Posts::get_post( 'contacts', $contact1["ID"] );
         $group1 = DT_Posts::get_post( 'groups', $group1["ID"], false );
         $this->assertSame( sizeof( $group1['members'] ), 2 );
-        $this->assertSame( $group1["member_count"], '2' );
+        $this->assertSame( $group1["member_count"], 2 );
 
         //remove on both
         $contact2 = DT_Posts::update_post( 'contacts', $contact2["ID"], [
@@ -68,7 +68,7 @@ class PostsTest extends WP_UnitTestCase {
         ] );
         $this->assertNotWPError( $contact2 );
         $group1 = DT_Posts::get_post( 'groups', $group1["ID"], false );
-        $this->assertSame( '1', $group1["member_count"] );
+        $this->assertSame( 1, $group1["member_count"] );
         $group1 = DT_Posts::update_post( 'groups', $group1["ID"], [
             'members' => [
                 "values" => [
@@ -79,7 +79,7 @@ class PostsTest extends WP_UnitTestCase {
                 ]
             ]
         ] );
-        $this->assertSame( $group1["member_count"], '0' );
+        $this->assertSame( $group1["member_count"], 0 );
 
         // test force values
         $contact3 = DT_Posts::create_post( 'contacts', [
@@ -95,7 +95,7 @@ class PostsTest extends WP_UnitTestCase {
                 "force_values" => true
             ]
         ] );
-        $this->assertSame( $group1["member_count"], '2' );
+        $this->assertSame( $group1["member_count"], 2 );
 
         //test removing member form manually set member count.
         DT_Posts::update_post( 'groups', $group1["ID"], [ "member_count" => 10 ] );
@@ -109,7 +109,7 @@ class PostsTest extends WP_UnitTestCase {
                 ]
             ]
         ] );
-        $this->assertSame( $group1["member_count"], '9' );
+        $this->assertSame( $group1["member_count"], 9 );
     }
 
     public function test_force_values() {

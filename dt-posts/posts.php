@@ -422,9 +422,17 @@ class Disciple_Tools_Posts
                 if ( $fields[$activity->meta_key]["type"] === "location_meta" ){
                     if ( $activity->meta_value === "value_deleted" ){
                         $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->old_value );
+                        // the meta address has been deleted, so get the address from the object note
+                        if ( !$label || $label === '' ) {
+                            $label = $activity->object_note;
+                        }
                         $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $label ?? $activity->old_value );
                     } else {
                         $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->meta_value );
+                        // if the meta address has been deleted, then get the address from the object note
+                        if ( !$label || $label === '' ) {
+                            $label = $activity->object_note;
+                        }
                         $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? $activity->old_value );
                     }
                 }
@@ -2042,7 +2050,7 @@ class Disciple_Tools_Posts
                         "key" => $value[0],
                         "label" => $label
                     ];
-                } elseif ( $key === "assigned_to" ) {
+                } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'user_select' ) {
                     if ( $value ) {
                         $meta_array = explode( '-', $value[0] ); // Separate the type and id
                         $type = $meta_array[0]; // Build variables
@@ -2077,10 +2085,12 @@ class Disciple_Tools_Posts
                     $fields[$key] = $value[0] === "1";
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
                     $fields[$key] = maybe_unserialize( $value[0] );
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'number' ) {
+                    $fields[$key] = maybe_unserialize( $value[0] ) + 0;
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
                     if ( isset( $value[0] ) && !empty( $value[0] ) ){
                         $fields[$key] = [
-                            "timestamp" => is_numeric( $value[0] ) ? $value[0] : dt_format_date( $value[0], "U" ),
+                            "timestamp" => is_numeric( $value[0] ) ? (int) $value[0] : dt_format_date( $value[0], "U" ),
                             "formatted" => dt_format_date( $value[0] ),
                         ];
                     }
@@ -2181,8 +2191,11 @@ class Disciple_Tools_Posts
                         $timestamp = $m['meta_value'];
                         $formatted_date = dt_format_date( $timestamp );
 
-                        $fields[$m["meta_key"]]['timestamp'] = $timestamp;
+                        $fields[$m["meta_key"]]['timestamp'] = (int) $timestamp;
                         $fields[$m["meta_key"]]['formatted'] = $formatted_date;
+
+                    } else if ( $field_settings[$m['meta_key']]['type'] === 'number' ){
+                        $fields[$m["meta_key"]] = $m['meta_value'] + 0;
 
                     } else if ( $field_settings[$m['meta_key']]['type'] === 'boolean' ){
                         if ( $m["meta_value"] === "1" || $m["meta_value"] === "yes" || $m["meta_value"] === "true" ){

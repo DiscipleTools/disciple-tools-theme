@@ -639,6 +639,7 @@ window.METRICS = {
       }
     );
   },
+
 };
 
 // nonce timeout fix
