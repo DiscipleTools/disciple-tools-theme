@@ -448,7 +448,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 'name'        => __( 'Favorite', 'disciple_tools' ),
                 'type'        => 'boolean',
                 'default'     => false,
-                'private'     => true
+                'private'     => true,
+                "show_in_table" => 10,
             ];
 
         }

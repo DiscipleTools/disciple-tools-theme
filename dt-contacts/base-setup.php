@@ -308,7 +308,8 @@ class DT_Contacts_Base {
                 'name'        => __( 'Favorite', 'disciple_tools' ),
                 'type'        => 'boolean',
                 'default'     => false,
-                'private'     => true
+                'private'     => true,
+                "show_in_table" => 6,
             ];
 
             $fields["overall_status"] = [
