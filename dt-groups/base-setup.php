@@ -449,7 +449,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type'        => 'boolean',
                 'default'     => false,
                 'private'     => true,
-                "show_in_table" => 10,
+                "show_in_table" => 6,
             ];
 
         }

@@ -478,19 +478,24 @@
               })
             } else if ( field_settings.type === "boolean" ){
               if (field_settings.name === "Favorite") {
-                values = [`<svg class='icon-star' viewBox="0 0 32 32"><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
+                values = [`<svg class='icon-star selected' viewBox="0 0 32 32"><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
               } else {
                 values = ['&check;']
               }
             }
+          } else if ( !field_value && field_settings.type === "boolean" && field_settings.name === "Favorite") {
+            values = [`<svg class='icon-star' viewBox="0 0 32 32"><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
           }
         } else {
           return;
         }
         values_html += values.map( (v, index)=>{
           //this looks for the star SVG from the favorited fields and changes the value to a checkmark like other boolean fields to be used in the title element on desktop lists.
+          if (v === `<svg class='icon-star selected' viewBox="0 0 32 32"><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>` ) {
+            values[index] = '&#9734;'
+          }
           if (v === `<svg class='icon-star' viewBox="0 0 32 32"><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`) {
-            values[index] = '&check;'
+            values[index] = '&#9733;'
           }
           return `<li>${v}</li>`
         }).join('')
