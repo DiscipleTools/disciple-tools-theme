@@ -100,7 +100,7 @@ function dt_site_scripts() {
 
     wp_register_script( 'tour', 'https://cdn.jsdelivr.net/npm/shepherd.js@5.0.1/dist/js/shepherd.js', false, '5.0.1', true );
     wp_register_script( 'tour', 'https://cdn.jsdelivr.net/npm/shepherd.js@5.0.1/dist/js/shepherd.js', false, '5.0.1', true );
-    dt_theme_enqueue_script( 'setup-tour', 'dt-assets/js/setup-tour.js', array( 'modular-list-js', 'shared-functions', 'tour' ), true );
+    dt_theme_enqueue_script( 'setup-tour', 'dt-assets/js/setup-tour.js', array( 'jquery', 'modular-list-js', 'shared-functions', 'tour' ), true );
 
     $post_type = get_post_type();
     $url_path = dt_get_url_path();
