@@ -13,7 +13,9 @@ jQuery(function ($) {
         close_tour: closeTourLabel,
     } = escapeObject(window.wpApiShare.translations)
 
-    startListTour()
+    if (window.list_settings) {
+        startListTour()
+    }
 
     function startListTour() {
         const tourId = 'list_tour'
@@ -79,7 +81,7 @@ jQuery(function ($) {
         return new Shepherd.Tour({
             defaultStepOptions: {
                 classes: 'shadow-md bg-purple-dark',
-                //        scrollTo: true
+                //scrollTo: true,
             },
             useModalOverlay: true,
         });
