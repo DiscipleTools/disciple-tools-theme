@@ -5,8 +5,8 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Enqueue Scripts for the site.
  *
- * @author  Chasm Solutions
- * @package Disciple_Tools
+ * @author  Disciple.Tools
+ * @package Disciple.Tools
  */
 
 /*

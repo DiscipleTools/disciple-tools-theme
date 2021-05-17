@@ -2,9 +2,9 @@
 /**
  * Contains create, update and delete functions for users, wrapping access to the database
  *
- * @package  Disciple_Tools
+ * @package  Disciple.Tools
  * @category Plugin
- * @author   Chasm.Solutions & Kingdom.Training
+ * @author   Disciple.Tools
  * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {

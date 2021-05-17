@@ -2,7 +2,7 @@
 /**
  * Counts Baptism statistics in database
  *
- * @package Disciple_Tools
+ * @package Disciple.Tools
  *
  * @version 0.1.0
  */

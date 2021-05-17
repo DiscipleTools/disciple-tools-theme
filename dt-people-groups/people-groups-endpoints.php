@@ -2,9 +2,9 @@
 /**
  * Custom endpoints file
  *
- * @package  Disciple_Tools
+ * @package  Disciple.Tools
  * @category Plugin
- * @author   Chasm.Solutions & Kingdom.Training
+ * @author   Disciple.Tools
  * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {

@@ -2,9 +2,9 @@
 /**
  * Presenter template for theme support
  *
- * @package  Disciple_Tools
+ * @package  Disciple.Tools
  * @category Theme
- * @author   Chasm.Solutions & Kingdom.Training
+ * @author   Disciple.Tools
  * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {

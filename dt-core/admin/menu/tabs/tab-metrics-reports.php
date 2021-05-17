@@ -6,8 +6,8 @@
  * @class      Disciple_Tools_Critical_Path_Tab
  * @version    0.1.0
  * @since      0.1.0
- * @package    Disciple_Tools
- * @author     Chasm.Solutions & Kingdom.Training
+ * @package    Disciple.Tools
+ * @author     Disciple.Tools
  */
 
 if ( !defined( 'ABSPATH' ) ) {

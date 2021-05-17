@@ -81,7 +81,7 @@ else {
      *
      * @class   Disciple_Tools
      * @since   0.1.0
-     * @package Disciple_Tools
+     * @package Disciple.Tools
      */
     class Disciple_Tools
     {
