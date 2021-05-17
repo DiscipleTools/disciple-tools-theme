@@ -276,7 +276,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
-        $defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
+        $defaults = apply_filters( 'dt_custom_fields_settings', $base_fields, $post_type );
 
         $field_options = $field["default"] ?? [];
 
