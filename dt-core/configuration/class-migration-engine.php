@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Migration_Engine
 {
 
-    public static $migration_number = 41;
+    public static $migration_number = 42;
 
     protected static $migrations = null;
 
@@ -78,7 +78,6 @@ class Disciple_Tools_Migration_Engine
                 throw new Exception( "Current migration number doesn't look like an integer ($current_migration_number)" );
             }
             $current_migration_number = intval( $current_migration_number );
-
             if ( $target_migration_number === $current_migration_number ) {
                 break;
             } elseif ( $target_migration_number < $current_migration_number ) {
