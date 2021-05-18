@@ -2,7 +2,7 @@
 /**
  * Class PostsTest
  *
- * @package Disciple_Tools_Theme
+ * @package Disciple.Tools
  */
 
 
