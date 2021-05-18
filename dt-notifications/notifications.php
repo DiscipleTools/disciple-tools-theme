@@ -109,7 +109,6 @@ class Disciple_Tools_Notifications
                 'post_id'             => $args['post_id'],
                 'secondary_item_id'   => $args['secondary_item_id'],
                 'notification_name'   => $args['notification_name'],
-                'notification_type'   => isset( $args['notification_type'] ) ? $args['notification_type'] : null ,
                 'notification_action' => $args['notification_action'],
                 'notification_note'   => "", // notification note is generated (and translated)
                 'date_notified'       => $args['date_notified'],
@@ -117,7 +116,7 @@ class Disciple_Tools_Notifications
                 'field_key'           => $args['field_key'],
                 'field_value'         => $args['field_value'],
             ],
-            [ '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s' ]
+            [ '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s' ]
         );
 
         /** Fire action after insert */
@@ -475,8 +474,10 @@ class Disciple_Tools_Notifications
             if ( $user ){
                 $email_preference = get_user_meta( $user_id, 'wp_email_preference', true );
                 if ( $email_preference !== 'real-time' ) {
-                    $notification['notification_type'] = 'email_' . $email_preference;
-                    dt_notification_insert( $notification );
+                    return;
+                    // TODO: add notification to queue
+/*                     $notification['notification_type'] = 'email_' . $email_preference;
+                    dt_notification_insert( $notification ); */
                 } elseif ( !in_array( 'email', $already_sent ) ) {
                         $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
                         dt_send_email_about_post( $user->user_email, $notification["post_id"], $message_plain_text );
@@ -703,7 +704,7 @@ class Disciple_Tools_Notifications
                             do_action( 'send_notification_on_channels', $follower, $notification, $notification_type, [ 'email' ] );
                         }
 
-                        // @TODO this looks like duplicate code. I can't see what difference this code
+                        // TODO: this looks like duplicate code. I can't see what difference this code
                         // does compared to the code in send_notification_on_channels
                         // unless it's possible to hit multiple of the above to create a multi-line
                         // email, but I'm not sure how that's possible...
