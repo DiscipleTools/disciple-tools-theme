@@ -124,6 +124,52 @@ class Disciple_Tools_Notifications
     }
 
     /**
+     * Get single notification
+     *
+     * @since 1.5.0
+     *
+     * @param array $args
+     *
+     * @return array
+     */
+    public static function get_notification( $args ) {
+        global $wpdb;
+
+        $args = wp_parse_args(
+            $args,
+            [
+                'user_id'           => '',
+                'post_id'           => '',
+                'secondary_item_id' => '',
+                'notification_name' => '',
+                'date_notified'     => '',
+            ]
+        );
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT * FROM $wpdb->dt_notifications
+                WHERE user_id = %s
+                AND post_id = %s
+                AND secondary_item_id = %s
+                AND notification_name = %s
+                AND date_notified = %s
+            ", [
+                    $args['user_id'],
+                    $args['post_id'],
+                    $args['secondary_item_id'],
+                    $args['notification_name'],
+                    $args['date_notified'],
+                ]
+            )
+        );
+
+        do_action( 'dt_get_notification', $args, $results );
+
+        return $results;
+    }
+
+    /**
      * Delete single notification
      *
      * @since 0.1.0
@@ -474,10 +520,11 @@ class Disciple_Tools_Notifications
             if ( $user ){
                 $email_preference = get_user_meta( $user_id, 'wp_email_preference', true );
                 if ( $email_preference !== 'real-time' ) {
-                    return;
-                    // TODO: add notification to queue
-/*                     $notification['notification_type'] = 'email_' . $email_preference;
-                    dt_notification_insert( $notification ); */
+                    $notifications_queue = new Disciple_Tools_Notifications_Queue();
+                    $notifications = self::get_notification( $notification );
+                    if ( ! empty( $notifications ) ) {
+                        $notifications_queue->schedule_email( $notifications[0], $email_preference );
+                    }
                 } elseif ( !in_array( 'email', $already_sent ) ) {
                         $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
                         dt_send_email_about_post( $user->user_email, $notification["post_id"], $message_plain_text );
