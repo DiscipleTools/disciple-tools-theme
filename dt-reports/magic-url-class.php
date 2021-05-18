@@ -207,12 +207,22 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     }
                     $elements['meta_key'] = $types[$elements['type']]['meta_key'];
 
-                    // get post_id
-                    $post_id = self::get_post_id( $elements['meta_key'], $parts[2] );
-                    if ( ! $post_id ){ // fail if no post id for public key
-                        return false;
+                    if ( 'user' === $types[$elements['type']]['post_type'] ) {
+                        // if user
+                        $user_id = self::get_user_id( $elements['meta_key'], $parts[2] );
+                        if ( ! $user_id ){ // fail if no post id for public key
+                            return false;
+                        } else {
+                            $elements['post_id'] = $user_id;
+                        }
                     } else {
-                        $elements['post_id'] = $post_id;
+                        // get post_id
+                        $post_id = self::get_post_id( $elements['meta_key'], $parts[2] );
+                        if ( ! $post_id ){ // fail if no post id for public key
+                            return false;
+                        } else {
+                            $elements['post_id'] = $post_id;
+                        }
                     }
                 }
                 if ( isset( $parts[3] ) && ! empty( $parts[3] ) ){
@@ -277,12 +287,22 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     }
                     $elements['meta_key'] = $types[$elements['type']]['meta_key'];
 
-                    // get post_id
-                    $post_id = self::get_post_id( $elements['meta_key'], $public_key );
-                    if ( ! $post_id ){ // fail if no post id for public key
-                        return false;
+                    if ( 'user' === $types[$elements['type']]['post_type'] ) {
+                        // if user
+                        $user_id = self::get_user_id( $elements['meta_key'], $parts[2] );
+                        if ( ! $user_id ){ // fail if no post id for public key
+                            return false;
+                        } else {
+                            $elements['post_id'] = $user_id;
+                        }
                     } else {
-                        $elements['post_id'] = $post_id;
+                        // get post_id
+                        $post_id = self::get_post_id( $elements['meta_key'], $parts[2] );
+                        if ( ! $post_id ){ // fail if no post id for public key
+                            return false;
+                        } else {
+                            $elements['post_id'] = $post_id;
+                        }
                     }
                 }
 
@@ -299,6 +319,21 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 WHERE pm.meta_key = %s
                   AND pm.meta_value = %s
                   ", $meta_key, $public_key ) );
+            if ( ! empty( $result ) && ! is_wp_error( $result ) ){
+                return $result;
+            }
+            return false;
+        }
+
+        public function get_user_id( string $meta_key, string $public_key ){
+            global $wpdb;
+            $site_meta_key = $wpdb->prefix . $meta_key;
+            $result = $wpdb->get_var( $wpdb->prepare( "
+                SELECT pm.user_id
+                FROM $wpdb->usermeta as pm
+                WHERE pm.meta_key = %s
+                  AND pm.meta_value = %s
+                  ", $site_meta_key, $public_key ) );
             if ( ! empty( $result ) && ! is_wp_error( $result ) ){
                 return $result;
             }
