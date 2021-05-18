@@ -493,7 +493,6 @@
           return `<li>${v}</li>`
         }).join('')
         if ( $(window).width() < mobile_breakpoint ){
-          console.log(values);
           row_fields_html += `
             <td>
               <div class="mobile-list-field-name">
