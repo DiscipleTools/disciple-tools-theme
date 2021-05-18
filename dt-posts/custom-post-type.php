@@ -163,6 +163,14 @@ class Disciple_Tools_Post_Type_Template {
             'default' => 0,
             'customizable' => false,
         ];
+        $fields['favorite'] = [
+            'name'        => __( 'Favorite', 'disciple_tools' ),
+            'type'        => 'boolean',
+            'default'     => false,
+            'private'     => true,
+            "show_in_table" => 6,
+            "icon" => get_template_directory_uri() . "/dt-assets/images/star.svg"
+        ];
         //tasks, location, ppl group? follow, unfollow?
         return $fields;
     }
