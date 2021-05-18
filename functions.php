@@ -81,7 +81,7 @@ else {
      *
      * @class   Disciple_Tools
      * @since   0.1.0
-     * @package Disciple_Tools
+     * @package Disciple.Tools
      */
     class Disciple_Tools
     {
@@ -149,7 +149,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.5.0';
+            $this->version = '1.6.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';

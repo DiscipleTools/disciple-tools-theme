@@ -65,7 +65,8 @@ $lang_codes = [
     "sl" => "sl_SI",
     "tr" => "tr_TR",
     "ro" => "ro_RO",
-    "pa" => "pa_IN"
+    "pa" => "pa_IN",
+    "it" => "it_IT"
 ];
 
 

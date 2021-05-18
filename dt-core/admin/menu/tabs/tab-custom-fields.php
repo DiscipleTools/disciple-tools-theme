@@ -6,8 +6,8 @@
  * @class      Disciple_Tools_Tab_Custom_Fields
  * @version    0.1.0
  * @since      0.1.0
- * @package    Disciple_Tools
- * @author     Chasm.Solutions & Kingdom.Training
+ * @package    Disciple.Tools
+ * @author     Disciple.Tools
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -276,7 +276,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
-        $defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
+        $defaults = apply_filters( 'dt_custom_fields_settings', $base_fields, $post_type );
 
         $field_options = $field["default"] ?? [];
 
@@ -326,7 +327,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php endif; ?>
                     </td>
                     <td>
-                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>></input>
+                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?> <?php echo esc_html( ( isset( $defaults[$field_key] ) ) ? "disabled" : '' ); ?>></input>
                     </td>
                     <td>
                         <button class="button small expand_translations">

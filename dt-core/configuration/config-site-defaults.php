@@ -6,8 +6,8 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Setting and lists to be used in D.T
  *
- * @author  Chasm Solutions
- * @package Disciple_Tools
+ * @author  Disciple.Tools
+ * @package Disciple.Tools
  */
 
 /*********************************************************************************************

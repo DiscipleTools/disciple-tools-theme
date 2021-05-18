@@ -4,7 +4,7 @@
  *
  * Drop custom D.T tables after the tests have run. PHPUnit does not see these
  *
- * @package Disciple_Tools_Theme
+ * @package Disciple.Tools
  */
 
 

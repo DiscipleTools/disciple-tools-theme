@@ -6,8 +6,8 @@ if ( !defined( 'ABSPATH' ) ) {
  * Admin design
  * This restricts the admin panel view of contacts, groups, and media to the those owned by the logged in user.
  *
- * @author  Chasm Solutions
- * @package Disciple_Tools
+ * @author  Disciple.Tools
+ * @package Disciple.Tools
  */
 
 /*********************************************************************************************
