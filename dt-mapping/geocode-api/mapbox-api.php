@@ -420,7 +420,6 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 }
             }
             $key = self::get_key();
-            $hidden_key = '**************' . substr( $key, -5, 5 );
 
             if ( self::is_active_mapbox_key() ) {
                 $status_class = 'connected';
@@ -443,7 +442,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     <tr>
                         <td>
                             <?php wp_nonce_field( 'geocoding_key' . get_current_user_id(), 'geocoding_key_nonce' ); ?>
-                            Mapbox API Token: <input type="text" class="regular-text" name="mapbox_key" value="<?php echo ( $key ) ? esc_attr( $hidden_key ) : ''; ?>" />
+                            Mapbox API Token: <input type="text" class="regular-text" name="mapbox_key" value="<?php echo ( $key ) ? esc_attr( $key ) : ''; ?>" />
                             <?php if ( self::get_key() ) : ?>
                                 <button type="submit" name="action" value="delete" class="button">Delete</button>
                             <?php else : ?>

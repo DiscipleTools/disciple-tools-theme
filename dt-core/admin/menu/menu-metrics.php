@@ -6,7 +6,7 @@
  * @version    0.1.0
  * @since      0.1.0
  * @package    Disciple.Tools
- * @author     Chasm.Solutions & Kingdom.Training
+ * @author     Disciple.Tools
  */
 
 if ( !defined( 'ABSPATH' ) ) {

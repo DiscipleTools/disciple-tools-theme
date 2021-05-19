@@ -676,6 +676,13 @@ select.color-select {
     .title {
         font-size: 15px
     }
+    .record-name-tagline {
+        font-size: 10px;
+        display: inline-block;
+        span, a {
+            font-size: 10px;
+        }
+    }
 }
 
 //user select field

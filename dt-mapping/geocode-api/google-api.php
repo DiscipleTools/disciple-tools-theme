@@ -191,7 +191,6 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                 }
             }
             $key = self::get_key();
-            $hidden_key = '**************' . substr( $key, -5, 5 );
 
             if ( self::is_active_google_key() ) {
                 $status_class = 'connected';
@@ -218,7 +217,7 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                     <tr>
                         <td>
                             <?php wp_nonce_field( 'google_geocoding_key' . get_current_user_id(), 'google_geocoding_key_nonce' ); ?>
-                            Google API Key: <input type="text" class="regular-text" name="google_key" value="<?php echo ( $key ) ? esc_attr( $hidden_key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
+                            Google API Key: <input type="text" class="regular-text" name="google_key" value="<?php echo ( $key ) ? esc_attr( $key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
                         </td>
                     </tr>
                     <tr>

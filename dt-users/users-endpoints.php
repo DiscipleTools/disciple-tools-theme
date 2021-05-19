@@ -42,6 +42,14 @@ class Disciple_Tools_Users_Endpoints
         );
 
         register_rest_route(
+            $this->namespace, '/users/app_switch', [
+                'methods'  => WP_REST_Server::CREATABLE,
+                'callback' => [ $this, 'app_switch' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+
+        register_rest_route(
             $this->namespace, '/users/get_filters', [
                 'methods' => "GET",
                 'callback' => [ $this, 'get_user_filters' ],
@@ -167,6 +175,20 @@ class Disciple_Tools_Users_Endpoints
         }
     }
 
+    public function app_switch( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        $user_id = get_current_user_id();
+        if ( isset( $params['app_key'] ) && ! empty( $params['app_key'] ) && $user_id ) {
+            $result = Disciple_Tools_Users::app_switch( $user_id, $params['app_key'] );
+            if ( $result["status"] ) {
+                return $result["response"];
+            } else {
+                return new WP_Error( __METHOD__, $result["message"], [ 'status' => 400 ] );
+            }
+        } else {
+            return new WP_Error( "preference_error", "Please provide a valid preference to change for user", [ 'status' => 400 ] );
+        }
+    }
 
     public function get_user_filters( WP_REST_Request $request ){
         $params = $request->get_params();

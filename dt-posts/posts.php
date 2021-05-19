@@ -3,7 +3,7 @@
  * Contains create, update and delete functions for posts, wrapping access to
  * the database
  *
- * @package  Disciple_Tools
+ * @package  Disciple.Tools
  * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {
@@ -783,13 +783,16 @@ class Disciple_Tools_Posts
                             }
                             if ( !empty( $in ) ){
                                 $connection_ids = dt_array_to_sql( $in );
+                                $all_key = '*';
                                 if ( $field_settings[$query_key]["p2p_direction"] === "to" ){
+                                    $from_connection_ids = ( in_array( $all_key, $in, true ) ) ? "" : "AND p2p_from IN (" .  $connection_ids .")";
                                     $where_sql .= " p.ID IN (
-                                        SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" .  $connection_ids .")
+                                        SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' $from_connection_ids
                                     ) ";
                                 } else {
+                                    $to_connection_ids = ( in_array( $all_key, $in, true ) ) ? "" : "AND p2p_to IN (" .  $connection_ids .")";
                                     $where_sql .= " p.ID IN (
-                                        SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" .  $connection_ids .")
+                                        SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' $to_connection_ids
                                     ) ";
                                 }
                             }
