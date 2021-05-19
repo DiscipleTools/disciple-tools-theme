@@ -524,7 +524,7 @@ class DT_Contacts_Base {
             $filters["filters"][] = [
                 'ID' => 'favorite',
                 'tab' => 'default',
-                'name' => __( "Favorites", 'disciple_tools' ),
+                'name' => sprintf( _x( "Favorite %s", 'Favorite Contacts', 'disciple_tools' ), $post_label_plural ),
                 'query' => [
                     "fields" => [ "favorite" => [ "1" ] ],
                     'sort' => "name"
