@@ -474,19 +474,19 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <?php
                                 if ( isset( $option["icon"] ) && !empty( $option["icon"] ) ):
                                     ?>
-                                    <img src="<?php echo $option["icon"]; ?>" style="width: 20px; margin-bottom: 1em;">
-                                <?php
-                                endif;
-                            ?>
-
-                                <input type="text" name="field_option_icon_<?php echo esc_html( $key )?>" value="<?php echo $option["icon"]; ?>">
-                                <?php
-                                if ( isset( $defaults[$field_key]["default"][$key]["icon"] ) && $defaults[$field_key]["default"][$key]["icon"] !== $option["icon"] ):
-                                ?>
-                                    <button type="submit" style="margin-top:1em;" class="button" name="restore_icon" value="<?php echo $key; ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
+                                    <img src="<?php echo esc_attr( $option["icon"] ); ?>" style="width: 20px; margin-bottom: 1em;">
                                     <?php
                                 endif;
+                                ?>
+
+                                <input type="text" name="field_option_icon_<?php echo esc_html( $key )?>" value="<?php echo esc_attr( $option["icon"] ); ?>">
+                                <?php
+                                if ( isset( $defaults[$field_key]["default"][$key]["icon"] ) && $defaults[$field_key]["default"][$key]["icon"] !== $option["icon"] ):
                                     ?>
+                                    <button type="submit" style="margin-top:1em;" class="button" name="restore_icon" value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
+                                    <?php
+                                endif;
+                                ?>
                             </td>
                             <td>
                                 <button class="button small expand_translations">
@@ -759,11 +759,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             } elseif ( ! empty( $val ) ) {
                                 $custom_field["default"][ $option_key ]["translations"][ $translation_langcode ] = $val;
                             }
-                        } elseif ( strpos( $key, 'icon') !== false ) {
+                        } elseif ( strpos( $key, 'icon' ) !== false ) {
                             $option_key = substr( $key, 18 );
 
                             if ( !empty( $val ) ){
-                                if ( !isset( $field_options[$option_key]["icon"]) || $field_options[$option_key]["icon"] != $val ){
+                                if ( ! isset( $field_options[ $option_key ]["icon"] ) || $field_options[ $option_key ]["icon"] != $val ) {
                                     $custom_field["default"][$option_key]["icon"] = $val;
                                 }
                                 $field_options[$option_key]['icon'] = $val;
