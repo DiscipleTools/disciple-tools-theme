@@ -231,16 +231,22 @@ class Disciple_Tools_Post_Type_Template {
     }
 }
 
-//build list page filters
+/**
+ * Build default filter available on all post type list pages
+ */
 add_filter( "dt_user_list_filters", "base_dt_user_list_filters", 100, 2 );
 function base_dt_user_list_filters( $filters, $post_type ){
+    // check of the all tab is declared
     $tab_names = array_map( function ( $f ){
         return $f["key"];
     }, $filters["tabs"] );
     if ( in_array( 'all', $tab_names, true ) ){
+
         $filter_ids = array_map( function ( $f ){
             return $f["ID"];
         }, $filters["filters"] );
+
+        // add favorite posts filter to all abb
         if ( !in_array( 'favorite', $filter_ids ) ){
             $post_type_settings = DT_Posts::get_post_settings( $post_type );
             $filters["filters"][] = [
@@ -256,6 +262,7 @@ function base_dt_user_list_filters( $filters, $post_type ){
                 ]
             ];
         }
+        // add recently viewed filter to all tab
         if ( !in_array( 'recent', $filter_ids, true ) ){
             $filters["filters"][] = [
                 'ID' => 'recent',
