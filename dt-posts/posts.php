@@ -1112,9 +1112,15 @@ class Disciple_Tools_Posts
         }
 
         if ( empty( $sort_sql ) && isset( $sort, $post_fields[$sort] ) ) {
+            if ( isset( $post_fields[$sort]['private'] ) && $post_fields[$sort]['private'] )  {
+                $meta_table = $wpdb->dt_post_user_meta;
+            } else {
+                $meta_table = $wpdb->postmeta;
+            }
+
             if ( $post_fields[$sort]["type"] === "key_select" ) {
                 $keys = array_keys( $post_fields[ $sort ]["default"] );
-                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql  = "CASE ";
                 foreach ( $keys as $index => $key ) {
                     $sort_sql .= "WHEN ( sort.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
@@ -1127,7 +1133,7 @@ class Disciple_Tools_Posts
                 $keys = array_reverse( array_keys( $post_fields[$sort]["default"] ) );
                 foreach ( $keys as $index  => $key ){
                     $alias = $sort . '_' . esc_sql( $key );
-                    $joins .= "LEFT JOIN $wpdb->postmeta as $alias ON
+                    $joins .= "LEFT JOIN $meta_table as $alias ON
                     ( p.ID = $alias.post_id AND $alias.meta_key = '$sort' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
                     $sort_sql .= "WHEN ( $alias.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
                 }
@@ -1151,7 +1157,7 @@ class Disciple_Tools_Posts
                 $joins = "LEFT JOIN $wpdb->postmeta sort ON ( sort.post_id = p.ID AND sort.meta_key = '$sort' AND sort.meta_id = ( SELECT meta_id FROM $wpdb->postmeta pm_sort where pm_sort.post_id = p.ID AND pm_sort.meta_key = '$sort' LIMIT 1 ) )";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
             } else {
-                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
             }
         }
