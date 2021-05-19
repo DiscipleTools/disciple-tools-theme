@@ -12,6 +12,8 @@ abstract class DT_Magic_Url_Base {
         '' => "Manage",
     ];
 
+    public $module = ""; // lets a magic url be a module as well
+
     public $allowed_scripts = [];
 
     public function __construct() {
@@ -137,6 +139,8 @@ abstract class DT_Magic_Url_Base {
                 'lodash-core',
                 'site-js',
                 'shared-functions',
+                'moment',
+                'datepicker'
             ]
         );
 
@@ -156,15 +160,20 @@ abstract class DT_Magic_Url_Base {
                 }
             }
         }
-        unset( $wp_scripts->registered['mapbox-search-widget']->extra['group'] );
+        unset( $wp_scripts->registered['mapbox-search-widget']->extra['group'] ); //lets the mapbox geocoder work
     }
 
     public function print_styles(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_css = [
-            'foundation-css',
-            'site-css',
-        ];
+        $allowed_css = array_merge(
+            $this->allowed_styles,
+            [
+                'foundation-css',
+                'site-css',
+                'jquery-ui-site-css',
+                'datepicker-css',
+            ]
+        );
 
         global $wp_styles;
         if ( isset( $wp_styles ) ) {
@@ -174,6 +183,18 @@ abstract class DT_Magic_Url_Base {
                 }
             }
         }
+    }
+
+    protected function check_module_enabled_and_prerequisites(){
+        $modules = dt_get_option( 'dt_post_type_modules' );
+        $module_enabled = isset( $modules[$this->module]["enabled"] ) ? $modules[$this->module]["enabled"] : false;
+        foreach ( $modules[$this->module]["prerequisites"] as $prereq ){
+            $prereq_enabled = isset( $modules[$prereq]["enabled"] ) ? $modules[$prereq]["enabled"] : false;
+            if ( !$prereq_enabled ){
+                return false;
+            }
+        }
+        return $module_enabled;
     }
 
 }
