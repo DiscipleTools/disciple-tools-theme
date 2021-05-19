@@ -77,7 +77,7 @@ abstract class DT_Magic_Url_Base {
             'name' => $this->type_name,
             'root' => $this->root,
             'type' => $this->type,
-            'meta_key' => 'public_key', // coaching-magic_c_key
+            'meta_key' => $this->root . '_' . $this->type . '_magic_key',
             'actions' => $this->type_actions,
             'post_type' => $this->post_type,
         ];
