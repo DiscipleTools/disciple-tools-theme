@@ -1156,6 +1156,9 @@ class Disciple_Tools_Posts
             } elseif ( $post_fields[$sort]["type"] === "location" ){
                 $joins = "LEFT JOIN $wpdb->postmeta sort ON ( sort.post_id = p.ID AND sort.meta_key = '$sort' AND sort.meta_id = ( SELECT meta_id FROM $wpdb->postmeta pm_sort where pm_sort.post_id = p.ID AND pm_sort.meta_key = '$sort' LIMIT 1 ) )";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
+            } elseif ( $post_fields[$sort]["type"] === "boolean" ){
+                $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql = "sort.meta_value $sort_dir";
             } else {
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
