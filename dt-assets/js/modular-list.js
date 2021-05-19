@@ -477,16 +477,21 @@
                 return `${window.lodash.escape( v.post_title )}`;
               })
             } else if ( field_settings.type === "boolean" ){
-              values = ['&check;']
+              if (field_key === "favorite") {
+                values = [`<svg class='icon-star selected' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
+              } else {
+                values = ['&check;']
+              }
             }
+          } else if ( !field_value && field_settings.type === "boolean" && field_key === "favorite") {
+            values = [`<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
           }
         } else {
           return;
         }
-        values_html += values.map(v=>{
+        values_html += values.map( (v, index)=>{
           return `<li>${v}</li>`
         }).join('')
-
         if ( $(window).width() < mobile_breakpoint ){
           row_fields_html += `
             <td>
@@ -504,6 +509,13 @@
             </td>
           `
         } else {
+          //this looks for the star SVG from the favorited fields and changes the value to a checkmark like other boolean fields to be used in the title element on desktop lists.
+          if (values[0] === `<svg class='icon-star selected' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>` ) {
+            values[0] = '&#9734;'
+          }
+          if (values[0] === `<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`) {
+            values[0] = '&#9733;'
+          }
           row_fields_html += `
             <td title="${values.join(', ')}">
               <ul>
@@ -546,6 +558,7 @@
     `
     $('#table-content').html(table_html)
     bulk_edit_checkbox_event();
+    favorite_edit_event();
   }
 
   function get_records( offset = 0, sort = null ){
@@ -1355,6 +1368,24 @@
   })
 
 
+  /***
+   * Favorite from List
+   */
+   function favorite_edit_event() {
+      $("svg.icon-star").on('click', function(e) {
+        e.stopImmediatePropagation();
+        let post_id = this.dataset.id
+        let favoritedValue;
+        if ( $(this).hasClass('selected') ) {
+          favoritedValue = false;
+        } else {
+          favoritedValue = true;
+        }
+        API.update_post(list_settings.post_type, post_id, {'favorite': favoritedValue}).then((new_post)=>{
+          $(this).toggleClass('selected');
+        })
+      })
+   }
 
   /***
    * Bulk Edit

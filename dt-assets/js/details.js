@@ -789,6 +789,39 @@ jQuery(document).ready(function($) {
     })
   })
 
+  /**
+   * Favorite
+   */
+  function favorite_check(post_data) {
+    if (post_data.favorite) {
+      document.querySelectorAll('.button.favorite').forEach( function(button) {
+          button.dataset.favorite = true
+      })
+      $('.button.favorite').addClass('selected');
+    } else {
+      document.querySelectorAll('.button.favorite').forEach( function(button) {
+          button.dataset.favorite = false
+      })
+      $('.button.favorite').removeClass('selected');
+    }
+  }
+
+  favorite_check(window.detailsSettings.post_fields);
+
+  $('.button.favorite').on( "click", function () {
+    var favorited = this.dataset.favorite
+    var favoritedValue;
+    if (favorited == "true") {
+      this.dataset.favorite = false
+      favoritedValue = false;
+    } else if (favorited == "false") {
+      this.dataset.favorite = true
+      favoritedValue = true;
+    }
+    rest_api.update_post(post_type, post_id, {'favorite': favoritedValue}).then((new_post)=>{
+      favorite_check(new_post);
+    })
+  })
 
   /**
    * Tags

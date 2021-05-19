@@ -283,6 +283,14 @@ table.js-list{
 #bulk_edit_picker .button-group.small .button.selected-select-button {
     border: none;
 }
+.icon-star {
+    height: 1em;
+    width: 1em;
+    fill: hsl(45, 5%, 77%);
+    &.selected {
+        fill: hsl(45, 100%, 51%);
+    }
+}
 
 @media screen and (max-width : #{map-get($breakpoints, large)}) {
     #table-content {
