@@ -1161,7 +1161,7 @@ class Disciple_Tools_Posts
                 $sort_sql = "sort.meta_value $sort_dir";
             } else {
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', sort.meta_value $sort_dir";
             }
         }
         if ( empty( $sort_sql ) ){
