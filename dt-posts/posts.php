@@ -1112,7 +1112,7 @@ class Disciple_Tools_Posts
         }
 
         if ( empty( $sort_sql ) && isset( $sort, $post_fields[$sort] ) ) {
-            if ( isset( $post_fields[$sort]['private'] ) && $post_fields[$sort]['private'] )  {
+            if ( isset( $post_fields[$sort]['private'] ) && $post_fields[$sort]['private'] ) {
                 $meta_table = $wpdb->dt_post_user_meta;
             } else {
                 $meta_table = $wpdb->postmeta;
