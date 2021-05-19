@@ -483,7 +483,7 @@
                 values = ['&check;']
               }
             }
-          } else if ( !field_value && field_settings.type === "boolean" && field_settings.name === "Favorite") {
+          } else if ( !field_value && field_settings.type === "boolean" && field_key === "favorite") {
             values = [`<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
           }
         } else {
