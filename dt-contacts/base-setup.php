@@ -296,6 +296,7 @@ class DT_Contacts_Base {
                 ],
                 'tile'     => 'details',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg",
+                "select_cannot_be_empty" => true //backwards compatible since we already have an "none" value
             ];
 
             $fields['requires_update'] = [

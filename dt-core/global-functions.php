@@ -432,7 +432,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 }
                 ?>
                 <select class="select-field <?php echo esc_html( $color_select ? "color-select" : "" ); ?>" id="<?php echo esc_html( $display_field_id ); ?>" style="<?php echo esc_html( $color_select ? ( "background-color: " . $active_color ) : "" ); ?>">
-                    <?php if ( !isset( $fields[$field_key]["default"]["none"] ) ) : ?>
+                    <?php if ( !isset( $fields[$field_key]["default"]["none"] ) && empty( $fields[$field_key]["select_cannot_be_empty"] ) ) : ?>
                         <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: "selected" ) ?>></option>
                     <?php endif; ?>
                     <?php foreach ($fields[$field_key]["default"] as $option_key => $option_value):
