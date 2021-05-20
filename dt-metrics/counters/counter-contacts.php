@@ -2,7 +2,7 @@
 /**
  * Counts Misc Contacts numbers
  *
- * @package Disciple_Tools
+ * @package Disciple.Tools
  * @version 0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {

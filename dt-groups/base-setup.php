@@ -445,8 +445,6 @@ class DT_Groups_Base extends DT_Module_Base {
                 'default' => ''
             ];
 
-
-
         }
 
         if ( $post_type === "contacts" ){
@@ -1030,6 +1028,7 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( $post_type === 'groups' ){
             $counts = self::get_my_groups_status_type();
             $fields = DT_Posts::get_post_field_settings( $post_type );
+            $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
             /**
              * Setup my group filters
              */
@@ -1145,6 +1144,18 @@ class DT_Groups_Base extends DT_Module_Base {
                     'sort' => 'group_type'
                 ],
                 "count" => $total_all
+            ];
+            $filters["filters"][] = [
+                'ID' => 'favorite',
+                'tab' => 'all',
+                'name' => sprintf( _x( "Favorite %s", 'Favorite Contacts', 'disciple_tools' ), $post_label_plural ),
+                'query' => [
+                    "fields" => [ "favorite" => [ "1" ] ],
+                    'sort' => "name"
+                ],
+                'labels' => [
+                    [ "id" => "1", "name" => __( "Favorite", "disciple_tools" ) ]
+                ]
             ];
             $filters["filters"][] = [
                 'ID' => 'recent',

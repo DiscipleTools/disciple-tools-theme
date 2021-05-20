@@ -2,9 +2,9 @@
 /**
  * Contains create, update and delete functions for users, wrapping access to the database
  *
- * @package  Disciple_Tools
+ * @package  Disciple.Tools
  * @category Plugin
- * @author   Chasm.Solutions & Kingdom.Training
+ * @author   Disciple.Tools
  * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {
@@ -252,6 +252,32 @@ class Disciple_Tools_Users
             return [
                 'status'  => false,
                 'message' => 'Unable to update_user_option ' . $preference_key . ' to ' . $label
+            ];
+        }
+    }
+
+    public static function app_switch( int $user_id, string $preference_key ) {
+
+        $value = get_user_option( $preference_key );
+        $hash = dt_create_unique_key();
+
+        if ( $value === '' || $value === false || $value === '0' ){
+            $status = update_user_option( $user_id, $preference_key, $hash );
+            $action = $hash;
+        } else {
+            $status = delete_user_option( $user_id, $preference_key );
+            $action = 'removed';
+        }
+
+        if ( $status ) {
+            return [
+                'status'   => true,
+                'response' => $action,
+            ];
+        } else {
+            return [
+                'status'  => false,
+                'message' => 'Unable to update_user_option.'
             ];
         }
     }

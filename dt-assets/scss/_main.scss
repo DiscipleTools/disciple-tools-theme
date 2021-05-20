@@ -236,6 +236,22 @@ nav.second-bar {
                 }
             }
         }
+        &.favorite {
+            background: none;
+            padding: 0;
+            .icon-star {
+                height: 1.8em;
+                width: auto;
+                fill: hsl(45, 5%, 77%);
+            }
+
+            &.selected{
+                .icon-star {
+                    fill: hsl(45, 100%, 51%);
+                }
+            }
+        }
+
     }
     .dropdown.menu>li>a {
         padding-top: 0.4em;

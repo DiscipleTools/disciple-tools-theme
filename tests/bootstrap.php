@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file
  *
- * @package Disciple_Tools_Theme
+ * @package Disciple.Tools
  */
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );

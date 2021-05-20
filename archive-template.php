@@ -554,6 +554,13 @@ dt_please_log_in();
                                         </div>
                                     </div>
                                 </div>
+                                <?php if ( $field_options[$field]["type"] === 'connection' ) : ?>
+                                    <p>
+                                        <label><?php echo esc_html( sprintf( _x( 'All %1$s with %2$s', 'All Contacts with Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
+                                            <input class="all-connections" type="checkbox" value="all-connections" />
+                                        </label>
+                                    </p>
+                                <?php endif; ?>
                                 <?php if ( $field === "subassigned" ): ?>
                                     <p>
                                         <label><?php esc_html_e( "Filter for subassigned OR Assigned To", 'disciple_tools' ) ?>
