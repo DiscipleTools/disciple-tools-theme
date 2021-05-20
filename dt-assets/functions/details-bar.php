@@ -116,6 +116,13 @@ function dt_print_details_bar(
                         </div>
                     </div>
                     <div class="cell small-5 large-4 align-right grid-x">
+                        <div class="cell shrink center-items">
+                            <button class="button favorite" data-favorite="false">
+                                <svg class='icon-star' viewBox="0 0 32 32">
+                                    <use xlink:href="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/star.svg#star" ) ?>"></use>
+                                </svg>
+                            </button>
+                        </div>
                         <?php if ( $task ) : ?>
                         <div class="cell shrink center-items">
                             <button class="button open-set-task">
@@ -170,6 +177,12 @@ function dt_print_details_bar(
                         </a>
                     </button>
                 </div>
+                <button class="button favorite" data-favorite="false">
+                <svg class='icon-star' viewBox="0 0 32 32">
+                    <use xlink:href="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/star.svg#star" ) ?>"></use>
+                </svg>
+                </object>
+                </button>
                 <?php endif; ?>
                 <?php if ( $share_button ): ?>
                     <div class="cell shrink">

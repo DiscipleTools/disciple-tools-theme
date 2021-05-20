@@ -711,6 +711,9 @@ class Disciple_Tools_Posts
                                 }
                                 if ( $field_type === "key_select" ){
                                     $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
+                                    if ( $value === "none" ){
+                                        $where_sql .= " OR $table_key.meta_value IS NULL ";
+                                    }
                                 }
                                 if ( $field_type === "multi_select" ){
                                     if ( $equality === "!=" && $field_type === "multi_select" ){
@@ -1112,9 +1115,15 @@ class Disciple_Tools_Posts
         }
 
         if ( empty( $sort_sql ) && isset( $sort, $post_fields[$sort] ) ) {
+            if ( isset( $post_fields[$sort]['private'] ) && $post_fields[$sort]['private'] ) {
+                $meta_table = $wpdb->dt_post_user_meta;
+            } else {
+                $meta_table = $wpdb->postmeta;
+            }
+
             if ( $post_fields[$sort]["type"] === "key_select" ) {
                 $keys = array_keys( $post_fields[ $sort ]["default"] );
-                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql  = "CASE ";
                 foreach ( $keys as $index => $key ) {
                     $sort_sql .= "WHEN ( sort.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
@@ -1127,7 +1136,7 @@ class Disciple_Tools_Posts
                 $keys = array_reverse( array_keys( $post_fields[$sort]["default"] ) );
                 foreach ( $keys as $index  => $key ){
                     $alias = $sort . '_' . esc_sql( $key );
-                    $joins .= "LEFT JOIN $wpdb->postmeta as $alias ON
+                    $joins .= "LEFT JOIN $meta_table as $alias ON
                     ( p.ID = $alias.post_id AND $alias.meta_key = '$sort' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
                     $sort_sql .= "WHEN ( $alias.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
                 }
@@ -1150,9 +1159,12 @@ class Disciple_Tools_Posts
             } elseif ( $post_fields[$sort]["type"] === "location" ){
                 $joins = "LEFT JOIN $wpdb->postmeta sort ON ( sort.post_id = p.ID AND sort.meta_key = '$sort' AND sort.meta_id = ( SELECT meta_id FROM $wpdb->postmeta pm_sort where pm_sort.post_id = p.ID AND pm_sort.meta_key = '$sort' LIMIT 1 ) )";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
+            } elseif ( $post_fields[$sort]["type"] === "boolean" ){
+                $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql = "sort.meta_value $sort_dir";
             } else {
-                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
+                $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', sort.meta_value $sort_dir";
             }
         }
         if ( empty( $sort_sql ) ){
@@ -2187,7 +2199,7 @@ class Disciple_Tools_Posts
                             $fields[$m["meta_key"]] = [];
                         }
                         $key = $m['meta_value'];
-                        $label = $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'];
+                        $label = isset( $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'] ) ? $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'] : $key;
                         $fields[$m["meta_key"]] = array( 'key' => $key, 'label' => $label  );
 
                     } else if ( $field_settings[$m['meta_key']]['type'] === 'date' ){

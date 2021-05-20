@@ -163,6 +163,14 @@ class Disciple_Tools_Post_Type_Template {
             'default' => 0,
             'customizable' => false,
         ];
+        $fields['favorite'] = [
+            'name'        => __( 'Favorite', 'disciple_tools' ),
+            'type'        => 'boolean',
+            'default'     => false,
+            'private'     => true,
+            "show_in_table" => 6,
+            "icon" => get_template_directory_uri() . "/dt-assets/images/star.svg"
+        ];
         //tasks, location, ppl group? follow, unfollow?
         return $fields;
     }
@@ -221,4 +229,53 @@ class Disciple_Tools_Post_Type_Template {
 //        }
         return $sections;
     }
+}
+
+/**
+ * Build default filter available on all post type list pages
+ */
+add_filter( "dt_user_list_filters", "base_dt_user_list_filters", 100, 2 );
+function base_dt_user_list_filters( $filters, $post_type ){
+    // check of the all tab is declared
+    $tab_names = array_map( function ( $f ){
+        return $f["key"];
+    }, $filters["tabs"] );
+    if ( in_array( 'all', $tab_names, true ) ){
+
+        $filter_ids = array_map( function ( $f ){
+            return $f["ID"];
+        }, $filters["filters"] );
+
+        // add favorite posts filter to all abb
+        if ( !in_array( 'favorite', $filter_ids ) ){
+            $post_type_settings = DT_Posts::get_post_settings( $post_type );
+            $filters["filters"][] = [
+                'ID' => 'favorite',
+                'tab' => 'all',
+                'name' => sprintf( _x( "Favorite %s", 'Favorite Contacts', 'disciple_tools' ), $post_type_settings["label_plural"] ),
+                'query' => [
+                    "fields" => [ "favorite" => [ "1" ] ],
+                    'sort' => "name"
+                ],
+                'labels' => [
+                    [ "id" => "1", "name" => __( "Favorite", "disciple_tools" ) ]
+                ]
+            ];
+        }
+        // add recently viewed filter to all tab
+        if ( !in_array( 'recent', $filter_ids, true ) ){
+            $filters["filters"][] = [
+                'ID' => 'recent',
+                'tab' => 'all',
+                'name' => __( "My Recently Viewed", 'disciple_tools' ),
+                'query' => [
+                    'dt_recent' => true
+                ],
+                'labels' => [
+                    [ "id" => 'recent', 'name' => __( "Last 30 viewed", 'disciple_tools' ) ]
+                ]
+            ];
+        }
+    }
+    return $filters;
 }

@@ -296,6 +296,7 @@ class DT_Contacts_Base {
                 ],
                 'tile'     => 'details',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg",
+                "select_cannot_be_empty" => true //backwards compatible since we already have an "none" value
             ];
 
             $fields['requires_update'] = [
@@ -522,6 +523,18 @@ class DT_Contacts_Base {
                 ]
             ];
             $filters["filters"][] = [
+                'ID' => 'favorite',
+                'tab' => 'default',
+                'name' => sprintf( _x( "Favorite %s", 'Favorite Contacts', 'disciple_tools' ), $post_label_plural ),
+                'query' => [
+                    "fields" => [ "favorite" => [ "1" ] ],
+                    'sort' => "name"
+                ],
+                'labels' => [
+                    [ "id" => "1", "name" => __( "Favorite", "disciple_tools" ) ]
+                ]
+            ];
+            $filters["filters"][] = [
                 'ID' => 'personal',
                 'tab' => 'default',
                 'name' => __( "Personal", 'disciple_tools' ),
@@ -532,7 +545,6 @@ class DT_Contacts_Base {
                 ],
                 "count" => $shared_by_type_counts['keys']['personal'] ?? 0,
             ];
-
             $filters["filters"] = self::add_default_custom_list_filters( $filters["filters"] );
         }
         return $filters;
