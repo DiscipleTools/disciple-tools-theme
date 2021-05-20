@@ -471,19 +471,18 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <?php
-                                if ( isset( $option["icon"] ) && !empty( $option["icon"] ) ):
-                                    ?>
-                                    <img src="<?php echo esc_attr( $option["icon"] ); ?>" style="width: 20px; margin-bottom: 1em;">
-                                    <?php
-                                endif;
-                                ?>
+                                <?php if ( isset( $option["icon"] ) && !empty( $option["icon"] ) ): ?>
+                                    <img src="<?php echo esc_attr( $option["icon"] ); ?>" style="width: 20px; vertical-align: middle">
+                                <?php else : ?>
+                                    <div style="width: 20px; display: inline-block">&nbsp;</div>
+                                <?php endif; ?>
 
-                                <input type="text" name="field_option_icon_<?php echo esc_html( $key )?>" value="<?php echo esc_attr( $option["icon"] ); ?>">
+                                <input type="text" name="field_option_icon_<?php echo esc_html( $key ) ?>" placeholder="Icon url"
+                                       value="<?php echo esc_attr( isset( $option["icon"] ) ? $option["icon"] : '' ); ?>">
                                 <?php
                                 if ( isset( $defaults[$field_key]["default"][$key]["icon"] ) && $defaults[$field_key]["default"][$key]["icon"] !== $option["icon"] ):
                                     ?>
-                                    <button type="submit" style="margin-top:1em;" class="button" name="restore_icon" value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
+                                    <button type="submit" class="button" name="restore_icon" value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
                                     <?php
                                 endif;
                                 ?>
