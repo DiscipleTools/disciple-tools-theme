@@ -429,7 +429,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return $link;
         }
 
-        public static function get_meta_key( $magic_url_root, $magic_url_type ){
+        public static function get_public_key_meta_key( $magic_url_root, $magic_url_type ){
             return $magic_url_root . '_' . $magic_url_type . '_magic_key';
         }
 
