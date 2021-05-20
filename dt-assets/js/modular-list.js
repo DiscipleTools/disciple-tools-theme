@@ -1134,7 +1134,7 @@
     let option_id = $(this).val()
     if ($(this).is(":checked")){
       let field_options = window.lodash.get( list_settings, `post_type_settings.fields.${field_key}.default` )
-      let option_name = field_options[option_id]["label"]
+      let option_name = field_options[option_id] ? field_options[option_id]["label"] : '';
       let name = window.lodash.get(list_settings, `post_type_settings.fields.${field_key}.name`, field_key)
       new_filter_labels.push({id:$(this).val(), name:`${name}: ${option_name}`, field:field_key})
       selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( name )}:${window.lodash.escape( option_name )}</span>`)

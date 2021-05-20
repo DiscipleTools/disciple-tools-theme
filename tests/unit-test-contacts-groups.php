@@ -329,11 +329,4 @@ class PostsTest extends WP_UnitTestCase {
         $this->assertWPError( $delete_anothers_task );
     }
 
-
-    private function map_ids( $posts ){
-        return array_map(  function ( $post ){
-            return $post->ID;
-        }, $posts );
-    }
-
 }
