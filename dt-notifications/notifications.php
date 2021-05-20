@@ -522,10 +522,8 @@ class Disciple_Tools_Notifications
                 AND (
                     channels LIKE %s
                     OR channels IS NULL
-                )",
-            $user_id,
-            '%web%',
-        ) );
+                )", $user_id, '%web%' )
+        );
 
         if ( !$result ) {
             $result = 0;
