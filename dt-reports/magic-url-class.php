@@ -429,6 +429,10 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return $link;
         }
 
+        public static function get_meta_key( $magic_url_root, $magic_url_type ){
+            return $magic_url_root . '_' . $magic_url_type . '_magic_key';
+        }
+
         /**
          * Open default restrictions for access to registered endpoints
          * @param $authorized

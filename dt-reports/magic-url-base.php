@@ -15,6 +15,7 @@ abstract class DT_Magic_Url_Base {
     public $module = ""; // lets a magic url be a module as well
 
     public $allowed_scripts = [];
+    public $allowed_styles = [];
 
     public function __construct() {
 
