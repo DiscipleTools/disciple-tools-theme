@@ -143,6 +143,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg',
                 "default_color" => "#366184",
                 "show_in_table" => 10,
+                "select_cannot_be_empty" => true
             ];
             $fields['assigned_to'] = [
                 'name'        => __( 'Assigned To', 'disciple_tools' ),
@@ -193,6 +194,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'in_create_form' => true,
                 "show_in_table" => 15,
                 "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg',
+                "select_cannot_be_empty" => true
             ];
 
 
