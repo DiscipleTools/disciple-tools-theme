@@ -2199,7 +2199,7 @@ class Disciple_Tools_Posts
                             $fields[$m["meta_key"]] = [];
                         }
                         $key = $m['meta_value'];
-                        $label = $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'];
+                        $label = isset( $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'] ) ? $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'] : $key;
                         $fields[$m["meta_key"]] = array( 'key' => $key, 'label' => $label  );
 
                     } else if ( $field_settings[$m['meta_key']]['type'] === 'date' ){
