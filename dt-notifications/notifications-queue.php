@@ -27,7 +27,7 @@ class Disciple_Tools_Notifications_Queue {
         $this->allowed_schedules = apply_filters( 'dt_allowed_schedules', self::DEFAULT_ALLOWED_SCHEDULES );
     }
 
-    private function add_to_queue( object $notification, string $type ) {
+    private function add_to_queue( stdClass $notification, string $type ) {
         global $wpdb;
 
         $wpdb->insert(
@@ -45,10 +45,10 @@ class Disciple_Tools_Notifications_Queue {
      *
      * $schedule_time can be one of 'hourly' | 'daily
      *
-     * @param object $notification
+     * @param stdClass $notification
      * @param string $schedule_time
      */
-    public function schedule_email( object $notification, $schedule_time ) {
+    public function schedule_email( stdClass $notification, $schedule_time ) {
         if ( ! $notification ) {
             throw new Exception( "Notification must be supplied" );
         }

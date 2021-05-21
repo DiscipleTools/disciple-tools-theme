@@ -132,7 +132,7 @@ class Disciple_Tools_Notifications
      *
      * @param array $args
      *
-     * @return object|null
+     * @return stdClass|null
      */
     public static function get_notification( $args ) {
         global $wpdb;

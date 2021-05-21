@@ -5,7 +5,10 @@ if ( !defined( 'ABSPATH' ) ) {
 
 class Disciple_Tools_Notifications_Scheduler {
 
-    const DAILY_RUN_TIME = '00:00';
+    /**
+     * The hour of the daily schedule
+     */
+    const DAILY_RUN_TIME = 0;
     const DEBUG          = false;
 
     private $queue_manager;
@@ -49,7 +52,7 @@ class Disciple_Tools_Notifications_Scheduler {
      */
     private function setup_hourly_schedule() {
         if ( ! wp_next_scheduled( 'dt_hourly_notification_schedule' ) ) {
-            $next_hour = self::DEBUG ? time() : time(); // TODO change to on the hour after now()
+            $next_hour = self::DEBUG ? time() : $this->get_next_hourly_time()->getTimestamp();
             $time_schedule = self::DEBUG ? 'minutely' : 'hourly';
             wp_schedule_event( $next_hour, $time_schedule, 'dt_hourly_notification_schedule' );
         }
@@ -59,7 +62,7 @@ class Disciple_Tools_Notifications_Scheduler {
      * Setup daily batch notification schedule
      */
     private function setup_daily_schedule() {
-        $next_day = time(); // TODO: change to the self::DAILY_RUN_TIME after time()
+        $next_day = self::DEBUG ? time() : $this->get_next_daily_time( self::DAILY_RUN_TIME );
         if ( ! wp_next_scheduled( 'dt_daily_notification_schedule' ) ) {
             wp_schedule_event( $next_day, 'daily', 'dt_daily_notification_schedule' );
         }
@@ -151,6 +154,41 @@ class Disciple_Tools_Notifications_Scheduler {
                 error_log( "email sent to $user->user_email" );
             }
         }
+    }
+
+    /**
+     * Returns the time of the next 'o' clock e.g. 10:00
+     *
+     * @return DateTime
+     */
+    private function get_next_hourly_time() {
+        $date_string = gmdate( 'c' );
+        $date = new DateTime( $date_string );
+        $seconds = $date->format( 's' );
+        $minutes = $date->format( 'i' );
+        if ( $minutes > 0 ) {
+            $date->modify( "+1 hour" );
+            $date->modify( '-' . $minutes . ' minutes' );
+        }
+        $date->modify( "-$seconds seconds" );
+        return $date;
+    }
+
+    /**
+     * Returns the time of the next daily schedule e.g. 00:00
+     *
+     * @return DateTime
+     */
+    private function get_next_daily_time( int $scheduled_hour ) {
+        $date_string = gmdate( 'c' );
+        $date = new DateTime( $date_string );
+        $hours = intval( $date->format( 'G' ) );
+        if ( $hours < $scheduled_hour ) {
+            $date->modify( "+1 day" );
+        }
+        $date->setTime( $scheduled_hour, 0 );
+
+        return $date;
     }
 
     public function debug_cron_schedules( $schedules ) {
