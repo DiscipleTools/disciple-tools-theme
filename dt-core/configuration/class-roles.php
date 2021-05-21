@@ -5,7 +5,7 @@
  * @class   Disciple_Tools_Roles
  * @version 0.1.0
  * @since   0.1.0
- * @package Disciple_Tools
+ * @package Disciple.Tools
  *
  */
 

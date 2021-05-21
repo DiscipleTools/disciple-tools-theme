@@ -143,6 +143,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg',
                 "default_color" => "#366184",
                 "show_in_table" => 10,
+                "select_cannot_be_empty" => true
             ];
             $fields['assigned_to'] = [
                 'name'        => __( 'Assigned To', 'disciple_tools' ),
@@ -193,6 +194,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'in_create_form' => true,
                 "show_in_table" => 15,
                 "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg',
+                "select_cannot_be_empty" => true
             ];
 
 
@@ -444,8 +446,6 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type' => 'text',
                 'default' => ''
             ];
-
-
 
         }
 
@@ -1030,6 +1030,7 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( $post_type === 'groups' ){
             $counts = self::get_my_groups_status_type();
             $fields = DT_Posts::get_post_field_settings( $post_type );
+            $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
             /**
              * Setup my group filters
              */
@@ -1145,6 +1146,18 @@ class DT_Groups_Base extends DT_Module_Base {
                     'sort' => 'group_type'
                 ],
                 "count" => $total_all
+            ];
+            $filters["filters"][] = [
+                'ID' => 'favorite',
+                'tab' => 'all',
+                'name' => sprintf( _x( "Favorite %s", 'Favorite Contacts', 'disciple_tools' ), $post_label_plural ),
+                'query' => [
+                    "fields" => [ "favorite" => [ "1" ] ],
+                    'sort' => "name"
+                ],
+                'labels' => [
+                    [ "id" => "1", "name" => __( "Favorite", "disciple_tools" ) ]
+                ]
             ];
             $filters["filters"][] = [
                 'ID' => 'recent',

@@ -2,7 +2,7 @@
 /**
  * Disciple_Tools_Counter_Generations
  *
- * @package Disciple_Tools
+ * @package Disciple.Tools
  * @version 0.1.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly

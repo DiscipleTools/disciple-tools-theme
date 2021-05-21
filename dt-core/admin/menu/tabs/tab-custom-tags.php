@@ -10,8 +10,8 @@ if ( !defined( 'ABSPATH' ) ) {
  * @class      Disciple_Tools_Tab_Custom_Fields
  * @version    0.1.0
  * @since      0.1.0
- * @package    Disciple_Tools
- * @author     Prykon
+ * @package    Disciple.Tools
+ * @author     Disciple.Tools
  */
 
 

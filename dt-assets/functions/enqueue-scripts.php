@@ -335,6 +335,7 @@ function dt_site_scripts() {
             'create_post_tour' => sprintf( _x( "Click here to create a new %s", 'Click here to create a new contact', 'disciple_tools' ), $post_settings["label_singular"] ),
             'filter_posts_tour' => sprintf( _x( "You can filter to find %s you need.", 'You can filter to find contacts you need.', 'disciple_tools' ), $post_settings["label_plural"] ),
             'view_posts_tour' => sprintf( _x( "%s appear here and can be clicked on to view more.", 'Contacts appear here and can be clicked on to view more.', 'disciple_tools' ), $post_settings["label_plural"] ),
+            'all' => __( 'All', 'disciple_tools' ),
         ];
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
         dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );
