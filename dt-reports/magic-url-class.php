@@ -165,8 +165,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             $types = self::list_types();
 
             // get url, create parts array and sanitize
-            $url_path = self::get_url_path();
-            $url_path = strtok( $url_path, '?' ); //allow get parameters
+            $url_path = dt_get_url_path( true );
             $parts = explode( '/', $url_path );
             $parts = array_map( 'sanitize_key', wp_unslash( $parts ) );
 
@@ -245,8 +244,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             $types = self::list_types();
 
             // get url, create parts array and sanitize
-            $url_path = self::get_url_path();
-            $url_path = strtok( $url_path, '?' ); //allow get parameters
+            $url_path = dt_get_url_path( true );
             $parts = explode( '/', $url_path );
             $parts = array_map( 'sanitize_key', wp_unslash( $parts ) );
 
@@ -297,7 +295,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         }
                     } else {
                         // get post_id
-                        $post_id = self::get_post_id( $elements['meta_key'], $parts[2] );
+                        $post_id = self::get_post_id( $elements['meta_key'], $public_key );
                         if ( ! $post_id ){ // fail if no post id for public key
                             return false;
                         } else {
@@ -309,6 +307,34 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 return $elements;
             }
             return false;
+        }
+
+        /**
+         * Verify that a rest endpoint has all the needed magic link values set
+         * and that they match the expected values
+         *
+         * @param WP_REST_Request $request
+         * @return bool
+         */
+        public function verify_rest_endpoint_permissions_on_post( WP_REST_Request $request ){
+            $params = $request->get_params();
+            if ( !isset( $params["parts"]["meta_key"], $params["parts"]["public_key"], $params["parts"]["post_id"], $params["parts"]["type"], $params["parts"]["root"] ) ){
+                return false;
+            }
+            $parts = $this->parse_wp_rest_url_parts( $params["parts"]["public_key"] );
+            if ( empty( $parts ) ){
+                return false;
+            }
+            if ( $parts["root"] !== $params["parts"]["root"] || $parts["type"] !== $params["parts"]["type"] ){
+                return false;
+            }
+            if ( $parts["meta_key"] !== $params["parts"]["meta_key"] || $parts["public_key"] !== $params["parts"]["public_key"] ){
+                return false;
+            }
+            if ( $parts["post_id"] !== $params["parts"]["post_id"] ){
+                return false;
+            }
+            return true;
         }
 
         public function get_post_id( string $meta_key, string $public_key ){
@@ -371,28 +397,12 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return $parts;
         }
 
-        public function get_url_path() {
-            if ( isset( $_SERVER["HTTP_HOST"] ) ) {
-                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
-                if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-                    $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
-                }
-                return trim( str_replace( get_site_url(), "", $url ), '/' );
-            }
-            return '';
-        }
-
         /**
          * Generates a unique id key
          * @return string
          */
-        public function create_unique_key() : string {
-            try {
-                $hash = hash( 'sha256', bin2hex( random_bytes( 256 ) ) );
-            } catch ( Exception $exception ) {
-                $hash = hash( 'sha256', bin2hex( rand( 0, 1234567891234567890 ) . microtime() ) );
-            }
-            return $hash;
+        public static function create_unique_key() : string {
+            return dt_create_unique_key();
         }
 
         public function get_current_public_key(){
@@ -409,6 +419,18 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 return (string) $parts['action'];
             }
             return false;
+        }
+
+        public static function get_link_url( $magic_url_root, $magic_url_type, $magic_url_key, $action = null ){
+            $link = trailingslashit( site_url() ) . $magic_url_root . '/' . $magic_url_type . '/' . $magic_url_key;
+            if ( $action ){
+                $link .= '/' . $action;
+            }
+            return $link;
+        }
+
+        public static function get_public_key_meta_key( $magic_url_root, $magic_url_type ){
+            return $magic_url_root . '_' . $magic_url_type . '_magic_key';
         }
 
         /**
@@ -440,7 +462,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
         }
 
         public function api_create_key( WP_REST_Request $request ){
-            return $this->create_unique_key();
+            return self::create_unique_key();
         }
     }
 }
