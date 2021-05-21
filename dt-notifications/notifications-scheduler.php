@@ -120,7 +120,8 @@ class Disciple_Tools_Notifications_Scheduler {
 
                 $post_notifications_email = '## ' . dt_make_post_email_subject( $post_id ) . "\r\n";
                 foreach ($notifications as $notification) {
-                    $email_body_for_notification = $this->notifications_manager->get_notification_message_html( $notification );
+                    $notification_time = gmdate( 'G:i', strToTime( $notification["date_notified"] ) );
+                    $email_body_for_notification = $notification_time . ': ' . $this->notifications_manager->get_notification_message_html( $notification );
                     $post_notifications_email .= "\r\n" . $email_body_for_notification;
                 }
                 $post_notifications_email .= dt_make_post_email_footer( $post_id );
@@ -140,7 +141,7 @@ class Disciple_Tools_Notifications_Scheduler {
                     break;
             }
 
-            $time_sent = gmdate( 'Y.n.j H:i' );
+            $time_sent = gmdate( 'Y.n.j H:i' ) . '(UTC)';
             $subject = "$digest_name: $time_sent";
 
             $did_send = dt_send_email(
