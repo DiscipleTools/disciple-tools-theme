@@ -81,4 +81,41 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertSame( $result["tags_test"][0], $create_values['tags_test']["values"][0]["value"] );
         $this->assertSame( $result["tags_test_private"][0], $create_values['tags_test_private']["values"][0]["value"] );
     }
+
+    /**
+     * Make sure post is share with the user selected in the user_select field
+     */
+    public function test_user_select_field(){
+        $user_id = wp_create_user( "multiplier_user_select", "test", "multiplier_user_select@example.com" );
+        $contact_fields = $this->sample_contact;
+        $contact_fields["assigned_to"] = $user_id;
+        $contact = DT_Posts::create_post( 'contacts', $contact_fields, true, false );
+        $group_fields = $this->sample_group;
+        $group_fields["assigned_to"] = $user_id;
+        $group = DT_Posts::create_post( "groups", $group_fields, true, false );
+
+        //test contacts create
+        $contact_shared_with = DT_Posts::get_shared_with( "contacts", $contact["ID"], false );
+        $user_ids = array_map(  function ( $post ){
+            return (int) $post["user_id"];
+        }, $contact_shared_with );
+        $this->assertContains( (int) $user_id, $user_ids );
+
+        //test group create
+        $group_shared_with = DT_Posts::get_shared_with( "groups", $group["ID"], false );
+        $user_ids = array_map(  function ( $post ){
+            return (int) $post["user_id"];
+        }, $group_shared_with );
+        $this->assertContains( (int) $user_id, $user_ids );
+
+        //test contact update
+        $user_2 = wp_create_user( "multiplier_user_select2", "test", "multiplier_user_select2@example.com" );
+        DT_Posts::update_post( "contacts", $contact["ID"], [ "assigned_to" => $user_2 ], true, false );
+        $contact_shared_with = DT_Posts::get_shared_with( "contacts", $contact["ID"], false );
+        $user_ids = array_map(  function ( $post ){
+            return (int) $post["user_id"];
+        }, $contact_shared_with );
+        $this->assertContains( (int) $user_id, $user_ids );
+        $this->assertContains( (int) $user_2, $user_ids );
+    }
 }

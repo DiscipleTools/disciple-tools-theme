@@ -730,25 +730,6 @@ class DT_Groups_Base extends DT_Module_Base {
     //filter at the start of post update
     public function dt_post_update_fields( $fields, $post_type, $post_id ){
         if ( $post_type === "groups" ){
-            if ( isset( $fields["assigned_to"] ) ) {
-                if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
-                    $user = get_user_by( "email", $fields["assigned_to"] );
-                    if ( $user ) {
-                        $fields["assigned_to"] = $user->ID;
-                    } else {
-                        return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
-                    }
-                }
-                //make sure the assigned to is in the right format (user-1)
-                if ( is_numeric( $fields["assigned_to"] ) ||
-                    strpos( $fields["assigned_to"], "user" ) === false ){
-                    $fields["assigned_to"] = "user-" . $fields["assigned_to"];
-                }
-                $user_id = explode( '-', $fields["assigned_to"] )[1];
-                if ( $user_id ){
-                    DT_Posts::add_shared( "groups", $post_id, $user_id, null, false, true, false );
-                }
-            }
             $existing_group = DT_Posts::get_post( 'groups', $post_id, true, false );
             if ( isset( $fields["group_type"] ) && empty( $fields["church_start_date"] ) && empty( $existing_group["church_start_date"] ) && $fields["group_type"] === 'church' ){
                 $fields["church_start_date"] = time();
@@ -941,21 +922,6 @@ class DT_Groups_Base extends DT_Module_Base {
             if ( isset( $fields["group_type"] ) && !isset( $fields["church_start_date"] ) && $fields["group_type"] === 'church' ){
                 $fields["church_start_date"] = time();
             }
-            if ( isset( $fields["assigned_to"] ) ) {
-                if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
-                    $user = get_user_by( "email", $fields["assigned_to"] );
-                    if ( $user ) {
-                        $fields["assigned_to"] = $user->ID;
-                    } else {
-                        return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
-                    }
-                }
-                //make sure the assigned to is in the right format (user-1)
-                if ( is_numeric( $fields["assigned_to"] ) ||
-                    strpos( $fields["assigned_to"], "user" ) === false ){
-                    $fields["assigned_to"] = "user-" . $fields["assigned_to"];
-                }
-            }
         }
         return $fields;
     }
@@ -964,12 +930,6 @@ class DT_Groups_Base extends DT_Module_Base {
     public function dt_post_created( $post_type, $post_id, $initial_fields ){
         if ( $post_type === "groups" ){
             do_action( "dt_group_created", $post_id, $initial_fields );
-            $group = DT_Posts::get_post( 'groups', $post_id, true, false );
-            if ( isset( $group["assigned_to"] )) {
-                if ( $group["assigned_to"]["id"] ) {
-                    DT_Posts::add_shared( "groups", $post_id, $group["assigned_to"]["id"], null, false, false, false );
-                }
-            }
         }
     }
 
