@@ -55,7 +55,7 @@ class Disciple_Tools_Notifications
      * @since     0.1.0
      */
     private static $_instance = null;
-    private const DEFAULT_CHANNELS = [ 'web', 'email' ];
+    const DEFAULT_CHANNELS = [ 'web', 'email' ];
 
     /**
      * Main Disciple_Tools_Notifications Instance
