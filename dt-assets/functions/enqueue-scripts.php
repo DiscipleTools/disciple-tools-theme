@@ -274,7 +274,7 @@ function dt_site_scripts() {
             $dependencies[] = 'mapping-drill-down';
         }
 
-        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/bb', $dependencies, true );
+        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', $dependencies, true );
         wp_localize_script(
             'dt-settings', 'wpApiSettingsPage', array(
                 'root'                  => esc_url_raw( rest_url() ),
