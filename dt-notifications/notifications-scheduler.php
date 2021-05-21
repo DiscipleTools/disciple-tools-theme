@@ -143,7 +143,7 @@ class Disciple_Tools_Notifications_Scheduler {
             $did_send = dt_send_email(
                 $user->user_email,
                 $subject,
-                $email_body,
+                $email_body
             );
 
             if ( $did_send ) {

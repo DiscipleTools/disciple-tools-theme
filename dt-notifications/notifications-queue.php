@@ -82,7 +82,7 @@ class Disciple_Tools_Notifications_Queue {
                 WHERE q.type = %s
                 AND date_sent IS NULL
             ", $type),
-            ARRAY_A,
+            ARRAY_A
         );
 
         return $results;
