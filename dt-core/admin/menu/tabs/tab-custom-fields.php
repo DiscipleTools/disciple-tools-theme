@@ -438,7 +438,13 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Default Label", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Custom Label", 'disciple_tools' ) ?></td>
-                    <td><?php esc_html_e( "Icon Link", 'disciple_tools' ) ?></td>
+                    <?php
+                    if ( $field["type"] === "multi_select" ):
+                        ?>
+                        <td><?php esc_html_e( "Icon Link", 'disciple_tools' ) ?></td>
+                        <?php
+                    endif;
+                    ?>
                     <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
@@ -470,24 +476,35 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <button title="submit" class="button" name="delete_option_label" value="<?php echo esc_html( $key ) ?>">Remove Label</button>
                                 <?php endif; ?>
                             </td>
-                            <td>
-                                <?php
-                                if ( isset( $option["icon"] ) && !empty( $option["icon"] ) ):
-                                    ?>
-                                    <img src="<?php echo esc_attr( $option["icon"] ); ?>" style="width: 20px; margin-bottom: 1em;">
-                                    <?php
-                                endif;
+                            <?php
+                            if ( $field["type"] === "multi_select" ):
                                 ?>
+                                <td>
+                                    <?php
+                                    if ( isset( $option["icon"] ) && ! empty( $option["icon"] ) ):
+                                        ?>
+                                        <img src="<?php echo esc_attr( $option["icon"] ); ?>"
+                                             style="width: 20px; margin-bottom: 1em;">
+                                    <?php
+                                    endif;
+                                    ?>
 
-                                <input type="text" name="field_option_icon_<?php echo esc_html( $key )?>" value="<?php echo esc_attr( $option["icon"] ); ?>">
-                                <?php
-                                if ( isset( $defaults[$field_key]["default"][$key]["icon"] ) && $defaults[$field_key]["default"][$key]["icon"] !== $option["icon"] ):
-                                    ?>
-                                    <button type="submit" style="margin-top:1em;" class="button" name="restore_icon" value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
+                                    <input type="text" name="field_option_icon_<?php echo esc_html( $key ) ?>"
+                                           value="<?php echo esc_attr( $option["icon"] ); ?>">
+                                    <button type="submit" style="margin-top:1em;" class="button" name="delete_icon"
+                                            value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Delete', 'disciple_tools' ); ?></button>
                                     <?php
-                                endif;
-                                ?>
-                            </td>
+                                    if ( isset( $defaults[ $field_key ]["default"][ $key ]["icon"] ) && $defaults[ $field_key ]["default"][ $key ]["icon"] !== $option["icon"] ):
+                                        ?>
+                                        <button type="submit" style="margin-top:1em;" class="button" name="restore_icon"
+                                                value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
+                                    <?php
+                                    endif;
+                                    ?>
+                                </td>
+                            <?php
+                            endif;
+                            ?>
                             <td>
                                 <button class="button small expand_translations">
                                     <?php
@@ -802,6 +819,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         }
                     }
                 }
+                //delete icon
+                if ( isset( $post_submission["delete_icon"] ) ) {
+                    $custom_field["default"][ $post_submission["delete_icon"] ]["icon"] = '';
+                    $field_options[ $post_submission["delete_icon"] ]["icon"]           = '';
+                }
                 //restore icon
                 if ( isset( $post_submission["restore_icon"] ) ) {
                     $restore_icon_defaults                                               = apply_filters( 'dt_custom_fields_settings', [], $post_type );
@@ -967,10 +989,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             } else {
                 $field_private = false;
             }
-            //field icon
-            if (isset( $post_submission['new_field_icon'] ) ) {
-                $field_icon = $post_submission['icon'];
-            }
             $post_fields = $this->get_post_fields( $post_type );
             if ( isset( $post_fields[ $field_key ] )){
                 self::admin_notice( __( "Field already exists", 'disciple_tools' ), "error" );
@@ -994,7 +1012,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'tile' => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private,
-                    'icon'    => $field_icon
                 ];
             } elseif ( $field_type === "tags" ){
                 $new_field = [
