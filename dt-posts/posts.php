@@ -1562,6 +1562,34 @@ class Disciple_Tools_Posts
         return $fields;
     }
 
+
+    public static function update_post_user_select( string $post_type, int $post_id, array $post_fields ){
+        $post_settings = DT_Posts::get_post_field_settings( $post_type );
+        foreach ( $post_fields as $field_key => $field_value ){
+            if ( isset( $post_settings[$field_key]["type"] ) && $post_settings[$field_key]["type"] === "user_select" ){
+                //if the value is an email
+                if ( filter_var( $field_value, FILTER_VALIDATE_EMAIL ) ){
+                    $user = get_user_by( "email", $field_value );
+                    if ( $user ) {
+                        $field_value = $user->ID;
+                    } else {
+                        return new WP_Error( __FUNCTION__, "Unrecognized user", $field_value );
+                    }
+                }
+                if ( is_numeric( $field_value ) || strpos( $field_value, "user" ) === false ){
+                    $field_value = "user-" . $field_value;
+                }
+                if ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ){
+                    return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
+                }
+                update_post_meta( $post_id, $field_key, $field_value );
+                $user_id = explode( '-', $field_value )[1];
+                DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false, false );
+            }
+        }
+        return true;
+    }
+
     public static function update_post_contact_methods( array $post_settings, int $post_id, array $fields, array $existing_contact = null ){
         // update contact details (phone, facebook, etc)
         foreach ( $post_settings["fields"] as $field_key => $field_settings ) {

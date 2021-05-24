@@ -130,6 +130,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $multi_select_fields = [];
         $location_meta = [];
         $post_user_meta = [];
+        $user_select_fields = [];
         foreach ( $fields as $field_key => $field_value ){
             if ( self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
                 $contact_methods_and_connections[$field_key] = $field_value;
@@ -169,11 +170,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields[ $field_key ] );
             }
             if ( $field_type === 'user_select' ) {
-                if ( is_numeric( $field_value ) ){
-                    $fields[$field_key] = "user-" . $field_value;
-                } else if ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ){
-                    return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
-                }
+                $user_select_fields[$field_key] = $field_value;
+                unset( $fields[ $field_key ] );
             }
             if ( $field_type === 'boolean' && $is_private ) {
                 $post_user_meta[$field_key] = $field_value;
@@ -208,7 +206,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             $post["post_date"] = $post_date;
         }
         $post_id = wp_insert_post( $post );
-
+        if ( is_wp_error( $post_id )){
+            return $post_id;
+        }
         $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $contact_methods_and_connections );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
@@ -230,6 +230,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $potential_error = self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $post_user_meta, [] );
+        if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
+
+        $potential_error = self::update_post_user_select( $post_type, $post_id, $user_select_fields );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }
@@ -374,6 +379,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
+        $potential_error = self::update_post_user_select( $post_type, $post_id, $fields );
+        if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
+
         $fields["last_modified"] = time(); //make sure the last modified field is updated.
         foreach ( $fields as $field_key => $field_value ){
             if ( !self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
@@ -388,13 +398,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 if ( $field_type === 'key_select' && !is_string( $field_value ) ){
                     return new WP_Error( __FUNCTION__, "key_select value must in string format: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
-                if ( $field_type === 'user_select' ) {
-                    if ( is_numeric( $field_value ) ){
-                        $field_value = "user-" . $field_value;
-                    } else if ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ){
-                        return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
-                    }
-                }
                 /**
                  * Custom Handled Meta
                  *
@@ -402,7 +405,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                  * field type included, so that it can be skipped here and handled later through the
                  * dt_post_updated action.
                  */
-                $already_handled = apply_filters( 'dt_post_updated_custom_handled_meta', [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel", "tags" ], $post_type );
+                $already_handled = apply_filters( 'dt_post_updated_custom_handled_meta', [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel", "tags", "user_select" ], $post_type );
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
                     if ( isset( $post_settings["fields"][$field_key]['private'] ) && $post_settings["fields"][$field_key]['private'] ) {
                         self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $fields, [] );
