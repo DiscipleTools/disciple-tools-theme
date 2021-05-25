@@ -486,7 +486,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                         <div style="width: 20px; display: inline-block">&nbsp;</div>
                                     <?php endif; ?>
 
-                                    <input type="text" name="field_option_icon_<?php echo esc_html( $key ) ?>" placeholder="<?php esc_html_e('Icon url', 'disciple_tools' ); ?>"
+                                    <input type="text" name="field_option_icon_<?php echo esc_html( $key ) ?>" placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
                                            value="<?php echo esc_attr( isset( $option["icon"] ) ? $option["icon"] : '' ); ?>">
                                     <button type="submit" style="margin-top:1em;" class="button" name="delete_icon" value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Delete', 'disciple_tools' ); ?></button>
                                     <?php
@@ -495,11 +495,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                         <button type="submit" style="margin-top:1em;" class="button" name="restore_icon"
                                                 value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
                                     <?php
-                                    endif;
+                                        endif;
                                     ?>
                                 </td>
                             <?php
-                            endif;
+                                endif;
                             ?>
                             <td>
                                 <button class="button small expand_translations">
