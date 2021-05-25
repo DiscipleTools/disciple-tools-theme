@@ -428,11 +428,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         <span class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></span>
                         <hr/>
 
-                        <?php $email_preference = isset( $dt_user_meta['wp_email_preference'] ) ? $dt_user_meta['wp_email_preference'][0] : null ?>
-                        <?php var_dump( [
-                            $dt_user_meta['wp_email_preference'],
-                            $email_preference,
-                        ] ) ?>
+                        <?php $email_preference = isset( $dt_user_meta['email_preference'] ) ? $dt_user_meta['email_preference'][0] : null ?>
                         <p>
                             <strong><?php echo esc_html_e( 'Email preferences', 'disciple_tools' ) ?></strong>
                             <span id="email-preference-spinner" class="loading-spinner"></span>
