@@ -541,7 +541,7 @@ class Disciple_Tools_Notifications
 
         $message = self::get_notification_message_html( $notification );
         $user_meta = get_user_meta( $user_id );
-        $email_preference = get_user_meta( $user_id, 'wp_email_preference', true );
+        $email_preference = get_user_meta( $user_id, 'email_preference', true );
 
         /**
          * Filter the available channels of communication, defaults to [ 'web', 'email' ]
@@ -799,7 +799,7 @@ class Disciple_Tools_Notifications
                             do_action( 'send_notification_on_channels', $follower, $notification, $notification_type, [ 'email' ] );
                         }
 
-                        $email_preference = get_user_meta( $follower, 'wp_email_preference', true );
+                        $email_preference = get_user_meta( $follower, 'email_preference', true );
                         if ( $email && $email_preference === 'real-time' ) {
                             $user = get_userdata( $follower );
                             $message_plain_text = wp_specialchars_decode( $email, ENT_QUOTES );
