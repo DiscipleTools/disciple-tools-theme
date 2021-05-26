@@ -476,9 +476,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <button title="submit" class="button" name="delete_option_label" value="<?php echo esc_html( $key ) ?>">Remove Label</button>
                                 <?php endif; ?>
                             </td>
-                            <?php
-                            if ( $field["type"] === "multi_select" ):
-                                ?>
+                            <?php if ( $field["type"] === "multi_select" ): ?>
                                 <td>
                                     <?php if ( isset( $option["icon"] ) && ! empty( $option["icon"] ) ): ?>
                                         <img src="<?php echo esc_attr( $option["icon"] ); ?>" style="width: 20px; vertical-align: middle;">
@@ -489,18 +487,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <input type="text" name="field_option_icon_<?php echo esc_html( $key ) ?>" placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
                                            value="<?php echo esc_attr( isset( $option["icon"] ) ? $option["icon"] : '' ); ?>">
                                     <button type="submit" style="margin-top:1em;" class="button" name="delete_icon" value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Delete', 'disciple_tools' ); ?></button>
-                                    <?php
-                                    if ( isset( $defaults[ $field_key ]["default"][ $key ]["icon"] ) && $defaults[ $field_key ]["default"][ $key ]["icon"] !== $option["icon"] ):
-                                        ?>
+                                    <?php if ( isset( $defaults[ $field_key ]["default"][ $key ]["icon"] ) && $defaults[ $field_key ]["default"][ $key ]["icon"] !== $option["icon"] ): ?>
                                         <button type="submit" style="margin-top:1em;" class="button" name="restore_icon"
                                                 value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
-                                    <?php
-                                            endif;
-                                    ?>
+                                    <?php endif; ?>
                                 </td>
-                            <?php
-                                    endif;
-                            ?>
+                            <?php endif; ?>
                             <td>
                                 <button class="button small expand_translations">
                                     <?php
