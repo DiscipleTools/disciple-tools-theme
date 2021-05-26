@@ -129,20 +129,17 @@ class Disciple_Tools_Notifications_Scheduler {
             }
             $email_body .= "\r\n" . dt_make_email_footer();
 
-            $digest_name = '';
+            $subject = '';
             switch ($time_schedule) {
                 case 'hourly':
-                    $digest_name = esc_html__( "Hourly Digest", "disciple_tools" );
+                    $subject = esc_html__( "Hourly Digest", "disciple_tools" );
                     break;
                 case 'daily':
-                    $digest_name = esc_html__( "Daily Digest", "disciple_tools" );
+                    $subject = esc_html__( "Daily Digest", "disciple_tools" );
                     break;
                 default:
                     break;
             }
-
-            $time_sent = gmdate( 'Y.n.j H:i' ) . '(UTC)';
-            $subject = "$digest_name: $time_sent";
 
             $did_send = dt_send_email(
                 $user->user_email,
@@ -152,7 +149,6 @@ class Disciple_Tools_Notifications_Scheduler {
 
             if ( $did_send ) {
                 $this->queue_manager->remove_sent_notifications( $sent_notifications );
-                error_log( "email sent to $user->user_email" );
             }
         }
     }
