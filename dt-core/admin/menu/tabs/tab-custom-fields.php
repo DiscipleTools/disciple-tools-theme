@@ -441,7 +441,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <?php
                     if ( $field["type"] === "multi_select" ):
                         ?>
+                        <td><?php esc_html_e( "Icon", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Icon Link", 'disciple_tools' ) ?></td>
+                        <td></td>
                         <?php
                     endif;
                     ?>
@@ -483,13 +485,17 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <?php else : ?>
                                         <div style="width: 20px; display: inline-block">&nbsp;</div>
                                     <?php endif; ?>
-
+                                </td>
+                                <td>
                                     <input type="text" name="field_option_icon_<?php echo esc_html( $key ) ?>" placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
                                            value="<?php echo esc_attr( isset( $option["icon"] ) ? $option["icon"] : '' ); ?>">
-                                    <button type="submit" style="margin-top:1em;" class="button" name="delete_icon" value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Delete', 'disciple_tools' ); ?></button>
+                                </td>
+                                <td>
                                     <?php if ( isset( $defaults[ $field_key ]["default"][ $key ]["icon"] ) && $defaults[ $field_key ]["default"][ $key ]["icon"] !== $option["icon"] ): ?>
-                                        <button type="submit" style="margin-top:1em;" class="button" name="restore_icon"
+                                        <button type="submit" class="button" name="restore_icon"
                                                 value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
+                                    <?php elseif ( isset( $option["icon"] ) && !empty( $option["icon"] ) ) : ?>
+                                        <button type="submit" class="button" name="delete_icon" value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Remove Icon', 'disciple_tools' ); ?></button>
                                     <?php endif; ?>
                                 </td>
                             <?php endif; ?>
