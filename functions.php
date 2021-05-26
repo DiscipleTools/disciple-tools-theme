@@ -314,9 +314,6 @@ else {
             require_once( get_template_directory() . '/dt-users/users-template.php' );
             require_once( get_template_directory() . '/dt-users/users-endpoints.php' );
             $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
-            if ( !$is_rest ){
-                require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
-            }
             require_once( get_template_directory() . '/dt-users/user-management.php' );
             require_once( get_template_directory() . '/dt-users/hover-coverage-map.php' );
             require_once( get_template_directory() . '/dt-users/mapbox-coverage-map.php' );
