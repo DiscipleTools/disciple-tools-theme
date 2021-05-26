@@ -78,13 +78,6 @@ class Disciple_Tools_Users_Endpoints
             ]
         );
         register_rest_route(
-            $this->namespace, '/users/disable_product_tour/', [
-                'methods' => "POST",
-                'callback' => [ $this, 'disable_product_tour' ],
-                'permission_callback' => '__return_true',
-            ]
-        );
-        register_rest_route(
             $this->namespace, '/users/create', [
                 'methods' => "POST",
                 'callback' => [ $this, 'create_user' ],
@@ -233,29 +226,6 @@ class Disciple_Tools_Users_Endpoints
             return new WP_Error( "missing_error", "Missing filters", [ 'status' => 400 ] );
         }
     }
-
-    public function disable_product_tour( WP_REST_Request $request ) {
-        $params = $request->get_json_params();
-
-        $tour_ids = [
-            'list_tour',
-        ];
-        if ( !isset( $params['tour_id'] ) ) {
-            return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
-        }
-
-        if ( !in_array( $params['tour_id'], $tour_ids, true ) ) {
-            return new WP_Error( "invalid_tour", "Invalid tour id", [ 'status' => 400 ] );
-        }
-
-        $completed_tours = get_user_meta( get_current_user_id(), 'dt_product_tour' );
-        if ( in_array( $params['tour_id'], $completed_tours ) ) {
-            return new WP_Error( "tour_complete", "Tour already complete", [ 'status' => 400 ] );
-        }
-
-        return update_user_meta( get_current_user_id(), 'dt_product_tour', $params['tour_id'] );
-    }
-
 
     public function create_user( WP_REST_Request $request ){
         $params = $request->get_params();
