@@ -326,7 +326,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php endif; ?>
                     </td>
                     <td>
-                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?> <?php echo esc_html( ( isset( $defaults[$field_key] ) ) ? "disabled" : '' ); ?>></input>
+                        <?php $private_field_disabled = isset( $defaults[$field_key] ) || $field["type"] === 'connection' ?>
+                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?> <?php echo esc_html( ( $private_field_disabled ) ? "disabled" : '' ); ?>>
                     </td>
                     <td>
                         <button class="button small expand_translations">
@@ -881,6 +882,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         global $wp_post_types;
         $post_type = sanitize_text_field( wp_unslash( $post_type ) );
         $tile_options = DT_Posts::get_post_tiles( $post_type );
+        global $wp_post_types;
+        $post_types = DT_Posts::get_post_types();
         ?>
         <form method="post">
             <input type="hidden" name="field_add_nonce" id="field_add_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_add' ) ) ?>" />
@@ -906,7 +909,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <label><?php esc_html_e( "Field type", 'disciple_tools' ) ?></label>
                     </td>
                     <td>
-                        <select name="new_field_type" required>
+                        <select id="new_field_type_select" name="new_field_type" required>
                             <option></option>
                             <option value="key_select"><?php esc_html_e( "Dropdown", 'disciple_tools' ) ?></option>
                             <option value="multi_select"><?php esc_html_e( "Multi Select", 'disciple_tools' ) ?></option>
@@ -914,10 +917,26 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
                             <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
                             <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
+                            <option value="connection"><?php esc_html_e( "Connection", 'disciple_tools' ) ?></option>
                         </select>
                     </td>
                 </tr>
-                <tr>
+                <tr id="connection_field_target_row" style="display: none">
+                    <td style="vertical-align: middle">
+                        <label><?php esc_html_e( "Connected to", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                    <select name="connection_target" id="connection_field_target">
+                        <option></option>
+                        <?php foreach ( $post_types as $post_type ) : ?>
+                            <option value="<?php echo esc_html( $post_type ); ?>">
+                                <?php echo esc_html( $wp_post_types[$post_type]->label ); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    </td>
+                </tr>
+                <tr id="private_field_row">
                     <td style="vertical-align: middle">
                         <label><?php esc_html_e( "Private Field", 'disciple_tools' ) ?></label>
                     </td>
@@ -1043,6 +1062,25 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private
+                ];
+            } elseif ( $field_type === "connection" ){
+                if ( !$post_submission["connection_target"] ){
+                    self::admin_notice( __( "Please select a connection target", 'disciple_tools' ), "error" );
+                    return false;
+                }
+                $p2p_key = $post_type . "_to_" . $post_submission["connection_target"];
+                if ( !p2p_type( $p2p_key ) === false ){
+                    $p2p_key = dt_create_field_key( $p2p_key, true );
+                }
+
+                $new_field = [
+                    'name'        => $post_submission["new_field_name"],
+                    'type'        => 'connection',
+                    "post_type" => $post_submission["connection_target"],
+                    "p2p_direction" => "from",
+                    "p2p_key" => $p2p_key,
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
                 ];
             }
 
