@@ -1072,12 +1072,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 if ( !p2p_type( $p2p_key ) === false ){
                     $p2p_key = dt_create_field_key( $p2p_key, true );
                 }
-
+                $direction = $post_type === $post_submission["connection_target"] ? "any" : "from";
                 $new_field = [
                     'name'        => $post_submission["new_field_name"],
                     'type'        => 'connection',
                     "post_type" => $post_submission["connection_target"],
-                    "p2p_direction" => "from",
+                    "p2p_direction" => $direction,
                     "p2p_key" => $p2p_key,
                     'tile'     => $field_tile,
                     'customizable' => 'all',

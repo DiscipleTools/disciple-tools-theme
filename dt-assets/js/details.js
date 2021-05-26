@@ -333,7 +333,8 @@ jQuery(document).ready(function($) {
 
 
   $('.dt_typeahead').each((key, el)=>{
-    let field_id = $(el).attr('id').replace('_connection', '')
+    let div_id = $(el).attr('id')
+    let field_id = $(`#${div_id} input`).data('field')
     let listing_post_type = window.lodash.get(window.detailsSettings.post_settings.fields[field_id], "post_type", 'contacts')
     $.typeahead({
       input: `.js-typeahead-${field_id}`,
