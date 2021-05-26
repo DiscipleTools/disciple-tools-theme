@@ -1069,7 +1069,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     return false;
                 }
                 $p2p_key = $post_type . "_to_" . $post_submission["connection_target"];
-                if ( !p2p_type( $p2p_key ) === false ){
+                if ( p2p_type( $p2p_key ) !== false ){
                     $p2p_key = dt_create_field_key( $p2p_key, true );
                 }
                 $direction = $post_type === $post_submission["connection_target"] ? "any" : "from";
