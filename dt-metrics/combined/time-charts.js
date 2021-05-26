@@ -16,11 +16,7 @@ makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`)
 const getFieldSettings = (postType) =>
 makeRequest('GET', `metrics/field_settings/${postType}`)
 
-function escapeObject(obj) {
-    return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
-        return [ key, window.lodash.escape(value)]
-    }))
-}
+const escapeObject = window.SHAREDFUNCTIONS.escapeObject
 
 function projectTimeCharts() {
 

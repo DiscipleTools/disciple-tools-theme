@@ -78,13 +78,6 @@ class Disciple_Tools_Users_Endpoints
             ]
         );
         register_rest_route(
-            $this->namespace, '/users/disable_product_tour', [
-                'methods' => "GET",
-                'callback' => [ $this, 'disable_product_tour' ],
-                'permission_callback' => '__return_true',
-            ]
-        );
-        register_rest_route(
             $this->namespace, '/users/create', [
                 'methods' => "POST",
                 'callback' => [ $this, 'create_user' ],
@@ -233,12 +226,6 @@ class Disciple_Tools_Users_Endpoints
             return new WP_Error( "missing_error", "Missing filters", [ 'status' => 400 ] );
         }
     }
-
-
-    public function disable_product_tour(){
-        return update_user_meta( get_current_user_id(), 'dt_product_tour', true );
-    }
-
 
     public function create_user( WP_REST_Request $request ){
         $params = $request->get_params();

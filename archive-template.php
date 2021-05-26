@@ -19,11 +19,11 @@ dt_please_log_in();
              data-sticky data-options="marginTop:0;" data-top-anchor="1"
              class="second-bar list-actions-bar">
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
-                <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
+                <a class="button dt-green create-post-desktop" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php echo esc_html( sprintf( _x( "Create New %s", "Create New record", 'disciple_tools' ), $post_settings["label_singular"] ?? $post_type ) ) ?></span>
                 </a>
-                <a class="button" data-open="filter-modal">
+                <a class="button filter-posts-desktop" data-open="filter-modal">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "Filters", 'disciple_tools' ) ?></span>
                 </a>
@@ -99,10 +99,10 @@ dt_please_log_in();
     </div>
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
-        <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
+        <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
         </a>
-        <a class="button" data-open="filter-modal">
+        <a class="button filter-posts-mobile" data-open="filter-modal">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
         </a>
         <a class="button" id="open-search">
@@ -200,7 +200,7 @@ dt_please_log_in();
             <main id="main" class="large-9 cell padding-bottom" role="main">
                 <div class="bordered-box">
                     <div >
-                        <span class="section-header" style="display: inline-block">
+                        <span class="section-header posts-header" style="display: inline-block">
                             <?php echo esc_html( sprintf( _x( '%s List', 'Contacts List', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_plural"] ) ) ?>
                         </span>
                         <span id="list-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
