@@ -868,7 +868,7 @@ class Disciple_Tools_Notifications
      * @param bool $html
      * @return string $notification_note the return value is expected to contain HTML.
      */
-    public static function get_notification_message_html( $notification, $html = true ){
+    public static function get_notification_message_html( $notification, $html = true, $condensed = false ){
         // load the local for the destination usr so emails are sent our correctly.
         $destination_user = get_user_by( 'id', $notification["user_id"] );
 
@@ -888,6 +888,7 @@ class Disciple_Tools_Notifications
         $post = get_post( $object_id );
         $post_title = isset( $post->post_title ) ? sanitize_text_field( $post->post_title ) : "";
         $notification_note = $notification["notification_note"]; // $notification_note is expected to contain HTML
+        $vertical_spacing = $condensed ? "\r\n" : "\r\n\r\n";
         if ( $html ){
             $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
         } else {
@@ -911,14 +912,14 @@ class Disciple_Tools_Notifications
             $source_user = get_userdata( $notification["source_user_id"] );
             $comment = get_comment( $notification["secondary_item_id"] );
             $comment_content = $comment ? self::format_comment( $comment->comment_content ) : "";
-            $comment_content = "\r\n\r\n " . $comment_content;
+            $comment_content = $vertical_spacing . ' ' . $comment_content;
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
             $notification_note = sprintf( esc_html_x( '%1$s mentioned you on %2$s saying: %3$s', 'User1 mentioned you on contact1 saying: test', 'disciple_tools' ), $display_name, $link, $comment_content );
         } elseif ( $notification["notification_name"] ==="comment" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $comment = get_comment( $notification["secondary_item_id"] );
             $comment_content = $comment ? self::format_comment( $comment->comment_content ) : "";
-            $comment_content = "\r\n\r\n " . $comment_content;
+            $comment_content = $vertical_spacing . ' '  . $comment_content;
             $display_name = $source_user ? $source_user->display_name : ( $comment->comment_author ?: __( "System", "disciple_tools" ) );
             $notification_note = sprintf( esc_html_x( '%1$s commented on %2$s saying: %3$s', 'User1 commented on contact1 saying: test', 'disciple_tools' ), $display_name, $link, $comment_content );
         } elseif ( $notification["notification_name"] === "subassigned" ){

@@ -9,7 +9,7 @@ class Disciple_Tools_Notifications_Scheduler {
      * The hour of the daily schedule
      */
     const DAILY_RUN_TIME = 0;
-    const DEBUG          = false;
+    const DEBUG          = true;
 
     private $queue_manager;
     private $notifications_manager;
@@ -69,14 +69,18 @@ class Disciple_Tools_Notifications_Scheduler {
     }
 
     public function hourly_schedule() {
-        error_log( 'This is my "hourly" cron going off' );
+        if ( self::DEBUG ) {
+            error_log( 'This is my "hourly" cron going off' );
+        }
 
         $unsent_notifications = $this->queue_manager->get_unsent_email_notifications( 'hourly' );
         $this->send_batch_emails( $unsent_notifications, 'hourly' );
     }
 
     public function daily_schedule() {
-        error_log( 'This is my daily cron going off' );
+        if ( self::DEBUG ) {
+            error_log( 'This is my daily cron going off' );
+        }
 
         $unsent_notifications = $this->queue_manager->get_unsent_email_notifications( 'daily' );
         $this->send_batch_emails( $unsent_notifications, 'daily' );
@@ -120,8 +124,7 @@ class Disciple_Tools_Notifications_Scheduler {
 
                 $post_notifications_email = '## ' . dt_make_post_email_subject( $post_id ) . "\r\n";
                 foreach ($notifications as $notification) {
-                    $notification_time = gmdate( 'G:i', strToTime( $notification["date_notified"] ) );
-                    $email_body_for_notification = $notification_time . ': ' . $this->notifications_manager->get_notification_message_html( $notification );
+                    $email_body_for_notification = $this->notifications_manager->get_notification_message_html( $notification, true, true );
                     $post_notifications_email .= "\r\n" . $email_body_for_notification;
                 }
                 $post_notifications_email .= dt_make_post_email_footer( $post_id );
