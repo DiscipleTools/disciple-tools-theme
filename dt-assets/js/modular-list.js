@@ -1685,8 +1685,9 @@
   let field_settings = window.list_settings.post_type_settings.fields;
 
   $('#bulk_edit_picker .dt_typeahead').each((key, el)=>{
-    let field_id = $(el).attr('id').replace('_connection', '').replace('bulk_', '');
-    let element_id =  $(el).attr('id').replace('_connection', '');
+    let element_id =  $(el).attr('id').replace(/_connection$/, '');
+    let div_id = $(el).attr('id')
+    let field_id = $(`#${div_id} input`).data('field')
     if (element_id !== "bulk_share") {
       let listing_post_type = window.lodash.get(window.list_settings.post_type_settings.fields[field_id], "post_type", 'contacts')
       $.typeahead({
