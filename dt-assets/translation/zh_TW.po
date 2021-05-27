@@ -32,7 +32,7 @@ msgstr "史詩404-找不到"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "找不到或刪除了您要查找的頁面"
 
-#: dt-contacts/base-setup.php:313
+#: dt-contacts/base-setup.php:314
 #: dt-groups/base-setup.php:137
 #: dt-users/template-user-management.php:78
 #: dt-users/user-management.php:103
@@ -57,10 +57,10 @@ msgstr "查看重複項"
 msgid "Search"
 msgstr "搜索"
 
-#: dt-contacts/base-setup.php:552
-#: dt-contacts/base-setup.php:560
-#: dt-contacts/base-setup.php:577
-#: dt-contacts/base-setup.php:578
+#: dt-contacts/base-setup.php:564
+#: dt-contacts/base-setup.php:572
+#: dt-contacts/base-setup.php:589
+#: dt-contacts/base-setup.php:590
 msgid "Shared with me"
 msgstr "與我分享"
 
@@ -69,45 +69,45 @@ msgid "Add new filter"
 msgstr "新增過濾器"
 
 #: dt-contacts/access-module.php:101
-#: dt-groups/base-setup.php:148
+#: dt-groups/base-setup.php:149
 #: dt-metrics/groups/tree.php:86
 #: dt-metrics/personal/group-tree.php:87
 msgid "Assigned To"
 msgstr "分配給"
 
-#: archive-template.php:568
+#: archive-template.php:575
 #: dt-assets/functions/enqueue-scripts.php:319
 #: dt-posts/custom-post-type.php:161
 msgid "Creation Date"
 msgstr "創立日期"
 
-#: archive-template.php:559
+#: archive-template.php:566
 msgid "Filter for subassigned OR Assigned To"
 msgstr "篩選子分配或分配給"
 
-#: archive-template.php:584
-#: archive-template.php:585
+#: archive-template.php:603
+#: archive-template.php:604
 #: dt-metrics/combined/time-charts.php:118
 #: template-settings.php:251
 #: template-settings.php:479
 msgid "No"
 msgstr "沒有"
 
-#: archive-template.php:591
-#: archive-template.php:592
+#: archive-template.php:610
+#: archive-template.php:611
 #: dt-metrics/combined/time-charts.php:117
 #: template-settings.php:250
 #: template-settings.php:478
 msgid "Yes"
 msgstr "是"
 
-#: archive-template.php:599
-#: archive-template.php:610
+#: archive-template.php:618
+#: archive-template.php:629
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "明確"
 
-#: archive-template.php:638
+#: archive-template.php:657
 #: dt-assets/functions/enqueue-scripts.php:282
 #: dt-assets/functions/enqueue-scripts.php:314
 #: template-merge-details.php:102
@@ -119,7 +119,7 @@ msgid "Save"
 msgstr "保存"
 
 #: dt-assets/functions/details-bar.php:44
-#: dt-assets/functions/details-bar.php:207
+#: dt-assets/functions/details-bar.php:220
 #: dt-core/configuration/config-site-defaults.php:279
 #: dt-users/template-user-management.php:77
 msgid "Update Needed"
@@ -133,23 +133,23 @@ msgstr "通過此聯繫人建立用戶"
 msgid "Link to an existing user"
 msgstr "鏈接到現有用戶"
 
-#: dt-contacts/base-setup.php:370
+#: dt-contacts/base-setup.php:371
 msgid "Merge with another contact"
 msgstr "與其他聯繫人合併"
 
-#: dt-assets/functions/details-bar.php:129
-#: dt-assets/functions/details-bar.php:134
+#: dt-assets/functions/details-bar.php:136
+#: dt-assets/functions/details-bar.php:141
 msgid "Following"
 msgstr "以下"
 
 #: archive-template.php:396
-#: dt-assets/functions/details-bar.php:138
+#: dt-assets/functions/details-bar.php:145
 #: dt-contacts/base-setup.php:161
 #: dt-groups/base-setup.php:98
 msgid "Follow"
 msgstr "跟隨"
 
-#: dt-assets/functions/details-bar.php:148
+#: dt-assets/functions/details-bar.php:155
 msgid "Share"
 msgstr "分享"
 
@@ -291,15 +291,15 @@ msgstr "註銷"
 msgid "Please provide an update by posting a comment."
 msgstr "請通過發表評論來提供更新。"
 
-#: dt-contacts/access-module.php:554
+#: dt-contacts/access-module.php:555
 msgid "This contact has been assigned to you."
 msgstr "此聯繫人已分配給您。"
 
-#: dt-contacts/access-module.php:555
+#: dt-contacts/access-module.php:556
 msgid "Accept"
 msgstr "接受"
 
-#: dt-contacts/access-module.php:556
+#: dt-contacts/access-module.php:557
 msgid "Decline"
 msgstr "下降"
 
@@ -308,10 +308,10 @@ msgid "This contact represents a user."
 msgstr "該聯繫人代表用戶。"
 
 #: archive-template.php:322
-#: dt-contacts/access-module.php:408
+#: dt-contacts/access-module.php:409
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1530
+#: dt-posts/dt-posts.php:1539
 #: dt-users/template-user-management.php:74
 #: dt-users/template-user-management.php:158
 #: single-template.php:78
@@ -328,20 +328,20 @@ msgstr "社交媒體"
 
 #: dt-contacts/base-setup.php:220
 #: dt-core/configuration/config-site-defaults.php:455
-#: dt-groups/base-setup.php:385
+#: dt-groups/base-setup.php:387
 #: template-settings.php:139
 msgid "Address"
 msgstr "地址"
 
 #: dt-assets/parts/modals/modal-help.php:126
 #: dt-contacts/base-setup.php:204
-#: dt-groups/base-setup.php:367
+#: dt-groups/base-setup.php:369
 msgid "Locations"
 msgstr "地點"
 
 #: dt-contacts/dmm-module.php:210
 #: dt-contacts/dmm-module.php:325
-#: dt-groups/base-setup.php:406
+#: dt-groups/base-setup.php:408
 #: dt-groups/base-setup.php:658
 #: dt-people-groups/people-groups-post-type.php:132
 msgid "People Groups"
@@ -397,7 +397,7 @@ msgid "Faith Milestones"
 msgstr "信仰里程碑"
 
 #: dt-groups/base-setup.php:51
-#: dt-groups/base-setup.php:179
+#: dt-groups/base-setup.php:180
 #: dt-metrics/groups/overview.php:80
 #: dt-metrics/personal/group-tree.php:165
 #: dt-metrics/personal/overview.php:74
@@ -408,22 +408,22 @@ msgstr "組"
 msgid "Loading..."
 msgstr "載入中..."
 
-#: dt-groups/base-setup.php:157
+#: dt-groups/base-setup.php:158
 msgid "Group Coach / Church Planter"
 msgstr "小組教練/教會主持人"
 
-#: dt-groups/base-setup.php:263
+#: dt-groups/base-setup.php:265
 #: dt-users/template-user-management.php:312
 #: template-settings.php:386
 #: template-settings.php:405
 msgid "Start Date"
 msgstr "開始日期"
 
-#: dt-groups/base-setup.php:271
+#: dt-groups/base-setup.php:273
 msgid "Church Start Date"
 msgstr "教會開始日期"
 
-#: dt-groups/base-setup.php:280
+#: dt-groups/base-setup.php:282
 #: dt-users/template-user-management.php:313
 #: template-settings.php:392
 #: template-settings.php:406
@@ -596,7 +596,7 @@ msgstr "救命"
 msgid "Ongoing Meetings"
 msgstr "正在進行的會議"
 
-#: dt-contacts/base-setup.php:302
+#: dt-contacts/base-setup.php:303
 #: dt-groups/base-setup.php:111
 msgid "Requires Update"
 msgstr "需要更新"
@@ -616,7 +616,7 @@ msgstr "洗禮日期"
 msgid "Baptism Generation"
 msgstr "洗禮代"
 
-#: dt-contacts/access-module.php:307
+#: dt-contacts/access-module.php:308
 #: dt-metrics/contacts/sources.php:90
 #: dt-users/users.php:837
 msgid "Sources"
@@ -641,7 +641,7 @@ msgstr "工作"
 msgid "Home"
 msgstr "家"
 
-#: dt-contacts/base-setup.php:463
+#: dt-contacts/base-setup.php:464
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:479
 #: dt-groups/base-setup.php:671
@@ -658,12 +658,12 @@ msgstr "其他"
 msgid "Email"
 msgstr "電子郵件"
 
-#: dt-contacts/access-module.php:284
+#: dt-contacts/access-module.php:285
 #: dt-contacts/base-setup.php:240
 msgid "Facebook"
 msgstr "臉書"
 
-#: dt-contacts/access-module.php:288
+#: dt-contacts/access-module.php:289
 #: dt-contacts/base-setup.php:248
 msgid "Twitter"
 msgstr "推特"
@@ -812,8 +812,8 @@ msgstr "我們已經有一段時間沒有聽說過這個小組了。你有更新
 
 #: dt-assets/functions/details-bar.php:75
 #: dt-assets/functions/details-bar.php:109
-#: dt-assets/functions/details-bar.php:218
-#: dt-assets/functions/details-bar.php:251
+#: dt-assets/functions/details-bar.php:231
+#: dt-assets/functions/details-bar.php:264
 #: dt-core/configuration/dt-configuration.php:75
 msgctxt "either rtl or ltr"
 msgid "ltr"
@@ -845,8 +845,8 @@ msgstr "的角色"
 msgid "(no title)"
 msgstr "（無題）"
 
-#: dt-groups/base-setup.php:247
-#: dt-groups/base-setup.php:309
+#: dt-groups/base-setup.php:249
+#: dt-groups/base-setup.php:311
 #: dt-groups/base-setup.php:606
 msgid "Leaders"
 msgstr "領導者"
@@ -1053,27 +1053,27 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "刪除的％1 $ s：％2 $ s"
 
-#: dt-posts/dt-posts.php:1353
+#: dt-posts/dt-posts.php:1356
 msgid "Post already shared with user."
 msgstr "帖子已與用戶共享。"
 
-#: dt-groups/base-setup.php:170
+#: dt-groups/base-setup.php:171
 msgid "Group Type"
 msgstr "團體類型"
 
-#: dt-groups/base-setup.php:175
+#: dt-groups/base-setup.php:176
 #: dt-metrics/groups/overview.php:79
 #: dt-metrics/personal/overview.php:73
 msgid "Pre-Group"
 msgstr "小組前"
 
-#: dt-groups/base-setup.php:183
+#: dt-groups/base-setup.php:184
 #: dt-metrics/groups/overview.php:81
 #: dt-metrics/personal/overview.php:75
 msgid "Church"
 msgstr "教會"
 
-#: dt-groups/base-setup.php:291
+#: dt-groups/base-setup.php:293
 msgid "Member Count"
 msgstr "會員人數"
 
@@ -1155,9 +1155,9 @@ msgstr "洗禮"
 msgid "Baptizers"
 msgstr "浸禮"
 
-#: dt-contacts/access-module.php:276
+#: dt-contacts/access-module.php:277
 #: dt-contacts/base-setup.php:128
-#: dt-contacts/base-setup.php:527
+#: dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:82
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1244,7 +1244,7 @@ msgstr "項目概況"
 msgid "Outreach"
 msgstr "外展"
 
-#: dt-contacts/access-module.php:380
+#: dt-contacts/access-module.php:381
 #: dt-metrics/combined/critical-path.php:77
 msgid "Follow Up"
 msgstr "跟進"
@@ -1386,11 +1386,11 @@ msgstr "查看聯繫記錄"
 msgid "Updated Needed"
 msgstr "需要更新"
 
-#: functions.php:485
+#: functions.php:482
 msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
 msgstr "門徒工具主題需要PHP 7.0或更高版本。您當前的版本是："
 
-#: functions.php:487
+#: functions.php:484
 msgid "Please upgrade PHP or uninstall this theme"
 msgstr "請升級PHP或卸載此主題"
 
@@ -1441,17 +1441,17 @@ msgstr "將此聯繫人鏈接到現有用戶"
 msgid "Click merge to continue."
 msgstr "單擊合併以繼續。"
 
-#: dt-groups/base-setup.php:300
+#: dt-groups/base-setup.php:302
 #: dt-groups/base-setup.php:534
 #: dt-groups/base-setup.php:667
 msgid "Member List"
 msgstr "會員名單"
 
-#: dt-groups/base-setup.php:326
+#: dt-groups/base-setup.php:328
 msgid "Parent Group"
 msgstr "家長小組"
 
-#: dt-groups/base-setup.php:338
+#: dt-groups/base-setup.php:340
 msgid "Peer Group"
 msgstr "同行組"
 
@@ -1539,7 +1539,7 @@ msgstr "傳"
 msgid "Type of Notification"
 msgstr "通知類型"
 
-#: dt-contacts/access-module.php:280
+#: dt-contacts/access-module.php:281
 #: dt-core/configuration/config-site-defaults.php:259
 msgid "Web"
 msgstr "網頁"
@@ -1837,7 +1837,7 @@ msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "您已分配：％1 $ s。"
 
-#: dt-groups/base-setup.php:350
+#: dt-groups/base-setup.php:352
 msgid "Child Group"
 msgstr "兒童組"
 
@@ -1845,12 +1845,12 @@ msgstr "兒童組"
 msgid "Not Ready"
 msgstr "沒有準備好"
 
-#: archive-template.php:596
+#: archive-template.php:615
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "範圍開始"
 
-#: archive-template.php:606
+#: archive-template.php:625
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "範圍結束"
@@ -1879,7 +1879,7 @@ msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
 msgstr "該聯繫人已分配給某人，但尚未被該人接受。"
 
-#: dt-contacts/base-setup.php:314
+#: dt-contacts/base-setup.php:315
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "聯繫人正在進行和/或不斷更新。"
@@ -1889,7 +1889,7 @@ msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "此聯繫人當前處於保留狀態（即正在休假或未回复）。"
 
-#: dt-contacts/base-setup.php:320
+#: dt-contacts/base-setup.php:321
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
 msgstr "此聯繫表明他們不再想要繼續，或者您已決定不再與他/她繼續。"
@@ -1899,102 +1899,102 @@ msgctxt "Seeker Path field description"
 msgid "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
 msgstr "設置聯繫人的進度狀態。這些是按特定順序執行的步驟，可幫助聯繫人繼續前進。"
 
-#: dt-contacts/access-module.php:229
+#: dt-contacts/access-module.php:230
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
 msgstr "假期聯繫"
 
-#: dt-contacts/access-module.php:230
+#: dt-contacts/access-module.php:231
 msgctxt "Reason Paused label"
 msgid "Contact not responding"
 msgstr "聯繫人無響應"
 
-#: dt-contacts/access-module.php:231
+#: dt-contacts/access-module.php:232
 msgctxt "Reason Paused label"
 msgid "Contact not available"
 msgstr "聯繫人不可用"
 
-#: dt-contacts/access-module.php:232
+#: dt-contacts/access-module.php:233
 msgctxt "Reason Paused label"
 msgid "Contact has little interest/hunger"
 msgstr "聯繫人沒有興趣/渴望"
 
-#: dt-contacts/access-module.php:233
+#: dt-contacts/access-module.php:234
 msgctxt "Reason Paused label"
 msgid "Contact shows no initiative"
 msgstr "聯繫人沒有主動權"
 
-#: dt-contacts/access-module.php:234
+#: dt-contacts/access-module.php:235
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
 msgstr "接觸有可疑的動機"
 
-#: dt-contacts/access-module.php:235
+#: dt-contacts/access-module.php:236
 msgctxt "Reason Paused label"
 msgid "Ball is in the contact's court"
 msgstr "球在聯絡人的法庭上"
 
-#: dt-contacts/access-module.php:236
+#: dt-contacts/access-module.php:237
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr "我們想看看聯繫人是否/如何響應自動短信"
 
-#: dt-contacts/access-module.php:248
+#: dt-contacts/access-module.php:249
 msgctxt "Reason Closed label"
 msgid "Duplicate"
 msgstr "重複"
 
-#: dt-contacts/access-module.php:249
+#: dt-contacts/access-module.php:250
 msgctxt "Reason Closed label"
 msgid "Insufficient contact info"
 msgstr "聯繫信息不足"
 
-#: dt-contacts/access-module.php:250
+#: dt-contacts/access-module.php:251
 msgctxt "Reason Closed label"
 msgid "Denies submitting contact request"
 msgstr "拒絕提交聯繫請求"
 
-#: dt-contacts/access-module.php:252
+#: dt-contacts/access-module.php:253
 msgctxt "Reason Closed label"
 msgid "Only wants to argue or debate"
 msgstr "只想爭論或辯論"
 
-#: dt-contacts/access-module.php:253
+#: dt-contacts/access-module.php:254
 msgctxt "Reason Closed label"
 msgid "Just wanted media or book"
 msgstr "想要媒體或書籍"
 
-#: dt-contacts/access-module.php:254
+#: dt-contacts/access-module.php:255
 msgctxt "Reason Closed label"
 msgid "No longer interested"
 msgstr "不再感興趣"
 
-#: dt-contacts/access-module.php:255
+#: dt-contacts/access-module.php:256
 msgctxt "Reason Closed label"
 msgid "No longer responding"
 msgstr "不再回應"
 
-#: dt-contacts/access-module.php:256
+#: dt-contacts/access-module.php:257
 msgctxt "Reason Closed label"
 msgid "Already in church or connected with others"
 msgstr "已經在教堂或與他人有聯繫"
 
-#: dt-contacts/access-module.php:257
+#: dt-contacts/access-module.php:258
 msgctxt "Reason Closed label"
 msgid "Transferred contact to partner"
 msgstr "將聯繫人轉移到合作夥伴"
 
-#: dt-contacts/access-module.php:258
+#: dt-contacts/access-module.php:259
 msgctxt "Reason Closed label"
 msgid "Martyred"
 msgstr "烈士"
 
-#: dt-contacts/access-module.php:259
+#: dt-contacts/access-module.php:260
 msgctxt "Reason Closed label"
 msgid "Moved or relocated"
 msgstr "搬家或搬遷"
 
-#: dt-contacts/access-module.php:261
+#: dt-contacts/access-module.php:262
 msgctxt "Reason Closed label"
 msgid "Unknown"
 msgstr "未知"
@@ -2055,7 +2055,7 @@ msgstr "工作WhatsApp"
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "工作WhatsApp用於分發給聯繫人和尋求者。"
 
-#: dt-contacts/access-module.php:292
+#: dt-contacts/access-module.php:293
 msgid "Transfer"
 msgstr "傳遞"
 
@@ -2148,7 +2148,7 @@ msgstr "輸入搜索"
 #: archive-template.php:304
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/user-module.php:169
-#: dt-core/global-functions.php:618
+#: dt-core/global-functions.php:619
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "搜索用戶"
@@ -2167,10 +2167,10 @@ msgstr "在這裡寫下您的評論或註釋"
 #: archive-template.php:35
 #: archive-template.php:115
 #: archive-template.php:380
-#: dt-core/global-functions.php:457
-#: dt-core/global-functions.php:483
-#: dt-core/global-functions.php:536
-#: dt-core/global-functions.php:580
+#: dt-core/global-functions.php:458
+#: dt-core/global-functions.php:484
+#: dt-core/global-functions.php:537
+#: dt-core/global-functions.php:581
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:336
@@ -2276,17 +2276,17 @@ msgid "Filter Name"
 msgstr "篩選器名稱"
 
 #: 403.php:45
-#: archive-template.php:630
+#: archive-template.php:649
 #: dt-assets/parts/merge-details.php:70
 #: dt-assets/parts/modals/modal-advanced-search.php:56
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:473
-#: dt-contacts/access-module.php:504
-#: dt-contacts/access-module.php:532
-#: dt-contacts/base-setup.php:387
-#: dt-contacts/base-setup.php:422
+#: dt-contacts/access-module.php:474
+#: dt-contacts/access-module.php:505
+#: dt-contacts/access-module.php:533
+#: dt-contacts/base-setup.php:388
+#: dt-contacts/base-setup.php:423
 #: dt-contacts/user-module.php:139
 #: dt-contacts/user-module.php:191
 #: single-template.php:347
@@ -2300,11 +2300,11 @@ msgstr "篩選器名稱"
 msgid "Cancel"
 msgstr "取消"
 
-#: archive-template.php:635
+#: archive-template.php:654
 msgid "Filter Records"
 msgstr "篩選記錄"
 
-#: dt-assets/functions/details-bar.php:122
+#: dt-assets/functions/details-bar.php:129
 #: dt-assets/parts/modals/modal-tasks.php:7
 #: dt-contacts/base-setup.php:173
 #: dt-groups/base-setup.php:117
@@ -2397,16 +2397,16 @@ msgid "No records found matching your filter."
 msgstr "找不到與您的過濾器匹配的記錄。"
 
 #: dt-assets/parts/nav-topbar.php:260
-#: dt-groups/base-setup.php:1062
-#: dt-groups/base-setup.php:1135
-#: dt-groups/base-setup.php:1143
+#: dt-groups/base-setup.php:1023
+#: dt-groups/base-setup.php:1096
+#: dt-groups/base-setup.php:1104
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "所有"
 
-#: dt-contacts/access-module.php:1027
-#: dt-contacts/access-module.php:1028
+#: dt-contacts/access-module.php:996
+#: dt-contacts/access-module.php:997
 msgid "Subassigned only"
 msgstr "僅子分配"
 
@@ -2417,7 +2417,7 @@ msgstr "僅子分配"
 msgid "Coached by me"
 msgstr "由我指導"
 
-#: dt-groups/base-setup.php:1054
+#: dt-groups/base-setup.php:1015
 msgctxt "List Filters"
 msgid "Assigned to me"
 msgstr "分配給我"
@@ -2454,7 +2454,7 @@ msgid "No note set"
 msgstr "沒有音符集"
 
 #: dt-assets/functions/enqueue-scripts.php:323
-#: dt-contacts/base-setup.php:502
+#: dt-contacts/base-setup.php:503
 msgctxt "All records"
 msgid "All %s"
 msgstr "所有％s"
@@ -2747,7 +2747,7 @@ msgid "Select the main person who is responsible for reporting on this contact."
 msgstr "選擇負責報告此聯繫人的主要人員。"
 
 #: dt-contacts/access-module.php:152
-#: dt-contacts/base-setup.php:308
+#: dt-contacts/base-setup.php:309
 msgid "Contact Status"
 msgstr "聯絡狀態"
 
@@ -2845,67 +2845,67 @@ msgstr "26-40歲"
 msgid "Over 40 years old"
 msgstr "超過40歲"
 
-#: dt-contacts/access-module.php:193
+#: dt-contacts/access-module.php:194
 msgid "Reason Not Ready"
 msgstr "原因尚未就緒"
 
-#: dt-contacts/access-module.php:194
+#: dt-contacts/access-module.php:195
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr "聯繫人尚未準備好分配給用戶的主要原因。"
 
-#: dt-contacts/access-module.php:201
+#: dt-contacts/access-module.php:202
 msgid "Insufficient Contact Information"
 msgstr "聯繫信息不足"
 
-#: dt-contacts/access-module.php:204
+#: dt-contacts/access-module.php:205
 msgid "Unknown Location"
 msgstr "位置不明"
 
-#: dt-contacts/access-module.php:207
+#: dt-contacts/access-module.php:208
 msgid "Only wants media"
 msgstr "只想要媒體"
 
-#: dt-contacts/access-module.php:210
+#: dt-contacts/access-module.php:211
 msgid "Outside Area"
 msgstr "外區"
 
-#: dt-contacts/access-module.php:213
+#: dt-contacts/access-module.php:214
 msgid "Needs Review"
 msgstr "需要審查"
 
-#: dt-contacts/access-module.php:216
+#: dt-contacts/access-module.php:217
 msgid "Waiting for Confirmation"
 msgstr "等待確認中"
 
-#: dt-contacts/access-module.php:224
+#: dt-contacts/access-module.php:225
 msgid "Reason Paused"
 msgstr "原因已暫停"
 
-#: dt-contacts/access-module.php:225
+#: dt-contacts/access-module.php:226
 msgctxt "Optional Documentation"
 msgid "A paused contact is one you are not currently interacting with but expect to in the future."
 msgstr "暫停的聯繫人是您當前未與之交互但希望在將來與之交互的聯繫人。"
 
-#: dt-contacts/access-module.php:243
+#: dt-contacts/access-module.php:244
 msgid "Reason Closed"
 msgstr "原因關閉"
 
-#: dt-contacts/access-module.php:244
+#: dt-contacts/access-module.php:245
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr "封閉聯繫人是您不願或不希望與之互動的人。"
 
-#: dt-contacts/access-module.php:251
+#: dt-contacts/access-module.php:252
 msgctxt "Reason Closed label"
 msgid "Hostile, playing games or self gain"
 msgstr "敵對，玩遊戲或自我增益"
 
-#: dt-contacts/access-module.php:268
+#: dt-contacts/access-module.php:269
 msgid "Accepted"
 msgstr "公認"
 
-#: dt-contacts/access-module.php:308
+#: dt-contacts/access-module.php:309
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "此聯繫人來自的網站，事件或位置。"
@@ -2984,7 +2984,7 @@ msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
 msgstr "此聯繫人受洗的對象"
 
-#: dt-groups/base-setup.php:407
+#: dt-groups/base-setup.php:409
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
 msgstr "該團體代表的人民團體。"
@@ -2999,7 +2999,7 @@ msgid "Contact or User assisting the Assigned To user to follow up with the cont
 msgstr "聯繫人或協助“分配給”用戶的用戶跟進該聯繫人。"
 
 #: dt-contacts/base-setup.php:205
-#: dt-groups/base-setup.php:368
+#: dt-groups/base-setup.php:370
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "此聯繫人所在的常規位置。"
@@ -3018,169 +3018,169 @@ msgstr "錯誤：無效的用戶名/密碼組合。"
 msgid "Inactive"
 msgstr "不活躍"
 
-#: dt-groups/base-setup.php:176
+#: dt-groups/base-setup.php:177
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
 msgstr "一群主要是非信徒的人。"
 
-#: dt-groups/base-setup.php:180
+#: dt-groups/base-setup.php:181
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr "具有三個或三個以上信徒但未標識為教會的團體。"
 
-#: dt-groups/base-setup.php:184
+#: dt-groups/base-setup.php:185
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr "具有三個或更多信徒並標識為教會的團體。"
 
-#: dt-groups/base-setup.php:187
+#: dt-groups/base-setup.php:188
 msgid "Team"
 msgstr "球隊"
 
-#: dt-groups/base-setup.php:188
+#: dt-groups/base-setup.php:189
 msgctxt "Optional Documentation"
 msgid "A special group that is not meeting as a church (or trying to become church)."
 msgstr "一個不作為教會聚會（或試圖成為教會）的特殊團體。"
 
-#: dt-groups/base-setup.php:149
+#: dt-groups/base-setup.php:150
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr "選擇負責報告此組的主要人員。"
 
-#: dt-groups/base-setup.php:202
+#: dt-groups/base-setup.php:204
 #: dt-groups/base-setup.php:668
 msgid "Church Health"
 msgstr "教會健康"
 
-#: dt-groups/base-setup.php:203
+#: dt-groups/base-setup.php:205
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "跟踪小組/教堂的進度和健康狀況。"
 
-#: dt-groups/base-setup.php:207
+#: dt-groups/base-setup.php:209
 #: dt-metrics/personal/baptism-tree.php:139
 msgid "Baptism"
 msgstr "洗禮"
 
-#: dt-groups/base-setup.php:208
+#: dt-groups/base-setup.php:210
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "這個團體正在受洗。"
 
-#: dt-groups/base-setup.php:212
+#: dt-groups/base-setup.php:214
 msgid "Bible Study"
 msgstr "聖經學習;聖經討論"
 
-#: dt-groups/base-setup.php:213
+#: dt-groups/base-setup.php:215
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "該小組正在研究聖經。"
 
-#: dt-groups/base-setup.php:217
+#: dt-groups/base-setup.php:219
 msgid "Communion"
 msgstr "聖餐"
 
-#: dt-groups/base-setup.php:218
+#: dt-groups/base-setup.php:220
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "該團體正在練習聖餐。"
 
-#: dt-groups/base-setup.php:222
+#: dt-groups/base-setup.php:224
 msgid "Fellowship"
 msgstr "團契"
 
-#: dt-groups/base-setup.php:223
+#: dt-groups/base-setup.php:225
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "該小組是團契。"
 
-#: dt-groups/base-setup.php:227
+#: dt-groups/base-setup.php:229
 msgid "Giving"
 msgstr "給予"
 
-#: dt-groups/base-setup.php:228
+#: dt-groups/base-setup.php:230
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "小組正在給予。"
 
-#: dt-groups/base-setup.php:232
+#: dt-groups/base-setup.php:234
 msgid "Prayer"
 msgstr "禱告"
 
-#: dt-groups/base-setup.php:233
+#: dt-groups/base-setup.php:235
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "該小組正在祈禱。"
 
-#: dt-groups/base-setup.php:237
+#: dt-groups/base-setup.php:239
 msgid "Praise"
 msgstr "讚美"
 
-#: dt-groups/base-setup.php:238
+#: dt-groups/base-setup.php:240
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "該小組稱讚。"
 
-#: dt-groups/base-setup.php:242
+#: dt-groups/base-setup.php:244
 msgid "Sharing the Gospel"
 msgstr "分享福音"
 
-#: dt-groups/base-setup.php:252
-#: dt-groups/base-setup.php:436
+#: dt-groups/base-setup.php:254
+#: dt-groups/base-setup.php:438
 msgid "Church Commitment"
 msgstr "教會的承諾"
 
-#: dt-groups/base-setup.php:418
+#: dt-groups/base-setup.php:420
 msgid "Unbelievers"
 msgstr "不信者"
 
-#: dt-groups/base-setup.php:424
+#: dt-groups/base-setup.php:426
 msgid "Believers"
 msgstr "信徒"
 
-#: dt-groups/base-setup.php:430
+#: dt-groups/base-setup.php:432
 msgid "Accountable"
 msgstr "問責"
 
-#: dt-groups/base-setup.php:437
+#: dt-groups/base-setup.php:439
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "這是教堂-是或否？"
 
-#: dt-groups/base-setup.php:442
+#: dt-groups/base-setup.php:444
 msgid "Multiplying"
 msgstr "相乘"
 
-#: dt-groups/base-setup.php:443
+#: dt-groups/base-setup.php:445
 msgctxt "Optional Documentation"
 msgid "Number of people helping start other groups. How many members are multiplying?"
 msgstr "幫助啟動其他小組的人數。有幾名成員在成倍增加？"
 
-#: dt-groups/base-setup.php:264
+#: dt-groups/base-setup.php:266
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "該小組開始開會的日期。"
 
-#: dt-groups/base-setup.php:272
+#: dt-groups/base-setup.php:274
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "該團體首次確定為教堂的日期。"
 
-#: dt-groups/base-setup.php:281
+#: dt-groups/base-setup.php:283
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "該小組停止開會的日期（如果適用）。"
 
-#: dt-groups/base-setup.php:327
+#: dt-groups/base-setup.php:329
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "建立該小組的小組。"
 
-#: dt-groups/base-setup.php:339
+#: dt-groups/base-setup.php:341
 msgctxt "Optional Documentation"
 msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
 msgstr "不是親子關係的相關組。它可能表示正在協作，即將合併，最近分裂等的組。"
 
-#: dt-groups/base-setup.php:351
+#: dt-groups/base-setup.php:353
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "從這個組中誕生的一個組。"
@@ -3190,12 +3190,12 @@ msgctxt "Optional Documentation"
 msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group."
 msgstr "該組中的成員數。在成員列表中添加或刪除新成員時，它將自動更新。手動更改此數字，以包括可能不在系統中但也是該組成員的人員。"
 
-#: dt-groups/base-setup.php:301
+#: dt-groups/base-setup.php:303
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "該組的聯繫人。"
 
-#: dt-groups/base-setup.php:158
+#: dt-groups/base-setup.php:159
 msgctxt "Optional Documentation"
 msgid "The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
 msgstr "種植和/或指導該小組的人。只能將一個人分配到一個組中，而可以將多個人作為該組的教練/教堂主。"
@@ -3354,17 +3354,17 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "您在％1 $ s上設置了此任務：％2 $ s"
 
-#: dt-contacts/access-module.php:454
-#: dt-contacts/access-module.php:485
-#: dt-contacts/access-module.php:516
-#: dt-contacts/base-setup.php:401
+#: dt-contacts/access-module.php:455
+#: dt-contacts/access-module.php:486
+#: dt-contacts/access-module.php:517
+#: dt-contacts/base-setup.php:402
 msgid "Choose an option:"
 msgstr "選擇一個選項："
 
-#: dt-contacts/access-module.php:476
-#: dt-contacts/access-module.php:507
-#: dt-contacts/access-module.php:535
-#: dt-contacts/base-setup.php:425
+#: dt-contacts/access-module.php:477
+#: dt-contacts/access-module.php:508
+#: dt-contacts/access-module.php:536
+#: dt-contacts/base-setup.php:426
 msgid "Confirm"
 msgstr "確認"
 
@@ -3439,7 +3439,7 @@ msgstr "類型："
 msgid "Type of Comment"
 msgstr "評論類型"
 
-#: dt-contacts/access-module.php:294
+#: dt-contacts/access-module.php:295
 msgid "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr "從與其他門徒的合作關係中轉介的聯絡人。工具網站。"
 
@@ -3589,7 +3589,7 @@ msgstr "標記為已讀"
 msgid "Task Type"
 msgstr "任務類型"
 
-#: dt-contacts/base-setup.php:309
+#: dt-contacts/base-setup.php:310
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
 msgstr "聯繫人狀態描述了我們與聯繫人交流的進展"
@@ -3606,32 +3606,32 @@ msgstr "上一次更改"
 msgid "New Comments"
 msgstr "新評論"
 
-#: dt-groups/base-setup.php:243
+#: dt-groups/base-setup.php:245
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "該團體正在分享福音。"
 
-#: dt-groups/base-setup.php:248
+#: dt-groups/base-setup.php:250
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "該小組有領導人。"
 
-#: dt-groups/base-setup.php:253
+#: dt-groups/base-setup.php:255
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "該團體致力於成為教會。"
 
-#: dt-groups/base-setup.php:419
+#: dt-groups/base-setup.php:421
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "該組中不信者的數量。"
 
-#: dt-groups/base-setup.php:425
+#: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "該組中的信徒人數。"
 
-#: dt-groups/base-setup.php:431
+#: dt-groups/base-setup.php:433
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "問責制組中的人數。"
@@ -3683,7 +3683,7 @@ msgstr "里程碑地圖"
 msgid "Unable to update"
 msgstr "無法更新"
 
-#: dt-contacts/access-module.php:260
+#: dt-contacts/access-module.php:261
 msgctxt "Reason Closed label"
 msgid "GDPR request"
 msgstr "GDPR 請求"
@@ -3880,7 +3880,7 @@ msgstr "我的輔導樹狀圖"
 msgid "My Groups Tree"
 msgstr "我的團體樹狀圖"
 
-#: dt-contacts/base-setup.php:367
+#: dt-contacts/base-setup.php:368
 msgid "See duplicates"
 msgstr "查看重複項目"
 
@@ -3909,7 +3909,7 @@ msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "此記錄已重複，且合併為 %2$s"
 
-#: dt-contacts/access-module.php:1349
+#: dt-contacts/access-module.php:1318
 #: dt-contacts/duplicates-merging.php:477
 #: dt-contacts/duplicates-merging.php:528
 msgid "Duplicate Checker"
@@ -3920,7 +3920,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s 已將 %2$s 合併到這筆記錄中"
 
-#: dt-posts/dt-posts.php:1127
+#: dt-posts/dt-posts.php:1130
 msgid "D.T System"
 msgstr "D.T 系統"
 
@@ -4055,35 +4055,35 @@ msgstr "需要持續追蹤的人"
 msgid "Collaborators"
 msgstr "協作者"
 
-#: dt-contacts/access-module.php:803
-#: dt-contacts/access-module.php:813
+#: dt-contacts/access-module.php:772
+#: dt-contacts/access-module.php:782
 msgid "My Follow-Up"
 msgstr "我的持續追蹤對象"
 
-#: dt-contacts/access-module.php:814
-#: dt-contacts/access-module.php:835
-#: dt-contacts/access-module.php:858
-#: dt-contacts/access-module.php:882
+#: dt-contacts/access-module.php:783
+#: dt-contacts/access-module.php:804
+#: dt-contacts/access-module.php:827
+#: dt-contacts/access-module.php:851
 msgid "Assigned to me"
 msgstr "指派給我"
 
-#: dt-contacts/access-module.php:815
-#: dt-contacts/access-module.php:836
-#: dt-contacts/access-module.php:859
-#: dt-contacts/access-module.php:883
+#: dt-contacts/access-module.php:784
+#: dt-contacts/access-module.php:805
+#: dt-contacts/access-module.php:828
+#: dt-contacts/access-module.php:852
 msgid "Sub-assigned to me"
 msgstr "替換指派給我"
 
-#: dt-contacts/access-module.php:919
+#: dt-contacts/access-module.php:888
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "持續追蹤 %s"
 
-#: dt-contacts/access-module.php:927
+#: dt-contacts/access-module.php:896
 msgid "All Follow-Up"
 msgstr "所有持續追蹤對象"
 
-#: dt-contacts/access-module.php:1343
+#: dt-contacts/access-module.php:1312
 msgid "This record might be a duplicate of: "
 msgstr "此紀錄可能是重複項目："
 
@@ -4113,7 +4113,7 @@ msgid "Only me"
 msgstr "只有我"
 
 #: dt-contacts/base-setup.php:213
-#: dt-groups/base-setup.php:377
+#: dt-groups/base-setup.php:379
 msgid "Locations or Address"
 msgstr "地點或地址"
 
@@ -4122,27 +4122,29 @@ msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "與其他 %s 的連結"
 
-#: dt-contacts/base-setup.php:362
+#: dt-contacts/base-setup.php:363
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "改變 %s 類型"
 
-#: dt-contacts/base-setup.php:496
+#: dt-contacts/base-setup.php:497
 msgid "Default Filters"
 msgstr "預設篩選工具"
 
-#: dt-contacts/base-setup.php:506
+#: dt-contacts/base-setup.php:507
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "所有我能查看的 %s"
 
-#: dt-contacts/base-setup.php:516
-#: dt-groups/base-setup.php:1152
+#: dt-contacts/base-setup.php:517
+#: dt-groups/base-setup.php:1125
+#: dt-posts/custom-post-type.php:270
 msgid "My Recently Viewed"
 msgstr "我最近查看過的"
 
-#: dt-contacts/base-setup.php:521
-#: dt-groups/base-setup.php:1157
+#: dt-contacts/base-setup.php:522
+#: dt-groups/base-setup.php:1130
+#: dt-posts/custom-post-type.php:275
 msgid "Last 30 viewed"
 msgstr "最近 30 個查看過的"
 
@@ -4240,7 +4242,7 @@ msgstr "聯絡人地圖"
 msgid "Groups Maps"
 msgstr "團體地圖"
 
-#: dt-posts/dt-posts.php:1531
+#: dt-posts/dt-posts.php:1540
 #: single-template.php:120
 msgid "Details"
 msgstr "詳細資訊"
@@ -4253,6 +4255,7 @@ msgstr "已新增報告"
 msgid "Updated report"
 msgstr "已更新報告"
 
+#: dt-assets/functions/enqueue-scripts.php:326
 #: dt-assets/parts/modals/modal-advanced-search.php:68
 #: dt-users/mapbox-coverage-map.php:77
 msgid "All"
@@ -4277,7 +4280,7 @@ msgid "This %s needs an update."
 msgstr "此 %s 需要更新。"
 
 #: dt-assets/functions/details-bar.php:98
-#: dt-assets/functions/details-bar.php:239
+#: dt-assets/functions/details-bar.php:252
 msgid "Record"
 msgstr "紀錄"
 
@@ -4289,7 +4292,7 @@ msgid "Created on %s"
 msgstr "建立於 %s"
 
 #: dt-assets/functions/details-bar.php:102
-#: dt-assets/functions/details-bar.php:243
+#: dt-assets/functions/details-bar.php:256
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "由 %s"
@@ -4329,26 +4332,26 @@ msgstr "開始"
 msgid "end"
 msgstr "結束"
 
-#: dt-contacts/base-setup.php:355
-#: dt-contacts/base-setup.php:382
+#: dt-contacts/base-setup.php:356
+#: dt-contacts/base-setup.php:383
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "封存 %s"
 
-#: dt-contacts/base-setup.php:383
+#: dt-contacts/base-setup.php:384
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "確定要封存 %s 嗎？"
 
-#: dt-contacts/base-setup.php:390
+#: dt-contacts/base-setup.php:391
 msgid "Archive"
 msgstr "封存"
 
-#: dt-contacts/base-setup.php:630
+#: dt-contacts/base-setup.php:642
 msgid "This %s is archived"
 msgstr "此 %s 已封存"
 
-#: dt-contacts/base-setup.php:632
+#: dt-contacts/base-setup.php:644
 msgid "Restore"
 msgstr "恢復"
 
@@ -4367,11 +4370,11 @@ msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "放棄所有符合 %s 的項目"
 
-#: dt-contacts/base-setup.php:318
+#: dt-contacts/base-setup.php:319
 msgid "Archived"
 msgstr "已封存"
 
-#: dt-groups/base-setup.php:318
+#: dt-groups/base-setup.php:320
 msgid "Leader Count"
 msgstr "領導者數"
 
@@ -4472,11 +4475,11 @@ msgstr "將使用者身分設定為管理者或 Disciple.Tools Admin 時發生�
 msgid "Hide fields"
 msgstr "隱藏欄位"
 
-#: dt-core/global-functions.php:459
+#: dt-core/global-functions.php:460
 msgid "Add new tag \"%s\""
 msgstr "新增標籤「%s」"
 
-#: dt-core/global-functions.php:460
+#: dt-core/global-functions.php:461
 msgid "Tag \"%s\" is already being used"
 msgstr "「%s」標籤已被使用"
 
@@ -4485,12 +4488,12 @@ msgid "Leader of Group"
 msgstr "團體領導者"
 
 #: dt-assets/functions/details-bar.php:74
-#: dt-assets/functions/details-bar.php:217
+#: dt-assets/functions/details-bar.php:230
 msgid "Previous record"
 msgstr "上一項紀錄"
 
 #: dt-assets/functions/details-bar.php:108
-#: dt-assets/functions/details-bar.php:250
+#: dt-assets/functions/details-bar.php:263
 msgid "Next record"
 msgstr "下一項紀錄"
 
@@ -4557,12 +4560,12 @@ msgstr "傷心"
 msgid "angry"
 msgstr "生氣"
 
-#: dt-posts/dt-posts.php:1590
+#: dt-posts/dt-posts.php:1599
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr "@[%1$s](%2$s) - 使用者 %3$s 已要求存取 %4$s [%5$s](%6$s)。若願意，將該紀錄與此聯絡人分享以授予權限。"
 
-#: dt-posts/dt-posts.php:1596
+#: dt-posts/dt-posts.php:1605
 msgid "Access Request"
 msgstr "存取要求"
 
@@ -4571,7 +4574,7 @@ msgstr "存取要求"
 msgid "link"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:361
+#: dt-assets/functions/enqueue-scripts.php:362
 msgid "load more"
 msgstr ""
 
@@ -4587,16 +4590,16 @@ msgstr ""
 msgid "Record Hits:"
 msgstr ""
 
-#: dt-contacts/access-module.php:320
+#: dt-contacts/access-module.php:321
 msgid "Campaigns"
 msgstr ""
 
-#: dt-contacts/access-module.php:321
+#: dt-contacts/access-module.php:322
 msgctxt "Optional Documentation"
 msgid "Marketing campaigns or access activities that this contact interacted with."
 msgstr ""
 
-#: dt-groups/base-setup.php:292
+#: dt-groups/base-setup.php:294
 msgctxt "Optional Documentation"
 msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
 msgstr ""
@@ -4712,5 +4715,29 @@ msgstr ""
 #: tests/dt-posts/tests-setup.php:85
 #: tests/dt-posts/tests-setup.php:90
 msgid "Boolean"
+msgstr ""
+
+#: archive-template.php:559
+msgctxt "All Contacts with Is Coaching"
+msgid "All %1$s with %2$s"
+msgstr ""
+
+#: archive-template.php:582
+#: archive-template.php:589
+msgid "None Set"
+msgstr ""
+
+#: dt-contacts/base-setup.php:528
+#: dt-groups/base-setup.php:1113
+#: dt-posts/custom-post-type.php:255
+msgctxt "Favorite Contacts"
+msgid "Favorite %s"
+msgstr ""
+
+#: dt-contacts/base-setup.php:534
+#: dt-groups/base-setup.php:1119
+#: dt-posts/custom-post-type.php:167
+#: dt-posts/custom-post-type.php:261
+msgid "Favorite"
 msgstr ""
 
