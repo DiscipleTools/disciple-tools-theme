@@ -389,16 +389,22 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             add_action( "admin_enqueue_scripts", [ 'DT_Mapbox_API', 'load_mapbox_header_scripts' ] );
         }
 
-        public static function is_active_mapbox_key() : bool {
+        public static function is_active_mapbox_key() : array {
             $key = self::get_key();
             $url = self::$mapbox_endpoint . 'Denver.json?access_token=' . $key;
             $response = wp_remote_get( esc_url_raw( $url ) );
             $data_result = json_decode( wp_remote_retrieve_body( $response ), true );
 
             if ( isset( $data_result['features'] ) && ! empty( $data_result['features'] ) ) {
-                return true;
+                return [
+                    'success' => true,
+                    'message' => ''
+                ];
             } else {
-                return false;
+                return [
+                    'success' => false,
+                    'message' => ( isset( $data_result['message'] ) && ! empty( $data_result['message'] ) ) ? $data_result['message'] : ''
+                ];
             }
         }
 
@@ -421,15 +427,17 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             }
             $key = self::get_key();
 
-            if ( self::is_active_mapbox_key() ) {
+            $mapbox_key_active_state = self::is_active_mapbox_key();
+            if ( $mapbox_key_active_state['success'] ) {
                 $status_class = 'connected';
-                $message = 'Successfully connected to selected source.';
+                $message      = 'Successfully connected to selected source.';
             } else {
                 $status_class = 'not-connected';
-                if ( empty( $key )){
+                if ( empty( $key ) ) {
                     $message = 'Please add a Mapbox API Token';
                 } else {
                     $message = 'Could not connect to the Mapbox API or could not verify the token';
+                    $message .= ! empty( $mapbox_key_active_state['message'] ) ? ' - ' . $mapbox_key_active_state['message'] : '';
                 }
             }
             ?>
