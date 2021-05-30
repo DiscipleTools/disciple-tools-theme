@@ -19,7 +19,7 @@ if [ ! $TOKEN ]
 fi
 
 # create new .pot file
-wp i18n make-pot ../.. $POT_FILE_NAME --domain="disciple_tools" --skip-audit --exclude="node_modules,vendor,dt-core/libraries,dt-core/dependencies,dt-core/config-p2p.php,dt-core/admin/menu,dt-core/admin/menu,*.js,dt-core/admin/site-link-post-type.php,dt-mapping/mapping-admin.php,dt-core/admin/multi-role,
+wp i18n make-pot ../.. $POT_FILE_NAME --domain="disciple_tools" --skip-audit --exclude="tests,node_modules,vendor,dt-core/libraries,dt-core/dependencies,dt-core/config-p2p.php,dt-core/admin/menu,dt-core/admin/menu,*.js,dt-core/admin/site-link-post-type.php,dt-mapping/mapping-admin.php,dt-core/admin/multi-role,
 dt-core/admin,template-blank*,*.css"
 
 

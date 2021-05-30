@@ -1054,7 +1054,21 @@
     $('#save-filter-edits').hide()
   })
 
+  var clicked;
+  $(document).mousedown(function (e) {
+    // The latest element clicked
+    clicked = $(e.target);
+  });
+  // when 'clicked == null' on blur, we know it was not caused by a click
+  // but maybe by pressing the tab key
+  $(document).mouseup(function (e) {
+    clicked = null;
+  });
   $("#filter-modal input.dt_date_picker").on('blur', function (e) {
+    if (clicked && clicked.closest( '.ui-datepicker' ).length === 1 ) {
+      // we have clicked in the datepicker, so don't run the blur
+      return
+    }
     // delay the blur so that if the user has clicked we get the correct date from the input
     setTimeout(() => {
       if (!e.target.value) {

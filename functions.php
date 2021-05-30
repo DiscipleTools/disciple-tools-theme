@@ -149,7 +149,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.6.0';
+            $this->version = '1.7.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -314,9 +314,6 @@ else {
             require_once( get_template_directory() . '/dt-users/users-template.php' );
             require_once( get_template_directory() . '/dt-users/users-endpoints.php' );
             $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
-            if ( !$is_rest ){
-                require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
-            }
             require_once( get_template_directory() . '/dt-users/user-management.php' );
             require_once( get_template_directory() . '/dt-users/hover-coverage-map.php' );
             require_once( get_template_directory() . '/dt-users/mapbox-coverage-map.php' );
