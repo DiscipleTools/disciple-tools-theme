@@ -485,3 +485,16 @@ function dt_theme_admin_notice_required_php_version() {
     </div>
     <?php
 }
+
+add_action( 'delete_user', 'dt_delete_user_contact_meta' );
+function dt_delete_user_contact_meta( $user_id ) {
+    global $wpdb;
+    // phpcs:disable
+    // WordPress.WP.PreparedSQL.NotPrepared
+    $wpdb->get_results( "DELETE FROM $wpdb->postmeta pm
+    WHERE meta_key = 'corresponds_to_user'
+    AND pm.meta_value = $user_id
+    ");
+    // phpcs:enable
+
+}
