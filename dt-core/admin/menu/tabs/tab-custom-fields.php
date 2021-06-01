@@ -882,7 +882,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         global $wp_post_types;
         $post_type = sanitize_text_field( wp_unslash( $post_type ) );
         $tile_options = DT_Posts::get_post_tiles( $post_type );
-        global $wp_post_types;
         $post_types = DT_Posts::get_post_types();
         ?>
         <form method="post">
