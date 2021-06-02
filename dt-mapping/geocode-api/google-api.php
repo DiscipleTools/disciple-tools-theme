@@ -197,8 +197,15 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                 $status_class = 'connected';
                 $message      = 'Successfully connected to Google Maps API.';
             } else {
-                $status_class = 'not-connected';
-                $message      = ! empty( $google_key_active_state['message'] ) ? $google_key_active_state['message'] : 'API NOT CONFIGURED.';
+
+                // As a no-google-key is an ok state; no need to flag as an error
+                if ( ! empty( $key ) ) {
+                    $status_class = 'not-connected';
+                    $message      = ! empty( $google_key_active_state['message'] ) ? $google_key_active_state['message'] : 'API NOT CONFIGURED.';
+                } else {
+                    $status_class = 'connected';
+                    $message      = '';
+                }
             }
             ?>
             <form method="post">
