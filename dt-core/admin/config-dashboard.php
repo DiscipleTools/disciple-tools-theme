@@ -129,37 +129,77 @@ final class Disciple_Tools_Dashboard
 
     public function dt_dashboard_tile(){
         wp_add_dashboard_widget('dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
+
             $setup_options = get_option( "dt_setup_options", [] );
-            $mapbox_key = DT_Mapbox_API::get_key();
+            $default = [
+                "base_email" => [
+                    "label" => "Base User",
+                    "complete" => !empty( $setup_options["base_email"] ),
+                    "link" => admin_url( "admin.php?page=dt_options&tab=general" ),
+                    "description" => "Default Assigned to for new contacts"
+                ],
+            ];
 
-            $todo = 0;
-            $todo += empty( $mapbox_key ) ? 1 : 0;
+            $dt_setup_wizard_items = apply_filters( 'dt_setup_wizard_items', $default, $setup_options );
 
-            $mapbox_upgraded = true;
-            if ( !isset( $setup_options["mapbox_upgrade"] ) ){
-                $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
-                if ( !$mapbox_upgraded ){
-                    $todo++;
-                } else {
-                    $setup_options["mapbox_upgrade"] = 1;
-                    update_option( "dt_setup_options", $setup_options );
+            $completed = 0;
+            foreach ( $dt_setup_wizard_items as $item_key => $item_value ){
+                if ( $item_value["complete"] === true ){
+                    $completed ++;
                 }
             }
 
-            ?>
-            <p>Remaining Setup Tasks: <?php echo esc_html( $todo ) ?></p>
-            <?php
-            if ( empty( $mapbox_key ) ){
-                ?>
-                For geo-location and mapping <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ) ); ?>">Add a Mapbox Key</a>
+            ?><p>Completed <?php echo esc_html( $completed ); ?> of <?php echo esc_html( sizeof( $dt_setup_wizard_items ) ); ?> tasks</p>
+
+            <table class="widefat striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Link</th>
+                        <th>Complete</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <?php
-            } else {
-                if ( !$mapbox_upgraded ) : ?>
-                    <p style="padding: 10px; background-color: lightcoral;">
-                        <strong>Mapping:</strong> Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts. <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ) ); ?>" class="button button-tertiary" style="background: #0071a1; color:white; border-color:white">here</a>
-                    </p>
-                <?php endif;
-            }
+                foreach ( $dt_setup_wizard_items as $item_key => $item_value ) :?>
+                    <tr>
+                        <td><?php echo esc_html( array_search( $item_key, array_keys( $dt_setup_wizard_items ) ) +1 ); ?>.</td>
+                        <td><?php echo esc_html( $item_value["label"] ); ?></td>
+                        <td>Update <a href="<?php echo esc_html( $item_value["link"] ); ?>">here</a></td>
+                        <td>
+                            <?php if ( $item_value["complete"] ) :?>
+                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/verified.svg' ) ?>"/>
+                            <?php elseif ( empty( $item_value["hide_mark_done"] ) ) : ?>
+                                <button>Mark Done</button></td>
+                            <?php endif; ?>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php
         });
     }
 }
+
+/**
+ * @todo move to mapping file
+ */
+add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
+    $mapbox_key = DT_Mapbox_API::get_key();
+    $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
+    $items["mapbox_key"] = [
+        "label" => "Upgrade Mapping",
+        "description" => "Better results when search locations and better mapping",
+        "link" => admin_url( "admin.php?page=dt_mapping_module&tab=geocoding" ),
+        "complete" => $mapbox_key ? true : false
+    ];
+    $items["upgraded_mapbox_records"] = [
+        "label" => "Upgrade Users and Record Mapping",
+        "description" => " Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts.",
+        "link" => admin_url( "admin.php?page=dt_mapping_module&tab=geocoding" ),
+        "complete" => $mapbox_upgraded,
+        "hide_mark_done" => true
+    ];
+    return $items;
+}, 10, 2);
