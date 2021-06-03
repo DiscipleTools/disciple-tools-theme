@@ -377,7 +377,7 @@ class DT_Duplicate_Checker_And_Merging {
                     $update[$key]["values"][] = [ "value" => $field_value ];
                 }
             }
-            if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] === "key_select" && ( !isset( $contact[ $key ] ) || $key === "none" || $key === "" ) ) {
+            if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] === "key_select" && ( !isset( $contact[ $key ] ) || $contact[ $key ]['key'] === "none" || $contact[ $key ]['key'] === "not-set" || $contact[ $key ]['key'] === "" ) ) {
                 $update[$key] = $fields["key"];
             }
             if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
@@ -397,6 +397,27 @@ class DT_Duplicate_Checker_And_Merging {
                     $update[$key] = $fields;
                 }
             }
+            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "tags" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                $update[$key]["values"] = [];
+                foreach ( $fields as $field_value ){
+                    $update[$key]["values"][] = [ "value" => $field_value ];
+                }
+            }
+            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "location_meta" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                $update[$key]["values"] = [];
+                foreach ( $fields as $field_value ){
+                    $update[$key]["values"][] = $field_value;
+                }
+            }/*
+            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "task" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                $update[$key]["values"] = [];
+                foreach ( $fields as $field_value ){
+                    $update[$key]["values"][] = $field_value;
+                }
+            }
+            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "boolean" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                $update[$key] = $fields;
+            }*/
             if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "connection" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                 $update[$key]["values"] = [];
                 $update_for_duplicate[$key]["values"] = [];
