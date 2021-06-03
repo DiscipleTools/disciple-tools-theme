@@ -177,16 +177,18 @@ function disciple_tools_login_title() { return get_option( 'blogname' ); }
 
 // calling it only on the login page
 add_action( 'login_enqueue_scripts', 'disciple_tools_login_css', 10 );
+
 add_filter( 'login_redirect',
     function( $url, $query, $user ) {
-        if ( $url != admin_url() ){
+        if ( isset( $_REQUEST['redirect_to'] ) ) {
+            return sanitize_text_field( wp_unslash( $_REQUEST['redirect_to'] ) );
+        } elseif ( $url != admin_url() ){
             return $url;
         } else {
             return home_url();
         }
     },
-    10,
-3 );
+10, 3 );
 
 
 //set security headers
