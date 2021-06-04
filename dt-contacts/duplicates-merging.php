@@ -371,65 +371,60 @@ class DT_Duplicate_Checker_And_Merging {
             Merge social media + other contact data from the non master to master
         */
         foreach ( $non_master as $key => $fields ) {
-            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "multi_select" ){
-                $update[$key]["values"] = [];
-                foreach ( $fields as $field_value ){
-                    $update[$key]["values"][] = [ "value" => $field_value ];
+            if ( isset( $contact_fields[ $key ] ) && ( ! isset( $contact_fields[ $key ]['private'] ) || ( isset( $contact_fields[ $key ]['private'] ) && ! $contact_fields[ $key ]['private'] ) ) ) {
+                if ( $contact_fields[ $key ]["type"] === "multi_select" ) {
+                    $update[ $key ]["values"] = [];
+                    foreach ( $fields as $field_value ) {
+                        $update[ $key ]["values"][] = [ "value" => $field_value ];
+                    }
+                }
+                if ( $contact_fields[ $key ]["type"] === "key_select" && ( ! isset( $contact[ $key ] ) || $contact[ $key ]['key'] === "none" || $contact[ $key ]['key'] === "not-set" || $contact[ $key ]['key'] === "" ) ) {
+                    $update[ $key ] = $fields["key"];
+                }
+                if ( $contact_fields[ $key ]["type"] === "text" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                    $update[ $key ] = $fields;
+                }
+                if ( $contact_fields[ $key ]["type"] === "textarea" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                    $update[ $key ] = $fields;
+                }
+                if ( $contact_fields[ $key ]["type"] === "number" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                    $update[ $key ] = $fields;
+                }
+                if ( $contact_fields[ $key ]["type"] === "date" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ]["timestamp"] ) ) ) {
+                    $update[ $key ] = $fields["timestamp"] ?? "";
+                }
+                if ( $contact_fields[ $key ]["type"] === "array" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                    if ( $key != "duplicate_data" ) {
+                        $update[ $key ] = $fields;
+                    }
+                }
+                if ( $contact_fields[ $key ]["type"] === "boolean" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                    $update[ $key ] = $fields;
+                }
+                if ( $contact_fields[ $key ]["type"] === "tags" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                    $update[ $key ]["values"] = [];
+                    foreach ( $fields as $field_value ) {
+                        $update[ $key ]["values"][] = [ "value" => $field_value ];
+                    }
+                }
+                if ( $contact_fields[ $key ]["type"] === "location_meta" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                    $update[ $key ]["values"] = [];
+                    foreach ( $fields as $field_value ) {
+                        $update[ $key ]["values"][] = $field_value;
+                    }
+                }
+                if ( $contact_fields[ $key ]["type"] === "connection" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                    $update[ $key ]["values"]               = [];
+                    $update_for_duplicate[ $key ]["values"] = [];
+                    foreach ( $fields as $field_value ) {
+                        $update[ $key ]["values"][]               = [ "value" => $field_value["ID"] ];
+                        $update_for_duplicate[ $key ]["values"][] = [
+                            "value"  => $field_value["ID"],
+                            "delete" => true
+                        ];
+                    }
                 }
             }
-            if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] === "key_select" && ( !isset( $contact[ $key ] ) || $contact[ $key ]['key'] === "none" || $contact[ $key ]['key'] === "not-set" || $contact[ $key ]['key'] === "" ) ) {
-                $update[$key] = $fields["key"];
-            }
-            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                $update[$key] = $fields;
-            }
-            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "textarea" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                $update[$key] = $fields;
-            }
-            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "number" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                $update[$key] = $fields;
-            }
-            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "date" && ( !isset( $contact[$key] ) || empty( $contact[$key]["timestamp"] ) )){
-                $update[$key] = $fields["timestamp"] ?? "";
-            }
-            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "array" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                if ( $key != "duplicate_data" ){
-                    $update[$key] = $fields;
-                }
-            }
-            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "tags" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                $update[$key]["values"] = [];
-                foreach ( $fields as $field_value ){
-                    $update[$key]["values"][] = [ "value" => $field_value ];
-                }
-            }
-            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "location_meta" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                $update[$key]["values"] = [];
-                foreach ( $fields as $field_value ){
-                    $update[$key]["values"][] = $field_value;
-                }
-            }/*
-            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "task" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                $update[$key]["values"] = [];
-                foreach ( $fields as $field_value ){
-                    $update[$key]["values"][] = $field_value;
-                }
-            }
-            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "boolean" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                $update[$key] = $fields;
-            }*/
-            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "connection" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                $update[$key]["values"] = [];
-                $update_for_duplicate[$key]["values"] = [];
-                foreach ( $fields as $field_value ){
-                    $update[$key]["values"][] = [ "value" => $field_value["ID"] ];
-                    $update_for_duplicate[$key]["values"][] = [
-                        "value" => $field_value["ID"],
-                        "delete" => true
-                    ];
-                }
-            }
-
 
             if ( strpos( $key, "contact_" ) === 0 ) {
                 $split = explode( "_", $key );
@@ -477,9 +472,16 @@ class DT_Duplicate_Checker_And_Merging {
             }
         }
 
+        // copy over private fields and tasks
+        global $wpdb;
+        $wpdb->query( $wpdb->prepare( "
+            INSERT INTO $wpdb->dt_post_user_meta (user_id, post_id, meta_key, meta_value, date, category)
+            SELECT user_id, %d, meta_key, meta_value, date, category
+            FROM $wpdb->dt_post_user_meta
+            WHERE post_id = %d
+        ", $master_id, $non_master_id ) );
 
         // copy over users the contact is shared with.
-        global $wpdb;
         $wpdb->query( $wpdb->prepare( "
             INSERT INTO $wpdb->dt_share (user_id, post_id )
             SELECT user_id, %d
