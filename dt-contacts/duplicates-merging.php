@@ -424,29 +424,20 @@ class DT_Duplicate_Checker_And_Merging {
                         ];
                     }
                 }
-            }
-
-            if ( strpos( $key, "contact_" ) === 0 ) {
-                $split = explode( "_", $key );
-                if ( !isset( $split[1] ) ) {
-                    continue;
-                }
-                $new_key = $split[0] . "_" . $split[1];
-                if ( in_array( $new_key, array_keys( $update ) ) ) {
-                    continue;
-                }
-                $update[ $new_key ] = array(
-                    'values' => array()
-                );
-                foreach ( $non_master[ $new_key ] ?? array() as $values ) {
-                    $index = array_search( $values['value'], $current[ $new_key ] ?? array() );
-                    if ( $index !== false ) {
-                        $ignore_keys[] = $index;
-                        continue;
+                if ( $contact_fields[ $key ]["type"] === "communication_channel" ) {
+                    $update[ $key ] = array(
+                        'values' => array()
+                    );
+                    foreach ( $non_master[ $key ] ?? array() as $values ) {
+                        $index = array_search( $values['value'], $current[ $key ] ?? array() );
+                        if ( $index !== false ) {
+                            $ignore_keys[] = $index;
+                            continue;
+                        }
+                        array_push( $update[ $key ]['values'], array(
+                            'value' => $values['value']
+                        ) );
                     }
-                    array_push( $update[ $new_key ]['values'], array(
-                        'value' => $values['value']
-                    ) );
                 }
             }
         }
