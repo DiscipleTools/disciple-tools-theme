@@ -410,7 +410,15 @@ class DT_Duplicate_Checker_And_Merging {
                 if ( $contact_fields[ $key ]["type"] === "location_meta" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
                     $update[ $key ]["values"] = [];
                     foreach ( $fields as $field_value ) {
-                        $update[ $key ]["values"][] = $field_value;
+                        if ( isset( $field_value['lng'] ) && isset( $field_value['lat'] ) ) {
+                            $update[ $key ]["values"][] = $field_value;
+                        }
+                    }
+                }
+                if ( $contact_fields[ $key ]["type"] === "location" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                    $update[ $key ]["values"] = [];
+                    foreach ( $fields as $field_value ) {
+                        $update[ $key ]["values"][] = [ "value" => $field_value['id'] ];
                     }
                 }
                 if ( $contact_fields[ $key ]["type"] === "connection" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
@@ -470,7 +478,15 @@ class DT_Duplicate_Checker_And_Merging {
             SELECT user_id, %d, meta_key, meta_value, date, category
             FROM $wpdb->dt_post_user_meta
             WHERE post_id = %d
-        ", $master_id, $non_master_id ) );
+            AND NOT EXISTS (SELECT 1
+            FROM wp_dt_post_user_meta
+            WHERE user_id = user_id
+            AND post_id = %d
+            AND meta_key = meta_key
+            AND meta_value = meta_value
+            AND date = date
+            AND category = category)
+        ", $master_id, $non_master_id, $master_id ) );
 
         // copy over users the contact is shared with.
         $wpdb->query( $wpdb->prepare( "
