@@ -126,7 +126,7 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&components=' . $component_string . '&key=' . self::get_key();
             $details     = json_decode( self::url_get_contents( $url_address ), true );
 
-            if (! isset( $details['status'] ) || $details['status'] === 'ZERO_RESULTS'  ) {
+            if ( ! isset( $details['status'] ) || $details['status'] === 'ZERO_RESULTS' ) {
                 return false;
             } else {
                 return $details;
@@ -148,7 +148,7 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $latlng . '&result_type=' . $result_type . '&key=' . self::get_key();
             $details     = json_decode( self::url_get_contents( $url_address ), true );
 
-            if ( ! isset( $details['status'] ) || $details['status'] === 'ZERO_RESULTS'  ) {
+            if ( ! isset( $details['status'] ) || $details['status'] === 'ZERO_RESULTS' ) {
                 return false;
             } else {
                 return $details; // raw response
@@ -632,7 +632,7 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             }
 
             // Individually check response statuses
-            if (  ! isset( $response_api['status'] ) || $response_api['status'] !== 'OK' ) {
+            if ( ! isset( $response_api['status'] ) || $response_api['status'] !== 'OK' ) {
                 return [
                     'success' => false,
                     'message' => ( isset( $response_api['error_message'] ) && ! empty( $response_api['error_message'] ) ) ? $response_api['error_message'] : $default_error_msg
