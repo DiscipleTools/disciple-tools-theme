@@ -57,6 +57,7 @@ class Disciple_Tools_Metrics{
                     if ( !empty( $modules["access_module"]["enabled"] ) ){
                         require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-maps.php' );
                         require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
+                        require_once( get_template_directory() . '/dt-metrics/contacts/daily-activity.php' );
                         require_once( get_template_directory() . '/dt-metrics/contacts/overview.php' );
                     }
 
