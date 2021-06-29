@@ -888,12 +888,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <input type="hidden" name="field_add_nonce" id="field_add_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_add' ) ) ?>" />
             <table>
                 <tr>
-                    <td style="vertical-align: middle">
-                        <?php esc_html_e( "Page type", 'disciple_tools' ) ?>
+                    <td style="vertical-align: middle; min-width:250px">
+                        <?php esc_html_e( "Post type", 'disciple_tools' ) ?>
                     </td>
                     <td>
-                        <b><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></b>
-                        <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type ); ?>">
+                        <strong><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></strong>
+                        <input type="hidden" name="post_type" id="current_post_type" value="<?php echo esc_html( $post_type ); ?>">
                     </td>
                 <tr>
                     <td style="vertical-align: middle">
@@ -920,19 +920,35 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         </select>
                     </td>
                 </tr>
-                <tr id="connection_field_target_row" style="display: none">
+                <tr class="connection_field_target_row" style="display: none">
                     <td style="vertical-align: middle">
                         <label><?php esc_html_e( "Connected to", 'disciple_tools' ) ?></label>
                     </td>
                     <td>
                     <select name="connection_target" id="connection_field_target">
                         <option></option>
-                        <?php foreach ( $post_types as $post_type ) : ?>
-                            <option value="<?php echo esc_html( $post_type ); ?>">
-                                <?php echo esc_html( $wp_post_types[$post_type]->label ); ?>
+                        <?php foreach ( $post_types as $post_type_key ) : ?>
+                            <option value="<?php echo esc_html( $post_type_key ); ?>">
+                                <?php echo esc_html( $wp_post_types[$post_type_key]->label ); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
+                    </td>
+                </tr>
+                <tr class="connection_field_reverse_row" style="display: none">
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Other direction field Name.", 'disciple_tools' ) ?>
+                        <br>
+                        See connection instructions bellow.
+                    </td>
+                    <td>
+                        <input name="reverse_connection_name" id="connection_field_reverse_name">
+                    </td>
+                    <td>
+                        <label>
+                            Only create connection in one direction
+                            <input type="checkbox" name="disable_reverse_connection">
+                        </label>
                     </td>
                 </tr>
                 <tr id="private_field_row">
@@ -940,7 +956,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <label><?php esc_html_e( "Private Field", 'disciple_tools' ) ?></label>
                     </td>
                     <td>
-                        <input name="new_field_private" id="new_field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>></input>
+                        <input name="new_field_private" id="new_field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>>
                     </td>
                 </tr>
                 <tr>
@@ -977,10 +993,18 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( "Text: This is just a normal text field", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Text Area: This is just a multi-line text area", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Date: A field that uses a date picker to choose dates (like baptism date)", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Connection: An autocomplete picker to connect to another record.", 'disciple_tools' ) ?></li>
         </ul>
         <?php esc_html_e( "Private Field:", 'disciple_tools' ) ?>
         <ul style="list-style: disc; padding-left:40px">
             <li><?php esc_html_e( "The content of private fields can only be seen by the user who creates it and will not be shared with other DT users.", 'disciple_tools' ) ?></li>
+        </ul>
+        <?php esc_html_e( "Connection Field:", 'disciple_tools' ) ?>
+        <ul style="list-style: disc; padding-left:40px">
+            <li>Connects one post type to another post type (or to the some post type). Ex: contacts to groups, contacts to contacts, etc</li>
+            <li>By default a connection will be bidirectional, meaning that a field will be displayed on the both the current and the "connected to" post types.</li>
+            <li>If you want the field to only show up on the current (<?php echo esc_html( $wp_post_types[$post_type]->label ); ?>) post type, the check the "Only create connection in one direction" checkbox</li>
+            <li>Other direction field name: this is the name of the field displayed on the "connected to" post type. Example: We create a connection between contacts and groups. On contacts the field name is "Groups", on Groups we want to the field name to be "Members"</li>
         </ul>
         <?php
     }
@@ -991,6 +1015,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $field_type = $post_submission["new_field_type"];
             $field_tile = $post_submission["new_field_tile"] ?? '';
             $field_key = dt_create_field_key( $post_submission["new_field_name"] );
+            $custom_field_options = dt_get_option( "dt_field_customizations" );
 
             if ( !$field_key ){
                 return false;
@@ -1081,9 +1106,21 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                 ];
+                //create the reverse fields on the connection post type
+                if ( !isset( $post_submission["disable_reverse_connection"] ) && $post_submission["connection_target"] !== $post_type ){
+                    $reverse_name = isset( $post_submission["reverse_connection_name"] ) ? $post_submission["reverse_connection_name"] : $post_submission["new_field_name"];
+                    $custom_field_options[$post_submission["connection_target"]][$field_key]  = [
+                        'name'        => $reverse_name,
+                        'type'        => 'connection',
+                        "post_type" => $post_type,
+                        "p2p_direction" => $direction === "any" ? "any" : "to",
+                        "p2p_key" => $p2p_key,
+                        'tile'     => "other",
+                        'customizable' => 'all',
+                    ];
+                }
             }
 
-            $custom_field_options = dt_get_option( "dt_field_customizations" );
             $custom_field_options[$post_type][$field_key] = $new_field;
             update_option( "dt_field_customizations", $custom_field_options );
             wp_cache_delete( $post_type . "_field_settings" );

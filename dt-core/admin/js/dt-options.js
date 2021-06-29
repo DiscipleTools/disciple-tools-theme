@@ -56,13 +56,23 @@ jQuery(document).ready(function ($) {
 
   $('#new_field_type_select').on('change', function (){
     if ( this.value === "connection" ){
-      $('#connection_field_target_row').show()
+      $('.connection_field_target_row').show()
       $('#private_field_row').hide()
       $('#connection_field_target').prop('required', true);
     } else {
-      $('#connection_field_target_row').hide()
+      $('.connection_field_reverse_row').hide()
+      $('.connection_field_target_row').hide()
       $('#private_field_row').show()
       $('#connection_field_target').prop('required', false);
+    }
+  })
+
+  //show the reverse connection field name row if the post type is not "self"
+  $('#connection_field_target').on("change", function (){
+    if ( this.value === $('#current_post_type').val()){
+      $('.connection_field_reverse_row').hide()
+    } else {
+      $('.connection_field_reverse_row').show()
     }
   })
 
