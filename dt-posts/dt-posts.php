@@ -1524,13 +1524,23 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( $field["type"] === "connection" && isset( $field["p2p_key"], $field["post_type"] ) ){
                 $p2p_type = p2p_type( $field["p2p_key"] );
                 if ( $p2p_type === false ){
-                    p2p_register_connection_type(
-                        [
-                            'name'        => $field["p2p_key"],
-                            'from'        => $post_type,
-                            'to'          => $field["post_type"]
-                        ]
-                    );
+                    if ( $field["p2p_direction"] === "to" ){
+                        p2p_register_connection_type(
+                            [
+                                'name'        => $field["p2p_key"],
+                                'to'        => $post_type,
+                                'from'          => $field["post_type"]
+                            ]
+                        );
+                    } else {
+                        p2p_register_connection_type(
+                            [
+                                'name'        => $field["p2p_key"],
+                                'from'        => $post_type,
+                                'to'          => $field["post_type"]
+                            ]
+                        );
+                    }
                 }
             }
         }
