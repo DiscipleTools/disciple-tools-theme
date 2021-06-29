@@ -36,6 +36,9 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
          * GEOCODING
          *************************************************************************************************************/
         public static function geocode_ip_address( $ip_address, $type = null ) {
+            if ( empty( self::get_key() ) ) {
+                return [];
+            }
             $data = [];
 
             if ( ! self::check_valid_ip_address( $ip_address ) ) {
@@ -68,6 +71,9 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
         }
 
         public static function geocode_current_visitor() : array {
+            if ( empty( self::get_key() ) ) {
+                return [];
+            }
             $string = self::url_get_contents( self::make_url( 'check' ) );
             $response = json_decode( $string, true );
 
