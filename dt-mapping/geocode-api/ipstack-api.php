@@ -68,11 +68,13 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
         }
 
         public static function geocode_current_visitor() : array {
-            $response = json_decode( self::url_get_contents( self::make_url( 'check' ) ), true );
-            if ( isset( $response['success'] ) && ! $response['success'] ) {
+            $string = self::url_get_contents( self::make_url( 'check' ) );
+            $response = json_decode( $string, true );
+
+            if ( isset( $response['success'] ) && empty( $response['success'] ) ) {
                 return [];
             }
-            return $response;
+            return $response ?? [];
         }
 
         /**************************************************************************************************************
