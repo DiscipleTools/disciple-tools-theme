@@ -1520,6 +1520,29 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !isset( $field["name"] ) ){
                 $field["name"] = $field_key; //set a field name so integration can depend on it.
             }
+            //register a connection if it is not set
+            if ( $field["type"] === "connection" && isset( $field["p2p_key"], $field["post_type"] ) ){
+                $p2p_type = p2p_type( $field["p2p_key"] );
+                if ( $p2p_type === false ){
+                    if ( $field["p2p_direction"] === "to" ){
+                        p2p_register_connection_type(
+                            [
+                                'name'        => $field["p2p_key"],
+                                'to'        => $post_type,
+                                'from'          => $field["post_type"]
+                            ]
+                        );
+                    } else {
+                        p2p_register_connection_type(
+                            [
+                                'name'        => $field["p2p_key"],
+                                'from'        => $post_type,
+                                'to'          => $field["post_type"]
+                            ]
+                        );
+                    }
+                }
+            }
         }
 
         $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, $post_type );

@@ -23,7 +23,6 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 ); //after contacts
 
         //setup tiles and fields
-        add_action( 'p2p_init', [ $this, 'p2p_init' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
@@ -570,96 +569,6 @@ class DT_Groups_Base extends DT_Module_Base {
                 </button>
             </div>
         <?php }
-    }
-
-    public function p2p_init(){
-        /**
-         * Group members field
-         */
-        p2p_register_connection_type(
-            [
-                'name'           => 'contacts_to_groups',
-                'from'           => 'contacts',
-                'to'             => 'groups',
-                'admin_box' => [
-                    'show' => false,
-                ],
-                'title'          => [
-                    'from' => __( 'Contacts', 'disciple_tools' ),
-                    'to'   => __( 'Members', 'disciple_tools' ),
-                ]
-            ]
-        );
-        /**
-         * Group leaders field
-         */
-        p2p_register_connection_type(
-            [
-                'name'           => 'groups_to_leaders',
-                'from'           => 'groups',
-                'to'             => 'contacts',
-                'admin_box' => [
-                    'show' => false,
-                ],
-                'title'          => [
-                    'from' => __( 'Groups', 'disciple_tools' ),
-                    'to'   => __( 'Leaders', 'disciple_tools' ),
-                ]
-            ]
-        );
-        /**
-         * Group coaches field
-         */
-        p2p_register_connection_type(
-            [
-                'name'           => 'groups_to_coaches',
-                'from'           => 'groups',
-                'to'             => 'contacts',
-                'admin_box' => [
-                    'show' => false,
-                ],
-                'title'          => [
-                    'from' => __( 'Groups', 'disciple_tools' ),
-                    'to'   => __( 'Coaches', 'disciple_tools' ),
-                ]
-            ]
-        );
-        /**
-         * Parent and child groups
-         */
-        p2p_register_connection_type(
-            [
-                'name'         => 'groups_to_groups',
-                'from'         => 'groups',
-                'to'           => 'groups',
-                'title'        => [
-                    'from' => __( 'Planted by', 'disciple_tools' ),
-                    'to'   => __( 'Planting', 'disciple_tools' ),
-                ],
-            ]
-        );
-        /**
-         * Peer groups
-         */
-        p2p_register_connection_type( [
-            'name'         => 'groups_to_peers',
-            'from'         => 'groups',
-            'to'           => 'groups',
-        ] );
-        /**
-         * Group People Groups field
-         */
-        p2p_register_connection_type(
-            [
-                'name'        => 'groups_to_peoplegroups',
-                'from'        => 'groups',
-                'to'          => 'peoplegroups',
-                'title'       => [
-                    'from' => __( 'People Groups', 'disciple_tools' ),
-                    'to'   => __( 'Groups', 'disciple_tools' ),
-                ]
-            ]
-        );
     }
 
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
