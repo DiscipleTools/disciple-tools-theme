@@ -1122,6 +1122,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 if ( $site_link ){
                     $a->name = get_the_title( $site_link );
                 }
+            } else if ( isset( $a->user_caps ) && $a->user_caps === "magic_link" ){
+                $a->name = __( "Magic Link Submission", 'disciple_tools' );
             }
             if ( !empty( $a->object_note ) ){
                 $activity_simple[] = [
