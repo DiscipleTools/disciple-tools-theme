@@ -1851,20 +1851,16 @@
     constrainInput: false,
     dateFormat: 'yy-mm-dd',
     onClose: function (date) {
-      if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
-        // do nothing
-      } else {
-        date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
+      date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
 
-        if (!$(this).val()) {
-          date = " ";//null;
-        }
-
-        let formattedDate = moment.utc(date).unix();
-
-        let field_key = this.id.replace('bulk_', '')
-        $(this).data(`bulk_key_${field_key}`, formattedDate);
+      if (!$(this).val()) {
+        date = " ";//null;
       }
+
+      let formattedDate = moment.utc(date).unix();
+
+      let field_key = this.id.replace('bulk_', '')
+      $(this).data(`bulk_key_${field_key}`, formattedDate);
     },
     changeMonth: true,
     changeYear: true,
