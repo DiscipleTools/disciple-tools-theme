@@ -41,6 +41,9 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
 
         if ( !isset( self::$total[$start . $end] ) ){
             $baptism_generations_this_year = self::get_baptism_generations( $start, $end );
+            if ( is_wp_error( $baptism_generations_this_year ) ){
+                return 0;
+            }
             $total_baptisms = array_sum( $baptism_generations_this_year );
             self::$total[$start . $end] = $total_baptisms;
             return $total_baptisms;
