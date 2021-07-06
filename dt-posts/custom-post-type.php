@@ -25,6 +25,7 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
+        add_action( 'init', [ $this, 'register_p2p_connections' ], 0, 50 );
     }
 
     public function register_post_type(){
@@ -228,6 +229,42 @@ class Disciple_Tools_Post_Type_Template {
 //            $sections[] = 'details';
 //        }
         return $sections;
+    }
+
+
+    /**
+     * register p2p connections dynamically based on the connection field declaration
+     */
+    public function register_p2p_connections(){
+        $fields = DT_Posts::get_post_field_settings( $this->post_type );
+        foreach ( $fields as $field_key => &$field ){
+            if ( !isset( $field["name"] ) ){
+                $field["name"] = $field_key; //set a field name so integration can depend on it.
+            }
+            //register a connection if it is not set
+            if ( $field["type"] === "connection" && isset( $field["p2p_key"], $field["post_type"] ) ){
+                $p2p_type = p2p_type( $field["p2p_key"] );
+                if ( $p2p_type === false ){
+                    if ( $field["p2p_direction"] === "to" ){
+                        p2p_register_connection_type(
+                            [
+                                'name'        => $field["p2p_key"],
+                                'to'          => $this->post_type,
+                                'from'        => $field["post_type"]
+                            ]
+                        );
+                    } else {
+                        p2p_register_connection_type(
+                            [
+                                'name'        => $field["p2p_key"],
+                                'from'        => $this->post_type,
+                                'to'          => $field["post_type"]
+                            ]
+                        );
+                    }
+                }
+            }
+        }
     }
 }
 
