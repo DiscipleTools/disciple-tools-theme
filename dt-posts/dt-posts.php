@@ -1427,6 +1427,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $load_from_cache && $cached ){
             return $cached;
         }
+        $post_types = apply_filters( 'dt_registered_post_types', [] );
         $fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, $post_type );
 
@@ -1502,6 +1503,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                         if ( !isset( $fields[$key]["default"]["none"] ) && empty( $fields[$key]["select_cannot_be_empty"] ) ){
                             $none = [ "none" => [ "label" => "" ] ];
                             $fields[$key]["default"] = dt_array_merge_recursive_distinct( $none, $fields[$key]["default"] );
+                        }
+                    }
+                    if ( $field_type === "connection" ){
+                        // remove the field if the target post_type is not available
+                        if ( isset( $fields[$key]["post_type"] ) && !in_array( $fields[$key]["post_type"], $post_types ) ){
+                            unset( $fields[$key] );
                         }
                     }
                 }
