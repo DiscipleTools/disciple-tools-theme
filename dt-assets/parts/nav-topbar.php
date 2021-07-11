@@ -112,27 +112,32 @@ $dt_nav_tabs = dt_default_menu_array();
         </div>
         <div class="top-bar-left">
             <ul class="dropdown menu" data-dropdown-menu>
-                <?php
-                foreach ( $dt_nav_tabs['main'] as $dt_main_tabs ) :
-                    ?>
-                    <li><a href="<?php echo esc_url( $dt_main_tabs['link'] ) ?>"><?php echo esc_html( $dt_main_tabs['label'] ) ?>&nbsp;</a>
-                        <?php
-                        if ( isset( $dt_main_tabs['submenu'] ) && ! empty( $dt_main_tabs['submenu'] ) ) {
-                            ?>
-                            <ul class="menu vertical nested is-dropdown-submenu">
-                                <?php
-                                foreach ( $dt_main_tabs['submenu'] as $dt_nav_submenu ) :
-                                    if ( ! $dt_nav_submenu['hidden'] ?? false ) : ?>
-                                        <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>
-                                        <?php
-                                    endif;
-                                endforeach;
-                                ?>
-                            </ul>
+                <?php foreach ( $dt_nav_tabs['main'] as $dt_main_tabs ) : ?>
+                        <li><a href="<?php echo esc_url( $dt_main_tabs['link'] ) ?>"><?php echo esc_html( $dt_main_tabs['label'] ) ?>&nbsp;</a>
                             <?php
-                        }
-                        ?></li>
+                            if ( isset( $dt_main_tabs['submenu'] ) && ! empty( $dt_main_tabs['submenu'] ) ) {
+                                ?>
+                                <ul class="menu vertical nested is-dropdown-submenu">
+                                    <?php
+                                    foreach ( $dt_main_tabs['submenu'] as $dt_nav_submenu ) :
+                                        if ( ! $dt_nav_submenu['hidden'] ?? false ) : ?>
+                                            <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>
+                                            <?php
+                                        endif;
+                                    endforeach;
+                                    ?>
+                                </ul>
+                                <?php
+                            }
+                            ?></li>
                 <?php endforeach; ?>
+                    <li id="more-menu-button"><a href="#">More&nbsp;</a>
+                        <ul class="menu vertical nested is-dropdown-submenu">
+                            <?php foreach ( $dt_nav_tabs['main'] as $dt_main_tabs_extra ) : ?>
+                                    <li><a href="<?php echo esc_url( $dt_main_tabs_extra['link'] ) ?>"><?php echo esc_html( $dt_main_tabs_extra['label'] ) ?>&nbsp;</a>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
             </ul>
         </div>
         <div class="top-bar-right">
