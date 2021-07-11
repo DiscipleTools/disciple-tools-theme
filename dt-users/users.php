@@ -540,6 +540,9 @@ class Disciple_Tools_Users
         }
         if ( dt_is_rest() ){
             $data = json_decode( WP_REST_Server::get_raw_data(), true );
+            if ( isset( $data["locale"] )) {
+                switch_to_locale( $data["locale"] );
+            }
             if ( isset( $data["corresponds_to_contact"] ) ){
                 $corresponds_to_contact = $data["corresponds_to_contact"];
                 update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
