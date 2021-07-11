@@ -131,6 +131,9 @@ class DT_Contacts_User {
 
                                 <?php endforeach; ?>
                             </select>
+                            <label for="locale">
+                                <?php esc_html_e( "User Language", "disciple_tools" ); ?>
+                            </label>
                             <?php
                             $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
                             $translations = dt_get_translations();
