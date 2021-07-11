@@ -137,10 +137,11 @@ class DT_Contacts_User {
                             <?php
                             $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
                             $translations = dt_get_translations();
+                            $site_default_locale = get_option( 'WPLANG' );
                             wp_dropdown_languages( array(
                                 'name'                        => 'locale',
                                 'id'                          => 'locale',
-                                'selected'                    => '',
+                                'selected'                    => $site_default_locale,
                                 'languages'                   => $dt_available_languages,
                                 'show_available_translations' => false,
                                 'show_option_site_default'    => false,
