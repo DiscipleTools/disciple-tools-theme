@@ -381,33 +381,33 @@ class DT_Duplicate_Checker_And_Merging {
                 if ( $contact_fields[ $key ]["type"] === "key_select" && ( ! isset( $contact[ $key ] ) || $contact[ $key ]['key'] === "none" || $contact[ $key ]['key'] === "not-set" || $contact[ $key ]['key'] === "" ) ) {
                     $update[ $key ] = $fields["key"];
                 }
-                if ( $contact_fields[ $key ]["type"] === "text" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                if ( $contact_fields[ $key ]["type"] === "text" ) {
                     $update[ $key ] = $fields;
                 }
-                if ( $contact_fields[ $key ]["type"] === "textarea" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                if ( $contact_fields[ $key ]["type"] === "textarea" ) {
                     $update[ $key ] = $fields;
                 }
-                if ( $contact_fields[ $key ]["type"] === "number" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                if ( $contact_fields[ $key ]["type"] === "number" ) {
                     $update[ $key ] = $fields;
                 }
-                if ( $contact_fields[ $key ]["type"] === "date" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ]["timestamp"] ) ) ) {
+                if ( $contact_fields[ $key ]["type"] === "date" ) {
                     $update[ $key ] = $fields["timestamp"] ?? "";
                 }
-                if ( $contact_fields[ $key ]["type"] === "array" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                if ( $contact_fields[ $key ]["type"] === "array" ) {
                     if ( $key != "duplicate_data" ) {
                         $update[ $key ] = $fields;
                     }
                 }
-                if ( $contact_fields[ $key ]["type"] === "boolean" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                if ( $contact_fields[ $key ]["type"] === "boolean" ) {
                     $update[ $key ] = $fields;
                 }
-                if ( $contact_fields[ $key ]["type"] === "tags" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                if ( $contact_fields[ $key ]["type"] === "tags" ) {
                     $update[ $key ]["values"] = [];
                     foreach ( $fields as $field_value ) {
                         $update[ $key ]["values"][] = [ "value" => $field_value ];
                     }
                 }
-                if ( $contact_fields[ $key ]["type"] === "location_meta" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                if ( $contact_fields[ $key ]["type"] === "location_meta" ) {
                     $update[ $key ]["values"] = [];
                     foreach ( $fields as $field_value ) {
                         if ( isset( $field_value['lng'] ) && isset( $field_value['lat'] ) ) {
@@ -415,13 +415,13 @@ class DT_Duplicate_Checker_And_Merging {
                         }
                     }
                 }
-                if ( $contact_fields[ $key ]["type"] === "location" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                if ( $contact_fields[ $key ]["type"] === "location" ) {
                     $update[ $key ]["values"] = [];
                     foreach ( $fields as $field_value ) {
                         $update[ $key ]["values"][] = [ "value" => $field_value['id'] ];
                     }
                 }
-                if ( $contact_fields[ $key ]["type"] === "connection" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
+                if ( $contact_fields[ $key ]["type"] === "connection" ) {
                     $update[ $key ]["values"]               = [];
                     $update_for_duplicate[ $key ]["values"] = [];
                     foreach ( $fields as $field_value ) {
