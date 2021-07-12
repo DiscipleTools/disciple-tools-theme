@@ -1661,8 +1661,15 @@ class Disciple_Tools_Posts
     }
 
 
-
-
+    /**
+     * Create or update the dt_post_user_meta field
+     *
+     * @param array $field_settings
+     * @param int $post_id
+     * @param array $fields
+     * @param array $existing_record
+     * @return WP_Error
+     */
     public static function update_post_user_meta_fields( array $field_settings, int $post_id, array $fields, array $existing_record ){
         global $wpdb;
         foreach ( $fields as $field_key => $field ) {
@@ -1754,7 +1761,8 @@ class Disciple_Tools_Posts
                 }
             }
 
-            if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && ( $field_settings[ $field_key ]["type"] === "text" || $field_settings[ $field_key ]["type"] === "textarea" || $field_settings[ $field_key ]["type"] === "date" || $field_settings[ $field_key ]["type"] === "key_select" || $field_settings[ $field_key ]["type"] === "boolean" || $field_settings[ $field_key ]["type"] === "number" ) ) {
+            $private_field_types = [ "text", "textarea", "date", "key_select", "boolean", "number" ];
+            if ( isset( $field_settings[ $field_key ]["type"] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && in_array( $field_settings[ $field_key ]["type"], $private_field_types, true ) ) {
                 if ( $field_settings[ $field_key ]["type"] === "boolean" ){
                     if ( $fields[$field_key] === "1" || $fields[$field_key] === "yes" || $fields[$field_key] === "true" ){
                         $field_value = true;

@@ -407,9 +407,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                  */
                 $already_handled = apply_filters( 'dt_post_updated_custom_handled_meta', [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel", "tags", "user_select" ], $post_type );
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
-                    if ( isset( $post_settings["fields"][$field_key]['private'] ) && $post_settings["fields"][$field_key]['private'] ) {
-                        self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $fields, [] );
-                    } else {
+                    if ( !( isset( $post_settings["fields"][$field_key]['private'] ) && $post_settings["fields"][$field_key]['private'] ) ){
                         update_post_meta( $post_id, $field_key, $field_value );
                     }
                 }
@@ -1427,6 +1425,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $load_from_cache && $cached ){
             return $cached;
         }
+        $post_types = apply_filters( 'dt_registered_post_types', [] );
         $fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, $post_type );
 
@@ -1504,6 +1503,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                             $fields[$key]["default"] = dt_array_merge_recursive_distinct( $none, $fields[$key]["default"] );
                         }
                     }
+                    if ( $field_type === "connection" ){
+                        // remove the field if the target post_type is not available
+                        if ( isset( $fields[$key]["post_type"] ) && !in_array( $fields[$key]["post_type"], $post_types ) ){
+                            unset( $fields[$key] );
+                        }
+                    }
                 }
             }
         }
@@ -1514,34 +1519,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                         if ( isset( $option_value["deleted"] ) && $option_value["deleted"] == true ){
                             unset( $fields[$field_key]["default"][$option_key] );
                         }
-                    }
-                }
-            }
-        }
-        foreach ( $fields as $field_key => &$field ){
-            if ( !isset( $field["name"] ) ){
-                $field["name"] = $field_key; //set a field name so integration can depend on it.
-            }
-            //register a connection if it is not set
-            if ( $field["type"] === "connection" && isset( $field["p2p_key"], $field["post_type"] ) ){
-                $p2p_type = p2p_type( $field["p2p_key"] );
-                if ( $p2p_type === false ){
-                    if ( $field["p2p_direction"] === "to" ){
-                        p2p_register_connection_type(
-                            [
-                                'name'        => $field["p2p_key"],
-                                'to'        => $post_type,
-                                'from'          => $field["post_type"]
-                            ]
-                        );
-                    } else {
-                        p2p_register_connection_type(
-                            [
-                                'name'        => $field["p2p_key"],
-                                'from'        => $post_type,
-                                'to'          => $field["post_type"]
-                            ]
-                        );
                     }
                 }
             }
