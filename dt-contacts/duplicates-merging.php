@@ -381,24 +381,24 @@ class DT_Duplicate_Checker_And_Merging {
                 if ( $contact_fields[ $key ]["type"] === "key_select" && ( ! isset( $contact[ $key ] ) || $contact[ $key ]['key'] === "none" || $contact[ $key ]['key'] === "not-set" || $contact[ $key ]['key'] === "" ) ) {
                     $update[ $key ] = $fields["key"];
                 }
-                if ( $contact_fields[ $key ]["type"] === "text" ) {
+                if ( $contact_fields[ $key ]["type"] === "text" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) )) {
                     $update[ $key ] = $fields;
                 }
-                if ( $contact_fields[ $key ]["type"] === "textarea" ) {
+                if ( $contact_fields[ $key ]["type"] === "textarea" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) )) {
                     $update[ $key ] = $fields;
                 }
-                if ( $contact_fields[ $key ]["type"] === "number" ) {
+                if ( $contact_fields[ $key ]["type"] === "number" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) )) {
                     $update[ $key ] = $fields;
                 }
-                if ( $contact_fields[ $key ]["type"] === "date" ) {
+                if ( $contact_fields[ $key ]["type"] === "date" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) )) {
                     $update[ $key ] = $fields["timestamp"] ?? "";
                 }
-                if ( $contact_fields[ $key ]["type"] === "array" ) {
+                if ( $contact_fields[ $key ]["type"] === "array" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
                     if ( $key != "duplicate_data" ) {
                         $update[ $key ] = $fields;
                     }
                 }
-                if ( $contact_fields[ $key ]["type"] === "boolean" ) {
+                if ( $contact_fields[ $key ]["type"] === "boolean" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) )) {
                     $update[ $key ] = $fields;
                 }
                 if ( $contact_fields[ $key ]["type"] === "tags" ) {
