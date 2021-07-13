@@ -411,7 +411,13 @@ class DT_Duplicate_Checker_And_Merging {
                     $update[ $key ]["values"] = [];
                     foreach ( $fields as $field_value ) {
                         if ( isset( $field_value['lng'] ) && isset( $field_value['lat'] ) ) {
-                            $update[ $key ]["values"][] = $field_value;
+                            $update[ $key ]["values"][] = [
+                                "lng" => $field_value["lng"],
+                                "lat" => $field_value["lat"],
+                                "level" => $field_value["level"],
+                                "label" => $field_value["label"],
+                                "source" => $field_value["source"],
+                            ];
                         }
                     }
                 }
