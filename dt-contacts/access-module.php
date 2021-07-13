@@ -1078,7 +1078,9 @@ class DT_Contacts_Access extends DT_Module_Base {
             } else if ( current_user_can( 'access_specific_sources' ) ){
                 //give user permission to all 'access' that also have a source the user can view.
                 $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-                if ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
+                if ( in_array( 'all', $allowed_sources, true ) ){
+                    $permissions["type"] = [ "access" ];
+                } elseif ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
                     $permissions[] = [ "type" => [ "access" ], "sources" => $allowed_sources];
                 }
             }
