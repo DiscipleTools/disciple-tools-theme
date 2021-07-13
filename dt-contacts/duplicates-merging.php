@@ -371,7 +371,7 @@ class DT_Duplicate_Checker_And_Merging {
             Merge social media + other contact data from the non master to master
         */
         foreach ( $non_master as $key => $fields ) {
-            if ( isset( $contact_fields[ $key ] ) && ( ! isset( $contact_fields[ $key ]['private'] ) || ( isset( $contact_fields[ $key ]['private'] ) && ! $contact_fields[ $key ]['private'] ) ) ) {
+            if ( !empty( $fields ) && isset( $contact_fields[ $key ] ) && ( ! isset( $contact_fields[ $key ]['private'] ) || ( isset( $contact_fields[ $key ]['private'] ) && ! $contact_fields[ $key ]['private'] ) ) ) {
                 if ( $contact_fields[ $key ]["type"] === "multi_select" ) {
                     $update[ $key ]["values"] = [];
                     foreach ( $fields as $field_value ) {
