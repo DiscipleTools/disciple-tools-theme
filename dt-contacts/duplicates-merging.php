@@ -410,14 +410,16 @@ class DT_Duplicate_Checker_And_Merging {
                 if ( $contact_fields[ $key ]["type"] === "location_meta" ) {
                     $update[ $key ]["values"] = [];
                     foreach ( $fields as $field_value ) {
-                        if ( isset( $field_value['lng'] ) && isset( $field_value['lat'] ) ) {
-                            $update[ $key ]["values"][] = [
-                                "lng" => $field_value["lng"],
-                                "lat" => $field_value["lat"],
-                                "level" => $field_value["level"],
-                                "label" => $field_value["label"],
-                                "source" => $field_value["source"],
-                            ];
+                        if ( isset( $field_value['lng'] ) && isset( $field_value['lat'] ) && isset( $field_value['level'] ) && isset( $field_value['label'] ) && isset( $field_value['source'] ) ) {
+                            if ( ! self::has_location_meta_label_duplicates( $contact, $key, $field_value["label"] ) ) {
+                                $update[ $key ]["values"][] = [
+                                    "lng"    => $field_value["lng"],
+                                    "lat"    => $field_value["lat"],
+                                    "level"  => $field_value["level"],
+                                    "label"  => $field_value["label"],
+                                    "source" => $field_value["source"],
+                                ];
+                            }
                         }
                     }
                 }
@@ -523,6 +525,18 @@ class DT_Duplicate_Checker_And_Merging {
 
         do_action( "dt_contact_merged", $master_id, $non_master_id );
         return true;
+    }
+
+    private static function has_location_meta_label_duplicates( $master, $key, $label ): bool {
+        if ( isset( $master[ $key ] ) && is_array( $master[ $key ] ) ) {
+            foreach ( $master[ $key ] as $item ) {
+                if ( isset( $item['label'] ) && $item['label'] === $label ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private static function remove_fields( $contact_id, $fields = [], $ignore = [] ){
