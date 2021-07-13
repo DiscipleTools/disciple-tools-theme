@@ -46,7 +46,7 @@ $dt_nav_tabs = dt_default_menu_array();
             <!-- site logo -->
             <?php if ( ! $dt_nav_tabs['admin']['site']['hidden'] ?? ! false ) : ?>
                 <div class="title-bar-title" style="margin-left: 5px">
-                    <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" style="padding-left:0;vertical-align: middle" ><img src="<?php echo esc_url( $dt_nav_tabs['admin']['site']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" ); ?>" style="margin:0; height: 20px" alt="logo-image"></a>
+                    <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" class="logo-link" ><img src="<?php echo esc_url( $dt_nav_tabs['admin']['site']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" ); ?>" class="logo" alt="logo-image"></a>
                 </div>
             <?php endif; ?>
 
@@ -108,7 +108,7 @@ $dt_nav_tabs = dt_default_menu_array();
     <div class="top-bar" id="top-bar-menu"
          data-sticky style="width:100%;margin-top:0">
         <div>
-            <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" style="padding-left:0;vertical-align: middle"><img src="<?php echo esc_url( $dt_nav_tabs['admin']['site']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" ); ?>" style="margin:0 17px; height: 20px" alt="logo-image"></a>
+            <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" class="logo-link"><img src="<?php echo esc_url( $dt_nav_tabs['admin']['site']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" ); ?>" class="logo" alt="logo-image"></a>
         </div>
         <div class="top-bar-left">
             <ul class="dropdown menu" data-dropdown-menu>
@@ -131,7 +131,7 @@ $dt_nav_tabs = dt_default_menu_array();
                             }
                             ?></li>
                 <?php endforeach; ?>
-                    <li id="more-menu-button"><a href="#">More&nbsp;</a>
+                    <li id="more-menu-button"><a href="#"><?php esc_html_e( 'More', 'disciple_tools' ) ?>&nbsp;</a>
                         <ul class="menu vertical nested is-dropdown-submenu">
                             <?php foreach ( $dt_nav_tabs['main'] as $dt_main_tabs_extra ) : ?>
                                     <li><a href="<?php echo esc_url( $dt_main_tabs_extra['link'] ) ?>"><?php echo esc_html( $dt_main_tabs_extra['label'] ) ?>&nbsp;</a>
