@@ -552,6 +552,9 @@ class Disciple_Tools_Users
                 ], false, true );
                 $user = get_user_by( 'id', $user_id );
                 $user->display_name = $contact["title"];
+                if ( isset( $data["locale"] )) {
+                    $user->locale = $data["locale"];
+                }
                 wp_update_user( $user );
             }
         }
@@ -564,6 +567,9 @@ class Disciple_Tools_Users
             ], false, true );
             $user = get_user_by( 'id', $user_id );
             $user->display_name = $contact["title"];
+            if ( isset( $data["locale"] )) {
+                $user->locale = $data["locale"];
+            }
             wp_update_user( $user );
         }
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
