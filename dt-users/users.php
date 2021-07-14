@@ -577,11 +577,9 @@ class Disciple_Tools_Users
             self::create_contact_for_user( $user_id );
         }
         if ( isset( $_POST["dt_locale"] ) && !empty( $_POST["dt_locale"] ) ) {
-            if ( !$user ) {
-                $user = get_user_by( 'id', $user_id );
-            }
-            $user->locale = sanitize_text_field( wp_unslash( $_POST["dt_locale"] ) );
-            wp_update_user( $user );
+            $userdata = get_user_by( 'id', $user_id );
+            $userdata->locale = sanitize_text_field( wp_unslash( $_POST["dt_locale"] ) );
+            wp_update_user( $userdata );
         }
     }
 
@@ -852,7 +850,7 @@ class Disciple_Tools_Users
                          $translations = dt_get_translations();
                          $site_default_locale = get_option( 'WPLANG' );
                     wp_dropdown_languages( array(
-                        'name'                        => 'locale',
+                        'name'                        => 'dt_locale',
                         'id'                          => 'dt_locale',
                         'selected'                    => $site_default_locale,
                         'languages'                   => $dt_available_languages,
