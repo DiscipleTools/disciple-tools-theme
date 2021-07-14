@@ -540,8 +540,14 @@ class Disciple_Tools_Users
         }
         if ( dt_is_rest() ){
             $data = json_decode( WP_REST_Server::get_raw_data(), true );
+
             if ( isset( $data["locale"] )) {
-                switch_to_locale( $data["locale"] );
+                if ( $data["locale"] === "" ) {
+                    $locale = "en-US";
+                } else {
+                    $locale = $data["locale"];
+                }
+                switch_to_locale( $locale );
             }
             if ( isset( $data["corresponds_to_contact"] ) ){
                 $corresponds_to_contact = $data["corresponds_to_contact"];
@@ -553,7 +559,7 @@ class Disciple_Tools_Users
                 $user = get_user_by( 'id', $user_id );
                 $user->display_name = $contact["title"];
                 if ( isset( $data["locale"] )) {
-                    $user->locale = $data["locale"];
+                    $user->locale = $locale;
                 }
                 wp_update_user( $user );
             }
@@ -567,18 +573,24 @@ class Disciple_Tools_Users
             ], false, true );
             $user = get_user_by( 'id', $user_id );
             $user->display_name = $contact["title"];
-            if ( isset( $data["locale"] )) {
-                $user->locale = $data["locale"];
-            }
             wp_update_user( $user );
         }
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
         if ( empty( $corresponds_to_contact ) ){
             self::create_contact_for_user( $user_id );
         }
-        if ( isset( $_POST["dt_locale"] ) && !empty( $_POST["dt_locale"] ) ) {
+        if ( isset( $_POST["dt_locale"] ) ) {
             $userdata = get_user_by( 'id', $user_id );
-            $userdata->locale = sanitize_text_field( wp_unslash( $_POST["dt_locale"] ) );
+
+            if ( isset( $_POST["dt_locale"] )) {
+                if ( $_POST["dt_locale"] === "" ) {
+                    $locale = "en-US";
+                } else {
+                    $locale = sanitize_text_field( wp_unslash( $_POST["dt_locale"] ) );
+                }
+            }
+            $userdata->locale = sanitize_text_field( wp_unslash( $locale ) );
+
             wp_update_user( $userdata );
         }
     }
