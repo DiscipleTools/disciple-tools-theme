@@ -825,6 +825,8 @@ jQuery(document).ready(function($) {
               <dd><input type="text" class="input" id="name" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.nickname ) }" required /> </dd>
               <dt>${ window.lodash.escape( dt_user_management_localized.translations.email ) }</dt>
               <dd><input type="email" class="input" id="email" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.email ) }" required /> </dd>
+              <dt>User Language</dt>
+              <dd>${ dt_user_management_localized.language_dropdown }</dd>
             </dl>
 
             <button type="submit" class="submit button" id="create-user">${ window.lodash.escape( dt_user_management_localized.translations.create_user ) }</button> <span class="spinner"></span>
@@ -846,6 +848,7 @@ jQuery(document).ready(function($) {
       ev.preventDefault();
       let name = jQuery('#name').val()
       let email = jQuery('#email').val()
+      let locale = jQuery('#locale').val();
 
       let corresponds_to_contact = null
       if ( typeof window.contact_record !== 'undefined' ) {
@@ -856,7 +859,7 @@ jQuery(document).ready(function($) {
         spinner_span.html(spinner)
         submit_button.prop('disabled', true)
 
-        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact })
+        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact, "locale": locale })
           .done(response=>{
             result_div.html(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response)}">
               ${ window.lodash.escape( dt_user_management_localized.translations.view_new_user ) }</a>
