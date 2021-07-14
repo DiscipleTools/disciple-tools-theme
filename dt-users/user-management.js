@@ -826,7 +826,7 @@ jQuery(document).ready(function($) {
               <dt>${ window.lodash.escape( dt_user_management_localized.translations.email ) }</dt>
               <dd><input type="email" class="input" id="email" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.email ) }" required /> </dd>
               <dt>User Language</dt>
-              <dd>${ dt_user_management_localized.language_dropdown }</dd>
+              <dd>${write_language_dropdown( dt_user_management_localized.language_dropdown )}</dd>
             </dl>
 
             <button type="submit" class="submit button" id="create-user">${ window.lodash.escape( dt_user_management_localized.translations.create_user ) }</button> <span class="spinner"></span>
@@ -938,6 +938,15 @@ jQuery(document).ready(function($) {
         }
       })
     })
+  }
+
+  function write_language_dropdown(translations) {
+      let select = '<select name="locale" id="locale">';
+      for ( const translation in translations ) {
+        select += `<option value="${translations[translation].language}" ${translations[translation].site_default ? 'selected' : '' } >${translations[translation].native_name}</option>`
+      }
+      select += '</select>'
+      return select;
   }
 
 })
