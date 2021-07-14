@@ -576,6 +576,13 @@ class Disciple_Tools_Users
         if ( empty( $corresponds_to_contact ) ){
             self::create_contact_for_user( $user_id );
         }
+        if ( isset( $_POST["dt_locale"] ) && !empty( $_POST["dt_locale"] ) ) {
+            if ( !$user ) {
+                $user = get_user_by( 'id', $user_id );
+            }
+            $user->locale = sanitize_text_field( wp_unslash( $_POST["dt_locale"] ) );
+            wp_update_user( $user );
+        }
     }
 
     /**
@@ -832,6 +839,26 @@ class Disciple_Tools_Users
                             </span>
                         <?php endif; ?>
                     <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="dt_locale"><?php esc_html_e( "User Language", 'disciple_tools' ) ?></label></th>
+                <td>
+                    <?php
+                         $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+                         $translations = dt_get_translations();
+                         $site_default_locale = get_option( 'WPLANG' );
+                    wp_dropdown_languages( array(
+                        'name'                        => 'locale',
+                        'id'                          => 'dt_locale',
+                        'selected'                    => $site_default_locale,
+                        'languages'                   => $dt_available_languages,
+                        'show_available_translations' => false,
+                        'show_option_site_default'    => false,
+                        'show_option_en_us'           => true,
+                        'translations'                => $translations
+                    ) );
+                    ?>
                 </td>
             </tr>
         </table>
