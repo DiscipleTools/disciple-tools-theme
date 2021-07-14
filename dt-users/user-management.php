@@ -138,6 +138,11 @@ class DT_User_Management
 
 
             wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', $dependencies, filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
+
+            $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+            $translations = dt_get_translations();
+            $site_default_locale = get_option( 'WPLANG' );
+
             wp_localize_script(
                 'dt_dispatcher_tools', 'dt_user_management_localized', [
                     'root'               => esc_url_raw( rest_url() ),
@@ -166,7 +171,18 @@ class DT_User_Management
                         'remove' => __( 'Remove', 'disciple_tools' ),
                         'already_user' => __( 'This contact is already a user.', 'disciple_tools' ),
                         'view_user' => __( 'View User', 'disciple_tools' ),
-                    ]
+                    ],
+                    'language_dropdown' => wp_dropdown_languages( array(
+                        'name'                        => 'locale',
+                        'id'                          => 'locale',
+                        'selected'                    => $site_default_locale,
+                        'languages'                   => $dt_available_languages,
+                        'show_available_translations' => false,
+                        'show_option_site_default'    => false,
+                        'show_option_en_us'           => true,
+                        'translations'                => $translations,
+                        'echo'                        => false
+                    ) ),
 
                 ]
             );
