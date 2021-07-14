@@ -64,7 +64,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
             'dt_' . $this->slug . '_script', $this->js_object_name, [
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
                 "data"                => [
-                    'activities' => $this->daily_activity( 'week' )
+                    'activities' => $this->daily_activity( 'this-month' )
                 ],
                 'translations'        => [
                     'activities'           => __( "Activity by Day", 'disciple_tools' ),
@@ -109,24 +109,46 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
         // First, identify date range boundaries.
         $start = null;
-        $end   = gmdate( 'Y-m-d' );
+        $end   = null;
 
         switch ( $date_range ) {
-            case 'week':
-                $start = gmdate( 'Y-m-d', strtotime( '-1 week' ) );
+            case 'this-month':
+                $start = gmdate( 'Y-m-01' );
+                $end   = gmdate( 'Y-m-d', strtotime( '+1 day' ) );
                 break;
-            case 'fortnight':
-                $start = gmdate( 'Y-m-d', strtotime( '-1 fortnight' ) );
+            case 'last-month':
+                $base_ts = strtotime( '-1 month' );
+                $start   = gmdate( 'Y-m-01', $base_ts );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
                 break;
-            case 'month':
-                $start = gmdate( 'Y-m-d', strtotime( '-1 month' ) );
+            case '2-months-ago':
+                $base_ts = strtotime( '-2 months' );
+                $start   = gmdate( 'Y-m-01', $base_ts );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
                 break;
-            case '3-months':
-                $start = gmdate( 'Y-m-d', strtotime( '-3 months' ) );
+            case '3-months-ago':
+                $base_ts = strtotime( '-3 months' );
+                $start   = gmdate( 'Y-m-01', $base_ts );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
+                break;
+            case '4-months-ago':
+                $base_ts = strtotime( '-4 months' );
+                $start   = gmdate( 'Y-m-01', $base_ts );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
+                break;
+            case '5-months-ago':
+                $base_ts = strtotime( '-5 months' );
+                $start   = gmdate( 'Y-m-01', $base_ts );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
+                break;
+            case '6-months-ago':
+                $base_ts = strtotime( '-6 months' );
+                $start   = gmdate( 'Y-m-01', $base_ts );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
                 break;
         }
 
-        if ( ! empty( $start ) ) {
+        if ( ! empty( $start ) && ! empty( $end ) ) {
 
             $days = null;
 
@@ -162,25 +184,18 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                     $ongoing_meetings    = Disciple_Tools_Counter_Contacts::get_contacts_count( 'ongoing_meetings', $current_day_ts, $next_day_ts );
                     $seeker_path_updates = Disciple_Tools_Counter_Contacts::seeker_path_activity( $current_day_ts, $next_day_ts );
 
-                    $active_groups   = Disciple_Tools_Counter_Groups::get_groups_count( 'active_groups', $current_day_ts, $next_day_ts );
-                    $active_churches = Disciple_Tools_Counter_Groups::get_groups_count( 'active_churches', $current_day_ts, $next_day_ts );
-
                     $baptisms = Disciple_Tools_Counter_Baptism::get_baptism_generations( $current_day_ts, $next_day_ts );
 
-                    $health                   = $this->health_metrics( $current_day_format, $next_day_format );
-                    $new_other_post_creations = $this->new_other_post_creations( $current_day_format, $next_day_format );
+                    $health = $this->health_metrics( $current_day_format, $next_day_format );
 
                     // Package counts
                     $daily_activities[ $current_day_format ] = [
-                        'new_contacts'             => $new_contacts,
-                        'first_meetings'           => $first_meetings,
-                        'ongoing_meetings'         => $ongoing_meetings,
-                        'active_groups'            => $active_groups,
-                        'active_churches'          => $active_churches,
-                        'new_other_post_creations' => $new_other_post_creations,
-                        'baptisms'                 => ! is_wp_error( $baptisms ) ? array_sum( $baptisms ) : 0,
-                        'seeker_path_updates'      => $this->seeker_path_updates_total_count( $seeker_path_updates ),
-                        'health'                   => $health
+                        'new_contacts'        => $new_contacts,
+                        'first_meetings'      => $first_meetings,
+                        'ongoing_meetings'    => $ongoing_meetings,
+                        'baptisms'            => ! is_wp_error( $baptisms ) ? array_sum( $baptisms ) : 0,
+                        'seeker_path_updates' => $seeker_path_updates,
+                        'health'              => $health
                     ];
                 }
 
@@ -195,21 +210,6 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         return [];
     }
 
-    private function seeker_path_updates_total_count( $seeker_path_updates ): int {
-        if ( ! empty( $seeker_path_updates ) && is_array( $seeker_path_updates ) ) {
-            $total = 0;
-            foreach ( $seeker_path_updates as $update ) {
-                if ( isset( $update['value'] ) ) {
-                    $total += intval( $update['value'] );
-                }
-            }
-
-            return $total;
-        }
-
-        return 0;
-    }
-
     public function health_metrics( $start, $end ): array {
         global $wpdb;
 
@@ -222,41 +222,46 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
         $chart = [];
 
+        $start_ts = strtotime( $start . ' 00:00:00' );
+        $end_ts   = strtotime( $end . ' 00:00:00' );
+
         $results = $wpdb->get_results( $wpdb->prepare(
             "SELECT d.meta_value as health_key,
               count(distinct(a.ID)) as count,
               ( SELECT count(*)
-              FROM wp_posts as a
-                JOIN wp_postmeta as c
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as c
                   ON a.ID=c.post_id
                      AND c.meta_key = 'group_status'
                      AND c.meta_value = 'active'
-                JOIN wp_postmeta as d
+                JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                      AND d.meta_key = 'group_type'
                      AND ( d.meta_value = 'group' OR d.meta_value = 'church' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
-AND a.post_date >= %s
-AND a.post_date < %s
               ) as out_of
-              FROM wp_posts as a
-                JOIN wp_postmeta as c
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as c
                   ON a.ID=c.post_id
                      AND c.meta_key = 'group_status'
                      AND c.meta_value = 'active'
-                JOIN wp_postmeta as d
+                JOIN $wpdb->postmeta as d
                   ON ( a.ID=d.post_id
                     AND d.meta_key = 'health_metrics' )
-                JOIN wp_postmeta as e
+                JOIN $wpdb->postmeta as e
                   ON a.ID=e.post_id
                      AND e.meta_key = 'group_type'
                      AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
+
+                JOIN $wpdb->postmeta as f
+                    ON a.ID=f.post_id
+                        AND f.meta_key = 'last_modified'
+                        AND ( f.meta_value >= %d AND f.meta_value <= %d )
+
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
-AND a.post_date >= %s
-AND a.post_date < %s
-              GROUP BY d.meta_value", $start, $end, $start, $end ), ARRAY_A );
+              GROUP BY d.meta_value", $start_ts, $end_ts ), ARRAY_A );
 
         if ( $results ) {
             $out_of = 0;
@@ -280,19 +285,6 @@ AND a.post_date < %s
         }
 
         return $chart;
-    }
-
-    public function new_other_post_creations( $start, $end ): int {
-        global $wpdb;
-
-        $results = $wpdb->get_results( $wpdb->prepare(
-            "SELECT COUNT(*) new_other_post_creations_count
-FROM wp_posts
-WHERE (post_type != 'contacts')
-AND (post_date >= %s)
-AND (post_date < %s)", $start, $end ), ARRAY_A );
-
-        return ( ! empty( $results ) && isset( $results[0]['new_other_post_creations_count'] ) ) ? intval( $results[0]['new_other_post_creations_count'] ) : 0;
     }
 }
 

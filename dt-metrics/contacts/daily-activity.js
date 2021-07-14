@@ -14,16 +14,20 @@ jQuery(document).ready(function ($) {
     <div class="section-subheader">${window.lodash.escape(window.wp_js_object.translations.filter_to_date_range)}:</div>
     <br>
     <select id="activity_date_range_filter">
-        <option selected value="week">Past Week</option>
-        <option value="fortnight">Past Fortnight</option>
-        <option value="month">Past Month</option>
-        <option value="3-months">Past 3 Months</option>
+        <option selected value="this-month">This Month</option>
+        <option value="last-month">Last Month</option>
+        <option value="2-months-ago">2 Months Ago</option>
+        <option value="3-months-ago">3 Months Ago</option>
+        <option value="4-months-ago">4 Months Ago</option>
+        <option value="5-months-ago">5 Months Ago</option>
+        <option value="6-months-ago">6 Months Ago</option>
     </select>
     <div style="display: inline-block" class="loading-spinner"></div>
+    Click on chart timeline day summary to display a detailed list of metrics below.
     <div id="chartdiv" style="height: 600px;"></div><br>
     <h2 id="chart_day_title"></h2><hr>
-    <div id="chart_day_counts_div" style="display: none;height: 300px;"></div><br>
-    <div id="chart_day_health_counts_div" style="display: none; height: 300px;"></div>`);
+    <div id="chart_day_counts_div" style="display: none;"></div><br>
+    <div id="chart_day_health_counts_div" style="display: none;"></div>`);
 
     let start_date = window.wp_js_object.data.activities.start;
     let end_date = window.wp_js_object.data.activities.end;
@@ -38,10 +42,8 @@ jQuery(document).ready(function ($) {
 
     // Ensure to hide daily sub-charts.
     $('#chart_day_title').html('');
-    $('#chart_day_counts_div').fadeOut('fast', function () {
-    });
-    $('#chart_day_health_counts_div').fadeOut('fast', function () {
-    });
+    $('#chart_day_counts_div').fadeOut('fast', function () {});
+    $('#chart_day_health_counts_div').fadeOut('fast', function () {});
 
     // Proceed with chart creation.
     $('#chartdiv').fadeOut('fast', function () {
@@ -112,22 +114,28 @@ jQuery(document).ready(function ($) {
           series.columns.template.fillOpacity = 0.6;
 
           let imageBullet1 = series.bullets.push(new am4plugins_bullets.PinBullet());
-          imageBullet1.background.radius = 18;
+          imageBullet1.background.radius = 0;
           imageBullet1.locationX = 1;
           imageBullet1.propertyFields.stroke = "color";
           imageBullet1.background.propertyFields.fill = "color";
-          imageBullet1.image = new am4core.Image();
-          imageBullet1.image.propertyFields.href = "icon";
-          imageBullet1.image.scale = 0.7;
-          imageBullet1.circle.radius = am4core.percent(100);
+          //..imageBullet1.image = new am4core.Image();
+          //..imageBullet1.image.propertyFields.href = "icon";
+          //..imageBullet1.image.scale = 0.7;
+          //..imageBullet1.circle.radius = am4core.percent(100);
           imageBullet1.background.fillOpacity = 0.8;
           imageBullet1.background.strokeOpacity = 0;
           imageBullet1.dy = -2;
           imageBullet1.background.pointerBaseWidth = 10;
           imageBullet1.background.pointerLength = 10
-          imageBullet1.tooltipHTML = "{tooltip}";
+          imageBullet1.background.hide();
+          imageBullet1.background.disabled = true;
+          //..imageBullet1.tooltipHTML = "{tooltip}";
+          imageBullet1.label = new am4core.Label();
+          imageBullet1.label.html = "{tooltip}";
 
           // Capture bullet clicks and display count breakdowns accordingly!
+          imageBullet1.cursorOverStyle = am4core.MouseCursorStyle.pointer;
+          imageBullet1.cursorDownStyle = am4core.MouseCursorStyle.grabbing;
           imageBullet1.clickable = true;
           imageBullet1.events.on("hit", function (ev) {
             display_daily_counts(ev.target.dataItem.dataContext);
@@ -143,7 +151,7 @@ jQuery(document).ready(function ($) {
             return value;
           });
 
-          let hs = imageBullet1.states.create("hover")
+          let hs = imageBullet1.states.create("hover");
           hs.properties.scale = 1.3;
           hs.properties.opacity = 1;
 
@@ -183,7 +191,7 @@ jQuery(document).ready(function ($) {
 
           chart.events.on("inited", function () {
             setTimeout(function () {
-              hoverItem(series.dataItems.getIndex(0));
+              // DISABLE ROLLOVER FUNCTION // hoverItem(series.dataItems.getIndex(0));
             }, 2000)
           })
 
@@ -300,86 +308,100 @@ jQuery(document).ready(function ($) {
   function display_daily_counts(dataContext) {
     $('#chart_day_title').html(dataContext.text);
     display_day_counts(dataContext.counts);
-    display_day_health_counts(dataContext.counts.health);
   }
 
   function display_day_counts(day_counts) {
     //console.log(day_counts);
-    $('#chart_day_counts_div').fadeOut('fast', function () {
+    let chart_day_counts_div = $('#chart_day_counts_div');
+    chart_day_counts_div.fadeOut('fast', function () {
 
-      // Create chart instance
-      let chart = am4core.create("chart_day_counts_div", am4charts.PieChart);
+      let html = '<table>';
 
-      // Add data
-      chart.data = [{
-        "metric": "New Contacts",
-        "count": day_counts['new_contacts']
-      }, {
-        "metric": "Active Groups",
-        "count": day_counts['active_groups']
-      }, {
-        "metric": "Active Churches",
-        "count": day_counts['active_churches']
-      }, {
-        "metric": "Baptisms",
-        "count": day_counts['baptisms']
-      }, {
-        "metric": "Other Post Creations",
-        "count": day_counts['new_other_post_creations']
-      }, {
-        "metric": "Seeker Path Updates",
-        "count": day_counts['seeker_path_updates']
-      }, {
-        "metric": "First Meetings",
-        "count": day_counts['first_meetings']
-      }, {
-        "metric": "Ongoing Meetings",
-        "count": day_counts['ongoing_meetings']
-      }];
+      html += '<thead>';
+      html += '<tr>';
+      html += '<th>Metric</th>';
+      html += '<th>Count</th>';
+      html += '</tr>';
+      html += '</thead>';
 
-      // Add and configure Series
-      let pieSeries = chart.series.push(new am4charts.PieSeries());
-      pieSeries.dataFields.value = "count";
-      pieSeries.dataFields.category = "metric";
+      html += '<tbody>';
 
-      // Display Counts Chart
-      $('#chart_day_counts_div').fadeIn('slow', function () {
+      // Default Metrics
+      html += '<tr>';
+      html += '<td>New Contacts</td>';
+      html += '<td>' + day_counts['new_contacts'] + '</td>';
+      html += '</tr>';
+
+      html += '<tr>';
+      html += '<td>Baptisms</td>';
+      html += '<td>' + day_counts['baptisms'] + '</td>';
+      html += '</tr>';
+
+      html += '<tr>';
+      html += '<td>First Meetings</td>';
+      html += '<td>' + day_counts['first_meetings'] + '</td>';
+      html += '</tr>';
+
+      html += '<tr>';
+      html += '<td>Ongoing Meetings</td>';
+      html += '<td>' + day_counts['ongoing_meetings'] + '</td>';
+      html += '</tr>';
+
+      // Seeker Path Updates
+      let seeker_path_updates = day_counts['seeker_path_updates'];
+
+      html += '<tr>';
+      html += '<td>' + seeker_path_updates['attempted']['label'] + '</td>';
+      html += '<td>' + seeker_path_updates['attempted']['value'] + '</td>';
+      html += '</tr>';
+
+      html += '<tr>';
+      html += '<td>' + seeker_path_updates['coaching']['label'] + '</td>';
+      html += '<td>' + seeker_path_updates['coaching']['value'] + '</td>';
+      html += '</tr>';
+
+      html += '<tr>';
+      html += '<td>' + seeker_path_updates['established']['label'] + '</td>';
+      html += '<td>' + seeker_path_updates['established']['value'] + '</td>';
+      html += '</tr>';
+
+      html += '<tr>';
+      html += '<td>' + seeker_path_updates['met']['label'] + '</td>';
+      html += '<td>' + seeker_path_updates['met']['value'] + '</td>';
+      html += '</tr>';
+
+      html += '<tr>';
+      html += '<td>' + seeker_path_updates['none']['label'] + '</td>';
+      html += '<td>' + seeker_path_updates['none']['value'] + '</td>';
+      html += '</tr>';
+
+      html += '<tr>';
+      html += '<td>' + seeker_path_updates['ongoing']['label'] + '</td>';
+      html += '<td>' + seeker_path_updates['ongoing']['value'] + '</td>';
+      html += '</tr>';
+
+      html += '<tr>';
+      html += '<td>' + seeker_path_updates['scheduled']['label'] + '</td>';
+      html += '<td>' + seeker_path_updates['scheduled']['value'] + '</td>';
+      html += '</tr>';
+
+      // Health
+      let health = day_counts['health'];
+
+      health.forEach(function (metric) {
+        html += '<tr>';
+        html += '<td>' + metric['label'] + '</td>';
+        html += '<td>' + metric['practicing'] + '</td>';
+        html += '</tr>';
       });
 
-    });
-  }
+      html += '</tbody>';
+      html += '</table>';
 
-  function display_day_health_counts(day_health_counts) {
-    //console.log(day_health_counts);
-    $('#chart_day_health_counts_div').fadeOut('fast', function () {
+      chart_day_counts_div.html(html);
 
-      if (day_health_counts && day_health_counts.length > 0) {
-
-        // Create chart instance
-        let chart = am4core.create("chart_day_health_counts_div", am4charts.PieChart);
-
-        // Repackage health metrics ahead of adding to chart data
-        let data = [];
-
-        day_health_counts.forEach(function (health) {
-          data.push({
-            "metric": health['label'],
-            "practicing": health['practicing']
-          });
-        });
-
-        // Add data
-        chart.data = data;
-
-        // Add and configure Series
-        let pieSeries = chart.series.push(new am4charts.PieSeries());
-        pieSeries.dataFields.value = "practicing";
-        pieSeries.dataFields.category = "metric";
-
-        // Display Counts Chart
-        $('#chart_day_health_counts_div').fadeIn('slow', function () {
-        });
-      }
+      // Display Counts Chart
+      chart_day_counts_div.fadeIn('slow', function () {});
     });
   }
 
@@ -435,11 +457,11 @@ jQuery(document).ready(function ($) {
   }
 
   function fetch_tooltip(date, counts) {
-    let html = '<h4>' + date + '</h4><br>';
+    let html = '<h3>' + date + '</h3>';
     html += '<ul>';
     html += '<li>New Contacts: ' + counts['new_contacts'] + '</li>'
     html += '<li>Baptisms: ' + counts['baptisms'] + '</li>'
-    html += '<li>Active Groups: ' + counts['active_groups'] + '</li>'
+    //html += '<li>Active Groups: ' + counts['active_groups'] + '</li>'
     html += '</ul>';
 
     return html;
