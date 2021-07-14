@@ -407,9 +407,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                  */
                 $already_handled = apply_filters( 'dt_post_updated_custom_handled_meta', [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel", "tags", "user_select" ], $post_type );
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
-                    if ( isset( $post_settings["fields"][$field_key]['private'] ) && $post_settings["fields"][$field_key]['private'] ) {
-                        self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $fields, [] );
-                    } else {
+                    if ( !( isset( $post_settings["fields"][$field_key]['private'] ) && $post_settings["fields"][$field_key]['private'] ) ){
                         update_post_meta( $post_id, $field_key, $field_value );
                     }
                 }
