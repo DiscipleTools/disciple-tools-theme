@@ -50,6 +50,8 @@ class Disciple_Tools_Users
         add_filter( 'dt_settings_js_data', [ $this, 'add_current_locations_list' ], 10, 1 );
         add_filter( 'dt_settings_js_data', [ $this, 'add_date_availability' ], 10, 1 );
 
+        add_action( 'delete_user', [ $this,'dt_delete_user_contact_meta' ], 10, 1 );
+
         add_action( 'remove_user_from_blog', [ $this,'dt_delete_user_contact_meta' ], 10, 1 );
         add_action( 'wpmu_delete_user', [ $this,'dt_multisite_delete_user_contact_meta' ], 10, 1 );
 
