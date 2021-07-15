@@ -57,7 +57,6 @@ class Disciple_Tools_Metrics{
                     if ( !empty( $modules["access_module"]["enabled"] ) ){
                         require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-maps.php' );
                         require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
-                        require_once( get_template_directory() . '/dt-metrics/contacts/daily-activity.php' );
                         require_once( get_template_directory() . '/dt-metrics/contacts/overview.php' );
                     }
 
@@ -67,6 +66,7 @@ class Disciple_Tools_Metrics{
                     require_once( get_template_directory() . '/dt-metrics/groups/overview.php' );
 
                     // Combined
+                    require_once( get_template_directory() . '/dt-metrics/combined/daily-activity.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/locations-list.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
                     if ( !empty( $modules["access_module"]["enabled"] ) ){

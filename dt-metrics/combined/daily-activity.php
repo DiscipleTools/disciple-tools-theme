@@ -6,12 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
     //slug and title of the top menu folder
-    public $base_slug = 'contacts'; // lowercase
+    public $base_slug = 'combined'; // lowercase
     public $base_title;
     public $title;
     public $slug = 'daily-activity'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = '/dt-metrics/contacts/daily-activity.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-metrics/combined/daily-activity.js'; // should be full file name plus extension
     public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
 
     public function __construct() {
@@ -20,7 +20,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
             return;
         }
         $this->title      = __( 'Activity by Day', 'disciple_tools' );
-        $this->base_title = __( 'Contacts', 'disciple_tools' );
+        $this->base_title = __( 'Project', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
@@ -114,7 +114,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         switch ( $date_range ) {
             case 'this-month':
                 $start = gmdate( 'Y-m-01' );
-                $end   = gmdate( 'Y-m-d', strtotime( '+1 day' ) );
+                $end   = gmdate( 'Y-m-d', strtotime( '+3 day' ) );
                 break;
             case 'last-month':
                 $base_ts = strtotime( '-1 month' );
@@ -180,20 +180,12 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                     $next_day_ts    = strtotime( $next_day_format );
 
                     $new_contacts        = Disciple_Tools_Counter_Contacts::get_contacts_count( 'new_contacts', $current_day_ts, $next_day_ts );
-                    $first_meetings      = Disciple_Tools_Counter_Contacts::get_contacts_count( 'first_meetings', $current_day_ts, $next_day_ts );
-                    $ongoing_meetings    = $this->seeker_path_metrics( $current_day_ts, $next_day_ts, 'ongoing' ) + $this->seeker_path_metrics( $current_day_ts, $next_day_ts, 'coaching' );
                     $seeker_path_updates = Disciple_Tools_Counter_Contacts::seeker_path_activity( $current_day_ts, $next_day_ts );
-
-                    $baptisms = Disciple_Tools_Counter_Baptism::get_baptism_generations( $current_day_ts, $next_day_ts );
-
-                    $health = $this->health_metrics( $current_day_ts, $next_day_ts );
+                    $health              = $this->health_metrics( $current_day_ts, $next_day_ts );
 
                     // Package counts
                     $daily_activities[ $current_day_format ] = [
                         'new_contacts'        => $new_contacts,
-                        'first_meetings'      => $first_meetings,
-                        'ongoing_meetings'    => $ongoing_meetings,
-                        'baptisms'            => ! is_wp_error( $baptisms ) ? array_sum( $baptisms ) : 0,
                         'seeker_path_updates' => $seeker_path_updates,
                         'health'              => $health
                     ];
@@ -283,26 +275,6 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         }
 
         return $chart;
-    }
-
-    private function seeker_path_metrics( $current_day_ts, $next_day_ts, $option ): int {
-        global $wpdb;
-
-        return $wpdb->get_var( $wpdb->prepare( "
-            SELECT COUNT(DISTINCT(a.ID)) as count
-            FROM $wpdb->posts as a
-            JOIN $wpdb->postmeta as b
-            ON a.ID = b.post_id
-               AND b.meta_key = 'seeker_path'
-               AND b.meta_value = %s
-            JOIN $wpdb->dt_activity_log as time
-            ON
-                time.object_id = a.ID
-                AND time.object_type = 'contacts'
-                AND time.meta_key = 'seeker_path'
-                AND time.meta_value = %s
-                AND time.hist_time BETWEEN %d AND %d
-        ", $option, $option, $current_day_ts, $next_day_ts ) );
     }
 }
 
