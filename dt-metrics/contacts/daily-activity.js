@@ -220,7 +220,7 @@ jQuery(document).ready(function ($) {
           }
 
           // Respond to filter date range changes
-          $(document).on('change', '#activity_date_range_filter', function () {
+          $(document).off('change').on('change', '#activity_date_range_filter', function () {
             refresh_daily_activity_chart(chart, $('#activity_date_range_filter').val());
           });
 
@@ -421,12 +421,11 @@ jQuery(document).ready(function ($) {
         },
       })
       .done(function (data) {
-
         // Disable loading spinner
         $(".loading-spinner").removeClass("active");
 
-        //console.log(data);
-        //chart.dispose();
+        console.log(data);
+        chart.dispose(); // Force chart disposal
         display_daily_activity_chart(data.start, data.end, data.days);
       })
       .fail(function (err) {

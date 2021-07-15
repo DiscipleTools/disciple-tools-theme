@@ -181,12 +181,12 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
                     $new_contacts        = Disciple_Tools_Counter_Contacts::get_contacts_count( 'new_contacts', $current_day_ts, $next_day_ts );
                     $first_meetings      = Disciple_Tools_Counter_Contacts::get_contacts_count( 'first_meetings', $current_day_ts, $next_day_ts );
-                    $ongoing_meetings    = Disciple_Tools_Counter_Contacts::get_contacts_count( 'ongoing_meetings', $current_day_ts, $next_day_ts );
+                    $ongoing_meetings    = $this->seeker_path_metrics( $current_day_ts, $next_day_ts, 'ongoing' ) + $this->seeker_path_metrics( $current_day_ts, $next_day_ts, 'coaching' );
                     $seeker_path_updates = Disciple_Tools_Counter_Contacts::seeker_path_activity( $current_day_ts, $next_day_ts );
 
                     $baptisms = Disciple_Tools_Counter_Baptism::get_baptism_generations( $current_day_ts, $next_day_ts );
 
-                    $health = $this->health_metrics( $current_day_format, $next_day_format );
+                    $health = $this->health_metrics( $current_day_ts, $next_day_ts );
 
                     // Package counts
                     $daily_activities[ $current_day_format ] = [
@@ -210,7 +210,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         return [];
     }
 
-    public function health_metrics( $start, $end ): array {
+    private function health_metrics( $start, $end ): array {
         global $wpdb;
 
         $group_fields = DT_Posts::get_post_field_settings( "groups" );
@@ -221,9 +221,6 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         }
 
         $chart = [];
-
-        $start_ts = strtotime( $start . ' 00:00:00' );
-        $end_ts   = strtotime( $end . ' 00:00:00' );
 
         $results = $wpdb->get_results( $wpdb->prepare(
             "SELECT d.meta_value as health_key,
@@ -254,14 +251,15 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                      AND e.meta_key = 'group_type'
                      AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
 
-                JOIN $wpdb->postmeta as f
-                    ON a.ID=f.post_id
-                        AND f.meta_key = 'last_modified'
-                        AND ( f.meta_value >= %d AND f.meta_value <= %d )
+                JOIN $wpdb->dt_activity_log f
+                    ON a.ID = f.object_id
+                        AND f.object_type = 'groups'
+                        AND f.meta_key = 'health_metrics'
+                        AND f.hist_time BETWEEN %d AND %d
 
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
-              GROUP BY d.meta_value", $start_ts, $end_ts ), ARRAY_A );
+              GROUP BY d.meta_value", $start, $end ), ARRAY_A );
 
         if ( $results ) {
             $out_of = 0;
@@ -285,6 +283,26 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         }
 
         return $chart;
+    }
+
+    private function seeker_path_metrics( $current_day_ts, $next_day_ts, $option ): int {
+        global $wpdb;
+
+        return $wpdb->get_var( $wpdb->prepare( "
+            SELECT COUNT(DISTINCT(a.ID)) as count
+            FROM $wpdb->posts as a
+            JOIN $wpdb->postmeta as b
+            ON a.ID = b.post_id
+               AND b.meta_key = 'seeker_path'
+               AND b.meta_value = %s
+            JOIN $wpdb->dt_activity_log as time
+            ON
+                time.object_id = a.ID
+                AND time.object_type = 'contacts'
+                AND time.meta_key = 'seeker_path'
+                AND time.meta_value = %s
+                AND time.hist_time BETWEEN %d AND %d
+        ", $option, $option, $current_day_ts, $next_day_ts ) );
     }
 }
 
