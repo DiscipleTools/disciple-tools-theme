@@ -79,24 +79,20 @@ jQuery(document).ready(function($) {
     constrainInput: false,
     dateFormat: 'yy-mm-dd',
     onClose: function (date) {
-      if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
-        // do nothing
-      } else {
-        date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
+      date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
 
-        if (!$(this).val()) {
-          date = " ";//null;
-        }
-        let id = $(this).attr('id')
-        $(`#${id}-spinner`).addClass('active')
-        rest_api.update_post( post_type, post_id, { [id]: moment.utc(date).unix() }).then((resp)=>{
-          $(`#${id}-spinner`).removeClass('active')
-          if (this.value) {
-            this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
-          }
-          $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
-        }).catch(handleAjaxError)
+      if (!$(this).val()) {
+        date = " ";//null;
       }
+      let id = $(this).attr('id')
+      $(`#${id}-spinner`).addClass('active')
+      rest_api.update_post( post_type, post_id, { [id]: moment.utc(date).unix() }).then((resp)=>{
+        $(`#${id}-spinner`).removeClass('active')
+        if (this.value) {
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+        }
+        $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
+      }).catch(handleAjaxError)
     },
     changeMonth: true,
     changeYear: true,
@@ -333,7 +329,8 @@ jQuery(document).ready(function($) {
 
 
   $('.dt_typeahead').each((key, el)=>{
-    let field_id = $(el).attr('id').replace('_connection', '')
+    let div_id = $(el).attr('id')
+    let field_id = $(`#${div_id} input`).data('field')
     let listing_post_type = window.lodash.get(window.detailsSettings.post_settings.fields[field_id], "post_type", 'contacts')
     $.typeahead({
       input: `.js-typeahead-${field_id}`,

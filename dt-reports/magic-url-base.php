@@ -136,6 +136,7 @@ abstract class DT_Magic_Url_Base {
             [
                 'jquery',
                 'jquery-core',
+                'jquery-ui',
                 'lodash',
                 'lodash-core',
                 'site-js',

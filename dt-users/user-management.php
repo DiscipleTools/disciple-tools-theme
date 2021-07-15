@@ -138,6 +138,7 @@ class DT_User_Management
 
 
             wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', $dependencies, filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
+
             wp_localize_script(
                 'dt_dispatcher_tools', 'dt_user_management_localized', [
                     'root'               => esc_url_raw( rest_url() ),
@@ -166,7 +167,8 @@ class DT_User_Management
                         'remove' => __( 'Remove', 'disciple_tools' ),
                         'already_user' => __( 'This contact is already a user.', 'disciple_tools' ),
                         'view_user' => __( 'View User', 'disciple_tools' ),
-                    ]
+                    ],
+                    'language_dropdown' => self::dt_languages(),
 
                 ]
             );
@@ -178,6 +180,30 @@ class DT_User_Management
         }
     }
 
+    public function dt_languages() {
+        $languages = array();
+        $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+        $translations = dt_get_translations();
+        $site_default_locale = get_option( 'WPLANG' );
+
+        //add English to the list
+        $languages['en-US'] = array(
+                'language' => '',
+                'english_name' => 'English (United States)',
+                'native_name' => 'English (United States)',
+                'site_default' => ( $site_default_locale == '' ) ? true : false
+        );
+
+        foreach ( $dt_available_languages as $langcode ) {
+            $languages[$langcode] = array(
+                'language' => $langcode,
+                'english_name' => $translations[$langcode]['english_name'],
+                'native_name' => $translations[$langcode]['native_name'],
+                'site_default' => ( $site_default_locale == $langcode ) ? true : false
+            );
+        }
+        return $languages;
+    }
     public function get_dt_user( $user_id, $section = null ) {
         if ( ! $this->has_permission() ) {
             return new WP_Error( __METHOD__, "Permission error", [ 'status' => 403 ] );
