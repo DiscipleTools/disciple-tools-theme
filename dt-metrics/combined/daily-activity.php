@@ -184,12 +184,13 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                     $next_day_ts    = strtotime( $next_day_format );
 
                     $new_contacts        = Disciple_Tools_Counter_Contacts::get_contacts_count( 'new_contacts', $current_day_ts, $next_day_ts );
+                    $new_groups          = $this->new_groups_count( $current_day_format, $next_day_format );
                     $seeker_path_updates = Disciple_Tools_Counter_Contacts::seeker_path_activity( $current_day_ts, $next_day_ts );
                     $health              = $this->health_metrics( $current_day_ts, $next_day_ts, $group_fields_settings );
 
                     $multiselect_fields = [];
                     foreach ( $contact_field_settings as $field_key => $field_settings ) {
-                        if ( isset( $field_settings['type'] ) && $field_settings['type'] === 'multi_select' ) {
+                        if ( isset( $field_settings['type'] ) && ( $field_settings['type'] === 'multi_select' ) && in_array( $field_key, [ 'milestones' ] ) ) {
                             $metrics = $this->multiselect_field_metrics( $current_day_ts, $next_day_ts, $field_key );
                             if ( ! empty( $metrics ) ) {
                                 foreach ( $metrics as $metric ) {
@@ -205,6 +206,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                     // Package counts
                     $daily_activities[ $current_day_format ] = [
                         'new_contacts'        => $new_contacts,
+                        'new_groups'          => $new_groups,
                         'seeker_path_updates' => $seeker_path_updates,
                         'health'              => $health,
                         'multiselect_fields'  => $multiselect_fields
@@ -300,26 +302,43 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
         return $wpdb->get_results( $wpdb->prepare( "
         SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as `label`
-            FROM wp_dt_activity_log log
-            INNER JOIN wp_postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
-            INNER JOIN wp_posts post
-            ON (
-                post.ID = log.object_id
-                AND post.post_type = 'contacts'
-                AND post.post_status = 'publish'
-            )
-            INNER JOIN wp_postmeta pm
-            ON (
-                pm.post_id = post.ID
-                AND pm.meta_key = %s
-                AND pm.meta_value = log.meta_value
-            )
-            WHERE log.meta_key = %s
-            AND log.object_type = 'contacts'
-            AND log.hist_time BETWEEN %d AND %d
-            GROUP BY log.meta_value
+        FROM $wpdb->dt_activity_log log
+        INNER JOIN $wpdb->postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
+        INNER JOIN $wpdb->posts post
+        ON (
+            post.ID = log.object_id
+            AND post.post_type = 'contacts'
+            AND post.post_status = 'publish'
+        )
+        INNER JOIN $wpdb->postmeta pm
+        ON (
+            pm.post_id = post.ID
+            AND pm.meta_key = %s
+            AND pm.meta_value = log.meta_value
+        )
+        WHERE log.meta_key = %s
+        AND log.object_type = 'contacts'
+        AND log.hist_time BETWEEN %d AND %d
+        GROUP BY log.meta_value
         ", $field_name, $field_name, $start, $end ) );
 
+    }
+
+    private function new_groups_count( $start, $end ): int {
+        global $wpdb;
+
+        return $wpdb->get_var( $wpdb->prepare( "
+        SELECT COUNT(ID) as count
+        FROM $wpdb->posts
+        WHERE post_type = 'groups'
+          AND post_status = 'publish'
+          AND post_date BETWEEN %s AND %s
+          AND ID NOT IN (
+            SELECT post_id
+            FROM $wpdb->postmeta
+            WHERE meta_key = 'type' AND  meta_value = 'user'
+            GROUP BY post_id)
+        ", $start, $end ) );
     }
 }
 

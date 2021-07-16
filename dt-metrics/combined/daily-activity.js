@@ -327,6 +327,13 @@ jQuery(document).ready(function ($) {
         metrics_html += '</tr>';
       }
 
+      if (parseInt(day_counts['new_groups']) > 0) {
+        metrics_html += '<tr>';
+        metrics_html += '<td>New Groups</td>';
+        metrics_html += '<td>' + day_counts['new_groups'] + '</td>';
+        metrics_html += '</tr>';
+      }
+
       // Seeker Path Updates
       let seeker_path_updates = day_counts['seeker_path_updates'];
 
@@ -382,14 +389,21 @@ jQuery(document).ready(function ($) {
       // Health
       let health = day_counts['health'];
 
-      health.forEach(function (metric) {
-        if (parseInt(metric['practicing']) > 0) {
-          metrics_html += '<tr>';
-          metrics_html += '<td>' + metric['label'] + '</td>';
-          metrics_html += '<td>' + metric['practicing'] + '</td>';
-          metrics_html += '</tr>';
-        }
-      });
+      if (health && health.length > 0) {
+        metrics_html += '<tr>';
+        metrics_html += '<td colspan="2" style="background-color:#E8E8E8FF;">Health</td>';
+        metrics_html += '</tr>';
+
+        // Iterate over each field option
+        health.forEach(function (metric) {
+          if (parseInt(metric['practicing']) > 0) {
+            metrics_html += '<tr>';
+            metrics_html += '<td style="padding-left: 50px;"><li>' + metric['label'] + '</li></td>';
+            metrics_html += '<td>' + metric['practicing'] + '</td>';
+            metrics_html += '</tr>';
+          }
+        });
+      }
 
       // Multiselect Fields
       let multiselect_fields = day_counts['multiselect_fields'];
@@ -491,6 +505,7 @@ jQuery(document).ready(function ($) {
     let html = '<h3>' + date + '</h3>';
     html += '<ul>';
     html += '<li>New Contacts: ' + counts['new_contacts'] + '</li>'
+    html += '<li>New Groups: ' + counts['new_groups'] + '</li>'
     html += '</ul>';
 
     return html;
