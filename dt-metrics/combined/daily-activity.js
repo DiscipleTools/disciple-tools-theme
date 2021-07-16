@@ -391,6 +391,25 @@ jQuery(document).ready(function ($) {
         }
       });
 
+      // Multiselect Fields
+      let multiselect_fields = day_counts['multiselect_fields'];
+      for (let [field_key, field_value] of Object.entries(multiselect_fields)) {
+        metrics_html += '<tr>';
+        metrics_html += '<td colspan="2" style="background-color:#E8E8E8FF;">' + field_key + '</td>';
+        metrics_html += '</tr>';
+
+        // Iterate over each field option
+        field_value.forEach(function (metric) {
+          if (parseInt(metric['value']) > 0) {
+            metrics_html += '<tr>';
+            metrics_html += '<td style="padding-left: 50px;"><li>' + metric['label'] + '</li></td>';
+            metrics_html += '<td>' + metric['value'] + '</td>';
+            metrics_html += '</tr>';
+          }
+        });
+      }
+
+      // Wrap it all up, with a bow! ;)
       let html = '';
       if (metrics_html) {
         html += '<table>';

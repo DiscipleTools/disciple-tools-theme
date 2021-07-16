@@ -119,32 +119,32 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
             case 'last-month':
                 $base_ts = strtotime( '-1 month' );
                 $start   = gmdate( 'Y-m-01', $base_ts );
-                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +3 day' ) );
                 break;
             case '2-months-ago':
                 $base_ts = strtotime( '-2 months' );
                 $start   = gmdate( 'Y-m-01', $base_ts );
-                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +3 day' ) );
                 break;
             case '3-months-ago':
                 $base_ts = strtotime( '-3 months' );
                 $start   = gmdate( 'Y-m-01', $base_ts );
-                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +3 day' ) );
                 break;
             case '4-months-ago':
                 $base_ts = strtotime( '-4 months' );
                 $start   = gmdate( 'Y-m-01', $base_ts );
-                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +3 day' ) );
                 break;
             case '5-months-ago':
                 $base_ts = strtotime( '-5 months' );
                 $start   = gmdate( 'Y-m-01', $base_ts );
-                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +3 day' ) );
                 break;
             case '6-months-ago':
                 $base_ts = strtotime( '-6 months' );
                 $start   = gmdate( 'Y-m-01', $base_ts );
-                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +1 day' ) );
+                $end     = gmdate( 'Y-m-d', strtotime( gmdate( 'Y-m-t', $base_ts ) . ' +3 day' ) );
                 break;
         }
 
@@ -167,6 +167,10 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
             if ( ! empty( $days ) ) {
 
+                // Fetch field settings
+                $contact_field_settings = DT_Posts::get_post_field_settings( "contacts" );
+                $group_fields_settings  = DT_Posts::get_post_field_settings( "groups" );
+
                 // Cycle through each day with range and obtain required metric counts
                 $daily_activities = [];
 
@@ -181,13 +185,29 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
                     $new_contacts        = Disciple_Tools_Counter_Contacts::get_contacts_count( 'new_contacts', $current_day_ts, $next_day_ts );
                     $seeker_path_updates = Disciple_Tools_Counter_Contacts::seeker_path_activity( $current_day_ts, $next_day_ts );
-                    $health              = $this->health_metrics( $current_day_ts, $next_day_ts );
+                    $health              = $this->health_metrics( $current_day_ts, $next_day_ts, $group_fields_settings );
+
+                    $multiselect_fields = [];
+                    foreach ( $contact_field_settings as $field_key => $field_settings ) {
+                        if ( isset( $field_settings['type'] ) && $field_settings['type'] === 'multi_select' ) {
+                            $metrics = $this->multiselect_field_metrics( $current_day_ts, $next_day_ts, $field_key );
+                            if ( ! empty( $metrics ) ) {
+                                foreach ( $metrics as $metric ) {
+                                    $multiselect_fields[ $field_settings['name'] ][] = [
+                                        'label' => $field_settings['default'][ $metric->label ]['label'] ?? $metric->label,
+                                        'value' => $metric->value
+                                    ];
+                                }
+                            }
+                        }
+                    }
 
                     // Package counts
                     $daily_activities[ $current_day_format ] = [
                         'new_contacts'        => $new_contacts,
                         'seeker_path_updates' => $seeker_path_updates,
-                        'health'              => $health
+                        'health'              => $health,
+                        'multiselect_fields'  => $multiselect_fields
                     ];
                 }
 
@@ -202,12 +222,10 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         return [];
     }
 
-    private function health_metrics( $start, $end ): array {
+    private function health_metrics( $start, $end, $group_fields ): array {
         global $wpdb;
 
-        $group_fields = DT_Posts::get_post_field_settings( "groups" );
-        $labels       = [];
-
+        $labels = [];
         foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) {
             $labels[ $key ] = $option["label"];
         }
@@ -275,6 +293,33 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         }
 
         return $chart;
+    }
+
+    private function multiselect_field_metrics( $start, $end, $field_name ): array {
+        global $wpdb;
+
+        return $wpdb->get_results( $wpdb->prepare( "
+        SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as `label`
+            FROM wp_dt_activity_log log
+            INNER JOIN wp_postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
+            INNER JOIN wp_posts post
+            ON (
+                post.ID = log.object_id
+                AND post.post_type = 'contacts'
+                AND post.post_status = 'publish'
+            )
+            INNER JOIN wp_postmeta pm
+            ON (
+                pm.post_id = post.ID
+                AND pm.meta_key = %s
+                AND pm.meta_value = log.meta_value
+            )
+            WHERE log.meta_key = %s
+            AND log.object_type = 'contacts'
+            AND log.hist_time BETWEEN %d AND %d
+            GROUP BY log.meta_value
+        ", $field_name, $field_name, $start, $end ) );
+
     }
 }
 
