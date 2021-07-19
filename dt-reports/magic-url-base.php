@@ -92,7 +92,7 @@ abstract class DT_Magic_Url_Base {
      * @note Copy function to 'extends' class to override or modify
      * @return string
      */
-    public function page_tab_title( ){
+    public function page_tab_title(){
         return $this->page_title;
     }
 
