@@ -14,8 +14,8 @@ abstract class DT_Magic_Url_Base {
 
     public $module = ""; // lets a magic url be a module as well
 
-    public $allowed_scripts = [];
-    public $allowed_styles = [];
+    public $allowed_scripts = [ 'lodash', 'lodash-core', 'site-js', 'shared-functions', 'moment', 'datepicker' ];
+    public $allowed_styles = [ 'foundation-css', 'site-css', 'datepicker-css' ];
 
     public function __construct() {
 
@@ -135,14 +135,7 @@ abstract class DT_Magic_Url_Base {
             $this->allowed_scripts,
             [
                 'jquery',
-                'jquery-core',
                 'jquery-ui',
-                'lodash',
-                'lodash-core',
-                'site-js',
-                'shared-functions',
-                'moment',
-                'datepicker'
             ]
         );
 
@@ -170,10 +163,7 @@ abstract class DT_Magic_Url_Base {
         $allowed_css = array_merge(
             $this->allowed_styles,
             [
-                'foundation-css',
-                'site-css',
                 'jquery-ui-site-css',
-                'datepicker-css',
             ]
         );
 
