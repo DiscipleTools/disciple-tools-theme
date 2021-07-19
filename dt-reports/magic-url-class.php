@@ -180,6 +180,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     'public_key' => '',
                     'action' => '',
                     'post_id' => '',
+                    'post_type' => '',
                 ];
                 if ( isset( $parts[0] ) && ! empty( $parts[0] ) ){
                     $elements['root'] = $parts[0];
@@ -232,6 +233,9 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         return false;
                     }
                 }
+                if ( isset( $all_types[$elements['root']][$elements['type']]['post_type'] ) ) {
+                    $elements['post_type'] = $all_types[$elements['root']][$elements['type']]['post_type'];
+                }
                 return $elements;
             }
             return false;
@@ -259,6 +263,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     'public_key' => '',
                     'action' => '',
                     'post_id' => '',
+                    'post_type' => '',
                 ];
                 if ( isset( $parts[1] ) && ! empty( $parts[1] ) ){
                     $elements['root'] = $parts[1];
@@ -287,8 +292,8 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
                     if ( 'user' === $types[$elements['type']]['post_type'] ) {
                         // if user
-                        $user_id = self::get_user_id( $elements['meta_key'], $parts[2] );
-                        if ( ! $user_id ){ // fail if no post id for public key
+                        $user_id = self::get_user_id( $elements['meta_key'], $public_key );
+                        if ( ! $user_id ){ // fail if no user id for public key
                             return false;
                         } else {
                             $elements['post_id'] = $user_id;
@@ -302,6 +307,9 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                             $elements['post_id'] = $post_id;
                         }
                     }
+                }
+                if ( isset( $all_types[$elements['root']][$elements['type']]['post_type'] ) ) {
+                    $elements['post_type'] = $all_types[$elements['root']][$elements['type']]['post_type'];
                 }
 
                 return $elements;
@@ -317,6 +325,27 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * @return bool
          */
         public function verify_rest_endpoint_permissions_on_post( WP_REST_Request $request ){
+            $params = $request->get_params();
+            if ( !isset( $params["parts"]["meta_key"], $params["parts"]["public_key"], $params["parts"]["post_id"], $params["parts"]["type"], $params["parts"]["root"] ) ){
+                return false;
+            }
+            $parts = $this->parse_wp_rest_url_parts( $params["parts"]["public_key"] );
+            if ( empty( $parts ) ){
+                return false;
+            }
+            if ( $parts["root"] !== $params["parts"]["root"] || $parts["type"] !== $params["parts"]["type"] ){
+                return false;
+            }
+            if ( $parts["meta_key"] !== $params["parts"]["meta_key"] || $parts["public_key"] !== $params["parts"]["public_key"] ){
+                return false;
+            }
+            if ( $parts["post_id"] !== $params["parts"]["post_id"] ){
+                return false;
+            }
+            return true;
+        }
+
+        public function verify_rest_endpoint_permissions_on_user( WP_REST_Request $request ){
             $params = $request->get_params();
             if ( !isset( $params["parts"]["meta_key"], $params["parts"]["public_key"], $params["parts"]["post_id"], $params["parts"]["type"], $params["parts"]["root"] ) ){
                 return false;
