@@ -195,12 +195,14 @@ class DT_User_Management
         );
 
         foreach ( $dt_available_languages as $langcode ) {
-            $languages[$langcode] = array(
-                'language' => $langcode,
-                'english_name' => $translations[$langcode]['english_name'],
-                'native_name' => $translations[$langcode]['native_name'],
-                'site_default' => ( $site_default_locale == $langcode ) ? true : false
-            );
+            if ( isset( $translations[$langcode] ) ) {
+                $languages[$langcode] = array(
+                    'language' => $langcode,
+                    'english_name' => $translations[$langcode]['english_name'],
+                    'native_name' => $translations[$langcode]['native_name'],
+                    'site_default' => ( $site_default_locale == $langcode ) ? true : false
+                );
+            }
         }
         return $languages;
     }
