@@ -14,7 +14,9 @@ abstract class DT_Magic_Url_Base {
 
     public $module = ""; // lets a magic url be a module as well
 
+    // @note site-js is required to use foundations framework
     public $allowed_scripts = [ 'lodash', 'lodash-core', 'site-js', 'shared-functions', 'moment', 'datepicker' ];
+    // @note foundation-css and site-css are required to use foundations framework
     public $allowed_styles = [ 'foundation-css', 'site-css', 'datepicker-css' ];
 
     public function __construct() {
@@ -45,8 +47,11 @@ abstract class DT_Magic_Url_Base {
             return true;
         }, 100, 1 );
         add_filter( "dt_blank_title", [ $this, "page_tab_title" ] ); // adds basic title to browser tab
-        add_action( 'wp_print_scripts', [ $this, 'print_scripts' ], 1500 ); // adds script links to header
-        add_action( 'wp_print_styles', [ $this, 'print_styles' ], 1500 ); // adds styles links to header
+        add_action( 'wp_print_scripts', [ $this, 'print_scripts' ], 1500 ); // authorizes scripts
+        add_action( 'wp_print_styles', [ $this, 'print_styles' ], 1500 ); // authorizes styles
+
+        add_action( 'dt_blank_head', [ $this, '_header' ] );
+        add_action( 'dt_blank_footer', [ $this, '_footer' ] );
     }
 
     /**
@@ -164,6 +169,8 @@ abstract class DT_Magic_Url_Base {
     }
 
     /**
+     * Authorizes scripts allowed to load in magic link
+     *
      * Controls the linked scripts loaded into the header.
      * @note This overrides standard DT header assets which natively have login authentication requirements.
      */
@@ -197,6 +204,8 @@ abstract class DT_Magic_Url_Base {
     }
 
     /**
+     * Authorizes styles allowed to load in magic link
+     *
      * Controls the linked styles loaded into the header.
      * @note This overrides standard DT header assets.
      */
