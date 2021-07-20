@@ -60,13 +60,13 @@ function dt_dra_disable_via_filters() {
  *
  * @param  $access
  *
- * @return WP_Error
+ * @return bool|WP_Error
  */
 function dt_dra_only_allow_logged_in_rest_access( $access ) {
     /*
      * Disable the built in Wordpress API because it opens all users and contacts to anyone who is logged in.
      */
-    if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/wp-json/wp/' ) !== false ) {
+    if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/wp-json/wp/' ) !== false && ! user_can( get_current_user_id(), 'wp_api_allowed_user' ) ) {
         return new WP_Error( 'wp_api_disabled', 'The Wordpress built in API is disabled.', [ 'status' => rest_authorization_required_code() ] );
     }
 
