@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 abstract class DT_Magic_Url_Base {
     public $magic = false;
@@ -13,11 +14,6 @@ abstract class DT_Magic_Url_Base {
     ];
 
     public $module = ""; // lets a magic url be a module as well
-
-    // @note site-js is required to use foundations framework
-    public $allowed_scripts = [ 'lodash', 'lodash-core', 'site-js', 'shared-functions', 'moment', 'datepicker' ];
-    // @note foundation-css and site-css are required to use foundations framework
-    public $allowed_styles = [ 'foundation-css', 'site-css', 'datepicker-css' ];
 
     public function __construct() {
 
@@ -176,13 +172,16 @@ abstract class DT_Magic_Url_Base {
      */
     public function print_scripts(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_js = array_merge(
-            $this->allowed_scripts,
-            [
-                'jquery',
-                'jquery-ui',
-            ]
-        );
+        $allowed_js = apply_filters( 'dt_magic_url_base_allowed_js', [
+            'jquery',
+            'jquery-ui',
+            'lodash',
+            'lodash-core',
+            'site-js',
+            'shared-functions',
+            'moment',
+            'datepicker'
+        ]);
 
         global $wp_scripts;
 
@@ -211,12 +210,12 @@ abstract class DT_Magic_Url_Base {
      */
     public function print_styles(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_css = array_merge(
-            $this->allowed_styles,
-            [
-                'jquery-ui-site-css',
-            ]
-        );
+        $allowed_css = apply_filters( 'dt_magic_url_base_allowed_css', [
+            'jquery-ui-site-css',
+            'foundation-css',
+            'site-css',
+            'datepicker-css'
+        ]);
 
         global $wp_styles;
         if ( isset( $wp_styles ) ) {

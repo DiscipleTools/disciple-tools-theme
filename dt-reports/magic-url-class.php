@@ -345,27 +345,6 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return true;
         }
 
-        public function verify_rest_endpoint_permissions_on_user( WP_REST_Request $request ){
-            $params = $request->get_params();
-            if ( !isset( $params["parts"]["meta_key"], $params["parts"]["public_key"], $params["parts"]["post_id"], $params["parts"]["type"], $params["parts"]["root"] ) ){
-                return false;
-            }
-            $parts = $this->parse_wp_rest_url_parts( $params["parts"]["public_key"] );
-            if ( empty( $parts ) ){
-                return false;
-            }
-            if ( $parts["root"] !== $params["parts"]["root"] || $parts["type"] !== $params["parts"]["type"] ){
-                return false;
-            }
-            if ( $parts["meta_key"] !== $params["parts"]["meta_key"] || $parts["public_key"] !== $params["parts"]["public_key"] ){
-                return false;
-            }
-            if ( $parts["post_id"] !== $params["parts"]["post_id"] ){
-                return false;
-            }
-            return true;
-        }
-
         public function get_post_id( string $meta_key, string $public_key ){
             global $wpdb;
             $result = $wpdb->get_var( $wpdb->prepare( "
