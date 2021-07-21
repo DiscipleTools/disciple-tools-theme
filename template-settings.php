@@ -3,6 +3,10 @@
 Template Name: Settings
 */
 dt_please_log_in();
+if ( ! current_user_can( 'access_contacts' ) ) {
+    wp_safe_redirect( '/registered' );
+    exit();
+}
 /* Process $_POST content */
 // We're not checking the nonce here because update_user_contact_info will
 // phpcs:ignore
