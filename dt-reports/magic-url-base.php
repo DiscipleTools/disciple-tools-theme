@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 abstract class DT_Magic_Url_Base {
     public $magic = false;
@@ -13,9 +14,6 @@ abstract class DT_Magic_Url_Base {
     ];
 
     public $module = ""; // lets a magic url be a module as well
-
-    public $allowed_scripts = [ 'lodash', 'lodash-core', 'site-js', 'shared-functions', 'moment', 'datepicker' ];
-    public $allowed_styles = [ 'foundation-css', 'site-css', 'datepicker-css' ];
 
     public function __construct() {
 
@@ -45,8 +43,11 @@ abstract class DT_Magic_Url_Base {
             return true;
         }, 100, 1 );
         add_filter( "dt_blank_title", [ $this, "page_tab_title" ] ); // adds basic title to browser tab
-        add_action( 'wp_print_scripts', [ $this, 'print_scripts' ], 1500 ); // adds script links to header
-        add_action( 'wp_print_styles', [ $this, 'print_styles' ], 1500 ); // adds styles links to header
+        add_action( 'wp_print_scripts', [ $this, 'print_scripts' ], 1500 ); // authorizes scripts
+        add_action( 'wp_print_styles', [ $this, 'print_styles' ], 1500 ); // authorizes styles
+
+        add_action( 'dt_blank_head', [ $this, '_header' ] );
+        add_action( 'dt_blank_footer', [ $this, '_footer' ] );
     }
 
     /**
@@ -164,18 +165,23 @@ abstract class DT_Magic_Url_Base {
     }
 
     /**
+     * Authorizes scripts allowed to load in magic link
+     *
      * Controls the linked scripts loaded into the header.
      * @note This overrides standard DT header assets which natively have login authentication requirements.
      */
     public function print_scripts(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_js = array_merge(
-            $this->allowed_scripts,
-            [
-                'jquery',
-                'jquery-ui',
-            ]
-        );
+        $allowed_js = apply_filters( 'dt_magic_url_base_allowed_js', [
+            'jquery',
+            'jquery-ui',
+            'lodash',
+            'lodash-core',
+            'site-js',
+            'shared-functions',
+            'moment',
+            'datepicker'
+        ]);
 
         global $wp_scripts;
 
@@ -197,17 +203,19 @@ abstract class DT_Magic_Url_Base {
     }
 
     /**
+     * Authorizes styles allowed to load in magic link
+     *
      * Controls the linked styles loaded into the header.
      * @note This overrides standard DT header assets.
      */
     public function print_styles(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_css = array_merge(
-            $this->allowed_styles,
-            [
-                'jquery-ui-site-css',
-            ]
-        );
+        $allowed_css = apply_filters( 'dt_magic_url_base_allowed_css', [
+            'jquery-ui-site-css',
+            'foundation-css',
+            'site-css',
+            'datepicker-css'
+        ]);
 
         global $wp_styles;
         if ( isset( $wp_styles ) ) {
