@@ -178,6 +178,9 @@ else {
             require_once( get_template_directory() . '/dt-core/configuration/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
             require_once( get_template_directory() . '/dt-core/configuration/restrict-site-access.php' ); // protect against DDOS attacks.
             require_once( get_template_directory() . '/dt-core/configuration/dt-configuration.php' ); //settings and configuration to alter default WP
+            require_once( get_template_directory() . '/dt-reports/magic-url-class.php' );
+            require_once( get_template_directory() . '/dt-reports/magic-url-base.php' );
+
 
             /**
              * User Groups & Multi Roles
@@ -317,6 +320,8 @@ else {
             require_once( get_template_directory() . '/dt-users/user-management.php' );
             require_once( get_template_directory() . '/dt-users/hover-coverage-map.php' );
             require_once( get_template_directory() . '/dt-users/mapbox-coverage-map.php' );
+            require_once( get_template_directory() . '/dt-users/template-no-permission.php' );
+
 
 
             /**
@@ -342,8 +347,6 @@ else {
              * Reports
              */
             require_once( get_template_directory() . '/dt-reports/reports.php' );
-            require_once( get_template_directory() . '/dt-reports/magic-url-class.php' );
-            require_once( get_template_directory() . '/dt-reports/magic-url-base.php' );
 
             /**
              * Workflows
@@ -460,7 +463,7 @@ else {
              * This is used for specific custom roles that are not intended to see the basic framework of DT.
              * Use this to create a dedicated landing page for partners, donors, or subscribers.
              */
-            wp_safe_redirect( apply_filters( 'dt_non_standard_front_page', home_url( '/settings' ) ) );
+            wp_safe_redirect( apply_filters( 'dt_non_standard_front_page', home_url( '/registered' ) ) );
         }
     }
     function set_up_wpdb_tables(){
