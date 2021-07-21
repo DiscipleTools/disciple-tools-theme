@@ -128,6 +128,10 @@ final class Disciple_Tools_Dashboard
 
 
     public function dt_dashboard_tile(){
+        if ( ! user_can( get_current_user_id(), 'manage_dt' ) ) {
+            return;
+        }
+
         wp_add_dashboard_widget('dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
             $setup_options = get_option( "dt_setup_options", [] );
             $mapbox_key = DT_Mapbox_API::get_key();
