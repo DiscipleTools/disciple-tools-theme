@@ -72,7 +72,7 @@ function build_post_types_option_list_html( $group_name ) {
         $post_settings = DT_Posts::get_post_settings( $search_post_type );
         $name          = $post_settings['label_plural'];
         if ( ! empty( $name ) && ( $search_post_type !== 'peoplegroups' ) ) {
-            echo '<input id="' . esc_html( $search_post_type ) . '" type="radio" class="advanced-search-modal-post-types" name="' . esc_html( $group_name ) . '" value="' . esc_html( $search_post_type ) . '"><label for="' . esc_html( $search_post_type ) . '">' . esc_html( $name ) . '</label><br>';
+            echo '<input type="radio" class="advanced-search-modal-post-types" name="' . esc_html( $group_name ) . '" value="' . esc_html( $search_post_type ) . '"><label for="' . esc_html( $search_post_type ) . '">' . esc_html( $name ) . '</label><br>';
         }
     }
 }
