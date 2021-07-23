@@ -213,7 +213,7 @@
                 return `
                   <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
                     <input type="radio" name="view" value="${window.lodash.escape(filter.ID)}" data-id="${window.lodash.escape(filter.ID)}" class="js-list-view" autocomplete="off">
-                    <span id="total_filter_label">${window.lodash.escape(filter.name)}</span>
+                    <span class="total_filter_label">${window.lodash.escape(filter.name)}</span>
                     <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(filter.ID)}">${window.lodash.escape(filter.count )}</span>
                   </label>
                   `

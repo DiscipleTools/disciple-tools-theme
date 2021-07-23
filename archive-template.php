@@ -324,7 +324,7 @@ dt_please_log_in();
                                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                             </button>
                                         </div>
-                                        <select id="overall_status" class="select-field">
+                                        <select id="bulk_overall_status" class="select-field">
                                             <option></option>
                                             <?php foreach ($field_options["overall_status"]["default"] as $key => $option){
                                                 $value = $option["label"] ?? "";?>

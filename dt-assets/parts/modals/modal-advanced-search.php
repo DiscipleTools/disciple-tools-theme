@@ -64,8 +64,8 @@
 <?php
 
 function build_post_types_option_list_html( $group_name ) {
-    echo '<input id="all" type="radio" class="advanced-search-modal-post-types" name="' . esc_html( $group_name ) . '" value="all" checked>';
-    echo '<label for="all">' . esc_html__( 'All', 'disciple_tools' ) .'</label><br>';
+    echo '<input id="' . esc_html( $group_name ) . '_all" type="radio" class="advanced-search-modal-post-types" name="' . esc_html( $group_name ) . '" value="all" checked>';
+    echo '<label for="' . esc_html( $group_name ) . '_all">' . esc_html__( 'All', 'disciple_tools' ) .'</label><br>';
 
     $search_post_types = DT_Posts::get_post_types();
     foreach ( $search_post_types as $search_post_type ) {
