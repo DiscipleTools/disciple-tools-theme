@@ -14,7 +14,8 @@ jQuery(document).ready(function ($) {
     <div class="section-subheader">${window.lodash.escape(window.wp_js_object.translations.filter_to_date_range)}:</div>
     <br>
     <select id="activity_date_range_filter">
-        <option selected value="this-month">This Month</option>
+        <option selected value="this-week">This Week</option>
+        <option value="this-month">This Month</option>
         <option value="last-month">Last Month</option>
         <option value="2-months-ago">2 Months Ago</option>
         <option value="3-months-ago">3 Months Ago</option>

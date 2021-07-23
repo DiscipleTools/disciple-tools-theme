@@ -64,7 +64,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
             'dt_' . $this->slug . '_script', $this->js_object_name, [
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
                 "data"                => [
-                    'activities' => $this->daily_activity( 'this-month' )
+                    'activities' => $this->daily_activity( 'this-week' )
                 ],
                 'translations'        => [
                     'activities'           => __( "Activity by Day", 'disciple_tools' ),
@@ -112,6 +112,10 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         $end   = null;
 
         switch ( $date_range ) {
+            case 'this-week':
+                $start = gmdate( 'Y-m-d', strtotime( '-1 week' ) );
+                $end   = gmdate( 'Y-m-d', strtotime( '+3 day' ) );
+                break;
             case 'this-month':
                 $start = gmdate( 'Y-m-01' );
                 $end   = gmdate( 'Y-m-d', strtotime( '+3 day' ) );
