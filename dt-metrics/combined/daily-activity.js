@@ -335,6 +335,13 @@ jQuery(document).ready(function ($) {
         metrics_html += '</tr>';
       }
 
+      if (parseInt(day_counts['scheduled_baptisms']) > 0) {
+        metrics_html += '<tr>';
+        metrics_html += '<td>Scheduled Baptisms</td>';
+        metrics_html += '<td>' + day_counts['scheduled_baptisms'] + '</td>';
+        metrics_html += '</tr>';
+      }
+
       // Seeker Path Updates
       let seeker_path_updates = day_counts['seeker_path_updates'];
 

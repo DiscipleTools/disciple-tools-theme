@@ -185,12 +185,13 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                     $next_day_format    = gmdate( 'Y-m-d', strtotime( '+1 day', $day->getTimestamp() ) );
 
                     $current_day_ts = strtotime( $current_day_format );
-                    $next_day_ts    = strtotime( $next_day_format );
+                    $next_day_ts    = strtotime( $next_day_format ) - 60; // Just shy of midnight!
 
                     $new_contacts        = Disciple_Tools_Counter_Contacts::get_contacts_count( 'new_contacts', $current_day_ts, $next_day_ts );
                     $new_groups          = $this->new_groups_count( $current_day_format, $next_day_format );
                     $seeker_path_updates = Disciple_Tools_Counter_Contacts::seeker_path_activity( $current_day_ts, $next_day_ts );
                     $health              = $this->health_metrics( $current_day_ts, $next_day_ts, $group_fields_settings );
+                    $scheduled_baptisms  = $this->scheduled_baptisms_count( $current_day_ts, $next_day_ts );
 
                     $multiselect_fields = [];
                     foreach ( $contact_field_settings as $field_key => $field_settings ) {
@@ -213,7 +214,8 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                         'new_groups'          => $new_groups,
                         'seeker_path_updates' => $seeker_path_updates,
                         'health'              => $health,
-                        'multiselect_fields'  => $multiselect_fields
+                        'multiselect_fields'  => $multiselect_fields,
+                        'scheduled_baptisms'  => $scheduled_baptisms
                     ];
                 }
 
@@ -250,7 +252,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                 JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                      AND d.meta_key = 'group_type'
-                     AND ( d.meta_value = 'group' OR d.meta_value = 'church' )
+                     AND ( d.meta_value LIKE %s )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               ) as out_of
@@ -265,7 +267,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                 JOIN $wpdb->postmeta as e
                   ON a.ID=e.post_id
                      AND e.meta_key = 'group_type'
-                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
+                     AND ( e.meta_value LIKE %s )
 
                 JOIN $wpdb->dt_activity_log f
                     ON a.ID = f.object_id
@@ -275,7 +277,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
-              GROUP BY d.meta_value", $start, $end ), ARRAY_A );
+              GROUP BY d.meta_value", '%', '%', $start, $end ), ARRAY_A );
 
         if ( $results ) {
             $out_of = 0;
@@ -342,6 +344,18 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
             FROM $wpdb->postmeta
             WHERE meta_key = 'type' AND  meta_value = 'user'
             GROUP BY post_id)
+        ", $start, $end ) );
+    }
+
+    private function scheduled_baptisms_count( $start, $end ): int {
+        global $wpdb;
+
+        return $wpdb->get_var( $wpdb->prepare( "
+        SELECT COUNT( DISTINCT( p.ID ) ) count
+        FROM $wpdb->posts p
+        INNER JOIN $wpdb->postmeta as pm ON (p.ID = pm.post_id AND p.post_type = 'contacts')
+        WHERE pm.meta_key = 'baptism_date'
+        AND pm.meta_value BETWEEN %d AND %d
         ", $start, $end ) );
     }
 }
