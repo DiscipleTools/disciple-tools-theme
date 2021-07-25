@@ -101,7 +101,7 @@ function setCommonMapSettings( chart ) {
   template.propertyFields.fill = "fill";
   polygonSeries.tooltip.label.interactionsEnabled = true;
   polygonSeries.tooltip.pointerOrientation = "vertical";
-  template.fill = am4core.color("#FFFFFF");
+  template.fill = am4core.color("#fefefe");
   // template.stroke = am4core.color("rgba(89,89,89,0.51)");
 
   polygonSeries.heatRules.push({
@@ -447,7 +447,7 @@ function mini_map( div, marker_data ) {
     let circle = imageSeriesTemplate.createChild(am4core.Circle);
     circle.radius = 4;
     circle.fill = am4core.color("#B27799");
-    circle.stroke = am4core.color("#FFFFFF");
+    circle.stroke = am4core.color("#fefefe");
     circle.strokeWidth = 2;
     circle.nonScaling = true;
     circle.tooltipText = "{title}";

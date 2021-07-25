@@ -8,7 +8,7 @@
 <use xlink:href="#path0_fill" fill="white" transform="translate(2632 290)"/>
 </mask>
 <g mask="url(#mask0_outline_ins)">
-<use xlink:href="#path1_stroke_2x" transform="translate(2632 290)" fill="#FFFFFF"/>
+<use xlink:href="#path1_stroke_2x" transform="translate(2632 290)" fill="#fefefe"/>
 </g>
 </g>
 </g>

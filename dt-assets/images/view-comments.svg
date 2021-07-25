@@ -4,13 +4,13 @@
 <g id="Canvas" transform="translate(-290 5223)">
 <rect x="290" y="-5223" width="20" height="21" fill="#333333"/>
 <clipPath id="clip-0" clip-rule="evenodd">
-<path d="M -9 -5419L 351 -5419L 351 -2420L -9 -2420L -9 -5419Z" fill="#FFFFFF"/>
+<path d="M -9 -5419L 351 -5419L 351 -2420L -9 -2420L -9 -5419Z" fill="#fefefe"/>
 </clipPath>
 <g id="Galaxy S8" clip-path="url(#clip-0)">
 <path d="M -9 -5419L 351 -5419L 351 -2420L -9 -2420L -9 -5419Z" fill="#E2E2E2"/>
 <g id="activity-buttons">
 <g id="Rectangle 9" filter="url(#filter0_d)">
-<use xlink:href="#path0_fill" transform="translate(-9 -5299)" fill="#FFFFFF"/>
+<use xlink:href="#path0_fill" transform="translate(-9 -5299)" fill="#fefefe"/>
 </g>
 <g id="view-comments-text">
 <g id="view-comments">

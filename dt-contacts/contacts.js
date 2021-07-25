@@ -100,7 +100,7 @@ jQuery(document).ready(function($) {
   merge_dupe_edit_modal.on("open.zf.reveal", function () {
     if ( !openedOnce ){
 
-      let original_contact_html = `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
+      let original_contact_html = `<div style='background-color: #f5f5f5; padding:2%; overflow: hidden;'>
         <h5 style='font-weight: bold; color: #3f729b;'>
         <a href="${window.wpApiShare.site_url}/${post_type}/${window.lodash.escape(post_id)}" target=_blank>
         ${ window.lodash.escape(post.name) }
@@ -166,7 +166,7 @@ jQuery(document).ready(function($) {
       return window.lodash.get(window.detailsSettings.post_settings, `fields[${field.field}].name`)
     }))
     let matched_values = dupe.fields.map(f=>f.value)
-    html += `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
+    html += `<div style='background-color: #f5f5f5; padding:2%; overflow: hidden;'>
       <h5 style='font-weight: bold; color: #3f729b;'>
       <a href="${window.wpApiShare.site_url}/${post_type}/${window.lodash.escape(dupe.ID)}" target=_blank>
       ${ window.lodash.escape(dupe.post.name) }

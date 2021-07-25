@@ -2,19 +2,19 @@
 <g id="Canvas" transform="translate(-724 1284)">
 <rect x="724" y="-1284" width="10" height="10" fill="#E5E5E5"/>
 <clipPath id="clip-0" clip-rule="evenodd">
-<path d="M 273 -1517L 1713 -1517L 1713 -493L 273 -493L 273 -1517Z" fill="#FFFFFF"/>
+<path d="M 273 -1517L 1713 -1517L 1713 -493L 273 -493L 273 -1517Z" fill="#fefefe"/>
 </clipPath>
 <g id="Contacts LIst" clip-path="url(#clip-0)">
 <path d="M 273 -1517L 1713 -1517L 1713 -493L 273 -493L 273 -1517Z" fill="#E2E2E2"/>
 <g id="Contact List">
 <path d="M 643 -1387L 1343 -1387L 1343 -523L 643 -523L 643 -1387Z" fill="#E2E2E2"/>
 <g id="Rectangle 12">
-<use xlink:href="#path0_fill" transform="translate(643 -1387)" fill="#FFFFFF"/>
+<use xlink:href="#path0_fill" transform="translate(643 -1387)" fill="#fefefe"/>
 </g>
 </g>
 <g id="Group">
 <g id="Rectangle 19">
-<use xlink:href="#path1_fill" transform="translate(643 -1327)" fill="#FFFFFF"/>
+<use xlink:href="#path1_fill" transform="translate(643 -1327)" fill="#fefefe"/>
 </g>
 <g id="logo-facebook">
 <g id="Group">

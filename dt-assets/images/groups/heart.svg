@@ -4,13 +4,13 @@
 <g id="Canvas" transform="translate(-2323 -183)">
 <rect x="2323" y="183" width="42" height="40" fill="#E5E5E5"/>
 <clipPath id="clip-0" clip-rule="evenodd">
-<path d="M 1778 -310L 3218 -310L 3218 1106L 1778 1106L 1778 -310Z" fill="#FFFFFF"/>
+<path d="M 1778 -310L 3218 -310L 3218 1106L 1778 1106L 1778 -310Z" fill="#fefefe"/>
 </clipPath>
 <g id="Group Details" clip-path="url(#clip-0)">
 <path d="M 1778 -310L 3218 -310L 3218 1106L 1778 1106L 1778 -310Z" fill="#E2E2E2"/>
 <g id="Progress">
 <g id="Rectangle 14" filter="url(#filter0_d)">
-<use xlink:href="#path0_fill" transform="translate(2278 118)" fill="#FFFFFF"/>
+<use xlink:href="#path0_fill" transform="translate(2278 118)" fill="#fefefe"/>
 </g>
 <g id="Rectangle 6">
 <use xlink:href="#path1_fill" transform="translate(2310 173)" fill="#3F729B"/>
@@ -19,7 +19,7 @@
 <g id="Group">
 <g id="Group">
 <g id="Vector">
-<use xlink:href="#path2_fill" transform="translate(2323 183)" fill="#FFFFFF"/>
+<use xlink:href="#path2_fill" transform="translate(2323 183)" fill="#fefefe"/>
 </g>
 </g>
 </g>

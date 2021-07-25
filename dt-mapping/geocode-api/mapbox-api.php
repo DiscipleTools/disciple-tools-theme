@@ -370,7 +370,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 .mapbox-autocomplete-active {
                     /*when navigating through the items using the arrow keys:*/
                     background-color: #00aeff !important;
-                    color: #ffffff;
+                    color: #fefefe;
                 }
                 #mapbox-spinner-button {
                     border-radius:0;

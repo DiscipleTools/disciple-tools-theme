@@ -3,19 +3,19 @@
 <g id="Canvas" transform="translate(-2158 1248)">
 <rect x="2158" y="-1248" width="11" height="12" fill="#E5E5E5"/>
 <clipPath id="clip-0" clip-rule="evenodd">
-<path d="M 1778 -1517L 3218 -1517L 3218 -493L 1778 -493L 1778 -1517Z" fill="#FFFFFF"/>
+<path d="M 1778 -1517L 3218 -1517L 3218 -493L 1778 -493L 1778 -1517Z" fill="#fefefe"/>
 </clipPath>
 <g id="Groups List - actions" clip-path="url(#clip-0)">
 <path d="M 1778 -1517L 3218 -1517L 3218 -493L 1778 -493L 1778 -1517Z" fill="#E2E2E2"/>
 <g id="Contact List">
 <path d="M 2148 -1387L 2848 -1387L 2848 -523L 2148 -523L 2148 -1387Z" fill="#E2E2E2"/>
 <g id="Rectangle 12" filter="url(#filter0_d)">
-<use xlink:href="#path0_fill" transform="translate(2148 -1387)" fill="#FFFFFF"/>
+<use xlink:href="#path0_fill" transform="translate(2148 -1387)" fill="#fefefe"/>
 </g>
 </g>
 <g id="group card">
 <g id="Rectangle 19">
-<use xlink:href="#path1_fill" transform="translate(2148 -1274)" fill="#FFFFFF"/>
+<use xlink:href="#path1_fill" transform="translate(2148 -1274)" fill="#fefefe"/>
 </g>
 <g id="favorite-pressed">
 <g id="flag-points-32">

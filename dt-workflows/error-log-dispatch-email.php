@@ -56,14 +56,14 @@ function build_email_body( $count, $deltas, $logs_url ): string {
     <tr>
       <td>
 
-<table align="center" border="0" cellpadding="0" cellspacing="0" style="min-width: 600px; border-collapse: collapse; border: 1px solid #cccccc;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" style="min-width: 600px; border-collapse: collapse; border: 1px solid #cacaca;">
   <tr>
-    <td align="center" bgcolor="#ffffff"><br><br>
+    <td align="center" bgcolor="#fefefe"><br><br>
       <img alt="Disciple.Tools" style="min-height: 80px; max-height: 80px; min-width: 175px;" src="$dt_logo" />
     </td>
   </tr>
   <tr>
-    <td bgcolor="#ffffff">
+    <td bgcolor="#fefefe">
       <table border="0" cellpadding="20" cellspacing="0" min-width: 100%; border-collapse: collapse;">
         <tr>
           <td style="color: #153643; font-family: Arial, sans-serif;"><br><br>
@@ -94,7 +94,7 @@ function build_email_body( $count, $deltas, $logs_url ): string {
     <td bgcolor="#70bbd9">
         <table border="0" cellpadding="10" cellspacing="0" style="min-width: 100%; border-collapse: collapse;">
         <tr>
-          <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;">
+          <td style="color: #fefefe; font-family: Arial, sans-serif; font-size: 14px;">
             <p>&reg; 2021 Disciple.Tools<br/></p>
           </td>
           <td align="right">

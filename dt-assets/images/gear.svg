@@ -3,7 +3,7 @@
 <g id="Canvas" transform="translate(-3582 1504)">
 <rect x="3582" y="-1504" width="24" height="25" fill="#E5E5E5"/>
 <clipPath id="clip-0" clip-rule="evenodd">
-<path d="M 3262 -1517L 3621 -1517L 3621 -661L 3262 -661L 3262 -1517Z" fill="#FFFFFF"/>
+<path d="M 3262 -1517L 3621 -1517L 3621 -661L 3262 -661L 3262 -1517Z" fill="#fefefe"/>
 </clipPath>
 <g id="Group List Mobile" clip-path="url(#clip-0)">
 <path d="M 3262 -1517L 3621 -1517L 3621 -661L 3262 -661L 3262 -1517Z" fill="#E2E2E2"/>
@@ -13,7 +13,7 @@
 <g id="ic_settings_24px">
 <g id="Group">
 <g id="Vector">
-<use xlink:href="#path1_fill" transform="translate(3582 -1503.98)" fill="#FFFFFF"/>
+<use xlink:href="#path1_fill" transform="translate(3582 -1503.98)" fill="#fefefe"/>
 </g>
 </g>
 </g>
