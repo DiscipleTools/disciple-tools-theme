@@ -235,8 +235,8 @@ class Disciple_Tools_Posts
         } else {
             $p2p_from = get_post( $p2p_record->p2p_from, ARRAY_A );
             $p2p_to = get_post( $p2p_record->p2p_to, ARRAY_A );
-            $from_title = wp_specialchars_decode( $p2p_from["post_title"] );
-            $to_title = wp_specialchars_decode( $p2p_to["post_title"] );
+            $to_title = "[" . wp_specialchars_decode( $p2p_to["post_title"] ) . "](" . get_permalink( $p2p_record->p2p_to ) .")";
+            $from_title = "[" . wp_specialchars_decode( $p2p_from["post_title"] ) . "](" . get_permalink( $p2p_record->p2p_from ) .")";
         }
         $object_note_from = '';
         $object_note_to = '';
