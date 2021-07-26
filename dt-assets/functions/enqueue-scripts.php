@@ -70,6 +70,10 @@ function dt_site_scripts() {
     // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
     wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' );
 
+    //removes unneeded Wordpress Block editor CSS styles.
+    wp_dequeue_style( 'wp-block-library' );
+    wp_dequeue_style( 'wp-block-library-theme' );
+
     // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
     wp_enqueue_style( 'jquery-ui-site-css', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css', array(), '', 'all' );
     wp_deregister_script( 'jquery' );
