@@ -43,7 +43,8 @@ abstract class DT_Magic_Url_Base {
             return true;
         }, 100, 1 );
         add_filter( "dt_blank_title", [ $this, "page_tab_title" ] ); // adds basic title to browser tab
-        add_action( 'wp_print_scripts', [ $this, 'print_scripts' ], 1500 ); // authorizes scripts
+        add_action( 'wp_print_scripts', [ $this, 'print_scripts' ], 5 ); // authorizes scripts
+        add_action( 'wp_print_footer_scripts', [ $this, 'print_scripts' ], 5 ); // authorizes scripts
         add_action( 'wp_print_styles', [ $this, 'print_styles' ], 1500 ); // authorizes styles
 
         add_action( 'dt_blank_head', [ $this, '_header' ] );
