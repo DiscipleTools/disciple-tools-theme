@@ -3,9 +3,9 @@
     Option buttons
  */
 .button.select-button {
-    border-radius: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
+    border-radius: .33334rem;
+    margin-right: .33334rem;
+    margin-bottom: .33334rem;
     &:hover {
         background-color: #4CAF50;
         opacity: .5;
@@ -31,7 +31,7 @@
 }
 .dt_multi_select {
     .dt-icon {
-        margin-right: 5px;
+        margin-right: .33334rem;
     }
 }
 
@@ -80,7 +80,7 @@ html[dir='rtl'] {
     font-size: 1.7rem;
 }
 .item-details-header-row {
-    margin-bottom:15px;
+    margin-bottom: 1rem;
 
     .button {
         padding: 0.45em 1em;
@@ -92,13 +92,13 @@ html[dir='rtl'] {
 //contact quick buttons
 .contact-quick-button-number {
     background-color: rgb(63, 114, 155);
-    border-radius: 20px;
+    border-radius: 1.33334rem;
     color: white;
-    padding: 2px 4px;
-    font-size: 10px;
+    padding: .133334rem .26667rem;
+    font-size: .66667rem;
     position: absolute;
     top: 0;
-    margin-left: 3px;
+    margin-left: .2rem;
 }
 .contact-quick-buttons {
     display: flex;
@@ -106,17 +106,17 @@ html[dir='rtl'] {
     width: 100%;
     flex-wrap:wrap;
     img {
-        width: 20px;
-        height: 20px;
+        width: 1.33334rem;
+        height: 1.33334rem;
     }
 }
 .contact-quick-button {
     width: min-content;
     position: relative;
-    flex: 0 1 100px;
-    margin: 5px 0 10px 0;
+    flex: 0 1 6.66667rem;
+    margin: .3334rem 0  .66667rem 0;
     p {
-        font-size: 12px;
+        font-size: .8rem;
         word-spacing: 100vw;
         margin-bottom: 0;
     }
@@ -124,8 +124,8 @@ html[dir='rtl'] {
 .quick-action-menu a {
     vertical-align: middle;
     img {
-        width: 20px;
-        height: 20px;
+        width: 1.33334rem;
+        height: 1.33334rem;
     }
 }
 
@@ -149,13 +149,13 @@ DT comments and activity
     }
 
     .tabs-title {
-        margin-right: 10px;
+        margin-right:  .66667rem;
         input {
             margin: 0;
         }
         button {
             color: #3f729b;
-            font-size: 12px;
+            font-size: .8rem;
         }
     }
 
@@ -169,15 +169,13 @@ DT comments and activity
 
     .gravatar {
         img {
-            height: 16px;
+            height: 1.0666666667rem;
         }
     }
 
     #add-comment-button {
         margin-bottom: 0;
         height: 3rem;
-        //width: 40px;
-        //padding: 0 4px;
     }
 
     #add-comment-button-container {
@@ -188,7 +186,7 @@ DT comments and activity
 
     .comment-bubble {
         word-wrap: break-word;
-        padding-bottom: 2px;
+        padding-bottom: .133334rem;
         .comment-text {
             min-height: 1em;
         }
@@ -201,10 +199,10 @@ DT comments and activity
 
     .edit-comment-controls {
         a {
-            font-size: 12px;
+            font-size: .8rem;
         }
         img {
-            height: 10px;
+            height:  .66667rem;
         }
         object path {
             fill: red;
@@ -217,10 +215,10 @@ DT comments and activity
 
     .comment-reaction,
     .reactions__button {
-        margin-top: 4px;
-        margin-right: 4px;
+        margin-top: .26667rem;
+        margin-right: .26667rem;
         background-color: #f5f5f5;
-        border-radius: 100px;
+        border-radius: 6.66667rem;
         padding: 0.1rem 0.5rem;
         display: flex;
         align-items: center;
@@ -234,7 +232,7 @@ DT comments and activity
 
     .comment-reaction {
         background-color: #f5f5f5;
-        border-radius: 100px;
+        border-radius: 6.66667rem;
         padding: 0.1rem 0.5rem;
         height: 1.6rem;
         font-size: 0.9rem;
@@ -254,7 +252,7 @@ DT comments and activity
         }
 
         span + span {
-            padding-left: 4px;
+            padding-left: .26667rem;
             font-size: 0.8rem;
         }
 
@@ -287,11 +285,11 @@ DT comments and activity
         content: '+';
         pointer-events: none;
         position: absolute;
-        right: -7px;
-        top: 3px;
+        right: -.46667rem;
+        top: .2rem;
         font-size: 0.8rem;
         background-color: white;
-        border-radius: 100px;
+        border-radius: 6.66667rem;
         padding: 0 0.1rem;
         line-height: 0.8rem;
         font-weight: 600;
@@ -316,29 +314,29 @@ DT comments and activity
         background: transparent;
     }
     .reactions__dropdown {
-        width: 215px;
-        left: 8px;
-        bottom: 35px;
+        width: 14.3334rem;
+        left: 0.53334rem;
+        bottom: 2.33334rem;
         z-index: 9;
-        border-radius: 6px;
+        border-radius: .4rem;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
-        transform: translate(-20px, 5px);
+        transform: translate(-1.33334rem, 0.33334rem);
 
         &::after {
             content: '';
             position: absolute;
-            bottom: -14px;
-            left: 20px;
-            border: 7px solid transparent;
-            border-top: 7px solid white;
+            bottom: -0.9333333333rem;
+            left: 1.33334rem;
+            border: 0.46667rem solid transparent;
+            border-top: 0.46667rem solid white;
         }
         &::before {
             content: '';
             position: absolute;
-            bottom: -16px;
-            left: 19px;
-            border: 8px solid transparent;
-            border-top: 8px solid #cacaca;
+            bottom: -1.0666666667rem;
+            left: 1.266667rem;
+            border: 0.5333rem solid transparent;
+            border-top: 0.5333rem solid #cacaca;
         }
     }
     .add-reaction {
@@ -356,14 +354,14 @@ DT comments and activity
     }
 
     .edit-comment-controls {
-        margin-right: 10px;
-        margin-top: 4px;
+        margin-right:  .66667rem;
+        margin-top: .26667rem;
     }
 
     .comment-bubble, .comment-controls {
         text-align: left;
         padding: 0;
-        padding-left: 15px;
+        padding-left: 1rem;
         margin: 0;
         margin-left: 2em;
     }
@@ -371,72 +369,72 @@ DT comments and activity
     html[dir='rtl'] .comment-bubble, html[dir='rtl'] .comment-controls {
         text-align: right;
         padding: 0;
-        padding-right: 15px;
+        padding-right: 1rem;
         margin: 0;
         margin-right: 2em;
     }
 
     .comment-date {
         text-align: right;
-        margin-right: 20px;
-        font-size:12px;
+        margin-right: 1.33334rem;
+        font-size:.8rem;
     }
 
     .translation-bubble {
         border: 0;
-        border-left: 2px solid $dark-gray;
+        border-left: .133334rem solid $dark-gray;
         padding-left: 1em;
         margin: 0 0 0 2em;
     }
 
     .translate-button {
         font-size: .85em;
-        padding: 0 0 0 15px;
+        padding: 0 0 0 1rem;
         margin: 0 0 0 2em;
     }
 
     html[dir='rtl'] {
         .translation-bubble {
             border: 0;
-            border-right: 2px solid $dark-gray;
+            border-right: .133334rem solid $dark-gray;
             padding-right: 1em;
             margin: 0 2em 0 0;
         }
         .translate-button {
-            padding: 0 15px 0 0;
+            padding: 0 1rem 0 0;
             margin: 0 2em 0 0;
         }
     }
 
     .activity-block {
-        margin-top: 15px;
+        margin-top: 1rem;
     }
 
     .activity-bubble {
         word-wrap: break-word;
         color:gray;
         font-style: italic;
-        border-inline-start: 3px solid gainsboro;
-        padding-inline-start: 15px;
+        border-inline-start: .2rem solid gainsboro;
+        padding-inline-start: 1rem;
         margin: 0;
         margin-inline-start: 2em;
-        padding-bottom: 2px;
+        padding-bottom: .133334rem;
     }
 
     .revert-activity {
         float: right;
     }
     .revert-arrow-img {
-        height: 17px;
-        padding-top: 2px;
+        height: 1.133334rem;
+        padding-top: .133334rem;
 
-        margin-right: 15px;
+        margin-right: 1rem;
     }
 
 
     //add a loading spinner when searching for contacts
     .mentions-input-box textarea.loading-gif {
-        background:url('../../../dt-assets/images/ajax-loader.gif') no-repeat 99% 6px;
+        background:url('../../../dt-assets/images/ajax-loader.gif') no-repeat 99% .4rem;
     }
     //make sure the blue boxes around the @mentions in the textarea are the right sizes
     .mentions-input-box .mentions strong span {
@@ -445,7 +443,7 @@ DT comments and activity
 
     #add-comment-section {
         border: 1px solid #dcdcdc;
-        border-radius: 3px;
+        border-radius: .2rem;
         margin: 0 0 01.06667rem;
         textarea,  select {
             margin-bottom: 0;
@@ -469,7 +467,7 @@ DT comments and activity
         margin-left: 0;
     }
     img {
-        height: 15px;
+        height: 1rem;
     }
 }
 
@@ -483,13 +481,13 @@ DT comments and activity
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        padding-right: 15px;
-        margin-bottom: 5px;
+        padding-right: 1rem;
+        margin-bottom: .33334rem;
         img {
-            margin-right: 3px;
+            margin-right: .2rem;
             vertical-align: middle;
-            height: 15px;
-            width: 15px
+            height: 1rem;
+            width: 1rem;
         }
         .snippet-field-name {
             font-size: small;
@@ -515,55 +513,55 @@ Groups
 
 .group-progress-button-wrapper {
     text-align: center;
-    flex: 1 0 80px;
+    flex: 1 0 5.33334rem;
 }
 
 .group-progress-button {
     text-align:center;
-    padding:10px;
+    padding: .66667rem;
     background-color:$primary-color;
     border-radius:5px;
-    height:60px;
-    width:65px;
+    height:4rem;
+    width:4.3334rem;
 }
 
 
 .members-section {
     border: 1px solid #ccc;
     #empty-members-list-message {
-        padding: 10px 10px;
+        padding:  .66667rem .66667rem;
     }
     .member-row {
-        padding: 10px 10px;
+        padding:  .66667rem .66667rem;
         display: flex;
         &:hover {
             background-color: rgba(204, 204, 204, 0.5);
         }
         .member-row-actions {
             margin: 0;
-            padding: 0 5px;
+            padding: 0 .33334rem;
             color: grey;
         }
         i {
-            padding: 0 2px;
+            padding: 0 .133334rem;
         }
         .dt-icon {
             vertical-align: text-top;
-            margin-right: 5px;
+            margin-right: .33334rem;
         }
     }
 }
 .members-header {
     button {
-        height: 36px;
+        height: 2.4rem;
         width: max-content;
         border: 1px solid #ccc;
         vertical-align: bottom;
-        border-bottom: 2px solid white;
+        border-bottom: .133334rem solid white;
         margin-bottom: -1px;
-        padding: 5px 10px;
+        padding: 0.33334rem  .66667rem;
         img {
-            margin-left: 2px;
+            margin-left: .133334rem;
         }
     }
 }
@@ -578,7 +576,7 @@ Groups
         font-weight: bold;
     }
     img {
-        margin: 0 10px;
+        margin: 0 .66667rem;
     }
 }
 
@@ -591,14 +589,14 @@ Groups
         background-color: #F43636;
     }
     .button {
-        margin: 0 10px;
+        margin: 0  .66667rem;
     }
 }
 
 select.color-select {
     color: white;
     font-weight: bold;
-    border-radius: 10px;
+    border-radius:  .66667rem;
     option {
         background-color: white;
         color: black;
@@ -618,7 +616,8 @@ select.color-select {
         margin-inline-start:auto;
         margin-inline-end:0;
         img {
-            vertical-align: middle; width:20px
+            vertical-align: middle;
+            width:0.9em;
         }
     }
     .chevron_down {
@@ -649,43 +648,43 @@ select.color-select {
     align-items: center;
     flex-wrap: wrap;
     .status-square {
-        height: 13px;
-        width: 13px;
+        height: .8em;
+        width: .8em;
         display: inline-block;
-        border-radius: 2px;
+        border-radius: .133334rem;
     }
     > span {
-        margin-right: 10px;
+        margin-right:  .66667rem;
     }
 }
 
 #tasks-modal {
   .existing-task-action {
-    font-size: 10px;
+    font-size:  .66667rem;
     color: $primary-color;
-    margin: 0 5px;
+    margin: 0 .33334rem;
   }
 }
 
 
 .details-second-bar {
-    span { font-size: 12px; }
+    span { font-size: .8rem; }
     button, a {
-        font-size: 12px;
+        font-size: .8rem;
     }
     .title {
-        font-size: 15px
+        font-size: 1rem;
     }
     .record-name-tagline {
-        font-size: 10px;
+        font-size:  .66667rem;
         display: inline-block;
         span, a {
-            font-size: 10px;
+            font-size:  .66667rem;
         }
     }
 }
 
 //user select field
 .dt_user_select {
-    margin-bottom:15px;
+    margin-bottom: 1rem;
 }
