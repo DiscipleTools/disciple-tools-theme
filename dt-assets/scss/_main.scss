@@ -114,13 +114,13 @@ NAVIGATION STYLES
     }
     .logo {
         margin-inline-end: 2vw;
-        height: 20px;
+        height: 1.3333333rem;
     }
 }
 
 #top-bar-menu {
     margin-top: 0 !important;
-    padding: 0 20px;
+    padding: 0 1.333333rem;
     z-index: 999;
 
     .logo-link {
@@ -132,7 +132,7 @@ NAVIGATION STYLES
         .dropdown.menu {
             justify-content: flex-end;
             & > li {
-            margin: 0 10px;
+            margin: 0.666666rem;
             }
             @media screen and (max-width : 775px) {
                 li {
@@ -163,7 +163,9 @@ NAVIGATION STYLES
         }
         //make dropdown caret white
         .dropdown.menu>li.is-dropdown-submenu-parent>a:after {
-            border-color: #fefefe transparent transparent;
+            border-color: $white transparent transparent;
+            right: .333333em;
+            margin-top: -.2em;
         }
         .dropdown.menu #more-menu-button {
             display: none;
@@ -241,11 +243,11 @@ NAVIGATION STYLES
 
     .image-menu-nav {
         img {
-            height: 24px;
+            height: 1.6em;
         }
 
         a {
-            padding: 4px 5px;
+            padding: .26666em .33333em;
             vertical-align: middle;
             font-weight: bold;
 
@@ -266,7 +268,7 @@ NAVIGATION STYLES
 
 html[dir="rtl"] #top-bar-menu {
     .dropdown.menu>li.is-dropdown-submenu-parent>a:after {
-        left: 5px;
+        left: .333333em;
         right: auto;
     }
 }
@@ -275,15 +277,15 @@ html[dir="rtl"] #top-bar-menu {
     display: none;
     vertical-align: top;
     position: relative;
-    top: -5px;
-    margin-left:-15px;
+    top: -.555555em;
+    margin-left:-1.666666em;
 }
 .notification-count-offcanvas {
     display: none;
     vertical-align: middle;
     position: relative;
     top: 0;
-    margin-left:10px;
+    margin-left:1em;
 }
 .add-new-items-dropdown {
     background-color: #3f729b;
@@ -293,7 +295,8 @@ html[dir="rtl"] #top-bar-menu {
         color: white;
         font-weight: 700;
         img {
-            width:25px; margin:0 10px 0 0
+            width:1.666666em;
+            margin:0 0.666666em 0 0
         }
     }
 }
@@ -304,6 +307,7 @@ nav.second-bar {
     width: 100%;
     top: auto;
     transform: translateX(0);
+    box-shadow: 0 .25em .25em rgba(0, 0, 0, 0.25);
 
     .title {
         font-weight: bold;
@@ -312,12 +316,10 @@ nav.second-bar {
     .breadcrumbs {
         margin-bottom: 0;
     }
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 
     .button {
         img {
-            height: 17px;
-            padding-right: 5px;
+            height: 1.26em;
         }
         padding: 0.4em 0.75em;
         margin-top: .2em;
@@ -327,8 +329,8 @@ nav.second-bar {
             &.follow {
                 padding: 0em .75em;
                 .fi-eye {
-                    font-size: 22px;
-                    line-height: 16px;
+                    font-size: 1.83333em;
+                    line-height: .75em;
                 }
             }
         }
@@ -356,14 +358,14 @@ nav.second-bar {
 
     input {
         padding: 0.4em 0.75em;
-        max-height: 30px;
+        max-height: 2em;
     }
 
     a,
     button,
     input {
         vertical-align: middle;
-        margin: 0 5px;
+        margin: 0 .333em;
 
         span {
             vertical-align: middle;
@@ -373,7 +375,7 @@ nav.second-bar {
 
 .search-input {
     margin-right: 0;
-    max-width: 200px;
+    max-width: 13.3334em;
     display: inline-block;
 }
 
@@ -390,13 +392,13 @@ nav.second-bar {
 
 .search-wrapper {
     display: inline-flex;
-    max-height: 30px;
+    max-height: 2em;
     transform: translateY(1px);
 }
 
 .text-input-wrapper {
     display: inline-flex;
-    width: 200px;
+    width: 13.3334em;
 
     input {
         padding: 0;
@@ -410,13 +412,13 @@ nav.second-bar .advanced_search {
     border: 1px solid #cacaca;
     border-inline-start: 0;
     padding: 0.15em 0.5em;
-    transform: translateX(-5px);
+    transform: translateX(-.3334em);
     display: inline-block;
     position: relative;
 }
 
 html[dir='rtl'] nav.second-bar .advanced_search {
-    transform: translateX(14px);
+    transform: translateX(.3334em);
 }
 
 .advancedSearch-count {
@@ -460,7 +462,7 @@ html[dir='rtl'] nav.second-bar .advanced_search {
         }
 
         .dropdown {
-            margin-left: 20px;
+            margin-left: 1.3334em;
         }
 
         .off-canvas-padding {
@@ -510,7 +512,7 @@ div.sticky-container {
         }
         .logo {
             margin:0;
-            height: 20px;
+            height: 1.3334em;
         }
 }
 .title-bar img {
@@ -526,25 +528,25 @@ POSTS & CONTENT STYLES
 #content {
     #inner-content {
         padding: 1rem 0;
-        margin-left: 5px;
-        margin-right: 5px;
+        margin-left: .3334em;
+        margin-right: .3334em;
     }
 
     article {
         //border: 1px solid $light-gray;
-        margin-bottom: 10px;
+        margin-bottom: .6667em;
 
         header {
-            padding: 10px;
+            padding: .6667em;
             //border-bottom: 1px solid $light-gray;
         }
 
         section {
-            padding: 10px;
+            padding: .6667em;
         }
 
         footer {
-            padding: 10px;
+            padding: .6667em;
             //border-top: 1px solid $light-gray;
             text-align: center;
         }
@@ -567,7 +569,7 @@ $bordered-box-padding: 1rem;
     background-color: $white;
     padding: $bordered-box-padding;
     box-shadow: 0 2px 4px rgba(0,0,0,0.25);
-    border-radius: 10px;
+    border-radius: .6667em;
 }
 // Override table.dataTable styles in datatables.min.css to make the table grab
 // the padding
@@ -578,12 +580,12 @@ $bordered-box-padding: 1rem;
 }
 
 i.large {
-    font-size: 50px;
-    line-height: 50px;
+    font-size: 3.33334rem;
+    line-height: 1em;
 }
 i.medium {
-    font-size: 25px;
-    line-height: 25px;
+    font-size: 1.66667rem;
+    line-height: 1em;
     transform: translateY(2px);
     display: inline-block;
 }
@@ -629,7 +631,7 @@ Title for boxed section
 
 .section-subheader {
     font-weight: 700;
-    font-size: 14px;
+    font-size: 0.93334em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -658,35 +660,20 @@ button.loader {
     &:not(.disabled):before {
         content: '';
         position: absolute;
-        right: 10px;
+        right: .66667rem;
         top: 50%;
-        margin-top: -11px;
-        width: 20px;
-        height: 20px;
+        margin-top: -.73334rem;
+        width: 1.3334rem;
+        height: 1.3334rem;
         border: 4px solid;
         border-left-color: transparent;
         border-radius: 50%;
-        filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
         opacity: 0;
-        -moz-transition-duration: 0.5s;
-        -o-transition-duration: 0.5s;
-        -webkit-transition-duration: 0.5s;
         transition-duration: 0.5s;
-        -moz-transition-property: opacity;
-        -o-transition-property: opacity;
-        -webkit-transition-property: opacity;
         transition-property: opacity;
-        -moz-animation-duration: 1s;
-        -webkit-animation-duration: 1s;
         animation-duration: 1s;
-        -moz-animation-iteration-count: infinite;
-        -webkit-animation-iteration-count: infinite;
         animation-iteration-count: infinite;
-        -moz-animation-name: rotate;
-        -webkit-animation-name: rotate;
         animation-name: rotate;
-        -moz-animation-timing-function: linear;
-        -webkit-animation-timing-function: linear;
         animation-timing-function: linear;
         display: none;
     }
@@ -696,17 +683,8 @@ button.loader {
         //display: inline-block;
         height: 100%;
         width: 0;
-        -moz-transition-delay: 0.5s;
-        -o-transition-delay: 0.5s;
-        -webkit-transition-delay: 0.5s;
         transition-delay: 0.5s;
-        -moz-transition-duration: 0.75s;
-        -o-transition-duration: 0.75s;
-        -webkit-transition-duration: 0.75s;
         transition-duration: 0.75s;
-        -moz-transition-property: width;
-        -o-transition-property: width;
-        -webkit-transition-property: width;
         transition-property: width;
     }
 
@@ -714,7 +692,7 @@ button.loader {
         position: relative;
         pointer-events: none;
         cursor: not-allowed;
-        padding-right: 35px;
+        padding-right: 2.3334rem;
     }
 
     &:not(.disabled).loading:not(.expand) {
@@ -722,38 +700,22 @@ button.loader {
     }
 
     &:not(.disabled).loading:before {
-        -moz-transition-delay: 0.5s;
-        -o-transition-delay: 0.5s;
-        -webkit-transition-delay: 0.5s;
         transition-delay: 0.5s;
-        -moz-transition-duration: 1s;
-        -o-transition-duration: 1s;
-        -webkit-transition-duration: 1s;
         transition-duration: 1s;
-        filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
         opacity: 1;
         display: block;
     }
 
     &:not(.disabled).loading:after {
-        -moz-transition-delay: 0s;
-        -o-transition-delay: 0s;
-        -webkit-transition-delay: 0s;
         transition-delay: 0s;
-        width: 20px;
+        width: 1.3334rem;
     }
     @keyframes rotate {
         0% {
-            -moz-transform: rotate(0deg);
-            -ms-transform: rotate(0deg);
-            -webkit-transform: rotate(0deg);
             transform: rotate(0deg);
         }
 
         100% {
-            -moz-transform: rotate(360deg);
-            -ms-transform: rotate(360deg);
-            -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
         }
     }
@@ -770,8 +732,8 @@ button.loader {
 
 .loading-spinner.active {
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
+    width: 1.6rem;
+    height: 1.6rem;
     border: 0.25rem solid #919191;
     border-top-color: black;
     animation: spin 1s infinite linear;
@@ -781,7 +743,7 @@ button.loader {
   Typeaheads
  */
 .scrollable-typeahead .typeahead__list {
-    max-height: 300px;
+    max-height: 20rem;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -791,11 +753,11 @@ button.loader {
 }
 
 .typeahead-margin-when-active .typeahead__container.result .typeahead__result {
-    margin-bottom: 350px;
+    margin-bottom: 23.3334rem;
 }
 
 .typeahead__container {
-    margin-bottom: 10px;
+    margin-bottom: .66667rem;
 
     .typeahead__image_button {
         padding-top: 3px;
@@ -803,10 +765,10 @@ button.loader {
         vertical-align: middle;
 
         img {
-            min-width: 15px;
-            min-height: 15px;
-            width: 20px;
-            height: 20px;
+            min-width: 1rem;
+            min-height: 1rem;
+            width: 1.3334rem;
+            height: 1.3334rem;
         }
     }
 }
@@ -815,7 +777,7 @@ button.loader {
 }
 
 .last-typeahead-in-section {
-    margin-bottom: 150px;
+    margin-bottom: 10rem;
 }
 
 .typeahead__field .typeahead__hint,
@@ -837,7 +799,7 @@ button.loader {
 .typeahead__item {
     .typeahead-user-row {
         img {
-            width: 20px;
+            width: 1.3334rem;;
             background-color: #3f729b;
             border-radius: 3px;
             vertical-align: text-bottom;
@@ -846,8 +808,7 @@ button.loader {
     }
 }
 .typeahead__label {
-  max-width: -webkit-fill-available;
-  max-width: -moz-available;
+  max-width: stretch;
   a {
     white-space: nowrap;
     overflow: hidden;
@@ -856,7 +817,7 @@ button.loader {
 }
 
 .avatar img {
-    height: 16px;
+    height: 1.0666666667rem;
 }
 
 .clearfix {
@@ -879,14 +840,14 @@ button.loader {
 html[dir='rtl'] {
     .typeahead__label {
         padding-left: 0;
-        padding-right: 4px;
-        margin-left: 4px;
+        padding-right: 3em;
+        margin-left: 3em;
         margin-right: 0;
     }
 
     .typeahead__label .typeahead__cancel-button {
         margin-left: 0;
-        margin-right: 4px;
+        margin-right: 3em;
         border-left: none;
         border-right: 1px solid #c2e0ff;
     }
@@ -901,8 +862,8 @@ html[dir='rtl'] {
     .typeahead__container .typeahead__field [contenteditable],
     .typeahead__container .typeahead__field input,
     .typeahead__container .typeahead__field textarea {
-        padding-right: 6px;
-        padding-left: 32px;
+        padding-right: .4em;
+        padding-left: 2.13333em;
     }
 
     .float-right {
@@ -914,14 +875,14 @@ html[dir='rtl'] {
         float: right !important;
     }
     .notifications-menu-item .notification-count {
-        right: -15px;
+        right: -1rem;
         left: 0;
-        margin-left:-15px;
+        margin-left:-1rem;
     }
     .notification-count-offcanvas {
         right: 0;
         left: 0;
-        margin-left:10px;
+        margin-left:1em;
     }
     .title-bar-right {
         text-align: left;
@@ -930,7 +891,7 @@ html[dir='rtl'] {
 }
 
 .empty-notification-message {
-    margin: 20px;
+    margin: 1.33334rem;
     font-weight: bold;
 }
 
@@ -947,16 +908,16 @@ a.dt-green:hover {
 
 .dt_tooltip .tooltiptext {
     visibility: hidden;
-    width: 120px;
+    width: 8em;
     background-color: black;
     color: #fff;
     text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
+    border-radius: .4em;
+    padding: .3334em 0;
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
-    top: -5px;
+    top: -.3334em;
     right: 105%;
 }
 
@@ -965,13 +926,13 @@ a.dt-green:hover {
 }
 
 #content {
-    max-width: 1440px;
+    max-width: 96rem;
     margin-left: auto;
     margin-right: auto;
 }
 
 .container-width {
-    max-width: 1440px;
+    max-width: 96rem;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1001,10 +962,10 @@ a.dt-green:hover {
     padding: 0;
     border: none;
     background-color: unset;
-    width: 500px;
+    width: 33.3334rem;
 
     .sized-box {
-        height: 6px;
+        height: .4em;
     }
 
     .bordered-box {
@@ -1034,18 +995,18 @@ a.dt-green:hover {
     }
 }
 .new-notification-label {
-    margin-left: 5px;
+    margin-left: .3334rem;
 }
 @media screen and (max-width: 1024px) {
     #notification-dropdown {
         .sized-box {
-            height: 16px;
+            height: 1.0666666667rem;
         }
     }
 }
 @media screen and (max-width: 640px) {
     #notification-dropdown {
-        width: 300px;
+        width: 20rem;
         .button-group {
             .button {
                 font-size: .75rem;
@@ -1055,9 +1016,6 @@ a.dt-green:hover {
         .notification-row .cell {
             margin-left: 0.7rem;
             margin-right: 0;
-        }
-        #notification-list {
-            margin-right: -1px;
         }
     }
 }
@@ -1074,20 +1032,20 @@ a.dt-green:hover {
 }
 
 .help-icon {
-    height: 15px;
+    height: 1rem;
 }
 
 .help-button {
-    margin-right: 3px;
-    margin-left: 3px;
+    margin-right: .2rem;
+    margin-left: .2rem;
 }
 .help-button-tile {
-    margin-right: 6px;
-    margin-left: 6px;
+    margin-right: .4rem;
+    margin-left: .4rem;
 }
 .help-button-field {
-    margin-right: 3px;
-    margin-left: 3px;
+    margin-right: .2rem;
+    margin-left: .2rem;
 }
 
 .help-section h3 {
@@ -1107,7 +1065,9 @@ div.help-more h5 {
 }
 
 .dropdown.menu > li.is-dropdown-submenu-parent > a.menu-white-dropdown-arrow:after {
-    border-color: #FFF transparent transparent;
+    border-color: $white transparent transparent;
+    right: .333333em;
+    margin-top: -.2em;
 }
 @media screen and (max-width : 640px) {
     table.js-list {
@@ -1122,8 +1082,8 @@ div.help-more h5 {
     }
 
     .bordered-box.list-box {
-        padding-left: 2px;
-        padding-right: 2px;
+        padding-left: .13333rem;
+        padding-right: .13333rem;
     }
 }
 @media screen and (min-width : 640px) {
@@ -1136,7 +1096,7 @@ div.help-more h5 {
     border: solid black;
     border-width: 0 2px 2px 0;
     display: inline-block;
-    padding: 3px;
+    padding: .2rem;
 
     &.down {
         transform: rotate(45deg);
@@ -1170,7 +1130,7 @@ div.help-more h5 {
     background: url("../../../dt-assets/images/vline.png") repeat-y;
     margin: 0;
     padding: 0;
-    margin-left: 50px;
+    margin-left: 3.33334rem;
 }
 
 #generation_map ul.ul-gen-0 {
@@ -1179,8 +1139,8 @@ div.help-more h5 {
 
 #generation_map li {
     margin: 0;
-    padding: 0 12px;
-    line-height: 20px;
+    padding: 0 .8em;
+    line-height: 1.33334em;
     background: url("../../../dt-assets/images/node.png") no-repeat;
     color: #369;
     font-weight: bold;
@@ -1218,13 +1178,13 @@ div.help-more h5 {
     display: inline-block;
     background: #fff;
     cursor: pointer;
-    padding: 5px 10px;
+    padding: .33334rem .66667rem;
     border: 1px solid #ccc;
-    width: 250px;
+    width: 16.6666666667rem;
 
     .dt_caret {
         float: right;
-        margin: 5px;
+        margin: .33334rem ;
     }
 }
 .daterangepicker {
@@ -1244,11 +1204,11 @@ div.help-more h5 {
 
 .drill_down li {
     display: inline;
-    margin-right: 3px;
+    margin-right: .2rem ;
 }
 
 .drill_down li select {
-    width: 150px;
+    width: 10rem;
 }
 /**
  * Switch
@@ -1263,11 +1223,11 @@ input.dt-switch[type=checkbox] {
 label.dt-switch {
     cursor: pointer;
     text-indent: -9999px;
-    width: 41px;
-    height: 20px;
+    width: 2.733334rem;
+    height: 1.33334rem;
     background: grey;
     display: inline-block;
-    border-radius: 100px;
+    border-radius: 6.666667rem;
     position: relative;
     margin: 0;
 }
@@ -1275,12 +1235,12 @@ label.dt-switch {
 label.dt-switch:after {
     content: '';
     position: absolute;
-    top: 2px;
-    left: 3px;
-    width: 16px;
-    height: 16px;
+    top: 0.133334rem;
+    left: 2rem;
+    width: 1.066667rem;
+    height: 1.066667rem;
     background: #fff;
-    border-radius: 90px;
+    border-radius: 6rem;
     transition: 0.3s;
 }
 
@@ -1294,7 +1254,7 @@ input.dt-switch:checked + label:after {
 }
 
 label.dt-switch:active:after {
-    width: 20px;
+    width: 1.33334rem;
 }
 
 .ul-no-bullets {
@@ -1304,7 +1264,7 @@ label.dt-switch:active:after {
 
 #user_modal_content{
   .bordered-box {
-    margin-bottom: 20px;
+    margin-bottom: 1.33334rem;
   }
   #hero_stats .bordered-box {
     flex-basis: 19%;
@@ -1317,11 +1277,11 @@ label.dt-switch:active:after {
 @media screen and (max-width : 640px) {
   #user_modal_content {
     #hero_stats .bordered-box {
-      margin: 5px;
+      margin: .33334rem;;
       flex-grow:1;
     }
     #hero_stats {
-      margin-bottom: 20px;
+      margin-bottom: 1.33334rem;;
     }
     .user_modal_column {
       flex-basis: 100%;
@@ -1336,23 +1296,23 @@ label.dt-switch:active:after {
     #multiplier {
         .section-subheader {
             img {
-                height: 15px;
+                height: 1rem;;
             }
-            margin-bottom: 4px;
+            margin-bottom: 0.266667rem;
         }
     }
 }
 
 .dt-status-square {
-    height: 13px;
-    width: 13px;
+    height: 0.86667rem;
+    width: 0.866667rem;
     display: inline-block;
-    border-radius: 2px;
+    border-radius: 0.13334rem;
 }
 
 img.dt-icon {
-    height: 15px;
-    width: 15px;
+    height: 1rem;
+    width: 1rem;
 }
 img.dt-blue-icon {
     filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg) brightness(94%) contrast(100%);
@@ -1362,35 +1322,35 @@ img.dt-blue-icon {
     .type-options {
         display:flex;
         flex-wrap:wrap;
-        margin-bottom: 15px;
+        margin-bottom: 1rem;
     }
     .type-option:hover {
         .type-option-border {
             background-color: #ecf5fc;
             border: 1px solid #c2e0ff;
-            border-radius:15px;
+            border-radius:1rem;
         }
     }
     .type-option.selected {
         .type-option-border {
             background-color: #ecf5fc;
             border: 1px solid #c2e0ff;
-            border-radius:15px;
+            border-radius:1rem;
         }
     }
     .type-option{
-        padding-right:10px;
+        padding-right:.6667rem;
         display:flex;
         flex-basis: 25%;
         .type-option-border {
-            padding: 5px 10px;
+            padding: .33334rem .6667rem;
             border: 1px solid #c2e0ff;
-            border-radius:15px;
+            border-radius:1rem;
             width: 100%;
         }
         input {
             align-self:center;
-            margin-right:5px;
+            margin-right:.33334rem;
             margin-bottom: 0;
         }
         .type-option-title {
@@ -1402,7 +1362,7 @@ img.dt-blue-icon {
             display: inline-block;
             div {
                 display: block;
-                margin-bottom: 5px;
+                margin-bottom: .33334rem;
             }
 
         }
