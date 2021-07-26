@@ -236,7 +236,7 @@
         return
       }
       let delete_filter = $(`<span style="float:right" data-filter="${window.lodash.escape( filter.ID )}">
-        <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/trash.svg">
+        <img style="padding: 0 0.26667rem" src="${window.wpApiShare.template_dir}/dt-assets/images/trash.svg">
       </span>`)
       delete_filter.on("click", function () {
         $(`.delete-filter-name`).html(filter.name)
@@ -244,7 +244,7 @@
         filter_to_delete = filter.ID;
       })
       let edit_filter = $(`<span style="float:right" data-filter="${window.lodash.escape( filter.ID )}">
-          <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/edit.svg">
+          <img style="padding: 0 0.26667rem" src="${window.wpApiShare.template_dir}/dt-assets/images/edit.svg">
       </span>`)
       edit_filter.on("click", function () {
         edit_saved_filter( filter )
@@ -501,7 +501,7 @@
                 </ul>
               </div>
               <div class="mobile-list-field-value">
-                <ul style="line-height:20px" >
+                <ul style="line-height:1.3334rem" >
                   ${values.join(', ')}
                 </ul>
               </div>
@@ -1607,8 +1607,8 @@
         </span>
         ${item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>`:''}
         ${item.update_needed && item.update_needed > 0 ? `<span>
-          <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
-          <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+          <img style="height: 0.8rem;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+          <span style="font-size: 0.93334rem">${window.lodash.escape(item.update_needed)}</span>
         </span>`:''}
       </div>`
       },

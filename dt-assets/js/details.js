@@ -289,8 +289,8 @@ jQuery(document).ready(function($) {
           </span>
           ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
           ${ item.update_needed && item.update_needed > 0 ? `<span>
-            <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-            <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+            <img style="height: 0.8rem;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+            <span style="font-size: 0.93334rem">${window.lodash.escape(item.update_needed)}</span>
           </span>` : '' }
         </div>`
       },

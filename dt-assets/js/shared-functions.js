@@ -410,7 +410,7 @@ window.TYPEAHEADS = {
       : "";
     let statusStyle = item.status === "closed" ? 'style="color:gray"' : "";
       return `<span dir="auto" ${statusStyle}>
-        <span class="typeahead-user-row" style="width:20px">${img}</span>
+        <span class="typeahead-user-row" style="width:1.3334rem">${img}</span>
         ${window.lodash.escape((item.label ? item.label : item.name))}
         <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
     </span>`;

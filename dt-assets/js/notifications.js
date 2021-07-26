@@ -13,13 +13,13 @@ function get_new_notification_count() {
 setTimeout(get_new_notification_count, 2000)
 
 const notificationRead = notification_id => `
-  <a class="read-button-${window.lodash.escape( notification_id )} read-button button hollow small" style="border-radius:100px; margin: 0;"
+  <a class="read-button-${window.lodash.escape( notification_id )} read-button button hollow small" style="border-radius:6.6667rem; margin: 0;"
       onclick="mark_unread( ${window.lodash.escape( notification_id )} )">
       <!--<i class="fi-minus hollow"></i>-->
    </a>
 `
 const notificationNew = notification_id => `
-  <a class="new-button-${window.lodash.escape( notification_id )} new-button button small" style="border-radius:100px; margin: 0;"
+  <a class="new-button-${window.lodash.escape( notification_id )} new-button button small" style="border-radius:6.6667rem; margin: 0;"
      onclick="mark_viewed( ${window.lodash.escape( notification_id )} )">
      <!--<i class="fi-check"></i>-->
   </a>

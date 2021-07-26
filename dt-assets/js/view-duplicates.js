@@ -13,9 +13,9 @@ let get_duplicates = (limit = 0) => {
     response.posts_with_matches.forEach(post => {
       let inner_html = ``
       window.lodash.forOwn(post.dups, (dup_values, dup_key) => {
-        inner_html += `<div style="display: flex"><div style="flex-basis: 100px"><strong>${window.lodash.escape(dup_key)}</strong></div><div>`;
+        inner_html += `<div style="display: flex"><div style="flex-basis: 6.6667rem"><strong>${window.lodash.escape(dup_key)}</strong></div><div>`;
         dup_values.forEach(dup => {
-          inner_html += `<a target="_blank" href="contacts/${window.lodash.escape(dup.ID)}" style="margin: 0 10px 0 5px">
+          inner_html += `<a target="_blank" href="contacts/${window.lodash.escape(dup.ID)}" style="margin: 0 0.6667rem 0 0.3334rem">
             ${window.lodash.escape(dup.post_title)}: ${dup.field==="post_title" ? "":window.lodash.escape(dup.value)} (#${window.lodash.escape(dup.ID)})
           </a>`;
         })
@@ -29,10 +29,10 @@ let get_duplicates = (limit = 0) => {
           </a>
           <div class="label" style="display:inline-block; background: ${window.lodash.escape(post.overall_status.color)}">${window.lodash.escape(post.overall_status.label)}</div>
           <div style="display:inline-block;">${window.lodash.escape(channels)}</div>
-          <h4 style="margin-top:20px">${window.lodash.escape(window.view_duplicates_settings.translations.matches_found)}</h4>
+          <h4 style="margin-top:1.3334rem">${window.lodash.escape(window.view_duplicates_settings.translations.matches_found)}</h4>
           <div>${inner_html}</div>
 
-          <button class="button hollow dismiss-all loader" data-id="${window.lodash.escape(post.ID)}"  style="margin-top:20px">
+          <button class="button hollow dismiss-all loader" data-id="${window.lodash.escape(post.ID)}"  style="margin-top:1.3334rem">
             ${window.lodash.escape(window.view_duplicates_settings.translations.dismiss_all.replace('%s', post.post_title ))}
           </button>
         </div>
