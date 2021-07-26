@@ -21,20 +21,16 @@
     </form>
 
     <div class="advanced-search-modal-results-div">
+        <div class="advanced-search-modal-results-post-types-view-at-top">
+            <a class="advanced-search-modal-results-post-types-view-at-top-collapsible-button button hollow"><?php esc_html_e( 'Search Settings', 'disciple_tools' ); ?>
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>">
+            </a>
+            <div class="advanced-search-modal-results-post-types-view-at-top-collapsible-content">
+                <?php build_post_types_option_list_html( "advanced-search-modal-post-types-at-top" ); ?>
+            </div>
+        </div>
         <table>
             <tbody>
-            <tr>
-                <td colspan="2">
-                    <div class="advanced-search-modal-results-post-types-view-at-top">
-                        <a class="advanced-search-modal-results-post-types-view-at-top-collapsible-button button hollow"><?php esc_html_e( 'Search Settings', 'disciple_tools' ); ?>
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>">
-                        </a>
-                        <div class="advanced-search-modal-results-post-types-view-at-top-collapsible-content">
-                            <?php build_post_types_option_list_html( "advanced-search-modal-post-types-at-top" ); ?>
-                        </div>
-                    </div>
-                </td>
-            </tr>
             <tr>
                 <td colspan="2"><?php esc_html_e( 'Record Hits:', 'disciple_tools' ); ?> <span class="advanced-search-modal-results-total"></span></td>
             </tr>
