@@ -249,10 +249,6 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                   ON a.ID=c.post_id
                      AND c.meta_key = 'group_status'
                      AND c.meta_value = 'active'
-                JOIN $wpdb->postmeta as d
-                  ON a.ID=d.post_id
-                     AND d.meta_key = 'group_type'
-                     AND ( d.meta_value LIKE %s )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               ) as out_of
@@ -264,10 +260,6 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                 JOIN $wpdb->postmeta as d
                   ON ( a.ID=d.post_id
                     AND d.meta_key = 'health_metrics' )
-                JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                     AND e.meta_key = 'group_type'
-                     AND ( e.meta_value LIKE %s )
 
                 JOIN $wpdb->dt_activity_log f
                     ON a.ID = f.object_id
@@ -277,7 +269,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
-              GROUP BY d.meta_value", '%', '%', $start, $end ), ARRAY_A );
+              GROUP BY d.meta_value", $start, $end ), ARRAY_A );
 
         if ( $results ) {
             $out_of = 0;
