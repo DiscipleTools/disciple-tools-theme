@@ -86,7 +86,7 @@ $dt_nav_tabs = dt_default_menu_array();
 
             <!-- notifications -->
             <?php if ( isset( $dt_nav_tabs['admin']['notifications'] ) && ! empty( $dt_nav_tabs['admin']['notifications'] ) ) : ?>
-                <a href="#" class="notifications-menu-item" type="button" data-toggle="notification-dropdown" style="margin-left: 15px; margin-bottom: 0">
+                <a href="#" class="notifications-menu-item" type="button" data-toggle="notification-dropdown" style="margin-left: 1rem; margin-bottom: 0">
                     <img title="<?php esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( "Notifications", 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/bell.svg" ); ?>">
                     <span class="badge alert notification-count" style="display:none"></span>
                 </a>

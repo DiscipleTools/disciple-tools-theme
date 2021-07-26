@@ -339,7 +339,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 }
                             }
                             ?>
-                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                            <img style="height: 1rem; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
                             (<?php echo esc_html( $number_of_translations ); ?>)
                         </button>
                         <div class="translation_container hide">
@@ -380,7 +380,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 }
                             }
                             ?>
-                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                            <img style="height: 1rem; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
                             (<?php echo esc_html( $number_of_translations ); ?>)
                         </button>
                         <div class="translation_container hide">
@@ -511,7 +511,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                         }
                                     }
                                     ?>
-                                    <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                                    <img style="height: 1rem; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
                                     (<?php echo esc_html( $number_of_translations ); ?>)
                                 </button>
                                 <div class="translation_container hide">
@@ -552,7 +552,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                         }
                                     }
                                     ?>
-                                    <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                                    <img style="height: 1rem; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
                                     (<?php echo esc_html( $number_of_translations ); ?>)
                                 </button>
                                 <div class="translation_container hide">

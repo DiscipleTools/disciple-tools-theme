@@ -318,7 +318,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
 
                             <!-- Languages -->
-                            <div class="section-subheader cell" style="margin-top:30px">
+                            <div class="section-subheader cell" style="margin-top:2rem">
                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/languages.svg" ?>">
                                 <strong style="display: inline-block;"><?php esc_html_e( 'Languages you are comfortable speaking', 'disciple_tools' )?></strong>
                                 <span id="languages-spinner" style="display: inline-block" class="loading-spinner"></span>
@@ -339,7 +339,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                             <!-- People Groups -->
                             <?php if ( isset( $contact_fields["people_groups"]["name"] ) ): ?>
-                            <div class="section-subheader cell" style="margin-top:20px">
+                            <div class="section-subheader cell" style="margin-top:1.33334rem">
                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
                                 <?php esc_html_e( 'People Groups you wish to serve', 'disciple_tools' ); ?>
                             </div>
@@ -400,7 +400,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 </div>
                                 <div class="start_date"><input type="text" class="date-picker" id="start_date" autocomplete="off"></div>
                             </div>
-                            <div style="margin: 0 20px">
+                            <div style="margin: 0 1.33334rem">
                                 <div class="section-subheader cell">
                                     <?php esc_html_e( 'End Date', 'disciple_tools' )?>
                                 </div>

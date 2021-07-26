@@ -195,7 +195,7 @@ function showChart(id) {
 }
 
 function createChart(id, keys, options) {
-    const defaultOptions = { 
+    const defaultOptions = {
         single: false,
         graphType: 'stacked',
         customLabel: ''
@@ -331,7 +331,7 @@ function createColumnSeries(chart, field, name, hidden = false) {
     series.dataFields.valueY = field
     series.dataFields.categoryX = chart_view
     series.name = name
-    series.columns.template.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 15px]{valueY}[/] [#fff]{additional}[/]`
+    series.columns.template.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 1rem]{valueY}[/] [#fff]{additional}[/]`
     series.stacked = true
     if (hidden) {
         series.hide()
@@ -344,7 +344,7 @@ function createLineSeries(chart, field, name, hidden = false) {
     const { chart_view } = dtMetricsProject.state
     const { tooltip_label } = escapeObject(dtMetricsProject.translations)
     const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
-    
+
     let lineSeries = chart.series.push(new am4charts.LineSeries());
     lineSeries.name = name
     lineSeries.dataFields.valueY = field;
@@ -360,7 +360,7 @@ function createLineSeries(chart, field, name, hidden = false) {
 
     let bullet = lineSeries.bullets.push(new am4charts.Bullet());
 //    bullet.fill = am4core.color("#fdd400"); // tooltips grab fill from parent by default
-    bullet.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 15px]{valueY}[/] [#fff]{additional}[/]`
+    bullet.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 1rem]{valueY}[/] [#fff]{additional}[/]`
     let circle = bullet.createChild(am4core.Circle);
     circle.radius = 4;
     circle.fill = am4core.color("#fff");
@@ -421,7 +421,7 @@ function getData() {
                 throw new Error('no data object returned')
             }
             window.dtMetricsProject.cumulative_offset = cumulative_offset
-            window.dtMetricsProject.data = isAllTime 
+            window.dtMetricsProject.data = isAllTime
                 ? formatYearData(data)
                 : formatMonthData(data)
             chartElement.dispatchEvent( new Event('datachange') )
@@ -437,7 +437,7 @@ function getData() {
 /**
  * Formats the metric data by filling in any blank years and calculating
  * cumulative counts for the charts
- * 
+ *
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
 function formatYearData(yearlyData) {
@@ -504,7 +504,7 @@ function formatCompoundYearData(yearlyData) {
 /**
  * Formats the metric data by filling in any blank months and calculating
  * cumulative counts for the charts
- * 
+ *
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
 function formatMonthData(monthlyData) {

@@ -206,12 +206,12 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             ?>
                             </div>
                         </div> <!-- end collapse details section -->
-                        <div id="show-details-edit-button" class="show-details-section" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px -15px -15px; border-radius: 0 0 10px 10px;">
-                            <a class="button clear " style="margin:0;padding:3px 0; width:100%">
+                        <div id="show-details-edit-button" class="show-details-section" style="text-align: center; background-color:rgb(236, 245, 252);margin: 0.2rem -1rem -1rem -1rem; border-radius: 0 0 0.6667rem 0.6667rem;">
+                            <a class="button clear " style="margin:0;padding:0.2rem 0; width:100%">
                                 <?php esc_html_e( 'Edit all details fields', 'disciple_tools' ); ?>
                             </a></div>
 
-                        <div id="details-section" class="display-fields" style="display: none; margin-top:20px">
+                        <div id="details-section" class="display-fields" style="display: none; margin-top:1.33334rem">
                             <div class="grid-x grid-margin-x">
                                 <?php
                                 // let the plugin add section content

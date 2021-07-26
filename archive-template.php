@@ -62,12 +62,12 @@ dt_please_log_in();
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
                 </a>
             </div>
-            <div id="advanced_search_picker"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
+            <div id="advanced_search_picker"  class="list_field_picker" style="display:none; padding:1.33334rem; border-radius:0.33334rem; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
                 <ul class="ul-no-bullets" style="">
 
                 <li style="" class="">
-                    <label style="margin-right:15px; cursor:pointer">
+                    <label style="margin-right:1rem; cursor:pointer">
                         <input type="checkbox" value="all"
                                 <?php echo esc_html( in_array( 'all', $fields_to_search ) ? "checked" : '' ); ?>
 
@@ -82,7 +82,7 @@ dt_please_log_in();
                     }
                     ?>
                     <li style="" class="">
-                        <label style="margin-right:15px; cursor:pointer">
+                        <label style="margin-right:1rem; cursor:pointer">
                             <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
                                     <?php echo esc_html( in_array( $field_key, $fields_to_search ) ? "checked" : '' );
                                     ?>
@@ -108,7 +108,7 @@ dt_please_log_in();
         <a class="button" id="open-search">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
         </a>
-        <div class="hideable-search" style="display: none; margin-top:5px">
+        <div class="hideable-search" style="display: none; margin-top:0.33334rem">
             <div class="search-wrapper">
                 <span class="text-input-wrapper">
                     <input class="search-input search-input--mobile" name="search" type="text" id="search-query-mobile"
@@ -139,12 +139,12 @@ dt_please_log_in();
                 <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
             </div>
         </div>
-        <div id="advanced_search_picker_mobile"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
+        <div id="advanced_search_picker_mobile"  class="list_field_picker" style="display:none; padding:1.33334rem; border-radius:0.33334rem; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
                 <ul class="ul-no-bullets" style="">
 
                 <li style="" class="">
-                    <label style="margin-right:15px; cursor:pointer">
+                    <label style="margin-right:1rem; cursor:pointer">
                         <input type="checkbox" value="all"
                                 <?php echo esc_html( in_array( 'all', $fields_to_search ) ? "checked" : '' ); ?>
 
@@ -159,7 +159,7 @@ dt_please_log_in();
                     }
                     ?>
                     <li style="" class="">
-                        <label style="margin-right:15px; cursor:pointer">
+                        <label style="margin-right:1rem; cursor:pointer">
                             <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
                                     <?php echo esc_html( in_array( $field_key, $fields_to_search ) ? "checked" : '' );
                                     ?>
@@ -188,8 +188,8 @@ dt_please_log_in();
                     </div>
                     <div class="section-body">
                         <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
-                        <div style="margin-bottom: 5px">
-                            <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                        <div style="margin-bottom: 0.33334rem">
+                            <a data-open="filter-modal"><img style="display: inline-block; margin-right:0.8rem" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
                         </div>
                         <div class="custom-filters"></div>
                     </div>
@@ -243,7 +243,7 @@ dt_please_log_in();
                             </button>
                         </span>
                     </div>
-                    <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+                    <div id="list_column_picker" class="list_field_picker" style="display:none; padding:1.33334rem; border-radius:0.33334rem; background-color:#ecf5fc; margin: 2rem 0">
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
                         <?php
                         $fields_to_show_in_table = [];
@@ -267,7 +267,7 @@ dt_please_log_in();
                             }
                             ?>
                             <li style="" class="">
-                                <label style="margin-right:15px; cursor:pointer">
+                                <label style="margin-right:1rem; cursor:pointer">
                                     <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
                                            <?php echo esc_html( in_array( $field_key, $fields_to_show_in_table ) ? "checked" : '' ); ?>
                                            <?php echo esc_html( ( empty( $fields_to_show_in_table ) && !empty( $field_values["show_in_table"] ) ) ? "checked" : '' ); ?>
@@ -281,7 +281,7 @@ dt_please_log_in();
                         <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
                     </div>
 
-                    <div id="bulk_edit_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+                    <div id="bulk_edit_picker" style="display:none; padding:1.33334rem; border-radius:0.33334rem; background-color:#ecf5fc; margin: 2rem 0">
                         <p style="font-weight:bold"><?php
                         echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                         <div class="grid-x grid-margin-x">
@@ -387,7 +387,7 @@ dt_please_log_in();
                             </div>
                             <?php if ( isset( $field_options["requires_update"] ) ) : ?>
                             <div class="cell small-12 medium-4 center-items">
-                            <span style="margin-right:5px"><?php echo esc_html( $field_options["requires_update"]["name"] ); ?>:</span>
+                            <span style="margin-right:0.33334rem"><?php echo esc_html( $field_options["requires_update"]["name"] ); ?>:</span>
                                     <input type="checkbox" id="update-needed-bulk" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
                                     <label class="dt-switch" for="update-needed-bulk" style="vertical-align: top;"></label>
                             </div>
@@ -437,16 +437,16 @@ dt_please_log_in();
                         </button>
                     </div>
 
-                    <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
+                    <div style="display: flex; flex-wrap:wrap; margin: 0.6667rem 0" id="current-filters"></div>
 
                     <div>
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
-                                    <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
+                                    <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:2.1334rem;; background-image:none; cursor:default">
                                     <input type="checkbox" name="bulk_edit_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
-                                    <th style="width:32px; background-image:none; cursor:default"></th>
+                                    <th style="width:2.1334rem;; background-image:none; cursor:default"></th>
 
                                     <?php $columns = [];
                                     if ( empty( $fields_to_show_in_table ) ){
@@ -495,7 +495,7 @@ dt_please_log_in();
     <div class="reveal" id="filter-modal" data-reveal>
         <div class="grid-container">
             <div class="grid-x">
-                <div class="cell small-4" style="padding: 0 5px 5px 5px">
+                <div class="cell small-4" style="padding: 0 0.33334rem 0.33334rem 0.33334rem">
                     <input type="text" id="new-filter-name"
                            placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"
                            style="margin-bottom: 0"/>

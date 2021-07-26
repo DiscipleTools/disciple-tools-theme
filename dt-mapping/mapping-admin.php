@@ -1447,7 +1447,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     list_results.empty()
 
                     jQuery.each( selection.list, function (i, v) {
-                        var row = 
+                        var row =
                         `<tr>
                             <td>
                                 <a class="open_next_drilldown"
@@ -1461,7 +1461,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <td>`;
                             if( v.is_custom_location === "1" ) {
                                 row += `<a class="button delete-button" data-grid_id="${window.lodash.escape( v.grid_id ) }">Delete</a>`;
-                            } 
+                            }
                         row += `</td>
                             </tr>`;
                         list_results.append( row );
@@ -2315,7 +2315,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 <!--                                            <a onclick="show_license()">Show Grid License</a><br>-->
 <!--                                        </p>-->
 
-                                        <div id="hierarchy_list" style="display:none; padding: 15px; border: solid 2px #ccc;">
+                                        <div id="hierarchy_list" style="display:none; padding: 1rem; border: solid 2px #ccc;">
                                             <img src="<?php echo esc_html( $dt_mapping['spinner'] ) ?>" width="30px" />
                                         </div>
                                     </td>
@@ -2324,7 +2324,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             </table>
                             <!-- End Main Column -->
 
-                            <div id="hierarchy_list" style="display:none; padding: 15px; border: solid 2px #ccc;">
+                            <div id="hierarchy_list" style="display:none; padding: 1rem; border: solid 2px #ccc;">
                                 <img src="<?php echo esc_html( $dt_mapping['spinner'] ) ?>" width="30px" />
                             </div>
 

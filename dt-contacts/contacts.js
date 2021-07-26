@@ -111,7 +111,7 @@ jQuery(document).ready(function($) {
         if ( field_settings.type === "communication_channel" && post[field_key] ){
           post[field_key].forEach( contact_info=>{
             if ( contact_info.value !== '' ){
-              original_contact_html +=`<img src='${window.lodash.escape(field_settings.icon)}'><span style="margin-right: 15px;">&nbsp;${window.lodash.escape(contact_info.value)}</span>`
+              original_contact_html +=`<img src='${window.lodash.escape(field_settings.icon)}'><span style="margin-right: 1rem;">&nbsp;${window.lodash.escape(contact_info.value)}</span>`
             }
           })
         }
@@ -179,7 +179,7 @@ jQuery(document).ready(function($) {
       if ( field_settings.type === "communication_channel" && dupe.post[field_key] ){
         dupe.post[field_key].forEach( contact_info=>{
           if ( contact_info.value !== '' ){
-            html +=`<img src='${window.lodash.escape(field_settings.icon)}'><span style="margin-right: 15px; ${matched_values.includes(contact_info.value) ? 'font-weight:bold;' : ''}">&nbsp;${window.lodash.escape(contact_info.value)}</span>`
+            html +=`<img src='${window.lodash.escape(field_settings.icon)}'><span style="margin-right: 1rem; ${matched_values.includes(contact_info.value) ? 'font-weight:bold;' : ''}">&nbsp;${window.lodash.escape(contact_info.value)}</span>`
           }
         })
       }

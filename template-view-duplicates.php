@@ -31,7 +31,7 @@ get_header();
                         <?php echo esc_html( _x( "Duplicates found:", 'Duplicate contacts found: 100', 'disciple_tools' ) ); ?> <span id="found_text">0</span>.
                     </p>
                 </div>
-                <div id="duplicates-content" class="grid-y grid-margin-y" style="margin-top:50px">
+                <div id="duplicates-content" class="grid-y grid-margin-y" style="margin-top:3.33334rem">
 
                 </div>
             </main> <!-- end #main -->

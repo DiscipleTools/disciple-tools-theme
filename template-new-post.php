@@ -34,7 +34,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
 
                     <!-- choose the record type -->
                     <?php if ( $force_type_choice ){ ?>
-                    <div class="type-control-field" style="margin:20px 0">
+                    <div class="type-control-field" style="margin:1.33334rem 0">
                         <strong>
                         <?php echo esc_html( sprintf( __( 'Select the %s type:', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
                         </strong>
@@ -112,11 +112,11 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                             <?php } ?>
                             </div>
                         <?php } ?>
-                        <div id="show-shield-banner" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">
-                            <a class="button clear" id="show-hidden-fields" style="margin:0;padding:3px 0; width:100%">
+                        <div id="show-shield-banner" style="text-align: center; background-color:rgb(236, 245, 252);margin: 0.2rem -1rem 1rem -1rem;">
+                            <a class="button clear" id="show-hidden-fields" style="margin:0;padding:0.2rem 0; width:100%">
                                 <?php esc_html_e( 'Show all fields', 'disciple_tools' ); ?>
                             </a>
-                            <a class="button clear" id="hide-hidden-fields" style="margin:0;padding:3px 0; width:100%; display: none;">
+                            <a class="button clear" id="hide-hidden-fields" style="margin:0;padding:0.2rem 0; width:100%; display: none;">
                                 <?php esc_html_e( 'Hide fields', 'disciple_tools' ); ?>
                             </a>
                         </div>

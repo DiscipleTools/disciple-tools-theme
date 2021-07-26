@@ -178,7 +178,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
                     <?php endforeach;
                 } ?>
 
-                <span id="merge_errors" style="margin-top: 30px; color: red; text-align: right;"></span>
+                <span id="merge_errors" style="margin-top: 2rem; color: red; text-align: right;"></span>
                 <button class='button loader' id="submit-merge" name='merge-submit' type='button' onclick='merge()' value='Merge'><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></button>
                 </form>
             </div>
@@ -192,7 +192,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
         .merge-column{
           width:33%;
           float:left;
-          min-height: 45px;
+          min-height: 40.33334rem;
         }
         .bold{
           font-weight:bold;
@@ -203,29 +203,29 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
           clear:both;
         }
         .line-wrap:last-of-type{
-          margin-bottom:20px;
+          margin-bottom:1.33334rem;
         }
         .merge-column input{
-          margin-top:15px;
+          margin-top:10.33334rem;
         }
         .merge-column .bold{
           position:relative;
-          top:10px;
+          top:0.6667rem;
         }
         #merge-form{
           display:inline-block;
           width:100%;
         }
         #merge-form button {
-          margin-top:20px;
+          margin-top:1.33334rem;
           float:right;
           display:inline-block;
         }
         .shortText {
-            max-width: 250px;
+            max-width: 23.33334rem;
         }
         .row-edit a {
-            margin-left: 10px;
+            margin-left: 0.6667rem;
         }
         .empty {
             display: inline-block;
