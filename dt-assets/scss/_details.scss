@@ -86,7 +86,7 @@ html[dir='rtl'] {
         padding: 0.45em 1em;
     }
     .label {
-        font-size: .9rem;
+        font-size: .8rem;
     }
 }
 //contact quick buttons
@@ -95,7 +95,7 @@ html[dir='rtl'] {
     border-radius: 1.33334rem;
     color: white;
     padding: .133334rem .26667rem;
-    font-size: .66667rem;
+    font-size: .8rem;
     position: absolute;
     top: 0;
     margin-left: .2rem;
@@ -235,8 +235,8 @@ DT comments and activity
         border-radius: 6.66667rem;
         padding: 0.1rem 0.5rem;
         height: 1.6rem;
-        font-size: 0.9rem;
-        line-height: 0.9rem;
+        font-size: .8rem;
+        line-height: .8rem;
         display: flex;
         align-items: center;
         border: 1px solid transparent;
@@ -253,7 +253,7 @@ DT comments and activity
 
         span + span {
             padding-left: .26667rem;
-            font-size: 0.8rem;
+            font-size: .8rem;
         }
 
         &[data-own-reaction="true"] {
@@ -287,11 +287,11 @@ DT comments and activity
         position: absolute;
         right: -.46667rem;
         top: .2rem;
-        font-size: 0.8rem;
+        font-size: .8rem;
         background-color: white;
         border-radius: 6.66667rem;
         padding: 0 0.1rem;
-        line-height: 0.8rem;
+        line-height: .8rem;
         font-weight: 600;
         text-align: center;
         }
@@ -388,7 +388,7 @@ DT comments and activity
     }
 
     .translate-button {
-        font-size: .85em;
+        font-size: .8em;
         padding: 0 0 0 1rem;
         margin: 0 0 0 2em;
     }
@@ -659,7 +659,7 @@ select.color-select {
 
 #tasks-modal {
   .existing-task-action {
-    font-size:  .66667rem;
+    font-size:  .8rem;
     color: $primary-color;
     margin: 0 .33334rem;
   }
@@ -675,10 +675,10 @@ select.color-select {
         font-size: 1rem;
     }
     .record-name-tagline {
-        font-size:  .66667rem;
+        font-size:  .8rem;
         display: inline-block;
         span, a {
-            font-size:  .66667rem;
+            font-size:  .8rem;
         }
     }
 }
