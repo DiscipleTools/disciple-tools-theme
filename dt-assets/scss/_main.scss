@@ -1100,22 +1100,18 @@ div.help-more h5 {
 
     &.down {
         transform: rotate(45deg);
-        -webkit-transform: rotate(45deg);
     }
 
     &.right {
         transform: rotate(-45deg);
-        -webkit-transform: rotate(-45deg);
     }
 
     &.left {
         transform: rotate(135deg);
-        -webkit-transform: rotate(135deg);
     }
 
     &.up {
         transform: rotate(-135deg);
-        -webkit-transform: rotate(-135deg);
     }
 }
 /* Metrics section */
