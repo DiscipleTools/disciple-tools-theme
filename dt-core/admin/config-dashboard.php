@@ -133,6 +133,7 @@ final class Disciple_Tools_Dashboard
             $mapbox_key = DT_Mapbox_API::get_key();
 
             $todo = 0;
+            $todo += ! wp_is_using_https() ? 1 : 0;
             $todo += empty( $mapbox_key ) ? 1 : 0;
 
             $mapbox_upgraded = true;
@@ -145,10 +146,18 @@ final class Disciple_Tools_Dashboard
                     update_option( "dt_setup_options", $setup_options );
                 }
             }
-
             ?>
             <p>Remaining Setup Tasks: <?php echo esc_html( $todo ) ?></p>
             <?php
+            if ( ! wp_is_using_https() ) {
+                ?>
+                <p>
+                    Serving site over HTTPS is strongly recommended to keep your information encrypted from network sniffers
+                    <a href="https://wordpress.org/support/article/https-for-wordpress/" target="_blank" rel="noopener">Read more here</a>
+                </p>
+                <?php
+            }
+
             if ( empty( $mapbox_key ) ){
                 ?>
                 For geo-location and mapping <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ) ); ?>">Add a Mapbox Key</a>
