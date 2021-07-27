@@ -147,7 +147,7 @@ function dt_site_scripts() {
         )
     );
 
-    dt_theme_enqueue_script( 'dt-notifications', 'dt-assets/js/notifications.js', array( 'jquery' ) );
+    dt_theme_enqueue_script( 'dt-notifications', 'dt-assets/js/notifications.js', array( 'jquery' ), true );
     wp_localize_script(
         'dt-notifications', 'wpApiNotifications', array(
             'root' => esc_url_raw( rest_url() ),
@@ -357,7 +357,7 @@ function dt_site_scripts() {
         ) );
     }
 
-    dt_theme_enqueue_script( 'dt-advanced-search', 'dt-assets/js/advanced-search.js', array( 'jquery' ) );
+    dt_theme_enqueue_script( 'dt-advanced-search', 'dt-assets/js/advanced-search.js', array( 'jquery' ), true );
     wp_localize_script( 'dt-advanced-search', 'advanced_search_settings', array(
         'template_dir_uri' => esc_html( get_template_directory_uri() ),
         'fetch_more_text' => __( 'load more', 'disciple_tools' ) // Support translations
