@@ -192,8 +192,8 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         "label" => "Upgrade HTTP to HTTPS",
         "description" => "Encrypt your traffic from network sniffers",
         "link" => admin_url( "options-general.php" ),
-        "complete" => wp_is_using_https() ? true : false
-
+        "complete" => wp_is_using_https() ? true : false,
+        "hide_mark_done" => true
     ];
     $items["mapbox_key"] = [
         "label" => "Upgrade Mapping",
