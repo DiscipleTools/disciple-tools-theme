@@ -411,7 +411,7 @@ jQuery(document).ready(function($) {
     document.querySelectorAll('#comments-wrapper [data-toggle]').forEach((element) => {
       const dropdownId = $(element).data('toggle')
       const dropdownElement = document.querySelector(`#${dropdownId}`)
-      element.addEventListener('click', (e) => {
+      element.addEventListener('mouseover', (e) => {
         const style = getComputedStyle(dropdownElement)
         element.toggleAttribute('open')
         if (style.visibility === 'hidden') {
