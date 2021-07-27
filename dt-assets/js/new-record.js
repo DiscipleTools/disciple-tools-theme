@@ -68,7 +68,9 @@ jQuery(function($) {
       }
       let id = $(this).attr('id')
       new_post[id] = date
-      this.value = window.SHAREDFUNCTIONS.formatDate(moment.utc(date).unix());
+      if ( this.value ){
+        this.value = window.SHAREDFUNCTIONS.formatDate(moment.utc(date).unix());
+      }
     },
     changeMonth: true,
     changeYear: true,
