@@ -150,7 +150,6 @@ final class Disciple_Tools_Dashboard
             }
 
             ?><p>Completed <?php echo esc_html( $completed ); ?> of <?php echo esc_html( sizeof( $dt_setup_wizard_items ) ); ?> tasks</p>
-
             <table class="widefat striped">
                 <thead>
                     <tr>
@@ -188,6 +187,14 @@ final class Disciple_Tools_Dashboard
 add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
     $mapbox_key = DT_Mapbox_API::get_key();
     $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
+
+    $items["https_check"] = [
+        "label" => "Upgrade HTTP to HTTPS",
+        "description" => "Encrypt your traffic from network sniffers",
+        "link" => admin_url( "options-general.php" ),
+        "complete" => wp_is_using_https() ? true : false
+
+    ];
     $items["mapbox_key"] = [
         "label" => "Upgrade Mapping",
         "description" => "Better results when search locations and better mapping",
