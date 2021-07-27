@@ -1108,6 +1108,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $activity_simple = [];
         foreach ( $activity as $a ) {
             $a->object_note = self::format_activity_message( $a, $post_settings );
+            $a->object_note = sanitize_text_field( $a->object_note );
             if ( isset( $a->user_id ) && $a->user_id > 0 ) {
                 $user = get_user_by( "id", $a->user_id );
                 if ( $user ){
