@@ -67,8 +67,29 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                     'activities' => $this->daily_activity( 'this-week' )
                 ],
                 'translations'        => [
-                    'activities'           => __( "Activity by Day", 'disciple_tools' ),
-                    'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
+                    'headings'   => [
+                        'header'     => __( "Activity by Day", 'disciple_tools' ),
+                        'sub_header' => __( "Filter by date range", 'disciple_tools' )
+                    ],
+                    'selections' => [
+                        'this_week'        => __( "This Week", 'disciple_tools' ),
+                        'this_month'       => __( "This Month", 'disciple_tools' ),
+                        'last_month'       => __( "Last Month", 'disciple_tools' ),
+                        'two_months_ago'   => __( "2 Months Ago", 'disciple_tools' ),
+                        'three_months_ago' => __( "3 Months Ago", 'disciple_tools' ),
+                        'four_months_ago'  => __( "4 Months Ago", 'disciple_tools' ),
+                        'five_months_ago'  => __( "5 Months Ago", 'disciple_tools' ),
+                        'six_months_ago'   => __( "6 Months Ago", 'disciple_tools' )
+                    ],
+                    'chart'      => [
+                        'instructions' => __( "Click on chart timeline day summary to display a detailed list of metrics below.", 'disciple_tools' ),
+                        'metric'       => __( "Metric", 'disciple_tools' ),
+                        'count'        => __( "Count", 'disciple_tools' ),
+                        'no_activity'  => __( "No Activity Detected!", 'disciple_tools' ),
+                        'new_contacts' => __( "New Contacts", 'disciple_tools' ),
+                        'new_groups'   => __( "New Groups", 'disciple_tools' ),
+                        'baptisms'     => __( "Baptisms", 'disciple_tools' )
+                    ]
                 ]
             ]
         );
@@ -191,7 +212,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                     $new_groups          = $this->new_groups_count( $current_day_format, $next_day_format );
                     $seeker_path_updates = Disciple_Tools_Counter_Contacts::seeker_path_activity( $current_day_ts, $next_day_ts );
                     $health              = $this->health_metrics( $current_day_ts, $next_day_ts, $group_fields_settings );
-                    $scheduled_baptisms  = $this->scheduled_baptisms_count( $current_day_ts, $next_day_ts );
+                    $baptisms            = $this->baptisms_count( $current_day_ts, $next_day_ts );
 
                     $multiselect_fields = [];
                     foreach ( $contact_field_settings as $field_key => $field_settings ) {
@@ -215,7 +236,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                         'seeker_path_updates' => $seeker_path_updates,
                         'health'              => $health,
                         'multiselect_fields'  => $multiselect_fields,
-                        'scheduled_baptisms'  => $scheduled_baptisms
+                        'baptisms'            => $baptisms
                     ];
                 }
 
@@ -238,7 +259,8 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
             $labels[ $key ] = $option["label"];
         }
 
-        $chart = [];
+        $chart         = [];
+        $chart["name"] = $group_fields["health_metrics"]["name"];
 
         $results = $wpdb->get_results( $wpdb->prepare(
             "SELECT d.meta_value as health_key,
@@ -288,7 +310,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                         $row["remaining"]  = intval( $result['out_of'] ) - intval( $result['count'] );
                     }
                 }
-                $chart[] = $row;
+                $chart["metrics"][] = $row;
             }
         }
 
@@ -339,7 +361,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         ", $start, $end ) );
     }
 
-    private function scheduled_baptisms_count( $start, $end ): int {
+    private function baptisms_count( $start, $end ): int {
         global $wpdb;
 
         return $wpdb->get_var( $wpdb->prepare( "

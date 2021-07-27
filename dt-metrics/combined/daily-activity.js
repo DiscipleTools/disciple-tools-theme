@@ -10,21 +10,21 @@ jQuery(document).ready(function ($) {
     let chartDiv = jQuery('#chart');
 
     chartDiv.empty().html(`
-    <div class="section-header">${window.lodash.escape(window.wp_js_object.translations.activities)}</div>
-    <div class="section-subheader">${window.lodash.escape(window.wp_js_object.translations.filter_to_date_range)}:</div>
+    <div class="section-header">${window.lodash.escape(window.wp_js_object.translations.headings.header)}</div>
+    <div class="section-subheader">${window.lodash.escape(window.wp_js_object.translations.headings.sub_header)}:</div>
     <br>
     <select id="activity_date_range_filter">
-        <option selected value="this-week">This Week</option>
-        <option value="this-month">This Month</option>
-        <option value="last-month">Last Month</option>
-        <option value="2-months-ago">2 Months Ago</option>
-        <option value="3-months-ago">3 Months Ago</option>
-        <option value="4-months-ago">4 Months Ago</option>
-        <option value="5-months-ago">5 Months Ago</option>
-        <option value="6-months-ago">6 Months Ago</option>
+        <option selected value="this-week">${window.lodash.escape(window.wp_js_object.translations.selections.this_week)}</option>
+        <option value="this-month">${window.lodash.escape(window.wp_js_object.translations.selections.this_month)}</option>
+        <option value="last-month">${window.lodash.escape(window.wp_js_object.translations.selections.last_month)}</option>
+        <option value="2-months-ago">${window.lodash.escape(window.wp_js_object.translations.selections.two_months_ago)}</option>
+        <option value="3-months-ago">${window.lodash.escape(window.wp_js_object.translations.selections.three_months_ago)}</option>
+        <option value="4-months-ago">${window.lodash.escape(window.wp_js_object.translations.selections.four_months_ago)}</option>
+        <option value="5-months-ago">${window.lodash.escape(window.wp_js_object.translations.selections.five_months_ago)}</option>
+        <option value="6-months-ago">${window.lodash.escape(window.wp_js_object.translations.selections.six_months_ago)}</option>
     </select>
     <div style="display: inline-block" class="loading-spinner"></div>
-    Click on chart timeline day summary to display a detailed list of metrics below.
+    ${window.lodash.escape(window.wp_js_object.translations.chart.instructions)}
     <div id="chartdiv" style="height: 600px;"></div><br>
     <h2 id="chart_day_title"></h2><hr>
     <div id="chart_day_counts_div" style="display: none;"></div><br>
@@ -323,22 +323,22 @@ jQuery(document).ready(function ($) {
       // Default Metrics
       if (parseInt(day_counts['new_contacts']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>New Contacts</td>';
+        metrics_html += '<td>' + window.lodash.escape(window.wp_js_object.translations.chart.new_contacts) + '</td>';
         metrics_html += '<td>' + day_counts['new_contacts'] + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(day_counts['new_groups']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>New Groups</td>';
+        metrics_html += '<td>' + window.lodash.escape(window.wp_js_object.translations.chart.new_groups) + '</td>';
         metrics_html += '<td>' + day_counts['new_groups'] + '</td>';
         metrics_html += '</tr>';
       }
 
-      if (parseInt(day_counts['scheduled_baptisms']) > 0) {
+      if (parseInt(day_counts['baptisms']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>Scheduled Baptisms</td>';
-        metrics_html += '<td>' + day_counts['scheduled_baptisms'] + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(window.wp_js_object.translations.chart.baptisms) + '</td>';
+        metrics_html += '<td>' + day_counts['baptisms'] + '</td>';
         metrics_html += '</tr>';
       }
 
@@ -397,13 +397,13 @@ jQuery(document).ready(function ($) {
       // Health
       let health = day_counts['health'];
 
-      if (health && health.length > 0) {
+      if (health['metrics'] && health['metrics'].length > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td colspan="2" style="background-color:#E8E8E8FF;">Health</td>';
+        metrics_html += '<td colspan="2" style="background-color:#E8E8E8FF;">' + health['name'] + '</td>';
         metrics_html += '</tr>';
 
         // Iterate over each field option
-        health.forEach(function (metric) {
+        health['metrics'].forEach(function (metric) {
           if (parseInt(metric['practicing']) > 0) {
             metrics_html += '<tr>';
             metrics_html += '<td style="padding-left: 50px;"><li>' + metric['label'] + '</li></td>';
@@ -438,8 +438,8 @@ jQuery(document).ready(function ($) {
 
         html += '<thead>';
         html += '<tr>';
-        html += '<th>Metric</th>';
-        html += '<th>Count</th>';
+        html += '<th>' + window.lodash.escape(window.wp_js_object.translations.chart.metric) + '</th>';
+        html += '<th>' + window.lodash.escape(window.wp_js_object.translations.chart.count) + '</th>';
         html += '</tr>';
         html += '</thead>';
 
@@ -449,7 +449,7 @@ jQuery(document).ready(function ($) {
         html += '</table>';
 
       } else {
-        html += 'No Activity Detected!'
+        html += window.lodash.escape(window.wp_js_object.translations.chart.no_activity);
       }
 
       chart_day_counts_div.html(html);
@@ -512,8 +512,8 @@ jQuery(document).ready(function ($) {
   function fetch_tooltip(date, counts) {
     let html = '<h3>' + date + '</h3>';
     html += '<ul>';
-    html += '<li>New Contacts: ' + counts['new_contacts'] + '</li>'
-    html += '<li>New Groups: ' + counts['new_groups'] + '</li>'
+    html += '<li>' + window.lodash.escape(window.wp_js_object.translations.chart.new_contacts) + ': ' + counts['new_contacts'] + '</li>'
+    html += '<li>' + window.lodash.escape(window.wp_js_object.translations.chart.new_groups) + ': ' + counts['new_groups'] + '</li>'
     html += '</ul>';
 
     return html;
