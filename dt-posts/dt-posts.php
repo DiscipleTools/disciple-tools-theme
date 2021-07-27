@@ -1524,6 +1524,13 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        foreach ( $fields as $field_key => $field ){
+            //make sure each field has the name filed out
+            if ( !isset( $field["name"] ) || empty( $field["name"] ) ){
+                $field["name"] = $field_key;
+            }
+        }
+
         $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, $post_type );
         wp_cache_set( $post_type . "_field_settings", $fields );
         return $fields;

@@ -25,7 +25,7 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
-        add_action( 'init', [ $this, 'register_p2p_connections' ], 0, 50 );
+        add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
     }
 
     public function register_post_type(){

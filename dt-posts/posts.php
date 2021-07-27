@@ -1223,7 +1223,7 @@ class Disciple_Tools_Posts
         }
         return [
             "posts" => $posts,
-            "total" => $total_rows,
+            "total" => (int) $total_rows,
         ];
     }
 
