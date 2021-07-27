@@ -786,6 +786,10 @@ class Disciple_Tools_Users
      * @param $user
      */
     public function custom_user_profile_fields( $user ){
+        if ( ! user_can( get_current_user_id(), 'access_contacts' ) ) {
+            return;
+        }
+        
         $contact_id = "";
         $contact_title = "";
         if ( $user != "add-new-user" && $user != "add-existing-user" && isset( $user->ID ) ) {
