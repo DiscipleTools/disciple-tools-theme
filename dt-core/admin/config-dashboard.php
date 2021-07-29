@@ -366,5 +366,61 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         "complete" => $mapbox_upgraded,
         "hide_mark_done" => true
     ];
+    $items['configuration_options'] = [
+        'label' => 'Default Configuration Options.',
+        'description' => 'Sets up the system in a way best suited for access or oikos strategy.',
+        'link' => admin_url( 'admin.php?page=dt_options' ),
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+    $items['non_wp_cron'] = [
+        'label' => 'Setup non WP Cron',
+        'description' => '',
+        'link' => '',
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+    $items['explore_user_invite'] = [
+        'label' => 'Explore User Invite Area',
+        'description' => 'Navigate the user invite area and have a frind or co-worker start using Disciple.Tools.',
+        'link' => admin_url( 'user-new.php' ),
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+    $items['explore_plugins'] = [
+        'label' => 'Explore Recommended Plugins',
+        'description' => 'Navigate the recommended plugins section and make sure your Disciple.Tools instance is secure and set up in the best way possible.',
+        'link' => admin_url( 'plugins.php?page=tgmpa-install-plugins&plugin_status=install' ),
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+    $items['explore_custom_fields'] = [
+        'label' => 'Explore Custom Fields',
+        'description' => 'Explore the custom fields section and unlock its full potential.',
+        'link' => admin_url( 'admin.php?page=dt_options&tab=custom-fields' ),
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+    $items['explore_custom_tiles'] = [
+        'label' => 'Explore Custom Tiles',
+        'description' => 'Explore the custom tiles section and personalize your Disicple.Tools instance.',
+        'link' => admin_url( 'admin.php?page=dt_options&tab=custom-tiles' ),
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+    $items['explore_site_link'] = [
+        'label' => 'Explore Site Links',
+        'description' => 'Did you know that you can link up several Disciple.Tools instances in a single place? Navigate the Site Link section to find out more!',
+        'link' => admin_url( 'edit.php?post_type=site_link_system' ),
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+    $items['explore_subscribe_dt_new'] = [
+        'label' => 'Subscribe to D.T News',
+        'description' => 'Stay up to date with the latest features and news for all things Disciple.Tools',
+        'link' => esc_url( 'https://disciple.tools/news/' ),
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
     return $items;
 }, 10, 2);
