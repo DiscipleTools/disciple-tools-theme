@@ -244,18 +244,23 @@ final class Disciple_Tools_Dashboard
                                 // Logic for displaying the 'dismiss' button
                                 if ( $item_value["hide_mark_done"] == false ) {
                                     $dt_setup_wizard_options = get_option( 'dt_setup_wizard_options', null );
+                                    $dt_setup_wizard_options = explode( ';', $dt_setup_wizard_options );
                                     if ( empty( $dt_setup_wizard_options ) ) {
                                         ?>
                                             <button name="dismiss" value="<?php echo esc_attr( $item_key ); ?>">Dismiss</button>
                                         <?php
                                     } else {
-                                        $dt_setup_wizard_options = explode( ';', $dt_setup_wizard_options );
                                         if ( ! in_array( $item_key, $dt_setup_wizard_options ) ) {
                                             ?>
                                                 <button name="dismiss" value="<?php echo esc_attr( $item_key ); ?>">Dismiss</button>
                                             <?php
                                         }
                                     }
+                                }
+                                if ( is_array( $dt_setup_wizard_options ) && in_array( $item_key, $dt_setup_wizard_options ) ) {
+                                    ?>
+                                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/verified.svg' ) ?>"/>
+                                    <?php
                                 }
                                 ?>
                             </td>
