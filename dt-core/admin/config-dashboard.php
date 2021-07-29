@@ -128,8 +128,8 @@ final class Disciple_Tools_Dashboard
 
     public function dt_dashboard_tile() {
         // Check for a dismissed item button click
-        if ( ! empty( $_POST['dismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( $_POST['setup_wizard_nonce'], 'update_setup_wizard_items' ) ) {
-            $item_label = esc_sql( $_POST['dismiss'] );
+        if ( ! empty( $_POST['dismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['setup_wizard_nonce'] ) ), 'update_setup_wizard_items' ) ) {
+            $item_label = esc_sql( sanitize_text_field( wp_unslash( $_POST['dismiss'] ) ) );
             $dt_setup_wizard_options = get_option( 'dt_setup_wizard_options', null );
 
             // Create the option and populate it if it doesn't exist and/or is empty
@@ -147,8 +147,8 @@ final class Disciple_Tools_Dashboard
         }
 
         // Check for an un-dismissed item button click
-        else if ( ! empty( $_POST['undismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( $_POST['setup_wizard_nonce'], 'update_setup_wizard_items' ) ) {
-            $item_label = esc_sql( $_POST['undismiss'] );
+        else if ( ! empty( $_POST['undismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['setup_wizard_nonce'] ) ), 'update_setup_wizard_items' ) ) {
+            $item_label = esc_sql( sanitize_text_field( wp_unslash( $_POST['undismiss'] ) ) );
             $dt_setup_wizard_options = get_option( 'dt_setup_wizard_options', null );
             if ( ! empty( $dt_setup_wizard_options ) ) {
                 $dt_setup_wizard_options = explode( ';', $dt_setup_wizard_options );
