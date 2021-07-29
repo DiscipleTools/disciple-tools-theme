@@ -126,6 +126,23 @@ final class Disciple_Tools_Dashboard
         return $query_args;
     }
 
+    public function order_by_complete( $item_array ) {
+        $complete_items = [];
+        $incomplete_items = [];
+
+        foreach ( $item_array as $item_key => $item_value ) {
+            if ( ! $item_value['complete'] ) {
+                $incomplete_items[$item_key] = $item_value;
+            } else {
+                $complete_items[$item_key] = $item_value;
+            }
+        }
+        // Order alphabetically by item key
+        ksort( $incomplete_items );
+        ksort( $complete_items );
+        return array_merge( $incomplete_items, $complete_items );
+    }
+
     public function dt_dashboard_tile() {
         // Check for a dismissed item button click
         if ( ! empty( $_POST['dismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['setup_wizard_nonce'] ) ), 'update_setup_wizard_items' ) ) {
@@ -179,11 +196,17 @@ final class Disciple_Tools_Dashboard
             $completed = 0;
             $dt_setup_wizard_options = explode( ';', $setup_options );
             foreach ( $dt_setup_wizard_items as $item_key => $item_value ){
-                if ( $item_value["complete"] === true || in_array( $item_key, $dt_setup_wizard_options ) ) {
+                // Treat dismissed items as complete
+                if ( in_array( $item_key, $dt_setup_wizard_options ) ) {
+                    $dt_setup_wizard_items[$item_key]['complete'] = true;
+                }
+                if ( $item_value['complete'] === true ) {
                     $completed ++;
                 }
             }
 
+            // Order array by complete status
+            $dt_setup_wizard_items = self::order_by_complete( $dt_setup_wizard_items );
             ?><p>Completed <?php echo esc_html( $completed ); ?> of <?php echo esc_html( sizeof( $dt_setup_wizard_items ) ); ?> tasks</p>
             <style>
                 .wizard_chevron_open {
@@ -230,7 +253,7 @@ final class Disciple_Tools_Dashboard
                     <tbody>
                     <?php
                     $row_count = 0;
-                    foreach ( $dt_setup_wizard_items as $item_key => $item_value ) :?>
+                    foreach ( $dt_setup_wizard_items as $item_key => $item_value ) : ?>
                         <tr>
                             <td><?php echo esc_html( array_search( $item_key, array_keys( $dt_setup_wizard_items ) ) +1 ); ?>.</td>
                             <td><?php echo esc_html( $item_value["label"] ); ?></td>
@@ -257,11 +280,6 @@ final class Disciple_Tools_Dashboard
                                             <?php
                                         }
                                     }
-                                }
-                                if ( is_array( $dt_setup_wizard_options ) && in_array( $item_key, $dt_setup_wizard_options ) ) {
-                                    ?>
-                                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/verified.svg' ) ?>"/>
-                                    <?php
                                 }
                                 ?>
                             </td>
