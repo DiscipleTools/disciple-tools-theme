@@ -177,8 +177,9 @@ final class Disciple_Tools_Dashboard
             $dt_setup_wizard_items = apply_filters( 'dt_setup_wizard_items', $default, $setup_options );
 
             $completed = 0;
+            $dt_setup_wizard_options = explode( ';', $setup_options );
             foreach ( $dt_setup_wizard_items as $item_key => $item_value ){
-                if ( $item_value["complete"] === true ){
+                if ( $item_value["complete"] === true || in_array( $item_key, $dt_setup_wizard_options ) ) {
                     $completed ++;
                 }
             }
@@ -294,8 +295,6 @@ final class Disciple_Tools_Dashboard
                     </tbody>
                 </table>
             </form>
-            
-            <!-- Prykon Setup Wizard Table -->
             <script>
                 jQuery( '.toggle_chevron' ).on( 'click', function() {
                     let class_name = jQuery( this ).children()[0].className;
@@ -317,7 +316,6 @@ final class Disciple_Tools_Dashboard
                     }
                 });
             </script>
-            <!-- Prykon Setup Wizard Table End -->
             <?php
         });
     }
