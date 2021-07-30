@@ -358,7 +358,7 @@ class Disciple_Tools_Users
 
         }
 
-        return wp_redirect( get_site_url() ."/settings" );
+        return wp_redirect( get_site_url() ."/registered" );
     }
 
 
@@ -540,6 +540,15 @@ class Disciple_Tools_Users
         }
         if ( dt_is_rest() ){
             $data = json_decode( WP_REST_Server::get_raw_data(), true );
+
+            if ( isset( $data["locale"] )) {
+                if ( $data["locale"] === "" ) {
+                    $locale = "en-US";
+                } else {
+                    $locale = $data["locale"];
+                }
+                switch_to_locale( $locale );
+            }
             if ( isset( $data["corresponds_to_contact"] ) ){
                 $corresponds_to_contact = $data["corresponds_to_contact"];
                 update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
@@ -549,6 +558,9 @@ class Disciple_Tools_Users
                 ], false, true );
                 $user = get_user_by( 'id', $user_id );
                 $user->display_name = $contact["title"];
+                if ( isset( $data["locale"] )) {
+                    $user->locale = $locale;
+                }
                 wp_update_user( $user );
             }
         }
@@ -566,6 +578,20 @@ class Disciple_Tools_Users
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
         if ( empty( $corresponds_to_contact ) ){
             self::create_contact_for_user( $user_id );
+        }
+        if ( isset( $_POST["dt_locale"] ) ) {
+            $userdata = get_user_by( 'id', $user_id );
+
+            if ( isset( $_POST["dt_locale"] )) {
+                if ( $_POST["dt_locale"] === "" ) {
+                    $locale = "en-US";
+                } else {
+                    $locale = sanitize_text_field( wp_unslash( $_POST["dt_locale"] ) );
+                }
+            }
+            $userdata->locale = sanitize_text_field( wp_unslash( $locale ) );
+
+            wp_update_user( $userdata );
         }
     }
 
@@ -760,6 +786,10 @@ class Disciple_Tools_Users
      * @param $user
      */
     public function custom_user_profile_fields( $user ){
+        if ( ! user_can( get_current_user_id(), 'access_contacts' ) ) {
+            return;
+        }
+
         $contact_id = "";
         $contact_title = "";
         if ( $user != "add-new-user" && $user != "add-existing-user" && isset( $user->ID ) ) {
@@ -774,6 +804,9 @@ class Disciple_Tools_Users
         if ( empty( $contact_title ) ) : ?>
             <script type="application/javascript">
                 jQuery(document).ready(function($) {
+                    //removes the Wordpress Language selector that only shows the Wordpress languages and not the Disciple tools languages.
+                    jQuery(".form-field.user-language-wrap").remove();
+
                     jQuery(".corresponds_to_contact").each(function () {
                         jQuery(this).autocomplete({
                             source: function (request, response) {
@@ -823,6 +856,26 @@ class Disciple_Tools_Users
                             </span>
                         <?php endif; ?>
                     <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="dt_locale"><?php esc_html_e( "User Language", 'disciple_tools' ) ?></label></th>
+                <td>
+                    <?php
+                         $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+                         $translations = dt_get_translations();
+                         $site_default_locale = get_option( 'WPLANG' );
+                    wp_dropdown_languages( array(
+                        'name'                        => 'dt_locale',
+                        'id'                          => 'dt_locale',
+                        'selected'                    => $site_default_locale,
+                        'languages'                   => $dt_available_languages,
+                        'show_available_translations' => false,
+                        'show_option_site_default'    => false,
+                        'show_option_en_us'           => true,
+                        'translations'                => $translations
+                    ) );
+                    ?>
                 </td>
             </tr>
         </table>

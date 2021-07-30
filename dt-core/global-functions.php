@@ -431,7 +431,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     }
                 }
                 ?>
-                <select class="select-field <?php echo esc_html( $color_select ? "color-select" : "" ); ?>" id="<?php echo esc_html( $display_field_id ); ?>" style="<?php echo esc_html( $color_select ? ( "background-color: " . $active_color ) : "" ); ?>">
+                <select class="select-field <?php echo esc_html( $color_select ? "color-select" : "" ); ?>" id="<?php echo esc_html( $display_field_id ); ?>" style="<?php echo esc_html( $color_select ? ( "background-color: " . $active_color ) : "" ); ?>" <?php echo esc_html( $required_tag ) ?>>
                     <?php if ( !isset( $fields[$field_key]["default"]["none"] ) && empty( $fields[$field_key]["select_cannot_be_empty"] ) ) : ?>
                         <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: "selected" ) ?>></option>
                     <?php endif; ?>
@@ -530,7 +530,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
-                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" data-field="<?php echo esc_html( $display_field_id ); ?>"
+                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" data-field="<?php echo esc_html( $field_key ); ?>"
                                            data-post_type="<?php echo esc_html( $fields[$field_key]["post_type"] ) ?>"
                                            data-field_type="connection"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]"

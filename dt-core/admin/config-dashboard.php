@@ -127,6 +127,9 @@ final class Disciple_Tools_Dashboard
     }
 
     public function dt_dashboard_tile() {
+        if ( ! user_can( get_current_user_id(), 'manage_dt' ) ) {
+            return;
+        }
         // Check for a dismissed item button click
         if ( ! empty( $_POST['dismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['setup_wizard_nonce'] ) ), 'update_setup_wizard_items' ) ) {
             $item_key = sanitize_text_field( wp_unslash( $_POST['dismiss'] ) );

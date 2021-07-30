@@ -19,7 +19,6 @@ class DT_Contacts_Base {
 
         //setup tiles and fields
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-        add_action( 'p2p_init', [ $this, 'p2p_init' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 5, 2 );
         add_filter( 'dt_custom_fields_settings_after_combine', [ $this, 'dt_custom_fields_settings_after_combine' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
@@ -440,20 +439,6 @@ class DT_Contacts_Base {
         <?php endif;
     }
 
-
-    public function p2p_init(){
-        /**
-         * Contact Connection or Relation
-         */
-        p2p_register_connection_type(
-            [
-                'name'        => 'contacts_to_relation',
-                'from'        => 'contacts',
-                'to'          => 'contacts'
-            ]
-        );
-
-    }
 
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
         return $tiles;

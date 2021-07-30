@@ -32,14 +32,14 @@ msgstr "Lỗi 404 - Không tìm thấy"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "Không tìm thấy trang bạn đang tìm kiếm, hoặc trang đã bị xóa"
 
-#: dt-contacts/base-setup.php:314
-#: dt-groups/base-setup.php:137
+#: dt-contacts/base-setup.php:313
+#: dt-groups/base-setup.php:136
 #: dt-users/template-user-management.php:78
 #: dt-users/user-management.php:103
 msgid "Active"
 msgstr "Đang hoạt động"
 
-#: dt-assets/parts/nav-topbar.php:254
+#: dt-assets/parts/nav-topbar.php:259
 #: template-notifications.php:43
 msgid "New"
 msgstr "Mới"
@@ -48,7 +48,7 @@ msgstr "Mới"
 msgid "Waiting to be accepted"
 msgstr "Chờ chấp nhận"
 
-#: dt-contacts/duplicates-merging.php:549
+#: dt-contacts/duplicates-merging.php:599
 msgid "View Duplicates"
 msgstr "Xem các Liên hệ trùng lặp"
 
@@ -57,10 +57,10 @@ msgstr "Xem các Liên hệ trùng lặp"
 msgid "Search"
 msgstr "Tìm kiếm"
 
-#: dt-contacts/base-setup.php:564
-#: dt-contacts/base-setup.php:572
-#: dt-contacts/base-setup.php:589
-#: dt-contacts/base-setup.php:590
+#: dt-contacts/base-setup.php:549
+#: dt-contacts/base-setup.php:557
+#: dt-contacts/base-setup.php:574
+#: dt-contacts/base-setup.php:575
 msgid "Shared with me"
 msgstr "Được chia sẻ với tôi"
 
@@ -69,7 +69,7 @@ msgid "Add new filter"
 msgstr "Thêm bộ lọc mới"
 
 #: dt-contacts/access-module.php:101
-#: dt-groups/base-setup.php:149
+#: dt-groups/base-setup.php:148
 #: dt-metrics/groups/tree.php:86
 #: dt-metrics/personal/group-tree.php:87
 msgid "Assigned To"
@@ -77,7 +77,7 @@ msgstr "Đã gán cho"
 
 #: archive-template.php:575
 #: dt-assets/functions/enqueue-scripts.php:319
-#: dt-posts/custom-post-type.php:161
+#: dt-posts/custom-post-type.php:162
 msgid "Creation Date"
 msgstr "Ngày tạo"
 
@@ -88,16 +88,16 @@ msgstr "Lọc theo các liên hệ gán lại HOẶC Gán cho"
 #: archive-template.php:603
 #: archive-template.php:604
 #: dt-metrics/combined/time-charts.php:118
-#: template-settings.php:251
-#: template-settings.php:479
+#: template-settings.php:264
+#: template-settings.php:486
 msgid "No"
 msgstr "Không"
 
 #: archive-template.php:610
 #: archive-template.php:611
 #: dt-metrics/combined/time-charts.php:117
-#: template-settings.php:250
-#: template-settings.php:478
+#: template-settings.php:263
+#: template-settings.php:485
 msgid "Yes"
 msgstr "Có"
 
@@ -114,7 +114,7 @@ msgstr "Xóa"
 #: template-merge-details.php:122
 #: template-merge-details.php:132
 #: template-merge-details.php:169
-#: template-settings.php:618
+#: template-settings.php:638
 msgid "Save"
 msgstr "Lưu"
 
@@ -133,7 +133,7 @@ msgstr "Đặt liên hệ này làm người dùng"
 msgid "Link to an existing user"
 msgstr "Kết nối với một người dùng có sẵn"
 
-#: dt-contacts/base-setup.php:371
+#: dt-contacts/base-setup.php:370
 msgid "Merge with another contact"
 msgstr "Hợp nhất với một liên hệ khác"
 
@@ -144,8 +144,8 @@ msgstr "Đang theo dõi"
 
 #: archive-template.php:396
 #: dt-assets/functions/details-bar.php:145
-#: dt-contacts/base-setup.php:161
-#: dt-groups/base-setup.php:98
+#: dt-contacts/base-setup.php:160
+#: dt-groups/base-setup.php:97
 msgid "Follow"
 msgstr "Theo dõi"
 
@@ -181,8 +181,8 @@ msgstr "Không chuyển được. Vui lòng kiểm tra cấu hình site-to-site.
 #: template-merge-details.php:121
 #: template-merge-details.php:132
 #: template-merge-details.php:167
-#: template-settings.php:78
-#: template-settings.php:494
+#: template-settings.php:91
+#: template-settings.php:514
 msgid "Edit"
 msgstr "Sửa"
 
@@ -208,10 +208,8 @@ msgid "Date Modified"
 msgstr "Ngày chỉnh sửa"
 
 #: archive-template.php:431
-#: dt-contacts/base-setup.php:49
-#: dt-contacts/base-setup.php:265
-#: dt-contacts/dmm-module.php:326
-#: dt-groups/base-setup.php:588
+#: dt-contacts/base-setup.php:48
+#: dt-contacts/base-setup.php:264
 #: dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/hover-map.php:128
 #: dt-metrics/combined/locations-list.php:121
@@ -232,12 +230,9 @@ msgid "Contacts"
 msgstr "Danh bạ"
 
 #: archive-template.php:433
-#: dt-groups/base-setup.php:51
-#: dt-groups/base-setup.php:454
-#: dt-groups/base-setup.php:605
-#: dt-groups/base-setup.php:622
-#: dt-groups/base-setup.php:659
-#: dt-groups/base-setup.php:670
+#: dt-groups/base-setup.php:50
+#: dt-groups/base-setup.php:453
+#: dt-groups/base-setup.php:579
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/hover-map.php:173
 #: dt-metrics/combined/locations-list.php:166
@@ -252,7 +247,7 @@ msgid "Groups"
 msgstr "Nhóm"
 
 #. Template Name of the plugin/theme
-#: dt-metrics/metrics.php:111
+#: dt-metrics/metrics.php:112
 msgid "Metrics"
 msgstr "Số liệu"
 
@@ -260,10 +255,10 @@ msgstr "Số liệu"
 #: dt-assets/functions/menu.php:70
 #: dt-assets/parts/nav-offcanvas.php:48
 #: dt-assets/parts/nav-topbar.php:90
-#: dt-assets/parts/nav-topbar.php:206
+#: dt-assets/parts/nav-topbar.php:211
 #: template-notifications.php:33
 #: template-settings.php:54
-#: template-settings.php:428
+#: template-settings.php:435
 msgid "Notifications"
 msgstr "Thông báo"
 
@@ -272,7 +267,7 @@ msgstr "Thông báo"
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:154
 #: dt-assets/parts/nav-topbar.php:98
-#: dt-assets/parts/nav-topbar.php:286
+#: dt-assets/parts/nav-topbar.php:291
 #: template-notifications.php:62
 msgid "Settings"
 msgstr "Cài đặt"
@@ -282,7 +277,7 @@ msgid "Admin"
 msgstr "Quản trị viên"
 
 #: dt-assets/parts/nav-offcanvas.php:79
-#: dt-assets/parts/nav-topbar.php:229
+#: dt-assets/parts/nav-topbar.php:234
 msgid "Log Off"
 msgstr "Đăng xuất"
 
@@ -303,22 +298,18 @@ msgstr "Chấp nhận"
 msgid "Decline"
 msgstr "Từ chối"
 
-#: dt-assets/parts/contact-details.php:41
-msgid "This contact represents a user."
-msgstr "Liên hệ này đại diện cho một người dùng."
-
 #: archive-template.php:322
 #: dt-contacts/access-module.php:409
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1539
+#: dt-posts/dt-posts.php:1541
 #: dt-users/template-user-management.php:74
 #: dt-users/template-user-management.php:158
 #: single-template.php:78
 msgid "Status"
 msgstr "Trạng thái"
 
-#: dt-contacts/dmm-module.php:132
+#: dt-contacts/dmm-module.php:131
 msgid "Sub-assigned to"
 msgstr "Gán lại cho"
 
@@ -326,33 +317,31 @@ msgstr "Gán lại cho"
 msgid "Social Media"
 msgstr "Mạng xã hội"
 
-#: dt-contacts/base-setup.php:220
+#: dt-contacts/base-setup.php:219
 #: dt-core/configuration/config-site-defaults.php:455
-#: dt-groups/base-setup.php:387
-#: template-settings.php:139
+#: dt-groups/base-setup.php:386
+#: template-settings.php:152
 msgid "Address"
 msgstr "Địa chỉ"
 
 #: dt-assets/parts/modals/modal-help.php:126
-#: dt-contacts/base-setup.php:204
-#: dt-groups/base-setup.php:369
+#: dt-contacts/base-setup.php:203
+#: dt-groups/base-setup.php:368
 msgid "Locations"
 msgstr "Vị trí"
 
-#: dt-contacts/dmm-module.php:210
-#: dt-contacts/dmm-module.php:325
-#: dt-groups/base-setup.php:408
-#: dt-groups/base-setup.php:658
+#: dt-contacts/dmm-module.php:209
+#: dt-groups/base-setup.php:407
 #: dt-people-groups/people-groups-post-type.php:132
 msgid "People Groups"
 msgstr "Nhóm Người"
 
-#: dt-contacts/base-setup.php:288
+#: dt-contacts/base-setup.php:287
 msgid "Age"
 msgstr "Tuổi"
 
-#: dt-contacts/base-setup.php:277
-#: template-settings.php:581
+#: dt-contacts/base-setup.php:276
+#: template-settings.php:601
 msgid "Gender"
 msgstr "Giới tính"
 
@@ -360,8 +349,8 @@ msgstr "Giới tính"
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
-#: dt-posts/custom-post-type.php:145
-#: template-settings.php:95
+#: dt-posts/custom-post-type.php:146
+#: template-settings.php:108
 msgid "Name"
 msgstr "Tên"
 
@@ -392,12 +381,12 @@ msgid "Seeker Path"
 msgstr "Con đường Người Tìm kiếm"
 
 #. Could be either Hitos or Pilares
-#: dt-contacts/dmm-module.php:57
+#: dt-contacts/dmm-module.php:56
 msgid "Faith Milestones"
 msgstr "Các cột mốc Đức tin"
 
-#: dt-groups/base-setup.php:51
-#: dt-groups/base-setup.php:180
+#: dt-groups/base-setup.php:50
+#: dt-groups/base-setup.php:179
 #: dt-metrics/groups/overview.php:80
 #: dt-metrics/personal/group-tree.php:165
 #: dt-metrics/personal/overview.php:74
@@ -408,25 +397,25 @@ msgstr "Nhóm"
 msgid "Loading..."
 msgstr "Đang tải..."
 
-#: dt-groups/base-setup.php:158
+#: dt-groups/base-setup.php:157
 msgid "Group Coach / Church Planter"
 msgstr "Huấn luyện nhóm / Người trồng Hội thánh"
 
-#: dt-groups/base-setup.php:265
+#: dt-groups/base-setup.php:264
 #: dt-users/template-user-management.php:312
-#: template-settings.php:386
-#: template-settings.php:405
+#: template-settings.php:394
+#: template-settings.php:413
 msgid "Start Date"
 msgstr "Ngày bắt đầu"
 
-#: dt-groups/base-setup.php:273
+#: dt-groups/base-setup.php:272
 msgid "Church Start Date"
 msgstr "Ngày bắt đầu Hội thánh"
 
-#: dt-groups/base-setup.php:282
+#: dt-groups/base-setup.php:281
 #: dt-users/template-user-management.php:313
-#: template-settings.php:392
-#: template-settings.php:406
+#: template-settings.php:400
+#: template-settings.php:414
 msgid "End Date"
 msgstr "Ngày kết thúc"
 
@@ -468,8 +457,8 @@ msgstr "Xóa bình luận:"
 #: dt-assets/parts/modals/modal-revert.php:15
 #: dt-assets/parts/modals/modal-share.php:50
 #: dt-assets/parts/modals/modal-tasks.php:46
-#: dt-contacts/dmm-module.php:581
-#: dt-groups/base-setup.php:563
+#: dt-contacts/dmm-module.php:519
+#: dt-groups/base-setup.php:562
 msgid "Close"
 msgstr "Đóng"
 
@@ -529,7 +518,7 @@ msgstr "Bạn muốn đặt tên cho bộ lọc này là gì?"
 msgid "Delete Filter"
 msgstr "Xóa Bộ lọc"
 
-#: dt-groups/base-setup.php:127
+#: dt-groups/base-setup.php:126
 msgid "Group Status"
 msgstr "Tình trạng Nhóm"
 
@@ -596,22 +585,21 @@ msgstr "Giúp đỡ"
 msgid "Ongoing Meetings"
 msgstr "Cuộc họp đang diễn ra"
 
-#: dt-contacts/base-setup.php:303
-#: dt-groups/base-setup.php:111
+#: dt-contacts/base-setup.php:302
+#: dt-groups/base-setup.php:110
 msgid "Requires Update"
 msgstr "Yêu cầu Cập nhật"
 
-#: dt-contacts/dmm-module.php:87
-#: dt-contacts/dmm-module.php:200
-#: dt-contacts/dmm-module.php:295
+#: dt-contacts/dmm-module.php:86
+#: dt-contacts/dmm-module.php:199
 msgid "Baptized"
 msgstr "Đã báp-tem"
 
-#: dt-contacts/dmm-module.php:167
+#: dt-contacts/dmm-module.php:166
 msgid "Baptism Date"
 msgstr "Ngày báp-tem"
 
-#: dt-contacts/dmm-module.php:175
+#: dt-contacts/dmm-module.php:174
 #: dt-metrics/counter.php:157
 msgid "Baptism Generation"
 msgstr "Thế hệ báp-tem"
@@ -622,14 +610,14 @@ msgstr "Thế hệ báp-tem"
 msgid "Sources"
 msgstr "Nguồn"
 
-#: dt-contacts/base-setup.php:167
-#: dt-groups/base-setup.php:105
+#: dt-contacts/base-setup.php:166
+#: dt-groups/base-setup.php:104
 msgid "Un-Follow"
 msgstr "Bỏ theo dõi"
 
-#: dt-contacts/base-setup.php:187
+#: dt-contacts/base-setup.php:186
 #: dt-core/configuration/config-site-defaults.php:443
-#: template-settings.php:128
+#: template-settings.php:141
 msgid "Phone"
 msgstr "Điện thoại"
 
@@ -641,30 +629,30 @@ msgstr "Chỗ làm"
 msgid "Home"
 msgstr "Nhà riêng"
 
-#: dt-contacts/base-setup.php:464
+#: dt-contacts/base-setup.php:449
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:479
-#: dt-groups/base-setup.php:671
-#: template-settings.php:161
+#: dt-groups/base-setup.php:580
+#: template-settings.php:174
 msgid "Other"
 msgstr "Khác"
 
-#: dt-contacts/base-setup.php:195
+#: dt-contacts/base-setup.php:194
 #: dt-contacts/user-module.php:107
 #: dt-core/configuration/config-site-defaults.php:256
 #: dt-core/configuration/config-site-defaults.php:447
 #: dt-users/user-management.php:161
-#: template-settings.php:115
+#: template-settings.php:128
 msgid "Email"
 msgstr "Email"
 
 #: dt-contacts/access-module.php:285
-#: dt-contacts/base-setup.php:240
+#: dt-contacts/base-setup.php:239
 msgid "Facebook"
 msgstr "Facebook"
 
 #: dt-contacts/access-module.php:289
-#: dt-contacts/base-setup.php:248
+#: dt-contacts/base-setup.php:247
 msgid "Twitter"
 msgstr "Twitter"
 
@@ -739,12 +727,12 @@ msgctxt "Contact1 is a duplicated and was merged into Contact2"
 msgid "%1$s is a duplicate and was merged into %2$s"
 msgstr "%1$s là liên hệ trùng lặp và đã được hợp nhất vào %2$s"
 
-#: dt-contacts/duplicates-merging.php:452
+#: dt-contacts/duplicates-merging.php:475
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(Từ liên hệ trùng lặp): %s"
 
-#: dt-contacts/base-setup.php:60
+#: dt-contacts/base-setup.php:59
 msgid "Strategist"
 msgstr "Chiến lược gia"
 
@@ -756,12 +744,12 @@ msgstr "Điều phối viên"
 msgid "Digital Responder"
 msgstr "Đội phản ứng số"
 
-#: dt-contacts/base-setup.php:70
+#: dt-contacts/base-setup.php:69
 msgid "Disciple.Tools Admin"
 msgstr "Tông đồ. Người quản trị công cụ"
 
-#: dt-contacts/base-setup.php:55
-#: dt-groups/base-setup.php:57
+#: dt-contacts/base-setup.php:54
+#: dt-groups/base-setup.php:56
 msgid "Multiplier"
 msgstr "Hệ số"
 
@@ -819,25 +807,25 @@ msgctxt "either rtl or ltr"
 msgid "ltr"
 msgstr "ltr"
 
-#: dt-core/configuration/restrict-site-access.php:288
+#: dt-core/configuration/restrict-site-access.php:290
 msgid "Someone has requested a password reset for the following account:"
 msgstr "Ai đó đã yêu cầu đặt lại mật khẩu cho tài khoản sau:"
 
 #. translators: %s: user login
-#: dt-core/configuration/restrict-site-access.php:292
+#: dt-core/configuration/restrict-site-access.php:294
 msgid "Username: %s"
 msgstr "Tên người dùng: %s"
 
-#: dt-core/configuration/restrict-site-access.php:293
+#: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr "Nếu đây là một sự nhầm lẫn, chỉ cần bỏ qua email này và sẽ không có gì xảy ra."
 
-#: dt-core/configuration/restrict-site-access.php:294
+#: dt-core/configuration/restrict-site-access.php:296
 msgid "To reset your password, visit the following address:"
 msgstr "Để đặt lại mật khẩu của bạn, hãy truy cập địa chỉ sau:"
 
 #: dt-users/template-user-management.php:325
-#: template-settings.php:108
+#: template-settings.php:121
 msgid "Roles"
 msgstr "Vai trò"
 
@@ -845,9 +833,8 @@ msgstr "Vai trò"
 msgid "(no title)"
 msgstr "(không có chức vụ)"
 
-#: dt-groups/base-setup.php:249
-#: dt-groups/base-setup.php:311
-#: dt-groups/base-setup.php:606
+#: dt-groups/base-setup.php:248
+#: dt-groups/base-setup.php:310
 msgid "Leaders"
 msgstr "Người lãnh đạo"
 
@@ -1057,23 +1044,23 @@ msgstr "Đã xóa bỏ %1$s: %2$s"
 msgid "Post already shared with user."
 msgstr "Bài đăng đã được chia sẻ với người dùng rồi."
 
-#: dt-groups/base-setup.php:171
+#: dt-groups/base-setup.php:170
 msgid "Group Type"
 msgstr "Loại Nhóm"
 
-#: dt-groups/base-setup.php:176
+#: dt-groups/base-setup.php:175
 #: dt-metrics/groups/overview.php:79
 #: dt-metrics/personal/overview.php:73
 msgid "Pre-Group"
 msgstr "Tiền Nhóm"
 
-#: dt-groups/base-setup.php:184
+#: dt-groups/base-setup.php:183
 #: dt-metrics/groups/overview.php:81
 #: dt-metrics/personal/overview.php:75
 msgid "Church"
 msgstr "Hội thánh"
 
-#: dt-groups/base-setup.php:293
+#: dt-groups/base-setup.php:292
 msgid "Member Count"
 msgstr "Số thành viên"
 
@@ -1156,8 +1143,8 @@ msgid "Baptizers"
 msgstr "Người rửa tội"
 
 #: dt-contacts/access-module.php:277
-#: dt-contacts/base-setup.php:128
-#: dt-contacts/base-setup.php:540
+#: dt-contacts/base-setup.php:127
+#: dt-contacts/base-setup.php:525
 #: dt-metrics/metrics.php:82
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1386,11 +1373,11 @@ msgstr "Xem bản ghi liên hệ"
 msgid "Updated Needed"
 msgstr "Cần cập nhật"
 
-#: functions.php:482
+#: functions.php:490
 msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
 msgstr "Chủ đề Công cụ Môn đồ yêu cầu phiên bản PHP 7.0 trở lên. Phiên bản hiện tại của bạn là:"
 
-#: functions.php:484
+#: functions.php:492
 msgid "Please upgrade PHP or uninstall this theme"
 msgstr "Vui lòng cập nhật PHP hoặc gỡ cài đặt chủ đề này"
 
@@ -1441,17 +1428,17 @@ msgstr "Liên kết liên hệ này với một người dùng hiện có"
 msgid "Click merge to continue."
 msgstr "Nhấn hợp nhất để tiếp tục."
 
-#: dt-groups/base-setup.php:302
-#: dt-groups/base-setup.php:534
-#: dt-groups/base-setup.php:667
+#: dt-groups/base-setup.php:301
+#: dt-groups/base-setup.php:533
+#: dt-groups/base-setup.php:576
 msgid "Member List"
 msgstr "Danh sách thành viên"
 
-#: dt-groups/base-setup.php:328
+#: dt-groups/base-setup.php:327
 msgid "Parent Group"
 msgstr "Nhóm Cha mẹ"
 
-#: dt-groups/base-setup.php:340
+#: dt-groups/base-setup.php:339
 msgid "Peer Group"
 msgstr "Nhóm Tương đồng"
 
@@ -1486,56 +1473,56 @@ msgstr "Bản ghi chính"
 msgid "Use as master"
 msgstr "Dùng làm bản ghi chính"
 
-#: dt-assets/parts/nav-topbar.php:264
+#: dt-assets/parts/nav-topbar.php:269
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "Chưa đọc"
 
-#: dt-assets/parts/nav-topbar.php:290
+#: dt-assets/parts/nav-topbar.php:295
 #: template-notifications.php:66
 msgid "Mark All"
 msgstr "Đánh dấu tất cả"
 
 #: dt-users/template-user-management.php:295
 #: template-settings.php:53
-#: template-settings.php:373
+#: template-settings.php:381
 msgid "Availability"
 msgstr "Thời gian trống"
 
-#: template-settings.php:76
+#: template-settings.php:89
 msgid "Your Profile"
 msgstr "Hồ sơ của bạn"
 
 #: dt-contacts/user-module.php:102
-#: template-settings.php:89
-#: template-settings.php:514
+#: template-settings.php:102
+#: template-settings.php:534
 msgid "Username"
 msgstr "Tên người dùng"
 
 #: dt-users/user-management.php:160
-#: template-settings.php:102
-#: template-settings.php:549
+#: template-settings.php:115
+#: template-settings.php:569
 msgid "Nickname (Display Name)"
 msgstr "Biệt danh (Tên hiển thị)"
 
-#: template-settings.php:150
+#: template-settings.php:163
 msgid "Social"
 msgstr "Xã hội"
 
-#: template-settings.php:175
+#: template-settings.php:188
 msgid "Language"
 msgstr "Ngôn ngữ"
 
-#: template-settings.php:181
+#: template-settings.php:194
 msgid "English"
 msgstr "Tiếng Anh"
 
-#: template-settings.php:185
-#: template-settings.php:573
+#: template-settings.php:198
+#: template-settings.php:593
 msgid "Biography"
 msgstr "Tiểu sử"
 
-#: template-settings.php:434
+#: template-settings.php:441
 msgid "Type of Notification"
 msgstr "Loại thông báo"
 
@@ -1544,70 +1531,66 @@ msgstr "Loại thông báo"
 msgid "Web"
 msgstr "Trang web"
 
-#: template-settings.php:447
+#: template-settings.php:454
 msgid "required"
 msgstr "bắt buộc"
 
-#: template-settings.php:470
+#: template-settings.php:477
 msgid "Follow all contacts"
 msgstr "Theo dõi tất cả các liên hệ"
 
-#: template-settings.php:249
-#: template-settings.php:477
+#: template-settings.php:262
+#: template-settings.php:484
 msgid "Enable"
 msgstr "Bật"
 
-#: template-settings.php:508
+#: template-settings.php:528
 msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
 msgstr "Hệ thống Công cụ Môn đồ không lưu trữ hình ảnh. Về ảnh đại diện, chúng tôi sử dụng Gravatar (Ảnh đại diện được công nhận toàn cầu). Nếu bạn lo ngại về bảo mật, chúng tôi khuyên bạn không nên sử dụng ảnh cá nhân mà nên chọn ảnh hoạt hình, ảnh trừu tượng hoặc hình ảnh bí danh làm ảnh đại diện."
 
-#: template-settings.php:509
+#: template-settings.php:529
 msgid "edit image on gravatar.com"
 msgstr "sửa hình ảnh trên gravatar.com"
 
-#: template-settings.php:515
-#: template-settings.php:516
+#: template-settings.php:535
+#: template-settings.php:536
 msgid "Username cannot be changed"
 msgstr "Không thể thay đổi tên người dùng"
 
-#: template-settings.php:118
-#: template-settings.php:520
+#: template-settings.php:131
+#: template-settings.php:540
 msgid "System Email"
 msgstr "Email hệ thống"
 
-#: template-settings.php:521
+#: template-settings.php:541
 msgid "User email can be changed by site administrator."
 msgstr "Quản trị viên của trang có thể thay đổi email của người dùng."
 
-#: template-settings.php:528
+#: template-settings.php:548
 msgid "Password"
 msgstr "Mật khẩu"
 
-#: template-settings.php:529
+#: template-settings.php:549
 msgid "Use this email reset form to create a new password."
 msgstr "Dùng mẫu đơn cài lại email này để tạo mật khẩu mới."
 
-#: template-settings.php:531
+#: template-settings.php:551
 msgid "go to password change form"
 msgstr "chuyển đến mẫu đơn thay đổi mật khẩu"
 
-#: template-settings.php:538
+#: template-settings.php:558
 msgid "First Name"
 msgstr "Tên"
 
-#: template-settings.php:544
+#: template-settings.php:564
 msgid "Last Name"
 msgstr "Họ"
-
-#: template-settings.php:511
-msgid "Description"
-msgstr "Mô tả"
 
 #: dt-notifications/notifications-email.php:118
 msgid "Do not reply directly to this email."
 msgstr "Vui lòng không trả lời trực tiếp email này."
 
-#: dt-core/configuration/restrict-site-access.php:236
+#: dt-core/configuration/restrict-site-access.php:238
 msgid "Reset password"
 msgstr "Cài lại mật khẩu"
 
@@ -1689,7 +1672,7 @@ msgstr "Chào,\n"
 msgid "[%s] Joining Confirmation"
 msgstr "[%s] Xác nhận tham gia"
 
-#: dt-core/configuration/restrict-site-access.php:237
+#: dt-core/configuration/restrict-site-access.php:239
 msgid "Lost your password"
 msgstr "Mất mật khẩu"
 
@@ -1718,7 +1701,7 @@ msgstr "Danh sách"
 msgid "World"
 msgstr "Thế giới"
 
-#: dt-posts/custom-post-type.php:127
+#: dt-posts/custom-post-type.php:128
 #: template-new-post.php:32
 msgid "New %s"
 msgstr "Mới %s"
@@ -1729,7 +1712,7 @@ msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "%1$s đã được bổ sung vào các địa điểm"
 
-#: dt-groups/base-setup.php:669
+#: dt-groups/base-setup.php:578
 msgid "Four Fields"
 msgstr "Bốn Ô"
 
@@ -1759,23 +1742,23 @@ msgstr "Tôi chỉ đầu tư vào những người liên hệ hiện có"
 msgid "I have too many contacts"
 msgstr "Tôi có quá nhiều người liên hệ"
 
-#: template-settings.php:376
+#: template-settings.php:384
 msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
 msgstr "Thiết lập ngày bạn sẽ đi du lịch hoặc đi vắng để Người điều phối sẽ biết được bạn có thể sẵn sàng tiếp nhận người liên hệ mới"
 
-#: template-settings.php:380
+#: template-settings.php:388
 msgid "Schedule Travel or Dates Unavailable"
 msgstr "Lên lịch Đi du lịch hoặc Ngày đi vắng"
 
-#: template-settings.php:397
+#: template-settings.php:405
 msgid "Add Unavailable dates"
 msgstr "Thêm Ngày đi vắng"
 
-#: template-settings.php:411
+#: template-settings.php:419
 msgid "No Travel Scheduled"
 msgstr "Không có chuyến đi nào được lên lịch"
 
-#: template-settings.php:472
+#: template-settings.php:479
 msgid "You will receive a notification for any update that happens in the system."
 msgstr "Bạn sẽ nhận được thông báo đối với bất kỳ cập nhật nào diễn ra trong hệ thống."
 
@@ -1837,7 +1820,7 @@ msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "Bạn đã được phân công: %1$s."
 
-#: dt-groups/base-setup.php:352
+#: dt-groups/base-setup.php:351
 msgid "Child Group"
 msgstr "Nhóm Trẻ em"
 
@@ -1879,7 +1862,7 @@ msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
 msgstr "Người liên hệ này đã được phân công cho một người nào đó nhưng vẫn chưa được người đó chấp nhận."
 
-#: dt-contacts/base-setup.php:315
+#: dt-contacts/base-setup.php:314
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "Người liên hệ đang tiến triển và/hoặc đang liên tục được cập nhật."
@@ -1889,7 +1872,7 @@ msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "Người liên hệ này hiện đang tạm hoãn (có nghĩa là đang đi nghỉ hoặc không hồi âm)."
 
-#: dt-contacts/base-setup.php:321
+#: dt-contacts/base-setup.php:320
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
 msgstr "Người liên hệ này đã cho biết rằng họ không muốn tiếp tục hoặc bạn đã quyết định không tiếp tục với họ."
@@ -2059,17 +2042,17 @@ msgstr "WhatsApp Công ty dùng để cung cấp cho người liên hệ và ng�
 msgid "Transfer"
 msgstr "Chuyển"
 
-#: dt-groups/base-setup.php:128
+#: dt-groups/base-setup.php:127
 msgctxt "field description"
 msgid "Set the current status of the group."
 msgstr "Đặt trạng thái hiện tại của nhóm này."
 
-#: dt-groups/base-setup.php:133
+#: dt-groups/base-setup.php:132
 msgctxt "field description"
 msgid "The group is no longer meeting."
 msgstr "Nhóm này không còn gặp gỡ."
 
-#: dt-groups/base-setup.php:138
+#: dt-groups/base-setup.php:137
 msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "Nhóm này đang tích cực gặp gỡ."
@@ -2136,7 +2119,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "Đã ngừng chia sẻ với %s"
 
-#: dt-contacts/dmm-module.php:470
+#: dt-contacts/dmm-module.php:408
 msgid "Quick Actions"
 msgstr "Hành động nhanh"
 
@@ -2154,7 +2137,7 @@ msgid "Search Users"
 msgstr "Tìm Người dùng"
 
 #: dt-assets/parts/merge-details.php:49
-#: dt-contacts/dmm-module.php:565
+#: dt-contacts/dmm-module.php:503
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "Tìm người đào tạo môn đồ và người liên hệ"
@@ -2173,7 +2156,7 @@ msgstr "Viết bình luận hoặc ghi chú của bạn vào đây"
 #: dt-core/global-functions.php:581
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
-#: template-settings.php:336
+#: template-settings.php:349
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "Tìm kiếm %s"
@@ -2189,7 +2172,7 @@ msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "Đã đổi %1$s thành %2$s"
 
-#: dt-contacts/dmm-module.php:551
+#: dt-contacts/dmm-module.php:489
 msgid "Who was this contact baptized by and when?"
 msgstr "Ai là người đã rửa tội cho người liên hệ này và khi nào?"
 
@@ -2202,16 +2185,6 @@ msgstr "Tạo Người dùng từ Người liên hệ"
 msgctxt "Make user modal"
 msgid "This contact is already connected to a user."
 msgstr "Người liên hệ này đã kết nối với một người dùng rồi."
-
-#: dt-contacts/user-module.php:94
-msgctxt "Make user modal"
-msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'."
-msgstr "Thao tác này sẽ mời người liên hệ này trở thành người dùng của hệ thống này. Theo mặc định, họ sẽ được giao vai trò \"người đào tạo môn đồ\"."
-
-#: dt-contacts/user-module.php:95
-msgctxt "Make user modal"
-msgid "In the fields below, enter their email address and a 'Display Name' which they can change later."
-msgstr "Hãy nhập địa chỉ email và \"Tên Hiển thị\" vào các ô dưới đây, bạn có thể thay đổi tên này sau."
 
 #: dt-contacts/user-module.php:156
 msgid "This contact already represents a user."
@@ -2240,7 +2213,7 @@ msgctxt "added to the end of a sentence"
 msgid "selected."
 msgstr "đã chọn."
 
-#: dt-groups/base-setup.php:553
+#: dt-groups/base-setup.php:552
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Thêm thành viên từ danh bạ hiện có"
@@ -2259,7 +2232,7 @@ msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "Không còn được giao lại cho %s"
 
-#: dt-groups/base-setup.php:547
+#: dt-groups/base-setup.php:546
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "Để thêm thành viên mới, hãy bấm vào \"Tạo\" hoặc \"Chọn\"."
 
@@ -2285,8 +2258,8 @@ msgstr "Lọc Tên"
 #: dt-contacts/access-module.php:474
 #: dt-contacts/access-module.php:505
 #: dt-contacts/access-module.php:533
-#: dt-contacts/base-setup.php:388
-#: dt-contacts/base-setup.php:423
+#: dt-contacts/base-setup.php:387
+#: dt-contacts/base-setup.php:422
 #: dt-contacts/user-module.php:139
 #: dt-contacts/user-module.php:191
 #: single-template.php:347
@@ -2306,8 +2279,8 @@ msgstr "Lọc Hồ sơ"
 
 #: dt-assets/functions/details-bar.php:129
 #: dt-assets/parts/modals/modal-tasks.php:7
-#: dt-contacts/base-setup.php:173
-#: dt-groups/base-setup.php:117
+#: dt-contacts/base-setup.php:172
+#: dt-groups/base-setup.php:116
 msgid "Tasks"
 msgstr "Nhiệm vụ"
 
@@ -2396,10 +2369,10 @@ msgstr "Không có bộ lọc nào, hãy tạo một bộ lọc bên dưới"
 msgid "No records found matching your filter."
 msgstr "Không tìm thấy hồ sơ nào phù hợp với bộ lọc của bạn."
 
-#: dt-assets/parts/nav-topbar.php:260
-#: dt-groups/base-setup.php:1023
-#: dt-groups/base-setup.php:1096
-#: dt-groups/base-setup.php:1104
+#: dt-assets/parts/nav-topbar.php:265
+#: dt-groups/base-setup.php:932
+#: dt-groups/base-setup.php:1005
+#: dt-groups/base-setup.php:1013
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
@@ -2410,14 +2383,14 @@ msgstr "Tất cả"
 msgid "Subassigned only"
 msgstr "Chỉ có được giao lại"
 
-#: dt-contacts/dmm-module.php:431
-#: dt-contacts/dmm-module.php:441
-#: dt-contacts/dmm-module.php:451
-#: dt-contacts/dmm-module.php:452
+#: dt-contacts/dmm-module.php:369
+#: dt-contacts/dmm-module.php:379
+#: dt-contacts/dmm-module.php:389
+#: dt-contacts/dmm-module.php:390
 msgid "Coached by me"
 msgstr "Do tôi huấn luyện"
 
-#: dt-groups/base-setup.php:1015
+#: dt-groups/base-setup.php:924
 msgctxt "List Filters"
 msgid "Assigned to me"
 msgstr "Được giao cho tôi"
@@ -2454,7 +2427,7 @@ msgid "No note set"
 msgstr "Chưa thiết lập ghi chú nào"
 
 #: dt-assets/functions/enqueue-scripts.php:323
-#: dt-contacts/base-setup.php:503
+#: dt-contacts/base-setup.php:488
 msgctxt "All records"
 msgid "All %s"
 msgstr "Tất cả %s"
@@ -2486,36 +2459,6 @@ msgid "For example, If you click the 'No Answer' button 4 times, we will log tha
 "                This action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr "Ví dụ: Nếu bạn bấm vào nút \"Không Trả lời\" 4 lần, chúng tôi sẽ ghi lại rằng bạn đã cố gắn liên lạc với liên hệ này 4 lần, nhưng họ không trả lời.\n"
 "                Hành động này cũng sẽ thay đổi \"Con đường của Người tìm kiếm\" thành \"Đã Cố gắng Liên hệ\"."
-
-#: dt-assets/parts/modals/modal-help.php:195
-msgctxt "Optional Documentation"
-msgid "If the group/church regularly practices any of the elements listed, then click each element to add them inside the circle."
-msgstr "Nếu nhóm/nhà thờ thường xuyên thực hành bất kỳ yếu tố nào được liệt kê thì hãy bấm vào từng yếu tố để thêm yếu tố đó vào bên trong vòng tròn."
-
-#: dt-assets/parts/modals/modal-help.php:196
-msgctxt "Optional Documentation"
-msgid "If the group has committed to be a church, indicate this by clicking the \"Church Commitment\" button to make the dotted line circle solid."
-msgstr "Nếu nhóm đã cam kết trở thành một nhà thờ, hãy cho biết điều này bằng cách bấm vào nút \"Cam kết của Nhà thờ\" để làm cho vòng tròn nét chấm chấm trở thành nét liền."
-
-#: dt-assets/parts/modals/modal-help.php:202
-msgctxt "Optional Documentation"
-msgid "This is the area where you manage the contacts that are a part of the group."
-msgstr "Đây là nơi bạn quản lý các liên hệ nằm trong nhóm."
-
-#: dt-assets/parts/modals/modal-help.php:207
-msgctxt "Optional Documentation"
-msgid "To remove a member, click the X icon to the right side of the member name. Click the footprint icon next to the members name to signify that this person is a leader of this group. (Multiple leaders can be assigned to a group)."
-msgstr "Để xóa thành viên, hãy bấm vào biểu tượng X ở phía bên phải của tên thành viên. Bấm vào biểu tượng dấu chân bên cạnh tên thành viên để biểu thị rằng người này là lãnh đạo của nhóm này. (Có thể chỉ định nhiều người lãnh đạo một nhóm)."
-
-#: dt-assets/parts/modals/modal-help.php:208
-msgctxt "Optional Documentation"
-msgid "To add new members, click on the 'Create' or 'Select' and click on the name or search for them."
-msgstr "Để thêm thành viên mới, hãy bấm vào \"Tạo\" hoặc \"Chọn\" và bấm vào tên hoặc tìm kiếm thành viên."
-
-#: dt-assets/parts/modals/modal-help.php:250
-msgctxt "Optional Documentation"
-msgid "Connections this group has with other groups in this system."
-msgstr "Các kết nối của nhóm này với các nhóm khác trong hệ thống này."
 
 #: dt-assets/parts/modals/modal-help.php:49
 msgctxt "Optional Documentation"
@@ -2581,16 +2524,6 @@ msgstr "Sử dụng nút chuyển đổi này để hiển thị hoặc ẩn cá
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show inactive groups in the list."
 msgstr "Sử dụng nút chuyển đổi này để hiển thị hoặc ẩn các nhóm không hoạt động trong danh sách."
-
-#: dt-assets/parts/modals/modal-help.php:354
-msgctxt "Optional Documentation"
-msgid "The Initial Comment field is for any extra information. It will be saved as the first comment under the Activity and Comments Tile."
-msgstr "Trường Bình luận Đầi tiên dùng để thêm bất kỳ thông tin bổ sung nào. Thông tin này sẽ được lưu dưới dạng bình luận đầu tiên trong Ô Hoạt động và Bình luận."
-
-#: dt-assets/parts/modals/modal-help.php:360
-msgctxt "Optional Documentation"
-msgid "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created."
-msgstr "Sau khi viết tên của liên hệ, bạn hãy hoàn thành nhiều trường khác nhất có thể trước khi bấm vào \"Lưu và tiếp tục chỉnh sửa\". Trong màn hình tiếp theo, bạn có thể chỉnh sửa và thêm nhiều thông tin hơn về liên hệ mới vừa được tạo này."
 
 #: dt-assets/parts/modals/modal-help.php:118
 msgctxt "Optional Documentation"
@@ -2729,7 +2662,7 @@ msgstr "Tạo Nhiệm vụ"
 msgid "Existing tasks for this record:"
 msgstr "Các nhiệm vụ hiện có cho hồ sơ này:"
 
-#: dt-assets/parts/nav-topbar.php:150
+#: dt-assets/parts/nav-topbar.php:155
 msgid "Theme Update Available!"
 msgstr "Đã có Bản cập nhật Chủ đề!"
 
@@ -2747,7 +2680,7 @@ msgid "Select the main person who is responsible for reporting on this contact."
 msgstr "Chọn người chịu trách nhiệm báo cáo chính về liên hệ này."
 
 #: dt-contacts/access-module.php:152
-#: dt-contacts/base-setup.php:309
+#: dt-contacts/base-setup.php:308
 msgid "Contact Status"
 msgstr "Trạng thái Liên hệ"
 
@@ -2768,7 +2701,7 @@ msgid "Contact Attempted"
 msgstr "Đã cố gắng Liên hệ"
 
 #: dt-contacts/access-module.php:124
-#: dt-contacts/dmm-module.php:229
+#: dt-contacts/dmm-module.php:228
 msgid "Contact Established"
 msgstr "Đã thiết lập Liên hệ"
 
@@ -2784,64 +2717,64 @@ msgstr "Cuộc họp Đầu tiên Hoàn tất"
 msgid "Being Coached"
 msgstr "Đang được Huấn luyện"
 
-#: dt-contacts/dmm-module.php:58
+#: dt-contacts/dmm-module.php:57
 msgctxt "Optional Documentation"
 msgid "Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
 msgstr "Chỉ định những cột mốc mà người liên hệ đã đạt được trong hành trình đức tin của họ. Đây là những điểm trong hành trình tinh thần của một người liên hệ đáng để kỷ niệm nhưng có thể xảy ra theo bất kỳ thứ tự nào."
 
-#: dt-contacts/dmm-module.php:62
+#: dt-contacts/dmm-module.php:61
 msgid "Has Bible"
 msgstr "Có Kinh thánh"
 
-#: dt-contacts/dmm-module.php:67
+#: dt-contacts/dmm-module.php:66
 msgid "Reading Bible"
 msgstr "Đang đọc Kinh thánh"
 
-#: dt-contacts/dmm-module.php:72
+#: dt-contacts/dmm-module.php:71
 msgid "States Belief"
 msgstr "Tuyên xưng Đức tin"
 
-#: dt-contacts/dmm-module.php:77
+#: dt-contacts/dmm-module.php:76
 msgid "Can Share Gospel/Testimony"
 msgstr "Có thể chia sẻ Phúc âm/Lời chứng"
 
-#: dt-contacts/dmm-module.php:82
+#: dt-contacts/dmm-module.php:81
 msgid "Sharing Gospel/Testimony"
 msgstr "Đang chia sẻ Phúc âm/Lời chứng"
 
-#: dt-contacts/dmm-module.php:92
+#: dt-contacts/dmm-module.php:91
 msgid "Baptizing"
 msgstr "Đang báp-tem"
 
-#: dt-contacts/dmm-module.php:97
+#: dt-contacts/dmm-module.php:96
 msgid "In Church/Group"
 msgstr "Trong Giáo hội/Đoàn thể"
 
-#: dt-contacts/dmm-module.php:102
+#: dt-contacts/dmm-module.php:101
 msgid "Starting Churches"
 msgstr "Đang thành lập Giáo hội"
 
-#: dt-contacts/base-setup.php:280
+#: dt-contacts/base-setup.php:279
 msgid "Male"
 msgstr "Nam"
 
-#: dt-contacts/base-setup.php:281
+#: dt-contacts/base-setup.php:280
 msgid "Female"
 msgstr "Nữ"
 
-#: dt-contacts/base-setup.php:292
+#: dt-contacts/base-setup.php:291
 msgid "Under 18 years old"
 msgstr "Dưới 18 tuổi"
 
-#: dt-contacts/base-setup.php:293
+#: dt-contacts/base-setup.php:292
 msgid "18-25 years old"
 msgstr "18-25 tuổi"
 
-#: dt-contacts/base-setup.php:294
+#: dt-contacts/base-setup.php:293
 msgid "26-40 years old"
 msgstr "26-40 tuổi"
 
-#: dt-contacts/base-setup.php:295
+#: dt-contacts/base-setup.php:294
 msgid "Over 40 years old"
 msgstr "Trên 40 tuổi"
 
@@ -2910,19 +2843,19 @@ msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "Website, sự kiện hoặc vị trí nơi người liên hệ này xuất phát."
 
-#: dt-contacts/dmm-module.php:220
+#: dt-contacts/dmm-module.php:219
 msgid "No Answer"
 msgstr "Không có Trả lời"
 
-#: dt-contacts/dmm-module.php:238
+#: dt-contacts/dmm-module.php:237
 msgid "Meeting Scheduled"
 msgstr "Cuộc gặp Đã lên lịch"
 
-#: dt-contacts/dmm-module.php:247
+#: dt-contacts/dmm-module.php:246
 msgid "Meeting Complete"
 msgstr "Cuộc gặp Đã kết thúc"
 
-#: dt-contacts/dmm-module.php:256
+#: dt-contacts/dmm-module.php:255
 msgid "Meeting No-show"
 msgstr "Cuộc gặp Vắng mặt"
 
@@ -2935,71 +2868,70 @@ msgctxt "Optional Documentation"
 msgid "The id of the user this contact corresponds to"
 msgstr "ID của người dùng mà người liên hệ này giao thiệp"
 
-#: dt-contacts/base-setup.php:122
+#: dt-contacts/base-setup.php:121
 msgid "User"
 msgstr "Người dùng"
 
-#: dt-contacts/base-setup.php:153
-#: dt-groups/base-setup.php:90
+#: dt-contacts/base-setup.php:152
+#: dt-groups/base-setup.php:89
 msgid "Tags"
 msgstr "Thẻ"
 
-#: dt-contacts/base-setup.php:154
-#: dt-groups/base-setup.php:91
+#: dt-contacts/base-setup.php:153
+#: dt-groups/base-setup.php:90
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags."
 msgstr "Một cách hữu ích để nhóm các mục liên quan và có thể giúp nhóm gộp những người liên hệ gắn liền với các đặc điểm đáng chú ý, ví dụ như chủ doanh nghiệp, người yêu thể thao. Cũng có thể lọc người liên hệ bằng các thẻ này."
 
-#: dt-contacts/base-setup.php:266
+#: dt-contacts/base-setup.php:265
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Mối quan hệ của người liên hệ này với người liên hệ khác trong hệ thống."
 
-#: dt-contacts/dmm-module.php:180
+#: dt-contacts/dmm-module.php:179
 msgid "Coached by"
 msgstr "Được kèm cặp bởi"
 
-#: dt-contacts/dmm-module.php:181
+#: dt-contacts/dmm-module.php:180
 msgctxt "Optional Documentation"
 msgid "Who is coaching this contact"
 msgstr "Ai đang kèm cặp người liên hệ này"
 
-#: dt-contacts/dmm-module.php:158
+#: dt-contacts/dmm-module.php:157
 msgctxt "Optional Documentation"
 msgid "Who is this contact coaching"
 msgstr "Người liên hệ này đang kèm cặp ai"
 
-#: dt-contacts/dmm-module.php:190
-#: dt-contacts/dmm-module.php:294
+#: dt-contacts/dmm-module.php:189
 msgid "Baptized by"
 msgstr "Được rửa tội bởi"
 
-#: dt-contacts/dmm-module.php:191
+#: dt-contacts/dmm-module.php:190
 msgctxt "Optional Documentation"
 msgid "Who baptized this contact"
 msgstr "Ai đã rửa tội cho người liên hệ này"
 
-#: dt-contacts/dmm-module.php:201
+#: dt-contacts/dmm-module.php:200
 msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
 msgstr "Người liên hệ này đã rửa tội cho ai"
 
-#: dt-groups/base-setup.php:409
+#: dt-groups/base-setup.php:408
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
 msgstr "Các nhóm người mà đoàn thể này đại diện."
 
-#: dt-groups/base-setup.php:455
+#: dt-groups/base-setup.php:454
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "Các đoàn thể mà người liên hệ này là thành viên."
 
-#: dt-contacts/dmm-module.php:133
+#: dt-contacts/dmm-module.php:132
 msgid "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr "Người liên hệ hoặc Người dùng đang trợ giúp người dùng ở mục \"Được chỉ định cho\" để theo sát liên hệ này."
 
-#: dt-contacts/base-setup.php:205
-#: dt-groups/base-setup.php:370
+#: dt-contacts/base-setup.php:204
+#: dt-groups/base-setup.php:369
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "Vị trí chung nơi người liên hệ này cư trú."
@@ -3009,193 +2941,188 @@ msgctxt "My records"
 msgid "My %s"
 msgstr "%s của tôi"
 
-#: dt-core/configuration/restrict-site-access.php:232
+#: dt-core/configuration/restrict-site-access.php:234
 msgid "ERROR: Invalid username/password combination."
 msgstr "LỖI: Tổ hợp tên người dùng/mật khẩu không hợp lệ"
 
-#: dt-groups/base-setup.php:132
+#: dt-groups/base-setup.php:131
 #: dt-users/user-management.php:106
 msgid "Inactive"
 msgstr "Không hoạt động"
 
-#: dt-groups/base-setup.php:177
+#: dt-groups/base-setup.php:176
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
 msgstr "Một đoàn thể chủ yếu là người ngoại đạo"
 
-#: dt-groups/base-setup.php:181
+#: dt-groups/base-setup.php:180
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr "Một đoàn thể có 3 tín đồ trở lên nhưng không xác định là giáo hội."
 
-#: dt-groups/base-setup.php:185
+#: dt-groups/base-setup.php:184
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr "Một đoàn thể có 3 tín đồ trở lên và xác định là giáo hội."
 
-#: dt-groups/base-setup.php:188
+#: dt-groups/base-setup.php:187
 msgid "Team"
 msgstr "Đội nhóm"
 
-#: dt-groups/base-setup.php:189
+#: dt-groups/base-setup.php:188
 msgctxt "Optional Documentation"
 msgid "A special group that is not meeting as a church (or trying to become church)."
 msgstr "Một đoàn thể đặc biệt không tụ họp như một giáo hội (hay cố gắng trở thành giáo hội)."
 
-#: dt-groups/base-setup.php:150
+#: dt-groups/base-setup.php:149
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr "Chọn người chủ chốt chịu trách nhiệm báo cáo về đoàn thể này."
 
-#: dt-groups/base-setup.php:204
-#: dt-groups/base-setup.php:668
+#: dt-groups/base-setup.php:203
+#: dt-groups/base-setup.php:577
 msgid "Church Health"
 msgstr "Tình trạng Giáo hội"
 
-#: dt-groups/base-setup.php:205
+#: dt-groups/base-setup.php:204
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "Theo dõi sự tiến bộ và tình trạng của một đoàn thể/giáo hội."
 
-#: dt-groups/base-setup.php:209
+#: dt-groups/base-setup.php:208
 #: dt-metrics/personal/baptism-tree.php:139
 msgid "Baptism"
 msgstr "Rửa tội"
 
-#: dt-groups/base-setup.php:210
+#: dt-groups/base-setup.php:209
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "Đoàn thể này đang rửa tội."
 
-#: dt-groups/base-setup.php:214
+#: dt-groups/base-setup.php:213
 msgid "Bible Study"
 msgstr "Học Kinh thánh"
 
-#: dt-groups/base-setup.php:215
+#: dt-groups/base-setup.php:214
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "Đoàn thể này đang học kinh thánh."
 
-#: dt-groups/base-setup.php:219
+#: dt-groups/base-setup.php:218
 msgid "Communion"
 msgstr "Rước lễ"
 
-#: dt-groups/base-setup.php:220
+#: dt-groups/base-setup.php:219
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "Đoàn thể này đang thực hành rước lễ."
 
-#: dt-groups/base-setup.php:224
+#: dt-groups/base-setup.php:223
 msgid "Fellowship"
 msgstr "Kết tình thân hữu"
 
-#: dt-groups/base-setup.php:225
+#: dt-groups/base-setup.php:224
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "Đoàn thể này đang kết tình thân hữu."
 
-#: dt-groups/base-setup.php:229
+#: dt-groups/base-setup.php:228
 msgid "Giving"
 msgstr "Dâng hiến"
 
-#: dt-groups/base-setup.php:230
+#: dt-groups/base-setup.php:229
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "Đoàn thể này đang dâng hiến."
 
-#: dt-groups/base-setup.php:234
+#: dt-groups/base-setup.php:233
 msgid "Prayer"
 msgstr "Lời cầu nguyện"
 
-#: dt-groups/base-setup.php:235
+#: dt-groups/base-setup.php:234
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "Đoàn thể này đang cầu nguyện."
 
-#: dt-groups/base-setup.php:239
+#: dt-groups/base-setup.php:238
 msgid "Praise"
 msgstr "Ngợi ca"
 
-#: dt-groups/base-setup.php:240
+#: dt-groups/base-setup.php:239
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "Đoàn thể này đang ngợi ca."
 
-#: dt-groups/base-setup.php:244
+#: dt-groups/base-setup.php:243
 msgid "Sharing the Gospel"
 msgstr "Chia sẻ Phúc âm"
 
-#: dt-groups/base-setup.php:254
-#: dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:253
+#: dt-groups/base-setup.php:437
 msgid "Church Commitment"
 msgstr "Cam kết của Giáo hội"
 
-#: dt-groups/base-setup.php:420
+#: dt-groups/base-setup.php:419
 msgid "Unbelievers"
 msgstr "Người ngoại đạo"
 
-#: dt-groups/base-setup.php:426
+#: dt-groups/base-setup.php:425
 msgid "Believers"
 msgstr "Tín đồ"
 
-#: dt-groups/base-setup.php:432
+#: dt-groups/base-setup.php:431
 msgid "Accountable"
 msgstr "Có trách nhiệm"
 
-#: dt-groups/base-setup.php:439
+#: dt-groups/base-setup.php:438
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "Đây có phải một giáo hội không - có hay không?"
 
-#: dt-groups/base-setup.php:444
+#: dt-groups/base-setup.php:443
 msgid "Multiplying"
 msgstr "Đang nhân rộng"
 
-#: dt-groups/base-setup.php:445
+#: dt-groups/base-setup.php:444
 msgctxt "Optional Documentation"
 msgid "Number of people helping start other groups. How many members are multiplying?"
 msgstr "Số lượng người đang giúp thành lập các đoàn thể khác. Có bao nhiêu người đang nhân rộng?"
 
-#: dt-groups/base-setup.php:266
+#: dt-groups/base-setup.php:265
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "Ngày mà đoàn thể này bắt đầu nhóm họp."
 
-#: dt-groups/base-setup.php:274
+#: dt-groups/base-setup.php:273
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "Ngày mà đoàn thể này lần đầu xác định là một giáo hội."
 
-#: dt-groups/base-setup.php:283
+#: dt-groups/base-setup.php:282
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "Ngày mà đoàn thể này ngừng nhóm họp (nếu phù hợp)."
 
-#: dt-groups/base-setup.php:329
+#: dt-groups/base-setup.php:328
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "Một đoàn thể đã thành lập nên đoàn thể này."
 
-#: dt-groups/base-setup.php:341
+#: dt-groups/base-setup.php:340
 msgctxt "Optional Documentation"
 msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
 msgstr "Một đoàn thể liên quan không có quan hệ cha/con. Nó có thể biểu thị các đoàn thể đang cộng tác, chuẩn bị sáp nhập, mới chia tách, v.v."
 
-#: dt-groups/base-setup.php:353
+#: dt-groups/base-setup.php:352
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "Một đoàn thể vừa được sinh ra từ đoàn thể này."
 
-#: dt-groups/base-setup.php:294
-msgctxt "Optional Documentation"
-msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group."
-msgstr "Số lượng thành viên trong đoàn thể này. Con số này sẽ tự động cập nhật khi có các thành viên mới được thêm vào hoặc loại ra khỏi danh sách thành viên. Thay đổi con số này theo cách thủ công để bao gồm cả những người có thể không ở trong hệ thống nhưng cũng là thành viên của đoàn thể."
-
-#: dt-groups/base-setup.php:303
+#: dt-groups/base-setup.php:302
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "Những người liên hệ là thành viên của đoàn thể này."
 
-#: dt-groups/base-setup.php:159
+#: dt-groups/base-setup.php:158
 msgctxt "Optional Documentation"
 msgid "The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
 msgstr "Người đã thành lập và/hoặc đang kèm cặp đoàn thể này. Chỉ có thể chỉ định một người vào một đoàn thể trong khi nhiều người có thể làm người kèm cặp/người thành lập giáo hội của đoàn thể này."
@@ -3262,7 +3189,7 @@ msgid "Save Roles"
 msgstr "Lưu Vai trò"
 
 #: dt-users/template-user-management.php:283
-#: template-settings.php:292
+#: template-settings.php:305
 msgid "Search Locations"
 msgstr "Tìm kiếm Vị trí"
 
@@ -3357,26 +3284,26 @@ msgstr "Bạn đã đặt nhiệm vụ này cho %1$s: %2$s"
 #: dt-contacts/access-module.php:455
 #: dt-contacts/access-module.php:486
 #: dt-contacts/access-module.php:517
-#: dt-contacts/base-setup.php:402
+#: dt-contacts/base-setup.php:401
 msgid "Choose an option:"
 msgstr "Chọn một phương án:"
 
 #: dt-contacts/access-module.php:477
 #: dt-contacts/access-module.php:508
 #: dt-contacts/access-module.php:536
-#: dt-contacts/base-setup.php:426
+#: dt-contacts/base-setup.php:425
 msgid "Confirm"
 msgstr "Xác nhận"
 
-#: dt-groups/base-setup.php:537
+#: dt-groups/base-setup.php:536
 msgid "Create"
 msgstr "Tạo"
 
-#: dt-groups/base-setup.php:542
+#: dt-groups/base-setup.php:541
 msgid "Select"
 msgstr "Chọn"
 
-#: dt-groups/base-setup.php:554
+#: dt-groups/base-setup.php:553
 msgctxt "Add members modal"
 msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
 msgstr "Trong trường 'Danh sách Thành viên', hãy nhập tên của một liên hệ hiện có để thêm người đó vào nhóm này."
@@ -3446,7 +3373,7 @@ msgstr "Các liên hệ được chuyển từ quan hệ đối tác với một
 #: dt-mapping/geocode-api/mapbox-api.php:286
 #: dt-mapping/geocode-api/mapbox-api.php:321
 #: dt-users/template-user-management.php:271
-#: template-settings.php:277
+#: template-settings.php:290
 msgid "add"
 msgstr "bổ sung"
 
@@ -3558,7 +3485,6 @@ msgstr "2 liên hệ cần cập nhật"
 msgid "Quick Action Buttons"
 msgstr "Các nút hành động nhanh"
 
-#: dt-groups/base-setup.php:589
 #: dt-metrics/groups/tree.php:84
 #: dt-metrics/personal/group-tree.php:85
 msgid "Members"
@@ -3580,7 +3506,7 @@ msgid "Inactive Groups Switch"
 msgstr "Chuyển đổi nhóm không hoạt động"
 
 #: dt-assets/parts/modals/modal-help.php:152
-#: dt-assets/parts/nav-topbar.php:284
+#: dt-assets/parts/nav-topbar.php:289
 #: template-notifications.php:60
 msgid "Mark all as read"
 msgstr "Đánh dấu tất cả là đã đọc"
@@ -3589,16 +3515,16 @@ msgstr "Đánh dấu tất cả là đã đọc"
 msgid "Task Type"
 msgstr "Loại công việc"
 
-#: dt-contacts/base-setup.php:310
+#: dt-contacts/base-setup.php:309
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
 msgstr "Trạng thái Liên hệ mô tả tiến trình giao tiếp với liên hệ."
 
-#: dt-contacts/base-setup.php:118
+#: dt-contacts/base-setup.php:117
 msgid "Contact Type"
 msgstr "Loại liên hệ"
 
-#: dt-posts/custom-post-type.php:154
+#: dt-posts/custom-post-type.php:155
 msgid "Last Modified"
 msgstr "Sửa đổi lần cuối"
 
@@ -3606,32 +3532,32 @@ msgstr "Sửa đổi lần cuối"
 msgid "New Comments"
 msgstr "Bình luận mới"
 
-#: dt-groups/base-setup.php:245
+#: dt-groups/base-setup.php:244
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "Nhóm đang chia sẻ phúc âm."
 
-#: dt-groups/base-setup.php:250
+#: dt-groups/base-setup.php:249
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "Nhóm có người lãnh đạo."
 
-#: dt-groups/base-setup.php:255
+#: dt-groups/base-setup.php:254
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "Nhóm đã cam kết trở thành hội thánh."
 
-#: dt-groups/base-setup.php:421
+#: dt-groups/base-setup.php:420
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "Số người không tin Chúa trong nhóm này."
 
-#: dt-groups/base-setup.php:427
+#: dt-groups/base-setup.php:426
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "Số người tin Chúa trong nhóm này."
 
-#: dt-groups/base-setup.php:433
+#: dt-groups/base-setup.php:432
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "Số người trong nhóm chịu trách nhiệm."
@@ -3665,7 +3591,7 @@ msgstr "Xem liên hệ"
 msgid "Load more notifications"
 msgstr "Tải thêm thông báo"
 
-#: dt-contacts/base-setup.php:49
+#: dt-contacts/base-setup.php:48
 msgid "Contact"
 msgstr "Liên hệ"
 
@@ -3688,15 +3614,15 @@ msgctxt "Reason Closed label"
 msgid "GDPR request"
 msgstr "Yêu cầu GDPR"
 
-#: dt-contacts/dmm-module.php:118
+#: dt-contacts/dmm-module.php:117
 msgid "Seeker"
 msgstr "Người tìm kiếm"
 
-#: dt-contacts/dmm-module.php:121
+#: dt-contacts/dmm-module.php:120
 msgid "Believer"
 msgstr "Người tin Chúa"
 
-#: dt-contacts/dmm-module.php:124
+#: dt-contacts/dmm-module.php:123
 msgid "Leader"
 msgstr "Người lãnh đạo"
 
@@ -3717,7 +3643,7 @@ msgid "Partner"
 msgstr "Đối tác"
 
 #. translators: %s: Site name.
-#: dt-core/configuration/restrict-site-access.php:290
+#: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
 msgstr "Tên trang web DT: %s"
 
@@ -3880,7 +3806,7 @@ msgstr "Cây huấn luyện của tôi"
 msgid "My Groups Tree"
 msgstr "Cây nhóm của tôi"
 
-#: dt-contacts/base-setup.php:368
+#: dt-contacts/base-setup.php:367
 msgid "See duplicates"
 msgstr "Xem bản trùng lặp"
 
@@ -3896,7 +3822,7 @@ msgstr "Bản trùng lặp vào: %s"
 msgid "No duplicates found."
 msgstr "Không tìm thấy bản trùng lặp."
 
-#: dt-contacts/base-setup.php:178
+#: dt-contacts/base-setup.php:177
 msgid "Languages"
 msgstr "Ngôn ngữ"
 
@@ -3904,18 +3830,18 @@ msgstr "Ngôn ngữ"
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "Liên hệ này đã được chuyển đến %s để theo dõi thêm."
 
-#: dt-contacts/duplicates-merging.php:524
+#: dt-contacts/duplicates-merging.php:574
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "Bản ghi này là bản trùng lặp và đã được hợp nhất vào %2$s"
 
-#: dt-contacts/access-module.php:1318
-#: dt-contacts/duplicates-merging.php:477
-#: dt-contacts/duplicates-merging.php:528
+#: dt-contacts/access-module.php:1320
+#: dt-contacts/duplicates-merging.php:515
+#: dt-contacts/duplicates-merging.php:578
 msgid "Duplicate Checker"
 msgstr "Trình kiểm tra bản trùng lặp"
 
-#: dt-contacts/duplicates-merging.php:537
+#: dt-contacts/duplicates-merging.php:587
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s đã hợp nhất %2$s vào bản ghi này"
@@ -3937,28 +3863,28 @@ msgid "View User"
 msgstr "Xem người dùng"
 
 #: template-settings.php:52
-#: template-settings.php:269
+#: template-settings.php:282
 msgid "Multiplier Preferences"
 msgstr "Lựa chọn ưu tiên về hệ số"
 
-#: template-settings.php:277
-#: template-settings.php:282
+#: template-settings.php:290
+#: template-settings.php:295
 msgid "Locations you are willing to be responsible for"
 msgstr "Những vị trí bạn sẵn lòng chịu trách nhiệm"
 
-#: template-settings.php:305
+#: template-settings.php:318
 msgid "Languages you are comfortable speaking"
 msgstr "Những ngôn ngữ bạn tự tin sử dụng"
 
-#: template-settings.php:326
+#: template-settings.php:339
 msgid "People Groups you wish to serve"
 msgstr "Những nhóm người bạn muốn phục vụ"
 
-#: template-settings.php:349
+#: template-settings.php:362
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "Thời gian rảnh để nhận liên hệ từ Điều phối viên"
 
-#: template-settings.php:595
+#: template-settings.php:615
 msgid "System Language"
 msgstr "Ngôn ngữ Hệ thống"
 
@@ -3999,10 +3925,6 @@ msgstr "đặt lại về mặc định"
 #: archive-template.php:286
 msgid "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "Chọn tất cả %1$s bạn muốn cập nhật từ danh sách và cập nhật chúng bên dưới"
-
-#: archive-template.php:173
-msgid "Assign To"
-msgstr "Giao Cho"
 
 #: archive-template.php:368
 msgid "Share with:"
@@ -4083,88 +4005,88 @@ msgstr "Theo sát %s"
 msgid "All Follow-Up"
 msgstr "Tất cả Người theo sát"
 
-#: dt-contacts/access-module.php:1312
+#: dt-contacts/access-module.php:1314
 msgid "This record might be a duplicate of: "
 msgstr "Hồ sơ này có thể là bản sao của:"
 
-#: dt-contacts/base-setup.php:65
+#: dt-contacts/base-setup.php:64
 msgid "User Manager"
 msgstr "Quản lý Người dùng"
 
-#: dt-contacts/base-setup.php:75
+#: dt-contacts/base-setup.php:74
 msgid "Administrator"
 msgstr "Quản trị viên"
 
-#: dt-contacts/base-setup.php:112
+#: dt-contacts/base-setup.php:111
 msgid "Nickname"
 msgstr "Biệt danh"
 
-#: dt-contacts/base-setup.php:123
+#: dt-contacts/base-setup.php:122
 msgid "Representing a User in the system"
 msgstr "Đại diện cho một Người dùng trong hệ thống"
 
-#: dt-contacts/base-setup.php:130
+#: dt-contacts/base-setup.php:129
 msgid "A friend, family member or acquaintance"
 msgstr "Một người bạn, thành viên gia đình hoặc người quen"
 
-#: dt-contacts/base-setup.php:131
-#: dt-contacts/dmm-module.php:54
+#: dt-contacts/base-setup.php:130
+#: dt-contacts/dmm-module.php:53
 msgid "Only me"
 msgstr "Chỉ mình tôi"
 
-#: dt-contacts/base-setup.php:213
-#: dt-groups/base-setup.php:379
+#: dt-contacts/base-setup.php:212
+#: dt-groups/base-setup.php:378
 msgid "Locations or Address"
 msgstr "Vị trí hoặc Địa chỉ"
 
-#: dt-contacts/base-setup.php:265
+#: dt-contacts/base-setup.php:264
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Kết nối với %s khác"
 
-#: dt-contacts/base-setup.php:363
+#: dt-contacts/base-setup.php:362
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Thay đổi Loại %s"
 
-#: dt-contacts/base-setup.php:497
+#: dt-contacts/base-setup.php:482
 msgid "Default Filters"
 msgstr "Bộ lọc Mặc định"
 
-#: dt-contacts/base-setup.php:507
+#: dt-contacts/base-setup.php:492
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Tất cả %s tôi có thể xem"
 
-#: dt-contacts/base-setup.php:517
-#: dt-groups/base-setup.php:1125
-#: dt-posts/custom-post-type.php:270
+#: dt-contacts/base-setup.php:502
+#: dt-groups/base-setup.php:1034
+#: dt-posts/custom-post-type.php:307
 msgid "My Recently Viewed"
 msgstr "Tôi Đã xem Gần đây"
 
-#: dt-contacts/base-setup.php:522
-#: dt-groups/base-setup.php:1130
-#: dt-posts/custom-post-type.php:275
+#: dt-contacts/base-setup.php:507
+#: dt-groups/base-setup.php:1039
+#: dt-posts/custom-post-type.php:312
 msgid "Last 30 viewed"
 msgstr "30 lần xem gần đây nhất"
 
-#: dt-contacts/dmm-module.php:49
+#: dt-contacts/dmm-module.php:48
 msgid "Connection"
 msgstr "Kết nối"
 
-#: dt-contacts/dmm-module.php:51
+#: dt-contacts/dmm-module.php:50
 msgid "Connected to a contact, or generational fruit"
 msgstr "Đã kết nối với một liên hệ hoặc trái thế hệ"
 
-#: dt-contacts/dmm-module.php:113
+#: dt-contacts/dmm-module.php:112
 msgid "Faith Status"
 msgstr "Trạng thái Đức tin"
 
-#: dt-contacts/dmm-module.php:157
+#: dt-contacts/dmm-module.php:156
 msgid "Is Coaching"
 msgstr "Đang Huấn luyện"
 
-#: dt-contacts/dmm-module.php:211
+#: dt-contacts/dmm-module.php:210
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this contact."
 msgstr "Các nhóm người được liên hệ này đại diện."
@@ -4177,11 +4099,11 @@ msgstr "Được giao lại bởi"
 msgid "Sub-assigned"
 msgstr "Được giao lại"
 
-#: dt-contacts/dmm-module.php:335
+#: dt-contacts/dmm-module.php:273
 msgid "Faith"
 msgstr "Đức tin"
 
-#: dt-contacts/dmm-module.php:418
+#: dt-contacts/dmm-module.php:356
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "%s Đã kết nối"
@@ -4242,7 +4164,7 @@ msgstr "Bản đồ Liên hệ"
 msgid "Groups Maps"
 msgstr "Bản đồ Nhóm"
 
-#: dt-posts/dt-posts.php:1540
+#: dt-posts/dt-posts.php:1542
 #: single-template.php:120
 msgid "Details"
 msgstr "Chi tiết"
@@ -4332,26 +4254,26 @@ msgstr "bắt đầu"
 msgid "end"
 msgstr "kết thúc"
 
-#: dt-contacts/base-setup.php:356
-#: dt-contacts/base-setup.php:383
+#: dt-contacts/base-setup.php:355
+#: dt-contacts/base-setup.php:382
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "Lưu trữ %s"
 
-#: dt-contacts/base-setup.php:384
+#: dt-contacts/base-setup.php:383
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Bạn có chắc chắn muốn lưu trữ %s không?"
 
-#: dt-contacts/base-setup.php:391
+#: dt-contacts/base-setup.php:390
 msgid "Archive"
 msgstr "Lưu trữ"
 
-#: dt-contacts/base-setup.php:642
+#: dt-contacts/base-setup.php:627
 msgid "This %s is archived"
 msgstr "%s này đã được lưu trữ"
 
-#: dt-contacts/base-setup.php:644
+#: dt-contacts/base-setup.php:629
 msgid "Restore"
 msgstr "Khôi phục"
 
@@ -4370,18 +4292,13 @@ msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "Loại bỏ tất cả các kết quả phù hợp dành cho %s"
 
-#: dt-contacts/base-setup.php:319
+#: dt-contacts/base-setup.php:318
 msgid "Archived"
 msgstr "Đã lưu trữ"
 
-#: dt-groups/base-setup.php:320
+#: dt-groups/base-setup.php:319
 msgid "Leader Count"
 msgstr "Số Người lãnh đạo"
-
-#: dt-groups/base-setup.php:321
-msgctxt "Optional Documentation"
-msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the training."
-msgstr "Số lượng thành viên trong nhóm này. Con số này sẽ tự động được cập nhật khi thành viên mới được thêm hoặc xóa trong danh sách thành viên. Thay đổi con số này theo cách thủ công để tính cả những người có thể không có trong hệ thống nhưng cũng là thành viên của khóa đào tạo."
 
 #: template-view-duplicates.php:21
 msgid "Duplicate Access Contacts"
@@ -4440,11 +4357,11 @@ msgstr "Tìm Tất cả các Trường"
 msgid "Choose which fields to search"
 msgstr "Chọn các trường để tìm kiếm"
 
-#: dt-contacts/base-setup.php:256
+#: dt-contacts/base-setup.php:255
 msgid "Other Social Links"
 msgstr "Các Liên kết Mạng xã hội khác"
 
-#: dt-assets/parts/nav-topbar.php:271
+#: dt-assets/parts/nav-topbar.php:276
 msgid "See All"
 msgstr "Xem Tất cả"
 
@@ -4483,7 +4400,7 @@ msgstr "Thêm tag mới \"%s\""
 msgid "Tag \"%s\" is already being used"
 msgstr "Tag \"%s\" đang được sử dụng"
 
-#: dt-groups/base-setup.php:466
+#: dt-groups/base-setup.php:465
 msgid "Leader of Group"
 msgstr "Lãnh đạo của Nhóm"
 
@@ -4497,11 +4414,11 @@ msgstr "Hồ sơ trước"
 msgid "Next record"
 msgstr "Hồ sơ tiếp theo"
 
-#: dt-contacts/dmm-module.php:144
+#: dt-contacts/dmm-module.php:143
 msgid "Sub-assigned on other Contacts"
 msgstr "Đã giao lại cho Liên hệ khác"
 
-#: dt-contacts/dmm-module.php:145
+#: dt-contacts/dmm-module.php:144
 msgid "Contacts this contacts is subassigned on"
 msgstr "Liên hệ mà liên hệ này được giao lại"
 
@@ -4560,184 +4477,157 @@ msgstr "buồn"
 msgid "angry"
 msgstr "giận"
 
-#: dt-posts/dt-posts.php:1599
+#: dt-posts/dt-posts.php:1601
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr "@[%1$s](%2$s) - Người dùng %3$s đã yêu cầu quyền truy cập vào %4$s [%5$s](%6$s). Nếu muốn, hãy chia sẻ hồ sơ này với người dùng đó để cấp quyền truy cập."
 
-#: dt-posts/dt-posts.php:1605
+#: dt-posts/dt-posts.php:1607
 msgid "Access Request"
 msgstr "Yêu cầu Truy cập"
 
 #: dt-assets/functions/enqueue-scripts.php:283
-#: template-settings.php:242
+#: template-settings.php:255
 msgid "link"
-msgstr ""
+msgstr "liên kết"
 
 #: dt-assets/functions/enqueue-scripts.php:362
 msgid "load more"
-msgstr ""
+msgstr "tải thêm"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:11
 msgid "Search Query..."
-msgstr ""
+msgstr "Truy vấn Tìm kiếm..."
 
 #: dt-assets/parts/modals/modal-advanced-search.php:29
 msgid "Search Settings"
-msgstr ""
+msgstr "Cài đặt Tìm kiếm"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:39
 msgid "Record Hits:"
-msgstr ""
+msgstr "Lượt truy cập Bản ghi:"
 
 #: dt-contacts/access-module.php:321
 msgid "Campaigns"
-msgstr ""
+msgstr "Chiến dịch"
 
 #: dt-contacts/access-module.php:322
 msgctxt "Optional Documentation"
 msgid "Marketing campaigns or access activities that this contact interacted with."
-msgstr ""
+msgstr "Các chiến dịch tiếp thị hoặc hoạt động truy cập mà người liên hệ này đã tương tác."
 
-#: dt-groups/base-setup.php:294
+#: dt-groups/base-setup.php:293
 msgctxt "Optional Documentation"
 msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
-msgstr ""
+msgstr "Số lượng thành viên trong nhóm này. Số lượng này sẽ tự động cập nhật khi thêm thành viên mới hoặc xoá thành viên trong danh sách thành viên. Thay đổi số lượng này theo cách thủ công để bao gồm những người có thể không có trong hệ thống nhưng cũng là thành viên của nhóm."
 
 #: dt-metrics/combined/time-charts.php:42
 #: dt-metrics/combined/time-charts.php:106
 msgid "Fields over Time Charts"
-msgstr ""
+msgstr "Các trường theo Biểu đồ Thời gian"
 
 #: dt-metrics/combined/time-charts.php:107
 msgid "Post Type"
-msgstr ""
+msgstr "Loại Bài đăng"
 
 #: dt-metrics/combined/time-charts.php:109
 msgid "Total"
-msgstr ""
+msgstr "Tổng cộng"
 
 #: dt-metrics/combined/time-charts.php:110
 msgid "Added"
-msgstr ""
+msgstr "Đã thêm"
 
 #: dt-metrics/combined/time-charts.php:111
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr ""
+msgstr "%1$s trong %2$s"
 
 #: dt-metrics/combined/time-charts.php:112
 msgid "Date"
-msgstr ""
+msgstr "Ngày"
 
 #: dt-metrics/combined/time-charts.php:113
 msgid "All time"
-msgstr ""
+msgstr "Toàn bộ thời gian"
 
 #: dt-metrics/combined/time-charts.php:114
 msgid "All cumulative totals"
-msgstr ""
+msgstr "Tất cả các tổng lũy kế"
 
 #: dt-metrics/combined/time-charts.php:115
 msgid "Single cumulative totals"
-msgstr ""
+msgstr "Các tổng lũy kế đơn lẻ"
 
 #: dt-metrics/combined/time-charts.php:116
 msgid "Number added"
-msgstr ""
+msgstr "Đã thêm số lượng"
 
 #: dt-metrics/personal/coaching-tree.php:58
 msgid "My Coaching Generation Tree"
-msgstr ""
+msgstr "Sơ đồ Thế hệ Huấn luyện Của tôi"
 
 #: dt-metrics/personal/group-tree.php:82
 msgid "My Group Generation Tree"
-msgstr ""
+msgstr "Sơ đồ Thế hệ Nhóm Của tôi"
 
 #: template-settings.php:50
 msgid "Apps"
-msgstr ""
+msgstr "Ứng dụng"
 
-#: template-settings.php:206
+#: template-settings.php:219
 msgid "Your Apps"
-msgstr ""
-
-#: template-settings.php:211
-msgid "App Name"
-msgstr ""
-
-#: template-settings.php:212
-msgid "App Description"
-msgstr ""
-
-#: template-settings.php:213
-msgid "App Link"
-msgstr ""
-
-#: template-settings.php:214
-msgid "App Activation"
-msgstr ""
+msgstr "Ứng dụng Của bạn"
 
 #: template-settings.php:224
+msgid "App Name"
+msgstr "Tên Ứng dụng"
+
+#: template-settings.php:225
+msgid "App Description"
+msgstr "Mô tả Ứng dụng"
+
+#: template-settings.php:226
+msgid "App Link"
+msgstr "Liên kết Ứng dụng"
+
+#: template-settings.php:227
+msgid "App Activation"
+msgstr "Kích hoạt Ứng dụng"
+
+#: template-settings.php:237
 msgid "No apps installed"
-msgstr ""
-
-#: tests/dt-posts/tests-setup.php:15
-msgid "Number field"
-msgstr ""
-
-#: tests/dt-posts/tests-setup.php:21
-msgid "Number field private"
-msgstr ""
-
-#: tests/dt-posts/tests-setup.php:28
-#: tests/dt-posts/tests-setup.php:34
-msgid "Text"
-msgstr ""
-
-#: tests/dt-posts/tests-setup.php:48
-msgid "Communication Channel"
-msgstr ""
-
-#: tests/dt-posts/tests-setup.php:55
-msgid "User Select"
-msgstr ""
-
-#: tests/dt-posts/tests-setup.php:60
-msgid "Array"
-msgstr ""
-
-#: tests/dt-posts/tests-setup.php:70
-#: tests/dt-posts/tests-setup.php:77
-msgid " Date Field"
-msgstr ""
-
-#: tests/dt-posts/tests-setup.php:85
-#: tests/dt-posts/tests-setup.php:90
-msgid "Boolean"
-msgstr ""
+msgstr "Không có ứng dụng nào được cài đặt"
 
 #: archive-template.php:559
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr ""
+msgstr "Tất cả %1$s với %2$s"
 
 #: archive-template.php:582
 #: archive-template.php:589
 msgid "None Set"
-msgstr ""
+msgstr "Chưa có gì Được thiết lập"
 
-#: dt-contacts/base-setup.php:528
-#: dt-groups/base-setup.php:1113
-#: dt-posts/custom-post-type.php:255
+#: dt-contacts/base-setup.php:513
+#: dt-groups/base-setup.php:1022
+#: dt-posts/custom-post-type.php:292
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
+msgstr "%s Ưa thích"
+
+#: dt-contacts/base-setup.php:519
+#: dt-groups/base-setup.php:1028
+#: dt-posts/custom-post-type.php:168
+#: dt-posts/custom-post-type.php:298
+msgid "Favorite"
+msgstr "Ưa thích"
+
+#: dt-assets/parts/nav-topbar.php:134
+msgid "More"
 msgstr ""
 
-#: dt-contacts/base-setup.php:534
-#: dt-groups/base-setup.php:1119
-#: dt-posts/custom-post-type.php:167
-#: dt-posts/custom-post-type.php:261
-msgid "Favorite"
+#: dt-posts/dt-posts.php:1124
+msgid "Magic Link Submission"
 msgstr ""
 

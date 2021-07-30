@@ -218,26 +218,48 @@ class Disciple_Tools_Posts
         // Get p2p record
         $p2p_record = p2p_get_connection( (int) $p2p_id ); // returns object
 
+        $from_title = "";
+        $from_link = "";
+        $to_title = "";
+        $to_link = "";
+
         if ( !$p2p_record ){
             if ( $activity->field_type === "connection from" ){
                 $from = get_post( $activity->object_id );
                 $to = get_post( $activity->meta_value );
-                $from_title = wp_specialchars_decode( isset( $from->post_title ) ? $from->post_title : "" );
-                $to_title = wp_specialchars_decode( isset( $to->post_title ) ? $to->post_title : "" ) ?? '#' . $activity->meta_value;
+                $to_title = '#' . $activity->meta_value;
             } elseif ( $activity->field_type === "connection to" ){
                 $to = get_post( $activity->object_id );
                 $from = get_post( $activity->meta_value );
-                $to_title = wp_specialchars_decode( isset( $to->post_title ) ? $to->post_title : "" );
-                $from_title = wp_specialchars_decode( isset( $from->post_title ) ? $from->post_title : "" ) ?? '#' . $activity->meta_value;
+                $from_title = '#' . $activity->meta_value;
             } else {
                 return "CONNECTION DESTROYED";
+            }
+            if ( isset( $from->post_title ) ){
+                $from_title = $from->post_title;
+                $from_link = get_permalink( $from->ID );
+            }
+            if ( isset( $to->post_title ) ){
+                $to_title = $to->post_title;
+                $to_link = get_permalink( $to->ID );
             }
         } else {
             $p2p_from = get_post( $p2p_record->p2p_from, ARRAY_A );
             $p2p_to = get_post( $p2p_record->p2p_to, ARRAY_A );
-            $from_title = wp_specialchars_decode( $p2p_from["post_title"] );
-            $to_title = wp_specialchars_decode( $p2p_to["post_title"] );
+            $to_title = $p2p_to["post_title"];
+            $to_link = get_permalink( $p2p_record->p2p_to );
+            $from_title = $p2p_from["post_title"];
+            $from_link = get_permalink( $p2p_record->p2p_from );
         }
+
+        //create link format to be clicked in activity
+        if ( !empty( $to_link ) ){
+            $to_title = "[" . wp_specialchars_decode( $to_title ) . "](" . $to_link .")";
+        }
+        if ( !empty( $from_link ) ){
+            $from_title = "[" . wp_specialchars_decode( $from_title ) . "](" . $from_link .")";
+        }
+
         $object_note_from = '';
         $object_note_to = '';
 
@@ -1223,7 +1245,7 @@ class Disciple_Tools_Posts
         }
         return [
             "posts" => $posts,
-            "total" => $total_rows,
+            "total" => (int) $total_rows,
         ];
     }
 
@@ -1661,8 +1683,15 @@ class Disciple_Tools_Posts
     }
 
 
-
-
+    /**
+     * Create or update the dt_post_user_meta field
+     *
+     * @param array $field_settings
+     * @param int $post_id
+     * @param array $fields
+     * @param array $existing_record
+     * @return WP_Error
+     */
     public static function update_post_user_meta_fields( array $field_settings, int $post_id, array $fields, array $existing_record ){
         global $wpdb;
         foreach ( $fields as $field_key => $field ) {
@@ -1754,7 +1783,8 @@ class Disciple_Tools_Posts
                 }
             }
 
-            if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && ( $field_settings[ $field_key ]["type"] === "text" || $field_settings[ $field_key ]["type"] === "textarea" || $field_settings[ $field_key ]["type"] === "date" || $field_settings[ $field_key ]["type"] === "key_select" || $field_settings[ $field_key ]["type"] === "boolean" || $field_settings[ $field_key ]["type"] === "number" ) ) {
+            $private_field_types = [ "text", "textarea", "date", "key_select", "boolean", "number" ];
+            if ( isset( $field_settings[ $field_key ]["type"] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && in_array( $field_settings[ $field_key ]["type"], $private_field_types, true ) ) {
                 if ( $field_settings[ $field_key ]["type"] === "boolean" ){
                     if ( $fields[$field_key] === "1" || $fields[$field_key] === "yes" || $fields[$field_key] === "true" ){
                         $field_value = true;
