@@ -441,7 +441,7 @@ jQuery(document).ready(function($) {
     Object.entries(reactions).forEach(([alias, reaction]) => {
       const reactionValue = `reaction_${alias}`
       emojis += `
-      <button class="add-reaction" type="submit" name="reaction" value="${reactionValue}">
+      <button class="add-reaction" type="submit" name="reaction" title="${window.lodash.escape(reaction.name)}" value="${reactionValue}">
         <img class="emoji" alt="${window.lodash.escape(reaction.name)}" src="${window.lodash.escape(reaction.path)}">
       </button>
       `
