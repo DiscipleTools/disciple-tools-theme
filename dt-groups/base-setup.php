@@ -127,15 +127,15 @@ class DT_Groups_Base extends DT_Module_Base {
                 'description' => _x( 'Set the current status of the group.', 'field description', 'disciple_tools' ),
                 'type'        => 'key_select',
                 'default'     => [
-                    'inactive' => [
-                        'label' => __( 'Inactive', 'disciple_tools' ),
-                        'description' => _x( 'The group is no longer meeting.', 'field description', 'disciple_tools' ),
-                        'color' => "#808080"
-                    ],
                     'active'   => [
                         'label' => __( 'Active', 'disciple_tools' ),
                         'description' => _x( 'The group is actively meeting.', 'field description', 'disciple_tools' ),
                         'color' => "#4CAF50"
+                    ],
+                    'inactive' => [
+                        'label' => __( 'Inactive', 'disciple_tools' ),
+                        'description' => _x( 'The group is no longer meeting.', 'field description', 'disciple_tools' ),
+                        'color' => "#808080"
                     ],
                 ],
                 'tile'     => 'status',
