@@ -212,8 +212,6 @@ final class Disciple_Tools_Dashboard
                 .wizard_description{
                     position: relative;
                     height: 200px;
-                    top: 15px;
-                    left: 15px;
                 }
             </style>
             <form method="POST">
@@ -244,7 +242,7 @@ final class Disciple_Tools_Dashboard
                                     <?php
                                 }
                                 // Logic for displaying the 'dismiss' button
-                                if ( $item_value["hide_mark_done"] == false ) {
+                                if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"]  ) ) {
                                     $setup_options = get_option( 'dt_setup_wizard_options', [] );
                                     if ( ! isset( $setup_options[$item_key]["dismissed"] ) || empty( $setup_options[$item_key]["dismissed"] ) ) {
                                         ?>
@@ -265,7 +263,7 @@ final class Disciple_Tools_Dashboard
                                 </p>
                                 <?php
                                 // Logic for displaying the 'un-dismiss' button
-                                if ( $item_value["hide_mark_done"] == false ) {
+                                if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"]  ) ) {
                                     $setup_options = get_option( 'dt_setup_wizard_options', [] );
                                     if ( isset( $setup_options[$item_key]["dismissed"] ) && ! empty( $setup_options[$item_key]["dismissed"] ) ) {
                                         ?>
@@ -336,24 +334,24 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
             "hide_mark_done" => true
         ];
     }
-    $items['non_wp_cron'] = [
-        'label' => 'Setup non WP Cron',
-        'description' => '',
-        'link' => esc_url( 'https://developers.disciple.tools/hosting/cron' ),
-        'complete' => false,
-        'hide_mark_done' => false
-    ];
+//    $items['non_wp_cron'] = [
+//        'label' => 'Setup non WP Cron',
+//        'description' => '',
+//        'link' => esc_url( 'https://developers.disciple.tools/hosting/cron' ),
+//        'complete' => false,
+//        'hide_mark_done' => false
+//    ];
     $items['explore_user_invite'] = [
         'label' => 'Explore User Invite Area',
-        'description' => 'Navigate the user invite area and have a frind or co-worker start using Disciple.Tools.',
+        'description' => 'Navigate the user invite area and have a friend or co-worker start using Disciple.Tools.',
         'link' => admin_url( 'user-new.php' ),
         'complete' => false,
         'hide_mark_done' => false
     ];
     $items['explore_plugins'] = [
         'label' => 'Explore Recommended Plugins',
-        'description' => 'Navigate the recommended plugins section and make sure your Disciple.Tools instance is secure and set up in the best way possible.',
-        'link' => admin_url( 'plugins.php?page=tgmpa-install-plugins&plugin_status=install' ),
+        'description' => 'Navigate the recommended plugins section to see different ways to extend your Disciple.Tools experience. Also see https://disciple.tools/plugins/',
+        'link' => admin_url( 'admin.php?page=dt_extensions' ),
         'complete' => false,
         'hide_mark_done' => false
     ];
@@ -374,7 +372,7 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
     $items['explore_site_link'] = [
         'label' => 'Explore Site Links',
         'description' => 'Did you know that you can link up several Disciple.Tools instances in a single place? Navigate the Site Link section to find out more!',
-        'link' => admin_url( 'edit.php?post_type=site_link_system' ),
+        'link' => 'https://disciple.tools/user-docs/getting-started-info/admin/site-links/',
         'complete' => false,
         'hide_mark_done' => false
     ];
