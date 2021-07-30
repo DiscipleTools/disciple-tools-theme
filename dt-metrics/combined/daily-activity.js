@@ -338,7 +338,7 @@ jQuery(document).ready(function ($) {
       if (parseInt(day_counts['baptisms']) > 0) {
         metrics_html += '<tr>';
         metrics_html += '<td>' + window.lodash.escape(window.wp_js_object.translations.chart.baptisms) + '</td>';
-        metrics_html += '<td>' + day_counts['baptisms'] + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(day_counts['baptisms']) + '</td>';
         metrics_html += '</tr>';
       }
 
@@ -347,50 +347,50 @@ jQuery(document).ready(function ($) {
 
       if (parseInt(seeker_path_updates['attempted']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + seeker_path_updates['attempted']['label'] + '</td>';
-        metrics_html += '<td>' + seeker_path_updates['attempted']['value'] + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['attempted']['label']) + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['attempted']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['coaching']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + seeker_path_updates['coaching']['label'] + '</td>';
-        metrics_html += '<td>' + seeker_path_updates['coaching']['value'] + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['coaching']['label']) + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['coaching']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['established']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + seeker_path_updates['established']['label'] + '</td>';
-        metrics_html += '<td>' + seeker_path_updates['established']['value'] + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['established']['label']) + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['established']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['met']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + seeker_path_updates['met']['label'] + '</td>';
-        metrics_html += '<td>' + seeker_path_updates['met']['value'] + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['met']['label']) + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['met']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['none']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + seeker_path_updates['none']['label'] + '</td>';
-        metrics_html += '<td>' + seeker_path_updates['none']['value'] + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['none']['label'] )+ '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['none']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['ongoing']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + seeker_path_updates['ongoing']['label'] + '</td>';
-        metrics_html += '<td>' + seeker_path_updates['ongoing']['value'] + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['ongoing']['label']) + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['ongoing']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['scheduled']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + seeker_path_updates['scheduled']['label'] + '</td>';
-        metrics_html += '<td>' + seeker_path_updates['scheduled']['value'] + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['scheduled']['label']) + '</td>';
+        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['scheduled']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
@@ -399,15 +399,15 @@ jQuery(document).ready(function ($) {
 
       if (health['metrics'] && health['metrics'].length > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td colspan="2" style="background-color:#E8E8E8FF;">' + health['name'] + '</td>';
+        metrics_html += '<td colspan="2" style="background-color:#E8E8E8FF;">' + window.lodash.escape(health['name']) + '</td>';
         metrics_html += '</tr>';
 
         // Iterate over each field option
         health['metrics'].forEach(function (metric) {
           if (parseInt(metric['practicing']) > 0) {
             metrics_html += '<tr>';
-            metrics_html += '<td style="padding-left: 50px;"><li>' + metric['label'] + '</li></td>';
-            metrics_html += '<td>' + metric['practicing'] + '</td>';
+            metrics_html += '<td style="padding-left: 50px;"><li>' + window.lodash.escape(metric['label']) + '</li></td>';
+            metrics_html += '<td>' + window.lodash.escape(metric['practicing']) + '</td>';
             metrics_html += '</tr>';
           }
         });
@@ -425,7 +425,7 @@ jQuery(document).ready(function ($) {
           if (parseInt(metric['value']) > 0) {
             metrics_html += '<tr>';
             metrics_html += '<td style="padding-left: 50px;"><li>' + metric['label'] + '</li></td>';
-            metrics_html += '<td>' + metric['value'] + '</td>';
+            metrics_html += '<td>' + window.lodash.escape(metric['value']) + '</td>';
             metrics_html += '</tr>';
           }
         });
@@ -461,7 +461,6 @@ jQuery(document).ready(function ($) {
   }
 
   function refresh_daily_activity_chart(chart, date_range_filter) {
-
     // Start loading spinner
     $(".loading-spinner").addClass("active");
 
@@ -512,8 +511,8 @@ jQuery(document).ready(function ($) {
   function fetch_tooltip(date, counts) {
     let html = '<h3>' + date + '</h3>';
     html += '<ul>';
-    html += '<li>' + window.lodash.escape(window.wp_js_object.translations.chart.new_contacts) + ': ' + counts['new_contacts'] + '</li>'
-    html += '<li>' + window.lodash.escape(window.wp_js_object.translations.chart.new_groups) + ': ' + counts['new_groups'] + '</li>'
+    html += '<li>' + window.lodash.escape(window.wp_js_object.translations.chart.new_contacts) + ': ' + window.lodash.escape(counts['new_contacts']) + '</li>'
+    html += '<li>' + window.lodash.escape(window.wp_js_object.translations.chart.new_groups) + ': ' + window.lodash.escape(counts['new_groups']) + '</li>'
     html += '</ul>';
 
     return html;
