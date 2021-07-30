@@ -206,7 +206,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                     $next_day_format    = gmdate( 'Y-m-d', strtotime( '+1 day', $day->getTimestamp() ) );
 
                     $current_day_ts = strtotime( $current_day_format );
-                    $next_day_ts    = strtotime( $next_day_format ) - 60; // Just shy of midnight!
+                    $next_day_ts    = strtotime( $next_day_format ); // Just shy of midnight!
 
                     $new_contacts        = Disciple_Tools_Counter_Contacts::get_contacts_count( 'new_contacts', $current_day_ts, $next_day_ts );
                     $new_groups          = $this->new_groups_count( $current_day_format, $next_day_format );
@@ -267,18 +267,10 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
               count(distinct(a.ID)) as count,
               ( SELECT count(*)
               FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as c
-                  ON a.ID=c.post_id
-                     AND c.meta_key = 'group_status'
-                     AND c.meta_value = 'active'
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               ) as out_of
               FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as c
-                  ON a.ID=c.post_id
-                     AND c.meta_key = 'group_status'
-                     AND c.meta_value = 'active'
                 JOIN $wpdb->postmeta as d
                   ON ( a.ID=d.post_id
                     AND d.meta_key = 'health_metrics' )
