@@ -126,57 +126,31 @@ final class Disciple_Tools_Dashboard
         return $query_args;
     }
 
-    public function order_by_complete( $item_array ) {
-        $complete_items = [];
-        $incomplete_items = [];
-
-        foreach ( $item_array as $item_key => $item_value ) {
-            if ( ! $item_value['complete'] ) {
-                $incomplete_items[$item_key] = $item_value;
-            } else {
-                $complete_items[$item_key] = $item_value;
-            }
-        }
-        // Order alphabetically by item key
-        ksort( $incomplete_items );
-        ksort( $complete_items );
-        return array_merge( $incomplete_items, $complete_items );
-    }
-
     public function dt_dashboard_tile() {
         // Check for a dismissed item button click
         if ( ! empty( $_POST['dismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['setup_wizard_nonce'] ) ), 'update_setup_wizard_items' ) ) {
-            $item_label = esc_sql( sanitize_text_field( wp_unslash( $_POST['dismiss'] ) ) );
-            $dt_setup_wizard_options = get_option( 'dt_setup_wizard_options', null );
+            $item_key = sanitize_text_field( wp_unslash( $_POST['dismiss'] ) );
+            $setup_options = get_option( 'dt_setup_wizard_options', [] );
 
             // Create the option and populate it if it doesn't exist and/or is empty
-            if ( empty( $dt_setup_wizard_options ) ) {
-                $dt_setup_wizard_options = $item_label;
-                update_option( 'dt_setup_wizard_options', $dt_setup_wizard_options );
+            if ( ! isset( $setup_options[$item_key] ) ) {
+                $setup_options[$item_key] = [ 'dismissed' => true ];
             } else {
-                $dt_setup_wizard_options = explode( ';', $dt_setup_wizard_options );
-                if ( ! in_array( $item_label, $dt_setup_wizard_options ) ) {
-                    $dt_setup_wizard_options[] = $item_label;
-                    $dt_setup_wizard_options = implode( ';', $dt_setup_wizard_options );
-                    update_option( 'dt_setup_wizard_options', $dt_setup_wizard_options );
-                }
+                $setup_options[$item_key]['dismissed'] = true;
             }
+            update_option( 'dt_setup_wizard_options', $setup_options );
         }
 
         // Check for an un-dismissed item button click
         else if ( ! empty( $_POST['undismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['setup_wizard_nonce'] ) ), 'update_setup_wizard_items' ) ) {
-            $item_label = esc_sql( sanitize_text_field( wp_unslash( $_POST['undismiss'] ) ) );
-            $dt_setup_wizard_options = get_option( 'dt_setup_wizard_options', null );
-            if ( ! empty( $dt_setup_wizard_options ) ) {
-                $dt_setup_wizard_options = explode( ';', $dt_setup_wizard_options );
-                foreach ( $dt_setup_wizard_options as $opt_key => $opt_value ) {
-                    if ( $opt_value === $item_label ) {
-                        unset( $dt_setup_wizard_options[$opt_key] );
-                    }
-                }
-                $dt_setup_wizard_options = implode( ';', $dt_setup_wizard_options );
-                update_option( 'dt_setup_wizard_options', $dt_setup_wizard_options );
+            $item_key = sanitize_text_field( wp_unslash( $_POST['undismiss'] ) );
+            $setup_options = get_option( 'dt_setup_wizard_options', [] );
+            if ( ! isset( $setup_options[$item_key] ) ) {
+                $setup_options[$item_key] = [ 'dismissed' => false ];
+            } else {
+                $setup_options[$item_key]['dismissed'] = false;
             }
+            update_option( 'dt_setup_wizard_options', $setup_options );
         }
 
         wp_add_dashboard_widget('dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
@@ -185,7 +159,7 @@ final class Disciple_Tools_Dashboard
             $default = [
                 "base_email" => [
                     "label" => "Base User",
-                    "complete" => !empty( $setup_options["base_email"] ),
+                    "complete" => false,
                     "link" => admin_url( "admin.php?page=dt_options&tab=general" ),
                     "description" => "Default Assigned to for new contacts"
                 ],
@@ -194,19 +168,23 @@ final class Disciple_Tools_Dashboard
             $dt_setup_wizard_items = apply_filters( 'dt_setup_wizard_items', $default, $setup_options );
 
             $completed = 0;
-            $dt_setup_wizard_options = explode( ';', $setup_options );
+
             foreach ( $dt_setup_wizard_items as $item_key => $item_value ){
                 // Treat dismissed items as complete
-                if ( in_array( $item_key, $dt_setup_wizard_options ) ) {
+                if ( isset( $setup_options[$item_key]["dismissed"] ) && ! empty( $setup_options[$item_key]["dismissed"] ) ) {
                     $dt_setup_wizard_items[$item_key]['complete'] = true;
                 }
-                if ( $item_value['complete'] === true ) {
+
+                if ( $dt_setup_wizard_items[$item_key]['complete'] === true ) {
                     $completed ++;
                 }
             }
 
             // Order array by complete status
-            $dt_setup_wizard_items = self::order_by_complete( $dt_setup_wizard_items );
+            uasort( $dt_setup_wizard_items, function ( $a, $b ) {
+                return $a['complete'] <=> $b['complete'];
+            } );
+
             ?><p>Completed <?php echo esc_html( $completed ); ?> of <?php echo esc_html( sizeof( $dt_setup_wizard_items ) ); ?> tasks</p>
             <style>
                 .wizard_chevron_open {
@@ -267,18 +245,11 @@ final class Disciple_Tools_Dashboard
                                 }
                                 // Logic for displaying the 'dismiss' button
                                 if ( $item_value["hide_mark_done"] == false ) {
-                                    $dt_setup_wizard_options = get_option( 'dt_setup_wizard_options', null );
-                                    $dt_setup_wizard_options = explode( ';', $dt_setup_wizard_options );
-                                    if ( empty( $dt_setup_wizard_options ) ) {
+                                    $setup_options = get_option( 'dt_setup_wizard_options', [] );
+                                    if ( ! isset( $setup_options[$item_key]["dismissed"] ) || empty( $setup_options[$item_key]["dismissed"] ) ) {
                                         ?>
                                             <button name="dismiss" value="<?php echo esc_attr( $item_key ); ?>">Dismiss</button>
                                         <?php
-                                    } else {
-                                        if ( ! in_array( $item_key, $dt_setup_wizard_options ) ) {
-                                            ?>
-                                                <button name="dismiss" value="<?php echo esc_attr( $item_key ); ?>">Dismiss</button>
-                                            <?php
-                                        }
                                     }
                                 }
                                 ?>
@@ -295,14 +266,11 @@ final class Disciple_Tools_Dashboard
                                 <?php
                                 // Logic for displaying the 'un-dismiss' button
                                 if ( $item_value["hide_mark_done"] == false ) {
-                                    $dt_setup_wizard_options = get_option( 'dt_setup_wizard_options', null );
-                                    if ( ! empty( $dt_setup_wizard_options ) ) {
-                                        $dt_setup_wizard_options = explode( ';', $dt_setup_wizard_options );
-                                        if ( in_array( $item_key, $dt_setup_wizard_options ) ) {
-                                            ?>
-                                                <button name="undismiss" value="<?php echo esc_attr( $item_key ); ?>">Un-dismiss</button>
-                                            <?php
-                                        }
+                                    $setup_options = get_option( 'dt_setup_wizard_options', [] );
+                                    if ( isset( $setup_options[$item_key]["dismissed"] ) && ! empty( $setup_options[$item_key]["dismissed"] ) ) {
+                                        ?>
+                                        <button name="undismiss" value="<?php echo esc_attr( $item_key ); ?>">Un-dismiss</button>
+                                        <?php
                                     }
                                 }
                                 ?>
@@ -344,7 +312,6 @@ final class Disciple_Tools_Dashboard
  */
 add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
     $mapbox_key = DT_Mapbox_API::get_key();
-    $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
 
     $items["https_check"] = [
         "label" => "Upgrade HTTP to HTTPS",
@@ -359,24 +326,20 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         "link" => admin_url( "admin.php?page=dt_mapping_module&tab=geocoding" ),
         "complete" => $mapbox_key ? true : false
     ];
-    $items["upgraded_mapbox_records"] = [
-        "label" => "Upgrade Users and Record Mapping",
-        "description" => " Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts.",
-        "link" => admin_url( "admin.php?page=dt_mapping_module&tab=geocoding" ),
-        "complete" => $mapbox_upgraded,
-        "hide_mark_done" => true
-    ];
-    $items['configuration_options'] = [
-        'label' => 'Default Configuration Options.',
-        'description' => 'Sets up the system in a way best suited for access or oikos strategy.',
-        'link' => admin_url( 'admin.php?page=dt_options' ),
-        'complete' => false,
-        'hide_mark_done' => false
-    ];
+    if ( $mapbox_key ) {
+        $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
+        $items["upgraded_mapbox_records"] = [
+            "label" => "Upgrade Users and Record Mapping",
+            "description" => " Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts.",
+            "link" => admin_url( "admin.php?page=dt_mapping_module&tab=geocoding" ),
+            "complete" => $mapbox_upgraded,
+            "hide_mark_done" => true
+        ];
+    }
     $items['non_wp_cron'] = [
         'label' => 'Setup non WP Cron',
         'description' => '',
-        'link' => '',
+        'link' => esc_url( 'https://developers.disciple.tools/hosting/cron' ),
         'complete' => false,
         'hide_mark_done' => false
     ];
@@ -422,5 +385,6 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         'complete' => false,
         'hide_mark_done' => false
     ];
+
     return $items;
 }, 10, 2);
