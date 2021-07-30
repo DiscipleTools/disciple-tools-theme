@@ -126,15 +126,40 @@ final class Disciple_Tools_Dashboard
         return $query_args;
     }
 
+    public function dt_dashboard_tile() {
+        // Check for a dismissed item button click
+        if ( ! empty( $_POST['dismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['setup_wizard_nonce'] ) ), 'update_setup_wizard_items' ) ) {
+            $item_key = sanitize_text_field( wp_unslash( $_POST['dismiss'] ) );
+            $setup_options = get_option( 'dt_setup_wizard_options', [] );
 
-    public function dt_dashboard_tile(){
+            // Create the option and populate it if it doesn't exist and/or is empty
+            if ( ! isset( $setup_options[$item_key] ) ) {
+                $setup_options[$item_key] = [ 'dismissed' => true ];
+            } else {
+                $setup_options[$item_key]['dismissed'] = true;
+            }
+            update_option( 'dt_setup_wizard_options', $setup_options );
+        }
+
+        // Check for an un-dismissed item button click
+        else if ( ! empty( $_POST['undismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['setup_wizard_nonce'] ) ), 'update_setup_wizard_items' ) ) {
+            $item_key = sanitize_text_field( wp_unslash( $_POST['undismiss'] ) );
+            $setup_options = get_option( 'dt_setup_wizard_options', [] );
+            if ( ! isset( $setup_options[$item_key] ) ) {
+                $setup_options[$item_key] = [ 'dismissed' => false ];
+            } else {
+                $setup_options[$item_key]['dismissed'] = false;
+            }
+            update_option( 'dt_setup_wizard_options', $setup_options );
+        }
+
         wp_add_dashboard_widget('dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
 
-            $setup_options = get_option( "dt_setup_options", [] );
+            $setup_options = get_option( "dt_setup_wizard_options", [] );
             $default = [
                 "base_email" => [
                     "label" => "Base User",
-                    "complete" => !empty( $setup_options["base_email"] ),
+                    "complete" => false,
                     "link" => admin_url( "admin.php?page=dt_options&tab=general" ),
                     "description" => "Default Assigned to for new contacts"
                 ],
@@ -143,39 +168,138 @@ final class Disciple_Tools_Dashboard
             $dt_setup_wizard_items = apply_filters( 'dt_setup_wizard_items', $default, $setup_options );
 
             $completed = 0;
+
             foreach ( $dt_setup_wizard_items as $item_key => $item_value ){
-                if ( $item_value["complete"] === true ){
+                // Treat dismissed items as complete
+                if ( isset( $setup_options[$item_key]["dismissed"] ) && ! empty( $setup_options[$item_key]["dismissed"] ) ) {
+                    $dt_setup_wizard_items[$item_key]['complete'] = true;
+                }
+
+                if ( $dt_setup_wizard_items[$item_key]['complete'] === true ) {
                     $completed ++;
                 }
             }
 
+            // Order array by complete status
+            uasort( $dt_setup_wizard_items, function ( $a, $b ) {
+                return $a['complete'] <=> $b['complete'];
+            } );
+
             ?><p>Completed <?php echo esc_html( $completed ); ?> of <?php echo esc_html( sizeof( $dt_setup_wizard_items ) ); ?> tasks</p>
-            <table class="widefat striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Link</th>
-                        <th>Complete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php
-                foreach ( $dt_setup_wizard_items as $item_key => $item_value ) :?>
-                    <tr>
-                        <td><?php echo esc_html( array_search( $item_key, array_keys( $dt_setup_wizard_items ) ) +1 ); ?>.</td>
-                        <td><?php echo esc_html( $item_value["label"] ); ?></td>
-                        <td>Update <a href="<?php echo esc_html( $item_value["link"] ); ?>">here</a></td>
-                        <td>
-                            <?php if ( $item_value["complete"] ) :?>
+            <style>
+                .wizard_chevron_open {
+                    position: relative;
+                    width: 7px;
+                    height: 7px;
+                    border-width: 0 2px 2px 0;
+                    border-style: solid;
+                    transform: rotate(45deg);
+                    margin: auto;
+                }
+                .wizard_chevron_close {
+                    position: relative;
+                    width: 7px;
+                    height: 7px;
+                    border-width: 0 2px 2px 0;
+                    border-style: solid;
+                    transform: rotate(225deg);
+                    margin: auto;
+                }
+                .toggle_chevron{
+                    vertical-align: middle !important;
+                    cursor:pointer;
+                }
+                .wizard_description{
+                    position: relative;
+                    height: 200px;
+                }
+            </style>
+            <form method="POST">
+                <?php wp_nonce_field( 'update_setup_wizard_items', 'setup_wizard_nonce' ); ?>
+                <table class="widefat striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Link</th>
+                            <th>Complete</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    $row_count = 0;
+                    foreach ( $dt_setup_wizard_items as $item_key => $item_value ) : ?>
+                        <tr>
+                            <td><?php echo esc_html( array_search( $item_key, array_keys( $dt_setup_wizard_items ) ) +1 ); ?>.</td>
+                            <td><?php echo esc_html( $item_value["label"] ); ?></td>
+                            <td>Update <a href="<?php echo esc_html( $item_value["link"] ); ?>">here</a></td>
+                            <td>
+                                <?php
+                                if ( $item_value['complete'] ) {
+                                    ?>
                                 <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/verified.svg' ) ?>"/>
-                            <?php elseif ( empty( $item_value["hide_mark_done"] ) ) : ?>
-                                <button>Mark Done</button></td>
-                            <?php endif; ?>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
+                                    <?php
+                                }
+                                // Logic for displaying the 'dismiss' button
+                                if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"] ) ){
+                                    $setup_options = get_option( 'dt_setup_wizard_options', [] );
+                                    if ( ! isset( $setup_options[$item_key]["dismissed"] ) || empty( $setup_options[$item_key]["dismissed"] ) ) {
+                                        ?>
+                                            <button name="dismiss" value="<?php echo esc_attr( $item_key ); ?>">Dismiss</button>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </td>
+                            <td class="toggle_chevron" data-cell="<?php echo esc_attr( $row_count ); ?>">
+                                <div class="wizard_chevron_open"></div>
+                            </td>
+                        </tr>
+                        <tr class="wizard_description" data-row="<?php echo esc_attr( $row_count ); ?>" hidden>
+                            <td colspan="5">
+                                <p>
+                                    <?php echo esc_html( $item_value['description'] ); ?>
+                                </p>
+                                <?php
+                                // Logic for displaying the 'un-dismiss' button
+                                if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"] ) ){
+                                    $setup_options = get_option( 'dt_setup_wizard_options', [] );
+                                    if ( isset( $setup_options[$item_key]["dismissed"] ) && ! empty( $setup_options[$item_key]["dismissed"] ) ) {
+                                        ?>
+                                        <button name="undismiss" value="<?php echo esc_attr( $item_key ); ?>">Un-dismiss</button>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                            <?php $row_count++; ?>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </form>
+            <script>
+                jQuery( '.toggle_chevron' ).on( 'click', function() {
+                    let class_name = jQuery( this ).children()[0].className;
+                    let cell_number = jQuery( this ).data('cell');
+
+                    // Toggle chevron arrow class names
+                    if ( class_name == 'wizard_chevron_open' ) {
+                        jQuery( this ).children().attr('class', 'wizard_chevron_close');
+                    } else {
+                        jQuery( this ).children().attr('class', 'wizard_chevron_open');
+                    }
+
+                    // Toggle description row visibility
+                    let row = jQuery( "*[data-row='" + cell_number + "']" )[0];
+                    if ( row.hidden == true ) {
+                        row.hidden = false;
+                    } else {
+                        row.hidden = true;
+                    }
+                });
+            </script>
             <?php
         });
     }
@@ -186,12 +310,11 @@ final class Disciple_Tools_Dashboard
  */
 add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
     $mapbox_key = DT_Mapbox_API::get_key();
-    $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
 
     $items["https_check"] = [
         "label" => "Upgrade HTTP to HTTPS",
         "description" => "Encrypt your traffic from network sniffers",
-        "link" => admin_url( "options-general.php" ),
+        "link" => esc_url( "https://wordpress.org/support/article/https-for-wordpress/" ),
         "complete" => wp_is_using_https() ? true : false,
         "hide_mark_done" => true
     ];
@@ -201,12 +324,65 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         "link" => admin_url( "admin.php?page=dt_mapping_module&tab=geocoding" ),
         "complete" => $mapbox_key ? true : false
     ];
-    $items["upgraded_mapbox_records"] = [
-        "label" => "Upgrade Users and Record Mapping",
-        "description" => " Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts.",
-        "link" => admin_url( "admin.php?page=dt_mapping_module&tab=geocoding" ),
-        "complete" => $mapbox_upgraded,
-        "hide_mark_done" => true
+    if ( $mapbox_key ) {
+        $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
+        $items["upgraded_mapbox_records"] = [
+            "label" => "Upgrade Users and Record Mapping",
+            "description" => " Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts.",
+            "link" => admin_url( "admin.php?page=dt_mapping_module&tab=geocoding" ),
+            "complete" => $mapbox_upgraded,
+            "hide_mark_done" => true
+        ];
+    }
+    //    $items['non_wp_cron'] = [
+    //        'label' => 'Setup non WP Cron',
+    //        'description' => '',
+    //        'link' => esc_url( 'https://developers.disciple.tools/hosting/cron' ),
+    //        'complete' => false,
+    //        'hide_mark_done' => false
+    //    ];
+    $items['explore_user_invite'] = [
+        'label' => 'Explore User Invite Area',
+        'description' => 'Navigate the user invite area and have a friend or co-worker start using Disciple.Tools.',
+        'link' => admin_url( 'user-new.php' ),
+        'complete' => false,
+        'hide_mark_done' => false
     ];
+    $items['explore_plugins'] = [
+        'label' => 'Explore Recommended Plugins',
+        'description' => 'Navigate the recommended plugins section to see different ways to extend your Disciple.Tools experience. Also see https://disciple.tools/plugins/',
+        'link' => admin_url( 'admin.php?page=dt_extensions' ),
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+    $items['explore_custom_fields'] = [
+        'label' => 'Explore Custom Fields',
+        'description' => 'Explore the custom fields section and unlock its full potential.',
+        'link' => admin_url( 'admin.php?page=dt_options&tab=custom-fields' ),
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+    $items['explore_custom_tiles'] = [
+        'label' => 'Explore Custom Tiles',
+        'description' => 'Explore the custom tiles section and personalize your Disicple.Tools instance.',
+        'link' => admin_url( 'admin.php?page=dt_options&tab=custom-tiles' ),
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+    $items['explore_site_link'] = [
+        'label' => 'Explore Site Links',
+        'description' => 'Did you know that you can link up several Disciple.Tools instances in a single place? Navigate the Site Link section to find out more!',
+        'link' => 'https://disciple.tools/user-docs/getting-started-info/admin/site-links/',
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+    $items['explore_subscribe_dt_new'] = [
+        'label' => 'Subscribe to D.T News',
+        'description' => 'Stay up to date with the latest features and news for all things Disciple.Tools',
+        'link' => esc_url( 'https://disciple.tools/news/' ),
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
+
     return $items;
 }, 10, 2);
