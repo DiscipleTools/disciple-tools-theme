@@ -242,7 +242,7 @@ final class Disciple_Tools_Dashboard
                                     <?php
                                 }
                                 // Logic for displaying the 'dismiss' button
-                                if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"]  ) ) {
+                                if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"] ) ){
                                     $setup_options = get_option( 'dt_setup_wizard_options', [] );
                                     if ( ! isset( $setup_options[$item_key]["dismissed"] ) || empty( $setup_options[$item_key]["dismissed"] ) ) {
                                         ?>
@@ -263,7 +263,7 @@ final class Disciple_Tools_Dashboard
                                 </p>
                                 <?php
                                 // Logic for displaying the 'un-dismiss' button
-                                if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"]  ) ) {
+                                if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"] ) ){
                                     $setup_options = get_option( 'dt_setup_wizard_options', [] );
                                     if ( isset( $setup_options[$item_key]["dismissed"] ) && ! empty( $setup_options[$item_key]["dismissed"] ) ) {
                                         ?>
@@ -334,13 +334,13 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
             "hide_mark_done" => true
         ];
     }
-//    $items['non_wp_cron'] = [
-//        'label' => 'Setup non WP Cron',
-//        'description' => '',
-//        'link' => esc_url( 'https://developers.disciple.tools/hosting/cron' ),
-//        'complete' => false,
-//        'hide_mark_done' => false
-//    ];
+    //    $items['non_wp_cron'] = [
+    //        'label' => 'Setup non WP Cron',
+    //        'description' => '',
+    //        'link' => esc_url( 'https://developers.disciple.tools/hosting/cron' ),
+    //        'complete' => false,
+    //        'hide_mark_done' => false
+    //    ];
     $items['explore_user_invite'] = [
         'label' => 'Explore User Invite Area',
         'description' => 'Navigate the user invite area and have a friend or co-worker start using Disciple.Tools.',
