@@ -114,7 +114,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         //get plugin data
         $plugins = $this->get_plugins();
         ?>
-        <h3><?php esc_html_e( "Official Disciple.Tools Plugins", 'disciple_tools' ) ?></h3>
+        <h3>All Disciple.Tools and Community Plugins</h3>
+        <p>See <a href="https://disciple.tools/plugins/">https://disciple.tools/plugins</a> </p>
+        <h3><?php esc_html_e( "Recommended Disciple.Tools Plugins", 'disciple_tools' ) ?></h3>
         <table class="widefat striped">
             <thead>
             <tr>
@@ -193,7 +195,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     <?php echo esc_html__( "UpdraftPlus - Backup/Restore", 'disciple_tools' ); ?>
                 </td>
                 <td>
-                    <?php echo esc_html__( "Setup backups to a remote location. Note: Only the Premium version works with Disciple.Tools. See our help page:", 'disciple_tools' ); ?>
+                    <?php echo esc_html__( "Setup backups to a remote location. See our help page:", 'disciple_tools' ); ?>
                     <a target="_blank" href="https://disciple.tools/dev-docs/hosting/backups/">Backups</a>
                 </td>
                 <td>
