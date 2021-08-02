@@ -568,7 +568,7 @@ class Disciple_Tools_Notifications
 
         if ( in_array( 'email', $open_channels, true ) ) {
             // if the user is getting batch emails, schedule an email even if the channel exists in $already_sent
-            if ( $email_preference !== 'real-time' ) {
+            if ( $email_preference && $email_preference !== '' && $email_preference !== 'real-time' ) {
                 $notifications_queue = new Disciple_Tools_Notifications_Queue();
                 $db_notification = self::get_notification( $notification );
                 if ( $db_notification ) {
