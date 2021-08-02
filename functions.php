@@ -403,6 +403,7 @@ else {
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-error-logs.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-workflows.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-metrics.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-reports.php' );

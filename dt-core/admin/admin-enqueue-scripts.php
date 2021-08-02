@@ -17,6 +17,7 @@ add_action( 'admin_enqueue_scripts', 'dt_admin_pages_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_people_groups_post_type_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_options_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_new_user_scripts' );
+add_action( 'admin_enqueue_scripts', 'dt_utilities_workflows_scripts' );
 
 /*
  * Functions
@@ -109,5 +110,25 @@ function dt_new_user_scripts(){
         wp_register_style( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css' );
         wp_enqueue_style( 'jquery-ui' );
         wp_enqueue_script( 'jquery-ui-autocomplete' );
+    }
+}
+
+/**
+ * Loads scripts and styles for dt utilities workflows.
+ */
+function dt_utilities_workflows_scripts() {
+    if ( isset( $_GET["page"] ) && ( $_GET["page"] === 'dt_utilities' ) ) {
+        if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'workflows' ) {
+            wp_register_style( 'bootstrap-5', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
+            wp_enqueue_style( 'bootstrap-5' );
+
+            wp_register_style( 'bootstrap-5-icons', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css' );
+            wp_enqueue_style( 'bootstrap-5-icons' );
+
+            wp_enqueue_script( 'dt_utilities_workflows_script', disciple_tools()->admin_js_url . 'dt-utilities-workflows.js', [
+                'jquery',
+                'lodash'
+            ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-workflows.js' ), true );
+        }
     }
 }
