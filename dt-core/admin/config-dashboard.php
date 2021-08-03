@@ -246,8 +246,7 @@ final class Disciple_Tools_Dashboard
                                 }
                                 // Logic for displaying the 'dismiss' button
                                 if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"] ) ){
-                                    $setup_options = get_option( 'dt_setup_wizard_options', [] );
-                                    if ( ! isset( $setup_options[$item_key]["dismissed"] ) || empty( $setup_options[$item_key]["dismissed"] ) ) {
+                                    if ( !isset( $item_value["complete"] ) || empty( $item_value["complete"] ) ) {
                                         ?>
                                             <button name="dismiss" value="<?php echo esc_attr( $item_key ); ?>">Dismiss</button>
                                         <?php
@@ -267,8 +266,8 @@ final class Disciple_Tools_Dashboard
                                 <?php
                                 // Logic for displaying the 'un-dismiss' button
                                 if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"] ) ){
-                                    $setup_options = get_option( 'dt_setup_wizard_options', [] );
-                                    if ( isset( $setup_options[$item_key]["dismissed"] ) && ! empty( $setup_options[$item_key]["dismissed"] ) ) {
+
+                                    if ( isset( $item_value["complete"] ) && !empty( $item_value["complete"] ) ) {
                                         ?>
                                         <button name="undismiss" value="<?php echo esc_attr( $item_key ); ?>">Un-dismiss</button>
                                         <?php
@@ -308,9 +307,7 @@ final class Disciple_Tools_Dashboard
     }
 }
 
-/**
- * @todo move to mapping file
- */
+
 add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
     $mapbox_key = DT_Mapbox_API::get_key();
 
