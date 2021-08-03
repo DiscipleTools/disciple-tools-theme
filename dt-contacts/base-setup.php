@@ -147,32 +147,6 @@ class DT_Contacts_Base {
                 "hidden" => true
             ];
 
-
-            $fields['tags'] = [
-                'name'        => __( 'Tags', 'disciple_tools' ),
-                'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'tags',
-                'default'     => [],
-                'tile'        => 'other',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/tag.svg",
-            ];
-            $fields["follow"] = [
-                'name'        => __( 'Follow', 'disciple_tools' ),
-                'type'        => 'multi_select',
-                'default'     => [],
-                'hidden'      => true
-            ];
-            $fields["unfollow"] = [
-                'name'        => __( 'Un-Follow', 'disciple_tools' ),
-                'type'        => 'multi_select',
-                'default'     => [],
-                'hidden'      => true
-            ];
-            $fields['tasks'] = [
-                'name' => __( 'Tasks', 'disciple_tools' ),
-                'type' => 'task',
-                'private' => true
-            ];
             $fields["languages"] = [
                 'name' => __( 'Languages', 'disciple_tools' ),
                 'type' => 'multi_select',

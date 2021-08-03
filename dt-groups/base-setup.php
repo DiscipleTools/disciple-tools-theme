@@ -85,37 +85,11 @@ class DT_Groups_Base extends DT_Module_Base {
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'groups' ){
-            $fields['tags'] = [
-                'name'        => __( 'Tags', 'disciple_tools' ),
-                'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'tags',
-                'default'     => [],
-                'tile'        => 'other',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/tag.svg'
-            ];
-            $fields["follow"] = [
-                'name'        => __( 'Follow', 'disciple_tools' ),
-                'type'        => 'multi_select',
-                'default'     => [],
-                'section'     => 'misc',
-                'hidden'      => true
-            ];
-            $fields["unfollow"] = [
-                'name'        => __( 'Un-Follow', 'disciple_tools' ),
-                'type'        => 'multi_select',
-                'default'     => [],
-                'hidden'      => true
-            ];
             $fields["requires_update"] = [
                 'name'        => __( 'Requires Update', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'boolean',
                 'default'     => false,
-            ];
-            $fields['tasks'] = [
-                'name' => __( 'Tasks', 'disciple_tools' ),
-                'type' => 'task',
-                'private' => true
             ];
             $fields["duplicate_data"] = [
                 "name" => 'Duplicates', //system string does not need translation

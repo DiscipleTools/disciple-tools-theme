@@ -172,7 +172,31 @@ class Disciple_Tools_Post_Type_Template {
             "show_in_table" => 6,
             "icon" => get_template_directory_uri() . "/dt-assets/images/star.svg"
         ];
-        //tasks, location, ppl group? follow, unfollow?
+        $fields['tags'] = [
+            'name'        => __( 'Tags', 'disciple_tools' ),
+            'description' => _x( 'A useful way to group related items.', 'Optional Documentation', 'disciple_tools' ),
+            'type'        => 'tags',
+            'default'     => [],
+            'tile'        => 'other',
+            'icon' => get_template_directory_uri() . "/dt-assets/images/tag.svg",
+        ];
+        $fields["follow"] = [
+            'name'        => __( 'Follow', 'disciple_tools' ),
+            'type'        => 'multi_select',
+            'default'     => [],
+            'hidden'      => true
+        ];
+        $fields["unfollow"] = [
+            'name'        => __( 'Un-Follow', 'disciple_tools' ),
+            'type'        => 'multi_select',
+            'default'     => [],
+            'hidden'      => true
+        ];
+        $fields['tasks'] = [
+            'name' => __( 'Tasks', 'disciple_tools' ),
+            'type' => 'task',
+            'private' => true
+        ];
         return $fields;
     }
 
