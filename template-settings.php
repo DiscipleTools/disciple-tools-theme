@@ -192,7 +192,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
                                 <p>
                                 <?php
-                                if ( !empty( $dt_user_locale ) && $dt_user_locale !== 'en_US' ){
+                                if ( !empty( $dt_user_locale ) && $dt_user_locale !== 'en_US' && isset( $translations[$dt_user_locale] ) ){
                                     echo esc_html( $translations[$dt_user_locale]['native_name'] );
                                 } else {
                                     echo esc_html__( 'English', 'disciple_tools' );

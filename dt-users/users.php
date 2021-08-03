@@ -549,7 +549,7 @@ class Disciple_Tools_Users
 
             if ( isset( $data["locale"] )) {
                 if ( $data["locale"] === "" ) {
-                    $locale = "en-US";
+                    $locale = "en_US";
                 } else {
                     $locale = $data["locale"];
                 }
@@ -590,7 +590,7 @@ class Disciple_Tools_Users
 
             if ( isset( $_POST["dt_locale"] )) {
                 if ( $_POST["dt_locale"] === "" ) {
-                    $locale = "en-US";
+                    $locale = "en_US";
                 } else {
                     $locale = sanitize_text_field( wp_unslash( $_POST["dt_locale"] ) );
                 }

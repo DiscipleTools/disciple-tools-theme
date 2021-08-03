@@ -253,14 +253,17 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $translations = dt_get_translations();
             $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
             $available_translations = [];
+            $site_default_locale = get_option( 'WPLANG' );
 
             array_push( $available_translations, array(
                 'language' => 'en_US',
-                'native_name' => 'English'
+                'english_name' => 'English (United States)',
+                'native_name' => 'English (United States)'
             ) );
 
             foreach ( $available_language_codes as $code ){
                 if ( isset( $translations[$code] )){
+                    $translations[$code]['site_default'] = $site_default_locale === $translations[$code]["language"];
                     $available_translations[] = $translations[$code];
                 }
             }
