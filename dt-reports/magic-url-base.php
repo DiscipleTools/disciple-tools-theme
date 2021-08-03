@@ -152,6 +152,14 @@ abstract class DT_Magic_Url_Base {
         return $template_for_url;
     }
 
+    /**
+     * Used as an alternate to register_url, primarily for root home page applications
+     */
+    public function theme_redirect() {
+        $path = get_theme_file_path( 'template-blank.php' );
+        include( $path );
+        die();
+    }
 
     /**
      * Open default restrictions for access to registered endpoints
