@@ -547,13 +547,12 @@ class Disciple_Tools_Users
         if ( dt_is_rest() ){
             $data = json_decode( WP_REST_Server::get_raw_data(), true );
 
-            if ( isset( $data["locale"] )) {
-                if ( $data["locale"] === "" ) {
-                    $locale = "en_US";
-                } else {
-                    $locale = $data["locale"];
-                }
+            if ( isset( $data["locale"] ) && !empty( $data["locale"] ) ){
+                $locale = $data["locale"];
                 switch_to_locale( $locale );
+                $user = get_user_by( 'id', $user_id );
+                $user->locale = $locale;
+                wp_update_user( $user );
             }
             if ( isset( $data["corresponds_to_contact"] ) ){
                 $corresponds_to_contact = $data["corresponds_to_contact"];
@@ -564,9 +563,6 @@ class Disciple_Tools_Users
                 ], false, true );
                 $user = get_user_by( 'id', $user_id );
                 $user->display_name = $contact["title"];
-                if ( isset( $data["locale"] )) {
-                    $user->locale = $locale;
-                }
                 wp_update_user( $user );
             }
         }
@@ -1022,11 +1018,11 @@ Please click the following link to confirm the invite:
      * @param $user_name
      * @param $user_email
      * @param $display_name
-     * @param string $user_role
+     * @param array $user_roles
      * @param null $corresponds_to_contact
      * @return int|WP_Error
      */
-    public static function create_user( $user_name, $user_email, $display_name, $user_role = 'multiplier', $corresponds_to_contact = null ){
+    public static function create_user( $user_name, $user_email, $display_name, array $user_roles = [ 'multiplier' ], $corresponds_to_contact = null ){
         if ( !current_user_can( "create_users" ) ){
             return new WP_Error( "no_permissions", "You don't have permissions to create users", [ 'status' => 401 ] );
         }
@@ -1055,18 +1051,14 @@ Please click the following link to confirm the invite:
             }
         } else {
 
-            if ( 'dt_admin' === $user_role || 'administrator' === $user_role ) {
-                return new WP_Error( "failed_to_add_user", __( "Error setting user role to administrator or Disciple.Tools Admin.", 'disciple_tools' ) );
-            }
-
             $user_id = register_new_user( $user_name, $user_email );
             if ( is_wp_error( $user_id ) ){
                 return $user_id;
             }
             $user = get_user_by( 'id', $user_id );
             $user->display_name = $display_name;
-            $user->set_role( $user_role );
             wp_update_user( $user );
+            self::save_user_roles( $user_id, $user_roles );
         }
 
         global $wpdb;
@@ -1080,6 +1072,35 @@ Please click the following link to confirm the invite:
         }
 
         return $user_id;
+    }
+
+    public static function save_user_roles( $user_id, $roles ){
+        // If the current user can't promote users or edit this particular user, bail.
+
+        $can_not_promote_to_roles = [];
+        if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
+            $can_not_promote_to_roles = [ 'administrator' ];
+        }
+        if ( !current_user_can( 'manage_dt' ) ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
+        }
+
+        // Create a new user object.
+        $u = new WP_User( $user_id );
+
+        // Sanitize the posted roles.
+        $new_roles = array_map( 'dt_multi_role_sanitize_role', array_map( 'sanitize_text_field', wp_unslash( $roles ) ) );
+
+        // Loop through the posted roles.
+        foreach ( $new_roles as $new_role ) {
+
+            // If the user doesn't already have the role, add it.
+            if ( dt_multi_role_is_role_editable( $new_role ) ) {
+                if ( !in_array( $new_role, $can_not_promote_to_roles ) ){
+                    $u->add_role( $new_role );
+                }
+            }
+        }
     }
 
 

@@ -329,7 +329,7 @@ $user_management_options = DT_User_Management::user_management_options();
                                     $dt_roles = dt_multi_role_get_editable_role_names();
                                     $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
                                     $upgrade_to_admin_disabled = !is_super_admin() && !dt_current_user_has_role( 'administrator' );
-
+                                    $admin_roles = [ "administrator", "dt_admin" ]
                                     ?>
 
                                     <p> <a href="https://disciple.tools/user-docs/getting-started-info/roles/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
@@ -341,7 +341,7 @@ $user_management_options = DT_User_Management::user_management_options();
                                                     <input type="checkbox" name="dt_multi_role_user_roles[]"
                                                            value="<?php echo esc_attr( $role_key ); ?>"
                                                         <?php checked( in_array( $role_key, $user_roles ) ); ?>
-                                                        <?php disabled( $upgrade_to_admin_disabled && $role_key === 'administrator' ); ?> />
+                                                        <?php disabled( $upgrade_to_admin_disabled && in_array( $role_key, $admin_roles, true ) ); ?> />
                                                     <strong>
                                                     <?php
                                                     if ( isset( $expected_roles[$role_key]["label"] ) && !empty( $expected_roles[$role_key]["label"] ) ){
