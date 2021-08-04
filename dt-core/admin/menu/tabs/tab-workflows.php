@@ -589,22 +589,39 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         <?php
     }
 
+    private function ignore_field_types(): array {
+        return [
+            'array',
+            'task',
+            'location_meta',
+            'post_user_meta',
+            'datetime_series',
+            'hash'
+        ];
+    }
+
     private function fetch_post_types(): array {
 
         $post_types = [];
 
         $dt_post_types = DT_Posts::get_post_types();
         if ( ! empty( $dt_post_types ) ) {
+
+            $field_types_to_ignore = $this->ignore_field_types();
+
             foreach ( $dt_post_types as $dt_post_type ) {
                 $dt_post_type_settings = DT_Posts::get_post_settings( $dt_post_type );
 
                 $fields = [];
                 foreach ( $dt_post_type_settings['fields'] as $key => $dt_field ) {
-                    $fields[] = [
-                        'id'   => $key,
-                        'name' => $dt_field['name'],
-                        'type' => $dt_field['type']
-                    ];
+
+                    if ( ! in_array( $dt_field['type'], $field_types_to_ignore ) ) {
+                        $fields[] = [
+                            'id'   => $key,
+                            'name' => $dt_field['name'],
+                            'type' => $dt_field['type']
+                        ];
+                    }
                 }
 
                 $post_type                = $dt_post_type_settings['post_type'];

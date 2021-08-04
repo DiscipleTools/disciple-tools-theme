@@ -43,5 +43,7 @@ class Disciple_Tools_Workflows {
         include( 'tasks.php' );
         include( 'error-log-dispatch-email.php' );
         include( 'error-log-retention-enforcer.php' );
+        include( 'workflows-execution-handler.php' );
+        include( 'workflows-triggers.php' );
     }
 }

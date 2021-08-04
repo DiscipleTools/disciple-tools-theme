@@ -33,7 +33,12 @@ jQuery(function ($) {
     let condition_name = $('#workflows_design_section_step2_conditions option:selected').text();
     let condition_value = $('#workflows_design_section_step2_condition_value').val();
 
-    handle_workflow_step_event_add_request(true, field_id, field_name, condition_id, condition_name, condition_value);
+    handle_workflow_step_event_add_request(true, field_id, field_name, condition_id, condition_name, condition_value, function () {
+      // Reset values following addition
+      $('#workflows_design_section_step2_fields').val('');
+      $('#workflows_design_section_step2_conditions').val('');
+      $('#workflows_design_section_step2_condition_value').val('');
+    });
   });
 
   $(document).on('click', '.workflows-design-section-step2-condition-remove', function (e) {
@@ -56,7 +61,12 @@ jQuery(function ($) {
     let action_name = $('#workflows_design_section_step3_actions option:selected').text();
     let action_value = $('#workflows_design_section_step3_action_value').val();
 
-    handle_workflow_step_event_add_request(false, field_id, field_name, action_id, action_name, action_value);
+    handle_workflow_step_event_add_request(false, field_id, field_name, action_id, action_name, action_value, function () {
+      // Reset values following addition
+      $('#workflows_design_section_step3_fields').val('');
+      $('#workflows_design_section_step3_actions').val('');
+      $('#workflows_design_section_step3_action_value').val('');
+    });
   });
 
   $(document).on('click', '.workflows-design-section-step3-action-remove', function (e) {
@@ -194,13 +204,14 @@ jQuery(function ($) {
     events_select.val("");
   }
 
-  function handle_workflow_step_event_add_request(is_condition, field_id, field_name, event_id, event_name, event_value) {
+  function handle_workflow_step_event_add_request(is_condition, field_id, field_name, event_id, event_name, event_value, callback) {
     if (field_id && field_name && event_id && event_name && event_value) {
       if (is_condition) {
         add_new_condition_row(field_id, field_name, event_id, event_name, event_value);
       } else {
         add_new_action_row(field_id, field_name, event_id, event_name, event_value);
       }
+      callback();
     }
   }
 
@@ -397,6 +408,14 @@ jQuery(function ($) {
           {
             'id': 'less',
             'name': 'Less Than'
+          },
+          {
+            'id': 'greater_equals',
+            'name': 'Greater Than or Equals'
+          },
+          {
+            'id': 'less_equals',
+            'name': 'Less Than or Equals'
           }
         );
         break;
@@ -449,6 +468,8 @@ jQuery(function ($) {
       case "number":
       case "date":
       case "boolean":
+      case "key_select":
+      case "user_select":
         actions.push(
           {
             'id': 'update',
@@ -458,14 +479,12 @@ jQuery(function ($) {
         break;
       case "tags":
       case "multi_select":
-      case "key_select":
       case "array":
       case "task":
       case "communication_channel":
       case "location":
       case "location_meta":
       case "connection":
-      case "user_select":
       case "post_user_meta":
       case "datetime_series":
       case "hash":
