@@ -56,7 +56,26 @@ $user_management_options = DT_User_Management::user_management_options();
                                         <p><i class="fi-alert"></i><?php esc_html_e( 'There are some errors in your form.', 'disciple_tools' ); ?></p>
                                     </div>
 
-
+                                    <dl>
+                                        <dt><?php esc_html_e( 'Contact to make a user (optional)', 'disciple_tools' ); ?></dt>
+                                        <dd>
+                                            <div class="subassigned details">
+                                                <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
+                                                <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead">
+                                                    <div class="typeahead__container">
+                                                        <div class="typeahead__field">
+                                                            <span class="typeahead__query">
+                                                                <input class="js-typeahead-subassigned input-height"
+                                                                       name="subassigned[query]" placeholder="<?php esc_html_e( 'Search multipliers and contacts', 'disciple_tools' ); ?>"
+                                                                       autocomplete="off">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                    <div id="contact-result"></div>
                                     <dl>
                                         <dt><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' ); ?></dt>
                                         <dd><input type="text" class="input" id="name" placeholder="<?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' ); ?>" required /> </dd>
@@ -106,26 +125,7 @@ $user_management_options = DT_User_Management::user_management_options();
 
                                         </dd>
                                     </dl>
-                                    <dl>
-                                        <dt><?php esc_html_e( 'Contact to make a user (optional)', 'disciple_tools' ); ?></dt>
-                                        <dd>
-                                            <div class="subassigned details">
-                                                <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
-                                                <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead">
-                                                    <div class="typeahead__container">
-                                                        <div class="typeahead__field">
-                                                            <span class="typeahead__query">
-                                                                <input class="js-typeahead-subassigned input-height"
-                                                                       name="subassigned[query]" placeholder="<?php esc_html_e( 'Search multipliers and contacts', 'disciple_tools' ); ?>"
-                                                                       autocomplete="off">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </dd>
-                                    </dl>
-                                    <div id="contact-result"></div>
+
 
                                     <button type="submit" class="submit button" id="create-user"><?php esc_html_e( 'Create User', 'disciple_tools' ); ?></button> <span class="spinner"></span>
                                 </form>
