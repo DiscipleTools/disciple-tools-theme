@@ -171,8 +171,8 @@ class Disciple_Tools_Posts
     }
 
 
-    public static function get_label_for_post_type( $post_type, $singular = false ){
-        $post_settings = DT_Posts::get_post_settings( $post_type );
+    public static function get_label_for_post_type( $post_type, $singular = false, $return_cache = true ){
+        $post_settings = DT_Posts::get_post_settings( $post_type, $return_cache );
         if ( $singular ){
             if ( isset( $post_settings["label_singular"] ) ){
                 return $post_settings["label_singular"];
