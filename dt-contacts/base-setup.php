@@ -51,30 +51,42 @@ class DT_Contacts_Base {
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
+        $expected_roles["registered"] = [
+            "label" => __( 'Registered', 'disciple_tools' ),
+            "description" => "Has no permissions",
+            "permissions" => [],
+            "order" => 4
+        ];
+
         $expected_roles["multiplier"] = [
             "label" => __( 'Multiplier', 'disciple_tools' ),
             "description" => "Interacts with Contacts and Groups",
-            "permissions" => []
+            "permissions" => [],
+            "order" => 5
         ];
         $expected_roles["strategist"] = [
             "label" => __( 'Strategist', 'disciple_tools' ),
             "description" => "View project metrics",
-            "permissions" => []
+            "permissions" => [],
+            "order" => 40
         ];
         $expected_roles["user_manager"] = [
             "label" => __( 'User Manager', 'disciple_tools' ),
             "description" => "List, invite, promote and demote users",
-            "permissions" => []
+            "permissions" => [],
+            "order" => 95
         ];
         $expected_roles["dt_admin"] = [
             "label" => __( 'Disciple.Tools Admin', 'disciple_tools' ),
             "description" => "All D.T permissions",
-            "permissions" => []
+            "permissions" => [],
+            "order" => 98
         ];
         $expected_roles["administrator"] = [
             "label" => __( 'Administrator', 'disciple_tools' ),
             "description" => "All D.T permissions plus the ability to manage plugins.",
-            "permissions" => []
+            "permissions" => [],
+            "order" => 100
         ];
 
         $multiplier_permissions = Disciple_Tools_Roles::default_multiplier_caps();

@@ -329,13 +329,17 @@ $user_management_options = DT_User_Management::user_management_options();
                                     $dt_roles = dt_multi_role_get_editable_role_names();
                                     $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
                                     $upgrade_to_admin_disabled = !is_super_admin() && !dt_current_user_has_role( 'administrator' );
-                                    $admin_roles = [ "administrator", "dt_admin" ]
+                                    $admin_roles = [ "administrator", "dt_admin" ];
+
+                                    uasort( $expected_roles, function ( $item1, $item2 ){
+                                        return ( $item1['order'] ?? 50 ) <=> ( $item2['order'] ?? 50 );
+                                    } );
                                     ?>
 
                                     <p> <a href="https://disciple.tools/user-docs/getting-started-info/roles/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
 
                                     <ul id="user_roles_list" class="no-bullet">
-                                        <?php foreach ( $dt_roles as $role_key => $name ) : ?>
+                                        <?php foreach ( $expected_roles as $role_key => $role_value ) : ?>
                                             <li>
                                                 <label style="color:<?php echo esc_html( $role_key === 'administrator' && $upgrade_to_admin_disabled ? 'grey' : 'inherit' ); ?>">
                                                     <input type="checkbox" name="dt_multi_role_user_roles[]"
@@ -343,17 +347,17 @@ $user_management_options = DT_User_Management::user_management_options();
                                                         <?php checked( in_array( $role_key, $user_roles ) ); ?>
                                                         <?php disabled( $upgrade_to_admin_disabled && in_array( $role_key, $admin_roles, true ) ); ?> />
                                                     <strong>
-                                                    <?php
-                                                    if ( isset( $expected_roles[$role_key]["label"] ) && !empty( $expected_roles[$role_key]["label"] ) ){
-                                                        echo esc_html( $expected_roles[$role_key]["label"] );
-                                                    } else {
-                                                        echo esc_html( $name );
-                                                    }
-                                                    ?>
+                                                        <?php
+                                                        if ( isset( $role_value["label"] ) && !empty( $role_value["label"] ) ){
+                                                            echo esc_html( $role_value["label"] );
+                                                        } else {
+                                                            echo esc_html( $role_key );
+                                                        }
+                                                        ?>
                                                     </strong>
                                                     <?php
-                                                    if ( isset( $expected_roles[$role_key]["description"] ) ){
-                                                        echo ' - ' . esc_html( $expected_roles[$role_key]["description"] );
+                                                    if ( isset( $role_value["description"] ) ){
+                                                        echo ' - ' . esc_html( $role_value["description"] );
                                                     }
                                                     ?>
                                                 </label>
