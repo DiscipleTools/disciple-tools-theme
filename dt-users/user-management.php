@@ -167,6 +167,7 @@ class DT_User_Management
                         'remove' => __( 'Remove', 'disciple_tools' ),
                         'already_user' => __( 'This contact is already a user.', 'disciple_tools' ),
                         'view_user' => __( 'View User', 'disciple_tools' ),
+                        'user_language' => __( 'Language', 'disciple_tools' ),
                     ],
                     'language_dropdown' => dt_get_available_languages(),
                 ]

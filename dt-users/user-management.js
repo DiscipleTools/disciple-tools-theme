@@ -799,6 +799,15 @@ jQuery(document).ready(function($) {
               <p><i class="fi-alert"></i> ${ window.lodash.escape( dt_user_management_localized.translations.there_are_some_errors ) }</p>
             </div>
 
+
+            <dl>
+              <dt>${ window.lodash.escape( dt_user_management_localized.translations.nickname ) }</dt>
+              <dd><input type="text" class="input" id="name" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.nickname ) }" required /> </dd>
+              <dt>${ window.lodash.escape( dt_user_management_localized.translations.email ) }</dt>
+              <dd><input type="email" class="input" id="email" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.email ) }" required /> </dd>
+              <dt>${ window.lodash.escape( dt_user_management_localized.translations.user_language ) }</dt>
+              <dd>${write_language_dropdown( dt_user_management_localized.language_dropdown )}</dd>
+            </dl>
             <dl>
               <dt>${ window.lodash.escape( dt_user_management_localized.translations.contact_to_user ) }</dt>
               <dd>
@@ -819,15 +828,6 @@ jQuery(document).ready(function($) {
               </dd>
             </dl>
             <div id="contact-result"></div>
-
-            <dl>
-              <dt>${ window.lodash.escape( dt_user_management_localized.translations.nickname ) }</dt>
-              <dd><input type="text" class="input" id="name" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.nickname ) }" required /> </dd>
-              <dt>${ window.lodash.escape( dt_user_management_localized.translations.email ) }</dt>
-              <dd><input type="email" class="input" id="email" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.email ) }" required /> </dd>
-              <dt>${ window.lodash.escape( dt_user_management_localized.translations.user_language ) }</dt>
-              <dd>${write_language_dropdown( dt_user_management_localized.language_dropdown )}</dd>
-            </dl>
 
             <button type="submit" class="submit button" id="create-user">${ window.lodash.escape( dt_user_management_localized.translations.create_user ) }</button> <span class="spinner"></span>
           </form>
