@@ -86,7 +86,7 @@ $user_management_options = DT_User_Management::user_management_options();
                                         <dt><?php esc_html_e( 'Role', 'disciple_tools' ); ?></dt>
                                         <dd>
                                             <?php
-                                            $user_roles = [];
+                                            $user_roles = [ 'multiplier' ];
 
                                             $dt_roles = dt_multi_role_get_editable_role_names();
                                             $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
