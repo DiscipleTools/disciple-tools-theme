@@ -15,7 +15,7 @@ $user_management_options = DT_User_Management::user_management_options();
 
 <?php get_header(); ?>
 
-<div id="user-add-user">
+<div id="user-add-user" style="padding:15px">
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
