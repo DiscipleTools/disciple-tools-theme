@@ -33,6 +33,7 @@ class DT_Contacts_Base {
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
         add_filter( "dt_post_update_fields", [ $this, "update_post_field_hook" ], 10, 3 );
+        add_filter( "dt_post_updated", [ $this, "dt_post_updated" ], 10, 5 );
         add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 20, 2 );
         add_filter( "dt_comments_additional_sections", [ $this, "add_comm_channel_comment_section" ], 10, 2 );
 
@@ -433,6 +434,15 @@ class DT_Contacts_Base {
 
     public function update_post_field_hook( $fields, $post_type, $post_id ){
         return $fields;
+    }
+
+    public function dt_post_updated( $post_type, $post_id, $update_fields, $old_post, $new_post ){
+        if ( $post_type === $this->post_type ){
+            //make sure a contact is shared with the user when they change the contact type to personal
+            if ( isset( $update_fields["type"] ) && $update_fields["type"] === "personal" && $old_post["type"]["key"] !== "personal" && !empty ( get_current_user_id() ) ){
+                DT_Posts::add_shared( "contacts", $post_id, get_current_user_id(), null, false, false, false );
+            }
+        }
     }
 
     //Add, remove or modify fields before the fields are processed in post create
