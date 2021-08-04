@@ -38,6 +38,7 @@ class DT_Groups_Base extends DT_Module_Base {
         add_action( "dt_post_created", [ $this, "dt_post_created" ], 10, 3 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
         add_filter( "dt_after_get_post_fields_filter", [ $this, "dt_after_get_post_fields_filter" ], 10, 2 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 2 );
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
@@ -50,6 +51,21 @@ class DT_Groups_Base extends DT_Module_Base {
             new Disciple_Tools_Post_Type_Template( "groups", __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ) );
         }
     }
+
+    /**
+     * Set the singular and plural translations for this post types settings
+     * The add_filter is set onto a higher priority than the one in Disciple_tools_Post_Type_Template
+     * so as to enable localisation changes. Otherwise the system translation passed in to the custom post type
+     * will prevail.
+     */
+    public function dt_get_post_type_settings( $settings, $post_type ){
+        if ( $post_type === $this->post_type ){
+            $settings['label_singular'] = __( 'Group', 'disciple_tools' );
+            $settings['label_plural'] = __( 'Groups', 'disciple_tools' );
+        }
+        return $settings;
+    }
+
     public function dt_set_roles_and_permissions( $expected_roles ){
         if ( !isset( $expected_roles["multiplier"] ) ){
             $expected_roles["multiplier"] = [
