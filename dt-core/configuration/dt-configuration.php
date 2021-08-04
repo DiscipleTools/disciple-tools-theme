@@ -105,3 +105,15 @@ function dt_cron_schedules( $schedules ) {
     );
     return $schedules;
 }
+
+/**
+ * Change the new user interface to use the one on the front end
+ */
+add_action('admin_menu', function (){
+    global $submenu;
+    foreach ( $submenu["users.php"] as $index => $values ){
+        if ( $values[1] === "create_users" ){
+            $submenu["users.php"][$index][2] = home_url( '/user-management/add-user/' ); //phpcs:ignore
+        }
+    }
+});
