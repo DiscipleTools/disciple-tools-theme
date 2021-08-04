@@ -439,7 +439,7 @@ class DT_Contacts_Base {
     public function dt_post_updated( $post_type, $post_id, $update_fields, $old_post, $new_post ){
         if ( $post_type === $this->post_type ){
             //make sure a contact is shared with the user when they change the contact type to personal
-            if ( isset( $update_fields["type"] ) && $update_fields["type"] === "personal" && $old_post["type"]["key"] !== "personal" && !empty ( get_current_user_id() ) ){
+            if ( isset( $update_fields["type"] ) && $update_fields["type"] === "personal" && $old_post["type"]["key"] !== "personal" && !empty( get_current_user_id() ) ){
                 DT_Posts::add_shared( "contacts", $post_id, get_current_user_id(), null, false, false, false );
             }
         }
