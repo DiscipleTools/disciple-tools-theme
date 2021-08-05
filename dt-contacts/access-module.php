@@ -57,14 +57,16 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'access_specific_sources' => true,
                 'assign_any_contacts' => true, //assign contacts to others,
                 'view_project_metrics' => true,
-            ], $multiplier_permissions )
+            ], $multiplier_permissions ),
+            "order" => 30
         ];
         $expected_roles['partner'] = [
             "label" => __( "Partner", "disciple_tools" ),
             "description" => "Allow access to a specific contact source so a partner can see progress",
             "permissions" => wp_parse_args( [
                 'access_specific_sources' => true,
-            ], $multiplier_permissions )
+            ], $multiplier_permissions ),
+            "order" => 35
         ];
         $expected_roles['dispatcher'] = [
             "label" => __( "Dispatcher", "disciple_tools" ),
@@ -75,7 +77,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'list_users' => true,
                 'dt_list_users' => true,
                 'assign_any_contacts' => true, //assign contacts to others
-            ], $multiplier_permissions )
+            ], $multiplier_permissions ),
+            "order" => 20
         ];
         $expected_roles["administrator"]["permissions"]["dt_all_access_contacts"] = true;
         $expected_roles["administrator"]["permissions"]["assign_any_contacts"] = true;

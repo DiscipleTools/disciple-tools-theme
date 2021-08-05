@@ -105,3 +105,14 @@ function dt_cron_schedules( $schedules ) {
     );
     return $schedules;
 }
+
+/**
+ * Redirect from the wp-admin new-user page to the theme new-user page.
+ */
+add_action( 'admin_init', function () {
+    global $pagenow;
+    if ( $pagenow == 'user-new.php' ) {
+        wp_redirect( home_url( '/user-management/add-user/' ) );
+        exit;
+    }
+} );

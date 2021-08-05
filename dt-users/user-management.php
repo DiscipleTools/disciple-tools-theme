@@ -85,7 +85,7 @@ class DT_User_Management
 
     public function dt_templates_for_urls( $template_for_url ) {
         $template_for_url['user-management/users'] = './dt-users/template-user-management.php';
-        $template_for_url['user-management/add-user'] = 'template-metrics.php';
+        $template_for_url['user-management/add-user'] = './dt-users/template-new-user.php';
         return $template_for_url;
     }
 
@@ -154,20 +154,12 @@ class DT_User_Management
                         'no_contact_attempt_time' => _x( '%1$s waiting for Contact Attempt for %2$s days', 'Bob waiting for contact for 10 days', 'disciple_tools' ),
                         'contact_attempt_time' => _x( 'Contact with %1$s was attempted on %2$s after %3$s days', 'Contact with Bob was attempted on Jul 8 after 10 days', 'disciple_tools' ),
                         'unable_to_update' => __( 'Unable to update', 'disciple_tools' ),
-                        'add_new_user' => __( 'Add New User', 'disciple_tools' ),
                         'view_new_user' => __( 'View New User', 'disciple_tools' ),
-                        'there_are_some_errors' => __( 'There are some errors in your form.', 'disciple_tools' ),
-                        'contact_to_user' => __( 'Contact to make a user (optional)', 'disciple_tools' ),
-                        'nickname' => __( 'Nickname (Display Name)', 'disciple_tools' ),
-                        'email' => __( 'Email', 'disciple_tools' ),
-                        'create_user' => __( 'Create User', 'disciple_tools' ),
                         'email_already_in_system' => __( 'Email address is already in the system as a user!', 'disciple_tools' ),
                         'username_in_system' => __( 'Username is already in the system as a user!', 'disciple_tools' ),
-                        'search' => __( 'Search multipliers and contacts', 'disciple_tools' ),
                         'remove' => __( 'Remove', 'disciple_tools' ),
                         'already_user' => __( 'This contact is already a user.', 'disciple_tools' ),
                         'view_user' => __( 'View User', 'disciple_tools' ),
-                        'user_language' => __( 'Language', 'disciple_tools' ),
                     ],
                     'language_dropdown' => dt_get_available_languages(),
                 ]
@@ -179,6 +171,7 @@ class DT_User_Management
             }
         }
     }
+
 
     public function get_dt_user( $user_id, $section = null ) {
         if ( ! $this->has_permission() ) {
