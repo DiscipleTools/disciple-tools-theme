@@ -27,6 +27,7 @@ class DT_Contacts_Base {
         add_action( 'dt_record_footer', [ $this, "dt_record_footer" ], 10, 2 );
         add_action( 'dt_record_notifications_section', [ $this, "dt_record_notifications_section" ], 10, 2 );
         add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 10, 3 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 2 );
 
         // hooks
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
@@ -48,6 +49,20 @@ class DT_Contacts_Base {
         if ( class_exists( 'Disciple_Tools_Post_Type_Template' )) {
             new Disciple_Tools_Post_Type_Template( "contacts", __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ) );
         }
+    }
+
+    /**
+     * Set the singular and plural translations for this post types settings
+     * The add_filter is set onto a higher priority than the one in Disciple_tools_Post_Type_Template
+     * so as to enable localisation changes. Otherwise the system translation passed in to the custom post type
+     * will prevail.
+     */
+    public function dt_get_post_type_settings( $settings, $post_type ){
+        if ( $post_type === $this->post_type ){
+            $settings['label_singular'] = __( 'Contact', 'disciple_tools' );
+            $settings['label_plural'] = __( 'Contacts', 'disciple_tools' );
+        }
+        return $settings;
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){

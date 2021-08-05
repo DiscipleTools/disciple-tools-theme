@@ -32,9 +32,9 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return array|WP_Error
      */
-    public static function get_post_settings( string $post_type ){
+    public static function get_post_settings( string $post_type, $return_cache = true ){
         $cached = wp_cache_get( $post_type . "_post_type_settings" );
-        if ( $cached ){
+        if ( $return_cache && $cached ){
             return $cached;
         }
         $settings = [];
