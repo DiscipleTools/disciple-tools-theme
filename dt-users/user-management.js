@@ -785,58 +785,9 @@ jQuery(document).ready(function($) {
   }
 
   function write_add_user() {
-    let obj = dt_user_management_localized
-    let chart = jQuery('#chart')
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
 
-    chart.empty().html(`
-
-      <div class="grid-x">
-        <div id="page-title" class="cell"><h3>${ window.lodash.escape( dt_user_management_localized.translations.add_new_user ) }</h3></div>
-        <div class="cell medium-6">
-          <form data-abide id="new-user-form">
-            <div data-abide-error class="alert callout" style="display: none;">
-              <p><i class="fi-alert"></i> ${ window.lodash.escape( dt_user_management_localized.translations.there_are_some_errors ) }</p>
-            </div>
-
-            <dl>
-              <dt>${ window.lodash.escape( dt_user_management_localized.translations.contact_to_user ) }</dt>
-              <dd>
-                <div class="subassigned details">
-                    <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
-                    <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-subassigned input-height"
-                                           name="subassigned[query]" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.search ) }"
-                                           autocomplete="off">
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              </dd>
-            </dl>
-            <div id="contact-result"></div>
-
-            <dl>
-              <dt>${ window.lodash.escape( dt_user_management_localized.translations.nickname ) }</dt>
-              <dd><input type="text" class="input" id="name" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.nickname ) }" required /> </dd>
-              <dt>${ window.lodash.escape( dt_user_management_localized.translations.email ) }</dt>
-              <dd><input type="email" class="input" id="email" placeholder="${ window.lodash.escape( dt_user_management_localized.translations.email ) }" required /> </dd>
-            </dl>
-
-            <button type="submit" class="submit button" id="create-user">${ window.lodash.escape( dt_user_management_localized.translations.create_user ) }</button> <span class="spinner"></span>
-          </form>
-
-        </div>
-        <div class="cell medium-6"></div>
-        <div class="cell" id="result-link"></div>
-        <div class="cell" style="height:20rem;"></div>
-      </div>
-
-    `)
+    $('#new-user-language-dropdown').html(write_language_dropdown(dt_user_management_localized.language_dropdown))
 
     let result_div = jQuery('#result-link')
     let submit_button = jQuery('#create-user')
@@ -846,17 +797,22 @@ jQuery(document).ready(function($) {
       ev.preventDefault();
       let name = jQuery('#name').val()
       let email = jQuery('#email').val()
+      let locale = jQuery('#locale').val();
 
       let corresponds_to_contact = null
       if ( typeof window.contact_record !== 'undefined' ) {
         corresponds_to_contact = window.contact_record.ID
       }
+      let roles = [];
+      $('#user_roles_list input:checked').each(function () {
+        roles.push($(this).val())
+      })
 
       if ( name !== '' && email !== '' )  {
         spinner_span.html(spinner)
         submit_button.prop('disabled', true)
 
-        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact })
+        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact, "locale": locale, 'user-roles':roles })
           .done(response=>{
             result_div.html(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response)}">
               ${ window.lodash.escape( dt_user_management_localized.translations.view_new_user ) }</a>
@@ -935,6 +891,15 @@ jQuery(document).ready(function($) {
         }
       })
     })
+  }
+
+  function write_language_dropdown(translations) {
+      let select = '<select name="locale" id="locale">';
+      for ( const translation in translations ) {
+        select += `<option value="${window.lodash.escape(translations[translation].language )}" ${translations[translation].site_default ? 'selected' : '' } >${window.lodash.escape( translations[translation].native_name )}</option>`
+      }
+      select += '</select>'
+      return select;
   }
 
 })

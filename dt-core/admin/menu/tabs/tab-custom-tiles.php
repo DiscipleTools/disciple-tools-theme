@@ -6,8 +6,8 @@
  * @class      Disciple_Tools_Tab_Custom_Fields
  * @version    0.1.0
  * @since      0.1.0
- * @package    Disciple_Tools
- * @author     Chasm.Solutions & Kingdom.Training
+ * @package    Disciple.Tools
+ * @author     Disciple.Tools
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -84,6 +84,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     $post_type = sanitize_key( $_POST["post_type"] );
                 }
             }
+            $this->template( 'begin' );
             $this->box( 'top', __( 'Edit Tiles', 'disciple_tools' ) );
             $this->post_type_select( $post_type );
             $this->box( 'bottom' );
@@ -94,7 +95,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
             $tile_options = dt_get_option( "dt_custom_tiles" );
 
-            $this->template( 'begin' );
 
             /*
              * Process Add tile
@@ -148,17 +148,10 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
             global $wp_post_types;
             if ( $post_type ){
-                $this->box( 'top', "Sort Tiles and Fields for " . esc_html( $wp_post_types[$post_type]->label ) );
-                $this->edit_post_type_tiles( $post_type );
-                $this->box( 'bottom' );
-            }
-
-            if ( $post_type ){
                 $this->box( 'top', 'Create or update tiles for ' . esc_html( $wp_post_types[$post_type]->label ) );
                 $this->tile_select( $post_type );
                 $this->box( 'bottom' );
             }
-
             if ( $show_add_tile ){
                 $this->box( 'top', __( "Add new tile", 'disciple_tools' ) );
                 $this->add_tile( $post_type );
@@ -167,6 +160,11 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             if ( $tile_key && $post_type ){
                 $this->box( 'top', "Modify " . ( $tile_options[$post_type][$tile_key]["label"] ?? $tile_key ) . " name, translations and fields" );
                 $this->edit_tile( $tile_key, $post_type );
+                $this->box( 'bottom' );
+            }
+            if ( $post_type ){
+                $this->box( 'top', "Sort Tiles and Fields for " . esc_html( $wp_post_types[$post_type]->label ) );
+                $this->edit_post_type_tiles( $post_type );
                 $this->box( 'bottom' );
             }
 
@@ -181,6 +179,12 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
     private function add_help_box(){
         ?>
+            <ol>
+                <li>Choose a post type</li>
+                <li><strong>Create</strong> a new tile or <strong>modify</strong> an existing one</li>
+                <li>Sort <strong>tiles order</strong> and tile <strong>fields order</strong></li>
+                <li>See extra documentation <a href="https://disciple.tools/user-docs/getting-started-info/admin/settings-dt/custom-tiles/" target="_blank">here</a></li>
+            </ol>
 
         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/sort-tiles.gif' ) ?>" style="width: 100%"/>
         <?php
@@ -502,52 +506,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         <button class="button" type="submit">Save Description</button>
 
         <br>
-
-        <h4><?php esc_html_e( "Tile Fields", 'disciple_tools' ) ?></h4>
-        <table class="widefat">
-            <thead>
-            <tr>
-                <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
-                <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
-            </tr>
-            </thead>
-            <tbody>
-            <?php $order = $tile["order"] ?? [];
-            foreach ( $fields as $key => $option ){
-                if ( isset( $option["tile"] ) && $option["tile"] === $tile_key ){
-                    if ( !in_array( $key, $order )){
-                        $order[] = $key;
-                    }
-                }
-            }
-
-            foreach ( $order as $key ) :
-                if ( !isset( $fields[$key] ) ){
-                    continue;
-                }
-                $option = $fields[$key];
-                if ( isset( $option["tile"] ) && $option["tile"] === $tile_key ):
-                    $label = $option["name"] ?? ""; ?>
-                    <tr>
-                        <td>
-                            <?php echo esc_html( $label ) ?>
-                        </td>
-                        <td>
-                            <?php if ( !$first ) : ?>
-                                <button type="submit" name="move_up" value="<?php echo esc_html( $key ) ?>" class="button small" >↑</button>
-                                <button type="submit" name="move_down" value="<?php echo esc_html( $key ) ?>" class="button small" >↓</button>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php $first = false;
-                endif;
-            endforeach; ?>
-            </tbody>
-        </table>
-
         <br>
-<!--        <button type="submit" style="float:right;" class="button">--><?php //esc_html_e( "Save", 'disciple_tools' ) ?><!--</button>-->
-
 
     <?php }
 

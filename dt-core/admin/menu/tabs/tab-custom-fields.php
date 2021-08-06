@@ -6,8 +6,8 @@
  * @class      Disciple_Tools_Tab_Custom_Fields
  * @version    0.1.0
  * @since      0.1.0
- * @package    Disciple_Tools
- * @author     Chasm.Solutions & Kingdom.Training
+ * @package    Disciple.Tools
+ * @author     Disciple.Tools
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -276,10 +276,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
-        $defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
+        $defaults = apply_filters( 'dt_custom_fields_settings', $base_fields, $post_type );
 
         $field_options = $field["default"] ?? [];
-
         $first = true;
         $tile_options = DT_Posts::get_post_tiles( $post_type );
 
@@ -326,7 +326,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php endif; ?>
                     </td>
                     <td>
-                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>></input>
+                        <?php $private_field_disabled = isset( $defaults[$field_key] ) || $field["type"] === 'connection' ?>
+                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?> <?php echo esc_html( ( $private_field_disabled ) ? "disabled" : '' ); ?>>
                     </td>
                     <td>
                         <button class="button small expand_translations">
@@ -439,6 +440,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Default Label", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Custom Label", 'disciple_tools' ) ?></td>
+                    <?php
+                    if ( $field["type"] === "multi_select" ):
+                        ?>
+                        <td><?php esc_html_e( "Icon", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Icon Link", 'disciple_tools' ) ?></td>
+                        <td></td>
+                        <?php
+                    endif;
+                    ?>
                     <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
@@ -470,6 +480,27 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <button title="submit" class="button" name="delete_option_label" value="<?php echo esc_html( $key ) ?>">Remove Label</button>
                                 <?php endif; ?>
                             </td>
+                            <?php if ( $field["type"] === "multi_select" ): ?>
+                                <td>
+                                    <?php if ( isset( $option["icon"] ) && ! empty( $option["icon"] ) ): ?>
+                                        <img src="<?php echo esc_attr( $option["icon"] ); ?>" style="width: 20px; vertical-align: middle;">
+                                    <?php else : ?>
+                                        <div style="width: 20px; display: inline-block">&nbsp;</div>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <input type="text" name="field_option_icon_<?php echo esc_html( $key ) ?>" placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
+                                           value="<?php echo esc_attr( isset( $option["icon"] ) ? $option["icon"] : '' ); ?>">
+                                </td>
+                                <td>
+                                    <?php if ( isset( $defaults[ $field_key ]["default"][ $key ]["icon"] ) && $defaults[ $field_key ]["default"][ $key ]["icon"] !== $option["icon"] ): ?>
+                                        <button type="submit" class="button" name="restore_icon"
+                                                value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
+                                    <?php elseif ( isset( $option["icon"] ) && !empty( $option["icon"] ) ) : ?>
+                                        <button type="submit" class="button" name="delete_icon" value="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Remove Icon', 'disciple_tools' ); ?></button>
+                                    <?php endif; ?>
+                                </td>
+                            <?php endif; ?>
                             <td>
                                 <button class="button small expand_translations">
                                     <?php
@@ -502,7 +533,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <?php if ( ( isset( $field["customizable"] ) && ( $field["customizable"] === "all" || ( $field["customizable"] === 'add_only' && !$in_defaults ) ) )
+                                <?php if ( !isset( $field["customizable"] ) || ( isset( $field["customizable"] ) && ( $field["customizable"] === "all" || ( $field["customizable"] === 'add_only' && !$in_defaults ) ) )
                                     || !isset( $field["default"][$key] ) ) : ?>
                                 <button type="submit" name="delete_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Hide", 'disciple_tools' ) ?></button>
                                 <?php endif; ?>
@@ -673,7 +704,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             return;
         }
 
-
         if ( isset( $post_fields[$post_submission["field_key"]] )){
             if ( !isset( $field_customizations[$post_type][$field_key] ) ){
                 $field_customizations[$post_type][$field_key] = [];
@@ -732,18 +762,28 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 foreach ( $post_submission as $key => $val ){
                     if ( strpos( $key, "field_option_" ) === 0) {
                         if ( strpos( $key, 'translation' ) !== false ) {
-                            $option_key = substr( $key, 13, strpos( $key, 'translation' ) - 14 );
+                            $option_key           = substr( $key, 13, strpos( $key, 'translation' ) - 14 );
                             $translation_langcode = substr( $key, strpos( $key, 'translation' ) + strlen( 'translation-' ) );
                             if ( strpos( $translation_langcode, '-' ) !== false ) {
                                 $translation_langcode = substr( $translation_langcode, 3 );
                             }
-                            if ( empty( $val ) && isset( $custom_field["default"][$option_key]["translations"][$translation_langcode] ) ){
-                                unset( $custom_field["default"][$option_key]["translations"][$translation_langcode] );
-                            } elseif ( !empty( $val ) ) {
-                                $custom_field["default"][$option_key]["translations"][$translation_langcode] = $val;
+                            if ( empty( $val ) && isset( $custom_field["default"][ $option_key ]["translations"][ $translation_langcode ] ) ) {
+                                unset( $custom_field["default"][ $option_key ]["translations"][ $translation_langcode ] );
+                            } elseif ( ! empty( $val ) ) {
+                                $custom_field["default"][ $option_key ]["translations"][ $translation_langcode ] = $val;
+                            }
+                        } elseif ( strpos( $key, 'icon' ) !== false ) {
+                            $option_key = substr( $key, 18 );
+
+                            if ( !empty( $val ) ){
+                                if ( ! isset( $field_options[ $option_key ]["icon"] ) || $field_options[ $option_key ]["icon"] != $val ) {
+                                    $custom_field["default"][$option_key]["icon"] = $val;
+                                }
+                                $field_options[$option_key]['icon'] = $val;
                             }
                         } else {
                             $option_key = substr( $key, 13 );
+
                             if ( !empty( $val ) ){
                                 if ( !isset( $field_options[$option_key]["label"] ) || $field_options[$option_key]["label"] != $val ){
                                     $custom_field["default"][$option_key]["label"] = $val;
@@ -752,6 +792,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             }
                         }
                     }
+
                     if ( strpos( $key, "option_description_" ) === 0) {
                         if ( strpos( $key, 'translation' ) !== false ) {
                             $option_key = substr( $key, strlen( "option_description_" ), strpos( $key, 'translation' ) - ( strlen( "option_description_" ) + 1 ) );
@@ -773,6 +814,17 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             $field_options[$option_key]["description"] = $val;
                         }
                     }
+                }
+                //delete icon
+                if ( isset( $post_submission["delete_icon"] ) ) {
+                    $custom_field["default"][ $post_submission["delete_icon"] ]["icon"] = '';
+                    $field_options[ $post_submission["delete_icon"] ]["icon"]           = '';
+                }
+                //restore icon
+                if ( isset( $post_submission["restore_icon"] ) ) {
+                    $restore_icon_defaults                                               = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+                    $custom_field["default"][ $post_submission["restore_icon"] ]["icon"] = $restore_icon_defaults[ $field_key ]["default"][ $post_submission["restore_icon"] ]["icon"];
+                    $field_options[ $post_submission["restore_icon"] ]["icon"]           = $restore_icon_defaults[ $field_key ]["default"][ $post_submission["restore_icon"] ]["icon"];
                 }
                 //delete option
                 if ( isset( $post_submission["delete_option"] ) ){
@@ -830,17 +882,18 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         global $wp_post_types;
         $post_type = sanitize_text_field( wp_unslash( $post_type ) );
         $tile_options = DT_Posts::get_post_tiles( $post_type );
+        $post_types = DT_Posts::get_post_types();
         ?>
         <form method="post">
             <input type="hidden" name="field_add_nonce" id="field_add_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_add' ) ) ?>" />
             <table>
                 <tr>
-                    <td style="vertical-align: middle">
-                        <?php esc_html_e( "Page type", 'disciple_tools' ) ?>
+                    <td style="vertical-align: middle; min-width:250px">
+                        <?php esc_html_e( "Post type", 'disciple_tools' ) ?>
                     </td>
                     <td>
-                        <b><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></b>
-                        <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type ); ?>">
+                        <strong><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></strong>
+                        <input type="hidden" name="post_type" id="current_post_type" value="<?php echo esc_html( $post_type ); ?>">
                     </td>
                 <tr>
                     <td style="vertical-align: middle">
@@ -855,7 +908,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <label><?php esc_html_e( "Field type", 'disciple_tools' ) ?></label>
                     </td>
                     <td>
-                        <select name="new_field_type" required>
+                        <select id="new_field_type_select" name="new_field_type" required>
                             <option></option>
                             <option value="key_select"><?php esc_html_e( "Dropdown", 'disciple_tools' ) ?></option>
                             <option value="multi_select"><?php esc_html_e( "Multi Select", 'disciple_tools' ) ?></option>
@@ -863,15 +916,47 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
                             <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
                             <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
+                            <option value="connection"><?php esc_html_e( "Connection", 'disciple_tools' ) ?></option>
                         </select>
                     </td>
                 </tr>
-                <tr>
+                <tr class="connection_field_target_row" style="display: none">
+                    <td style="vertical-align: middle">
+                        <label><?php esc_html_e( "Connected to", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                    <select name="connection_target" id="connection_field_target">
+                        <option></option>
+                        <?php foreach ( $post_types as $post_type_key ) : ?>
+                            <option value="<?php echo esc_html( $post_type_key ); ?>">
+                                <?php echo esc_html( $wp_post_types[$post_type_key]->label ); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    </td>
+                </tr>
+                <tr class="connection_field_reverse_row" style="display: none">
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Other direction field Name.", 'disciple_tools' ) ?>
+                        <br>
+                        See connection instructions bellow.
+                    </td>
+                    <td>
+                        <input name="reverse_connection_name" id="connection_field_reverse_name">
+                    </td>
+                    <td>
+                        <label>
+                            Only create connection in one direction
+                            <input type="checkbox" name="disable_reverse_connection">
+                        </label>
+                    </td>
+                </tr>
+                <tr id="private_field_row">
                     <td style="vertical-align: middle">
                         <label><?php esc_html_e( "Private Field", 'disciple_tools' ) ?></label>
                     </td>
                     <td>
-                        <input name="new_field_private" id="new_field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>></input>
+                        <input name="new_field_private" id="new_field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>>
                     </td>
                 </tr>
                 <tr>
@@ -908,10 +993,18 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( "Text: This is just a normal text field", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Text Area: This is just a multi-line text area", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Date: A field that uses a date picker to choose dates (like baptism date)", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Connection: An autocomplete picker to connect to another record.", 'disciple_tools' ) ?></li>
         </ul>
         <?php esc_html_e( "Private Field:", 'disciple_tools' ) ?>
         <ul style="list-style: disc; padding-left:40px">
             <li><?php esc_html_e( "The content of private fields can only be seen by the user who creates it and will not be shared with other DT users.", 'disciple_tools' ) ?></li>
+        </ul>
+        <?php esc_html_e( "Connection Field:", 'disciple_tools' ) ?>
+        <ul style="list-style: disc; padding-left:40px">
+            <li>Connects one post type to another post type (or to the some post type). Ex: contacts to groups, contacts to contacts, etc</li>
+            <li>By default a connection will be bidirectional, meaning that a field will be displayed on the both the current and the "connected to" post types.</li>
+            <li>If you want the field to only show up on the current (<?php echo esc_html( $wp_post_types[$post_type]->label ); ?>) post type, the check the "Only create connection in one direction" checkbox</li>
+            <li>Other direction field name: this is the name of the field displayed on the "connected to" post type. Example: We create a connection between contacts and groups. On contacts the field name is "Groups", on Groups we want to the field name to be "Members"</li>
         </ul>
         <?php
     }
@@ -922,6 +1015,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $field_type = $post_submission["new_field_type"];
             $field_tile = $post_submission["new_field_tile"] ?? '';
             $field_key = dt_create_field_key( $post_submission["new_field_name"] );
+            $custom_field_options = dt_get_option( "dt_field_customizations" );
 
             if ( !$field_key ){
                 return false;
@@ -955,7 +1049,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'type' => 'multi_select',
                     'tile' => $field_tile,
                     'customizable' => 'all',
-                    'private' => $field_private
+                    'private' => $field_private,
                 ];
             } elseif ( $field_type === "tags" ){
                 $new_field = [
@@ -993,9 +1087,40 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
+            } elseif ( $field_type === "connection" ){
+                if ( !$post_submission["connection_target"] ){
+                    self::admin_notice( __( "Please select a connection target", 'disciple_tools' ), "error" );
+                    return false;
+                }
+                $p2p_key = $post_type . "_to_" . $post_submission["connection_target"];
+                if ( p2p_type( $p2p_key ) !== false ){
+                    $p2p_key = dt_create_field_key( $p2p_key, true );
+                }
+                $direction = $post_type === $post_submission["connection_target"] ? "any" : "from";
+                $new_field = [
+                    'name'        => $post_submission["new_field_name"],
+                    'type'        => 'connection',
+                    "post_type" => $post_submission["connection_target"],
+                    "p2p_direction" => $direction,
+                    "p2p_key" => $p2p_key,
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
+                ];
+                //create the reverse fields on the connection post type
+                if ( !isset( $post_submission["disable_reverse_connection"] ) && $post_submission["connection_target"] !== $post_type ){
+                    $reverse_name = isset( $post_submission["reverse_connection_name"] ) ? $post_submission["reverse_connection_name"] : $post_submission["new_field_name"];
+                    $custom_field_options[$post_submission["connection_target"]][$field_key]  = [
+                        'name'        => $reverse_name,
+                        'type'        => 'connection',
+                        "post_type" => $post_type,
+                        "p2p_direction" => $direction === "any" ? "any" : "to",
+                        "p2p_key" => $p2p_key,
+                        'tile'     => "other",
+                        'customizable' => 'all',
+                    ];
+                }
             }
 
-            $custom_field_options = dt_get_option( "dt_field_customizations" );
             $custom_field_options[$post_type][$field_key] = $new_field;
             update_option( "dt_field_customizations", $custom_field_options );
             wp_cache_delete( $post_type . "_field_settings" );

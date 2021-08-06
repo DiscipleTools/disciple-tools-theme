@@ -23,7 +23,6 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 ); //after contacts
 
         //setup tiles and fields
-        add_action( 'p2p_init', [ $this, 'p2p_init' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
@@ -39,6 +38,7 @@ class DT_Groups_Base extends DT_Module_Base {
         add_action( "dt_post_created", [ $this, "dt_post_created" ], 10, 3 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
         add_filter( "dt_after_get_post_fields_filter", [ $this, "dt_after_get_post_fields_filter" ], 10, 2 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 2 );
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
@@ -51,6 +51,21 @@ class DT_Groups_Base extends DT_Module_Base {
             new Disciple_Tools_Post_Type_Template( "groups", __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ) );
         }
     }
+
+    /**
+     * Set the singular and plural translations for this post types settings
+     * The add_filter is set onto a higher priority than the one in Disciple_tools_Post_Type_Template
+     * so as to enable localisation changes. Otherwise the system translation passed in to the custom post type
+     * will prevail.
+     */
+    public function dt_get_post_type_settings( $settings, $post_type ){
+        if ( $post_type === $this->post_type ){
+            $settings['label_singular'] = __( 'Group', 'disciple_tools' );
+            $settings['label_plural'] = __( 'Groups', 'disciple_tools' );
+        }
+        return $settings;
+    }
+
     public function dt_set_roles_and_permissions( $expected_roles ){
         if ( !isset( $expected_roles["multiplier"] ) ){
             $expected_roles["multiplier"] = [
@@ -86,37 +101,11 @@ class DT_Groups_Base extends DT_Module_Base {
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'groups' ){
-            $fields['tags'] = [
-                'name'        => __( 'Tags', 'disciple_tools' ),
-                'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'tags',
-                'default'     => [],
-                'tile'        => 'other',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/tag.svg'
-            ];
-            $fields["follow"] = [
-                'name'        => __( 'Follow', 'disciple_tools' ),
-                'type'        => 'multi_select',
-                'default'     => [],
-                'section'     => 'misc',
-                'hidden'      => true
-            ];
-            $fields["unfollow"] = [
-                'name'        => __( 'Un-Follow', 'disciple_tools' ),
-                'type'        => 'multi_select',
-                'default'     => [],
-                'hidden'      => true
-            ];
             $fields["requires_update"] = [
                 'name'        => __( 'Requires Update', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'boolean',
                 'default'     => false,
-            ];
-            $fields['tasks'] = [
-                'name' => __( 'Tasks', 'disciple_tools' ),
-                'type' => 'task',
-                'private' => true
             ];
             $fields["duplicate_data"] = [
                 "name" => 'Duplicates', //system string does not need translation
@@ -128,21 +117,22 @@ class DT_Groups_Base extends DT_Module_Base {
                 'description' => _x( 'Set the current status of the group.', 'field description', 'disciple_tools' ),
                 'type'        => 'key_select',
                 'default'     => [
-                    'inactive' => [
-                        'label' => __( 'Inactive', 'disciple_tools' ),
-                        'description' => _x( 'The group is no longer meeting.', 'field description', 'disciple_tools' ),
-                        'color' => "#808080"
-                    ],
                     'active'   => [
                         'label' => __( 'Active', 'disciple_tools' ),
                         'description' => _x( 'The group is actively meeting.', 'field description', 'disciple_tools' ),
                         'color' => "#4CAF50"
+                    ],
+                    'inactive' => [
+                        'label' => __( 'Inactive', 'disciple_tools' ),
+                        'description' => _x( 'The group is no longer meeting.', 'field description', 'disciple_tools' ),
+                        'color' => "#808080"
                     ],
                 ],
                 'tile'     => 'status',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg',
                 "default_color" => "#366184",
                 "show_in_table" => 10,
+                "select_cannot_be_empty" => true
             ];
             $fields['assigned_to'] = [
                 'name'        => __( 'Assigned To', 'disciple_tools' ),
@@ -193,6 +183,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'in_create_form' => true,
                 "show_in_table" => 15,
                 "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg',
+                "select_cannot_be_empty" => true
             ];
 
 
@@ -445,8 +436,6 @@ class DT_Groups_Base extends DT_Module_Base {
                 'default' => ''
             ];
 
-
-
         }
 
         if ( $post_type === "contacts" ){
@@ -572,96 +561,6 @@ class DT_Groups_Base extends DT_Module_Base {
         <?php }
     }
 
-    public function p2p_init(){
-        /**
-         * Group members field
-         */
-        p2p_register_connection_type(
-            [
-                'name'           => 'contacts_to_groups',
-                'from'           => 'contacts',
-                'to'             => 'groups',
-                'admin_box' => [
-                    'show' => false,
-                ],
-                'title'          => [
-                    'from' => __( 'Contacts', 'disciple_tools' ),
-                    'to'   => __( 'Members', 'disciple_tools' ),
-                ]
-            ]
-        );
-        /**
-         * Group leaders field
-         */
-        p2p_register_connection_type(
-            [
-                'name'           => 'groups_to_leaders',
-                'from'           => 'groups',
-                'to'             => 'contacts',
-                'admin_box' => [
-                    'show' => false,
-                ],
-                'title'          => [
-                    'from' => __( 'Groups', 'disciple_tools' ),
-                    'to'   => __( 'Leaders', 'disciple_tools' ),
-                ]
-            ]
-        );
-        /**
-         * Group coaches field
-         */
-        p2p_register_connection_type(
-            [
-                'name'           => 'groups_to_coaches',
-                'from'           => 'groups',
-                'to'             => 'contacts',
-                'admin_box' => [
-                    'show' => false,
-                ],
-                'title'          => [
-                    'from' => __( 'Groups', 'disciple_tools' ),
-                    'to'   => __( 'Coaches', 'disciple_tools' ),
-                ]
-            ]
-        );
-        /**
-         * Parent and child groups
-         */
-        p2p_register_connection_type(
-            [
-                'name'         => 'groups_to_groups',
-                'from'         => 'groups',
-                'to'           => 'groups',
-                'title'        => [
-                    'from' => __( 'Planted by', 'disciple_tools' ),
-                    'to'   => __( 'Planting', 'disciple_tools' ),
-                ],
-            ]
-        );
-        /**
-         * Peer groups
-         */
-        p2p_register_connection_type( [
-            'name'         => 'groups_to_peers',
-            'from'         => 'groups',
-            'to'           => 'groups',
-        ] );
-        /**
-         * Group People Groups field
-         */
-        p2p_register_connection_type(
-            [
-                'name'        => 'groups_to_peoplegroups',
-                'from'        => 'groups',
-                'to'          => 'peoplegroups',
-                'title'       => [
-                    'from' => __( 'People Groups', 'disciple_tools' ),
-                    'to'   => __( 'Groups', 'disciple_tools' ),
-                ]
-            ]
-        );
-    }
-
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
         if ( $post_type === "groups" ){
             $tiles["relationships"] = [ "label" => __( "Member List", 'disciple_tools' ) ];
@@ -730,34 +629,18 @@ class DT_Groups_Base extends DT_Module_Base {
     //filter at the start of post update
     public function dt_post_update_fields( $fields, $post_type, $post_id ){
         if ( $post_type === "groups" ){
-            if ( isset( $fields["assigned_to"] ) ) {
-                if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
-                    $user = get_user_by( "email", $fields["assigned_to"] );
-                    if ( $user ) {
-                        $fields["assigned_to"] = $user->ID;
-                    } else {
-                        return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
-                    }
-                }
-                //make sure the assigned to is in the right format (user-1)
-                if ( is_numeric( $fields["assigned_to"] ) ||
-                    strpos( $fields["assigned_to"], "user" ) === false ){
-                    $fields["assigned_to"] = "user-" . $fields["assigned_to"];
-                }
-                $user_id = explode( '-', $fields["assigned_to"] )[1];
-                if ( $user_id ){
-                    DT_Posts::add_shared( "groups", $post_id, $user_id, null, false, true, false );
-                }
-            }
             $existing_group = DT_Posts::get_post( 'groups', $post_id, true, false );
+            //if group is updated to church, set the group start date
             if ( isset( $fields["group_type"] ) && empty( $fields["church_start_date"] ) && empty( $existing_group["church_start_date"] ) && $fields["group_type"] === 'church' ){
                 $fields["church_start_date"] = time();
             }
+            //if group is updated to inactive, set the group end date
             if ( isset( $fields["group_status"] ) && empty( $fields["end_date"] ) && empty( $existing_group["end_date"] ) && $fields["group_status"] === 'inactive' ){
                 $fields["end_date"] = time();
             }
         }
         if ( $post_type === "contacts" ){
+            //if updating a contact to be a loader of a group, also add the contact to the group members
             if ( isset( $fields["group_leader"]["values"] ) ){
                 $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
                 foreach ( $fields["group_leader"]["values"] as $leader ){
@@ -941,21 +824,6 @@ class DT_Groups_Base extends DT_Module_Base {
             if ( isset( $fields["group_type"] ) && !isset( $fields["church_start_date"] ) && $fields["group_type"] === 'church' ){
                 $fields["church_start_date"] = time();
             }
-            if ( isset( $fields["assigned_to"] ) ) {
-                if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
-                    $user = get_user_by( "email", $fields["assigned_to"] );
-                    if ( $user ) {
-                        $fields["assigned_to"] = $user->ID;
-                    } else {
-                        return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
-                    }
-                }
-                //make sure the assigned to is in the right format (user-1)
-                if ( is_numeric( $fields["assigned_to"] ) ||
-                    strpos( $fields["assigned_to"], "user" ) === false ){
-                    $fields["assigned_to"] = "user-" . $fields["assigned_to"];
-                }
-            }
         }
         return $fields;
     }
@@ -964,12 +832,6 @@ class DT_Groups_Base extends DT_Module_Base {
     public function dt_post_created( $post_type, $post_id, $initial_fields ){
         if ( $post_type === "groups" ){
             do_action( "dt_group_created", $post_id, $initial_fields );
-            $group = DT_Posts::get_post( 'groups', $post_id, true, false );
-            if ( isset( $group["assigned_to"] )) {
-                if ( $group["assigned_to"]["id"] ) {
-                    DT_Posts::add_shared( "groups", $post_id, $group["assigned_to"]["id"], null, false, false, false );
-                }
-            }
         }
     }
 
@@ -1030,6 +892,7 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( $post_type === 'groups' ){
             $counts = self::get_my_groups_status_type();
             $fields = DT_Posts::get_post_field_settings( $post_type );
+            $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
             /**
              * Setup my group filters
              */
@@ -1145,6 +1008,18 @@ class DT_Groups_Base extends DT_Module_Base {
                     'sort' => 'group_type'
                 ],
                 "count" => $total_all
+            ];
+            $filters["filters"][] = [
+                'ID' => 'favorite',
+                'tab' => 'all',
+                'name' => sprintf( _x( "Favorite %s", 'Favorite Contacts', 'disciple_tools' ), $post_label_plural ),
+                'query' => [
+                    "fields" => [ "favorite" => [ "1" ] ],
+                    'sort' => "name"
+                ],
+                'labels' => [
+                    [ "id" => "1", "name" => __( "Favorite", "disciple_tools" ) ]
+                ]
             ];
             $filters["filters"][] = [
                 'ID' => 'recent',

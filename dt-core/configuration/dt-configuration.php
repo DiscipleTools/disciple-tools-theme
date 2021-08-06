@@ -95,5 +95,24 @@ function dt_cron_schedules( $schedules ) {
         'interval' => 60 * 60 * 24 * 7, # 604,800, seconds in a week
         'display'  => 'Weekly'
     );
+    $schedules["15min"] = array(
+        'interval' => 15 * 60,
+        'display'  => __( 'Once every 15 minutes' )
+    );
+    $schedules["5min"] = array(
+        'interval' => 5 * 60,
+        'display'  => __( 'Once every 5 minutes' )
+    );
     return $schedules;
 }
+
+/**
+ * Redirect from the wp-admin new-user page to the theme new-user page.
+ */
+add_action( 'admin_init', function () {
+    global $pagenow;
+    if ( $pagenow == 'user-new.php' ) {
+        wp_redirect( home_url( '/user-management/add-user/' ) );
+        exit;
+    }
+} );

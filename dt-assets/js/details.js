@@ -79,24 +79,20 @@ jQuery(document).ready(function($) {
     constrainInput: false,
     dateFormat: 'yy-mm-dd',
     onClose: function (date) {
-      if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
-        // do nothing
-      } else {
-        date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
+      date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
 
-        if (!$(this).val()) {
-          date = " ";//null;
-        }
-        let id = $(this).attr('id')
-        $(`#${id}-spinner`).addClass('active')
-        rest_api.update_post( post_type, post_id, { [id]: moment.utc(date).unix() }).then((resp)=>{
-          $(`#${id}-spinner`).removeClass('active')
-          if (this.value) {
-            this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
-          }
-          $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
-        }).catch(handleAjaxError)
+      if (!$(this).val()) {
+        date = " ";//null;
       }
+      let id = $(this).attr('id')
+      $(`#${id}-spinner`).addClass('active')
+      rest_api.update_post( post_type, post_id, { [id]: moment.utc(date).unix() }).then((resp)=>{
+        $(`#${id}-spinner`).removeClass('active')
+        if (this.value) {
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+        }
+        $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
+      }).catch(handleAjaxError)
     },
     changeMonth: true,
     changeYear: true,
@@ -333,7 +329,8 @@ jQuery(document).ready(function($) {
 
 
   $('.dt_typeahead').each((key, el)=>{
-    let field_id = $(el).attr('id').replace('_connection', '')
+    let div_id = $(el).attr('id')
+    let field_id = $(`#${div_id} input`).data('field')
     let listing_post_type = window.lodash.get(window.detailsSettings.post_settings.fields[field_id], "post_type", 'contacts')
     $.typeahead({
       input: `.js-typeahead-${field_id}`,
@@ -789,6 +786,39 @@ jQuery(document).ready(function($) {
     })
   })
 
+  /**
+   * Favorite
+   */
+  function favorite_check(post_data) {
+    if (post_data.favorite) {
+      document.querySelectorAll('.button.favorite').forEach( function(button) {
+          button.dataset.favorite = true
+      })
+      $('.button.favorite').addClass('selected');
+    } else {
+      document.querySelectorAll('.button.favorite').forEach( function(button) {
+          button.dataset.favorite = false
+      })
+      $('.button.favorite').removeClass('selected');
+    }
+  }
+
+  favorite_check(window.detailsSettings.post_fields);
+
+  $('.button.favorite').on( "click", function () {
+    var favorited = this.dataset.favorite
+    var favoritedValue;
+    if (favorited == "true") {
+      this.dataset.favorite = false
+      favoritedValue = false;
+    } else if (favorited == "false") {
+      this.dataset.favorite = true
+      favoritedValue = true;
+    }
+    rest_api.update_post(post_type, post_id, {'favorite': favoritedValue}).then((new_post)=>{
+      favorite_check(new_post);
+    })
+  })
 
   /**
    * Tags

@@ -60,7 +60,7 @@ function dt_dra_disable_via_filters() {
  *
  * @param  $access
  *
- * @return WP_Error
+ * @return bool|WP_Error
  */
 function dt_dra_only_allow_logged_in_rest_access( $access ) {
     /*

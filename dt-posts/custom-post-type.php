@@ -25,6 +25,7 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
+        add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
     }
 
     public function register_post_type(){
@@ -69,7 +70,7 @@ class Disciple_Tools_Post_Type_Template {
             'supports'              => [ 'title' ],
             'menu_position'         => 5,
             'menu_icon'             => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNOSwxMmMyLjc1NywwLDUtMi4yNDMsNS01VjVjMC0yLjc1Ny0yLjI0My01LTUtNVM0LDIuMjQzLDQsNXYyQzQsOS43NTcsNi4yNDMsMTIsOSwxMnoiPjwvcGF0aD4gPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTE1LjQyMywxNS4xNDVDMTQuMDQyLDE0LjYyMiwxMS44MDYsMTQsOSwxNHMtNS4wNDIsMC42MjItNi40MjQsMS4xNDZDMS4wMzUsMTUuNzI5LDAsMTcuMjMzLDAsMTguODg2VjI0IGgxOHYtNS4xMTRDMTgsMTcuMjMzLDE2Ljk2NSwxNS43MjksMTUuNDIzLDE1LjE0NXoiPjwvcGF0aD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjMiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjgiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTkiIHk9IjEzIiBmaWxsPSIjZmZmZmZmIiB3aWR0aD0iNSIgaGVpZ2h0PSIyIj48L3JlY3Q+PC9nPjwvc3ZnPg==',
-            'show_in_nav_menus'     => true,
+            'show_in_nav_menus'     => false,
             'can_export'            => false,
             'exclude_from_search'   => true,
             'show_in_rest'          => false
@@ -163,7 +164,39 @@ class Disciple_Tools_Post_Type_Template {
             'default' => 0,
             'customizable' => false,
         ];
-        //tasks, location, ppl group? follow, unfollow?
+        $fields['favorite'] = [
+            'name'        => __( 'Favorite', 'disciple_tools' ),
+            'type'        => 'boolean',
+            'default'     => false,
+            'private'     => true,
+            "show_in_table" => 6,
+            "icon" => get_template_directory_uri() . "/dt-assets/images/star.svg"
+        ];
+        $fields['tags'] = [
+            'name'        => __( 'Tags', 'disciple_tools' ),
+            'description' => _x( 'A useful way to group related items.', 'Optional Documentation', 'disciple_tools' ),
+            'type'        => 'tags',
+            'default'     => [],
+            'tile'        => 'other',
+            'icon' => get_template_directory_uri() . "/dt-assets/images/tag.svg",
+        ];
+        $fields["follow"] = [
+            'name'        => __( 'Follow', 'disciple_tools' ),
+            'type'        => 'multi_select',
+            'default'     => [],
+            'hidden'      => true
+        ];
+        $fields["unfollow"] = [
+            'name'        => __( 'Un-Follow', 'disciple_tools' ),
+            'type'        => 'multi_select',
+            'default'     => [],
+            'hidden'      => true
+        ];
+        $fields['tasks'] = [
+            'name' => __( 'Tasks', 'disciple_tools' ),
+            'type' => 'task',
+            'private' => true
+        ];
         return $fields;
     }
 
@@ -221,4 +254,89 @@ class Disciple_Tools_Post_Type_Template {
 //        }
         return $sections;
     }
+
+
+    /**
+     * register p2p connections dynamically based on the connection field declaration
+     */
+    public function register_p2p_connections(){
+        $fields = DT_Posts::get_post_field_settings( $this->post_type );
+        foreach ( $fields as $field_key => &$field ){
+            if ( !isset( $field["name"] ) ){
+                $field["name"] = $field_key; //set a field name so integration can depend on it.
+            }
+            //register a connection if it is not set
+            if ( $field["type"] === "connection" && isset( $field["p2p_key"], $field["post_type"] ) ){
+                $p2p_type = p2p_type( $field["p2p_key"] );
+                if ( $p2p_type === false ){
+                    if ( $field["p2p_direction"] === "to" ){
+                        p2p_register_connection_type(
+                            [
+                                'name'        => $field["p2p_key"],
+                                'to'          => $this->post_type,
+                                'from'        => $field["post_type"]
+                            ]
+                        );
+                    } else {
+                        p2p_register_connection_type(
+                            [
+                                'name'        => $field["p2p_key"],
+                                'from'        => $this->post_type,
+                                'to'          => $field["post_type"]
+                            ]
+                        );
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Build default filter available on all post type list pages
+ */
+add_filter( "dt_user_list_filters", "base_dt_user_list_filters", 100, 2 );
+function base_dt_user_list_filters( $filters, $post_type ){
+    // check of the all tab is declared
+    $tab_names = array_map( function ( $f ){
+        return $f["key"];
+    }, $filters["tabs"] );
+    if ( in_array( 'all', $tab_names, true ) ){
+
+        $filter_ids = array_map( function ( $f ){
+            return $f["ID"];
+        }, $filters["filters"] );
+
+        // add favorite posts filter to all abb
+        if ( !in_array( 'favorite', $filter_ids ) ){
+            $post_type_settings = DT_Posts::get_post_settings( $post_type );
+            $filters["filters"][] = [
+                'ID' => 'favorite',
+                'tab' => 'all',
+                'name' => sprintf( _x( "Favorite %s", 'Favorite Contacts', 'disciple_tools' ), $post_type_settings["label_plural"] ),
+                'query' => [
+                    "fields" => [ "favorite" => [ "1" ] ],
+                    'sort' => "name"
+                ],
+                'labels' => [
+                    [ "id" => "1", "name" => __( "Favorite", "disciple_tools" ) ]
+                ]
+            ];
+        }
+        // add recently viewed filter to all tab
+        if ( !in_array( 'recent', $filter_ids, true ) ){
+            $filters["filters"][] = [
+                'ID' => 'recent',
+                'tab' => 'all',
+                'name' => __( "My Recently Viewed", 'disciple_tools' ),
+                'query' => [
+                    'dt_recent' => true
+                ],
+                'labels' => [
+                    [ "id" => 'recent', 'name' => __( "Last 30 viewed", 'disciple_tools' ) ]
+                ]
+            ];
+        }
+    }
+    return $filters;
 }

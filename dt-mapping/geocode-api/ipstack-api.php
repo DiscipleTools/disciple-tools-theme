@@ -36,6 +36,9 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
          * GEOCODING
          *************************************************************************************************************/
         public static function geocode_ip_address( $ip_address, $type = null ) {
+            if ( empty( self::get_key() ) ) {
+                return [];
+            }
             $data = [];
 
             if ( ! self::check_valid_ip_address( $ip_address ) ) {
@@ -68,11 +71,16 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
         }
 
         public static function geocode_current_visitor() : array {
-            $response = json_decode( self::url_get_contents( self::make_url( 'check' ) ), true );
-            if ( isset( $response['success'] ) && ! $response['success'] ) {
+            if ( empty( self::get_key() ) ) {
                 return [];
             }
-            return $response;
+            $string = self::url_get_contents( self::make_url( 'check' ) );
+            $response = json_decode( $string, true );
+
+            if ( isset( $response['success'] ) && empty( $response['success'] ) ) {
+                return [];
+            }
+            return $response ?? [];
         }
 
         /**************************************************************************************************************
@@ -324,6 +332,55 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
                     return false;
                     break;
             }
+        }
+        /**
+         * This function converts IpStack result to a location grid meta array.
+         * @param $ip_result
+         * @return array|false
+         */
+        public static function convert_ip_result_to_location_grid_meta( $ip_result) {
+            if (empty( $ip_result['longitude'] )) {
+                return false;
+            }
+            $geocoder = new Location_Grid_Geocoder();
+
+            // prioritize the smallest unit
+            if ( !empty( $ip_result['city'] )) {
+                $label = $ip_result['city'] . ', ' . $ip_result['region_name'] . ', ' . $ip_result['country_name'];
+                $level = "district";
+            } elseif ( !empty( $ip_result['region_name'] )) {
+                $label = $ip_result['region_name'] . ', ' . $ip_result['country_name'];
+                $level = "region";
+            } elseif ( !empty( $ip_result['country_name'] )) {
+                $label = $ip_result['country_name'];
+                $level = "country";
+            } elseif ( !empty( $ip_result['continent_name'] )) {
+                $label = $ip_result['continent_name'];
+                $level = 'world';
+            } else {
+                $label = '';
+                $level = '';
+            }
+
+            $grid_id = $geocoder->get_grid_id_by_lnglat( $ip_result['longitude'], $ip_result['latitude'], $ip_result['country_code'] );
+
+            if (empty( $label )) {
+                $admin0_grid_id = Disciple_Tools_Mapping_Queries::get_by_grid_id( $grid_id['admin0_grid_id'] );
+                $label = $grid_id['name'] . ', ' . $admin0_grid_id['name'];
+            }
+
+            $location_grid_meta = [
+                'lng' => $ip_result['longitude'] ?? '',
+                'lat' => $ip_result['latitude'] ?? '',
+                'level' => $level,
+                'label' => $label,
+                'source' => 'ip',
+                'grid_id' => $grid_id['grid_id'] ?? '',
+            ];
+
+            Location_Grid_Meta::validate_location_grid_meta( $location_grid_meta );
+
+            return $location_grid_meta;
         }
     }
 }

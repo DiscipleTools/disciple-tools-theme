@@ -19,11 +19,11 @@ dt_please_log_in();
              data-sticky data-options="marginTop:0;" data-top-anchor="1"
              class="second-bar list-actions-bar">
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
-                <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
+                <a class="button dt-green create-post-desktop" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php echo esc_html( sprintf( _x( "Create New %s", "Create New record", 'disciple_tools' ), $post_settings["label_singular"] ?? $post_type ) ) ?></span>
                 </a>
-                <a class="button" data-open="filter-modal">
+                <a class="button filter-posts-desktop" data-open="filter-modal">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "Filters", 'disciple_tools' ) ?></span>
                 </a>
@@ -99,10 +99,10 @@ dt_please_log_in();
     </div>
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
-        <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
+        <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
         </a>
-        <a class="button" data-open="filter-modal">
+        <a class="button filter-posts-mobile" data-open="filter-modal">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
         </a>
         <a class="button" id="open-search">
@@ -200,7 +200,7 @@ dt_please_log_in();
             <main id="main" class="large-9 cell padding-bottom" role="main">
                 <div class="bordered-box">
                     <div >
-                        <span class="section-header" style="display: inline-block">
+                        <span class="section-header posts-header" style="display: inline-block">
                             <?php echo esc_html( sprintf( _x( '%s List', 'Contacts List', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_plural"] ) ) ?>
                         </span>
                         <span id="list-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
@@ -459,7 +459,7 @@ dt_please_log_in();
                                             if ( isset( $b["show_in_table"] ) ){
                                                 $b_order = is_numeric( $b["show_in_table"] ) ? $b["show_in_table"] : 90;
                                             }
-                                            return $a_order > $b_order;
+                                            return $a_order <=> $b_order;
                                         });
                                         foreach ( $post_settings["fields"] as $field_key => $field_value ){
                                             if ( ( isset( $field_value["show_in_table"] ) && $field_value["show_in_table"] ) ){
@@ -554,6 +554,13 @@ dt_please_log_in();
                                         </div>
                                     </div>
                                 </div>
+                                <?php if ( $field_options[$field]["type"] === 'connection' ) : ?>
+                                    <p>
+                                        <label><?php echo esc_html( sprintf( _x( 'All %1$s with %2$s', 'All Contacts with Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
+                                            <input class="all-connections" type="checkbox" value="all-connections" />
+                                        </label>
+                                    </p>
+                                <?php endif; ?>
                                 <?php if ( $field === "subassigned" ): ?>
                                     <p>
                                         <label><?php esc_html_e( "Filter for subassigned OR Assigned To", 'disciple_tools' ) ?>
@@ -568,8 +575,20 @@ dt_please_log_in();
                                 <div class="section-header"><?php echo esc_html( $field === "post_date" ? __( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :
+                                        if ( !isset( $field_options[$field]["default"]["none"] ) ) :?>
+                                            <div class="key_select_options">
+                                                <label style="cursor: pointer">
+                                                    <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
+                                                           value="none"> <?php echo esc_html__( "None Set", "disciple_tools" ); ?>
+                                                </label>
+                                            </div>
+                                        <?php endif;
                                         foreach ( $field_options[$field]["default"] as $option_key => $option_value ) :
-                                            $label = $option_value["label"] ?? ""?>
+                                            $label = $option_value["label"] ?? "";
+                                            if ( empty( $label ) && ( $option_key === "" || $option_key === "none" ) ){
+                                                $label = __( "None Set", "disciple_tools" );
+                                            }
+                                            ?>
                                             <div class="key_select_options">
                                                 <label style="cursor: pointer">
                                                     <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"

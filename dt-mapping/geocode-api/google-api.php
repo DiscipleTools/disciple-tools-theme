@@ -55,10 +55,10 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             $address     = str_replace( '   ', ' ', $address );
             $address     = str_replace( '  ', ' ', $address );
             $address     = urlencode( trim( $address ) );
-            $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&key=' . self::key();
+            $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&key=' . self::get_key();
             $details     = json_decode( self::url_get_contents( $url_address ), true );
 
-            if ( $details['status'] == 'ZERO_RESULTS' ) {
+            if ( ! isset( $details['status'] ) || $details['status'] === 'ZERO_RESULTS' ) {
                 return false;
             } else {
                 switch ( $type ) {
@@ -123,10 +123,10 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                 }
             }
 
-            $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&components=' . $component_string . '&key=' . self::key();
+            $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&components=' . $component_string . '&key=' . self::get_key();
             $details     = json_decode( self::url_get_contents( $url_address ), true );
 
-            if ( $details['status'] == 'ZERO_RESULTS' ) {
+            if ( ! isset( $details['status'] ) || $details['status'] === 'ZERO_RESULTS' ) {
                 return false;
             } else {
                 return $details;
@@ -145,10 +145,10 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             $latlng = trim( $latlng );
             $latlng = str_replace( ' ', '', $latlng );
 
-            $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $latlng . '&result_type=' . $result_type . '&key=' . self::key();
+            $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $latlng . '&result_type=' . $result_type . '&key=' . self::get_key();
             $details     = json_decode( self::url_get_contents( $url_address ), true );
 
-            if ( $details['status'] == 'ZERO_RESULTS' ) {
+            if ( ! isset( $details['status'] ) || $details['status'] === 'ZERO_RESULTS' ) {
                 return false;
             } else {
                 return $details; // raw response
@@ -191,14 +191,21 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                 }
             }
             $key = self::get_key();
-            $hidden_key = '**************' . substr( $key, -5, 5 );
 
-            if ( self::is_active_google_key() ) {
+            $google_key_active_state = self::is_active_google_key();
+            if ( $google_key_active_state['success'] ) {
                 $status_class = 'connected';
-                $message = 'Successfully connected to Google Maps API.';
+                $message      = 'Successfully connected to Google Maps API.';
             } else {
-                $status_class = '';
-                $message = 'API NOT CONFIGURED.';
+
+                // As a no-google-key is an ok state; no need to flag as an error
+                if ( ! empty( $key ) ) {
+                    $status_class = 'not-connected';
+                    $message      = ! empty( $google_key_active_state['message'] ) ? $google_key_active_state['message'] : 'API NOT CONFIGURED.';
+                } else {
+                    $status_class = 'connected';
+                    $message      = '';
+                }
             }
             ?>
             <form method="post">
@@ -218,7 +225,7 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                     <tr>
                         <td>
                             <?php wp_nonce_field( 'google_geocoding_key' . get_current_user_id(), 'google_geocoding_key_nonce' ); ?>
-                            Google API Key: <input type="text" class="regular-text" name="google_key" value="<?php echo ( $key ) ? esc_attr( $hidden_key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
+                            Google API Key: <input type="text" class="regular-text" name="google_key" value="<?php echo ( $key ) ? esc_attr( $key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
                         </td>
                     </tr>
                     <tr>
@@ -607,11 +614,48 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             return false;
         }
 
-        public static function is_active_google_key(){
-            // @todo test if key is live
+        public static function is_active_google_key(): array {
+            $key = self::get_key();
 
-            return self::get_key();
+            // Query all available api call types for - Denver, CO, USA
+            $response_api                 = self::query_google_api( 'Denver, CO, USA' );
+            $response_api_reverse         = self::query_google_api_reverse( '39.742043,-104.991531' ); // Denver, CO, USA - Lat,Long
+            $response_api_with_components = self::query_google_api_with_components( 'Denver, CO, USA' );
 
+            // Return response accordingly, based on returning status
+            $default_error_msg = 'API NOT CONFIGURED.';
+            if ( ( $response_api === false ) && ( $response_api_reverse === false ) && ( $response_api_with_components === false ) ) {
+                return [
+                    'success' => false,
+                    'message' => $default_error_msg
+                ];
+            }
+
+            // Individually check response statuses
+            if ( ! isset( $response_api['status'] ) || $response_api['status'] !== 'OK' ) {
+                return [
+                    'success' => false,
+                    'message' => ( isset( $response_api['error_message'] ) && ! empty( $response_api['error_message'] ) ) ? $response_api['error_message'] : $default_error_msg
+                ];
+            }
+            if ( ! isset( $response_api_reverse['status'] ) || $response_api_reverse['status'] !== 'OK' ) {
+                return [
+                    'success' => false,
+                    'message' => ( isset( $response_api_reverse['error_message'] ) && ! empty( $response_api_reverse['error_message'] ) ) ? $response_api_reverse['error_message'] : $default_error_msg
+                ];
+            }
+            if ( ! isset( $response_api_with_components['status'] ) || $response_api_with_components['status'] !== 'OK' ) {
+                return [
+                    'success' => false,
+                    'message' => ( isset( $response_api_with_components['error_message'] ) && ! empty( $response_api_with_components['error_message'] ) ) ? $response_api_with_components['error_message'] : $default_error_msg
+                ];
+            }
+
+            // If this point is reached, then simply return true
+            return [
+                'success' => true,
+                'message' => ''
+            ];
         }
 
         public static function load_google_geocoding_scripts() {

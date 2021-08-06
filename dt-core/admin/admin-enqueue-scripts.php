@@ -5,8 +5,8 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Enqueue Scripts for the site.
  *
- * @author  Chasm Solutions
- * @package Disciple_Tools
+ * @author  Disciple.Tools
+ * @package Disciple.Tools
  */
 
 /*
@@ -71,6 +71,7 @@ function dt_options_scripts() {
             'jquery',
             'jquery-ui-core',
             'jquery-ui-sortable',
+            'lodash'
         ], filemtime( disciple_tools()->admin_js_path . 'dt-options.js' ), true );
         wp_register_style( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css' );
         wp_enqueue_style( 'jquery-ui' );

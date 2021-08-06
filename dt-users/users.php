@@ -2,9 +2,9 @@
 /**
  * Contains create, update and delete functions for users, wrapping access to the database
  *
- * @package  Disciple_Tools
+ * @package  Disciple.Tools
  * @category Plugin
- * @author   Chasm.Solutions & Kingdom.Training
+ * @author   Disciple.Tools
  * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {
@@ -49,6 +49,12 @@ class Disciple_Tools_Users
 
         add_filter( 'dt_settings_js_data', [ $this, 'add_current_locations_list' ], 10, 1 );
         add_filter( 'dt_settings_js_data', [ $this, 'add_date_availability' ], 10, 1 );
+
+        add_action( 'delete_user', [ $this,'dt_delete_user_contact_meta' ], 10, 1 );
+
+        add_action( 'remove_user_from_blog', [ $this,'dt_delete_user_contact_meta' ], 10, 1 );
+        add_action( 'wpmu_delete_user', [ $this,'dt_multisite_delete_user_contact_meta' ], 10, 1 );
+
 
     }
 
@@ -358,7 +364,7 @@ class Disciple_Tools_Users
 
         }
 
-        return wp_redirect( get_site_url() ."/settings" );
+        return wp_redirect( get_site_url() ."/registered" );
     }
 
 
@@ -540,6 +546,14 @@ class Disciple_Tools_Users
         }
         if ( dt_is_rest() ){
             $data = json_decode( WP_REST_Server::get_raw_data(), true );
+
+            if ( isset( $data["locale"] ) && !empty( $data["locale"] ) ){
+                $locale = $data["locale"];
+                switch_to_locale( $locale );
+                $user = get_user_by( 'id', $user_id );
+                $user->locale = $locale;
+                wp_update_user( $user );
+            }
             if ( isset( $data["corresponds_to_contact"] ) ){
                 $corresponds_to_contact = $data["corresponds_to_contact"];
                 update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
@@ -566,6 +580,20 @@ class Disciple_Tools_Users
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
         if ( empty( $corresponds_to_contact ) ){
             self::create_contact_for_user( $user_id );
+        }
+        if ( isset( $_POST["dt_locale"] ) ) {
+            $userdata = get_user_by( 'id', $user_id );
+
+            if ( isset( $_POST["dt_locale"] )) {
+                if ( $_POST["dt_locale"] === "" ) {
+                    $locale = "en_US";
+                } else {
+                    $locale = sanitize_text_field( wp_unslash( $_POST["dt_locale"] ) );
+                }
+            }
+            $userdata->locale = sanitize_text_field( wp_unslash( $locale ) );
+
+            wp_update_user( $userdata );
         }
     }
 
@@ -760,6 +788,10 @@ class Disciple_Tools_Users
      * @param $user
      */
     public function custom_user_profile_fields( $user ){
+        if ( ! user_can( get_current_user_id(), 'access_contacts' ) ) {
+            return;
+        }
+
         $contact_id = "";
         $contact_title = "";
         if ( $user != "add-new-user" && $user != "add-existing-user" && isset( $user->ID ) ) {
@@ -774,6 +806,9 @@ class Disciple_Tools_Users
         if ( empty( $contact_title ) ) : ?>
             <script type="application/javascript">
                 jQuery(document).ready(function($) {
+                    //removes the Wordpress Language selector that only shows the Wordpress languages and not the Disciple tools languages.
+                    jQuery(".form-field.user-language-wrap").remove();
+
                     jQuery(".corresponds_to_contact").each(function () {
                         jQuery(this).autocomplete({
                             source: function (request, response) {
@@ -823,6 +858,26 @@ class Disciple_Tools_Users
                             </span>
                         <?php endif; ?>
                     <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="dt_locale"><?php esc_html_e( "User Language", 'disciple_tools' ) ?></label></th>
+                <td>
+                    <?php
+                         $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+                         $translations = dt_get_translations();
+                         $site_default_locale = get_option( 'WPLANG' );
+                    wp_dropdown_languages( array(
+                        'name'                        => 'dt_locale',
+                        'id'                          => 'dt_locale',
+                        'selected'                    => $site_default_locale,
+                        'languages'                   => $dt_available_languages,
+                        'show_available_translations' => false,
+                        'show_option_site_default'    => false,
+                        'show_option_en_us'           => true,
+                        'translations'                => $translations
+                    ) );
+                    ?>
                 </td>
             </tr>
         </table>
@@ -910,64 +965,15 @@ class Disciple_Tools_Users
         }
     }
 
-    private static function invite_existing_user_to_site( $user_id, $user_email, $role ){
-        $user_details = get_user_by( "ID", $user_id );
-        $newuser_key = wp_generate_password( 20, false );
-        add_option(
-            'new_user_' . $newuser_key,
-            array(
-                'user_id' => $user_id,
-                'email'   => $user_details->user_email,
-                'role'    => $role,
-            )
-        );
-
-        $all_roles = wp_roles()->roles;
-        $roles = apply_filters( 'editable_roles', $all_roles );
-        $role  = $roles[ $role ];
-
-        /**
-         * Fires immediately after a user is invited to join a site, but before the notification is sent.
-         *
-         * @since 4.4.0
-         *
-         * @param int    $user_id     The invited user's ID.
-         * @param array  $role        The role of invited user.
-         * @param string $newuser_key The key of the invitation.
-         */
-        do_action( 'invite_user', $user_id, $role, $newuser_key );
-
-        $switched_locale = switch_to_locale( get_user_locale( $user_details ) );
-
-        /* translators: 1: Site name, 2: site URL, 3: role, 4: activation URL */
-        $message = __(
-            'Hi,
-
-You\'ve been invited to join \'%1$s\' at
-%2$s with the role of %3$s.
-
-Please click the following link to confirm the invite:
-%4$s', 'disciple_tools'
-        );
-
-        /* translators: Joining confirmation notification email subject. %s: Site title */
-        wp_mail( $user_email, sprintf( __( '[%s] Joining Confirmation', 'disciple_tools' ), wp_specialchars_decode( get_option( 'blogname' ) ) ), sprintf( $message, get_option( 'blogname' ), home_url(), wp_specialchars_decode( translate_user_role( $role['name'] ) ), home_url( "/newbloguser/$newuser_key/" ) ) );
-
-        if ( $switched_locale ) {
-            restore_previous_locale();
-        }
-        return $user_id;
-    }
-
     /**
      * @param $user_name
      * @param $user_email
      * @param $display_name
-     * @param string $user_role
+     * @param array $user_roles
      * @param null $corresponds_to_contact
      * @return int|WP_Error
      */
-    public static function create_user( $user_name, $user_email, $display_name, $user_role = 'multiplier', $corresponds_to_contact = null ){
+    public static function create_user( $user_name, $user_email, $display_name, array $user_roles = [ 'multiplier' ], $corresponds_to_contact = null, $locale = null ){
         if ( !current_user_can( "create_users" ) ){
             return new WP_Error( "no_permissions", "You don't have permissions to create users", [ 'status' => 401 ] );
         }
@@ -996,18 +1002,14 @@ Please click the following link to confirm the invite:
             }
         } else {
 
-            if ( 'dt_admin' === $user_role || 'administrator' === $user_role ) {
-                return new WP_Error( "failed_to_add_user", __( "Error setting user role to administrator or Disciple.Tools Admin.", 'disciple_tools' ) );
-            }
-
             $user_id = register_new_user( $user_name, $user_email );
             if ( is_wp_error( $user_id ) ){
                 return $user_id;
             }
             $user = get_user_by( 'id', $user_id );
             $user->display_name = $display_name;
-            $user->set_role( $user_role );
             wp_update_user( $user );
+            self::save_user_roles( $user_id, $user_roles );
         }
 
         global $wpdb;
@@ -1021,6 +1023,35 @@ Please click the following link to confirm the invite:
         }
 
         return $user_id;
+    }
+
+    public static function save_user_roles( $user_id, $roles ){
+        // If the current user can't promote users or edit this particular user, bail.
+
+        $can_not_promote_to_roles = [];
+        if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
+            $can_not_promote_to_roles = [ 'administrator' ];
+        }
+        if ( !current_user_can( 'manage_dt' ) ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
+        }
+
+        // Create a new user object.
+        $u = new WP_User( $user_id );
+
+        // Sanitize the posted roles.
+        $new_roles = array_map( 'dt_multi_role_sanitize_role', array_map( 'sanitize_text_field', wp_unslash( $roles ) ) );
+
+        // Loop through the posted roles.
+        foreach ( $new_roles as $new_role ) {
+
+            // If the user doesn't already have the role, add it.
+            if ( dt_multi_role_is_role_editable( $new_role ) ) {
+                if ( !in_array( $new_role, $can_not_promote_to_roles ) ){
+                    $u->add_role( $new_role );
+                }
+            }
+        }
     }
 
 
@@ -1066,12 +1097,7 @@ Please click the following link to confirm the invite:
         }
         return $val;
     }
-    public function user_deleted( $user_id, $blog_id = null ){
-        $corresponds_to_contact = self::get_contact_for_user( $user_id );
-        if ( $corresponds_to_contact ){
-            delete_post_meta( $corresponds_to_contact, "corresponds_to_user" );
-        }
-    }
+
     public function add_date_availability( $custom_data ) {
         $dates_unavailable = get_user_option( "user_dates_unavailable", get_current_user_id() );
         if ( !$dates_unavailable ) {
@@ -1214,15 +1240,30 @@ Please click the following link to confirm the invite:
         return $grid;
     }
 
-    public static function copy_locations_from_contact_to_user( $contact_id, $user_id ) {
-        // @todo finish writing transfer
-        $contact_meta = get_post_meta( $contact_id, 'location_grid' );
-        if ( ! empty( $contact_meta ) ) {
-            foreach ( $contact_meta as $item ) {
-                dt_write_log( $item );
+    public static function dt_delete_user_contact_meta( $user_id ) {
+        global $wpdb;
+        $wpdb->get_results(
+            $wpdb->prepare( "DELETE FROM $wpdb->postmeta pm WHERE meta_key = 'corresponds_to_user' AND pm.meta_value = %d
+            ", $user_id )
+        );
+    }
+
+    /** Multisite Only
+     *  This will remove the 'corresponds_to_user' meta key and value from all sites on the network if deleted by a super admin
+     */
+    public static function dt_multisite_delete_user_contact_meta( $user_id ) {
+        $blogs = get_sites();
+        if ( ! empty( $blogs ) ) {
+            foreach ( $blogs as $blog ) {
+                switch_to_blog( $blog->userblog_id );
+                global $wpdb;
+                $wpdb->get_results(
+                    $wpdb->prepare( "DELETE FROM $wpdb->postmeta pm WHERE meta_key = 'corresponds_to_user' AND pm.meta_value = %d
+                    ", $user_id )
+                );
+
+                restore_current_blog();
             }
         }
     }
-
-
 }

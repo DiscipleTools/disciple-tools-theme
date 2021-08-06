@@ -57,14 +57,16 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'access_specific_sources' => true,
                 'assign_any_contacts' => true, //assign contacts to others,
                 'view_project_metrics' => true,
-            ], $multiplier_permissions )
+            ], $multiplier_permissions ),
+            "order" => 30
         ];
         $expected_roles['partner'] = [
             "label" => __( "Partner", "disciple_tools" ),
             "description" => "Allow access to a specific contact source so a partner can see progress",
             "permissions" => wp_parse_args( [
                 'access_specific_sources' => true,
-            ], $multiplier_permissions )
+            ], $multiplier_permissions ),
+            "order" => 35
         ];
         $expected_roles['dispatcher'] = [
             "label" => __( "Dispatcher", "disciple_tools" ),
@@ -75,7 +77,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'list_users' => true,
                 'dt_list_users' => true,
                 'assign_any_contacts' => true, //assign contacts to others
-            ], $multiplier_permissions )
+            ], $multiplier_permissions ),
+            "order" => 20
         ];
         $expected_roles["administrator"]["permissions"]["dt_all_access_contacts"] = true;
         $expected_roles["administrator"]["permissions"]["assign_any_contacts"] = true;
@@ -186,7 +189,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'custom_display' => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/status.svg",
                 "show_in_table" => 10,
-                "only_for_types" => [ "access" ]
+                "only_for_types" => [ "access" ],
+                "select_cannot_be_empty" => true
             ];
 
             $fields["reason_unassignable"] = [
@@ -347,7 +351,7 @@ class DT_Contacts_Access extends DT_Module_Base {
 
             //order overall status options
             uksort( $declared_fields["overall_status"]["default"], function ( $a, $b ) use ( $fields ){
-                return array_search( $a, array_keys( $fields["overall_status"]["default"] ) ) > array_search( $b, array_keys( $fields["overall_status"]["default"] ) );
+                return array_search( $a, array_keys( $fields["overall_status"]["default"] ) ) <=> array_search( $b, array_keys( $fields["overall_status"]["default"] ) );
             } );
             $fields = $declared_fields;
         }
@@ -567,22 +571,9 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( ( !isset( $existing_post["type"]["key"] ) || $existing_post["type"]["key"] !== "access" ) && ( !isset( $fields["type"] ) || $fields["type"] !== "access" ) ){
                 return $fields;
             }
+            //make sure and access contact is assigned to a user
             if ( isset( $fields["assigned_to"] ) ) {
-                if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
-                    $user = get_user_by( "email", $fields["assigned_to"] );
-                    if ( $user ) {
-                        $fields["assigned_to"] = $user->ID;
-                    } else {
-                        return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
-                    }
-                }
-                //make sure the assigned to is in the right format (user-1)
-                if ( is_numeric( $fields["assigned_to"] ) ||
-                    strpos( $fields["assigned_to"], "user" ) === false ){
-                    $fields["assigned_to"] = "user-" . $fields["assigned_to"];
-                }
-                $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
-                if ( !isset( $existing_contact["assigned_to"] ) || $fields["assigned_to"] !== $existing_contact["assigned_to"]["assigned-to"] ){
+                if ( !isset( $existing_post["assigned_to"] ) || $fields["assigned_to"] !== $existing_post["assigned_to"]["assigned-to"] ){
                     $user_id = explode( '-', $fields["assigned_to"] )[1];
                     if ( !isset( $fields["overall_status"] ) ){
                         if ( $user_id != get_current_user_id() ){
@@ -590,7 +581,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                                 $fields["overall_status"] = 'assigned';
                             }
                             $fields['accepted'] = false;
-                        } elseif ( isset( $existing_contact["overall_status"]["key"] ) && $existing_contact["overall_status"]["key"] === "assigned" ) {
+                        } elseif ( isset( $existing_post["overall_status"]["key"] ) && $existing_post["overall_status"]["key"] === "assigned" ) {
                             $fields["overall_status"] = 'active';
                         }
                     }
@@ -632,12 +623,6 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( !isset( $post["type"]["key"] ) || $post["type"]["key"] !== "access" ){
                 return;
             }
-            if ( isset( $post["assigned_to"] ) ) {
-                if ( $post["assigned_to"]["id"] ) {
-                    // share the post with the assigned to user.
-                    DT_Posts::add_shared( $post_type, $post_id, $post["assigned_to"]["id"], null, false, false, false );
-                }
-            }
             //check for duplicate along other access contacts
             $this->check_for_duplicates( $post_type, $post_id );
         }
@@ -673,19 +658,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                     }
                 }
                 $fields["assigned_to"] = sprintf( "user-%d", $base_id );
-            }
-        } else {
-            if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
-                $user = get_user_by( "email", $fields["assigned_to"] );
-                if ( $user ) {
-                    $fields["assigned_to"] = $user->ID;
-                } else {
-                    return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
-                }
-            }
-            if ( is_numeric( $fields["assigned_to"] ) ||
-                strpos( $fields["assigned_to"], "user" ) === false ){
-                $fields["assigned_to"] = "user-" . $fields["assigned_to"];
             }
         }
         if ( !isset( $fields["overall_status"] ) ){
@@ -1109,7 +1081,9 @@ class DT_Contacts_Access extends DT_Module_Base {
             } else if ( current_user_can( 'access_specific_sources' ) ){
                 //give user permission to all 'access' that also have a source the user can view.
                 $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-                if ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
+                if ( in_array( 'all', $allowed_sources, true ) ){
+                    $permissions["type"] = [ "access" ];
+                } elseif ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
                     $permissions[] = [ "type" => [ "access" ], "sources" => $allowed_sources];
                 }
             }

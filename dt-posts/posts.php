@@ -3,7 +3,7 @@
  * Contains create, update and delete functions for posts, wrapping access to
  * the database
  *
- * @package  Disciple_Tools
+ * @package  Disciple.Tools
  * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {
@@ -171,8 +171,8 @@ class Disciple_Tools_Posts
     }
 
 
-    public static function get_label_for_post_type( $post_type, $singular = false ){
-        $post_settings = DT_Posts::get_post_settings( $post_type );
+    public static function get_label_for_post_type( $post_type, $singular = false, $return_cache = true ){
+        $post_settings = DT_Posts::get_post_settings( $post_type, $return_cache );
         if ( $singular ){
             if ( isset( $post_settings["label_singular"] ) ){
                 return $post_settings["label_singular"];
@@ -218,26 +218,48 @@ class Disciple_Tools_Posts
         // Get p2p record
         $p2p_record = p2p_get_connection( (int) $p2p_id ); // returns object
 
+        $from_title = "";
+        $from_link = "";
+        $to_title = "";
+        $to_link = "";
+
         if ( !$p2p_record ){
             if ( $activity->field_type === "connection from" ){
                 $from = get_post( $activity->object_id );
                 $to = get_post( $activity->meta_value );
-                $from_title = wp_specialchars_decode( isset( $from->post_title ) ? $from->post_title : "" );
-                $to_title = wp_specialchars_decode( isset( $to->post_title ) ? $to->post_title : "" ) ?? '#' . $activity->meta_value;
+                $to_title = '#' . $activity->meta_value;
             } elseif ( $activity->field_type === "connection to" ){
                 $to = get_post( $activity->object_id );
                 $from = get_post( $activity->meta_value );
-                $to_title = wp_specialchars_decode( isset( $to->post_title ) ? $to->post_title : "" );
-                $from_title = wp_specialchars_decode( isset( $from->post_title ) ? $from->post_title : "" ) ?? '#' . $activity->meta_value;
+                $from_title = '#' . $activity->meta_value;
             } else {
                 return "CONNECTION DESTROYED";
+            }
+            if ( isset( $from->post_title ) ){
+                $from_title = $from->post_title;
+                $from_link = get_permalink( $from->ID );
+            }
+            if ( isset( $to->post_title ) ){
+                $to_title = $to->post_title;
+                $to_link = get_permalink( $to->ID );
             }
         } else {
             $p2p_from = get_post( $p2p_record->p2p_from, ARRAY_A );
             $p2p_to = get_post( $p2p_record->p2p_to, ARRAY_A );
-            $from_title = wp_specialchars_decode( $p2p_from["post_title"] );
-            $to_title = wp_specialchars_decode( $p2p_to["post_title"] );
+            $to_title = $p2p_to["post_title"];
+            $to_link = get_permalink( $p2p_record->p2p_to );
+            $from_title = $p2p_from["post_title"];
+            $from_link = get_permalink( $p2p_record->p2p_from );
         }
+
+        //create link format to be clicked in activity
+        if ( !empty( $to_link ) ){
+            $to_title = "[" . wp_specialchars_decode( $to_title ) . "](" . $to_link .")";
+        }
+        if ( !empty( $from_link ) ){
+            $from_title = "[" . wp_specialchars_decode( $from_title ) . "](" . $from_link .")";
+        }
+
         $object_note_from = '';
         $object_note_to = '';
 
@@ -711,6 +733,9 @@ class Disciple_Tools_Posts
                                 }
                                 if ( $field_type === "key_select" ){
                                     $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
+                                    if ( $value === "none" ){
+                                        $where_sql .= " OR $table_key.meta_value IS NULL ";
+                                    }
                                 }
                                 if ( $field_type === "multi_select" ){
                                     if ( $equality === "!=" && $field_type === "multi_select" ){
@@ -783,13 +808,16 @@ class Disciple_Tools_Posts
                             }
                             if ( !empty( $in ) ){
                                 $connection_ids = dt_array_to_sql( $in );
+                                $all_key = '*';
                                 if ( $field_settings[$query_key]["p2p_direction"] === "to" ){
+                                    $from_connection_ids = ( in_array( $all_key, $in, true ) ) ? "" : "AND p2p_from IN (" .  $connection_ids .")";
                                     $where_sql .= " p.ID IN (
-                                        SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" .  $connection_ids .")
+                                        SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' $from_connection_ids
                                     ) ";
                                 } else {
+                                    $to_connection_ids = ( in_array( $all_key, $in, true ) ) ? "" : "AND p2p_to IN (" .  $connection_ids .")";
                                     $where_sql .= " p.ID IN (
-                                        SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" .  $connection_ids .")
+                                        SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' $to_connection_ids
                                     ) ";
                                 }
                             }
@@ -1109,9 +1137,15 @@ class Disciple_Tools_Posts
         }
 
         if ( empty( $sort_sql ) && isset( $sort, $post_fields[$sort] ) ) {
+            if ( isset( $post_fields[$sort]['private'] ) && $post_fields[$sort]['private'] ) {
+                $meta_table = $wpdb->dt_post_user_meta;
+            } else {
+                $meta_table = $wpdb->postmeta;
+            }
+
             if ( $post_fields[$sort]["type"] === "key_select" ) {
                 $keys = array_keys( $post_fields[ $sort ]["default"] );
-                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql  = "CASE ";
                 foreach ( $keys as $index => $key ) {
                     $sort_sql .= "WHEN ( sort.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
@@ -1124,7 +1158,7 @@ class Disciple_Tools_Posts
                 $keys = array_reverse( array_keys( $post_fields[$sort]["default"] ) );
                 foreach ( $keys as $index  => $key ){
                     $alias = $sort . '_' . esc_sql( $key );
-                    $joins .= "LEFT JOIN $wpdb->postmeta as $alias ON
+                    $joins .= "LEFT JOIN $meta_table as $alias ON
                     ( p.ID = $alias.post_id AND $alias.meta_key = '$sort' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
                     $sort_sql .= "WHEN ( $alias.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
                 }
@@ -1147,9 +1181,12 @@ class Disciple_Tools_Posts
             } elseif ( $post_fields[$sort]["type"] === "location" ){
                 $joins = "LEFT JOIN $wpdb->postmeta sort ON ( sort.post_id = p.ID AND sort.meta_key = '$sort' AND sort.meta_id = ( SELECT meta_id FROM $wpdb->postmeta pm_sort where pm_sort.post_id = p.ID AND pm_sort.meta_key = '$sort' LIMIT 1 ) )";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
+            } elseif ( $post_fields[$sort]["type"] === "boolean" ){
+                $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql = "sort.meta_value $sort_dir";
             } else {
-                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
+                $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', sort.meta_value $sort_dir";
             }
         }
         if ( empty( $sort_sql ) ){
@@ -1208,7 +1245,7 @@ class Disciple_Tools_Posts
         }
         return [
             "posts" => $posts,
-            "total" => $total_rows,
+            "total" => (int) $total_rows,
         ];
     }
 
@@ -1547,6 +1584,34 @@ class Disciple_Tools_Posts
         return $fields;
     }
 
+
+    public static function update_post_user_select( string $post_type, int $post_id, array $post_fields ){
+        $post_settings = DT_Posts::get_post_field_settings( $post_type );
+        foreach ( $post_fields as $field_key => $field_value ){
+            if ( isset( $post_settings[$field_key]["type"] ) && $post_settings[$field_key]["type"] === "user_select" ){
+                //if the value is an email
+                if ( filter_var( $field_value, FILTER_VALIDATE_EMAIL ) ){
+                    $user = get_user_by( "email", $field_value );
+                    if ( $user ) {
+                        $field_value = $user->ID;
+                    } else {
+                        return new WP_Error( __FUNCTION__, "Unrecognized user", $field_value );
+                    }
+                }
+                if ( is_numeric( $field_value ) || strpos( $field_value, "user" ) === false ){
+                    $field_value = "user-" . $field_value;
+                }
+                if ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ){
+                    return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
+                }
+                update_post_meta( $post_id, $field_key, $field_value );
+                $user_id = explode( '-', $field_value )[1];
+                DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false, false );
+            }
+        }
+        return true;
+    }
+
     public static function update_post_contact_methods( array $post_settings, int $post_id, array $fields, array $existing_contact = null ){
         // update contact details (phone, facebook, etc)
         foreach ( $post_settings["fields"] as $field_key => $field_settings ) {
@@ -1618,8 +1683,15 @@ class Disciple_Tools_Posts
     }
 
 
-
-
+    /**
+     * Create or update the dt_post_user_meta field
+     *
+     * @param array $field_settings
+     * @param int $post_id
+     * @param array $fields
+     * @param array $existing_record
+     * @return WP_Error
+     */
     public static function update_post_user_meta_fields( array $field_settings, int $post_id, array $fields, array $existing_record ){
         global $wpdb;
         foreach ( $fields as $field_key => $field ) {
@@ -1711,7 +1783,8 @@ class Disciple_Tools_Posts
                 }
             }
 
-            if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && ( $field_settings[ $field_key ]["type"] === "text" || $field_settings[ $field_key ]["type"] === "textarea" || $field_settings[ $field_key ]["type"] === "date" || $field_settings[ $field_key ]["type"] === "key_select" || $field_settings[ $field_key ]["type"] === "boolean" || $field_settings[ $field_key ]["type"] === "number" ) ) {
+            $private_field_types = [ "text", "textarea", "date", "key_select", "boolean", "number" ];
+            if ( isset( $field_settings[ $field_key ]["type"] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && in_array( $field_settings[ $field_key ]["type"], $private_field_types, true ) ) {
                 if ( $field_settings[ $field_key ]["type"] === "boolean" ){
                     if ( $fields[$field_key] === "1" || $fields[$field_key] === "yes" || $fields[$field_key] === "true" ){
                         $field_value = true;
@@ -2184,7 +2257,7 @@ class Disciple_Tools_Posts
                             $fields[$m["meta_key"]] = [];
                         }
                         $key = $m['meta_value'];
-                        $label = $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'];
+                        $label = isset( $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'] ) ? $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'] : $key;
                         $fields[$m["meta_key"]] = array( 'key' => $key, 'label' => $label  );
 
                     } else if ( $field_settings[$m['meta_key']]['type'] === 'date' ){

@@ -147,7 +147,7 @@ function dt_site_scripts() {
         )
     );
 
-    dt_theme_enqueue_script( 'dt-notifications', 'dt-assets/js/notifications.js', array( 'jquery' ) );
+    dt_theme_enqueue_script( 'dt-notifications', 'dt-assets/js/notifications.js', array( 'jquery' ), true );
     wp_localize_script(
         'dt-notifications', 'wpApiNotifications', array(
             'root' => esc_url_raw( rest_url() ),
@@ -281,6 +281,7 @@ function dt_site_scripts() {
                     'add' => __( 'Add', 'disciple_tools' ),
                     'save' => __( 'Save', 'disciple_tools' ),
                     'link' => __( 'link', 'disciple_tools' ),
+                    'copy' => __( 'copy', 'disciple_tools' ),
                 ] ),
                 'google_translate_api_key' => get_option( 'dt_googletranslate_api_key' ),
                 'custom_data'           => apply_filters( 'dt_settings_js_data', [] ), // nest associated array
@@ -322,7 +323,8 @@ function dt_site_scripts() {
             'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
             'filter_all' => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), $post_settings["label_plural"] ),
             'range_start' => __( 'start', 'disciple_tools' ),
-            'range_end' => __( 'end', 'disciple_tools' )
+            'range_end' => __( 'end', 'disciple_tools' ),
+            'all' => __( 'All', 'disciple_tools' ),
         ];
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
         dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );
@@ -355,7 +357,7 @@ function dt_site_scripts() {
         ) );
     }
 
-    dt_theme_enqueue_script( 'dt-advanced-search', 'dt-assets/js/advanced-search.js', array( 'jquery' ) );
+    dt_theme_enqueue_script( 'dt-advanced-search', 'dt-assets/js/advanced-search.js', array( 'jquery' ), true );
     wp_localize_script( 'dt-advanced-search', 'advanced_search_settings', array(
         'template_dir_uri' => esc_html( get_template_directory_uri() ),
         'fetch_more_text' => __( 'load more', 'disciple_tools' ) // Support translations

@@ -67,7 +67,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
          *          Also supports WP installations in subfolders
          *
          * @returns boolean
-         * @author matzeeable
          */
         function dt_is_rest( $namespace = null ) {
             $prefix = rest_get_url_prefix();
@@ -254,14 +253,17 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $translations = dt_get_translations();
             $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
             $available_translations = [];
+            $site_default_locale = get_option( 'WPLANG' );
 
             array_push( $available_translations, array(
                 'language' => 'en_US',
-                'native_name' => 'English'
+                'english_name' => 'English (United States)',
+                'native_name' => 'English (United States)'
             ) );
 
             foreach ( $available_language_codes as $code ){
                 if ( isset( $translations[$code] )){
+                    $translations[$code]['site_default'] = $site_default_locale === $translations[$code]["language"];
                     $available_translations[] = $translations[$code];
                 }
             }
@@ -432,13 +434,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     }
                 }
                 ?>
-                <select class="select-field <?php echo esc_html( $color_select ? "color-select" : "" ); ?>" id="<?php echo esc_html( $display_field_id ); ?>" style="<?php echo esc_html( $color_select ? ( "background-color: " . $active_color ) : "" ); ?>">
-                    <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: "selected" ) ?>></option>
+                <select class="select-field <?php echo esc_html( $color_select ? "color-select" : "" ); ?>" id="<?php echo esc_html( $display_field_id ); ?>" style="<?php echo esc_html( $color_select ? ( "background-color: " . $active_color ) : "" ); ?>" <?php echo esc_html( $required_tag ) ?>>
+                    <?php if ( !isset( $fields[$field_key]["default"]["none"] ) && empty( $fields[$field_key]["select_cannot_be_empty"] ) ) : ?>
+                        <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: "selected" ) ?>></option>
+                    <?php endif; ?>
                     <?php foreach ($fields[$field_key]["default"] as $option_key => $option_value):
                         if ( !$show_hidden && isset( $option_value["hidden"] ) && $option_value["hidden"] === true ){
                             continue;
                         }
-                        $selected = isset( $post[$field_key]["key"] ) && $post[$field_key]["key"] === $option_key; ?>
+                        $selected = isset( $post[$field_key]["key"] ) && $post[$field_key]["key"] === strval( $option_key ); ?>
                         <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
                             <?php echo esc_html( $option_value["label"] ) ?>
                         </option>
@@ -529,7 +533,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
-                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" data-field="<?php echo esc_html( $display_field_id ); ?>"
+                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" data-field="<?php echo esc_html( $field_key ); ?>"
                                            data-post_type="<?php echo esc_html( $fields[$field_key]["post_type"] ) ?>"
                                            data-field_type="connection"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]"

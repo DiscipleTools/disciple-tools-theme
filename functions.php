@@ -81,7 +81,7 @@ else {
      *
      * @class   Disciple_Tools
      * @since   0.1.0
-     * @package Disciple_Tools
+     * @package Disciple.Tools
      */
     class Disciple_Tools
     {
@@ -149,7 +149,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.5.0';
+            $this->version = '1.9.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -178,6 +178,9 @@ else {
             require_once( get_template_directory() . '/dt-core/configuration/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
             require_once( get_template_directory() . '/dt-core/configuration/restrict-site-access.php' ); // protect against DDOS attacks.
             require_once( get_template_directory() . '/dt-core/configuration/dt-configuration.php' ); //settings and configuration to alter default WP
+            require_once( get_template_directory() . '/dt-reports/magic-url-class.php' );
+            require_once( get_template_directory() . '/dt-reports/magic-url-base.php' );
+
 
             /**
              * User Groups & Multi Roles
@@ -314,12 +317,11 @@ else {
             require_once( get_template_directory() . '/dt-users/users-template.php' );
             require_once( get_template_directory() . '/dt-users/users-endpoints.php' );
             $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
-            if ( !$is_rest ){
-                require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
-            }
             require_once( get_template_directory() . '/dt-users/user-management.php' );
             require_once( get_template_directory() . '/dt-users/hover-coverage-map.php' );
             require_once( get_template_directory() . '/dt-users/mapbox-coverage-map.php' );
+            require_once( get_template_directory() . '/dt-users/template-no-permission.php' );
+
 
 
             /**
@@ -352,8 +354,6 @@ else {
              * Reports
              */
             require_once( get_template_directory() . '/dt-reports/reports.php' );
-            require_once( get_template_directory() . '/dt-reports/magic-url-class.php' );
-            require_once( get_template_directory() . '/dt-reports/magic-url-base.php' );
 
             /**
              * Workflows
@@ -456,13 +456,21 @@ else {
      */
     function dt_route_front_page() {
         if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+            /**
+             * Use this filter to add a new landing page for logged in users with 'access_contacts' capabilities
+             */
             wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/contacts' ) ) );
         }
         else if ( ! is_user_logged_in() ) {
             dt_please_log_in();
         }
         else {
-            wp_safe_redirect( home_url( '/settings' ) );
+            /**
+             * Use this filter to give a front page for logged in users who do not have basic 'access_contacts' capabilities
+             * This is used for specific custom roles that are not intended to see the basic framework of DT.
+             * Use this to create a dedicated landing page for partners, donors, or subscribers.
+             */
+            wp_safe_redirect( apply_filters( 'dt_non_standard_front_page', home_url( '/registered' ) ) );
         }
     }
     function set_up_wpdb_tables(){
