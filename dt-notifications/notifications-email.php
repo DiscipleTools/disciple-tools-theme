@@ -131,7 +131,7 @@ function dt_make_post_email_footer( int $post_id ) {
 
 function dt_make_post_email_subject( $post_id ) {
     $post_type = get_post_type( $post_id );
-    $post_label = Disciple_Tools_Posts::get_label_for_post_type( $post_type, true );
+    $post_label = Disciple_Tools_Posts::get_label_for_post_type( $post_type, true, $return_cache = false );
     return sprintf( esc_html_x( 'Update on %1$s #%2$s', 'ex: Update on Contact #323', 'disciple_tools' ), $post_label, $post_id );
 }
 
