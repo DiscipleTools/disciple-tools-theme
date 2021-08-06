@@ -1029,7 +1029,7 @@ class Disciple_Tools_Users
     /**
      * Translate email using theme translation domain
      */
-    public static function wp_new_user_notification_email($wp_new_user_notification_email, $user, $blogname){
+    public static function wp_new_user_notification_email( $wp_new_user_notification_email, $user, $blogname ){
 
         dt_switch_locale_for_notifications( $user->ID );
 
