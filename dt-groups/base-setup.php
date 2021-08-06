@@ -630,14 +630,17 @@ class DT_Groups_Base extends DT_Module_Base {
     public function dt_post_update_fields( $fields, $post_type, $post_id ){
         if ( $post_type === "groups" ){
             $existing_group = DT_Posts::get_post( 'groups', $post_id, true, false );
+            //if group is updated to church, set the group start date
             if ( isset( $fields["group_type"] ) && empty( $fields["church_start_date"] ) && empty( $existing_group["church_start_date"] ) && $fields["group_type"] === 'church' ){
                 $fields["church_start_date"] = time();
             }
+            //if group is updated to inactive, set the group end date
             if ( isset( $fields["group_status"] ) && empty( $fields["end_date"] ) && empty( $existing_group["end_date"] ) && $fields["group_status"] === 'inactive' ){
                 $fields["end_date"] = time();
             }
         }
         if ( $post_type === "contacts" ){
+            //if updating a contact to be a loader of a group, also add the contact to the group members
             if ( isset( $fields["group_leader"]["values"] ) ){
                 $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
                 foreach ( $fields["group_leader"]["values"] as $leader ){
