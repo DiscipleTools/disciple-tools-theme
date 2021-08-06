@@ -55,6 +55,8 @@ class Disciple_Tools_Users
         add_action( 'remove_user_from_blog', [ $this,'dt_delete_user_contact_meta' ], 10, 1 );
         add_action( 'wpmu_delete_user', [ $this,'dt_multisite_delete_user_contact_meta' ], 10, 1 );
 
+        // translate emails
+        add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
 
     }
 
@@ -1001,7 +1003,6 @@ class Disciple_Tools_Users
                 }
             }
         } else {
-
             $user_id = register_new_user( $user_name, $user_email );
             if ( is_wp_error( $user_id ) ){
                 return $user_id;
@@ -1023,6 +1024,32 @@ class Disciple_Tools_Users
         }
 
         return $user_id;
+    }
+
+    /**
+     * Translate email using theme translation domain
+     */
+    public static function wp_new_user_notification_email($wp_new_user_notification_email, $user, $blogname){
+
+        dt_switch_locale_for_notifications( $user->ID );
+
+        /* Copied in from https://developer.wordpress.org/reference/functions/wp_new_user_notification/ line 2086ish */
+        $key = get_password_reset_key( $user );
+        if ( is_wp_error( $key ) ) {
+            return;
+        }
+
+        $subject = __( '[%s] Login Details', 'disciple_tools' );
+        $message  = sprintf( __( 'Username: %s', 'disciple_tools' ), $user->user_login ) . "\r\n\r\n";
+        $message .= __( 'To set your password, visit the following address:', 'disciple_tools' ) . "\r\n\r\n";
+        $message .= network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) . "\r\n\r\n";
+
+        $message .= wp_login_url() . "\r\n";
+
+        $wp_new_user_notification_email['subject'] = $subject;
+        $wp_new_user_notification_email['message'] = $message;
+
+        return $wp_new_user_notification_email;
     }
 
     public static function save_user_roles( $user_id, $roles ){
