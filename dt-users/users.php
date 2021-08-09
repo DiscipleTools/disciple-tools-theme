@@ -1063,19 +1063,47 @@ class Disciple_Tools_Users
         $user = get_user_by( 'ID', $user_id );
         $site = get_blog_details( $site_id );
 
-        $to = $user->user_email;
-
-        $subject = sprintf( __( '[%s] Login Details', 'disciple_tools' ), $site->blogname );
 
         $message = self::common_user_invite_text( $user->user_login, $site->blogname, $site->siteurl );
         $message .= sprintf( __( 'To log in click here: %s', 'disciple_tools' ), wp_login_url() )  . "\r\n";
 
-        wp_mail( $to, $subject, $message );
+        $dt_existing_user_notification_email = [
+            'to' => $user->user_email,
+            'subject' => __( '[%s] Login Details', 'disciple_tools' ),
+            'message' => $message,
+            'headers' => '',
+        ];
+
+        /**
+		 * Filters the contents of the existing user notification email sent to the new user.
+		 *
+		 * @since 1.10.0
+		 *
+		 * @param array   $dt_existing_user_notification_email {
+		 *     Used to build wp_mail().
+		 *
+		 *     @type string $to      The intended recipient - New user email address.
+		 *     @type string $subject The subject of the email.
+		 *     @type string $message The body of the email.
+		 *     @type string $headers The headers of the email.
+		 * }
+		 * @param WP_User $user     User object for new user.
+		 * @param string  $blogname The site title.
+		 */
+        $dt_existing_user_notification_email = apply_filters( 'dt_existing_user_notification_email', $dt_existing_user_notification_email, $user, $site->blogname );
+
+        wp_mail(
+            $dt_existing_user_notification_email['to'],
+            /* translators: Login details notification email subject. %s: Site title. */
+            sprintf( $dt_existing_user_notification_email['subject'], $site->blogname ),
+            $dt_existing_user_notification_email['message'],
+            $dt_existing_user_notification_email['headers'],
+        );
 
     }
 
     public static function common_user_invite_text( $username, $sitename, $url ) {
-        $message = sprintf( __( 'Hi %s', 'disciple_tools'), $username ) . "\r\n\r\n";
+        $message = sprintf( __( 'Hi %s,', 'disciple_tools'), $username ) . "\r\n\r\n";
         $message .= sprintf( __( 'You\'ve been invited to join %1$s at %2$s', 'disciple_tools'), $sitename, $url ) . "\r\n\r\n";
         $message .= sprintf( __( 'Username: %s', 'disciple_tools' ), $username ) . "\r\n\r\n";
 
