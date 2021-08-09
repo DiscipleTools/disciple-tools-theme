@@ -997,10 +997,11 @@ class Disciple_Tools_Users
             } else {
 
                 $blog_id = get_current_blog_id();
-                $addition = add_user_to_blog( $blog_id, $user_id, 'multiplier' );
+                $addition = add_user_to_blog( $blog_id, $user_id, $user_roles[0] ?? "multiplier" );
                 if ( is_wp_error( $addition ) ) {
                     return new WP_Error( "failed_to_add_user", __( "Failed to add user to site.", 'disciple_tools' ), [ 'status' => 409 ] );
                 }
+                self::save_user_roles( $user_id, $user_roles );
             }
         } else {
             $user_id = register_new_user( $user_name, $user_email );
@@ -1135,13 +1136,26 @@ class Disciple_Tools_Users
         // Sanitize the posted roles.
         $new_roles = array_map( 'dt_multi_role_sanitize_role', array_map( 'sanitize_text_field', wp_unslash( $roles ) ) );
 
+        // Get the current user roles.
+        $old_roles = (array) $u->roles;
+
         // Loop through the posted roles.
         foreach ( $new_roles as $new_role ) {
 
             // If the user doesn't already have the role, add it.
             if ( dt_multi_role_is_role_editable( $new_role ) ) {
-                if ( !in_array( $new_role, $can_not_promote_to_roles ) ){
+                if ( !in_array( $new_role, $can_not_promote_to_roles ) && !in_array( $new_role, $old_roles ) ){
                     $u->add_role( $new_role );
+                }
+            }
+        }
+        // Loop through the current user roles.
+        foreach ( $old_roles  as $old_role ) {
+
+            // If the role is editable and not in the new roles array, remove it.
+            if ( dt_multi_role_is_role_editable( $old_role ) && !in_array( $old_role, $new_roles ) ) {
+                if ( !in_array( $old_role, $can_not_promote_to_roles ) ){
+                    $u->remove_role( $old_role );
                 }
             }
         }
