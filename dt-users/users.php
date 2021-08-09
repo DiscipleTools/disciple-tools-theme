@@ -55,7 +55,9 @@ class Disciple_Tools_Users
         add_action( 'remove_user_from_blog', [ $this,'dt_delete_user_contact_meta' ], 10, 1 );
         add_action( 'wpmu_delete_user', [ $this,'dt_multisite_delete_user_contact_meta' ], 10, 1 );
 
-
+        // translate emails
+        add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
+        add_action( 'add_user_to_blog', [ $this, 'wp_existing_user_notification_email' ], 10, 3 );
     }
 
     /**
@@ -1001,7 +1003,6 @@ class Disciple_Tools_Users
                 }
             }
         } else {
-
             $user_id = register_new_user( $user_name, $user_email );
             if ( is_wp_error( $user_id ) ){
                 return $user_id;
@@ -1023,6 +1024,98 @@ class Disciple_Tools_Users
         }
 
         return $user_id;
+    }
+
+    /**
+     * Translate email using theme translation domain
+     */
+    public static function wp_new_user_notification_email( $wp_new_user_notification_email, $user, $blogname ){
+
+        dt_switch_locale_for_notifications( $user->ID );
+
+        /* Copied in from https://developer.wordpress.org/reference/functions/wp_new_user_notification/ line 2086ish */
+        $key = get_password_reset_key( $user );
+        if ( is_wp_error( $key ) ) {
+            return;
+        }
+
+        $subject = __( '[%s] Login Details', 'disciple_tools' );
+
+        $display_name = $user->user_login;
+        if ( dt_is_rest() ){
+            $data = json_decode( WP_REST_Server::get_raw_data(), true );
+            if ( isset( $data["user-display"] ) && !empty( $data["user-display"] ) ){
+                $display_name = sanitize_text_field( wp_unslash( $data["user-display"] ) );
+            }
+        }
+
+        $message = self::common_user_invite_text( $user->user_email, $blogname, home_url(), $display_name );
+        $message .= __( 'To set your password, visit the following address:', 'disciple_tools' ) . "\r\n\r\n";
+        $message .= home_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) . "\r\n\r\n";
+
+        $message .= wp_login_url() . "\r\n";
+
+        $wp_new_user_notification_email['subject'] = $subject;
+        $wp_new_user_notification_email['message'] = $message;
+
+        return $wp_new_user_notification_email;
+    }
+
+    /**
+     * Send email to an existing user being added to a different site on a multisite
+     */
+    public static function wp_existing_user_notification_email( $user_id, $role, $site_id ){
+
+        dt_switch_locale_for_notifications( $user_id );
+
+        $user = get_user_by( 'ID', $user_id );
+        $site = get_blog_details( $site_id );
+
+
+        $message = self::common_user_invite_text( $user->user_email, $site->blogname, $site->siteurl, $user->display_name );
+        $message .= sprintf( __( 'To log in click here: %s', 'disciple_tools' ), wp_login_url() )  . "\r\n";
+
+        $dt_existing_user_notification_email = [
+            'to' => $user->user_email,
+            'subject' => __( '[%s] Login Details', 'disciple_tools' ),
+            'message' => $message,
+            'headers' => '',
+        ];
+
+        /**
+         * Filters the contents of the existing user notification email sent to the new user.
+         *
+         * @since 1.10.0
+         *
+         * @param array   $dt_existing_user_notification_email {
+         *     Used to build wp_mail().
+         *
+         *     @type string $to      The intended recipient - New user email address.
+         *     @type string $subject The subject of the email.
+         *     @type string $message The body of the email.
+         *     @type string $headers The headers of the email.
+         * }
+         * @param WP_User $user     User object for new user.
+         * @param string  $blogname The site title.
+         */
+        $dt_existing_user_notification_email = apply_filters( 'dt_existing_user_notification_email', $dt_existing_user_notification_email, $user, $site->blogname );
+
+        wp_mail(
+            $dt_existing_user_notification_email['to'],
+            /* translators: Login details notification email subject. %s: Site title. */
+            sprintf( $dt_existing_user_notification_email['subject'], $site->blogname ),
+            $dt_existing_user_notification_email['message'],
+            $dt_existing_user_notification_email['headers']
+        );
+
+    }
+
+    public static function common_user_invite_text( $username, $sitename, $url, $display_name = null ) {
+        $message = sprintf( __( 'Hi %s,', 'disciple_tools' ), $display_name ?? $username ) . "\r\n\r\n";
+        $message .= sprintf( __( 'You\'ve been invited to join %1$s at %2$s', 'disciple_tools' ), $sitename, $url ) . "\r\n\r\n";
+        $message .= sprintf( __( 'Username: %s', 'disciple_tools' ), $username ) . "\r\n\r\n";
+
+        return $message;
     }
 
     public static function save_user_roles( $user_id, $roles ){
