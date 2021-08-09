@@ -1042,7 +1042,7 @@ class Disciple_Tools_Users
         $subject = __( '[%s] Login Details', 'disciple_tools' );
         $message  = sprintf( __( 'Username: %s', 'disciple_tools' ), $user->user_login ) . "\r\n\r\n";
         $message .= __( 'To set your password, visit the following address:', 'disciple_tools' ) . "\r\n\r\n";
-        $message .= network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) . "\r\n\r\n";
+        $message .= home_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) . "\r\n\r\n";
 
         $message .= wp_login_url() . "\r\n";
 
