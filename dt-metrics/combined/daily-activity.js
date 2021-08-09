@@ -438,7 +438,7 @@ jQuery(document).ready(function ($) {
 
         html += '<thead>';
         html += '<tr>';
-        html += '<th>' + window.lodash.escape(window.wp_js_object.translations.chart.metric) + '</th>';
+        html += '<th>' + window.lodash.escape(window.wp_js_object.translations.chart.metrics) + '</th>';
         html += '<th>' + window.lodash.escape(window.wp_js_object.translations.chart.count) + '</th>';
         html += '</tr>';
         html += '</thead>';

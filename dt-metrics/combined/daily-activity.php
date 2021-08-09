@@ -69,25 +69,25 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                 'translations'        => [
                     'headings'   => [
                         'header'     => __( "Activity by Day", 'disciple_tools' ),
-                        'sub_header' => __( "Filter by date range", 'disciple_tools' )
+                        'sub_header' => __( "Filter to date range", 'disciple_tools' )
                     ],
                     'selections' => [
                         'this_week'        => __( "This Week", 'disciple_tools' ),
                         'this_month'       => __( "This Month", 'disciple_tools' ),
                         'last_month'       => __( "Last Month", 'disciple_tools' ),
-                        'two_months_ago'   => __( "2 Months Ago", 'disciple_tools' ),
-                        'three_months_ago' => __( "3 Months Ago", 'disciple_tools' ),
-                        'four_months_ago'  => __( "4 Months Ago", 'disciple_tools' ),
-                        'five_months_ago'  => __( "5 Months Ago", 'disciple_tools' ),
-                        'six_months_ago'   => __( "6 Months Ago", 'disciple_tools' )
+                        'two_months_ago' => sprintf( _n( '%s month ago', '%s months ago', 2, 'disciple_tools' ), 2 ),
+                        'three_months_ago' => sprintf( _n( '%s month ago', '%s months ago', 3, 'disciple_tools' ), 3 ),
+                        'four_months_ago'  => sprintf( _n( '%s month ago', '%s months ago', 4, 'disciple_tools' ), 4 ),
+                        'five_months_ago'  => sprintf( _n( '%s month ago', '%s months ago', 5, 'disciple_tools' ), 5 ),
+                        'six_months_ago'   => sprintf( _n( '%s month ago', '%s months ago', 6, 'disciple_tools' ), 6 ),
                     ],
                     'chart'      => [
-                        'instructions' => __( "Click on chart timeline day summary to display a detailed list of metrics below.", 'disciple_tools' ),
-                        'metric'       => __( "Metric", 'disciple_tools' ),
+                        'instructions' => __( "Click on a timeline day summary to display a detailed list of metrics below.", 'disciple_tools' ),
+                        'metrics'       => __( "Metrics", 'disciple_tools' ),
                         'count'        => __( "Count", 'disciple_tools' ),
                         'no_activity'  => __( "No Activity Detected!", 'disciple_tools' ),
-                        'new_contacts' => __( "New Contacts", 'disciple_tools' ),
-                        'new_groups'   => __( "New Groups", 'disciple_tools' ),
+                        'new_contacts' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), __( "Contacts", "disciple_tools" ) ),
+                        'new_groups'   => sprintf( esc_html__( 'New %s', 'disciple_tools' ), __( "Groups", "disciple_tools" ) ),
                         'baptisms'     => __( "Baptisms", 'disciple_tools' )
                     ]
                 ]

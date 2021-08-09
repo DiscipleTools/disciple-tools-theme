@@ -41,13 +41,18 @@ function dt_notification_delete_by_post( $args = [] ) {
     Disciple_Tools_Notifications::delete_by_post( $args );
 }
 
-function dt_switch_locale_for_notifications( $user_id ) {
+function dt_switch_locale_for_notifications( $user_id, $locale = '' ) {
     // load the local for the destination usr so emails are sent our correctly.
-    $destination_user = get_user_by( 'id', $user_id );
 
-    $destination_user_locale = !empty( $destination_user->locale ) ? $destination_user->locale : Disciple_Tools::instance()->site_locale;
+    if ( !$user_id && $locale !== '' ) {
+        $destination_user_locale = $locale;
+    } else {
+        $destination_user = get_user_by( 'id', $user_id );
 
-    add_filter( "determine_locale", function ( $locale ) use ( $destination_user_locale ) {
+        $destination_user_locale = !empty( $destination_user->locale ) ? $destination_user->locale : Disciple_Tools::instance()->site_locale;
+    }
+
+    add_filter( "pre_determine_locale", function ( $locale ) use ( $destination_user_locale ) {
         if ( $destination_user_locale ){
             $locale = $destination_user_locale;
         }
