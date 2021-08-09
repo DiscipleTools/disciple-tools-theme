@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-08-09T19:05:38+00:00\n"
+"POT-Creation-Date: 2021-08-09T19:24:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0-alpha\n"
 "X-Domain: disciple_tools\n"
@@ -3131,7 +3131,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: dt-metrics/combined/daily-activity.php:85
-msgid "Click on chart timeline day summary to display a detailed list of metrics below."
+msgid "Click on a timeline day summary to display a detailed list of metrics below."
 msgstr ""
 
 #. Template Name of the theme
@@ -4059,10 +4059,6 @@ msgstr ""
 msgid "You are registered but an administrator needs to assign you access permissions."
 msgstr ""
 
-#: dt-users/template-no-permission.php:101
-msgid "Add Magic"
-msgstr ""
-
 #: dt-users/template-user-management.php:64
 msgid "Multipliers"
 msgstr ""
@@ -4361,6 +4357,7 @@ msgid "Hi %s,"
 msgstr ""
 
 #: dt-users/users.php:1116
+msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr ""
 

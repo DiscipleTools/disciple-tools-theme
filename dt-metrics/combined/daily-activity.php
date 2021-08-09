@@ -72,8 +72,8 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                         'sub_header' => __( "Filter to date range", 'disciple_tools' )
                     ],
                     'selections' => [
-                        'this_week'        => __( "This week", 'disciple_tools' ),
-                        'this_month'       => __( "This month", 'disciple_tools' ),
+                        'this_week'        => __( "This Week", 'disciple_tools' ),
+                        'this_month'       => __( "This Month", 'disciple_tools' ),
                         'last_month'       => __( "Last Month", 'disciple_tools' ),
                         'two_months_ago' => sprintf( _n( '%s month ago', '%s months ago', 2, 'disciple_tools' ), 2 ),
                         'three_months_ago' => sprintf( _n( '%s month ago', '%s months ago', 3, 'disciple_tools' ), 3 ),
@@ -82,7 +82,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                         'six_months_ago'   => sprintf( _n( '%s month ago', '%s months ago', 6, 'disciple_tools' ), 6 ),
                     ],
                     'chart'      => [
-                        'instructions' => __( "Click on chart timeline day summary to display a detailed list of metrics below.", 'disciple_tools' ),
+                        'instructions' => __( "Click on a timeline day summary to display a detailed list of metrics below.", 'disciple_tools' ),
                         'metrics'       => __( "Metrics", 'disciple_tools' ),
                         'count'        => __( "Count", 'disciple_tools' ),
                         'no_activity'  => __( "No Activity Detected!", 'disciple_tools' ),

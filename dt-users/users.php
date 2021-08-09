@@ -1113,7 +1113,7 @@ class Disciple_Tools_Users
 
     public static function common_user_invite_text( $username, $sitename, $url, $display_name = null ) {
         $message = sprintf( __( 'Hi %s,', 'disciple_tools' ), $display_name ?? $username ) . "\r\n\r\n";
-        $message .= sprintf( __( 'You\'ve been invited to join %1$s at %2$s', 'disciple_tools' ), $sitename, $url ) . "\r\n\r\n";
+        $message .= sprintf( _x( 'You\'ve been invited to join %1$s at %2$s', 'You\'ve been invited to join Awesome Site at https://awesome_site.disciple.tools', 'disciple_tools' ), $sitename, $url ) . "\r\n\r\n";
         $message .= sprintf( __( 'Username: %s', 'disciple_tools' ), $username ) . "\r\n\r\n";
 
         return $message;
