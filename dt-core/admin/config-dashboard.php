@@ -261,7 +261,11 @@ final class Disciple_Tools_Dashboard
                         <tr class="wizard_description" data-row="<?php echo esc_attr( $row_count ); ?>" hidden>
                             <td colspan="5">
                                 <p>
-                                    <?php echo esc_html( $item_value['description'] ); ?>
+                                    <?php
+                                    //replace urls with links
+                                    $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
+                                    $item_value['description'] = preg_replace( $url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', $item_value['description'] );
+                                    echo nl2br( wp_kses_post( $item_value['description'] ) ); ?>
                                 </p>
                                 <?php
                                 // Logic for displaying the 'un-dismiss' button
@@ -315,14 +319,14 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         "label" => "Upgrade HTTP to HTTPS",
         "description" => "Encrypt your traffic from network sniffers",
         "link" => esc_url( "https://wordpress.org/support/article/https-for-wordpress/" ),
-        "complete" => wp_is_using_https() ? true : false,
+        "complete" => is_ssl(),
         "hide_mark_done" => true
     ];
     $items["mapbox_key"] = [
         "label" => "Upgrade Mapping",
         "description" => "Better results when search locations and better mapping",
         "link" => admin_url( "admin.php?page=dt_mapping_module&tab=geocoding" ),
-        "complete" => $mapbox_key ? true : false
+        "complete" => (bool) $mapbox_key,
     ];
     if ( $mapbox_key ) {
         $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
@@ -334,13 +338,7 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
             "hide_mark_done" => true
         ];
     }
-    //    $items['non_wp_cron'] = [
-    //        'label' => 'Setup non WP Cron',
-    //        'description' => '',
-    //        'link' => esc_url( 'https://developers.disciple.tools/hosting/cron' ),
-    //        'complete' => false,
-    //        'hide_mark_done' => false
-    //    ];
+
     $items['explore_user_invite'] = [
         'label' => 'Explore User Invite Area',
         'description' => 'Navigate the user invite area and have a friend or co-worker start using Disciple.Tools.',
@@ -350,7 +348,7 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
     ];
     $items['explore_plugins'] = [
         'label' => 'Explore Recommended Plugins',
-        'description' => 'Navigate the recommended plugins section to see different ways to extend your Disciple.Tools experience. Also see https://disciple.tools/plugins/',
+        'description' => "Navigate the recommended plugins section to see different ways to extend your Disciple.Tools experience.\r\n Also see https://disciple.tools/plugins/",
         'link' => admin_url( 'admin.php?page=dt_extensions' ),
         'complete' => false,
         'hide_mark_done' => false
@@ -382,6 +380,14 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         'link' => esc_url( 'https://disciple.tools/news/' ),
         'complete' => false,
         'hide_mark_done' => false
+    ];
+
+    $items['non_wp_cron'] = [
+        'label' => 'Disable WP Cron',
+        'description' => "By disabling the built in WP Cron and enabling an alternate solution this system will be able to rely on a better scheduler to send out notifications. \r\n See https://developers.disciple.tools/hosting/cron for more details",
+        'link' => esc_url( 'https://developers.disciple.tools/hosting/cron' ),
+        'complete' => DISABLE_WP_CRON === true,
+        'hide_mark_done' => true
     ];
 
     return $items;
