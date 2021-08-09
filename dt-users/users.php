@@ -57,7 +57,7 @@ class Disciple_Tools_Users
 
         // translate emails
         add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
-
+        add_action( 'add_user_to_blog', [ $this, 'wp_existing_user_notification_email' ], 10, 3 );
     }
 
     /**
@@ -1040,7 +1040,8 @@ class Disciple_Tools_Users
         }
 
         $subject = __( '[%s] Login Details', 'disciple_tools' );
-        $message  = sprintf( __( 'Username: %s', 'disciple_tools' ), $user->user_login ) . "\r\n\r\n";
+
+        $message = self::common_user_invite_text( $user->user_login, $blogname, home_url() );
         $message .= __( 'To set your password, visit the following address:', 'disciple_tools' ) . "\r\n\r\n";
         $message .= home_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) . "\r\n\r\n";
 
@@ -1050,6 +1051,35 @@ class Disciple_Tools_Users
         $wp_new_user_notification_email['message'] = $message;
 
         return $wp_new_user_notification_email;
+    }
+
+    /**
+     * Send email to an existing user being added to a different site on a multisite
+     */
+    public static function wp_existing_user_notification_email( $user_id, $role, $site_id ){
+
+        dt_switch_locale_for_notifications( $user_id );
+
+        $user = get_user_by( 'ID', $user_id );
+        $site = get_blog_details( $site_id );
+
+        $to = $user->user_email;
+
+        $subject = sprintf( __( '[%s] Login Details', 'disciple_tools' ), $site->blogname );
+
+        $message = self::common_user_invite_text( $user->user_login, $site->blogname, $site->siteurl );
+        $message .= sprintf( __( 'To log in click here: %s', 'disciple_tools' ), wp_login_url() )  . "\r\n";
+
+        wp_mail( $to, $subject, $message );
+
+    }
+
+    public static function common_user_invite_text( $username, $sitename, $url ) {
+        $message = sprintf( __( 'Hi %s', 'disciple_tools'), $username ) . "\r\n\r\n";
+        $message .= sprintf( __( 'You\'ve been invited to join %1$s at %2$s', 'disciple_tools'), $sitename, $url ) . "\r\n\r\n";
+        $message .= sprintf( __( 'Username: %s', 'disciple_tools' ), $username ) . "\r\n\r\n";
+
+        return $message;
     }
 
     public static function save_user_roles( $user_id, $roles ){
