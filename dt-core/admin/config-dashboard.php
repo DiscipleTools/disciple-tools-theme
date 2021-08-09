@@ -384,7 +384,7 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
 
     $items['non_wp_cron'] = [
         'label' => 'Disable WP Cron',
-        'description' => "By disabling the built in WP Cron and enabling an alternate solution this system will be able to rely on a better scheduler to send out notifications. \r\n See https://developers.disciple.tools/hosting/cron for more details",
+        'description' => "By disabling the built in WP Cron and enabling an alternate solution this system will be able to rely on a better scheduler to send out notifications and scheduled tasks. \r\n See https://developers.disciple.tools/hosting/cron for more details.",
         'link' => esc_url( 'https://developers.disciple.tools/hosting/cron' ),
         'complete' => defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON === true,
         'hide_mark_done' => true
