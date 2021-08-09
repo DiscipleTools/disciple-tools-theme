@@ -117,6 +117,8 @@ class Disciple_Tools_Notifications_Scheduler {
                 continue;
             }
 
+            dt_switch_locale_for_notifications( $user_id );
+
             $email_body = '';
             $sent_notifications = [];
             foreach ($notifications_by_post as $post_id => $notifications) {
