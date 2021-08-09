@@ -119,15 +119,27 @@ function dt_new_user_scripts(){
 function dt_utilities_workflows_scripts() {
     if ( isset( $_GET["page"] ) && ( $_GET["page"] === 'dt_utilities' ) ) {
         if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'workflows' ) {
-            wp_register_style( 'bootstrap-5', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
-            wp_enqueue_style( 'bootstrap-5' );
+            wp_register_style( 'bootstrap-5-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
+            wp_enqueue_style( 'bootstrap-5-css' );
 
             wp_register_style( 'bootstrap-5-icons', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css' );
             wp_enqueue_style( 'bootstrap-5-icons' );
 
+            wp_register_style( 'typeahead-bootstrap', 'https://cdn.jsdelivr.net/npm/typeahead.js-bootstrap-css@1.2.1/typeaheadjs.css' );
+            wp_enqueue_style( 'typeahead-bootstrap' );
+            wp_enqueue_script( 'typeahead-bundle', 'https://cdn.jsdelivr.net/npm/typeahead.js@0.11.1/dist/typeahead.bundle.min.js', [
+                'jquery',
+            ], '0.11.1', true );
+
+            wp_register_style( 'daterangepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css' );
+            wp_enqueue_style( 'daterangepicker-css' );
+            wp_enqueue_script( 'daterangepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.js', [], '3.1.0', true );
+
             wp_enqueue_script( 'dt_utilities_workflows_script', disciple_tools()->admin_js_url . 'dt-utilities-workflows.js', [
                 'jquery',
-                'lodash'
+                'lodash',
+                'typeahead-bundle',
+                'daterangepicker-js'
             ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-workflows.js' ), true );
         }
     }

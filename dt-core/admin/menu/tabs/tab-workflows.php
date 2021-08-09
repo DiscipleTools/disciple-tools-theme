@@ -400,9 +400,22 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                                     value:
                                 </td>
                                 <td>
-                                    <input type="text" style="min-width: 100%;"
-                                           id="workflows_design_section_step2_condition_value"
-                                           placeholder="Condition value">
+                                    <input id="workflows_design_section_step2_condition_value_id" type="hidden"
+                                           value="">
+                                    <input id="workflows_design_section_step2_condition_value_object_id" type="hidden"
+                                           value="">
+
+                                    <div id="workflows_design_section_step2_condition_value_div">
+                                        --- dynamic condition value field ---
+
+                                        <!--
+                                        TODO: Update all resets; which reference this field....!!
+                                        <input type="text" style="min-width: 100%;"
+                                               id="workflows_design_section_step2_condition_value"
+                                               placeholder="Condition value">
+                                               -->
+                                    </div>
+                                <td>
                                 </td>
                                 <td>
                                         <span style="float:right;">
@@ -495,9 +508,21 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                                     value:
                                 </td>
                                 <td>
-                                    <input type="text" style="min-width: 100%;"
-                                           id="workflows_design_section_step3_action_value"
-                                           placeholder="Action value">
+                                    <input id="workflows_design_section_step3_action_value_id" type="hidden"
+                                           value="">
+                                    <input id="workflows_design_section_step3_action_value_object_id" type="hidden"
+                                           value="">
+
+                                    <div id="workflows_design_section_step3_action_value_div">
+                                        --- dynamic action value field ---
+
+                                        <!--
+                                        TODO: Update all resets; which reference this field....!!
+                                        <input type="text" style="min-width: 100%;"
+                                               id="workflows_design_section_step3_action_value"
+                                               placeholder="Action value">
+                                               -->
+                                    </div>
                                 </td>
                                 <td>
                                         <span style="float:right;">
@@ -617,18 +642,22 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
                     if ( ! in_array( $dt_field['type'], $field_types_to_ignore ) ) {
                         $fields[] = [
-                            'id'   => $key,
-                            'name' => $dt_field['name'],
-                            'type' => $dt_field['type']
+                            'id'        => $key,
+                            'name'      => $dt_field['name'],
+                            'type'      => $dt_field['type'],
+                            'defaults'  => $dt_field['default'] ?? '',
+                            'post_type' => $dt_field['post_type'] ?? ''
                         ];
                     }
                 }
 
                 $post_type                = $dt_post_type_settings['post_type'];
                 $post_types[ $post_type ] = [
-                    'id'     => $post_type,
-                    'name'   => $dt_post_type_settings['label_plural'],
-                    'fields' => $fields
+                    'id'       => $post_type,
+                    'name'     => $dt_post_type_settings['label_plural'],
+                    'fields'   => $fields,
+                    'base_url' => rest_url(),
+                    'wp_nonce' => esc_attr( wp_create_nonce( 'wp_rest' ) )
                 ];
             }
         }
