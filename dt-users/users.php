@@ -1041,7 +1041,15 @@ class Disciple_Tools_Users
 
         $subject = __( '[%s] Login Details', 'disciple_tools' );
 
-        $message = self::common_user_invite_text( $user->user_login, $blogname, home_url() );
+        $display_name = $user->user_login;
+        if ( dt_is_rest() ){
+            $data = json_decode( WP_REST_Server::get_raw_data(), true );
+            if ( isset( $data["user-display"] ) && !empty( $data["user-display"] ) ){
+                $display_name = sanitize_text_field( wp_unslash( $data["user-display"] ) );
+            }
+        }
+
+        $message = self::common_user_invite_text( $user->user_email, $blogname, home_url(), $display_name );
         $message .= __( 'To set your password, visit the following address:', 'disciple_tools' ) . "\r\n\r\n";
         $message .= home_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) . "\r\n\r\n";
 
@@ -1064,7 +1072,7 @@ class Disciple_Tools_Users
         $site = get_blog_details( $site_id );
 
 
-        $message = self::common_user_invite_text( $user->user_login, $site->blogname, $site->siteurl );
+        $message = self::common_user_invite_text( $user->user_email, $site->blogname, $site->siteurl, $user->display_name );
         $message .= sprintf( __( 'To log in click here: %s', 'disciple_tools' ), wp_login_url() )  . "\r\n";
 
         $dt_existing_user_notification_email = [
@@ -1102,8 +1110,8 @@ class Disciple_Tools_Users
 
     }
 
-    public static function common_user_invite_text( $username, $sitename, $url ) {
-        $message = sprintf( __( 'Hi %s,', 'disciple_tools' ), $username ) . "\r\n\r\n";
+    public static function common_user_invite_text( $username, $sitename, $url, $display_name = null ) {
+        $message = sprintf( __( 'Hi %s,', 'disciple_tools' ), $display_name ?? $username ) . "\r\n\r\n";
         $message .= sprintf( __( 'You\'ve been invited to join %1$s at %2$s', 'disciple_tools' ), $sitename, $url ) . "\r\n\r\n";
         $message .= sprintf( __( 'Username: %s', 'disciple_tools' ), $username ) . "\r\n\r\n";
 

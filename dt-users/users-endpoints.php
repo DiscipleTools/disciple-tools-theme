@@ -242,7 +242,7 @@ class Disciple_Tools_Users_Endpoints
             if (isset( $params["locale"] ) ) {
                 $locale = $params["locale"];
             }
-            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $user_roles, $params["corresponds_to_contact"] ?? null, $locale );
+            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $user_roles, $params["corresponds_to_contact"] ?? null, $locale ?? null );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
