@@ -79,21 +79,6 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
         $is_sent = wp_mail( $email, $subject, $message_plain_text );
     }
 
-//    @todo figure why this async method is slower.
-    // Send email
-//    try {
-//        $send_email = new Disciple_Tools_Notifications_Email();
-//        $send_email->launch(
-//            [
-//                'email'              => $email,
-//                'subject'            => $subject,
-//                'message_plain_text' => $message_plain_text,
-//            ]
-//        );
-//    } catch ( Exception $e ) {
-//        return false;
-//    }
-
     return $is_sent;
 }
 
@@ -148,91 +133,6 @@ function dt_make_post_email_subject( $post_id ) {
 function dt_make_email_footer() {
     return "\r\n" . __( 'Do not reply directly to this email.', 'disciple_tools' );
 }
-
-
-
-/**
- * Class Disciple_Tools_Notifications_Email
- */
-class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
-{
-    protected $action = 'email_notification';
-
-    /**
-     * Prepare data for the asynchronous request
-     *
-     * @throws Exception If for any reason the request should not happen.
-     *
-     * @param array $data An array of data sent to the hook
-     *
-     * @return array
-     */
-    protected function prepare_data( $data ) {
-        return $data;
-    }
-
-    /**
-     * Send email
-     */
-    public function send_email() {
-        /**
-         * Nonce validation is done through a custom nonce process inside Disciple_Tools_Async_Task
-         * to allow for asynchronous processing. This is a valid nonce but is not recognized by the WP standards checker.
-         */
-        // WordPress.CSRF.NonceVerification.NoNonceVerification
-        // @phpcs:disable
-        $id = get_user_by( 'email', sanitize_email( $_POST[0]['email'] ) );
-        if ( isset( $_POST['action'] ) ) {
-//            ( metadata_exists( 'user', $id->ID, 'default_password_nag' ) || metadata_exists( 'user', $id->ID, 'session_tokens' )
-            if ( sanitize_text_field( wp_unslash( $_POST['action'] ) ) == 'dt_async_email_notification' &&
-                 isset( $_POST['_nonce'] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST['_nonce'] ) ) ) ) {
-
-                wp_mail( sanitize_email( $_POST[0]['email'] ), sanitize_text_field( wp_unslash( $_POST[0]['subject'] ) ), sanitize_textarea_field( wp_unslash( $_POST[0]['message_plain_text'] ) ) );
-
-            }
-        }
-        // phpcs:enable
-    }
-
-    /**
-     * Run the async task action
-     * Used when loading long running process with add_action
-     * Not used when launching via the dt_send_email() function.
-     */
-    protected function run_action() {
-        /**
-         * Nonce validation is done through a custom nonce process inside Disciple_Tools_Async_Task
-         * to allow for asynchronous processing. This is a valid nonce but is not recognized by the WP standards checker.
-         */
-        // WordPress.CSRF.NonceVerification.NoNonceVerification
-        // @phpcs:disable
-        $email = isset( $_POST[0]['email'] ) ? sanitize_email( wp_unslash( $_POST[0]['email'] ) ) : '';
-        $subject = isset( $_POST[0]['subject'] ) ? sanitize_text_field( wp_unslash( $_POST[0]['subject'] ) ) : '';
-        $message_plain_text = isset( $_POST[0]['message_plain_text'] ) ? sanitize_textarea_field( $_POST[0]['message_plain_text'] ) : '';
-        // phpcs:enable
-
-        do_action( "dt_async_$this->action", $email, $subject, $message_plain_text );
-
-    }
-}
-
-/**
- * This hook function listens for the prepared async process on every page load.
- */
-function dt_load_async_email() {
-    if ( isset( $_POST['_wp_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wp_nonce'] ) ) ) && isset( $_POST['action'] ) && sanitize_key( wp_unslash( $_POST['action'] ) ) == 'dt_async_email_notification' ) {
-        try {
-            $send_email = new Disciple_Tools_Notifications_Email();
-            $send_email->send_email();
-        } catch ( Exception $e ) {
-            dt_write_log( __METHOD__ . ': Failed to send email' );
-            return new WP_Error( __METHOD__, 'Failed to send email with Async' );
-        }
-    }
-}
-add_action( 'init', 'dt_load_async_email' );
-
-
 
 
 /**
