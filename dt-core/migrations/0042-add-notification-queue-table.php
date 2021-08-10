@@ -18,7 +18,7 @@ class Disciple_Tools_Migration_0042 extends Disciple_Tools_Migration {
 
         $charset_collate = $wpdb->get_charset_collate();
         $rv = $wpdb->query(
-            "CREATE TABLE $wpdb->dt_notifications_queue (
+            "CREATE TABLE IF NOT EXISTS $wpdb->dt_notifications_queue (
                 `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `notification_id` BIGINT(20) UNSIGNED NOT NULL,
                 `type` varchar(20) NOT NULL DEFAULT '',
