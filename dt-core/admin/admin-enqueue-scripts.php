@@ -125,21 +125,20 @@ function dt_utilities_workflows_scripts() {
             wp_register_style( 'bootstrap-5-icons', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css' );
             wp_enqueue_style( 'bootstrap-5-icons' );
 
-            wp_register_style( 'typeahead-bootstrap', 'https://cdn.jsdelivr.net/npm/typeahead.js-bootstrap-css@1.2.1/typeaheadjs.css' );
-            wp_enqueue_style( 'typeahead-bootstrap' );
-            wp_enqueue_script( 'typeahead-bundle', 'https://cdn.jsdelivr.net/npm/typeahead.js@0.11.1/dist/typeahead.bundle.min.js', [
-                'jquery',
-            ], '0.11.1', true );
+            dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+            dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
 
             wp_register_style( 'daterangepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css' );
             wp_enqueue_style( 'daterangepicker-css' );
             wp_enqueue_script( 'daterangepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.js', [], '3.1.0', true );
+            wp_enqueue_script( 'daterangepicker-moment', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/moment.min.js', [], '3.1.0', true );
 
             wp_enqueue_script( 'dt_utilities_workflows_script', disciple_tools()->admin_js_url . 'dt-utilities-workflows.js', [
                 'jquery',
                 'lodash',
-                'typeahead-bundle',
-                'daterangepicker-js'
+                'typeahead-jquery',
+                'daterangepicker-js',
+                'daterangepicker-moment'
             ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-workflows.js' ), true );
         }
     }

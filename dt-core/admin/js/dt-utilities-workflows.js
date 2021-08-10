@@ -37,9 +37,9 @@ jQuery(function ($) {
       let condition_value_name = null;
 
       // Determine dynamic field element type, in order to know how best to extract values!
-      if (condition_value_element.hasClass('typeahead')) { // Typeahead
+      if (condition_value_element.hasClass('dt-typeahead')) { // Typeahead
         condition_value_id = $('#workflows_design_section_step2_condition_value_object_id').val();
-        condition_value_name = condition_value_element.typeahead('val');
+        condition_value_name = condition_value_element.val();
 
       } else if (condition_value_element.is('select')) { // Select Dropdown
         condition_value_id = condition_value_element.val();
@@ -86,9 +86,9 @@ jQuery(function ($) {
       let action_value_name = null;
 
       // Determine dynamic field element type, in order to know how best to extract values!
-      if (action_value_element.hasClass('typeahead')) { // Typeahead
+      if (action_value_element.hasClass('dt-typeahead')) { // Typeahead
         action_value_id = $('#workflows_design_section_step3_action_value_object_id').val();
-        action_value_name = action_value_element.typeahead('val');
+        action_value_name = action_value_element.val();
 
       } else if (action_value_element.is('select')) { // Select Dropdown
         action_value_id = action_value_element.val();
@@ -831,6 +831,32 @@ jQuery(function ($) {
       }
     }
 
+    function handle_event_value_field_typeaheads(wp_nonce, field, event_value_object_id) {
+
+      if (field['typeahead']) {
+        let typeahead = field['typeahead'];
+
+        // Instantiate the typeahead element
+        let dynamic_field = $('#' + field['id']);
+        dynamic_field.typeahead({
+          order: "asc",
+          accent: true,
+          minLength: 1,
+          maxItem: 10,
+          dynamic: true,
+          source: typeahead['endpoint'](wp_nonce),
+          callback: {
+            onClick: function (node, a, item, event) {
+              let id = typeahead['id_func'](item);
+              if (id) {
+                event_value_object_id.val(id);
+              }
+            }
+          }
+        });
+      }
+    }
+
     function handle_event_value_field_datepickers(field, event_value_object_id) {
 
       let dynamic_field = $('#' + field['id']);
@@ -862,83 +888,6 @@ jQuery(function ($) {
       dynamic_field.on('cancel.daterangepicker', function (ev, picker) {
         dynamic_field.val('');
       });
-    }
-
-    function handle_event_value_field_typeaheads(wp_nonce, field, event_value_object_id) {
-
-      if (field['typeahead']) {
-
-        let typeahead = field['typeahead'];
-
-        // Instantiate the typeahead suggestion engine
-        let suggestion_engine = new Bloodhound({
-          datumTokenizer: Bloodhound.tokenizers.whitespace,
-          queryTokenizer: Bloodhound.tokenizers.whitespace,
-          remote: {
-            url: typeahead['endpoint_url'],
-            transform: typeahead['transform_func'],
-            prepare: function (query, settings) {
-
-              // Update url
-              settings['url'] = settings['url'] + typeahead['endpoint_url_query_param'] + query;
-
-              // Set security transport nonce token
-              settings['headers'] = {
-                'X-WP-Nonce': wp_nonce
-              };
-
-              //console.log(settings);
-              return settings;
-            }
-          }
-        });
-
-        // Instantiate the typeahead element
-        let typeahead_element = $('#' + field['id']);
-        typeahead_element.typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 1
-          },
-          {
-            name: field['id'],
-            source: suggestion_engine,
-            limit: 10,
-            display: typeahead['display_func'],
-            templates: {
-              suggestion: typeahead['suggestion_func']
-            }
-          });
-
-        // Bind to select and change events
-        typeahead_element.bind('typeahead:select', function (ev, suggestion) {
-          //console.log(suggestion);
-          let id = typeahead['id_func'](suggestion);
-          if (id) {
-            event_value_object_id.val(id);
-          }
-        });
-
-        typeahead_element.bind('typeahead:change', function (ev, suggestion) {
-          //console.log(suggestion);
-          suggestion_engine.search(suggestion, function (datums) { // Ignore local {sync} search index
-          }, function (datums) { // Process remote {async} search index
-            if (datums && datums.length > 0) {
-              //console.log(datums);
-
-              // Quickly iterate over datums, in search of closest suggestion hit!
-              datums.forEach(element => {
-                if (element[typeahead['data_name']].includes(suggestion)) {
-                  let id = typeahead['id_func'](element);
-                  if (id) {
-                    event_value_object_id.val(id);
-                  }
-                }
-              });
-            }
-          });
-        });
-      }
     }
 
     function fetch_event_value_field(base_url, field) {
@@ -1033,28 +982,42 @@ jQuery(function ($) {
     function generate_event_value_locations(base_url) {
       let response = {};
       response['id'] = Date.now();
-      response['html'] = '<input type="text" class="typeahead" placeholder="Start typing a location..." style="min-width: 100%;" id="' + response['id'] + '">';
+
+      let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
+      html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing a location..." style="min-width: 100%;" id="' + response['id'] + '">';
+      html += '</div></div></div>';
+      response['html'] = html;
+
       response['typeahead'] = {
-        endpoint_url: base_url + 'dt/v1/mapping_module/search_location_grid_by_name?filter=all',
-        endpoint_url_query_param: '&s=',
-        transform_func: function (response) {
-          return response['location_grid'];
+        endpoint: function (wp_nonce) {
+          return {
+            locations: {
+              display: ["name", "ID"],
+              template: "<span>{{name}}</span>",
+              ajax: {
+                url: base_url + 'dt/v1/mapping_module/search_location_grid_by_name?filter=all',
+                data: {
+                  s: '{{query}}'
+                },
+                beforeSend: function (xhr) {
+                  xhr.setRequestHeader("X-WP-Nonce", wp_nonce);
+                },
+                callback: {
+                  done: function (response) {
+                    return (response['location_grid']) ? response['location_grid'] : [];
+                  }
+                }
+              }
+            }
+          }
         },
-        display_func: function (item) {
-          return item['name'];
-        },
-        suggestion_func: function (data) {
-          return '<p>' + data['name'] + '</p>';
-        },
-        id_func: function (suggestion) {
-          console.log(suggestion);
-          if (suggestion && suggestion['ID']) {
-            return suggestion['ID'];
+        id_func: function (item) {
+          console.log(item);
+          if (item && item['ID']) {
+            return item['ID'];
           }
           return null;
-        },
-        data_id: 'ID',
-        data_name: 'name'
+        }
       };
 
       return response;
@@ -1065,28 +1028,42 @@ jQuery(function ($) {
 
         let response = {};
         response['id'] = Date.now();
-        response['html'] = '<input type="text" class="typeahead" placeholder="Start typing connection details..." style="min-width: 100%;" id="' + response['id'] + '">';
+
+        let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
+        html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing connection details..." style="min-width: 100%;" id="' + response['id'] + '">';
+        html += '</div></div></div>';
+        response['html'] = html;
+
         response['typeahead'] = {
-          endpoint_url: base_url + 'dt-posts/v2/' + field['post_type'] + '/compact?field_key=' + field['id'],
-          endpoint_url_query_param: '&s=',
-          transform_func: function (response) {
-            return response['posts'];
+          endpoint: function (wp_nonce) {
+            return {
+              connections: {
+                display: ["name", "ID"],
+                template: "<span>{{name}}</span>",
+                ajax: {
+                  url: base_url + 'dt-posts/v2/' + field['post_type'] + '/compact?field_key=' + field['id'],
+                  data: {
+                    s: '{{query}}'
+                  },
+                  beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-WP-Nonce", wp_nonce);
+                  },
+                  callback: {
+                    done: function (response) {
+                      return (response['posts']) ? response['posts'] : [];
+                    }
+                  }
+                }
+              }
+            }
           },
-          display_func: function (item) {
-            return item['name'];
-          },
-          suggestion_func: function (data) {
-            return '<p>' + data['name'] + '</p>';
-          },
-          id_func: function (suggestion) {
-            console.log(suggestion);
-            if (suggestion && suggestion['ID']) {
-              return suggestion['ID'];
+          id_func: function (item) {
+            console.log(item);
+            if (item && item['ID']) {
+              return item['ID'];
             }
             return null;
-          },
-          data_id: 'ID',
-          data_name: 'name'
+          }
         };
 
         return response;
@@ -1097,28 +1074,42 @@ jQuery(function ($) {
     function generate_event_value_user_select(base_url) {
       let response = {};
       response['id'] = Date.now();
-      response['html'] = '<input type="text" class="typeahead" placeholder="Start typing user details..." style="min-width: 100%;" id="' + response['id'] + '">';
+
+      let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
+      html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing user details..." style="min-width: 100%;" id="' + response['id'] + '">';
+      html += '</div></div></div>';
+      response['html'] = html;
+
       response['typeahead'] = {
-        endpoint_url: base_url + 'dt/v1/users/get_users?get_all',
-        endpoint_url_query_param: '&s=',
-        transform_func: function (response) {
-          return response;
+        endpoint: function (wp_nonce) {
+          return {
+            users: {
+              display: ["name", "ID"],
+              template: "<span>{{name}}</span>",
+              ajax: {
+                url: base_url + 'dt/v1/users/get_users?get_all',
+                data: {
+                  s: '{{query}}'
+                },
+                beforeSend: function (xhr) {
+                  xhr.setRequestHeader("X-WP-Nonce", wp_nonce);
+                },
+                callback: {
+                  done: function (response) {
+                    return response;
+                  }
+                }
+              }
+            }
+          }
         },
-        display_func: function (item) {
-          return item['name'];
-        },
-        suggestion_func: function (data) {
-          return '<p>' + data['name'] + '</p>';
-        },
-        id_func: function (suggestion) {
-          console.log(suggestion);
-          if (suggestion && suggestion['ID']) {
-            return 'user-' + suggestion['ID'];
+        id_func: function (item) {
+          console.log(item);
+          if (item && item['ID']) {
+            return 'user-' + item['ID'];
           }
           return null;
-        },
-        data_id: 'ID',
-        data_name: 'name'
+        }
       };
 
       return response;
