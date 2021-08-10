@@ -9,7 +9,7 @@ class Disciple_Tools_Notifications_Scheduler {
      * The hour of the daily schedule
      */
     const DAILY_RUN_TIME = 0;
-    const DEBUG          = true;
+    const DEBUG          = false;
 
     private $queue_manager;
     private $notifications_manager;
