@@ -139,7 +139,7 @@ if ( ! function_exists( 'wp_queue_install_tables' ) ) {
 		$wpdb->hide_errors();
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE {$wpdb->prefix}queue_jobs (
+		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}queue_jobs (
 				id bigint(20) NOT NULL AUTO_INCREMENT,
 				job longtext NOT NULL,
 				category tinytext NOT NULL,
@@ -153,7 +153,7 @@ if ( ! function_exists( 'wp_queue_install_tables' ) ) {
 
 		dbDelta( $sql );
 
-		$sql = "CREATE TABLE {$wpdb->prefix}queue_failures (
+		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}queue_failures (
 				id bigint(20) NOT NULL AUTO_INCREMENT,
 				job longtext NOT NULL,
 				error text DEFAULT NULL,
