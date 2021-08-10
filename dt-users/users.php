@@ -1101,6 +1101,11 @@ class Disciple_Tools_Users
          */
         $dt_existing_user_notification_email = apply_filters( 'dt_existing_user_notification_email', $dt_existing_user_notification_email, $user, $site->blogname );
 
+        //allow an email to not be sent. Example: demo content users
+        $continue = apply_filters( "dt_sent_email_check", true, $dt_existing_user_notification_email['to'], sprintf( $dt_existing_user_notification_email['subject'], $site->blogname ), $dt_existing_user_notification_email['message'] );
+        if ( !$continue ){
+            return false;
+        }
         wp_mail(
             $dt_existing_user_notification_email['to'],
             /* translators: Login details notification email subject. %s: Site title. */
