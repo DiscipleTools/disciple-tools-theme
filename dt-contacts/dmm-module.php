@@ -19,7 +19,6 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             return;
         }
         //setup fields
-        add_action( 'p2p_init', [ $this, 'p2p_init' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
 
@@ -266,67 +265,6 @@ class DT_Contacts_DMM  extends DT_Module_Base {
 
         }
         return dt_array_merge_recursive_distinct( $declared_fields, $fields );
-    }
-
-    public function p2p_init(){
-        /**
-         * Contact Coaching field
-         */
-        p2p_register_connection_type(
-            [
-                'name'        => 'contacts_to_contacts',
-                'from'        => 'contacts',
-                'to'          => 'contacts',
-            ]
-        );
-        /**
-         * Contact Baptism Field
-         */
-        p2p_register_connection_type(
-            [
-                'name'        => 'baptizer_to_baptized',
-                'from'        => 'contacts',
-                'to'          => 'contacts',
-                'admin_box' => [
-                    'show' => false,
-                ],
-                'title'       => [
-                    'from' => __( 'Baptized by', 'disciple_tools' ),
-                    'to'   => __( 'Baptized', 'disciple_tools' ),
-                ]
-            ]
-        );
-        /**
-         * Contact Sub-assigned to
-         */
-        p2p_register_connection_type(
-            [
-                'name'        => 'contacts_to_subassigned',
-                'from'        => 'contacts',
-                'to'          => 'contacts',
-                'admin_box' => [
-                    'show' => false,
-                ],
-                'title'       => [
-                    'from' => __( 'Sub-assigned by', 'disciple_tools' ),
-                    'to'   => __( 'Sub-assigned', 'disciple_tools' ),
-                ]
-            ]
-        );
-        /**
-         * Contact People Groups
-         */
-        p2p_register_connection_type(
-            [
-                'name'        => 'contacts_to_peoplegroups',
-                'from'        => 'contacts',
-                'to'          => 'peoplegroups',
-                'title'       => [
-                    'from' => __( 'People Groups', 'disciple_tools' ),
-                    'to'   => __( 'Contacts', 'disciple_tools' ),
-                ]
-            ]
-        );
     }
 
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){

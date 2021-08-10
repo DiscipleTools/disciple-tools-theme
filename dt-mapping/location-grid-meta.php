@@ -6,6 +6,12 @@ if ( !defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'Location_Grid_Meta' ) ) {
     class Location_Grid_Meta
     {
+        /**
+         * This function converts IpStack result to a location grid meta array.
+         * @see /geocode-api/ipstack-api.php
+         * @param $ip_result
+         * @return array|false
+         */
         public static function convert_ip_result_to_location_grid_meta( $ip_result) {
             if (empty( $ip_result['longitude'] )) {
                 return false;

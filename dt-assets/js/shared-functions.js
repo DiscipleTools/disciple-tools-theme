@@ -569,6 +569,16 @@ window.SHAREDFUNCTIONS = {
     );
     return results !== null ? results[1] || 0 : false;
   },
+  /**
+   * Lodash escape all string values in a simple key, value object.
+   *
+   * @param obj Must be a simple map of key, value pairs. E.g. a translation mapping.
+   */
+  escapeObject(obj) {
+    return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
+        return [ key, window.lodash.escape(value)]
+    }))
+  }
 };
 
 window.METRICS = {
@@ -641,13 +651,3 @@ window.METRICS = {
   },
 
 };
-
-// nonce timeout fix
-// every 5 minutes will check if nonce timed out
-// if it did then it will redirect to login
-window.fiveMinuteTimer = setInterval(function () {
-  //check if timed out
-  get_new_notification_count().fail(function (x) {
-    window.location.reload();
-  });
-}, 300000); //300000 = five minutes

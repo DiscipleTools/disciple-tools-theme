@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 abstract class DT_Magic_Url_Base {
     public $magic = false;
@@ -14,9 +15,6 @@ abstract class DT_Magic_Url_Base {
 
     public $module = ""; // lets a magic url be a module as well
 
-    public $allowed_scripts = [];
-    public $allowed_styles = [];
-
     public function __construct() {
 
         // register type
@@ -24,6 +22,8 @@ abstract class DT_Magic_Url_Base {
         add_filter( 'dt_magic_url_register_types', [ $this, 'dt_magic_url_register_types' ], 10, 1 );
         // register REST and REST access
         add_filter( 'dt_allow_rest_access', [ $this, 'authorize_url' ], 10, 1 );
+
+        // Tests for url
 
         // fail if not valid url
         $this->parts = $this->magic->parse_url_parts();
@@ -36,24 +36,45 @@ abstract class DT_Magic_Url_Base {
             return;
         }
 
-        add_filter( 'dt_blank_access', [ $this, '_has_access' ] );
-
-        add_filter( "dt_blank_title", [ $this, "page_tab_title" ] );
         // register url and access
-        add_filter( 'dt_templates_for_urls', [ $this, 'register_url' ], 199, 1 );
-        add_filter( 'dt_allow_non_login_access', function (){
+        add_filter( 'dt_blank_access', [ $this, '_has_access' ] ); // gives access once above tests are passed
+        add_filter( 'dt_templates_for_urls', [ $this, 'register_url' ], 199, 1 ); // registers url as valid once tests are passed
+        add_filter( 'dt_allow_non_login_access', function (){ // allows non-logged in visit
             return true;
         }, 100, 1 );
-        add_action( 'wp_print_scripts', [ $this, 'print_scripts' ], 1500 );
-        add_action( 'wp_print_styles', [ $this, 'print_styles' ], 1500 );
+        add_filter( "dt_blank_title", [ $this, "page_tab_title" ] ); // adds basic title to browser tab
+        add_action( 'wp_print_scripts', [ $this, 'print_scripts' ], 5 ); // authorizes scripts
+        add_action( 'wp_print_footer_scripts', [ $this, 'print_scripts' ], 5 ); // authorizes scripts
+        add_action( 'wp_print_styles', [ $this, 'print_styles' ], 1500 ); // authorizes styles
+
+        add_action( 'dt_blank_head', [ $this, '_header' ] );
+        add_action( 'dt_blank_footer', [ $this, '_footer' ] );
     }
 
-    public function check_parts_match(){
-        if ( isset( $this->parts["post_id"], $this->parts["root"], $this->parts["type"] ) ){
-            if ( $this->type === $this->parts["type"] && $this->root === $this->parts["root"] && !empty( $this->parts["post_id"] ) ){
-                return true;
+    /**
+     * Test for core parts elements
+     * @note    Use the true/false to include or exclude testing for the post_id in the registered magic link type. Test for
+ *              post_id if building magic link from a contact, group, etc. Don't test if building magic link for a user or
+     *          non-post_type based link.
+     *
+     * @note    Primarily used in 'extends' classes for a progress check inside the construct. See stater plugin / magic link
+     * @return bool
+     */
+    public function check_parts_match( $test_post_id = true ){
+        if ( $test_post_id ) {
+            if ( isset( $this->parts["post_id"], $this->parts["root"], $this->parts["type"] ) ){
+                if ( $this->type === $this->parts["type"] && $this->root === $this->parts["root"] && !empty( $this->parts["post_id"] ) ){
+                    return true;
+                }
+            }
+        } else {
+            if ( isset( $this->parts["root"], $this->parts["type"] ) ){
+                if ( $this->type === $this->parts["type"] && $this->root === $this->parts["root"] ){
+                    return true;
+                }
             }
         }
+
         return false;
     }
 
@@ -68,10 +89,20 @@ abstract class DT_Magic_Url_Base {
         return false;
     }
 
-    public function page_tab_title( $title ){
+    /**
+     * Builds page title for browser tab
+     * @note Copy function to 'extends' class to override or modify
+     * @return string
+     */
+    public function page_tab_title(){
         return $this->page_title;
     }
 
+    /**
+     * Builds registered magic link
+     * @param array $types
+     * @return array
+     */
     public function dt_magic_url_register_types( array $types ) : array {
         if ( ! isset( $types[$this->root] ) ) {
             $types[$this->root] = [];
@@ -87,6 +118,11 @@ abstract class DT_Magic_Url_Base {
         return $types;
     }
 
+    /**
+     * Tests the url and if it matches as an approved magic link it loads the appropriate template.
+     * @param $template_for_url
+     * @return mixed
+     */
     public function register_url( $template_for_url ){
         $parts = $this->parts;
 
@@ -116,6 +152,14 @@ abstract class DT_Magic_Url_Base {
         return $template_for_url;
     }
 
+    /**
+     * Used as an alternate to register_url, primarily for root home page applications
+     */
+    public function theme_redirect() {
+        $path = get_theme_file_path( 'template-blank.php' );
+        include( $path );
+        die();
+    }
 
     /**
      * Open default restrictions for access to registered endpoints
@@ -129,21 +173,24 @@ abstract class DT_Magic_Url_Base {
         return $authorized;
     }
 
+    /**
+     * Authorizes scripts allowed to load in magic link
+     *
+     * Controls the linked scripts loaded into the header.
+     * @note This overrides standard DT header assets which natively have login authentication requirements.
+     */
     public function print_scripts(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_js = array_merge(
-            $this->allowed_scripts,
-            [
-                'jquery',
-                'jquery-core',
-                'lodash',
-                'lodash-core',
-                'site-js',
-                'shared-functions',
-                'moment',
-                'datepicker'
-            ]
-        );
+        $allowed_js = apply_filters( 'dt_magic_url_base_allowed_js', [
+            'jquery',
+            'jquery-ui',
+            'lodash',
+            'lodash-core',
+            'site-js',
+            'shared-functions',
+            'moment',
+            'datepicker'
+        ]);
 
         global $wp_scripts;
 
@@ -164,17 +211,20 @@ abstract class DT_Magic_Url_Base {
         unset( $wp_scripts->registered['mapbox-search-widget']->extra['group'] ); //lets the mapbox geocoder work
     }
 
+    /**
+     * Authorizes styles allowed to load in magic link
+     *
+     * Controls the linked styles loaded into the header.
+     * @note This overrides standard DT header assets.
+     */
     public function print_styles(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_css = array_merge(
-            $this->allowed_styles,
-            [
-                'foundation-css',
-                'site-css',
-                'jquery-ui-site-css',
-                'datepicker-css',
-            ]
-        );
+        $allowed_css = apply_filters( 'dt_magic_url_base_allowed_css', [
+            'jquery-ui-site-css',
+            'foundation-css',
+            'site-css',
+            'datepicker-css'
+        ]);
 
         global $wp_styles;
         if ( isset( $wp_styles ) ) {
@@ -185,6 +235,43 @@ abstract class DT_Magic_Url_Base {
             }
         }
     }
+
+    /**
+     * Loads enqueued scripts and custom printed scripts to header
+     * @note this is a required method because the standard DT header includes authentication requirements
+     * @note Copy function to 'extends' class to override or modify
+     */
+    public function _header(){
+        wp_head();
+        $this->header_style();
+        $this->header_javascript();
+    }
+    /**
+     * Loads enqueued styles and custom printed styles to header
+     * @note Copy function to 'extends' class to override or modify
+     */
+    public function _footer(){
+        $this->footer_javascript();
+        wp_footer();
+    }
+
+    /**
+     * Adds printed styles to header
+     * @note Copy function to 'extends' class to override or modify
+     */
+    public function header_style(){}
+
+    /**
+     * Adds printed scripts to header
+     * @note Copy function to 'extends' class to override or modify
+     */
+    public function header_javascript(){}
+
+    /**
+     * Adds printed scripts to footer
+     * @note Copy function to 'extends' class to override or modify
+     */
+    public function footer_javascript(){}
 
     protected function check_module_enabled_and_prerequisites(){
         $modules = dt_get_option( 'dt_post_type_modules' );

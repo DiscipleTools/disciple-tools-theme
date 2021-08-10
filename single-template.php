@@ -82,7 +82,6 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         </h3>
 
                         <div class="grid-x grid-margin-x">
-                        <?php do_action( "dt_details_additional_section", 'status', $post_type ); ?>
                         <?php
                         //setup the order of the tile fields
                         $order = $tiles['status']["order"] ?? [];
@@ -108,6 +107,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             <?php }
                         }
                         ?>
+                        <?php do_action( "dt_details_additional_section", 'status', $post_type ); ?>
                         </div>
                     </section>
                     <?php endif; ?>
@@ -214,8 +214,6 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         <div id="details-section" class="display-fields" style="display: none; margin-top:20px">
                             <div class="grid-x grid-margin-x">
                                 <?php
-                                // let the plugin add section content
-                                do_action( "dt_details_additional_section", 'details', $post_type );
                                 //setup the order of the tile fields
                                 $order = $tiles['details']["order"] ?? [];
                                 foreach ( $post_settings["fields"] as $key => $option ){
@@ -242,6 +240,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                         </div>
                                     <?php }
                                 }
+                                // let the plugin add section content
+                                do_action( "dt_details_additional_section", 'details', $post_type );
                                 ?>
                             </div>
                         </div>

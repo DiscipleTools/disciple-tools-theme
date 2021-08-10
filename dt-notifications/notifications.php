@@ -41,6 +41,28 @@ function dt_notification_delete_by_post( $args = [] ) {
     Disciple_Tools_Notifications::delete_by_post( $args );
 }
 
+function dt_switch_locale_for_notifications( $user_id, $locale = '' ) {
+    // load the local for the destination usr so emails are sent our correctly.
+
+    if ( !$user_id && $locale !== '' ) {
+        $destination_user_locale = $locale;
+    } else {
+        $destination_user = get_user_by( 'id', $user_id );
+
+        $destination_user_locale = !empty( $destination_user->locale ) ? $destination_user->locale : Disciple_Tools::instance()->site_locale;
+    }
+
+    add_filter( "pre_determine_locale", function ( $locale ) use ( $destination_user_locale ) {
+        if ( $destination_user_locale ){
+            $locale = $destination_user_locale;
+        }
+        return $locale;
+    }, 10, 1 );
+    //make sure correct translation is loaded for destination user.
+    unload_textdomain( "disciple_tools" );
+    load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
+}
+
 /**
  * Class Disciple_Tools_Notifications
  */
@@ -464,6 +486,8 @@ class Disciple_Tools_Notifications
 
 
     public static function send_notification_on_channels( $user_id, $notification, $notification_type, $already_sent = [] ){
+        dt_switch_locale_for_notifications( $notification["user_id"] );
+
         $message = self::get_notification_message_html( $notification );
         $user_meta = get_user_meta( $user_id );
         if ( !in_array( 'web', $already_sent ) && dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $user_id ) ) {
@@ -629,6 +653,8 @@ class Disciple_Tools_Notifications
                 if ( $follower != $source_user_id ){
                     $user_meta = get_user_meta( $follower );
                     if ( $user_meta ) {
+                        dt_switch_locale_for_notifications( $follower );
+
                         $notification = [
                             'user_id'             => $follower,
                             'source_user_id'      => $source_user_id,
@@ -764,20 +790,6 @@ class Disciple_Tools_Notifications
      * @return string $notification_note the return value is expected to contain HTML.
      */
     public static function get_notification_message_html( $notification, $html = true ){
-        // load the local for the destination usr so emails are sent our correctly.
-        $destination_user = get_user_by( 'id', $notification["user_id"] );
-
-        $destination_user_locale = !empty( $destination_user->locale ) ? $destination_user->locale : Disciple_Tools::instance()->site_locale;
-
-        add_filter( "determine_locale", function ( $locale ) use ( $destination_user_locale ) {
-            if ( $destination_user_locale ){
-                $locale = $destination_user_locale;
-            }
-            return $locale;
-        }, 10, 1 );
-        //make sure correct translation is loaded for destination user.
-        unload_textdomain( "disciple_tools" );
-        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
 
         $object_id = $notification["post_id"];
         $post = get_post( $object_id );

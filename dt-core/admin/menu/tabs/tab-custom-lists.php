@@ -642,6 +642,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <label for="custom">Custom Icon URL:</label>
                     <input type="radio" name="icon" value="custom">
                     <input name="add_custom_quick_action_icon" type="text">
+                    <br>
                     <button type="submit" class="button"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></button>
             </div>
         </form>

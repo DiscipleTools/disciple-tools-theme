@@ -78,13 +78,6 @@ class Disciple_Tools_Users_Endpoints
             ]
         );
         register_rest_route(
-            $this->namespace, '/users/disable_product_tour', [
-                'methods' => "GET",
-                'callback' => [ $this, 'disable_product_tour' ],
-                'permission_callback' => '__return_true',
-            ]
-        );
-        register_rest_route(
             $this->namespace, '/users/create', [
                 'methods' => "POST",
                 'callback' => [ $this, 'create_user' ],
@@ -234,18 +227,22 @@ class Disciple_Tools_Users_Endpoints
         }
     }
 
-
-    public function disable_product_tour(){
-        return update_user_meta( get_current_user_id(), 'dt_product_tour', true );
-    }
-
-
     public function create_user( WP_REST_Request $request ){
         $params = $request->get_params();
 
         if ( isset( $params["user-email"], $params["user-display"] ) ){
+            $user_roles = [ "multiplier" ];
+            if ( isset( $params["user-user_role"] ) ){
+                $user_roles = [ $params["user-user_role"] ];
+            }
+            if ( isset( $params["user-roles"] ) ){
+                $user_roles =$params["user-roles"];
+            }
             $user_login = $params["user-user_login"] ?? $params["user-email"];
-            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $params["user-user_role"] ?? 'multiplier', $params["corresponds_to_contact"] ?? null );
+            if (isset( $params["locale"] ) ) {
+                $locale = $params["locale"];
+            }
+            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $user_roles, $params["corresponds_to_contact"] ?? null, $locale ?? null );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }

@@ -180,6 +180,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     'public_key' => '',
                     'action' => '',
                     'post_id' => '',
+                    'post_type' => '',
                 ];
                 if ( isset( $parts[0] ) && ! empty( $parts[0] ) ){
                     $elements['root'] = $parts[0];
@@ -232,6 +233,9 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         return false;
                     }
                 }
+                if ( isset( $all_types[$elements['root']][$elements['type']]['post_type'] ) ) {
+                    $elements['post_type'] = $all_types[$elements['root']][$elements['type']]['post_type'];
+                }
                 return $elements;
             }
             return false;
@@ -259,6 +263,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     'public_key' => '',
                     'action' => '',
                     'post_id' => '',
+                    'post_type' => '',
                 ];
                 if ( isset( $parts[1] ) && ! empty( $parts[1] ) ){
                     $elements['root'] = $parts[1];
@@ -287,8 +292,8 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
                     if ( 'user' === $types[$elements['type']]['post_type'] ) {
                         // if user
-                        $user_id = self::get_user_id( $elements['meta_key'], $parts[2] );
-                        if ( ! $user_id ){ // fail if no post id for public key
+                        $user_id = self::get_user_id( $elements['meta_key'], $public_key );
+                        if ( ! $user_id ){ // fail if no user id for public key
                             return false;
                         } else {
                             $elements['post_id'] = $user_id;
@@ -302,6 +307,9 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                             $elements['post_id'] = $post_id;
                         }
                     }
+                }
+                if ( isset( $all_types[$elements['root']][$elements['type']]['post_type'] ) ) {
+                    $elements['post_type'] = $all_types[$elements['root']][$elements['type']]['post_type'];
                 }
 
                 return $elements;
