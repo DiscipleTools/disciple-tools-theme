@@ -68,7 +68,7 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
     if ( !$continue ){
         return false;
     }
-
+    $is_sent = true;
     /**
      * if a server cron is set up, then use the email scheduler
      * otherwise send the email normally
@@ -76,7 +76,7 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
     if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ){
         wp_queue()->push( new DT_Send_Email_Job( $user->ID, $email, $subject, $message_plain_text ) );
     } else {
-        wp_mail( $email, $subject, $message_plain_text );
+        $is_sent = wp_mail( $email, $subject, $message_plain_text );
     }
 
 //    @todo figure why this async method is slower.
@@ -94,7 +94,7 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
 //        return false;
 //    }
 
-    return true;
+    return $is_sent;
 }
 
 /**
@@ -122,18 +122,34 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
  * @return bool|\WP_Error
  */
 function dt_send_email_about_post( string $email, int $post_id, string $message_plain_text ) {
-    $post_type = get_post_type( $post_id );
-    $contact_url = home_url( '/' ) . $post_type . '/' . $post_id;
-    $full_message = $message_plain_text . "\r\n\r\n--\r\n" . __( 'Click here to view or reply', 'disciple_tools' ) . ": $contact_url";
-    $full_message .= "\r\n" . __( 'Do not reply directly to this email.', 'disciple_tools' );
-    $post_label = Disciple_Tools_Posts::get_label_for_post_type( $post_type, true, $return_cache = false );
+    $full_message = $message_plain_text . dt_make_post_email_footer( $post_id );
+    $full_message .= dt_make_email_footer();
+    $subject = dt_make_post_email_subject( $post_id );
 
     return dt_send_email(
         $email,
-        sprintf( esc_html_x( 'Update on %1$s #%2$s', 'ex: Update on Contact #323', 'disciple_tools' ), $post_label, $post_id ),
+        $subject,
         $full_message
     );
 }
+
+function dt_make_post_email_footer( int $post_id ) {
+    $post_type = get_post_type( $post_id );
+    $contact_url = home_url( '/' ) . $post_type . '/' . $post_id;
+    return "\r\n\r\n--\r\n" . __( 'Click here to view or reply', 'disciple_tools' ) . ": $contact_url";
+}
+
+function dt_make_post_email_subject( $post_id ) {
+    $post_type = get_post_type( $post_id );
+    $post_label = Disciple_Tools_Posts::get_label_for_post_type( $post_type, true, $return_cache = false );
+    return sprintf( esc_html_x( 'Update on %1$s #%2$s', 'ex: Update on Contact #323', 'disciple_tools' ), $post_label, $post_id );
+}
+
+function dt_make_email_footer() {
+    return "\r\n" . __( 'Do not reply directly to this email.', 'disciple_tools' );
+}
+
+
 
 /**
  * Class Disciple_Tools_Notifications_Email

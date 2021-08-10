@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-08-09T19:24:53+00:00\n"
+"POT-Creation-Date: 2021-08-10T15:08:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0-alpha\n"
 "X-Domain: disciple_tools\n"
@@ -2519,7 +2519,7 @@ msgstr ""
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:294
-#: dt-users/users.php:1117
+#: dt-users/users.php:1122
 msgid "Username: %s"
 msgstr ""
 
@@ -4352,16 +4352,16 @@ msgstr ""
 msgid "To log in click here: %s"
 msgstr ""
 
-#: dt-users/users.php:1115
+#: dt-users/users.php:1120
 msgid "Hi %s,"
 msgstr ""
 
-#: dt-users/users.php:1116
+#: dt-users/users.php:1121
 msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr ""
 
-#: dt-users/users.php:1177
+#: dt-users/users.php:1182
 msgid "View contact record"
 msgstr ""
 
