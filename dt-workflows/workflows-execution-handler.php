@@ -282,19 +282,19 @@ class Disciple_Tools_Workflows_Execution_Handler {
 
         $already_executed = false;
         foreach ( $actions as $action ) {
+
+            // Determine current field state
+            $current_state = false;
             if ( isset( $post[ $action->field_id ] ) && isset( $post_type_settings['fields'][ $action->field_id ]['type'] ) ) {
                 $field      = $post[ $action->field_id ];
                 $field_type = $post_type_settings['fields'][ $action->field_id ]['type'];
 
-                // Determine if field has already been set!
                 switch ( $field_type ) {
                     case 'text':
                     case 'number':
                     case 'boolean':
                     case 'date':
-                        if ( self::condition_equals( $field_type, $field, $action->value ) ) {
-                            $already_executed = true;
-                        }
+                        $current_state = self::condition_equals( $field_type, $field, $action->value );
                         break;
                     case 'tags':
                     case 'multi_select':
@@ -303,11 +303,25 @@ class Disciple_Tools_Workflows_Execution_Handler {
                     case 'location':
                     case 'connection':
                     case 'user_select':
-                        if ( self::condition_contains( $field_type, $field, $action->value ) ) {
-                            $already_executed = true;
-                        }
+                        $current_state = self::condition_contains( $field_type, $field, $action->value );
                         break;
                 }
+            }
+
+            // Determine if field has already been worked on based on the current action to be carried out!
+            switch ( $action->id ) {
+                case 'update':
+                case 'append':
+                case 'connect':
+                    if ( $current_state ) {
+                        $already_executed = true;
+                    }
+                    break;
+                case 'remove':
+                    if ( ! $current_state ) {
+                        $already_executed = true;
+                    }
+                    break;
             }
         }
 
@@ -331,6 +345,9 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         break;
                     case 'connect':
                         $updated_fields = self::action_connect( $field_type, $field_id, $value );
+                        break;
+                    case 'remove':
+                        $updated_fields = self::action_remove( $field_type, $field_id, $value );
                         break;
                 }
 
@@ -379,6 +396,22 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'connection': // $value to be connection ID
                 $updated[ $field_id ]['values']   = [];
                 $updated[ $field_id ]['values'][] = [ "value" => $value ];
+                break;
+        }
+
+        return $updated;
+    }
+
+    private static function action_remove( $field_type, $field_id, $value ): array {
+        $updated = [];
+        switch ( $field_type ) {
+            case 'multi_select':
+            case 'connection':
+                $updated[ $field_id ]['values']   = [];
+                $updated[ $field_id ]['values'][] = [
+                    "value"  => $value,
+                    "delete" => true
+                ];
                 break;
         }
 

@@ -526,7 +526,6 @@ jQuery(function ($) {
           );
           break;
         case "tags":
-        case "multi_select":
         case "array":
         case "task":
         case "communication_channel":
@@ -542,11 +541,27 @@ jQuery(function ($) {
             }
           );
           break;
+        case "multi_select":
+          actions.push(
+            {
+              'id': 'append',
+              'name': 'Appended With'
+            },
+            {
+              'id': 'remove',
+              'name': 'Removal Of'
+            }
+          );
+          break;
         case "connection":
           actions.push(
             {
               'id': 'connect',
               'name': 'Connect To'
+            },
+            {
+              'id': 'remove',
+              'name': 'Removal Of'
             }
           );
           break;
