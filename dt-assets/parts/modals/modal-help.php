@@ -180,7 +180,7 @@
             <!-- documentation link -->
             <div class="help-more">
                 <h5><?php echo esc_html_x( "Need more help?", 'Optional Documentation', 'disciple_tools' ) ?></h5>
-                <a class="button small" id="docslink" href="https://disciple.tools/user-docs"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
+                <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
             </div>
         </div>
         <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -191,7 +191,7 @@
 <div class="reveal" id="help-modal-field" data-reveal>
 
     <h1 id="help-modal-field-title"><?php echo esc_html( "Tile Documentation" ); ?></h1>
-    <p id="help-modal-field-description"></p>
+    <p id="help-modal-field-description" class="make-links-clickable" style="white-space: pre-line"></p>
     <div id="help-modal-field-body"></div>
 
     <!-- close -->
@@ -205,7 +205,7 @@
             <!-- documentation link -->
             <div class="help-more">
                 <h5><?php echo esc_html_x( "Need more help?", 'Optional Documentation', 'disciple_tools' ) ?></h5>
-                <a class="button small" id="docslink" href="https://disciple.tools/user-docs"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
+                <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
             </div>
         </div>
         <button class="close-button" data-close aria-label="Close modal" type="button">

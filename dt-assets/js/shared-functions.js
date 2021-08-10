@@ -235,10 +235,13 @@ jQuery(document).on("click", ".help-button-tile", function () {
   let tile = window.wpApiShare.tiles[section];
   if (tile && window.post_type_fields) {
     if (tile.label) {
-      $("#help-modal-field-title").html(tile.label);
+      $("#help-modal-field-title").html(window.lodash.escape(tile.label));
     }
     if (tile.description) {
-      $("#help-modal-field-description").html(tile.description);
+      $("#help-modal-field-description").html(window.lodash.escape(tile.description));
+      window.SHAREDFUNCTIONS.make_links_clickable('#help-modal-field-description' )
+    } else {
+      $("#help-modal-field-description").empty()
     }
     let html = ``;
     window.lodash.forOwn(window.post_type_fields, (field, field_key) => {
@@ -275,9 +278,11 @@ jQuery(document).on("click", ".help-button-field", function () {
 
   if (window.post_type_fields && window.post_type_fields[section]) {
     let field = window.post_type_fields[section];
+    $("#help-modal-field-title").html(window.lodash.escape(field.name));
     if (field.description) {
-      $("#help-modal-field-title").html(field.name);
-      $("#help-modal-field-description").html(field.description);
+      $("#help-modal-field-description").html(window.lodash.escape(field.description));
+    } else {
+      $("#help-modal-field-description").empty()
     }
     if (window.lodash.isObject(field.default)) {
       let html = `<ul>`;
@@ -578,6 +583,28 @@ window.SHAREDFUNCTIONS = {
     return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
         return [ key, window.lodash.escape(value)]
     }))
+  },
+  make_links_clickable( selector ){
+    //make text links clickable in a section
+    let elem_text = $(selector).html()
+    let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
+    elem_text = elem_text.replace(urlRegex, (match)=>{
+      let url = match
+      if(match.indexOf("@") === -1 && match.indexOf("[") === -1 && match.indexOf("(") === -1 && match.indexOf("href") === -1) {
+        if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
+          url = match
+        }
+        else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
+          url = "http://" + match
+        }
+        else if (match.indexOf("www.") === -1) {
+          url = "http://www." + match
+        }
+        return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
+      }
+      return match
+    })
+    $(selector).html(elem_text)
   }
 };
 
