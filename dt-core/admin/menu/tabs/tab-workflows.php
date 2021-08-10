@@ -215,7 +215,15 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
                             <?php
                             if ( ! empty( $post_type_workflows ) && isset( $post_type_workflows->workflows ) ) {
-                                foreach ( $post_type_workflows->workflows as $workflow ) {
+
+                                // Sort detected workflows by name
+                                $workflows = (array) $post_type_workflows->workflows;
+                                usort( $workflows, function ( $a, $b ) {
+                                    return strcmp( $a->name, $b->name );
+                                } );
+
+                                // Iterate through sorted workflow list
+                                foreach ( $workflows as $workflow ) {
                                     echo '<option value="' . esc_attr( $workflow->id ) . '">' . esc_attr( $workflow->name ) . '</option>';
                                 }
                             }

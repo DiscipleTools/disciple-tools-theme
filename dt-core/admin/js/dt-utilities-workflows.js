@@ -532,7 +532,6 @@ jQuery(function ($) {
         case "communication_channel":
         case "location":
         case "location_meta":
-        case "connection":
         case "post_user_meta":
         case "datetime_series":
         case "hash":
@@ -540,6 +539,14 @@ jQuery(function ($) {
             {
               'id': 'append',
               'name': 'Appended With'
+            }
+          );
+          break;
+        case "connection":
+          actions.push(
+            {
+              'id': 'connect',
+              'name': 'Connect To'
             }
           );
           break;

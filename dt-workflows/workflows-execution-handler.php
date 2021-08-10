@@ -329,6 +329,9 @@ class Disciple_Tools_Workflows_Execution_Handler {
                     case 'append':
                         $updated_fields = self::action_append( $field_type, $field_id, $value );
                         break;
+                    case 'connect':
+                        $updated_fields = self::action_connect( $field_type, $field_id, $value );
+                        break;
                 }
 
                 // Assuming we have updated fields, proceed with post update!
@@ -362,6 +365,17 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'multi_select':
             case 'communication_channel':
             case 'location': // $value to be location id
+                $updated[ $field_id ]['values']   = [];
+                $updated[ $field_id ]['values'][] = [ "value" => $value ];
+                break;
+        }
+
+        return $updated;
+    }
+
+    private static function action_connect( $field_type, $field_id, $value ): array {
+        $updated = [];
+        switch ( $field_type ) {
             case 'connection': // $value to be connection ID
                 $updated[ $field_id ]['values']   = [];
                 $updated[ $field_id ]['values'][] = [ "value" => $value ];
