@@ -53,57 +53,84 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                 // Updating workflow
                 $updating_post_type_workflow = json_decode( sanitize_text_field( wp_unslash( $_POST['workflows_design_section_form_post_type_workflow'] ) ) );
 
-                // Fetch stored workflows
-                $current_post_type_workflow = $this->get_option_post_type_workflows( $updating_post_type_workflow->post_type_id );
+                // Process updating workflow based on its type - regular or default
+                if ( $updating_post_type_workflow->is_regular_workflow ) {
 
-                // Update and re-package
-                $post_type_id   = $updating_post_type_workflow->post_type_id;
-                $post_type_name = $updating_post_type_workflow->post_type_name;
+                    // Fetch stored workflows
+                    $current_post_type_workflow = $this->get_option_workflows( 'dt_workflows_post_types', $updating_post_type_workflow->post_type_id );
 
-                $workflow_id      = $updating_post_type_workflow->workflow_id;
-                $workflow_name    = $updating_post_type_workflow->workflow_name;
-                $workflow_enabled = $updating_post_type_workflow->workflow_enabled;
+                    // Update and re-package
+                    $post_type_id   = $updating_post_type_workflow->post_type_id;
+                    $post_type_name = $updating_post_type_workflow->post_type_name;
 
-                $trigger    = $updating_post_type_workflow->trigger;
-                $conditions = $updating_post_type_workflow->conditions;
-                $actions    = $updating_post_type_workflow->actions;
+                    $workflow_id      = $updating_post_type_workflow->workflow_id;
+                    $workflow_name    = $updating_post_type_workflow->workflow_name;
+                    $workflow_enabled = $updating_post_type_workflow->workflow_enabled;
 
-                $current_post_type_workflow->id   = $post_type_id;
-                $current_post_type_workflow->name = $post_type_name;
+                    $trigger    = $updating_post_type_workflow->trigger;
+                    $conditions = $updating_post_type_workflow->conditions;
+                    $actions    = $updating_post_type_workflow->actions;
 
-                if ( ! isset( $current_post_type_workflow->workflows ) ) {
-                    $current_post_type_workflow->workflows = (object) [];
+                    $current_post_type_workflow->id   = $post_type_id;
+                    $current_post_type_workflow->name = $post_type_name;
+
+                    if ( ! isset( $current_post_type_workflow->workflows ) ) {
+                        $current_post_type_workflow->workflows = (object) [];
+                    }
+                    $current_post_type_workflow->workflows->{$workflow_id} = (object) [
+                        'id'         => $workflow_id,
+                        'name'       => $workflow_name,
+                        'enabled'    => $workflow_enabled,
+                        'trigger'    => $trigger,
+                        'conditions' => $conditions,
+                        'actions'    => $actions
+                    ];
+
+                    // Save latest updates
+                    $this->update_option_workflows( 'dt_workflows_post_types', $post_type_id, $current_post_type_workflow );
+
+                } else { // Default Workflow
+
+                    // Fetch stored default workflows
+                    $current_default_workflow = $this->get_option_workflows( 'dt_workflows_defaults', $updating_post_type_workflow->post_type_id );
+
+                    // Update and re-package
+                    $workflow_id      = $updating_post_type_workflow->workflow_id;
+                    $workflow_name    = $updating_post_type_workflow->workflow_name;
+                    $workflow_enabled = $updating_post_type_workflow->workflow_enabled;
+
+                    if ( ! isset( $current_default_workflow->workflows ) ) {
+                        $current_default_workflow->workflows = (object) [];
+                    }
+                    $current_default_workflow->workflows->{$workflow_id} = (object) [
+                        'id'      => $workflow_id,
+                        'name'    => $workflow_name,
+                        'enabled' => $workflow_enabled
+                    ];
+
+                    // Save latest updates
+                    $this->update_option_workflows( 'dt_workflows_defaults', $updating_post_type_workflow->post_type_id, $current_default_workflow );
+
                 }
-                $current_post_type_workflow->workflows->{$workflow_id} = (object) [
-                    'id'         => $workflow_id,
-                    'name'       => $workflow_name,
-                    'enabled'    => $workflow_enabled,
-                    'trigger'    => $trigger,
-                    'conditions' => $conditions,
-                    'actions'    => $actions
-                ];
-
-                // Save latest updates
-                $this->update_option_post_type_workflows( $post_type_id, $current_post_type_workflow );
             }
         }
     }
 
-    private function get_option_post_type_workflows( $post_type_id ) {
-        $option                     = get_option( 'dt_workflows_post_types' );
-        $option_post_type_workflows = ( ! empty( $option ) ) ? json_decode( $option ) : (object) [];
+    private function get_option_workflows( $option_id, $post_type_id ) {
+        $option           = get_option( $option_id );
+        $option_workflows = ( ! empty( $option ) ) ? json_decode( $option ) : (object) [];
 
-        return ( isset( $option_post_type_workflows->{$post_type_id} ) ) ? $option_post_type_workflows->{$post_type_id} : (object) [];
+        return ( isset( $option_workflows->{$post_type_id} ) ) ? $option_workflows->{$post_type_id} : (object) [];
     }
 
-    private function update_option_post_type_workflows( $post_type_id, $post_type_workflow ) {
-        $option                     = get_option( 'dt_workflows_post_types' );
-        $option_post_type_workflows = ( ! empty( $option ) ) ? json_decode( $option ) : (object) [];
+    private function update_option_workflows( $option_id, $post_type_id, $workflow ) {
+        $option           = get_option( $option_id );
+        $option_workflows = ( ! empty( $option ) ) ? json_decode( $option ) : (object) [];
 
-        $option_post_type_workflows->{$post_type_id} = $post_type_workflow;
+        $option_workflows->{$post_type_id} = $workflow;
 
         // Save changes.
-        update_option( 'dt_workflows_post_types', json_encode( $option_post_type_workflows ) );
+        update_option( $option_id, json_encode( $option_workflows ) );
     }
 
     private function fetch_selected_post_type(): array {
@@ -194,8 +221,14 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             echo '<div id="workflows_management_section_div">';
 
             // Capture hidden values, to be used further down stream
-            $post_type_workflows = $this->get_option_post_type_workflows( $selected_post_type['id'] );
-            echo '<input type="hidden" id="workflows_management_section_hidden_post_type_workflows" value="' . esc_attr( json_encode( $post_type_workflows ) ) . '">';
+            $option_post_type_workflows = $this->get_option_workflows( 'dt_workflows_post_types', $selected_post_type['id'] );
+            echo '<input type="hidden" id="workflows_management_section_hidden_option_post_type_workflows" value="' . esc_attr( json_encode( $option_post_type_workflows ) ) . '">';
+
+            $option_default_workflows = $this->get_option_workflows( 'dt_workflows_defaults', $selected_post_type['id'] );
+            echo '<input type="hidden" id="workflows_management_section_hidden_option_default_workflows" value="' . esc_attr( json_encode( $option_default_workflows ) ) . '">';
+
+            $filtered_workflows_defaults = apply_filters( 'dt_workflows_defaults', $selected_post_type['id'], [] );
+            echo '<input type="hidden" id="workflows_management_section_hidden_filtered_workflows_defaults" value="' . esc_attr( json_encode( $filtered_workflows_defaults ) ) . '">';
 
             $this->box( 'top', 'Add new workflows or modify existing ones on ' . $selected_post_type['name'], [ "col_span" => 1 ] );
             ?>
@@ -214,17 +247,28 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                             </option>
 
                             <?php
-                            if ( ! empty( $post_type_workflows ) && isset( $post_type_workflows->workflows ) ) {
+                            // List owned workflows
+                            if ( ! empty( $option_post_type_workflows ) && isset( $option_post_type_workflows->workflows ) ) {
 
                                 // Sort detected workflows by name
-                                $workflows = (array) $post_type_workflows->workflows;
-                                usort( $workflows, function ( $a, $b ) {
-                                    return strcmp( $a->name, $b->name );
-                                } );
+                                $workflows = $this->sort_workflows_by_name( (array) $option_post_type_workflows->workflows );
 
                                 // Iterate through sorted workflow list
                                 foreach ( $workflows as $workflow ) {
                                     echo '<option value="' . esc_attr( $workflow->id ) . '">' . esc_attr( $workflow->name ) . '</option>';
+                                }
+                            }
+
+                            // List default filtered workflows
+                            if ( ! empty( $filtered_workflows_defaults ) ) {
+                                echo '<option disabled value="">--- default workflows ---</option>';
+
+                                // Sort detected default workflows by name
+                                $workflows_defaults = $this->sort_workflows_by_name( $filtered_workflows_defaults );
+
+                                // Iterate through sorted workflow list
+                                foreach ( $workflows_defaults as $workflow_default ) {
+                                    echo '<option value="default_' . esc_attr( $workflow_default->id ) . '">' . esc_attr( $workflow_default->name ) . '</option>';
                                 }
                             }
                             ?>
@@ -381,7 +425,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
                         <table border="0">
                             <tbody>
-                            <tr>
+                            <tr id="workflows_design_section_step2_fields_tr">
                                 <td>
                                     fields:
                                 </td>
@@ -392,7 +436,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                                 </td>
                                 <td></td>
                             </tr>
-                            <tr>
+                            <tr id="workflows_design_section_step2_conditions_tr">
                                 <td>
                                     condition:
                                 </td>
@@ -403,7 +447,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                                 </td>
                                 <td></td>
                             </tr>
-                            <tr>
+                            <tr id="workflows_design_section_step2_condition_value_tr">
                                 <td>
                                     value:
                                 </td>
@@ -415,13 +459,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
                                     <div id="workflows_design_section_step2_condition_value_div">
                                         --- dynamic condition value field ---
-
-                                        <!--
-                                        TODO: Update all resets; which reference this field....!!
-                                        <input type="text" style="min-width: 100%;"
-                                               id="workflows_design_section_step2_condition_value"
-                                               placeholder="Condition value">
-                                               -->
                                     </div>
                                 <td>
                                 </td>
@@ -489,7 +526,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
                         <table border="0">
                             <tbody>
-                            <tr>
+                            <tr id="workflows_design_section_step3_fields_tr">
                                 <td>
                                     fields:
                                 </td>
@@ -500,7 +537,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                                 </td>
                                 <td></td>
                             </tr>
-                            <tr>
+                            <tr id="workflows_design_section_step3_actions_tr">
                                 <td>
                                     action:
                                 </td>
@@ -511,7 +548,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                                 </td>
                                 <td></td>
                             </tr>
-                            <tr>
+                            <tr id="workflows_design_section_step3_action_value_tr">
                                 <td>
                                     value:
                                 </td>
@@ -523,13 +560,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
                                     <div id="workflows_design_section_step3_action_value_div">
                                         --- dynamic action value field ---
-
-                                        <!--
-                                        TODO: Update all resets; which reference this field....!!
-                                        <input type="text" style="min-width: 100%;"
-                                               id="workflows_design_section_step3_action_value"
-                                               placeholder="Action value">
-                                               -->
                                     </div>
                                 </td>
                                 <td>
@@ -690,6 +720,16 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         }
 
         return $post_field_types;
+    }
+
+    private function sort_workflows_by_name( $workflows ): array {
+        if ( ! empty( $workflows ) ) {
+            usort( $workflows, function ( $a, $b ) {
+                return strcmp( $a->name, $b->name );
+            } );
+        }
+
+        return $workflows;
     }
 
 }

@@ -158,32 +158,22 @@ jQuery(function ($) {
             $('#workflows_design_section_div').fadeIn('fast', function () {
 
               // Parse hidden workflows in search of the one!
-              let parsed_workflows = JSON.parse($('#workflows_management_section_hidden_post_type_workflows').val());
-              let workflow = parsed_workflows['workflows'][workflow_id];
-
+              let workflow = find_parsed_workflow(true, workflow_id);
               if (workflow) {
 
-                // Set step 1 elements and display
-                set_elements_step1(workflow, function () {
-                  $('#workflows_design_section_step1').fadeIn('fast', function () {
-                  });
-                });
+                display_regular_workflow(workflow);
 
-                // Set step 2 elements and display
-                set_elements_step2(workflow, handle_workflow_step1_next_request);
+              } else if (workflow_id.startsWith('default_')) {
 
-                // Set step 3 elements and display
-                set_elements_step3(workflow, handle_workflow_step2_next_request);
+                workflow = find_parsed_workflow(false, workflow_id.split('default_')[1]);
+                display_default_workflow(workflow);
 
-                // Set step 4 elements and display
-                set_elements_step4(workflow, handle_workflow_step3_next_request);
+              }
 
-              } else {
-
-                // Just display step 1
+              // If still unable to locate a valid workflow, default to just the first step!
+              if (!workflow) {
                 $('#workflows_design_section_step1').fadeIn('fast', function () {
                 });
-
               }
             });
           });
@@ -282,6 +272,138 @@ jQuery(function ($) {
 
 
     /*** Header Functions - Helpers ***/
+    function find_parsed_workflow(is_regular_workflow, workflow_id) {
+      if (is_regular_workflow) {
+        let parsed_workflows = JSON.parse($('#workflows_management_section_hidden_option_post_type_workflows').val());
+        if (parsed_workflows && parsed_workflows['workflows']) {
+          return parsed_workflows['workflows'][workflow_id];
+        }
+      } else {
+        let parsed_workflows = JSON.parse($('#workflows_management_section_hidden_filtered_workflows_defaults').val());
+
+        let workflow = null;
+        if (parsed_workflows) {
+          parsed_workflows.forEach(function (item) {
+            if (String(item['id']) === String(workflow_id)) {
+              workflow = item;
+            }
+          });
+        }
+        return workflow;
+      }
+
+      return null;
+    }
+
+    function update_default_workflow_state(workflow) {
+      if (workflow) {
+
+        // Fetch latest default workflow option values
+        let parsed_default_options = JSON.parse($('#workflows_management_section_hidden_option_default_workflows').val());
+
+        // Update relevant values
+        let option = (parsed_default_options['workflows']) ? parsed_default_options['workflows'][workflow['id']] : null;
+        if (option) {
+          workflow['enabled'] = option['enabled'];
+        }
+      }
+
+      return workflow;
+    }
+
+    function display_regular_workflow(workflow) {
+      if (workflow) {
+        display_workflow(true, workflow);
+      }
+    }
+
+    function display_default_workflow(workflow) {
+      /*
+       * Apart from setting the default workflow's enabled state,
+       * they will be shown in a read-only capacity, only!
+       *
+       * However, ensure to override configured attributes with most
+       * recent values; where needed!
+       */
+
+      if (workflow) {
+        display_workflow(false, update_default_workflow_state(workflow));
+      }
+    }
+
+    function display_workflow(unlocked, workflow) {
+      // Set step 1 elements and display
+      set_elements_step1(workflow, function () {
+        adjust_elements_step1_locked_state(unlocked, function () {
+          $('#workflows_design_section_step1').fadeIn('fast', function () {
+          });
+        });
+      });
+
+      // Set step 2 elements and display
+      set_elements_step2(workflow, function () {
+        adjust_elements_step2_locked_state(unlocked, handle_workflow_step1_next_request);
+      });
+
+      // Set step 3 elements and display
+      set_elements_step3(workflow, function () {
+        adjust_elements_step3_locked_state(unlocked, handle_workflow_step2_next_request);
+      });
+
+      // Set step 4 elements and display
+      set_elements_step4(workflow, function () {
+        adjust_elements_step4_locked_state(unlocked, handle_workflow_step3_next_request);
+      });
+    }
+
+    function adjust_elements_step1_locked_state(unlock, callback) {
+      $('#workflows_design_section_step1_trigger_created').prop('disabled', !unlock);
+      $('#workflows_design_section_step1_trigger_updated').prop('disabled', !unlock);
+
+      let next_but = $('#workflows_design_section_step1_next_but');
+      unlock ? next_but.show() : next_but.hide();
+
+      callback();
+    }
+
+    function adjust_elements_step2_locked_state(unlock, callback) {
+      let fields_tr = $('#workflows_design_section_step2_fields_tr');
+      let conditions_tr = $('#workflows_design_section_step2_conditions_tr');
+      let condition_value_tr = $('#workflows_design_section_step2_condition_value_tr');
+      let condition_remove_but = $('.workflows-design-section-step2-condition-remove');
+      let next_but = $('#workflows_design_section_step2_next_but');
+
+      unlock ? fields_tr.show() : fields_tr.hide();
+      unlock ? conditions_tr.show() : conditions_tr.hide();
+      unlock ? condition_value_tr.show() : condition_value_tr.hide();
+      unlock ? condition_remove_but.show() : condition_remove_but.hide();
+      unlock ? next_but.show() : next_but.hide();
+
+      callback();
+    }
+
+    function adjust_elements_step3_locked_state(unlock, callback) {
+      let fields_tr = $('#workflows_design_section_step3_fields_tr');
+      let actions_tr = $('#workflows_design_section_step3_actions_tr');
+      let action_value_tr = $('#workflows_design_section_step3_action_value_tr');
+      let action_remove_but = $('.workflows-design-section-step3-action-remove');
+      let next_but = $('#workflows_design_section_step3_next_but');
+
+      unlock ? fields_tr.show() : fields_tr.hide();
+      unlock ? actions_tr.show() : actions_tr.hide();
+      unlock ? action_value_tr.show() : action_value_tr.hide();
+      unlock ? action_remove_but.show() : action_remove_but.hide();
+      unlock ? next_but.show() : next_but.hide();
+
+      callback();
+    }
+
+    function adjust_elements_step4_locked_state(unlock, callback) {
+      $('#workflows_design_section_step4_title').prop('readonly', !unlock);
+
+      callback();
+    }
+
     function new_workflow_view_reset(reset_workflow_select, callback) {
 
       // Reset management panel elements
@@ -294,22 +416,22 @@ jQuery(function ($) {
         $('#workflows_design_section_step4').fadeOut('fast', function () {
 
           // Reset step 4 elements!
-          reset_step4_elements();
+          adjust_elements_step4_locked_state(true, reset_step4_elements);
 
           $('#workflows_design_section_step3').fadeOut('fast', function () {
 
             // Reset step 3 elements!
-            reset_step3_elements();
+            adjust_elements_step3_locked_state(true, reset_step3_elements);
 
             $('#workflows_design_section_step2').fadeOut('fast', function () {
 
               // Reset step 2 elements!
-              reset_step2_elements();
+              adjust_elements_step2_locked_state(true, reset_step2_elements);
 
               $('#workflows_design_section_step1').fadeOut('fast', function () {
 
                 // Reset step 1 elements!
-                reset_step1_elements();
+                adjust_elements_step1_locked_state(true, reset_step1_elements);
 
                 // Execute callback
                 callback();
@@ -662,7 +784,10 @@ jQuery(function ($) {
       let post_type_id = $('#workflows_design_section_hidden_selected_post_type_id').val();
       let post_type_name = $('#workflows_design_section_hidden_selected_post_type_name').val();
 
-      let workflow_id = $('#workflows_design_section_hidden_workflow_id').val();
+      let hidden_workflow_id = $('#workflows_design_section_hidden_workflow_id');
+      let is_regular_workflow = !hidden_workflow_id.val().startsWith('default_');
+
+      let workflow_id = is_regular_workflow ? hidden_workflow_id.val() : hidden_workflow_id.val().split('default_')[1];
       let workflow_name = $('#workflows_design_section_step4_title').val();
       let workflow_enabled = $('#workflows_design_section_step4_enabled').is(':checked');
 
@@ -696,6 +821,7 @@ jQuery(function ($) {
           'post_type_id': post_type_id,
           'post_type_name': post_type_name,
 
+          'is_regular_workflow': is_regular_workflow,
           'workflow_id': workflow_id,
           'workflow_name': workflow_name,
           'workflow_enabled': workflow_enabled,

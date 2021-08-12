@@ -12,7 +12,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
     public function __construct() {
     }
 
-    public static function get_post_type_workflows( $post_type, $enabled_only ): array {
+    public static function get_workflows( $post_type, $enabled_only, $include_defaults ): array {
         $option                     = get_option( 'dt_workflows_post_types' );
         $option_post_type_workflows = ( ! empty( $option ) ) ? json_decode( $option ) : (object) [];
 
@@ -31,7 +31,42 @@ class Disciple_Tools_Workflows_Execution_Handler {
             }
         }
 
+        // If requested, also include any available default workflows
+        if ( $include_defaults ) {
+
+            // Fetch any available default workflow configs
+            $option                    = get_option( 'dt_workflows_defaults' );
+            $option_default_workflows  = ( ! empty( $option ) ) ? json_decode( $option ) : (object) [];
+            $default_workflows_configs = ( isset( $option_default_workflows->{$post_type} ) && isset( $option_default_workflows->{$post_type}->workflows ) ) ? $option_default_workflows->{$post_type}->workflows : (object) [];
+
+            // Iterate over all filtered default workflows
+            foreach ( apply_filters( 'dt_workflows_defaults', $post_type, [] ) ?? [] as $workflow ) {
+
+                // Ensure default workflow states are updated accordingly, based on current configs!
+                if ( ! empty( $workflow ) ) {
+                    $workflow = self::update_default_workflow_state( $workflow, $default_workflows_configs );
+
+                    // Determine if workflow is to be returned based on enabled_only flag!
+                    if ( $enabled_only ) {
+                        if ( $workflow->enabled ) {
+                            $workflows[] = $workflow;
+                        }
+                    } else {
+                        $workflows[] = $workflow;
+                    }
+                }
+            }
+        }
+
         return $workflows;
+    }
+
+    private static function update_default_workflow_state( $workflow, $default_workflows_configs ) {
+        if ( isset( $default_workflows_configs->{$workflow->id} ) ) {
+            $workflow->enabled = $default_workflows_configs->{$workflow->id}->enabled;
+        }
+
+        return $workflow;
     }
 
     public static function eval_conditions( $workflow, $post, $post_type_settings ): bool {

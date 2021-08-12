@@ -22,7 +22,7 @@ function process_trigger( $trigger_id, $post ) {
     if ( ! empty( $post ) ) {
 
         // Fetch all enabled workflows for given post_type
-        $workflows = Disciple_Tools_Workflows_Execution_Handler::get_post_type_workflows( $post['post_type'], true );
+        $workflows = Disciple_Tools_Workflows_Execution_Handler::get_workflows( $post['post_type'], true, true );
         if ( ! empty( $workflows ) ) {
 
             // Fetch post type settings
