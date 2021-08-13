@@ -4,14 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
-add_action( 'dt_post_created', 'dt_post_created_workflows_trigger', 10, 3 );
+add_action( 'dt_post_created', 'dt_post_created_workflows_trigger', 100, 3 );
 function dt_post_created_workflows_trigger( $post_type, $post_id, $initial_fields ) {
     // Process incoming post id, based on created trigger
     $post = DT_Posts::get_post( $post_type, $post_id, false, false, true );
     process_trigger( 'created', ! is_wp_error( $post ) ? $post : null );
 }
 
-add_action( 'dt_post_updated', 'dt_post_updated_workflows_trigger', 10, 5 );
+add_action( 'dt_post_updated', 'dt_post_updated_workflows_trigger', 100, 5 );
 function dt_post_updated_workflows_trigger( $post_type, $post_id, $initial_fields, $existing_post, $post ) {
     // Process incoming post, based on updated trigger
     process_trigger( 'updated', ! is_wp_error( $post ) ? $post : null );
