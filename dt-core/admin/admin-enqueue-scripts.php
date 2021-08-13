@@ -17,6 +17,7 @@ add_action( 'admin_enqueue_scripts', 'dt_admin_pages_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_people_groups_post_type_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_options_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_new_user_scripts' );
+add_action( 'admin_enqueue_scripts', 'dt_utilities_workflows_scripts' );
 
 /*
  * Functions
@@ -109,5 +110,35 @@ function dt_new_user_scripts(){
         wp_register_style( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css' );
         wp_enqueue_style( 'jquery-ui' );
         wp_enqueue_script( 'jquery-ui-autocomplete' );
+    }
+}
+
+/**
+ * Loads scripts and styles for dt utilities workflows.
+ */
+function dt_utilities_workflows_scripts() {
+    if ( isset( $_GET["page"] ) && ( $_GET["page"] === 'dt_options' ) ) {
+        if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'workflows' ) {
+            wp_register_style( 'bootstrap-5-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
+            wp_enqueue_style( 'bootstrap-5-css' );
+
+            wp_register_style( 'bootstrap-5-icons', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css' );
+            wp_enqueue_style( 'bootstrap-5-icons' );
+
+            dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+            dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
+
+            wp_register_style( 'daterangepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css' );
+            wp_enqueue_style( 'daterangepicker-css' );
+            wp_enqueue_script( 'daterangepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.js', [ 'moment' ], '3.1.0', true );
+
+            wp_enqueue_script( 'dt_utilities_workflows_script', disciple_tools()->admin_js_url . 'dt-utilities-workflows.js', [
+                'moment',
+                'jquery',
+                'lodash',
+                'typeahead-jquery',
+                'daterangepicker-js',
+            ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-workflows.js' ), true );
+        }
     }
 }
