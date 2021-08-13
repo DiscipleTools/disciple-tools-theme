@@ -53,7 +53,6 @@ jQuery(function ($) {
         condition_value_id = condition_value_name = condition_value_element.val();
       }
 
-      console.log('id: ' + condition_value_id + ' label: ' + condition_value_name);
       handle_workflow_step_event_add_request(true, field_id, field_name, condition_id, condition_name, condition_value_id, condition_value_name, function () {
         // Reset values following addition
         $('#workflows_design_section_step2_fields').val('');
@@ -102,7 +101,6 @@ jQuery(function ($) {
         action_value_id = action_value_name = action_value_element.val();
       }
 
-      console.log('id: ' + action_value_id + ' label: ' + action_value_name);
       handle_workflow_step_event_add_request(false, field_id, field_name, action_id, action_name, action_value_id, action_value_name, function () {
         // Reset values following addition
         $('#workflows_design_section_step3_fields').val('');
@@ -493,7 +491,7 @@ jQuery(function ($) {
         // Add sorted field names
         fields.forEach(function (field, idx) {
           if (field['id'] && field['name']) {
-            let option = '<option value="' + field['id'] + '">' + field['name'] + '</option>';
+            let option = `<option value="${ window.lodash.escape(field['id']) }">${ window.lodash.escape(field['name']) }</option>`;
             fields_select.append(option);
           }
         });
@@ -667,11 +665,11 @@ jQuery(function ($) {
           actions.push(
             {
               'id': 'append',
-              'name': 'Appended With'
+              'name': 'Add'
             },
             {
               'id': 'remove',
-              'name': 'Removal Of'
+              'name': 'Remove'
             }
           );
           break;
@@ -697,23 +695,23 @@ jQuery(function ($) {
 
       // Field
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step2_conditions_table_field_id" type="hidden" value="' + field_id + '">';
-      html += '<input id="workflows_design_section_step2_conditions_table_field_name" type="hidden" value="' + field_name + '">';
-      html += field_name;
+      html += '<input id="workflows_design_section_step2_conditions_table_field_id" type="hidden" value="' + window.lodash.escape(field_id) + '">';
+      html += '<input id="workflows_design_section_step2_conditions_table_field_name" type="hidden" value="' + window.lodash.escape(field_name) + '">';
+      html += window.lodash.escape(field_name);
       html += '</td>';
 
       // Condition
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step2_conditions_table_condition_id" type="hidden" value="' + condition_id + '">';
-      html += '<input id="workflows_design_section_step2_conditions_table_condition_name" type="hidden" value="' + condition_name + '">';
-      html += condition_name;
+      html += '<input id="workflows_design_section_step2_conditions_table_condition_id" type="hidden" value="' + window.lodash.escape(condition_id) + '">';
+      html += '<input id="workflows_design_section_step2_conditions_table_condition_name" type="hidden" value="' + window.lodash.escape(condition_name) + '">';
+      html += window.lodash.escape(condition_name);
       html += '</td>';
 
       // Value
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step2_conditions_table_condition_value" type="hidden" value="' + condition_value_id + '">';
-      html += '<input id="workflows_design_section_step2_conditions_table_condition_value_name" type="hidden" value="' + condition_value_name + '">';
-      html += condition_value_name;
+      html += '<input id="workflows_design_section_step2_conditions_table_condition_value" type="hidden" value="' + window.lodash.escape(condition_value_id) + '">';
+      html += '<input id="workflows_design_section_step2_conditions_table_condition_value_name" type="hidden" value="' + window.lodash.escape(condition_value_name) + '">';
+      html += window.lodash.escape(condition_value_name);
       html += '</td>';
 
       // Removal Button
@@ -734,23 +732,23 @@ jQuery(function ($) {
 
       // Field
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step3_actions_table_field_id" type="hidden" value="' + field_id + '">';
-      html += '<input id="workflows_design_section_step3_actions_table_field_name" type="hidden" value="' + field_name + '">';
-      html += field_name;
+      html += '<input id="workflows_design_section_step3_actions_table_field_id" type="hidden" value="' + window.lodash.escape(field_id) + '">';
+      html += '<input id="workflows_design_section_step3_actions_table_field_name" type="hidden" value="' + window.lodash.escape(field_name) + '">';
+      html += window.lodash.escape(field_name);
       html += '</td>';
 
       // Condition
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step3_actions_table_action_id" type="hidden" value="' + action_id + '">';
-      html += '<input id="workflows_design_section_step3_actions_table_action_name" type="hidden" value="' + action_name + '">';
-      html += action_name;
+      html += '<input id="workflows_design_section_step3_actions_table_action_id" type="hidden" value="' + window.lodash.escape(action_id) + '">';
+      html += '<input id="workflows_design_section_step3_actions_table_action_name" type="hidden" value="' + window.lodash.escape(action_name) + '">';
+      html += window.lodash.escape(action_name);
       html += '</td>';
 
       // Value
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step3_actions_table_action_value" type="hidden" value="' + action_value_id + '">';
-      html += '<input id="workflows_design_section_step3_actions_table_action_value_name" type="hidden" value="' + action_value_name + '">';
-      html += action_value_name;
+      html += '<input id="workflows_design_section_step3_actions_table_action_value" type="hidden" value="' + window.lodash.escape(action_value_id) + '">';
+      html += '<input id="workflows_design_section_step3_actions_table_action_value_name" type="hidden" value="' + window.lodash.escape(action_value_name) + '">';
+      html += window.lodash.escape(action_value_name);
       html += '</td>';
 
       // Removal Button
@@ -1075,7 +1073,7 @@ jQuery(function ($) {
     function generate_event_value_textfield() {
       let response = {};
       response['id'] = Date.now();
-      response['html'] = '<input type="text" placeholder="Enter a value..." style="min-width: 100%;" id="' + response['id'] + '">';
+      response['html'] = '<input type="text" placeholder="Enter a value..." style="min-width: 100%;" id="' + window.lodash.escape(response['id']) + '">';
 
       return response;
     }
@@ -1083,7 +1081,7 @@ jQuery(function ($) {
     function generate_event_value_datepicker() {
       let response = {};
       response['id'] = Date.now();
-      response['html'] = '<input type="text" class="dt-datepicker" placeholder="Enter a date..." style="min-width: 100%;" id="' + response['id'] + '">';
+      response['html'] = '<input type="text" class="dt-datepicker" placeholder="Enter a date..." style="min-width: 100%;" id="' + window.lodash.escape(response['id']) + '">';
       response['datepicker'] = {};
 
       return response;
@@ -1115,7 +1113,7 @@ jQuery(function ($) {
         // Iterate over field defaults...
         for (const [key, value] of Object.entries(defaults)) {
           //if (value['label']) { // As an empty label string is actually a valid entry!
-          html += '<option value="' + key + '">' + value['label'] + '</option>';
+          html += '<option value="' + window.lodash.escape(key) + '">' + window.lodash.escape(value['label']) + '</option>';
           //}
         }
 
@@ -1133,7 +1131,7 @@ jQuery(function ($) {
       response['id'] = Date.now();
 
       let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
-      html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing a location..." style="min-width: 100%;" id="' + response['id'] + '">';
+      html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing a location..." style="min-width: 100%;" id="' + window.lodash.escape(response['id']) + '">';
       html += '</div></div></div>';
       response['html'] = html;
 
@@ -1161,7 +1159,6 @@ jQuery(function ($) {
           }
         },
         id_func: function (item) {
-          console.log(item);
           if (item && item['ID']) {
             return item['ID'];
           }
@@ -1179,7 +1176,7 @@ jQuery(function ($) {
         response['id'] = Date.now();
 
         let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
-        html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing connection details..." style="min-width: 100%;" id="' + response['id'] + '">';
+        html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing connection details..." style="min-width: 100%;" id="' + window.lodash.escape( response['id']) + '">';
         html += '</div></div></div>';
         response['html'] = html;
 
@@ -1207,7 +1204,6 @@ jQuery(function ($) {
             }
           },
           id_func: function (item) {
-            console.log(item);
             if (item && item['ID']) {
               return item['ID'];
             }
@@ -1225,7 +1221,7 @@ jQuery(function ($) {
       response['id'] = Date.now();
 
       let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
-      html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing user details..." style="min-width: 100%;" id="' + response['id'] + '">';
+      html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing user details..." style="min-width: 100%;" id="' + window.lodash.escape(response['id'] )+ '">';
       html += '</div></div></div>';
       response['html'] = html;
 
@@ -1253,7 +1249,6 @@ jQuery(function ($) {
           }
         },
         id_func: function (item) {
-          console.log(item);
           if (item && item['ID']) {
             return 'user-' + item['ID'];
           }
