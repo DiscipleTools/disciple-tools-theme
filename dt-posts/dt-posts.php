@@ -1528,7 +1528,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $fields as $field_key => $field ){
             //make sure each field has the name filed out
             if ( !isset( $field["name"] ) || empty( $field["name"] ) ){
-                $field["name"] = $field_key;
+                $fields[$field_key]["name"] = $field_key;
             }
         }
 
