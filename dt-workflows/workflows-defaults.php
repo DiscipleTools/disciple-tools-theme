@@ -9,28 +9,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Workflows_Defaults {
 
-    public const TRIGGER_CREATED = [ 'id' => 'created', 'label' => 'Record Created' ];
-    public const TRIGGER_UPDATED = [ 'id' => 'updated', 'label' => 'Field Updated' ];
+    public static $trigger_created = [ 'id' => 'created', 'label' => 'Record Created' ];
+    public static $trigger_updated = [ 'id' => 'updated', 'label' => 'Field Updated' ];
 
-    public const CONDITION_EQUALS = [ 'id' => 'equals', 'label' => 'Equals' ];
-    public const CONDITION_NOT_EQUALS = [ 'id' => 'not_equals', 'label' => 'Not Equal' ];
-    public const CONDITION_GREATER = [ 'id' => 'greater', 'label' => 'Greater Than' ];
-    public const CONDITION_LESS = [ 'id' => 'less', 'label' => 'Less Than' ];
-    public const CONDITION_GREATER_EQUALS = [ 'id' => 'greater_equals', 'label' => 'Greater Than or Equals' ];
-    public const CONDITION_LESS_EQUALS = [ 'id' => 'less_equals', 'label' => 'Less Than or Equals' ];
-    public const CONDITION_CONTAINS = [ 'id' => 'contains', 'label' => 'Contains' ];
-    public const CONDITION_NOT_CONTAIN = [ 'id' => 'not_contain', 'label' => 'Not Contain' ];
+    public static $condition_equals = [ 'id' => 'equals', 'label' => 'Equals' ];
+    public static $condition_not_equals = [ 'id' => 'not_equals', 'label' => 'Not Equal' ];
+    public static $condition_greater = [ 'id' => 'greater', 'label' => 'Greater Than' ];
+    public static $condition_less = [ 'id' => 'less', 'label' => 'Less Than' ];
+    public static $condition_greater_equals = [ 'id' => 'greater_equals', 'label' => 'Greater Than or Equals' ];
+    public static $condition_less_equals = [ 'id' => 'less_equals', 'label' => 'Less Than or Equals' ];
+    public static $condition_contains = [ 'id' => 'contains', 'label' => 'Contains' ];
+    public static $condition_not_contain = [ 'id' => 'not_contain', 'label' => 'Not Contain' ];
 
-    public const ACTION_UPDATE = [ 'id' => 'update', 'label' => 'Updated To' ];
-    public const ACTION_APPEND = [ 'id' => 'append', 'label' => 'Appended With' ];
-    public const ACTION_CONNECT = [ 'id' => 'connect', 'label' => 'Connect To' ];
-    public const ACTION_REMOVE = [ 'id' => 'remove', 'label' => 'Removal Of' ];
+    public static $action_update = [ 'id' => 'update', 'label' => 'Updated To' ];
+    public static $action_append = [ 'id' => 'append', 'label' => 'Appended With' ];
+    public static $action_connect = [ 'id' => 'connect', 'label' => 'Connect To' ];
+    public static $action_remove = [ 'id' => 'remove', 'label' => 'Removal Of' ];
 
     public function __construct() {
-        add_filter( 'dt_workflows_defaults', [ $this, 'fetch_default_workflows_filter' ], 10, 2 );
+        add_filter( 'dt_workflows', [ $this, 'fetch_default_workflows_filter' ], 10, 2 );
     }
 
-    public function fetch_default_workflows_filter( $post_type, $workflows ) {
+    public function fetch_default_workflows_filter( $workflows, $post_type ) {
         /*
          * Please ensure workflow ids are both static and unique; as they
          * will be used further downstream within admin view and execution handler.
@@ -82,9 +82,9 @@ class Disciple_Tools_Workflows_Defaults {
             'id'         => 'groups_00001',
             'name'       => 'Link Church Health Commitment -> Church Group Type',
             'enabled'    => false, // Can be enabled via admin view
-            'trigger'    => self::TRIGGER_UPDATED['id'],
+            'trigger'    => self::$trigger_updated['id'],
             'conditions' => [
-                $this->new_condition( self::CONDITION_CONTAINS,
+                $this->new_condition( self::$condition_contains,
                     [
                         'id'    => 'health_metrics',
                         'label' => $dt_contacts_fields['health_metrics']['name']
@@ -95,7 +95,7 @@ class Disciple_Tools_Workflows_Defaults {
                 )
             ],
             'actions'    => [
-                $this->new_action( self::ACTION_UPDATE,
+                $this->new_action( self::$action_update,
                     [
                         'id'    => 'group_type',
                         'label' => $dt_contacts_fields['group_type']['name']
@@ -110,9 +110,9 @@ class Disciple_Tools_Workflows_Defaults {
             'id'         => 'groups_00002',
             'name'       => 'Link Church Group Type -> Church Health Commitment',
             'enabled'    => false, // Can be enabled via admin view
-            'trigger'    => self::TRIGGER_UPDATED['id'],
+            'trigger'    => self::$trigger_updated['id'],
             'conditions' => [
-                $this->new_condition( self::CONDITION_CONTAINS,
+                $this->new_condition( self::$condition_contains,
                     [
                         'id'    => 'group_type',
                         'label' => $dt_contacts_fields['group_type']['name']
@@ -123,7 +123,7 @@ class Disciple_Tools_Workflows_Defaults {
                 )
             ],
             'actions'    => [
-                $this->new_action( self::ACTION_APPEND,
+                $this->new_action( self::$action_append,
                     [
                         'id'    => 'health_metrics',
                         'label' => $dt_contacts_fields['health_metrics']['name']

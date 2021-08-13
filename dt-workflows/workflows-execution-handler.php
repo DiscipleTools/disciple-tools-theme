@@ -40,7 +40,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
             $default_workflows_configs = ( isset( $option_default_workflows->{$post_type} ) && isset( $option_default_workflows->{$post_type}->workflows ) ) ? $option_default_workflows->{$post_type}->workflows : (object) [];
 
             // Iterate over all filtered default workflows
-            foreach ( apply_filters( 'dt_workflows_defaults', $post_type, [] ) ?? [] as $workflow ) {
+            foreach ( apply_filters( 'dt_workflows', [], $post_type ) ?? [] as $workflow ) {
 
                 // Ensure default workflow states are updated accordingly, based on current configs!
                 if ( ! empty( $workflow ) ) {

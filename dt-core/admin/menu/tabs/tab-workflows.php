@@ -227,7 +227,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             $option_default_workflows = $this->get_option_workflows( 'dt_workflows_defaults', $selected_post_type['id'] );
             echo '<input type="hidden" id="workflows_management_section_hidden_option_default_workflows" value="' . esc_attr( json_encode( $option_default_workflows ) ) . '">';
 
-            $filtered_workflows_defaults = apply_filters( 'dt_workflows_defaults', $selected_post_type['id'], [] );
+            $filtered_workflows_defaults = apply_filters( 'dt_workflows', [], $selected_post_type['id'] );
             echo '<input type="hidden" id="workflows_management_section_hidden_filtered_workflows_defaults" value="' . esc_attr( json_encode( $filtered_workflows_defaults ) ) . '">';
 
             $this->box( 'top', 'Add new workflows or modify existing ones on ' . $selected_post_type['name'], [ "col_span" => 1 ] );
