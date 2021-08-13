@@ -117,7 +117,7 @@ function dt_new_user_scripts(){
  * Loads scripts and styles for dt utilities workflows.
  */
 function dt_utilities_workflows_scripts() {
-    if ( isset( $_GET["page"] ) && ( $_GET["page"] === 'dt_utilities' ) ) {
+    if ( isset( $_GET["page"] ) && ( $_GET["page"] === 'dt_options' ) ) {
         if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'workflows' ) {
             wp_register_style( 'bootstrap-5-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
             wp_enqueue_style( 'bootstrap-5-css' );
@@ -130,15 +130,14 @@ function dt_utilities_workflows_scripts() {
 
             wp_register_style( 'daterangepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css' );
             wp_enqueue_style( 'daterangepicker-css' );
-            wp_enqueue_script( 'daterangepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.js', [], '3.1.0', true );
-            wp_enqueue_script( 'daterangepicker-moment', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/moment.min.js', [], '3.1.0', true );
+            wp_enqueue_script( 'daterangepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.js', [ 'moment' ], '3.1.0', true );
 
             wp_enqueue_script( 'dt_utilities_workflows_script', disciple_tools()->admin_js_url . 'dt-utilities-workflows.js', [
+                'moment',
                 'jquery',
                 'lodash',
                 'typeahead-jquery',
                 'daterangepicker-js',
-                'daterangepicker-moment'
             ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-workflows.js' ), true );
         }
     }

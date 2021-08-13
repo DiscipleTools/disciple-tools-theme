@@ -26,21 +26,21 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
      */
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 125 );
-        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 125, 1 );
-        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 125, 1 );
+        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 125, 1 );
+        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 125, 1 );
 
         parent::__construct();
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'dt_utilities', __( 'Workflows', 'disciple_tools' ), __( 'Workflows', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=workflows', [
+        add_submenu_page( 'dt_options', __( 'Workflows', 'disciple_tools' ), __( 'Workflows', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=workflows', [
             'Disciple_Tools_Settings_Menu',
             'content'
         ] );
     }
 
     public function add_tab( $tab ) {
-        echo '<a href="' . esc_url( admin_url() ) . 'admin.php?page=dt_utilities&tab=workflows" class="nav-tab ';
+        echo '<a href="' . esc_url( admin_url() ) . 'admin.php?page=dt_options&tab=workflows" class="nav-tab ';
         if ( $tab == 'workflows' ) {
             echo 'nav-tab-active';
         }
@@ -678,7 +678,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                 $fields = [];
                 foreach ( $dt_post_type_settings['fields'] as $key => $dt_field ) {
 
-                    if ( ! in_array( $dt_field['type'], $field_types_to_ignore ) ) {
+                    if ( ! in_array( $dt_field['type'], $field_types_to_ignore ) && !$dt_field["hidden"] ) {
                         $fields[] = [
                             'id'        => $key,
                             'name'      => $dt_field['name'],

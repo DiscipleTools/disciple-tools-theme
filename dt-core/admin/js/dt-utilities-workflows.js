@@ -1012,9 +1012,9 @@ jQuery(function ($) {
       // Instantiate date range picker dynamic field.
       dynamic_field.daterangepicker({
         singleDatePicker: true,
-        timePicker: true,
+        timePicker: false,
         locale: {
-          format: 'YYYY-MM-DD hh:mm A'
+          format: 'YYYY-MM-DD'
         }
       }, function (start, end, label) {
         // As we are in single date picker mode, just focus on start date and convert to epoch timestamp.
