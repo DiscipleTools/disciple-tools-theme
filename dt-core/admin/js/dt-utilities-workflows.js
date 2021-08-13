@@ -989,9 +989,10 @@ jQuery(function ($) {
         dynamic_field.typeahead({
           order: "asc",
           accent: true,
-          minLength: 1,
+          minLength: 0,
           maxItem: 10,
           dynamic: true,
+          searchOnFocus: true,
           source: typeahead['endpoint'](wp_nonce),
           callback: {
             onClick: function (node, a, item, event) {
