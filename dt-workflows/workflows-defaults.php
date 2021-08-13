@@ -76,7 +76,7 @@ class Disciple_Tools_Workflows_Defaults {
     }
 
     private function build_default_workflows_groups( &$workflows ) {
-        $dt_contacts_fields = DT_Posts::get_post_field_settings( 'groups' );
+        $dt_fields = DT_Posts::get_post_field_settings( 'groups' );
 
         $workflows[] = (object) [
             'id'         => 'groups_00001',
@@ -87,10 +87,10 @@ class Disciple_Tools_Workflows_Defaults {
                 $this->new_condition( self::$condition_contains,
                     [
                         'id'    => 'health_metrics',
-                        'label' => $dt_contacts_fields['health_metrics']['name']
+                        'label' => $dt_fields['health_metrics']['name']
                     ], [
                         'id'    => 'church_commitment',
-                        'label' => $dt_contacts_fields['health_metrics']['default']['church_commitment']['label']
+                        'label' => $dt_fields['health_metrics']['default']['church_commitment']['label']
                     ]
                 )
             ],
@@ -98,10 +98,10 @@ class Disciple_Tools_Workflows_Defaults {
                 $this->new_action( self::$action_update,
                     [
                         'id'    => 'group_type',
-                        'label' => $dt_contacts_fields['group_type']['name']
+                        'label' => $dt_fields['group_type']['name']
                     ], [
                         'id'    => 'church',
-                        'label' => $dt_contacts_fields['group_type']['default']['church']['label']
+                        'label' => $dt_fields['group_type']['default']['church']['label']
                     ]
                 )
             ]
@@ -115,10 +115,10 @@ class Disciple_Tools_Workflows_Defaults {
                 $this->new_condition( self::$condition_contains,
                     [
                         'id'    => 'group_type',
-                        'label' => $dt_contacts_fields['group_type']['name']
+                        'label' => $dt_fields['group_type']['name']
                     ], [
                         'id'    => 'church',
-                        'label' => $dt_contacts_fields['group_type']['default']['church']['label']
+                        'label' => $dt_fields['group_type']['default']['church']['label']
                     ]
                 )
             ],
@@ -126,10 +126,10 @@ class Disciple_Tools_Workflows_Defaults {
                 $this->new_action( self::$action_append,
                     [
                         'id'    => 'health_metrics',
-                        'label' => $dt_contacts_fields['health_metrics']['name']
+                        'label' => $dt_fields['health_metrics']['name']
                     ], [
                         'id'    => 'church_commitment',
-                        'label' => $dt_contacts_fields['health_metrics']['default']['church_commitment']['label']
+                        'label' => $dt_fields['health_metrics']['default']['church_commitment']['label']
                     ]
                 )
             ]
