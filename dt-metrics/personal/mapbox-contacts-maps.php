@@ -55,7 +55,7 @@ class DT_Metrics_Mapbox_Personal_Contacts_Maps extends DT_Metrics_Chart_Base
             filemtime( get_theme_file_path() .  $this->js_file_name ),
             true
         );
-        $field_settings = DT_Posts::get_post_field_settings( $this->post_type );
+//        $field_settings = DT_Posts::get_post_field_settings( $this->post_type );
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
                 'translations' => [],
@@ -68,10 +68,10 @@ class DT_Metrics_Mapbox_Personal_Contacts_Maps extends DT_Metrics_Chart_Base
                     'geocoder_url' => trailingslashit( get_stylesheet_directory_uri() ),
                     'geocoder_nonce' => wp_create_nonce( 'wp_rest' ),
                     'rest_base_url' => $this->namespace,
-                    'rest_url' => 'cluster_geojson',
-                    'totals_rest_url' => 'get_grid_totals',
-                    'list_by_grid_rest_url' => 'get_list_by_grid_id',
-                    'points_rest_url' => 'points_geojson',
+                    'rest_url' => '/cluster_geojson',
+                    'totals_rest_url' => '/get_grid_totals',
+                    'list_by_grid_rest_url' => '/get_list_by_grid_id',
+                    'points_rest_url' => '/points_geojson',
                 ],
             ]
         );
