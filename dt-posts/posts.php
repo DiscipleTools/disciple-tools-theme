@@ -214,7 +214,7 @@ class Disciple_Tools_Posts
         return $shares;
     }
 
-    public static function format_connection_message( $p2p_id, $activity, $action = 'connected to' ){
+    public static function format_connection_message( $p2p_id, $activity, $action = 'connected to', $fields = [] ){
         // Get p2p record
         $p2p_record = p2p_get_connection( (int) $p2p_id ); // returns object
 
@@ -222,6 +222,17 @@ class Disciple_Tools_Posts
         $from_link = "";
         $to_title = "";
         $to_link = "";
+
+        //don't create activity on connection fields that are hidden
+        foreach ( $fields as $field ){
+            if ( $field["p2p_key"] === $activity->meta_key ){
+                if ( $activity->field_type === "connection to" && $field["p2p_direction"] === "to" || $activity->field_type === "connection to" && $field["p2p_direction"] !== "to" ){
+                    if ( isset( $field["hidden"] ) && !empty( $field["hidden"] ) ){
+                        return "";
+                    }
+                }
+            }
+        }
 
         if ( !$p2p_record ){
             if ( $activity->field_type === "connection from" ){
@@ -528,7 +539,7 @@ class Disciple_Tools_Posts
             $user = get_user_by( "ID", $activity->user_id );
             $message = sprintf( _x( "%s accepted assignment", 'message', 'disciple_tools' ), $user->display_name ?? _x( "A user", 'message', 'disciple_tools' ) );
         } elseif ( $activity->object_subtype === "p2p" ){
-            $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action );
+            $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action, $post_type_settings["fields"] );
         } elseif ( $activity->object_subtype === "share" ){
             if ($activity->action === "share"){
                 $message = sprintf( _x( "Shared with %s", 'message', 'disciple_tools' ), dt_get_user_display_name( $activity->meta_value ) );
