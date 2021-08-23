@@ -225,7 +225,7 @@ class Disciple_Tools_Posts
 
         //don't create activity on connection fields that are hidden
         foreach ( $fields as $field ){
-            if ( $field["p2p_key"] === $activity->meta_key ){
+            if ( isset( $field["p2p_key"] ) && $field["p2p_key"] === $activity->meta_key ){
                 if ( $activity->field_type === "connection to" && $field["p2p_direction"] === "to" || $activity->field_type === "connection to" && $field["p2p_direction"] !== "to" ){
                     if ( isset( $field["hidden"] ) && !empty( $field["hidden"] ) ){
                         return "";
