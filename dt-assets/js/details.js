@@ -742,8 +742,8 @@ jQuery(document).ready(function($) {
     "locale": {
       "format": "YYYY/MM/DD",
       "separator": " - ",
-      "daysOfWeek": window.wpApiShare.translations.days_of_the_week,
-      "monthNames": window.wpApiShare.translations.month_labels,
+      "daysOfWeek": window.SHAREDFUNCTIONS.get_days_of_the_week_initials(),
+      "monthNames": window.SHAREDFUNCTIONS.get_months_labels(),
     },
     "firstDay": 1,
     "startDate": moment().add(1, "day"),

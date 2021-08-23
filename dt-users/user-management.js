@@ -171,8 +171,8 @@ jQuery(document).ready(function($) {
       "locale": {
         "format": "YYYY/MM/DD",
         "separator": " - ",
-        "daysOfWeek": window.wpApiShare.translations.days_of_the_week,
-        "monthNames": window.wpApiShare.translations.month_labels,
+        "daysOfWeek": window.SHAREDFUNCTIONS.get_days_of_the_week_initials(),
+        "monthNames": window.SHAREDFUNCTIONS.get_months_labels(),
       },
       "firstDay": 1,
       "opens": "center",
@@ -471,10 +471,11 @@ jQuery(document).ready(function($) {
     makeRequest( "get", `user?user=${user_id}&section=days_active`, null , 'user-management/v1/')
       .done(days=>{
         if ( window.current_user_lookup === user_id ) {
+          let days_of_the_week = window.SHAREDFUNCTIONS.get_days_of_the_week_initials('short')
           const daysActiveTranslated = days.days_active.map((day) => {
             // translations start week with Sun, php gmdate starts week with Monday
             const weekNumber = parseInt(day.weekday_number) === 7 ? 0 : parseInt(day.weekday_number)
-            const translatedWeekDay = window.wpApiShare.translations.days_of_the_week[weekNumber]
+            const translatedWeekDay = days_of_the_week[weekNumber]
             return {
               ...day,
               weekday: translatedWeekDay ? translatedWeekDay : day.weekday

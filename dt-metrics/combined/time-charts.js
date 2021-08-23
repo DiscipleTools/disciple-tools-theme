@@ -195,7 +195,7 @@ function showChart(id) {
 }
 
 function createChart(id, keys, options) {
-    const defaultOptions = { 
+    const defaultOptions = {
         single: false,
         graphType: 'stacked',
         customLabel: ''
@@ -344,7 +344,7 @@ function createLineSeries(chart, field, name, hidden = false) {
     const { chart_view } = dtMetricsProject.state
     const { tooltip_label } = escapeObject(dtMetricsProject.translations)
     const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
-    
+
     let lineSeries = chart.series.push(new am4charts.LineSeries());
     lineSeries.name = name
     lineSeries.dataFields.valueY = field;
@@ -421,7 +421,7 @@ function getData() {
                 throw new Error('no data object returned')
             }
             window.dtMetricsProject.cumulative_offset = cumulative_offset
-            window.dtMetricsProject.data = isAllTime 
+            window.dtMetricsProject.data = isAllTime
                 ? formatYearData(data)
                 : formatMonthData(data)
             chartElement.dispatchEvent( new Event('datachange') )
@@ -437,7 +437,7 @@ function getData() {
 /**
  * Formats the metric data by filling in any blank years and calculating
  * cumulative counts for the charts
- * 
+ *
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
 function formatYearData(yearlyData) {
@@ -504,7 +504,7 @@ function formatCompoundYearData(yearlyData) {
 /**
  * Formats the metric data by filling in any blank months and calculating
  * cumulative counts for the charts
- * 
+ *
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
 function formatMonthData(monthlyData) {
@@ -524,7 +524,7 @@ function isInFuture(monthNumber) {
 }
 
 function formatSimpleMonthData(monthlyData) {
-    const monthLabels = window.wpApiShare.translations.month_labels
+    const monthLabels = window.SHAREDFUNCTIONS.get_months_labels()
 
     let cumulativeTotal = window.dtMetricsProject.cumulative_offset
     const formattedMonthlyData = monthLabels.map((monthLabel, i) => {
@@ -550,7 +550,7 @@ function formatSimpleMonthData(monthlyData) {
 }
 
 function formatCompoundMonthData(monthlyData) {
-    const monthLabels = window.wpApiShare.translations.month_labels
+    const monthLabels = window.SHAREDFUNCTIONS.get_months_labels()
     const keys = getDataKeys(monthlyData)
 
     const cumulative_offsets = window.dtMetricsProject.cumulative_offset
