@@ -583,10 +583,13 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( $post_type === "groups" ){
             $tiles["relationships"] = [ "label" => __( "Member List", 'disciple_tools' ) ];
             $tiles["health-metrics"] = [ "label" => __( "Church Health", 'disciple_tools' ) ];
-            $tiles["four-fields"] = [
-                "label" => __( "Four Fields", 'disciple_tools' ),
-                "description" => " Zúme article on 4 Fields: https://zume.training/four-fields-tool \r\n\r\n" . _x( "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:", 'Optional Documentation', 'disciple_tools' ),
-            ];
+            $group_preferences = dt_get_option( 'group_preferences' );
+            if ( !empty( $group_preferences["four_fields"] ) ){
+                $tiles["four-fields"] = [
+                    "label" => __( "Four Fields", 'disciple_tools' ),
+                    "description" => " Zúme article on 4 Fields: https://zume.training/four-fields-tool \r\n\r\n" . _x( "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:", 'Optional Documentation', 'disciple_tools' ),
+                ];
+            }
             $tiles["groups"] = [ "label" => __( "Groups", 'disciple_tools' ) ];
             $tiles["other"] = [ "label" => __( "Other", 'disciple_tools' ) ];
         }
