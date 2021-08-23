@@ -49,7 +49,6 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
             filemtime( get_theme_file_path() .  $this->js_file_name ),
             true
         );
-        $field_settings = DT_Posts::get_post_field_settings( $this->post_type );
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
                 'translations' => [],
