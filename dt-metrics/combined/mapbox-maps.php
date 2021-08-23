@@ -69,10 +69,10 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
                     'geocoder_url' => trailingslashit( get_stylesheet_directory_uri() ),
                     'geocoder_nonce' => wp_create_nonce( 'wp_rest' ),
                     'rest_base_url' => $this->namespace,
-                    'rest_url' => '/cluster_geojson',
-                    'totals_rest_url' => '/user_grid_totals',
-                    'list_by_grid_rest_url' => '/get_user_list',
-                    'points_rest_url' => '/points_geojson',
+                    'rest_url' => 'cluster_geojson',
+                    'totals_rest_url' => 'user_grid_totals',
+                    'list_by_grid_rest_url' => 'get_user_list',
+                    'points_rest_url' => 'points_geojson',
                 ],
             ]
         );
