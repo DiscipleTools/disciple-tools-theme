@@ -110,29 +110,6 @@ function dt_site_scripts() {
             'site_url' => get_site_url(),
             'template_dir' => get_template_directory_uri(),
             'translations' => [
-                'days_of_the_week' => [
-                    _x( "Su", 'Abbreviation of Sunday', 'disciple_tools' ),
-                    _x( "Mo", 'Abbreviation of Monday', 'disciple_tools' ),
-                    _x( "Tu", 'Abbreviation of Tuesday', 'disciple_tools' ),
-                    _x( "We", 'Abbreviation of Wednesday', 'disciple_tools' ),
-                    _x( "Th", 'Abbreviation of Thursday', 'disciple_tools' ),
-                    _x( "Fr", 'Abbreviation of Friday', 'disciple_tools' ),
-                    _x( "Sa", 'Abbreviation of Saturday', 'disciple_tools' )
-                ],
-                'month_labels' => [
-                    _x( "January", 'Dates', 'disciple_tools' ),
-                    _x( "February", 'Dates', 'disciple_tools' ),
-                    _x( "March", 'Dates', 'disciple_tools' ),
-                    _x( "April", 'Dates', 'disciple_tools' ),
-                    _x( "May", 'Dates', 'disciple_tools' ),
-                    _x( "June", 'Dates', 'disciple_tools' ),
-                    _x( "July", 'Dates', 'disciple_tools' ),
-                    _x( "August", 'Dates', 'disciple_tools' ),
-                    _x( "September", 'Dates', 'disciple_tools' ),
-                    _x( "October", 'Dates', 'disciple_tools' ),
-                    _x( "November", 'Dates', 'disciple_tools' ),
-                    _x( "December", 'Dates', 'disciple_tools' )
-                ],
                 'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
                 'all_locations' => __( 'All Locations', 'disciple_tools' ),
                 'used_locations' => __( 'Used Locations', 'disciple_tools' ),

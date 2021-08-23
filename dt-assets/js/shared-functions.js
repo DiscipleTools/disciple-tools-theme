@@ -539,6 +539,22 @@ window.SHAREDFUNCTIONS = {
     const filterLabel = { field, id, name }
     return encodeURIComponent(JSON.stringify(filterLabel))
   },
+  get_days_of_the_week_initials(format = 'narrow'){
+    let langcode = document.querySelector("html").getAttribute("lang")
+      ? document.querySelector("html").getAttribute("lang").replace("_", "-")
+      : "en"; // get the language attribute from the HTML or default to english if it doesn't exists.
+    let now = new Date()
+    const int_format = new Intl.DateTimeFormat(langcode, {weekday:format}).format;
+    return [...Array(7).keys()].map((day) => int_format(new Date().getTime() - (now.getDay() - day) * 86400000));
+  },
+  get_months_labels(format = 'long'){
+    let langcode = document.querySelector("html").getAttribute("lang")
+      ? document.querySelector("html").getAttribute("lang").replace("_", "-")
+      : "en"; // get the language attribute from the HTML or default to english if it doesn't exists.
+    let now = new Date()
+    const int_format = new Intl.DateTimeFormat(langcode, {month:format}).format;
+    return [...Array(12).keys()].map((month) => int_format(new Date( Date.UTC(2021, month+1, 1))));
+  },
   formatDate(date, with_time = false) {
     let langcode = document.querySelector("html").getAttribute("lang")
       ? document.querySelector("html").getAttribute("lang").replace("_", "-")
