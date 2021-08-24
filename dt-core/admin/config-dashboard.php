@@ -203,9 +203,9 @@ final class Disciple_Tools_Dashboard
                         margin-bottom: 5%;
                     }
                 </style>
-            <?
+            <?php
             //var_dump( $news_feed_items );die();
-            foreach( $news_feed_items as $news ) {
+            foreach ( $news_feed_items as $news ) {
                 ?>
                 <div class="news-feed">
                     <div class="news-feed-heading" >
