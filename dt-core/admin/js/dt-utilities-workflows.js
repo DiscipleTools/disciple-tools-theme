@@ -587,28 +587,40 @@ jQuery(function ($) {
     function fetch_condition_options(field_type) {
       let conditions = [];
 
+      let labels = {
+        equals: "Equals",
+        not_equals: "Doesn't equal",
+        contains: "Contains",
+        not_contain: "Doesn't contain",
+        not_set: "Has no value or is empty",
+        greater: "Greater than",
+        less: "Less than",
+        greater_equals: "Greater than or equals",
+        less_equals: "Less than or equals",
+      }
+
       switch (field_type) {
         case "text":
           conditions.push(
             {
               'id': 'equals',
-              'name': 'Equals'
+              'name': labels.equals
             },
             {
               'id': 'not_equals',
-              'name': 'Not Equal'
+              'name': labels.not_equals
             },
             {
               'id': 'contains',
-              'name': 'Contains'
+              'name': labels.contains
             },
             {
               'id': 'not_contain',
-              'name': 'Not Contain'
+              'name': labels.not_contain
             },
             {
               'id': 'not_set',
-              'name': 'Not Set'
+              'name': labels.not_set
             }
           );
           break;
@@ -617,31 +629,31 @@ jQuery(function ($) {
           conditions.push(
             {
               'id': 'equals',
-              'name': 'Equals'
+              'name': labels.equals
             },
             {
               'id': 'not_equals',
-              'name': 'Not Equal'
+              'name': labels.not_equals
             },
             {
               'id': 'greater',
-              'name': 'Greater Than'
+              'name': labels.greater
             },
             {
               'id': 'less',
-              'name': 'Less Than'
+              'name': labels.less
             },
             {
               'id': 'greater_equals',
-              'name': 'Greater Than or Equals'
+              'name': labels.greater_equals
             },
             {
               'id': 'less_equals',
-              'name': 'Less Than or Equals'
+              'name': labels.less_equals
             },
             {
               'id': 'not_set',
-              'name': 'Not Set'
+              'name': labels.not_set
             }
           );
           break;
@@ -649,15 +661,15 @@ jQuery(function ($) {
           conditions.push(
             {
               'id': 'equals',
-              'name': 'Equals'
+              'name': labels.equals
             },
             {
               'id': 'not_equals',
-              'name': 'Not Equal'
+              'name': labels.not_equals
             },
             {
               'id': 'not_set',
-              'name': 'Not Set'
+              'name': labels.not_set
             }
           );
           break;
@@ -677,15 +689,15 @@ jQuery(function ($) {
           conditions.push(
             {
               'id': 'contains',
-              'name': 'Contains'
+              'name': labels.contains
             },
             {
               'id': 'not_contain',
-              'name': 'Not Contain'
+              'name': labels.not_contain
             },
             {
               'id': 'not_set',
-              'name': 'Not Set'
+              'name': labels.not_set
             }
           );
           break;
@@ -707,7 +719,7 @@ jQuery(function ($) {
           actions.push(
             {
               'id': 'update',
-              'name': 'Updated To'
+              'name': 'Update To'
             }
           );
           break;
