@@ -86,11 +86,12 @@ class Disciple_Tools_Workflows_Execution_Handler {
 
     private static function process_condition( $field_id, $condition, $value, $post, $post_type_settings ): bool {
 
-        if ( ! empty( $field_id ) && ! empty( $condition ) && ! empty( $value ) ) {
+        if ( ! empty( $field_id ) && ! empty( $condition ) && isset( $post_type_settings['fields'][ $field_id ]['type'] ) ) {
 
-            if ( isset( $post[ $field_id ] ) && isset( $post_type_settings['fields'][ $field_id ]['type'] ) ) {
-                $field      = $post[ $field_id ];
-                $field_type = $post_type_settings['fields'][ $field_id ]['type'];
+            $field_type = $post_type_settings['fields'][ $field_id ]['type'];
+
+            if ( isset( $post[ $field_id ] ) ) {
+                $field = $post[ $field_id ];
 
                 switch ( $condition ) {
                     case 'equals':
@@ -111,6 +112,13 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         return self::condition_not_contains( $field_type, $field, $value );
                     case 'not_set':
                         return self::condition_not_set( $field_type, $field );
+                }
+            } else {
+
+                // Process not_set states...
+                switch ( $condition ) {
+                    case 'not_set':
+                        return self::condition_not_set( $field_type, null );
                 }
             }
         }
