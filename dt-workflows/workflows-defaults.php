@@ -20,6 +20,7 @@ class Disciple_Tools_Workflows_Defaults {
     public static $condition_less_equals = [ 'id' => 'less_equals', 'label' => 'Less Than or Equals' ];
     public static $condition_contains = [ 'id' => 'contains', 'label' => 'Contains' ];
     public static $condition_not_contain = [ 'id' => 'not_contain', 'label' => 'Not Contain' ];
+    public static $condition_not_set = [ 'id' => 'not_set', 'label' => 'Not Set' ];
 
     public static $action_update = [ 'id' => 'update', 'label' => 'Updated To' ];
     public static $action_append = [ 'id' => 'append', 'label' => 'Appended With' ];

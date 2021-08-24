@@ -109,6 +109,8 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         return self::condition_contains( $field_type, $field, $value );
                     case 'not_contain':
                         return self::condition_not_contains( $field_type, $field, $value );
+                    case 'not_set':
+                        return self::condition_not_set( $field_type, $field );
                 }
             }
         }
@@ -289,6 +291,35 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 return ! $found;
             case 'user_select':
                 return isset( $field['assigned-to'] ) && strval( $field['assigned-to'] ) !== strval( $value );
+            case 'array':
+            case 'task':
+            case 'location_meta':
+            case 'post_user_meta':
+            case 'datetime_series':
+            case 'hash':
+                break;
+        }
+
+        return false;
+    }
+
+    private static function condition_not_set( $field_type, $field ): bool {
+        switch ( $field_type ) {
+            case 'text':
+            case 'number':
+            case 'boolean':
+            case 'tags':
+            case 'multi_select':
+            case 'communication_channel':
+            case 'location':
+            case 'connection':
+                return empty( $field );
+            case 'date':
+                return empty( $field['timestamp'] );
+            case 'key_select':
+                return empty( $field['key'] );
+            case 'user_select':
+                return empty( $field['assigned-to'] );
             case 'array':
             case 'task':
             case 'location_meta':
