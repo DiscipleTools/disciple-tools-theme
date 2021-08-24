@@ -202,6 +202,14 @@ final class Disciple_Tools_Dashboard
                         justify-content: space-between;
                         margin-bottom: 5%;
                     }
+                    #dashboard-widgets .news-feed h3 {
+                        font-size: 1.3em;
+                        font-weight: 600;
+                    }
+                    #dashboard-widgets .news-feed ul {
+                        list-style: disc;
+                        padding-inline-start: 40px;
+                    }
                 </style>
             <?php
             //var_dump( $news_feed_items );die();
