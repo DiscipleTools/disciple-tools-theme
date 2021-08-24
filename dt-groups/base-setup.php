@@ -404,36 +404,53 @@ class DT_Groups_Base extends DT_Module_Base {
                 "tile" => "details"
             ];
 
+            $group_preferences = dt_get_option( 'group_preferences' );
+            $field_fields_enabled = !empty( $group_preferences['four_fields'] );
             /* 4 fields */
             $fields["four_fields_unbelievers"] = [
                 'name' => __( 'Unbelievers', 'disciple_tools' ),
                 'description' => _x( 'Number of unbelievers in this group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'text',
-                'default' => ''
+                'default' => '',
+                'tile' => "four-fields",
+                'custom_display' => true,
+                'hidden' => !$field_fields_enabled,
             ];
             $fields["four_fields_believers"] = [
                 'name' => __( 'Believers', 'disciple_tools' ),
                 'description' => _x( 'Number of believers in this group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'text',
-                'default' => ''
+                'default' => '',
+                'tile' => "four-fields",
+                'custom_display' => true,
+                'hidden' => !$field_fields_enabled,
             ];
             $fields["four_fields_accountable"] = [
                 'name' => __( 'Accountable', 'disciple_tools' ),
                 'description' => _x( 'Number of people in accountability group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'text',
-                'default' => ''
+                'default' => '',
+                'tile' => "four-fields",
+                'custom_display' => true,
+                'hidden' => !$field_fields_enabled,
             ];
             $fields["four_fields_church_commitment"] = [
                 'name' => __( 'Church Commitment', 'disciple_tools' ),
                 'description' => _x( 'Is this a church - yes or no?', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'text',
-                'default' => ''
+                'default' => '',
+                'tile' => "four-fields",
+                'custom_display' => true,
+                'hidden' => !$field_fields_enabled,
             ];
             $fields["four_fields_multiplying"] = [
                 'name' => __( 'Multiplying', 'disciple_tools' ),
                 'description' => _x( 'Number of people helping start other groups. How many members are multiplying?', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'text',
-                'default' => ''
+                'default' => '',
+                'tile' => "four-fields",
+                'custom_display' => true,
+                'hidden' => !$field_fields_enabled,
             ];
 
         }
@@ -562,10 +579,17 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
+
         if ( $post_type === "groups" ){
             $tiles["relationships"] = [ "label" => __( "Member List", 'disciple_tools' ) ];
             $tiles["health-metrics"] = [ "label" => __( "Church Health", 'disciple_tools' ) ];
-            $tiles["four-fields"] = [ "label" => __( "Four Fields", 'disciple_tools' ) ];
+            $group_preferences = dt_get_option( 'group_preferences' );
+            if ( !empty( $group_preferences["four_fields"] ) ){
+                $tiles["four-fields"] = [
+                    "label" => __( "Four Fields", 'disciple_tools' ),
+                    "description" => " Zúme article on 4 Fields: https://zume.training/four-fields-tool \r\n\r\n" . _x( "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:", 'Optional Documentation', 'disciple_tools' ),
+                ];
+            }
             $tiles["groups"] = [ "label" => __( "Groups", 'disciple_tools' ) ];
             $tiles["other"] = [ "label" => __( "Other", 'disciple_tools' ) ];
         }
