@@ -28,7 +28,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 125 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 125, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 125, 1 );
-
+        add_action( 'admin_enqueue_scripts', [ $this, 'dt_utilities_workflows_scripts' ] );
         parent::__construct();
     } // End __construct()
 
@@ -37,6 +37,42 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             'Disciple_Tools_Settings_Menu',
             'content'
         ] );
+    }
+
+    /**
+     * Loads scripts and styles for dt utilities workflows.
+     */
+    public function dt_utilities_workflows_scripts(){
+        if ( isset( $_GET["page"] ) && ( $_GET["page"] === 'dt_options' ) ) {
+            if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'workflows' ) {
+                wp_register_style( 'bootstrap-5-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
+                wp_enqueue_style( 'bootstrap-5-css' );
+
+                wp_register_style( 'bootstrap-5-icons', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css' );
+                wp_enqueue_style( 'bootstrap-5-icons' );
+
+                dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+                dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
+
+                wp_register_style( 'daterangepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css' );
+                wp_enqueue_style( 'daterangepicker-css' );
+                wp_enqueue_script( 'daterangepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.js', [ 'moment' ], '3.1.0', true );
+
+                wp_enqueue_script( 'dt_utilities_workflows_script', disciple_tools()->admin_js_url . 'dt-utilities-workflows.js', [
+                    'moment',
+                    'jquery',
+                    'lodash',
+                    'typeahead-jquery',
+                    'daterangepicker-js',
+                ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-workflows.js' ), true );
+
+                wp_localize_script(
+                    "dt_utilities_workflows_script", "dt_workflows", array(
+                        'workflows_design_section_hidden_post_types' => $this->fetch_post_types(),
+                    )
+                );
+            }
+        }
     }
 
     public function add_tab( $tab ) {

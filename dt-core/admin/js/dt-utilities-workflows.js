@@ -1,5 +1,7 @@
 jQuery(function ($) {
 
+    console.log(window.dt_workflows) //@todo remove
+
     /*** Event Listeners ***/
     $(document).on('click', '.workflows-post-types-section-buttons', function (e) {
       handle_workflow_post_type_select(e);
