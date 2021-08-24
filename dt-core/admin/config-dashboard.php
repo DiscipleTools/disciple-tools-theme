@@ -206,14 +206,13 @@ final class Disciple_Tools_Dashboard
             <?
             //var_dump( $news_feed_items );die();
             foreach( $news_feed_items as $news ) {
-                $parsedown = new Parsedown();
                 ?>
                 <div class="news-feed">
                     <div class="news-feed-heading" >
                         <a href="<?php echo esc_attr( esc_url( $news->get_permalink() ) ); ?>" target="_blank" class="news-feed-title"><?php echo esc_html( $news->get_title() ); ?></a>
                         <i><?php echo esc_html( $news->get_date( 'm/d/Y' ) ); ?></i>
                     </div>
-                    <?php echo $parsedown->text( $news->get_content() ); ?>
+                    <?php echo wp_kses_post( $news->get_content() ); ?>
                 </div>
                 <?php
             }
