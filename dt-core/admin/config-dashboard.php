@@ -156,7 +156,7 @@ final class Disciple_Tools_Dashboard
             update_option( 'dt_setup_wizard_options', $setup_options );
         }
 
-        wp_add_dashboard_widget( 'dt_news_feed', esc_html__( 'Disciple.Tools News Feed', 'disciple_tools' ), function() {
+        function dt_show_news_widget() {
             include_once( ABSPATH . WPINC . '/feed.php' );
 
             if ( function_exists( 'fetch_feed' ) ) {
@@ -212,7 +212,6 @@ final class Disciple_Tools_Dashboard
                     }
                 </style>
             <?php
-            //var_dump( $news_feed_items );die();
             foreach ( $news_feed_items as $news ) {
                 ?>
                 <div class="news-feed">
@@ -221,10 +220,13 @@ final class Disciple_Tools_Dashboard
                         <i><?php echo esc_html( $news->get_date( 'm/d/Y' ) ); ?></i>
                     </div>
                     <?php echo wp_kses_post( $news->get_content() ); ?>
+                    <div align="right"><small>powered by <a href="https://disciple.tools/news" target="_blank">Disciple.Tools News</a></small></div>
                 </div>
                 <?php
             }
-        } );
+        }
+
+        add_meta_box( 'dt_news_feed', esc_html__( 'Disciple.Tools News Feed', 'disciple_tools' ), 'dt_show_news_widget', 'dashboard', 'side', 'high' );
 
         wp_add_dashboard_widget( 'dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
 
