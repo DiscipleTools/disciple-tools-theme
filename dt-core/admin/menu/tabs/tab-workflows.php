@@ -42,7 +42,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
     /**
      * Loads scripts and styles for dt utilities workflows.
      */
-    public function dt_utilities_workflows_scripts(){
+    public function dt_utilities_workflows_scripts() {
         if ( isset( $_GET["page"] ) && ( $_GET["page"] === 'dt_options' ) ) {
             if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'workflows' ) {
                 wp_register_style( 'bootstrap-5-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
@@ -68,7 +68,8 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
                 wp_localize_script(
                     "dt_utilities_workflows_script", "dt_workflows", array(
-                        'workflows_design_section_hidden_post_types' => $this->fetch_post_types(),
+                        'workflows_design_section_hidden_post_types'       => $this->fetch_post_types(),
+                        'workflows_design_section_hidden_post_field_types' => $this->fetch_post_field_types()
                     )
                 );
             }
@@ -420,8 +421,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             echo '<div id="workflows_design_section_div" style="display: none;">';
 
             // Capture hidden values, to be used further down stream
-            echo '<input type="hidden" id="workflows_design_section_hidden_post_types" value="' . esc_attr( json_encode( $this->fetch_post_types() ) ) . '">';
-            echo '<input type="hidden" id="workflows_design_section_hidden_post_field_types" value="' . esc_attr( json_encode( $this->fetch_post_field_types() ) ) . '">';
             echo '<input type="hidden" id="workflows_design_section_hidden_selected_post_type_id" value="' . esc_attr( $selected_post_type['id'] ?? '' ) . '">';
             echo '<input type="hidden" id="workflows_design_section_hidden_selected_post_type_name" value="' . esc_attr( $selected_post_type['name'] ?? '' ) . '">';
             echo '<input type="hidden" id="workflows_design_section_hidden_workflow_id" value="' . esc_attr( time() ) . '">';

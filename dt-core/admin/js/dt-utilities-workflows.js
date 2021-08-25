@@ -1,7 +1,5 @@
 jQuery(function ($) {
 
-    console.log(window.dt_workflows) //@todo remove
-
     /*** Event Listeners ***/
     $(document).on('click', '.workflows-post-types-section-buttons', function (e) {
       handle_workflow_post_type_select(e);
@@ -523,7 +521,7 @@ jQuery(function ($) {
 
     function reset_elements(fields_select, events_select, events_table, callback) {
       let selected_post_type = $('#workflows_design_section_hidden_selected_post_type_id').val();
-      let post_types = JSON.parse($('#workflows_design_section_hidden_post_types').val());
+      let post_types = window.dt_workflows.workflows_design_section_hidden_post_types;
 
       // Remove previous options prior to re-populating
       fields_select.find('option[value != ""]').remove();
@@ -560,8 +558,8 @@ jQuery(function ($) {
 
     function fetch_event_options(field_id, is_condition) {
       let selected_post_type = $('#workflows_design_section_hidden_selected_post_type_id').val();
-      let post_types = JSON.parse($('#workflows_design_section_hidden_post_types').val());
-      let post_field_types = JSON.parse($('#workflows_design_section_hidden_post_field_types').val());
+      let post_types = window.dt_workflows.workflows_design_section_hidden_post_types;
+      let post_field_types = window.dt_workflows.workflows_design_section_hidden_post_field_types;
 
       let events = [];
 
@@ -1023,7 +1021,7 @@ jQuery(function ($) {
 
     function determine_event_value_state(field_id, event_value_div, event_value_id, event_value_object_id) {
       let selected_post_type = $('#workflows_design_section_hidden_selected_post_type_id').val();
-      let post_types = JSON.parse($('#workflows_design_section_hidden_post_types').val());
+      let post_types = window.dt_workflows.workflows_design_section_hidden_post_types;
 
       // Determine field's type
       let post_type = post_types[selected_post_type];
