@@ -28,7 +28,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 125 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 125, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 125, 1 );
-
+        add_action( 'admin_enqueue_scripts', [ $this, 'dt_utilities_workflows_scripts' ] );
         parent::__construct();
     } // End __construct()
 
@@ -39,6 +39,43 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         ] );
     }
 
+    /**
+     * Loads scripts and styles for dt utilities workflows.
+     */
+    public function dt_utilities_workflows_scripts() {
+        if ( isset( $_GET["page"] ) && ( $_GET["page"] === 'dt_options' ) ) {
+            if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'workflows' ) {
+                wp_register_style( 'bootstrap-5-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' );
+                wp_enqueue_style( 'bootstrap-5-css' );
+
+                wp_register_style( 'bootstrap-5-icons', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css' );
+                wp_enqueue_style( 'bootstrap-5-icons' );
+
+                dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+                dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
+
+                wp_register_style( 'daterangepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css' );
+                wp_enqueue_style( 'daterangepicker-css' );
+                wp_enqueue_script( 'daterangepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.js', [ 'moment' ], '3.1.0', true );
+
+                wp_enqueue_script( 'dt_utilities_workflows_script', disciple_tools()->admin_js_url . 'dt-utilities-workflows.js', [
+                    'moment',
+                    'jquery',
+                    'lodash',
+                    'typeahead-jquery',
+                    'daterangepicker-js',
+                ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-workflows.js' ), true );
+
+                wp_localize_script(
+                    "dt_utilities_workflows_script", "dt_workflows", array(
+                        'workflows_design_section_hidden_post_types'       => $this->fetch_post_types(),
+                        'workflows_design_section_hidden_post_field_types' => $this->fetch_post_field_types()
+                    )
+                );
+            }
+        }
+    }
+
     public function add_tab( $tab ) {
         echo '<a href="' . esc_url( admin_url() ) . 'admin.php?page=dt_options&tab=workflows" class="nav-tab ';
         if ( $tab == 'workflows' ) {
@@ -47,11 +84,16 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         echo '">' . esc_attr__( 'Workflows' ) . '</a>';
     }
 
+    private function final_post_param_sanitization( $str ) {
+        return str_replace( [ '&lt;', '&gt;' ], [ '<', '>' ], $str );
+    }
+
     private function process_updates() {
         if ( isset( $_POST['workflows_design_section_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['workflows_design_section_nonce'] ) ), 'workflows_design_section_nonce' ) ) {
             if ( isset( $_POST['workflows_design_section_form_post_type_workflow'] ) ) {
                 // Updating workflow
-                $updating_post_type_workflow = json_decode( sanitize_text_field( wp_unslash( $_POST['workflows_design_section_form_post_type_workflow'] ) ) );
+                $sanitized_input             = filter_var( wp_unslash( $_POST['workflows_design_section_form_post_type_workflow'] ), FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES );
+                $updating_post_type_workflow = json_decode( $this->final_post_param_sanitization( $sanitized_input ) );
 
                 // Process updating workflow based on its type - regular or default
                 if ( $updating_post_type_workflow->is_regular_workflow ) {
@@ -134,18 +176,31 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
     }
 
     private function fetch_selected_post_type(): array {
-        if ( isset( $_POST['workflows_post_types_section_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['workflows_post_types_section_nonce'] ) ), 'workflows_post_types_section_nonce' ) ) {
 
+        $selected_post_type_id   = null;
+        $selected_post_type_name = null;
+
+        // Determine selected post type id
+        if ( isset( $_POST['workflows_post_types_section_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['workflows_post_types_section_nonce'] ) ), 'workflows_post_types_section_nonce' ) ) {
             $selected_post_type_id   = ( isset( $_POST['workflows_post_types_section_form_post_type_id'] ) ) ? sanitize_text_field( wp_unslash( $_POST['workflows_post_types_section_form_post_type_id'] ) ) : '';
             $selected_post_type_name = ( isset( $_POST['workflows_post_types_section_form_post_type_name'] ) ) ? sanitize_text_field( wp_unslash( $_POST['workflows_post_types_section_form_post_type_name'] ) ) : '';
 
-            if ( ! empty( $selected_post_type_id ) && ! empty( $selected_post_type_name ) ) {
+        } elseif ( isset( $_POST['workflows_design_section_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['workflows_design_section_nonce'] ) ), 'workflows_design_section_nonce' ) ) {
+            if ( isset( $_POST['workflows_design_section_form_post_type_workflow'] ) ) {
+                $sanitized_input             = filter_var( wp_unslash( $_POST['workflows_design_section_form_post_type_workflow'] ), FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES );
+                $updating_post_type_workflow = json_decode( $this->final_post_param_sanitization( $sanitized_input ) );
 
-                return [
-                    'id'   => $selected_post_type_id,
-                    'name' => $selected_post_type_name
-                ];
+                $selected_post_type_id   = $updating_post_type_workflow->post_type_id;
+                $selected_post_type_name = $updating_post_type_workflow->post_type_name;
             }
+        }
+
+        // Assuming we have a valid selection, return details
+        if ( ! empty( $selected_post_type_id ) && ! empty( $selected_post_type_name ) ) {
+            return [
+                'id'   => $selected_post_type_id,
+                'name' => $selected_post_type_name
+            ];
         }
 
         return [];
@@ -237,54 +292,101 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                 <tbody>
                 <tr>
                     <td>
-                        Modify an existing workflow
+                        <span style="float:right;">
+                            <a id="workflows_management_section_new_but"
+                               class="button float-left"><?php esc_html_e( "New Workflow", 'disciple_tools' ) ?></a>
+                        </span>
                     </td>
+                </tr>
+                <tr>
                     <td>
-                        <select style="min-width: 100%;" id="workflows_management_section_select">
-                            <option disabled selected value="">
-                                --- available <?php echo esc_attr( strtolower( $selected_post_type['name'] ) ); ?>
-                                workflows ---
-                            </option>
-
+                        <table style="min-width: 100%;" class="widefat striped">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center;">Enabled</th>
+                                <th>Workflow</th>
+                                <th style="text-align: center;">Type</th>
+                                <th>Updated Fields</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             <?php
-                            // List owned workflows
+                            // List owned/custom workflows
                             if ( ! empty( $option_post_type_workflows ) && isset( $option_post_type_workflows->workflows ) ) {
 
                                 // Sort detected workflows by name
                                 $workflows = $this->sort_workflows_by_name( (array) $option_post_type_workflows->workflows );
 
-                                // Iterate through sorted workflow list
+                                // Iterate through sorted custom workflow list
                                 foreach ( $workflows as $workflow ) {
-                                    echo '<option value="' . esc_attr( $workflow->id ) . '">' . esc_attr( $workflow->name ) . '</option>';
+                                    ?>
+
+                                    <tr>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox"
+                                                   disabled <?php echo ( $workflow->enabled ) ? 'checked' : ''; ?>>
+                                        </td>
+                                        <td>
+                                            <a href="#" onclick="event.preventDefault();"
+                                               class="workflows-management-section-workflow-name"
+                                               data-workflow-id="<?php echo esc_attr( $workflow->id ); ?>"
+                                               data-workflow-name="<?php echo esc_attr( $workflow->name ); ?>"><?php echo esc_attr( $workflow->name ); ?></a>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            Custom
+                                        </td>
+                                        <td>
+                                            <?php echo esc_attr( $this->fields_to_string_list( $workflow->actions ) ); ?>
+                                        </td>
+                                    </tr>
+
+                                    <?php
                                 }
                             }
 
                             // List default filtered workflows
                             if ( ! empty( $filtered_workflows_defaults ) ) {
-                                echo '<option disabled value="">--- default workflows ---</option>';
 
                                 // Sort detected default workflows by name
                                 $workflows_defaults = $this->sort_workflows_by_name( $filtered_workflows_defaults );
 
                                 // Iterate through sorted workflow list
                                 foreach ( $workflows_defaults as $workflow_default ) {
-                                    echo '<option value="default_' . esc_attr( $workflow_default->id ) . '">' . esc_attr( $workflow_default->name ) . '</option>';
+                                    ?>
+
+                                    <tr>
+                                        <td style="text-align: center;">
+
+                                            <?php
+                                            // Update default workflow state accordingly
+                                            if ( ! empty( $option_default_workflows ) && isset( $option_default_workflows->workflows->{$workflow_default->id} ) ) {
+                                                $workflow_default->enabled = $option_default_workflows->workflows->{$workflow_default->id}->enabled;
+                                            }
+                                            ?>
+
+                                            <input type="checkbox"
+                                                   disabled <?php echo ( $workflow_default->enabled ) ? 'checked' : ''; ?>>
+                                        </td>
+                                        <td>
+                                            <a href="#" onclick="event.preventDefault();"
+                                               class="workflows-management-section-workflow-name"
+                                               data-workflow-id="<?php echo 'default_' . esc_attr( $workflow_default->id ); ?>"
+                                               data-workflow-name="<?php echo esc_attr( $workflow_default->name ); ?>"><?php echo esc_attr( $workflow_default->name ); ?></a>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            Default
+                                        </td>
+                                        <td>
+                                            <?php echo esc_attr( $this->fields_to_string_list( $workflow_default->actions ) ); ?>
+                                        </td>
+                                    </tr>
+
+                                    <?php
                                 }
                             }
                             ?>
-
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Create a new workflow
-                    </td>
-                    <td>
-                        <span style="float:left;">
-                            <a id="workflows_management_section_new_but"
-                               class="button float-left"><?php esc_html_e( "New Workflow", 'disciple_tools' ) ?></a>
-                        </span>
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
                 </tbody>
@@ -298,6 +400,20 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         }
     }
 
+    private function fields_to_string_list( $fields ): string {
+        $names = [];
+
+        if ( ! empty( $fields ) ) {
+            foreach ( $fields as $field ) {
+                if ( ! in_array( $field->field_name, $names ) ) {
+                    $names[] = $field->field_name;
+                }
+            }
+        }
+
+        return implode( ', ', $names );
+    }
+
     private function workflows_design_section( $selected_post_type ) {
 
         if ( ! empty( $selected_post_type ) ) {
@@ -305,8 +421,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             echo '<div id="workflows_design_section_div" style="display: none;">';
 
             // Capture hidden values, to be used further down stream
-            echo '<input type="hidden" id="workflows_design_section_hidden_post_types" value="' . esc_attr( json_encode( $this->fetch_post_types() ) ) . '">';
-            echo '<input type="hidden" id="workflows_design_section_hidden_post_field_types" value="' . esc_attr( json_encode( $this->fetch_post_field_types() ) ) . '">';
             echo '<input type="hidden" id="workflows_design_section_hidden_selected_post_type_id" value="' . esc_attr( $selected_post_type['id'] ?? '' ) . '">';
             echo '<input type="hidden" id="workflows_design_section_hidden_selected_post_type_name" value="' . esc_attr( $selected_post_type['name'] ?? '' ) . '">';
             echo '<input type="hidden" id="workflows_design_section_hidden_workflow_id" value="' . esc_attr( time() ) . '">';
@@ -460,13 +574,18 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                                     <div id="workflows_design_section_step2_condition_value_div">
                                         --- dynamic condition value field ---
                                     </div>
-                                <td>
                                 </td>
                                 <td>
                                         <span style="float:right;">
                                             <a id="workflows_design_section_step2_condition_add"
                                                class="button float-right"><?php esc_html_e( "Add", 'disciple_tools' ) ?></a>
                                         </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <span id="workflows_design_section_step2_exception_message"
+                                          style="color:#ff0000"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -571,6 +690,12 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                             </tr>
                             <tr>
                                 <td colspan="3">
+                                    <span id="workflows_design_section_step3_exception_message"
+                                          style="color:#ff0000"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
                                     <table style="min-width: 100%;" border="0"
                                            id="workflows_design_section_step3_actions_table">
                                         <thead>
@@ -642,6 +767,12 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                                            id="workflows_design_section_step4_enabled">
                                 </td>
                             </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span id="workflows_design_section_step4_exception_message"
+                                          style="color:#ff0000"></span>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
 
@@ -678,7 +809,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                 $fields = [];
                 foreach ( $dt_post_type_settings['fields'] as $key => $dt_field ) {
 
-                    if ( ! in_array( $dt_field['type'], $field_types_to_ignore ) && !$dt_field["hidden"] ) {
+                    if ( ! in_array( $dt_field['type'], $field_types_to_ignore ) && ! ( $dt_field['hidden'] ?? false ) ) {
                         $fields[] = [
                             'id'        => $key,
                             'name'      => $dt_field['name'],

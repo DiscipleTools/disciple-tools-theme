@@ -5,8 +5,8 @@ jQuery(function ($) {
       handle_workflow_post_type_select(e);
     });
 
-    $(document).on('change', '#workflows_management_section_select', function () {
-      handle_workflow_manage_select();
+    $(document).on('click', '.workflows-management-section-workflow-name', function (e) {
+      handle_workflow_manage_select(e);
     });
 
     $(document).on('click', '#workflows_management_section_new_but', function () {
@@ -23,6 +23,10 @@ jQuery(function ($) {
 
     $(document).on('change', '#workflows_design_section_step2_fields', function () {
       handle_workflow_step_fields_select(true, $('#workflows_design_section_step2_fields'), $('#workflows_design_section_step2_conditions'), $('#workflows_design_section_step2_condition_value_div'), $('#workflows_design_section_step2_condition_value_id'), $('#workflows_design_section_step2_condition_value_object_id'));
+    });
+
+    $(document).on('change', '#workflows_design_section_step2_conditions', function () {
+      handle_workflow_step2_conditions_select();
     });
 
     $(document).on('click', '#workflows_design_section_step2_condition_add', function () {
@@ -53,11 +57,14 @@ jQuery(function ($) {
         condition_value_id = condition_value_name = condition_value_element.val();
       }
 
-      handle_workflow_step_event_add_request(true, field_id, field_name, condition_id, condition_name, condition_value_id, condition_value_name, function () {
+      handle_workflow_step_event_add_request(true, field_id, field_name, condition_id, condition_name, condition_value_id, condition_value_name, $('#workflows_design_section_step2_exception_message'), function () {
         // Reset values following addition
         $('#workflows_design_section_step2_fields').val('');
         $('#workflows_design_section_step2_conditions').val('');
-        $('#workflows_design_section_step2_condition_value_div').html('--- dynamic condition value field ---');
+        let value_div = $('#workflows_design_section_step2_condition_value_div');
+        value_div.html('--- dynamic condition value field ---');
+        value_div.fadeIn('fast');
+        $('#workflows_design_section_step2_exception_message').html('');
       });
     });
 
@@ -101,11 +108,14 @@ jQuery(function ($) {
         action_value_id = action_value_name = action_value_element.val();
       }
 
-      handle_workflow_step_event_add_request(false, field_id, field_name, action_id, action_name, action_value_id, action_value_name, function () {
+      handle_workflow_step_event_add_request(false, field_id, field_name, action_id, action_name, action_value_id, action_value_name, $('#workflows_design_section_step3_exception_message'), function () {
         // Reset values following addition
         $('#workflows_design_section_step3_fields').val('');
         $('#workflows_design_section_step3_actions').val('');
-        $('#workflows_design_section_step3_action_value_div').html('--- dynamic action value field ---');
+        let value_div = $('#workflows_design_section_step3_action_value_div');
+        value_div.html('--- dynamic action value field ---');
+        value_div.fadeIn('fast');
+        $('#workflows_design_section_step3_exception_message').html('');
       });
     });
 
@@ -138,9 +148,9 @@ jQuery(function ($) {
       }
     }
 
-    function handle_workflow_manage_select() {
-
-      let workflow_id = $('#workflows_management_section_select').val();
+    function handle_workflow_manage_select(evt) {
+      let workflow_id = $(evt.currentTarget).data('workflowId');
+      let workflow_name = $(evt.currentTarget).data('workflowName');
 
       if (workflow_id) {
 
@@ -150,7 +160,7 @@ jQuery(function ($) {
         $('#workflows_design_section_div').fadeOut('slow', function () {
 
           // Reset associated component views
-          new_workflow_view_reset(false, function () {
+          new_workflow_view_reset(function () {
 
             // Display new workflow canvas
             $('#workflows_design_section_div').fadeIn('fast', function () {
@@ -187,7 +197,7 @@ jQuery(function ($) {
       $('#workflows_design_section_div').fadeOut('slow', function () {
 
         // Reset associated component views
-        new_workflow_view_reset(true, function () {
+        new_workflow_view_reset(function () {
 
           // Display new workflow canvas
           $('#workflows_design_section_div').fadeIn('fast', function () {
@@ -223,7 +233,7 @@ jQuery(function ($) {
           // Append new options
           events.forEach(function (event, idx) {
             if (event['id'] && event['name']) {
-              let option = '<option value="' + event['id'] + '">' + event['name'] + '</option>';
+              let option = `<option value="${window.lodash.escape(event['id'])}">${window.lodash.escape(event['name'])}</option>`;
               events_select.append(option);
             }
           });
@@ -238,14 +248,52 @@ jQuery(function ($) {
       events_select.val("");
     }
 
-    function handle_workflow_step_event_add_request(is_condition, field_id, field_name, event_id, event_name, event_value_id, event_value_name, callback) {
-      if (field_id && field_name && event_id && event_name && event_value_id) {
+    function handle_workflow_step2_conditions_select() {
+      let condition = $('#workflows_design_section_step2_conditions').val();
+
+      // Ensure value fields are disabled for not_set conditions
+      if (String(condition) === 'not_set') {
+        $('#workflows_design_section_step2_condition_value_div').fadeOut('fast');
+      } else {
+        $('#workflows_design_section_step2_condition_value_div').fadeIn('fast');
+      }
+    }
+
+    function handle_workflow_step_event_add_request(is_condition, field_id, field_name, event_id, event_name, event_value_id, event_value_name, exception_element, callback) {
+
+      let added_new_row = false;
+      if (field_id && field_name && event_id && event_name) {
+
         if (is_condition) {
-          add_new_condition_row(field_id, field_name, event_id, event_name, event_value_id, event_value_name);
-        } else {
+
+          let add_condition = false;
+
+          // Ignore value on not_set conditions
+          if (String(event_id) === 'not_set') {
+            event_value_id = '';
+            event_value_name = '';
+            add_condition = true;
+
+          } else {
+            add_condition = ((event_value_id !== null) && (event_value_id !== ''));
+          }
+
+          if (add_condition) {
+            add_new_condition_row(field_id, field_name, event_id, event_name, event_value_id, event_value_name);
+            added_new_row = true;
+          }
+
+        } else if (event_value_id) {
           add_new_action_row(field_id, field_name, event_id, event_name, event_value_id, event_value_name);
+          added_new_row = true;
         }
+      }
+
+      // Only trigger callback following successful row addition
+      if (added_new_row) {
         callback();
+      } else {
+        exception_element.html(`Please select a valid field, ${(is_condition ? 'condition' : 'action')} and value!`);
       }
     }
 
@@ -402,12 +450,7 @@ jQuery(function ($) {
       callback();
     }
 
-    function new_workflow_view_reset(reset_workflow_select, callback) {
-
-      // Reset management panel elements
-      if (reset_workflow_select) {
-        $('#workflows_management_section_select').val('');
-      }
+    function new_workflow_view_reset(callback) {
 
       // Reset workflow steps
       $('#workflows_design_section_save_but').fadeOut('fast', function () {
@@ -450,7 +493,10 @@ jQuery(function ($) {
       let conditions_table = $('#workflows_design_section_step2_conditions_table');
 
       reset_elements(fields_select, conditions_select, conditions_table, function () {
-        $('#workflows_design_section_step2_condition_value_div').html('--- dynamic condition value field ---');
+        let value_div = $('#workflows_design_section_step2_condition_value_div');
+        value_div.html('--- dynamic condition value field ---');
+        value_div.fadeIn('fast');
+        $('#workflows_design_section_step2_exception_message').html('');
       });
     }
 
@@ -460,18 +506,22 @@ jQuery(function ($) {
       let actions_table = $('#workflows_design_section_step3_actions_table');
 
       reset_elements(fields_select, actions_select, actions_table, function () {
-        $('#workflows_design_section_step3_action_value_div').html('--- dynamic action value field ---');
+        let value_div = $('#workflows_design_section_step3_action_value_div');
+        value_div.html('--- dynamic action value field ---');
+        value_div.fadeIn('fast');
+        $('#workflows_design_section_step3_exception_message').html('');
       });
     }
 
     function reset_step4_elements() {
       $('#workflows_design_section_step4_title').val('');
       $('#workflows_design_section_step4_enabled').prop('checked', true);
+      $('#workflows_design_section_step4_exception_message').html('');
     }
 
     function reset_elements(fields_select, events_select, events_table, callback) {
       let selected_post_type = $('#workflows_design_section_hidden_selected_post_type_id').val();
-      let post_types = JSON.parse($('#workflows_design_section_hidden_post_types').val());
+      let post_types = window.dt_workflows.workflows_design_section_hidden_post_types;
 
       // Remove previous options prior to re-populating
       fields_select.find('option[value != ""]').remove();
@@ -491,7 +541,7 @@ jQuery(function ($) {
         // Add sorted field names
         fields.forEach(function (field, idx) {
           if (field['id'] && field['name']) {
-            let option = `<option value="${ window.lodash.escape(field['id']) }">${ window.lodash.escape(field['name']) }</option>`;
+            let option = `<option value="${window.lodash.escape(field['id'])}">${window.lodash.escape(field['name'])}</option>`;
             fields_select.append(option);
           }
         });
@@ -508,8 +558,8 @@ jQuery(function ($) {
 
     function fetch_event_options(field_id, is_condition) {
       let selected_post_type = $('#workflows_design_section_hidden_selected_post_type_id').val();
-      let post_types = JSON.parse($('#workflows_design_section_hidden_post_types').val());
-      let post_field_types = JSON.parse($('#workflows_design_section_hidden_post_field_types').val());
+      let post_types = window.dt_workflows.workflows_design_section_hidden_post_types;
+      let post_field_types = window.dt_workflows.workflows_design_section_hidden_post_field_types;
 
       let events = [];
 
@@ -537,24 +587,40 @@ jQuery(function ($) {
     function fetch_condition_options(field_type) {
       let conditions = [];
 
+      let labels = {
+        equals: "Equals",
+        not_equals: "Doesn't equal",
+        contains: "Contains",
+        not_contain: "Doesn't contain",
+        not_set: "Has no value or is empty",
+        greater: "Greater than",
+        less: "Less than",
+        greater_equals: "Greater than or equals",
+        less_equals: "Less than or equals",
+      }
+
       switch (field_type) {
         case "text":
           conditions.push(
             {
               'id': 'equals',
-              'name': 'Equals'
+              'name': labels.equals
             },
             {
               'id': 'not_equals',
-              'name': 'Not Equal'
+              'name': labels.not_equals
             },
             {
               'id': 'contains',
-              'name': 'Contains'
+              'name': labels.contains
             },
             {
               'id': 'not_contain',
-              'name': 'Not Contain'
+              'name': labels.not_contain
+            },
+            {
+              'id': 'not_set',
+              'name': labels.not_set
             }
           );
           break;
@@ -563,27 +629,31 @@ jQuery(function ($) {
           conditions.push(
             {
               'id': 'equals',
-              'name': 'Equals'
+              'name': labels.equals
             },
             {
               'id': 'not_equals',
-              'name': 'Not Equal'
+              'name': labels.not_equals
             },
             {
               'id': 'greater',
-              'name': 'Greater Than'
+              'name': labels.greater
             },
             {
               'id': 'less',
-              'name': 'Less Than'
+              'name': labels.less
             },
             {
               'id': 'greater_equals',
-              'name': 'Greater Than or Equals'
+              'name': labels.greater_equals
             },
             {
               'id': 'less_equals',
-              'name': 'Less Than or Equals'
+              'name': labels.less_equals
+            },
+            {
+              'id': 'not_set',
+              'name': labels.not_set
             }
           );
           break;
@@ -591,11 +661,15 @@ jQuery(function ($) {
           conditions.push(
             {
               'id': 'equals',
-              'name': 'Equals'
+              'name': labels.equals
             },
             {
               'id': 'not_equals',
-              'name': 'Not Equal'
+              'name': labels.not_equals
+            },
+            {
+              'id': 'not_set',
+              'name': labels.not_set
             }
           );
           break;
@@ -615,11 +689,15 @@ jQuery(function ($) {
           conditions.push(
             {
               'id': 'contains',
-              'name': 'Contains'
+              'name': labels.contains
             },
             {
               'id': 'not_contain',
-              'name': 'Not Contain'
+              'name': labels.not_contain
+            },
+            {
+              'id': 'not_set',
+              'name': labels.not_set
             }
           );
           break;
@@ -641,7 +719,7 @@ jQuery(function ($) {
           actions.push(
             {
               'id': 'update',
-              'name': 'Updated To'
+              'name': 'Update To'
             }
           );
           break;
@@ -695,22 +773,22 @@ jQuery(function ($) {
 
       // Field
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step2_conditions_table_field_id" type="hidden" value="' + window.lodash.escape(field_id) + '">';
-      html += '<input id="workflows_design_section_step2_conditions_table_field_name" type="hidden" value="' + window.lodash.escape(field_name) + '">';
+      html += `<input id="workflows_design_section_step2_conditions_table_field_id" type="hidden" value="${window.lodash.escape(field_id)}">`;
+      html += `<input id="workflows_design_section_step2_conditions_table_field_name" type="hidden" value="${window.lodash.escape(field_name)}">`;
       html += window.lodash.escape(field_name);
       html += '</td>';
 
       // Condition
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step2_conditions_table_condition_id" type="hidden" value="' + window.lodash.escape(condition_id) + '">';
-      html += '<input id="workflows_design_section_step2_conditions_table_condition_name" type="hidden" value="' + window.lodash.escape(condition_name) + '">';
+      html += `<input id="workflows_design_section_step2_conditions_table_condition_id" type="hidden" value="${window.lodash.escape(condition_id)}">`;
+      html += `<input id="workflows_design_section_step2_conditions_table_condition_name" type="hidden" value="${window.lodash.escape(condition_name)}">`;
       html += window.lodash.escape(condition_name);
       html += '</td>';
 
       // Value
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step2_conditions_table_condition_value" type="hidden" value="' + window.lodash.escape(condition_value_id) + '">';
-      html += '<input id="workflows_design_section_step2_conditions_table_condition_value_name" type="hidden" value="' + window.lodash.escape(condition_value_name) + '">';
+      html += `<input id="workflows_design_section_step2_conditions_table_condition_value" type="hidden" value="${window.lodash.escape(condition_value_id)}">`;
+      html += `<input id="workflows_design_section_step2_conditions_table_condition_value_name" type="hidden" value="${window.lodash.escape(condition_value_name)}">`;
       html += window.lodash.escape(condition_value_name);
       html += '</td>';
 
@@ -732,22 +810,22 @@ jQuery(function ($) {
 
       // Field
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step3_actions_table_field_id" type="hidden" value="' + window.lodash.escape(field_id) + '">';
-      html += '<input id="workflows_design_section_step3_actions_table_field_name" type="hidden" value="' + window.lodash.escape(field_name) + '">';
+      html += `<input id="workflows_design_section_step3_actions_table_field_id" type="hidden" value="${window.lodash.escape(field_id)}">`;
+      html += `<input id="workflows_design_section_step3_actions_table_field_name" type="hidden" value="${window.lodash.escape(field_name)}">`;
       html += window.lodash.escape(field_name);
       html += '</td>';
 
       // Condition
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step3_actions_table_action_id" type="hidden" value="' + window.lodash.escape(action_id) + '">';
-      html += '<input id="workflows_design_section_step3_actions_table_action_name" type="hidden" value="' + window.lodash.escape(action_name) + '">';
+      html += `<input id="workflows_design_section_step3_actions_table_action_id" type="hidden" value="${window.lodash.escape(action_id)}">`;
+      html += `<input id="workflows_design_section_step3_actions_table_action_name" type="hidden" value="${window.lodash.escape(action_name)}">`;
       html += window.lodash.escape(action_name);
       html += '</td>';
 
       // Value
       html += '<td style="vertical-align: middle;">';
-      html += '<input id="workflows_design_section_step3_actions_table_action_value" type="hidden" value="' + window.lodash.escape(action_value_id) + '">';
-      html += '<input id="workflows_design_section_step3_actions_table_action_value_name" type="hidden" value="' + window.lodash.escape(action_value_name) + '">';
+      html += `<input id="workflows_design_section_step3_actions_table_action_value" type="hidden" value="${window.lodash.escape(action_value_id)}">`;
+      html += `<input id="workflows_design_section_step3_actions_table_action_value_name" type="hidden" value="${window.lodash.escape(action_value_name)}">`;
       html += window.lodash.escape(action_value_name);
       html += '</td>';
 
@@ -832,6 +910,9 @@ jQuery(function ($) {
 
         // Post!
         $('#workflows_design_section_form').submit();
+
+      } else {
+        $('#workflows_design_section_step4_exception_message').html('Please ensure a valid workflow name and actions have been selected!');
       }
     }
 
@@ -861,8 +942,11 @@ jQuery(function ($) {
         let event_value = $(tr).find('#' + id_event_value).val();
         let event_value_name = $(tr).find('#' + id_event_value_name).val();
 
+        // Allow blank values on not_set conditions
+        let add_event = (String(event_id) === 'not_set') ? true : ((event_value !== null) && (event_value !== ''));
+
         // Are values valid?
-        if (field_id && field_name && event_id && event_name && event_value) {
+        if (field_id && field_name && event_id && event_name && add_event) {
           events.push({
             'id': event_id,
             'name': event_name,
@@ -937,7 +1021,7 @@ jQuery(function ($) {
 
     function determine_event_value_state(field_id, event_value_div, event_value_id, event_value_object_id) {
       let selected_post_type = $('#workflows_design_section_hidden_selected_post_type_id').val();
-      let post_types = JSON.parse($('#workflows_design_section_hidden_post_types').val());
+      let post_types = window.dt_workflows.workflows_design_section_hidden_post_types;
 
       // Determine field's type
       let post_type = post_types[selected_post_type];
@@ -1073,7 +1157,7 @@ jQuery(function ($) {
     function generate_event_value_textfield() {
       let response = {};
       response['id'] = Date.now();
-      response['html'] = '<input type="text" placeholder="Enter a value..." style="min-width: 100%;" id="' + window.lodash.escape(response['id']) + '">';
+      response['html'] = `<input type="text" placeholder="Enter a value..." style="min-width: 100%;" id="${window.lodash.escape(response['id'])}">`;
 
       return response;
     }
@@ -1081,7 +1165,7 @@ jQuery(function ($) {
     function generate_event_value_datepicker() {
       let response = {};
       response['id'] = Date.now();
-      response['html'] = '<input type="text" class="dt-datepicker" placeholder="Enter a date..." style="min-width: 100%;" id="' + window.lodash.escape(response['id']) + '">';
+      response['html'] = `<input type="text" class="dt-datepicker" placeholder="Enter a date..." style="min-width: 100%;" id="${window.lodash.escape(response['id'])}">`;
       response['datepicker'] = {};
 
       return response;
@@ -1091,7 +1175,7 @@ jQuery(function ($) {
       let response = {};
       response['id'] = Date.now();
 
-      let html = '<select style="min-width: 100%;" id="' + response['id'] + '">';
+      let html = `<select style="min-width: 100%;" id="${window.lodash.escape(response['id'])}">`;
       html += '<option value="true" selected>True</option>';
       html += '<option value="false">False</option>';
       html += '</select>';
@@ -1107,13 +1191,13 @@ jQuery(function ($) {
         let response = {};
         response['id'] = Date.now();
 
-        let html = '<select style="min-width: 100%; max-width: 100px;" id="' + response['id'] + '">';
+        let html = `<select style="min-width: 100%; max-width: 100px;" id="${window.lodash.escape(response['id'])}">`;
         html += '<option disabled selected value="">--- select value ---</option>';
 
         // Iterate over field defaults...
         for (const [key, value] of Object.entries(defaults)) {
           //if (value['label']) { // As an empty label string is actually a valid entry!
-          html += '<option value="' + window.lodash.escape(key) + '">' + window.lodash.escape(value['label']) + '</option>';
+          html += `<option value="${window.lodash.escape(key)}">${window.lodash.escape(value['label'])}</option>`;
           //}
         }
 
@@ -1131,7 +1215,7 @@ jQuery(function ($) {
       response['id'] = Date.now();
 
       let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
-      html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing a location..." style="min-width: 100%;" id="' + window.lodash.escape(response['id']) + '">';
+      html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing a location..." style="min-width: 100%;" id="${window.lodash.escape(response['id'])}">`;
       html += '</div></div></div>';
       response['html'] = html;
 
@@ -1176,7 +1260,7 @@ jQuery(function ($) {
         response['id'] = Date.now();
 
         let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
-        html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing connection details..." style="min-width: 100%;" id="' + window.lodash.escape( response['id']) + '">';
+        html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing connection details..." style="min-width: 100%;" id="${window.lodash.escape(response['id'])}">`;
         html += '</div></div></div>';
         response['html'] = html;
 
@@ -1221,7 +1305,7 @@ jQuery(function ($) {
       response['id'] = Date.now();
 
       let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
-      html += '<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing user details..." style="min-width: 100%;" id="' + window.lodash.escape(response['id'] )+ '">';
+      html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing user details..." style="min-width: 100%;" id="${window.lodash.escape(response['id'])}">`;
       html += '</div></div></div>';
       response['html'] = html;
 
