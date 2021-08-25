@@ -156,7 +156,79 @@ final class Disciple_Tools_Dashboard
             update_option( 'dt_setup_wizard_options', $setup_options );
         }
 
-        wp_add_dashboard_widget('dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
+        function dt_show_news_widget() {
+            include_once( ABSPATH . WPINC . '/feed.php' );
+
+            if ( function_exists( 'fetch_feed' ) ) {
+                $news_feed = fetch_feed( 'https://disciple.tools/news/feed/' );
+            }
+
+            if ( is_wp_error( $news_feed ) ) {
+                ?>
+                <p>
+                    <i><?php echo esc_html( $news_feed->get_error_message() ); ?></i>
+                </p>
+                <?php
+                return;
+            }
+
+            $news_feed->init();
+            $news_feed->set_output_encoding( 'UTF-8' );
+            $news_feed->handle_content_type();
+            $news_feed->set_cache_duration( 86400 );
+            $news_feed_items = $news_feed->get_items( 0, 1 );
+
+            if ( empty( $news_feed_items ) || !is_array( $news_feed_items ) ) {
+                ?>
+                <p align="center">
+                    <i><?php echo esc_html_e( 'no news found', 'disciple_tools' ); ?></i>
+                </p>
+                <?php
+                return;
+            }
+
+            ?>
+                <style>
+                    .news-feed img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+                    .news-feed-title {
+                        color: #0073aa;
+                        font-weight: bold;
+                    }
+                    .news-feed-heading {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 5%;
+                    }
+                    #dashboard-widgets .news-feed h3 {
+                        font-size: 1.3em;
+                        font-weight: 600;
+                    }
+                    #dashboard-widgets .news-feed ul {
+                        list-style: disc;
+                        padding-inline-start: 40px;
+                    }
+                </style>
+            <?php
+            foreach ( $news_feed_items as $news ) {
+                ?>
+                <div class="news-feed">
+                    <div class="news-feed-heading" >
+                        <a href="<?php echo esc_attr( esc_url( $news->get_permalink() ) ); ?>" target="_blank" class="news-feed-title"><?php echo esc_html( $news->get_title() ); ?></a>
+                        <i><?php echo esc_html( $news->get_date( 'm/d/Y' ) ); ?></i>
+                    </div>
+                    <?php echo wp_kses_post( $news->get_content() ); ?>
+                    <div align="right"><small>powered by <a href="https://disciple.tools/news" target="_blank">Disciple.Tools News</a></small></div>
+                </div>
+                <?php
+            }
+        }
+
+        add_meta_box( 'dt_news_feed', esc_html__( 'Disciple.Tools News Feed', 'disciple_tools' ), 'dt_show_news_widget', 'dashboard', 'side', 'high' );
+
+        wp_add_dashboard_widget( 'dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
 
             $setup_options = get_option( "dt_setup_wizard_options", [] );
             $default = [
