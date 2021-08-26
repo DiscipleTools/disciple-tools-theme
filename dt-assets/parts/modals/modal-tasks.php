@@ -20,13 +20,13 @@ global $post;
             <li>
                 <label style="display: flex; align-items: baseline">
                     <input type="radio" name="task-type" value="custom"><?php echo esc_html__( 'Custom', 'disciple_tools' ); ?>:&nbsp;
-                    <input type="text" id="task-custom-text" style="">
+                    <input type="text" id="task-custom-text" >
                 </label>
             </li>
         </ul>
 
         <label><strong><?php echo esc_html__( "Due Date", "disciple_tools" ); ?></strong></label>
-        <input id="create-task-date" name="task-date" type="text" class="" required autocomplete="off" >
+        <input id="create-task-date" name="task-date" type="text" required autocomplete="off" >
 
         <button class="button loader" type="submit" id="create-task">
             <?php echo esc_html__( 'Create Task', 'disciple_tools' ); ?>

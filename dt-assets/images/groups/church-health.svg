@@ -44,16 +44,16 @@
       <path id="Path_736" data-name="Path 736" d="M47,33H1V21a1,1,0,0,1,1-1,9.179,9.179,0,0,0,6.767-3.079,1.033,1.033,0,0,1,.746-.321,1,1,0,0,1,.738.338,8.971,8.971,0,0,0,13.5,0,.994.994,0,0,1,1.5,0,8.978,8.978,0,0,0,13.048.484,1,1,0,0,1,1.408.006A8.952,8.952,0,0,0,46.008,20,.993.993,0,0,1,47,21Z" transform="translate(-1 -4.597)" fill="#a4dae0"/>
       <path id="Path_737" data-name="Path 737" d="M46,44H2a1,1,0,0,1-1-1V33a1,1,0,0,1,1-1,9.18,9.18,0,0,0,6.766-3.079,1.033,1.033,0,0,1,.746-.321,1,1,0,0,1,.738.338,8.971,8.971,0,0,0,13.5,0,1.032,1.032,0,0,1,1.5,0,8.979,8.979,0,0,0,13.05.484,1,1,0,0,1,1.4,0A8.95,8.95,0,0,0,46,32a1,1,0,0,1,1,1V43A1,1,0,0,1,46,44Z" transform="translate(-1 -4.597)" fill="#c8e9ec"/>
     </g>
-    <text id="Baptism" transform="translate(7162 -175)" fill="#333" font-size="10" font-family="ArialMT, Arial"><tspan x="-18.062" y="0">Baptism</tspan></text>
-    <text id="Praise" transform="translate(7278 -67)" fill="#333" font-size="10" font-family="ArialMT, Arial"><tspan x="-14.172" y="0">Praise</tspan></text>
+    <text id="Baptism" transform="translate(7162 -175)" fill="#333" font-size="10" font-family="Helvetica, Arial, sans-serif"><tspan x="-18.062" y="0">Baptism</tspan></text>
+    <text id="Praise" transform="translate(7278 -67)" fill="#333" font-size="10" font-family="Helvetica, Arial, sans-serif"><tspan x="-14.172" y="0">Praise</tspan></text>
     <text id="Sharing_the_Gospel" data-name="Sharing the
-Gospel" transform="translate(7358 -99)" fill="#333" font-size="10" font-family="ArialMT, Arial"><tspan x="-25.574" y="0">Sharing the</tspan><tspan x="-15.842" y="12">Gospel</tspan></text>
-    <text id="Fellowship" transform="translate(7278 -280)" fill="#333" font-size="10" font-family="ArialMT, Arial"><tspan x="-23.621" y="0">Fellowship</tspan></text>
-    <text id="Giving" transform="translate(7198 -251)" fill="#333" font-size="10" font-family="ArialMT, Arial"><tspan x="-14.172" y="0">Giving</tspan></text>
-    <text id="Prayer" transform="translate(7278 -175)" fill="#333" font-size="10" font-family="ArialMT, Arial"><tspan x="-14.727" y="0">Prayer</tspan></text>
-    <text id="Leaders" transform="translate(7394 -175)" fill="#333" font-size="10" font-family="ArialMT, Arial"><tspan x="-18.069" y="0">Leaders</tspan></text>
-    <text id="Bible_Study" data-name="Bible Study" transform="translate(7199 -98)" fill="#333" font-size="10" font-family="ArialMT, Arial"><tspan x="-25.293" y="0">Bible Study</tspan></text>
-    <text id="Communion" transform="translate(7360 -251)" fill="#333" font-size="10" font-family="ArialMT, Arial"><tspan x="-26.956" y="0">Communion</tspan></text>
+Gospel" transform="translate(7358 -99)" fill="#333" font-size="10" font-family="Helvetica, Arial, sans-serif"><tspan x="-25.574" y="0">Sharing the</tspan><tspan x="-15.842" y="12">Gospel</tspan></text>
+    <text id="Fellowship" transform="translate(7278 -280)" fill="#333" font-size="10" font-family="Helvetica, Arial, sans-serif"><tspan x="-23.621" y="0">Fellowship</tspan></text>
+    <text id="Giving" transform="translate(7198 -251)" fill="#333" font-size="10" font-family="Helvetica, Arial, sans-serif"><tspan x="-14.172" y="0">Giving</tspan></text>
+    <text id="Prayer" transform="translate(7278 -175)" fill="#333" font-size="10" font-family="Helvetica, Arial, sans-serif"><tspan x="-14.727" y="0">Prayer</tspan></text>
+    <text id="Leaders" transform="translate(7394 -175)" fill="#333" font-size="10" font-family="Helvetica, Arial, sans-serif"><tspan x="-18.069" y="0">Leaders</tspan></text>
+    <text id="Bible_Study" data-name="Bible Study" transform="translate(7199 -98)" fill="#333" font-size="10" font-family="Helvetica, Arial, sans-serif"><tspan x="-25.293" y="0">Bible Study</tspan></text>
+    <text id="Communion" transform="translate(7360 -251)" fill="#333" font-size="10" font-family="Helvetica, Arial, sans-serif"><tspan x="-26.956" y="0">Communion</tspan></text>
     <g id="Ellipse_347" data-name="Ellipse 347" transform="translate(7114 -365)" fill="none" stroke="#3f729b" stroke-width="1" stroke-dasharray="5 5">
       <circle cx="163.5" cy="163.5" r="163.5" stroke="none"/>
       <circle cx="163.5" cy="163.5" r="163" fill="none"/>

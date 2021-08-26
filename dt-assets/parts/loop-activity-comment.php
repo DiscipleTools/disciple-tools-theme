@@ -164,7 +164,7 @@
                         <div class="section-subheader">
                             <?php esc_html_e( "Type of Comment", 'disciple_tools' ) ?>
                         </div>
-                        <select id="edit_comment_type_selector" class="">
+                        <select id="edit_comment_type_selector">
                             <?php
                             $section_keys = [];
                             foreach ( $sections as $section ) {

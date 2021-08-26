@@ -415,14 +415,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             if ( in_array( $field_key, $core_fields ) ){
                 ?>
                 <p>
-                    <strong>This is a core field. <a href="<?php echo esc_url( admin_url() ) ?>edit.php?page=dt_options&tab=custom-lists#<?php echo esc_attr( $field_key ) ?>"  class="">Go to Custom Lists page to edit options.</a></strong>
+                    <strong>This is a core field. <a href="<?php echo esc_url( admin_url() ) ?>edit.php?page=dt_options&tab=custom-lists#<?php echo esc_attr( $field_key ) ?>" >Go to Custom Lists page to edit options.</a></strong>
                 </p>
                 <?php
                 return;
             } ?>
 
             <h3><?php esc_html_e( "Field Options", 'disciple_tools' ) ?></h3>
-            <table id="add_option" style="">
+            <table id="add_option" >
                 <tr>
                     <td style="vertical-align: middle">
                         <?php esc_html_e( "Add new option", 'disciple_tools' ) ?>

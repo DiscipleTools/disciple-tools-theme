@@ -153,7 +153,7 @@ jQuery(document).ready(function($) {
                 <% has_Comment_ID = true %>
                   <div class="edit-comment-controls">
                     <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:0.3334rem">
-                        <img class="" src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
+                        <img src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
                         ${window.lodash.escape(commentsSettings.translations.edit)}
                     </a>
                     <a class="open-delete-comment" data-id="<%- a.comment_ID %>">

@@ -38,7 +38,7 @@ $dt_nav_tabs = dt_default_menu_array();
 
             <!-- menu -->
             <?php if ( ! $dt_nav_tabs['admin']['menu']['hidden'] ?? ! false ) : ?>
-                <button class="" type="button" data-open="off-canvas">
+                <button type="button" data-open="off-canvas">
                     <img src="<?php echo esc_url( $dt_nav_tabs['admin']['menu']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/hamburger.svg' ) ?>">
                 </button>
             <?php endif; ?>
@@ -284,7 +284,7 @@ $dt_nav_tabs = dt_default_menu_array();
             <div id="notification-list" class="grid-x" style="border-top: 1px solid #ccc;"><span class="loading-spinner active" style="margin:1em;"></span></div>
 
 
-            <div class="" style="text-align:center;">
+            <div style="text-align:center;">
                 <span>
                     <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark all as read', 'disciple_tools' ) ?></a>  -
                     <a href="<?php echo esc_url( home_url( '/' ) ); ?>settings/#notifications">

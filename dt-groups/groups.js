@@ -84,7 +84,7 @@ jQuery(document).ready(function($) {
           ? htmlString + `<img class="dt-icon" src="${window.lodash.escape( milestone.icon )}" alt="${window.lodash.escape( milestone.label )}" title="${window.lodash.escape( milestone.label )}">`
           : htmlString
       }, '')
-      let memberHTML = `<div class="member-row" style="" data-id="${window.lodash.escape( member.ID )}">
+      let memberHTML = `<div class="member-row"  data-id="${window.lodash.escape( member.ID )}">
           <div style="flex-grow: 1" class="member-status">
               ${contactStatusHTML}
               <a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape( member.ID )}">${window.lodash.escape(member.post_title)}</a>

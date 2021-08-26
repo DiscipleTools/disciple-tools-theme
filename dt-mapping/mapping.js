@@ -40,7 +40,7 @@ function page_mapping_view( rest_endpoints_base = null ) {
           <span id="current_level" class="current_level"></span>
         </div>
       </div>
-      <hr id="map_hr_1" class="map_hr" style="">
+      <hr id="map_hr_1" class="map_hr" >
 
       <div id="data_type_list" class="small button-group data_type_list"></div>
 

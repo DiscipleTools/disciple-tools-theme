@@ -30,7 +30,7 @@ function dt_print_details_bar(
     }
     ?>
 
-    <div data-sticky-container class="show-for-medium details-second-bar" style="z-index: 9">
+    <div data-sticky-container class="show-for-medium details-second-bar">
         <nav role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
              class="second-bar" id="second-bar-large">
@@ -162,7 +162,7 @@ function dt_print_details_bar(
         </nav>
     </div>
 
-    <div data-sticky-container class="show-for-small-only details-second-bar" style="z-index: 9">
+    <div data-sticky-container class="show-for-small-only details-second-bar">
     <?php if ( $comment_button || $share_button ): ?>
     <nav role="navigation"
         data-sticky data-options="marginTop:0;" data-sticky-on="small" data-top-anchor="95" style="width:100%; border-color: <?php echo esc_html( $type_color ); ?>"

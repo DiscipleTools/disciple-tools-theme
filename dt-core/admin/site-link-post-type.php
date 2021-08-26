@@ -590,7 +590,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                                     $data = self::generate_token();
 
                                     echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
-                                    <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" /> <a style="" onclick="jQuery(\'#'.esc_attr( $k ).'\').val(\'\');">clear</a>' . "\n";
+                                    <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" /> <a  onclick="jQuery(\'#'.esc_attr( $k ).'\').val(\'\');">clear</a>' . "\n";
                                     echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
                                     echo '</td><tr/>' . "\n";
                                 }

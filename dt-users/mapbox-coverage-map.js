@@ -16,7 +16,7 @@ jQuery(document).ready(function($) {
     ${window.lodash.escape(window.dt_mapbox_metrics.translations.all)}:
   </button>`
   window.lodash.forOwn(window.dt_mapbox_metrics.settings.user_status_options, (option, option_key)=>{
-    options_html += `<button class="button small empty-select-button" data-key="${window.lodash.escape(option_key)}" style="">
+    options_html += `<button class="button small empty-select-button" data-key="${window.lodash.escape(option_key)}" >
       ${window.lodash.escape(option)}
     </button>`
   })
