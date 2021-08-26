@@ -14,23 +14,23 @@ dt_please_log_in();
     $field_options = $post_settings["fields"];
     get_header();
     ?>
-    <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
+    <div data-sticky-container class="hide-for-small-only">
         <nav role="navigation"
              data-sticky data-options="marginTop:0;" data-top-anchor="1"
              class="second-bar list-actions-bar">
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
                 <a class="button dt-green create-post-desktop" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
+                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php echo esc_html( sprintf( _x( "Create New %s", "Create New record", 'disciple_tools' ), $post_settings["label_singular"] ?? $post_type ) ) ?></span>
                 </a>
                 <a class="button filter-posts-desktop" data-open="filter-modal">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
+                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "Filters", 'disciple_tools' ) ?></span>
                 </a>
                 <?php do_action( "archive_template_action_bar_buttons", $post_type ) ?>
                 <div class="search-wrapper">
                     <span class="text-input-wrapper">
-                        <input class="search-input search-input--desktop" style="margin-right: 0;"
+                        <input class="search-input search-input--desktop"
                                type="text" id="search-query" name="search"
                                placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
                         <div class="search-input__clear-button" title="<?php echo esc_html( __( "Clear", 'disciple_tools' ) ) ?>">
@@ -58,20 +58,19 @@ dt_please_log_in();
                     </a>
                 </div>
                 <a class="button" id="search">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
+                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
                 </a>
             </div>
-            <div id="advanced_search_picker"  class="list_field_picker" style="display:none; padding:1.33334rem; border-radius:0.33334rem; background-color:#ecf5fc;">
-                <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
-                <ul class="ul-no-bullets" style="">
+            <div id="advanced_search_picker"  class="list_field_picker">
+                <p ><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
+                <ul class="ul-no-bullets" >
 
-                <li style="" class="">
-                    <label style="margin-right:1rem; cursor:pointer">
+                <li >
+                    <label >
                         <input type="checkbox" value="all"
                                 <?php echo esc_html( in_array( 'all', $fields_to_search ) ? "checked" : '' ); ?>
-
-                                style="margin:0">
+                        >
                         <b><?php esc_html_e( 'Search All Fields', 'disciple_tools' ) ?></b>
                     </label>
                 </li>
@@ -81,34 +80,33 @@ dt_please_log_in();
                         continue;
                     }
                     ?>
-                    <li style="" class="">
-                        <label style="margin-right:1rem; cursor:pointer">
+                    <li >
+                        <label >
                             <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
                                     <?php echo esc_html( in_array( $field_key, $fields_to_search ) ? "checked" : '' );
                                     ?>
-                                    style="margin:0">
+                            >
                                     <?php echo esc_html( $field_values["name"] ); ?>
                         </label>
                     </li>
                 <?php endforeach; ?>
                 </ul>
-                <button class="button" id="save_advanced_search_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
-                <a class="button clear" id="advanced_search_reset" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
+                <button class="button" id="save_advanced_search_choices"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
+                <a class="button clear" id="advanced_search_reset"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
             </div>
         </nav>
     </div>
-    <nav  role="navigation" style="width:100%;"
-          class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
+    <nav  role="navigation" class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
+            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
         </a>
         <a class="button filter-posts-mobile" data-open="filter-modal">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
+            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
         </a>
         <a class="button" id="open-search">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
+            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
         </a>
-        <div class="hideable-search" style="display: none; margin-top:0.33334rem">
+        <div class="hideable-search">
             <div class="search-wrapper">
                 <span class="text-input-wrapper">
                     <input class="search-input search-input--mobile" name="search" type="text" id="search-query-mobile"
@@ -136,19 +134,18 @@ dt_please_log_in();
                     ?>
                     <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( "display:none" ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
                 </a>
-                <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
+                <button class="button" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
             </div>
         </div>
-        <div id="advanced_search_picker_mobile"  class="list_field_picker" style="display:none; padding:1.33334rem; border-radius:0.33334rem; background-color:#ecf5fc;">
-                <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
-                <ul class="ul-no-bullets" style="">
+        <div id="advanced_search_picker_mobile"  class="list_field_picker">
+                <p ><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
+                <ul class="ul-no-bullets" >
 
-                <li style="" class="">
-                    <label style="margin-right:1rem; cursor:pointer">
+                <li >
+                    <label >
                         <input type="checkbox" value="all"
                                 <?php echo esc_html( in_array( 'all', $fields_to_search ) ? "checked" : '' ); ?>
-
-                                style="margin:0">
+                        >
                                 <b><?php esc_html_e( 'Search All Fields', 'disciple_tools' ) ?></b>
                     </label>
                 </li>
@@ -158,19 +155,19 @@ dt_please_log_in();
                         continue;
                     }
                     ?>
-                    <li style="" class="">
-                        <label style="margin-right:1rem; cursor:pointer">
+                    <li >
+                        <label >
                             <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
                                     <?php echo esc_html( in_array( $field_key, $fields_to_search ) ? "checked" : '' );
                                     ?>
-                                    style="margin:0">
+                            >
                             <?php echo esc_html( $field_values["name"] ); ?>
                         </label>
                     </li>
                 <?php endforeach; ?>
                 </ul>
-                <button class="button" id="save_advanced_search_choices_mobile" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
-                <a class="button clear" id="advanced_search_reset_mobile" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
+                <button class="button" id="save_advanced_search_choices_mobile"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
+                <a class="button clear" id="advanced_search_reset_mobile"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
             </div>
     </nav>
     <div id="content" class="archive-template">
@@ -188,8 +185,8 @@ dt_please_log_in();
                     </div>
                     <div class="section-body">
                         <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
-                        <div style="margin-bottom: 0.33334rem">
-                            <a data-open="filter-modal"><img style="display: inline-block; margin-right:0.8rem" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                        <div>
+                            <a data-open="filter-modal" class="filter-modal-openner"><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
                         </div>
                         <div class="custom-filters"></div>
                     </div>
@@ -199,13 +196,13 @@ dt_please_log_in();
 
             <main id="main" class="large-9 cell padding-bottom" role="main">
                 <div class="bordered-box">
-                    <div >
-                        <span class="section-header posts-header" style="display: inline-block">
+                    <div class="list-header-container">
+                        <span class="section-header posts-header">
                             <?php echo esc_html( sprintf( _x( '%s List', 'Contacts List', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_plural"] ) ) ?>
                         </span>
-                        <span id="list-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
-                        <span style="display: inline-block" class="filter-result-text"></span>
-                        <div class="js-sort-dropdown" style="display: inline-block">
+                        <span id="list-loading-spinner" class="loading-spinner active"></span>
+                        <span class="filter-result-text"></span>
+                        <div class="js-sort-dropdown">
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
                                     <a href="#"><?php esc_html_e( "Sort", "disciple_tools" ); ?></a>
@@ -230,21 +227,21 @@ dt_please_log_in();
                                 </li>
                             </ul>
                         </div>
-                        <span style="display:inline-block">
-                            <button class="button clear" id="choose_fields_to_show_in_table" style="margin:0; padding:0">
+                        <span>
+                            <button class="button clear" id="choose_fields_to_show_in_table" >
                                 <?php esc_html_e( 'Fields', 'disciple_tools' ); ?>
                                 <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>"/>
                             </button>
                         </span>
-                        <span style="display:inline-block">
-                            <button class="button clear" id="bulk_edit_controls" style="margin:0; padding:0">
+                        <span>
+                            <button class="button clear" id="bulk_edit_controls">
                                 <?php esc_html_e( 'Bulk Edit', 'disciple_tools' ); ?>
                                 <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ) ?>"/>
                             </button>
                         </span>
                     </div>
-                    <div id="list_column_picker" class="list_field_picker" style="display:none; padding:1.33334rem; border-radius:0.33334rem; background-color:#ecf5fc; margin: 2rem 0">
-                        <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
+                    <div id="list_column_picker" class="list_field_picker">
+                        <p ><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
                         <?php
                         $fields_to_show_in_table = [];
                         if ( isset( $_COOKIE["fields_to_show_in_table"] ) ) {
@@ -260,29 +257,29 @@ dt_please_log_in();
                         });
 
                         ?>
-                        <ul class="ul-no-bullets" style="">
+                        <ul class="ul-no-bullets" >
                         <?php foreach ( $post_settings["fields"] as $field_key => $field_values ):
                             if ( !empty( $field_values["hidden"] )){
                                 continue;
                             }
                             ?>
-                            <li style="" class="">
-                                <label style="margin-right:1rem; cursor:pointer">
+                            <li >
+                                <label >
                                     <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
                                            <?php echo esc_html( in_array( $field_key, $fields_to_show_in_table ) ? "checked" : '' ); ?>
                                            <?php echo esc_html( ( empty( $fields_to_show_in_table ) && !empty( $field_values["show_in_table"] ) ) ? "checked" : '' ); ?>
-                                           style="margin:0">
+                                        >
                                     <?php echo esc_html( $field_values["name"] ); ?>
                                 </label>
                             </li>
                         <?php endforeach; ?>
                         </ul>
-                        <button class="button" id="save_column_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
-                        <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
+                        <button class="button" id="save_column_choices"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
+                        <a class="button clear" id="reset_column_choices"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
                     </div>
 
-                    <div id="bulk_edit_picker" style="display:none; padding:1.33334rem; border-radius:0.33334rem; background-color:#ecf5fc; margin: 2rem 0">
-                        <p style="font-weight:bold"><?php
+                    <div id="bulk_edit_picker" class="list_field_picker">
+                        <p ><?php
                         echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                         <div class="grid-x grid-margin-x">
                             <?php if ( isset( $field_options["assigned_to"] ) ) : ?>
@@ -297,7 +294,7 @@ dt_please_log_in();
                             <div class="bulk_assigned_to details">
                                 <var id="bulk_assigned_to-result-container" class="result-container bulk_assigned_to-result-container"></var>
                                 <div id="bulk_assigned_to_t" name="form-bulk_assigned_to" class="scrollable-typeahead">
-                                    <div class="typeahead__container" style="margin-bottom: 0">
+                                    <div class="typeahead__container no_bottom_margin">
                                         <div class="typeahead__field">
                                             <span class="typeahead__query">
                                                 <input class="js-typeahead-bulk_assigned_to input-height" dir="auto"
@@ -387,9 +384,9 @@ dt_please_log_in();
                             </div>
                             <?php if ( isset( $field_options["requires_update"] ) ) : ?>
                             <div class="cell small-12 medium-4 center-items">
-                            <span style="margin-right:0.33334rem"><?php echo esc_html( $field_options["requires_update"]["name"] ); ?>:</span>
+                            <span><?php echo esc_html( $field_options["requires_update"]["name"] ); ?>:</span>
                                     <input type="checkbox" id="update-needed-bulk" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
-                                    <label class="dt-switch" for="update-needed-bulk" style="vertical-align: top;"></label>
+                                    <label class="dt-switch" for="update-needed-bulk"></label>
                             </div>
                             <?php endif; ?>
                             <div class="cell small-12 medium-4 center-items">
@@ -426,27 +423,27 @@ dt_please_log_in();
                             </div>
                         </div>
 
-                        <button class="button dt-green" id="bulk_edit_submit"><span id="bulk_edit_submit_text" style="    text-transform:capitalize">Update <?php
+                        <button class="button dt-green" id="bulk_edit_submit"><span id="bulk_edit_submit_text" class="capitalize">Update <?php
                         if ( $post_type == "contacts" ) {
                             esc_html_e( 'Contacts', 'disciple_tools' );
                         } elseif ( $post_type == "groups" ) {
                             esc_html_e( 'Groups', 'disciple_tools' );
                         }
                         ?></span>
-                        <span id="bulk_edit_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
+                        <span id="bulk_edit_submit-spinner" class="loading-spinner"></span>
                         </button>
                     </div>
 
-                    <div style="display: flex; flex-wrap:wrap; margin: 0.6667rem 0" id="current-filters"></div>
+                    <div id="current-filters"></div>
 
                     <div>
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
-                                    <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:2.1334rem;; background-image:none; cursor:default">
+                                    <th id="bulk_edit_master" class="empty-list-head bulk_edit_checkbox">
                                     <input type="checkbox" name="bulk_edit_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
-                                    <th style="width:2.1334rem;; background-image:none; cursor:default"></th>
+                                    <th class="empty-list-head"></th>
 
                                     <?php $columns = [];
                                     if ( empty( $fields_to_show_in_table ) ){
@@ -495,10 +492,9 @@ dt_please_log_in();
     <div class="reveal" id="filter-modal" data-reveal>
         <div class="grid-container">
             <div class="grid-x">
-                <div class="cell small-4" style="padding: 0 0.33334rem 0.33334rem 0.33334rem">
-                    <input type="text" id="new-filter-name"
-                           placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"
-                           style="margin-bottom: 0"/>
+                <div class="cell small-4 new-filter-name-input">
+                    <input type="text" id="new-filter-name" class="no_bottom_margin"
+                           placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"/>
                 </div>
                 <div class="cell small-8">
                     <div id="selected-filters"></div>
@@ -571,13 +567,13 @@ dt_please_log_in();
                             </div>
 
                         <?php else : ?>
-                            <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>"" id="<?php echo esc_html( $field ) ?>">
+                            <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
                                 <div class="section-header"><?php echo esc_html( $field === "post_date" ? __( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :
                                         if ( !isset( $field_options[$field]["default"]["none"] ) ) :?>
                                             <div class="key_select_options">
-                                                <label style="cursor: pointer">
+                                                <label class="cursor__pointer">
                                                     <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
                                                            value="none"> <?php echo esc_html__( "None Set", "disciple_tools" ); ?>
                                                 </label>
@@ -590,7 +586,7 @@ dt_please_log_in();
                                             }
                                             ?>
                                             <div class="key_select_options">
-                                                <label style="cursor: pointer">
+                                                <label class="cursor__pointer">
                                                     <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
                                                            value="<?php echo esc_html( $option_key ) ?>"> <?php echo esc_html( $label ) ?>
                                                 </label>
@@ -598,14 +594,14 @@ dt_please_log_in();
                                         <?php endforeach; ?>
                                     <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "boolean" ) : ?>
                                         <div class="boolean_options">
-                                            <label style="cursor: pointer">
+                                            <label class="cursor__pointer">
                                                 <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
                                                        data-label="<?php esc_html_e( "No", 'disciple_tools' ) ?>"
                                                        value="0"> <?php esc_html_e( "No", 'disciple_tools' ) ?>
                                             </label>
                                         </div>
                                         <div class="boolean_options">
-                                            <label style="cursor: pointer">
+                                            <label class="cursor__pointer">
                                                 <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
                                                        data-label="<?php esc_html_e( "Yes", 'disciple_tools' ) ?>"
                                                        value="1"> <?php esc_html_e( "Yes", 'disciple_tools' ) ?>
@@ -613,7 +609,7 @@ dt_please_log_in();
                                         </div>
                                     <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "date" ) : ?>
                                         <strong><?php echo esc_html_x( "Range Start", 'The start date of a date range', 'disciple_tools' ) ?></strong>
-                                        <button class="clear-date-picker" style="color:firebrick"
+                                        <button class="clear-date-picker"
                                                 data-for="<?php echo esc_html( $field ) ?>_start">
                                             <?php echo esc_html_x( "Clear", 'Clear/empty input', 'disciple_tools' ) ?></button>
                                         <input id="<?php echo esc_html( $field ) ?>_start"
@@ -624,7 +620,6 @@ dt_please_log_in();
                                         <br>
                                         <strong><?php echo esc_html_x( "Range End", 'The end date of a date range', 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker"
-                                                style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_end">
                                             <?php echo esc_html_x( "Clear", 'Clear/empty input', 'disciple_tools' ) ?></button>
                                         <input id="<?php echo esc_html( $field ) ?>_end"
@@ -650,7 +645,7 @@ dt_please_log_in();
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">
-                <button style="display: inline-block" class="button loader confirm-filter-records" type="button" id="confirm-filter-records" data-close >
+                <button class="button loader confirm-filter-records" type="button" id="confirm-filter-records" data-close >
                     <?php esc_html_e( 'Filter Records', 'disciple_tools' )?>
                 </button>
                 <button class="button loader confirm-filter-records" type="button" id="save-filter-edits" data-close style="display: none">

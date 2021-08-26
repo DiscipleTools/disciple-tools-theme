@@ -75,6 +75,18 @@ object {
     width: 100%;
     height: 100%;
 }
+
+.capitalize {
+    text-transform:capitalize;
+}
+
+.cursor__pointer {
+    cursor: pointer;
+}
+
+.no_bottom_margin {
+    margin-bottom: 0 !important;
+}
 /*********************
 LINK STYLES
 *********************/
@@ -390,10 +402,18 @@ nav.second-bar {
     align-items: center;
 }
 
+.hideable-search {
+    display: none;
+    margin-top:0.33334rem;
+}
 .search-wrapper {
     display: inline-flex;
     max-height: 2em;
     transform: translateY(1px);
+}
+
+#search-mobile.button {
+    margin-bottom: 0;
 }
 
 .text-input-wrapper {
@@ -501,7 +521,7 @@ html[dir='rtl'] nav.second-bar .advanced_search {
 }
 
 div.sticky-container {
-    z-index: 1;
+    z-index: 9;
 }
 
 .title-bar {
@@ -730,6 +750,9 @@ button.loader {
     }
 }
 
+.loading-spinner {
+    display: inline-block;
+}
 .loading-spinner.active {
     border-radius: 50%;
     width: 1.6rem;
