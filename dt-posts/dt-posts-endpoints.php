@@ -653,7 +653,14 @@ class Disciple_Tools_Posts_Endpoints {
         $query     = urldecode( $request->get_param( 'query' ) );
         $post_type = $request->get_param( 'post_type' );
         $offset    = intval( $request->get_param( 'offset' ) );
+        $post      = ( strtolower( $request->get_param( 'post' ) ) === 'true' );
+        $comment   = ( strtolower( $request->get_param( 'comment' ) ) === 'true' );
+        $meta      = ( strtolower( $request->get_param( 'meta' ) ) === 'true' );
 
-        return DT_Posts::advanced_search( $query, $post_type, $offset );
+        return DT_Posts::advanced_search( $query, $post_type, $offset, [
+            'post'    => $post,
+            'comment' => $comment,
+            'meta'    => $meta
+        ] );
     }
 }

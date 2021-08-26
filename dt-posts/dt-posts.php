@@ -1626,11 +1626,11 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
 
-    public static function advanced_search( string $query, string $post_type, int $offset ): array {
-        return self::advanced_search_query_exec( $query, $post_type, $offset );
+    public static function advanced_search( string $query, string $post_type, int $offset, array $filters = [] ): array {
+        return self::advanced_search_query_exec( $query, $post_type, $offset, $filters );
     }
 
-    private static function advanced_search_query_exec( $query, $post_type, $offset ): array {
+    private static function advanced_search_query_exec( $query, $post_type, $offset, $filters ): array {
 
         $query_results = array();
         $total_hits    = 0;
@@ -1644,7 +1644,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $type_results = self::advanced_search_by_post( $post_type, [
                             'text'             => $query,
                             'offset'           => $offset
-                        ]
+                        ],
+                        $filters
                     );
                     if ( ! empty( $type_results ) && ( intval( $type_results['total'] ) > 0 ) ) {
                         array_push( $query_results, $type_results );
@@ -1662,7 +1663,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
     }
 
-    private static function advanced_search_by_post( string $post_type, array $query ) {
+    private static function advanced_search_by_post( string $post_type, array $query, array $filters ) {
         if ( ! self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, "You do not have access to these", [ 'status' => 403 ] );
         }
@@ -1739,11 +1740,33 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //remove duplicated non-hits
         foreach ( $posts as $post ) {
+            $add_post = false;
             if ( isset( $post->post_hit ) && isset( $post->comment_hit ) && isset( $post->meta_hit ) ) {
                 if ( ! ( ( $post->post_hit === 'N' ) && ( $post->comment_hit === 'N' ) && ( $post->meta_hit === 'N' ) ) ) {
-                    $post_hits[] = $post;
+                    $add_post = true;
                 }
             } else {
+                $add_post = true;
+            }
+
+            // Apply search filters
+            if ( $add_post ) {
+                if ( isset( $post->post_hit ) && ( $post->post_hit === 'Y' ) &&
+                     isset( $filters['post'] ) && ! ( $filters['post'] ) ) {
+                    $add_post = false;
+                }
+                if ( isset( $post->comment_hit ) && ( $post->comment_hit === 'Y' ) &&
+                     isset( $filters['comment'] ) && ! ( $filters['comment'] ) ) {
+                    $add_post = false;
+                }
+                if ( isset( $post->meta_hit ) && ( $post->meta_hit === 'Y' ) &&
+                     isset( $filters['meta'] ) && ! ( $filters['meta'] ) ) {
+                    $add_post = false;
+                }
+            }
+
+            // Add post accordingly, based on flag!
+            if ( $add_post ) {
                 $post_hits[] = $post;
             }
         }

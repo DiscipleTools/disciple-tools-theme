@@ -12,7 +12,8 @@
                 </td>
                 <td>
                     <a class="advanced-search-modal-form-button button" id="advanced-search-modal-form-button">
-                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>">
+                        <img
+                            src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>">
                     </a>
                 </td>
             </tr>
@@ -27,16 +28,20 @@
                 <td colspan="2">
                     <div class="advanced-search-modal-results-post-types-view-at-top">
                         <a class="advanced-search-modal-results-post-types-view-at-top-collapsible-button button hollow"><?php esc_html_e( 'Search Settings', 'disciple_tools' ); ?>
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>">
+                            <img
+                                src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>">
                         </a>
                         <div class="advanced-search-modal-results-post-types-view-at-top-collapsible-content">
                             <?php build_post_types_option_list_html( "advanced-search-modal-post-types-at-top" ); ?>
+                            <hr>
+                            <?php build_filters_option_list_html( 'top' ); ?>
                         </div>
                     </div>
                 </td>
             </tr>
             <tr>
-                <td colspan="2"><?php esc_html_e( 'Record Hits:', 'disciple_tools' ); ?> <span class="advanced-search-modal-results-total"></span></td>
+                <td colspan="2"><?php esc_html_e( 'Record Hits:', 'disciple_tools' ); ?> <span
+                        class="advanced-search-modal-results-total"></span></td>
             </tr>
             <tr>
                 <td class="advanced-search-modal-results-div-col-results-list">
@@ -45,6 +50,8 @@
                 <td class="advanced-search-modal-results-div-col-post-type">
                     <div class="advanced-search-modal-results-post-types-view-at-side">
                         <?php build_post_types_option_list_html( "advanced-search-modal-post-types-at-side" ); ?>
+                        <hr>
+                        <?php build_filters_option_list_html( 'side' ); ?>
                     </div>
                 </td>
             </tr>
@@ -65,7 +72,7 @@
 
 function build_post_types_option_list_html( $group_name ) {
     echo '<input id="all" type="radio" class="advanced-search-modal-post-types" name="' . esc_html( $group_name ) . '" value="all" checked>';
-    echo '<label for="all">' . esc_html__( 'All', 'disciple_tools' ) .'</label><br>';
+    echo '<label for="all">' . esc_html__( 'All', 'disciple_tools' ) . '</label><br>';
 
     $search_post_types = DT_Posts::get_post_types();
     foreach ( $search_post_types as $search_post_type ) {
@@ -75,6 +82,28 @@ function build_post_types_option_list_html( $group_name ) {
             echo '<input id="' . esc_html( $search_post_type ) . '" type="radio" class="advanced-search-modal-post-types" name="' . esc_html( $group_name ) . '" value="' . esc_html( $search_post_type ) . '"><label for="' . esc_html( $search_post_type ) . '">' . esc_html( $name ) . '</label><br>';
         }
     }
+}
+
+function build_filters_option_list_html( $location ) {
+    ?>
+    <input type="checkbox" id="advanced-search-modal-filters-posts-<?php echo esc_attr( $location ); ?>"
+           class="advanced-search-modal-filters" checked>
+    <label
+        for="advanced-search-modal-filters-posts-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Posts', 'disciple_tools' ); ?></label>
+    <br>
+
+    <input type="checkbox" id="advanced-search-modal-filters-comments-<?php echo esc_attr( $location ); ?>"
+           class="advanced-search-modal-filters" checked>
+    <label
+        for="advanced-search-modal-filters-comments-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Comments', 'disciple_tools' ); ?></label>
+    <br>
+
+    <input type="checkbox" id="advanced-search-modal-filters-meta-<?php echo esc_attr( $location ); ?>"
+           class="advanced-search-modal-filters" checked>
+    <label
+        for="advanced-search-modal-filters-meta-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Metadata', 'disciple_tools' ); ?></label>
+    <br>
+    <?php
 }
 
 ?>
