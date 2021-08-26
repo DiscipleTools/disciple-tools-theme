@@ -935,22 +935,55 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     </select>
                     </td>
                 </tr>
-                <tr class="connection_field_reverse_row" style="display: none">
+
+
+                <tr class="same_post_type_row" style="display: none">
+                    <td>
+                        Bi-directional
+                    </td>
+                    <td>
+                         <input type="checkbox" id="multidirectional_checkbox" name="multidirectional" checked>
+                    </td>
+                </tr>
+                <tr class="same_post_type_other_field_name" style="display: none">
                     <td style="vertical-align: middle">
-                        <?php esc_html_e( "Other direction field Name.", 'disciple_tools' ) ?>
+                        Reverse connection field name
                         <br>
                         See connection instructions bellow.
                     </td>
                     <td>
                         <input name="reverse_connection_name" id="connection_field_reverse_name">
                     </td>
+                </tr>
+                <tr class="same_post_type_other_field_name" style="display: none">
                     <td>
-                        <label>
-                            Only create connection in one direction
-                            <input type="checkbox" name="disable_reverse_connection">
-                        </label>
+                        Hide reverse connection field on <span class="connected_post_type"></span>
+                    </td>
+                    <td>
+                        <input type="checkbox" name="disable_reverse_connection">
                     </td>
                 </tr>
+
+
+                <tr class="connection_field_reverse_row" style="display: none">
+                    <td style="vertical-align: middle">
+                        Field name when shown on: <span class="connected_post_type"></span>
+                        <br>
+                        See connection instructions bellow.
+                    </td>
+                    <td>
+                        <input name="other_field_name" id="other_field_name">
+                    </td>
+                </tr>
+                <tr class="connection_field_reverse_row" style="display: none">
+                    <td>
+                        Hide field on <span class="connected_post_type"></span>
+                    </td>
+                    <td>
+                        <input type="checkbox" name="disable_other_post_type_field">
+                    </td>
+                </tr>
+
                 <tr id="private_field_row">
                     <td style="vertical-align: middle">
                         <label><?php esc_html_e( "Private Field", 'disciple_tools' ) ?></label>
@@ -985,7 +1018,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             </table>
         </form>
         <br>
-        <?php esc_html_e( "Field types:", 'disciple_tools' ) ?>
+        <strong><?php esc_html_e( "Field types:", 'disciple_tools' ) ?></strong>
         <ul style="list-style: disc; padding-left:40px">
             <li><?php esc_html_e( "Dropdown: Select an option for a dropdown list", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Multi Select: A field like the milestones to track items like course progress", 'disciple_tools' ) ?></li>
@@ -995,16 +1028,28 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( "Date: A field that uses a date picker to choose dates (like baptism date)", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Connection: An autocomplete picker to connect to another record.", 'disciple_tools' ) ?></li>
         </ul>
-        <?php esc_html_e( "Private Field:", 'disciple_tools' ) ?>
+        <strong><?php esc_html_e( "Private Field:", 'disciple_tools' ) ?></strong>
         <ul style="list-style: disc; padding-left:40px">
             <li><?php esc_html_e( "The content of private fields can only be seen by the user who creates it and will not be shared with other DT users.", 'disciple_tools' ) ?></li>
         </ul>
-        <?php esc_html_e( "Connection Field:", 'disciple_tools' ) ?>
+        <strong><?php esc_html_e( "Connection Field:", 'disciple_tools' ) ?></strong>
         <ul style="list-style: disc; padding-left:40px">
             <li>Connects one post type to another post type (or to the some post type). Ex: contacts to groups, contacts to contacts, etc</li>
-            <li>By default a connection will be bidirectional, meaning that a field will be displayed on the both the current and the "connected to" post types.</li>
-            <li>If you want the field to only show up on the current (<?php echo esc_html( $wp_post_types[$post_type]->label ); ?>) post type, the check the "Only create connection in one direction" checkbox</li>
-            <li>Other direction field name: this is the name of the field displayed on the "connected to" post type. Example: We create a connection between contacts and groups. On contacts the field name is "Groups", on Groups we want to the field name to be "Members"</li>
+            <li><strong>Connecting to the same post type</strong>
+                <ul style="list-style: disc; padding-left:40px">
+                    <li>By default a connection will be bi-directional, meaning that one field is created and a connection on one record will show on the other.</li>
+                    <li>Make the connection one-directional by unchecking the bi-directional checkbox will allow connections like the coaching field or the sub-assigned field.
+                        This splits the connection into 2 fields (coaching and coached by). </li>
+                    <li>You can hide the second field to not have it show up by checking the "Hide reverse connection" box.</li>
+                </ul>
+            </li>
+            <li><strong>Connection to another post type</strong>
+                <ul style="list-style: disc; padding-left:40px">
+                    <li>This creates 2 fields. One on the current (<?php echo esc_html( $wp_post_types[$post_type]->label ); ?>) post type, the other of the "connected to" post type</li>
+                    <li>Choose the field name that shows up on the connected post type by filling the "Field name when shown on: X" box</li>
+                    <li>If you want the field to only show up on the current (<?php echo esc_html( $wp_post_types[$post_type]->label ); ?>) post type, the check the "Hide field" checkbox</li>
+                </ul>
+            </li>
         </ul>
         <?php
     }
@@ -1096,32 +1141,60 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 if ( p2p_type( $p2p_key ) !== false ){
                     $p2p_key = dt_create_field_key( $p2p_key, true );
                 }
-                $direction = $post_type === $post_submission["connection_target"] ? "any" : "from";
-                $new_field = [
-                    'name'        => $post_submission["new_field_name"],
-                    'type'        => 'connection',
-                    "post_type" => $post_submission["connection_target"],
-                    "p2p_direction" => $direction,
-                    "p2p_key" => $p2p_key,
-                    'tile'     => $field_tile,
-                    'customizable' => 'all',
-                ];
-                //create the reverse fields on the connection post type
-                if ( !isset( $post_submission["disable_reverse_connection"] ) && $post_submission["connection_target"] !== $post_type ){
-                    $reverse_name = isset( $post_submission["reverse_connection_name"] ) ? $post_submission["reverse_connection_name"] : $post_submission["new_field_name"];
+
+                // connection field to the same post type
+                if ( $post_type === $post_submission["connection_target"] ){
+                    //default direction to "any". If not multidirectional, then from
+                    $direction = isset( $post_submission["multidirectional"] ) ? "any" : "from";
+                    $custom_field_options[$post_type][$field_key] = [
+                        'name'        => $post_submission["new_field_name"],
+                        'type'        => 'connection',
+                        "post_type" => $post_submission["connection_target"],
+                        "p2p_direction" => $direction,
+                        "p2p_key" => $p2p_key,
+                        'tile'     => $field_tile,
+                        'customizable' => 'all',
+                    ];
+                    //if not multidirectional, create the reverse direction field
+                    if ( !isset( $post_submission["multidirectional"] ) ){
+                        $reverse_name = $post_submission["reverse_connection_name"] ?? $post_submission["new_field_name"];
+                        $custom_field_options[$post_type][$field_key . "_reverse"]  = [
+                            'name'        => $reverse_name,
+                            'type'        => 'connection',
+                            "post_type" => $post_type,
+                            "p2p_direction" => "to",
+                            "p2p_key" => $p2p_key,
+                            'tile'     => "other",
+                            'customizable' => 'all',
+                            'hidden' => isset( $post_submission["disable_reverse_connection"] )
+                        ];
+                    }
+                } else {
+                    $direction = "from";
+                    $custom_field_options[$post_type][$field_key] = [
+                        'name'        => $post_submission["new_field_name"],
+                        'type'        => 'connection',
+                        "post_type" => $post_submission["connection_target"],
+                        "p2p_direction" => $direction,
+                        "p2p_key" => $p2p_key,
+                        'tile'     => $field_tile,
+                        'customizable' => 'all',
+                    ];
+                    //create the reverse fields on the connection post type
+                    $reverse_name = $post_submission["other_field_name"] ?? $post_submission["new_field_name"];
                     $custom_field_options[$post_submission["connection_target"]][$field_key]  = [
                         'name'        => $reverse_name,
                         'type'        => 'connection',
                         "post_type" => $post_type,
-                        "p2p_direction" => $direction === "any" ? "any" : "to",
+                        "p2p_direction" => "to",
                         "p2p_key" => $p2p_key,
                         'tile'     => "other",
                         'customizable' => 'all',
+                        'hidden' => isset( $post_submission["disable_other_post_type_field"] )
                     ];
                 }
             }
 
-            $custom_field_options[$post_type][$field_key] = $new_field;
             update_option( "dt_field_customizations", $custom_field_options );
             wp_cache_delete( $post_type . "_field_settings" );
             self::admin_notice( __( "Field added successfully", 'disciple_tools' ), "success" );

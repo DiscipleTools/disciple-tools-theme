@@ -55,6 +55,27 @@ function dt_dra_disable_via_filters() {
     remove_action( 'template_redirect', 'rest_output_link_header', 11 );
 }
 
+
+/*
+ * Disable the built in Wordpress API because it opens all users and contacts to anyone who is logged in.
+ */
+add_filter( 'rest_endpoints', function( $endpoints ){
+    $allowed_wp_v2_paths = apply_filters( 'allowed_wp_v2_paths', [] ); // enable wp/v2 endpoints in certain circumstances
+    foreach ( $endpoints as $path => $endpoint ){
+        if ( strpos( $path, 'wp/v2' ) !== false ){
+            $allowed = false;
+            foreach ( $allowed_wp_v2_paths as $allowed_path ){
+                if ( strpos( $path, $allowed_path ) === 0 ){
+                    $allowed = true;
+                }
+            }
+            if ( !$allowed ){
+                unset( $endpoints[$path] );
+            }
+        }
+    }
+    return $endpoints;
+});
 /**
  * Returning an authentication error if a user who is not logged in tries to query tries to query a REST API endpoint that is not public
  *
@@ -63,12 +84,6 @@ function dt_dra_disable_via_filters() {
  * @return bool|WP_Error
  */
 function dt_dra_only_allow_logged_in_rest_access( $access ) {
-    /*
-     * Disable the built in Wordpress API because it opens all users and contacts to anyone who is logged in.
-     */
-    if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/wp-json/wp/' ) !== false ) {
-        return new WP_Error( 'wp_api_disabled', 'The Wordpress built in API is disabled.', [ 'status' => rest_authorization_required_code() ] );
-    }
 
     $authorized = false;
     /**

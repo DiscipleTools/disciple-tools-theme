@@ -14,7 +14,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-users/mapbox-coverage-map.js'; // should be full file name plus extension
     public $permissions = [ 'list_users', 'manage_dt' ];
-    public $namespace = 'user-management/v1/';
+    public $namespace = 'user-management/v1';
 
     public function __construct() {
         if ( ! DT_Mapbox_API::get_key() ) {

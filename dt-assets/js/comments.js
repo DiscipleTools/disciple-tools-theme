@@ -165,7 +165,7 @@ jQuery(document).ready(function($) {
               </div>
 
         <% } else { %>
-            <p class="activity-bubble" title="<%- date %>">  <%- a.text %> <% print(a.action) %> </p>
+            <p class="activity-bubble" title="<%- date %>" dir="auto"><%= a.text %> <% print(a.action) /* not escaped on purpose */ %></p>
         <%  }
     }); %>
     <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate'
@@ -355,6 +355,9 @@ jQuery(document).ready(function($) {
       if (baptismDateRegex.test(d.object_note)) {
         d.object_note = d.object_note.replace(baptismDateRegex, baptismTimestamptoDate);
       }
+      if ( d.object_note ){
+        d.object_note = formatComment(d.object_note)
+      }
       let first = window.lodash.first(array)
       let name = d.comment_author || d.name
       let gravatar = d.gravatar || ""
@@ -441,7 +444,7 @@ jQuery(document).ready(function($) {
     Object.entries(reactions).forEach(([alias, reaction]) => {
       const reactionValue = `reaction_${alias}`
       emojis += `
-      <button class="add-reaction" type="submit" name="reaction" value="${reactionValue}">
+      <button class="add-reaction" type="submit" name="reaction" title="${window.lodash.escape(reaction.name)}" value="${reactionValue}">
         <img class="emoji" alt="${window.lodash.escape(reaction.name)}" src="${window.lodash.escape(reaction.path)}">
       </button>
       `
@@ -476,6 +479,10 @@ jQuery(document).ready(function($) {
     get_all();
   }
 
+
+  /*
+   * Allow links and @ mentions to be displayed in comments section
+   */
   let formatComment = (comment=>{
     if(comment){
       let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g
@@ -503,7 +510,7 @@ jQuery(document).ready(function($) {
         }
         return match
       })
-      let linkRegex = /\[(.*?)\]\((.+?)\)/g
+      let linkRegex = /\[(.*?)\]\((.+?)\)/g; //format [text](link)
       comment = comment.replace(linkRegex, (match, text, url)=>{
         if (text.includes("http") && !url.includes("http")){
           [url, text] = [text, url]

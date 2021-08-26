@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
 
 /**
  * Class Disciple_Tools_Workflows
@@ -23,13 +25,14 @@ class Disciple_Tools_Workflows {
      *
      * Ensures only one instance of Disciple_Tools_Workflows is loaded or can be loaded.
      *
-     * @since  1.0.0
      * @return Disciple_Tools_Workflows instance
+     * @since  1.0.0
      */
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
+
         return self::$_instance;
     }
 
@@ -43,5 +46,9 @@ class Disciple_Tools_Workflows {
         include( 'tasks.php' );
         include( 'error-log-dispatch-email.php' );
         include( 'error-log-retention-enforcer.php' );
+        include( 'workflows-execution-handler.php' );
+        include( 'workflows-triggers.php' );
+        include( 'workflows-defaults.php' );
+        new Disciple_Tools_Workflows_Defaults();
     }
 }

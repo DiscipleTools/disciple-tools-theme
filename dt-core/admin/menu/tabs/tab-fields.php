@@ -68,12 +68,15 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
 
     public function post_type_select( $type ){
         $this->box( 'top', 'Select Post type' );
+        global $wp_post_types;
+        $post_types = DT_Posts::get_post_types();
         ?>
         <form method="post" action="">
             <?php wp_nonce_field( 'post_type_select', 'post_type_select_nonce', false, true ) ?>
             <select name="post_type">
-                <option value="contacts" <?php echo $type === "contacts" ? "selected" : "" ?> >Contacts</option>
-                <option value="groups" <?php echo $type === "groups" ? "selected" : "" ?> >Groups</option>
+            <?php foreach ( $post_types as $post_type ) : ?>
+                <option value="<?php echo esc_html( $post_type ); ?>" <?php echo $post_type === "contacts" ? "selected" : "" ?> ><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></option>
+            <?php endforeach; ?>
             </select>
             <button class="button" type="submit">Select</button>
         </form>
@@ -92,7 +95,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
         $fields = $post_settings["fields"];
 
 
-        $types = [ "text", "textarea", "date", 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'post_user_meta', 'number', 'communication_channel' ];
+        $types = [ "text", "textarea", "date", 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'number', 'communication_channel', 'tags', 'user_select', 'task', 'location', 'location_meta' ];
         foreach ( $types as $type ){
             ?>
             <h3>Field type: <?php echo esc_html( $type ) ?></h3>

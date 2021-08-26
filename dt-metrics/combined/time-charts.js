@@ -524,7 +524,7 @@ function isInFuture(monthNumber) {
 }
 
 function formatSimpleMonthData(monthlyData) {
-    const monthLabels = window.wpApiShare.translations.month_labels
+    const monthLabels = window.SHAREDFUNCTIONS.get_months_labels()
 
     let cumulativeTotal = window.dtMetricsProject.cumulative_offset
     const formattedMonthlyData = monthLabels.map((monthLabel, i) => {
@@ -550,7 +550,7 @@ function formatSimpleMonthData(monthlyData) {
 }
 
 function formatCompoundMonthData(monthlyData) {
-    const monthLabels = window.wpApiShare.translations.month_labels
+    const monthLabels = window.SHAREDFUNCTIONS.get_months_labels()
     const keys = getDataKeys(monthlyData)
 
     const cumulative_offsets = window.dtMetricsProject.cumulative_offset

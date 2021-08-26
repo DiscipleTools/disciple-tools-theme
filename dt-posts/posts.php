@@ -171,8 +171,8 @@ class Disciple_Tools_Posts
     }
 
 
-    public static function get_label_for_post_type( $post_type, $singular = false ){
-        $post_settings = DT_Posts::get_post_settings( $post_type );
+    public static function get_label_for_post_type( $post_type, $singular = false, $return_cache = true ){
+        $post_settings = DT_Posts::get_post_settings( $post_type, $return_cache );
         if ( $singular ){
             if ( isset( $post_settings["label_singular"] ) ){
                 return $post_settings["label_singular"];
@@ -214,30 +214,63 @@ class Disciple_Tools_Posts
         return $shares;
     }
 
-    public static function format_connection_message( $p2p_id, $activity, $action = 'connected to' ){
+    public static function format_connection_message( $p2p_id, $activity, $action = 'connected to', $fields = [] ){
         // Get p2p record
         $p2p_record = p2p_get_connection( (int) $p2p_id ); // returns object
+
+        $from_title = "";
+        $from_link = "";
+        $to_title = "";
+        $to_link = "";
+
+        //don't create activity on connection fields that are hidden
+        foreach ( $fields as $field ){
+            if ( isset( $field["p2p_key"] ) && $field["p2p_key"] === $activity->meta_key ){
+                if ( $activity->field_type === "connection to" && $field["p2p_direction"] === "to" || $activity->field_type === "connection to" && $field["p2p_direction"] !== "to" ){
+                    if ( isset( $field["hidden"] ) && !empty( $field["hidden"] ) ){
+                        return "";
+                    }
+                }
+            }
+        }
 
         if ( !$p2p_record ){
             if ( $activity->field_type === "connection from" ){
                 $from = get_post( $activity->object_id );
                 $to = get_post( $activity->meta_value );
-                $from_title = wp_specialchars_decode( isset( $from->post_title ) ? $from->post_title : "" );
-                $to_title = wp_specialchars_decode( isset( $to->post_title ) ? $to->post_title : "" ) ?? '#' . $activity->meta_value;
+                $to_title = '#' . $activity->meta_value;
             } elseif ( $activity->field_type === "connection to" ){
                 $to = get_post( $activity->object_id );
                 $from = get_post( $activity->meta_value );
-                $to_title = wp_specialchars_decode( isset( $to->post_title ) ? $to->post_title : "" );
-                $from_title = wp_specialchars_decode( isset( $from->post_title ) ? $from->post_title : "" ) ?? '#' . $activity->meta_value;
+                $from_title = '#' . $activity->meta_value;
             } else {
                 return "CONNECTION DESTROYED";
+            }
+            if ( isset( $from->post_title ) ){
+                $from_title = $from->post_title;
+                $from_link = get_permalink( $from->ID );
+            }
+            if ( isset( $to->post_title ) ){
+                $to_title = $to->post_title;
+                $to_link = get_permalink( $to->ID );
             }
         } else {
             $p2p_from = get_post( $p2p_record->p2p_from, ARRAY_A );
             $p2p_to = get_post( $p2p_record->p2p_to, ARRAY_A );
-            $from_title = wp_specialchars_decode( $p2p_from["post_title"] );
-            $to_title = wp_specialchars_decode( $p2p_to["post_title"] );
+            $to_title = $p2p_to["post_title"];
+            $to_link = get_permalink( $p2p_record->p2p_to );
+            $from_title = $p2p_from["post_title"];
+            $from_link = get_permalink( $p2p_record->p2p_from );
         }
+
+        //create link format to be clicked in activity
+        if ( !empty( $to_link ) ){
+            $to_title = "[" . wp_specialchars_decode( $to_title ) . "](" . $to_link .")";
+        }
+        if ( !empty( $from_link ) ){
+            $from_title = "[" . wp_specialchars_decode( $from_title ) . "](" . $from_link .")";
+        }
+
         $object_note_from = '';
         $object_note_to = '';
 
@@ -506,7 +539,7 @@ class Disciple_Tools_Posts
             $user = get_user_by( "ID", $activity->user_id );
             $message = sprintf( _x( "%s accepted assignment", 'message', 'disciple_tools' ), $user->display_name ?? _x( "A user", 'message', 'disciple_tools' ) );
         } elseif ( $activity->object_subtype === "p2p" ){
-            $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action );
+            $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action, $post_type_settings["fields"] );
         } elseif ( $activity->object_subtype === "share" ){
             if ($activity->action === "share"){
                 $message = sprintf( _x( "Shared with %s", 'message', 'disciple_tools' ), dt_get_user_display_name( $activity->meta_value ) );
@@ -1223,7 +1256,7 @@ class Disciple_Tools_Posts
         }
         return [
             "posts" => $posts,
-            "total" => $total_rows,
+            "total" => (int) $total_rows,
         ];
     }
 

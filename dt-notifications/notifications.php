@@ -41,6 +41,28 @@ function dt_notification_delete_by_post( $args = [] ) {
     Disciple_Tools_Notifications::delete_by_post( $args );
 }
 
+function dt_switch_locale_for_notifications( $user_id, $locale = '' ) {
+    // load the local for the destination usr so emails are sent our correctly.
+
+    if ( !$user_id && $locale !== '' ) {
+        $destination_user_locale = $locale;
+    } else {
+        $destination_user = get_user_by( 'id', $user_id );
+
+        $destination_user_locale = !empty( $destination_user->locale ) ? $destination_user->locale : Disciple_Tools::instance()->site_locale;
+    }
+
+    add_filter( "pre_determine_locale", function ( $locale ) use ( $destination_user_locale ) {
+        if ( $destination_user_locale ){
+            $locale = $destination_user_locale;
+        }
+        return $locale;
+    }, 10, 1 );
+    //make sure correct translation is loaded for destination user.
+    unload_textdomain( "disciple_tools" );
+    load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
+}
+
 /**
  * Class Disciple_Tools_Notifications
  */
@@ -55,6 +77,7 @@ class Disciple_Tools_Notifications
      * @since     0.1.0
      */
     private static $_instance = null;
+    const DEFAULT_CHANNELS = [ 'web', 'email' ];
 
     /**
      * Main Disciple_Tools_Notifications Instance
@@ -113,14 +136,61 @@ class Disciple_Tools_Notifications
                 'notification_note'   => "", // notification note is generated (and translated)
                 'date_notified'       => $args['date_notified'],
                 'is_new'              => $args['is_new'],
+                'channels'            => isset( $args['channels'] ) ? $args['channels'] : null,
                 'field_key'           => $args['field_key'],
                 'field_value'         => $args['field_value'],
             ],
-            [ '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s' ]
+            [ '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s' ]
         );
 
         /** Fire action after insert */
         do_action( 'dt_insert_notification', $args );
+    }
+
+    /**
+     * Get single notification
+     *
+     * @since 1.5.0
+     *
+     * @param array $args
+     *
+     * @return stdClass|null
+     */
+    public static function get_notification( $args ) {
+        global $wpdb;
+
+        $args = wp_parse_args(
+            $args,
+            [
+                'user_id'           => '',
+                'post_id'           => '',
+                'secondary_item_id' => '',
+                'notification_name' => '',
+                'date_notified'     => '',
+            ]
+        );
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT * FROM $wpdb->dt_notifications
+                WHERE user_id = %s
+                AND post_id = %s
+                AND secondary_item_id = %s
+                AND notification_name = %s
+                AND date_notified = %s
+            ", [
+                    $args['user_id'],
+                    $args['post_id'],
+                    $args['secondary_item_id'],
+                    $args['notification_name'],
+                    $args['date_notified'],
+                ]
+            )
+        );
+
+        do_action( 'dt_get_notification', $args, $results );
+
+        return empty( $results ) ? null : $results[0];
     }
 
     /**
@@ -254,7 +324,7 @@ class Disciple_Tools_Notifications
     }
 
     /**
-     * Mark all as viewed by user_id
+     * Mark all web notifications as viewed by user_id
      *
      * @param $user_id int
      *
@@ -263,7 +333,21 @@ class Disciple_Tools_Notifications
     public static function mark_all_viewed( int $user_id ) {
         global $wpdb;
 
-        $wpdb->update(
+        $wpdb->query(
+            $wpdb->prepare("
+                UPDATE
+                    $wpdb->dt_notifications
+                SET
+                    is_new = %d
+                WHERE user_id = %d
+                    AND (
+                        channels LIKE %s
+                        OR channels IS NULL
+                    )
+            ", 0, $user_id, '%web%')
+        );
+
+        /* $wpdb->update(
             $wpdb->dt_notifications,
             [
                 'is_new' => 0,
@@ -271,7 +355,7 @@ class Disciple_Tools_Notifications
             [
                 'user_id' => $user_id,
             ]
-        );
+        ); */
 
         return $wpdb->last_error ? [
         'status' => false,
@@ -283,7 +367,7 @@ class Disciple_Tools_Notifications
     }
 
     /**
-     * Get notifications
+     * Get all web notifications
      *
      * @param bool $all
      * @param int  $page
@@ -310,10 +394,15 @@ class Disciple_Tools_Notifications
                 ON n.post_id = p.ID
              WHERE user_id = %d
              AND is_new LIKE %s
+             AND (
+                 channels LIKE %s
+                 OR channels IS NULL
+                 )
              ORDER BY date_notified
              DESC LIMIT %d OFFSET %d",
             $user_id,
             $all ? '%' : '1',
+            '%web%',
             $limit,
             $page
         ), ARRAY_A );
@@ -435,7 +524,7 @@ class Disciple_Tools_Notifications
     }
 
     /**
-     * Get user notifications
+     * Get user new web notifications count
      *
      * @return int
      */
@@ -451,9 +540,12 @@ class Disciple_Tools_Notifications
                 `$wpdb->dt_notifications`
             WHERE
                 user_id = %d
-                AND is_new = '1'",
-            $user_id
-        ) );
+                AND is_new = '1'
+                AND (
+                    channels LIKE %s
+                    OR channels IS NULL
+                )", $user_id, '%web%' )
+        );
 
         if ( !$result ) {
             $result = 0;
@@ -464,16 +556,50 @@ class Disciple_Tools_Notifications
 
 
     public static function send_notification_on_channels( $user_id, $notification, $notification_type, $already_sent = [] ){
+        $user = get_userdata( $user_id );
+        if ( ! $user ) {
+            return;
+        }
+        dt_switch_locale_for_notifications( $notification["user_id"] );
+
         $message = self::get_notification_message_html( $notification );
         $user_meta = get_user_meta( $user_id );
-        if ( !in_array( 'web', $already_sent ) && dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $user_id ) ) {
+        $email_preference = get_user_meta( $user_id, 'email_preference', true );
+
+        /**
+         * Filter the available channels of communication, defaults to [ 'web', 'email' ]
+         *
+         * @since 1.7.0
+         */
+        $available_channels = apply_filters( 'dt_communication_channels', self::DEFAULT_CHANNELS );
+
+        $open_channels = array_filter( $available_channels, function ( $channel ) use ( $notification_type, $user_meta, $user_id ) {
+            return dt_user_notification_is_enabled( $notification_type, $channel, $user_meta, $user_id );
+        });
+
+        if ( empty( $open_channels ) ) {
+            return;
+        }
+
+        // insert notification with all selected channels set.
+        $is_only_email_channel = ( count( $open_channels ) === 1 && in_array( 'email', $open_channels ) );
+        $notification_insert_needed = ! ( $is_only_email_channel && $email_preference === 'real-time' );
+        if ( $notification_insert_needed ) {
+            $notification['channels'] = implode( ', ', $open_channels );
             dt_notification_insert( $notification );
         }
-        if ( !in_array( 'email', $already_sent ) && dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $user_id ) ) {
-            $user = get_userdata( $user_id );
-            if ( $user ){
-                $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
-                dt_send_email_about_post( $user->user_email, $notification["post_id"], $message_plain_text );
+
+        if ( in_array( 'email', $open_channels, true ) ) {
+            // if the user is getting batch emails, schedule an email even if the channel exists in $already_sent
+            if ( $email_preference && $email_preference !== '' && $email_preference !== 'real-time' ) {
+                $notifications_queue = new Disciple_Tools_Notifications_Queue();
+                $db_notification = self::get_notification( $notification );
+                if ( $db_notification ) {
+                    $notifications_queue->schedule_email( $db_notification, $email_preference );
+                }
+            } elseif ( !in_array( 'email', $already_sent ) ) {
+                    $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
+                    dt_send_email_about_post( $user->user_email, $notification["post_id"], $message_plain_text );
             }
         }
     }
@@ -629,6 +755,8 @@ class Disciple_Tools_Notifications
                 if ( $follower != $source_user_id ){
                     $user_meta = get_user_meta( $follower );
                     if ( $user_meta ) {
+                        dt_switch_locale_for_notifications( $follower );
+
                         $notification = [
                             'user_id'             => $follower,
                             'source_user_id'      => $source_user_id,
@@ -695,7 +823,10 @@ class Disciple_Tools_Notifications
                             }
                             do_action( 'send_notification_on_channels', $follower, $notification, $notification_type, [ 'email' ] );
                         }
-                        if ( $email ) {
+
+                        $email_preference = get_user_meta( $follower, 'email_preference', true );
+                        $should_send_email = !$email_preference || $email_preference === '' || $email_preference === 'real-time';
+                        if ( $email && $should_send_email ) {
                             $user = get_userdata( $follower );
                             $message_plain_text = wp_specialchars_decode( $email, ENT_QUOTES );
                             dt_send_email_about_post(
@@ -763,26 +894,13 @@ class Disciple_Tools_Notifications
      * @param bool $html
      * @return string $notification_note the return value is expected to contain HTML.
      */
-    public static function get_notification_message_html( $notification, $html = true ){
-        // load the local for the destination usr so emails are sent our correctly.
-        $destination_user = get_user_by( 'id', $notification["user_id"] );
-
-        $destination_user_locale = !empty( $destination_user->locale ) ? $destination_user->locale : Disciple_Tools::instance()->site_locale;
-
-        add_filter( "determine_locale", function ( $locale ) use ( $destination_user_locale ) {
-            if ( $destination_user_locale ){
-                $locale = $destination_user_locale;
-            }
-            return $locale;
-        }, 10, 1 );
-        //make sure correct translation is loaded for destination user.
-        unload_textdomain( "disciple_tools" );
-        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
+    public static function get_notification_message_html( $notification, $html = true, $condensed = false ){
 
         $object_id = $notification["post_id"];
         $post = get_post( $object_id );
         $post_title = isset( $post->post_title ) ? sanitize_text_field( $post->post_title ) : "";
         $notification_note = $notification["notification_note"]; // $notification_note is expected to contain HTML
+        $vertical_spacing = $condensed ? "\r\n" : "\r\n\r\n";
         if ( $html ){
             $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
         } else {
@@ -806,14 +924,14 @@ class Disciple_Tools_Notifications
             $source_user = get_userdata( $notification["source_user_id"] );
             $comment = get_comment( $notification["secondary_item_id"] );
             $comment_content = $comment ? self::format_comment( $comment->comment_content ) : "";
-            $comment_content = "\r\n\r\n " . $comment_content;
+            $comment_content = $vertical_spacing . ' ' . $comment_content;
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
             $notification_note = sprintf( esc_html_x( '%1$s mentioned you on %2$s saying: %3$s', 'User1 mentioned you on contact1 saying: test', 'disciple_tools' ), $display_name, $link, $comment_content );
         } elseif ( $notification["notification_name"] ==="comment" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $comment = get_comment( $notification["secondary_item_id"] );
             $comment_content = $comment ? self::format_comment( $comment->comment_content ) : "";
-            $comment_content = "\r\n\r\n " . $comment_content;
+            $comment_content = $vertical_spacing . ' '  . $comment_content;
             $display_name = $source_user ? $source_user->display_name : ( $comment->comment_author ?: __( "System", "disciple_tools" ) );
             $notification_note = sprintf( esc_html_x( '%1$s commented on %2$s saying: %3$s', 'User1 commented on contact1 saying: test', 'disciple_tools' ), $display_name, $link, $comment_content );
         } elseif ( $notification["notification_name"] === "subassigned" ){

@@ -192,7 +192,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
                                 <p>
                                 <?php
-                                if ( !empty( $dt_user_locale ) && $dt_user_locale !== 'en_US' ){
+                                if ( !empty( $dt_user_locale ) && $dt_user_locale !== 'en_US' && isset( $translations[$dt_user_locale] ) ){
                                     echo esc_html( $translations[$dt_user_locale]['native_name'] );
                                 } else {
                                     echo esc_html__( 'English', 'disciple_tools' );
@@ -439,6 +439,26 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         </button>
                         <span class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></span>
                         <hr/>
+
+                        <?php $email_preference = isset( $dt_user_meta['email_preference'] ) ? $dt_user_meta['email_preference'][0] : null ?>
+                        <p>
+                            <strong><?php echo esc_html_e( 'Email preferences', 'disciple_tools' ) ?></strong>
+                            <span id="email-preference-spinner" class="loading-spinner"></span>
+                        </p>
+                        <div>
+                            <label for="real-time-preference">
+                                <input id="real-time-preference" type="radio" name="email-preference" <?php echo !$email_preference || $email_preference === 'real-time' ? 'checked' : '' ?>>
+                                <?php echo esc_html_e( 'Real time', 'disciple_tools' ) ?>
+                            </label>
+                            <label for="hourly-preference">
+                                <input id="hourly-preference" type="radio" name="email-preference" <?php echo $email_preference && $email_preference === 'hourly' ? 'checked' : '' ?>>
+                                <?php echo esc_html_e( 'Hourly digest', 'disciple_tools' ) ?>
+                            </label>
+                            <label for="daily-preference">
+                                <input id="daily-preference" type="radio" name="email-preference" <?php echo $email_preference && $email_preference === 'daily' ? 'checked' : '' ?>>
+                                <?php echo esc_html_e( 'Daily digest', 'disciple_tools' ) ?>
+                            </label>
+                        </div>
 
                         <table class="form-table">
                             <thead>

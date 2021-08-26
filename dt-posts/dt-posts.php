@@ -32,9 +32,9 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return array|WP_Error
      */
-    public static function get_post_settings( string $post_type ){
+    public static function get_post_settings( string $post_type, $return_cache = true ){
         $cached = wp_cache_get( $post_type . "_post_type_settings" );
-        if ( $cached ){
+        if ( $return_cache && $cached ){
             return $cached;
         }
         $settings = [];
@@ -1108,6 +1108,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $activity_simple = [];
         foreach ( $activity as $a ) {
             $a->object_note = self::format_activity_message( $a, $post_settings );
+            $a->object_note = sanitize_text_field( $a->object_note );
             if ( isset( $a->user_id ) && $a->user_id > 0 ) {
                 $user = get_user_by( "id", $a->user_id );
                 if ( $user ){
@@ -1521,6 +1522,13 @@ class DT_Posts extends Disciple_Tools_Posts {
                         }
                     }
                 }
+            }
+        }
+
+        foreach ( $fields as $field_key => $field ){
+            //make sure each field has the name filed out
+            if ( !isset( $field["name"] ) || empty( $field["name"] ) ){
+                $fields[$field_key]["name"] = $field_key;
             }
         }
 

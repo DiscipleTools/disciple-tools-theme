@@ -149,7 +149,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.8.1';
+            $this->version = '1.11.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -336,6 +336,13 @@ else {
             require_once( get_template_directory() . '/dt-core/logging/usage.php' );
 
             /**
+             * dt-notifications queue
+             */
+            require_once( get_template_directory() . '/dt-notifications/notifications-queue.php' );
+            require_once( get_template_directory() . '/dt-notifications/notifications-scheduler.php' );
+            $this->notifications_scheduler = new Disciple_Tools_Notifications_Scheduler( Disciple_Tools_Notifications::instance() );
+
+            /**
              * Logging
              */
             require_once( get_template_directory() . '/dt-core/logging/class-activity-api.php' );
@@ -403,6 +410,7 @@ else {
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-error-logs.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-workflows.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-metrics.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-reports.php' );
@@ -473,6 +481,7 @@ else {
         $wpdb->dt_reportmeta = $wpdb->prefix . 'dt_reportmeta';
         $wpdb->dt_share = $wpdb->prefix . 'dt_share';
         $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
+        $wpdb->dt_notifications_queue = $wpdb->prefix . 'dt_notifications_queue';
         $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
         $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
         $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';

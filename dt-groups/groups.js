@@ -170,15 +170,30 @@ jQuery(document).ready(function($) {
   }
 
   let ffInputs = `
-    <input style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-left:33.3%;margin-top:25%;" type="text" name="four_fields_unbelievers" id="four_fields_unbelievers">
+    <label style="margin-left:33.3%;">
+        <span></span>${window.lodash.escape(window.detailsSettings.post_settings.fields.four_fields_unbelievers.name)}
+        <input class="four_fields" style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;" type="text" name="four_fields_unbelievers" id="four_fields_unbelievers">
+    </label>
     <div></div>
-    <input style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-right:33.3%;margin-top:25%;" type="text" name="four_fields_believers" id="four_fields_believers">
+    <label style="margin-right:33.3%;">
+        ${window.lodash.escape(window.detailsSettings.post_settings.fields.four_fields_believers.name)}
+        <input class="four_fields" style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;" type="text" name="four_fields_believers" id="four_fields_believers">
+    </label>
     <div></div>
-    <input style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-top:8%" type="text" name="four_fields_multiplying" id="four_fields_multiplying">
+    <label style="text-align: center">
+        ${window.lodash.escape(window.detailsSettings.post_settings.fields.four_fields_multiplying.name)}
+        <input class="four_fields" style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin:auto" type="text" name="four_fields_multiplying" id="four_fields_multiplying">
+    </label>
     <div></div>
-    <input style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-left:33.3%;margin-bottom:30%;" type="text" name="four_fields_accountable" id="four_fields_accountable">
+    <label style="margin-left:33.3%;">
+        <input class="four_fields" style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-bottom:0" type="text" name="four_fields_accountable" id="four_fields_accountable">
+        ${window.lodash.escape(window.detailsSettings.post_settings.fields.four_fields_accountable.name)}
+    </label>
     <div></div>
-    <input style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-right:33.3%;margin-bottom:30%;" type="text" name="four_fields_church_commitment" id="four_fields_church_commitment">
+    <label style="margin-right:33.3%;">
+        <input class="four_fields" style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-bottom:0" type="text" name="four_fields_church_commitment" id="four_fields_church_commitment">
+        ${window.lodash.escape(window.detailsSettings.post_settings.fields.four_fields_church_commitment.name)}
+    </label>
   `
   $('#four-fields-inputs').append(ffInputs)
   loadFourFields()
