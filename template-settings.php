@@ -207,7 +207,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 ?>
 
                                 <!-- gender -->
-                                <strong style="display: inline-block"><?php echo esc_html( $contact_fields[$field_key]["name"] ) ?></strong>
+                                <strong><?php echo esc_html( $contact_fields[$field_key]["name"] ) ?></strong>
                                 <p><?php echo esc_html( $user_field ); ?></p>
                             </div>
                         </div>
@@ -284,7 +284,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                 <!-- Multiplier Interests -->
                 <div class="small-12 cell bordered-box " id="multiplier" data-magellan-target="multiplier">
-                    <span class="section-header" style="display: inline-block"><?php esc_html_e( 'Multiplier Preferences', 'disciple_tools' )?></span>
+                    <span class="section-header"><?php esc_html_e( 'Multiplier Preferences', 'disciple_tools' )?></span>
                     <hr>
                     <div class="grid-x grid-margin-x grid-padding-x grid-padding-y ">
 
@@ -320,10 +320,10 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                             <!-- Languages -->
                             <div class="section-subheader cell" style="margin-top:2rem">
                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/languages.svg" ?>">
-                                <strong style="display: inline-block;"><?php esc_html_e( 'Languages you are comfortable speaking', 'disciple_tools' )?></strong>
-                                <span id="languages-spinner" style="display: inline-block" class="loading-spinner"></span>
+                                <?php esc_html_e( 'Languages you are comfortable speaking', 'disciple_tools' )?>
+                                <span id="languages-spinner" class="loading-spinner"></span>
                             </div>
-                            <div class="small button-group" style="display: inline-block">
+                            <div class="small button-group">
                                 <?php foreach ( $contact_fields["languages"]["default"] as $option_key => $option_value ): ?>
                                     <?php
                                     $user_languages = get_user_option( 'user_languages', get_current_user_id() );
@@ -365,7 +365,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                             <!-- Workload -->
                             <div class="section-subheader cell">
                                 <?php esc_html_e( "Availability to receive contacts from the Dispatcher", 'disciple_tools' ) ?>
-                                <span id="workload-spinner" style="display: inline-block" class="loading-spinner"></span>
+                                <span id="workload-spinner" class="loading-spinner"></span>
                             </div>
 
                             <?php $options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
@@ -408,7 +408,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                             </div>
                             <div style="display: flex;">
                                 <button id="add_unavailable_dates" class="button" disabled style="margin: 0;"><?php esc_html_e( "Add Unavailable dates", 'disciple_tools' ) ?></button>
-                                <div id="add_unavailable_dates_spinner" style="display: inline-block" class="loading-spinner"></div>
+                                <div id="add_unavailable_dates_spinner" class="loading-spinner"></div>
                             </div>
                         </div>
                         <div >
