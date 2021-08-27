@@ -49,7 +49,7 @@ class Disciple_Tools_Contacts_Transfer
         if ( $post_type === "contacts" && isset( $contact['reason_closed']['key'] ) && $contact['reason_closed']['key'] === 'transfer' ) {
             ?>
             <section class="cell small-12">
-                <div class="bordered-box detail-notification-box" style="background-color:#3F729B">
+                <div class="bordered-box detail-notification-box blue">
                     <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact has been transferred', 'disciple_tools' ) ?>.</h4>
                     <p><?php esc_html_e( 'This contact has been transferred to', 'disciple_tools' )?>: <?php echo isset( $contact['transfer_site_link_post_id'] ) ? esc_html( get_the_title( $contact['transfer_site_link_post_id'] ) ) : ''; ?></p>
                 </div>

@@ -38,7 +38,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 
             <?php do_action( 'dt_record_top_full_with', $post_type, $dt_post ) ?>
 
-            <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
+            <main id="main" class="large-7 medium-12 small-12 cell no_padding" role="main">
 
                 <div class="cell grid-y grid-margin-y">
 
@@ -47,7 +47,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                     <section class="cell small-12 update-needed-notification"
                              style="display: <?php echo esc_html( ( isset( $dt_post['requires_update'] ) && $dt_post['requires_update'] === true ) ? "block" : "none" ) ?> ">
                         <a href="#comment-activity-section" class="hide-for-large">
-                            <div class="bordered-box detail-notification-box" style="background-color:#F43636">
+                            <div class="bordered-box detail-notification-box red">
                                 <h4>
                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
                                     <?php echo esc_html( sprintf( __( 'This %s needs an update.', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
@@ -55,7 +55,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?></p>
                             </div>
                         </a>
-                        <div class="bordered-box detail-notification-box show-for-large" style="background-color:#F43636">
+                        <div class="bordered-box detail-notification-box red show-for-large">
                                 <h4>
                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
                                     <?php echo esc_html( sprintf( __( 'This %s needs an update.', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
@@ -206,12 +206,12 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             ?>
                             </div>
                         </div> <!-- end collapse details section -->
-                        <div id="show-details-edit-button" class="show-details-section" style="text-align: center; background-color:rgb(236, 245, 252);margin: 0.2rem -1rem -1rem -1rem; border-radius: 0 0 0.6667rem 0.6667rem;">
-                            <a class="button clear " style="margin:0;padding:0.2rem 0; width:100%">
+                        <div id="show-details-edit-button" class="show-details-section">
+                            <a class="button clear">
                                 <?php esc_html_e( 'Edit all details fields', 'disciple_tools' ); ?>
                             </a></div>
 
-                        <div id="details-section" class="display-fields" style="display: none; margin-top:1.33334rem">
+                        <div id="details-section" class="display-fields" style="display: none">
                             <div class="grid-x grid-margin-x">
                                 <?php
                                 //setup the order of the tile fields

@@ -632,7 +632,7 @@ class DT_Contacts_Base {
             <!-- archived -->
             <section class="cell small-12 archived-notification"
                      style="display: <?php echo esc_html( ( isset( $dt_post['overall_status']["key"] ) && $dt_post['overall_status']["key"] === "closed" ) ? "block" : "none" ) ?> ">
-                <div class="bordered-box detail-notification-box" style="background-color:#333">
+                <div class="bordered-box detail-notification-box black">
                     <h4>
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
                         <?php echo esc_html( sprintf( __( 'This %s is archived', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>

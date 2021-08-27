@@ -461,6 +461,7 @@ DT comments and activity
 }
 
 .display-fields {
+    margin-top:1.33334rem;
     ul {
         list-style-type: none;
         margin-left: 0;
@@ -496,6 +497,18 @@ DT comments and activity
         .detail-snippet {
             max-width: 100%;
         }
+    }
+}
+
+#show-details-edit-button {
+    text-align: center;
+    background-color:rgb(236, 245, 252);
+    margin: 0.2rem -1rem -1rem -1rem;
+    border-radius: 0 0 0.6667rem 0.6667rem;
+    a.button {
+        margin:0;
+        padding:0.2rem 0;
+        width:100%;
     }
 }
 
@@ -571,6 +584,15 @@ Groups
     border: none;
     color: white;
     text-align: center;
+    &.red {
+        background-color:#F43636;
+    }
+    &.blue {
+        background-color: #3F729B;
+    }
+    &.black {
+        background-color: #333;
+    }
     h4 {
         font-weight: bold;
     }

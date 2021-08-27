@@ -294,7 +294,7 @@ dt_please_log_in();
                             <div class="bulk_assigned_to details">
                                 <var id="bulk_assigned_to-result-container" class="result-container bulk_assigned_to-result-container"></var>
                                 <div id="bulk_assigned_to_t" name="form-bulk_assigned_to" class="scrollable-typeahead">
-                                    <div class="typeahead__container no_bottom_margin">
+                                    <div class="typeahead__container no_margin_bottom">
                                         <div class="typeahead__field">
                                             <span class="typeahead__query">
                                                 <input class="js-typeahead-bulk_assigned_to input-height" dir="auto"
@@ -493,7 +493,7 @@ dt_please_log_in();
         <div class="grid-container">
             <div class="grid-x">
                 <div class="cell small-4 new-filter-name-input">
-                    <input type="text" id="new-filter-name" class="no_bottom_margin"
+                    <input type="text" id="new-filter-name" class="no_margin_bottom"
                            placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"/>
                 </div>
                 <div class="cell small-8">

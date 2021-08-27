@@ -84,9 +84,6 @@ object {
     cursor: pointer;
 }
 
-.no_bottom_margin {
-    margin-bottom: 0 !important;
-}
 /*********************
 LINK STYLES
 *********************/
@@ -1561,4 +1558,17 @@ img.dt-blue-icon {
     .advanced-search-modal-results-post-types-view-at-side {
         display: none;
     }
+}
+
+/*******
+*Helper Classes
+*********/
+.no_padding {
+    padding: 0;
+}
+.no_padding_bottom {
+    padding-bottom: 0;
+}
+.no_margin_bottom {
+    margin-bottom: 0 !important;
 }
