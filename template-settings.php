@@ -127,8 +127,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 </p>
 
                             </div>
-                            <div class="small-12 medium-4 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
-
+                            <div class="small-12 medium-4 cell settings-column">
                                 <p><strong><?php esc_html_e( 'Email', 'disciple_tools' )?></strong></p>
                                 <ul>
                                     <li>
@@ -187,7 +186,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 </ul>
 
                             </div>
-                            <div class="small-12 medium-4 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
+                            <div class="small-12 medium-4 cell settings-column">
 
                                 <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
                                 <p>
@@ -265,7 +264,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                                    onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
                                             <label class="switch-paddle" for="app_state_<?php echo esc_attr( $app_key )?>">
                                                 <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
-                                                <span class="switch-active" aria-hidden="true" style="color:white;"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
+                                                <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
                                                 <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
                                             </label>
                                         </td>
@@ -318,7 +317,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
 
                             <!-- Languages -->
-                            <div class="section-subheader cell" style="margin-top:2rem">
+                            <div class="section-subheader cell settings-languages">
                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/languages.svg" ?>">
                                 <?php esc_html_e( 'Languages you are comfortable speaking', 'disciple_tools' )?>
                                 <span id="languages-spinner" class="loading-spinner"></span>
@@ -339,7 +338,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                             <!-- People Groups -->
                             <?php if ( isset( $contact_fields["people_groups"]["name"] ) ): ?>
-                            <div class="section-subheader cell" style="margin-top:1.33334rem">
+                            <div class="section-subheader cell settings-people_groups">
                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
                                 <?php esc_html_e( 'People Groups you wish to serve', 'disciple_tools' ); ?>
                             </div>
@@ -361,7 +360,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         </div>
                         <?php endif; ?>
 
-                        <div class="small-12 medium-6 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
+                        <div class="small-12 medium-6 cell settings-column">
                             <!-- Workload -->
                             <div class="section-subheader cell">
                                 <?php esc_html_e( "Availability to receive contacts from the Dispatcher", 'disciple_tools' ) ?>
@@ -371,7 +370,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                             <?php $options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
                             foreach ( $options as $option_key => $option_val ) :
                                 $icon = $option_key === "active" ? "play" : ( $option_key === "existing" ? "pause" : "stop" ); ?>
-                                <button style="display: block" class="button hollow status-button" name="<?php echo esc_html( $option_key ) ?>">
+                                <button class="button hollow status-button block" name="<?php echo esc_html( $option_key ) ?>">
                                     <i class="fi-<?php echo esc_html( $icon ) ?>"></i> <?php echo esc_html( $option_val["label"] )?>
                                 </button>
                             <?php endforeach; ?>
@@ -393,21 +392,21 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <?php esc_html_e( "Schedule Travel or Dates Unavailable", 'disciple_tools' ) ?>
                             </strong>
                         </p>
-                        <div style="display: flex; justify-content: flex-start; align-items: center">
-                            <div style="flex-shrink: 1">
+                        <div class="date_row_container">
+                            <div class="start_date">
                                 <div class="section-subheader cell">
                                     <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
                                 </div>
                                 <div class="start_date"><input type="text" class="date-picker" id="start_date" autocomplete="off"></div>
                             </div>
-                            <div style="margin: 0 1.33334rem">
+                            <div class="end_date">
                                 <div class="section-subheader cell">
                                     <?php esc_html_e( 'End Date', 'disciple_tools' )?>
                                 </div>
                                 <div class="end_date"><input type="text" class="date-picker" id="end_date" autocomplete="off"></div>
                             </div>
-                            <div style="display: flex;">
-                                <button id="add_unavailable_dates" class="button" disabled style="margin: 0;"><?php esc_html_e( "Add Unavailable dates", 'disciple_tools' ) ?></button>
+                            <div class="flex">
+                                <button id="add_unavailable_dates" class="button no_margin" disabled><?php esc_html_e( "Add Unavailable dates", 'disciple_tools' ) ?></button>
                                 <div id="add_unavailable_dates_spinner" class="loading-spinner"></div>
                             </div>
                         </div>
@@ -476,7 +475,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     <?php foreach ( $dt_site_notification_defaults["channels"] as $channel_key => $channel_value ) : ?>
                                         <td>
                                             <?php if ( $dt_notification_default[$channel_key] ) : ?>
-                                                <div style="height:2em;"><?php esc_html_e( "required", 'disciple_tools' ) ?></div>
+                                                <div><?php esc_html_e( "required", 'disciple_tools' ) ?></div>
                                             <?php else :
                                                 $channel_notification_key = $dt_notification_key . '_' . $channel_key;
                                                 ?>
@@ -558,7 +557,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <tr>
                                     <td><?php esc_html_e( 'Username', 'disciple_tools' )?> </td>
                                     <td><span data-tooltip data-click-open="true" class="top" tabindex="2" title="<?php esc_html_e( 'Username cannot be changed', 'disciple_tools' ) ?>"><?php echo esc_html( $dt_user->user_login ); ?> <i class="fi-info primary-color" onclick="jQuery('#username-message').toggle()"></i></span>
-                                        <span id="username-message" style="display: none; font-size: .7em;"><br><?php esc_html_e( 'Username cannot be changed', 'disciple_tools' ) ?></span>
+                                        <span id="username-message" class="smaller-text" style="display: none;"><br><?php esc_html_e( 'Username cannot be changed', 'disciple_tools' ) ?></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -626,7 +625,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                         <?php esc_html_e( 'Gender', 'disciple_tools' ) ?>
                                     </label></td>
                                     <td>
-                                        <select class="select-field" id="<?php echo esc_html( $field_key ); ?>" style="width:auto; display: block">
+                                        <select class="select-field block" id="<?php echo esc_html( $field_key ); ?>">
                                             <?php foreach ($contact_fields[$field_key]["default"] as $option_key => $option_value):
                                                 $selected = $user_field === $option_key; ?>
                                                 <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>

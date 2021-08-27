@@ -41,7 +41,9 @@ color:$light-gray;
 .float-right {
     float: right;
 }
-
+.smaller-text {
+    font-size: .7em;
+}
 .full-width {
     width: 100%;
 }
@@ -367,6 +369,7 @@ nav.second-bar {
         padding-top: 0.4em;
         padding-bottom: 0.4em;
     }
+
 
     input {
         padding: 0.4em 0.75em;
@@ -1281,6 +1284,11 @@ label.dt-switch:active:after {
     margin: 0;
 }
 
+.switch-active {
+    &.white {
+        color: white;
+    }
+}
 #user_modal_content{
   .bordered-box {
     margin-bottom: 1.33334rem;
@@ -1312,12 +1320,34 @@ label.dt-switch:active:after {
 
 
 .template-settings {
+    .settings-column {
+        border-left: 1px solid lightgrey;
+        padding-left: 1em;
+    }
     #multiplier {
         .section-subheader {
             img {
                 height: 1rem;;
             }
             margin-bottom: 0.266667rem;
+        }
+    }
+    .settings-languages {
+        margin-top: 2rem;
+    }
+    .settings-people_groups {
+        margin-top:1.33334rem
+    }
+}
+
+.date_row_container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    div {
+        margin-inline-end: 1.33334rem;
+        &:last-of-type {
+            margin-inline-end: 0;
         }
     }
 }
@@ -1566,9 +1596,26 @@ img.dt-blue-icon {
     }
 }
 
+#edit-profile-modal {
+    #gender {
+        width: auto;
+    }
+}
+
+.template-view-duplicates {
+    #duplicates-content {
+        margin-top:3.33334rem;
+    }
+}
 /*******
 *Helper Classes
 *********/
+.block {
+    display: block;
+}
+.flex {
+    display: flex;
+}
 .no_padding {
     padding: 0;
 }
@@ -1577,6 +1624,9 @@ img.dt-blue-icon {
 }
 .padding1rem {
     padding: 1rem;
+}
+.no_margin {
+    margin: 0;
 }
 .no_margin_bottom {
     margin-bottom: 0 !important;
