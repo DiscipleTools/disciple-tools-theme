@@ -13,7 +13,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
 <?php get_header(); ?>
 
-<div style="padding:1rem" class="template-metrics-wide">
+<div class="template-metrics template-metrics-wide">
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 

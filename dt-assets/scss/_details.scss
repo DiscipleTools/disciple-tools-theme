@@ -500,11 +500,14 @@ DT comments and activity
     }
 }
 
-#show-details-edit-button {
+.show-details-section {
     text-align: center;
     background-color:rgb(236, 245, 252);
     margin: 0.2rem -1rem -1rem -1rem;
     border-radius: 0 0 0.6667rem 0.6667rem;
+    &.new-post-details-section {
+        margin: 0.2rem -1rem 1rem -1rem;
+    }
     a.button {
         margin:0;
         padding:0.2rem 0;

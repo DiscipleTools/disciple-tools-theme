@@ -34,7 +34,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
 
                     <!-- choose the record type -->
                     <?php if ( $force_type_choice ){ ?>
-                    <div class="type-control-field" style="margin:1.33334rem 0">
+                    <div class="type-control-field">
                         <strong>
                         <?php echo esc_html( sprintf( __( 'Select the %s type:', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
                         </strong>
@@ -112,17 +112,18 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                             <?php } ?>
                             </div>
                         <?php } ?>
-                        <div id="show-shield-banner" style="text-align: center; background-color:rgb(236, 245, 252);margin: 0.2rem -1rem 1rem -1rem;">
-                            <a class="button clear" id="show-hidden-fields" style="margin:0;padding:0.2rem 0; width:100%">
+                        <div id="show-shield-banner"
+                        class="show-details-section new-post-details-section">
+                            <a class="button clear" id="show-hidden-fields">
                                 <?php esc_html_e( 'Show all fields', 'disciple_tools' ); ?>
                             </a>
-                            <a class="button clear" id="hide-hidden-fields" style="margin:0;padding:0.2rem 0; width:100%; display: none;">
+                            <a class="button clear" id="hide-hidden-fields">
                                 <?php esc_html_e( 'Hide fields', 'disciple_tools' ); ?>
                             </a>
                         </div>
 
 
-                        <div style="text-align: center">
+                        <div class="center">
                             <a href="<?php echo esc_html( get_site_url() . "/" . $dt_post_type )?>" class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' )?></a>
                             <button class="button loader js-create-post-button dt-green" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                         </div>

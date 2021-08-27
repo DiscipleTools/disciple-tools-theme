@@ -1383,6 +1383,9 @@ img.dt-blue-icon {
 
         }
     }
+    .type-control-field {
+        margin:1.33334rem 0;
+    }
 }
 @media screen and (max-width : 640px) {
     .template-new-post .type-option {
@@ -1568,6 +1571,9 @@ img.dt-blue-icon {
 }
 .no_padding_bottom {
     padding-bottom: 0;
+}
+.padding1rem {
+    padding: 1rem;
 }
 .no_margin_bottom {
     margin-bottom: 0 !important;

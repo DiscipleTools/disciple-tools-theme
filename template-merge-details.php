@@ -178,7 +178,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
                     <?php endforeach;
                 } ?>
 
-                <span id="merge_errors" style="margin-top: 2rem; color: red; text-align: right;"></span>
+                <span id="merge_errors"></span>
                 <button class='button loader' id="submit-merge" name='merge-submit' type='button' onclick='merge()' value='Merge'><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></button>
                 </form>
             </div>
@@ -220,6 +220,11 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
           margin-top:1.33334rem;
           float:right;
           display:inline-block;
+        }
+        #merge_errors {
+            margin-top: 2rem;
+            color: red;
+            text-align: right;
         }
         .shortText {
             max-width: 23.33334rem;

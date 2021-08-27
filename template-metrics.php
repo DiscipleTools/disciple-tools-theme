@@ -12,7 +12,7 @@ if ( !current_user_can( 'access_contacts' ) && !current_user_can( "view_project_
 
 <?php get_header(); ?>
 
-    <div style="padding:1rem" class="template-metrics">
+    <div class="template-metrics">
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
