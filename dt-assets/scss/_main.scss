@@ -34,6 +34,9 @@ color:$light-gray;
 .center {
     text-align: center;
 }
+.txt-right {
+    text-align: right;
+}
 
 .float-right {
     float: right;
@@ -1577,4 +1580,7 @@ img.dt-blue-icon {
 }
 .no_margin_bottom {
     margin-bottom: 0 !important;
+}
+.margin1rem {
+    margin: 1rem;
 }

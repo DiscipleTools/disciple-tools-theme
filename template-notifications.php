@@ -36,7 +36,7 @@ get_header(); ?>
 
                 <div class="grid-x">
                     <div class="cell">
-                        <div class="grid-x grid-margin-x " style="border-bottom: 1px solid #ccc;">
+                        <div class="grid-x grid-margin-x bottom-border">
                             <div class="small-4 medium-5 cell">
                                 <div class="grid-x align-middle">
                                     <span class="badge alert notification-count" style="display:none;">&nbsp;</span>
@@ -55,7 +55,7 @@ get_header(); ?>
                                     </button>
                                 </div>
                             </div>
-                            <div class="small-4 medium-5 cell" style="text-align:right;">
+                            <div class="small-4 medium-5 cell txt-right">
                                 <span class="hide-for-small-only">
                                     <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark all as read', 'disciple_tools' ) ?></a>  -
                                     <a href="<?php echo esc_url( home_url( '/' ) ); ?>settings/#notifications">
@@ -70,7 +70,7 @@ get_header(); ?>
                     </div>
                 </div>
 
-                <div id="notification-list" class="grid-x"><span class="loading-spinner active" style="margin:1em;"></span></div>
+                <div id="notification-list" class="grid-x"><span class="loading-spinner active margin1rem"></span></div>
 
                 <div class="grid-x">
                     <div class="cell">
