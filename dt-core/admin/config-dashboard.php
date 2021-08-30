@@ -220,7 +220,7 @@ final class Disciple_Tools_Dashboard
                         <i><?php echo esc_html( $news->get_date( 'm/d/Y' ) ); ?></i>
                     </div>
                     <?php echo wp_kses_post( $news->get_content() ); ?>
-                    <div align="right"><small>powered by <a href="https://disciple.tools/news" target="_blank">Disciple.Tools News</a></small></div>
+                    <div align="right"><small>powered by <a href="https://disciple.tools/news?source=dt_dashboard_news_feed" target="_blank">Disciple.Tools News</a></small></div>
                 </div>
                 <?php
             }
