@@ -53,8 +53,10 @@ jQuery(document).ready(function ($) {
  * @returns {jQuery}
  */
 function makeRequest(type, url, data, base = "dt/v1/") {
-  //make sure base has a trailing slash
-  base += base.endsWith("/") ? "" : "/"
+  //make sure base has a trailing slash if url does not start with one
+  if ( !base.endsWith('/') && !url.startsWith('/')){
+    base += '/'
+  }
   const options = {
     type: type,
     contentType: "application/json; charset=utf-8",
