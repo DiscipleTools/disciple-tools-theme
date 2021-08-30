@@ -542,7 +542,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $post_settings = self::get_post_settings( $post_type );
         $records = $data["posts"];
         foreach ( $post_settings["connection_types"] as $connection_type ){
-            if ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) && !empty( $records ) ){
+            if ( ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) ) && !empty( $records ) ){
                 $p2p_type = $post_settings["fields"][$connection_type]["p2p_key"];
                 $p2p_direction = $post_settings["fields"][$connection_type]["p2p_direction"];
                 $q = p2p_type( $p2p_type )->set_direction( $p2p_direction )->get_connected( $records, [ "nopaging" => true ], 'abstract' );
