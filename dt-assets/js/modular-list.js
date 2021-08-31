@@ -1444,6 +1444,10 @@
     let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .button').not('#bulk_share');
     let multiSelectInputs = $('#bulk_edit_picker .dt_multi_select')
     let shareInput = $('#bulk_share');
+    let commentPayload = {};
+    commentPayload['commentText'] = $('#bulk_comment-input').val();
+    commentPayload['commentType'] = $('#comment_type_selector').val();
+
     let updatePayload = {};
     let sharePayload;
 
@@ -1495,7 +1499,7 @@
         queue.push( postId );
       }
     });
-    process(queue, 10, doEach, doDone, updatePayload, sharePayload);
+    process(queue, 10, doEach, doDone, updatePayload, sharePayload, commentPayload);
   }
 
   function bulk_edit_count() {
@@ -1537,7 +1541,7 @@
   })
 
   //Bulk Update Queue
-  function process( q, num, fn, done, update, share ) {
+  function process( q, num, fn, done, update, share, comment ) {
     // remove a batch of items from the queue
     let items = q.splice(0, num),
         count = items.length;
@@ -1557,14 +1561,14 @@
         fn(items[i], function() {
             // when done, decrement counter and
             // if counter is 0, process next batch
-            --count || process(q, num, fn, done, update, share);
-        }, update, share);
+            --count || process(q, num, fn, done, update, share, comment);
+        }, update, share, comment);
 
     }
   }
 
   // a per-item action
-  function doEach( item, done, update, share ) {
+  function doEach( item, done, update, share, comment ) {
     let promises = [];
 
     if (Object.keys(update).length) {
@@ -1575,6 +1579,10 @@
       share.forEach(function(value) {
         promises.push( API.add_shared(list_settings.post_type, item, value).catch(err => { console.error(err) }));
       })
+    }
+
+    if (comment) {
+      promises.push( API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => { console.error(err);}));
     }
 
     Promise.all(promises).then( function() {
