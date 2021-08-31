@@ -404,10 +404,12 @@ jQuery(document).ready(function($) {
         ${emojis}
       `
       reactionForm.addEventListener('submit', (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        const formDataEntries = new FormData(e.target).entries();
+        const entries = Array.from(formDataEntries);
+        const reaction = entries.map((arr) => `${arr[1]}`);
         const userId = commentsSettings.current_user_id
-        const reaction = e.submitter.value
-        rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction)
+        rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction[0])
       })
       element.appendChild(reactionForm)
     })
