@@ -59,7 +59,7 @@ class Disciple_Tools_Post_Type_Template {
             'public'                => false,
             'publicly_queryable'    => true,
             'show_ui'               => true,
-            'show_in_menu'          => true,
+            'show_in_menu'          => 'dt_post_types',
             'query_var'             => false,
             'show_in_admin_bar'     => false,
             'rewrite'               => $rewrite,
