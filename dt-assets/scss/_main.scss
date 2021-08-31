@@ -146,7 +146,7 @@ NAVIGATION STYLES
         .dropdown.menu {
             justify-content: flex-end;
             & > li {
-            margin: 0.666666rem;
+            margin: 0 0.666666rem;
             }
             @media screen and (max-width : 775px) {
                 li {
