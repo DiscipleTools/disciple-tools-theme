@@ -396,6 +396,46 @@ dt_please_log_in();
                             <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
                             </div>
 
+                            <div class="cell small-12 medium-12 grid-y">
+                                <div class="section-subheader">
+                                    <?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?>
+                                </div>
+                                <div class="cell" id="bulk_add-comment-section">
+                                    <div class="auto cell">
+                                        <textarea class="mention" dir="auto" id="bulk_comment-input"
+                                                placeholder="<?php echo esc_html_x( "Write your comment or note here", 'input field placeholder', 'disciple_tools' ) ?>"
+                                        ></textarea>
+
+                                        <?php if ( $post_type == "contacts" ) :
+                                            $sections = [
+                                                [
+                                                    "key" => "comment",
+                                                    "label" => __( "Comments", 'disciple_tools' ),
+                                                    "selected_by_default" => true
+                                                ],
+                                            ];
+                                            $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+
+                                                <div class="grid-x">
+                                                    <div class="section-subheader cell shrink">
+                                                        <?php esc_html_e( "Type:", 'disciple_tools' ) ?>
+                                                    </div>
+                                                    <select id="comment_type_selector" class="cell auto">
+                                                        <?php
+                                                        $section_keys = [];
+                                                        foreach ( $sections as $section ) {
+                                                            if ( !in_array( $section["key"], $section_keys ) ) {
+                                                                $section_keys[] = $section["key"] ?>
+                                                                <option value="<?php echo esc_html( $section["key"] ); ?>">
+                                                                <?php echo esc_html( $section["label"] );
+                                                            }
+                                                        } ?>
+                                                    </select>
+                                                </div>
+                                                <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
                             <span class="cell small-12 medium-12 center">
                                 <a class="button" id="bulk_edit_seeMore">
                                     <span class="seeMoreText"><?php esc_html_e( 'See More Options', 'disciple_tools' ); ?></span>
