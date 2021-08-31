@@ -559,6 +559,9 @@ dt_please_log_in();
                                         <label><?php echo esc_html( sprintf( _x( 'All %1$s with %2$s', 'All Contacts with Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
                                             <input class="all-connections" type="checkbox" value="all-connections" />
                                         </label>
+                                        <label><?php echo esc_html( sprintf( _x( 'All %1$s without %2$s', 'All Contacts without Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
+                                            <input class="all-without-connections" type="checkbox" value="all-without-connections" />
+                                        </label>
                                     </p>
                                 <?php endif; ?>
                                 <?php if ( $field === "subassigned" ): ?>
