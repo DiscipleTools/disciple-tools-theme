@@ -405,11 +405,17 @@ jQuery(document).ready(function($) {
       `
       reactionForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const formDataEntries = new FormData(e.target).entries();
-        const entries = Array.from(formDataEntries);
-        const reaction = entries.map((arr) => `${arr[1]}`);
+        if (e.submitter) {
+          //This gets the reaction submit button data for Chrome and other Blink based browsers that have the event submitter data.
+          var reaction = e.submitter.value;
+        } else {
+          //this gets the reaction submit button data for Safari and other Webkit based browsers.
+          const formDataEntries = new FormData(e.target).entries();
+          const entries = Array.from(formDataEntries);
+          var reaction = entries[0][1];
+        }
         const userId = commentsSettings.current_user_id
-        rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction[0])
+        rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction)
       })
       element.appendChild(reactionForm)
     })
