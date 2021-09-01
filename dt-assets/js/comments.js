@@ -405,15 +405,10 @@ jQuery(document).ready(function($) {
       `
       reactionForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        if (e.submitter) {
-          //This gets the reaction submit button data for Chrome and other Blink based browsers that have the event submitter data.
-          var reaction = e.submitter.value;
-        } else {
-          //this gets the reaction submit button data for Safari and other Webkit based browsers.
-          const formDataEntries = new FormData(e.target).entries();
-          const entries = Array.from(formDataEntries);
-          var reaction = entries[0][1];
-        }
+        const formDataEntries = new FormData(e.target).entries();
+        const entries = Array.from(formDataEntries);
+        //event submitter data is not available in Safari/Webkit browsers only in Chrome/Blink browsers. This checks if that data exists and falls back to the formDataEntries data if it doesn't exists.
+        const reaction = e.submitter ? e.submitter.value : entries[0][1];
         const userId = commentsSettings.current_user_id
         rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction)
       })
