@@ -69,6 +69,7 @@ class Disciple_Tools_Roles
             'list_peoplegroups' => true,
             'access_groups' => true,
             'create_groups' => true,
+            'access_settings' => true,
         ];
     }
 

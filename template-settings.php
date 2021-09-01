@@ -3,7 +3,7 @@
 Template Name: Settings
 */
 dt_please_log_in();
-if ( ! current_user_can( 'access_contacts' ) ) {
+if ( ! current_user_can( 'access_settings' ) ) {
     wp_safe_redirect( '/registered' );
     exit();
 }
