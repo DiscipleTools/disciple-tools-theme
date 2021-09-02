@@ -62,6 +62,10 @@ function dt_load_github_release_markdown( $tag, $repo = "DiscipleTools/disciple-
     if ( empty( $repo ) || empty( $tag ) ){
         return false;
     }
+    $release = get_transient( 'dt_release_notification_' . $tag );
+    if ( !empty( $release ) ){
+        return $release;
+    }
 
     $url = "https://api.github.com/repos/" . esc_attr( $repo ) . "/releases/tags/" . esc_attr( $tag );
     $response = wp_remote_get( $url );
@@ -76,6 +80,8 @@ function dt_load_github_release_markdown( $tag, $repo = "DiscipleTools/disciple-
     // end check on readme existence
     if ( !empty( $release["body"] ) ){
         $parsedown = new Parsedown();
-        return $parsedown->text( $release["body"] );
+        $release = $parsedown->text( $release["body"] );
+        set_transient( 'dt_release_notification_' . $tag, $release, DAY_IN_SECONDS );
+        return $release;
     }
 }
