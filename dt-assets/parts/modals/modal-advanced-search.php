@@ -89,7 +89,7 @@ function build_filters_option_list_html( $location ) {
     <input type="checkbox" id="advanced-search-modal-filters-posts-<?php echo esc_attr( $location ); ?>"
            class="advanced-search-modal-filters" checked>
     <label
-        for="advanced-search-modal-filters-posts-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Posts', 'disciple_tools' ); ?></label>
+        for="advanced-search-modal-filters-posts-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Names', 'disciple_tools' ); ?></label>
     <br>
 
     <input type="checkbox" id="advanced-search-modal-filters-comments-<?php echo esc_attr( $location ); ?>"
@@ -101,7 +101,7 @@ function build_filters_option_list_html( $location ) {
     <input type="checkbox" id="advanced-search-modal-filters-meta-<?php echo esc_attr( $location ); ?>"
            class="advanced-search-modal-filters" checked>
     <label
-        for="advanced-search-modal-filters-meta-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Metadata', 'disciple_tools' ); ?></label>
+        for="advanced-search-modal-filters-meta-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Communication', 'disciple_tools' ); ?></label>
     <br>
     <?php
 }
