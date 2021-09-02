@@ -21,6 +21,9 @@
   let clearSearchButton = $('.search-input__clear-button')
   window.post_type_fields = list_settings.post_type_settings.fields
 
+  const ALL_ID = '*'
+  const ALL_WITHOUT_ID = '-*'
+
   let items = []
   try {
     cached_filter = JSON.parse(cookie)
@@ -655,8 +658,13 @@
       let type = window.lodash.get(list_settings, `post_type_settings.fields.${field}.type` )
       if ( type === "connection" || type === "user_select" ){
         const allConnections = $(`#${field} .all-connections`)
-        if (type === "connection" && allConnections.prop('checked') === true) {
-          search_query.push( { [field] : ['*'] } )
+        const withoutConnections = $(`#${field} .all-without-connections`)
+        if (type === "connection") {
+          if (allConnections.prop('checked') === true) {
+            search_query.push( { [field] : [ALL_ID] } )
+          } else if (withoutConnections.prop('checked') === true) {
+            search_query.push( { [field] : [ALL_WITHOUT_ID] } )
+          }
         } else {
           search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
         }
@@ -708,12 +716,24 @@
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
 
-  function allConnectionsClickHandler() {
+  function toggleAllConnectionOption(tabsPanel, without) {
+    const allConnectionsElement = tabsPanel.find('.all-connections')
+    const withoutConnectionsElement = tabsPanel.find('.all-without-connections')
+
+    without ? allConnectionsElement.prop('checked', false) : withoutConnectionsElement.prop('checked', false)
+  }
+
+  function allConnectionsClickHandler({ without = false }) {
+    const id = without ? ALL_WITHOUT_ID : ALL_ID
     const tabsPanel = $(this).closest('.tabs-panel')
     const field = tabsPanel.length === 1 ? tabsPanel[0].id : ''
     const typeaheadQueryElement = tabsPanel.find('.typeahead__query')
     const typeaheadCancelButtons = tabsPanel.find('.typeahead__cancel-button')
     const typeahead = tabsPanel.find(`.js-typeahead-${field}`)
+
+    toggleAllConnectionOption(tabsPanel, without)
+
+    const esc = window.lodash.escape
 
     if ($(this).prop('checked') === true) {
       typeahead.prop('disabled', true)
@@ -721,13 +741,14 @@
       // remove the current filters and leave anything in the typeahead as it is
       removeAllFilterLabels(field)
       const fieldLabel = list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : ''
-      const filterName = `${window.lodash.escape( fieldLabel )}: ${window.lodash.escape( list_settings.translations.all )}`
-      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field )}" data-id="*">${filterName}</span>`)
-      new_filter_labels.push({id: '*', name: filterName, field: field})
+      const allLabel = without ? esc(list_settings.translations.without) : esc( list_settings.translations.all )
+      const filterName = `${esc( fieldLabel )}: ${allLabel}`
+      selected_filters.append(`<span class="current-filter ${esc( field )}" data-id="${id}">${filterName}</span>`)
+      new_filter_labels.push({id: id, name: filterName, field: field})
     } else {
       typeahead.prop('disabled', false)
       typeaheadQueryElement.removeClass('disabled')
-      removeFilterLabels('*', field)
+      removeFilterLabels(id, field)
       // clear the typeahead by manually clicking each selected item.
       // This is done at this point as it triggers the typeahead to open which we don't want just after we have disabled it.
       typeaheadCancelButtons.each(function () {
@@ -737,6 +758,10 @@
   }
 
   $('.all-connections').on("click", allConnectionsClickHandler)
+  function withoutConnectionsHandler() {
+    allConnectionsClickHandler.call(this, { without: true })
+  }
+  $('.all-without-connections').on("click", withoutConnectionsHandler)
 
 
   let load_multi_select_typeaheads = async function load_multi_select_typeaheads() {
@@ -1444,6 +1469,10 @@
     let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .button').not('#bulk_share');
     let multiSelectInputs = $('#bulk_edit_picker .dt_multi_select')
     let shareInput = $('#bulk_share');
+    let commentPayload = {};
+    commentPayload['commentText'] = $('#bulk_comment-input').val();
+    commentPayload['commentType'] = $('#comment_type_selector').val();
+
     let updatePayload = {};
     let sharePayload;
 
@@ -1495,7 +1524,7 @@
         queue.push( postId );
       }
     });
-    process(queue, 10, doEach, doDone, updatePayload, sharePayload);
+    process(queue, 10, doEach, doDone, updatePayload, sharePayload, commentPayload);
   }
 
   function bulk_edit_count() {
@@ -1537,7 +1566,7 @@
   })
 
   //Bulk Update Queue
-  function process( q, num, fn, done, update, share ) {
+  function process( q, num, fn, done, update, share, comment ) {
     // remove a batch of items from the queue
     let items = q.splice(0, num),
         count = items.length;
@@ -1557,14 +1586,14 @@
         fn(items[i], function() {
             // when done, decrement counter and
             // if counter is 0, process next batch
-            --count || process(q, num, fn, done, update, share);
-        }, update, share);
+            --count || process(q, num, fn, done, update, share, comment);
+        }, update, share, comment);
 
     }
   }
 
   // a per-item action
-  function doEach( item, done, update, share ) {
+  function doEach( item, done, update, share, comment ) {
     let promises = [];
 
     if (Object.keys(update).length) {
@@ -1575,6 +1604,10 @@
       share.forEach(function(value) {
         promises.push( API.add_shared(list_settings.post_type, item, value).catch(err => { console.error(err) }));
       })
+    }
+
+    if (comment) {
+      promises.push( API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => { console.error(err);}));
     }
 
     Promise.all(promises).then( function() {

@@ -370,6 +370,30 @@ th.empty-list-head {
 #bulk_edit_picker .button-group.small .button.selected-select-button {
     border: none;
 }
+
+#bulk_add-comment-section {
+    background: $white;
+    border: 1px solid #dcdcdc;
+    border-radius: 3px;
+    margin: 0 0 01.06667rem;
+    textarea,  select {
+        margin-bottom: 0;
+        border: none;
+    }
+    select {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .section-subheader {
+        padding-top: .53333rem;
+        padding-left: .5rem;
+        padding-right: .15rem;
+    }
+}
+#bulk_comment-input {
+    margin: 0;
+}
+
 .icon-star {
     height: 1em;
     width: 1em;

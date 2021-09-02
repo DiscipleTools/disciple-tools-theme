@@ -835,13 +835,16 @@ class Disciple_Tools_Posts
                             if ( !empty( $not_in ) ){
                                 $connection_ids = dt_array_to_sql( $not_in );
                                 $where_sql .= ( !empty( $where_sql ) ? " AND " : "" );
+                                $all_key = '*';
                                 if ( $field_settings[$query_key]["p2p_direction"] === "to" ){
+                                    $from_connection_ids = ( in_array( $all_key, $not_in, true ) ) ? "" : "AND p2p_from IN (" .  $connection_ids .")";
                                     $where_sql .= " p.ID NOT IN (
-                                        SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" .  $connection_ids .")
+                                        SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' $from_connection_ids
                                     ) ";
                                 } else {
+                                    $to_connection_ids = ( in_array( $all_key, $not_in, true ) ) ? "" : "AND p2p_to IN (" .  $connection_ids .")";
                                     $where_sql .= " p.ID NOT IN (
-                                        SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" .  $connection_ids .")
+                                        SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' $to_connection_ids
                                     ) ";
                                 }
                             }

@@ -404,9 +404,12 @@ jQuery(document).ready(function($) {
         ${emojis}
       `
       reactionForm.addEventListener('submit', (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        const formDataEntries = new FormData(e.target).entries();
+        const entries = Array.from(formDataEntries);
+        //event submitter data is not available in Safari/Webkit browsers only in Chrome/Blink browsers. This checks if that data exists and falls back to the formDataEntries data if it doesn't exists.
+        const reaction = e.submitter ? e.submitter.value : entries[0][1];
         const userId = commentsSettings.current_user_id
-        const reaction = e.submitter.value
         rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction)
       })
       element.appendChild(reactionForm)

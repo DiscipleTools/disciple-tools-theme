@@ -258,6 +258,9 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 if ( ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ) || in_array( $tile_key, [ 'details', 'status' ] ) ) {
                                     continue;
                                 }
+                                if ( isset( $tile_options["display_for"]["type"], $dt_post["type"]["key"] ) && !in_array( $dt_post["type"]["key"], $tile_options["display_for"]["type"] ) ){
+                                    continue;
+                                }
                                 ?>
                                 <section id="<?php echo esc_html( $tile_key ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
                                     <div class="bordered-box" id="<?php echo esc_html( $tile_key ) ?>-tile">

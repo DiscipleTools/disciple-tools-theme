@@ -609,9 +609,6 @@ class DT_User_Management
             if ( !$user ){
                 return new WP_Error( "user_id", "User does not exist", [ 'status' => 400 ] );
             }
-            if ( empty( $user->caps ) ) {
-                return new WP_Error( "user_id", "Cannot update this user", [ 'status' => 400 ] );
-            }
             if ( !empty( $body["user_status"] ) ) {
                 update_user_option( $user->ID, 'user_status', $body["user_status"] );
             }
