@@ -453,7 +453,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Description", 'disciple_tools' ) ?></td>
-                    <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( "Description Translation", 'disciple_tools' ) ?></td>
                 </tr>
                 </thead>
                 <tbody>
