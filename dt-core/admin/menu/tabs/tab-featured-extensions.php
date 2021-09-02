@@ -134,7 +134,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             <tbody>
             <?php
             foreach ( $plugins as $plugin ) {
-                    ?>
+                ?>
                     <tr>
                         <td>
                             <?php echo esc_html( $plugin->name ); ?>
@@ -167,7 +167,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                             ?>
                         </td>
                     </tr>
-                    <?php
+                <?php
             }
             ?>
             </tbody>
