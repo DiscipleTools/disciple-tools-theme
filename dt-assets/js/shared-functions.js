@@ -190,10 +190,13 @@ window.API = {
       user_id: userId,
     }),
 
-  advanced_search: (search_query, post_type, offset) => makeRequest("GET", `advanced_search`, {
+  advanced_search: (search_query, post_type, offset, filters) => makeRequest("GET", `advanced_search`, {
     query: search_query,
     post_type: post_type,
-    offset: offset
+    offset: offset,
+    post: filters['post'],
+    comment: filters['comment'],
+    meta: filters['meta'],
   }, 'dt-posts/v2/posts/search/')
 };
 
