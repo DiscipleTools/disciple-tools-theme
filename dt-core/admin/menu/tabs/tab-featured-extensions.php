@@ -133,27 +133,26 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             <tbody>
             <?php
             foreach ( $plugins as $plugin ) {
-                foreach ( $plugin as $p ) {
                     ?>
                     <tr>
                         <td>
-                            <?php echo esc_html( $p->name ); ?>
+                            <?php echo esc_html( $plugin->name ); ?>
                         </td>
                         <td>
-                            <?php echo esc_html( $p->description ); ?>
+                            <?php echo esc_html( $plugin->description ); ?>
                         </td>
                         <td>
                             <?php
-                            $result_name = $this->partial_array_search( $all_plugins, $p->folder_name );
+                            $result_name = $this->partial_array_search( $all_plugins, $plugin->slug );
                             if ( $result_name == -1 ) {
-                                if ( current_user_can( "install_plugins" ) ) : ?>
+                                if ( isset( $plugin->download_url ) && current_user_can( "install_plugins" ) ) : ?>
                                 <button class="button"
-                                        onclick="install('<?php echo esc_html( $p->url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
+                                        onclick="install('<?php echo esc_html( $plugin->download_url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
                                 <?php else : ?>
                                     <span>To install this plugin ask your network administrator</span>
                                 <?php endif;
 
-                            } elseif ( $this->partial_array_search( $active_plugins, $p->folder_name ) == -1 && isset( $_POST["activate"] ) == false ) {
+                            } elseif ( $this->partial_array_search( $active_plugins, $plugin->slug ) == -1 && isset( $_POST["activate"] ) == false ) {
                                 ?>
                                 <button class="button"
                                         onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
@@ -168,7 +167,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         </td>
                     </tr>
                     <?php
-                }
             }
             ?>
             </tbody>
@@ -340,7 +338,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     //this function gets the plugin list data
     public function get_plugins() {
-        return json_decode( trim( file_get_contents( 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-plugin-url-list.json' ) ) );
+        return json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
     }
 }
 
