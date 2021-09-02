@@ -127,7 +127,7 @@ final class Disciple_Tools_Dashboard
     }
 
     public function dt_dashboard_tile() {
-        if ( ! user_can( get_current_user_id(), 'manage_dt' ) ) {
+        if ( ! current_user_can( 'manage_dt' ) ) {
             return;
         }
         // Check for a dismissed item button click

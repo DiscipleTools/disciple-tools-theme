@@ -245,7 +245,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             /**
              * Approved member of the site can get data for drill down and geocoding
              */
-            else if ( user_can( get_current_user_id(), 'read' ) ) {
+            else if ( current_user_can( 'read' ) ) {
                 unset( $mapping_module['data']['custom_column_data'] );
                 unset( $mapping_module['data']['custom_column_labels'] );
                 return $mapping_module;
