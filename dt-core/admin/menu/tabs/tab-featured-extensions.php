@@ -102,7 +102,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             && ( ( is_multisite() && is_super_admin() ) || ( ! is_multisite() && current_user_can( "manage_dt" ) ) ) ) {
             //check for admin or multisite super admin
             //install plugin
-            $this->install_plugin_legacy( sanitize_text_field( wp_unslash( $_POST["install"] ) ) ); //todo switch install_plugin_legacy to install_plugin
+            $this->install_plugin( sanitize_text_field( wp_unslash( $_POST["install"] ) ) );
             exit;
         } elseif ( isset( $_POST["deactivate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
             //deactivate the plugin
@@ -316,40 +316,11 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     //this function will install a plugin with a name
     public function install_plugin( $download_url ) {
-        set_time_limit( 0 );        
-
-        $folder_name = explode( "/", $download_url );
-        $folder_name = get_home_path() . "wp-content/plugins/" . $folder_name[4];
-        if ( $folder_name != "" ) {
-            //download the zip file to plugins
-            file_put_contents( $folder_name, file_get_contents( $download_url ) );
-            // get the absolute path to $file
-            $folder_name = realpath( $folder_name );
-            //unzip
-            WP_Filesystem();
-            $unzip = unzip_file( $folder_name, realpath( get_home_path() . "wp-content/plugins/" ) );
-            //remove the file
-            unlink( $folder_name );
-            dt_write_log( "download_url: $download_url" );
-            dt_write_log( "folder_name: $folder_name" );
-            dt_write_log('got to the bottom of the function');
-        }
-    }
-
-    //todo delete this function when install_plugin is working properly
-    //this function will install a plugin with a name
-    public function install_plugin_legacy( $url ) {
         set_time_limit( 0 );
-        //download plugin json data
-        $plugin_json_text = file_get_contents( $url );
-        $plugin_json = json_decode( trim( $plugin_json_text ) );
-        //get url for plugin
-        $download_url = $plugin_json->download_url;
         $folder_name = explode( "/", $download_url );
-        $folder_name = get_home_path() . "wp-content/plugins/" . $folder_name[ count( $folder_name ) - 1 ];
+        $folder_name = get_home_path() . "wp-content/plugins/" . $folder_name[4] . '.zip';
         if ( $folder_name != "" ) {
             //download the zip file to plugins
-            //http://php.net/file_put_contents <- to download
             file_put_contents( $folder_name, file_get_contents( $download_url ) );
             // get the absolute path to $file
             $folder_name = realpath( $folder_name );
@@ -358,9 +329,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             $unzip = unzip_file( $folder_name, realpath( get_home_path() . "wp-content/plugins/" ) );
             //remove the file
             unlink( $folder_name );
-            dt_write_log( "download_url: $download_url" );
-            dt_write_log( "folder_name: $folder_name" );
-            dt_write_log('got to the bottom of the function');
         }
     }
 
