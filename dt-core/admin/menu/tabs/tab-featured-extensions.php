@@ -134,6 +134,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             <tbody>
             <?php
             foreach ( $plugins as $plugin ) {
+                $plugin->slug = explode( '/', $plugin->homepage );
+                $plugin->slug = $plugin->slug[ array_key_last( $plugin->slug ) ];
                 ?>
                     <tr>
                         <td>
