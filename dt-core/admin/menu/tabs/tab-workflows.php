@@ -69,7 +69,8 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                 wp_localize_script(
                     "dt_utilities_workflows_script", "dt_workflows", array(
                         'workflows_design_section_hidden_post_types'       => $this->fetch_post_types(),
-                        'workflows_design_section_hidden_post_field_types' => $this->fetch_post_field_types()
+                        'workflows_design_section_hidden_post_field_types' => $this->fetch_post_field_types(),
+                        'workflows_design_section_hidden_custom_actions'   => $this->fetch_custom_actions()
                     )
                 );
             }
@@ -851,6 +852,21 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         }
 
         return $post_field_types;
+    }
+
+    private function fetch_custom_actions(): array {
+        $filtered_custom_actions = apply_filters( 'dt_workflows_custom_actions', [] );
+
+        // Only focus on the actions which have been flagged for display
+        $actions = [];
+        foreach ( $filtered_custom_actions as $action ) {
+            if ( ! empty( $action ) && $action->displayed ) {
+                $actions[] = $action;
+            }
+        }
+
+        // Piggyback off workflow sorter, as the shapes are identical... ;)
+        return $this->sort_workflows_by_name( $actions );
     }
 
     private function sort_workflows_by_name( $workflows ): array {

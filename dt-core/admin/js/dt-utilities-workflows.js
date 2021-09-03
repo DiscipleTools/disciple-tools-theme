@@ -80,6 +80,10 @@ jQuery(function ($) {
       handle_workflow_step_fields_select(false, $('#workflows_design_section_step3_fields'), $('#workflows_design_section_step3_actions'), $('#workflows_design_section_step3_action_value_div'), $('#workflows_design_section_step3_action_value_id'), $('#workflows_design_section_step3_action_value_object_id'));
     });
 
+    $(document).on('change', '#workflows_design_section_step3_actions', function () {
+      handle_workflow_step3_actions_select();
+    });
+
     $(document).on('click', '#workflows_design_section_step3_action_add', function () {
       let field_id = $('#workflows_design_section_step3_fields').val();
       let field_name = $('#workflows_design_section_step3_fields option:selected').text();
@@ -251,8 +255,8 @@ jQuery(function ($) {
     function handle_workflow_step2_conditions_select() {
       let condition = $('#workflows_design_section_step2_conditions').val();
 
-      // Ensure value fields are disabled for not_set conditions
-      if (String(condition) === 'not_set') {
+      // Ensure value fields are disabled for is/not_set conditions
+      if ((String(condition) === 'is_set') || (String(condition) === 'not_set')) {
         $('#workflows_design_section_step2_condition_value_div').fadeOut('fast');
       } else {
         $('#workflows_design_section_step2_condition_value_div').fadeIn('fast');
@@ -268,8 +272,8 @@ jQuery(function ($) {
 
           let add_condition = false;
 
-          // Ignore value on not_set conditions
-          if (String(event_id) === 'not_set') {
+          // Ignore value on is/not_set conditions
+          if ((String(event_id) === 'is_set') || (String(event_id) === 'not_set')) {
             event_value_id = '';
             event_value_name = '';
             add_condition = true;
@@ -305,6 +309,19 @@ jQuery(function ($) {
       row.parentNode.removeChild(row);
     }
 
+    function handle_workflow_step3_actions_select() {
+      let action = $('#workflows_design_section_step3_actions').val();
+
+      // Display valid list of custom actions, accordingly
+      if (String(action) === 'custom') {
+        handle_custom_action_select();
+
+      } else {
+        // Revert back to value field shape based on selected field
+        determine_event_value_state($('#workflows_design_section_step3_fields').val(), $('#workflows_design_section_step3_action_value_div'), $('#workflows_design_section_step3_action_value_id'), $('#workflows_design_section_step3_action_value_object_id'));
+      }
+    }
+
     function handle_workflow_step3_next_request() {
       $('#workflows_design_section_step4').slideDown('fast', function () {
 
@@ -318,6 +335,49 @@ jQuery(function ($) {
 
 
     /*** Header Functions - Helpers ***/
+    function handle_custom_action_select() {
+      $('#workflows_design_section_step3_action_value_div').fadeOut('fast', function () {
+
+        // Build custom actions select element
+        let custom_actions_select_element = generate_custom_actions_list(window.dt_workflows.workflows_design_section_hidden_custom_actions);
+        if (custom_actions_select_element) {
+          let value_div = $('#workflows_design_section_step3_action_value_div');
+
+          // Capture id of generated element for future reference
+          $('#workflows_design_section_step3_action_value_id').val(custom_actions_select_element['id']);
+
+          // Display available custom actions
+          value_div.html(custom_actions_select_element['html']);
+          value_div.fadeIn('fast');
+        }
+      });
+    }
+
+    function generate_custom_actions_list(actions) {
+      if (actions) {
+
+        let response = {};
+        response['id'] = Date.now();
+
+        let html = `<select style="min-width: 100%; max-width: 100px;" id="${window.lodash.escape(response['id'])}">`;
+        html += '<option disabled selected value="">--- select custom action ---</option>';
+
+        // Iterate over custom actions...
+        for (const [key, action] of Object.entries(actions)) {
+          if (action['id'] && action['name']) {
+            html += `<option value="${window.lodash.escape(action['id'])}">${window.lodash.escape(action['name'])}</option>`;
+          }
+        }
+
+        html += '</select>';
+
+        response['html'] = html;
+
+        return response;
+      }
+      return null;
+    }
+
     function find_parsed_workflow(is_regular_workflow, workflow_id) {
       if (is_regular_workflow) {
         let parsed_workflows = JSON.parse($('#workflows_management_section_hidden_option_post_type_workflows').val());
@@ -592,6 +652,7 @@ jQuery(function ($) {
         not_equals: "Doesn't equal",
         contains: "Contains",
         not_contain: "Doesn't contain",
+        is_set: "Has any value and not empty",
         not_set: "Has no value or is empty",
         greater: "Greater than",
         less: "Less than",
@@ -617,6 +678,10 @@ jQuery(function ($) {
             {
               'id': 'not_contain',
               'name': labels.not_contain
+            },
+            {
+              'id': 'is_set',
+              'name': labels.is_set
             },
             {
               'id': 'not_set',
@@ -652,6 +717,10 @@ jQuery(function ($) {
               'name': labels.less_equals
             },
             {
+              'id': 'is_set',
+              'name': labels.is_set
+            },
+            {
               'id': 'not_set',
               'name': labels.not_set
             }
@@ -666,6 +735,10 @@ jQuery(function ($) {
             {
               'id': 'not_equals',
               'name': labels.not_equals
+            },
+            {
+              'id': 'is_set',
+              'name': labels.is_set
             },
             {
               'id': 'not_set',
@@ -694,6 +767,10 @@ jQuery(function ($) {
             {
               'id': 'not_contain',
               'name': labels.not_contain
+            },
+            {
+              'id': 'is_set',
+              'name': labels.is_set
             },
             {
               'id': 'not_set',
@@ -763,6 +840,17 @@ jQuery(function ($) {
             }
           );
           break;
+      }
+
+      // Append custom option if any custom actions are detected
+      let custom_actions = window.dt_workflows.workflows_design_section_hidden_custom_actions;
+      if (custom_actions && custom_actions.length > 0) {
+        actions.push(
+          {
+            'id': 'custom',
+            'name': 'Custom Action'
+          }
+        );
       }
 
       return actions;
@@ -942,8 +1030,8 @@ jQuery(function ($) {
         let event_value = $(tr).find('#' + id_event_value).val();
         let event_value_name = $(tr).find('#' + id_event_value_name).val();
 
-        // Allow blank values on not_set conditions
-        let add_event = (String(event_id) === 'not_set') ? true : ((event_value !== null) && (event_value !== ''));
+        // Allow blank values on is/not_set conditions
+        let add_event = (String(event_id) === 'is_set') || (String(event_id) === 'not_set') ? true : ((event_value !== null) && (event_value !== ''));
 
         // Are values valid?
         if (field_id && field_name && event_id && event_name && add_event) {
@@ -1038,7 +1126,7 @@ jQuery(function ($) {
               // Capture generated event value field's id; to be used during event add request
               event_value_id.val(event_value_field['id']);
 
-              event_value_div.fadeOut('slow', function () {
+              event_value_div.fadeOut('fast', function () {
                 event_value_div.html(event_value_field['html']);
 
                 // Handle typeahead dynamic fields

@@ -13,19 +13,21 @@ class Disciple_Tools_Workflows_Defaults {
     public static $trigger_updated = [ 'id' => 'updated', 'label' => 'Field Updated' ];
 
     public static $condition_equals = [ 'id' => 'equals', 'label' => 'Equals' ];
-    public static $condition_not_equals = [ 'id' => 'not_equals', 'label' => 'Not Equal' ];
-    public static $condition_greater = [ 'id' => 'greater', 'label' => 'Greater Than' ];
-    public static $condition_less = [ 'id' => 'less', 'label' => 'Less Than' ];
-    public static $condition_greater_equals = [ 'id' => 'greater_equals', 'label' => 'Greater Than or Equals' ];
-    public static $condition_less_equals = [ 'id' => 'less_equals', 'label' => 'Less Than or Equals' ];
+    public static $condition_not_equals = [ 'id' => 'not_equals', 'label' => "Doesn't equal" ];
+    public static $condition_greater = [ 'id' => 'greater', 'label' => 'Greater than' ];
+    public static $condition_less = [ 'id' => 'less', 'label' => 'Less than' ];
+    public static $condition_greater_equals = [ 'id' => 'greater_equals', 'label' => 'Greater than or equals' ];
+    public static $condition_less_equals = [ 'id' => 'less_equals', 'label' => 'Less than or equals' ];
     public static $condition_contains = [ 'id' => 'contains', 'label' => 'Contains' ];
-    public static $condition_not_contain = [ 'id' => 'not_contain', 'label' => 'Not Contain' ];
-    public static $condition_not_set = [ 'id' => 'not_set', 'label' => 'Not Set' ];
+    public static $condition_not_contain = [ 'id' => 'not_contain', 'label' => "Doesn't contain" ];
+    public static $condition_is_set = [ 'id' => 'is_set', 'label' => 'Has any value and not empty' ];
+    public static $condition_not_set = [ 'id' => 'not_set', 'label' => 'Has no value or is empty' ];
 
     public static $action_update = [ 'id' => 'update', 'label' => 'Updated To' ];
     public static $action_append = [ 'id' => 'append', 'label' => 'Appended With' ];
     public static $action_connect = [ 'id' => 'connect', 'label' => 'Connect To' ];
     public static $action_remove = [ 'id' => 'remove', 'label' => 'Removal Of' ];
+    public static $action_custom = [ 'id' => 'custom', 'label' => 'Custom Action' ];
 
     public function __construct() {
         add_filter( 'dt_workflows', [ $this, 'fetch_default_workflows_filter' ], 10, 2 );
@@ -54,15 +56,15 @@ class Disciple_Tools_Workflows_Defaults {
         return $workflows;
     }
 
-    public function new_condition( $condition, $field, $value ) {
-        return $this->new_event( $condition, $field, $value );
+    public static function new_condition( $condition, $field, $value ) {
+        return self::new_event( $condition, $field, $value );
     }
 
-    public function new_action( $action, $field, $value ) {
-        return $this->new_event( $action, $field, $value );
+    public static function new_action( $action, $field, $value ) {
+        return self::new_event( $action, $field, $value );
     }
 
-    private function new_event( $event, $field, $value ) {
+    private static function new_event( $event, $field, $value ) {
         return (object) [
             'id'         => $event['id'],
             'name'       => $event['label'],
@@ -85,7 +87,7 @@ class Disciple_Tools_Workflows_Defaults {
             'enabled'    => false, // Can be enabled via admin view
             'trigger'    => self::$trigger_updated['id'],
             'conditions' => [
-                $this->new_condition( self::$condition_contains,
+                self::new_condition( self::$condition_contains,
                     [
                         'id'    => 'health_metrics',
                         'label' => $dt_fields['health_metrics']['name']
@@ -96,7 +98,7 @@ class Disciple_Tools_Workflows_Defaults {
                 )
             ],
             'actions'    => [
-                $this->new_action( self::$action_update,
+                self::new_action( self::$action_update,
                     [
                         'id'    => 'group_type',
                         'label' => $dt_fields['group_type']['name']
@@ -113,7 +115,7 @@ class Disciple_Tools_Workflows_Defaults {
             'enabled'    => false, // Can be enabled via admin view
             'trigger'    => self::$trigger_updated['id'],
             'conditions' => [
-                $this->new_condition( self::$condition_contains,
+                self::new_condition( self::$condition_contains,
                     [
                         'id'    => 'group_type',
                         'label' => $dt_fields['group_type']['name']
@@ -124,7 +126,7 @@ class Disciple_Tools_Workflows_Defaults {
                 )
             ],
             'actions'    => [
-                $this->new_action( self::$action_append,
+                self::new_action( self::$action_append,
                     [
                         'id'    => 'health_metrics',
                         'label' => $dt_fields['health_metrics']['name']
