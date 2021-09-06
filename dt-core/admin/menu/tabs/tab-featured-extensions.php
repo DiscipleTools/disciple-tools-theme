@@ -68,11 +68,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             }
         </script>
         <?php
-        echo '<a href="' . esc_url( admin_url() ) . 'admin.php?page=dt_extensions&tab=featured-extensions" class="nav-tab ';
-        if ( $tab == 'featured-extensions' ) {
-            echo 'nav-tab-active';
-        }
-        echo '">' . esc_attr__( 'Featured Extensions', 'disciple_tools' ) . '</a>';
     }
 
     public function content( $tab ) {
@@ -87,6 +82,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
             // end columns template
             $this->template( 'end' );
+
+            $this->modify_css();
         }
     }
 
@@ -113,178 +110,65 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         $all_plugins = get_plugins();
         //get plugin data
         $plugins = $this->get_plugins();
-        ?>
-        <h3>All Disciple.Tools and Community Plugins</h3>
-        <p>See <a href="https://disciple.tools/plugins/">https://disciple.tools/plugins</a> </p>
-        <h3><?php esc_html_e( "Recommended Disciple.Tools Plugins", 'disciple_tools' ) ?></h3>
-        <table class="widefat striped">
-            <thead>
-            <tr>
-                <td>
-                    <?php echo esc_html__( 'Name', 'disciple_tools' ) ?>
-                </td>
-                <td>
-                    <?php echo esc_html__( 'Description', 'disciple_tools' ) ?>
-                <td>
-                    <?php echo esc_html__( 'Actions', 'disciple_tools' ) ?>
-                </td>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-            foreach ( $plugins as $plugin ) {
-                foreach ( $plugin as $p ) {
-                    ?>
-                    <tr>
-                        <td>
-                            <?php echo esc_html( $p->name ); ?>
-                        </td>
-                        <td>
-                            <?php echo esc_html( $p->description ); ?>
-                        </td>
-                        <td>
-                            <?php
-                            $result_name = $this->partial_array_search( $all_plugins, $p->folder_name );
-                            if ( $result_name == -1 ) {
-                                if ( current_user_can( "install_plugins" ) ) : ?>
-                                <button class="button"
-                                        onclick="install('<?php echo esc_html( $p->url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
-                                <?php else : ?>
-                                    <span>To install this plugin ask your network administrator</span>
-                                <?php endif;
 
-                            } elseif ( $this->partial_array_search( $active_plugins, $p->folder_name ) == -1 && isset( $_POST["activate"] ) == false ) {
-                                ?>
-                                <button class="button"
-                                        onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
-                                <?php
-                            } else {
-                                ?>
-                                <button class="button"
-                                        onclick="deactivate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Deactivate', 'disciple_tools' ) ?></button>
-                                <?php
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                    <?php
-                }
+        // Page content goes here
+        ?>
+        <div class="wp-filter">
+        <ul class="filter-links">
+            <li class="plugin-install"><a href="https://dt-clean-fork.local/wp-admin/plugin-install.php?tab=featured" class="current" aria-current="page">All Plugins</a> </li>
+        </ul>
+        </div>
+        <p>Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.</p>
+        <div id="the-list">
+            <?php foreach( $plugins as $plugin ) {
+                $plugin->slug = explode( '/', $plugin->homepage );
+                $plugin->slug = $plugin->slug[ array_key_last( $plugin->slug ) ];
+                $plugin->blog_url = 'https://disciple.tools/plugins/' . $plugin->slug;
+                //var_dump($plugin);
+            ?>
+            <!-- Plugin Card: START -->
+            <div class="plugin-card plugin-card-classic-editor">
+                            <div class="plugin-card-top">
+                    <div class="name column-name">
+                        <h3>
+                            <a href="https://dt-clean-fork.local/wp-admin/plugin-install.php?tab=plugin-information&amp;plugin=classic-editor&amp;TB_iframe=true&amp;width=772&amp;height=890" class="thickbox open-plugin-details-modal">
+                            <?php echo esc_html( $plugin->name ); ?>
+                            <img src="https://ps.w.org/classic-editor/assets/icon-256x256.png?rev=1998671" class="plugin-icon" alt="">
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="action-links">
+                        <ul class="plugin-action-buttons">
+                            <li>
+                                <a class="install-now button" data-slug="classic-editor" href="https://dt-clean-fork.local/wp-admin/update.php?action=install-plugin&amp;plugin=classic-editor&amp;_wpnonce=e385191c33" aria-label="Install Classic Editor 1.6.2 now" data-name="Classic Editor 1.6.2">Install Now</a></li><li><a href="<?php echo esc_attr( $plugin->blog_url ); ?>" target="_blank" class="thickbox open-plugin-details-modal">More Details</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="desc column-description">
+                        <p><?php echo esc_html( $plugin->description ); ?></p>
+                        <p class="authors"> <cite>By <a href="<?php echo esc_attr( $plugin->author_homepage); ?>"><?php echo esc_html( $plugin->author ); ?></a></cite></p>
+                    </div>
+                </div>
+                <div class="plugin-card-bottom">
+                    <div class="vers column-rating">
+                        <div class="star-rating"><span class="screen-reader-text">5.0 rating based on 1,002 ratings</span><div class="star star-full" aria-hidden="true"></div><div class="star star-full" aria-hidden="true"></div><div class="star star-full" aria-hidden="true"></div><div class="star star-full" aria-hidden="true"></div><div class="star star-full" aria-hidden="true"></div></div>                   <span class="num-ratings" aria-hidden="true">(1,002)</span>
+                    </div>
+                    <div class="column-updated">
+                        <strong>Last Updated:</strong>
+                        <?php echo esc_html( $plugin->last_updated ); ?>
+                    </div>
+                    <div class="column-downloaded">Active Installations data not available</div>
+                    <div class="column-compatibility">
+                        <span class="compatibility-compatible"><strong>Compatible</strong> with your version of WordPress</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Plugin Card: END -->
+            <?php
             }
             ?>
-            </tbody>
-        </table>
-        <h3><?php esc_html_e( "Recommended Plugins", 'disciple_tools' ) ?></h3>
-        <p><?php echo esc_html__( 'Look for the "Install" button on the bottom right of your screen after clicking the install button link', 'disciple_tools' ) ?></p>
-        <table class="widefat striped">
-            <thead>
-            <tr>
-                <td>
-                    <?php echo esc_html__( 'Name', 'disciple_tools' ) ?>
-                </td>
-                <td>
-                    <?php echo esc_html__( 'Description', 'disciple_tools' ) ?>
-                <td>
-                    <?php echo esc_html__( 'Action', 'disciple_tools' ) ?>
-                </td>
-            </tr>
-            </thead>
-            <tbody>
-            <!--Updraft-->
-            <tr>
-                <td>
-                    <?php echo esc_html__( "UpdraftPlus - Backup/Restore", 'disciple_tools' ); ?>
-                </td>
-                <td>
-                    <?php echo esc_html__( "Setup backups to a remote location. See our help page:", 'disciple_tools' ); ?>
-                    <a target="_blank" href="https://disciple.tools/dev-docs/hosting/backups/">Backups</a>
-                </td>
-                <td>
-                    <?php
-                    $result_name = $this->partial_array_search( $all_plugins, "updraftplus" );
-                    if ( $result_name == -1 ) {
-                        if ( current_user_can( "install_plugins" ) ) : ?>
-                            <a class="button"
-                               href="./plugin-install.php?tab=plugin-information&plugin=updraftplus"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
-                        <?php else : ?>
-                            <span>To install this plugin ask your network administrator</span>
-                        <?php endif;
-                    } else if ( $this->partial_array_search( $active_plugins, "updraftplus" ) == -1 && isset( $_POST["activate"] ) == false ) {
-                        ?>
-                        <button class="button"
-                                onclick="activate('<?php echo esc_html( "updraftplus/updraftplus.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
-                        <?php
-                    } else { ?>
-                        <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
-                    <?php } ?>
-                </td>
-            </tr>
-            <!--Two Factor Authentication-->
-            <tr>
-                <td>
-                    <?php echo esc_html__( "Two Factor Authentication", 'disciple_tools' ); ?>
-                </td>
-                <td>
-                    <?php echo esc_html__( "Secure your WordPress login forms with two factor authentication - including WooCommerce login forms", 'disciple_tools' ); ?>
-                </td>
-                <td>
-                    <?php
-                    $result_name = $this->partial_array_search( $all_plugins, "two-factor-authentication" );
-                    if ( $result_name == -1 ) {
-                        if ( current_user_can( "install_plugins" ) ) : ?>
-                            <a class="button"
-                               href="./plugin-install.php?tab=plugin-information&plugin=two-factor-authentication"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
-                        <?php else : ?>
-                            <span>To install this plugin ask your network administrator</span>
-                        <?php endif;
-                    } else if ( $this->partial_array_search( $active_plugins, "two-factor-authentication" ) == -1 && isset( $_POST["activate"] ) == false ) {
-                        ?>
-                        <button class="button"
-                                onclick="activate('<?php echo esc_html( "two-factor-authentication/two-factor-login.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
-                        <?php
-                    }
-                    else {
-                        ?>
-                            <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
-                        <?php
-                    }
-                    ?>
-                </td>
-            </tr>
-            <!--Inactive Logout-->
-            <tr>
-                <td>
-                    <?php echo esc_html__( "Inactive Logout", 'disciple_tools' ); ?>
-                </td>
-                <td>
-                    <?php echo esc_html__( "Inactive logout provides functionality to automatically log out any idle users after a defined period.", 'disciple_tools' ); ?>
-                </td>
-                <td>
-                    <?php
-                    $result_name = $this->partial_array_search( $all_plugins, " inactive-logout" );
-                    if ( $result_name == -1 ) {
-                        if ( current_user_can( "install_plugins" ) ) : ?>
-                            <a class="button"
-                               href="./plugin-install.php?tab=plugin-information&plugin= inactive-logout"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
-                        <?php else : ?>
-                            <span>To install this plugin ask your network administrator</span>
-                        <?php endif;
-                    } else if ( $this->partial_array_search( $active_plugins, " inactive-logout" ) == -1 && isset( $_POST["activate"] ) == false ) {
-                        ?>
-                        <button class="button"
-                                onclick="activate('<?php echo esc_html( " inactive-logout/inactive-logout.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
-                        <?php
-                    }
-                    else {
-                        ?>
-                        <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
-                        <?php
-                    }
-                    ?>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
+        </div>
+        <?
     }
 
     //checks for a partial string in an array
@@ -315,18 +199,12 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     //this function will install a plugin with a name
-    public function install_plugin( $url ) {
+    public function install_plugin( $download_url ) {
         set_time_limit( 0 );
-        //download plugin json data
-        $plugin_json_text = file_get_contents( $url );
-        $plugin_json = json_decode( trim( $plugin_json_text ) );
-        //get url for plugin
-        $download_url = $plugin_json->download_url;
         $folder_name = explode( "/", $download_url );
-        $folder_name = get_home_path() . "wp-content/plugins/" . $folder_name[ count( $folder_name ) - 1 ];
+        $folder_name = get_home_path() . "wp-content/plugins/" . $folder_name[4] . '.zip';
         if ( $folder_name != "" ) {
             //download the zip file to plugins
-            //http://php.net/file_put_contents <- to download
             file_put_contents( $folder_name, file_get_contents( $download_url ) );
             // get the absolute path to $file
             $folder_name = realpath( $folder_name );
@@ -340,7 +218,17 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     //this function gets the plugin list data
     public function get_plugins() {
-        return json_decode( trim( file_get_contents( 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-plugin-url-list.json' ) ) );
+        return json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
+    }
+
+    /**
+     * Remove the 'columns-2' class from #post-body
+     * in order to make the most of the screen's width
+     */
+    private function modify_css() {
+        ?>
+        <script>jQuery('#post-body').attr('class', 'metabox-holder');</script>
+        <?
     }
 }
 
