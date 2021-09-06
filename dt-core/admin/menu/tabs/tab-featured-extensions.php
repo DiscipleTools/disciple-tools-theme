@@ -133,7 +133,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <h3>
                             <a href="https://dt-clean-fork.local/wp-admin/plugin-install.php?tab=plugin-information&amp;plugin=classic-editor&amp;TB_iframe=true&amp;width=772&amp;height=890" class="thickbox open-plugin-details-modal">
                             <?php echo esc_html( $plugin->name ); ?>
-                            <img src="https://ps.w.org/classic-editor/assets/icon-256x256.png?rev=1998671" class="plugin-icon" alt="">
+                            <img src="https://s.w.org/plugins/geopattern-icon/<?php echo esc_attr( $plugin->slug ); ?>.svg" class="plugin-icon" alt="<?php echo esc_attr( $plugin->name ); ?>">
                             </a>
                         </h3>
                     </div>
