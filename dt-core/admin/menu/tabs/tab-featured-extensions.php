@@ -9,26 +9,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Menu_Base
 {
-    private static $_instance = null;
+private static $_instance = null;
 
-    public static function instance() {
-        if ( is_null( self::$_instance ) ) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
+public static function instance() {
+    if ( is_null( self::$_instance ) ) {
+        self::$_instance = new self();
     }
 
-    public function __construct() {
-        add_action( 'dt_extensions_tab_menu', [ $this, 'add_tab' ], 10, 1 ); // use the priority setting to control load order
-        add_action( 'dt_extensions_tab_content', [ $this, 'content' ], 99, 1 );
+    return self::$_instance;
+}
 
-        parent::__construct();
-    } // End __construct()
+public function __construct() {
+    add_action( 'dt_extensions_tab_menu', [ $this, 'add_tab' ], 10, 1 ); // use the priority setting to control load order
+    add_action( 'dt_extensions_tab_content', [ $this, 'content' ], 99, 1 );
 
-    public function add_tab( $tab ) {
-        $nonce = wp_create_nonce( 'portal-nonce' );
-        ?>
+    parent::__construct();
+} // End __construct()
+
+public function add_tab( $tab ) {
+    $nonce = wp_create_nonce( 'portal-nonce' );
+    ?>
         <script type="text/javascript">
             function install(plug) {
                 jQuery("#wpbody-content").replaceWith("<p><?php esc_html_e( 'installing', 'disciple_tools' ) ?>...</p>");
@@ -68,51 +68,51 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             }
         </script>
         <?php
+}
+
+public function content( $tab ) {
+    if ( 'featured-extensions' == $tab ) {
+        // begin columns template
+        $this->template( 'begin' );
+
+        $this->box_message();
+
+        // begin right column template
+        $this->template( 'right_column' );
+
+        // end columns template
+        $this->template( 'end' );
+
+        $this->modify_css();
     }
-
-    public function content( $tab ) {
-        if ( 'featured-extensions' == $tab ) {
-            // begin columns template
-            $this->template( 'begin' );
-
-            $this->box_message();
-
-            // begin right column template
-            $this->template( 'right_column' );
-
-            // end columns template
-            $this->template( 'end' );
-
-            $this->modify_css();
-        }
-    }
+}
 
     //main page
-    public function box_message() {
+public function box_message() {
         //check for actions
-        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
-            //activate the plugin
-            activate_plugin( sanitize_text_field( wp_unslash( $_POST["activate"] ) ) );
-            exit;
-        } elseif ( isset( $_POST ) && isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] )
+if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
+    //activate the plugin
+    activate_plugin( sanitize_text_field( wp_unslash( $_POST["activate"] ) ) );
+    exit;
+} elseif ( isset( $_POST ) && isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] )
             && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) )
             && ( ( is_multisite() && is_super_admin() ) || ( ! is_multisite() && current_user_can( "manage_dt" ) ) ) ) {
-            //check for admin or multisite super admin
-            //install plugin
-            $this->install_plugin( sanitize_text_field( wp_unslash( $_POST["install"] ) ) );
-            exit;
-        } elseif ( isset( $_POST["deactivate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
-            //deactivate the plugin
-            deactivate_plugins( sanitize_text_field( wp_unslash( $_POST["deactivate"] ) ), true );
-            exit;
-        }
+    //check for admin or multisite super admin
+    //install plugin
+    $this->install_plugin( sanitize_text_field( wp_unslash( $_POST["install"] ) ) );
+    exit;
+} elseif ( isset( $_POST["deactivate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
+    //deactivate the plugin
+    deactivate_plugins( sanitize_text_field( wp_unslash( $_POST["deactivate"] ) ), true );
+    exit;
+}
         $active_plugins = get_option( 'active_plugins' );
         $all_plugins = get_plugins();
         //get plugin data
         $plugins = $this->get_plugins();
 
         // Page content goes here
-        ?>
+?>
         <div class="wp-filter">
         <ul class="filter-links">
             <li class="plugin-install"><a href="https://dt-clean-fork.local/wp-admin/plugin-install.php?tab=featured" class="current" aria-current="page">All Plugins</a> </li>
@@ -120,12 +120,12 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         </div>
         <p>Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.</p>
         <div id="the-list">
-            <?php foreach( $plugins as $plugin ) {
+            <?php foreach ( $plugins as $plugin ) {
                 $plugin->slug = explode( '/', $plugin->homepage );
                 $plugin->slug = $plugin->slug[ array_key_last( $plugin->slug ) ];
                 $plugin->blog_url = 'https://disciple.tools/plugins/' . $plugin->slug;
-                //var_dump($plugin);
-            ?>
+                $plugin->folder_name = get_home_path() . "wp-content/plugins/" . $plugin->slug;
+                ?>
             <!-- Plugin Card: START -->
             <div class="plugin-card plugin-card-classic-editor">
                             <div class="plugin-card-top">
@@ -140,19 +140,50 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     <div class="action-links">
                         <ul class="plugin-action-buttons">
                             <li>
-                                <a class="install-now button" data-slug="classic-editor" href="https://dt-clean-fork.local/wp-admin/update.php?action=install-plugin&amp;plugin=classic-editor&amp;_wpnonce=e385191c33" aria-label="Install Classic Editor 1.6.2 now" data-name="Classic Editor 1.6.2">Install Now</a></li><li><a href="<?php echo esc_attr( $plugin->blog_url ); ?>" target="_blank" class="thickbox open-plugin-details-modal">More Details</a>
+                            <?php
+                            $result_name = $this->partial_array_search( $all_plugins, $plugin->slug );
+                            if ( $result_name == -1 ) {
+                                if ( isset( $plugin->download_url ) && current_user_can( "install_plugins" ) ) : ?>
+                                <button class="button"
+                                        onclick="install('<?php echo esc_html( $plugin->download_url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
+                                <?php else : ?>
+                                    <span>To install this plugin ask your network administrator</span>
+                                <?php endif;
+
+                            } elseif ( $this->partial_array_search( $active_plugins, $plugin->slug ) == -1 && isset( $_POST["activate"] ) == false ) {
+                                ?>
+                                <button class="button"
+                                        onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                                <?php
+                            } else {
+                                ?>
+                                <button class="button"
+                                        onclick="deactivate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Deactivate', 'disciple_tools' ) ?></button>
+                                <?php
+                            }
+                            ?> 
                             </li>
                         </ul>
                     </div>
                     <div class="desc column-description">
                         <p><?php echo esc_html( $plugin->description ); ?></p>
-                        <p class="authors"> <cite>By <a href="<?php echo esc_attr( $plugin->author_homepage); ?>"><?php echo esc_html( $plugin->author ); ?></a></cite></p>
+                        <p class="authors"> <cite>By <a href="<?php echo esc_attr( $plugin->author_homepage ); ?>"><?php echo esc_html( $plugin->author ); ?></a></cite></p>
                     </div>
                 </div>
                 <div class="plugin-card-bottom">
+                    <!--
                     <div class="vers column-rating">
-                        <div class="star-rating"><span class="screen-reader-text">5.0 rating based on 1,002 ratings</span><div class="star star-full" aria-hidden="true"></div><div class="star star-full" aria-hidden="true"></div><div class="star star-full" aria-hidden="true"></div><div class="star star-full" aria-hidden="true"></div><div class="star star-full" aria-hidden="true"></div></div>                   <span class="num-ratings" aria-hidden="true">(1,002)</span>
+                        <div class="star-rating">
+                            <span class="screen-reader-text">5.0 rating based on 1,000 ratings</span>
+                            <div class="star star-full" aria-hidden="true"></div>
+                            <div class="star star-full" aria-hidden="true"></div>
+                            <div class="star star-full" aria-hidden="true"></div>
+                            <div class="star star-full" aria-hidden="true"></div>
+                            <div class="star star-full" aria-hidden="true"></div>
+                        </div>
+                        <span class="num-ratings" aria-hidden="true">(1,000)</span>
                     </div>
+                    -->
                     <div class="column-updated">
                         <strong>Last Updated:</strong>
                         <?php echo esc_html( $plugin->last_updated ); ?>
@@ -164,7 +195,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 </div>
             </div>
             <!-- Plugin Card: END -->
-            <?php
+                <?php
             }
             ?>
         </div>
