@@ -567,7 +567,7 @@ dt_please_log_in();
 
                                         <?php if ( isset( $field_options[$field]["icon"] ) && ! empty( $field_options[$field]["icon"] ) ): ?>
 
-                                            <img class="tabs-title__icon" src="<?php echo esc_html($field_options[$field]["icon"]) ?>" alt="<?php echo esc_html( $field_options[$field]["name"] ) ?>">
+                                            <img class="tabs-title__icon" src="<?php echo esc_html( $field_options[$field]["icon"] ) ?>" alt="<?php echo esc_html( $field_options[$field]["name"] ) ?>">
 
                                         <?php else: ?>
 
