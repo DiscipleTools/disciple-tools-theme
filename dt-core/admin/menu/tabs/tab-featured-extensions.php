@@ -71,6 +71,18 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     public function content( $tab ) {
+        ?>
+        <style>
+            .plugin-author-img {
+                height: 28px;
+                width: 28px;
+                border: 1px solid #d0d7de;
+                border-radius: 100px;
+                vertical-align: bottom;
+                margin-left: 6px;
+            }
+        </style>
+        <?php
         // begin columns template
         $this->template( 'begin' );
 
@@ -140,16 +152,18 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             <?php
             // Print plugin cards
             foreach ( $plugins as $plugin ) {
-                $plugin->slug = explode( '/', $plugin->homepage );
-                $plugin->slug = $plugin->slug[ array_key_last( $plugin->slug ) ];
+                //var_dump( $plugin );die();
+                $plugin->slug = explode( '/', $plugin->homepage )[4];
                 $plugin->blog_url = 'https://disciple.tools/plugins/' . $plugin->slug;
                 $plugin->folder_name = get_home_path() . "wp-content/plugins/" . $plugin->slug;
+                $plugin->author_github_username = explode( '/', $plugin->homepage )[3];
+                $plugin->description = count_chars( $plugin->description ) > 128 ? trim( substr( $plugin->description, 0, 128 ) ) . '...' : $plugin->description; // Shorten descriptions to 88 chars
                 ?>
             <div class="plugin-card plugin-card-classic-editor">
                             <div class="plugin-card-top">
                     <div class="name column-name">
                         <h3>
-                            <a href="<?php echo esc_html( $plugin->homepage ); ?>" target="_blank">
+                            <a href="<?php echo esc_html( $plugin->permalink ); ?>" target="_blank">
                             <?php echo esc_html( $plugin->name ); ?>
                             <img src="https://s.w.org/plugins/geopattern-icon/<?php echo esc_attr( $plugin->slug ); ?>.svg" class="plugin-icon" alt="<?php echo esc_attr( $plugin->name ); ?>">
                             </a>
@@ -185,7 +199,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     </div>
                     <div class="desc column-description">
                         <p><?php echo esc_html( $plugin->description ); ?></p>
-                        <p class="authors"> <cite>By <a href="<?php echo esc_attr( $plugin->author_homepage ); ?>"><?php echo esc_html( $plugin->author ); ?></a></cite></p>
+                        <p class="authors"> <cite>By <a href="<?php echo esc_attr( $plugin->author_homepage ); ?>"><?php echo esc_html( $plugin->author ); ?><img src="https://avatars.githubusercontent.com/<?php echo esc_attr( $plugin->author_github_username ); ?>?size=28" class="plugin-author-img"></a></cite></p>
                     </div>
                 </div>
                 <div class="plugin-card-bottom">
@@ -241,7 +255,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 }
             }
         }
-
         //false
         return -1;
     }
