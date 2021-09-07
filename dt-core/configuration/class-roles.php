@@ -62,6 +62,7 @@ class Disciple_Tools_Roles
     public static function default_multiplier_caps(){
         return [
             'read' => true,  //allow access to wp-admin to set 2nd factor auth settings per user.
+            'access_disciple_tools' => true,
             'access_contacts' => true,
             'create_contacts' => true,
             'read_location' => true,

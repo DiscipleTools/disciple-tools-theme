@@ -106,7 +106,7 @@ class Disciple_Tools_Metrics{
         /**
          * Add Navigation Menu
          */
-        if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+        if ( current_user_can( 'access_disciple_tools' ) ) {
             add_filter( 'desktop_navbar_menu_options', function ( $tabs ){
                 $tabs['metrics'] = [
                     "link" => site_url( '/metrics/' ),

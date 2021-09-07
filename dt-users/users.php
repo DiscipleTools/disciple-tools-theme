@@ -366,7 +366,7 @@ class Disciple_Tools_Users
 
         }
 
-        return wp_redirect( get_site_url() ."/registered" );
+        return wp_redirect( get_site_url() ."/settings" );
     }
 
 
@@ -790,7 +790,7 @@ class Disciple_Tools_Users
      * @param $user
      */
     public function custom_user_profile_fields( $user ){
-        if ( ! user_can( get_current_user_id(), 'access_contacts' ) ) {
+        if ( ! current_user_can( 'access_contacts' ) ) {
             return;
         }
 

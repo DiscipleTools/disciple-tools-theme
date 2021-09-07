@@ -456,11 +456,15 @@ else {
      * Route Front Page depending on login role
      */
     function dt_route_front_page() {
-        if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+        if ( current_user_can( 'access_disciple_tools' ) || current_user_can( 'access_contacts' ) ) {
             /**
              * Use this filter to add a new landing page for logged in users with 'access_contacts' capabilities
              */
-            wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/contacts' ) ) );
+            if ( current_user_can( 'access_contacts' ) ){
+                wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/contacts' ) ) );
+            } else {
+                wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/settings' ) ) );
+            }
         }
         else if ( ! is_user_logged_in() ) {
             dt_please_log_in();

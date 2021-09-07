@@ -125,6 +125,7 @@ class DT_Contacts_Base {
 
         //strategist
         $expected_roles["strategist"]["permissions"]['view_project_metrics'] = true;
+        $expected_roles["strategist"]["permissions"]['access_disciple_tools'] = true;
 
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );

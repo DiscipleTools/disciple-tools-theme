@@ -146,7 +146,7 @@ class Disciple_Tools_People_Groups_Endpoints
      */
     public function add_single_people_group( WP_REST_Request $request ) {
 
-        if ( ! user_can( get_current_user_id(), 'manage_dt' ) ) {
+        if ( ! current_user_can( 'manage_dt' ) ) {
             return new WP_Error( __METHOD__, 'You do not have permission to add people groups', [] );
         }
 

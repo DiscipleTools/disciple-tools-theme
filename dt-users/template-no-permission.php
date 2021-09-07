@@ -44,7 +44,9 @@ class Disciple_Tools_No_Permission extends DT_Magic_Url_Base
     }
 
     public function dt_blank_access() {
-        if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+        require_once( get_template_directory() . '/dt-core/setup-functions.php' );
+        dt_setup_roles_and_permissions(); //make sure roles are set up
+        if ( current_user_can( 'access_disciple_tools' ) ) {
             dt_route_front_page();
         }
         else if ( ! is_user_logged_in() ) {
@@ -85,7 +87,11 @@ class Disciple_Tools_No_Permission extends DT_Magic_Url_Base
             }
         </style>
         <div class="grid-x">
-            <div class="cell" style="text-align:center; padding-top:2em;"><?php esc_html_e( 'You are registered but an administrator needs to assign you access permissions.', 'disciple_tools' ) ?></div>
+            <div class="cell" style="text-align:center; padding-top:2em;">
+                <?php esc_html_e( 'You are registered but an administrator needs to assign you access permissions.', 'disciple_tools' ) ?>
+                <br><br>
+￼               <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( 'Log Out', 'disciple_tools' )?></a>
+            </div>
         </div>
         <?php
     }
