@@ -569,7 +569,7 @@ dt_please_log_in();
 
                                             <img class="tabs-title__icon" src="<?php echo esc_html( $field_options[$field]["icon"] ) ?>" alt="<?php echo esc_html( $field_options[$field]["name"] ) ?>">
 
-                                        <?php else: ?>
+                                        <?php else : ?>
 
                                             <div class="tabs-title__icon"></div>
 
