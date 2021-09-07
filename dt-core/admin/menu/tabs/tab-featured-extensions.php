@@ -9,26 +9,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Menu_Base
 {
-private static $_instance = null;
+    private static $_instance = null;
 
-public static function instance() {
-    if ( is_null( self::$_instance ) ) {
-        self::$_instance = new self();
+    public static function instance() {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+
+        return self::$_instance;
     }
 
-    return self::$_instance;
-}
+    public function __construct() {
+        add_action( 'dt_extensions_tab_menu', [ $this, 'add_tab' ], 10, 1 ); // use the priority setting to control load order
+        add_action( 'dt_extensions_tab_content', [ $this, 'content' ], 99, 1 );
 
-public function __construct() {
-    add_action( 'dt_extensions_tab_menu', [ $this, 'add_tab' ], 10, 1 ); // use the priority setting to control load order
-    add_action( 'dt_extensions_tab_content', [ $this, 'content' ], 99, 1 );
+        parent::__construct();
+    } // End __construct()
 
-    parent::__construct();
-} // End __construct()
-
-public function add_tab( $tab ) {
-    $nonce = wp_create_nonce( 'portal-nonce' );
-    ?>
+    public function add_tab( $tab ) {
+        $nonce = wp_create_nonce( 'portal-nonce' );
+        ?>
         <script type="text/javascript">
             function install(plug) {
                 jQuery("#wpbody-content").replaceWith("<p><?php esc_html_e( 'installing', 'disciple_tools' ) ?>...</p>");
@@ -68,14 +68,13 @@ public function add_tab( $tab ) {
             }
         </script>
         <?php
-}
+    }
 
-public function content( $tab ) {
-    if ( 'featured-extensions' == $tab ) {
+    public function content( $tab ) {
         // begin columns template
         $this->template( 'begin' );
 
-        $this->box_message();
+        $this->box_message( $tab );
 
         // begin right column template
         $this->template( 'right_column' );
@@ -85,53 +84,72 @@ public function content( $tab ) {
 
         $this->modify_css();
     }
-}
 
     //main page
-public function box_message() {
+    public function box_message( $tab ) {
         //check for actions
-if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
-    //activate the plugin
-    activate_plugin( sanitize_text_field( wp_unslash( $_POST["activate"] ) ) );
-    exit;
-} elseif ( isset( $_POST ) && isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] )
+        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
+            //activate the plugin
+            activate_plugin( sanitize_text_field( wp_unslash( $_POST["activate"] ) ) );
+            exit;
+        } elseif ( isset( $_POST ) && isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] )
             && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) )
             && ( ( is_multisite() && is_super_admin() ) || ( ! is_multisite() && current_user_can( "manage_dt" ) ) ) ) {
-    //check for admin or multisite super admin
-    //install plugin
-    $this->install_plugin( sanitize_text_field( wp_unslash( $_POST["install"] ) ) );
-    exit;
-} elseif ( isset( $_POST["deactivate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
-    //deactivate the plugin
-    deactivate_plugins( sanitize_text_field( wp_unslash( $_POST["deactivate"] ) ), true );
-    exit;
-}
+            //check for admin or multisite super admin
+            //install plugin
+            $this->install_plugin( sanitize_text_field( wp_unslash( $_POST["install"] ) ) );
+            exit;
+        } elseif ( isset( $_POST["deactivate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
+            //deactivate the plugin
+            deactivate_plugins( sanitize_text_field( wp_unslash( $_POST["deactivate"] ) ), true );
+            exit;
+        }
         $active_plugins = get_option( 'active_plugins' );
         $all_plugins = get_plugins();
-        //get plugin data
-        $plugins = $this->get_plugins();
+        $tab = 'all_categories';
+        if ( isset( $_GET['tab'] ) ) {
+            $tab = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
+        }
 
+        //get plugin data
+        $plugins = $this->get_plugins( $tab );
         // Page content goes here
-?>
+
+        // Assign the 'current' class to the selected tab
+            $class_current_tab = '';
+        ?>
         <div class="wp-filter">
         <ul class="filter-links">
-            <li class="plugin-install"><a href="https://dt-clean-fork.local/wp-admin/plugin-install.php?tab=featured" class="current" aria-current="page">All Plugins</a> </li>
+            <li class="plugin-install">
+                <a href="?page=dt_extensions" <?php if ( ! isset( $_GET['tab'] ) ) { echo 'class="current"'; } ?>>All Plugins</a>
+            </li>
+            <?php
+            $all_plugin_categories = $this->get_all_plugin_categories();
+            foreach ( $all_plugin_categories as $plugin_category ) {
+                ?>
+                <li class="plugin-install">
+                    <a href="?page=dt_extensions&tab=<?php echo esc_attr( $plugin_category ); ?>" <?php if ( isset( $_GET['tab'] ) && $_GET['tab'] == $plugin_category ) { echo 'class="current"'; } ?>><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>       
+                </li>
+                <?php
+            }
+            ?>
         </ul>
         </div>
         <p>Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.</p>
         <div id="the-list">
-            <?php foreach ( $plugins as $plugin ) {
+            <?php
+            // Print plugin cards
+            foreach ( $plugins as $plugin ) {
                 $plugin->slug = explode( '/', $plugin->homepage );
                 $plugin->slug = $plugin->slug[ array_key_last( $plugin->slug ) ];
                 $plugin->blog_url = 'https://disciple.tools/plugins/' . $plugin->slug;
                 $plugin->folder_name = get_home_path() . "wp-content/plugins/" . $plugin->slug;
                 ?>
-            <!-- Plugin Card: START -->
             <div class="plugin-card plugin-card-classic-editor">
                             <div class="plugin-card-top">
                     <div class="name column-name">
                         <h3>
-                            <a href="https://dt-clean-fork.local/wp-admin/plugin-install.php?tab=plugin-information&amp;plugin=classic-editor&amp;TB_iframe=true&amp;width=772&amp;height=890" class="thickbox open-plugin-details-modal">
+                            <a href="<?php echo esc_html( $plugin->homepage ); ?>" target="_blank">
                             <?php echo esc_html( $plugin->name ); ?>
                             <img src="https://s.w.org/plugins/geopattern-icon/<?php echo esc_attr( $plugin->slug ); ?>.svg" class="plugin-icon" alt="<?php echo esc_attr( $plugin->name ); ?>">
                             </a>
@@ -161,7 +179,7 @@ if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] )
                                         onclick="deactivate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Deactivate', 'disciple_tools' ) ?></button>
                                 <?php
                             }
-                            ?> 
+                            ?>
                             </li>
                         </ul>
                     </div>
@@ -189,12 +207,11 @@ if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] )
                         <?php echo esc_html( $plugin->last_updated ); ?>
                     </div>
                     <div class="column-downloaded">Active Installations data not available</div>
-                    <div class="column-compatibility">
+                    <!-- <div class="column-compatibility">
                         <span class="compatibility-compatible"><strong>Compatible</strong> with your version of WordPress</span>
-                    </div>
+                    </div> -->
                 </div>
             </div>
-            <!-- Plugin Card: END -->
                 <?php
             }
             ?>
@@ -247,9 +264,35 @@ if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] )
         }
     }
 
+    // Returns an array of all distinct plugin categories
+    public function get_all_plugin_categories() {
+        $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
+        $distinct_categories = [];
+        foreach ( $plugins as $plugin ) {
+            $plugin_categories = explode( ',', $plugin->categories );
+            foreach ( $plugin_categories as $plug_cat ) {
+                if ( ! in_array( $plug_cat, $distinct_categories ) ) {
+                    $distinct_categories[] = $plug_cat;
+                }
+            }
+        }
+        return $distinct_categories;
+    }
+
     //this function gets the plugin list data
-    public function get_plugins() {
-        return json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
+    public function get_plugins( $category ) {
+        $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
+        if ( $category === 'all_categories' ) {
+            return $plugins;
+        }
+        $filtered_plugins = [];
+        foreach ( $plugins as $plugin ) {
+            $plugin_categories = explode( ',', $plugin->categories );
+            if ( in_array( $category, $plugin_categories ) ) {
+                $filtered_plugins[] = $plugin;
+            }
+        }
+        return $filtered_plugins;
     }
 
     /**
@@ -259,7 +302,7 @@ if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] )
     private function modify_css() {
         ?>
         <script>jQuery('#post-body').attr('class', 'metabox-holder');</script>
-        <?
+            <?php
     }
 }
 
