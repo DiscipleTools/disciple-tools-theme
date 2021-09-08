@@ -304,7 +304,7 @@ class Disciple_Tools_Users_Endpoints
 
             // only dt admin caps can add locations for other users
             $user_id = get_current_user_id();
-            if ( isset( $params['user_id'] ) && ! empty( $params['user_id'] ) && $params['user_id'] !== $user_id ) {
+            if ( isset( $params['user_id'] ) && ! empty( $params['user_id'] ) && (int) $params['user_id'] !== $user_id ) {
                 if ( user_can( $user_id, 'manage_dt' ) ) { // if user_id param is set, you must be able to edit users.
                     $user_id = sanitize_text_field( wp_unslash( $params['user_id'] ) );
                 } else {
@@ -346,7 +346,7 @@ class Disciple_Tools_Users_Endpoints
 
             // only dt admin caps can add locations for other users
             $user_id = get_current_user_id();
-            if ( isset( $params['user_id'] ) && ! empty( $params['user_id'] ) && $params['user_id'] !== $user_id ) {
+            if ( isset( $params['user_id'] ) && ! empty( $params['user_id'] ) && (int) $params['user_id'] !== $user_id ) {
                 // if user_id param is set, you must be able to edit users.
                 if ( user_can( $user_id, 'manage_dt' ) ) {
                     $user_id = sanitize_text_field( wp_unslash( $params['user_id'] ) );
