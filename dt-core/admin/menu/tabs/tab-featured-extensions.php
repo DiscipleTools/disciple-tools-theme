@@ -140,7 +140,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             foreach ( $all_plugin_categories as $plugin_category ) {
                 ?>
                 <li class="plugin-install">
-                    <a href="?page=dt_extensions&tab=<?php echo esc_attr( $plugin_category ); ?>" <?php if ( isset( $_GET['tab'] ) && $_GET['tab'] == $plugin_category ) { echo 'class="current"'; } ?>><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>       
+                    <a href="?page=dt_extensions&tab=<?php echo esc_attr( $plugin_category ); ?>" <?php if ( isset( $_GET['tab'] ) && $_GET['tab'] == $plugin_category ) { echo 'class="current"'; } ?>><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
                 </li>
                 <?php
             }
@@ -294,7 +294,11 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     //this function gets the plugin list data
     public function get_plugins( $category ) {
-        $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
+        $plugins = get_transient( "dt_plugins_feed" );
+        if ( empty( $plugins ) ){
+            $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
+            set_transient( "dt_plugins_feed", $plugins, HOUR_IN_SECONDS );
+        }
         if ( $category === 'all_categories' ) {
             return $plugins;
         }
