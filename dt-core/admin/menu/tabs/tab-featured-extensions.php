@@ -81,6 +81,17 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 vertical-align: bottom;
                 margin-left: 6px;
             }
+            .warning-pill{
+                background-color: #ffae00;
+                color: black;
+                font-size: .9em;
+                pointer-events: none;
+                border-radius: 3px;
+                text-decoration: none;
+                margin: 1rem 0 0 1rem;
+                padding: .5em .5em;
+                text-align: center;
+            }
         </style>
         <?php
         // begin columns template
@@ -197,6 +208,16 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                             }
                             ?>
                             </li>
+                            <?php if ( in_array( 'proof-of-concept', explode( ',', $plugin->categories ) ) ): ?>
+                            <li>
+                                <a class="warning-pill">POC</a>
+                            </li>
+                        <?php elseif ( in_array( 'beta', explode( ',', $plugin->categories ) ) ): ?>
+                            <li>
+
+                                <a class="warning-pill">BETA</a>
+                            </li>
+                    <?php endif; ?>
                         </ul>
                     </div>
                     <div class="desc column-description">
