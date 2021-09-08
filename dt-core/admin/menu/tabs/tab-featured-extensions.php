@@ -158,13 +158,15 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 $plugin->folder_name = get_home_path() . "wp-content/plugins/" . $plugin->slug;
                 $plugin->author_github_username = explode( '/', $plugin->homepage )[3];
                 $plugin->description = count_chars( $plugin->description ) > 128 ? trim( substr( $plugin->description, 0, 128 ) ) . '...' : $plugin->description; // Shorten descriptions to 88 chars
+                $plugin->name = str_replace( "Disciple Tools - ", "", $plugin->name );
+                $plugin->name = str_replace( "Disciple.Tools - ", "", $plugin->name );
                 ?>
             <div class="plugin-card plugin-card-classic-editor">
                             <div class="plugin-card-top">
                     <div class="name column-name">
                         <h3>
                             <a href="<?php echo esc_html( $plugin->permalink ); ?>" target="_blank">
-                            <?php echo esc_html( $plugin->name ); ?>
+                                <?php echo esc_html( $plugin->name ); ?>
                             <img src="https://s.w.org/plugins/geopattern-icon/<?php echo esc_attr( $plugin->slug ); ?>.svg" class="plugin-icon" alt="<?php echo esc_attr( $plugin->name ); ?>">
                             </a>
                         </h3>
