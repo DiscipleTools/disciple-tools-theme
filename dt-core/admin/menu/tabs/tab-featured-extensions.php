@@ -129,7 +129,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         }
         $active_plugins = get_option( 'active_plugins' );
         $all_plugins = get_plugins();
-        $tab = 'all_categories';
+        $tab = 'featured';
         if ( isset( $_GET['tab'] ) ) {
             $tab = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
         }
@@ -144,16 +144,21 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         <div class="wp-filter">
         <ul class="filter-links">
             <li class="plugin-install">
-                <a href="?page=dt_extensions" <?php if ( ! isset( $_GET['tab'] ) ) { echo 'class="current"'; } ?>>All Plugins</a>
+                <a href="?page=dt_extensions&tab=featured" <?php if ( ! isset( $_GET['tab'] ) || $tab === 'featured' ) { echo 'class="current"'; } ?>>Featured</a>
+            </li>
+            <li class="plugin-install">
+                <a href="?page=dt_extensions&tab=all_plugins" <?php if ( $tab === 'all_plugins' ) { echo 'class="current"'; } ?>>All Plugins</a>
             </li>
             <?php
             $all_plugin_categories = $this->get_all_plugin_categories();
             foreach ( $all_plugin_categories as $plugin_category ) {
-                ?>
+                if ( $plugin_category !== 'featured' ) {
+                    ?>
                 <li class="plugin-install">
                     <a href="?page=dt_extensions&tab=<?php echo esc_attr( $plugin_category ); ?>" <?php if ( isset( $_GET['tab'] ) && $_GET['tab'] == $plugin_category ) { echo 'class="current"'; } ?>><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
                 </li>
-                <?php
+                    <?php
+                }
             }
             ?>
         </ul>
@@ -163,7 +168,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             <?php
             // Print plugin cards
             foreach ( $plugins as $plugin ) {
-                //var_dump( $plugin );die();
                 $plugin->slug = explode( '/', $plugin->homepage )[4];
                 $plugin->blog_url = 'https://disciple.tools/plugins/' . $plugin->slug;
                 $plugin->folder_name = get_home_path() . "wp-content/plugins/" . $plugin->slug;
@@ -316,15 +320,16 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     //this function gets the plugin list data
-    public function get_plugins( $category ) {
+    public function get_plugins( $category = 'featured' ) {
         $plugins = get_transient( "dt_plugins_feed" );
         if ( empty( $plugins ) ){
             $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
             set_transient( "dt_plugins_feed", $plugins, HOUR_IN_SECONDS );
         }
-        if ( $category === 'all_categories' ) {
+        if ( $category === 'all_plugins' ) {
             return $plugins;
         }
+
         $filtered_plugins = [];
         foreach ( $plugins as $plugin ) {
             $plugin_categories = explode( ',', $plugin->categories );
