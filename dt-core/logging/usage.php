@@ -9,7 +9,7 @@ class Disciple_Tools_Usage {
      *
      * @var int
      */
-    public $version = 2;
+    public $version = 3;
 
     public function send_usage() {
         $disabled = apply_filters( 'dt_disable_usage_report', false );
@@ -37,6 +37,17 @@ class Disciple_Tools_Usage {
         $users = new WP_User_Query( [ 'count_total' => true ] );
 
         $site_url = get_site_url( null, '', 'https' );
+
+        //active plugins
+        $active_plugins_options = get_option( 'active_plugins' );
+        $active_plugins = array_map( function ( $folder_slash_plugin ){
+            return explode( '/', $folder_slash_plugin )[1];
+        }, $active_plugins_options );
+
+        //geocoding
+        $using_mapbox = (bool) DT_Mapbox_API::get_key();
+        $using_google_geocode = (bool) Disciple_Tools_Google_Geocode_API::get_key();
+
         $data = [
             'validator' => hash( 'sha256', time() ),
             'site_id' => hash( 'sha256', $site_url ),
@@ -66,6 +77,10 @@ class Disciple_Tools_Usage {
                 'regions' => $regions ?: '0',
                 'timestamp' => gmdate( 'Y-m-d' ),
 
+                //DT Usage
+                'active_plugins' => $active_plugins,
+                'using_mapbox' => $using_mapbox,
+                'using_google_geocode' => $using_google_geocode
             ],
         ];
 
