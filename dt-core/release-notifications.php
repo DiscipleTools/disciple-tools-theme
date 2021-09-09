@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function dt_release_modal() {
-    $show_notification_for_theme_version = '1.11.0'; // increment this number with each new release modal
+    $show_notification_for_theme_version = '1.12.0'; // increment this number with each new release modal
 
     $theme_version = wp_get_theme()->version;
     $last_release_notification = get_user_meta( get_current_user_id(), 'dt_release_notification', true );
