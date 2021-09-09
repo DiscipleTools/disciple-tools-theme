@@ -1808,3 +1808,12 @@ img.dt-blue-icon {
         display: none;
     }
 }
+
+//release notification modal
+#release-modal {
+    //center images
+    p img {
+        display: block;
+        margin: auto;
+    }
+}
