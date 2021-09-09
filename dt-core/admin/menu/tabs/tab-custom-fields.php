@@ -1194,7 +1194,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     ];
                 }
             }
-
+            if ( !empty( $new_field ) ){
+                $custom_field_options[$post_type][$field_key] = $new_field;
+            }
             update_option( "dt_field_customizations", $custom_field_options );
             wp_cache_delete( $post_type . "_field_settings" );
             self::admin_notice( __( "Field added successfully", 'disciple_tools' ), "success" );
