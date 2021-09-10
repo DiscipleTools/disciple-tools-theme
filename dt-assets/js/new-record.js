@@ -14,6 +14,8 @@ jQuery(function($) {
     $('#show-hidden-fields').show();
     $('#hide-hidden-fields').hide();
     new_post.type = type
+    /* Focus first field in form */
+    document.querySelector('.form-fields input').focus()
   })
   $('#show-hidden-fields').on('click', function (){
     $('.form-field').show()
