@@ -844,7 +844,7 @@ jQuery(document).ready(function($) {
     function getContact(id, isUser = false) {
       makeRequest('GET', 'contacts/'+id, null, 'dt-posts/v2/' )
         .done(function(response){
-          if ( isUser || response.type.key === 'user' ) {
+          if ( isUser || ( response.corresponds_to_user >= 0 ) ) {
             jQuery('#name').val( window.lodash.escape(response.title) )
             jQuery('#contact-result').html(`${window.lodash.escape(dt_user_management_localized.translations.already_user)} <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${window.lodash.escape(dt_user_management_localized.translations.view_user)}</a>`)
           } else {
