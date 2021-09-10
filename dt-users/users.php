@@ -976,7 +976,7 @@ class Disciple_Tools_Users
      * @return int|WP_Error
      */
     public static function create_user( $user_name, $user_email, $display_name, array $user_roles = [ 'multiplier' ], $corresponds_to_contact = null, $locale = null ){
-        if ( !current_user_can( "create_users" ) ){
+        if ( !current_user_can( "create_users" ) && !DT_User_Management::non_admins_can_make_users() ){
             return new WP_Error( "no_permissions", "You don't have permissions to create users", [ 'status' => 401 ] );
         }
         $user_email = sanitize_email( wp_unslash( $user_email ) );
