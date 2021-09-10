@@ -487,7 +487,7 @@ class DT_Duplicate_Checker_And_Merging {
             FROM $wpdb->dt_post_user_meta
             WHERE post_id = %d
             AND NOT EXISTS (SELECT 1
-            FROM wp_dt_post_user_meta
+            FROM $wpdb->dt_post_user_meta
             WHERE user_id = user_id
             AND post_id = %d
             AND meta_key = meta_key
