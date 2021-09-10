@@ -5,7 +5,7 @@ jQuery(document).ready(function($) {
     write_users_list()
     open_user_modal( window.wpApiShare.url_path.replace( 'user-management/user','').replace('/','') )
   }
-  if( 'user-management/add-user' === window.wpApiShare.url_path ) {
+  if( window.wpApiShare.url_path.includes('user-management/add-user') ) {
     write_add_user()
   }
 
@@ -841,6 +841,25 @@ jQuery(document).ready(function($) {
       }
     });
 
+    function getContact(id, isUser = false) {
+      makeRequest('GET', 'contacts/'+id, null, 'dt-posts/v2/' )
+        .done(function(response){
+          if ( isUser || response.type.key === 'user' ) {
+            jQuery('#name').val( window.lodash.escape(response.title) )
+            jQuery('#contact-result').html(`${window.lodash.escape(dt_user_management_localized.translations.already_user)} <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${window.lodash.escape(dt_user_management_localized.translations.view_user)}</a>`)
+          } else {
+            window.contact_record = response
+            submit_button.prop('disabled', false)
+            jQuery('#name').val( window.lodash.escape(response.title) )
+            if ( response.contact_email && response.contact_email[0] !== 'undefined' ) {
+              jQuery('#email').val( window.lodash.escape(response.contact_email[0].value) )
+            }
+
+          }
+          spinner_span.html(``)
+        })
+    }
+
     ["subassigned"].forEach(field_id=>{
       $.typeahead({
         input: `.js-typeahead-${field_id}`,
@@ -858,21 +877,7 @@ jQuery(document).ready(function($) {
             spinner_span.html(spinner)
             submit_button.prop('disabled', true)
 
-            makeRequest('GET', 'contacts/'+item.ID, null, 'dt-posts/v2/' )
-              .done(function(response){
-                if ( item.user ) {
-                  jQuery('#contact-result').html(`${window.lodash.escape(dt_user_management_localized.translations.already_user)} <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${window.lodash.escape(dt_user_management_localized.translations.view_user)}</a>`)
-                } else {
-                  window.contact_record = response
-                  submit_button.prop('disabled', false)
-                  jQuery('#name').val( window.lodash.escape(response.title) )
-                  if ( response.contact_email[0] !== 'undefined' ) {
-                    jQuery('#email').val( window.lodash.escape(response.contact_email[0].value) )
-                  }
-
-                }
-                spinner_span.html(``)
-              })
+            getContact(item.ID, item.user)
           },
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -892,6 +897,13 @@ jQuery(document).ready(function($) {
         }
       })
     })
+
+    // Prefill the form if contact_id is in the query params
+    const url = new URL(window.location.href)
+    contactId = url.searchParams.get('contact_id')
+    if ( contactId !== null && contactId !== '' && !isNaN(contactId) ) {
+      getContact(parseInt(contactId))
+    }
   }
 
   function write_language_dropdown(translations) {

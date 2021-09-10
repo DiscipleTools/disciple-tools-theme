@@ -124,8 +124,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             <div class="details-title-section">
 
                                 <?php if ( get_option( 'dt_user_invite_setting', false ) ): ?>
-
-                                <a href="/user-management/add-user" class="button small create_user_from_contact" style="margin-left: 2rem;">
+                                <a href="/user-management/add-user?contact_id=<?php echo esc_html( $post_id ) ?>" class="button small create_user_from_contact" style="margin-left: 2rem;">
                                     <?php esc_html_e( 'Create user from contact', 'disciple_tools' ) ?>
                                 </a>
 
