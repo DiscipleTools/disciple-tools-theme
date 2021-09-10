@@ -339,7 +339,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             if ( $parts["meta_key"] !== $params["parts"]["meta_key"] || $parts["public_key"] !== $params["parts"]["public_key"] ){
                 return false;
             }
-            if ( $parts["post_id"] !== $params["parts"]["post_id"] ){
+            if ( (int) $parts["post_id"] !== (int) $params["parts"]["post_id"] ){
                 return false;
             }
             return true;
