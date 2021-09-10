@@ -336,6 +336,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
 
+    function is_associative_array( array $arr ){
+        if ( array() === $arr ){
+            return false;
+        }
+        return array_keys( $arr ) !== range( 0, count( $arr ) - 1 );
+    }
     /**
      * Recursively merge array2 on to array1
      *
@@ -345,7 +351,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      */
     function dt_array_merge_recursive_distinct( array &$array1, array &$array2 ){
         $merged = $array1;
-        if ( wp_is_numeric_array( $array2 ) && wp_is_numeric_array( $merged ) ){
+        if ( !is_associative_array( $array2 ) && !is_associative_array( $merged ) ){
             return array_unique( array_merge( $merged, $array2 ), SORT_REGULAR );
         }
         foreach ( $array2 as $key => &$value ){
