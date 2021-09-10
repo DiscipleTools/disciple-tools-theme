@@ -235,7 +235,7 @@ class Disciple_Tools_Users_Endpoints
             if ( isset( $params["user-user_role"] ) ){
                 $user_roles = [ $params["user-user_role"] ];
             }
-            if ( isset( $params["user-roles"] ) ){
+            if ( isset( $params["user-roles"] ) && !empty( $params["user-roles"] ) ){
                 $user_roles =$params["user-roles"];
             }
             $user_login = $params["user-user_login"] ?? $params["user-email"];
