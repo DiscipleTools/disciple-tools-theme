@@ -262,7 +262,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             }
             ?>
         </div>
-        <?
+        <?php
     }
 
     //checks for a partial string in an array
