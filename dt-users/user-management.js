@@ -813,10 +813,17 @@ jQuery(document).ready(function($) {
         spinner_span.html(spinner)
         submit_button.prop('disabled', true)
 
-        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact, "locale": locale, 'user-roles':roles })
+        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact, "locale": locale, 'user-roles':roles, return_contact: true })
           .done(response=>{
-            result_div.html(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response)}">
+            const { user_id, corresponds_to_contact: contact_id } = response
+            result_div.html('')
+            if ( dt_user_management_localized.has_permission ) {
+              result_div.append(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(user_id)}">
               ${ window.lodash.escape( dt_user_management_localized.translations.view_new_user ) }</a>
+            `)
+            }
+            result_div.append(`<br /><a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape(contact_id)}">
+              ${ window.lodash.escape( dt_user_management_localized.translations.view_new_contact ) }</a>
             `)
             jQuery('#new-user-form').empty()
           })
@@ -846,7 +853,11 @@ jQuery(document).ready(function($) {
         .done(function(response){
           if ( isUser || ( response.corresponds_to_user >= 0 ) ) {
             jQuery('#name').val( window.lodash.escape(response.title) )
-            jQuery('#contact-result').html(`${window.lodash.escape(dt_user_management_localized.translations.already_user)} <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${window.lodash.escape(dt_user_management_localized.translations.view_user)}</a>`)
+            jQuery('#contact-result').html(window.lodash.escape(dt_user_management_localized.translations.already_user))
+            if ( window.dt_user_management_localized.has_permission ) {
+              jQuery('#contact-result').append(`<br /> <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${window.lodash.escape(dt_user_management_localized.translations.view_user)}</a>`)
+            }
+            jQuery('#contact-result').append(`<br /> <a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${id}">${window.lodash.escape(dt_user_management_localized.translations.view_contact)}</a>`)
           } else {
             window.contact_record = response
             submit_button.prop('disabled', false)
