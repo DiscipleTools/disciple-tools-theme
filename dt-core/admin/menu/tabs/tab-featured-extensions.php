@@ -127,7 +127,14 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             deactivate_plugins( sanitize_text_field( wp_unslash( $_POST["deactivate"] ) ), true );
             exit;
         }
+        $network_active_plugins = get_site_option( 'active_sitewide_plugins' );
         $active_plugins = get_option( 'active_plugins' );
+        if ( empty( $active_plugins ) ){
+            $active_plugins = [];
+        }
+        foreach ( $network_active_plugins as $plugin => $time ){
+            $active_plugins[] = $plugin;
+        }
         $all_plugins = get_plugins();
         $tab = 'featured';
         if ( isset( $_GET['tab'] ) ) {

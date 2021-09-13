@@ -9,7 +9,7 @@ class Disciple_Tools_Usage {
      *
      * @var int
      */
-    public $version = 3;
+    public $version = 4;
 
     public function send_usage() {
         $disabled = apply_filters( 'dt_disable_usage_report', false );
@@ -22,6 +22,7 @@ class Disciple_Tools_Usage {
                 'httpversion' => '1.0',
                 'body' => $this->telemetry(),
             ];
+
 
             wp_remote_post( $url, $args );
         }
@@ -39,7 +40,14 @@ class Disciple_Tools_Usage {
         $site_url = get_site_url( null, '', 'https' );
 
         //active plugins
+        $network_active_plugins = get_site_option( 'active_sitewide_plugins' );
         $active_plugins_options = get_option( 'active_plugins' );
+        if ( empty( $active_plugins_options ) ){
+            $active_plugins_options = [];
+        }
+        foreach ( $network_active_plugins as $plugin => $time ){
+            $active_plugins_options[] = $plugin;
+        }
         $active_plugins = array_map( function ( $folder_slash_plugin ){
             return explode( '/', $folder_slash_plugin )[1];
         }, $active_plugins_options );
