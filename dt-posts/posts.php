@@ -1349,15 +1349,30 @@ class Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, "You do not have access to: " . $field, [ 'status' => 403 ] );
         }
         global $wpdb;
-        $options = $wpdb->get_col( $wpdb->prepare("
-            SELECT DISTINCT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
-            LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
-            WHERE $wpdb->postmeta.meta_key = %s
-            AND $wpdb->postmeta.meta_value LIKE %s
-            AND $wpdb->posts.post_status = 'publish'
-            ORDER BY $wpdb->postmeta.meta_value ASC
-            LIMIT %d
-        ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( $limit ) ) );
+        $fields = DT_Posts::get_post_field_settings( $post_type );
+        if ( isset( $fields[$field]["private"] ) && $fields[$field]["private"] === true ){
+            $options = $wpdb->get_col( $wpdb->prepare("
+                SELECT DISTINCT pm.meta_value
+                FROM $wpdb->dt_post_user_meta pm
+                LEFT JOIN $wpdb->posts on $wpdb->posts.ID = pm.post_id
+                WHERE pm.meta_key = %s
+                AND pm.meta_value LIKE %s
+                AND $wpdb->posts.post_status = 'publish'
+                AND pm.user_id = %s
+                ORDER BY pm.meta_value ASC
+                LIMIT %d
+            ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( get_current_user_id() ), esc_sql( $limit ) ) );
+        } else {
+            $options = $wpdb->get_col( $wpdb->prepare("
+                SELECT DISTINCT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
+                LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
+                WHERE $wpdb->postmeta.meta_key = %s
+                AND $wpdb->postmeta.meta_value LIKE %s
+                AND $wpdb->posts.post_status = 'publish'
+                ORDER BY $wpdb->postmeta.meta_value ASC
+                LIMIT %d
+            ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( $limit ) ) );
+        }
 
         return $options;
     }
