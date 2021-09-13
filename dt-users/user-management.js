@@ -848,11 +848,19 @@ jQuery(document).ready(function($) {
       }
     });
 
-    function getContact(id, isUser = false) {
+    function getContact(id, isUser = false, overwriteTypeahead = false) {
       makeRequest('GET', 'contacts/'+id, null, 'dt-posts/v2/' )
         .done(function(response){
+
+          console.log(response, overwriteTypeahead)
+          if (overwriteTypeahead) {
+            $(".js-typeahead-subassigned").val(window.lodash.escape(response.name))
+          }
           if ( isUser || ( response.corresponds_to_user >= 0 ) ) {
-            jQuery('#name').val( window.lodash.escape(response.title) )
+            jQuery('#name').val( window.lodash.escape(response.name) )
+            if ( response.contact_email && response.contact_email.length > 0 ) {
+              jQuery('#email').val( window.lodash.escape(response.contact_email[0].value) )
+            }
             jQuery('#contact-result').html(window.lodash.escape(dt_user_management_localized.translations.already_user))
             if ( window.dt_user_management_localized.has_permission ) {
               jQuery('#contact-result').append(`<br /> <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${window.lodash.escape(dt_user_management_localized.translations.view_user)}</a>`)
@@ -913,7 +921,7 @@ jQuery(document).ready(function($) {
     const url = new URL(window.location.href)
     contactId = url.searchParams.get('contact_id')
     if ( contactId !== null && contactId !== '' && !isNaN(contactId) ) {
-      getContact(parseInt(contactId))
+      getContact(parseInt(contactId), false, true)
     }
   }
 
