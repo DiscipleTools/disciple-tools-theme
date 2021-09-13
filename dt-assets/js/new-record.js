@@ -1,5 +1,6 @@
 jQuery(function($) {
   let new_post = {}
+  document.querySelector('.form-fields input').focus()
   $('.type-option').on('click', function(){
     let type = $(this).attr('id')
     $('.type-option.selected').removeClass('selected')
