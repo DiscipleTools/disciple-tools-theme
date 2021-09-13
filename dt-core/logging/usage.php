@@ -40,11 +40,8 @@ class Disciple_Tools_Usage {
         $site_url = get_site_url( null, '', 'https' );
 
         //active plugins
-        $network_active_plugins = get_site_option( 'active_sitewide_plugins' );
-        $active_plugins_options = get_option( 'active_plugins' );
-        if ( empty( $active_plugins_options ) ){
-            $active_plugins_options = [];
-        }
+        $network_active_plugins = get_site_option( 'active_sitewide_plugins', [] );
+        $active_plugins_options = get_option( 'active_plugins', [] );
         foreach ( $network_active_plugins as $plugin => $time ){
             $active_plugins_options[] = $plugin;
         }
