@@ -727,7 +727,7 @@ class Disciple_Tools_Users
 
             $filters = apply_filters( "dt_user_list_filters", $filters, $post_type );
             usort( $filters["tabs"], function ( $a, $b ) {
-                return ( $a["order"] ?? 50 ) >= ( $b["order"] ?? 51 );
+                return ( $a["order"] ?? 50 ) <=> ( $b["order"] ?? 51 );
             } );
             update_user_option( $current_user_id, "dt_cached_filters_$post_type", $filters );
         }
