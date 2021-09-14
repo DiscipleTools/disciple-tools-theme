@@ -135,19 +135,7 @@ class DT_Contacts_User {
                                 <?php esc_html_e( "User Language", "disciple_tools" ); ?>
                             </label>
                             <?php
-                            $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
-                            $translations = dt_get_translations();
-                            $site_default_locale = get_option( 'WPLANG' );
-                            wp_dropdown_languages( array(
-                                'name'                        => 'locale',
-                                'id'                          => 'locale',
-                                'selected'                    => $site_default_locale,
-                                'languages'                   => $dt_available_languages,
-                                'show_available_translations' => false,
-                                'show_option_site_default'    => false,
-                                'show_option_en_us'           => true,
-                                'translations'                => $translations
-                            ) );
+                            dt_language_select()
                             ?>
                             <div class="grid-x">
                                 <p id="create-user-errors" style="color: red"></p>

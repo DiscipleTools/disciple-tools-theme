@@ -24,7 +24,6 @@ $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array o
 $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
 
 $dt_user_locale = get_user_locale( $dt_user->ID );
-$translations = dt_get_translations();
 
 $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
@@ -640,16 +639,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     <td><label for="systemLanguage"><?php esc_html_e( 'System Language', 'disciple_tools' )?></label></td>
                                     <td dir="auto">
                                         <?php
-                                        wp_dropdown_languages( array(
-                                            'name'                        => 'locale',
-                                            'id'                          => 'locale',
-                                            'selected'                    => esc_html( $dt_user_locale ),
-                                            'languages'                   => $dt_available_languages,
-                                            'show_available_translations' => false,
-                                            'show_option_site_default'    => false,
-                                            'show_option_en_us'           => true,
-                                            'translations'                => $translations
-                                        ) );
+                                        dt_language_select()
                                         ?>
                                     </td>
                                 </tr>
