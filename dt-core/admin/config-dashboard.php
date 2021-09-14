@@ -308,7 +308,11 @@ final class Disciple_Tools_Dashboard
                         <tr>
                             <td><?php echo esc_html( array_search( $item_key, array_keys( $dt_setup_wizard_items ) ) +1 ); ?>.</td>
                             <td><?php echo esc_html( $item_value["label"] ); ?></td>
-                            <td>Update <a href="<?php echo esc_html( $item_value["link"] ); ?>">here</a></td>
+                            <td>
+                                <?php if ( !empty( $item_value["link"] ) ) : ?>
+                                    Update <a href="<?php echo esc_html( $item_value["link"] ); ?>">here</a>
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <?php
                                 if ( $item_value['complete'] ) {
@@ -461,6 +465,15 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         'complete' => defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON === true,
         'hide_mark_done' => true
     ];
+    if ( version_compare( phpversion(), '7.3.0', "<=" ) ){
+        $items['update_php'] = [
+            'label' => 'Update PHP',
+            'description' => "You are using an old version of PHP, please consider contacting your hosting provider to upgrade it",
+            'link' => '',
+            'complete' => version_compare( phpversion(), '7.3.0', ">=" ),
+            'hide_mark_done' => true
+        ];
+    }
 
     return $items;
 }, 10, 2);
