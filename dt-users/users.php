@@ -983,11 +983,7 @@ class Disciple_Tools_Users
         if ( !current_user_can( "create_users" ) && DT_User_Management::non_admins_can_make_users() ) {
             $user_roles = [ 'multiplier' ];
 
-            if ( !$corresponds_to_contact ) {
-                return new WP_Error( "no_permissions", "You don't have permission to create users with no contact", [ 'status' => 401 ] );
-            }
-
-            if ( ! DT_Posts::can_view( 'contacts', (int) $corresponds_to_contact ) ) {
+            if ( $corresponds_to_contact && ! DT_Posts::can_view( 'contacts', (int) $corresponds_to_contact ) ) {
                 return new WP_Error( "no_permissions", "You don't have permission to create a user for this contact", [ 'status' => 401 ] );
             }
         }
