@@ -15,8 +15,8 @@ cache:
 matrix:
   include:
     - php: 8.0
-      env: WP_VERSION=latest
     - php: 7.2
+      env: WP_VERSION=latest
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS testdb'
