@@ -121,16 +121,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             <button class="help-button-tile" data-tile="details">
                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                             </button>
-                            <div class="details-title-section">
-
-                                <?php if ( get_option( 'dt_user_invite_setting', false ) ): ?>
-                                <a href="/user-management/add-user?contact_id=<?php echo esc_html( $post_id ) ?>" class="button small create_user_from_contact" style="margin-left: 2rem;">
-                                    <?php esc_html_e( 'Create user from contact', 'disciple_tools' ) ?>
-                                </a>
-
-                                <?php endif; ?>
-
-                            </div>
+                            <div class="details-title-section"></div>
                             <button class="section-chevron chevron_down show-details-section">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                             </button>
