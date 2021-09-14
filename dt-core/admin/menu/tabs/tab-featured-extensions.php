@@ -252,7 +252,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <strong>Last Updated:</strong>
                         <?php echo esc_html( $plugin->last_updated ); ?>
                     </div>
-                    <div class="column-downloaded"><?php echo esc_html( $plugin->active_installs ); ?> installations</div>
+                    <div class="column-downloaded"><?php echo esc_html( $plugin->active_installs ); ?> active installations</div>
                     <!-- <div class="column-compatibility">
                         <span class="compatibility-compatible"><strong>Compatible</strong> with your version of WordPress</span>
                     </div> -->
