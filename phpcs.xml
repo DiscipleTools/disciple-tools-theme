@@ -23,11 +23,12 @@
 
   <file>.</file>
 
-  <exclude-pattern>*\.(?!php$)</exclude-pattern> <!-- only check php files -->
-  <exclude-pattern>dt-core/dependencies/*</exclude-pattern>
-  <exclude-pattern>dt-core/libraries/*</exclude-pattern>
+  <exclude-pattern>dt-assets/dependencies/*</exclude-pattern>
   <exclude-pattern>vendor/*</exclude-pattern>
-  <exclude-pattern>node_modules/*</exclude-pattern>
+  <exclude-pattern>dt-update/class-tgm-plugin-activation.php</exclude-pattern>
+  <exclude-pattern>dt-update/plugin-update-checker/*</exclude-pattern>
+  <exclude-pattern>dt-core/libraries/*</exclude-pattern>
+  <exclude-pattern>*.js</exclude-pattern>
 
   <arg name="extensions" value="php,inc,lib"/>
   <arg value="n"/>
