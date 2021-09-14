@@ -159,7 +159,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 if ( $plugin_category !== 'featured' ) {
                     ?>
                 <li class="plugin-install">
-                    <a href="?page=dt_extensions&tab=<?php echo esc_attr( $plugin_category ); ?>" <?php if ( isset( $_GET['tab'] ) && $_GET['tab'] == $plugin_category ) { echo 'class="current"'; } ?>><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
+                    <a href="?page=dt_extensions&tab=<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>" <?php if ( isset( $_GET['tab'] ) && $_GET['tab'] == $plugin_category ) { echo 'class="current"'; } ?>><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
                 </li>
                     <?php
                 }
@@ -252,7 +252,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <strong>Last Updated:</strong>
                         <?php echo esc_html( $plugin->last_updated ); ?>
                     </div>
-                    <div class="column-downloaded">Active Installations data not available</div>
+                    <div class="column-downloaded"><?php echo esc_html( $plugin->active_installs ); ?> installations</div>
                     <!-- <div class="column-compatibility">
                         <span class="compatibility-compatible"><strong>Compatible</strong> with your version of WordPress</span>
                     </div> -->
@@ -316,8 +316,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         foreach ( $plugins as $plugin ) {
             $plugin_categories = explode( ',', $plugin->categories );
             foreach ( $plugin_categories as $plug_cat ) {
-                if ( ! in_array( $plug_cat, $distinct_categories ) ) {
-                    $distinct_categories[] = $plug_cat;
+                if ( ! in_array( str_replace( '-', ' ', $plug_cat ), $distinct_categories ) ) {
+                    $distinct_categories[] = str_replace( '-', ' ', $plug_cat );
                 }
             }
         }
