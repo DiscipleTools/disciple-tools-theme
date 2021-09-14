@@ -49,6 +49,5 @@ script:
     if [[ ! -z "$WP_VERSION" ]] ; then
       composer require "phpunit/phpunit=7.5.*"
       vendor/phpunit/phpunit/phpunit --version
-      vendor/phpunit/phpunit/phpunit
       WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
     fi
