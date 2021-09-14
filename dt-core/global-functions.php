@@ -447,7 +447,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             ?>
             <select name="locale">
                 <?php foreach ( $languages as $language ){ ?>
-                    <option value="<?php echo esc_html( $language["language"] ); ?>" <?php selected( $dt_user_locale === $language["language"] ) ?>><?php echo esc_html( $language["native_name"] ); ?></option>
+                    <option value="<?php echo esc_html( $language["language"] ); ?>" <?php selected( $dt_user_locale === $language["language"] ) ?>>
+                        <?php echo esc_html( $language["native_name"] ); ?> - <?php echo esc_html( $language["english_name"] ); ?>
+                    </option>
                 <?php } ?>
             </select>
             <?php
