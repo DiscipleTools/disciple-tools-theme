@@ -357,8 +357,8 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
                         </div>
-                        <?php endif; ?>
 
                         <div class="small-12 medium-6 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
                             <!-- Workload -->
