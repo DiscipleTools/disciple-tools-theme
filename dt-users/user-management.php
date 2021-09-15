@@ -320,50 +320,8 @@ class DT_User_Management
             $user_response['user_location'] = Disciple_Tools_Users::get_user_location( $user->ID );
         }
 
-
         if ( $section === 'activity' || $section === null ) {
-            $user_activity = $wpdb->get_results($wpdb->prepare("
-                SELECT hist_time, action, object_name, meta_key, object_type, object_note
-                FROM $wpdb->dt_activity_log
-                WHERE user_id = %s
-                AND action IN ( 'comment', 'field_update', 'connected_to', 'logged_in', 'created', 'disconnected_from', 'decline', 'assignment_decline' )
-                ORDER BY `hist_time` DESC
-                LIMIT 100
-            ", $user->ID));
-            if ( ! empty( $user_activity ) ) {
-                foreach ($user_activity as $a) {
-                    if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
-                        if ($a->object_type === "contacts") {
-                            $a->object_note = sprintf( _x( "Updated contact %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                        if ($a->object_type === "groups") {
-                            $a->object_note = sprintf( _x( "Updated group %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                    }
-                    if ($a->action == 'comment') {
-                        if ($a->meta_key === "contacts") {
-                            $a->object_note = sprintf( _x( "Commented on contact %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                        if ($a->meta_key === "groups") {
-                            $a->object_note = sprintf( _x( "Commented on group %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                    }
-                    if ($a->action == 'created') {
-                        if ($a->object_type === "contacts") {
-                            $a->object_note = sprintf( _x( "Created contact %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                        if ($a->object_type === "groups") {
-                            $a->object_note = sprintf( _x( "Created group %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                    }
-                    if ($a->action === "logged_in") {
-                        $a->object_note = __( "Logged In", 'disciple_tools' );
-                    }
-                    if ($a->action === 'assignment_decline') {
-                        $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
-                    }
-                }
-            }
+            $user_activity = $this->get_user_activity( $user );
             $user_response['user_activity'] = $user_activity;
         }
 
@@ -433,6 +391,61 @@ class DT_User_Management
 
         return $user_response;
 
+    }
+
+    private function get_user_activity( $user, $exclude = [] ) {
+        global $wpdb;
+
+        $allowed_actions = [ "'comment'", "'field_update'", "'connected_to'", "'logged_in'", "'created'", "'disconnected_from'", "'decline'", "'assignment_decline'" ];
+
+        $allowed_actions_sql = implode( ', ', $allowed_actions );
+
+        //phpcs:disable
+        $user_activity = $wpdb->get_results($wpdb->prepare("
+                SELECT hist_time, action, object_name, meta_key, object_type, object_note
+                FROM $wpdb->dt_activity_log
+                WHERE user_id = %s
+                AND action IN ( $allowed_actions_sql )
+                ORDER BY `hist_time` DESC
+                LIMIT 100
+            ", $user->ID ));
+        //phpcs:enable
+        if ( ! empty( $user_activity ) ) {
+            foreach ($user_activity as $a) {
+                if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
+                    if ($a->object_type === "contacts") {
+                        $a->object_note = sprintf( _x( "Updated contact %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
+                    }
+                    if ($a->object_type === "groups") {
+                        $a->object_note = sprintf( _x( "Updated group %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
+                    }
+                }
+                if ($a->action == 'comment') {
+                    if ($a->meta_key === "contacts") {
+                        $a->object_note = sprintf( _x( "Commented on contact %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
+                    }
+                    if ($a->meta_key === "groups") {
+                        $a->object_note = sprintf( _x( "Commented on group %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
+                    }
+                }
+                if ($a->action == 'created') {
+                    if ($a->object_type === "contacts") {
+                        $a->object_note = sprintf( _x( "Created contact %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
+                    }
+                    if ($a->object_type === "groups") {
+                        $a->object_note = sprintf( _x( "Created group %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
+                    }
+                }
+                if ($a->action === "logged_in") {
+                    $a->object_note = __( "Logged In", 'disciple_tools' );
+                }
+                if ($a->action === 'assignment_decline') {
+                    $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
+                }
+            }
+        }
+
+        return $user_activity;
     }
 
     public function get_user_endpoint( WP_REST_Request $request ) {
