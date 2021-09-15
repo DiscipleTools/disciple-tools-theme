@@ -63,6 +63,17 @@ class DT_User_Management
                 ],
             ]
         );
+
+        register_rest_route(
+            $namespace, '/activity-log', [
+                [
+                    'methods'  => "GET",
+                    'callback' => [ $this, 'get_user_activity_endpoint' ],
+                    'permission_callback' => '__return_true',
+                ],
+            ]
+        );
+
         register_rest_route(
             $namespace, '/user', [
                 [
@@ -393,12 +404,20 @@ class DT_User_Management
 
     }
 
-    private function get_user_activity( $user, $exclude = [] ) {
+    private function get_user_activity( $user_id, $include = [] ) {
         global $wpdb;
 
-        $allowed_actions = [ "'comment'", "'field_update'", "'connected_to'", "'logged_in'", "'created'", "'disconnected_from'", "'decline'", "'assignment_decline'" ];
+        if ( empty( $include ) ) {
+            $allowed_actions = [ 'comment', 'field_update', 'connected_to', 'logged_in', 'created', 'disconnected_from', 'decline', 'assignment_decline' ];
+        } else {
+            $allowed_actions = $include;
+        }
 
-        $allowed_actions_sql = implode( ', ', $allowed_actions );
+        $wrap_actions = function ( $action ) {
+            return "'$action'";
+        };
+        $wrapped_allowed_actions = array_map( $wrap_actions, $allowed_actions );
+        $allowed_actions_sql = implode( ', ', $wrapped_allowed_actions );
 
         //phpcs:disable
         $user_activity = $wpdb->get_results($wpdb->prepare("
@@ -408,7 +427,7 @@ class DT_User_Management
                 AND action IN ( $allowed_actions_sql )
                 ORDER BY `hist_time` DESC
                 LIMIT 100
-            ", $user->ID ));
+            ", $user_id ));
         //phpcs:enable
         if ( ! empty( $user_activity ) ) {
             foreach ($user_activity as $a) {
@@ -461,6 +480,18 @@ class DT_User_Management
             return new WP_Error( __METHOD__, "Missing collection id", [ 'status' => 400 ] );
         }
         return $this->get_dt_user( $params["user"], $params["section"] );
+    }
+
+    public function get_user_activity_endpoint( WP_REST_Request $request ) {
+        $user_id = get_current_user_id();
+
+        if ( $user_id === 0 ) {
+            return new WP_Error( __METHOD__, "Not logged in", [ 'status' => 401 ] );
+        }
+
+        $include = [ 'comment', 'field_update', 'created' ];
+
+        return $this->get_user_activity( $user_id, $include );
     }
 
     public function get_users_endpoints( WP_REST_Request $request ){

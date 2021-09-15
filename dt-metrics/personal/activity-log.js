@@ -15,11 +15,11 @@ jQuery(document).ready(function() {
     /* activity */
     const user_id = sourceData.user_id
 
-    makeRequest( "get", `user?user=${user_id}&section=activity`, null , 'user-management/v1/')
+    makeRequest( "get", `activity-log`, null , 'user-management/v1/')
     .done(activity=>{
 
       const title = makeTitle(window.lodash.escape( translations.title ))
-      const activity_html = window.SHAREDFUNCTIONS.makeActivityList(activity.user_activity)
+      const activity_html = window.SHAREDFUNCTIONS.makeActivityList(activity)
 
       let html = `
         ${title}
