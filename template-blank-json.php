@@ -9,7 +9,7 @@ header( 'Content-type: application/json' );
  * Filter to set access to the template
  */
 if ( ! apply_filters( 'dt_json_access', false ) ){
-    echo json_encode(['status' => 'FAIL'] );
+    echo json_encode( [ 'status' => 'FAIL' ] );
     exit;
 }
 $download = apply_filters( 'dt_json_download', false );
