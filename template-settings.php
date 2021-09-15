@@ -57,6 +57,14 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
                         <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
 
+                        <!-- Invite user button only when multipliers can invite multipliers -->
+
+                        <?php if ( DT_User_Management::non_admins_can_make_users() || current_user_can( 'create_users ' ) ): ?>
+
+                            <li><a href="/user-management/add-user"><?php esc_html_e( 'Invite User', 'disciple_tools' ) ?></a></li>
+
+                        <?php endif; ?>
+
                         <?php
                         /**
                          * Add a page menu item that jumps the settings page down to a custom tile.
