@@ -349,50 +349,52 @@ $('input[name="email-preference"]').on('change', (e) => {
 /**
  * People groups
  */
-$.typeahead({
-  input: '.js-typeahead-people_groups',
-  minLength: 0,
-  accent: true,
-  searchOnFocus: true,
-  maxItem: 20,
-  template: window.TYPEAHEADS.contactListRowTemplate,
-  source: TYPEAHEADS.typeaheadPostsSource("peoplegroups" ),
-  display: ["name", "label"],
-  templateValue: function() {
-    if (this.items[this.items.length - 1].label) {
-      return "{{label}}"
-    } else {
-      return "{{name}}"
-    }
-  },
-  dynamic: true,
-  multiselect: {
-    matchOn: ["ID"],
-    data: function () {
-      return wpApiSettingsPage.user_people_groups.map(g=>{
-        return { ID: g.ID, name:g.post_title };
-      })
-    },
-    callback: {
-      onCancel: function (node, item) {
-       update_user( 'remove_people_groups', item.ID )
+if ( $('.js-typeahead-people_groups').length) {
+  $.typeahead({
+    input: '.js-typeahead-people_groups',
+    minLength: 0,
+    accent: true,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: window.TYPEAHEADS.contactListRowTemplate,
+    source: TYPEAHEADS.typeaheadPostsSource("peoplegroups"),
+    display: ["name", "label"],
+    templateValue: function () {
+      if (this.items[this.items.length - 1].label) {
+        return "{{label}}"
+      } else {
+        return "{{name}}"
       }
     },
-  },
-  callback: {
-    onClick: function(node, a, item, event){
-      update_user( 'add_people_groups', item.ID )
-      this.addMultiselectItemLayout(item)
-      event.preventDefault()
-      this.hideLayout();
-      this.resetInput();
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return wpApiSettingsPage.user_people_groups.map(g => {
+          return {ID: g.ID, name: g.post_title};
+        })
+      },
+      callback: {
+        onCancel: function (node, item) {
+          update_user('remove_people_groups', item.ID)
+        }
+      },
     },
-    onResult: function (node, query, result, resultCount) {
-      let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-      $('#people_groups-result-container').html(text);
-    },
-    onHideLayout: function () {
-      $('#people_groups-result-container').html("");
+    callback: {
+      onClick: function (node, a, item, event) {
+        update_user('add_people_groups', item.ID)
+        this.addMultiselectItemLayout(item)
+        event.preventDefault()
+        this.hideLayout();
+        this.resetInput();
+      },
+      onResult: function (node, query, result, resultCount) {
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#people_groups-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#people_groups-result-container').html("");
+      }
     }
-  }
-})
+  })
+}

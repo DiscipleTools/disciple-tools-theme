@@ -251,7 +251,6 @@ function dt_site_scripts() {
                 'current_user_id'       => get_current_user_id(),
                 'template_dir'          => get_template_directory_uri(),
                 'associated_contact_id' => $contact_id,
-                'associated_contact'    => $contact,
                 'translations'          => apply_filters( 'dt_settings_js_translations', [
                     'delete' => __( 'delete', 'disciple_tools' ),
                     'responsible_for_locations' => __( "Locations you are responsible for", 'disciple_tools' ),
