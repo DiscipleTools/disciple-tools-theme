@@ -247,6 +247,9 @@ function dt_get_user_display_name( $user_id ) {
 }
 
 function dt_get_user_id_from_assigned_to( $user_meta ){
+    if ( is_numeric( $user_meta ) ) {
+        return (int) $user_meta;
+    }
     $meta_array = explode( '-', $user_meta ); // Separate the type and id
     if ( isset( $meta_array[1] ) ) {
         return (int) $meta_array[1];

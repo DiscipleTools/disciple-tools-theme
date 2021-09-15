@@ -75,6 +75,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //get extra fields and defaults
         $fields = apply_filters( "dt_post_create_fields", $fields, $post_type );
+        $filtered_initial_fields = $fields;
 
         //set title
         if ( !isset( $fields["title"] ) && !isset( $fields["name"] ) ) {
@@ -264,11 +265,9 @@ class DT_Posts extends Disciple_Tools_Posts {
 
 
         //hook for signaling that a post has been created and the initial fields
-        if ( !is_wp_error( $post_id )){
-            do_action( "dt_post_created", $post_type, $post_id, $initial_fields );
-            if ( !$silent ){
-                Disciple_Tools_Notifications::insert_notification_for_new_post( $post_type, $fields, $post_id );
-            }
+        do_action( "dt_post_created", $post_type, $post_id, $initial_fields );
+        if ( !$silent ){
+            Disciple_Tools_Notifications::insert_notification_for_new_post( $post_type, $filtered_initial_fields, $post_id );
         }
 
         // share the record with the user that created it.
