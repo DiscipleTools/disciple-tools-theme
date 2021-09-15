@@ -421,7 +421,7 @@ class DT_User_Management
 
         //phpcs:disable
         $user_activity = $wpdb->get_results($wpdb->prepare("
-                SELECT hist_time, action, object_name, meta_key, object_type, object_note
+                SELECT hist_time, action, object_name, meta_key, object_type, object_subtype, object_note
                 FROM $wpdb->dt_activity_log
                 WHERE user_id = %s
                 AND action IN ( $allowed_actions_sql )
@@ -429,14 +429,20 @@ class DT_User_Management
                 LIMIT 100
             ", $user_id ));
         //phpcs:enable
+
         if ( ! empty( $user_activity ) ) {
+            $contact_settings = DT_Posts::get_post_field_settings( 'contacts' );
+            $group_settings = DT_Posts::get_post_field_settings( 'groups' );
+
             foreach ($user_activity as $a) {
                 if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
                     if ($a->object_type === "contacts") {
                         $a->object_note = sprintf( _x( "Updated contact %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
+                        $a->field = $a->action === 'field_update' ? $contact_settings[ $a->object_subtype ]["name"] : null;
                     }
                     if ($a->object_type === "groups") {
                         $a->object_note = sprintf( _x( "Updated group %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
+                        $a->field = $a->action === 'field_update' ? $group_settings[ $a->object_subtype ]["name"] : null;
                     }
                 }
                 if ($a->action == 'comment') {
