@@ -11,7 +11,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Log extends DT_Metrics_Chart_Base
     public $title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/personal/activity-log.js'; // should be full file name plus extension
-    public $permissions = [ 'access_contacts' ];
+    public $permissions = [];
     public $namespace = null;
 
     public function __construct() {
@@ -45,7 +45,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Log extends DT_Metrics_Chart_Base
                 'data' => [
                     'translations' => [
                         'title' => __( 'Activity Log', 'disciple_tools' ),
-                    ]
+                    ],
+                    'user_id' => get_current_user_id(),
                 ],
             ]
         );

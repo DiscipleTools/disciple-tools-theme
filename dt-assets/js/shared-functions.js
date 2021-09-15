@@ -628,6 +628,19 @@ window.SHAREDFUNCTIONS = {
       return match
     })
     $(selector).html(elem_text)
+  },
+  makeActivityList(userActivity) {
+    let activity_html = ``;
+    userActivity.forEach((a) => {
+      if ( a.object_note !== '' ) {
+        activity_html += `<div>
+          <strong>${moment.unix(a.hist_time).format('YYYY-MM-DD')}</strong>
+          ${window.lodash.escape(a.object_note)}
+        </div>`
+      }
+    })
+
+    return activity_html
   }
 };
 

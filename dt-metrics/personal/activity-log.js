@@ -12,13 +12,33 @@ jQuery(document).ready(function() {
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
-    let html = `
-      <div class="cell center">
-          <h3 >${ window.lodash.escape( translations.title ) }</h3>
-      </div>
+    /* activity */
+    const user_id = sourceData.user_id
+
+    makeRequest( "get", `user?user=${user_id}&section=activity`, null , 'user-management/v1/')
+    .done(activity=>{
+
+      const title = makeTitle(window.lodash.escape( translations.title ))
+      const activity_html = window.SHAREDFUNCTIONS.makeActivityList(activity.user_activity)
+
+      let html = `
+        ${title}
+        <div className="activity">
+          ${activity_html}
+        </div>
       `
-
-    chartDiv.empty().html( html )
-
+      chartDiv.empty().html( html )
+    }).catch((e)=>{
+      console.log( 'error in activity')
+      console.log( e)
+    })
   }
 })
+
+function makeTitle(title) {
+  return `
+    <div class="cell center">
+      <h3>${ title }</h3>
+    </div>
+  `
+}
