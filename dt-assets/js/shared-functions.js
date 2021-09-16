@@ -694,16 +694,29 @@ window.SHAREDFUNCTIONS = {
 
         const groupedActivities = groupActivityTypes(postActivities)
         Object.entries(groupedActivities).forEach(([action, activities]) => {
-          const { fields, object_note_short, object_note, count } = activities
+          const { fields, object_note_short, object_note, count, hist_time } = activities
           if ( action === 'field_update' ) {
             // TODO: escape field names also
+            // TODO: Translate more
             if ( fields.length === 0 ) return
-            const more = fields.slice(2).length > 0
-             ? `<span class="activity__more-link">+&nbsp;${fields.slice(2).length}&nbsp;more</span>`
-             : ''
-            activityHtml += `<div class="activity">
-              ${window.lodash.escape(object_note_short)}: ${fields.slice(0, 2).join(', ')} ${more}
-            </div>`
+            const hasMoreFields = fields.slice(2).length > 0
+
+            if ( hasMoreFields ) {
+              activityHtml += `
+              <div class="activity">
+                <input type="checkbox" class="activity__more-state" id="activity${hist_time}" />
+                ${window.lodash.escape(object_note_short)}: ${fields.slice(0, 2).join(', ')}<span class="activity__more-details">, ${fields.slice(2).join(', ')}</span>
+                <label for="activity${hist_time}" class="activity__more-link">+&nbsp;${fields.slice(2).length}&nbsp;more</label>
+                <label for="activity${hist_time}" class="activity__less-link">-&nbsp;less</label>
+              </div>
+              `
+            } else {
+              activityHtml += `
+              <div class="activity">
+                ${window.lodash.escape(object_note_short)}: ${fields.join(', ')}
+              </div>
+              `
+            }
           } else {
             const note = object_note_short
               ? window.lodash.escape(object_note_short.replace('%n', count))

@@ -19,7 +19,41 @@
     color: #3f729b;
 }
 
-.activity__more-link {
+.activity__more-state {
+    display: none;
+}
+
+.activity__more-link, .activity__less-link {
     color: #3f729b;
-    text-decoration: underline
+    text-decoration: underline;
+    display: inline;
+    cursor: pointer;
+    padding: 0 0.5rem;
+}
+
+.activity__less-link {
+    display: none;
+}
+
+.activity__more-details {
+    opacity: 0;
+    max-height: 0;
+    font-size: 0;
+    transform: .25s ease;
+}
+
+.activity__more-state:checked {
+    & ~ .activity__more-details {
+        opacity: 1;
+        font-size: inherit;
+        max-height: 100em;
+    }
+
+    & ~ .activity__more-link {
+        display: none;
+    }
+
+    & ~ .activity__less-link {
+        display: inline;
+    }
 }
