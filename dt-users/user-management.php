@@ -332,7 +332,7 @@ class DT_User_Management
         }
 
         if ( $section === 'activity' || $section === null ) {
-            $user_activity = $this->get_user_activity( $user );
+            $user_activity = $this->get_user_activity( $user->ID );
             $user_response['user_activity'] = $user_activity;
         }
 

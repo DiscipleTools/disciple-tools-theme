@@ -39,7 +39,7 @@
     opacity: 0;
     max-height: 0;
     font-size: 0;
-    transform: .25s ease;
+    transition: .25s ease;
 }
 
 .activity__more-state:checked {
