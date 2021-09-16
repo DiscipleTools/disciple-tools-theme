@@ -682,11 +682,15 @@ window.SHAREDFUNCTIONS = {
       activityHtml += `<div class="day-activities">`
       activityHtml += `<h4 class="day-activities__title">${date}</h4>`
       Object.entries(daysActivities).forEach(([postTitle, postActivities]) => {
-        const icon =  window.lodash.escape(postActivities[0].icon)
-        if ( !postActivities[0].post_type_label ) return
-        const iconHtml = postActivities[0].icon ? `<i class="${icon} medium post-activities__icon"></i> ` : window.lodash.escape(postActivities[0].post_type_label) + ':'
+        const firstPostActivity = postActivities[0]
+        const icon =  window.lodash.escape(firstPostActivity.icon)
+        if ( !firstPostActivity.post_type_label ) return
+        const iconHtml = firstPostActivity.icon ? `<i class="${icon} medium post-activities__icon"></i> ` : window.lodash.escape(firstPostActivity.post_type_label) + ':'
         activityHtml += `<div class="post-activities">`
-        activityHtml += `<h5 class="post-activities__title">${iconHtml} ${postTitle}</h5>`
+        activityHtml += `
+          <h5 class="post-activities__title">
+            <a href="/${firstPostActivity.post_type}/${firstPostActivity.object_id}">${iconHtml} ${postTitle}</a>
+          </h5>`
 
         const groupedActivities = groupActivityTypes(postActivities)
         Object.entries(groupedActivities).forEach(([action, activities]) => {
@@ -695,7 +699,7 @@ window.SHAREDFUNCTIONS = {
             // TODO: escape field names also
             if ( fields.length === 0 ) return
             const more = fields.slice(2).length > 0
-             ? `<span class="activity__more-link">+ ${fields.slice(2).length} more</span>`
+             ? `<span class="activity__more-link">+&nbsp;${fields.slice(2).length}&nbsp;more</span>`
              : ''
             activityHtml += `<div class="activity">
               ${window.lodash.escape(object_note_short)}: ${fields.slice(0, 2).join(', ')} ${more}
