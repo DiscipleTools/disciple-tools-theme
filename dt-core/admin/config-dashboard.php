@@ -181,7 +181,7 @@ final class Disciple_Tools_Dashboard
             if ( empty( $news_feed_items ) || !is_array( $news_feed_items ) ) {
                 ?>
                 <p align="center">
-                    <i><?php echo esc_html_e( 'no news found', 'disciple_tools' ); ?></i>
+                    <i><?php esc_html_e( 'no news found', 'disciple_tools' ); ?></i>
                 </p>
                 <?php
                 return;
