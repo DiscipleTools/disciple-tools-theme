@@ -2,14 +2,14 @@
 /*
  * Name: User Management
 */
-if ( !current_user_can( 'list_users' ) && !current_user_can( 'manage_dt' ) ) {
+
+$current_user_can_managage_users = current_user_can( 'list_users' ) || current_user_can( 'manage_dt' );
+if ( !$current_user_can_managage_users && !DT_User_Management::non_admins_can_make_users() ) {
     wp_safe_redirect( '/registered' );
     exit();
 }
 $dt_url_path = dt_get_url_path();
 $user_management_options = DT_User_Management::user_management_options();
-
-
 
 ?>
 
@@ -18,6 +18,8 @@ $user_management_options = DT_User_Management::user_management_options();
 <div id="user-add-user" style="padding:15px">
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
+
+        <?php if ( $current_user_can_managage_users ): ?>
 
         <div class="large-2 medium-3 small-12 cell hide-for-small-only" id="side-nav-container">
 
@@ -43,8 +45,10 @@ $user_management_options = DT_User_Management::user_management_options();
 
         </div>
 
+        <?php endif; ?>
+
         <!-- List Section -->
-        <div class="large-10 medium-9 small-12 cell ">
+        <div class="<?php echo ( $current_user_can_managage_users ) ? "large-10 medium-9 small-12" : "" ?> cell ">
             <section id="metrics-container" class="medium-12 cell">
                 <div class="bordered-box">
                     <div id="chart">
@@ -83,6 +87,9 @@ $user_management_options = DT_User_Management::user_management_options();
                                         <dd><input type="email" class="input" id="email" placeholder="<?php esc_html_e( 'Email', 'disciple_tools' ); ?>" required /> </dd>
                                         <dt><?php esc_html_e( 'Language', 'disciple_tools' ); ?></dt>
                                         <dd id="new-user-language-dropdown"></dd>
+
+                                        <?php if ( $current_user_can_managage_users ): ?>
+
                                         <dt><?php esc_html_e( 'Role', 'disciple_tools' ); ?></dt>
                                         <dd>
                                             <?php
@@ -127,6 +134,9 @@ $user_management_options = DT_User_Management::user_management_options();
                                             <p> <a href="https://disciple.tools/user-docs/getting-started-info/roles/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
 
                                         </dd>
+
+                                        <?php endif; ?>
+
                                     </dl>
 
 
