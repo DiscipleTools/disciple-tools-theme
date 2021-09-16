@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disciple Tools 1.11.0\n"
+"Project-Id-Version: Disciple Tools 1.12.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-theme\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-09-09T08:56:47+00:00\n"
+"POT-Creation-Date: 2021-09-16T09:11:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: disciple_tools\n"
@@ -74,8 +74,8 @@ msgstr ""
 #: dt-contacts/access-module.php:535
 #: dt-contacts/base-setup.php:390
 #: dt-contacts/base-setup.php:425
-#: dt-contacts/user-module.php:157
-#: dt-contacts/user-module.php:209
+#: dt-contacts/user-module.php:145
+#: dt-contacts/user-module.php:197
 #: single-template.php:350
 #: single-template.php:367
 #: template-merge-details.php:102
@@ -107,13 +107,13 @@ msgstr ""
 #: archive-template.php:35
 #: archive-template.php:115
 #: archive-template.php:380
-#: dt-core/global-functions.php:461
-#: dt-core/global-functions.php:487
-#: dt-core/global-functions.php:540
-#: dt-core/global-functions.php:584
+#: dt-core/global-functions.php:655
+#: dt-core/global-functions.php:681
+#: dt-core/global-functions.php:734
+#: dt-core/global-functions.php:778
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
-#: template-settings.php:354
+#: template-settings.php:353
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr ""
@@ -219,8 +219,8 @@ msgstr ""
 
 #: archive-template.php:304
 #: dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/user-module.php:187
-#: dt-core/global-functions.php:622
+#: dt-contacts/user-module.php:175
+#: dt-core/global-functions.php:816
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr ""
@@ -229,7 +229,7 @@ msgstr ""
 #: dt-contacts/access-module.php:411
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1549
+#: dt-posts/dt-posts.php:1548
 #: dt-users/template-user-management.php:74
 #: dt-users/template-user-management.php:158
 #: single-template.php:78
@@ -319,7 +319,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:146
-#: template-settings.php:112
+#: template-settings.php:111
 msgid "Name"
 msgstr ""
 
@@ -355,7 +355,7 @@ msgid "Filter for subassigned OR Assigned To"
 msgstr ""
 
 #: archive-template.php:630
-#: dt-assets/functions/enqueue-scripts.php:297
+#: dt-assets/functions/enqueue-scripts.php:296
 #: dt-posts/custom-post-type.php:162
 msgid "Creation Date"
 msgstr ""
@@ -368,16 +368,16 @@ msgstr ""
 #: archive-template.php:658
 #: archive-template.php:659
 #: dt-metrics/combined/time-charts.php:118
-#: template-settings.php:269
-#: template-settings.php:511
+#: template-settings.php:268
+#: template-settings.php:510
 msgid "No"
 msgstr ""
 
 #: archive-template.php:665
 #: archive-template.php:666
 #: dt-metrics/combined/time-charts.php:117
-#: template-settings.php:268
-#: template-settings.php:510
+#: template-settings.php:267
+#: template-settings.php:509
 msgid "Yes"
 msgstr ""
 
@@ -402,13 +402,13 @@ msgid "Filter Records"
 msgstr ""
 
 #: archive-template.php:712
-#: dt-assets/functions/enqueue-scripts.php:259
-#: dt-assets/functions/enqueue-scripts.php:292
+#: dt-assets/functions/enqueue-scripts.php:258
+#: dt-assets/functions/enqueue-scripts.php:291
 #: template-merge-details.php:102
 #: template-merge-details.php:122
 #: template-merge-details.php:132
 #: template-merge-details.php:169
-#: template-settings.php:663
+#: template-settings.php:653
 msgid "Save"
 msgstr ""
 
@@ -515,19 +515,19 @@ msgid "Created record on {}"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:173
-#: dt-assets/functions/enqueue-scripts.php:293
+#: dt-assets/functions/enqueue-scripts.php:292
 #: template-merge-details.php:102
 #: template-merge-details.php:121
 #: template-merge-details.php:132
 #: template-merge-details.php:167
-#: template-settings.php:95
-#: template-settings.php:539
+#: template-settings.php:94
+#: template-settings.php:538
 msgid "Edit"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:294
+#: dt-assets/functions/enqueue-scripts.php:293
 #: dt-assets/parts/loop-activity-comment.php:137
 #: single-template.php:370
 msgid "Delete"
@@ -574,7 +574,7 @@ msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:214
 #: dt-assets/parts/merge-details.php:76
-#: dt-contacts/user-module.php:215
+#: dt-contacts/user-module.php:203
 #: template-merge-details.php:182
 msgid "Merge"
 msgstr ""
@@ -602,84 +602,84 @@ msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:256
+#: dt-assets/functions/enqueue-scripts.php:255
 msgid "delete"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:257
+#: dt-assets/functions/enqueue-scripts.php:256
 msgid "Locations you are responsible for"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:258
+#: dt-assets/functions/enqueue-scripts.php:257
 msgid "Add"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:259
+#: template-settings.php:258
+msgid "link"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:260
 #: template-settings.php:259
-msgid "link"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:261
-#: template-settings.php:260
 msgid "copy"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:277
+#: dt-assets/functions/enqueue-scripts.php:276
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:278
+#: dt-assets/functions/enqueue-scripts.php:277
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:295
+#: dt-assets/functions/enqueue-scripts.php:294
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:296
+#: dt-assets/functions/enqueue-scripts.php:295
 msgid "Sorting By"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:298
+#: dt-assets/functions/enqueue-scripts.php:297
 msgid "Date Modified"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:299
+#: dt-assets/functions/enqueue-scripts.php:298
 msgid "No filters, create one below"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:300
+#: dt-assets/functions/enqueue-scripts.php:299
 msgid "No records found matching your filter."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:301
+#: dt-assets/functions/enqueue-scripts.php:300
 #: dt-contacts/base-setup.php:500
 msgctxt "All records"
 msgid "All %s"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:302
+#: dt-assets/functions/enqueue-scripts.php:301
 msgid "start"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:303
+#: dt-assets/functions/enqueue-scripts.php:302
 msgid "end"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:304
+#: dt-assets/functions/enqueue-scripts.php:303
 #: dt-assets/parts/modals/modal-advanced-search.php:75
 #: dt-users/mapbox-coverage-map.php:77
 msgid "All"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:305
+#: dt-assets/functions/enqueue-scripts.php:304
 msgid "Without"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:341
+#: dt-assets/functions/enqueue-scripts.php:340
 msgid "load more"
 msgstr ""
 
@@ -693,7 +693,7 @@ msgid "Disciple.Tools"
 msgstr ""
 
 #: dt-assets/functions/menu.php:51
-#: template-settings.php:52
+#: template-settings.php:51
 msgid "Profile"
 msgstr ""
 
@@ -707,8 +707,8 @@ msgstr ""
 #: dt-assets/parts/nav-topbar.php:90
 #: dt-assets/parts/nav-topbar.php:211
 #: template-notifications.php:33
-#: template-settings.php:58
-#: template-settings.php:440
+#: template-settings.php:57
+#: template-settings.php:439
 msgid "Notifications"
 msgstr ""
 
@@ -1546,7 +1546,7 @@ msgstr ""
 
 #: dt-contacts/access-module.php:311
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/users.php:894
+#: dt-users/users.php:882
 msgid "Sources"
 msgstr ""
 
@@ -1700,7 +1700,7 @@ msgstr ""
 
 #: dt-contacts/base-setup.php:189
 #: dt-core/configuration/config-site-defaults.php:443
-#: template-settings.php:145
+#: template-settings.php:144
 msgid "Phone"
 msgstr ""
 
@@ -1710,7 +1710,7 @@ msgstr ""
 #: dt-core/configuration/config-site-defaults.php:447
 #: dt-users/template-new-user.php:82
 #: dt-users/template-new-user.php:83
-#: template-settings.php:132
+#: template-settings.php:131
 msgid "Email"
 msgstr ""
 
@@ -1728,7 +1728,7 @@ msgstr ""
 #: dt-contacts/base-setup.php:222
 #: dt-core/configuration/config-site-defaults.php:455
 #: dt-groups/base-setup.php:376
-#: template-settings.php:156
+#: template-settings.php:155
 msgid "Address"
 msgstr ""
 
@@ -1747,7 +1747,7 @@ msgid "Relationship this contact has with another contact in the system."
 msgstr ""
 
 #: dt-contacts/base-setup.php:279
-#: template-settings.php:626
+#: template-settings.php:625
 msgid "Gender"
 msgstr ""
 
@@ -1842,7 +1842,7 @@ msgstr ""
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:481
 #: dt-groups/base-setup.php:594
-#: template-settings.php:178
+#: template-settings.php:177
 msgid "Other"
 msgstr ""
 
@@ -2214,8 +2214,8 @@ msgid "In the fields below, enter their username, email address, a 'Display Name
 msgstr ""
 
 #: dt-contacts/user-module.php:102
-#: template-settings.php:106
-#: template-settings.php:559
+#: template-settings.php:105
+#: template-settings.php:558
 msgid "Username"
 msgstr ""
 
@@ -2242,24 +2242,24 @@ msgstr ""
 msgid "User Language"
 msgstr ""
 
-#: dt-contacts/user-module.php:160
+#: dt-contacts/user-module.php:148
 msgid "Create user"
 msgstr ""
 
-#: dt-contacts/user-module.php:171
+#: dt-contacts/user-module.php:159
 msgid "Link this contact to an existing user"
 msgstr ""
 
-#: dt-contacts/user-module.php:174
+#: dt-contacts/user-module.php:162
 msgid "This contact already represents a user."
 msgstr ""
 
-#: dt-contacts/user-module.php:178
+#: dt-contacts/user-module.php:166
 msgctxt "Step 1 of link user"
 msgid "To link to an existing user, first, find the user using the field below."
 msgstr ""
 
-#: dt-contacts/user-module.php:202
+#: dt-contacts/user-module.php:190
 msgctxt "Step 2 of link user"
 msgid "To finish the linking, merge this contact with the existing user details."
 msgstr ""
@@ -2436,7 +2436,7 @@ msgstr ""
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:294
-#: dt-users/users.php:1122
+#: dt-users/users.php:1110
 msgid "Username: %s"
 msgstr ""
 
@@ -2448,11 +2448,11 @@ msgstr ""
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: dt-core/global-functions.php:463
+#: dt-core/global-functions.php:657
 msgid "Add new tag \"%s\""
 msgstr ""
 
-#: dt-core/global-functions.php:464
+#: dt-core/global-functions.php:658
 msgid "Tag \"%s\" is already being used"
 msgstr ""
 
@@ -2651,8 +2651,8 @@ msgstr ""
 
 #: dt-groups/base-setup.php:254
 #: dt-users/template-user-management.php:312
-#: template-settings.php:399
-#: template-settings.php:418
+#: template-settings.php:398
+#: template-settings.php:417
 msgid "Start Date"
 msgstr ""
 
@@ -2672,8 +2672,8 @@ msgstr ""
 
 #: dt-groups/base-setup.php:271
 #: dt-users/template-user-management.php:313
-#: template-settings.php:405
-#: template-settings.php:419
+#: template-settings.php:404
+#: template-settings.php:418
 msgid "End Date"
 msgstr ""
 
@@ -2833,7 +2833,7 @@ msgstr ""
 #: dt-mapping/geocode-api/mapbox-api.php:286
 #: dt-mapping/geocode-api/mapbox-api.php:321
 #: dt-users/template-user-management.php:271
-#: template-settings.php:295
+#: template-settings.php:294
 msgid "add"
 msgstr ""
 
@@ -3569,29 +3569,29 @@ msgstr ""
 msgid "Un-Follow"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1125
+#: dt-posts/dt-posts.php:1124
 msgid "Magic Link Submission"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1131
+#: dt-posts/dt-posts.php:1130
 msgid "D.T System"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1357
+#: dt-posts/dt-posts.php:1356
 msgid "Post already shared with user."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1550
+#: dt-posts/dt-posts.php:1549
 #: single-template.php:120
 msgid "Details"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1609
+#: dt-posts/dt-posts.php:1608
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1615
+#: dt-posts/dt-posts.php:1614
 msgid "Access Request"
 msgstr ""
 
@@ -3962,13 +3962,13 @@ msgstr ""
 
 #: dt-users/template-new-user.php:80
 #: dt-users/template-new-user.php:81
-#: template-settings.php:119
-#: template-settings.php:594
+#: template-settings.php:118
+#: template-settings.php:593
 msgid "Nickname (Display Name)"
 msgstr ""
 
 #: dt-users/template-new-user.php:84
-#: template-settings.php:192
+#: template-settings.php:191
 msgid "Language"
 msgstr ""
 
@@ -4072,13 +4072,13 @@ msgid "Location Responsibility"
 msgstr ""
 
 #: dt-users/template-user-management.php:283
-#: template-settings.php:310
+#: template-settings.php:309
 msgid "Search Locations"
 msgstr ""
 
 #: dt-users/template-user-management.php:295
-#: template-settings.php:57
-#: template-settings.php:386
+#: template-settings.php:56
+#: template-settings.php:385
 msgid "Availability"
 msgstr ""
 
@@ -4095,7 +4095,7 @@ msgid "Travel or Away Dates"
 msgstr ""
 
 #: dt-users/template-user-management.php:325
-#: template-settings.php:125
+#: template-settings.php:124
 msgid "Roles"
 msgstr ""
 
@@ -4108,17 +4108,17 @@ msgid "Access by Source"
 msgstr ""
 
 #: dt-users/template-user-management.php:381
-#: dt-users/users.php:901
+#: dt-users/users.php:889
 msgid "All Sources - gives access to all contacts"
 msgstr ""
 
 #: dt-users/template-user-management.php:387
-#: dt-users/users.php:908
+#: dt-users/users.php:896
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr ""
 
 #: dt-users/template-user-management.php:393
-#: dt-users/users.php:915
+#: dt-users/users.php:903
 msgid "No Sources - only own contacts"
 msgstr ""
 
@@ -4265,37 +4265,37 @@ msgstr ""
 msgid "Learn more."
 msgstr ""
 
-#: dt-users/users.php:996
+#: dt-users/users.php:984
 msgid "Email already exists and is a user on this site"
 msgstr ""
 
-#: dt-users/users.php:1002
+#: dt-users/users.php:990
 msgid "Failed to add user to site."
 msgstr ""
 
-#: dt-users/users.php:1043
-#: dt-users/users.php:1081
+#: dt-users/users.php:1031
+#: dt-users/users.php:1069
 msgid "[%s] Login Details"
 msgstr ""
 
-#: dt-users/users.php:1054
+#: dt-users/users.php:1042
 msgid "To set your password, visit the following address:"
 msgstr ""
 
-#: dt-users/users.php:1077
+#: dt-users/users.php:1065
 msgid "To log in click here: %s"
 msgstr ""
 
-#: dt-users/users.php:1120
+#: dt-users/users.php:1108
 msgid "Hi %s,"
 msgstr ""
 
-#: dt-users/users.php:1121
+#: dt-users/users.php:1109
 msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr ""
 
-#: dt-users/users.php:1182
+#: dt-users/users.php:1170
 msgid "View contact record"
 msgstr ""
 
@@ -4427,169 +4427,169 @@ msgstr ""
 msgid "Load more notifications"
 msgstr ""
 
-#: template-settings.php:54
+#: template-settings.php:53
 msgid "Apps"
 msgstr ""
 
-#: template-settings.php:56
-#: template-settings.php:287
+#: template-settings.php:55
+#: template-settings.php:286
 msgid "Multiplier Preferences"
 msgstr ""
 
-#: template-settings.php:93
+#: template-settings.php:92
 msgid "Your Profile"
 msgstr ""
 
-#: template-settings.php:135
-#: template-settings.php:565
+#: template-settings.php:134
+#: template-settings.php:564
 msgid "System Email"
 msgstr ""
 
-#: template-settings.php:167
+#: template-settings.php:166
 msgid "Social"
 msgstr ""
 
-#: template-settings.php:198
+#: template-settings.php:197
 msgid "English"
 msgstr ""
 
-#: template-settings.php:202
-#: template-settings.php:618
+#: template-settings.php:201
+#: template-settings.php:617
 msgid "Biography"
 msgstr ""
 
-#: template-settings.php:223
+#: template-settings.php:222
 msgid "Your Apps"
 msgstr ""
 
-#: template-settings.php:228
+#: template-settings.php:227
 msgid "App Name"
 msgstr ""
 
-#: template-settings.php:229
+#: template-settings.php:228
 msgid "App Description"
 msgstr ""
 
-#: template-settings.php:230
+#: template-settings.php:229
 msgid "App Link"
 msgstr ""
 
-#: template-settings.php:231
+#: template-settings.php:230
 msgid "App Activation"
 msgstr ""
 
-#: template-settings.php:241
+#: template-settings.php:240
 msgid "No apps installed"
 msgstr ""
 
-#: template-settings.php:267
-#: template-settings.php:509
+#: template-settings.php:266
+#: template-settings.php:508
 msgid "Enable"
 msgstr ""
 
-#: template-settings.php:295
-#: template-settings.php:300
+#: template-settings.php:294
+#: template-settings.php:299
 msgid "Locations you are willing to be responsible for"
 msgstr ""
 
-#: template-settings.php:323
+#: template-settings.php:322
 msgid "Languages you are comfortable speaking"
 msgstr ""
 
-#: template-settings.php:344
+#: template-settings.php:343
 msgid "People Groups you wish to serve"
 msgstr ""
 
-#: template-settings.php:367
+#: template-settings.php:366
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr ""
 
-#: template-settings.php:389
+#: template-settings.php:388
 msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
 msgstr ""
 
-#: template-settings.php:393
+#: template-settings.php:392
 msgid "Schedule Travel or Dates Unavailable"
 msgstr ""
 
-#: template-settings.php:410
+#: template-settings.php:409
 msgid "Add Unavailable dates"
 msgstr ""
 
-#: template-settings.php:424
+#: template-settings.php:423
 msgid "No Travel Scheduled"
 msgstr ""
 
-#: template-settings.php:445
+#: template-settings.php:444
 msgid "Email preferences"
 msgstr ""
 
-#: template-settings.php:451
+#: template-settings.php:450
 msgid "Real time"
 msgstr ""
 
-#: template-settings.php:455
+#: template-settings.php:454
 msgid "Hourly digest"
 msgstr ""
 
-#: template-settings.php:459
+#: template-settings.php:458
 msgid "Daily digest"
 msgstr ""
 
-#: template-settings.php:466
+#: template-settings.php:465
 msgid "Type of Notification"
 msgstr ""
 
-#: template-settings.php:479
+#: template-settings.php:478
 msgid "required"
 msgstr ""
 
-#: template-settings.php:502
+#: template-settings.php:501
 msgid "Follow all contacts"
 msgstr ""
 
-#: template-settings.php:504
+#: template-settings.php:503
 msgid "You will receive a notification for any update that happens in the system."
 msgstr ""
 
-#: template-settings.php:553
+#: template-settings.php:552
 msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
 msgstr ""
 
-#: template-settings.php:554
+#: template-settings.php:553
 msgid "edit image on gravatar.com"
 msgstr ""
 
+#: template-settings.php:559
 #: template-settings.php:560
-#: template-settings.php:561
 msgid "Username cannot be changed"
 msgstr ""
 
-#: template-settings.php:566
+#: template-settings.php:565
 msgid "User email can be changed by site administrator."
 msgstr ""
 
-#: template-settings.php:573
+#: template-settings.php:572
 msgid "Password"
 msgstr ""
 
-#: template-settings.php:574
+#: template-settings.php:573
 msgid "Use this email reset form to create a new password."
 msgstr ""
 
-#: template-settings.php:576
+#: template-settings.php:575
 msgid "go to password change form"
 msgstr ""
 
-#: template-settings.php:583
+#: template-settings.php:582
 msgid "First Name"
 msgstr ""
 
-#: template-settings.php:589
+#: template-settings.php:588
 msgid "Last Name"
 msgstr ""
 
-#: template-settings.php:640
+#: template-settings.php:639
 msgid "System Language"
 msgstr ""
 
