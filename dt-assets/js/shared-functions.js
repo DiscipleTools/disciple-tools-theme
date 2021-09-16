@@ -668,6 +668,8 @@ window.SHAREDFUNCTIONS = {
         groupedActivities[action].count += 1
         if (activity.field) {
           groupedActivities[action].fields.push(activity.field)
+        } else {
+          groupedActivities[action].fields.push(activity.meta_key)
         }
       })
       return groupedActivities
