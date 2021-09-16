@@ -678,22 +678,22 @@ window.SHAREDFUNCTIONS = {
     let activityHtml = ``;
     Object.entries(sortedActivities).forEach(([date, daysActivities]) => {
       activityHtml += `<div class="day-activities">`
-      activityHtml += `<h4 class="day-activities__title" style="background-color: #3f729b; color: white;">${date}</h4>`
+      activityHtml += `<h4 class="day-activities__title">${date}</h4>`
       Object.entries(daysActivities).forEach(([postTitle, postActivities]) => {
         const icon =  window.lodash.escape(postActivities[0].icon)
         if ( !postActivities[0].post_type_label ) return
-        const iconHtml = postActivities[0].icon ? `<i class="${icon} medium" style="#3f729b"></i> ` : window.lodash.escape(postActivities[0].post_type_label) + ':'
+        const iconHtml = postActivities[0].icon ? `<i class="${icon} medium post-activities__icon"></i> ` : window.lodash.escape(postActivities[0].post_type_label) + ':'
         activityHtml += `<div class="post-activities">`
-        activityHtml += `<h5 class="post-activities__title" style="color: #3f729b">${iconHtml} ${postTitle}</h5>`
+        activityHtml += `<h5 class="post-activities__title">${iconHtml} ${postTitle}</h5>`
 
         const groupedActivities = groupActivityTypes(postActivities)
         Object.entries(groupedActivities).forEach(([action, activities]) => {
           const { fields, object_note_short, object_note, count } = activities
           if ( action === 'field_update' ) {
             // TODO: escape field names also
-            if ( fields.length = 0 ) return
+            if ( fields.length === 0 ) return
             const more = fields.slice(2).length > 0
-             ? `<span class="more" style="color: #3f729b; text-decoration: underline;">+ ${fields.slice(2).length} more</span>`
+             ? `<span class="activity__more-link">+ ${fields.slice(2).length} more</span>`
              : ''
             activityHtml += `<div class="activity">
               ${window.lodash.escape(object_note_short)}: ${fields.slice(0, 2).join(', ')} ${more}
@@ -703,7 +703,7 @@ window.SHAREDFUNCTIONS = {
               ? window.lodash.escape(object_note_short.replace('%n', count))
               : window.lodash.escape(object_note)
 
-            activityHtml += `<div>
+            activityHtml += `<div class="activity">
               ${note}
             </div>`
           }

@@ -2,3 +2,24 @@
 .timechart {
     height: 400px;
 }
+
+.day-activities__title {
+    background-color: #3f729b;
+    color: white;
+    padding: 0.1rem 0.3rem;
+    font-size: 1.1rem;
+}
+
+.post-activities__icon {
+    color: #3f729b;
+    margin-right: 0.1rem;
+}
+
+.post-activities__title {
+    color: #3f729b;
+}
+
+.activity__more-link {
+    color: #3f729b;
+    text-decoration: underline
+}
