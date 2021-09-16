@@ -261,34 +261,7 @@ final class Disciple_Tools_Dashboard
             } );
 
             ?><p>Completed <?php echo esc_html( $completed ); ?> of <?php echo esc_html( sizeof( $dt_setup_wizard_items ) ); ?> tasks</p>
-            <style>
-                .wizard_chevron_open {
-                    position: relative;
-                    width: 7px;
-                    height: 7px;
-                    border-width: 0 2px 2px 0;
-                    border-style: solid;
-                    transform: rotate(45deg);
-                    margin: auto;
-                }
-                .wizard_chevron_close {
-                    position: relative;
-                    width: 7px;
-                    height: 7px;
-                    border-width: 0 2px 2px 0;
-                    border-style: solid;
-                    transform: rotate(225deg);
-                    margin: auto;
-                }
-                .toggle_chevron{
-                    vertical-align: middle !important;
-                    cursor:pointer;
-                }
-                .wizard_description{
-                    position: relative;
-                    height: 200px;
-                }
-            </style>
+
             <form method="POST">
                 <?php wp_nonce_field( 'update_setup_wizard_items', 'setup_wizard_nonce' ); ?>
                 <table class="widefat striped">
@@ -310,7 +283,7 @@ final class Disciple_Tools_Dashboard
                             <td><?php echo esc_html( $item_value["label"] ); ?></td>
                             <td>
                                 <?php if ( !empty( $item_value["link"] ) ) : ?>
-                                    Update <a href="<?php echo esc_html( $item_value["link"] ); ?>">here</a>
+                                    <a href="<?php echo esc_html( $item_value["link"] ); ?>" target="_blank">See</a>
                                 <?php endif; ?>
                             </td>
                             <td>
@@ -324,7 +297,7 @@ final class Disciple_Tools_Dashboard
                                 if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"] ) ){
                                     if ( !isset( $item_value["complete"] ) || empty( $item_value["complete"] ) ) {
                                         ?>
-                                            <button name="dismiss" value="<?php echo esc_attr( $item_key ); ?>">Dismiss</button>
+                                            <button name="dismiss" class="button" value="<?php echo esc_attr( $item_key ); ?>">Dismiss</button>
                                         <?php
                                     }
                                 }
@@ -349,7 +322,7 @@ final class Disciple_Tools_Dashboard
 
                                     if ( isset( $item_value["complete"] ) && !empty( $item_value["complete"] ) ) {
                                         ?>
-                                        <button name="undismiss" value="<?php echo esc_attr( $item_key ); ?>">Un-dismiss</button>
+                                        <button name="undismiss" class="button" value="<?php echo esc_attr( $item_key ); ?>">Un-dismiss</button>
                                         <?php
                                     }
                                 }
@@ -474,6 +447,13 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
             'hide_mark_done' => true
         ];
     }
+    $items['donation'] = [
+        'label' => 'Consider donating to Disciple.Tools',
+        'description' => "Would you like to be part of the development and maintenance of Disciple Tools? We would love your help! \r\n\r\n Donation portal: https://gospelambition.org/donate/",
+        'link' => 'https://gospelambition.org/donate/',
+        'complete' => false,
+        'hide_mark_done' => false
+    ];
 
     return $items;
 }, 10, 2);

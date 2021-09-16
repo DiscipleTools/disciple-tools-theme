@@ -92,3 +92,30 @@ button.button-like-link {
 .hide {
     display: none;
 }
+
+.wizard_chevron_open {
+    position: relative;
+    width: 7px;
+    height: 7px;
+    border-width: 0 2px 2px 0;
+    border-style: solid;
+    transform: rotate(45deg);
+    margin: auto;
+}
+.wizard_chevron_close {
+    position: relative;
+    width: 7px;
+    height: 7px;
+    border-width: 0 2px 2px 0;
+    border-style: solid;
+    transform: rotate(225deg);
+    margin: auto;
+}
+.toggle_chevron{
+    vertical-align: middle !important;
+    cursor:pointer;
+}
+.wizard_description{
+    position: relative;
+    height: 200px;
+}
