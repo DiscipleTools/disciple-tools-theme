@@ -630,17 +630,90 @@ window.SHAREDFUNCTIONS = {
     $(selector).html(elem_text)
   },
   makeActivityList(userActivity) {
-    let activity_html = ``;
-    userActivity.forEach((a) => {
-      if ( a.object_note !== '' ) {
-        activity_html += `<div>
-          <strong>${moment.unix(a.hist_time).format('YYYY-MM-DD')}</strong>
-          ${window.lodash.escape(a.object_note)}
-        </div>`
-      }
+
+    function groupActivityByDayAndRecord(data) {
+      const sortedByDayAndRecord = []
+      let currentDay = ''
+      let daysActivity = {}
+      data.forEach(activity => {
+        // data is already in date order, so we can go day by day
+        const date = moment.unix(activity.hist_time).format('YYYY-MM-DD')
+        if ( date !== currentDay ) {
+          currentDay = date
+          daysActivity = {}
+          sortedByDayAndRecord[currentDay]  = daysActivity
+        }
+        if (!daysActivity[activity.object_name]) {
+          daysActivity[activity.object_name] = []
+        }
+        daysActivity[activity.object_name].push(activity)
+      });
+
+      return sortedByDayAndRecord
+    }
+
+    function groupActivityTypes(postActivities) {
+      const groupedActivities = {}
+
+      postActivities.forEach((activity) => {
+        const action = activity.action
+        if (!groupedActivities[action]) {
+          groupedActivities[action] = {
+            count: 0,
+            ...activity,
+            fields: [],
+          }
+          delete groupedActivities[action].field
+        }
+        groupedActivities[action].count += 1
+        if (activity.field) {
+          groupedActivities[action].fields.push(activity.field)
+        }
+      })
+      return groupedActivities
+    }
+
+    const sortedActivities = groupActivityByDayAndRecord(userActivity)
+
+    let activityHtml = ``;
+    Object.entries(sortedActivities).forEach(([date, daysActivities]) => {
+      activityHtml += `<div class="day-activities">`
+      activityHtml += `<h4 class="day-activities__title" style="background-color: #3f729b; color: white;">${date}</h4>`
+      Object.entries(daysActivities).forEach(([postTitle, postActivities]) => {
+        const icon =  window.lodash.escape(postActivities[0].icon)
+        if ( !postActivities[0].post_type_label ) return
+        const iconHtml = postActivities[0].icon ? `<i class="${icon} medium" style="#3f729b"></i> ` : window.lodash.escape(postActivities[0].post_type_label) + ':'
+        activityHtml += `<div class="post-activities">`
+        activityHtml += `<h5 class="post-activities__title" style="color: #3f729b">${iconHtml} ${postTitle}</h5>`
+
+        const groupedActivities = groupActivityTypes(postActivities)
+        Object.entries(groupedActivities).forEach(([action, activities]) => {
+          const { fields, object_note_short, object_note, count } = activities
+          if ( action === 'field_update' ) {
+            // TODO: escape field names also
+            if ( fields.length = 0 ) return
+            const more = fields.slice(2).length > 0
+             ? `<span class="more" style="color: #3f729b; text-decoration: underline;">+ ${fields.slice(2).length} more</span>`
+             : ''
+            activityHtml += `<div class="activity">
+              ${window.lodash.escape(object_note_short)}: ${fields.slice(0, 2).join(', ')} ${more}
+            </div>`
+          } else {
+            const note = object_note_short
+              ? window.lodash.escape(object_note_short.replace('%n', count))
+              : window.lodash.escape(object_note)
+
+            activityHtml += `<div>
+              ${note}
+            </div>`
+          }
+        })
+        activityHtml += `</div>`
+      })
+      activityHtml += `</div>`
     })
 
-    return activity_html
+    return activityHtml
   }
 };
 

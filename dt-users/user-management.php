@@ -421,8 +421,10 @@ class DT_User_Management
 
         //phpcs:disable
         $user_activity = $wpdb->get_results($wpdb->prepare("
-                SELECT hist_time, action, object_name, meta_key, object_type, object_subtype, object_note
-                FROM $wpdb->dt_activity_log
+                SELECT hist_time, action, object_name, meta_key, object_type, object_id, object_subtype, object_note, p.post_type
+                FROM $wpdb->dt_activity_log a
+                LEFT JOIN $wpdb->posts p
+                ON a.object_id = p.ID
                 WHERE user_id = %s
                 AND action IN ( $allowed_actions_sql )
                 ORDER BY `hist_time` DESC
@@ -435,7 +437,12 @@ class DT_User_Management
             $group_settings = DT_Posts::get_post_field_settings( 'groups' );
 
             foreach ($user_activity as $a) {
+                $a->object_note = '';
+                $a->icon = apply_filters( 'dt_record_icon', null, $a->object_type, [] );
+                $a->post_type_label = $a->post_type ? DT_Posts::get_label_for_post_type( $a->post_type ) : null;
+
                 if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
+                    $a->object_note_short = __( "Updated fields", 'disciple_tools' );
                     if ($a->object_type === "contacts") {
                         $a->object_note = sprintf( _x( "Updated contact %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
                         $a->field = $a->action === 'field_update' ? $contact_settings[ $a->object_subtype ]["name"] : null;
@@ -446,6 +453,7 @@ class DT_User_Management
                     }
                 }
                 if ($a->action == 'comment') {
+                    $a->object_note_short = __( "Made %n comments", "disciple_tools" );
                     if ($a->meta_key === "contacts") {
                         $a->object_note = sprintf( _x( "Commented on contact %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
                     }
@@ -462,6 +470,7 @@ class DT_User_Management
                     }
                 }
                 if ($a->action === "logged_in") {
+                    $a->object_note_short = __( "Logged In %n times", 'disciple_tools' );
                     $a->object_note = __( "Logged In", 'disciple_tools' );
                 }
                 if ($a->action === 'assignment_decline') {
