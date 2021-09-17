@@ -27,6 +27,7 @@ jQuery(function() {
           const { fields, object_note_short, object_note, count, hist_time } = activities
           if (action === 'field_update') {
             // TODO: escape field names also
+            const escapedFields = fields.map((field) => window.lodash.escape(field))
             if (fields.length === 0) return
             const hasMoreFields = fields.slice(2).length > 0
 
@@ -35,7 +36,7 @@ jQuery(function() {
               activityHtml += `
                 <div class="post-activities__item">
                   <input type="checkbox" class="activity__more-state" id="${forID}" />
-                  ${window.lodash.escape(object_note_short)}: ${fields.slice(0, 2).join(', ')}<span class="activity__more-details">, ${fields.slice(2).join(', ')}</span>
+                  ${window.lodash.escape(object_note_short)}: ${escapedFields.slice(0, 2).join(', ')}<span class="activity__more-details">, ${escapedFields.slice(2).join(', ')}</span>
                   <label for="${forID}" class="activity__more-link">+&nbsp;${fields.slice(2).length}&nbsp;${moreLabel}</label>
                   <label for="${forID}" class="activity__less-link">-&nbsp;${lessLabel}</label>
                 </div>
