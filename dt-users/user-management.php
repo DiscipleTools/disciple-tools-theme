@@ -191,6 +191,8 @@ class DT_User_Management
                         'already_user' => __( 'This contact is already a user.', 'disciple_tools' ),
                         'view_user' => __( 'View User', 'disciple_tools' ),
                         'view_contact' => __( 'View Contact', 'disciple_tools' ),
+                        'more' => __( 'More', 'disciple_tools' ),
+                        'less' => __( 'Less', 'disciple_tools' ),
                     ],
                     'language_dropdown' => dt_get_available_languages(),
                     'has_permission' => $this->has_permission(),

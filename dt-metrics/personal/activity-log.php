@@ -50,6 +50,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Log extends DT_Metrics_Chart_Base
                 'data' => [
                     'translations' => [
                         'title' => __( 'Activity Log', 'disciple_tools' ),
+                        'more' => __( 'More', 'disciple_tools' ),
+                        'less' => __( 'Less', 'disciple_tools' ),
                     ],
                     'user_id' => get_current_user_id(),
                 ],

@@ -1,6 +1,8 @@
 jQuery(function() {
-  function makeActivityList(userActivity) {
+  function makeActivityList(userActivity, translations) {
     const sortedActivities = groupActivityByDayAndRecord(userActivity)
+    const moreLabel = window.lodash.escape(translations.more)
+    const lessLabel = window.lodash.escape(translations.less)
 
     let activityHtml = ``;
     Object.entries(sortedActivities).forEach(([date, daysActivities]) => {
@@ -25,7 +27,6 @@ jQuery(function() {
           const { fields, object_note_short, object_note, count, hist_time } = activities
           if (action === 'field_update') {
             // TODO: escape field names also
-            // TODO: Translate more
             if (fields.length === 0) return
             const hasMoreFields = fields.slice(2).length > 0
 
@@ -35,8 +36,8 @@ jQuery(function() {
                 <div class="post-activities__item">
                   <input type="checkbox" class="activity__more-state" id="${forID}" />
                   ${window.lodash.escape(object_note_short)}: ${fields.slice(0, 2).join(', ')}<span class="activity__more-details">, ${fields.slice(2).join(', ')}</span>
-                  <label for="${forID}" class="activity__more-link">+&nbsp;${fields.slice(2).length}&nbsp;more</label>
-                  <label for="${forID}" class="activity__less-link">-&nbsp;less</label>
+                  <label for="${forID}" class="activity__more-link">+&nbsp;${fields.slice(2).length}&nbsp;${moreLabel}</label>
+                  <label for="${forID}" class="activity__less-link">-&nbsp;${lessLabel}</label>
                 </div>
                 `
             } else {
