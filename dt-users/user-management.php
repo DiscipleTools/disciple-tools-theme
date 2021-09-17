@@ -408,7 +408,7 @@ class DT_User_Management
 
     }
 
-    private function make_sql_from_list($list) {
+    private function make_sql_from_list( $list ) {
         $wrap_actions = function ( $action ) {
             return "'$action'";
         };
