@@ -34,14 +34,14 @@ class Disciple_Tools_Metrics_Personal_Activity_Log extends DT_Metrics_Chart_Base
             'lodash'
         ], filemtime( get_theme_file_path() .  '/dt-assets/js/activity-log.js' ), true );
 
-        wp_enqueue_script( 'dt_metrics_personal_script', get_template_directory_uri() . $this->js_file_name, [
+        wp_enqueue_script( 'dt_metrics_activity_script', get_template_directory_uri() . $this->js_file_name, [
             'jquery',
             'jquery-ui-core',
             'lodash'
         ], filemtime( get_theme_file_path() .  $this->js_file_name ), true );
 
         wp_localize_script(
-            'dt_metrics_personal_script', 'dtMetricsPersonal', [
+            'dt_metrics_activity_script', 'dtMetricsActivity', [
                 'root' => esc_url_raw( rest_url() ),
                 'theme_uri' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),

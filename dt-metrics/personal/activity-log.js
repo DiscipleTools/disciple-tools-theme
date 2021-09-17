@@ -6,8 +6,8 @@ jQuery(document).ready(function() {
   function my_stats() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    let sourceData = dtMetricsPersonal.data
-    let translations = dtMetricsPersonal.data.translations
+    let sourceData = dtMetricsActivity.data
+    let translations = dtMetricsActivity.data.translations
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
