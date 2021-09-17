@@ -14,9 +14,9 @@ cache:
 
 matrix:
   include:
-    - php: 7.4
+    - php: 8.0
+    - php: 7.2
       env: WP_VERSION=latest
-    - php: 7.0
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS testdb'
@@ -49,6 +49,5 @@ script:
     if [[ ! -z "$WP_VERSION" ]] ; then
       composer require "phpunit/phpunit=7.5.*"
       vendor/phpunit/phpunit/phpunit --version
-      vendor/phpunit/phpunit/phpunit
       WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
     fi

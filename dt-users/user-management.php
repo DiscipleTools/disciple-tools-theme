@@ -13,14 +13,18 @@ class DT_User_Management
     } // End instance()
 
     public function __construct() {
+        $url_path = dt_get_url_path();
+        if ( $this->has_permission() || self::non_admins_can_make_users() ) {
+            if ( strpos( $url_path, 'user-management/user' ) !== false || ( strpos( $url_path, 'user-management/add-user' ) !== false && ( current_user_can( "create_users" ) || self::non_admins_can_make_users() ) ) ){
+                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+                add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
+            }
+        }
         if ( $this->has_permission() ){
-            $url_path = dt_get_url_path();
             if ( strpos( $url_path, 'user-management' ) !== false || strpos( $url_path, 'user-management' ) !== false ) {
                 add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 20 );
             }
-            if ( strpos( $url_path, 'user-management/user' ) !== false || ( strpos( $url_path, 'user-management/add-user' ) !== false && current_user_can( "create_users" ) ) ){
-                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-                add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
+            if ( strpos( $url_path, 'user-management/user' ) !== false || ( strpos( $url_path, 'user-management/add-user' ) !== false && ( current_user_can( "create_users" ) ) ) ){
 
 
                 add_action( 'init', function() {
@@ -49,6 +53,16 @@ class DT_User_Management
             }
         }
         return $pass;
+    }
+
+    public static function non_admins_can_make_users() {
+        $user_invite_setting = get_option( 'dt_user_invite_setting', false );
+
+        if ( $user_invite_setting && current_user_can( 'access_contacts' ) ) {
+            return true;
+        }
+
+        return false;
     }
 
     public function add_api_routes() {
@@ -170,13 +184,16 @@ class DT_User_Management
                         'contact_attempt_time' => _x( 'Contact with %1$s was attempted on %2$s after %3$s days', 'Contact with Bob was attempted on Jul 8 after 10 days', 'disciple_tools' ),
                         'unable_to_update' => __( 'Unable to update', 'disciple_tools' ),
                         'view_new_user' => __( 'View New User', 'disciple_tools' ),
+                        'view_new_contact' => __( 'View New Contact', 'disciple_tools' ),
                         'email_already_in_system' => __( 'Email address is already in the system as a user!', 'disciple_tools' ),
                         'username_in_system' => __( 'Username is already in the system as a user!', 'disciple_tools' ),
                         'remove' => __( 'Remove', 'disciple_tools' ),
                         'already_user' => __( 'This contact is already a user.', 'disciple_tools' ),
                         'view_user' => __( 'View User', 'disciple_tools' ),
+                        'view_contact' => __( 'View Contact', 'disciple_tools' ),
                     ],
                     'language_dropdown' => dt_get_available_languages(),
+                    'has_permission' => $this->has_permission(),
                 ]
             );
 
