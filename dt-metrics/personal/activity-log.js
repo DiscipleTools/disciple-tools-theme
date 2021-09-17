@@ -1,6 +1,5 @@
 jQuery(document).ready(function() {
-  if ('metrics' === window.wpApiShare.url_path || 'metrics/' === window.wpApiShare.url_path || window.wpApiShare.url_path.startsWith( 'metrics/personal/activity-log' ) ) {
-    console.log('hi there')
+  if ( window.wpApiShare.url_path.startsWith( 'metrics/personal/activity-log' ) ) {
     my_stats()
   }
 

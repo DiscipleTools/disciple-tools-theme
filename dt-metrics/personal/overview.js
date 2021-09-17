@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+jQuery(function() {
   if ('metrics' === window.wpApiShare.url_path || 'metrics/' === window.wpApiShare.url_path || window.wpApiShare.url_path.startsWith( 'metrics/personal/overview' ) ) {
     my_stats()
   }
