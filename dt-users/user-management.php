@@ -404,6 +404,16 @@ class DT_User_Management
 
     }
 
+    private function make_sql_from_list($list) {
+        $wrap_actions = function ( $action ) {
+            return "'$action'";
+        };
+        $wrapped_allowed_actions = array_map( $wrap_actions, $list );
+        $list_sql = implode( ', ', $wrapped_allowed_actions );
+
+        return $list_sql;
+    }
+
     private function get_user_activity( $user_id, $include = [] ) {
         global $wpdb;
 
@@ -413,11 +423,10 @@ class DT_User_Management
             $allowed_actions = $include;
         }
 
-        $wrap_actions = function ( $action ) {
-            return "'$action'";
-        };
-        $wrapped_allowed_actions = array_map( $wrap_actions, $allowed_actions );
-        $allowed_actions_sql = implode( ', ', $wrapped_allowed_actions );
+        $allowed_actions_sql = $this->make_sql_from_list( $allowed_actions );
+        $allowed_post_types = DT_Posts::get_post_types();
+        array_push( $allowed_post_types, 'post' );
+        $allowed_post_types_sql = $this->make_sql_from_list( $allowed_post_types );
 
         //phpcs:disable
         $user_activity = $wpdb->get_results($wpdb->prepare("
@@ -427,6 +436,7 @@ class DT_User_Management
                 ON a.object_id = p.ID
                 WHERE user_id = %s
                 AND action IN ( $allowed_actions_sql )
+                AND p.post_type IN ( $allowed_post_types_sql )
                 ORDER BY `hist_time` DESC
                 LIMIT 100
             ", $user_id ));
@@ -438,7 +448,7 @@ class DT_User_Management
 
             foreach ($user_activity as $a) {
                 $a->object_note = '';
-                $a->icon = apply_filters( 'dt_record_icon', null, $a->object_type, [] );
+                $a->icon = apply_filters( 'dt_record_icon', null, $a->post_type, [] );
                 $a->post_type_label = $a->post_type ? DT_Posts::get_label_for_post_type( $a->post_type ) : null;
 
                 if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {

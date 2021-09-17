@@ -10,6 +10,10 @@
     font-size: 1.1rem;
 }
 
+.post-activities {
+    margin-bottom: 0.5rem;
+}
+
 .post-activities__icon {
     color: #3f729b;
     margin-right: 0.1rem;
@@ -17,6 +21,15 @@
 
 .post-activities__title {
     color: #3f729b;
+}
+
+.post-activities__item {
+    padding-left: 1.4rem;
+}
+
+.post-activities__item--no-title {
+    padding-left: 1.4rem;
+    background-color: rgba(63,114,155,.19);
 }
 
 .activity__more-state {

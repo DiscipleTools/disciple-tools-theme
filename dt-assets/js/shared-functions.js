@@ -687,10 +687,13 @@ window.SHAREDFUNCTIONS = {
         if ( !firstPostActivity.post_type_label ) return
         const iconHtml = firstPostActivity.icon ? `<i class="${icon} medium post-activities__icon"></i> ` : window.lodash.escape(firstPostActivity.post_type_label) + ':'
         activityHtml += `<div class="post-activities">`
-        activityHtml += `
+        const requiresTitle = [ 'field_update', 'created', 'comment' ].includes(firstPostActivity.action)
+        if ( requiresTitle ) {
+          activityHtml += `
           <h5 class="post-activities__title">
             <a href="/${firstPostActivity.post_type}/${firstPostActivity.object_id}">${iconHtml} ${postTitle}</a>
           </h5>`
+        }
 
         const groupedActivities = groupActivityTypes(postActivities)
         Object.entries(groupedActivities).forEach(([action, activities]) => {
@@ -703,7 +706,7 @@ window.SHAREDFUNCTIONS = {
 
             if ( hasMoreFields ) {
               activityHtml += `
-              <div class="activity">
+              <div class="post-activities__item">
                 <input type="checkbox" class="activity__more-state" id="activity${hist_time}" />
                 ${window.lodash.escape(object_note_short)}: ${fields.slice(0, 2).join(', ')}<span class="activity__more-details">, ${fields.slice(2).join(', ')}</span>
                 <label for="activity${hist_time}" class="activity__more-link">+&nbsp;${fields.slice(2).length}&nbsp;more</label>
@@ -712,7 +715,7 @@ window.SHAREDFUNCTIONS = {
               `
             } else {
               activityHtml += `
-              <div class="activity">
+              <div class="post-activities__item">
                 ${window.lodash.escape(object_note_short)}: ${fields.join(', ')}
               </div>
               `
@@ -721,8 +724,7 @@ window.SHAREDFUNCTIONS = {
             const note = object_note_short
               ? window.lodash.escape(object_note_short.replace('%n', count))
               : window.lodash.escape(object_note)
-
-            activityHtml += `<div class="activity">
+            activityHtml += `<div class="post-activities__item${requiresTitle ? '' : '--no-title'}">
               ${note}
             </div>`
           }
