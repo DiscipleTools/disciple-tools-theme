@@ -29,6 +29,11 @@ class Disciple_Tools_Metrics_Personal_Activity_Log extends DT_Metrics_Chart_Base
     }
 
     public function scripts() {
+        wp_enqueue_script( 'dtActivityLogs', get_template_directory_uri() . '/dt-assets/js/activity-log.js', [
+            'jquery',
+            'lodash'
+        ], filemtime( get_theme_file_path() .  '/dt-assets/js/activity-log.js' ), true );
+
         wp_enqueue_script( 'dt_metrics_personal_script', get_template_directory_uri() . $this->js_file_name, [
             'jquery',
             'jquery-ui-core',

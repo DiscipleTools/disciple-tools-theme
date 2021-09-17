@@ -451,7 +451,7 @@ jQuery(document).ready(function($) {
       .done(activity=>{
         if ( window.current_user_lookup === user_id ) {
           let activity_div = $('#activity')
-          let activity_html = window.SHAREDFUNCTIONS.makeActivityList(activity.user_activity)
+          let activity_html = window.dtActivityLogs.makeActivityList(activity.user_activity)
           activity_div.html(activity_html)
         }
       }).catch((e)=>{

@@ -19,7 +19,7 @@ jQuery(document).ready(function() {
     .done(activity=>{
 
       const title = makeTitle(window.lodash.escape( translations.title ))
-      const activity_html = window.SHAREDFUNCTIONS.makeActivityList(activity)
+      const activity_html = window.dtActivityLogs.makeActivityList(activity)
 
       let html = `
         ${title}
