@@ -705,12 +705,13 @@ window.SHAREDFUNCTIONS = {
             const hasMoreFields = fields.slice(2).length > 0
 
             if ( hasMoreFields ) {
+              const forID = `activity${hist_time}${activities.object_id}`
               activityHtml += `
               <div class="post-activities__item">
-                <input type="checkbox" class="activity__more-state" id="activity${hist_time}" />
+                <input type="checkbox" class="activity__more-state" id="${forID}" />
                 ${window.lodash.escape(object_note_short)}: ${fields.slice(0, 2).join(', ')}<span class="activity__more-details">, ${fields.slice(2).join(', ')}</span>
-                <label for="activity${hist_time}" class="activity__more-link">+&nbsp;${fields.slice(2).length}&nbsp;more</label>
-                <label for="activity${hist_time}" class="activity__less-link">-&nbsp;less</label>
+                <label for="${forID}" class="activity__more-link">+&nbsp;${fields.slice(2).length}&nbsp;more</label>
+                <label for="${forID}" class="activity__less-link">-&nbsp;less</label>
               </div>
               `
             } else {
