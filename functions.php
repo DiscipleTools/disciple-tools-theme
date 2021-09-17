@@ -149,7 +149,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.7.0';
+            $this->version = '1.12.3';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -178,6 +178,9 @@ else {
             require_once( get_template_directory() . '/dt-core/configuration/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
             require_once( get_template_directory() . '/dt-core/configuration/restrict-site-access.php' ); // protect against DDOS attacks.
             require_once( get_template_directory() . '/dt-core/configuration/dt-configuration.php' ); //settings and configuration to alter default WP
+            require_once( get_template_directory() . '/dt-reports/magic-url-class.php' );
+            require_once( get_template_directory() . '/dt-reports/magic-url-base.php' );
+
 
             /**
              * User Groups & Multi Roles
@@ -317,6 +320,8 @@ else {
             require_once( get_template_directory() . '/dt-users/user-management.php' );
             require_once( get_template_directory() . '/dt-users/hover-coverage-map.php' );
             require_once( get_template_directory() . '/dt-users/mapbox-coverage-map.php' );
+            require_once( get_template_directory() . '/dt-users/template-no-permission.php' );
+
 
 
             /**
@@ -331,6 +336,13 @@ else {
             require_once( get_template_directory() . '/dt-core/logging/usage.php' );
 
             /**
+             * dt-notifications queue
+             */
+            require_once( get_template_directory() . '/dt-notifications/notifications-queue.php' );
+            require_once( get_template_directory() . '/dt-notifications/notifications-scheduler.php' );
+            $this->notifications_scheduler = new Disciple_Tools_Notifications_Scheduler( Disciple_Tools_Notifications::instance() );
+
+            /**
              * Logging
              */
             require_once( get_template_directory() . '/dt-core/logging/class-activity-api.php' );
@@ -342,8 +354,6 @@ else {
              * Reports
              */
             require_once( get_template_directory() . '/dt-reports/reports.php' );
-            require_once( get_template_directory() . '/dt-reports/magic-url-class.php' );
-            require_once( get_template_directory() . '/dt-reports/magic-url-base.php' );
 
             /**
              * Workflows
@@ -400,6 +410,7 @@ else {
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-error-logs.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-workflows.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-metrics.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-reports.php' );
@@ -445,14 +456,26 @@ else {
      * Route Front Page depending on login role
      */
     function dt_route_front_page() {
-        if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-            wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/contacts' ) ) );
+        if ( current_user_can( 'access_disciple_tools' ) || current_user_can( 'access_contacts' ) ) {
+            /**
+             * Use this filter to add a new landing page for logged in users with 'access_contacts' capabilities
+             */
+            if ( current_user_can( 'access_contacts' ) ){
+                wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/contacts' ) ) );
+            } else {
+                wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/settings' ) ) );
+            }
         }
         else if ( ! is_user_logged_in() ) {
             dt_please_log_in();
         }
         else {
-            wp_safe_redirect( home_url( '/settings' ) );
+            /**
+             * Use this filter to give a front page for logged in users who do not have basic 'access_contacts' capabilities
+             * This is used for specific custom roles that are not intended to see the basic framework of DT.
+             * Use this to create a dedicated landing page for partners, donors, or subscribers.
+             */
+            wp_safe_redirect( apply_filters( 'dt_non_standard_front_page', home_url( '/registered' ) ) );
         }
     }
     function set_up_wpdb_tables(){
@@ -462,6 +485,7 @@ else {
         $wpdb->dt_reportmeta = $wpdb->prefix . 'dt_reportmeta';
         $wpdb->dt_share = $wpdb->prefix . 'dt_share';
         $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
+        $wpdb->dt_notifications_queue = $wpdb->prefix . 'dt_notifications_queue';
         $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
         $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
         $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';

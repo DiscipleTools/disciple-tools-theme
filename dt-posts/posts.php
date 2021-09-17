@@ -171,8 +171,8 @@ class Disciple_Tools_Posts
     }
 
 
-    public static function get_label_for_post_type( $post_type, $singular = false ){
-        $post_settings = DT_Posts::get_post_settings( $post_type );
+    public static function get_label_for_post_type( $post_type, $singular = false, $return_cache = true ){
+        $post_settings = DT_Posts::get_post_settings( $post_type, $return_cache );
         if ( $singular ){
             if ( isset( $post_settings["label_singular"] ) ){
                 return $post_settings["label_singular"];
@@ -214,30 +214,63 @@ class Disciple_Tools_Posts
         return $shares;
     }
 
-    public static function format_connection_message( $p2p_id, $activity, $action = 'connected to' ){
+    public static function format_connection_message( $p2p_id, $activity, $action = 'connected to', $fields = [] ){
         // Get p2p record
         $p2p_record = p2p_get_connection( (int) $p2p_id ); // returns object
+
+        $from_title = "";
+        $from_link = "";
+        $to_title = "";
+        $to_link = "";
+
+        //don't create activity on connection fields that are hidden
+        foreach ( $fields as $field ){
+            if ( isset( $field["p2p_key"] ) && $field["p2p_key"] === $activity->meta_key ){
+                if ( $activity->field_type === "connection to" && $field["p2p_direction"] === "to" || $activity->field_type === "connection to" && $field["p2p_direction"] !== "to" ){
+                    if ( isset( $field["hidden"] ) && !empty( $field["hidden"] ) ){
+                        return "";
+                    }
+                }
+            }
+        }
 
         if ( !$p2p_record ){
             if ( $activity->field_type === "connection from" ){
                 $from = get_post( $activity->object_id );
                 $to = get_post( $activity->meta_value );
-                $from_title = wp_specialchars_decode( isset( $from->post_title ) ? $from->post_title : "" );
-                $to_title = wp_specialchars_decode( isset( $to->post_title ) ? $to->post_title : "" ) ?? '#' . $activity->meta_value;
+                $to_title = '#' . $activity->meta_value;
             } elseif ( $activity->field_type === "connection to" ){
                 $to = get_post( $activity->object_id );
                 $from = get_post( $activity->meta_value );
-                $to_title = wp_specialchars_decode( isset( $to->post_title ) ? $to->post_title : "" );
-                $from_title = wp_specialchars_decode( isset( $from->post_title ) ? $from->post_title : "" ) ?? '#' . $activity->meta_value;
+                $from_title = '#' . $activity->meta_value;
             } else {
                 return "CONNECTION DESTROYED";
+            }
+            if ( isset( $from->post_title ) ){
+                $from_title = $from->post_title;
+                $from_link = get_permalink( $from->ID );
+            }
+            if ( isset( $to->post_title ) ){
+                $to_title = $to->post_title;
+                $to_link = get_permalink( $to->ID );
             }
         } else {
             $p2p_from = get_post( $p2p_record->p2p_from, ARRAY_A );
             $p2p_to = get_post( $p2p_record->p2p_to, ARRAY_A );
-            $from_title = wp_specialchars_decode( $p2p_from["post_title"] );
-            $to_title = wp_specialchars_decode( $p2p_to["post_title"] );
+            $to_title = $p2p_to["post_title"];
+            $to_link = get_permalink( $p2p_record->p2p_to );
+            $from_title = $p2p_from["post_title"];
+            $from_link = get_permalink( $p2p_record->p2p_from );
         }
+
+        //create link format to be clicked in activity
+        if ( !empty( $to_link ) ){
+            $to_title = "[" . wp_specialchars_decode( $to_title ) . "](" . $to_link .")";
+        }
+        if ( !empty( $from_link ) ){
+            $from_title = "[" . wp_specialchars_decode( $from_title ) . "](" . $from_link .")";
+        }
+
         $object_note_from = '';
         $object_note_to = '';
 
@@ -506,7 +539,7 @@ class Disciple_Tools_Posts
             $user = get_user_by( "ID", $activity->user_id );
             $message = sprintf( _x( "%s accepted assignment", 'message', 'disciple_tools' ), $user->display_name ?? _x( "A user", 'message', 'disciple_tools' ) );
         } elseif ( $activity->object_subtype === "p2p" ){
-            $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action );
+            $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action, $post_type_settings["fields"] );
         } elseif ( $activity->object_subtype === "share" ){
             if ($activity->action === "share"){
                 $message = sprintf( _x( "Shared with %s", 'message', 'disciple_tools' ), dt_get_user_display_name( $activity->meta_value ) );
@@ -802,13 +835,16 @@ class Disciple_Tools_Posts
                             if ( !empty( $not_in ) ){
                                 $connection_ids = dt_array_to_sql( $not_in );
                                 $where_sql .= ( !empty( $where_sql ) ? " AND " : "" );
+                                $all_key = '*';
                                 if ( $field_settings[$query_key]["p2p_direction"] === "to" ){
+                                    $from_connection_ids = ( in_array( $all_key, $not_in, true ) ) ? "" : "AND p2p_from IN (" .  $connection_ids .")";
                                     $where_sql .= " p.ID NOT IN (
-                                        SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" .  $connection_ids .")
+                                        SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' $from_connection_ids
                                     ) ";
                                 } else {
+                                    $to_connection_ids = ( in_array( $all_key, $not_in, true ) ) ? "" : "AND p2p_to IN (" .  $connection_ids .")";
                                     $where_sql .= " p.ID NOT IN (
-                                        SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" .  $connection_ids .")
+                                        SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' $to_connection_ids
                                     ) ";
                                 }
                             }
@@ -1223,7 +1259,7 @@ class Disciple_Tools_Posts
         }
         return [
             "posts" => $posts,
-            "total" => $total_rows,
+            "total" => (int) $total_rows,
         ];
     }
 
@@ -1313,15 +1349,30 @@ class Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, "You do not have access to: " . $field, [ 'status' => 403 ] );
         }
         global $wpdb;
-        $options = $wpdb->get_col( $wpdb->prepare("
-            SELECT DISTINCT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
-            LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
-            WHERE $wpdb->postmeta.meta_key = %s
-            AND $wpdb->postmeta.meta_value LIKE %s
-            AND $wpdb->posts.post_status = 'publish'
-            ORDER BY $wpdb->postmeta.meta_value ASC
-            LIMIT %d
-        ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( $limit ) ) );
+        $fields = DT_Posts::get_post_field_settings( $post_type );
+        if ( isset( $fields[$field]["private"] ) && $fields[$field]["private"] === true ){
+            $options = $wpdb->get_col( $wpdb->prepare("
+                SELECT DISTINCT pm.meta_value
+                FROM $wpdb->dt_post_user_meta pm
+                LEFT JOIN $wpdb->posts on $wpdb->posts.ID = pm.post_id
+                WHERE pm.meta_key = %s
+                AND pm.meta_value LIKE %s
+                AND $wpdb->posts.post_status = 'publish'
+                AND pm.user_id = %s
+                ORDER BY pm.meta_value ASC
+                LIMIT %d
+            ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( get_current_user_id() ), esc_sql( $limit ) ) );
+        } else {
+            $options = $wpdb->get_col( $wpdb->prepare("
+                SELECT DISTINCT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
+                LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
+                WHERE $wpdb->postmeta.meta_key = %s
+                AND $wpdb->postmeta.meta_value LIKE %s
+                AND $wpdb->posts.post_status = 'publish'
+                ORDER BY $wpdb->postmeta.meta_value ASC
+                LIMIT %d
+            ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( $limit ) ) );
+        }
 
         return $options;
     }
@@ -1661,8 +1712,15 @@ class Disciple_Tools_Posts
     }
 
 
-
-
+    /**
+     * Create or update the dt_post_user_meta field
+     *
+     * @param array $field_settings
+     * @param int $post_id
+     * @param array $fields
+     * @param array $existing_record
+     * @return WP_Error
+     */
     public static function update_post_user_meta_fields( array $field_settings, int $post_id, array $fields, array $existing_record ){
         global $wpdb;
         foreach ( $fields as $field_key => $field ) {
@@ -1754,7 +1812,8 @@ class Disciple_Tools_Posts
                 }
             }
 
-            if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && ( $field_settings[ $field_key ]["type"] === "text" || $field_settings[ $field_key ]["type"] === "textarea" || $field_settings[ $field_key ]["type"] === "date" || $field_settings[ $field_key ]["type"] === "key_select" || $field_settings[ $field_key ]["type"] === "boolean" || $field_settings[ $field_key ]["type"] === "number" ) ) {
+            $private_field_types = [ "text", "textarea", "date", "key_select", "boolean", "number" ];
+            if ( isset( $field_settings[ $field_key ]["type"] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && in_array( $field_settings[ $field_key ]["type"], $private_field_types, true ) ) {
                 if ( $field_settings[ $field_key ]["type"] === "boolean" ){
                     if ( $fields[$field_key] === "1" || $fields[$field_key] === "yes" || $fields[$field_key] === "true" ){
                         $field_value = true;

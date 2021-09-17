@@ -3,6 +3,10 @@
 Template Name: Settings
 */
 dt_please_log_in();
+if ( ! current_user_can( 'access_disciple_tools' ) ) {
+    wp_safe_redirect( '/registered' );
+    exit();
+}
 /* Process $_POST content */
 // We're not checking the nonce here because update_user_contact_info will
 // phpcs:ignore
@@ -20,7 +24,6 @@ $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array o
 $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
 
 $dt_user_locale = get_user_locale( $dt_user->ID );
-$translations = dt_get_translations();
 
 $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
@@ -52,7 +55,28 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         <li><a href="#multiplier"><?php esc_html_e( 'Multiplier Preferences', 'disciple_tools' )?></a></li>
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
                         <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
-                        <?php do_action( 'dt_profile_settings_page_menu' ) ?>
+
+                        <!-- Invite user button only when multipliers can invite multipliers -->
+
+                        <?php if ( DT_User_Management::non_admins_can_make_users() || current_user_can( 'create_users ' ) ): ?>
+
+                            <li><a href="/user-management/add-user"><?php esc_html_e( 'Invite User', 'disciple_tools' ) ?></a></li>
+
+                        <?php endif; ?>
+
+                        <?php
+                        /**
+                         * Add a page menu item that jumps the settings page down to a custom tile.
+                         * Add a link with an li wrapper and a named #hash to your tile.
+                         *
+                         * Use this in combination with the action at the bottom the page called: dt_profile_settings_page_sections
+                         * @param $dt_user WP_User object
+                         * @param $dt_user_meta array Full array of user meta data
+                         * @param $dt_user_contact_id bool/int returns either id for contact connected to user or false
+                         * @param $contact_fields array Array of fields on the contact record
+                         */
+                        do_action( 'dt_profile_settings_page_menu', $dt_user, $dt_user_meta, $dt_user_contact_id, $contact_fields ) ?>
+
                     </ul>
 
                 </div>
@@ -175,7 +199,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
                                 <p>
                                 <?php
-                                if ( !empty( $dt_user_locale ) && $dt_user_locale !== 'en_US' ){
+                                if ( !empty( $dt_user_locale ) && $dt_user_locale !== 'en_US' && isset( $translations[$dt_user_locale] ) ){
                                     echo esc_html( $translations[$dt_user_locale]['native_name'] );
                                 } else {
                                     echo esc_html__( 'English', 'disciple_tools' );
@@ -239,7 +263,8 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                         <td class="tall-3"><?php echo esc_html( $app_value["description"] )?></td>
                                         <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url( $app_url_base ) ?>">
                                             <?php if ( $app_link ) { ?>
-                                                <a href="<?php echo esc_url( $app_link ) ?>"><?php esc_html_e( 'link', 'disciple_tools' ) ?></a>
+                                                <a class="button small"  href="<?php echo esc_url( $app_link ) ?>" title="<?php esc_html_e( 'link', 'disciple_tools' ) ?>"><i class="fi-link"></i></a>
+                                                <button class="button small copy_to_clipboard" data-value="<?php echo esc_url( $app_link ) ?>" title="<?php esc_html_e( 'copy', 'disciple_tools' ) ?>"><i class="fi-page-copy"></i></button>
                                             <?php } ?>
                                         </td>
                                         <td class="tall-3">
@@ -247,7 +272,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                                    onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
                                             <label class="switch-paddle" for="app_state_<?php echo esc_attr( $app_key )?>">
                                                 <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
-                                                <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
+                                                <span class="switch-active" aria-hidden="true" style="color:white;"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
                                                 <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
                                             </label>
                                         </td>
@@ -340,8 +365,8 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
                         </div>
-                        <?php endif; ?>
 
                         <div class="small-12 medium-6 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
                             <!-- Workload -->
@@ -365,11 +390,6 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                 <div class="small-12 cell">
 
                     <div class="bordered-box cell" id="availability" data-magellan-target="availability">
-                        <!--                      <button class="help-button float-right" data-section="availability-help-text">-->
-                        <!--                          <img class="help-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?><!--"/>-->
-                        <!--                      </button>-->
-
-                        <!-- section header-->
                         <span class="section-header"><?php esc_html_e( 'Availability', 'disciple_tools' )?></span>
                         <hr/>
 
@@ -420,13 +440,32 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                 <!-- Begin Notification-->
                 <div class="small-12 cell">
-
                     <div class="bordered-box cell" id="notifications" data-magellan-target="notifications">
                         <button class="help-button float-right" data-section="notifications-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         </button>
                         <span class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></span>
                         <hr/>
+
+                        <?php $email_preference = isset( $dt_user_meta['email_preference'] ) ? $dt_user_meta['email_preference'][0] : null ?>
+                        <p>
+                            <strong><?php esc_html_e( 'Email preferences', 'disciple_tools' ) ?></strong>
+                            <span id="email-preference-spinner" class="loading-spinner"></span>
+                        </p>
+                        <div>
+                            <label for="real-time-preference">
+                                <input id="real-time-preference" type="radio" name="email-preference" <?php echo !$email_preference || $email_preference === 'real-time' ? 'checked' : '' ?>>
+                                <?php esc_html_e( 'Real time', 'disciple_tools' ) ?>
+                            </label>
+                            <label for="hourly-preference">
+                                <input id="hourly-preference" type="radio" name="email-preference" <?php echo $email_preference && $email_preference === 'hourly' ? 'checked' : '' ?>>
+                                <?php esc_html_e( 'Hourly Digest', 'disciple_tools' ) ?>
+                            </label>
+                            <label for="daily-preference">
+                                <input id="daily-preference" type="radio" name="email-preference" <?php echo $email_preference && $email_preference === 'daily' ? 'checked' : '' ?>>
+                                <?php esc_html_e( 'Daily Digest', 'disciple_tools' ) ?>
+                            </label>
+                        </div>
 
                         <table class="form-table">
                             <thead>
@@ -484,8 +523,21 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                 </div>
                 <!-- End Notifications -->
 
-                <!-- hook for more sections added by plugins -->
-                <?php do_action( 'dt_profile_settings_page_sections' ) ?>
+                <?php
+                /**
+                 * Action hook to add additional tiles to the bottom of the personal settings page
+                 *
+                 * Wrap your section of code in <div class="cell bordered-box" id="your_id" data-magellan-target="your_id"></div>
+                 *
+                 * In addition to this section, you can add a navigation link above on with the dt_profile_settings_page_menu at the top of this page
+                 *
+                 * @param $dt_user WP_User object
+                 * @param $dt_user_meta array Full array of user meta data
+                 * @param $dt_user_contact_id bool/int returns either id for contact connected to user or false
+                 * @param $contact_fields array Array of fields on the contact record
+                 */
+                do_action( 'dt_profile_settings_page_sections', $dt_user, $dt_user_meta, $dt_user_contact_id, $contact_fields )
+                ?>
 
                 <div class="reveal" id="edit-profile-modal" data-reveal>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -595,16 +647,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     <td><label for="systemLanguage"><?php esc_html_e( 'System Language', 'disciple_tools' )?></label></td>
                                     <td dir="auto">
                                         <?php
-                                        wp_dropdown_languages( array(
-                                            'name'                        => 'locale',
-                                            'id'                          => 'locale',
-                                            'selected'                    => esc_html( $dt_user_locale ),
-                                            'languages'                   => $dt_available_languages,
-                                            'show_available_translations' => false,
-                                            'show_option_site_default'    => false,
-                                            'show_option_en_us'           => true,
-                                            'translations'                => $translations
-                                        ) );
+                                        dt_language_select()
                                         ?>
                                     </td>
                                 </tr>

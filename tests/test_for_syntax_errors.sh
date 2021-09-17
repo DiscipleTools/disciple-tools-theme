@@ -9,12 +9,14 @@ fi
 
 found_error=0
 
-while read -d '' php_filename ; do
 
-    # php -l checks the file for syntax errors
-    php -l "$php_filename" || found_error=1
-
-done < <(find . -path ./vendor -prune -o -name "*.php" -print0)
+#this is done by phpcs
+#while read -d '' php_filename ; do
+#
+#    # php -l checks the file for syntax errors
+#    php -l "$php_filename" || found_error=1
+#
+#done < <(find . -path ./vendor -prune -o -name "*.php" -print0)
 
 
 while read -d '' js_filename ; do

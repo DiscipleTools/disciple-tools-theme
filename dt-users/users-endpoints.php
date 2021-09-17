@@ -231,8 +231,21 @@ class Disciple_Tools_Users_Endpoints
         $params = $request->get_params();
 
         if ( isset( $params["user-email"], $params["user-display"] ) ){
+            $user_roles = [ "multiplier" ];
+            if ( isset( $params["user-user_role"] ) ){
+                $user_roles = [ $params["user-user_role"] ];
+            }
+            if ( isset( $params["user-roles"] ) && !empty( $params["user-roles"] ) ){
+                $user_roles =$params["user-roles"];
+            }
             $user_login = $params["user-user_login"] ?? $params["user-email"];
-            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $params["user-user_role"] ?? 'multiplier', $params["corresponds_to_contact"] ?? null );
+            if (isset( $params["locale"] ) ) {
+                $locale = $params["locale"];
+            }
+            if (isset( $params["return_contact"] ) ) {
+                $return_contact = true;
+            }
+            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $user_roles, $params["corresponds_to_contact"] ?? null, $locale ?? null, $return_contact );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
@@ -294,7 +307,7 @@ class Disciple_Tools_Users_Endpoints
 
             // only dt admin caps can add locations for other users
             $user_id = get_current_user_id();
-            if ( isset( $params['user_id'] ) && ! empty( $params['user_id'] ) && $params['user_id'] !== $user_id ) {
+            if ( isset( $params['user_id'] ) && ! empty( $params['user_id'] ) && (int) $params['user_id'] !== $user_id ) {
                 if ( user_can( $user_id, 'manage_dt' ) ) { // if user_id param is set, you must be able to edit users.
                     $user_id = sanitize_text_field( wp_unslash( $params['user_id'] ) );
                 } else {
@@ -336,7 +349,7 @@ class Disciple_Tools_Users_Endpoints
 
             // only dt admin caps can add locations for other users
             $user_id = get_current_user_id();
-            if ( isset( $params['user_id'] ) && ! empty( $params['user_id'] ) && $params['user_id'] !== $user_id ) {
+            if ( isset( $params['user_id'] ) && ! empty( $params['user_id'] ) && (int) $params['user_id'] !== $user_id ) {
                 // if user_id param is set, you must be able to edit users.
                 if ( user_can( $user_id, 'manage_dt' ) ) {
                     $user_id = sanitize_text_field( wp_unslash( $params['user_id'] ) );
@@ -451,6 +464,9 @@ class Disciple_Tools_Users_Endpoints
         }
         if ( !empty( $body["gender"] ) ) {
             update_user_option( $user->ID, 'user_gender', $body["gender"] );
+        }
+        if ( !empty( $body["email-preference"] ) ) {
+            update_user_meta( $user->ID, 'email_preference', $body["email-preference"] );
         }
         try {
             do_action( 'dt_update_user', $user, $body );

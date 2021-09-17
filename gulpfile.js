@@ -9,6 +9,7 @@ var gulp = require('gulp'),
   log = require('fancy-log');
   browserSync = require('browser-sync'),
   plugin = require('gulp-load-plugins')(),
+  sass = require('gulp-sass')(require('sass')),
   touch = require('gulp-touch-cmd'),
   rename = require('gulp-rename'),
   frep = require('gulp-frep'),
@@ -125,7 +126,7 @@ gulp.task('styles', function () {
       this.emit('end');
     }))
     .pipe(plugin.sourcemaps.init())
-    .pipe(plugin.sass())
+    .pipe(sass().on('error', sass.logError))
     .pipe(plugin.autoprefixer({
       cascade: false
     }))

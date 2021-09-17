@@ -78,14 +78,19 @@ class DT_Contacts_User {
         global $wp_roles;
         if ( $post_type === "contacts" ){
             $contact = DT_Posts::get_post( $post_type, $post_id );
-            if ( current_user_can( "create_users" ) ){
+            if ( current_user_can( "create_users" ) || DT_User_Management::non_admins_can_make_users() ){
                 ?>
                 <li><a data-open="make-user-from-contact-modal">
                         <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/arrow-user.svg' ) ?>"/>
                         <?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>
-                <li><a data-open="link-to-user-modal">
-                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/link.svg' ) ?>"/>
-                        <?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
+
+                <?php if ( current_user_can( "create_users" ) ): ?>
+
+                    <li><a data-open="link-to-user-modal">
+                            <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/link.svg' ) ?>"/>
+                            <?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
+
+                <?php endif; ?>
 
                 <div class="reveal" id="make-user-from-contact-modal" data-reveal data-reset-on-close>
                     <h3><?php echo esc_html_x( 'Make User From Contact', 'Make user modal', 'disciple_tools' )?></h3>
@@ -114,23 +119,35 @@ class DT_Contacts_User {
                                        value="<?php the_title_attribute(); ?>"
                                        placeholder="<?php esc_html_e( "Display Name", 'disciple_tools' ) ?>">
                             </label>
-                            <label for="user-roles">
-                                <?php esc_html_e( "User Role", "disciple_tools" ); ?>
+
+                            <?php if ( current_user_can( "create_users" ) ): ?>
+
+                                <label for="user-roles">
+                                    <?php esc_html_e( "User Role", "disciple_tools" ); ?>
+                                </label>
+                                <select name="user-user_role">
+                                    <?php
+
+                                    foreach ( $wp_roles->role_names as $role_key => $role_name ):
+
+                                        if ( 'administrator' === $role_key || 'dt_admin' === $role_key ):
+                                            continue;
+                                        endif;
+
+                                        ?>
+                                    <option value="<?php echo esc_attr( $role_key ); ?>" <?php if ( 'multiplier' === $role_key ): ?> selected <?php endif; ?>><?php echo esc_html( $role_name ); ?></option>
+
+                                    <?php endforeach; ?>
+                                </select>
+
+                            <?php endif; ?>
+
+                            <label for="locale">
+                                <?php esc_html_e( "User Language", "disciple_tools" ); ?>
                             </label>
-                            <select name="user-user_role">
-                                <?php
-
-                                foreach ( $wp_roles->role_names as $role_key => $role_name ):
-
-                                    if ( 'administrator' === $role_key || 'dt_admin' === $role_key ):
-                                        continue;
-                                    endif;
-
-                                    ?>
-                                <option value="<?php echo esc_attr( $role_key ); ?>" <?php if ( 'multiplier' === $role_key ): ?> selected <?php endif; ?>><?php echo esc_html( $role_name ); ?></option>
-
-                                <?php endforeach; ?>
-                            </select>
+                            <?php
+                            dt_language_select()
+                            ?>
                             <div class="grid-x">
                                 <p id="create-user-errors" style="color: red"></p>
                             </div>

@@ -642,6 +642,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <label for="custom">Custom Icon URL:</label>
                     <input type="radio" name="icon" value="custom">
                     <input name="add_custom_quick_action_icon" type="text">
+                    <br>
                     <button type="submit" class="button"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></button>
             </div>
         </form>
@@ -659,18 +660,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
         // Load custom fields
         $custom_field_options = dt_get_option( 'dt_field_customizations' );
-
-        // Check if custom fields exists and if not create an empty array
-        if ( ! isset( $custom_field_options ) ) {
-            update_option( 'dt_field_customizations', [], true );
-            $custom_field_options = dt_get_option( 'dt_field_customizations' );
-        }
-
-        // Check if custom fields aren't empty and if so create an empty array
-        if ( empty( $custom_field_options['contacts'] ) ) {
-            update_option( 'dt_field_customizations', [], true );
-            $custom_field_options = dt_get_option( 'dt_field_customizations' );
-        }
 
         // Add a new custom field
         if ( ! empty( $_POST['add_custom_quick_action_label'] ) ) {

@@ -57,14 +57,16 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'access_specific_sources' => true,
                 'assign_any_contacts' => true, //assign contacts to others,
                 'view_project_metrics' => true,
-            ], $multiplier_permissions )
+            ], $multiplier_permissions ),
+            "order" => 30
         ];
         $expected_roles['partner'] = [
             "label" => __( "Partner", "disciple_tools" ),
             "description" => "Allow access to a specific contact source so a partner can see progress",
             "permissions" => wp_parse_args( [
                 'access_specific_sources' => true,
-            ], $multiplier_permissions )
+            ], $multiplier_permissions ),
+            "order" => 35
         ];
         $expected_roles['dispatcher'] = [
             "label" => __( "Dispatcher", "disciple_tools" ),
@@ -75,7 +77,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'list_users' => true,
                 'dt_list_users' => true,
                 'assign_any_contacts' => true, //assign contacts to others
-            ], $multiplier_permissions )
+            ], $multiplier_permissions ),
+            "order" => 20
         ];
         $expected_roles["administrator"]["permissions"]["dt_all_access_contacts"] = true;
         $expected_roles["administrator"]["permissions"]["assign_any_contacts"] = true;
@@ -325,7 +328,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'default'     => [],
                 'icon' => get_template_directory_uri() . "/dt-assets/images/megaphone.svg",
                 'only_for_types' => [ 'access' ],
-                'in_create_form' => [ 'access' ]
             ];
 
             if ( empty( $fields["contact_phone"]['in_create_form'] ) ){
@@ -348,7 +350,7 @@ class DT_Contacts_Access extends DT_Module_Base {
 
             //order overall status options
             uksort( $declared_fields["overall_status"]["default"], function ( $a, $b ) use ( $fields ){
-                return array_search( $a, array_keys( $fields["overall_status"]["default"] ) ) > array_search( $b, array_keys( $fields["overall_status"]["default"] ) );
+                return array_search( $a, array_keys( $fields["overall_status"]["default"] ) ) <=> array_search( $b, array_keys( $fields["overall_status"]["default"] ) );
             } );
             $fields = $declared_fields;
         }
@@ -1078,7 +1080,9 @@ class DT_Contacts_Access extends DT_Module_Base {
             } else if ( current_user_can( 'access_specific_sources' ) ){
                 //give user permission to all 'access' that also have a source the user can view.
                 $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-                if ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
+                if ( in_array( 'all', $allowed_sources, true ) ){
+                    $permissions["type"] = [ "access" ];
+                } elseif ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
                     $permissions[] = [ "type" => [ "access" ], "sources" => $allowed_sources];
                 }
             }

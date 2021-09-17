@@ -66,6 +66,7 @@ class Disciple_Tools_Metrics{
                     require_once( get_template_directory() . '/dt-metrics/groups/overview.php' );
 
                     // Combined
+                    require_once( get_template_directory() . '/dt-metrics/combined/daily-activity.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/locations-list.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
                     if ( !empty( $modules["access_module"]["enabled"] ) ){
@@ -105,13 +106,16 @@ class Disciple_Tools_Metrics{
         /**
          * Add Navigation Menu
          */
-        add_filter( 'desktop_navbar_menu_options', function ( $tabs ){
-            $tabs['metrics'] = [
-                "link" => site_url( '/metrics/' ),
-                "label" => __( "Metrics", "disciple_tools" )
-            ];
-            return $tabs;
-        }, 25 );
+        if ( current_user_can( 'access_disciple_tools' ) ) {
+            add_filter( 'desktop_navbar_menu_options', function ( $tabs ){
+                $tabs['metrics'] = [
+                    "link" => site_url( '/metrics/' ),
+                    "label" => __( "Metrics", "disciple_tools" )
+                ];
+                return $tabs;
+            }, 25 );
+        }
+
     }
 }
 

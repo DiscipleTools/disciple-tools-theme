@@ -1,5 +1,6 @@
 jQuery(function($) {
   let new_post = {}
+  document.querySelector('.form-fields input').focus()
   $('.type-option').on('click', function(){
     let type = $(this).attr('id')
     $('.type-option.selected').removeClass('selected')
@@ -14,6 +15,8 @@ jQuery(function($) {
     $('#show-hidden-fields').show();
     $('#hide-hidden-fields').hide();
     new_post.type = type
+    /* Focus first field in form */
+    document.querySelector('.form-fields input').focus()
   })
   $('#show-hidden-fields').on('click', function (){
     $('.form-field').show()
@@ -68,7 +71,9 @@ jQuery(function($) {
       }
       let id = $(this).attr('id')
       new_post[id] = date
-      this.value = window.SHAREDFUNCTIONS.formatDate(moment.utc(date).unix());
+      if ( this.value ){
+        this.value = window.SHAREDFUNCTIONS.formatDate(moment.utc(date).unix());
+      }
     },
     changeMonth: true,
     changeYear: true,

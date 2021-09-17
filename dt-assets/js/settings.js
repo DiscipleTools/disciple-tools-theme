@@ -13,7 +13,11 @@ function app_switch (app_key = null) {
         jQuery('#app_link_' + app_key).empty()
       } else {
         let u = a.data('url-base')
-        a.empty().html(`<a href="${u}${data}">${wpApiSettingsPage.translations.link}</a>`)
+        a.empty().html(
+          `<a class="button small"  href="${u}${data}" title="${wpApiSettingsPage.translations.link}"><i class="fi-link"></i></a>
+            <button class="button small copy_to_clipboard" data-value="${u}${data}" title="${wpApiSettingsPage.translations.copy}"><i class="fi-page-copy"></i></button>`
+        )
+        load_user_app_copy_to_clipboard_listener()
       }
     })
     .fail(function (err) {
@@ -22,6 +26,31 @@ function app_switch (app_key = null) {
       a.empty().html(`error`)
     });
 }
+
+function load_user_app_copy_to_clipboard_listener() {
+  jQuery('.copy_to_clipboard').on('click', function(){
+    let str = jQuery(this).data('value')
+    const el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    const selected =
+      document.getSelection().rangeCount > 0
+        ? document.getSelection().getRangeAt(0)
+        : false;
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    if (selected) {
+      document.getSelection().removeAllRanges();
+      document.getSelection().addRange(selected);
+    }
+    alert('Copied')
+  })
+}
+load_user_app_copy_to_clipboard_listener()
 
 /**
  * Password reset
@@ -304,54 +333,68 @@ $('select.select-field').change(e => {
     $(`#${id}-spinner`).removeClass("active")
   }).catch(handleAjaxError)
 })
+$('input[name="email-preference"]').on('change', (e) => {
+  const optionId = e.target.id.replace('-preference', '')
+  const loadingSpinner = $('#email-preference-spinner')
+  loadingSpinner.addClass('active')
+  update_user('email-preference', optionId)
+  .then(() => {
+    loadingSpinner.removeClass('active')
+  })
+  .fail(() => {
+    loadingSpinner.removeClass('active')
+  })
+})
 
 /**
  * People groups
  */
-$.typeahead({
-  input: '.js-typeahead-people_groups',
-  minLength: 0,
-  accent: true,
-  searchOnFocus: true,
-  maxItem: 20,
-  template: window.TYPEAHEADS.contactListRowTemplate,
-  source: TYPEAHEADS.typeaheadPostsSource("peoplegroups" ),
-  display: ["name", "label"],
-  templateValue: function() {
-    if (this.items[this.items.length - 1].label) {
-      return "{{label}}"
-    } else {
-      return "{{name}}"
-    }
-  },
-  dynamic: true,
-  multiselect: {
-    matchOn: ["ID"],
-    data: function () {
-      return wpApiSettingsPage.user_people_groups.map(g=>{
-        return { ID: g.ID, name:g.post_title };
-      })
-    },
-    callback: {
-      onCancel: function (node, item) {
-       update_user( 'remove_people_groups', item.ID )
+if ( $('.js-typeahead-people_groups').length) {
+  $.typeahead({
+    input: '.js-typeahead-people_groups',
+    minLength: 0,
+    accent: true,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: window.TYPEAHEADS.contactListRowTemplate,
+    source: TYPEAHEADS.typeaheadPostsSource("peoplegroups"),
+    display: ["name", "label"],
+    templateValue: function () {
+      if (this.items[this.items.length - 1].label) {
+        return "{{label}}"
+      } else {
+        return "{{name}}"
       }
     },
-  },
-  callback: {
-    onClick: function(node, a, item, event){
-      update_user( 'add_people_groups', item.ID )
-      this.addMultiselectItemLayout(item)
-      event.preventDefault()
-      this.hideLayout();
-      this.resetInput();
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return wpApiSettingsPage.user_people_groups.map(g => {
+          return {ID: g.ID, name: g.post_title};
+        })
+      },
+      callback: {
+        onCancel: function (node, item) {
+          update_user('remove_people_groups', item.ID)
+        }
+      },
     },
-    onResult: function (node, query, result, resultCount) {
-      let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-      $('#people_groups-result-container').html(text);
-    },
-    onHideLayout: function () {
-      $('#people_groups-result-container').html("");
+    callback: {
+      onClick: function (node, a, item, event) {
+        update_user('add_people_groups', item.ID)
+        this.addMultiselectItemLayout(item)
+        event.preventDefault()
+        this.hideLayout();
+        this.resetInput();
+      },
+      onResult: function (node, query, result, resultCount) {
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#people_groups-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#people_groups-result-container').html("");
+      }
     }
-  }
-})
+  })
+}

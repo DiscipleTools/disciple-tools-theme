@@ -69,7 +69,7 @@
 
         <?php
         /* Admin */
-        if ( ( user_can( get_current_user_id(), 'manage_dt' ) )
+        if ( ( current_user_can( 'manage_dt' ) )
             && ( isset( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ) && ! empty( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ) ) ) : ?>
             <li><a href="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ?? '' ); ?>"><?php echo esc_html( $dt_nav_tabs['admin']['settings']['submenu']['admin']['label'] ?? '' ); ?></a></li>
         <?php endif; ?>

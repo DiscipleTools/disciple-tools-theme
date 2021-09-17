@@ -49,4 +49,42 @@ jQuery(document).ready(function ($) {
   })
 
 
+  /**
+   * new fields
+   */
+  //show more fields when connection option selected
+
+  $('#new_field_type_select').on('change', function (){
+    if ( this.value === "connection" ){
+      $('.connection_field_target_row').show()
+      $('#private_field_row').hide()
+      $('#connection_field_target').prop('required', true);
+    } else {
+      $('.connection_field_reverse_row').hide()
+      $('.connection_field_target_row').hide()
+      $('#private_field_row').show()
+      $('#connection_field_target').prop('required', false);
+    }
+  })
+
+  //show the reverse connection field name row if the post type is not "self"
+  $('#connection_field_target').on("change", function (){
+    let post_type_label = $( "#connection_field_target option:selected" ).text();
+    $('.connected_post_type').html(post_type_label)
+    if ( this.value === $('#current_post_type').val()){
+      $('.same_post_type_other_field_name').toggle(!$('#multidirectional_checkbox').is(':checked'))
+      $('.connection_field_reverse_row').hide()
+      $('.same_post_type_row').show()
+    } else {
+      $('.same_post_type_other_field_name').hide()
+      $('.connection_field_reverse_row').show()
+      $('.same_post_type_row').hide()
+    }
+  })
+
+
+  $('#multidirectional_checkbox').on("change", function (){
+    $('.same_post_type_other_field_name').toggle(!this.checked)
+  })
+
 })

@@ -396,6 +396,46 @@ dt_please_log_in();
                             <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
                             </div>
 
+                            <div class="cell small-12 medium-12 grid-y">
+                                <div class="section-subheader">
+                                    <?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?>
+                                </div>
+                                <div class="cell" id="bulk_add-comment-section">
+                                    <div class="auto cell">
+                                        <textarea class="mention" dir="auto" id="bulk_comment-input"
+                                                placeholder="<?php echo esc_html_x( "Write your comment or note here", 'input field placeholder', 'disciple_tools' ) ?>"
+                                        ></textarea>
+
+                                        <?php if ( $post_type == "contacts" ) :
+                                            $sections = [
+                                                [
+                                                    "key" => "comment",
+                                                    "label" => __( "Comments", 'disciple_tools' ),
+                                                    "selected_by_default" => true
+                                                ],
+                                            ];
+                                            $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+
+                                                <div class="grid-x">
+                                                    <div class="section-subheader cell shrink">
+                                                        <?php esc_html_e( "Type:", 'disciple_tools' ) ?>
+                                                    </div>
+                                                    <select id="comment_type_selector" class="cell auto">
+                                                        <?php
+                                                        $section_keys = [];
+                                                        foreach ( $sections as $section ) {
+                                                            if ( !in_array( $section["key"], $section_keys ) ) {
+                                                                $section_keys[] = $section["key"] ?>
+                                                                <option value="<?php echo esc_html( $section["key"] ); ?>">
+                                                                <?php echo esc_html( $section["label"] );
+                                                            }
+                                                        } ?>
+                                                    </select>
+                                                </div>
+                                                <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
                             <span class="cell small-12 medium-12 center">
                                 <a class="button" id="bulk_edit_seeMore">
                                     <span class="seeMoreText"><?php esc_html_e( 'See More Options', 'disciple_tools' ); ?></span>
@@ -459,7 +499,7 @@ dt_please_log_in();
                                             if ( isset( $b["show_in_table"] ) ){
                                                 $b_order = is_numeric( $b["show_in_table"] ) ? $b["show_in_table"] : 90;
                                             }
-                                            return $a_order > $b_order;
+                                            return $a_order <=> $b_order;
                                         });
                                         foreach ( $post_settings["fields"] as $field_key => $field_value ){
                                             if ( ( isset( $field_value["show_in_table"] ) && $field_value["show_in_table"] ) ){
@@ -524,7 +564,19 @@ dt_please_log_in();
                             if ( isset( $field_options[$field]["name"] ) ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
-                                        <?php echo esc_html( $field_options[$field]["name"] ) ?></a>
+
+                                        <?php if ( isset( $field_options[$field]["icon"] ) && ! empty( $field_options[$field]["icon"] ) ): ?>
+
+                                            <img class="tabs-title__icon" src="<?php echo esc_html( $field_options[$field]["icon"] ) ?>" alt="<?php echo esc_html( $field_options[$field]["name"] ) ?>">
+
+                                        <?php else : ?>
+
+                                            <div class="tabs-title__icon"></div>
+
+                                        <?php endif; ?>
+
+                                        <?php echo esc_html( $field_options[$field]["name"] ) ?>
+                                    </a>
                                 </li>
                             <?php endif; ?>
                         <?php endforeach; ?>
@@ -558,6 +610,9 @@ dt_please_log_in();
                                     <p>
                                         <label><?php echo esc_html( sprintf( _x( 'All %1$s with %2$s', 'All Contacts with Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
                                             <input class="all-connections" type="checkbox" value="all-connections" />
+                                        </label>
+                                        <label><?php echo esc_html( sprintf( _x( 'All %1$s without %2$s', 'All Contacts without Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
+                                            <input class="all-without-connections" type="checkbox" value="all-without-connections" />
                                         </label>
                                     </p>
                                 <?php endif; ?>

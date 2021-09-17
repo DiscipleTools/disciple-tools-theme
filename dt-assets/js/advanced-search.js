@@ -1,5 +1,6 @@
 jQuery(document).ready(function ($) {
 
+  let timer = null;
   let rest_api = window.API
   let template_dir_uri = window.advanced_search_settings.template_dir_uri;
   let fetch_more_text = window.advanced_search_settings.fetch_more_text;
@@ -8,9 +9,14 @@ jQuery(document).ready(function ($) {
   $(document).on("click", '.advanced-search-nav-button', function () {
     reset_widgets();
     $('#advanced-search-modal').foundation('open');
+    $('#advanced-search-modal-form-query').focus();
   })
 
   // Process search queries
+  $(document).on("keydown", '.advanced-search-modal-form-input', function (e) {
+    clearTimeout(timer);
+    timer = setTimeout(execute_search_query, 500);
+  })
   $(document).on("keypress", '.advanced-search-modal-form-input', function (e) {
     if (e.which === 13) {
       e.preventDefault();
@@ -48,12 +54,27 @@ jQuery(document).ready(function ($) {
     });
   })
 
+  $(document).on("click", '.advanced-search-modal-filters', function (e) {
+    execute_search_query();
+  })
+
+  function fetch_filters() {
+    // Source filters based on current visibility orientation
+    let location = $('.advanced-search-modal-results-post-types-view-at-top-collapsible-button').is(':visible') ? 'top' : 'side';
+    return {
+      post: $('#advanced-search-modal-filters-posts-' + location).prop('checked'),
+      comment: $('#advanced-search-modal-filters-comments-' + location).prop('checked'),
+      meta: $('#advanced-search-modal-filters-meta-' + location).prop('checked')
+    };
+  }
+
   function execute_search_query_by_offset(evt, current_section_head) {
     let query = $('.advanced-search-modal-form-input').val();
     let offset = evt.currentTarget.parentNode.parentNode.querySelector("#advanced-search-modal-results-table-row-section-head-hidden-offset").getAttribute("value");
     let post_type = evt.currentTarget.parentNode.parentNode.querySelector("#advanced-search-modal-results-table-row-section-head-hidden-post-type").getAttribute("value");
 
-    rest_api.advanced_search(encodeURI(query), post_type, offset).then(api_data => {
+    rest_api.advanced_search(encodeURI(query), post_type, offset, fetch_filters()).then(api_data => {
+
       /*
        * As by offset search is on a per post_type basis, there should
        * only be a single result element returned.
@@ -110,7 +131,7 @@ jQuery(document).ready(function ($) {
     $('.advanced-search-modal-results-div').slideDown('fast', function (data) {
       let spinner = '<span class="loading-spinner active"></span>';
       $('.advanced-search-modal-results').html(spinner).fadeIn('slow', function () {
-        rest_api.advanced_search(encodeURI(query), selected_post_type, 0).then(api_data => {
+        rest_api.advanced_search(encodeURI(query), selected_post_type, 0, fetch_filters()).then(api_data => {
           display_results(api_data, function () {
             $('.advanced-search-modal-results').fadeIn('fast');
           });

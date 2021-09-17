@@ -42,3 +42,15 @@ jQuery(document).ready($ => {
 jQuery(document).ready(function () {
   jQuery('#inner-content ').css('min-height', window.innerHeight)
 })
+
+//Hide Top Menu More button if all items are showing
+document.addEventListener('DOMContentLoaded', top_bar_menu_more_button);
+window.addEventListener('resize', top_bar_menu_more_button);
+
+function top_bar_menu_more_button () {
+  if ( $("#top-bar-menu > div.top-bar-left > ul > li:nth-last-child(2)").is(':visible')) {
+    $("#more-menu-button").hide();
+  } else {
+    $("#more-menu-button").show();
+  }
+}

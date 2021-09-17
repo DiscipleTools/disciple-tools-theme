@@ -15,7 +15,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/common/maps_library.js'; // should be full file name plus extension
     public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
-    public $namespace = 'dt-metrics/combined/';
+    public $namespace = 'dt-metrics/combined';
 
     public function __construct() {
         if ( ! DT_Mapbox_API::get_key() ) {
@@ -113,7 +113,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
 //            ]
 //        );
         register_rest_route(
-            $this->namespace, 'points_geojson', [
+            $this->namespace, '/points_geojson', [
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'points_geojson' ],

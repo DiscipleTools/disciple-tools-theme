@@ -19,7 +19,6 @@ class DT_Contacts_Base {
 
         //setup tiles and fields
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-        add_action( 'p2p_init', [ $this, 'p2p_init' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 5, 2 );
         add_filter( 'dt_custom_fields_settings_after_combine', [ $this, 'dt_custom_fields_settings_after_combine' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
@@ -28,12 +27,14 @@ class DT_Contacts_Base {
         add_action( 'dt_record_footer', [ $this, "dt_record_footer" ], 10, 2 );
         add_action( 'dt_record_notifications_section', [ $this, "dt_record_notifications_section" ], 10, 2 );
         add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 10, 3 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 2 );
 
         // hooks
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
         add_filter( "dt_post_update_fields", [ $this, "update_post_field_hook" ], 10, 3 );
+        add_filter( "dt_post_updated", [ $this, "dt_post_updated" ], 10, 5 );
         add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 20, 2 );
         add_filter( "dt_comments_additional_sections", [ $this, "add_comm_channel_comment_section" ], 10, 2 );
 
@@ -50,31 +51,57 @@ class DT_Contacts_Base {
         }
     }
 
+    /**
+     * Set the singular and plural translations for this post types settings
+     * The add_filter is set onto a higher priority than the one in Disciple_tools_Post_Type_Template
+     * so as to enable localisation changes. Otherwise the system translation passed in to the custom post type
+     * will prevail.
+     */
+    public function dt_get_post_type_settings( $settings, $post_type ){
+        if ( $post_type === $this->post_type ){
+            $settings['label_singular'] = __( 'Contact', 'disciple_tools' );
+            $settings['label_plural'] = __( 'Contacts', 'disciple_tools' );
+        }
+        return $settings;
+    }
+
     public function dt_set_roles_and_permissions( $expected_roles ){
+        $expected_roles["registered"] = [
+            "label" => __( 'Registered', 'disciple_tools' ),
+            "description" => "Has no permissions",
+            "permissions" => [],
+            "order" => 4
+        ];
+
         $expected_roles["multiplier"] = [
             "label" => __( 'Multiplier', 'disciple_tools' ),
             "description" => "Interacts with Contacts and Groups",
-            "permissions" => []
+            "permissions" => [],
+            "order" => 5
         ];
         $expected_roles["strategist"] = [
             "label" => __( 'Strategist', 'disciple_tools' ),
             "description" => "View project metrics",
-            "permissions" => []
+            "permissions" => [],
+            "order" => 40
         ];
         $expected_roles["user_manager"] = [
             "label" => __( 'User Manager', 'disciple_tools' ),
             "description" => "List, invite, promote and demote users",
-            "permissions" => []
+            "permissions" => [],
+            "order" => 95
         ];
         $expected_roles["dt_admin"] = [
             "label" => __( 'Disciple.Tools Admin', 'disciple_tools' ),
             "description" => "All D.T permissions",
-            "permissions" => []
+            "permissions" => [],
+            "order" => 98
         ];
         $expected_roles["administrator"] = [
             "label" => __( 'Administrator', 'disciple_tools' ),
             "description" => "All D.T permissions plus the ability to manage plugins.",
-            "permissions" => []
+            "permissions" => [],
+            "order" => 100
         ];
 
         $multiplier_permissions = Disciple_Tools_Roles::default_multiplier_caps();
@@ -98,6 +125,7 @@ class DT_Contacts_Base {
 
         //strategist
         $expected_roles["strategist"]["permissions"]['view_project_metrics'] = true;
+        $expected_roles["strategist"]["permissions"]['access_disciple_tools'] = true;
 
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );
@@ -148,32 +176,6 @@ class DT_Contacts_Base {
                 "hidden" => true
             ];
 
-
-            $fields['tags'] = [
-                'name'        => __( 'Tags', 'disciple_tools' ),
-                'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'tags',
-                'default'     => [],
-                'tile'        => 'other',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/tag.svg",
-            ];
-            $fields["follow"] = [
-                'name'        => __( 'Follow', 'disciple_tools' ),
-                'type'        => 'multi_select',
-                'default'     => [],
-                'hidden'      => true
-            ];
-            $fields["unfollow"] = [
-                'name'        => __( 'Un-Follow', 'disciple_tools' ),
-                'type'        => 'multi_select',
-                'default'     => [],
-                'hidden'      => true
-            ];
-            $fields['tasks'] = [
-                'name' => __( 'Tasks', 'disciple_tools' ),
-                'type' => 'task',
-                'private' => true
-            ];
             $fields["languages"] = [
                 'name' => __( 'Languages', 'disciple_tools' ),
                 'type' => 'multi_select',
@@ -441,20 +443,6 @@ class DT_Contacts_Base {
     }
 
 
-    public function p2p_init(){
-        /**
-         * Contact Connection or Relation
-         */
-        p2p_register_connection_type(
-            [
-                'name'        => 'contacts_to_relation',
-                'from'        => 'contacts',
-                'to'          => 'contacts'
-            ]
-        );
-
-    }
-
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
         return $tiles;
     }
@@ -474,6 +462,15 @@ class DT_Contacts_Base {
 
     public function update_post_field_hook( $fields, $post_type, $post_id ){
         return $fields;
+    }
+
+    public function dt_post_updated( $post_type, $post_id, $update_fields, $old_post, $new_post ){
+        if ( $post_type === $this->post_type ){
+            //make sure a contact is shared with the user when they change the contact type to personal
+            if ( isset( $update_fields["type"] ) && $update_fields["type"] === "personal" && $old_post["type"]["key"] !== "personal" && !empty( get_current_user_id() ) ){
+                DT_Posts::add_shared( "contacts", $post_id, get_current_user_id(), null, false, false, false );
+            }
+        }
     }
 
     //Add, remove or modify fields before the fields are processed in post create

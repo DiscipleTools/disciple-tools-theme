@@ -37,29 +37,6 @@
         </div>
     <?php endif; ?>
 
-    <?php
-    /**
-     * Group record
-     */
-    if ( $current_post_type === "groups" ) : ?>
-
-
-        <!--  Four Fields Tile -->
-        <div class="help-section" id="four-fields-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Four Fields", 'Optional Documentation', 'disciple_tools' ) ?></h3>
-            <p><?php echo esc_html_x( "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:", 'Optional Documentation', 'disciple_tools' ) ?></p>
-
-            <ul>
-                <li><strong><?php echo esc_html( $post_fields["four_fields_unbelievers"]["name"] ) ?></strong> - <?php echo esc_html( $post_fields["four_fields_unbelievers"]["description"] ?? "" ) ?></li>
-                <li><strong><?php echo esc_html( $post_fields["four_fields_believers"]["name"] ) ?></strong> - <?php echo esc_html( $post_fields["four_fields_believers"]["description"] ?? "" ) ?></li>
-                <li><strong><?php echo esc_html( $post_fields["four_fields_accountable"]["name"] ) ?></strong> - <?php echo esc_html( $post_fields["four_fields_accountable"]["description"] ?? "" ) ?></li>
-                <li><strong><?php echo esc_html( $post_fields["four_fields_church_commitment"]["name"] ) ?></strong> - <?php echo esc_html( $post_fields["four_fields_church_commitment"]["description"] ?? "" ) ?></li>
-                <li><strong><?php echo esc_html( $post_fields["four_fields_multiplying"]["name"] ) ?></strong> - <?php echo esc_html( $post_fields["four_fields_multiplying"]["description"] ?? "" ) ?></li>
-            </ul>
-        </div>
-
-    <?php endif; ?>
-
     <!--    Comments and Activity - contact & group  -->
     <div class="help-section" id="comments-activity-help-text" style="display: none">
         <h3><?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?></h3>
@@ -180,7 +157,7 @@
             <!-- documentation link -->
             <div class="help-more">
                 <h5><?php echo esc_html_x( "Need more help?", 'Optional Documentation', 'disciple_tools' ) ?></h5>
-                <a class="button small" id="docslink" href="https://disciple.tools/user-docs"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
+                <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
             </div>
         </div>
         <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -191,7 +168,7 @@
 <div class="reveal" id="help-modal-field" data-reveal>
 
     <h1 id="help-modal-field-title"><?php echo esc_html( "Tile Documentation" ); ?></h1>
-    <p id="help-modal-field-description"></p>
+    <p id="help-modal-field-description" class="make-links-clickable" style="white-space: pre-line"></p>
     <div id="help-modal-field-body"></div>
 
     <!-- close -->
@@ -205,7 +182,7 @@
             <!-- documentation link -->
             <div class="help-more">
                 <h5><?php echo esc_html_x( "Need more help?", 'Optional Documentation', 'disciple_tools' ) ?></h5>
-                <a class="button small" id="docslink" href="https://disciple.tools/user-docs"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
+                <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
             </div>
         </div>
         <button class="close-button" data-close aria-label="Close modal" type="button">

@@ -53,6 +53,10 @@ jQuery(document).ready(function ($) {
  * @returns {jQuery}
  */
 function makeRequest(type, url, data, base = "dt/v1/") {
+  //make sure base has a trailing slash if url does not start with one
+  if ( !base.endsWith('/') && !url.startsWith('/')){
+    base += '/'
+  }
   const options = {
     type: type,
     contentType: "application/json; charset=utf-8",
@@ -186,10 +190,13 @@ window.API = {
       user_id: userId,
     }),
 
-  advanced_search: (search_query, post_type, offset) => makeRequest("GET", `advanced_search`, {
+  advanced_search: (search_query, post_type, offset, filters) => makeRequest("GET", `advanced_search`, {
     query: search_query,
     post_type: post_type,
-    offset: offset
+    offset: offset,
+    post: filters['post'],
+    comment: filters['comment'],
+    meta: filters['meta'],
   }, 'dt-posts/v2/posts/search/')
 };
 
@@ -235,10 +242,13 @@ jQuery(document).on("click", ".help-button-tile", function () {
   let tile = window.wpApiShare.tiles[section];
   if (tile && window.post_type_fields) {
     if (tile.label) {
-      $("#help-modal-field-title").html(tile.label);
+      $("#help-modal-field-title").html(window.lodash.escape(tile.label));
     }
     if (tile.description) {
-      $("#help-modal-field-description").html(tile.description);
+      $("#help-modal-field-description").html(window.lodash.escape(tile.description));
+      window.SHAREDFUNCTIONS.make_links_clickable('#help-modal-field-description' )
+    } else {
+      $("#help-modal-field-description").empty()
     }
     let html = ``;
     window.lodash.forOwn(window.post_type_fields, (field, field_key) => {
@@ -275,9 +285,11 @@ jQuery(document).on("click", ".help-button-field", function () {
 
   if (window.post_type_fields && window.post_type_fields[section]) {
     let field = window.post_type_fields[section];
+    $("#help-modal-field-title").html(window.lodash.escape(field.name));
     if (field.description) {
-      $("#help-modal-field-title").html(field.name);
-      $("#help-modal-field-description").html(field.description);
+      $("#help-modal-field-description").html(window.lodash.escape(field.description));
+    } else {
+      $("#help-modal-field-description").empty()
     }
     if (window.lodash.isObject(field.default)) {
       let html = `<ul>`;
@@ -532,10 +544,26 @@ window.SHAREDFUNCTIONS = {
     const filterLabel = { field, id, name }
     return encodeURIComponent(JSON.stringify(filterLabel))
   },
-  formatDate(date, with_time = false) {
+  get_langcode() {
     let langcode = document.querySelector("html").getAttribute("lang")
       ? document.querySelector("html").getAttribute("lang").replace("_", "-")
       : "en"; // get the language attribute from the HTML or default to english if it doesn't exists.
+      return langcode;
+  },
+  get_days_of_the_week_initials(format = 'narrow'){
+    let langcode = window.SHAREDFUNCTIONS.get_langcode();
+    let now = new Date()
+    const int_format = new Intl.DateTimeFormat(langcode, {weekday:format}).format;
+    return [...Array(7).keys()].map((day) => int_format(new Date().getTime() - (now.getDay() - day) * 86400000));
+  },
+  get_months_labels(format = 'long'){
+    let langcode = window.SHAREDFUNCTIONS.get_langcode();
+    let now = new Date()
+    const int_format = new Intl.DateTimeFormat(langcode, {month:format}).format;
+    return [...Array(12).keys()].map((month) => int_format(new Date( Date.UTC(2021, month+1, 1))));
+  },
+  formatDate(date, with_time = false) {
+    let langcode = window.SHAREDFUNCTIONS.get_langcode();
     if (langcode === "fa-IR") {
       //This is a check so that we use the gergorian (Western) calendar if the users locale is Farsi. This is the calendar used primarily by Farsi speakers outside of Iran, and is easily understood by those inside.
       langcode = `${langcode}-u-ca-gregory`;
@@ -578,6 +606,28 @@ window.SHAREDFUNCTIONS = {
     return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
         return [ key, window.lodash.escape(value)]
     }))
+  },
+  make_links_clickable( selector ){
+    //make text links clickable in a section
+    let elem_text = $(selector).html()
+    let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,8}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
+    elem_text = elem_text.replace(urlRegex, (match)=>{
+      let url = match
+      if(match.indexOf("@") === -1 && match.indexOf("[") === -1 && match.indexOf("(") === -1 && match.indexOf("href") === -1) {
+        if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
+          url = match
+        }
+        else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
+          url = "http://" + match
+        }
+        else if (match.indexOf("www.") === -1) {
+          url = "http://www." + match
+        }
+        return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
+      }
+      return match
+    })
+    $(selector).html(elem_text)
   }
 };
 
@@ -651,13 +701,3 @@ window.METRICS = {
   },
 
 };
-
-// nonce timeout fix
-// every 5 minutes will check if nonce timed out
-// if it did then it will redirect to login
-window.fiveMinuteTimer = setInterval(function () {
-  //check if timed out
-  get_new_notification_count().fail(function (x) {
-    window.location.reload();
-  });
-}, 300000); //300000 = five minutes

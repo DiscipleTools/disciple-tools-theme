@@ -174,13 +174,40 @@ function dt_change_admin_color( $result ) {
  */
 function dt_remove_post_admin_menus() {
 
-    remove_menu_page( 'edit.php' );                     // Posts
-    remove_menu_page( 'upload.php' );                   // Media
-    remove_menu_page( 'edit.php?post_type=page' );      // Pages
-    remove_menu_page( 'edit-comments.php' );            // Comments
+    /**
+     * Filters allows added page removals and removing page removals.
+     */
+    $elements = apply_filters('dt_remove_menu_pages', [
+        'posts' => [
+            'menu_slug' => 'edit.php', // Posts admin tab
+            'allowed_for' => []
+        ],
+        'media' => [
+            'menu_slug' => 'upload.php', // Media admin tab (hidden because all media stored on WP is public accessible. Should not be used for anything secure.)
+            'allowed_for' => []
+        ],
+        'page' => [
+            'menu_slug' => 'edit.php?post_type=page', // Pages admin tab
+            'allowed_for' => []
+        ],
+        'comments' => [
+            'menu_slug' => 'edit-comments.php', // Comments admin tab
+            'allowed_for' => []
+        ],
+        'tools' => [
+            'menu_slug' => 'tools.php',  // Tools admin tab
+            'allowed_for' => [ 'manage_dt' ]
+        ],
+    ] );
 
-    if ( ! current_user_can( 'manage_dt' ) ) {          // Add menu items to hide from all but admin
-        remove_menu_page( 'tools.php' );                // Tools
+    foreach ( $elements as $page ) {
+        if ( empty( $page['allowed_for'] ) ) {
+            remove_menu_page( $page['menu_slug'] );
+        } else {
+            if ( ! current_user_can( 'manage_dt' ) ) {          // Add menu items to hide from all but admin
+                remove_menu_page( $page['menu_slug'] );                // Tools
+            }
+        }
     }
 }
 
