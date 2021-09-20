@@ -275,9 +275,6 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/date-end.svg',
             ];
-
-
-
             $fields["member_count"] = [
                 'name' => __( 'Member Count', 'disciple_tools' ),
                 'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group.', 'Optional Documentation', 'disciple_tools' ),
@@ -286,6 +283,33 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'relationships',
                 "show_in_table" => 25,
                 "icon" => get_template_directory_uri() . '/dt-assets/images/tally.svg',
+            ];
+            $fields["believer_count"] = [
+                'name' => __( 'Believer Count', 'disciple_tools' ),
+                'description' => _x( 'The number of believers in this group.', 'Optional Documentation', 'disciple_tools' ),
+                'type' => 'number',
+                'default' => '',
+                'tile' => 'relationships',
+                "show_in_table" => 25,
+                "icon" => get_template_directory_uri() . '/dt-assets/images/cross.svg',
+            ];
+            $fields["baptized_count"] = [
+                'name' => __( 'Baptized Count', 'disciple_tools' ),
+                'description' => _x( 'The number of believers who are baptized.', 'Optional Documentation', 'disciple_tools' ),
+                'type' => 'number',
+                'default' => '',
+                'tile' => 'relationships',
+                "show_in_table" => 25,
+                "icon" => get_template_directory_uri() . '/dt-assets/images/baptism.svg',
+            ];
+            $fields["baptized_in_group_count"] = [
+                'name' => __( 'Baptized in Group Count', 'disciple_tools' ),
+                'description' => _x( 'The number of believers who are baptized by the group', 'Optional Documentation', 'disciple_tools' ),
+                'type' => 'number',
+                'default' => '',
+                'tile' => 'relationships',
+                "show_in_table" => 25,
+                "icon" => get_template_directory_uri() . '/dt-assets/images/baptism.svg',
             ];
             $fields["members"] = [
                 "name" => __( 'Member List', 'disciple_tools' ),
