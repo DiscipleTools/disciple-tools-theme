@@ -20,11 +20,11 @@ dt_please_log_in();
              class="second-bar list-actions-bar">
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
                 <a class="button dt-green create-post-desktop" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
+                    <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php echo esc_html( sprintf( _x( "Create New %s", "Create New record", 'disciple_tools' ), $post_settings["label_singular"] ?? $post_type ) ) ?></span>
                 </a>
                 <a class="button filter-posts-desktop" data-open="filter-modal">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
+                    <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "Filters", 'disciple_tools' ) ?></span>
                 </a>
                 <?php do_action( "archive_template_action_bar_buttons", $post_type ) ?>
@@ -58,7 +58,7 @@ dt_please_log_in();
                     </a>
                 </div>
                 <a class="button" id="search">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
+                    <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
                 </a>
             </div>
@@ -100,13 +100,13 @@ dt_please_log_in();
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
         </a>
         <a class="button filter-posts-mobile" data-open="filter-modal">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
         </a>
         <a class="button" id="open-search">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
             <div class="search-wrapper">
@@ -189,7 +189,7 @@ dt_please_log_in();
                     <div class="section-body">
                         <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
                         <div style="margin-bottom: 5px">
-                            <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                            <a data-open="filter-modal"><img class="dt-blue-icon dt-icon" style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
                         </div>
                         <div class="custom-filters"></div>
                     </div>

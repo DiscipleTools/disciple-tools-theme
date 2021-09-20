@@ -56,14 +56,14 @@ function dt_default_menu_array() : array {
             'advanced_search' => [
                 'label' => __( "Advanced Search", "disciple_tools" ),
                 'link' => '#',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/search-white.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/search.svg",
                 'hidden' => false,
             ],
             'add_new' => [
                 'label' => __( "Add New", 'disciple_tools' ),
                 'link' => '',
                 'hidden' => false,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/circle-add-plus.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/circle-add-green.svg",
                 'submenu' => apply_filters( 'dt_nav_add_post_menu', [] ),
             ],
             'notifications' => [
@@ -75,28 +75,32 @@ function dt_default_menu_array() : array {
             'settings' => [
                 'label' => __( "Settings", 'disciple_tools' ),
                 'link' => site_url( '/settings/' ),
-                'icon' => get_template_directory_uri() . "/dt-assets/images/settings.svg" ,
+                'icon' => get_template_directory_uri() . "/dt-assets/images/settings.svg",
                 'hidden' => false,
                 'submenu' => [
                     'settings' => [
                         'label' => __( "Settings", 'disciple_tools' ),
                         'link' => site_url( '/settings/' ),
                         'hidden' => false,
+                        'icon' => get_template_directory_uri() . "/dt-assets/images/profile.svg",
                     ],
                     'admin' => [
                         'label' => __( "Admin", 'disciple_tools' ),
                         'link' => get_admin_url(),
                         'hidden' => ( ! current_user_can( 'manage_dt' ) ),
+                        'icon' => get_template_directory_uri() . "/dt-assets/images/house.svg",
                     ],
                     'user_management' => [
                         'label' => __( "Users", "disciple_tools" ),
                         'link' => site_url( '/user-management/users/' ),
                         'hidden' => ( ! ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' ) ) ),
+                        'icon' => get_template_directory_uri() . "/dt-assets/images/group.svg",
                     ],
                     'help' => [
                         'label' => __( "Help", "disciple_tools" ),
                         'link' => 'https://disciple.tools/user-docs',
                         'hidden' => false,
+                        'icon' => get_template_directory_uri() . "/dt-assets/images/help.svg",
                     ],
                 ]
             ],

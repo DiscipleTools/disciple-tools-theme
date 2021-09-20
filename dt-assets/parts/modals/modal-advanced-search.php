@@ -12,8 +12,7 @@
                 </td>
                 <td>
                     <a class="advanced-search-modal-form-button button" id="advanced-search-modal-form-button">
-                        <img
-                            src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>">
+                        <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>">
                     </a>
                 </td>
             </tr>
