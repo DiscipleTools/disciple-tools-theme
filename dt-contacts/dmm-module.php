@@ -48,7 +48,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "label" => __( 'Connection', 'disciple_tools' ),
                 "color" => "#FF9800",
                 "description" => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/network.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/network.svg?v=2",
                 "order" => 40,
                 "visibility" => __( "Only me", 'disciple_tools' ),
             ];
@@ -60,53 +60,53 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     "milestone_has_bible"     => [
                         "label" => __( 'Has Bible', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/bible.svg",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/bible.svg?v=2",
                     ],
                     "milestone_reading_bible" => [
                         "label" => __( 'Reading Bible', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/reading.svg",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/reading.svg?v=2",
                     ],
                     "milestone_belief"        => [
                         "label" => __( 'States Belief', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/speak.svg",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/speak.svg?v=2",
                     ],
                     "milestone_can_share"     => [
                         "label" => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/can-share.svg",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/can-share.svg?v=2",
                     ],
                     "milestone_sharing"       => [
                         "label" => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/connection-people.svg",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/connection-people.svg?v=2",
                     ],
                     "milestone_baptized"      => [
                         "label" => __( 'Baptized', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/baptism.svg",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/baptism.svg?v=2",
                     ],
                     "milestone_baptizing"     => [
                         "label" => __( 'Baptizing', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/child.svg",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/child.svg?v=2",
                     ],
                     "milestone_in_group"      => [
                         "label" => __( 'In Church/Group', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/group-type.svg",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/group-type.svg?v=2",
                     ],
                     "milestone_planting"      => [
                     "label" => __( 'Starting Churches', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/stream.svg",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/stream.svg?v=2",
                     ],
                 ],
                 "customizable" => "add_only",
                 "tile" => "faith",
                 "show_in_table" => 20,
-                "icon" => get_template_directory_uri() . "/dt-assets/images/bible.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/bible.svg?v=2",
             ];
             $fields["faith_status"] =[
                 "name" => __( 'Faith Status', 'disciple_tools' ),
@@ -124,7 +124,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     ],
                 ],
                 'tile' => "status",
-                'icon' => get_template_directory_uri() . "/dt-assets/images/cross.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/cross.svg?v=2",
                 'in_create_form' => true
             ];
             $fields["subassigned"] = [
@@ -136,7 +136,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_key" => "contacts_to_subassigned",
                 "tile" => "status",
                 "custom_display" => false,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg?v=2",
             ];
 
             $fields["subassigned_on"] = [
@@ -148,7 +148,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_key" => "contacts_to_subassigned",
                 "tile" => "no_tile",
                 "custom_display" => false,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg?v=2",
             ];
 
 
@@ -160,13 +160,13 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_contacts",
                 "tile" => "other",
-                "icon" => get_template_directory_uri() . '/dt-assets/images/coaching.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/coaching.svg?v=2',
             ];
             $fields['baptism_date'] = [
                 'name' => __( 'Baptism Date', 'disciple_tools' ),
                 'description' => '',
                 'type' => 'date',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/calendar.svg',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/calendar.svg?v=2',
                 'tile' => 'details',
             ];
 
@@ -183,7 +183,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "from",
                 "p2p_key" => "contacts_to_contacts",
                 "tile" => "status",
-                "icon" => get_template_directory_uri() . '/dt-assets/images/coach.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/coach.svg?v=2',
             ];
             $fields["baptized_by"] = [
                 "name" => __( "Baptized by", 'disciple_tools' ),
@@ -193,7 +193,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "from",
                 "p2p_key" => "baptizer_to_baptized",
                 'tile'     => 'faith',
-                "icon" => get_template_directory_uri() . '/dt-assets/images/baptism.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/baptism.svg?v=2',
             ];
             $fields["baptized"] = [
                 "name" => __( "Baptized", 'disciple_tools' ),
@@ -203,7 +203,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "to",
                 "p2p_key" => "baptizer_to_baptized",
                 'tile'     => 'faith',
-                "icon" => get_template_directory_uri() . '/dt-assets/images/child.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/child.svg?v=2',
             ];
             $fields["people_groups"] = [
                 "name" => __( 'People Groups', 'disciple_tools' ),
@@ -213,7 +213,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "from",
                 "p2p_key" => "contacts_to_peoplegroups",
                 'tile'     => 'details',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/people-group.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/people-group.svg?v=2",
             ];
             $fields['quick_button_no_answer'] = [
                 'name'        => __( 'No Answer', 'disciple_tools' ),
@@ -221,7 +221,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/no-answer.svg",
+                'icon'        => get_template_directory_uri() . "/dt-assets/images/no-answer.svg?v=2",
                 "customizable" => false
             ];
             $fields['quick_button_contact_established'] = [
@@ -230,7 +230,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/successful-conversation.svg",
+                'icon'        => get_template_directory_uri() . "/dt-assets/images/successful-conversation.svg?v=2",
                 "customizable" => false
             ];
             $fields['quick_button_meeting_scheduled'] = [
@@ -239,7 +239,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-scheduled.svg",
+                'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-scheduled.svg?v=2",
                 "customizable" => false
             ];
             $fields['quick_button_meeting_complete'] = [
@@ -248,7 +248,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-complete.svg",
+                'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-complete.svg?v=2",
                 "customizable" => false
             ];
             $fields['quick_button_no_show'] = [
@@ -257,7 +257,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/no-show.svg",
+                'icon'        => get_template_directory_uri() . "/dt-assets/images/no-show.svg?v=2",
                 "customizable" => false
             ];
 
@@ -430,7 +430,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             </ul>
             <button class="help-button" data-section="quick-action-help-text">
                 <img class="help-icon"
-                     src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                     src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg?v=2' ) ?>"/>
             </button>
             <?php
         }

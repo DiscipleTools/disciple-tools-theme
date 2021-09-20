@@ -418,7 +418,7 @@ window.TYPEAHEADS = {
   },
   contactListRowTemplate: function (query, item) {
     let img = item.user
-      ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg">`
+      ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg?v=2">`
       : "";
     let statusStyle = item.status === "closed" ? 'style="color:gray"' : "";
       return `<span dir="auto" ${statusStyle}>

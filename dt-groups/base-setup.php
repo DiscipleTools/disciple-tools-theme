@@ -129,7 +129,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     ],
                 ],
                 'tile'     => 'status',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg?v=2',
                 "default_color" => "#366184",
                 "show_in_table" => 10,
                 "select_cannot_be_empty" => true
@@ -140,7 +140,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type'        => 'user_select',
                 'default'     => '',
                 'tile' => 'status',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg?v=2',
                 "show_in_table" => 16,
             ];
             $fields["coaches"] = [
@@ -151,8 +151,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "p2p_direction" => "from",
                 "p2p_key" => "groups_to_coaches",
                 'tile' => 'status',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg',
-                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-contact.svg',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg?v=2',
+                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-contact.svg?v=2',
             ];
 
 
@@ -182,7 +182,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'groups',
                 'in_create_form' => true,
                 "show_in_table" => 15,
-                "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
                 "select_cannot_be_empty" => true
             ];
 
@@ -197,52 +197,52 @@ class DT_Groups_Base extends DT_Module_Base {
                     "church_baptism" => [
                         "label" => __( "Baptism", 'disciple_tools' ),
                         "description" => _x( "The group is baptising.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/baptism.svg'
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/baptism.svg?v=2'
                     ],
                     "church_bible" => [
                         "label" => __( "Bible Study", 'disciple_tools' ),
                         "description" => _x( "The group is studying the bible.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/word.svg'
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/word.svg?v=2'
                     ],
                     "church_communion" => [
                         "label" => __( "Communion", 'disciple_tools' ),
                         "description" => _x( "The group is practicing communion.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/communion.svg'
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/communion.svg?v=2'
                     ],
                     "church_fellowship" => [
                         "label" => __( "Fellowship", 'disciple_tools' ),
                         "description" => _x( "The group is fellowshiping.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/heart.svg'
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/heart.svg?v=2'
                     ],
                     "church_giving" => [
                         "label" => __( "Giving", 'disciple_tools' ),
                         "description" => _x( "The group is giving.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/giving.svg'
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/giving.svg?v=2'
                     ],
                     "church_prayer" => [
                         "label" => __( "Prayer", 'disciple_tools' ),
                         "description" => _x( "The group is praying.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/prayer.svg'
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/prayer.svg?v=2'
                     ],
                     "church_praise" => [
                         "label" => __( "Praise", 'disciple_tools' ),
                         "description" => _x( "The group is praising.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/praise.svg'
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/praise.svg?v=2'
                     ],
                     "church_sharing" => [
                         "label" => __( "Sharing the Gospel", 'disciple_tools' ),
                         "description" => _x( "The group is sharing the gospel.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/evangelism.svg'
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/evangelism.svg?v=2'
                     ],
                     "church_leaders" => [
                         "label" => __( "Leaders", 'disciple_tools' ),
                         "description" => _x( "The group has leaders.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/leadership.svg'
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/leadership.svg?v=2'
                     ],
                     "church_commitment" => [
                         "label" => __( "Church Commitment", 'disciple_tools' ),
                         "description" => _x( "The group has committed to be church.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg?v=2'
                     ],
                 ],
                 "customizable" => "add_only",
@@ -256,7 +256,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type'        => 'date',
                 'default'     => time(),
                 'tile' => 'details',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/date-start.svg',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/date-start.svg?v=2',
             ];
             $fields['church_start_date'] =[
                 'name' => __( 'Church Start Date', 'disciple_tools' ),
@@ -264,7 +264,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type' => 'date',
                 'default'     => time(),
                 'tile' => 'details',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/date-success.svg',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/date-success.svg?v=2',
 
             ];
             $fields['end_date'] = [
@@ -273,7 +273,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type'        => 'date',
                 'default'     => '',
                 'tile' => 'details',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/date-end.svg',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/date-end.svg?v=2',
             ];
 
 
@@ -285,7 +285,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'default' => '',
                 'tile' => 'relationships',
                 "show_in_table" => 25,
-                "icon" => get_template_directory_uri() . '/dt-assets/images/tally.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/tally.svg?v=2',
             ];
             $fields["members"] = [
                 "name" => __( 'Member List', 'disciple_tools' ),
@@ -294,7 +294,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_groups",
-                "icon" => get_template_directory_uri() . '/dt-assets/images/list.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/list.svg?v=2',
             ];
             $fields["leaders"] = [
                 "name" => __( 'Leaders', 'disciple_tools' ),
@@ -310,7 +310,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',
-                "icon" => get_template_directory_uri() . '/dt-assets/images/tallying.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/tallying.svg?v=2',
             ];
 
             $fields["parent_groups"] = [
@@ -321,8 +321,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "p2p_direction" => "from",
                 "p2p_key" => "groups_to_groups",
                 'tile' => 'groups',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/group-parent.svg',
-                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/group-parent.svg?v=2',
+                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg?v=2',
             ];
 
             $fields["peer_groups"] = [
@@ -333,8 +333,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "p2p_direction" => "any",
                 "p2p_key" => "groups_to_peers",
                 'tile' => 'groups',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/group-peer.svg',
-                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/group-peer.svg?v=2',
+                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg?v=2',
             ];
 
             $fields["child_groups"] = [
@@ -345,8 +345,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "p2p_direction" => "to",
                 "p2p_key" => "groups_to_groups",
                 'tile' => 'groups',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/group-child.svg',
-                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/group-child.svg?v=2',
+                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg?v=2',
             ];
 
 
@@ -361,7 +361,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'mapbox'    => false,
                 "in_create_form" => true,
                 "tile" => "details",
-                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
             ];
 
             $fields['location_grid_meta'] = [
@@ -374,7 +374,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
             $fields["contact_address"] = [
                 "name" => __( 'Address', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg?v=2",
                 "type" => "communication_channel",
                 "tile" => "details",
                 'mapbox'    => false,
@@ -396,7 +396,7 @@ class DT_Groups_Base extends DT_Module_Base {
             $fields["people_groups"] = [
                 "name" => __( 'People Groups', 'disciple_tools' ),
                 'description' => _x( 'The people groups represented by this group.', 'Optional Documentation', 'disciple_tools' ),
-                'icon' => get_template_directory_uri() . "/dt-assets/images/people-group.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/people-group.svg?v=2",
                 "type" => "connection",
                 "post_type" => "peoplegroups",
                 "p2p_direction" => "from",
@@ -464,8 +464,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "p2p_direction" => "from",
                 "p2p_key" => "contacts_to_groups",
                 "tile" => "other",
-                'icon' => get_template_directory_uri() . "/dt-assets/images/group-type.svg",
-                'create-icon' => get_template_directory_uri() . "/dt-assets/images/add-group.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/group-type.svg?v=2",
+                'create-icon' => get_template_directory_uri() . "/dt-assets/images/add-group.svg?v=2",
                 "show_in_table" => 35
             ];
             $fields["group_leader"] = [
@@ -475,7 +475,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 "p2p_key" => "groups_to_leaders",
                 "post_type" => "groups",
                 "tile" => "no_tile",
-                'icon' => get_template_directory_uri() . "/dt-assets/images/foot.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/foot.svg?v=2",
             ];
         }
         return $fields;
@@ -491,7 +491,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
                 <div class="grid-x">
                     <div style="margin-right:auto; margin-left:auto;min-height:302px">
-                        <object id="church-svg-wrapper" type="image/svg+xml" data="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/church-wheel.svg' ); ?>"></object>
+                        <object id="church-svg-wrapper" type="image/svg+xml" data="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/church-wheel.svg?v=2' ); ?>"></object>
                     </div>
                 </div>
                 <div style="display:flex;flex-wrap:wrap;margin-top:10px" class=" js-progress-bordered-box half-opacity">
@@ -518,7 +518,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
                         <div class="section-body">
                             <!-- start collapse -->
-                            <div style="background:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg' ); ?>');background-size: 100% 100%;height: 379px;display: grid;grid-template-columns: 1fr 1fr 1fr;grid-template-rows: auto;justify-items: center;align-items: center;" id="four-fields-inputs">
+                            <div style="background:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg?v=2' ); ?>');background-size: 100% 100%;height: 379px;display: grid;grid-template-columns: 1fr 1fr 1fr;grid-template-rows: auto;justify-items: center;align-items: center;" id="four-fields-inputs">
 
                             </div>
                             <!-- end collapse -->
@@ -536,17 +536,17 @@ class DT_Groups_Base extends DT_Module_Base {
             ?>
             <div class="section-subheader members-header" style="padding-top: 10px;">
                 <div style="padding-bottom: 5px; margin-right:10px; display: inline-block">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/list.svg' ) ?>"/>
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/list.svg?v=2' ) ?>"/>
                     <?php esc_html_e( "Member List", 'disciple_tools' ) ?>
                 </div>
                 <button type="button" class="create-new-record" data-connection-key="members" style="height: 36px;">
                     <?php echo esc_html__( 'Create', 'disciple_tools' )?>
-                    <img style="height: 14px; width: 14px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                    <img style="height: 14px; width: 14px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg?v=2' ) ?>"/>
                 </button>
                 <button type="button"
                         class="add-new-member">
                     <?php echo esc_html__( 'Select', 'disciple_tools' )?>
-                    <img style="height: 16px; width: 16px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg' ) ?>"/>
+                    <img style="height: 16px; width: 16px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg?v=2' ) ?>"/>
                 </button>
             </div>
             <div class="members-section" style="margin-bottom:10px">

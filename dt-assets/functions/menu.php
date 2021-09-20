@@ -50,7 +50,7 @@ function dt_default_menu_array() : array {
             'profile' => [
                 'label' => wp_get_current_user()->display_name ?? __( "Profile", "disciple_tools" ),
                 'link' => site_url( '/settings/' ),
-                'icon' => get_template_directory_uri() . "/dt-assets/images/profile.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/profile.svg?v=2",
                 'hidden' => false,
             ],
             'advanced_search' => [
