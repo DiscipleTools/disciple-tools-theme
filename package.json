@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/DiscipleTools/disciple-tools-theme.git"
   },
-  "author": "Disciple Tools",
+  "author": "Disciple.Tools",
   "license": "GPL-2.0-or-later",
   "homepage": "https://disciple.tools",
   "devDependencies": {
