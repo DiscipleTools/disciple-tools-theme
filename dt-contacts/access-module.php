@@ -578,7 +578,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                             </span>
                             <span class="typeahead__button">
                                 <button type="button" class="<?php echo esc_html( $button_class ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $field_key ); ?>">
-                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                    <i class="fi-magnifying-glass"></i>
                                 </button>
                             </span>
                         </div>
@@ -602,11 +602,11 @@ class DT_Contacts_Access extends DT_Module_Base {
             <div class="reveal" id="assigned_to_modal" data-reveal>
                 <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
                     <div class="cell dt-filter-tabs">
-                        <h4 class="section-header"><?php esc_html_e( 'Assign For', "disciple-tools-advanced-m2m-tiles" ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span></h4>
+                        <h4 class="section-header"><?php esc_html_e( 'Assign To', "disciple_tools" ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span></h4>
                         <div class="section-body">
                             <ul class="horizontal tabs" data-tabs id="filter-tabs">
                                 <?php foreach ( $roles as $key => $value ) : ?>
-                                    <li class="tabs-title">
+                                    <li class="tabs-title <?php echo esc_html( $key === "multiplier" ? "is-active" : "" ); ?>">
                                         <a href="#<?php echo esc_html( $key ); ?>" data-field="<?php echo esc_html( $key ); ?>">
                                             <?php echo esc_html( $value["label"] ); ?>
                                         </a>
@@ -1276,13 +1276,13 @@ class DT_Contacts_Access extends DT_Module_Base {
             ], filemtime( get_theme_file_path() . '/dt-contacts/contacts_access.js' ), true );
             wp_localize_script( 'dt_contacts_access', 'dt_contacts_access', [
                 "translations" => [
-                    "all" => __( "All", "disciple-tools-advanced-m2m-tiles" ),
-                    "ready" => __( "Ready", "disciple-tools-advanced-m2m-tiles" ),
-                    "recent" => __( "Recent", "disciple-tools-advanced-m2m-tiles" ),
-                    "location" => __( "Location", "disciple-tools-advanced-m2m-tiles" ),
-                    "assign" => __( "Assign", "disciple-tools-advanced-m2m-tiles" ),
-                    "language" => __( "Language", "disciple-tools-advanced-m2m-tiles" ),
-                    "gender" => __( "Gender", "disciple-tools-advanced-m2m-tiles" ),
+                    "all" => __( "All", "disciple_tools" ),
+                    "ready" => __( "Ready", "disciple_tools" ),
+                    "recent" => __( "Recent", "disciple_tools" ),
+                    "location" => __( "Location", "disciple_tools" ),
+                    "assign" => __( "Assign", "disciple_tools" ),
+                    "language" => __( "Language", "disciple_tools" ),
+                    "gender" => __( "Gender", "disciple_tools" ),
                 ],
             ] );
         }
