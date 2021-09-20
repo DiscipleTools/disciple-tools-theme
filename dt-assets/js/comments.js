@@ -52,7 +52,7 @@ jQuery(document).ready(function($) {
     let createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
-      object_note: settings.txt_created.replace("{}", window.SHAREDFUNCTIONS.formatDate(createdDate.unix())),
+      object_note: window.detailsSettings.translations.created_on.replace('%s', window.SHAREDFUNCTIONS.formatDate(createdDate.unix(), true)),
       name: settings.contact_author_name,
       user_id: currentContact.post_author,
     }

@@ -340,10 +340,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                 dt_activity_insert( [
                     'action'            => 'field_update',
                     'object_type'       => $post_type,
-                    'object_subtype'    => 'title',
+                    'object_subtype'    => 'name',
                     'object_id'         => $post_id,
                     'object_name'       => $title,
-                    'meta_key'          => 'title',
+                    'meta_key'          => 'name',
                     'meta_value'        => $title,
                     'old_value'         => $existing_post['name'],
                 ] );
