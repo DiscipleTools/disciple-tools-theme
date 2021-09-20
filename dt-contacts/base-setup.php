@@ -635,7 +635,7 @@ class DT_Contacts_Base {
                      style="display: <?php echo esc_html( ( isset( $dt_post['overall_status']["key"] ) && $dt_post['overall_status']["key"] === "closed" ) ? "block" : "none" ) ?> ">
                 <div class="bordered-box detail-notification-box" style="background-color:#333">
                     <h4>
-                        <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
+                        <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg?v=2' ) ?>"/>
                         <?php echo esc_html( sprintf( __( 'This %s is archived', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
                     </h4>
                     <button class="button" id="unarchive-record"><?php esc_html_e( 'Restore', 'disciple_tools' )?></button>

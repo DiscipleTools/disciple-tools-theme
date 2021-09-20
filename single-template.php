@@ -49,7 +49,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         <a href="#comment-activity-section" class="hide-for-large">
                             <div class="bordered-box detail-notification-box" style="background-color:#F43636">
                                 <h4>
-                                    <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
+                                    <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg?v=2' ) ?>"/>
                                     <?php echo esc_html( sprintf( __( 'This %s needs an update.', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
                                 </h4>
                                 <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?></p>
@@ -57,7 +57,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         </a>
                         <div class="bordered-box detail-notification-box show-for-large" style="background-color:#F43636">
                                 <h4>
-                                    <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
+                                    <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg?v=2' ) ?>"/>
                                     <?php echo esc_html( sprintf( __( 'This %s needs an update.', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
                                 </h4>
                                 <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?></p>

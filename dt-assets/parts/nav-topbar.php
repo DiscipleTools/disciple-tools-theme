@@ -39,7 +39,7 @@ $dt_nav_tabs = dt_default_menu_array();
             <!-- menu -->
             <?php if ( ! $dt_nav_tabs['admin']['menu']['hidden'] ?? ! false ) : ?>
                 <button class="" type="button" data-open="off-canvas">
-                    <img class="dt-white-icon" src="<?php echo esc_url( $dt_nav_tabs['admin']['menu']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/hamburger.svg' ) ?>">
+                    <img class="dt-white-icon" src="<?php echo esc_url( $dt_nav_tabs['admin']['menu']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/hamburger.svg?v=2' ) ?>">
                 </button>
             <?php endif; ?>
 
