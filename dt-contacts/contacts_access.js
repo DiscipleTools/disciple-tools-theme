@@ -122,7 +122,7 @@ jQuery(document).ready(function($) {
   let populated_list = $('.populated-list')
 
   jQuery('.advanced_user_select').on('click', function (){
-    $('#assigned_to_modal').foundation('open');
+    $('#assigned_to_user_modal').foundation('open');
     if ( dispatch_users_promise === null ){
       $('#dispatch-tile-loader').addClass('active')
       dispatch_users_promise = window.makeRequest( 'GET', 'assignment-list', {location_ids: (post.location_grid||[]).map(l=>l.id)}, 'dt-posts/v2/contacts' )
@@ -130,23 +130,23 @@ jQuery(document).ready(function($) {
         $('#dispatch-tile-loader').removeClass('active')
         dispatch_users = response
         $('.users-select-panel').show()
-        display_dispatch_tab( selected_role )
+        show_assignment_tab( selected_role )
       })
     } else {
       $('.users-select-panel').show()
-      display_dispatch_tab( selected_role )
+      show_assignment_tab( selected_role )
     }
 
   })
 
   //change tab
-  $('#filter-tabs a').on('click', function () {
+  $('#assign-role-tabs a').on('click', function () {
     selected_role = $(this).data('field')
-    $('#search-users-input').attr("placeholder", $(this).text().trim())
-    display_dispatch_tab( selected_role )
+    $('#search-users-filtered').attr("placeholder", $(this).text().trim())
+    show_assignment_tab( selected_role )
   })
 
-  function display_dispatch_tab( tab = 'multiplier' ){
+  function show_assignment_tab( tab = 'multiplier' ){
     const contact_languages = (window.lodash.get(window.detailsSettings, "post_fields.languages"))
       ? window.detailsSettings.post_fields.languages
       : []
@@ -166,7 +166,7 @@ jQuery(document).ready(function($) {
       gender: users_with_role.filter(m => contact_gender.label !== "" && m.gender === contact_gender.key),
       location: users_with_role.concat().filter(m=>m.location!==null).sort((a,b)=>a.location-b.location)
     }
-    populate_user_list( users_with_role )
+    populate_users_list( users_with_role )
     filters += filter_options.ready.length ? `<a data-id="ready">${window.lodash.escape(window.dt_contacts_access.translations.ready)}</a> | ` : ''
     filters += filter_options.recent.length ? `<a data-id="recent">${window.lodash.escape(window.dt_contacts_access.translations.recent)}</a> | ` : ''
     filters += filter_options.language.length ? `<a data-id="language">${window.lodash.escape(window.dt_contacts_access.translations.language)}</a> | ` : ''
@@ -179,11 +179,11 @@ jQuery(document).ready(function($) {
       $( '#user-list-filters a' ).css("color","").css("font-weight","")
       $(this).css("color", "black").css("font-weight", "bold")
       let key = $(this).data('id')
-      populate_user_list( filter_options[key] || [] )
+      populate_users_list( filter_options[key] || [] )
     })
   }
 
-  function populate_user_list( users ){
+  function populate_users_list( users ){
     let user_rows = '';
     users.forEach( m => {
       user_rows += `<div class="assigned-to-row" dir="auto">
@@ -202,7 +202,7 @@ jQuery(document).ready(function($) {
 
       }
         <div style="flex-grow: 1"></div>
-        <button class="button hollow tiny assign-user-button" data-id="${ window.lodash.escape(m.ID) }" style="margin-bottom: 3px">
+        <button class="button hollow tiny trigger-assignment" data-id="${ window.lodash.escape(m.ID) }" style="margin-bottom: 3px">
            ${window.lodash.escape(window.dt_contacts_access.translations.assign)}
         </button>
       </div>
@@ -212,7 +212,7 @@ jQuery(document).ready(function($) {
 
   }
 
-  $(document).on('click', '.assign-user-button', function () {
+  $(document).on('click', '.trigger-assignment', function () {
     let user_id = $(this).data('id')
     $('#dispatch-tile-loader').addClass('active')
     let status = selected_role === "dispatcher" ? "unassigned" : "assigned"
@@ -227,20 +227,20 @@ jQuery(document).ready(function($) {
       $('#dispatch-tile-loader').removeClass('active')
       setStatus(response)
       $(`.js-typeahead-assigned_to`).val(window.lodash.escape(response.assigned_to.display)).blur()
-      $('#assigned_to_modal').foundation('close');
+      $('#assigned_to_user_modal').foundation('close');
     })
   })
 
   /**
    * search name in list
    */
-  $('#search-users-input').on('input', function () {
+  $('#search-users-filtered').on('input', function () {
     $( '#user-list-filters a' ).css("color","").css("font-weight","")
     let search_text = $(this).val().normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase()
     let users_with_role = dispatch_users.filter(u => u.roles.includes(selected_role) )
     let match_name = users_with_role.filter(u =>
       u.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase().includes( search_text )
     )
-    populate_user_list(match_name)
+    populate_users_list(match_name)
   })
 })

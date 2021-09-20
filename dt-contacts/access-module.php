@@ -599,12 +599,12 @@ class DT_Contacts_Access extends DT_Module_Base {
                 ],
             ];
             if ( $is_dispatcher ) { ?>
-            <div class="reveal" id="assigned_to_modal" data-reveal>
+            <div class="reveal" id="assigned_to_user_modal" data-reveal>
                 <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
                     <div class="cell dt-filter-tabs">
                         <h4 class="section-header"><?php esc_html_e( 'Assign To', "disciple_tools" ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span></h4>
                         <div class="section-body">
-                            <ul class="horizontal tabs" data-tabs id="filter-tabs">
+                            <ul class="horizontal tabs" data-tabs id="assign-role-tabs">
                                 <?php foreach ( $roles as $key => $value ) : ?>
                                     <li class="tabs-title <?php echo esc_html( $key === "multiplier" ? "is-active" : "" ); ?>">
                                         <a href="#<?php echo esc_html( $key ); ?>" data-field="<?php echo esc_html( $key ); ?>">
@@ -618,7 +618,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                                     <div class="grid-x grid-margin-x" style="margin-top:5px">
                                         <div class="medium-4 cell">
                                             <div class="input-group">
-                                                <input id="search-users-input" class="input-group-field" type="text" placeholder="Multipliers">
+                                                <input id="search-users-filtered" class="input-group-field" type="text" placeholder="Multipliers">
                                                 <div class="input-group-button">
                                                     <button type="button" class="button hollow"><i class="fi-magnifying-glass"></i></button>
                                                 </div>
