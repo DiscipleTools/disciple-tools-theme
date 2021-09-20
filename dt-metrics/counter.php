@@ -499,7 +499,7 @@ class Disciple_Tools_Queries
                 break;
 
             case 'multiplying_groups_only':
-                $query = $wpdb->get_results("
+                $query = "
                     SELECT
                       a.ID         as id,
                       0            as parent_id,
@@ -510,10 +510,10 @@ class Disciple_Tools_Queries
                       location1.name as location_name,
                       startdate1.meta_value as start_date,
                       enddate1.meta_value as end_date,
-                      (SELECT COUNT( members1.p2p_id ) FROM $wpdb->p2p as members1 WHERE members1.p2p_to = a.ID AND members1.p2p_type = 'contacts_to_groups') as total_members,
-                      (SELECT COUNT( believers1.post_id ) FROM $wpdb->postmeta as believers1 WHERE believers1.post_id = a.ID AND believers1.meta_key = 'milestone_belief') as total_believers,
-                      (SELECT COUNT( baptized1.post_id ) FROM $wpdb->postmeta as baptized1 WHERE baptized1.post_id = a.ID AND baptized1.meta_key = 'milestone_baptized') as total_baptized,
-                      (SELECT COUNT( baptized2.p2p_id ) FROM $wpdb->p2p as baptized2 WHERE baptized2.p2p_from = a.ID AND baptized2.p2p_type = 'baptizer_to_baptized') as total_baptized_by_group,
+                      IFNULL(members1.meta_value, 0) as total_members,
+                      IFNULL(believers1.meta_value, 0) as total_believers,
+                      IFNULL(baptized1.meta_value, 0) as total_baptized,
+                      IFNULL(baptized2.meta_value, 0) as total_baptized_by_group,
                       (SELECT EXISTS (SELECT 1 FROM $wpdb->postmeta as metricbaptized1 WHERE metricbaptized1.post_id = a.ID AND metricbaptized1.meta_key = 'health_metrics' AND metricbaptized1.meta_value = 'church_baptism')) as health_metrics_baptism,
                       (SELECT EXISTS (SELECT 1 FROM $wpdb->postmeta as metricfellowship1 WHERE metricfellowship1.post_id = a.ID AND metricfellowship1.meta_key = 'health_metrics' AND metricfellowship1.meta_value = 'church_fellowship')) as health_metrics_fellowship,
                       (SELECT EXISTS (SELECT 1 FROM $wpdb->postmeta as metricsharing1 WHERE metricsharing1.post_id = a.ID AND metricsharing1.meta_key = 'health_metrics' AND metricsharing1.meta_value = 'church_sharing')) as health_metrics_sharing,
@@ -525,13 +525,25 @@ class Disciple_Tools_Queries
                       (SELECT EXISTS (SELECT 1 FROM $wpdb->postmeta as metricgiving1 WHERE metricgiving1.post_id = a.ID AND metricgiving1.meta_key = 'health_metrics' AND metricgiving1.meta_value = 'church_giving')) as health_metrics_giving,
                       (SELECT EXISTS (SELECT 1 FROM $wpdb->postmeta as metricprayer1 WHERE metricprayer1.post_id = a.ID AND metricprayer1.meta_key = 'health_metrics' AND metricprayer1.meta_value = 'church_prayer')) as health_metrics_prayer
                     FROM $wpdb->posts as a
-                     LEFT JOIN $wpdb->postmeta as gs1
+                    LEFT JOIN $wpdb->postmeta as members1
+                      ON members1.post_id=a.ID
+                      AND members1.meta_key = 'member_count'
+                    LEFT JOIN $wpdb->postmeta as believers1
+                      ON believers1.post_id=a.ID
+                      AND believers1.meta_key = 'believer_count'
+                    LEFT JOIN $wpdb->postmeta as baptized1
+                      ON baptized1.post_id=a.ID
+                      AND baptized1.meta_key = 'baptized_count'
+                    LEFT JOIN $wpdb->postmeta as baptized2
+                      ON baptized2.post_id=a.ID
+                      AND baptized2.meta_key = 'baptized_in_group_count'
+                    LEFT JOIN $wpdb->postmeta as gs1
                       ON gs1.post_id=a.ID
                       AND gs1.meta_key = 'group_status'
-                     LEFT JOIN $wpdb->postmeta as type1
+                    LEFT JOIN $wpdb->postmeta as type1
                       ON type1.post_id=a.ID
                       AND type1.meta_key = 'group_type'
-                     LEFT JOIN $wpdb->p2p as groupcoach1
+                    LEFT JOIN $wpdb->p2p as groupcoach1
                       ON groupcoach1.p2p_from=a.ID
                       AND groupcoach1.p2p_type = 'groups_to_coaches'
                     LEFT JOIN $wpdb->posts as coach1
@@ -572,10 +584,10 @@ class Disciple_Tools_Queries
                       glocation1.name as location,
                       gstartdate1.meta_value as start_date,
                       genddate1.meta_value as end_date,
-                      (SELECT COUNT( gsmembers1.p2p_id ) FROM $wpdb->p2p as gsmembers1 WHERE gsmembers1.p2p_to = p.p2p_from AND gsmembers1.p2p_type = 'contacts_to_groups') as total_members,
-                      (SELECT COUNT( gbelievers1.post_id ) FROM $wpdb->postmeta as gbelievers1 WHERE gbelievers1.post_id = p.p2p_from AND gbelievers1.meta_key = 'milestone_belief') as total_believers,
-                      (SELECT COUNT( gbaptized1.post_id ) FROM $wpdb->postmeta as gbaptized1 WHERE gbaptized1.post_id = p.p2p_from AND gbaptized1.meta_key = 'milestone_baptized') as total_believers,
-                      (SELECT COUNT( gbaptized2.p2p_id ) FROM $wpdb->p2p as gbaptized2 WHERE gbaptized2.p2p_from = p.p2p_from AND gbaptized2.p2p_type = 'baptizer_to_baptized') as total_baptized_by_group,
+                      IFNULL(gmembers1.meta_value, 0) as total_members,
+                      IFNULL(gbelievers1.meta_value, 0) as total_believers,
+                      IFNULL(gbaptized1.meta_value, 0) as total_believers,
+                      IFNULL(gbaptized2.meta_value, 0) as total_baptized_by_group,
                       (SELECT EXISTS (SELECT 1 FROM $wpdb->postmeta as gmetricbaptized1 WHERE gmetricbaptized1.post_id = p.p2p_from AND gmetricbaptized1.meta_key = 'health_metrics' AND gmetricbaptized1.meta_value = 'church_baptism')) as health_metrics_baptism,
                       (SELECT EXISTS (SELECT 1 FROM $wpdb->postmeta as gmetricfellowship1 WHERE gmetricfellowship1.post_id = p.p2p_from AND gmetricfellowship1.meta_key = 'health_metrics' AND gmetricfellowship1.meta_value = 'church_fellowship')) as health_metrics_fellowship,
                       (SELECT EXISTS (SELECT 1 FROM $wpdb->postmeta as gmetricsharing1 WHERE gmetricsharing1.post_id = p.p2p_from AND gmetricsharing1.meta_key = 'health_metrics' AND gmetricsharing1.meta_value = 'church_sharing')) as health_metrics_sharing,
@@ -587,6 +599,18 @@ class Disciple_Tools_Queries
                       (SELECT EXISTS (SELECT 1 FROM $wpdb->postmeta as gmetricgiving1 WHERE gmetricgiving1.post_id = p.p2p_from AND gmetricgiving1.meta_key = 'health_metrics' AND gmetricgiving1.meta_value = 'church_giving')) as health_metrics_giving,
                       (SELECT EXISTS (SELECT 1 FROM $wpdb->postmeta as gmetricprayer1 WHERE gmetricprayer1.post_id = p.p2p_from AND gmetricprayer1.meta_key = 'health_metrics' AND gmetricprayer1.meta_value = 'church_prayer')) as health_metrics_prayer
                     FROM $wpdb->p2p as p
+                    LEFT JOIN $wpdb->postmeta as gmembers1
+                      ON gmembers1.post_id=p.p2p_from
+                      AND gmembers1.meta_key = 'member_count'
+                    LEFT JOIN $wpdb->postmeta as gbelievers1
+                      ON gbelievers1.post_id=p.p2p_from
+                      AND gbelievers1.meta_key = 'believer_count'
+                    LEFT JOIN $wpdb->postmeta as gbaptized1
+                      ON gbaptized1.post_id=p.p2p_from
+                      AND gbaptized1.meta_key = 'baptized_count'
+                    LEFT JOIN $wpdb->postmeta as gbaptized2
+                      ON gbaptized2.post_id=p.p2p_from
+                      AND gbaptized2.meta_key = 'baptized_in_group_count'
                     LEFT JOIN $wpdb->p2p as ggroupcoach1
                       ON ggroupcoach1.p2p_from=p.p2p_from
                       AND ggroupcoach1.p2p_type = 'groups_to_coaches'
@@ -604,7 +628,8 @@ class Disciple_Tools_Queries
                       ON genddate1.post_id=p.p2p_from
                       AND genddate1.meta_key = 'end_date'
                     WHERE p.p2p_type = 'groups_to_groups'
-                ", ARRAY_A);
+                ";
+                $query = $wpdb->get_results($query, ARRAY_A);
 
                 break;
 
@@ -629,7 +654,7 @@ class Disciple_Tools_Queries
                       (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'contacts_to_contacts'
-                ", ARRAY_A );
+                ", ARRAY_A);
                 break;
 
             case 'multiplying_coaching_only':
