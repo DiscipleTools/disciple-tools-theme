@@ -102,11 +102,6 @@ class DT_Contacts_User {
                             <p><?php echo esc_html__( "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'.", 'disciple_tools' ) ?></p>
 
                         <form id="create-user-form">
-                            <label for="user-username">
-                                <?php esc_html_e( "Username", "disciple_tools" ); ?>
-                            </label>
-                            <input name="user-user_login" id="user-user_login" type="text" placeholder="username" required aria-describedby="username-help-text">
-                            <p class="help-text" id="username-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
                             <label for="user-email">
                                 <?php esc_html_e( "Email", "disciple_tools" ); ?>
                             </label>
