@@ -27,7 +27,6 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-
         add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 10, 3 );
 
         // hooks
@@ -39,11 +38,13 @@ class DT_Groups_Base extends DT_Module_Base {
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
         add_filter( "dt_after_get_post_fields_filter", [ $this, "dt_after_get_post_fields_filter" ], 10, 2 );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 2 );
+        add_action('added_post_meta', [ $this, 'dt_updated_post_meta'], 10, 4);
+        add_action('updated_post_meta', [ $this, 'dt_updated_post_meta'], 10, 4);
+        add_action('deleted_post_meta', [ $this, 'dt_deleted_post_meta'], 10, 4);
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
         add_filter( "dt_filter_access_permissions", [ $this, "dt_filter_access_permissions" ], 20, 2 );
-
     }
 
     public function after_setup_theme(){
@@ -609,6 +610,7 @@ class DT_Groups_Base extends DT_Module_Base {
                         DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false );
                     }
                 }
+                self::refresh_milestone_counts( $post_id );
                 self::update_group_member_count( $post_id );
             }
             if ( $field_key === "leaders" ){
@@ -623,6 +625,7 @@ class DT_Groups_Base extends DT_Module_Base {
             }
         }
         if ( $post_type === "contacts" && $field_key === "groups" ){
+            self::refresh_milestone_counts( $value );
             self::update_group_member_count( $value );
             // share the group with the owner of the contact.
             $assigned_to = get_post_meta( $post_id, "assigned_to", true );
@@ -635,10 +638,29 @@ class DT_Groups_Base extends DT_Module_Base {
         }
     }
 
+    //update the group member count when members and added or removed.
+    private static function update_group_member_count( $group_id, $action = "added" ){
+        $group = get_post( $group_id );
+        $args = [
+            'connected_type'   => "contacts_to_groups",
+            'connected_items'  => $group,
+            'nopaging'         => true,
+            'suppress_filters' => false,
+        ];
+        $members = get_posts( $args );
+        $member_count = get_post_meta( $group_id, 'member_count', true );
+        if ( sizeof( $members ) > intval( $member_count ) ){
+            update_post_meta( $group_id, 'member_count', sizeof( $members ) );
+        } elseif ( $action === "removed" ) {
+            update_post_meta($group_id, 'member_count', intval($member_count) - 1);
+        }
+    }
+
     //action when a post connection is removed during create or update
     public function post_connection_removed( $post_type, $post_id, $field_key, $value ){
         if ( $post_type === "groups" ){
             if ( $field_key === "members" ){
+                self::refresh_milestone_counts( $post_id, "removed" );
                 self::update_group_member_count( $post_id, "removed" );
             }
             if ( $field_key === "leaders" ){
@@ -646,6 +668,7 @@ class DT_Groups_Base extends DT_Module_Base {
             }
         }
         if ( $post_type === "contacts" && $field_key === "groups" ){
+            self::refresh_milestone_counts( $value, "removed" );
             self::update_group_member_count( $value, "removed" );
         }
     }
@@ -685,22 +708,67 @@ class DT_Groups_Base extends DT_Module_Base {
         return $fields;
     }
 
-    //update the group member count when members and added or removed.
-    private static function update_group_member_count( $group_id, $action = "added" ){
+    public function dt_updated_post_meta($meta_id, $object_id, $meta_key, $_meta_value) {
+        if ($meta_key === 'milestones') {
+            self::refresh_milestone_counts_from_contact($object_id);
+        }
+    }
+
+    public function dt_deleted_post_meta($meta_id, $object_id, $meta_key, $_meta_value) {
+        if ($meta_key === 'milestones') {
+            self::refresh_milestone_counts_from_contact($object_id, 'removed');
+        }
+    }
+
+    private static function refresh_milestone_counts_from_contact( $contact_id, $action = "added" ) {
+        $groups = get_posts( [
+            'connected_type' => 'contacts_to_groups',
+            'connected_items' => get_post($contact_id),
+            'nopaging' => true,
+            'suppress_filters' => false
+        ] );
+        if (!$groups) {
+            return;
+        }
+        foreach($groups as $group) {
+            self::refresh_milestone_counts($group->ID, $action);
+        }
+    }
+
+    private static function refresh_milestone_counts( $group_id, $action = "added" ) {
         $group = get_post( $group_id );
-        $args = [
-            'connected_type'   => "contacts_to_groups",
+        $contacts = get_posts( [
+            'connected_type' => 'contacts_to_groups',
+            'connected_items' => $group,
             'connected_direction' => 'to',
-            'connected_items'  => $group,
-            'nopaging'         => true,
-            'suppress_filters' => false,
-        ];
-        $members = get_posts( $args );
-        $member_count = get_post_meta( $group_id, 'member_count', true );
-        if ( sizeof( $members ) > intval( $member_count ) ){
-            update_post_meta( $group_id, 'member_count', sizeof( $members ) );
-        } elseif ( $action === "removed" ){
-            update_post_meta( $group_id, 'member_count', intval( $member_count ) - 1 );
+            'nopaging' => true,
+            'suppress_filters' => false
+        ] );
+        if (!$contacts) {
+            return;
+        }
+        $current_belief_count = intval(get_post_meta( $group_id, 'believer_count', true ));
+        $belief_count = 0;
+        $current_baptism_count = intval(get_post_meta( $group_id, 'baptized_count', true ));
+        $baptism_count = 0;
+        foreach($contacts as $contact) {
+            $milestones = get_metadata( 'post', $contact->ID, 'milestones');
+            if (in_array('milestone_belief', $milestones)) {
+                $belief_count++;
+            }
+            if (in_array('milestone_baptized', $milestones)) {
+                $baptism_count++;
+            }
+        }
+        if ($action === 'added' && $current_belief_count < $belief_count) {
+            update_post_meta( $group_id, 'believer_count', $belief_count );
+        } else if ($action === 'removed' && $current_belief_count > $belief_count) {
+            update_post_meta( $group_id, 'believer_count', $belief_count );
+        }
+        if ($action === 'added' && $current_baptism_count < $baptism_count) {
+            update_post_meta( $group_id, 'baptized_count', $baptism_count );
+        } else if ($action === 'removed' && $current_baptism_count > $baptism_count) {
+            update_post_meta( $group_id, 'baptized_count', $baptism_count );
         }
     }
 

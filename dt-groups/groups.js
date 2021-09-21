@@ -60,6 +60,8 @@ jQuery(document).ready(function($) {
   /* Member List*/
   let memberList = $('.member-list')
   let memberCountInput = $('#member_count')
+  let believerCountInput = $('#believer_count')
+  let baptizedCountInput = $('#baptized_count')
   let leaderCountInput = $('#leader_count')
   let populateMembersList = ()=>{
     memberList.empty()
@@ -106,6 +108,8 @@ jQuery(document).ready(function($) {
       $("#empty-members-list-message").hide()
     }
     memberCountInput.val( post.member_count )
+    believerCountInput.val(post.believer_count)
+    baptizedCountInput.val(post.baptized_count)
     leaderCountInput.val( post.leader_count )
     window.masonGrid.masonry('layout')
   }
