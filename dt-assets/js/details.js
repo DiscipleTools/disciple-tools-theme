@@ -299,10 +299,9 @@ jQuery(document).ready(function($) {
       emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function(node, a, item){
-          API.update_post('contacts', post_id, {[field_key]: 'user-' + item.ID}).then(function (response) {
+          API.update_post(post_type, post_id, {[field_key]: 'user-' + item.ID}).then(function (response) {
             window.lodash.set(post, field_key, response[field_key])
-            setStatus(response)
-            user_input.val(post.assigned_to.display)
+            user_input.val(post[field_key].display)
             user_input.blur()
           }).catch(err => { console.error(err) })
         },

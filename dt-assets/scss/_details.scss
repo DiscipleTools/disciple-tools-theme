@@ -659,6 +659,10 @@ select.color-select {
         margin-right: 10px;
     }
 }
+.dt_user_select .typeahead__cancel-button {
+    visibility: inherit;
+    line-height: 1.5;
+}
 
 #tasks-modal {
   .existing-task-action {
