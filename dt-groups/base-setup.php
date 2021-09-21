@@ -938,7 +938,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
             $filters["tabs"][] = [
                 "key" => "assigned_to_me",
-                "label" => _x( "Assigned to me", 'List Filters', 'disciple_tools' ),
+                "label" => __( "Assigned to me", 'disciple_tools' ),
                 "count" => $total_my,
                 "order" => 20
             ];
@@ -946,7 +946,7 @@ class DT_Groups_Base extends DT_Module_Base {
             $filters["filters"][] = [
                 'ID' => 'my_all',
                 'tab' => 'assigned_to_me',
-                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                'name' => __( "All", 'disciple_tools' ),
                 'query' => [
                     'assigned_to' => [ 'me' ],
                     'sort' => 'group_status'
@@ -1019,7 +1019,7 @@ class DT_Groups_Base extends DT_Module_Base {
             }
             $filters["tabs"][] = [
                 "key" => "all",
-                "label" => _x( "All", 'List Filters', 'disciple_tools' ),
+                "label" => __( "All", 'disciple_tools' ),
                 "count" => $total_all,
                 "order" => 10
             ];
@@ -1027,7 +1027,7 @@ class DT_Groups_Base extends DT_Module_Base {
             $filters["filters"][] = [
                 'ID' => 'all',
                 'tab' => 'all',
-                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                'name' => __( "All", 'disciple_tools' ),
                 'query' => [
                     'sort' => 'group_type'
                 ],

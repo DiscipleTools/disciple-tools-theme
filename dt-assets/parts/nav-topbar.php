@@ -238,7 +238,7 @@ $dt_nav_tabs = dt_default_menu_array();
 
                             <li><a href="<?php echo esc_url( wp_logout_url() ); ?>">
                                     <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>" src="<?php echo esc_url( get_template_directory_uri()  . "/dt-assets/images/logout.svg" ) ?>">
-                                    <?php esc_html_e( 'Log Off', 'disciple_tools' )?></a>
+                                    <?php esc_html_e( 'Log Out', 'disciple_tools' )?></a>
                             </li>
                         </ul>
                     </li>
