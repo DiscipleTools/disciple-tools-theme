@@ -86,7 +86,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
 
         $post_type = $this->post_types[0];
-        $field = array_key_first( $this->post_field_select_options );
+        $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
                 'root'               => esc_url_raw( rest_url() ),
