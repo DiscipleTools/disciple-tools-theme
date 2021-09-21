@@ -642,37 +642,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
-
-            <style type="text/css">
-                #filter-tabs img {
-                    height: 20px;
-                    width: 20px;
-                    display: inline-block;
-                    vertical-align: middle;
-                    margin-right: 2px;
-                }
-                .dispatcher-tile .populated-list .assigned-to-row > span {
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                }
-                .dispatcher-tile .populated-list .assigned-to-row:hover {
-                    background-color: #F2F2F2;
-                }
-                .dispatcher-tile .populated-list .assigned-to-row {
-                    padding: 5px 5px 0 5px;
-                    border-bottom: 1px solid rgba(128, 128, 128, 0.31);
-                }
-                .dispatcher-tile .populated-list {
-                    overflow-y: scroll;
-                    max-height: 250px;
-                }
-
-            </style>
-            <script>
-
-            </script>
             <?php }
         }
     }
