@@ -18,7 +18,7 @@ jQuery(function() {
         if (requiresTitle) {
           activityHtml += `
             <h5 class="post-activities__title">
-              <a href="/${firstPostActivity.post_type}/${firstPostActivity.object_id}">${iconHtml} ${postTitle}</a>
+              <a href="/${firstPostActivity.post_type}/${firstPostActivity.object_id}">${iconHtml} ${window.lodash.escape(postTitle)}</a>
             </h5>`
         }
 
@@ -26,7 +26,6 @@ jQuery(function() {
         Object.entries(groupedActivities).forEach(([action, activities]) => {
           const { fields, object_note_short, object_note, count, hist_time } = activities
           if (action === 'field_update') {
-            // TODO: escape field names also
             const escapedFields = fields.map((field) => window.lodash.escape(field))
             if (fields.length === 0) return
             const hasMoreFields = fields.slice(2).length > 0
@@ -44,7 +43,7 @@ jQuery(function() {
             } else {
               activityHtml += `
                 <div class="post-activities__item">
-                  ${window.lodash.escape(object_note_short)}: ${fields.join(', ')}
+                  ${window.lodash.escape(object_note_short)}: ${escapedFields.join(', ')}
                 </div>
                 `
             }
