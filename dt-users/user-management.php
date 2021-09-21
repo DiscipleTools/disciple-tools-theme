@@ -41,8 +41,8 @@ class DT_User_Management
                     return get_template_directory() . '/dt-users/template-user-management.php';
                 } );
             }
-            add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         }
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
     public function has_permission(){
