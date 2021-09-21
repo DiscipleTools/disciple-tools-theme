@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-09-21T14:46:28+00:00\n"
+"POT-Creation-Date: 2021-09-21T17:25:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: disciple_tools\n"
@@ -74,8 +74,8 @@ msgstr ""
 #: dt-contacts/access-module.php:545
 #: dt-contacts/base-setup.php:390
 #: dt-contacts/base-setup.php:425
-#: dt-contacts/user-module.php:156
-#: dt-contacts/user-module.php:208
+#: dt-contacts/user-module.php:150
+#: dt-contacts/user-module.php:202
 #: single-template.php:350
 #: single-template.php:367
 #: template-merge-details.php:102
@@ -221,7 +221,7 @@ msgstr ""
 #: archive-template.php:304
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:574
-#: dt-contacts/user-module.php:186
+#: dt-contacts/user-module.php:180
 #: dt-core/global-functions.php:816
 msgctxt "input field placeholder"
 msgid "Search Users"
@@ -578,7 +578,7 @@ msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:213
 #: dt-assets/parts/merge-details.php:76
-#: dt-contacts/user-module.php:214
+#: dt-contacts/user-module.php:208
 #: template-merge-details.php:182
 msgid "Merge"
 msgstr ""
@@ -1753,7 +1753,7 @@ msgid "Phone"
 msgstr ""
 
 #: dt-contacts/base-setup.php:197
-#: dt-contacts/user-module.php:112
+#: dt-contacts/user-module.php:106
 #: dt-core/configuration/config-site-defaults.php:256
 #: dt-core/configuration/config-site-defaults.php:447
 #: dt-users/template-new-user.php:86
@@ -2247,63 +2247,54 @@ msgid "This contact is already connected to a user."
 msgstr ""
 
 #: dt-contacts/user-module.php:102
-msgctxt "Make user modal"
-msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier', but you can change that in the dropdown below."
+msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'."
 msgstr ""
 
-#: dt-contacts/user-module.php:103
-msgctxt "Make user modal"
-msgid "In the fields below, enter their username, email address, a 'Display Name' which they can change later and a User Role."
-msgstr ""
-
-#: dt-contacts/user-module.php:107
-#: template-settings.php:113
-#: template-settings.php:566
-msgid "Username"
-msgstr ""
-
-#: dt-contacts/user-module.php:110
-#: dt-contacts/user-module.php:115
+#: dt-contacts/user-module.php:109
 #: single-template.php:345
 #: template-new-post.php:111
 #: template-new-post.php:147
 msgid "This is required"
 msgstr ""
 
-#: dt-contacts/user-module.php:117
-#: dt-contacts/user-module.php:120
+#: dt-contacts/user-module.php:111
+#: dt-contacts/user-module.php:114
 #: dt-users/template-user-management.php:73
 msgid "Display Name"
 msgstr ""
 
-#: dt-contacts/user-module.php:126
+#: dt-contacts/user-module.php:111
+msgid "Can be changed later"
+msgstr ""
+
+#: dt-contacts/user-module.php:120
 msgid "User Role"
 msgstr ""
 
-#: dt-contacts/user-module.php:146
+#: dt-contacts/user-module.php:140
 #: dt-users/users.php:866
 msgid "User Language"
 msgstr ""
 
-#: dt-contacts/user-module.php:159
+#: dt-contacts/user-module.php:153
 #: dt-users/template-new-user.php:143
 msgid "Create User"
 msgstr ""
 
-#: dt-contacts/user-module.php:170
+#: dt-contacts/user-module.php:164
 msgid "Link this contact to an existing user"
 msgstr ""
 
-#: dt-contacts/user-module.php:173
+#: dt-contacts/user-module.php:167
 msgid "This contact already represents a user."
 msgstr ""
 
-#: dt-contacts/user-module.php:177
+#: dt-contacts/user-module.php:171
 msgctxt "Step 1 of link user"
 msgid "To link to an existing user, first, find the user using the field below."
 msgstr ""
 
-#: dt-contacts/user-module.php:201
+#: dt-contacts/user-module.php:195
 msgctxt "Step 2 of link user"
 msgid "To finish the linking, merge this contact with the existing user details."
 msgstr ""
@@ -4435,6 +4426,11 @@ msgstr ""
 
 #: template-settings.php:63
 msgid "Invite User"
+msgstr ""
+
+#: template-settings.php:113
+#: template-settings.php:566
+msgid "Username"
 msgstr ""
 
 #: template-settings.php:142

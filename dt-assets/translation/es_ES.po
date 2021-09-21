@@ -173,11 +173,6 @@ msgstr "No tienes notificaciones sin leer"
 msgid "You don't have any notifications"
 msgstr "No tienes notificaciones"
 
-#: dt-assets/functions/enqueue-scripts.php:255
-#, fuzzy
-msgid "delete"
-msgstr "Eliminar"
-
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "Transferencia fallida. Compruebe la configuración de sitio a sitio."
@@ -291,11 +286,6 @@ msgstr "Configuraciones"
 #: dt-assets/functions/menu.php:88
 msgid "Admin"
 msgstr "Administrador"
-
-#: dt-assets/parts/nav-offcanvas.php:79
-#: dt-assets/parts/nav-topbar.php:234
-msgid "Log Off"
-msgstr "Cerrar Sesión"
 
 #: single-template.php:55
 #: single-template.php:63
@@ -540,8 +530,7 @@ msgstr "Eliminar Filtro"
 msgid "Group Status"
 msgstr "Estado del Grupo"
 
-#: dt-contacts/user-module.php:110
-#: dt-contacts/user-module.php:115
+#: dt-contacts/user-module.php:109
 #: single-template.php:345
 #: template-new-post.php:111
 #: template-new-post.php:147
@@ -655,7 +644,7 @@ msgid "Other"
 msgstr "Otro"
 
 #: dt-contacts/base-setup.php:197
-#: dt-contacts/user-module.php:112
+#: dt-contacts/user-module.php:106
 #: dt-core/configuration/config-site-defaults.php:256
 #: dt-core/configuration/config-site-defaults.php:447
 #: dt-users/template-new-user.php:86
@@ -1033,16 +1022,6 @@ msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
 msgstr "%1$s agregado a %2$s"
 
-#: dt-posts/posts.php:431
-#, fuzzy
-msgid "yes"
-msgstr "sí"
-
-#: dt-posts/posts.php:433
-#, fuzzy
-msgid "no"
-msgstr "no"
-
 #: dt-posts/posts.php:520
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
@@ -1278,11 +1257,6 @@ msgstr "Árbol de generación de entrenamiento"
 msgid "Teams"
 msgstr "Equipos"
 
-#: dt-metrics/groups/overview.php:75
-#, fuzzy
-msgid "groups"
-msgstr "grupos"
-
 #: dt-metrics/groups/overview.php:76
 msgid "generations"
 msgstr "generaciones"
@@ -1391,12 +1365,6 @@ msgstr "Corresponde a Contacto"
 msgid "View contact record"
 msgstr "Ver registro de contacto"
 
-#: dt-workflows/update-required.php:67
-#: dt-workflows/update-required.php:105
-#, fuzzy
-msgid "Updated Needed"
-msgstr "Se necesita actualización"
-
 #: functions.php:506
 msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
 msgstr "El tema de Disciple Tools requiere PHP versión 7.0 o superior. Tu versión actual es:"
@@ -1434,18 +1402,13 @@ msgstr "Etiqueta"
 msgid "Create and apply tag"
 msgstr "Crear y aplicar etiqueta"
 
-#: dt-contacts/user-module.php:117
-#: dt-contacts/user-module.php:120
+#: dt-contacts/user-module.php:111
+#: dt-contacts/user-module.php:114
 #: dt-users/template-user-management.php:73
 msgid "Display Name"
 msgstr "Nombre para mostrar"
 
-#: dt-contacts/user-module.php:148
-#, fuzzy
-msgid "Create user"
-msgstr "Crear usuario"
-
-#: dt-contacts/user-module.php:170
+#: dt-contacts/user-module.php:164
 msgid "Link this contact to an existing user"
 msgstr "Enlace este contacto a un usuario existente"
 
@@ -1519,7 +1482,6 @@ msgstr "Disponibilidad"
 msgid "Your Profile"
 msgstr "Tu Perfil"
 
-#: dt-contacts/user-module.php:107
 #: template-settings.php:113
 #: template-settings.php:566
 msgid "Username"
@@ -2145,7 +2107,7 @@ msgstr "Escriba para buscar"
 #: archive-template.php:304
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:574
-#: dt-contacts/user-module.php:186
+#: dt-contacts/user-module.php:180
 #: dt-core/global-functions.php:816
 msgctxt "input field placeholder"
 msgid "Search Users"
@@ -2202,16 +2164,16 @@ msgctxt "Make user modal"
 msgid "This contact is already connected to a user."
 msgstr "Este contacto ya representa a un usuario."
 
-#: dt-contacts/user-module.php:173
+#: dt-contacts/user-module.php:167
 msgid "This contact already represents a user."
 msgstr "Este contacto ya representa a un usuario."
 
-#: dt-contacts/user-module.php:177
+#: dt-contacts/user-module.php:171
 msgctxt "Step 1 of link user"
 msgid "To link to an existing user, first, find the user using the field below."
 msgstr "Para vincular a un usuario existente, primero, busque al usuario utilizando el siguiente campo."
 
-#: dt-contacts/user-module.php:201
+#: dt-contacts/user-module.php:195
 msgctxt "Step 2 of link user"
 msgid "To finish the linking, merge this contact with the existing user details."
 msgstr "Para finalizar el enlace, combina este contacto con los detalles existentes del usuario ."
@@ -2277,8 +2239,8 @@ msgstr "Nombre del filtro"
 #: dt-contacts/access-module.php:545
 #: dt-contacts/base-setup.php:390
 #: dt-contacts/base-setup.php:425
-#: dt-contacts/user-module.php:156
-#: dt-contacts/user-module.php:208
+#: dt-contacts/user-module.php:150
+#: dt-contacts/user-module.php:202
 #: single-template.php:350
 #: single-template.php:367
 #: template-merge-details.php:102
@@ -2344,11 +2306,6 @@ msgstr "Sólo subasignado"
 msgid "Coached by me"
 msgstr "Entrenado por mí"
 
-#: dt-groups/base-setup.php:941
-msgctxt "List Filters"
-msgid "Assigned to me"
-msgstr "Asignado a mí"
-
 #: dt-metrics/combined/critical-path.php:299
 msgid "Groups active at the end of the time range"
 msgstr "Grupos activos al final del rango de tiempo"
@@ -2392,7 +2349,7 @@ msgstr "Disciple.Tools"
 
 #: dt-assets/functions/enqueue-scripts.php:213
 #: dt-assets/parts/merge-details.php:76
-#: dt-contacts/user-module.php:214
+#: dt-contacts/user-module.php:208
 #: template-merge-details.php:182
 msgid "Merge"
 msgstr "Combinar"
@@ -2413,12 +2370,6 @@ msgid "For example, If you click the 'No Answer' button 4 times, we will log tha
 "                This action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr "Por ejemplo, si hace clic en el botón \"Sin respuesta\" 4 veces, registraremos que intentó comunicarse con este contacto 4 veces, pero no respondieron.\n"
 "                Esta acción también cambiará la \"Ruta del Buscador\" a “Se Intentó Contactar“."
-
-#: dt-assets/parts/modals/modal-help.php:49
-#, fuzzy
-msgctxt "Optional Documentation"
-msgid "Four Fields"
-msgstr "Cuatro Campos"
 
 #: dt-groups/base-setup.php:590
 msgctxt "Optional Documentation"
@@ -2479,11 +2430,6 @@ msgstr "Utilice este switch para mostrar o no los contactos cerrados en la lista
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show inactive groups in the list."
 msgstr "Utilice este switch para mostrar o no los grupos inactivos en la lista."
-
-#: dt-assets/parts/modals/modal-help.php:95
-msgctxt "Optional Documentation"
-msgid "Your Profile"
-msgstr "Tu Perfil"
 
 #: dt-assets/parts/modals/modal-help.php:96
 msgctxt "Optional Documentation"
@@ -3181,36 +3127,6 @@ msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "Se intentó contactar a %1$s en %2$s después de %3$s días"
 
-#: dt-users/user-management.php:337
-msgctxt "Updated record Bob"
-msgid "Updated contact %s"
-msgstr "Contacto %s actualizado"
-
-#: dt-users/user-management.php:340
-msgctxt "Updated record Bob"
-msgid "Updated group %s"
-msgstr "Grupo %s actualizado"
-
-#: dt-users/user-management.php:345
-msgctxt "Commented on record Bob"
-msgid "Commented on contact %s"
-msgstr "Ha comentado sobre contacto %s"
-
-#: dt-users/user-management.php:348
-msgctxt "Commented on record Bob"
-msgid "Commented on group %s"
-msgstr "Se comentó al grupo %s"
-
-#: dt-users/user-management.php:353
-msgctxt "Created record Bob"
-msgid "Created contact %s"
-msgstr "Contacto %s creado"
-
-#: dt-users/user-management.php:356
-msgctxt "Created record Bob"
-msgid "Created group %s"
-msgstr "Grupo %s creado"
-
 #: dt-users/user-management.php:493
 msgid "Logged In"
 msgstr "Conectado"
@@ -3301,10 +3217,6 @@ msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "hace %s año"
 msgstr[1] "hace %s años"
-
-#: dt-assets/functions/enqueue-scripts.php:169
-msgid "Created record on {}"
-msgstr "Registro creado en {}"
 
 #: dt-assets/functions/enqueue-scripts.php:174
 msgid "Translate with Google Translate"
@@ -3705,7 +3617,7 @@ msgstr "Hay errores en el llenado del formulario."
 msgid "Contact to make a user (optional)"
 msgstr "Contacto para hacer un usuario (opcional)"
 
-#: dt-contacts/user-module.php:159
+#: dt-contacts/user-module.php:153
 #: dt-users/template-new-user.php:143
 msgid "Create User"
 msgstr "Crear Usuario"
@@ -4028,10 +3940,6 @@ msgctxt "Optional Documentation"
 msgid "The people groups represented by this contact."
 msgstr "Las étnias representadas por este contacto."
 
-#: dt-contacts/dmm-module.php:311
-msgid "Sub-assigned by"
-msgstr "Subasignado por"
-
 #: dt-contacts/dmm-module.php:312
 msgid "Sub-assigned"
 msgstr "Subasignado"
@@ -4048,14 +3956,6 @@ msgstr "Conectado %s"
 #: dt-groups/base-setup.php:623
 msgid "Coaches"
 msgstr "Entrenadores"
-
-#: dt-groups/base-setup.php:636
-msgid "Planted by"
-msgstr "Plantado por"
-
-#: dt-groups/base-setup.php:637
-msgid "Planting"
-msgstr "Plantando"
 
 #. Is this a verb or a noun?
 #: dt-mapping/geocode-api/mapbox-api.php:287
@@ -4074,10 +3974,6 @@ msgstr "Eliminar ubicación"
 #: dt-mapping/geocode-api/mapbox-api.php:290
 msgid "Open Mapping"
 msgstr "Abrir Mapas"
-
-#: dt-mapping/geocode-api/mapbox-api.php:291
-msgid "clear"
-msgstr "limpiar"
 
 #: dt-metrics/combined/mapbox-maps.php:28
 msgid "Combined Maps"
@@ -4318,7 +4214,7 @@ msgctxt "Make user modal"
 msgid "In the fields below, enter their username, email address, a 'Display Name' which they can change later and a User Role."
 msgstr "En los campos a continuación, ingrese su nombre de usuario, dirección de correo electrónico, un 'Nombre para Mostrar' que pueden cambiar más tarde y un Rol de Usuario."
 
-#: dt-contacts/user-module.php:126
+#: dt-contacts/user-module.php:120
 msgid "User Role"
 msgstr "Rol del usuario"
 
@@ -4431,10 +4327,6 @@ msgstr "Acceso requerido"
 msgid "link"
 msgstr "enlace"
 
-#: dt-assets/functions/enqueue-scripts.php:340
-msgid "load more"
-msgstr "cargar más"
-
 #: dt-assets/parts/modals/modal-advanced-search.php:11
 msgid "Search Query..."
 msgstr "Consulta de Búsqueda"
@@ -4486,10 +4378,6 @@ msgstr "%1$s en %2$s"
 #: dt-metrics/combined/time-charts.php:112
 msgid "Date"
 msgstr "Fecha"
-
-#: dt-metrics/combined/time-charts.php:113
-msgid "All time"
-msgstr "Todo tiempo"
 
 #: dt-metrics/combined/time-charts.php:114
 msgid "All cumulative totals"
@@ -4579,7 +4467,7 @@ msgstr "Envío de enlace mágico"
 msgid "copy"
 msgstr "copiar"
 
-#: dt-contacts/user-module.php:146
+#: dt-contacts/user-module.php:140
 #: dt-users/users.php:866
 msgid "User Language"
 msgstr "Idioma del usuario"
@@ -4662,14 +4550,6 @@ msgstr "Preferencias de correo electrónico"
 msgid "Real time"
 msgstr "Tiempo real"
 
-#: template-settings.php:454
-msgid "Hourly digest"
-msgstr "Resumen por hora"
-
-#: template-settings.php:458
-msgid "Daily digest"
-msgstr "Resumen diario"
-
 #: archive-template.php:614
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
@@ -4749,5 +4629,13 @@ msgstr ""
 
 #: template-settings.php:63
 msgid "Invite User"
+msgstr ""
+
+#: dt-contacts/user-module.php:102
+msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'."
+msgstr ""
+
+#: dt-contacts/user-module.php:111
+msgid "Can be changed later"
 msgstr ""
 
