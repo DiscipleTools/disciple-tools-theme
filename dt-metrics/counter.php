@@ -499,7 +499,7 @@ class Disciple_Tools_Queries
                 break;
 
             case 'multiplying_groups_only':
-                $query = "
+                $query = $wpdb->get_results( "
                     SELECT
                       a.ID         as id,
                       0            as parent_id,
@@ -628,8 +628,7 @@ class Disciple_Tools_Queries
                       ON genddate1.post_id=p.p2p_from
                       AND genddate1.meta_key = 'end_date'
                     WHERE p.p2p_type = 'groups_to_groups'
-                ";
-                $query = $wpdb->get_results($query, ARRAY_A);
+                ", ARRAY_A );
 
                 break;
 

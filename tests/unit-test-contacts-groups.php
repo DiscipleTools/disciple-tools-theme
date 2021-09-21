@@ -45,81 +45,81 @@ class PostsTest extends WP_UnitTestCase {
             'title'   => 'group1',
             "members" => [ "values" => [ [ "value" => $contact1["ID"] ], [ "value" => $contact2["ID"] ] ] ]
         ] );
-        $milestones1 = get_post_meta( $contact1["ID"], 'milestones');
-        $milestones2 = get_post_meta( $contact2["ID"], 'milestones');
-        $group1BaptismCount = (int) get_post_meta($group1["ID"], 'baptized_count', true);
-        $group1BeliefCount = (int) get_post_meta($group1["ID"], 'believer_count', true);
+        $milestones1 = get_post_meta( $contact1["ID"], 'milestones' );
+        $milestones2 = get_post_meta( $contact2["ID"], 'milestones' );
+        $group1_baptism_count = (int) get_post_meta( $group1["ID"], 'baptized_count', true );
+        $group1_belief_count = (int) get_post_meta( $group1["ID"], 'believer_count', true );
 
-        $this->assertFalse(in_array('milestone_baptized', $milestones1));
-        $this->assertFalse(in_array('milestone_belief', $milestones1));
-        $this->assertFalse(in_array('milestone_baptized', $milestones2));
-        $this->assertFalse(in_array('milestone_belief', $milestones2));
-        $this->assertEquals(0, $group1BaptismCount);
-        $this->assertEquals(0, $group1BeliefCount);
+        $this->assertFalse( in_array( 'milestone_baptized', $milestones1 ) );
+        $this->assertFalse( in_array( 'milestone_belief', $milestones1 ) );
+        $this->assertFalse( in_array( 'milestone_baptized', $milestones2 ) );
+        $this->assertFalse( in_array( 'milestone_belief', $milestones2 ) );
+        $this->assertEquals( 0, $group1_baptism_count );
+        $this->assertEquals( 0, $group1_belief_count );
 
-        add_post_meta($contact1["ID"], 'milestones', 'milestone_baptized');
-        add_post_meta($contact2["ID"], 'milestones', 'milestone_belief');
+        add_post_meta( $contact1["ID"], 'milestones', 'milestone_baptized' );
+        add_post_meta( $contact2["ID"], 'milestones', 'milestone_belief' );
 
-        $milestones1 = get_metadata('post',  $contact1["ID"], 'milestones');
-        $milestones2 = get_metadata('post',  $contact2["ID"], 'milestones');
-        $group1BaptismCount = (int) get_post_meta( $group1["ID"], 'baptized_count', true);
-        $group1BeliefCount = (int) get_post_meta($group1["ID"], 'believer_count', true);
+        $milestones1 = get_metadata( 'post', $contact1["ID"], 'milestones' );
+        $milestones2 = get_metadata( 'post', $contact2["ID"], 'milestones' );
+        $group1_baptism_count = (int) get_post_meta( $group1["ID"], 'baptized_count', true );
+        $group1_belief_count = (int) get_post_meta( $group1["ID"], 'believer_count', true );
 
-        $this->assertTrue(in_array('milestone_baptized', $milestones1));
-        $this->assertFalse(in_array('milestone_belief', $milestones1));
-        $this->assertFalse(in_array('milestone_baptized', $milestones2));
-        $this->assertTrue(in_array('milestone_belief', $milestones2));
-        $this->assertEquals(1, $group1BaptismCount);
-        $this->assertEquals(1, $group1BeliefCount);
+        $this->assertTrue( in_array( 'milestone_baptized', $milestones1 ) );
+        $this->assertFalse( in_array( 'milestone_belief', $milestones1 ) );
+        $this->assertFalse( in_array( 'milestone_baptized', $milestones2 ) );
+        $this->assertTrue( in_array( 'milestone_belief', $milestones2 ) );
+        $this->assertEquals( 1, $group1_baptism_count );
+        $this->assertEquals( 1, $group1_belief_count );
 
-        add_post_meta($contact2["ID"], 'milestones', 'milestone_baptized');
+        add_post_meta( $contact2["ID"], 'milestones', 'milestone_baptized' );
 
-        $milestones1 = get_metadata('post',  $contact1["ID"], 'milestones');
-        $milestones2 = get_metadata('post',  $contact2["ID"], 'milestones');
-        $group1BaptismCount = (int) get_post_meta( $group1["ID"], 'baptized_count', true);
-        $group1BeliefCount = (int) get_post_meta($group1["ID"], 'believer_count', true);
+        $milestones1 = get_metadata( 'post', $contact1["ID"], 'milestones' );
+        $milestones2 = get_metadata( 'post', $contact2["ID"], 'milestones' );
+        $group1_baptism_count = (int) get_post_meta( $group1["ID"], 'baptized_count', true );
+        $group1_belief_count = (int) get_post_meta( $group1["ID"], 'believer_count', true );
 
-        $this->assertTrue(in_array('milestone_baptized', $milestones1));
-        $this->assertFalse(in_array('milestone_belief', $milestones1));
-        $this->assertTrue(in_array('milestone_baptized', $milestones2));
-        $this->assertTrue(in_array('milestone_belief', $milestones2));
-        $this->assertEquals(2, $group1BaptismCount);
-        $this->assertEquals(1, $group1BeliefCount);
+        $this->assertTrue( in_array( 'milestone_baptized', $milestones1 ) );
+        $this->assertFalse( in_array( 'milestone_bphjpelief', $milestones1 ) );
+        $this->assertTrue( in_array( 'milestone_baptized', $milestones2 ) );
+        $this->assertTrue( in_array( 'milestone_belief', $milestones2 ) );
+        $this->assertEquals( 2, $group1_baptism_count );
+        $this->assertEquals( 1, $group1_belief_count );
 
         //test handling manually set count
-        update_post_meta(  $group1["ID"], 'believer_count', 5 );
+        update_post_meta( $group1["ID"], 'believer_count', 5 );
 
-        $group1BeliefCount = (int) get_post_meta($group1["ID"], 'believer_count', true);
-        $this->assertEquals(5, $group1BeliefCount);
+        $group1_belief_count = (int) get_post_meta( $group1["ID"], 'believer_count', true );
+        $this->assertEquals( 5, $group1_belief_count );
 
-        add_post_meta($contact1["ID"], 'milestones', 'milestone_belief');
+        add_post_meta( $contact1["ID"], 'milestones', 'milestone_belief' );
 
-        $milestones1 = get_metadata('post',  $contact1["ID"], 'milestones');
-        $milestones2 = get_metadata('post',  $contact2["ID"], 'milestones');
-        $group1BaptismCount = (int) get_post_meta( $group1["ID"], 'baptized_count', true);
-        $group1BeliefCount = (int) get_post_meta($group1["ID"], 'believer_count', true);
+        $milestones1 = get_metadata( 'post', $contact1["ID"], 'milestones' );
+        $milestones2 = get_metadata( 'post', $contact2["ID"], 'milestones' );
+        $group1_baptism_count = (int) get_post_meta( $group1["ID"], 'baptized_count', true );
+        $group1_belief_count = (int) get_post_meta( $group1["ID"], 'believer_count', true );
 
-        $this->assertTrue(in_array('milestone_baptized', $milestones1));
-        $this->assertTrue(in_array('milestone_belief', $milestones1));
-        $this->assertTrue(in_array('milestone_baptized', $milestones2));
-        $this->assertTrue(in_array('milestone_belief', $milestones2));
-        $this->assertEquals(2, $group1BaptismCount);
-        $this->assertEquals(5, $group1BeliefCount);
+        $this->assertTrue( in_array( 'milestone_baptized', $milestones1 ) );
+        $this->assertTrue( in_array( 'milestone_belief', $milestones1 ) );
+        $this->assertTrue( in_array( 'milestone_baptized', $milestones2 ) );
+        $this->assertTrue( in_array( 'milestone_belief', $milestones2 ) );
+        $this->assertEquals( 2, $group1_baptism_count );
+        $this->assertEquals( 5, $group1_belief_count );
 
         //Delete
-        delete_post_meta($contact2["ID"], 'milestones', 'milestone_baptized');
+        delete_post_meta( $contact2["ID"], 'milestones', 'milestone_baptized' );
 
-        $milestones1 = get_metadata('post',  $contact1["ID"], 'milestones');
-        $milestones2 = get_metadata('post',  $contact2["ID"], 'milestones');
-        $group1BaptismCount = (int) get_post_meta( $group1["ID"], 'baptized_count', true);
-        $group1BeliefCount = (int) get_post_meta($group1["ID"], 'believer_count', true);
+        $milestones1 = get_metadata( 'post', $contact1["ID"], 'milestones' );
+        $milestones2 = get_metadata( 'post', $contact2["ID"], 'milestones' );
+        $group1_baptism_count = (int) get_post_meta( $group1["ID"], 'baptized_count', true );
+        $group1_belief_count = (int) get_post_meta( $group1["ID"], 'believer_count', true );
 
-        $this->assertTrue(in_array('milestone_baptized', $milestones1));
-        $this->assertTrue(in_array('milestone_belief', $milestones1));
-        $this->assertFalse(in_array('milestone_baptized', $milestones2));
-        $this->assertTrue(in_array('milestone_belief', $milestones2));
-        $this->assertEquals(1, $group1BaptismCount);
-        $this->assertEquals(2, $group1BeliefCount);
+        $this->assertTrue( in_array( 'milestone_baptized', $milestones1 ) );
+        $this->assertTrue( in_array( 'milestone_belief', $milestones1 ) );
+        $this->assertFalse( in_array( 'milestone_baptized', $milestones2 ) );
+        $this->assertTrue( in_array( 'milestone_belief', $milestones2 ) );
+        $this->assertEquals( 1, $group1_baptism_count );
+        $this->assertEquals( 2, $group1_belief_count );
     }
 
     public function test_member_count(){

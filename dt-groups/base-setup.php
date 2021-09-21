@@ -38,9 +38,9 @@ class DT_Groups_Base extends DT_Module_Base {
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
         add_filter( "dt_after_get_post_fields_filter", [ $this, "dt_after_get_post_fields_filter" ], 10, 2 );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 2 );
-        add_action('added_post_meta', [ $this, 'dt_updated_post_meta'], 10, 4);
-        add_action('updated_post_meta', [ $this, 'dt_updated_post_meta'], 10, 4);
-        add_action('deleted_post_meta', [ $this, 'dt_deleted_post_meta'], 10, 4);
+        add_action( 'added_post_meta', [ $this, 'dt_updated_post_meta' ], 10, 4 );
+        add_action( 'updated_post_meta', [ $this, 'dt_updated_post_meta' ], 10, 4 );
+        add_action( 'deleted_post_meta', [ $this, 'dt_deleted_post_meta' ], 10, 4 );
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
@@ -652,7 +652,7 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( sizeof( $members ) > intval( $member_count ) ){
             update_post_meta( $group_id, 'member_count', sizeof( $members ) );
         } elseif ( $action === "removed" ) {
-            update_post_meta($group_id, 'member_count', intval($member_count) - 1);
+            update_post_meta( $group_id, 'member_count', intval( $member_count ) - 1 );
         }
     }
 
@@ -708,30 +708,30 @@ class DT_Groups_Base extends DT_Module_Base {
         return $fields;
     }
 
-    public function dt_updated_post_meta($meta_id, $object_id, $meta_key, $_meta_value) {
+    public function dt_updated_post_meta( $meta_id, $object_id, $meta_key, $_meta_value) {
         if ($meta_key === 'milestones') {
-            self::refresh_milestone_counts_from_contact($object_id);
+            self::refresh_milestone_counts_from_contact( $object_id );
         }
     }
 
-    public function dt_deleted_post_meta($meta_id, $object_id, $meta_key, $_meta_value) {
+    public function dt_deleted_post_meta( $meta_id, $object_id, $meta_key, $_meta_value) {
         if ($meta_key === 'milestones') {
-            self::refresh_milestone_counts_from_contact($object_id, 'removed');
+            self::refresh_milestone_counts_from_contact( $object_id, 'removed' );
         }
     }
 
     private static function refresh_milestone_counts_from_contact( $contact_id, $action = "added" ) {
         $groups = get_posts( [
             'connected_type' => 'contacts_to_groups',
-            'connected_items' => get_post($contact_id),
+            'connected_items' => get_post( $contact_id ),
             'nopaging' => true,
             'suppress_filters' => false
         ] );
-        if (!$groups) {
+        if ( !$groups) {
             return;
         }
-        foreach($groups as $group) {
-            self::refresh_milestone_counts($group->ID, $action);
+        foreach ($groups as $group) {
+            self::refresh_milestone_counts( $group->ID, $action );
         }
     }
 
@@ -744,19 +744,19 @@ class DT_Groups_Base extends DT_Module_Base {
             'nopaging' => true,
             'suppress_filters' => false
         ] );
-        if (!$contacts) {
+        if ( !$contacts) {
             return;
         }
-        $current_belief_count = intval(get_post_meta( $group_id, 'believer_count', true ));
+        $current_belief_count = intval( get_post_meta( $group_id, 'believer_count', true ) );
         $belief_count = 0;
-        $current_baptism_count = intval(get_post_meta( $group_id, 'baptized_count', true ));
+        $current_baptism_count = intval( get_post_meta( $group_id, 'baptized_count', true ) );
         $baptism_count = 0;
-        foreach($contacts as $contact) {
-            $milestones = get_metadata( 'post', $contact->ID, 'milestones');
-            if (in_array('milestone_belief', $milestones)) {
+        foreach ($contacts as $contact) {
+            $milestones = get_metadata( 'post', $contact->ID, 'milestones' );
+            if (in_array( 'milestone_belief', $milestones )) {
                 $belief_count++;
             }
-            if (in_array('milestone_baptized', $milestones)) {
+            if (in_array( 'milestone_baptized', $milestones )) {
                 $baptism_count++;
             }
         }
