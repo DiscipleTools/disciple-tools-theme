@@ -127,7 +127,7 @@ class Disciple_Tools_Post_Type_Template {
             $links[] = [
                 'label' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ),
                 'link' => esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/circle-add-plus.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/circle-add-green.svg",
                 'hidden' => false,
             ];
         }

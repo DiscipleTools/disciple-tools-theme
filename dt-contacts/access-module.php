@@ -96,7 +96,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "color" => "#2196F3",
                 "description" => __( 'Someone to follow-up with', 'disciple_tools' ),
                 "visibility" => __( "Collaborators", 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg?v=2",
                 "order" => 20
             ];
 
@@ -106,7 +106,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'type'        => 'user_select',
                 'default'     => '',
                 'tile'        => 'status',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/assigned-to.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/assigned-to.svg?v=2",
                 "show_in_table" => 25,
                 "only_for_types" => [ "access", "user" ],
                 "custom_display" => true
@@ -149,7 +149,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile' => 'followup',
                 "show_in_table" => 15,
                 "only_for_types" => [ "access" ],
-                "icon" => get_template_directory_uri() . '/dt-assets/images/sign-post.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/sign-post.svg?v=2',
             ];
 
             $fields['overall_status'] = [
@@ -188,7 +188,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile'     => 'status',
                 'customizable' => 'add_only',
                 'custom_display' => true,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/status.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/status.svg?v=2",
                 "show_in_table" => 10,
                 "only_for_types" => [ "access" ],
                 "select_cannot_be_empty" => true
@@ -316,7 +316,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile'     => 'details',
                 'customizable' => 'all',
                 'display' => "typeahead",
-                'icon' => get_template_directory_uri() . "/dt-assets/images/source.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/source.svg?v=2",
                 "only_for_types" => [ "access" ],
                 "in_create_form" => [ "access" ]
             ];
@@ -327,7 +327,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile' => 'details',
                 'type'        => 'tags',
                 'default'     => [],
-                'icon' => get_template_directory_uri() . "/dt-assets/images/megaphone.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/megaphone.svg?v=2",
                 'only_for_types' => [ 'access' ],
             ];
 
@@ -642,37 +642,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
-
-            <style type="text/css">
-                #filter-tabs img {
-                    height: 20px;
-                    width: 20px;
-                    display: inline-block;
-                    vertical-align: middle;
-                    margin-right: 2px;
-                }
-                .dispatcher-tile .populated-list .assigned-to-row > span {
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                }
-                .dispatcher-tile .populated-list .assigned-to-row:hover {
-                    background-color: #F2F2F2;
-                }
-                .dispatcher-tile .populated-list .assigned-to-row {
-                    padding: 5px 5px 0 5px;
-                    border-bottom: 1px solid rgba(128, 128, 128, 0.31);
-                }
-                .dispatcher-tile .populated-list {
-                    overflow-y: scroll;
-                    max-height: 250px;
-                }
-
-            </style>
-            <script>
-
-            </script>
             <?php }
         }
     }

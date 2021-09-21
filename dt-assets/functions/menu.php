@@ -50,53 +50,57 @@ function dt_default_menu_array() : array {
             'profile' => [
                 'label' => wp_get_current_user()->display_name ?? __( "Profile", "disciple_tools" ),
                 'link' => site_url( '/settings/' ),
-                'icon' => get_template_directory_uri() . "/dt-assets/images/profile.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/profile.svg?v=2",
                 'hidden' => false,
             ],
             'advanced_search' => [
                 'label' => __( "Advanced Search", "disciple_tools" ),
                 'link' => '#',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/search-white.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/search.svg",
                 'hidden' => false,
             ],
             'add_new' => [
                 'label' => __( "Add New", 'disciple_tools' ),
                 'link' => '',
                 'hidden' => false,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/circle-add-plus.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/circle-add-green.svg",
                 'submenu' => apply_filters( 'dt_nav_add_post_menu', [] ),
             ],
             'notifications' => [
                 'label' => __( "Notifications", 'disciple_tools' ),
                 'link' => site_url( '/notifications/' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/bell.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/bell.svg?v=2",
                 'hidden' => false,
             ],
             'settings' => [
                 'label' => __( "Settings", 'disciple_tools' ),
                 'link' => site_url( '/settings/' ),
-                'icon' => get_template_directory_uri() . "/dt-assets/images/settings.svg" ,
+                'icon' => get_template_directory_uri() . "/dt-assets/images/settings.svg?v=2",
                 'hidden' => false,
                 'submenu' => [
                     'settings' => [
                         'label' => __( "Settings", 'disciple_tools' ),
                         'link' => site_url( '/settings/' ),
                         'hidden' => false,
+                        'icon' => get_template_directory_uri() . "/dt-assets/images/profile.svg?v=2",
                     ],
                     'admin' => [
                         'label' => __( "Admin", 'disciple_tools' ),
                         'link' => get_admin_url(),
                         'hidden' => ( ! current_user_can( 'manage_dt' ) ),
+                        'icon' => get_template_directory_uri() . "/dt-assets/images/house.svg?v=2",
                     ],
                     'user_management' => [
                         'label' => __( "Users", "disciple_tools" ),
                         'link' => site_url( '/user-management/users/' ),
                         'hidden' => ( ! ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' ) ) ),
+                        'icon' => get_template_directory_uri() . "/dt-assets/images/group.svg?v=2",
                     ],
                     'help' => [
                         'label' => __( "Help", "disciple_tools" ),
                         'link' => 'https://disciple.tools/user-docs',
                         'hidden' => false,
+                        'icon' => get_template_directory_uri() . "/dt-assets/images/help.svg?v=2",
                     ],
                 ]
             ],
