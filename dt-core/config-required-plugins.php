@@ -48,7 +48,7 @@ function dt_register_required_plugins() {
         $plugins[] = [
             'name' => 'Disciple.Tools Multisite Helper',
             'slug' => 'disciple-tools-multisite',
-            'external_url' => 'https://github.com/DiscipleTools/disciple-tools-multisite/releases/latest/download/disciple-tools-multisite.zip',
+            'source' => 'https://github.com/DiscipleTools/disciple-tools-multisite/releases/latest/download/disciple-tools-multisite.zip',
             'required' => false
         ];
     }
