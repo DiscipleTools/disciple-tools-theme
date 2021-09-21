@@ -628,7 +628,7 @@ window.SHAREDFUNCTIONS = {
       return match
     })
     $(selector).html(elem_text)
-  }
+  },
 };
 
 window.METRICS = {

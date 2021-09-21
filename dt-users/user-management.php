@@ -41,8 +41,8 @@ class DT_User_Management
                     return get_template_directory() . '/dt-users/template-user-management.php';
                 } );
             }
-            add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         }
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
     public function has_permission(){
@@ -77,6 +77,17 @@ class DT_User_Management
                 ],
             ]
         );
+
+        register_rest_route(
+            $namespace, '/activity-log', [
+                [
+                    'methods'  => "GET",
+                    'callback' => [ $this, 'get_user_activity_endpoint' ],
+                    'permission_callback' => '__return_true',
+                ],
+            ]
+        );
+
         register_rest_route(
             $namespace, '/user', [
                 [
@@ -150,6 +161,10 @@ class DT_User_Management
             wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
             wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+            wp_enqueue_script( 'dtActivityLogs', get_template_directory_uri() . '/dt-assets/js/activity-log.js', [
+                'jquery',
+                'lodash'
+            ], filemtime( get_theme_file_path() .  '/dt-assets/js/activity-log.js' ), true );
 
             wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', $dependencies, filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
 
@@ -176,6 +191,8 @@ class DT_User_Management
                         'already_user' => __( 'This contact is already a user.', 'disciple_tools' ),
                         'view_user' => __( 'View User', 'disciple_tools' ),
                         'view_contact' => __( 'View Contact', 'disciple_tools' ),
+                        'more' => __( 'More', 'disciple_tools' ),
+                        'less' => __( 'Less', 'disciple_tools' ),
                     ],
                     'language_dropdown' => dt_get_available_languages(),
                     'has_permission' => $this->has_permission(),
@@ -337,50 +354,8 @@ class DT_User_Management
             $user_response['user_location'] = Disciple_Tools_Users::get_user_location( $user->ID );
         }
 
-
         if ( $section === 'activity' || $section === null ) {
-            $user_activity = $wpdb->get_results($wpdb->prepare("
-                SELECT hist_time, action, object_name, meta_key, object_type, object_note
-                FROM $wpdb->dt_activity_log
-                WHERE user_id = %s
-                AND action IN ( 'comment', 'field_update', 'connected_to', 'logged_in', 'created', 'disconnected_from', 'decline', 'assignment_decline' )
-                ORDER BY `hist_time` DESC
-                LIMIT 100
-            ", $user->ID));
-            if ( ! empty( $user_activity ) ) {
-                foreach ($user_activity as $a) {
-                    if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
-                        if ($a->object_type === "contacts") {
-                            $a->object_note = sprintf( _x( "Updated contact %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                        if ($a->object_type === "groups") {
-                            $a->object_note = sprintf( _x( "Updated group %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                    }
-                    if ($a->action == 'comment') {
-                        if ($a->meta_key === "contacts") {
-                            $a->object_note = sprintf( _x( "Commented on contact %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                        if ($a->meta_key === "groups") {
-                            $a->object_note = sprintf( _x( "Commented on group %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                    }
-                    if ($a->action == 'created') {
-                        if ($a->object_type === "contacts") {
-                            $a->object_note = sprintf( _x( "Created contact %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                        if ($a->object_type === "groups") {
-                            $a->object_note = sprintf( _x( "Created group %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                    }
-                    if ($a->action === "logged_in") {
-                        $a->object_note = __( "Logged In", 'disciple_tools' );
-                    }
-                    if ($a->action === 'assignment_decline') {
-                        $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
-                    }
-                }
-            }
+            $user_activity = $this->get_user_activity( $user->ID );
             $user_response['user_activity'] = $user_activity;
         }
 
@@ -452,6 +427,80 @@ class DT_User_Management
 
     }
 
+    private function make_sql_from_list( $list ) {
+        $wrap_actions = function ( $action ) {
+            return "'$action'";
+        };
+        $wrapped_allowed_actions = array_map( $wrap_actions, $list );
+        $list_sql = implode( ', ', $wrapped_allowed_actions );
+
+        return $list_sql;
+    }
+
+    private function get_user_activity( $user_id, $include = [] ) {
+        global $wpdb;
+
+        if ( empty( $include ) ) {
+            $allowed_actions = [ 'comment', 'field_update', 'connected_to', 'logged_in', 'created', 'disconnected_from', 'decline', 'assignment_decline' ];
+        } else {
+            $allowed_actions = $include;
+        }
+
+        $allowed_actions_sql = $this->make_sql_from_list( $allowed_actions );
+        $allowed_post_types = DT_Posts::get_post_types();
+        array_push( $allowed_post_types, 'post' );
+        $allowed_post_types_sql = $this->make_sql_from_list( $allowed_post_types );
+
+        //phpcs:disable
+        $user_activity = $wpdb->get_results($wpdb->prepare("
+                SELECT hist_time, action, object_name, meta_key, object_type, object_id, object_subtype, object_note, p.post_type
+                FROM $wpdb->dt_activity_log a
+                LEFT JOIN $wpdb->posts p
+                ON a.object_id = p.ID
+                WHERE user_id = %s
+                AND action IN ( $allowed_actions_sql )
+                AND p.post_type IN ( $allowed_post_types_sql )
+                ORDER BY `hist_time` DESC
+                LIMIT 100
+            ", $user_id ));
+        //phpcs:enable
+
+        if ( ! empty( $user_activity ) ) {
+
+            foreach ($user_activity as $a) {
+                $post_fields = DT_Posts::get_post_field_settings( $a->post_type );
+                $a->object_note = sanitize_text_field( $a->object_note );
+
+                $a->icon = apply_filters( 'dt_record_icon', null, $a->post_type, [] );
+                $a->post_type_label = $a->post_type ? DT_Posts::get_label_for_post_type( $a->post_type ) : null;
+
+                if ( $a->object_subtype === "title" ){
+                    $a->object_subtype = "name";
+                }
+
+                if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
+                    $a->object_note_short = __( "Updated fields", 'disciple_tools' );
+                    $a->field = $a->action === 'field_update' ? $post_fields[ $a->object_subtype ]["name"] : null;
+                }
+                if ($a->action == 'comment') {
+                    $a->object_note_short = __( "Made %n comments", "disciple_tools" );
+                }
+                if ($a->action == 'created') {
+                    $a->object_note = __( 'Created record', 'disciple_tools' );
+                }
+                if ($a->action === "logged_in") {
+                    $a->object_note_short = __( "Logged In %n times", 'disciple_tools' );
+                    $a->object_note = __( "Logged In", 'disciple_tools' );
+                }
+                if ($a->action === 'assignment_decline') {
+                    $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
+                }
+            }
+        }
+
+        return $user_activity;
+    }
+
     public function get_user_endpoint( WP_REST_Request $request ) {
         if ( !$this->has_permission() ) {
             return new WP_Error( "get_user", "Missing Permissions", [ 'status' => 401 ] );
@@ -465,6 +514,18 @@ class DT_User_Management
             return new WP_Error( __METHOD__, "Missing collection id", [ 'status' => 400 ] );
         }
         return $this->get_dt_user( $params["user"], $params["section"] );
+    }
+
+    public function get_user_activity_endpoint( WP_REST_Request $request ) {
+        $user_id = get_current_user_id();
+
+        if ( $user_id === 0 ) {
+            return new WP_Error( __METHOD__, "Not logged in", [ 'status' => 401 ] );
+        }
+
+        $include = [ 'comment', 'field_update', 'created' ];
+
+        return $this->get_user_activity( $user_id, $include );
     }
 
     public function get_users_endpoints( WP_REST_Request $request ){
