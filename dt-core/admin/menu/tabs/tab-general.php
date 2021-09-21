@@ -470,7 +470,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             </table>
             <br>
             <p>
-                <label><?php esc_html_e( 'Allow multipliers to invite contacts to become users with the multiplier role.' ) ?></label>
+                <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role.' ) ?></label>
                 <input type="checkbox" name="user_invite_check" id="user_invite_check" value="user_invite" <?php echo $user_invite_allowed ? 'checked' : '' ?> />
             </p>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>

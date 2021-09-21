@@ -99,8 +99,7 @@ class DT_Contacts_User {
                             <p><strong><?php echo esc_html_x( "This contact is already connected to a user.", 'Make user modal', 'disciple_tools' ) ?></strong></p>
                         <?php else : ?>
 
-                        <p><?php echo esc_html_x( "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier', but you can change that in the dropdown below.", 'Make user modal', 'disciple_tools' ) ?></p>
-                        <p><?php echo esc_html_x( "In the fields below, enter their username, email address, a 'Display Name' which they can change later and a User Role.", 'Make user modal', 'disciple_tools' ) ?></p>
+                            <p><?php echo esc_html__( "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'.", 'disciple_tools' ) ?></p>
 
                         <form id="create-user-form">
                             <label for="user-username">
@@ -114,7 +113,7 @@ class DT_Contacts_User {
                             <input name="user-email" id="user-email" type="email" value="<?php echo ( isset( $contact['contact_email'][0]['value'] ) ) ? esc_html( $contact['contact_email'][0]['value'] ) : ''; ?>" placeholder="user@example.com" required aria-describedby="email-help-text">
                             <p class="help-text" id="email-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
                             <label for="user-display">
-                                <?php esc_html_e( "Display Name", "disciple_tools" ); ?>
+                                <?php esc_html_e( "Display Name", "disciple_tools" ); ?> (<?php esc_html_e( "Can be changed later", "disciple_tools" ); ?>)
                                 <input name="user-display" id="user-display" type="text"
                                        value="<?php the_title_attribute(); ?>"
                                        placeholder="<?php esc_html_e( "Display Name", 'disciple_tools' ) ?>">
