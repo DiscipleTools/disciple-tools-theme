@@ -466,41 +466,27 @@ class DT_User_Management
         //phpcs:enable
 
         if ( ! empty( $user_activity ) ) {
-            $contact_settings = DT_Posts::get_post_field_settings( 'contacts' );
-            $group_settings = DT_Posts::get_post_field_settings( 'groups' );
 
             foreach ($user_activity as $a) {
-                $a->object_note = '';
+                $post_fields = DT_Posts::get_post_field_settings( $a->post_type );
+                $a->object_note = sanitize_text_field( $a->object_note );
+
                 $a->icon = apply_filters( 'dt_record_icon', null, $a->post_type, [] );
                 $a->post_type_label = $a->post_type ? DT_Posts::get_label_for_post_type( $a->post_type ) : null;
 
+                if ( $a->object_subtype === "title" ){
+                    $a->object_subtype = "name";
+                }
+
                 if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
                     $a->object_note_short = __( "Updated fields", 'disciple_tools' );
-                    if ($a->object_type === "contacts") {
-                        $a->object_note = sprintf( _x( "Updated contact %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
-                        $a->field = $a->action === 'field_update' ? $contact_settings[ $a->object_subtype ]["name"] : null;
-                    }
-                    if ($a->object_type === "groups") {
-                        $a->object_note = sprintf( _x( "Updated group %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
-                        $a->field = $a->action === 'field_update' ? $group_settings[ $a->object_subtype ]["name"] : null;
-                    }
+                    $a->field = $a->action === 'field_update' ? $post_fields[ $a->object_subtype ]["name"] : null;
                 }
                 if ($a->action == 'comment') {
                     $a->object_note_short = __( "Made %n comments", "disciple_tools" );
-                    if ($a->meta_key === "contacts") {
-                        $a->object_note = sprintf( _x( "Commented on contact %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
-                    }
-                    if ($a->meta_key === "groups") {
-                        $a->object_note = sprintf( _x( "Commented on group %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
-                    }
                 }
                 if ($a->action == 'created') {
-                    if ($a->object_type === "contacts") {
-                        $a->object_note = sprintf( _x( "Created contact %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
-                    }
-                    if ($a->object_type === "groups") {
-                        $a->object_note = sprintf( _x( "Created group %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
-                    }
+                    $a->object_note = __( 'Created record', 'disciple_tools' );
                 }
                 if ($a->action === "logged_in") {
                     $a->object_note_short = __( "Logged In %n times", 'disciple_tools' );
