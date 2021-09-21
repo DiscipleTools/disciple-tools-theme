@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g class="nc-icon-wrapper" fill="#ffffff"><path fill="#ffffff" d="M12,6L12,6c-1.657,0-3-1.343-3-3v0c0-1.657,1.343-3,3-3h0c1.657,0,3,1.343,3,3v0C15,4.657,13.657,6,12,6z"></path> <path data-color="color-2" fill="#ffffff" d="M4,19v-8c0-1.13,0.391-2.162,1.026-3H2c-1.105,0-2,0.895-2,2v6h2v5c0,0.552,0.448,1,1,1h2 c0.552,0,1-0.448,1-1v-2H4z"></path> <path fill="#ffffff" d="M14,24h-4c-0.552,0-1-0.448-1-1v-6H6v-6c0-1.657,1.343-3,3-3h6c1.657,0,3,1.343,3,3v6h-3v6 C15,23.552,14.552,24,14,24z"></path> <path data-color="color-2" fill="#ffffff" d="M4,7L4,7C2.895,7,2,6.105,2,5v0c0-1.105,0.895-2,2-2h0c1.105,0,2,0.895,2,2v0 C6,6.105,5.105,7,4,7z"></path> <path data-color="color-2" fill="#ffffff" d="M20,19v-8c0-1.13-0.391-2.162-1.026-3H22c1.105,0,2,0.895,2,2v6h-2v5c0,0.552-0.448,1-1,1h-2 c-0.552,0-1-0.448-1-1v-2H20z"></path> <path data-color="color-2" fill="#ffffff" d="M20,7L20,7c1.105,0,2-0.895,2-2v0c0-1.105-0.895-2-2-2h0c-1.105,0-2,0.895-2,2v0 C18,6.105,18.895,7,20,7z"></path></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="24" height="24" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g>
+        <path d="M12,6C10.343,6 9,4.657 9,3C9,1.343 10.343,0 12,0C13.657,0 15,1.343 15,3C15,4.657 13.657,6 12,6Z" style="fill:#000000;fill-rule:nonzero;"/>
+        <path d="M4,19L4,11C4,9.87 4.391,8.838 5.026,8L2,8C0.895,8 0,8.895 0,10L0,16L2,16L2,21C2,21.552 2.448,22 3,22L5,22C5.552,22 6,21.552 6,21L6,19L4,19Z" style="fill:#000000;fill-rule:nonzero;"/>
+        <path d="M14,24L10,24C9.448,24 9,23.552 9,23L9,17L6,17L6,11C6,9.343 7.343,8 9,8L15,8C16.657,8 18,9.343 18,11L18,17L15,17L15,23C15,23.552 14.552,24 14,24Z" style="fill:#000000;fill-rule:nonzero;"/>
+        <path d="M4,7C2.895,7 2,6.105 2,5C2,3.895 2.895,3 4,3C5.105,3 6,3.895 6,5C6,6.105 5.105,7 4,7Z" style="fill:#000000;fill-rule:nonzero;"/>
+        <path d="M20,19L20,11C20,9.87 19.609,8.838 18.974,8L22,8C23.105,8 24,8.895 24,10L24,16L22,16L22,21C22,21.552 21.552,22 21,22L19,22C18.448,22 18,21.552 18,21L18,19L20,19Z" style="fill:#000000;fill-rule:nonzero;"/>
+        <path d="M20,7C21.105,7 22,6.105 22,5C22,3.895 21.105,3 20,3C18.895,3 18,3.895 18,5C18,6.105 18.895,7 20,7Z" style="fill:#000000;fill-rule:nonzero;"/>
+    </g>
+</svg>

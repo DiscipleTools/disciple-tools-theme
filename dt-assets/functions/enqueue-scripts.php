@@ -166,7 +166,6 @@ function dt_site_scripts() {
                 'comments', 'commentsSettings', [
                     "post" => get_post(),
                     'post_with_fields' => $post,
-                    'txt_created' => __( "Created record on {}", "disciple_tools" ),
                     'template_dir' => get_template_directory_uri(),
                     'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : "",
                     'translations' => [
@@ -252,7 +251,7 @@ function dt_site_scripts() {
                 'template_dir'          => get_template_directory_uri(),
                 'associated_contact_id' => $contact_id,
                 'translations'          => apply_filters( 'dt_settings_js_translations', [
-                    'delete' => __( 'delete', 'disciple_tools' ),
+                    'delete' => __( 'Delete', 'disciple_tools' ),
                     'responsible_for_locations' => __( "Locations you are responsible for", 'disciple_tools' ),
                     'add' => __( 'Add', 'disciple_tools' ),
                     'save' => __( 'Save', 'disciple_tools' ),
@@ -337,7 +336,7 @@ function dt_site_scripts() {
     dt_theme_enqueue_script( 'dt-advanced-search', 'dt-assets/js/advanced-search.js', array( 'jquery' ), true );
     wp_localize_script( 'dt-advanced-search', 'advanced_search_settings', array(
         'template_dir_uri' => esc_html( get_template_directory_uri() ),
-        'fetch_more_text' => __( 'load more', 'disciple_tools' ) // Support translations
+        'fetch_more_text' => __( 'Load More', 'disciple_tools' ) // Support translations
     ) );
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );

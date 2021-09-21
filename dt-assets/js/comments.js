@@ -52,7 +52,7 @@ jQuery(document).ready(function($) {
     let createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
-      object_note: settings.txt_created.replace("{}", window.SHAREDFUNCTIONS.formatDate(createdDate.unix())),
+      object_note: window.detailsSettings.translations.created_on.replace('%s', window.SHAREDFUNCTIONS.formatDate(createdDate.unix(), true)),
       name: settings.contact_author_name,
       user_id: currentContact.post_author,
     }
@@ -153,11 +153,11 @@ jQuery(document).ready(function($) {
                 <% has_Comment_ID = true %>
                   <div class="edit-comment-controls">
                     <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
-                        <img class="" src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
+                        <img class="dt-blue-icon" src="${commentsSettings.template_dir}/dt-assets/images/edit.svg">
                         ${window.lodash.escape(commentsSettings.translations.edit)}
                     </a>
                     <a class="open-delete-comment" data-id="<%- a.comment_ID %>">
-                        <img src="${commentsSettings.template_dir}/dt-assets/images/trash-blue.svg">
+                        <img class="dt-blue-icon" src="${commentsSettings.template_dir}/dt-assets/images/trash.svg">
                         ${window.lodash.escape(commentsSettings.translations.delete)}
                     </a>
                   </div>

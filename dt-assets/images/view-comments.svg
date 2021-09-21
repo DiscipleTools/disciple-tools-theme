@@ -2,7 +2,7 @@
 <title>view-comments</title>
 <desc>Created using Figma</desc>
 <g id="Canvas" transform="translate(-290 5223)">
-<rect x="290" y="-5223" width="20" height="21" fill="#333333"/>
+<rect x="290" y="-5223" width="20" height="21" fill="#000000"/>
 <clipPath id="clip-0" clip-rule="evenodd">
 <path d="M -9 -5419L 351 -5419L 351 -2420L -9 -2420L -9 -5419Z" fill="#FFFFFF"/>
 </clipPath>

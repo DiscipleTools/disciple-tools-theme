@@ -285,7 +285,7 @@ html[dir="rtl"] #top-bar-menu {
     top: 0;
     margin-left:10px;
 }
-.add-new-items-dropdown {
+.top-bar .is-submenu-item {
     background-color: #3f729b;
     text-align: left;
     a {
@@ -838,7 +838,6 @@ button.loader {
     .typeahead-user-row {
         img {
             width: 20px;
-            background-color: #3f729b;
             border-radius: 3px;
             vertical-align: text-bottom;
             padding: 1px;
@@ -1075,6 +1074,7 @@ a.dt-green:hover {
 
 .help-icon {
     height: 15px;
+    filter: invert(69%) sepia(1%) saturate(0%) hue-rotate(239deg) brightness(94%) contrast(86%);
 }
 
 .help-button {
@@ -1353,9 +1353,18 @@ label.dt-switch:active:after {
 img.dt-icon {
     height: 15px;
     width: 15px;
+    filter:invert(18%) sepia(0%) saturate(19%) hue-rotate(170deg) brightness(108%) contrast(98%);
+
+
 }
 img.dt-blue-icon {
     filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg) brightness(94%) contrast(100%);
+}
+img.dt-white-icon {
+    filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
+}
+img.dt-green-icon {
+    filter: invert(52%) sepia(77%) saturate(383%) hue-rotate(73deg) brightness(98%) contrast(83%);
 }
 
 .template-new-post {

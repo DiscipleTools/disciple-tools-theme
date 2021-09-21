@@ -195,7 +195,7 @@ jQuery(document).ready(function ($) {
 
     let results_html = '<tr class="advanced-search-modal-results-table-row-clickable">';
 
-    results_html += '<td class="advanced-search-modal-results-table-col-hits"><b>' + window.lodash.escape(post['post_title']) + '</b><br><span>';
+    results_html += '<td class="advanced-search-modal-results-table-col-hits"><b>' + window.lodash.escape(post['post_title']) + '</b> (#' + window.lodash.escape(hidden_post_id) + ')<br><span>';
 
     if (is_comment_hit) {
       results_html += window.lodash.escape((String(post['comment_hit_content']).length > 100) ? String(post['comment_hit_content']).substring(0, 100) + "..." : post['comment_hit_content']);

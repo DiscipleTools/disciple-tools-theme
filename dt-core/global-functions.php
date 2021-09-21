@@ -578,7 +578,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
         $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
         $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
-        $is_private = ( isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true ) ? true : false;
+        $is_private = isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true;
+        $display_field_id = $field_key;
+        if ( !empty( $field_id_prefix ) ) {
+            $display_field_id = $field_id_prefix . $field_key;
+        }
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
@@ -588,10 +592,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 return;
             }
 
-            $display_field_id = $field_key;
-            if ( !empty( $field_id_prefix ) ) {
-                $display_field_id = $field_id_prefix . $field_key;
-            }
 
             ?>
             <div class="section-subheader">
@@ -650,7 +650,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                           data-field="<?php echo esc_html( $display_field_id );?>"
+                                           data-field="<?php echo esc_html( $field_key );?>"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]"
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                            autocomplete="off"
@@ -658,7 +658,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
                                 </span>
                                 <span class="typeahead__button">
-                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $display_field_id );?>">
+                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $field_key );?>">
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
                                     </button>
                                 </span>
@@ -676,7 +676,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                 <div class="typeahead__field">
                                     <span class="typeahead__query">
                                         <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                               data-field="<?php echo esc_html( $display_field_id );?>"
+                                               data-field="<?php echo esc_html( $field_key );?>"
                                                name="<?php echo esc_html( $display_field_id ); ?>[query]"
                                                placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                                autocomplete="off">
@@ -691,7 +691,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <?php
                             $class = ( in_array( $option_key, $post[$field_key] ?? [] ) ) ?
                                 "selected-select-button" : "empty-select-button"; ?>
-                            <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $display_field_id ); ?>"
+                            <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $field_key ); ?>"
                                     class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
                                 <?php if ( !empty( $option_value["icon"] ) ) { ?>
                                     <img class="dt-icon" src="<?php echo esc_html( $option_value["icon"] ) ?>" >
@@ -772,7 +772,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                           data-field="<?php echo esc_html( $display_field_id ); ?>"
+                                           data-field="<?php echo esc_html( $field_key ); ?>"
                                            data-field_type="location"
                                            name="<?php echo esc_html( $field_key ); ?>[query]"
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
@@ -788,7 +788,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         <div class="input-group">
                             <input id="<?php echo esc_html( $field_value["key"] ) ?>"
                                    type="text"
-                                   data-field="<?php echo esc_html( $display_field_id ); ?>"
+                                   data-field="<?php echo esc_html( $field_key ); ?>"
                                    value="<?php echo esc_html( $field_value["value"] ) ?>"
                                    class="dt-communication-channel input-group-field" dir="auto"/>
                             <div class="input-group-button">
@@ -819,7 +819,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            autocomplete="off">
                                 </span>
                                 <span class="typeahead__button">
-                                    <button type="button" class="search_<?php echo esc_html( $display_field_id ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $display_field_id ); ?>_t">
+                                    <button type="button" class="search_<?php echo esc_html( $field_key ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $field_key ); ?>">
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                     </button>
                                 </span>
@@ -829,7 +829,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 </div>
             <?php endif;
         }
-        do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag );
+        do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id );
     }
 
     function dt_increment( &$var, $val ){

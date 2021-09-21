@@ -92,7 +92,7 @@
     if ( 'settings' === $url_path ) : ?>
         <!--  Your Profile -->
         <div class="help-section" id="profile-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Your Profile", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html__( "Your Profile", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "In this area you can see your user profile.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <p><?php echo esc_html_x( "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <p><?php echo esc_html_x( "By clicking 'Edit', you will be able adjust things like the language that this system operates in.", 'Optional Documentation', 'disciple_tools' ) ?></p>

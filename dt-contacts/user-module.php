@@ -156,7 +156,7 @@ class DT_Contacts_User {
                                     <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                                 </button>
                                 <button class="button loader" type="submit" id="create-user-return">
-                                    <?php esc_html_e( 'Create user', 'disciple_tools' ); ?>
+                                    <?php esc_html_e( 'Create User', 'disciple_tools' ); ?>
                                 </button>
                                 <button class="close-button" data-close aria-label="Close modal" type="button">
                                     <span aria-hidden="true">&times;</span>
