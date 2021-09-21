@@ -17,7 +17,7 @@ class Disciple_Tools_Users_Endpoints
      * Disciple_Tools_Users_Endpoints constructor.
      */
     public function __construct() {
-        $this->namespace = $this->context . "/v" . intval( $this->version );
+        $this->namespace = $this->context . "/v" . $this->version;
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
@@ -129,9 +129,9 @@ class Disciple_Tools_Users_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|\WP_Error
+     * @return array|WP_Error
      */
     public function get_users( WP_REST_Request $request ) {
         $params = $request->get_params();
@@ -143,15 +143,13 @@ class Disciple_Tools_Users_Endpoints
         if ( isset( $params["get_all"] )){
             $get_all = $params["get_all"] === "1";
         }
-        $users = Disciple_Tools_Users::get_assignable_users_compact( $search, $get_all );
-
-        return $users;
+        return Disciple_Tools_Users::get_assignable_users_compact( $search, $get_all );
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|\WP_Error
+     * @return array|WP_Error
      */
     public function switch_preference( WP_REST_Request $request ) {
         $params = $request->get_params();
@@ -192,6 +190,7 @@ class Disciple_Tools_Users_Endpoints
         if ( isset( $params["post_type"] ) ) {
             return Disciple_Tools_Users::get_user_filters( $params["post_type"], $force_refresh );
         }
+        return [];
     }
 
     public function save_user_filter( WP_REST_Request $request ){
@@ -245,7 +244,7 @@ class Disciple_Tools_Users_Endpoints
             if (isset( $params["return_contact"] ) ) {
                 $return_contact = true;
             }
-            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $user_roles, $params["corresponds_to_contact"] ?? null, $locale ?? null, $return_contact );
+            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $user_roles, $params["corresponds_to_contact"] ?? null, $locale ?? null, $return_contact ?? false );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
@@ -383,49 +382,19 @@ class Disciple_Tools_Users_Endpoints
     }
 
     public function update_user( WP_REST_Request $request ){
-        $get_params = $request->get_params();
         $body = $request->get_json_params() ?? $request->get_body_params();
         $user = wp_get_current_user();
         if ( !$user ) {
             return new WP_Error( "update_user", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
         }
         if ( !empty( $body["add_unavailability"] ) ){
-            if ( !empty( $body["add_unavailability"]["start_date"] ) && !empty( $body["add_unavailability"]["end_date"] ) ) {
-                $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-                if ( !$dates_unavailable ){
-                    $dates_unavailable = [];
-                }
-                $max_id = 0;
-                foreach ( $dates_unavailable as $range ){
-                    $max_id = max( $max_id, $range["id"] ?? 0 );
-                }
-
-                $dates_unavailable[] = [
-                    "id" => $max_id + 1,
-                    "start_date" => $body["add_unavailability"]["start_date"],
-                    "end_date" => $body["add_unavailability"]["end_date"],
-                ];
-                update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
-                return $dates_unavailable;
-            }
+            return Disciple_Tools_Users::add_date_availability( $body["add_unavailability"], $user->ID );
         }
         if ( !empty( $body["remove_unavailability"] ) ) {
-            $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-            foreach ( $dates_unavailable as $index => $range ) {
-                if ( $body["remove_unavailability"] === $range["id"] ){
-                    unset( $dates_unavailable[$index] );
-                }
-            }
-            $dates_unavailable = array_values( $dates_unavailable );
-            update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
-            return $dates_unavailable;
+            return Disciple_Tools_Users::remove_date_availability( $body["remove_unavailability"], $user->ID );
         }
         if ( !empty( $body["locale"] ) ){
-            $e = wp_update_user( [
-                'ID' => $user->ID,
-                'locale' => $body["locale"]
-            ] );
-            return is_wp_error( $e ) ? $e : true;
+            return Disciple_Tools_Users::update_user_locale( $body["locale"], $user->ID );
         }
         if ( !empty( $body["workload_status"] ) ) {
             update_user_option( $user->ID, 'workload_status', $body["workload_status"] );

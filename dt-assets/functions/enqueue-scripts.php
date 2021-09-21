@@ -229,13 +229,11 @@ function dt_site_scripts() {
     if ( 'settings' === $url_path ) {
 
         $dependencies = [ 'jquery', 'jquery-ui', 'lodash', 'moment' ];
-        $contact_id = dt_get_associated_user_id( get_current_user_id(), 'user' );
-        $contact = [];
+        $contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
         if ( DT_Mapbox_API::get_key() ) {
             DT_Mapbox_API::load_mapbox_search_widget_users();
             $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';
-            $contact = DT_Posts::get_post( 'contacts', intval( $contact_id ), false, false );
         } else {
             DT_Mapping_Module::instance()->drilldown_script();
             $dependencies[] = 'mapping-drill-down';

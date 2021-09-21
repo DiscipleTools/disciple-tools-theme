@@ -639,35 +639,14 @@ class DT_User_Management
                 Disciple_Tools_Users::delete_user_location( $body["remove_location"], $user->ID );
             }
             if ( !empty( $body["add_unavailability"] ) ){
-                if ( !empty( $body["add_unavailability"]["start_date"] ) && !empty( $body["add_unavailability"]["end_date"] ) ) {
-                    $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-                    if ( !$dates_unavailable ){
-                        $dates_unavailable = [];
-                    }
-                    $max_id = 0;
-                    foreach ( $dates_unavailable as $range ){
-                        $max_id = max( $max_id, $range["id"] ?? 0 );
-                    }
-
-                    $dates_unavailable[] = [
-                        "id" => $max_id + 1,
-                        "start_date" => strtotime( $body["add_unavailability"]["start_date"] ),
-                        "end_date" => strtotime( $body["add_unavailability"]["end_date"] ),
-                    ];
-                    update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
-                    return $this->get_dt_user( $user->ID );
+                $update = Disciple_Tools_Users::add_date_availability( $body["add_unavailability"], $user->ID );
+                if ( is_wp_error( $update ) ){
+                    return $update;
                 }
+                return $this->get_dt_user( $user->ID );
             }
             if ( !empty( $body["remove_unavailability"] ) ) {
-                $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-                foreach ( $dates_unavailable as $index => $range ) {
-                    if ( $body["remove_unavailability"] === $range["id"] ){
-                        unset( $dates_unavailable[$index] );
-                    }
-                }
-                $dates_unavailable = array_values( $dates_unavailable );
-                update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
-                return $dates_unavailable;
+                return Disciple_Tools_Users::remove_date_availability( $body["remove_unavailability"], $user->ID );
             }
             if ( isset( $body["save_roles"] ) ){
                 // If the current user can't promote users or edit this particular user, bail.
