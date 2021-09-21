@@ -124,10 +124,10 @@ jQuery(document).ready(function($) {
   jQuery('.advanced_user_select').on('click', function (){
     $('#assigned_to_user_modal').foundation('open');
     if ( dispatch_users_promise === null ){
-      $('#dispatch-tile-loader').addClass('active')
+      $('#assigned_to_user_modal #dispatch-tile-loader').addClass('active')
       dispatch_users_promise = window.makeRequest( 'GET', 'assignment-list', {location_ids: (post.location_grid||[]).map(l=>l.id)}, 'dt-posts/v2/contacts' )
       dispatch_users_promise.then(response=>{
-        $('#dispatch-tile-loader').removeClass('active')
+        $('#assigned_to_user_modal #dispatch-tile-loader').removeClass('active')
         dispatch_users = response
         $('.users-select-panel').show()
         show_assignment_tab( selected_role )
@@ -136,7 +136,6 @@ jQuery(document).ready(function($) {
       $('.users-select-panel').show()
       show_assignment_tab( selected_role )
     }
-
   })
 
   //change tab
