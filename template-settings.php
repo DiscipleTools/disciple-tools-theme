@@ -215,7 +215,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                                 <!-- gender -->
                                 <strong style="display: inline-block"><?php echo esc_html( $contact_fields[$field_key]["name"] ) ?></strong>
-                                <p><?php echo esc_html( $user_field ); ?></p>
+                                <p><?php echo esc_html( isset( $contact_fields[$field_key]["default"][$user_field]["label"] ) ? $contact_fields[$field_key]["default"][$user_field]["label"] : $user_field ); ?></p>
                             </div>
                         </div>
 

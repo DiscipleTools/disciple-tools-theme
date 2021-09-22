@@ -387,62 +387,7 @@ class Disciple_Tools_Users_Endpoints
         if ( !$user ) {
             return new WP_Error( "update_user", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
         }
-        if ( !empty( $body["add_unavailability"] ) ){
-            return Disciple_Tools_Users::add_date_availability( $body["add_unavailability"], $user->ID );
-        }
-        if ( !empty( $body["remove_unavailability"] ) ) {
-            return Disciple_Tools_Users::remove_date_availability( $body["remove_unavailability"], $user->ID );
-        }
-        if ( !empty( $body["locale"] ) ){
-            return Disciple_Tools_Users::update_user_locale( $body["locale"], $user->ID );
-        }
-        if ( !empty( $body["workload_status"] ) ) {
-            update_user_option( $user->ID, 'workload_status', $body["workload_status"] );
-        }
-        if ( !empty( $body["add_languages"] ) ){
-            $languages = get_user_option( "user_languages", $user->ID ) ?: [];
-            if ( !in_array( $body["add_languages"], $languages )){
-                $languages[] = $body["add_languages"];
-            }
-            update_user_option( $user->ID, "user_languages", $languages );
-            return $languages;
-        }
-        if ( !empty( $body["remove_languages"] ) ){
-            $languages = get_user_option( "user_languages", $user->ID );
-            if ( in_array( $body["remove_languages"], $languages )){
-                unset( $languages[array_search( $body["remove_languages"], $languages )] );
-            }
-            update_user_option( $user->ID, "user_languages", $languages );
-            return $languages;
-        }
-        if ( !empty( $body["add_people_groups"] ) ){
-            $people_groups = get_user_option( "user_people_groups", $user->ID ) ?: [];
-            if ( !in_array( $body["add_people_groups"], $people_groups )){
-                $people_groups[] = $body["add_people_groups"];
-            }
-            update_user_option( $user->ID, "user_people_groups", $people_groups );
-            return $people_groups;
-        }
-        if ( !empty( $body["remove_people_groups"] ) ){
-            $people_groups = get_user_option( "user_people_groups", $user->ID );
-            if ( in_array( $body["remove_people_groups"], $people_groups )){
-                unset( $people_groups[array_search( $body["remove_people_groups"], $people_groups )] );
-            }
-            update_user_option( $user->ID, "user_people_groups", $people_groups );
-            return $people_groups;
-        }
-        if ( !empty( $body["gender"] ) ) {
-            update_user_option( $user->ID, 'user_gender', $body["gender"] );
-        }
-        if ( !empty( $body["email-preference"] ) ) {
-            update_user_meta( $user->ID, 'email_preference', $body["email-preference"] );
-        }
-        try {
-            do_action( 'dt_update_user', $user, $body );
-        } catch (Exception $e) {
-            return new WP_Error( __FUNCTION__, $e->getMessage(), [ 'status' => $e->getCode() ] );
-        }
-        return new WP_REST_Response( true );
+        return Disciple_Tools_Users::update_settings_on_user( $user->ID, $body );
     }
 
 

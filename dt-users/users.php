@@ -44,6 +44,10 @@ class Disciple_Tools_Users
         return false;
     }
 
+    public static function current_user_can_upgrade_users(){
+        return current_user_can( "list_users" ) || current_user_can( "promote_users" ) || current_user_can( "manage_dt" );
+    }
+
     /**
      * Get assignable users
      *
@@ -432,13 +436,16 @@ class Disciple_Tools_Users
     }
 
     public static function save_user_roles( $user_id, $roles ){
-        // If the current user can't promote users or edit this particular user, bail.
+        if ( !self::current_user_can_upgrade_users() ){
+            $roles = [ "multiplier" ];
+        }
 
         $can_not_promote_to_roles = [];
         if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
             $can_not_promote_to_roles = [ 'administrator' ];
         }
         if ( !current_user_can( 'manage_dt' ) ){
+            // get roles that can `manage_dt`
             $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
         }
 
@@ -471,6 +478,7 @@ class Disciple_Tools_Users
                 }
             }
         }
+        return (array) $u->roles;
     }
 
     //======================================================================
@@ -567,6 +575,111 @@ class Disciple_Tools_Users
     // USER PROFILE
     //======================================================================
 
+    public static function update_settings_on_user( int $user_id, $body ){
+        if ( !self::can_update( $user_id ) ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 401 ] );
+        }
+        delete_transient( 'dispatcher_user_data' );
+        $user = get_user_by( "ID", $user_id );
+        if ( !$user ){
+            return new WP_Error( "user_id", "User does not exist", [ 'status' => 400 ] );
+        }
+        if ( !empty( $body["user_status"] ) ) {
+            return update_user_option( $user->ID, 'user_status', $body["user_status"] );
+        }
+        if ( !empty( $body["workload_status"] ) ) {
+            return update_user_option( $user->ID, 'workload_status', $body["workload_status"] );
+        }
+        if ( !empty( $body["add_location"] ) ){
+            return self::add_user_location( $body["add_location"], $user->ID );
+        }
+        if ( !empty( $body["remove_location"] ) ){
+            return self::delete_user_location( $body["remove_location"], $user->ID );
+        }
+        if ( !empty( $body["add_unavailability"] ) ){
+            return self::add_date_availability( $body["add_unavailability"], $user->ID );
+        }
+        if ( !empty( $body["remove_unavailability"] ) ) {
+            return self::remove_date_availability( $body["remove_unavailability"], $user->ID );
+        }
+        if ( isset( $body["save_roles"] ) ){
+            return self::save_user_roles( $user_id, $body["save_roles"] );
+        }
+        if ( isset( $body["allowed_sources"] ) ){
+            // If the current user can't promote users or edit this particular user, bail.
+            if ( !current_user_can( 'promote_users' ) ) {
+                return false;
+            }
+            $allowed_sources = [];
+            foreach ( $body["allowed_sources"] as $s ){
+                $allowed_sources[] = sanitize_key( wp_unslash( $s ) );
+            }
+            if ( in_array( "restrict_all_sources", $allowed_sources ) ){
+                $allowed_sources = [ "restrict_all_sources" ];
+            }
+            update_user_option( $user->ID, "allowed_sources", $allowed_sources );
+            return $allowed_sources;
+        }
+        if ( isset( $body['update_display_name'] ) ) {
+            $display_name = sanitize_text_field( wp_unslash( $body['update_display_name'] ) );
+            $result = wp_update_user( array(
+                'ID' => $user->ID,
+                'display_name' => $display_name
+            ) );
+            if ( is_wp_error( $result ) ) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+        if ( !empty( $body["locale"] ) ){
+            return self::update_user_locale( $body["locale"], $user->ID );
+        }
+        if ( !empty( $body["add_languages"] ) ){
+            $languages = get_user_option( "user_languages", $user->ID ) ?: [];
+            if ( !in_array( $body["add_languages"], $languages )){
+                $languages[] = $body["add_languages"];
+            }
+            update_user_option( $user->ID, "user_languages", $languages );
+            return $languages;
+        }
+        if ( !empty( $body["remove_languages"] ) ){
+            $languages = get_user_option( "user_languages", $user->ID );
+            if ( in_array( $body["remove_languages"], $languages )){
+                unset( $languages[array_search( $body["remove_languages"], $languages )] );
+            }
+            update_user_option( $user->ID, "user_languages", $languages );
+            return $languages;
+        }
+        if ( !empty( $body["add_people_groups"] ) ){
+            $people_groups = get_user_option( "user_people_groups", $user->ID ) ?: [];
+            if ( !in_array( $body["add_people_groups"], $people_groups )){
+                $people_groups[] = $body["add_people_groups"];
+            }
+            update_user_option( $user->ID, "user_people_groups", $people_groups );
+            return $people_groups;
+        }
+        if ( !empty( $body["remove_people_groups"] ) ){
+            $people_groups = get_user_option( "user_people_groups", $user->ID );
+            if ( in_array( $body["remove_people_groups"], $people_groups )){
+                unset( $people_groups[array_search( $body["remove_people_groups"], $people_groups )] );
+            }
+            update_user_option( $user->ID, "user_people_groups", $people_groups );
+            return $people_groups;
+        }
+        if ( !empty( $body["gender"] ) ) {
+            update_user_option( $user->ID, 'user_gender', $body["gender"] );
+        }
+        if ( !empty( $body["email-preference"] ) ) {
+            update_user_meta( $user->ID, 'email_preference', $body["email-preference"] );
+        }
+        try {
+            do_action( 'dt_update_user', $user, $body );
+        } catch (Exception $e) {
+            return new WP_Error( __FUNCTION__, $e->getMessage(), [ 'status' => $e->getCode() ] );
+        }
+        return true;
+    }
 
     /**
      * Switch user preference for notifications and availability meta fields.
