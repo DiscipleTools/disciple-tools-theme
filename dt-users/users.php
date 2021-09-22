@@ -584,10 +584,10 @@ class Disciple_Tools_Users
         if ( !$user ){
             return new WP_Error( "user_id", "User does not exist", [ 'status' => 400 ] );
         }
-        if ( !empty( $body["user_status"] ) ) {
+        if ( isset( $body["user_status"] ) ) {
             return update_user_option( $user->ID, 'user_status', $body["user_status"] );
         }
-        if ( !empty( $body["workload_status"] ) ) {
+        if ( isset( $body["workload_status"] ) ) {
             return update_user_option( $user->ID, 'workload_status', $body["workload_status"] );
         }
         if ( !empty( $body["add_location"] ) ){
@@ -667,7 +667,7 @@ class Disciple_Tools_Users
             update_user_option( $user->ID, "user_people_groups", $people_groups );
             return $people_groups;
         }
-        if ( !empty( $body["gender"] ) ) {
+        if ( isset( $body["gender"] ) ) {
             update_user_option( $user->ID, 'user_gender', $body["gender"] );
         }
         if ( !empty( $body["email-preference"] ) ) {

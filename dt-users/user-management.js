@@ -111,52 +111,8 @@ jQuery(document).ready(function($) {
     }
     return makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
   }
-  $('#user_name').on( "click", function(e) {
-    window.user_name = $(this).text()
-    $(this).parent().prepend(`
-          <div class="input-group" id="user-name-input-wrapper">
-              <input type="text" class="input-group-field" style="max-width: 50%;" id="user-name-input" value="${window.lodash.escape(window.user_name)}" />
-              <div class="input-group-button">
-                  <input type="button" class="button hollow" id="reset-user-name" value="Reset">
-                  <input type="button" class="button" id="update-user-name" value="Save">
-              </div>
-          </div>`)
-    $(this).hide()
-    $('#reset-user-name').on("click", function(){
-      $('#user_name').show()
-      $('#user-name-input-wrapper').hide()
-    })
-    $('#update-user-name').on('click', function(){
-      let new_name = window.lodash.escape($('#user-name-input').val())
-      if ( window.user_name !== new_name ) {
-        update_user(user_id, 'update_display_name', new_name )
-        .done(function(data) {
-          if ( data ) {
-            window.user_name = new_name
-            $('#user_name').html(new_name).show()
-            $('#user-name-input-wrapper').hide()
-          } else {
-            $('#user_name').show().append(' <span class="error"><i class="fi-alert"></i></span>')
-            $('#user-name-input-wrapper').hide()
-          }
-        })
-      }
-    })
-  })
+
   let user_details = [];
-
-  /**
-   * Status
-   */
-  $('#status-select').on('change', function () {
-    let value = $(this).val()
-    update_user( window.current_user_lookup, 'user_status', value)
-  })
-  $('#workload-select').on('change', function () {
-    let value = $(this).val()
-    update_user( window.current_user_lookup, 'workload_status', value)
-  })
-
 
   function setup_user_roles(user_data){
     $('#user_roles_list input').prop('checked', false);
@@ -311,6 +267,50 @@ jQuery(document).ready(function($) {
   }
 
 
+  $('input.text-input').change(function(){
+    const id = $(this).attr('id')
+    const val = $(this).val()
+    $(`#${id}-spinner`).addClass('active')
+    update_user( window.current_user_lookup, id, val ).then(()=> {
+      $(`#${id}-spinner`).removeClass('active')
+    })
+  })
+  $('select.select-field').change(e => {
+    const id = $(e.currentTarget).attr('id')
+    const val = $(e.currentTarget).val()
+    $(`#${id}-spinner`).addClass('active')
+
+    update_user( window.current_user_lookup, id, val ).then(()=> {
+      $(`#${id}-spinner`).removeClass('active')
+    })
+  })
+  $('button.dt_multi_select').on('click',function () {
+    let fieldKey = $(this).data("field-key")
+    let optionKey = $(this).attr('id')
+    $(`#${fieldKey}-spinner`).addClass("active")
+    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
+    field.addClass("submitting-select-button")
+    let action = "add"
+    let update_request = null
+    if (field.hasClass("selected-select-button")){
+      action = "delete"
+      update_request = update_user( window.current_user_lookup,'remove_' + fieldKey, optionKey )
+    } else {
+      field.removeClass("empty-select-button")
+      field.addClass("selected-select-button")
+      update_request = update_user( window.current_user_lookup, 'add_' + fieldKey, optionKey )
+    }
+    update_request.then(()=>{
+      field.removeClass("submitting-select-button selected-select-button")
+      field.blur();
+      field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
+      $(`#${fieldKey}-spinner`).removeClass("active")
+    }).catch(err=>{
+      field.removeClass("submitting-select-button selected-select-button")
+      field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
+      handleAjaxError(err)
+    })
+  })
 
   function open_user_modal( user_id ) {
     $('#user_modal').foundation('open');
@@ -383,11 +383,16 @@ jQuery(document).ready(function($) {
         if ( window.current_user_lookup === user_id ) {
           user_details = details
           $("#user_name").html(window.lodash.escape(details.display_name))
+          $("#update_display_name").val(window.lodash.escape(details.display_name));
+          (details.languages || []).forEach(l=>{
+            $(`#${l}`).addClass('selected-select-button').removeClass('empty-select-button')
+          })
 
-          $('#status-select').val(window.lodash.escape(details.user_status))
+          $('#gender').val(details.gender)
+          $('#user_status').val(window.lodash.escape(details.user_status))
           if ( details.user_status !== "0" ){
           }
-          $('#workload-select').val(window.lodash.escape(details.workload_status))
+          $('#workload_status').val(window.lodash.escape(details.workload_status))
 
           //stats
           $('#update_needed_count').html(window.lodash.escape(details.update_needed["total"]))
