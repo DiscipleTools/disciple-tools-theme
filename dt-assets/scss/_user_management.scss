@@ -27,12 +27,25 @@
 }
 
 #user_modal {
+
     background-color: #e2e2e2;
     max-width: 100%;
-}
 
-#hero_status {
-    p {
-        font-size: 2rem;
+    #hero_status {
+        p {
+            font-size: 2rem;
+        }
     }
+
+    .tabs-content {
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    .tabs {
+        background: none;
+        border: none;
+    }
+
 }

@@ -260,6 +260,9 @@ class DT_User_Management
             $user_response['active_contacts'] = DT_User_Metrics::get_user_active_contacts_count( $user_id );
             $user_response['assigned_counts'] = isset( $assigned_counts[0] ) ? $assigned_counts[0] : [];
             $user_response['unread_notifications'] = DT_User_Metrics::get_user_unread_notifications_count( $user_id );
+
+            $user_response["gender"] = get_user_option( 'user_gender', $user_id );
+            $user_response["languages"] = get_user_option( 'user_languages', $user_id );
         }
 
         $modules = dt_get_option( "dt_post_type_modules" );
