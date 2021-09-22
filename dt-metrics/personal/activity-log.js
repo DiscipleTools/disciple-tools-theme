@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
     /* activity */
     const user_id = sourceData.user_id
 
-    makeRequest( "get", `activity-log`, null , 'user-management/v1/')
+    makeRequest( "get", `activity-log`, null , 'dt-users/v1/')
     .done(activity=>{
 
       const title = makeTitle(window.lodash.escape( translations.title ))

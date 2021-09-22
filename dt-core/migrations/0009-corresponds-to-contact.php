@@ -3,7 +3,7 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0009 extends Disciple_Tools_Migration {
     public function up() {
-        Disciple_Tools_Users::create_contacts_for_existing_users();
+        DT_User_Hooks_And_Configuration::create_contacts_for_existing_users();
     }
 
     public function down() {
