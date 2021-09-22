@@ -428,9 +428,9 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "boolean" ){
                     if ( $activity->meta_value === true || $activity->meta_value === '1' ){
-                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "yes", 'disciple_tools' );
+                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "Yes", 'disciple_tools' );
                     } else {
-                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "no", 'disciple_tools' );
+                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "No", 'disciple_tools' );
                     }
                 }
                 if ($fields[$activity->meta_key]["type"] === "number"){

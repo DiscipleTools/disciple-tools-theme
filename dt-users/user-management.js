@@ -451,15 +451,7 @@ jQuery(document).ready(function($) {
       .done(activity=>{
         if ( window.current_user_lookup === user_id ) {
           let activity_div = $('#activity')
-          let activity_html = ``;
-          activity.user_activity.forEach((a) => {
-            if ( a.object_note !== '' ) {
-              activity_html += `<div>
-                <strong>${moment.unix(a.hist_time).format('YYYY-MM-DD')}</strong>
-                ${window.lodash.escape(a.object_note)}
-              </div>`
-            }
-          })
+          let activity_html = window.dtActivityLogs.makeActivityList(activity.user_activity, window.dt_user_management_localized.translations)
           activity_div.html(activity_html)
         }
       }).catch((e)=>{

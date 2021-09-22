@@ -656,18 +656,19 @@
     let fields_filtered = window.lodash.uniq(new_filter_labels.map(f=>f.field))
     fields_filtered.forEach(field=>{
       let type = window.lodash.get(list_settings, `post_type_settings.fields.${field}.type` )
-      if ( type === "connection" || type === "user_select" ){
-        const allConnections = $(`#${field} .all-connections`)
-        const withoutConnections = $(`#${field} .all-without-connections`)
         if (type === "connection") {
+          const allConnections = $(`#${field} .all-connections`)
+          const withoutConnections = $(`#${field} .all-without-connections`)
           if (allConnections.prop('checked') === true) {
             search_query.push( { [field] : [ALL_ID] } )
           } else if (withoutConnections.prop('checked') === true) {
             search_query.push( { [field] : [ALL_WITHOUT_ID] } )
+          } else {
+            search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
           }
-        } else {
-          search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
         }
+      if ( type === "user_select" ){
+          search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
       } else if ( type === "multi_select" ){
         search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
       } else if ( type === "tags" ){

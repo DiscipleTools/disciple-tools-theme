@@ -36,20 +36,22 @@ function dt_register_required_plugins() {
      * Array of plugin arrays. Required keys are name and slug.
      * If the source is NOT from the .org repo, then source is also required.
      */
-    $plugins = array(
-        array(
+    $plugins = [
+        [
             'name'                  => 'iThemes Security',
             'slug'                  => 'better-wp-security',
             'required'              => false,
             'version'               => '7.2.0',
-        ),
-        array(
-            'name'                  => 'WP Mail SMTP',
-            'slug'                  => 'wp-mail-smtp',
-            'required'              => false,
-            'version'               => '1.8.1',
-        ),
-    );
+        ]
+    ];
+    if ( is_multisite() ){
+        $plugins[] = [
+            'name' => 'Disciple.Tools Multisite Helper',
+            'slug' => 'disciple-tools-multisite',
+            'source' => 'https://github.com/DiscipleTools/disciple-tools-multisite/releases/latest/download/disciple-tools-multisite.zip',
+            'required' => false
+        ];
+    }
 
     /*
      * Array of configuration settings. Amend each line as needed.
