@@ -166,11 +166,11 @@ jQuery(document).ready(function($) {
       location: users_with_role.concat().filter(m=>m.location!==null).sort((a,b)=>a.location-b.location)
     }
     populate_users_list( users_with_role )
-    filters += filter_options.ready.length ? `<a data-id="ready">${window.lodash.escape(window.dt_contacts_access.translations.ready)}</a> | ` : ''
-    filters += filter_options.recent.length ? `<a data-id="recent">${window.lodash.escape(window.dt_contacts_access.translations.recent)}</a> | ` : ''
-    filters += filter_options.language.length ? `<a data-id="language">${window.lodash.escape(window.dt_contacts_access.translations.language)}</a> | ` : ''
-    filters += filter_options.gender.length ? `<a data-id="gender">${window.lodash.escape(window.dt_contacts_access.translations.gender)}</a> | ` : ''
-    filters += filter_options.location.length ? `<a data-id="location">${window.lodash.escape(window.dt_contacts_access.translations.location)}</a> | ` : ''
+    filters += `<a data-id="ready">${window.lodash.escape(window.dt_contacts_access.translations.ready)}</a> | `
+    filters += `<a data-id="recent">${window.lodash.escape(window.dt_contacts_access.translations.recent)}</a> | `
+    filters += `<a data-id="language">${window.lodash.escape(window.dt_contacts_access.translations.language)}</a> | `
+    filters += `<a data-id="gender">${window.lodash.escape(window.dt_contacts_access.translations.gender)}</a> | `
+    filters += `<a data-id="location">${window.lodash.escape(window.dt_contacts_access.translations.location)}</a>`
     list_filters.html(filters)
 
 
@@ -178,11 +178,11 @@ jQuery(document).ready(function($) {
       $( '#user-list-filters a' ).css("color","").css("font-weight","")
       $(this).css("color", "black").css("font-weight", "bold")
       let key = $(this).data('id')
-      populate_users_list( filter_options[key] || [] )
+      populate_users_list( filter_options[key] || [], key )
     })
   }
 
-  function populate_users_list( users ){
+  function populate_users_list(users, tab = 'all') {
     let user_rows = '';
     users.forEach( m => {
       user_rows += `<div class="assigned-to-row" dir="auto">
@@ -207,6 +207,9 @@ jQuery(document).ready(function($) {
       </div>
       `
     })
+    if ( user_rows.length === 0 ){
+      user_rows = `<p style="padding:1rem">${window.lodash.escape(window.wpApiShare.translations.no_records_found.replace("{{query}}", window.dt_contacts_access.translations[tab]))}</p>`
+    }
     populated_list.html(user_rows)
 
   }
