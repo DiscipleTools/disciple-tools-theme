@@ -525,8 +525,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 .health-circle {
                     display: block;
                     margin:auto;
-                    height:300px;
-                    width:300px;
+                    height:280px;
+                    width:280px;
                     border-radius:100%;
                     border: 3px darkgray dashed;
                 }
@@ -561,11 +561,11 @@ class DT_Groups_Base extends DT_Module_Base {
                                 $fields = DT_Posts::get_post_field_settings( $post_type );
                                 foreach ( $fields['health_metrics']['default'] as $key => $option ) :
                                     if ( $key !== 'church_commitment' ) :
-                                    ?>
+                                        ?>
                                     <div class="health-item" id="icon_<?php echo esc_attr( strtolower( $key ) ) ?>" title="<?php echo esc_attr( $option['description'] ); ?>">
                                         <img src="<?php echo esc_attr( $option['image'] ); ?>">
                                     </div>
-                                    <?php endif; 
+                                    <?php endif;
                                 endforeach; ?>
                             </div>
                         </div>

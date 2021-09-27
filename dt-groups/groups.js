@@ -6,26 +6,27 @@ jQuery(document).ready(function($) {
   let post           = window.detailsSettings.post_fields;
   let field_settings = window.detailsSettings.post_settings.fields;
 
-  /* Church Metrics */
+  /* Health Metrics */
   let health_keys = Object.keys(field_settings.health_metrics.default);
 
   function fillOutChurchHealthMetrics() {
     let practiced_items = window.detailsSettings.post_fields.health_metrics;
-    
-    // Make church commitment circle green
+
+    /* Make church commitment circle green */
     if ( practiced_items.indexOf( 'church_commitment' ) !== -1 ) {
       $('#health-items-container').addClass( 'committed' );
     }
 
-    // Color church circle items that are being practiced
+    /* Color church circle items that are being practiced */
     let items = $( 'div[id^="icon_"]' );
+
     items.each( function( k, v ) {
         if ( practiced_items.indexOf( v.id.replace( 'icon_', '' ), practiced_items ) !== -1 ) {
-            $( this ).children('img').attr( 'class','practiced-item' );
+            $( this ).children( 'img' ).attr( 'class','practiced-item' );
         }
     });
 
-    // Color group progress buttons
+    /* Color group progress buttons */
     let icons = $( '.group-progress-button' );
     icons.each( function( k, v ) {
       if ( practiced_items.indexOf( v.id, practiced_items ) !== -1 ) {
@@ -37,34 +38,36 @@ jQuery(document).ready(function($) {
   fillOutChurchHealthMetrics();
   distributeItems();
 
-  $('.group-progress-button').on('click', function () {
-    let fieldId = $(this).attr('id');
-    let already_set = window.lodash.get(post, `health_metrics`, []).includes(fieldId)
-    let update = {values:[{value:fieldId}]}
+  $( '.group-progress-button' ).on( 'click', function () {
+    let fieldId = $( this ).attr( 'id' );
+    let already_set = window.lodash.get(post, 'health_metrics', []).includes( fieldId );
+    let update = { values: [ { value : fieldId } ] };
     if ( already_set ){
       update.values[0].delete = true;
     }
-    API.update_post( post_type, post_id, {"health_metrics": update })
-      .then(groupData=>{
+    API.update_post( post_type, post_id, { 'health_metrics': update })
+      .then( groupData => {
         post = groupData;
-        // Update icons or commitment circle
-        if ( $(this).attr('id') === 'church_commitment' ) {
-          $('#health-items-container').toggleClass('committed');
-          $(this).toggleClass( 'practiced-button' );
+        /* Update icons or commitment circle */
+        if ( $( this ).attr( 'id' ) === 'church_commitment' ) {
+          $( '#health-items-container' ).toggleClass( 'committed' );
+          $( this ).toggleClass( 'practiced-button' );
           return true; 
         }
-        $( '#icon_' + $(this).attr('id') ).children('img').toggleClass( 'practiced-item' ); // Toggle church health circle item color
-        $(this).toggleClass( 'practiced-button' );
-      }).catch(err=>{
-        console.log(err)
-    })
-  })
+        /* Toggle church health circle item color */
+        $( '#icon_' + $( this ).attr( 'id' ) ).children( 'img' ).toggleClass( 'practiced-item' );
+        $( this ).toggleClass( 'practiced-button' );
+      }).catch( err=>{
+        console.log( err );
+    });
+  });
 
-  // Dynamically distribute items in Church Health Circle
+  /* Dynamically distribute items in Church Health Circle
+     according to amount of health metric elements */
   function distributeItems() {
     let radius = 75;
-    let items = $('.health-item'),
-        container = $('#health-items-container'),
+    let items = $( '.health-item' ),
+        container = $( '#health-items-container' ),
         item_count = items.length,
         fade_delay = 45,
         width = container.width(),
@@ -107,7 +110,7 @@ jQuery(document).ready(function($) {
         fade_delay += 45;
     });
   }
-  /* end Church fields*/
+  /* End Health Metrics*/
 
 
   /* Member List*/
