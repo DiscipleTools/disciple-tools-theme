@@ -488,10 +488,9 @@ class DT_Groups_Base extends DT_Module_Base {
             $fields = DT_Posts::get_post_field_settings( $post_type );
             //<!-- Health Metrics-->
             if ( ! empty( $group_preferences['church_metrics'] ) ) :
-                $health_church_commitment = 'committed';
                 ?>
                 <style>
-                .custom-group-health-item {
+                .health-item {
                     display: none;
                     margin: auto;
                     position: absolute;
@@ -504,7 +503,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     font-style: italic;
                 }
 
-                .custom-group-health-item img {
+                .health-item img {
                     height: 50px;
                     width: 50px;
                     filter: grayscale(1) opacity(0.3);
@@ -514,7 +513,16 @@ class DT_Groups_Base extends DT_Module_Base {
                     filter:  none !important;
                 }
 
-                .custom-group-health-circle {
+                .practiced-button {
+                    background-color: #3f729b !important;
+                    opacity: unset !important;
+                }
+
+                .practiced-button img {
+                    filter:  none !important;;
+                }
+
+                .health-circle {
                     display: block;
                     margin:auto;
                     height:300px;
@@ -523,7 +531,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     border: 3px darkgray dashed;
                 }
 
-                .custom-group-health-grid {
+                .health-grid {
                     display: inline-block;
                     position: relative;
                     height:75%;
@@ -538,7 +546,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 }
 
                 .group-progress-button {
-                    background-color: darkgray;
+                    opacity: 0.5;
                 }
 
                 .group-progress-button img {
@@ -547,14 +555,14 @@ class DT_Groups_Base extends DT_Module_Base {
                 </style>
                 <div class="grid-x">
                     <div style="margin-right:auto; margin-left:auto;min-height:302px">
-                        <div class="custom-group-health-circle <?php echo esc_attr( $health_church_commitment ); ?>" id="custom-group-health-items-container">
-                            <div class="custom-group-health-grid">
+                        <div class="health-circle" id="health-items-container">
+                            <div class="health-grid">
                                 <?php
                                 $fields = DT_Posts::get_post_field_settings( $post_type );
                                 foreach ( $fields['health_metrics']['default'] as $key => $option ) :
                                     if ( $key !== 'church_commitment' ) :
                                     ?>
-                                    <div class="custom-group-health-item" id="icon_<?php echo esc_attr( strtolower( $key ) ) ?>" title="<?php echo esc_attr( $option['description'] ); ?>">
+                                    <div class="health-item" id="icon_<?php echo esc_attr( strtolower( $key ) ) ?>" title="<?php echo esc_attr( $option['description'] ); ?>">
                                         <img src="<?php echo esc_attr( $option['image'] ); ?>">
                                     </div>
                                     <?php endif; 
@@ -567,37 +575,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     
                     
             </script>
-            <script>
-                // Toggle practiced/non-practiced items
-                jQuery(document).ready(function($) {
-                      let group_id       = window.detailsSettings.post_id;
-                      let post_type      = window.detailsSettings.post_type;
-                      let post           = window.detailsSettings.post_fields;
-                      let field_settings = window.detailsSettings.post_settings.fields;
-
-                      $('.summary-icons').on('click', function () {
-                        let fieldId = $(this).attr('id');
-                        if (fieldId == 'church_commitment') {
-                          $( '#custom-group-health-items-container' ).toggleClass( 'committed' );
-                          $( this ).toggleClass('half-opacity');
-                        } else {
-                          $( '#' + fieldId ).toggleClass('half-opacity');
-                          $( '#icon_' + fieldId ).toggleClass('half-opacity');
-                        }
-
-                        $.ajax( {
-                          type: 'POST',
-                          contentType: 'application/json; charset=utf-8',
-                          dataType: "json",
-                          url: window.wpApiShare.root + 'custom_group_health_plugin/v1/update_practice/' + group_id + '/' + fieldId,
-                          beforeSend: function(xhr) {
-                              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce );
-                              },
-                          } )
-                      });
-                    });
-                </script>
-                <div style="display:flex;flex-wrap:wrap;margin-top:10px" class=" js-progress-bordered-box half-opacity">
+                <div style="display:flex;flex-wrap:wrap;margin-top:10px" class=" js-progress-bordered-box">
                     <?php foreach ( $fields["health_metrics"]["default"] as $key => $option ) : ?>
                         <div class="group-progress-button-wrapper">
                             <button  class="group-progress-button" id="<?php echo esc_html( $key ) ?>">

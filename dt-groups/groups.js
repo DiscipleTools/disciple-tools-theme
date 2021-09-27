@@ -1,31 +1,44 @@
 "use strict"
 jQuery(document).ready(function($) {
 
-  let post_id        = window.detailsSettings.post_id
-  let post_type      = window.detailsSettings.post_type
-  let post           = window.detailsSettings.post_fields
-  let field_settings = window.detailsSettings.post_settings.fields
+  let post_id        = window.detailsSettings.post_id;
+  let post_type      = window.detailsSettings.post_type;
+  let post           = window.detailsSettings.post_fields;
+  let field_settings = window.detailsSettings.post_settings.fields;
 
   /* Church Metrics */
-  let health_keys = Object.keys(field_settings.health_metrics.default)
+  let health_keys = Object.keys(field_settings.health_metrics.default);
+
   function fillOutChurchHealthMetrics() {
-    let items = $("div[id^='icon']");
     let practiced_items = window.detailsSettings.post_fields.health_metrics;
+    
+    // Make church commitment circle green
+    if ( practiced_items.indexOf( 'church_commitment' ) !== -1 ) {
+      $('#health-items-container').addClass( 'committed' );
+    }
+
+    // Color church circle items that are being practiced
+    let items = $( 'div[id^="icon_"]' );
     items.each( function( k, v ) {
         if ( practiced_items.indexOf( v.id.replace( 'icon_', '' ), practiced_items ) !== -1 ) {
-            $(this).children('img').attr('class','practiced-item');
+            $( this ).children('img').attr( 'class','practiced-item' );
         }
     });
+
+    // Color group progress buttons
+    let icons = $( '.group-progress-button' );
+    icons.each( function( k, v ) {
+      if ( practiced_items.indexOf( v.id, practiced_items ) !== -1 ) {
+        $( this ).addClass( 'practiced-button' );
+      }
+    });
   }
-  $('#church-svg-wrapper').on('load', function() {
-    fillOutChurchHealthMetrics()
-  })
+
   fillOutChurchHealthMetrics();
   distributeItems();
 
   $('.group-progress-button').on('click', function () {
-    let fieldId = $(this).attr('id')
-    $(this).css('opacity', ".6");
+    let fieldId = $(this).attr('id');
     let already_set = window.lodash.get(post, `health_metrics`, []).includes(fieldId)
     let update = {values:[{value:fieldId}]}
     if ( already_set ){
@@ -33,8 +46,15 @@ jQuery(document).ready(function($) {
     }
     API.update_post( post_type, post_id, {"health_metrics": update })
       .then(groupData=>{
-        post = groupData
-        fillOutChurchHealthMetrics()
+        post = groupData;
+        // Update icons or commitment circle
+        if ( $(this).attr('id') === 'church_commitment' ) {
+          $('#health-items-container').toggleClass('committed');
+          $(this).toggleClass( 'practiced-button' );
+          return true; 
+        }
+        $( '#icon_' + $(this).attr('id') ).children('img').toggleClass( 'practiced-item' ); // Toggle church health circle item color
+        $(this).toggleClass( 'practiced-button' );
       }).catch(err=>{
         console.log(err)
     })
@@ -43,8 +63,8 @@ jQuery(document).ready(function($) {
   // Dynamically distribute items in Church Health Circle
   function distributeItems() {
     let radius = 75;
-    let items = $('.custom-group-health-item'),
-        container = $('#custom-group-health-items-container'),
+    let items = $('.health-item'),
+        container = $('#health-items-container'),
         item_count = items.length,
         fade_delay = 45,
         width = container.width(),
@@ -70,18 +90,19 @@ jQuery(document).ready(function($) {
         }
 
     items.each(function() {
-        let X = Math.round(width/2 + radius * Math.cos(angle) - $(this).width()/2);
-        let y = Math.round(height/2 + radius * Math.sin(angle) - $(this).height()/2) + y_offset;
+        let X = Math.round( width / 2 + radius * Math.cos(angle) - $( this ).width() / 2 );
+        let y = Math.round( height / 2 + radius * Math.sin(angle) - $( this ).height() / 2 ) + y_offset;
         
         if ( item_count == 1 ) {
             X = 112.5;
             y = 68;
         }
+
         $(this).css({
             left: X + 'px',
             top: y + 'px',
         });
-        $(this).delay(fade_delay).fadeIn(1000,'linear');
+        $(this).delay(fade_delay).fadeIn( 1000, 'linear' );
         angle += step;
         fade_delay += 45;
     });
