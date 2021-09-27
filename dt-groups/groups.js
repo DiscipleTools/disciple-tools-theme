@@ -9,34 +9,19 @@ jQuery(document).ready(function($) {
   /* Church Metrics */
   let health_keys = Object.keys(field_settings.health_metrics.default)
   function fillOutChurchHealthMetrics() {
-    if ( $("#health-metrics").length ) {
-      let svgItem = document.getElementById("church-svg-wrapper").contentDocument
-
-      let churchWheel = $(svgItem).find('svg')
-      health_keys.forEach(m=>{
-        if (post[`health_metrics`] && post.health_metrics.includes(m) ){
-          churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", "1")
-          $(`#${m}`).css("opacity", "1")
-        } else {
-          churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", ".1")
-          $(`#${m}`).css("opacity", ".4")
+    let items = $("div[id^='icon']");
+    let practiced_items = window.detailsSettings.post_fields.health_metrics;
+    items.each( function( k, v ) {
+        if ( practiced_items.indexOf( v.id.replace( 'icon_', '' ), practiced_items ) !== -1 ) {
+            $(this).children('img').attr('class','practiced-item');
         }
-      })
-      if ( !(post.health_metrics ||[]).includes("church_commitment") ){
-        churchWheel.find('#group').css("opacity", "1")
-        $(`#church_commitment`).css("opacity", ".4")
-      } else {
-        churchWheel.find('#group').css("opacity", ".1")
-        $(`#church_commitment`).css("opacity", "1")
-      }
-
-      $(".js-progress-bordered-box").removeClass("half-opacity")
-    }
+    });
   }
   $('#church-svg-wrapper').on('load', function() {
     fillOutChurchHealthMetrics()
   })
-  fillOutChurchHealthMetrics()
+  fillOutChurchHealthMetrics();
+  distributeItems();
 
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
@@ -54,6 +39,53 @@ jQuery(document).ready(function($) {
         console.log(err)
     })
   })
+
+  // Dynamically distribute items in Church Health Circle
+  function distributeItems() {
+    let radius = 75;
+    let items = $('.custom-group-health-item'),
+        container = $('#custom-group-health-items-container'),
+        item_count = items.length,
+        fade_delay = 45,
+        width = container.width(),
+        height = container.height(),
+        angle = 0,
+        step = (2*Math.PI) / items.length,
+        y_offset = -35;
+
+        if ( item_count >= 5 && item_count < 7 ) {
+            radius = 90;
+        }
+
+        if ( item_count >= 7 & item_count < 11 ) {
+            radius = 100;
+        }
+
+        if ( item_count >= 11 ) {
+            radius = 110;
+        }
+
+        if ( item_count == 3 ) {
+            angle = 22.5;
+        }
+
+    items.each(function() {
+        let X = Math.round(width/2 + radius * Math.cos(angle) - $(this).width()/2);
+        let y = Math.round(height/2 + radius * Math.sin(angle) - $(this).height()/2) + y_offset;
+        
+        if ( item_count == 1 ) {
+            X = 112.5;
+            y = 68;
+        }
+        $(this).css({
+            left: X + 'px',
+            top: y + 'px',
+        });
+        $(this).delay(fade_delay).fadeIn(1000,'linear');
+        angle += step;
+        fade_delay += 45;
+    });
+  }
   /* end Church fields*/
 
 
