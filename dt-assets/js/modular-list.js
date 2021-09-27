@@ -766,7 +766,7 @@
 
 
   let load_multi_select_typeaheads = async function load_multi_select_typeaheads() {
-    for (let input of $(".multi_select .typeahead__query input")) {
+    for (let input of $("#filter-modal .multi_select .typeahead__query input")) {
       let field = $(input).data('field')
       let typeahead_name = `.js-typeahead-${field}`
 
