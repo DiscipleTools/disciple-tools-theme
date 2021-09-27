@@ -454,25 +454,29 @@ dt_please_log_in();
                                     </div>
                                     <?php
                                 }
-                                $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status','tags' ];
-                                foreach ( $field_options as $field_option => $value ) {
-                                    if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) ) { ?>
-                                        <div class="cell small-12 medium-<?php echo esc_attr( $value["type"] === "multi_select" ? "12" : "4" ) ?>">
+                                //move multi_select fields to the end
+                                function multiselect_at_end( $a, $b ){
+                                    return ( $a["type"] === "multi_select" && ( $a["display"] ?? "" ) !== "typeahead" ) ? 1 : 0;
+                                };
+                                uasort( $field_options, "multiselect_at_end" );
+                                $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status' ];
+                                foreach ( $field_options as $field_option => $value ) :
+                                    if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value )
+                                        && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) && empty( $value["hidden"] ) ) : ?>
+                                        <div class="cell small-12 medium-<?php echo esc_attr( ( $value["type"] === "multi_select" && ( $value["display"] ?? "" ) !== "typeahead" ) ? "12" : "4" ) ?>">
                                             <?php $field_options[$field_option]["custom_display"] = false;
                                             render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
                                         </div>
-                                    <?php }
-                                }?>
+                                    <?php endif;
+                                endforeach;
+                                ?>
                             </div>
                         </div>
 
-                        <button class="button dt-green" id="bulk_edit_submit"><span id="bulk_edit_submit_text" style="    text-transform:capitalize">Update <?php
-                        if ( $post_type == "contacts" ) {
-                            esc_html_e( 'Contacts', 'disciple_tools' );
-                        } elseif ( $post_type == "groups" ) {
-                            esc_html_e( 'Groups', 'disciple_tools' );
-                        }
-                        ?></span>
+                        <button class="button dt-green" id="bulk_edit_submit">
+                            <span id="bulk_edit_submit_text" style="    text-transform:capitalize">
+                                <?php echo esc_html( sprintf( __( "Update %s", "disciple_tools" ), $post_settings["label_plural"] ) ); ?>
+                            </span>
                         <span id="bulk_edit_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
                         </button>
                     </div>
