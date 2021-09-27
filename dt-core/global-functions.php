@@ -643,7 +643,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <?php endforeach; ?>
                 </select>
             <?php elseif ( $field_type === "tags" ) : ?>
-                <div class="tags">
+                <div id="<?php echo esc_html( $display_field_id ); ?>" class="tags">
                     <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
                     <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
@@ -657,11 +657,13 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
                                            data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
                                 </span>
+                                <?php if ( $show_extra_controls ) : ?>
                                 <span class="typeahead__button">
                                     <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $field_key );?>">
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
                                     </button>
                                 </span>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -669,9 +671,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php elseif ( $field_type === "multi_select" ) :
                 if ( isset( $fields[$field_key]["display"] ) && $fields[$field_key]["display"] === "typeahead" ){
                     ?>
-                    <div class="multi_select">
+                    <div class="multi_select" id="<?php echo esc_html( $display_field_id ); ?>" >
                         <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
-                        <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
+                        <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-multi_select" class="scrollable-typeahead typeahead-margin-when-active">
                             <div class="typeahead__container">
                                 <div class="typeahead__field">
                                     <span class="typeahead__query">
@@ -727,7 +729,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
-                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" data-field="<?php echo esc_html( $field_key ); ?>"
+                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
+                                           data-field="<?php echo esc_html( $field_key ); ?>"
                                            data-post_type="<?php echo esc_html( $fields[$field_key]["post_type"] ) ?>"
                                            data-field_type="connection"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]"

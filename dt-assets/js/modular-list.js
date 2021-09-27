@@ -1607,7 +1607,7 @@
       })
     }
 
-    if (comment) {
+    if (comment.commentText) {
       promises.push( API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => { console.error(err);}));
     }
 
@@ -1760,7 +1760,6 @@
             event.preventDefault()
             this.hideLayout();
             this.resetInput();
-            //masonGrid.masonry('layout')
           },
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -1770,10 +1769,8 @@
             if ( !query ){
               $(`#${element_id}-result-container`).empty()
             }
-            //masonGrid.masonry('layout')
           },
           onShowLayout (){
-            //masonGrid.masonry('layout')
           }
         }
       })
@@ -1852,6 +1849,75 @@
         onHideLayout: function () {
           $('#location_grid-result-container').html("");
         }
+      }
+    });
+  })
+
+  $('#bulk_edit_picker .tags input, #bulk_edit_picker .multi_select input').each((key, input)=>{
+    let field = $(input).data('field') || 'tags'
+    let field_options = window.lodash.get(list_settings, `post_type_settings.fields.${field}.default`, {})
+    $.typeahead({
+      input: input,
+      minLength: 0,
+      maxItem: 20,
+      searchOnFocus: true,
+      source: {
+        tags: {
+          display: ["name"],
+          ajax: {
+            url: window.wpApiShare.root + `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
+            data: {
+              s: "{{query}}",
+              field: field
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                return (data || []).map(tag => {
+                  let label = window.lodash.get(field_options, tag + ".label", tag)
+                  return {name: label || tag, key: tag}
+                })
+              }
+            }
+          }
+        }
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["key"],
+        callback: {
+            onCancel: function (node, item) {
+              $(node).removeData( `bulk_key_${field}` );
+            }
+          },
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          let multiUserArray;
+          if ( node.data(`bulk_key_${field}`) ) {
+            multiUserArray = node.data(`bulk_key_${field}`).values;
+          } else {
+            multiUserArray = [];
+          }
+          multiUserArray.push({"value":item.key});
+
+          node.data(`bulk_key_${field}`, {values: multiUserArray});
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $(`#${field}-result-container`).html(text);
+        },
+        onHideLayout: function () {
+          $(`#${field}-result-container`).html("");
+        },
       }
     });
   })
