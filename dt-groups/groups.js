@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
         item_count = items.length,
         fade_delay = 45,
         width = container.width(),
-        height = container.height(),
+        height = container.height() + 66,
         angle = 0,
         step = (2*Math.PI) / items.length,
         y_offset = -35;

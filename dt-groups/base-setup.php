@@ -481,8 +481,8 @@ class DT_Groups_Base extends DT_Module_Base {
         return $fields;
     }
 
-    public function dt_details_additional_section( $section, $post_type ){
-        // Display 'Health Metrics' tile
+    public function dt_details_additional_section( $section, $post_type ) {
+        // Display 'Health Metrics' Tile
         if ( $post_type === "groups" && $section === "health-metrics" ) {
             $group_preferences = dt_get_option( 'group_preferences' );
             $fields = DT_Posts::get_post_field_settings( $post_type );
@@ -490,91 +490,109 @@ class DT_Groups_Base extends DT_Module_Base {
             if ( ! empty( $group_preferences['church_metrics'] ) ) :
                 ?>
                 <style>
-                .health-item {
-                    display: none;
-                    margin: auto;
-                    position: absolute;
-                    height: 50px;
-                    width: 50px;
-                    border-radius: 100%;
-                    font-size: 16px;
-                    color: black;
-                    text-align: center;
-                    font-style: italic;
-                }
+                    .health-item {
+                        display: none;
+                        margin: auto;
+                        position: absolute;
+                        height: 50px;
+                        width: 50px;
+                        border-radius: 100%;
+                        font-size: 16px;
+                        color: black;
+                        text-align: center;
+                        font-style: italic;
+                    }
 
-                .health-item img {
-                    height: 50px;
-                    width: 50px;
-                    filter: grayscale(1) opacity(0.3);
-                }
+                    .health-item img {
+                        height: 50px;
+                        width: 50px;
+                        filter: grayscale(1) opacity(0.3);
+                    }
 
-                .practiced-item {
-                    filter:  none !important;
-                }
+                    .practiced-item {
+                        filter: none !important;
+                    }
 
-                .practiced-button {
-                    background-color: #3f729b !important;
-                    opacity: unset !important;
-                }
+                    .practiced-button {
+                        background-color: #3f729b !important;
+                        opacity: unset !important;
+                    }
 
-                .practiced-button img {
-                    filter:  none !important;;
-                }
+                    .practiced-button img {
+                        filter: none !important;;
+                    }
 
-                .health-circle {
-                    display: block;
-                    margin:auto;
-                    height:280px;
-                    width:280px;
-                    border-radius:100%;
-                    border: 3px darkgray dashed;
-                }
+                    .health-circle {
+                        display: block;
+                        margin: auto;
+                        height: 280px;
+                        width: 280px;
+                        border-radius: 100%;
+                        border: 3px darkgray dashed;
+                    }
 
-                .health-grid {
-                    display: inline-block;
-                    position: relative;
-                    height:75%;
-                    width:75%;
-                    margin-top: 12.5%;
-                    margin-left: auto;
-                    margin-right: auto;
-                }
+                    .health-grid {
+                        display: inline-block;
+                        position: relative;
+                        height: 100%;
+                        width: 100%;
+                        margin-left: auto;
+                        margin-right: auto;
+                    }
 
-                .committed {
-                    border: 3px #4caf50 solid !important;
-                }
+                    .committed {
+                        border: 3px #4caf50 solid !important;
+                    }
 
-                .group-progress-button {
-                    opacity: 0.5;
-                }
+                    .group-progress-button {
+                        opacity: 0.5;
+                    }
 
-                .group-progress-button img {
-                    filter: grayscale(1) contrast(1.35);
-                }
+                    .group-progress-button img {
+                        filter: grayscale(1) contrast(1.35);
+                    }
+
+                    .empty-health {
+                        width: 35px;
+                        height: 35px;
+                        margin-left: auto;
+                        margin-right: auto;
+                        margin-top: 40%;
+                    }
+
+                    .empty-health-text {
+                        text-align: center;
+                        font-style: italic;
+                        margin-left: -15%;
+                        margin-top: -15%;
+                    }
                 </style>
                 <div class="grid-x">
                     <div style="margin-right:auto; margin-left:auto;min-height:302px">
                         <div class="health-circle" id="health-items-container">
                             <div class="health-grid">
-                                <?php
-                                $fields = DT_Posts::get_post_field_settings( $post_type );
-                                foreach ( $fields['health_metrics']['default'] as $key => $option ) :
-                                    if ( $key !== 'church_commitment' ) :
-                                        ?>
-                                    <div class="health-item" id="icon_<?php echo esc_attr( strtolower( $key ) ) ?>" title="<?php echo esc_attr( $option['description'] ); ?>">
-                                        <img src="<?php echo esc_attr( $option['image'] ); ?>">
+                                <?php $fields = DT_Posts::get_post_field_settings( $post_type );
+                                if ( empty( $fields['health_metrics']['default'] ) ): ?>
+                                    <div class="custom-group-health-item empty-health" id="health-metrics" style="filter: opacity(0.35);">
+                                        <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/dots.svg' ); ?>">
+                                        <div class="empty-health-text">
+                                            <?php echo esc_html( 'Empty', 'disciple_tools' ); ?>
+                                        </div>
                                     </div>
-                                    <?php endif;
-                                endforeach; ?>
+                                <?php else : ?>
+                                    <?php foreach ( $fields['health_metrics']['default'] as $key => $option ) : ?>
+                                        <?php if ( $key !== 'church_commitment' ) : ?>
+                                            <div class="health-item" id="icon_<?php echo esc_attr( strtolower( $key ) ) ?>" title="<?php echo esc_attr( $option['description'] ); ?>">
+                                                <img src="<?php echo esc_attr( $option['image'] ); ?>">
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
                 </div>
-                <script>
-                    
-                    
-            </script>
+                <?php if ( ! empty( $fields['health_metrics']['default'] ) ) : ?>
                 <div style="display:flex;flex-wrap:wrap;margin-top:10px" class=" js-progress-bordered-box">
                     <?php foreach ( $fields["health_metrics"]["default"] as $key => $option ) : ?>
                         <div class="group-progress-button-wrapper">
@@ -585,9 +603,9 @@ class DT_Groups_Base extends DT_Module_Base {
                         </div>
                     <?php endforeach; ?>
                 </div>
-            <?php endif; ?>
-
-        <?php }
+                <?php endif; ?>
+        <?php endif;
+        }
             // Display 'Four Fields' tile
         if ( $post_type === "groups" && $section === "four-fields" ) {
             $group_preferences = dt_get_option( 'group_preferences' );
