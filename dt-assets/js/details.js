@@ -891,6 +891,11 @@ jQuery(document).ready(function($) {
             }).catch(err => { console.error(err) })
           }
         },
+        href: function (item) {
+          const postType = window.wpApiShare.post_type
+          const encodedFilterLabel = window.SHAREDFUNCTIONS.uriEncodeFilter('tags', item.name, `Tags: ${item.name}`)
+          return window.wpApiShare.site_url + `/${postType}?fieldQuery=${encodedFilterLabel}`
+        },
       },
       callback: {
         onClick: function (node, a, item, event) {
