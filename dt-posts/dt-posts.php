@@ -624,6 +624,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "timestamp" => is_numeric( $record["post_date"] ) ? $record["post_date"] : dt_format_date( $record["post_date"], "U" ),
                 "formatted" => dt_format_date( $record["post_date"] )
             ];
+
+            if (in_array( 'last_comment', $fields_to_return )) {
+                $comments = self::get_post_comments( $post_type, $record['ID'], true );
+                $record['last_comment'] = !empty( $comments['comments'] ) ?$comments['comments'][0]['comment_content'] : null;
+            }
         }
         $data["posts"] = $records;
 
