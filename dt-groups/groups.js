@@ -15,6 +15,7 @@ jQuery(document).ready(function($) {
     /* Make church commitment circle green */
     if ( practiced_items.indexOf( 'church_commitment' ) !== -1 ) {
       $('#health-items-container').addClass( 'committed' );
+      $('#is-church-switch').prop('checked', true);
     }
 
     /* Color church circle items that are being practiced */
@@ -48,7 +49,7 @@ jQuery(document).ready(function($) {
     API.update_post( post_type, post_id, { 'health_metrics': update })
       .then( groupData => {
         post = groupData;
-        /* Update icons or commitment circle */
+        /* Update icon */
         if ( $( this ).attr( 'id' ) === 'church_commitment' ) {
           $( '#health-items-container' ).toggleClass( 'committed' );
           $( this ).toggleClass( 'practiced-button' );
@@ -60,6 +61,23 @@ jQuery(document).ready(function($) {
         console.log( err );
     });
   });
+
+  $('#is-church-switch').on( 'click', function() {
+    let fieldId = 'church_commitment';
+    let already_set = window.lodash.get(post, 'health_metrics', []).includes( fieldId );
+    let update = { values: [ { value : fieldId } ] };
+    if ( already_set ){
+      update.values[0].delete = true;
+    }
+    API.update_post( post_type, post_id, { 'health_metrics': update })
+      .then( groupData => {
+        post = groupData;
+        /* Update commitment circle */
+        $( '#health-items-container' ).toggleClass( 'committed' );
+      }).catch( err=>{
+        console.log( err );
+    });
+  })
 
   /* Dynamically distribute items in Church Health Circle
      according to amount of health metric elements */
