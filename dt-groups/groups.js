@@ -38,8 +38,8 @@ jQuery(document).ready(function($) {
   fillOutChurchHealthMetrics();
   distributeItems();
 
-  $( '.group-progress-button' ).on( 'click', function () {
-    let fieldId = $( this ).attr( 'id' );
+  $('.health-item').on( 'click', function() {
+    let fieldId = $( this ).attr( 'id' ).replace('icon_', '');
     let already_set = window.lodash.get(post, 'health_metrics', []).includes( fieldId );
     let update = { values: [ { value : fieldId } ] };
     if ( already_set ){
@@ -55,8 +55,7 @@ jQuery(document).ready(function($) {
           return true; 
         }
         /* Toggle church health circle item color */
-        $( '#icon_' + $( this ).attr( 'id' ) ).children( 'img' ).toggleClass( 'practiced-item' );
-        $( this ).toggleClass( 'practiced-button' );
+        $( this ).children( 'img' ).toggleClass( 'practiced-item' );
       }).catch( err=>{
         console.log( err );
     });
