@@ -23,14 +23,13 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Disciple.Tools Theme:**
+- version: [e.g 1.13.2]
+- setup: [single site, multisite, local]
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
+**Device and browser (please complete the following information):**
+ - Device: [e.g. iPhone6, MacBook, Thinkpad]
+ - OS: [e.g. iOS8.1, ubuntu 21.10, windows 10, android 10]
  - Browser [e.g. stock browser, safari]
  - Version [e.g. 22]
 
