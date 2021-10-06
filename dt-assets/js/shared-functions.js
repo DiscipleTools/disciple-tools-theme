@@ -261,9 +261,19 @@ jQuery(document).on("click", ".help-button-tile", function () {
         html += `<p>${window.lodash.escape(field.description)}</p>`;
 
         if (window.lodash.isObject(field.default)) {
-          let list_html = `<ul>`;
+          let list_html = ``;
+          if ( section == 'health-metrics') {
+            list_html += `<ul style="margin-left:15%;">`;
+          } else {
+            list_html += `<ul>`;
+          }
           window.lodash.forOwn(field.default, (field_options, field_key) => {
-            list_html += `<li><strong>${window.lodash.escape(
+            if( section == 'health-metrics' ) {
+              list_html += `<li style="list-style-image:url(${window.lodash.escape(field_options.image)});margin-bottom:3%">`;
+            } else {
+              list_html += `<li>`;
+            }
+            list_html += `<strong>${window.lodash.escape(
               field_options.label
             )}</strong> ${window.lodash.escape(
               !field_options.description ? "" : "- " + field_options.description
