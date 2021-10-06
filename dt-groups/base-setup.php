@@ -515,7 +515,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     </div>
                 </div>
                 <div>
-                    <span>Is church:</span>
+                    <span>Church Commitment:</span>
                     <input type="checkbox" id="is-church-switch" class="dt-switch">
                     <label class="dt-switch" for="is-church-switch" style="vertical-align: top;"></label>
                 </div>
