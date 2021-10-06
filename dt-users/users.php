@@ -296,7 +296,7 @@ class Disciple_Tools_Users
      * @param bool $return_contact_id
      * @return int|WP_Error|array
      */
-    public static function create_user( $user_name, $user_email, $display_name, array $user_roles = [ 'multiplier' ], $corresponds_to_contact = null, $locale = null, bool $return_contact_id = false ){
+    public static function create_user( $user_name, $user_email, $display_name, array $user_roles = [ 'multiplier' ], $corresponds_to_contact = null, $locale = null, bool $return_contact_id = false, $password = null ){
         if ( !current_user_can( "create_users" ) && !DT_User_Management::non_admins_can_make_users() ){
             return new WP_Error( "no_permissions", "You don't have permissions to create users", [ 'status' => 401 ] );
         }
@@ -336,6 +336,9 @@ class Disciple_Tools_Users
             $user_id = register_new_user( $user_name, $user_email );
             if ( is_wp_error( $user_id ) ){
                 return $user_id;
+            }
+            if ( $password ) {
+                wp_set_password( $password, $user_id );
             }
             $user = get_user_by( 'id', $user_id );
             $user->display_name = $display_name;

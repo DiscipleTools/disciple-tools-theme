@@ -825,7 +825,7 @@ jQuery(document).ready(function($) {
         spinner_span.html(spinner)
         submit_button.prop('disabled', true)
 
-        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "user-username": username || '', "user-password": password || '', "corresponds_to_contact": corresponds_to_contact, "locale": locale, 'user-roles':roles, return_contact: true })
+        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "user-username": username || null, "user-password": password || null, "corresponds_to_contact": corresponds_to_contact, "locale": locale, 'user-roles':roles, return_contact: true })
           .done(response=>{
             const { user_id, corresponds_to_contact: contact_id } = response
             result_div.html('')
