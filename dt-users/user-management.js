@@ -781,6 +781,21 @@ jQuery(document).ready(function($) {
 
   function write_add_user() {
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
+    const showOptionsButton = $('#show-hidden-fields')
+    const hideOptionsButton = $('#hide-hidden-fields')
+    const hiddenFields = $('.hidden-fields')
+
+    showOptionsButton.on('click', function() {
+      hiddenFields.show()
+      showOptionsButton.hide()
+      hideOptionsButton.show()
+    })
+
+    hideOptionsButton.on('click', function() {
+      hiddenFields.hide()
+      showOptionsButton.show()
+      hideOptionsButton.hide()
+    })
 
     $('#new-user-language-dropdown').html(write_language_dropdown(dt_user_management_localized.language_dropdown))
 
@@ -793,6 +808,9 @@ jQuery(document).ready(function($) {
       let name = jQuery('#name').val()
       let email = jQuery('#email').val()
       let locale = jQuery('#locale').val();
+
+      const username = $('#username').val()
+      const password = $('#password').val()
 
       let corresponds_to_contact = null
       if ( typeof window.contact_record !== 'undefined' ) {
@@ -807,7 +825,7 @@ jQuery(document).ready(function($) {
         spinner_span.html(spinner)
         submit_button.prop('disabled', true)
 
-        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact, "locale": locale, 'user-roles':roles, return_contact: true })
+        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "user-username": username || '', "user-password": password || '', "corresponds_to_contact": corresponds_to_contact, "locale": locale, 'user-roles':roles, return_contact: true })
           .done(response=>{
             const { user_id, corresponds_to_contact: contact_id } = response
             result_div.html('')

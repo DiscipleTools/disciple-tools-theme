@@ -85,6 +85,23 @@ $user_management_options = DT_User_Management::user_management_options();
                                         <dd><input type="text" class="input" id="name" placeholder="<?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' ); ?>" required /> </dd>
                                         <dt><?php esc_html_e( 'Email', 'disciple_tools' ); ?></dt>
                                         <dd><input type="email" class="input" id="email" placeholder="<?php esc_html_e( 'Email', 'disciple_tools' ); ?>" required /> </dd>
+
+                                        <div class="hidden-fields" style="display:none">
+                                            <dt><?php esc_html_e( 'Username', 'disciple_tools' ); ?></dt>
+                                            <dd><input type="text" class="input" id="username" placeholder="<?php esc_html_e( 'Username', 'disciple_tools' ); ?>" /> </dd>
+                                            <dt><?php esc_html_e( 'Password', 'disciple_tools' ); ?></dt>
+                                            <dd><input type="password" class="input" id="password" placeholder="<?php esc_html_e( 'Password', 'disciple_tools' ); ?>" /> </dd>
+                                        </div>
+
+                                        <div id="show-shield-banner" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">
+                                            <a class="button clear" id="show-hidden-fields" style="margin:0;padding:3px 0; width:100%">
+                                                <?php esc_html_e( 'See More Options', 'disciple_tools' ); ?>
+                                            </a>
+                                            <a class="button clear" id="hide-hidden-fields" style="margin:0;padding:3px 0; width:100%; display: none;">
+                                                <?php esc_html_e( 'See Fewer Options', 'disciple_tools' ); ?>
+                                            </a>
+                                        </div>
+
                                         <dt><?php esc_html_e( 'Language', 'disciple_tools' ); ?></dt>
                                         <dd id="new-user-language-dropdown"></dd>
 
