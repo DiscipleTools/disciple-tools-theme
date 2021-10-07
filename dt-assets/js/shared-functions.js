@@ -268,8 +268,8 @@ jQuery(document).on("click", ".help-button-tile", function () {
             list_html += `<ul>`;
           }
           window.lodash.forOwn(field.default, (field_options, field_key) => {
-            if( section == 'health-metrics' ) {
-              list_html += `<li style="list-style-image:url(${window.lodash.escape(field_options.image)});margin-bottom:3%">`;
+            if( field_options.hasOwnProperty('icon') ) {
+              list_html += `<li style="list-style-image:url(${window.lodash.escape(field_options.icon)});margin-bottom:3%">`;
             } else {
               list_html += `<li>`;
             }
