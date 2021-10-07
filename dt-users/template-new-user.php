@@ -13,9 +13,8 @@ $user_management_options = DT_User_Management::user_management_options();
 
 
 /* Build variables for page */
-$dt_user = wp_get_current_user(); // Returns WP_User object
-$dt_user_meta = get_user_meta( $dt_user->ID ); // Full array of user meta data
-$dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
+$dt_user_fields = dt_get_site_custom_lists( 'user_fields' );
+$gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
 ?>
 
 <?php get_header(); ?>
@@ -159,11 +158,11 @@ $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the
                                         <div class="cell medium-6">
                                             <dl>
                                                 <dt><label for="first_name"><?php esc_html_e( 'First Name', 'disciple_tools' )?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)</label></dt>
-                                                <dd><input class="input" type="text" class="input" id="first_name"
-                                                        name="first_name" placeholder="<?php esc_html_e( 'First Name', 'disciple_tools' )?>"/>
+                                                <dd><input class="input" type="text" class="input" id="first_name" data-optional
+                                                        name="first_name" placeholder="<?php esc_html_e( 'First Name', 'disciple_tools' )?>" />
                                                 </dd>
                                                 <dt><label for="last_name"><?php esc_html_e( 'Last Name', 'disciple_tools' )?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)</label></dt>
-                                                <dd><input class="input" type="text" class="input" id="last_name" name="last_name" placeholder="<?php esc_html_e( 'Last Name', 'disciple_tools' )?>"/></dd>
+                                                <dd><input class="input" type="text" class="input" id="last_name" data-optional name="last_name" placeholder="<?php esc_html_e( 'Last Name', 'disciple_tools' )?>"/></dd>
 
 
                                                 <?php // site defined fields
@@ -173,6 +172,7 @@ $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the
                                                         <label for="<?php echo esc_attr( $dt_field['key'] ) ?>"><?php echo esc_html( $dt_field['label'] ) ?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)</label>
                                                     </dt>
                                                     <dd><input type="text"
+                                                            data-optional
                                                             class="input"
                                                             id="<?php echo esc_attr( $dt_field['key'] ) ?>"
                                                             name="<?php echo esc_attr( $dt_field['key'] ) ?>"
@@ -184,24 +184,26 @@ $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the
                                                 ?>
 
                                                 <dt><label for="description"><?php esc_html_e( 'Biography', 'disciple_tools' )?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)</label></dt>
-                                                    <dd><textarea type="text" class="input" id="description"
-                                                                name="description"
-                                                                placeholder="<?php esc_html_e( 'Biography', 'disciple_tools' )?>"
-                                                                rows="5"></textarea>
-                                                    </dd>
-                                                    <dt><label for="gender">
-                                                        <?php esc_html_e( 'Gender', 'disciple_tools' ) ?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)
-                                                    </label></dt>
-                                                    <dd>
-                                                        <select class="select-field" id="<?php echo esc_html( $field_key ); ?>" style="width:auto; display: block">
-                                                            <?php foreach ($contact_fields[$field_key]["default"] as $option_key => $option_value):
-                                                                $selected = $user_field === $option_key; ?>
-                                                                <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
+                                                <dd><textarea
+                                                        type="text" class="input" id="description"
+                                                        name="description"
+                                                        placeholder="<?php esc_html_e( 'Biography', 'disciple_tools' )?>"
+                                                        rows="5"
+                                                        data-optional
+                                                    ></textarea>
+                                                </dd>
+                                                <dt><label for="gender">
+                                                    <?php esc_html_e( 'Gender', 'disciple_tools' ) ?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)
+                                                </label></dt>
+                                                <dd>
+                                                    <select class="select-field" id="gender" style="width:auto; display: block" data-optional>
+                                                        <?php foreach ($gender_fields["default"] as $option_key => $option_value): ?>
+                                                            <option value="<?php echo esc_html( $option_key )?>">
                                                                 <?php echo esc_html( $option_value["label"] ) ?>
-                                                        </option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                                    </dd>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </dd>
                                             </dl>
                                         </div>
                                     </div>

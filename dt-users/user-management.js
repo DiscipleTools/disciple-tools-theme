@@ -812,6 +812,15 @@ jQuery(document).ready(function($) {
       const username = $('#username').val()
       const password = $('#password').val()
 
+      const optionalFields = document.querySelectorAll('[data-optional=""]')
+      const optionalValues = {}
+
+      optionalFields.forEach((node) => {
+        if (node.value) {
+          optionalValues[node.id] = node.value
+        }
+      })
+
       let corresponds_to_contact = null
       if ( typeof window.contact_record !== 'undefined' ) {
         corresponds_to_contact = window.contact_record.ID
@@ -825,7 +834,20 @@ jQuery(document).ready(function($) {
         spinner_span.html(spinner)
         submit_button.prop('disabled', true)
 
-        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "user-username": username || null, "user-password": password || null, "corresponds_to_contact": corresponds_to_contact, "locale": locale, 'user-roles':roles, return_contact: true })
+        makeRequest(
+          "POST",
+          `users/create`,
+          {
+            "user-email": email,
+            "user-display": name,
+            "user-username": username || null,
+            "user-password": password || null,
+            "user-optional-fields": optionalValues !== {} ? optionalValues : null,
+            "corresponds_to_contact": corresponds_to_contact,
+            "locale": locale,
+            'user-roles':roles,
+            return_contact: true
+          })
           .done(response=>{
             const { user_id, corresponds_to_contact: contact_id } = response
             result_div.html('')
