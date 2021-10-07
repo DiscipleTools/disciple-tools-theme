@@ -515,7 +515,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     </div>
                 </div>
                 <div>
-                    <span>Church Commitment:</span>
+                    <span><?php echo esc_html( $fields['health_metrics']['default']['church_commitment']['label'] ); ?></span>
                     <input type="checkbox" id="is-church-switch" class="dt-switch">
                     <label class="dt-switch" for="is-church-switch" style="vertical-align: top;"></label>
                 </div>
