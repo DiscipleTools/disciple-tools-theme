@@ -52,7 +52,7 @@ jQuery(document).ready(function($) {
     let createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
-      object_note: settings.txt_created.replace("{}", window.SHAREDFUNCTIONS.formatDate(createdDate.unix())),
+      object_note: window.detailsSettings.translations.created_on.replace('%s', window.SHAREDFUNCTIONS.formatDate(createdDate.unix(), true)),
       name: settings.contact_author_name,
       user_id: currentContact.post_author,
     }
@@ -153,11 +153,11 @@ jQuery(document).ready(function($) {
                 <% has_Comment_ID = true %>
                   <div class="edit-comment-controls">
                     <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
-                        <img class="" src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
+                        <img class="dt-blue-icon" src="${commentsSettings.template_dir}/dt-assets/images/edit.svg">
                         ${window.lodash.escape(commentsSettings.translations.edit)}
                     </a>
                     <a class="open-delete-comment" data-id="<%- a.comment_ID %>">
-                        <img src="${commentsSettings.template_dir}/dt-assets/images/trash-blue.svg">
+                        <img class="dt-blue-icon" src="${commentsSettings.template_dir}/dt-assets/images/trash.svg">
                         ${window.lodash.escape(commentsSettings.translations.delete)}
                     </a>
                   </div>
@@ -404,9 +404,12 @@ jQuery(document).ready(function($) {
         ${emojis}
       `
       reactionForm.addEventListener('submit', (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        const formDataEntries = new FormData(e.target).entries();
+        const entries = Array.from(formDataEntries);
+        //event submitter data is not available in Safari/Webkit browsers only in Chrome/Blink browsers. This checks if that data exists and falls back to the formDataEntries data if it doesn't exists.
+        const reaction = e.submitter ? e.submitter.value : entries[0][1];
         const userId = commentsSettings.current_user_id
-        const reaction = e.submitter.value
         rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction)
       })
       element.appendChild(reactionForm)

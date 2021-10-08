@@ -75,6 +75,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //get extra fields and defaults
         $fields = apply_filters( "dt_post_create_fields", $fields, $post_type );
+        $filtered_initial_fields = $fields;
 
         //set title
         if ( !isset( $fields["title"] ) && !isset( $fields["name"] ) ) {
@@ -264,11 +265,9 @@ class DT_Posts extends Disciple_Tools_Posts {
 
 
         //hook for signaling that a post has been created and the initial fields
-        if ( !is_wp_error( $post_id )){
-            do_action( "dt_post_created", $post_type, $post_id, $initial_fields );
-            if ( !$silent ){
-                Disciple_Tools_Notifications::insert_notification_for_new_post( $post_type, $fields, $post_id );
-            }
+        do_action( "dt_post_created", $post_type, $post_id, $initial_fields );
+        if ( !$silent ){
+            Disciple_Tools_Notifications::insert_notification_for_new_post( $post_type, $filtered_initial_fields, $post_id );
         }
 
         // share the record with the user that created it.
@@ -341,10 +340,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                 dt_activity_insert( [
                     'action'            => 'field_update',
                     'object_type'       => $post_type,
-                    'object_subtype'    => 'title',
+                    'object_subtype'    => 'name',
                     'object_id'         => $post_id,
                     'object_name'       => $title,
-                    'meta_key'          => 'title',
+                    'meta_key'          => 'name',
                     'meta_value'        => $title,
                     'old_value'         => $existing_post['name'],
                 ] );
@@ -542,7 +541,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $post_settings = self::get_post_settings( $post_type );
         $records = $data["posts"];
         foreach ( $post_settings["connection_types"] as $connection_type ){
-            if ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) && !empty( $records ) ){
+            if ( ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) ) && !empty( $records ) ){
                 $p2p_type = $post_settings["fields"][$connection_type]["p2p_key"];
                 $p2p_direction = $post_settings["fields"][$connection_type]["p2p_direction"];
                 $q = p2p_type( $p2p_type )->set_direction( $p2p_direction )->get_connected( $records, [ "nopaging" => true ], 'abstract' );
@@ -1528,7 +1527,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $fields as $field_key => $field ){
             //make sure each field has the name filed out
             if ( !isset( $field["name"] ) || empty( $field["name"] ) ){
-                $field["name"] = $field_key;
+                $fields[$field_key]["name"] = $field_key;
             }
         }
 
@@ -1626,11 +1625,11 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
 
-    public static function advanced_search( string $query, string $post_type, int $offset ): array {
-        return self::advanced_search_query_exec( $query, $post_type, $offset );
+    public static function advanced_search( string $query, string $post_type, int $offset, array $filters = [] ): array {
+        return self::advanced_search_query_exec( $query, $post_type, $offset, $filters );
     }
 
-    private static function advanced_search_query_exec( $query, $post_type, $offset ): array {
+    private static function advanced_search_query_exec( $query, $post_type, $offset, $filters ): array {
 
         $query_results = array();
         $total_hits    = 0;
@@ -1644,7 +1643,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $type_results = self::advanced_search_by_post( $post_type, [
                             'text'             => $query,
                             'offset'           => $offset
-                        ]
+                        ],
+                        $filters
                     );
                     if ( ! empty( $type_results ) && ( intval( $type_results['total'] ) > 0 ) ) {
                         array_push( $query_results, $type_results );
@@ -1662,7 +1662,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
     }
 
-    private static function advanced_search_by_post( string $post_type, array $query ) {
+    private static function advanced_search_by_post( string $post_type, array $query, array $filters ) {
         if ( ! self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, "You do not have access to these", [ 'status' => 403 ] );
         }
@@ -1739,11 +1739,33 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //remove duplicated non-hits
         foreach ( $posts as $post ) {
+            $add_post = false;
             if ( isset( $post->post_hit ) && isset( $post->comment_hit ) && isset( $post->meta_hit ) ) {
                 if ( ! ( ( $post->post_hit === 'N' ) && ( $post->comment_hit === 'N' ) && ( $post->meta_hit === 'N' ) ) ) {
-                    $post_hits[] = $post;
+                    $add_post = true;
                 }
             } else {
+                $add_post = true;
+            }
+
+            // Apply search filters
+            if ( $add_post ) {
+                if ( isset( $post->post_hit ) && ( $post->post_hit === 'Y' ) &&
+                     isset( $filters['post'] ) && ! ( $filters['post'] ) ) {
+                    $add_post = false;
+                }
+                if ( isset( $post->comment_hit ) && ( $post->comment_hit === 'Y' ) &&
+                     isset( $filters['comment'] ) && ! ( $filters['comment'] ) ) {
+                    $add_post = false;
+                }
+                if ( isset( $post->meta_hit ) && ( $post->meta_hit === 'Y' ) &&
+                     isset( $filters['meta'] ) && ! ( $filters['meta'] ) ) {
+                    $add_post = false;
+                }
+            }
+
+            // Add post accordingly, based on flag!
+            if ( $add_post ) {
                 $post_hits[] = $post;
             }
         }

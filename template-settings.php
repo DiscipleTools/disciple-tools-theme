@@ -3,7 +3,7 @@
 Template Name: Settings
 */
 dt_please_log_in();
-if ( ! current_user_can( 'access_contacts' ) ) {
+if ( ! current_user_can( 'access_disciple_tools' ) ) {
     wp_safe_redirect( '/registered' );
     exit();
 }
@@ -17,14 +17,13 @@ if ( isset( $_POST['user_update_nonce'] ) ) {
 /* Build variables for page */
 $dt_user = wp_get_current_user(); // Returns WP_User object
 $dt_user_meta = get_user_meta( $dt_user->ID ); // Full array of user meta data
-$dt_user_contact_id = dt_get_associated_user_id( $dt_user->ID, 'user' );
+$dt_user_contact_id = Disciple_Tools_Users::get_contact_for_user( $dt_user->ID );
 
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings
 $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
 
 $dt_user_locale = get_user_locale( $dt_user->ID );
-$translations = dt_get_translations();
 
 $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
@@ -56,6 +55,14 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         <li><a href="#multiplier"><?php esc_html_e( 'Multiplier Preferences', 'disciple_tools' )?></a></li>
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
                         <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
+
+                        <!-- Invite user button only when multipliers can invite multipliers -->
+
+                        <?php if ( DT_User_Management::non_admins_can_make_users() || current_user_can( 'create_users ' ) ): ?>
+
+                            <li><a href="/user-management/add-user"><?php esc_html_e( 'Invite User', 'disciple_tools' ) ?></a></li>
+
+                        <?php endif; ?>
 
                         <?php
                         /**
@@ -208,7 +215,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                                 <!-- gender -->
                                 <strong style="display: inline-block"><?php echo esc_html( $contact_fields[$field_key]["name"] ) ?></strong>
-                                <p><?php echo esc_html( $user_field ); ?></p>
+                                <p><?php echo esc_html( isset( $contact_fields[$field_key]["default"][$user_field]["label"] ) ? $contact_fields[$field_key]["default"][$user_field]["label"] : $user_field ); ?></p>
                             </div>
                         </div>
 
@@ -358,8 +365,8 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
                         </div>
-                        <?php endif; ?>
 
                         <div class="small-12 medium-6 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
                             <!-- Workload -->
@@ -442,21 +449,21 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                         <?php $email_preference = isset( $dt_user_meta['email_preference'] ) ? $dt_user_meta['email_preference'][0] : null ?>
                         <p>
-                            <strong><?php echo esc_html_e( 'Email preferences', 'disciple_tools' ) ?></strong>
+                            <strong><?php esc_html_e( 'Email preferences', 'disciple_tools' ) ?></strong>
                             <span id="email-preference-spinner" class="loading-spinner"></span>
                         </p>
                         <div>
                             <label for="real-time-preference">
                                 <input id="real-time-preference" type="radio" name="email-preference" <?php echo !$email_preference || $email_preference === 'real-time' ? 'checked' : '' ?>>
-                                <?php echo esc_html_e( 'Real time', 'disciple_tools' ) ?>
+                                <?php esc_html_e( 'Real time', 'disciple_tools' ) ?>
                             </label>
                             <label for="hourly-preference">
                                 <input id="hourly-preference" type="radio" name="email-preference" <?php echo $email_preference && $email_preference === 'hourly' ? 'checked' : '' ?>>
-                                <?php echo esc_html_e( 'Hourly digest', 'disciple_tools' ) ?>
+                                <?php esc_html_e( 'Hourly Digest', 'disciple_tools' ) ?>
                             </label>
                             <label for="daily-preference">
                                 <input id="daily-preference" type="radio" name="email-preference" <?php echo $email_preference && $email_preference === 'daily' ? 'checked' : '' ?>>
-                                <?php echo esc_html_e( 'Daily digest', 'disciple_tools' ) ?>
+                                <?php esc_html_e( 'Daily Digest', 'disciple_tools' ) ?>
                             </label>
                         </div>
 
@@ -640,16 +647,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     <td><label for="systemLanguage"><?php esc_html_e( 'System Language', 'disciple_tools' )?></label></td>
                                     <td dir="auto">
                                         <?php
-                                        wp_dropdown_languages( array(
-                                            'name'                        => 'locale',
-                                            'id'                          => 'locale',
-                                            'selected'                    => esc_html( $dt_user_locale ),
-                                            'languages'                   => $dt_available_languages,
-                                            'show_available_translations' => false,
-                                            'show_option_site_default'    => false,
-                                            'show_option_en_us'           => true,
-                                            'translations'                => $translations
-                                        ) );
+                                        dt_language_select()
                                         ?>
                                     </td>
                                 </tr>

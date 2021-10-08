@@ -32,6 +32,7 @@
 .dt_multi_select {
     .dt-icon {
         margin-right: 5px;
+        filter:none;
     }
 }
 
@@ -658,6 +659,10 @@ select.color-select {
         margin-right: 10px;
     }
 }
+.dt_user_select .typeahead__cancel-button {
+    visibility: inherit;
+    line-height: 1.5;
+}
 
 #tasks-modal {
   .existing-task-action {
@@ -688,4 +693,29 @@ select.color-select {
 //user select field
 .dt_user_select {
     margin-bottom:15px;
+}
+
+//assign to modal
+#filter-tabs img {
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 2px;
+}
+.dispatcher-tile .populated-list .assigned-to-row > span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.dispatcher-tile .populated-list .assigned-to-row:hover {
+    background-color: #F2F2F2;
+}
+.dispatcher-tile .populated-list .assigned-to-row {
+    padding: 5px 5px 0 5px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.31);
+}
+.dispatcher-tile .populated-list {
+    overflow-y: scroll;
+    max-height: 250px;
 }

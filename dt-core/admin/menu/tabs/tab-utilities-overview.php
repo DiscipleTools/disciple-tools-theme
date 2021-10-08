@@ -126,7 +126,11 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         </tr>
         <?php
         $plugins = get_plugins();
-        $active_plugins = get_option( 'active_plugins' );
+        $network_active_plugins = get_site_option( 'active_sitewide_plugins', [] );
+        $active_plugins = get_option( 'active_plugins', [] );
+        foreach ( $network_active_plugins as $plugin => $time ){
+            $active_plugins[] = $plugin;
+        }
         foreach ( $plugins as $i => $v ){
             if ( !isset( $v["Name"], $v["Version"] )){
                 continue;

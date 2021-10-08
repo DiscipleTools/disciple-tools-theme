@@ -210,64 +210,249 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    /**
+     * Deprecated function, use dt_get_available_languages()
+     */
     if ( ! function_exists( 'dt_get_translations' ) ) {
         function dt_get_translations() {
             require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
             $translations = wp_get_available_translations(); // @todo throwing errors if wp.org connection isn't established
-            $translations["ar_MA"] = [
-                "language" => "ar_MA",
-                "native_name" => "العربية (المغرب)",
-                "english_name" => "Arabic (Morocco)",
-                "iso" => [ "ar" ]
-            ];
-            $translations["sw"] = [
-                "language" => "sw",
-                "native_name" => "Kiswahili",
-                "english_name" => "Swahili",
-                "iso" => [ "sw" ]
-            ];
-            $translations["sr_BA"] = [
-                "language" => "sr_BA",
-                "native_name" => "српски",
-                "english_name" => "Serbian",
-                "iso" => [ "sr" ]
-            ];
-            $translations["es_419"] = [
-                "language" => "es_419",
-                "native_name" => "Español (Latinoamérica) ",
-                "english_name" => "Spanish (Latin America)",
-                "iso" => [ "es" ]
-            ];
-            $translations["am_ET"] = [
-                "language" => "am_ET",
-                "native_name" => "Amharic (Ethiopia)",
-                "english_name" => "Amharic (Ethiopia)",
-                "iso" => [ "am" ]
-            ];
             return $translations;
         }
     }
 
     if ( ! function_exists( 'dt_get_available_languages' ) ) {
-        function dt_get_available_languages() {
-            $translations = dt_get_translations();
+        function dt_get_available_languages( $code_as_key = false) {
             $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+            array_unshift( $available_language_codes, 'en_US' );
             $available_translations = [];
             $site_default_locale = get_option( 'WPLANG' );
 
-            array_push( $available_translations, array(
-                'language' => 'en_US',
-                'english_name' => 'English (United States)',
-                'native_name' => 'English (United States)'
-            ) );
+            $translations = [
+                'en_US' => [
+                    'language' => 'en_US',
+                    'english_name' => 'English (United States)',
+                    'native_name' => 'English (United States)'
+                ],
+                'am_ET' => [
+                    'language' => 'am_ET',
+                    'native_name' => 'Amharic (Ethiopia)',
+                    'english_name' => 'Amharic (Ethiopia)'
+                ],
+                'ar' => [
+                    'language' => 'ar',
+                    'english_name' => 'Arabic',
+                    'native_name' => 'العربية'
+                ],
+                'ar_MA' => [
+                    'language' => 'ar_MA',
+                    'native_name' => 'العربية (المغرب)',
+                    'english_name' => 'Arabic (Morocco)'
+                ],
+                'bg_BG' => [
+                    'language' => 'bg_BG',
+                    'english_name' => 'Bulgarian',
+                    'native_name' => 'Български'
+                ],
+                'bn_BD' => [
+                    'language' => 'bn_BD',
+                    'english_name' => 'Bengali (Bangladesh)',
+                    'native_name' => 'বাংলা'
+                ],
+                'bs_BA' => [
+                    'language' => 'bs_BA',
+                    'english_name' => 'Bosnian',
+                    'native_name' => 'Bosanski'
+                ],
+                'de_DE' => [
+                    'language' => 'de_DE',
+                    'english_name' => 'German',
+                    'native_name' => 'Deutsch'
+                ],
+                'es_419' => [
+                    'language' => 'es_419',
+                    'native_name' => 'Español (Latinoamérica) ',
+                    'english_name' => 'Spanish (Latin America)'
+                ],
+                'es_AR' => [
+                    'language' => 'es_AR',
+                    'english_name' => 'Spanish (Argentina)',
+                    'native_name' => 'Español de Argentina'
+                ],
+                'es_CO' => [
+                    'language' => 'es_CO',
+                    'english_name' => 'Spanish (Colombia)',
+                    'native_name' => 'Español de Colombia'
+                ],
+                'es_ES' => [
+                    'language' => 'es_ES',
+                    'english_name' => 'Spanish (Spain)',
+                    'native_name' => 'Español'
+                ],
+                'es_MX' => [
+                    'language' => 'es_MX',
+                    'english_name' => 'Spanish (Mexico)',
+                    'native_name' => 'Español de México'
+                ],
+                'fa_IR' => [
+                    'language' => 'fa_IR',
+                    'english_name' => 'Persian',
+                    'native_name' => 'فارسی'
+                ],
+                'fr_FR' => [
+                    'language' => 'fr_FR',
+                    'english_name' => 'French (France)',
+                    'native_name' => 'Français'
+                ],
+                'hi_IN' => [
+                    'language' => 'hi_IN',
+                    'english_name' => 'Hindi',
+                    'native_name' => 'हिन्दी'
+                ],
+                'hr' => [
+                    'language' => 'hr',
+                    'english_name' => 'Croatian',
+                    'native_name' => 'Hrvatski'
+                ],
+                'id_ID' => [
+                    'language' => 'id_ID',
+                    'english_name' => 'Indonesian',
+                    'native_name' => 'Bahasa Indonesia'
+                ],
+                'it_IT' => [
+                    'language' => 'it_IT',
+                    'english_name' => 'Italian',
+                    'native_name' => 'Italiano'
+                ],
+                'ja' => [
+                    'language' => 'ja',
+                    'english_name' => 'Japanese',
+                    'native_name' => '日本語'
+                ],
+                'ko_KR' => [
+                    'language' => 'ko_KR',
+                    'english_name' => 'Korean',
+                    'native_name' => '한국어'
+                ],
+                'mk_MK' => [
+                    'language' => 'mk_MK',
+                    'english_name' => 'Macedonian',
+                    'native_name' => 'Македонски јазик'
+                ],
+                'mr' => [
+                    'language' => 'mr',
+                    'english_name' => 'Marathi',
+                    'native_name' => 'मराठी'
+                ],
+                'my_MM' => [
+                    'language' => 'my_MM',
+                    'english_name' => 'Myanmar (Burmese)',
+                    'native_name' => 'ဗမာစာ'
+                ],
+                'ne_NP' => [
+                    'language' => 'ne_NP',
+                    'english_name' => 'Nepali',
+                    'native_name' => 'नेपाली'
+                ],
+                'nl_NL' => [
+                    'language' => 'nl_NL',
+                    'english_name' => 'Dutch',
+                    'native_name' => 'Nederlands'
+                ],
+                'pa_IN' => [
+                    'language' => 'pa_IN',
+                    'english_name' => 'Punjabi',
+                    'native_name' => 'ਪੰਜਾਬੀ'
+                ],
+                'pt_BR' => [
+                    'language' => 'pt_BR',
+                    'english_name' => 'Portuguese (Brazil)',
+                    'native_name' => 'Português do Brasil'
+                ],
+                'ro_RO' => [
+                    'language' => 'ro_RO',
+                    'english_name' => 'Romanian',
+                    'native_name' => 'Română'
+                ],
+                'ru_RU' => [
+                    'language' => 'ru_RU',
+                    'english_name' => 'Russian',
+                    'native_name' => 'Русский'
+                ],
+                'sl_SI' => [
+                    'language' => 'sl_SI',
+                    'english_name' => 'Slovenian',
+                    'native_name' => 'Slovenščina'
+                ],
+                'sr_BA' => [
+                    'language' => 'sr_BA',
+                    'native_name' => 'српски',
+                    'english_name' => 'Serbian'
+                ],
+                'sw' => [
+                    'language' => 'sw',
+                    'native_name' => 'Kiswahili',
+                    'english_name' => 'Swahili'
+                ],
+                'th' => [
+                    'language' => 'th',
+                    'english_name' => 'Thai',
+                    'native_name' => 'ไทย'
+                ],
+                'tl' => [
+                    'language' => 'tl',
+                    'english_name' => 'Tagalog',
+                    'native_name' => 'Tagalog'
+                ],
+                'tr_TR' => [
+                    'language' => 'tr_TR',
+                    'english_name' => 'Turkish',
+                    'native_name' => 'Türkçe'
+                ],
+                'vi' => [
+                    'language' => 'vi',
+                    'english_name' => 'Vietnamese',
+                    'native_name' => 'Tiếng Việt'
+                ],
+                'zh_CN' => [
+                    'language' => 'zh_CN',
+                    'english_name' => 'Chinese (China)',
+                    'native_name' => '简体中文'
+                ],
+                'zh_TW' => [
+                    'language' => 'zh_TW',
+                    'english_name' => 'Chinese (Taiwan)',
+                    'native_name' => '繁體中文'
+                ],
+            ];
 
             foreach ( $available_language_codes as $code ){
                 if ( isset( $translations[$code] )){
                     $translations[$code]['site_default'] = $site_default_locale === $translations[$code]["language"];
-                    $available_translations[] = $translations[$code];
+                    if ( !$code_as_key ){
+                        $available_translations[] = $translations[$code];
+                    } else {
+                        $available_translations[$code] = $translations[$code];
+                    }
                 }
             }
             return $available_translations;
+        }
+    }
+
+    if ( !function_exists( 'dt_language_select' ) ){
+        function dt_language_select(){
+            $languages = dt_get_available_languages();
+            $dt_user_locale = get_user_locale( get_current_user_id() );
+            ?>
+            <select name="locale">
+                <?php foreach ( $languages as $language ){ ?>
+                    <option value="<?php echo esc_html( $language["language"] ); ?>" <?php selected( $dt_user_locale === $language["language"] ) ?>>
+                        <?php echo esc_html( $language["native_name"] ); ?> - <?php echo esc_html( $language["english_name"] ); ?>
+                    </option>
+                <?php } ?>
+            </select>
+            <?php
         }
     }
 
@@ -336,6 +521,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
 
+    function is_associative_array( array $arr ){
+        if ( array() === $arr ){
+            return false;
+        }
+        return array_keys( $arr ) !== range( 0, count( $arr ) - 1 );
+    }
     /**
      * Recursively merge array2 on to array1
      *
@@ -345,6 +536,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      */
     function dt_array_merge_recursive_distinct( array &$array1, array &$array2 ){
         $merged = $array1;
+        if ( !is_associative_array( $array2 ) && !is_associative_array( $merged ) ){
+            return array_unique( array_merge( $merged, $array2 ), SORT_REGULAR );
+        }
         foreach ( $array2 as $key => &$value ){
             if ( is_array( $value ) && isset( $merged[$key] ) && is_array( $merged[$key] ) ){
                 $merged[$key] = dt_array_merge_recursive_distinct( $merged[$key], $value );
@@ -384,7 +578,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
         $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
         $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
-        $is_private = ( isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true ) ? true : false;
+        $is_private = isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true;
+        $display_field_id = $field_key;
+        if ( !empty( $field_id_prefix ) ) {
+            $display_field_id = $field_id_prefix . $field_key;
+        }
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
@@ -394,10 +592,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 return;
             }
 
-            $display_field_id = $field_key;
-            if ( !empty( $field_id_prefix ) ) {
-                $display_field_id = $field_id_prefix . $field_key;
-            }
 
             ?>
             <div class="section-subheader">
@@ -449,25 +643,27 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <?php endforeach; ?>
                 </select>
             <?php elseif ( $field_type === "tags" ) : ?>
-                <div class="tags">
+                <div id="<?php echo esc_html( $display_field_id ); ?>" class="tags">
                     <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
                     <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                           data-field="<?php echo esc_html( $display_field_id );?>"
+                                           data-field="<?php echo esc_html( $field_key );?>"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]"
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                            autocomplete="off"
                                            data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
                                            data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
                                 </span>
+                                <?php if ( $show_extra_controls ) : ?>
                                 <span class="typeahead__button">
-                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $display_field_id );?>">
+                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $field_key );?>">
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
                                     </button>
                                 </span>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -475,14 +671,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php elseif ( $field_type === "multi_select" ) :
                 if ( isset( $fields[$field_key]["display"] ) && $fields[$field_key]["display"] === "typeahead" ){
                     ?>
-                    <div class="multi_select">
+                    <div class="multi_select" id="<?php echo esc_html( $display_field_id ); ?>" >
                         <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
-                        <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
+                        <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-multi_select" class="scrollable-typeahead typeahead-margin-when-active">
                             <div class="typeahead__container">
                                 <div class="typeahead__field">
                                     <span class="typeahead__query">
                                         <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                               data-field="<?php echo esc_html( $display_field_id );?>"
+                                               data-field="<?php echo esc_html( $field_key );?>"
                                                name="<?php echo esc_html( $display_field_id ); ?>[query]"
                                                placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                                autocomplete="off">
@@ -497,7 +693,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <?php
                             $class = ( in_array( $option_key, $post[$field_key] ?? [] ) ) ?
                                 "selected-select-button" : "empty-select-button"; ?>
-                            <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $display_field_id ); ?>"
+                            <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $field_key ); ?>"
                                     class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
                                 <?php if ( !empty( $option_value["icon"] ) ) { ?>
                                     <img class="dt-icon" src="<?php echo esc_html( $option_value["icon"] ) ?>" >
@@ -533,7 +729,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
-                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" data-field="<?php echo esc_html( $field_key ); ?>"
+                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
+                                           data-field="<?php echo esc_html( $field_key ); ?>"
                                            data-post_type="<?php echo esc_html( $fields[$field_key]["post_type"] ) ?>"
                                            data-field_type="connection"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]"
@@ -578,7 +775,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                           data-field="<?php echo esc_html( $display_field_id ); ?>"
+                                           data-field="<?php echo esc_html( $field_key ); ?>"
                                            data-field_type="location"
                                            name="<?php echo esc_html( $field_key ); ?>[query]"
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
@@ -594,7 +791,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         <div class="input-group">
                             <input id="<?php echo esc_html( $field_value["key"] ) ?>"
                                    type="text"
-                                   data-field="<?php echo esc_html( $display_field_id ); ?>"
+                                   data-field="<?php echo esc_html( $field_key ); ?>"
                                    value="<?php echo esc_html( $field_value["value"] ) ?>"
                                    class="dt-communication-channel input-group-field" dir="auto"/>
                             <div class="input-group-button">
@@ -625,7 +822,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            autocomplete="off">
                                 </span>
                                 <span class="typeahead__button">
-                                    <button type="button" class="search_<?php echo esc_html( $display_field_id ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $display_field_id ); ?>_t">
+                                    <button type="button" class="search_<?php echo esc_html( $field_key ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $field_key ); ?>">
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                     </button>
                                 </span>
@@ -635,7 +832,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 </div>
             <?php endif;
         }
-        do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag );
+        do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id );
     }
 
     function dt_increment( &$var, $val ){

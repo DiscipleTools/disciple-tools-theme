@@ -105,7 +105,7 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
       all_offset = limit + limit
     }
     else {
-      page = all_offset + limit
+      page = all_offset
       all_offset = all_offset + limit
     }
   } else {
@@ -119,7 +119,7 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
       new_offset = limit + limit
     }
     else {
-      page = new_offset + limit
+      page = new_offset
       new_offset = new_offset + limit
     }
 
@@ -129,7 +129,6 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
   }else if (reset === false) {
     page += 1
   }
-
   const jQueryElementsDict = {
     'default' : {
       notificationList: jQuery('.notifications-page #notification-list'),

@@ -21,6 +21,9 @@
   let clearSearchButton = $('.search-input__clear-button')
   window.post_type_fields = list_settings.post_type_settings.fields
 
+  const ALL_ID = '*'
+  const ALL_WITHOUT_ID = '-*'
+
   let items = []
   try {
     cached_filter = JSON.parse(cookie)
@@ -653,13 +656,19 @@
     let fields_filtered = window.lodash.uniq(new_filter_labels.map(f=>f.field))
     fields_filtered.forEach(field=>{
       let type = window.lodash.get(list_settings, `post_type_settings.fields.${field}.type` )
-      if ( type === "connection" || type === "user_select" ){
-        const allConnections = $(`#${field} .all-connections`)
-        if (type === "connection" && allConnections.prop('checked') === true) {
-          search_query.push( { [field] : ['*'] } )
-        } else {
-          search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
+        if (type === "connection") {
+          const allConnections = $(`#${field} .all-connections`)
+          const withoutConnections = $(`#${field} .all-without-connections`)
+          if (allConnections.prop('checked') === true) {
+            search_query.push( { [field] : [ALL_ID] } )
+          } else if (withoutConnections.prop('checked') === true) {
+            search_query.push( { [field] : [ALL_WITHOUT_ID] } )
+          } else {
+            search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
+          }
         }
+      if ( type === "user_select" ){
+          search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
       } else if ( type === "multi_select" ){
         search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
       } else if ( type === "tags" ){
@@ -708,12 +717,24 @@
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
 
-  function allConnectionsClickHandler() {
+  function toggleAllConnectionOption(tabsPanel, without) {
+    const allConnectionsElement = tabsPanel.find('.all-connections')
+    const withoutConnectionsElement = tabsPanel.find('.all-without-connections')
+
+    without ? allConnectionsElement.prop('checked', false) : withoutConnectionsElement.prop('checked', false)
+  }
+
+  function allConnectionsClickHandler({ without = false }) {
+    const id = without ? ALL_WITHOUT_ID : ALL_ID
     const tabsPanel = $(this).closest('.tabs-panel')
     const field = tabsPanel.length === 1 ? tabsPanel[0].id : ''
     const typeaheadQueryElement = tabsPanel.find('.typeahead__query')
     const typeaheadCancelButtons = tabsPanel.find('.typeahead__cancel-button')
     const typeahead = tabsPanel.find(`.js-typeahead-${field}`)
+
+    toggleAllConnectionOption(tabsPanel, without)
+
+    const esc = window.lodash.escape
 
     if ($(this).prop('checked') === true) {
       typeahead.prop('disabled', true)
@@ -721,13 +742,14 @@
       // remove the current filters and leave anything in the typeahead as it is
       removeAllFilterLabels(field)
       const fieldLabel = list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : ''
-      const filterName = `${window.lodash.escape( fieldLabel )}: ${window.lodash.escape( list_settings.translations.all )}`
-      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field )}" data-id="*">${filterName}</span>`)
-      new_filter_labels.push({id: '*', name: filterName, field: field})
+      const allLabel = without ? esc(list_settings.translations.without) : esc( list_settings.translations.all )
+      const filterName = `${esc( fieldLabel )}: ${allLabel}`
+      selected_filters.append(`<span class="current-filter ${esc( field )}" data-id="${id}">${filterName}</span>`)
+      new_filter_labels.push({id: id, name: filterName, field: field})
     } else {
       typeahead.prop('disabled', false)
       typeaheadQueryElement.removeClass('disabled')
-      removeFilterLabels('*', field)
+      removeFilterLabels(id, field)
       // clear the typeahead by manually clicking each selected item.
       // This is done at this point as it triggers the typeahead to open which we don't want just after we have disabled it.
       typeaheadCancelButtons.each(function () {
@@ -737,10 +759,14 @@
   }
 
   $('.all-connections').on("click", allConnectionsClickHandler)
+  function withoutConnectionsHandler() {
+    allConnectionsClickHandler.call(this, { without: true })
+  }
+  $('.all-without-connections').on("click", withoutConnectionsHandler)
 
 
   let load_multi_select_typeaheads = async function load_multi_select_typeaheads() {
-    for (let input of $(".multi_select .typeahead__query input")) {
+    for (let input of $("#filter-modal .multi_select .typeahead__query input")) {
       let field = $(input).data('field')
       let typeahead_name = `.js-typeahead-${field}`
 
@@ -1444,6 +1470,10 @@
     let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .button').not('#bulk_share');
     let multiSelectInputs = $('#bulk_edit_picker .dt_multi_select')
     let shareInput = $('#bulk_share');
+    let commentPayload = {};
+    commentPayload['commentText'] = $('#bulk_comment-input').val();
+    commentPayload['commentType'] = $('#comment_type_selector').val();
+
     let updatePayload = {};
     let sharePayload;
 
@@ -1495,7 +1525,7 @@
         queue.push( postId );
       }
     });
-    process(queue, 10, doEach, doDone, updatePayload, sharePayload);
+    process(queue, 10, doEach, doDone, updatePayload, sharePayload, commentPayload);
   }
 
   function bulk_edit_count() {
@@ -1537,7 +1567,7 @@
   })
 
   //Bulk Update Queue
-  function process( q, num, fn, done, update, share ) {
+  function process( q, num, fn, done, update, share, comment ) {
     // remove a batch of items from the queue
     let items = q.splice(0, num),
         count = items.length;
@@ -1557,14 +1587,14 @@
         fn(items[i], function() {
             // when done, decrement counter and
             // if counter is 0, process next batch
-            --count || process(q, num, fn, done, update, share);
-        }, update, share);
+            --count || process(q, num, fn, done, update, share, comment);
+        }, update, share, comment);
 
     }
   }
 
   // a per-item action
-  function doEach( item, done, update, share ) {
+  function doEach( item, done, update, share, comment ) {
     let promises = [];
 
     if (Object.keys(update).length) {
@@ -1575,6 +1605,10 @@
       share.forEach(function(value) {
         promises.push( API.add_shared(list_settings.post_type, item, value).catch(err => { console.error(err) }));
       })
+    }
+
+    if (comment.commentText) {
+      promises.push( API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => { console.error(err);}));
     }
 
     Promise.all(promises).then( function() {
@@ -1726,7 +1760,6 @@
             event.preventDefault()
             this.hideLayout();
             this.resetInput();
-            //masonGrid.masonry('layout')
           },
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -1736,10 +1769,8 @@
             if ( !query ){
               $(`#${element_id}-result-container`).empty()
             }
-            //masonGrid.masonry('layout')
           },
           onShowLayout (){
-            //masonGrid.masonry('layout')
           }
         }
       })
@@ -1818,6 +1849,75 @@
         onHideLayout: function () {
           $('#location_grid-result-container').html("");
         }
+      }
+    });
+  })
+
+  $('#bulk_edit_picker .tags input, #bulk_edit_picker .multi_select input').each((key, input)=>{
+    let field = $(input).data('field') || 'tags'
+    let field_options = window.lodash.get(list_settings, `post_type_settings.fields.${field}.default`, {})
+    $.typeahead({
+      input: input,
+      minLength: 0,
+      maxItem: 20,
+      searchOnFocus: true,
+      source: {
+        tags: {
+          display: ["name"],
+          ajax: {
+            url: window.wpApiShare.root + `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
+            data: {
+              s: "{{query}}",
+              field: field
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                return (data || []).map(tag => {
+                  let label = window.lodash.get(field_options, tag + ".label", tag)
+                  return {name: label || tag, key: tag}
+                })
+              }
+            }
+          }
+        }
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["key"],
+        callback: {
+            onCancel: function (node, item) {
+              $(node).removeData( `bulk_key_${field}` );
+            }
+          },
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          let multiUserArray;
+          if ( node.data(`bulk_key_${field}`) ) {
+            multiUserArray = node.data(`bulk_key_${field}`).values;
+          } else {
+            multiUserArray = [];
+          }
+          multiUserArray.push({"value":item.key});
+
+          node.data(`bulk_key_${field}`, {values: multiUserArray});
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $(`#${field}-result-container`).html(text);
+        },
+        onHideLayout: function () {
+          $(`#${field}-result-container`).html("");
+        },
       }
     });
   })

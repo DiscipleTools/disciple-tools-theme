@@ -13,14 +13,18 @@ class DT_User_Management
     } // End instance()
 
     public function __construct() {
+        $url_path = dt_get_url_path();
+        if ( $this->has_permission() || self::non_admins_can_make_users() ) {
+            if ( strpos( $url_path, 'user-management/user' ) !== false || ( strpos( $url_path, 'user-management/add-user' ) !== false && ( current_user_can( "create_users" ) || self::non_admins_can_make_users() ) ) ){
+                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+                add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
+            }
+        }
         if ( $this->has_permission() ){
-            $url_path = dt_get_url_path();
             if ( strpos( $url_path, 'user-management' ) !== false || strpos( $url_path, 'user-management' ) !== false ) {
                 add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 20 );
             }
-            if ( strpos( $url_path, 'user-management/user' ) !== false || ( strpos( $url_path, 'user-management/add-user' ) !== false && current_user_can( "create_users" ) ) ){
-                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-                add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
+            if ( strpos( $url_path, 'user-management/user' ) !== false || ( strpos( $url_path, 'user-management/add-user' ) !== false && ( current_user_can( "create_users" ) ) ) ){
 
 
                 add_action( 'init', function() {
@@ -37,8 +41,8 @@ class DT_User_Management
                     return get_template_directory() . '/dt-users/template-user-management.php';
                 } );
             }
-            add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         }
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
     public function has_permission(){
@@ -49,6 +53,16 @@ class DT_User_Management
             }
         }
         return $pass;
+    }
+
+    public static function non_admins_can_make_users() {
+        $user_invite_setting = get_option( 'dt_user_invite_setting', false );
+
+        if ( $user_invite_setting && current_user_can( 'access_contacts' ) ) {
+            return true;
+        }
+
+        return false;
     }
 
     public function add_api_routes() {
@@ -63,6 +77,7 @@ class DT_User_Management
                 ],
             ]
         );
+
         register_rest_route(
             $namespace, '/user', [
                 [
@@ -136,6 +151,10 @@ class DT_User_Management
             wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
             wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+            wp_enqueue_script( 'dtActivityLogs', get_template_directory_uri() . '/dt-assets/js/activity-log.js', [
+                'jquery',
+                'lodash'
+            ], filemtime( get_theme_file_path() .  '/dt-assets/js/activity-log.js' ), true );
 
             wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', $dependencies, filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
 
@@ -155,13 +174,18 @@ class DT_User_Management
                         'contact_attempt_time' => _x( 'Contact with %1$s was attempted on %2$s after %3$s days', 'Contact with Bob was attempted on Jul 8 after 10 days', 'disciple_tools' ),
                         'unable_to_update' => __( 'Unable to update', 'disciple_tools' ),
                         'view_new_user' => __( 'View New User', 'disciple_tools' ),
+                        'view_new_contact' => __( 'View New Contact', 'disciple_tools' ),
                         'email_already_in_system' => __( 'Email address is already in the system as a user!', 'disciple_tools' ),
                         'username_in_system' => __( 'Username is already in the system as a user!', 'disciple_tools' ),
                         'remove' => __( 'Remove', 'disciple_tools' ),
                         'already_user' => __( 'This contact is already a user.', 'disciple_tools' ),
                         'view_user' => __( 'View User', 'disciple_tools' ),
+                        'view_contact' => __( 'View Contact', 'disciple_tools' ),
+                        'more' => __( 'More', 'disciple_tools' ),
+                        'less' => __( 'Less', 'disciple_tools' ),
                     ],
                     'language_dropdown' => dt_get_available_languages(),
+                    'has_permission' => $this->has_permission(),
                 ]
             );
 
@@ -230,60 +254,15 @@ class DT_User_Management
             $user_response['dates_unavailable'] = $dates_unavailable;
 
             /* counts section */
-            $month_start = strtotime( gmdate( 'Y-m-01' ) );
-            $last_month_start = strtotime( 'first day of last month' );
-            $this_year = strtotime( "first day of january this year" );
-            //number of assigned contacts
-            $assigned_counts = $wpdb->get_results($wpdb->prepare("
-                SELECT
-                COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_month,
-                COUNT( CASE WHEN date_assigned.hist_time >= %d AND date_assigned.hist_time < %d THEN 1 END ) as last_month,
-                COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_year,
-                COUNT( date_assigned.histid ) as all_time
-                FROM $wpdb->dt_activity_log as date_assigned
-                INNER JOIN $wpdb->postmeta as type ON ( date_assigned.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
-                WHERE date_assigned.meta_key = 'assigned_to'
-                    AND date_assigned.object_type = 'contacts'
-                    AND date_assigned.meta_value = %s
-            ", $month_start, $last_month_start, $month_start, $this_year, 'user-' . $user->ID), ARRAY_A);
+            $assigned_counts = DT_User_Metrics::get_user_assigned_contacts_summary( $user_id );
 
-            $active_contacts = $wpdb->get_var( $wpdb->prepare( "
-                SELECT count(a.ID)
-                FROM $wpdb->posts as a
-                INNER JOIN $wpdb->postmeta as assigned_to
-                ON a.ID=assigned_to.post_id
-                  AND assigned_to.meta_key = 'assigned_to'
-                  AND assigned_to.meta_value = CONCAT( 'user-', %s )
-                JOIN $wpdb->postmeta as b
-                  ON a.ID=b.post_id
-                     AND b.meta_key = 'overall_status'
-                         AND b.meta_value = 'active'
-                WHERE a.post_status = 'publish'
-                AND post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
-            ", $user->ID ) );
-
-
-            $notification_count = $wpdb->get_var($wpdb->prepare(
-                "SELECT count(id)
-                        FROM `$wpdb->dt_notifications`
-                        WHERE
-                            user_id = %d
-                            AND is_new = '1'",
-                $user->ID
-            ));
-
-            $contact_statuses = Disciple_Tools_Counter_Contacts::get_contact_statuses( $user->ID );
-
-            $user_response['contact_statuses'] = $contact_statuses;
-            $user_response['active_contacts'] = $active_contacts;
-
+            $user_response['contact_statuses'] = Disciple_Tools_Counter_Contacts::get_contact_statuses( $user->ID );
+            $user_response['active_contacts'] = DT_User_Metrics::get_user_active_contacts_count( $user_id );
             $user_response['assigned_counts'] = isset( $assigned_counts[0] ) ? $assigned_counts[0] : [];
-            $user_response['unread_notifications'] = $notification_count;
+            $user_response['unread_notifications'] = DT_User_Metrics::get_user_unread_notifications_count( $user_id );
+
+            $user_response["gender"] = get_user_option( 'user_gender', $user_id );
+            $user_response["languages"] = get_user_option( 'user_languages', $user_id );
         }
 
         $modules = dt_get_option( "dt_post_type_modules" );
@@ -320,109 +299,30 @@ class DT_User_Management
             $user_response['user_location'] = Disciple_Tools_Users::get_user_location( $user->ID );
         }
 
-
         if ( $section === 'activity' || $section === null ) {
-            $user_activity = $wpdb->get_results($wpdb->prepare("
-                SELECT hist_time, action, object_name, meta_key, object_type, object_note
-                FROM $wpdb->dt_activity_log
-                WHERE user_id = %s
-                AND action IN ( 'comment', 'field_update', 'connected_to', 'logged_in', 'created', 'disconnected_from', 'decline', 'assignment_decline' )
-                ORDER BY `hist_time` DESC
-                LIMIT 100
-            ", $user->ID));
-            if ( ! empty( $user_activity ) ) {
-                foreach ($user_activity as $a) {
-                    if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
-                        if ($a->object_type === "contacts") {
-                            $a->object_note = sprintf( _x( "Updated contact %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                        if ($a->object_type === "groups") {
-                            $a->object_note = sprintf( _x( "Updated group %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                    }
-                    if ($a->action == 'comment') {
-                        if ($a->meta_key === "contacts") {
-                            $a->object_note = sprintf( _x( "Commented on contact %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                        if ($a->meta_key === "groups") {
-                            $a->object_note = sprintf( _x( "Commented on group %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                    }
-                    if ($a->action == 'created') {
-                        if ($a->object_type === "contacts") {
-                            $a->object_note = sprintf( _x( "Created contact %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                        if ($a->object_type === "groups") {
-                            $a->object_note = sprintf( _x( "Created group %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
-                        }
-                    }
-                    if ($a->action === "logged_in") {
-                        $a->object_note = __( "Logged In", 'disciple_tools' );
-                    }
-                    if ($a->action === 'assignment_decline') {
-                        $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
-                    }
-                }
-            }
+            $user_activity = DT_User_Metrics::get_user_activity( $user->ID );
             $user_response['user_activity'] = $user_activity;
         }
 
         if ( $section === 'contact_attempts' || $section === null ) {
-//            $user_response['contact_attempts'] = $this->query_contact_attempts( $user->ID ); // @todo query running super slow, needs rewrite
+            $user_response['contact_attempts'] = DT_User_Metrics::get_user_time_to_contact_attempt( $user->ID );
             $user_response['contact_attempts'] = [];
         }
 
         if ( $section === 'contact_accepts' || $section === null ) {
-            $user_response['contact_accepts'] = $this->query_contact_accepts( $user->ID );
+            $user_response['contact_accepts'] = DT_User_Metrics::get_user_time_to_contact_accept( $user->ID );
         }
 
         if ( $section === 'unaccepted_contacts' || $section === null ) {
-            $user_response['unaccepted_contacts'] = $this->query_unaccepted_contacts( $user->ID );
+            $user_response['unaccepted_contacts'] = DT_User_Metrics::get_user_oldest_unaccepted_contacts( $user->ID );
         }
 
         if ( $section === 'unattempted_contacts' || $section === null ) {
-            $user_response['unattempted_contacts'] = $this->query_unattempted_contacts( $user->ID );
+            $user_response['unattempted_contacts'] = DT_User_Metrics::get_user_oldest_active_contacts_with_no_seeker_path( $user->ID );
         }
 
         if ( $section === 'days_active' || $section === null ) {
-
-            $one_year = time() - 3600 * 24 * 365;
-            $days_active_results = $wpdb->get_results($wpdb->prepare("
-                SELECT FROM_UNIXTIME(`hist_time`, '%%Y-%%m-%%d') as day,
-                count(histid) as activity_count
-                FROM $wpdb->dt_activity_log
-                WHERE user_id = %s
-                AND hist_time > %s
-                group by day
-                ORDER BY `day` ASC",
-                $user->ID,
-                $one_year
-            ), ARRAY_A);
-            $days_active = [];
-            foreach ($days_active_results as $a) {
-                $days_active[$a["day"]] = $a;
-            }
-            $first = isset( $days_active_results[0]['day'] ) ? strtotime( $days_active_results[0]['day'] ) : time();
-            $first_week_start = gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $first ) . ' days', $first ) );
-            $current = strtotime( $first_week_start );
-            $daily_activity = [];
-            while ($current < time()) {
-
-                $activity = $days_active[gmdate( 'Y-m-d', $current )]["activity_count"] ?? 0;
-
-                $daily_activity[] = [
-                    "day" => dt_format_date( $current ),
-                    "weekday" => gmdate( 'l', $current ),
-                    "weekday_number" => gmdate( 'N', $current ),
-                    "week_start" => gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $current ) . ' days', $current ) ),
-                    "activity_count" => $activity,
-                    "activity" => $activity > 0 ? 1 : 0
-                ];
-
-                $current += 24 * 60 * 60;
-            }
-
-            $user_response['days_active'] = $daily_activity;
+            $user_response['days_active'] = DT_User_Metrics::get_user_days_active_chart_data( $user_id );
         }
 
 
@@ -604,281 +504,11 @@ class DT_User_Management
         $body = $request->get_json_params();
 
         if ( isset( $get_params["user"] ) ) {
-            delete_transient( 'dispatcher_user_data' );
-            $user = get_user_by( "ID", $get_params["user"] );
-            if ( !$user ){
-                return new WP_Error( "user_id", "User does not exist", [ 'status' => 400 ] );
-            }
-            if ( empty( $user->caps ) ) {
-                return new WP_Error( "user_id", "Cannot update this user", [ 'status' => 400 ] );
-            }
-            if ( !empty( $body["user_status"] ) ) {
-                update_user_option( $user->ID, 'user_status', $body["user_status"] );
-            }
-            if ( !empty( $body["workload_status"] ) ) {
-                update_user_option( $user->ID, 'workload_status', $body["workload_status"] );
-            }
-            if ( !empty( $body["add_location"] ) ){
-                Disciple_Tools_Users::add_user_location( $body["add_location"], $user->ID );
-            }
-            if ( !empty( $body["remove_location"] ) ){
-                Disciple_Tools_Users::delete_user_location( $body["remove_location"], $user->ID );
-            }
-            if ( !empty( $body["add_unavailability"] ) ){
-                if ( !empty( $body["add_unavailability"]["start_date"] ) && !empty( $body["add_unavailability"]["end_date"] ) ) {
-                    $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-                    if ( !$dates_unavailable ){
-                        $dates_unavailable = [];
-                    }
-                    $max_id = 0;
-                    foreach ( $dates_unavailable as $range ){
-                        $max_id = max( $max_id, $range["id"] ?? 0 );
-                    }
-
-                    $dates_unavailable[] = [
-                        "id" => $max_id + 1,
-                        "start_date" => strtotime( $body["add_unavailability"]["start_date"] ),
-                        "end_date" => strtotime( $body["add_unavailability"]["end_date"] ),
-                    ];
-                    update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
-                    return $this->get_dt_user( $user->ID );
-                }
-            }
-            if ( !empty( $body["remove_unavailability"] ) ) {
-                $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-                foreach ( $dates_unavailable as $index => $range ) {
-                    if ( $body["remove_unavailability"] === $range["id"] ){
-                        unset( $dates_unavailable[$index] );
-                    }
-                }
-                $dates_unavailable = array_values( $dates_unavailable );
-                update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
-                return $dates_unavailable;
-            }
-            if ( isset( $body["save_roles"] ) ){
-                // If the current user can't promote users or edit this particular user, bail.
-                if ( !current_user_can( 'promote_users' ) ) {
-                    return false;
-                }
-                $can_not_promote_to_roles = [];
-                if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
-                    $can_not_promote_to_roles = [ 'administrator' ];
-                }
-                if ( !current_user_can( 'manage_dt' ) ){
-                    $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
-                }
-
-                // Create a new user object.
-                $u = new WP_User( $user->ID );
-
-                // If we have an array of roles.
-                if ( ! empty( $body['save_roles'] ) ) {
-
-                    // Get the current user roles.
-                    $old_roles = (array) $u->roles;
-
-                    // Sanitize the posted roles.
-                    $new_roles = array_map( 'dt_multi_role_sanitize_role', array_map( 'sanitize_text_field', wp_unslash( $body['save_roles'] ) ) );
-
-                    // Loop through the posted roles.
-                    foreach ( $new_roles as $new_role ) {
-
-                        // If the user doesn't already have the role, add it.
-                        if ( dt_multi_role_is_role_editable( $new_role ) && ! in_array( $new_role, (array) $user->roles ) ) {
-                            if ( !in_array( $new_role, $can_not_promote_to_roles ) ){
-                                $u->add_role( $new_role );
-                            }
-                        }
-                    }
-
-                    // Loop through the current user roles.
-                    foreach ( $old_roles as $old_role ) {
-
-                        // If the role is editable and not in the new roles array, remove it.
-                        if ( dt_multi_role_is_role_editable( $old_role ) && ! in_array( $old_role, $new_roles ) ) {
-                            if ( !in_array( $old_role, $can_not_promote_to_roles ) ){
-                                $u->remove_role( $old_role );
-                            }
-                        }
-                    }
-
-                    // If the posted roles are empty.
-                } else {
-
-                    // Loop through the current user roles.
-                    foreach ( (array) $u->roles as $old_role ) {
-
-                        // Remove the role if it is editable.
-                        if ( dt_multi_role_is_role_editable( $old_role ) ) {
-                            $u->remove_role( $old_role );
-                        }
-                    }
-                }
-                return $this->get_dt_user( $user->ID );
-            }
-            if ( isset( $body["allowed_sources"] ) ){
-                // If the current user can't promote users or edit this particular user, bail.
-                if ( !current_user_can( 'promote_users' ) ) {
-                    return false;
-                }
-                $allowed_sources = [];
-                foreach ( $body["allowed_sources"] as $s ){
-                    $allowed_sources[] = sanitize_key( wp_unslash( $s ) );
-                }
-                if ( in_array( "restrict_all_sources", $allowed_sources ) ){
-                    $allowed_sources = [ "restrict_all_sources" ];
-                }
-                update_user_option( $user->ID, "allowed_sources", $allowed_sources );
-                return $this->get_dt_user( $user->ID );
-            }
-            if ( isset( $body['update_nickname'] ) ) {
-                $display_name = sanitize_text_field( wp_unslash( $body['update_nickname'] ) );
-                $result = wp_update_user( array(
-                    'ID' => $user->ID,
-                    'display_name' => $display_name
-                ) );
-                if ( is_wp_error( $result ) ) {
-                    return false;
-                } else {
-                    return $result;
-                }
-            }
+            return Disciple_Tools_Users::update_settings_on_user( $get_params["user"], $body );
         }
         return false;
     }
 
-    public function query_contact_attempts( $user_id ) {
-        global $wpdb;
-        $user_assigned_to = 'user-' . esc_sql( $user_id );
-
-        return $wpdb->get_results( $wpdb->prepare( "
-            SELECT contacts.ID,
-                MAX(date_assigned.hist_time) as date_assigned,
-                MIN(date_attempted.hist_time) as date_attempted,
-                MIN(date_attempted.hist_time) - MAX(date_assigned.hist_time) as time,
-                contacts.post_title as name
-            from $wpdb->posts as contacts
-            INNER JOIN $wpdb->postmeta as pm on ( contacts.ID = pm.post_id AND pm.meta_key = 'assigned_to' )
-            INNER JOIN $wpdb->dt_activity_log as date_attempted on ( date_attempted.meta_key = 'seeker_path' and date_attempted.object_type = 'contacts' AND date_attempted.object_id = contacts.ID AND date_attempted.meta_value ='attempted' )
-            INNER JOIN $wpdb->dt_activity_log as date_assigned on (
-                date_assigned.meta_key = 'assigned_to'
-                AND date_assigned.object_type = 'contacts'
-                AND date_assigned.object_id = contacts.ID
-                AND date_assigned.meta_value = %s )
-            WHERE date_attempted.hist_time > date_assigned.hist_time
-            AND pm.meta_value = %s
-            AND date_assigned.hist_time = (
-                SELECT MAX(hist_time) FROM $wpdb->dt_activity_log a WHERE
-                a.meta_key = 'assigned_to'
-                AND a.object_type = 'contacts'
-                AND a.object_id = contacts.ID )
-            AND contacts.ID NOT IN (
-                SELECT post_id FROM $wpdb->postmeta
-                WHERE meta_key = 'type' AND meta_value = 'user'
-                GROUP BY post_id )
-            GROUP by contacts.ID
-            ORDER BY date_attempted desc
-            LIMIT 10
-        ", $user_assigned_to, $user_assigned_to ), ARRAY_A);
-    }
-
-    public function query_unattempted_contacts( $user_id ) {
-        global $wpdb;
-        $user_assigned_to = 'user-' . esc_sql( $user_id );
-
-        return $wpdb->get_results( $wpdb->prepare( "
-            SELECT contacts.ID,
-                MAX(date_assigned.hist_time) as date_assigned,
-                %d - MAX(date_assigned.hist_time) as time,
-                contacts.post_title as name
-            from $wpdb->posts as contacts
-            INNER JOIN $wpdb->postmeta as pm on ( contacts.ID = pm.post_id AND pm.meta_key = 'assigned_to' )
-            INNER JOIN $wpdb->postmeta as pm1 on ( contacts.ID = pm1.post_id AND pm1.meta_key = 'seeker_path' and pm1.meta_value = 'none' )
-            INNER JOIN $wpdb->postmeta as pm2 on ( contacts.ID = pm2.post_id AND pm2.meta_key = 'overall_status' and pm2.meta_value = 'active' )
-            INNER JOIN $wpdb->dt_activity_log as date_assigned on (
-                date_assigned.meta_key = 'assigned_to'
-                AND date_assigned.object_type = 'contacts'
-                AND date_assigned.object_id = contacts.ID
-                AND date_assigned.meta_value = %s )
-            WHERE pm.meta_value = %s
-            AND contacts.ID NOT IN (
-                SELECT post_id FROM $wpdb->postmeta
-                WHERE meta_key = 'type' AND meta_value = 'user'
-                GROUP BY post_id )
-            GROUP by contacts.ID
-            ORDER BY date_assigned asc
-            LIMIT 10
-        ", time(), $user_assigned_to, $user_assigned_to ), ARRAY_A);
-    }
-
-    public function query_contact_accepts( $user_id ) {
-        global $wpdb;
-        $user_assigned_to = 'user-' . esc_sql( $user_id );
-
-        return $wpdb->get_results( $wpdb->prepare( "
-            SELECT contacts.ID,
-                MAX(date_assigned.hist_time) as date_assigned,
-                MIN(date_accepted.hist_time) as date_accepted,
-                MIN(date_accepted.hist_time) - MAX(date_assigned.hist_time) as time,
-                contacts.post_title as name
-            from $wpdb->posts as contacts
-            INNER JOIN $wpdb->postmeta as pm on ( contacts.ID = pm.post_id AND pm.meta_key = 'assigned_to' )
-            INNER JOIN $wpdb->dt_activity_log as date_accepted on (
-                date_accepted.meta_key = 'overall_status'
-                AND date_accepted.object_type = 'contacts'
-                AND date_accepted.object_id = contacts.ID
-                AND date_accepted.meta_value = 'active' )
-            INNER JOIN $wpdb->dt_activity_log as date_assigned on (
-                date_assigned.meta_key = 'assigned_to'
-                AND date_assigned.object_type = 'contacts'
-                AND date_assigned.object_id = contacts.ID
-                AND date_assigned.user_id != %d
-                AND date_assigned.meta_value = %s )
-            WHERE date_accepted.hist_time > date_assigned.hist_time
-            AND pm.meta_value = %s
-            AND date_assigned.hist_time = (
-                SELECT MAX(hist_time) FROM $wpdb->dt_activity_log a WHERE
-                a.meta_key = 'assigned_to'
-                AND a.object_type = 'contacts'
-                AND a.object_id = contacts.ID )
-            AND contacts.ID NOT IN (
-                SELECT post_id FROM $wpdb->postmeta
-                WHERE meta_key = 'type' AND meta_value = 'user'
-                GROUP BY post_id )
-            GROUP by contacts.ID
-            ORDER BY date_accepted desc
-            LIMIT 10
-        ", esc_sql( $user_id ), $user_assigned_to, $user_assigned_to ), ARRAY_A);
-    }
-
-    public function query_unaccepted_contacts( $user_id ) {
-        global $wpdb;
-        $user_assigned_to = 'user-' . esc_sql( $user_id );
-
-        return $wpdb->get_results( $wpdb->prepare( "
-            SELECT contacts.ID,
-                MAX(date_assigned.hist_time) as date_assigned,
-                %d - MAX(date_assigned.hist_time) as time,
-                contacts.post_title as name
-            from $wpdb->posts as contacts
-            INNER JOIN $wpdb->postmeta as pm on ( contacts.ID = pm.post_id AND pm.meta_key = 'assigned_to' )
-            INNER JOIN $wpdb->postmeta as pm1 on ( contacts.ID = pm1.post_id AND pm1.meta_key = 'overall_status' and pm1.meta_value = 'assigned' )
-            INNER JOIN $wpdb->dt_activity_log as date_assigned on (
-                date_assigned.meta_key = 'assigned_to'
-                AND date_assigned.object_type = 'contacts'
-                AND date_assigned.object_id = contacts.ID
-                AND date_assigned.meta_value = %s )
-            WHERE pm.meta_value = %s
-            AND contacts.ID NOT IN (
-                SELECT post_id FROM $wpdb->postmeta
-                WHERE meta_key = 'type' AND meta_value = 'user'
-                GROUP BY post_id )
-            GROUP by contacts.ID
-            ORDER BY date_assigned asc
-            LIMIT 10
-        ", time(), $user_assigned_to, $user_assigned_to ), ARRAY_A);
-
-    }
 
 }
 new DT_User_Management();

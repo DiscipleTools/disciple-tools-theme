@@ -637,7 +637,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <br>
                 <div class="menuitem">
                     <label for="default">Default Icon:</label>
-                    <input type="radio" name="icon" value="default" checked><img src="<?php echo esc_html( get_template_directory_uri() ); ?>/dt-assets/images/follow.svg"></div>
+                    <input type="radio" name="icon" value="default" checked><img src="<?php echo esc_html( get_template_directory_uri() ); ?>/dt-assets/images/contact.svg"></div>
                     <br>
                     <label for="custom">Custom Icon URL:</label>
                     <input type="radio" name="icon" value="custom">
@@ -661,18 +661,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         // Load custom fields
         $custom_field_options = dt_get_option( 'dt_field_customizations' );
 
-        // Check if custom fields exists and if not create an empty array
-        if ( ! isset( $custom_field_options ) ) {
-            update_option( 'dt_field_customizations', [], true );
-            $custom_field_options = dt_get_option( 'dt_field_customizations' );
-        }
-
-        // Check if custom fields aren't empty and if so create an empty array
-        if ( empty( $custom_field_options['contacts'] ) ) {
-            update_option( 'dt_field_customizations', [], true );
-            $custom_field_options = dt_get_option( 'dt_field_customizations' );
-        }
-
         // Add a new custom field
         if ( ! empty( $_POST['add_custom_quick_action_label'] ) ) {
             $label = sanitize_text_field( wp_unslash( $_POST['add_custom_quick_action_label'] ) );
@@ -682,7 +670,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             if ( ! empty( $_POST['add_custom_quick_action_icon'] ) ) {
                 $icon_url = sanitize_text_field( wp_unslash( $_POST["add_custom_quick_action_icon"] ) );
             } else {
-                $icon_url = get_template_directory_uri() . '/dt-assets/images/follow.svg';
+                $icon_url = get_template_directory_uri() . '/dt-assets/images/contact.svg';
             }
 
             if ( empty( $label ) ) {
@@ -732,7 +720,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             if ( isset( $_POST['edit_field_icon'] ) ) {
                 $edit_field_icon = dt_recursive_sanitize_array( $_POST['edit_field_icon'] );
             } else {
-                $edit_field_icon = get_template_directory_uri() . '/dt-assets/images/follow.svg';
+                $edit_field_icon = get_template_directory_uri() . '/dt-assets/images/contact.svg';
             }
 
             foreach ( $quick_action_edits as $quick_action_key => $quick_action_new_name ) {

@@ -127,7 +127,7 @@ final class Disciple_Tools_Dashboard
     }
 
     public function dt_dashboard_tile() {
-        if ( ! user_can( get_current_user_id(), 'manage_dt' ) ) {
+        if ( ! current_user_can( 'manage_dt' ) ) {
             return;
         }
         // Check for a dismissed item button click
@@ -156,7 +156,79 @@ final class Disciple_Tools_Dashboard
             update_option( 'dt_setup_wizard_options', $setup_options );
         }
 
-        wp_add_dashboard_widget('dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
+        function dt_show_news_widget() {
+            include_once( ABSPATH . WPINC . '/feed.php' );
+
+            if ( function_exists( 'fetch_feed' ) ) {
+                $news_feed = fetch_feed( 'https://disciple.tools/news/feed/' );
+            }
+
+            if ( is_wp_error( $news_feed ) ) {
+                ?>
+                <p>
+                    <i><?php echo esc_html( $news_feed->get_error_message() ); ?></i>
+                </p>
+                <?php
+                return;
+            }
+
+            $news_feed->init();
+            $news_feed->set_output_encoding( 'UTF-8' );
+            $news_feed->handle_content_type();
+            $news_feed->set_cache_duration( 86400 );
+            $news_feed_items = $news_feed->get_items( 0, 1 );
+
+            if ( empty( $news_feed_items ) || !is_array( $news_feed_items ) ) {
+                ?>
+                <p align="center">
+                    <i><?php esc_html_e( 'no news found', 'disciple_tools' ); ?></i>
+                </p>
+                <?php
+                return;
+            }
+
+            ?>
+                <style>
+                    .news-feed img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+                    .news-feed-title {
+                        color: #0073aa;
+                        font-weight: bold;
+                    }
+                    .news-feed-heading {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 5%;
+                    }
+                    #dashboard-widgets .news-feed h3 {
+                        font-size: 1.3em;
+                        font-weight: 600;
+                    }
+                    #dashboard-widgets .news-feed ul {
+                        list-style: disc;
+                        padding-inline-start: 40px;
+                    }
+                </style>
+            <?php
+            foreach ( $news_feed_items as $news ) {
+                ?>
+                <div class="news-feed">
+                    <div class="news-feed-heading" >
+                        <a href="<?php echo esc_attr( esc_url( $news->get_permalink() ) ); ?>" target="_blank" class="news-feed-title"><?php echo esc_html( $news->get_title() ); ?></a>
+                        <i><?php echo esc_html( $news->get_date( 'm/d/Y' ) ); ?></i>
+                    </div>
+                    <?php echo wp_kses_post( $news->get_content() ); ?>
+                    <div align="right"><small>powered by <a href="https://disciple.tools/news?source=dt_dashboard_news_feed" target="_blank">Disciple.Tools News</a></small></div>
+                </div>
+                <?php
+            }
+        }
+
+        add_meta_box( 'dt_news_feed', esc_html__( 'Disciple.Tools News Feed', 'disciple_tools' ), 'dt_show_news_widget', 'dashboard', 'side', 'high' );
+
+        wp_add_dashboard_widget( 'dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
 
             $setup_options = get_option( "dt_setup_wizard_options", [] );
             $default = [
@@ -189,34 +261,7 @@ final class Disciple_Tools_Dashboard
             } );
 
             ?><p>Completed <?php echo esc_html( $completed ); ?> of <?php echo esc_html( sizeof( $dt_setup_wizard_items ) ); ?> tasks</p>
-            <style>
-                .wizard_chevron_open {
-                    position: relative;
-                    width: 7px;
-                    height: 7px;
-                    border-width: 0 2px 2px 0;
-                    border-style: solid;
-                    transform: rotate(45deg);
-                    margin: auto;
-                }
-                .wizard_chevron_close {
-                    position: relative;
-                    width: 7px;
-                    height: 7px;
-                    border-width: 0 2px 2px 0;
-                    border-style: solid;
-                    transform: rotate(225deg);
-                    margin: auto;
-                }
-                .toggle_chevron{
-                    vertical-align: middle !important;
-                    cursor:pointer;
-                }
-                .wizard_description{
-                    position: relative;
-                    height: 200px;
-                }
-            </style>
+
             <form method="POST">
                 <?php wp_nonce_field( 'update_setup_wizard_items', 'setup_wizard_nonce' ); ?>
                 <table class="widefat striped">
@@ -236,7 +281,11 @@ final class Disciple_Tools_Dashboard
                         <tr>
                             <td><?php echo esc_html( array_search( $item_key, array_keys( $dt_setup_wizard_items ) ) +1 ); ?>.</td>
                             <td><?php echo esc_html( $item_value["label"] ); ?></td>
-                            <td>Update <a href="<?php echo esc_html( $item_value["link"] ); ?>">here</a></td>
+                            <td>
+                                <?php if ( !empty( $item_value["link"] ) ) : ?>
+                                    <a href="<?php echo esc_html( $item_value["link"] ); ?>" target="_blank">See</a>
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <?php
                                 if ( $item_value['complete'] ) {
@@ -248,7 +297,7 @@ final class Disciple_Tools_Dashboard
                                 if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"] ) ){
                                     if ( !isset( $item_value["complete"] ) || empty( $item_value["complete"] ) ) {
                                         ?>
-                                            <button name="dismiss" value="<?php echo esc_attr( $item_key ); ?>">Dismiss</button>
+                                            <button name="dismiss" class="button" value="<?php echo esc_attr( $item_key ); ?>">Dismiss</button>
                                         <?php
                                     }
                                 }
@@ -273,7 +322,7 @@ final class Disciple_Tools_Dashboard
 
                                     if ( isset( $item_value["complete"] ) && !empty( $item_value["complete"] ) ) {
                                         ?>
-                                        <button name="undismiss" value="<?php echo esc_attr( $item_key ); ?>">Un-dismiss</button>
+                                        <button name="undismiss" class="button" value="<?php echo esc_attr( $item_key ); ?>">Un-dismiss</button>
                                         <?php
                                     }
                                 }
@@ -388,6 +437,22 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         'link' => esc_url( 'https://developers.disciple.tools/hosting/cron' ),
         'complete' => defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON === true,
         'hide_mark_done' => true
+    ];
+    if ( version_compare( phpversion(), '7.3.0', "<=" ) ){
+        $items['update_php'] = [
+            'label' => 'Update PHP',
+            'description' => "You are using an old version of PHP, please consider contacting your hosting provider to upgrade it",
+            'link' => '',
+            'complete' => version_compare( phpversion(), '7.3.0', ">=" ),
+            'hide_mark_done' => true
+        ];
+    }
+    $items['donation'] = [
+        'label' => 'Consider donating to Disciple.Tools',
+        'description' => "Would you like to be part of the development and maintenance of Disciple Tools? We would love your help! \r\n\r\n Donation portal: https://gospelambition.org/donate/",
+        'link' => 'https://gospelambition.org/donate/',
+        'complete' => false,
+        'hide_mark_done' => false
     ];
 
     return $items;

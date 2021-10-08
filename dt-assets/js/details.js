@@ -299,10 +299,9 @@ jQuery(document).ready(function($) {
       emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function(node, a, item){
-          API.update_post('contacts', post_id, {[field_key]: 'user-' + item.ID}).then(function (response) {
+          API.update_post(post_type, post_id, {[field_key]: 'user-' + item.ID}).then(function (response) {
             window.lodash.set(post, field_key, response[field_key])
-            setStatus(response)
-            user_input.val(post.assigned_to.display)
+            user_input.val(post[field_key].display)
             user_input.blur()
           }).catch(err => { console.error(err) })
         },
@@ -742,8 +741,8 @@ jQuery(document).ready(function($) {
     "locale": {
       "format": "YYYY/MM/DD",
       "separator": " - ",
-      "daysOfWeek": window.wpApiShare.translations.days_of_the_week,
-      "monthNames": window.wpApiShare.translations.month_labels,
+      "daysOfWeek": window.SHAREDFUNCTIONS.get_days_of_the_week_initials(),
+      "monthNames": window.SHAREDFUNCTIONS.get_months_labels(),
     },
     "firstDay": 1,
     "startDate": moment().add(1, "day"),
@@ -891,6 +890,11 @@ jQuery(document).ready(function($) {
               $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
             }).catch(err => { console.error(err) })
           }
+        },
+        href: function (item) {
+          const postType = window.wpApiShare.post_type
+          const encodedFilterLabel = window.SHAREDFUNCTIONS.uriEncodeFilter('tags', item.name, `Tags: ${item.name}`)
+          return window.wpApiShare.site_url + `/${postType}?fieldQuery=${encodedFilterLabel}`
         },
       },
       callback: {

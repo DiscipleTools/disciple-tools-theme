@@ -5,7 +5,7 @@ jQuery(document).ready(function($) {
     write_users_list()
     open_user_modal( window.wpApiShare.url_path.replace( 'user-management/user','').replace('/','') )
   }
-  if( 'user-management/add-user' === window.wpApiShare.url_path ) {
+  if( window.wpApiShare.url_path.includes('user-management/add-user') ) {
     write_add_user()
   }
 
@@ -105,74 +105,228 @@ jQuery(document).ready(function($) {
 
   }
 
-
-  function open_user_modal( user_id ) {
-
-    let update_user = ( user_id, key, value )=>{
-      let data =  {
-        [key]: value
-      }
-      return makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
+  let update_user = ( user_id, key, value )=>{
+    let data =  {
+      [key]: value
     }
+    return makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
+  }
 
-    $('#user_name').on( "click", function(e) {
-      window.user_name = $(this).text()
-      $(this).parent().prepend(`
-          <div class="input-group" id="user-name-input-wrapper">
-              <input type="text" class="input-group-field" style="max-width: 50%;" id="user-name-input" value="${window.lodash.escape(window.user_name)}" />
-              <div class="input-group-button">
-                  <input type="button" class="button hollow" id="reset-user-name" value="Reset">
-                  <input type="button" class="button" id="update-user-name" value="Save">
-              </div>
-          </div>`)
-      $(this).hide()
-      $('#reset-user-name').on("click", function(){
-        $('#user_name').show()
-        $('#user-name-input-wrapper').hide()
-      })
-      $('#update-user-name').on('click', function(){
-        let new_name = window.lodash.escape($('#user-name-input').val())
-        if ( window.user_name !== new_name ) {
-          update_user(user_id, 'update_nickname', new_name )
-            .done(function(data) {
-              if ( data ) {
-                window.user_name = new_name
-                $('#user_name').html(new_name).show()
-                $('#user-name-input-wrapper').hide()
-              } else {
-                $('#user_name').show().append(' <span class="error"><i class="fi-alert"></i></span>')
-                $('#user-name-input-wrapper').hide()
-              }
-            })
+  let user_details = [];
+
+  function setup_user_roles(user_data){
+    $('#user_roles_list input').prop('checked', false);
+    if ( user_data.roles ){
+      window.lodash.forOwn( user_data.roles, role=>{
+        $(`#user_roles_list [value="${role}"]`).prop('checked', true)
+        if ( role === "partner" || role === "marketer" ){
+          $(`#allowed_sources_options`).show()
+          $('#allowed_sources_options input').prop('checked', false);
+          user_data.allowed_sources.forEach(source=>{
+            $(`#allowed_sources_options [value="${source}"]`).prop('checked', true)
+          })
+          if ( user_data.length === 0 ){
+            $(`#allowed_sources_options [value="all"]`).prop('checked', true)
+          }
+        } else {
+          $(`#allowed_sources_options`).hide()
         }
       })
+    }
+  }
+
+  $('#save_roles').on("click", function () {
+    $(this).toggleClass('loading', true)
+    let roles = [];
+    $('#user_roles_list input:checked').each(function () {
+      roles.push($(this).val())
+    })
+    update_user( window.current_user_lookup, 'save_roles', roles).then((roles)=>{
+      user_details.roles = roles
+      setup_user_roles( user_details )
+      $(this).toggleClass('loading', false)
+    }).catch(()=>{
+      $(this).toggleClass('loading', false)
     })
 
-
-    /**
-     * Status
-     */
-    $('#status-select').on('change', function () {
-      let value = $(this).val()
-      update_user( window.current_user_lookup, 'user_status', value)
+  })
+  $('#save_allowed_sources').on("click", function () {
+    $(this).toggleClass('loading', true)
+    let sources = [];
+    $('#allowed_sources_options input:checked').each(function () {
+      sources.push($(this).val())
     })
-    $('#workload-select').on('change', function () {
-      let value = $(this).val()
-      update_user( window.current_user_lookup, 'workload_status', value)
+    update_user( window.current_user_lookup, 'allowed_sources', sources).then((user_data)=>{
+      user_details.allowed_sources = user_data
+      setup_user_roles( user_details )
+      $(this).toggleClass('loading', false)
+    }).catch(()=>{
+      $(this).toggleClass('loading', false)
     })
+  })
 
+  let date_unavailable_table = $('#unavailable-list')
+  date_unavailable_table.empty()
+  let display_dates_unavailable = (list = [] )=>{
+    date_unavailable_table.empty()
+    let rows = ``
+    list.forEach(range=>{
+      rows += `<tr>
+        <td>${window.lodash.escape(range.start_date)}</td>
+        <td>${window.lodash.escape(range.end_date)}</td>
+        <td><button class="button remove_dates_unavailable" data-id="${window.lodash.escape(range.id)}">${ window.lodash.escape( dt_user_management_localized.translations.remove ) }</button></td>
+      </tr>`
+    })
+    date_unavailable_table.html(rows)
+  }
+  $( document).on( 'click', '.remove_dates_unavailable', function () {
+    let id = $(this).data('id');
+    update_user( window.current_user_lookup, 'remove_unavailability', id).then((resp)=>{
+      display_dates_unavailable(resp)
+    })
+  })
+
+  /**
+   * Locations
+   */
+  if ( typeof dtMapbox === "undefined" ) {
+    let typeaheadTotals = {}
+    if (!window.Typeahead['.js-typeahead-location_grid'] ){
+      $.typeahead({
+        input: '.js-typeahead-location_grid',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        maxItem: 20,
+        dropdownFilter: [{
+          key: 'group',
+          value: 'focus',
+          template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
+          all: window.lodash.escape(window.wpApiShare.translations.all_locations),
+        }],
+        source: {
+          focus: {
+            display: "name",
+            ajax: {
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+              data: {
+                s: "{{query}}",
+                filter: function () {
+                  return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                }
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  if (typeof typeaheadTotals !== "undefined") {
+                    typeaheadTotals.field = data.total
+                  }
+                  return data.location_grid
+                }
+              }
+            }
+          }
+        },
+        display: "name",
+        templateValue: "{{name}}",
+        dynamic: true,
+        multiselect: {
+          matchOn: ["ID"],
+          data: function () {
+            return [];
+          }, callback: {
+            onCancel: function (node, item) {
+              update_user( window.current_user_lookup, 'remove_location', item.ID)
+            }
+          }
+        },
+        callback: {
+          onClick: function(node, a, item, event){
+            update_user( window.current_user_lookup, 'add_location', item.ID)
+          },
+          onReady(){
+            this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
+            this.container
+            .removeClass("filter")
+            .find("." + this.options.selector.filterButton)
+            .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.location_grid
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#location_grid-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#location_grid-result-container').html("");
+          }
+        }
+      });
+    }
+  }
+
+
+  $('input.text-input').change(function(){
+    const id = $(this).attr('id')
+    const val = $(this).val()
+    $(`#${id}-spinner`).addClass('active')
+    update_user( window.current_user_lookup, id, val ).then(()=> {
+      $(`#${id}-spinner`).removeClass('active')
+    })
+  })
+  $('select.select-field').change(e => {
+    const id = $(e.currentTarget).attr('id')
+    const val = $(e.currentTarget).val()
+    $(`#${id}-spinner`).addClass('active')
+
+    update_user( window.current_user_lookup, id, val ).then(()=> {
+      $(`#${id}-spinner`).removeClass('active')
+    })
+  })
+  $('button.dt_multi_select').on('click',function () {
+    let fieldKey = $(this).data("field-key")
+    let optionKey = $(this).attr('id')
+    $(`#${fieldKey}-spinner`).addClass("active")
+    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
+    field.addClass("submitting-select-button")
+    let action = "add"
+    let update_request = null
+    if (field.hasClass("selected-select-button")){
+      action = "delete"
+      update_request = update_user( window.current_user_lookup,'remove_' + fieldKey, optionKey )
+    } else {
+      field.removeClass("empty-select-button")
+      field.addClass("selected-select-button")
+      update_request = update_user( window.current_user_lookup, 'add_' + fieldKey, optionKey )
+    }
+    update_request.then(()=>{
+      field.removeClass("submitting-select-button selected-select-button")
+      field.blur();
+      field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
+      $(`#${fieldKey}-spinner`).removeClass("active")
+    }).catch(err=>{
+      field.removeClass("submitting-select-button selected-select-button")
+      field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
+      handleAjaxError(err)
+    })
+  })
+
+  function open_user_modal( user_id ) {
+    $('#user_modal').foundation('open');
     /**
      * Set availability dates
      */
     let unavailable_dates_picker = $('#date_range')
     unavailable_dates_picker.daterangepicker({
+      parentEl: "#user_modal",
       "singleDatePicker": false,
       autoUpdateInput: false,
       "locale": {
         "format": "YYYY/MM/DD",
         "separator": " - ",
-        "daysOfWeek": window.wpApiShare.translations.days_of_the_week,
-        "monthNames": window.wpApiShare.translations.month_labels,
+        "daysOfWeek": window.SHAREDFUNCTIONS.get_days_of_the_week_initials(),
+        "monthNames": window.SHAREDFUNCTIONS.get_months_labels(),
       },
       "firstDay": 1,
       "opens": "center",
@@ -185,148 +339,13 @@ jQuery(document).ready(function($) {
       update_user( window.current_user_lookup, 'add_unavailability', {start_date, end_date}).then((resp)=>{
         $('#add_unavailable_dates_spinner').removeClass('active')
         unavailable_dates_picker.val('');
-        display_dates_unavailable(resp.dates_unavailable)
-      })
-    })
-
-
-    $('#save_roles').on("click", function () {
-      $(this).toggleClass('loading', true)
-      let roles = [];
-      $('#user_roles_list input:checked').each(function () {
-        roles.push($(this).val())
-      })
-      update_user( window.current_user_lookup, 'save_roles', roles).then((user_data)=>{
-        setup_user_roles( user_data )
-        $(this).toggleClass('loading', false)
-      }).catch(()=>{
-        $(this).toggleClass('loading', false)
-      })
-
-    })
-    $('#save_allowed_sources').on("click", function () {
-      $(this).toggleClass('loading', true)
-      let sources = [];
-      $('#allowed_sources_options input:checked').each(function () {
-        sources.push($(this).val())
-      })
-      update_user( window.current_user_lookup, 'allowed_sources', sources).then((user_data)=>{
-        setup_user_roles( user_data )
-        $(this).toggleClass('loading', false)
-      }).catch(()=>{
-        $(this).toggleClass('loading', false)
-      })
-    })
-
-    let date_unavailable_table = $('#unavailable-list')
-    date_unavailable_table.empty()
-    let display_dates_unavailable = (list = [] )=>{
-      date_unavailable_table.empty()
-      let rows = ``
-      list.forEach(range=>{
-        rows += `<tr>
-        <td>${window.lodash.escape(range.start_date)}</td>
-        <td>${window.lodash.escape(range.end_date)}</td>
-        <td><button class="button remove_dates_unavailable" data-id="${window.lodash.escape(range.id)}">${ window.lodash.escape( dt_user_management_localized.translations.remove ) }</button></td>
-      </tr>`
-      })
-      date_unavailable_table.html(rows)
-    }
-    $( document).on( 'click', '.remove_dates_unavailable', function () {
-      let id = $(this).data('id');
-      update_user( window.current_user_lookup, 'remove_unavailability', id).then((resp)=>{
         display_dates_unavailable(resp)
       })
     })
 
-    /**
-     * Locations
-     */
-    if ( typeof dtMapbox === "undefined" ) {
-      let typeaheadTotals = {}
-      if (!window.Typeahead['.js-typeahead-location_grid'] ){
-        $.typeahead({
-          input: '.js-typeahead-location_grid',
-          minLength: 0,
-          accent: true,
-          searchOnFocus: true,
-          maxItem: 20,
-          dropdownFilter: [{
-            key: 'group',
-            value: 'focus',
-            template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
-            all: window.lodash.escape(window.wpApiShare.translations.all_locations),
-          }],
-          source: {
-            focus: {
-              display: "name",
-              ajax: {
-                url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
-                data: {
-                  s: "{{query}}",
-                  filter: function () {
-                    return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
-                  }
-                },
-                beforeSend: function (xhr) {
-                  xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-                },
-                callback: {
-                  done: function (data) {
-                    if (typeof typeaheadTotals !== "undefined") {
-                      typeaheadTotals.field = data.total
-                    }
-                    return data.location_grid
-                  }
-                }
-              }
-            }
-          },
-          display: "name",
-          templateValue: "{{name}}",
-          dynamic: true,
-          multiselect: {
-            matchOn: ["ID"],
-            data: function () {
-              return [];
-            }, callback: {
-              onCancel: function (node, item) {
-                update_user( window.current_user_lookup, 'remove_location', item.ID)
-              }
-            }
-          },
-          callback: {
-            onClick: function(node, a, item, event){
-              update_user( window.current_user_lookup, 'add_location', item.ID)
-            },
-            onReady(){
-              this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
-              this.container
-                .removeClass("filter")
-                .find("." + this.options.selector.filterButton)
-                .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
-            },
-            onResult: function (node, query, result, resultCount) {
-              resultCount = typeaheadTotals.location_grid
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-              $('#location_grid-result-container').html(text);
-            },
-            onHideLayout: function () {
-              $('#location_grid-result-container').html("");
-            }
-          }
-        });
-      }
-    }
-
-
-
-
     window.current_user_lookup = user_id
 
     $('#user-id-reveal').html(window.current_user_lookup)
-
-    $('#user_modal').foundation('open');
 
     $('.users-spinner').addClass("active")
 
@@ -362,12 +381,18 @@ jQuery(document).ready(function($) {
     makeRequest( "get", `user?user=${user_id}&section=details`, null , 'user-management/v1/')
       .done(details=>{
         if ( window.current_user_lookup === user_id ) {
+          user_details = details
           $("#user_name").html(window.lodash.escape(details.display_name))
+          $("#update_display_name").val(window.lodash.escape(details.display_name));
+          (details.languages || []).forEach(l=>{
+            $(`#${l}`).addClass('selected-select-button').removeClass('empty-select-button')
+          })
 
-          $('#status-select').val(window.lodash.escape(details.user_status))
+          $('#gender').val(details.gender)
+          $('#user_status').val(window.lodash.escape(details.user_status))
           if ( details.user_status !== "0" ){
           }
-          $('#workload-select').val(window.lodash.escape(details.workload_status))
+          $('#workload_status').val(window.lodash.escape(details.workload_status))
 
           //stats
           $('#update_needed_count').html(window.lodash.escape(details.update_needed["total"]))
@@ -451,15 +476,7 @@ jQuery(document).ready(function($) {
       .done(activity=>{
         if ( window.current_user_lookup === user_id ) {
           let activity_div = $('#activity')
-          let activity_html = ``;
-          activity.user_activity.forEach((a) => {
-            if ( a.object_note !== '' ) {
-              activity_html += `<div>
-                <strong>${moment.unix(a.hist_time).format('YYYY-MM-DD')}</strong>
-                ${window.lodash.escape(a.object_note)}
-              </div>`
-            }
-          })
+          let activity_html = window.dtActivityLogs.makeActivityList(activity.user_activity, window.dt_user_management_localized.translations)
           activity_div.html(activity_html)
         }
       }).catch((e)=>{
@@ -471,10 +488,11 @@ jQuery(document).ready(function($) {
     makeRequest( "get", `user?user=${user_id}&section=days_active`, null , 'user-management/v1/')
       .done(days=>{
         if ( window.current_user_lookup === user_id ) {
+          let days_of_the_week = window.SHAREDFUNCTIONS.get_days_of_the_week_initials('short')
           const daysActiveTranslated = days.days_active.map((day) => {
             // translations start week with Sun, php gmdate starts week with Monday
             const weekNumber = parseInt(day.weekday_number) === 7 ? 0 : parseInt(day.weekday_number)
-            const translatedWeekDay = window.wpApiShare.translations.days_of_the_week[weekNumber]
+            const translatedWeekDay = days_of_the_week[weekNumber]
             return {
               ...day,
               weekday: translatedWeekDay ? translatedWeekDay : day.weekday
@@ -490,8 +508,6 @@ jQuery(document).ready(function($) {
     /* unaccepted_contacts */
     makeRequest( "get", `user?user=${user_id}&section=unaccepted_contacts`, null , 'user-management/v1/')
       .done(response=>{
-        // console.log('unaccepted_contacts')
-        // console.log(response)
 
         if ( window.current_user_lookup === user_id && response.unaccepted_contacts.length > 0 ) {
           let unaccepted_contacts_html = ``
@@ -602,28 +618,7 @@ jQuery(document).ready(function($) {
       console.log( 'error in contact_attempts')
       console.log( e)
     })
-    function setup_user_roles(user_data){
-      $('#user_roles_list input').prop('checked', false);
-      if ( user_data.roles ){
-        window.lodash.forOwn( user_data.roles, role=>{
-          $(`#user_roles_list [value="${role}"]`).prop('checked', true)
-          if ( role === "partner" || role === "marketer" ){
-            $(`#allowed_sources_options`).show()
-            $('#allowed_sources_options input').prop('checked', false);
-            user_data.allowed_sources.forEach(source=>{
-              $(`#allowed_sources_options [value="${source}"]`).prop('checked', true)
-            })
-            if ( user_data.length === 0 ){
-              $(`#allowed_sources_options [value="all"]`).prop('checked', true)
-            }
-          } else {
-            $(`#allowed_sources_options`).hide()
-          }
-        })
-      }
 
-
-    }
   }
 
   function day_activity_chart( days_active ) {
@@ -812,10 +807,17 @@ jQuery(document).ready(function($) {
         spinner_span.html(spinner)
         submit_button.prop('disabled', true)
 
-        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact, "locale": locale, 'user-roles':roles })
+        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact, "locale": locale, 'user-roles':roles, return_contact: true })
           .done(response=>{
-            result_div.html(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response)}">
+            const { user_id, corresponds_to_contact: contact_id } = response
+            result_div.html('')
+            if ( dt_user_management_localized.has_permission ) {
+              result_div.append(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(user_id)}">
               ${ window.lodash.escape( dt_user_management_localized.translations.view_new_user ) }</a>
+            `)
+            }
+            result_div.append(`<br /><a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape(contact_id)}">
+              ${ window.lodash.escape( dt_user_management_localized.translations.view_new_contact ) }</a>
             `)
             jQuery('#new-user-form').empty()
           })
@@ -840,6 +842,36 @@ jQuery(document).ready(function($) {
       }
     });
 
+    function getContact(id, isUser = false, overwriteTypeahead = false) {
+      makeRequest('GET', 'contacts/'+id, null, 'dt-posts/v2/' )
+        .done(function(response){
+
+          if (overwriteTypeahead) {
+            $(".js-typeahead-subassigned").val(window.lodash.escape(response.name))
+          }
+          if ( isUser || ( response.corresponds_to_user >= 0 ) ) {
+            jQuery('#name').val( window.lodash.escape(response.name) )
+            if ( response.contact_email && response.contact_email.length > 0 ) {
+              jQuery('#email').val( window.lodash.escape(response.contact_email[0].value) )
+            }
+            jQuery('#contact-result').html(window.lodash.escape(dt_user_management_localized.translations.already_user))
+            if ( window.dt_user_management_localized.has_permission ) {
+              jQuery('#contact-result').append(`<br /> <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${window.lodash.escape(dt_user_management_localized.translations.view_user)}</a>`)
+            }
+            jQuery('#contact-result').append(`<br /> <a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${id}">${window.lodash.escape(dt_user_management_localized.translations.view_contact)}</a>`)
+          } else {
+            window.contact_record = response
+            submit_button.prop('disabled', false)
+            jQuery('#name').val( window.lodash.escape(response.title) )
+            if ( response.contact_email && response.contact_email[0] !== 'undefined' ) {
+              jQuery('#email').val( window.lodash.escape(response.contact_email[0].value) )
+            }
+
+          }
+          spinner_span.html(``)
+        })
+    }
+
     ["subassigned"].forEach(field_id=>{
       $.typeahead({
         input: `.js-typeahead-${field_id}`,
@@ -857,21 +889,7 @@ jQuery(document).ready(function($) {
             spinner_span.html(spinner)
             submit_button.prop('disabled', true)
 
-            makeRequest('GET', 'contacts/'+item.ID, null, 'dt-posts/v2/' )
-              .done(function(response){
-                if ( item.user ) {
-                  jQuery('#contact-result').html(`${window.lodash.escape(dt_user_management_localized.translations.already_user)} <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${window.lodash.escape(dt_user_management_localized.translations.view_user)}</a>`)
-                } else {
-                  window.contact_record = response
-                  submit_button.prop('disabled', false)
-                  jQuery('#name').val( window.lodash.escape(response.title) )
-                  if ( response.contact_email[0] !== 'undefined' ) {
-                    jQuery('#email').val( window.lodash.escape(response.contact_email[0].value) )
-                  }
-
-                }
-                spinner_span.html(``)
-              })
+            getContact(item.ID, item.user)
           },
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -891,6 +909,13 @@ jQuery(document).ready(function($) {
         }
       })
     })
+
+    // Prefill the form if contact_id is in the query params
+    const url = new URL(window.location.href)
+    contactId = url.searchParams.get('contact_id')
+    if ( contactId !== null && contactId !== '' && !isNaN(contactId) ) {
+      getContact(parseInt(contactId), false, true)
+    }
   }
 
   function write_language_dropdown(translations) {

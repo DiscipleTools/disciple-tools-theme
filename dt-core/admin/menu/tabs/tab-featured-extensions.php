@@ -68,30 +68,48 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             }
         </script>
         <?php
-        echo '<a href="' . esc_url( admin_url() ) . 'admin.php?page=dt_extensions&tab=featured-extensions" class="nav-tab ';
-        if ( $tab == 'featured-extensions' ) {
-            echo 'nav-tab-active';
-        }
-        echo '">' . esc_attr__( 'Featured Extensions', 'disciple_tools' ) . '</a>';
     }
 
     public function content( $tab ) {
-        if ( 'featured-extensions' == $tab ) {
-            // begin columns template
-            $this->template( 'begin' );
+        ?>
+        <style>
+            .plugin-author-img {
+                height: 28px;
+                width: 28px;
+                border: 1px solid #d0d7de;
+                border-radius: 100px;
+                vertical-align: bottom;
+                margin-left: 6px;
+            }
+            .warning-pill{
+                background-color: #ffae00;
+                color: black;
+                font-size: .9em;
+                pointer-events: none;
+                border-radius: 3px;
+                text-decoration: none;
+                margin: 1rem 0 0 1rem;
+                padding: .5em .5em;
+                text-align: center;
+            }
+        </style>
+        <?php
+        // begin columns template
+        $this->template( 'begin' );
 
-            $this->box_message();
+        $this->box_message( $tab );
 
-            // begin right column template
-            $this->template( 'right_column' );
+        // begin right column template
+        $this->template( 'right_column' );
 
-            // end columns template
-            $this->template( 'end' );
-        }
+        // end columns template
+        $this->template( 'end' );
+
+        $this->modify_css();
     }
 
     //main page
-    public function box_message() {
+    public function box_message( $tab ) {
         //check for actions
         if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
             //activate the plugin
@@ -109,51 +127,84 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             deactivate_plugins( sanitize_text_field( wp_unslash( $_POST["deactivate"] ) ), true );
             exit;
         }
-        $active_plugins = get_option( 'active_plugins' );
+        $network_active_plugins = get_site_option( 'active_sitewide_plugins', [] );
+        $active_plugins = get_option( 'active_plugins', [] );
+        foreach ( $network_active_plugins as $plugin => $time ){
+            $active_plugins[] = $plugin;
+        }
         $all_plugins = get_plugins();
+        $tab = 'featured';
+        if ( isset( $_GET['tab'] ) ) {
+            $tab = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
+        }
+
         //get plugin data
-        $plugins = $this->get_plugins();
+        $plugins = $this->get_plugins( $tab );
+        // Page content goes here
+
+        // Assign the 'current' class to the selected tab
+            $class_current_tab = '';
         ?>
-        <h3>All Disciple.Tools and Community Plugins</h3>
-        <p>See <a href="https://disciple.tools/plugins/">https://disciple.tools/plugins</a> </p>
-        <h3><?php esc_html_e( "Recommended Disciple.Tools Plugins", 'disciple_tools' ) ?></h3>
-        <table class="widefat striped">
-            <thead>
-            <tr>
-                <td>
-                    <?php echo esc_html__( 'Name', 'disciple_tools' ) ?>
-                </td>
-                <td>
-                    <?php echo esc_html__( 'Description', 'disciple_tools' ) ?>
-                <td>
-                    <?php echo esc_html__( 'Actions', 'disciple_tools' ) ?>
-                </td>
-            </tr>
-            </thead>
-            <tbody>
+        <div class="wp-filter">
+        <ul class="filter-links">
+            <li class="plugin-install">
+                <a href="?page=dt_extensions&tab=featured" <?php if ( ! isset( $_GET['tab'] ) || $tab === 'featured' ) { echo 'class="current"'; } ?>>Featured</a>
+            </li>
+            <li class="plugin-install">
+                <a href="?page=dt_extensions&tab=all_plugins" <?php if ( $tab === 'all_plugins' ) { echo 'class="current"'; } ?>>All Plugins</a>
+            </li>
             <?php
-            foreach ( $plugins as $plugin ) {
-                foreach ( $plugin as $p ) {
+            $all_plugin_categories = $this->get_all_plugin_categories();
+            foreach ( $all_plugin_categories as $plugin_category ) {
+                if ( $plugin_category !== 'featured' ) {
                     ?>
-                    <tr>
-                        <td>
-                            <?php echo esc_html( $p->name ); ?>
-                        </td>
-                        <td>
-                            <?php echo esc_html( $p->description ); ?>
-                        </td>
-                        <td>
+                <li class="plugin-install">
+                    <a href="?page=dt_extensions&tab=<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>" <?php if ( isset( $_GET['tab'] ) && $_GET['tab'] == $plugin_category ) { echo 'class="current"'; } ?>><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
+                </li>
+                    <?php
+                }
+            }
+            ?>
+        </ul>
+        </div>
+        <p>Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.</p>
+        <div id="the-list">
+            <?php
+            // Print plugin cards
+            foreach ( $plugins as $plugin ) {
+                $plugin->slug = explode( '/', $plugin->homepage )[4];
+                $plugin->blog_url = 'https://disciple.tools/plugins/' . $plugin->slug;
+                $plugin->folder_name = get_home_path() . "wp-content/plugins/" . $plugin->slug;
+                $plugin->author_github_username = explode( '/', $plugin->homepage )[3];
+                $plugin->description = count_chars( $plugin->description ) > 128 ? trim( substr( $plugin->description, 0, 128 ) ) . '...' : $plugin->description; // Shorten descriptions to 88 chars
+                $plugin->icon = ! isset( $plugin->icon ) ? 'https://s.w.org/plugins/geopattern-icon/' . $plugin->slug . '.svg' : $plugin->icon;
+                $plugin->name = str_replace( "Disciple Tools - ", "", $plugin->name );
+                $plugin->name = str_replace( "Disciple.Tools - ", "", $plugin->name );
+                ?>
+            <div class="plugin-card plugin-card-classic-editor">
+                            <div class="plugin-card-top">
+                    <div class="name column-name">
+                        <h3>
+                            <a href="<?php echo esc_html( $plugin->permalink ); ?>" target="_blank">
+                                <?php echo esc_html( $plugin->name ); ?>
+                            <img src="<?php echo esc_attr( $plugin->icon ); ?>" class="plugin-icon" alt="<?php echo esc_attr( $plugin->name ); ?>">
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="action-links">
+                        <ul class="plugin-action-buttons">
+                            <li>
                             <?php
-                            $result_name = $this->partial_array_search( $all_plugins, $p->folder_name );
+                            $result_name = $this->partial_array_search( $all_plugins, $plugin->slug );
                             if ( $result_name == -1 ) {
-                                if ( current_user_can( "install_plugins" ) ) : ?>
+                                if ( isset( $plugin->download_url ) && current_user_can( "install_plugins" ) ) : ?>
                                 <button class="button"
-                                        onclick="install('<?php echo esc_html( $p->url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
+                                        onclick="install('<?php echo esc_html( $plugin->download_url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
                                 <?php else : ?>
                                     <span>To install this plugin ask your network administrator</span>
                                 <?php endif;
 
-                            } elseif ( $this->partial_array_search( $active_plugins, $p->folder_name ) == -1 && isset( $_POST["activate"] ) == false ) {
+                            } elseif ( $this->partial_array_search( $active_plugins, $plugin->slug ) == -1 && isset( $_POST["activate"] ) == false ) {
                                 ?>
                                 <button class="button"
                                         onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
@@ -165,125 +216,52 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                                 <?php
                             }
                             ?>
-                        </td>
-                    </tr>
-                    <?php
-                }
+                            </li>
+                            <?php if ( in_array( 'proof-of-concept', explode( ',', $plugin->categories ) ) ): ?>
+                            <li>
+                                <a class="warning-pill">POC</a>
+                            </li>
+                        <?php elseif ( in_array( 'beta', explode( ',', $plugin->categories ) ) ): ?>
+                            <li>
+
+                                <a class="warning-pill">BETA</a>
+                            </li>
+                    <?php endif; ?>
+                        </ul>
+                    </div>
+                    <div class="desc column-description">
+                        <p><?php echo esc_html( $plugin->description ); ?></p>
+                        <p class="authors"> <cite>By <a href="<?php echo esc_attr( $plugin->author_homepage ); ?>"><?php echo esc_html( $plugin->author ); ?><img src="https://avatars.githubusercontent.com/<?php echo esc_attr( $plugin->author_github_username ); ?>?size=28" class="plugin-author-img"></a></cite></p>
+                    </div>
+                </div>
+                <div class="plugin-card-bottom">
+                    <!--
+                    <div class="vers column-rating">
+                        <div class="star-rating">
+                            <span class="screen-reader-text">5.0 rating based on 1,000 ratings</span>
+                            <div class="star star-full" aria-hidden="true"></div>
+                            <div class="star star-full" aria-hidden="true"></div>
+                            <div class="star star-full" aria-hidden="true"></div>
+                            <div class="star star-full" aria-hidden="true"></div>
+                            <div class="star star-full" aria-hidden="true"></div>
+                        </div>
+                        <span class="num-ratings" aria-hidden="true">(1,000)</span>
+                    </div>
+                    -->
+                    <div class="column-updated">
+                        <strong>Last Updated:</strong>
+                        <?php echo esc_html( $plugin->last_updated ); ?>
+                    </div>
+                    <div class="column-downloaded"><?php echo esc_html( $plugin->active_installs ); ?> active installations</div>
+                    <!-- <div class="column-compatibility">
+                        <span class="compatibility-compatible"><strong>Compatible</strong> with your version of WordPress</span>
+                    </div> -->
+                </div>
+            </div>
+                <?php
             }
             ?>
-            </tbody>
-        </table>
-        <h3><?php esc_html_e( "Recommended Plugins", 'disciple_tools' ) ?></h3>
-        <p><?php echo esc_html__( 'Look for the "Install" button on the bottom right of your screen after clicking the install button link', 'disciple_tools' ) ?></p>
-        <table class="widefat striped">
-            <thead>
-            <tr>
-                <td>
-                    <?php echo esc_html__( 'Name', 'disciple_tools' ) ?>
-                </td>
-                <td>
-                    <?php echo esc_html__( 'Description', 'disciple_tools' ) ?>
-                <td>
-                    <?php echo esc_html__( 'Action', 'disciple_tools' ) ?>
-                </td>
-            </tr>
-            </thead>
-            <tbody>
-            <!--Updraft-->
-            <tr>
-                <td>
-                    <?php echo esc_html__( "UpdraftPlus - Backup/Restore", 'disciple_tools' ); ?>
-                </td>
-                <td>
-                    <?php echo esc_html__( "Setup backups to a remote location. See our help page:", 'disciple_tools' ); ?>
-                    <a target="_blank" href="https://disciple.tools/dev-docs/hosting/backups/">Backups</a>
-                </td>
-                <td>
-                    <?php
-                    $result_name = $this->partial_array_search( $all_plugins, "updraftplus" );
-                    if ( $result_name == -1 ) {
-                        if ( current_user_can( "install_plugins" ) ) : ?>
-                            <a class="button"
-                               href="./plugin-install.php?tab=plugin-information&plugin=updraftplus"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
-                        <?php else : ?>
-                            <span>To install this plugin ask your network administrator</span>
-                        <?php endif;
-                    } else if ( $this->partial_array_search( $active_plugins, "updraftplus" ) == -1 && isset( $_POST["activate"] ) == false ) {
-                        ?>
-                        <button class="button"
-                                onclick="activate('<?php echo esc_html( "updraftplus/updraftplus.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
-                        <?php
-                    } else { ?>
-                        <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
-                    <?php } ?>
-                </td>
-            </tr>
-            <!--Two Factor Authentication-->
-            <tr>
-                <td>
-                    <?php echo esc_html__( "Two Factor Authentication", 'disciple_tools' ); ?>
-                </td>
-                <td>
-                    <?php echo esc_html__( "Secure your WordPress login forms with two factor authentication - including WooCommerce login forms", 'disciple_tools' ); ?>
-                </td>
-                <td>
-                    <?php
-                    $result_name = $this->partial_array_search( $all_plugins, "two-factor-authentication" );
-                    if ( $result_name == -1 ) {
-                        if ( current_user_can( "install_plugins" ) ) : ?>
-                            <a class="button"
-                               href="./plugin-install.php?tab=plugin-information&plugin=two-factor-authentication"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
-                        <?php else : ?>
-                            <span>To install this plugin ask your network administrator</span>
-                        <?php endif;
-                    } else if ( $this->partial_array_search( $active_plugins, "two-factor-authentication" ) == -1 && isset( $_POST["activate"] ) == false ) {
-                        ?>
-                        <button class="button"
-                                onclick="activate('<?php echo esc_html( "two-factor-authentication/two-factor-login.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
-                        <?php
-                    }
-                    else {
-                        ?>
-                            <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
-                        <?php
-                    }
-                    ?>
-                </td>
-            </tr>
-            <!--Inactive Logout-->
-            <tr>
-                <td>
-                    <?php echo esc_html__( "Inactive Logout", 'disciple_tools' ); ?>
-                </td>
-                <td>
-                    <?php echo esc_html__( "Inactive logout provides functionality to automatically log out any idle users after a defined period.", 'disciple_tools' ); ?>
-                </td>
-                <td>
-                    <?php
-                    $result_name = $this->partial_array_search( $all_plugins, " inactive-logout" );
-                    if ( $result_name == -1 ) {
-                        if ( current_user_can( "install_plugins" ) ) : ?>
-                            <a class="button"
-                               href="./plugin-install.php?tab=plugin-information&plugin= inactive-logout"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
-                        <?php else : ?>
-                            <span>To install this plugin ask your network administrator</span>
-                        <?php endif;
-                    } else if ( $this->partial_array_search( $active_plugins, " inactive-logout" ) == -1 && isset( $_POST["activate"] ) == false ) {
-                        ?>
-                        <button class="button"
-                                onclick="activate('<?php echo esc_html( " inactive-logout/inactive-logout.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
-                        <?php
-                    }
-                    else {
-                        ?>
-                        <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
-                        <?php
-                    }
-                    ?>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        </div>
         <?php
     }
 
@@ -309,24 +287,17 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 }
             }
         }
-
         //false
         return -1;
     }
 
     //this function will install a plugin with a name
-    public function install_plugin( $url ) {
+    public function install_plugin( $download_url ) {
         set_time_limit( 0 );
-        //download plugin json data
-        $plugin_json_text = file_get_contents( $url );
-        $plugin_json = json_decode( trim( $plugin_json_text ) );
-        //get url for plugin
-        $download_url = $plugin_json->download_url;
         $folder_name = explode( "/", $download_url );
-        $folder_name = get_home_path() . "wp-content/plugins/" . $folder_name[ count( $folder_name ) - 1 ];
+        $folder_name = get_home_path() . "wp-content/plugins/" . $folder_name[4] . '.zip';
         if ( $folder_name != "" ) {
             //download the zip file to plugins
-            //http://php.net/file_put_contents <- to download
             file_put_contents( $folder_name, file_get_contents( $download_url ) );
             // get the absolute path to $file
             $folder_name = realpath( $folder_name );
@@ -338,9 +309,50 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         }
     }
 
+    // Returns an array of all distinct plugin categories
+    public function get_all_plugin_categories() {
+        $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
+        $distinct_categories = [];
+        foreach ( $plugins as $plugin ) {
+            $plugin_categories = explode( ',', $plugin->categories );
+            foreach ( $plugin_categories as $plug_cat ) {
+                if ( ! in_array( str_replace( '-', ' ', $plug_cat ), $distinct_categories ) ) {
+                    $distinct_categories[] = str_replace( '-', ' ', $plug_cat );
+                }
+            }
+        }
+        return $distinct_categories;
+    }
+
     //this function gets the plugin list data
-    public function get_plugins() {
-        return json_decode( trim( file_get_contents( 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-plugin-url-list.json' ) ) );
+    public function get_plugins( $category = 'featured' ) {
+        $plugins = get_transient( "dt_plugins_feed" );
+        if ( empty( $plugins ) ){
+            $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
+            set_transient( "dt_plugins_feed", $plugins, HOUR_IN_SECONDS );
+        }
+        if ( $category === 'all_plugins' ) {
+            return $plugins;
+        }
+
+        $filtered_plugins = [];
+        foreach ( $plugins as $plugin ) {
+            $plugin_categories = explode( ',', $plugin->categories );
+            if ( in_array( $category, $plugin_categories ) ) {
+                $filtered_plugins[] = $plugin;
+            }
+        }
+        return $filtered_plugins;
+    }
+
+    /**
+     * Remove the 'columns-2' class from #post-body
+     * in order to make the most of the screen's width
+     */
+    private function modify_css() {
+        ?>
+        <script>jQuery('#post-body').attr('class', 'metabox-holder');</script>
+            <?php
     }
 }
 

@@ -214,7 +214,7 @@ class Disciple_Tools_Posts
         return $shares;
     }
 
-    public static function format_connection_message( $p2p_id, $activity, $action = 'connected to' ){
+    public static function format_connection_message( $p2p_id, $activity, $action = 'connected to', $fields = [] ){
         // Get p2p record
         $p2p_record = p2p_get_connection( (int) $p2p_id ); // returns object
 
@@ -222,6 +222,17 @@ class Disciple_Tools_Posts
         $from_link = "";
         $to_title = "";
         $to_link = "";
+
+        //don't create activity on connection fields that are hidden
+        foreach ( $fields as $field ){
+            if ( isset( $field["p2p_key"] ) && $field["p2p_key"] === $activity->meta_key ){
+                if ( $activity->field_type === "connection to" && $field["p2p_direction"] === "to" || $activity->field_type === "connection to" && $field["p2p_direction"] !== "to" ){
+                    if ( isset( $field["hidden"] ) && !empty( $field["hidden"] ) ){
+                        return "";
+                    }
+                }
+            }
+        }
 
         if ( !$p2p_record ){
             if ( $activity->field_type === "connection from" ){
@@ -417,9 +428,9 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "boolean" ){
                     if ( $activity->meta_value === true || $activity->meta_value === '1' ){
-                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "yes", 'disciple_tools' );
+                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "Yes", 'disciple_tools' );
                     } else {
-                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "no", 'disciple_tools' );
+                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "No", 'disciple_tools' );
                     }
                 }
                 if ($fields[$activity->meta_key]["type"] === "number"){
@@ -528,7 +539,7 @@ class Disciple_Tools_Posts
             $user = get_user_by( "ID", $activity->user_id );
             $message = sprintf( _x( "%s accepted assignment", 'message', 'disciple_tools' ), $user->display_name ?? _x( "A user", 'message', 'disciple_tools' ) );
         } elseif ( $activity->object_subtype === "p2p" ){
-            $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action );
+            $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action, $post_type_settings["fields"] );
         } elseif ( $activity->object_subtype === "share" ){
             if ($activity->action === "share"){
                 $message = sprintf( _x( "Shared with %s", 'message', 'disciple_tools' ), dt_get_user_display_name( $activity->meta_value ) );
@@ -824,13 +835,16 @@ class Disciple_Tools_Posts
                             if ( !empty( $not_in ) ){
                                 $connection_ids = dt_array_to_sql( $not_in );
                                 $where_sql .= ( !empty( $where_sql ) ? " AND " : "" );
+                                $all_key = '*';
                                 if ( $field_settings[$query_key]["p2p_direction"] === "to" ){
+                                    $from_connection_ids = ( in_array( $all_key, $not_in, true ) ) ? "" : "AND p2p_from IN (" .  $connection_ids .")";
                                     $where_sql .= " p.ID NOT IN (
-                                        SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" .  $connection_ids .")
+                                        SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' $from_connection_ids
                                     ) ";
                                 } else {
+                                    $to_connection_ids = ( in_array( $all_key, $not_in, true ) ) ? "" : "AND p2p_to IN (" .  $connection_ids .")";
                                     $where_sql .= " p.ID NOT IN (
-                                        SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" .  $connection_ids .")
+                                        SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' $to_connection_ids
                                     ) ";
                                 }
                             }
@@ -1335,15 +1349,30 @@ class Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, "You do not have access to: " . $field, [ 'status' => 403 ] );
         }
         global $wpdb;
-        $options = $wpdb->get_col( $wpdb->prepare("
-            SELECT DISTINCT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
-            LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
-            WHERE $wpdb->postmeta.meta_key = %s
-            AND $wpdb->postmeta.meta_value LIKE %s
-            AND $wpdb->posts.post_status = 'publish'
-            ORDER BY $wpdb->postmeta.meta_value ASC
-            LIMIT %d
-        ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( $limit ) ) );
+        $fields = DT_Posts::get_post_field_settings( $post_type );
+        if ( isset( $fields[$field]["private"] ) && $fields[$field]["private"] === true ){
+            $options = $wpdb->get_col( $wpdb->prepare("
+                SELECT DISTINCT pm.meta_value
+                FROM $wpdb->dt_post_user_meta pm
+                LEFT JOIN $wpdb->posts on $wpdb->posts.ID = pm.post_id
+                WHERE pm.meta_key = %s
+                AND pm.meta_value LIKE %s
+                AND $wpdb->posts.post_status = 'publish'
+                AND pm.user_id = %s
+                ORDER BY pm.meta_value ASC
+                LIMIT %d
+            ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( get_current_user_id() ), esc_sql( $limit ) ) );
+        } else {
+            $options = $wpdb->get_col( $wpdb->prepare("
+                SELECT DISTINCT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
+                LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
+                WHERE $wpdb->postmeta.meta_key = %s
+                AND $wpdb->postmeta.meta_value LIKE %s
+                AND $wpdb->posts.post_status = 'publish'
+                ORDER BY $wpdb->postmeta.meta_value ASC
+                LIMIT %d
+            ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( $limit ) ) );
+        }
 
         return $options;
     }

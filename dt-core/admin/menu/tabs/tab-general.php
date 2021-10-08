@@ -98,9 +98,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             /* Site Notifications */
 
             /* User Visibility */
-            $this->box( 'top', 'User Visibility Preferences' );
-            $this->process_user_visibility();
-            $this->update_user_visibility();
+            $this->box( 'top', 'User Preferences' );
+            $this->process_user_preferences();
+            $this->update_user_preferences();
             $this->box( 'bottom' );
             /* User Visibility */
 
@@ -173,8 +173,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             update_option( 'dt_site_options', $site_options, true );
         }
     }
-
-
 
     /**
      * Set base user assigns the catch-all user
@@ -425,9 +423,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     /** User Visibility Preferences */
-    public function process_user_visibility(){
-        if ( isset( $_POST['user_visibility_nonce'] ) &&
-             wp_verify_nonce( sanitize_key( wp_unslash( $_POST['user_visibility_nonce'] ) ), 'user_visibility' . get_current_user_id() ) ) {
+    public function process_user_preferences(){
+        if ( isset( $_POST['user_preferences_nonce'] ) &&
+             wp_verify_nonce( sanitize_key( wp_unslash( $_POST['user_preferences_nonce'] ) ), 'user_preferences' . get_current_user_id() ) ) {
 
             $dt_roles = dt_multi_role_get_editable_role_names();
             foreach ( $dt_roles as $role_key => $name ) :
@@ -438,12 +436,19 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     $role_object->remove_cap( 'dt_list_users' );
                 }
             endforeach;
+
+            if ( isset( $_POST['user_invite_check'] ) && $_POST['user_invite_check'] === 'user_invite' ) {
+                update_option( 'dt_user_invite_setting', true );
+            } else {
+                delete_option( 'dt_user_invite_setting' );
+            }
         }
 
     }
 
-    public function update_user_visibility(){
+    public function update_user_preferences(){
         $dt_roles = dt_multi_role_get_editable_role_names();
+        $user_invite_allowed = get_option( 'dt_user_invite_setting', false );
         ?>
         <p><?php esc_html_e( "User Roles that can view all other Disciple Tools users names" ) ?></p>
         <form method="post" >
@@ -461,9 +466,13 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <?php endif; ?>
             <?php endforeach; ?>
 
-                <?php wp_nonce_field( 'user_visibility' . get_current_user_id(), 'user_visibility_nonce' )?>
+                <?php wp_nonce_field( 'user_preferences' . get_current_user_id(), 'user_preferences_nonce' )?>
             </table>
             <br>
+            <p>
+                <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role.' ) ?></label>
+                <input type="checkbox" name="user_invite_check" id="user_invite_check" value="user_invite" <?php echo $user_invite_allowed ? 'checked' : '' ?> />
+            </p>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
         </form>
         <?php

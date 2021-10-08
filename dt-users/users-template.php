@@ -11,149 +11,6 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
-/** Functions to output data for the theme. @see Buddypress bp-members-template.php or bp-groups-template.php for an example of the role of this page */
-
-/**
- * Prepares the keys of user connections for WP_Query
- * This function builds the array for the meta_query used in WP_Query to retrieve only records associated with
- * the user or the teams the user is connected to.
- * Example return:
- * Array
- *   (
- *       [relation] => OR
- * [0] => Array
- * (
- * [key] => assigned_to
- * [value] => user-1
- * )
- * [1] => Array
- * (
- * [key] => assigned_to
- * [value] => group-1
- * )
- * )
- *
- * @return array
- */
-function dt_get_user_associations() {
-
-    // Set variables
-    global $wpdb;
-    $user_connections = [];
-
-    // Set constructor
-    $user_connections['relation'] = 'OR';
-
-    // Get current user ID and build meta_key for current user
-    $user_id = get_current_user_id();
-    $user_key_value = 'user-' . $user_id;
-    $user_connections[] = [
-    'key' => 'assigned_to',
-    'value' => $user_key_value
-    ];
-
-    // Build arrays for current groups connected to user
-    $results = $wpdb->get_results( $wpdb->prepare( "SELECT
-            `$wpdb->term_relationships`.`term_taxonomy_id`
-        FROM
-            `$wpdb->term_relationships`
-        WHERE
-            `object_id` = %d ",
-    $user_id ), ARRAY_A );
-
-    foreach ( $results as $result ) {
-        $user_connections[] = [
-        'key' => 'assigned_to',
-        'value' => 'group-' . $result['term_taxonomy_id']
-        ];
-    }
-
-    // Return array to the meta_query
-    return $user_connections;
-}
-
-/**
- * Gets team contacts for a specified user_id
- * Example return:
- * Array
- * (
- * [relation] => OR
- * [0] => Array
- * (
- * [key] => assigned_to
- * [value] => user-1
- * )
- * [1] => Array
- * (
- * [key] => assigned_to
- * [value] => group-1
- * )
- * )
- *
- * @param $user_id
- *
- * @return array
- */
-function dt_get_team_contacts( $user_id ) {
-    // get variables
-    global $wpdb;
-    $user_connections = [];
-    $user_connections['relation'] = 'OR';
-    $members = [];
-
-    // First Query
-    // Build arrays for current groups connected to user
-    $results = $wpdb->get_results( $wpdb->prepare( "SELECT
-            DISTINCT `$wpdb->term_relationships`.`term_taxonomy_id`
-        FROM
-            `$wpdb->term_relationships`
-        INNER JOIN
-            `$wpdb->term_taxonomy`
-        ON
-            `$wpdb->term_relationships`.`term_taxonomy_id` = `$wpdb->term_taxonomy`.`term_taxonomy_id`
-        WHERE
-            object_id  = %d
-            AND taxonomy = 'user-group'", $user_id ), ARRAY_A );
-
-    // Loop
-    foreach ( $results as $result ) {
-        // create the meta query for the group
-        $user_connections[] = [
-        'key' => 'assigned_to',
-        'value' => 'group-' . $result['term_taxonomy_id']
-        ];
-
-        // Second Query
-        // query a member list for this group
-        // build list of member ids who are part of the team
-        $results2 = $wpdb->get_results( $wpdb->prepare( "SELECT
-                `$wpdb->term_relationships`.object_id
-            FROM
-                `$wpdb->term_relationships`
-            WHERE
-                term_taxonomy_id = %d", $result['term_taxonomy_id'] ), ARRAY_A );
-
-        // Inner Loop
-        foreach ( $results2 as $result2 ) {
-
-            if ( $result2['object_id'] != $user_id ) {
-                $members[] = $result2['object_id'];
-            }
-        }
-    }
-
-    $members = array_unique( $members );
-
-    foreach ( $members as $member ) {
-        $user_connections[] = [
-        'key' => 'assigned_to',
-        'value' => 'user-' . $member
-        ];
-    }
-
-    // return
-    return $user_connections;
-}
 
 /**
  * Gets the current site defaults defined in the notifications config section in wp-admin
@@ -177,48 +34,6 @@ function dt_get_site_notification_defaults(){
     $notifications = apply_filters( "dt_get_site_notification_options", $site_options["notifications"] );
 
     return $notifications;
-}
-
-/**
- * Returns the site default user fields
- *
- * @return array
- */
-function dt_get_site_default_user_fields(): array
-{
-    $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-    if ( ! $site_custom_lists ) {
-        return [];
-    }
-
-    return $site_custom_lists['user_fields'];
-}
-
-/**
- * Returns the corresponding id for either user or contact.
- *
- * @param        $id
- * @param string $id_type
- *
- * @return bool|mixed
- */
-function dt_get_associated_user_id( $id, $id_type = 'user' ) {
-    if ( $id_type === 'user' ) {
-        return get_user_option( "corresponds_to_contact", $id );
-    } else if ( $id_type === 'contact' ) {
-        return get_post_meta( $id, 'corresponds_to_user', true );
-    } else {
-        return false;
-    }
-}
-
-/**
- * Echos user display name
- *
- * @param int $user_id
- */
-function dt_user_display_name( int $user_id ) {
-    echo esc_html( dt_get_user_display_name( $user_id ) );
 }
 
 /**
@@ -247,6 +62,9 @@ function dt_get_user_display_name( $user_id ) {
 }
 
 function dt_get_user_id_from_assigned_to( $user_meta ){
+    if ( is_numeric( $user_meta ) ) {
+        return (int) $user_meta;
+    }
     $meta_array = explode( '-', $user_meta ); // Separate the type and id
     if ( isset( $meta_array[1] ) ) {
         return (int) $meta_array[1];

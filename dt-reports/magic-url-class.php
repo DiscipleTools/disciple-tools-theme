@@ -339,7 +339,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             if ( $parts["meta_key"] !== $params["parts"]["meta_key"] || $parts["public_key"] !== $params["parts"]["public_key"] ){
                 return false;
             }
-            if ( $parts["post_id"] !== $params["parts"]["post_id"] ){
+            if ( (int) $parts["post_id"] !== (int) $params["parts"]["post_id"] ){
                 return false;
             }
             return true;
@@ -440,6 +440,29 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
         public static function get_public_key_meta_key( $magic_url_root, $magic_url_type ){
             return $magic_url_root . '_' . $magic_url_type . '_magic_key';
         }
+
+        /**
+         * Get the magic url link for a past
+         *
+         * @param $post_type
+         * @param $post_id
+         * @param $magic_url_root
+         * @param $magic_url_type
+         * @param null $action
+         * @return string
+         */
+        public static function get_link_url_for_post( $post_type, $post_id, $magic_url_root, $magic_url_type, $action = null ): string{
+            $record = DT_Posts::get_post( $post_type, $post_id );
+            $key_name = self::get_public_key_meta_key( $magic_url_root, $magic_url_type );
+            if ( isset( $record[$key_name] ) ){
+                $key = $record[$key_name];
+            } else {
+                $key = dt_create_unique_key();
+                update_post_meta( $post_id, $key_name, $key );
+            }
+            return self::get_link_url( $magic_url_root, $magic_url_type, $key, $action );
+        }
+
 
         /**
          * Open default restrictions for access to registered endpoints

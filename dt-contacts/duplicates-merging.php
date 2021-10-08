@@ -487,7 +487,7 @@ class DT_Duplicate_Checker_And_Merging {
             FROM $wpdb->dt_post_user_meta
             WHERE post_id = %d
             AND NOT EXISTS (SELECT 1
-            FROM wp_dt_post_user_meta
+            FROM $wpdb->dt_post_user_meta
             WHERE user_id = user_id
             AND post_id = %d
             AND meta_key = meta_key
@@ -595,7 +595,7 @@ class DT_Duplicate_Checker_And_Merging {
         }
         ?>
         <a class="button" href="<?php echo esc_url( site_url( '/view-duplicates' ) ); ?>">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate-white.svg' ) ?>"/>
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
             <span><?php esc_html_e( "View Duplicates", 'disciple_tools' ) ?></span>
         </a>
         <?php

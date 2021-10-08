@@ -125,6 +125,7 @@ class DT_Contacts_Base {
 
         //strategist
         $expected_roles["strategist"]["permissions"]['view_project_metrics'] = true;
+        $expected_roles["strategist"]["permissions"]['access_disciple_tools'] = true;
 
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );
@@ -139,7 +140,7 @@ class DT_Contacts_Base {
                 'name' => __( "Nickname", 'disciple_tools' ),
                 'type' => 'text',
                 'tile' => 'details',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/nametag.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/nametag.svg?v=2",
             ];
             $fields["type"] = [
                 'name'        => __( 'Contact Type', 'disciple_tools' ),
@@ -156,11 +157,11 @@ class DT_Contacts_Base {
                         "color" => "#9b379b",
                         "description" => __( "A friend, family member or acquaintance", 'disciple_tools' ),
                         "visibility" => __( "Only me", 'disciple_tools' ),
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg?v=2",
                         "order" => 50
                     ],
                 ],
-                "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
                 'customizable' => false
             ];
             $fields["duplicate_data"] = [
@@ -179,14 +180,14 @@ class DT_Contacts_Base {
                 'name' => __( 'Languages', 'disciple_tools' ),
                 'type' => 'multi_select',
                 'default' => dt_get_option( "dt_working_languages" ) ?: [],
-                'icon' => get_template_directory_uri() . "/dt-assets/images/languages.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/languages.svg?v=2",
                 "tile" => "no_tile"
             ];
 
             //add communication channels
             $fields["contact_phone"] = [
                 "name" => __( 'Phone', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/phone.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/phone.svg?v=2",
                 "type" => "communication_channel",
                 "tile" => "details",
                 "customizable" => false,
@@ -194,7 +195,7 @@ class DT_Contacts_Base {
             ];
             $fields["contact_email"] = [
                 "name" => __( 'Email', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/email.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/email.svg?v=2",
                 "type" => "communication_channel",
                 "tile" => "details",
                 "customizable" => false
@@ -208,7 +209,7 @@ class DT_Contacts_Base {
                 'mapbox'    => false,
                 "in_create_form" => true,
                 "tile" => "details",
-                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
             ];
             $fields['location_grid_meta'] = [
                 'name'        => __( 'Locations or Address', 'disciple_tools' ),
@@ -219,7 +220,7 @@ class DT_Contacts_Base {
             ];
             $fields["contact_address"] = [
                 "name" => __( 'Address', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg?v=2",
                 "type" => "communication_channel",
                 "tile" => "details",
                 'mapbox'    => false,
@@ -239,7 +240,7 @@ class DT_Contacts_Base {
             // add social media
             $fields["contact_facebook"] = [
                 "name" => __( 'Facebook', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/facebook.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/facebook.svg?v=2",
                 "hide_domain" => true,
                 "type" => "communication_channel",
                 "tile" => "details",
@@ -247,7 +248,7 @@ class DT_Contacts_Base {
             ];
             $fields["contact_twitter"] = [
                 "name" => __( 'Twitter', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/twitter.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/twitter.svg?v=2",
                 "hide_domain" => true,
                 "type" => "communication_channel",
                 "tile" => "details",
@@ -255,7 +256,7 @@ class DT_Contacts_Base {
             ];
             $fields["contact_other"] = [
                 "name" => __( 'Other Social Links', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/socialmedia.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/socialmedia.svg?v=2",
                 "hide_domain" => false,
                 "type" => "communication_channel",
                 "tile" => "details",
@@ -271,7 +272,7 @@ class DT_Contacts_Base {
                 "p2p_key" => "contacts_to_relation",
                 "tile" => "other",
                 "in_create_form" => [ "placeholder" ],
-                'icon' => get_template_directory_uri() . "/dt-assets/images/connection-people.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/connection-people.svg?v=2",
             ];
 
             $fields['gender'] = [
@@ -282,7 +283,7 @@ class DT_Contacts_Base {
                     'female'  => [ "label" => __( 'Female', 'disciple_tools' ) ],
                 ],
                 'tile'     => 'details',
-                "icon" => get_template_directory_uri() . "/dt-assets/images/gender.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/gender.svg?v=2",
             ];
 
             $fields['age'] = [
@@ -296,7 +297,7 @@ class DT_Contacts_Base {
                     '>41'     => [ "label" => __( 'Over 40 years old', 'disciple_tools' ) ],
                 ],
                 'tile'     => 'details',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg?v=2",
                 "select_cannot_be_empty" => true //backwards compatible since we already have an "none" value
             ];
 
@@ -353,22 +354,22 @@ class DT_Contacts_Base {
             if ( empty( $post["archive"] ) && ( $post["type"]["key"] === "personal" || $post["type"]["key"] === "placeholder" ) ) :?>
                 <li>
                     <a data-open="archive-record-modal">
-                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/archive.svg' ) ?>"/>
+                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2' ) ?>"/>
                         <?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
                 </li>
             <?php endif; ?>
 
             <li>
                 <a data-open="contact-type-modal">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg' ) ?>"/>
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2' ) ?>"/>
                     <?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
             </li>
             <li><a data-open="merge-dupe-edit-modal">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg?v=2' ) ?>"/>
 
                     <?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
             <li><a id="open_merge_with_contact">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg' ) ?>"/>
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg?v=2' ) ?>"/>
                     <?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
             <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
             <?php
@@ -634,7 +635,7 @@ class DT_Contacts_Base {
                      style="display: <?php echo esc_html( ( isset( $dt_post['overall_status']["key"] ) && $dt_post['overall_status']["key"] === "closed" ) ? "block" : "none" ) ?> ">
                 <div class="bordered-box detail-notification-box" style="background-color:#333">
                     <h4>
-                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
+                        <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg?v=2?v=2' ) ?>"/>
                         <?php echo esc_html( sprintf( __( 'This %s is archived', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
                     </h4>
                     <button class="button" id="unarchive-record"><?php esc_html_e( 'Restore', 'disciple_tools' )?></button>

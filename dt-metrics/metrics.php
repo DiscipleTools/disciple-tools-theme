@@ -42,6 +42,7 @@ class Disciple_Tools_Metrics{
 
                 require_once( get_template_directory() . '/dt-metrics/personal/mapbox-contacts-maps.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/mapbox-groups-maps.php' );
+                require_once( get_template_directory() . '/dt-metrics/personal/activity-log.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/overview.php' );
 
                 require_once( get_template_directory() . '/dt-metrics/combined/mapbox-maps.php' );
@@ -106,7 +107,7 @@ class Disciple_Tools_Metrics{
         /**
          * Add Navigation Menu
          */
-        if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+        if ( current_user_can( 'access_disciple_tools' ) ) {
             add_filter( 'desktop_navbar_menu_options', function ( $tabs ){
                 $tabs['metrics'] = [
                     "link" => site_url( '/metrics/' ),

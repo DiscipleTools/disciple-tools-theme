@@ -20,11 +20,11 @@ dt_please_log_in();
              class="second-bar list-actions-bar">
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
                 <a class="button dt-green create-post-desktop" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
+                    <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php echo esc_html( sprintf( _x( "Create New %s", "Create New record", 'disciple_tools' ), $post_settings["label_singular"] ?? $post_type ) ) ?></span>
                 </a>
                 <a class="button filter-posts-desktop" data-open="filter-modal">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
+                    <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "Filters", 'disciple_tools' ) ?></span>
                 </a>
                 <?php do_action( "archive_template_action_bar_buttons", $post_type ) ?>
@@ -58,7 +58,7 @@ dt_please_log_in();
                     </a>
                 </div>
                 <a class="button" id="search">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
+                    <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
                 </a>
             </div>
@@ -100,13 +100,13 @@ dt_please_log_in();
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
         </a>
         <a class="button filter-posts-mobile" data-open="filter-modal">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
         </a>
         <a class="button" id="open-search">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
             <div class="search-wrapper">
@@ -189,7 +189,7 @@ dt_please_log_in();
                     <div class="section-body">
                         <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
                         <div style="margin-bottom: 5px">
-                            <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                            <a data-open="filter-modal"><img class="dt-blue-icon dt-icon" style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
                         </div>
                         <div class="custom-filters"></div>
                     </div>
@@ -396,6 +396,46 @@ dt_please_log_in();
                             <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
                             </div>
 
+                            <div class="cell small-12 medium-12 grid-y">
+                                <div class="section-subheader">
+                                    <?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?>
+                                </div>
+                                <div class="cell" id="bulk_add-comment-section">
+                                    <div class="auto cell">
+                                        <textarea class="mention" dir="auto" id="bulk_comment-input"
+                                                placeholder="<?php echo esc_html_x( "Write your comment or note here", 'input field placeholder', 'disciple_tools' ) ?>"
+                                        ></textarea>
+
+                                        <?php if ( $post_type == "contacts" ) :
+                                            $sections = [
+                                                [
+                                                    "key" => "comment",
+                                                    "label" => __( "Comments", 'disciple_tools' ),
+                                                    "selected_by_default" => true
+                                                ],
+                                            ];
+                                            $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+
+                                                <div class="grid-x">
+                                                    <div class="section-subheader cell shrink">
+                                                        <?php esc_html_e( "Type:", 'disciple_tools' ) ?>
+                                                    </div>
+                                                    <select id="comment_type_selector" class="cell auto">
+                                                        <?php
+                                                        $section_keys = [];
+                                                        foreach ( $sections as $section ) {
+                                                            if ( !in_array( $section["key"], $section_keys ) ) {
+                                                                $section_keys[] = $section["key"] ?>
+                                                                <option value="<?php echo esc_html( $section["key"] ); ?>">
+                                                                <?php echo esc_html( $section["label"] );
+                                                            }
+                                                        } ?>
+                                                    </select>
+                                                </div>
+                                                <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
                             <span class="cell small-12 medium-12 center">
                                 <a class="button" id="bulk_edit_seeMore">
                                     <span class="seeMoreText"><?php esc_html_e( 'See More Options', 'disciple_tools' ); ?></span>
@@ -414,25 +454,29 @@ dt_please_log_in();
                                     </div>
                                     <?php
                                 }
-                                $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status','tags' ];
-                                foreach ( $field_options as $field_option => $value ) {
-                                    if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) ) { ?>
-                                        <div class="cell small-12 medium-<?php echo esc_attr( $value["type"] === "multi_select" ? "12" : "4" ) ?>">
+                                //move multi_select fields to the end
+                                function multiselect_at_end( $a, $b ){
+                                    return ( $a["type"] === "multi_select" && ( $a["display"] ?? "" ) !== "typeahead" ) ? 1 : 0;
+                                };
+                                uasort( $field_options, "multiselect_at_end" );
+                                $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status' ];
+                                foreach ( $field_options as $field_option => $value ) :
+                                    if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value )
+                                        && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) && empty( $value["hidden"] ) ) : ?>
+                                        <div class="cell small-12 medium-<?php echo esc_attr( ( $value["type"] === "multi_select" && ( $value["display"] ?? "" ) !== "typeahead" ) ? "12" : "4" ) ?>">
                                             <?php $field_options[$field_option]["custom_display"] = false;
                                             render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
                                         </div>
-                                    <?php }
-                                }?>
+                                    <?php endif;
+                                endforeach;
+                                ?>
                             </div>
                         </div>
 
-                        <button class="button dt-green" id="bulk_edit_submit"><span id="bulk_edit_submit_text" style="    text-transform:capitalize">Update <?php
-                        if ( $post_type == "contacts" ) {
-                            esc_html_e( 'Contacts', 'disciple_tools' );
-                        } elseif ( $post_type == "groups" ) {
-                            esc_html_e( 'Groups', 'disciple_tools' );
-                        }
-                        ?></span>
+                        <button class="button dt-green" id="bulk_edit_submit">
+                            <span id="bulk_edit_submit_text" style="    text-transform:capitalize">
+                                <?php echo esc_html( sprintf( __( "Update %s", "disciple_tools" ), $post_settings["label_plural"] ) ); ?>
+                            </span>
                         <span id="bulk_edit_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
                         </button>
                     </div>
@@ -524,7 +568,19 @@ dt_please_log_in();
                             if ( isset( $field_options[$field]["name"] ) ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
-                                        <?php echo esc_html( $field_options[$field]["name"] ) ?></a>
+
+                                        <?php if ( isset( $field_options[$field]["icon"] ) && ! empty( $field_options[$field]["icon"] ) ): ?>
+
+                                            <img class="tabs-title__icon" src="<?php echo esc_html( $field_options[$field]["icon"] ) ?>" alt="<?php echo esc_html( $field_options[$field]["name"] ) ?>">
+
+                                        <?php else : ?>
+
+                                            <div class="tabs-title__icon"></div>
+
+                                        <?php endif; ?>
+
+                                        <?php echo esc_html( $field_options[$field]["name"] ) ?>
+                                    </a>
                                 </li>
                             <?php endif; ?>
                         <?php endforeach; ?>
@@ -558,6 +614,9 @@ dt_please_log_in();
                                     <p>
                                         <label><?php echo esc_html( sprintf( _x( 'All %1$s with %2$s', 'All Contacts with Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
                                             <input class="all-connections" type="checkbox" value="all-connections" />
+                                        </label>
+                                        <label><?php echo esc_html( sprintf( _x( 'All %1$s without %2$s', 'All Contacts without Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
+                                            <input class="all-without-connections" type="checkbox" value="all-without-connections" />
                                         </label>
                                     </p>
                                 <?php endif; ?>
