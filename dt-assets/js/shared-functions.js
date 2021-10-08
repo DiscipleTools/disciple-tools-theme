@@ -266,10 +266,10 @@ jQuery(document).on("click", ".help-button-tile", function () {
           window.lodash.forOwn(field.default, (field_options, field_key) => {
             if( field_options.hasOwnProperty('icon') ) {
               if ( first_field_option ) {
-                list_html += `<ul style="margin-left:15%;">`;
+                list_html += `<ul class="help-modal-icon">`;
                 first_field_option = false;
               }
-              list_html += `<li style="list-style-image:url(${window.lodash.escape(field_options.icon)});margin-bottom:3%">`;
+              list_html += `<li><img src="${window.lodash.escape(field_options.icon)}">`;
             } else {
               if ( first_field_option ) {
                 list_html + `<ul>`;
