@@ -261,9 +261,23 @@ jQuery(document).on("click", ".help-button-tile", function () {
         html += `<p>${window.lodash.escape(field.description)}</p>`;
 
         if (window.lodash.isObject(field.default)) {
-          let list_html = `<ul>`;
+          let list_html = ``;
+          let first_field_option = true;
           window.lodash.forOwn(field.default, (field_options, field_key) => {
-            list_html += `<li><strong>${window.lodash.escape(
+            if( field_options.hasOwnProperty('icon') ) {
+              if ( first_field_option ) {
+                list_html += `<ul style="margin-left:15%;">`;
+                first_field_option = false;
+              }
+              list_html += `<li style="list-style-image:url(${window.lodash.escape(field_options.icon)});margin-bottom:3%">`;
+            } else {
+              if ( first_field_option ) {
+                list_html + `<ul>`;
+                first_field_option = false;
+              }
+              list_html += `<li>`;
+            }
+            list_html += `<strong>${window.lodash.escape(
               field_options.label
             )}</strong> ${window.lodash.escape(
               !field_options.description ? "" : "- " + field_options.description
