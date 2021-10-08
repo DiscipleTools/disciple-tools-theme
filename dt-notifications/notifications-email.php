@@ -68,7 +68,16 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
     if ( !$continue ){
         return false;
     }
-    $is_sent = wp_mail( $email, $subject, $message_plain_text );
+    $is_sent = true;
+    /**
+     * if a server cron is set up, then use the email scheduler
+     * otherwise send the email normally
+     */
+    if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ){
+        wp_queue()->push( new DT_Send_Email_Job( $user->ID, $email, $subject, $message_plain_text ) );
+    } else {
+        $is_sent = wp_mail( $email, $subject, $message_plain_text );
+    }
 
     return $is_sent;
 }
@@ -123,4 +132,40 @@ function dt_make_post_email_subject( $post_id ) {
 
 function dt_make_email_footer() {
     return "\r\n" . __( 'Do not reply directly to this email.', 'disciple_tools' );
+}
+
+
+/**
+ * Send emails that have been put in the email queue
+ */
+
+use WP_Queue\Job;
+class DT_Send_Email_Job extends Job{
+
+    /**
+     * @var int
+     */
+    public $user_id;
+    public $email_address;
+    public $email_message;
+    public $email_subject;
+
+    /**
+     * Subscribe_User_Job constructor.
+     *
+     * @param int $user_id
+     */
+    public function __construct( $user_id, $email_address, $email_subject, $email_message ){
+        $this->user_id = $user_id;
+        $this->email_address = $email_address;
+        $this->email_message = $email_message;
+        $this->email_subject = $email_subject;
+    }
+
+    /**
+     * Handle job logic.
+     */
+    public function handle(){
+        wp_mail( $this->email_address, $this->email_subject, $this->email_message );
+    }
 }
