@@ -262,15 +262,19 @@ jQuery(document).on("click", ".help-button-tile", function () {
 
         if (window.lodash.isObject(field.default)) {
           let list_html = ``;
-          if ( section == 'health-metrics') {
-            list_html += `<ul style="margin-left:15%;">`;
-          } else {
-            list_html += `<ul>`;
-          }
+          let first_field_option = true;
           window.lodash.forOwn(field.default, (field_options, field_key) => {
             if( field_options.hasOwnProperty('icon') ) {
+              if ( first_field_option ) {
+                list_html += `<ul style="margin-left:15%;">`;
+                first_field_option = false;
+              }
               list_html += `<li style="list-style-image:url(${window.lodash.escape(field_options.icon)});margin-bottom:3%">`;
             } else {
+              if ( first_field_option ) {
+                list_html + `<ul>`;
+                first_field_option = false;
+              }
               list_html += `<li>`;
             }
             list_html += `<strong>${window.lodash.escape(
