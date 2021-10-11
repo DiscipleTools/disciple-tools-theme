@@ -251,6 +251,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
           }
           .column-header{
             font-weight: bold;
+            overflow: hidden;
+            white-space: nowrap;
           }
           .field-container {
             padding: 5px;
@@ -269,7 +271,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <div id="sort-tiles" style="display: inline-block; width: 100%">
 
                 <?php foreach ( $tile_options as $tile_key => $tile ) :
-                    if ( $tile_key === "no_tile" ){
+                    if ( $tile_key === "no_tile" || ( $tile["hidden"] ?? false ) ){
                         continue;
                     }
                     //@todo display hidden tile greyed out

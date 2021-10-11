@@ -413,8 +413,6 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( !dt_field_enabled_for_record_type( $contact_fields[$field_key], $post ) ){
                 return;
             }
-            $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
-
             ?>
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( $contact_fields[$field_key]["icon"] ) ?>">
