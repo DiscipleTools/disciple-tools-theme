@@ -455,7 +455,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         $updated_fields = self::action_remove( $field_type, $field_id, $value );
                         break;
                     case 'custom':
-                        do_action( strval( $value ), $post );
+                        do_action( strval( $value ), $post, $field_id, $value );
                         break;
                 }
 
