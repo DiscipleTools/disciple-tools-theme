@@ -20,17 +20,26 @@ jQuery(function() {
   function makeDaysActivitiesHtml(daysActivities, translations) {
     let daysActivitiesHtml = ''
 
+    const { template_dir } = window.wpApiShare
+
     Object.entries(daysActivities).forEach(([postTitle, postActivities]) => {
       const firstPostActivity = postActivities[0]
       const icon = window.lodash.escape(firstPostActivity.icon)
       if (!firstPostActivity.post_type_label) return
       const requiresTitle = ['field_update', 'created', 'comment'].includes(firstPostActivity.action)
       const iconHtml = firstPostActivity.icon ? `<i class="${icon} medium post-activities__icon"></i> ` : window.lodash.escape(firstPostActivity.post_type_label) + ':'
+      const forID = `activity_${firstPostActivity.hist_time}_${firstPostActivity.object_name}`
       const activitiesTitle = requiresTitle
         ? `
+        <input type="checkbox" class="activity__more-state" id="${forID}" />
         <h5 class="post-activities__title">
           <a href="/${firstPostActivity.post_type}/${firstPostActivity.object_id}">${iconHtml} ${window.lodash.escape(postTitle)}</a>
-
+          <label for="${forID}" class="activity__less-link">
+            <img src="${template_dir}/dt-assets/images/chevron_up.svg"/>
+          </label>
+          <label for="${forID}" class="activity__more-link">
+            <img src="${template_dir}/dt-assets/images/chevron_down.svg"/>
+          </label>
         </h5>`
         : ''
 
@@ -53,9 +62,8 @@ jQuery(function() {
     let groupedActivitiesHtml = ''
 
     const groupedActivities = groupActivityTypes(postActivities)
-    console.log(groupedActivities)
     Object.entries(groupedActivities).forEach(([action, activities]) => {
-      const { fields, object_note_short, object_note, count, hist_time } = activities
+      const { fields, object_note_short, object_note, object_notes, count, hist_time } = activities
 
       let note = ''
 
@@ -65,12 +73,12 @@ jQuery(function() {
         const hasMoreFields = fields.slice(2).length > 0
 
         if (hasMoreFields) {
-          const forID = `activity${hist_time}${activities.object_id}`
+          const forID = `fields_${hist_time}${activities.object_id}`
           note = `
-              <input type="checkbox" class="activity__more-state" id="${forID}" />
-              ${window.lodash.escape(object_note_short)}: ${escapedFields.slice(0, 2).join(', ')}<span class="activity__more-details">, ${escapedFields.slice(2).join(', ')}</span>
-              <label for="${forID}" class="activity__more-link">+&nbsp;${fields.slice(2).length}&nbsp;${moreLabel}</label>
-              <label for="${forID}" class="activity__less-link">-&nbsp;${lessLabel}</label>
+              <input type="checkbox" class="fields__more-state" id="${forID}" />
+              ${window.lodash.escape(object_note_short)}: ${escapedFields.slice(0, 2).join(', ')}<span class="fields__more-details">, ${escapedFields.slice(2).join(', ')}</span>
+              <label for="${forID}" class="fields__more-link">+&nbsp;${fields.slice(2).length}&nbsp;${moreLabel}</label>
+              <label for="${forID}" class="fields__less-link">-&nbsp;${lessLabel}</label>
             `
         } else {
           note = `${window.lodash.escape(object_note_short)}: ${escapedFields.join(', ')}`
@@ -80,9 +88,19 @@ jQuery(function() {
           ? window.lodash.escape(object_note_short.replace('%n', count))
           : window.lodash.escape(object_note)
       }
+      let activityDetails = ''
+      object_notes.forEach((objectNote) => {
+        activityDetails += `<li>${objectNote}</li>`
+      })
+
       groupedActivitiesHtml += `
       <div class="post-activities__item${requiresTitle ? '' : '--no-title'}">
         ${note}
+        ${(activityDetails !== '') ? `
+          <ul class="activity__more-details">
+            ${activityDetails}
+          </ul>
+        ` : ''}
       </div>`
 
     })
@@ -120,6 +138,7 @@ jQuery(function() {
           count: 0,
           ...activity,
           fields: [],
+          object_notes: [],
         }
         delete groupedActivities[action].field
       }
@@ -128,6 +147,10 @@ jQuery(function() {
         groupedActivities[action].fields.push(activity.field)
       } else {
         groupedActivities[action].fields.push(activity.meta_key)
+      }
+      // e.g. If the name has been set the object_note = '0'
+      if (activity.object_note !== '0') {
+        groupedActivities[action].object_notes.push(activity.object_note)
       }
     })
     return groupedActivities
