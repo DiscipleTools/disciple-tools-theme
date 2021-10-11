@@ -460,9 +460,10 @@ dt_please_log_in();
                                 };
                                 uasort( $field_options, "multiselect_at_end" );
                                 $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status' ];
+                                $allowed_types = [ "user_select", "multi_select", "key_select", "date", "location", "location_meta", "connection", "tags", "text", "textarea", "number" ];
                                 foreach ( $field_options as $field_option => $value ) :
-                                    if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value )
-                                        && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) && empty( $value["hidden"] ) ) : ?>
+                                    if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && in_array( $value["type"], $allowed_types )
+                                        && $value['type'] != "communication_channel" && empty( $value["hidden"] ) ) : ?>
                                         <div class="cell small-12 medium-<?php echo esc_attr( ( $value["type"] === "multi_select" && ( $value["display"] ?? "" ) !== "typeahead" ) ? "12" : "4" ) ?>">
                                             <?php $field_options[$field_option]["custom_display"] = false;
                                             render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
