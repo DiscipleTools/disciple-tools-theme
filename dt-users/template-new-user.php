@@ -155,7 +155,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                             </dl>
                                         </div>
 
-                                        <div class="cell medium-6">
+                                        <div id="optional-fields" class="cell medium-6 show-for-medium">
                                             <dl>
                                                 <dt><label for="first_name"><?php esc_html_e( 'First Name', 'disciple_tools' )?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)</label></dt>
                                                 <dd><input class="input" type="text" class="input" id="first_name" data-optional
@@ -206,8 +206,17 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                 </dd>
                                             </dl>
                                         </div>
+
                                     </div>
 
+                                    <div id="show-optional-fields-banner" class="show-for-small-only" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">
+                                        <a class="button clear" id="show-optional-fields" style="margin:0;padding:3px 0; width:100%">
+                                            <?php esc_html_e( 'See More Options', 'disciple_tools' ); ?>
+                                        </a>
+                                        <a class="button clear" id="hide-optional-fields" style="margin:0;padding:3px 0; width:100%; display: none;">
+                                            <?php esc_html_e( 'See Fewer Options', 'disciple_tools' ); ?>
+                                        </a>
+                                    </div>
 
                                     <button type="submit" class="submit button" id="create-user"><?php esc_html_e( 'Create User', 'disciple_tools' ); ?></button> <span class="spinner"></span>
 

@@ -797,6 +797,22 @@ jQuery(document).ready(function($) {
       hideOptionsButton.hide()
     })
 
+    const showOptionalFields = $('#show-optional-fields')
+    const hideOptionalFields = $('#hide-optional-fields')
+    const optionalFields = $('#optional-fields')
+
+    showOptionalFields.on('click', function() {
+      showOptionalFields.hide()
+      hideOptionalFields.show()
+      optionalFields.removeClass('show-for-medium')
+    })
+
+    hideOptionalFields.on('click', function() {
+      showOptionalFields.show()
+      hideOptionalFields.hide()
+      optionalFields.addClass('show-for-medium')
+    })
+
     $('#new-user-language-dropdown').html(write_language_dropdown(dt_user_management_localized.language_dropdown))
 
     let result_div = jQuery('#result-link')
