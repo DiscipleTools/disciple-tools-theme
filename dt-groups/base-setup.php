@@ -197,52 +197,52 @@ class DT_Groups_Base extends DT_Module_Base {
                     "church_baptism" => [
                         "label" => __( "Baptism", 'disciple_tools' ),
                         "description" => _x( "The group is baptising.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/baptism.svg?v=2'
+                        "icon" => get_template_directory_uri() . '/dt-assets/images/groups/baptism-2.svg'
                     ],
                     "church_bible" => [
                         "label" => __( "Bible Study", 'disciple_tools' ),
                         "description" => _x( "The group is studying the bible.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/word.svg?v=2'
+                        "icon" => get_template_directory_uri() . '/dt-assets/images/groups/word-2.svg'
                     ],
                     "church_communion" => [
                         "label" => __( "Communion", 'disciple_tools' ),
                         "description" => _x( "The group is practicing communion.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/communion.svg?v=2'
+                        "icon" => get_template_directory_uri() . '/dt-assets/images/groups/communion-2.svg'
                     ],
                     "church_fellowship" => [
                         "label" => __( "Fellowship", 'disciple_tools' ),
                         "description" => _x( "The group is fellowshiping.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/heart.svg?v=2'
+                        "icon" => get_template_directory_uri() . '/dt-assets/images/groups/heart-2.svg'
                     ],
                     "church_giving" => [
                         "label" => __( "Giving", 'disciple_tools' ),
                         "description" => _x( "The group is giving.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/giving.svg?v=2'
+                        "icon" => get_template_directory_uri() . '/dt-assets/images/groups/giving-2.svg'
                     ],
                     "church_prayer" => [
                         "label" => __( "Prayer", 'disciple_tools' ),
                         "description" => _x( "The group is praying.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/prayer.svg?v=2'
+                        "icon" => get_template_directory_uri() . '/dt-assets/images/groups/prayer-2.svg'
                     ],
                     "church_praise" => [
                         "label" => __( "Praise", 'disciple_tools' ),
                         "description" => _x( "The group is praising.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/praise.svg?v=2'
+                        "icon" => get_template_directory_uri() . '/dt-assets/images/groups/praise-2.svg'
                     ],
                     "church_sharing" => [
                         "label" => __( "Sharing the Gospel", 'disciple_tools' ),
                         "description" => _x( "The group is sharing the gospel.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/evangelism.svg?v=2'
+                        "icon" => get_template_directory_uri() . '/dt-assets/images/groups/evangelism-2.svg'
                     ],
                     "church_leaders" => [
                         "label" => __( "Leaders", 'disciple_tools' ),
                         "description" => _x( "The group has leaders.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/leadership.svg?v=2'
+                        "icon" => get_template_directory_uri() . '/dt-assets/images/groups/leadership-2.svg'
                     ],
                     "church_commitment" => [
                         "label" => __( "Church Commitment", 'disciple_tools' ),
                         "description" => _x( "The group has committed to be church.", 'Optional Documentation', 'disciple_tools' ),
-                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg?v=2'
+                        "icon" => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
                     ],
                 ],
                 "customizable" => "add_only",
@@ -481,32 +481,46 @@ class DT_Groups_Base extends DT_Module_Base {
         return $fields;
     }
 
-    public function dt_details_additional_section( $section, $post_type ){
-        // Display 'Health Metrics' tile
+    public function dt_details_additional_section( $section, $post_type ) {
+        // Display 'Health Metrics' Tile
         if ( $post_type === "groups" && $section === "health-metrics" ) {
             $group_preferences = dt_get_option( 'group_preferences' );
             $fields = DT_Posts::get_post_field_settings( $post_type );
             //<!-- Health Metrics-->
-            if ( ! empty( $group_preferences['church_metrics'] ) ) : ?>
-
+            if ( ! empty( $group_preferences['church_metrics'] ) ) :
+                ?>
                 <div class="grid-x">
                     <div style="margin-right:auto; margin-left:auto;min-height:302px">
-                        <object id="church-svg-wrapper" type="image/svg+xml" data="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/church-wheel.svg?v=2' ); ?>"></object>
+                        <div class="health-circle" id="health-items-container">
+                            <div class="health-grid">
+                                <?php $fields = DT_Posts::get_post_field_settings( $post_type );
+                                if ( empty( $fields['health_metrics']['default'] ) ): ?>
+                                    <div class="custom-group-health-item empty-health" id="health-metrics" style="filter: opacity(0.35);">
+                                        <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/dots.svg' ); ?>">
+                                        <div class="empty-health-text">
+                                            <?php echo esc_html( 'Empty', 'disciple_tools' ); ?>
+                                        </div>
+                                    </div>
+                                <?php else : ?>
+                                    <?php foreach ( $fields['health_metrics']['default'] as $key => $option ) : ?>
+                                        <?php if ( $key !== 'church_commitment' ) : ?>
+                                            <div class="health-item" id="icon_<?php echo esc_attr( strtolower( $key ) ) ?>" title="<?php echo esc_attr( $option['description'] ); ?>">
+                                                <img src="<?php echo esc_attr( $option['icon'] ); ?>">
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div style="display:flex;flex-wrap:wrap;margin-top:10px" class=" js-progress-bordered-box half-opacity">
-                    <?php foreach ( $fields["health_metrics"]["default"] as $key => $option ) : ?>
-                        <div class="group-progress-button-wrapper">
-                            <button  class="group-progress-button" id="<?php echo esc_html( $key ) ?>">
-                                <img src="<?php echo esc_html( $option["image"] ?? "" ) ?>">
-                            </button>
-                            <p><?php echo esc_html( $option["label"] ) ?> </p>
-                        </div>
-                    <?php endforeach; ?>
+                <div>
+                    <span><?php echo esc_html( $fields['health_metrics']['default']['church_commitment']['label'] ); ?></span>
+                    <input type="checkbox" id="is-church-switch" class="dt-switch">
+                    <label class="dt-switch" for="is-church-switch" style="vertical-align: top;"></label>
                 </div>
-            <?php endif; ?>
-
-        <?php }
+        <?php endif;
+        }
             // Display 'Four Fields' tile
         if ( $post_type === "groups" && $section === "four-fields" ) {
             $group_preferences = dt_get_option( 'group_preferences' );

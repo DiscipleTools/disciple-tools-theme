@@ -526,6 +526,7 @@ Groups
     border-radius:5px;
     height:60px;
     width:65px;
+    opacity: 0.5;
 }
 
 
@@ -718,4 +719,69 @@ select.color-select {
 .dispatcher-tile .populated-list {
     overflow-y: scroll;
     max-height: 250px;
+}
+
+//church health circle
+.health-item {
+    display: none;
+    margin: auto;
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+    font-size: 16px;
+    color: black;
+    text-align: center;
+    font-style: italic;
+    cursor: pointer;
+}
+.health-item img {
+    height: 50px;
+    width: 50px;
+    filter: grayscale(1) opacity(0.3);
+}
+.practiced-item {
+    filter: none !important;
+}
+.practiced-button {
+    background-color: #3f729b !important;
+    opacity: unset !important;
+}
+.practiced-button img {
+    filter: none !important;;
+}
+.health-circle {
+    display: block;
+    margin: auto;
+    height: 280px;
+    width: 280px;
+    border-radius: 100%;
+    border: 3px darkgray dashed;
+}
+.health-grid {
+    display: inline-block;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.committed {
+    border: 3px #4caf50 solid !important;
+}
+.group-progress-button img {
+    filter: grayscale(1) contrast(1.35);
+}
+.empty-health {
+    width: 35px;
+    height: 35px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40%;
+}
+.empty-health-text {
+    text-align: center;
+    font-style: italic;
+    margin-left: -15%;
+    margin-top: -15%;
 }
