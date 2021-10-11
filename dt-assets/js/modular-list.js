@@ -519,13 +519,19 @@
           if (values[0] === `<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`) {
             values[0] = '&#9733;'
           }
-          row_fields_html += `
+          let tmp_html = `
             <td title="${values.join(', ')}">
               <ul>
                 ${values_html}
               </ul>
             </td>
           `
+
+          if (field_key === "favorite") {
+            row_fields_html = tmp_html + row_fields_html;
+          } else {
+            row_fields_html += tmp_html;
+          }
         }
       })
 

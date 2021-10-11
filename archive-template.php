@@ -512,14 +512,22 @@ dt_please_log_in();
                                         }
                                     }
                                     $columns = array_unique( array_merge( $fields_to_show_in_table, $columns ) );
+                                    if ( in_array( 'favorite', $columns ) ) {
+                                        ?>
+                                        <th style="width:36px; background-image:none; cursor:default"></th>
+                                        <?php
+                                    }
                                     foreach ( $columns as $field_key ):
-                                        if ( $field_key === "name" ): ?>
-                                            <th class="all" data-id="name"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
-                                        <?php elseif ( isset( $post_settings["fields"][$field_key]["name"] ) ) : ?>
-                                            <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
-                                                <?php echo esc_html( $post_settings["fields"][$field_key]["name"] ) ?>
-                                            </th>
-                                        <?php endif;
+                                        if ( ! in_array( $field_key, [ 'favorite' ] ) ):
+                                            if ( $field_key === "name" ): ?>
+                                                <th class="all"
+                                                    data-id="name"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
+                                            <?php elseif ( isset( $post_settings["fields"][ $field_key ]["name"] ) ) : ?>
+                                                <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
+                                                    <?php echo esc_html( $post_settings["fields"][ $field_key ]["name"] ) ?>
+                                                </th>
+                                            <?php endif;
+                                        endif;
                                     endforeach ?>
                                 </tr>
                             </thead>
