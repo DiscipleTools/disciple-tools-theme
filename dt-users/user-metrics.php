@@ -62,7 +62,7 @@ class DT_User_Metrics {
 
         //phpcs:disable
         $user_activity = $wpdb->get_results( $wpdb->prepare( "
-            SELECT hist_time, action, object_name, meta_key, object_type, object_id, object_subtype, object_note, p.post_type
+            SELECT hist_time, action, object_name, meta_key, meta_value, object_type, object_id, object_subtype, object_note, p.post_type, a.field_type
             FROM $wpdb->dt_activity_log a
             LEFT JOIN $wpdb->posts p
             ON a.object_id = p.ID
@@ -77,8 +77,9 @@ class DT_User_Metrics {
         if ( ! empty( $user_activity ) ) {
 
             foreach ($user_activity as $a) {
+                $post_settings = DT_Posts::get_post_settings( $a->post_type );
                 $post_fields = DT_Posts::get_post_field_settings( $a->post_type );
-                $a->object_note = sanitize_text_field( $a->object_note );
+                $a->object_note = DT_Posts::format_activity_message( $a, $post_settings );
 
                 $a->icon = apply_filters( 'dt_record_icon', null, $a->post_type, [] );
                 $a->post_type_label = $a->post_type ? DT_Posts::get_label_for_post_type( $a->post_type ) : null;

@@ -62,6 +62,7 @@ jQuery(function() {
     let groupedActivitiesHtml = ''
 
     const groupedActivities = groupActivityTypes(postActivities)
+
     Object.entries(groupedActivities).forEach(([action, activities]) => {
       const { fields, object_note_short, object_note, object_notes, count, hist_time } = activities
 
@@ -149,7 +150,7 @@ jQuery(function() {
         groupedActivities[action].fields.push(activity.meta_key)
       }
       // e.g. If the name has been set the object_note = '0'
-      if (activity.object_note !== '0') {
+      if (activity.object_note && !groupedActivities[action].object_notes.includes(activity.object_note)) {
         groupedActivities[action].object_notes.push(activity.object_note)
       }
     })
