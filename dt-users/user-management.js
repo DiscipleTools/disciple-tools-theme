@@ -781,6 +781,37 @@ jQuery(document).ready(function($) {
 
   function write_add_user() {
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
+    const showOptionsButton = $('#show-hidden-fields')
+    const hideOptionsButton = $('#hide-hidden-fields')
+    const hiddenFields = $('.hidden-fields')
+
+    showOptionsButton.on('click', function() {
+      hiddenFields.show()
+      showOptionsButton.hide()
+      hideOptionsButton.show()
+    })
+
+    hideOptionsButton.on('click', function() {
+      hiddenFields.hide()
+      showOptionsButton.show()
+      hideOptionsButton.hide()
+    })
+
+    const showOptionalFields = $('#show-optional-fields')
+    const hideOptionalFields = $('#hide-optional-fields')
+    const optionalFields = $('#optional-fields')
+
+    showOptionalFields.on('click', function() {
+      showOptionalFields.hide()
+      hideOptionalFields.show()
+      optionalFields.removeClass('show-for-medium')
+    })
+
+    hideOptionalFields.on('click', function() {
+      showOptionalFields.show()
+      hideOptionalFields.hide()
+      optionalFields.addClass('show-for-medium')
+    })
 
     $('#new-user-language-dropdown').html(write_language_dropdown(dt_user_management_localized.language_dropdown))
 
@@ -793,6 +824,18 @@ jQuery(document).ready(function($) {
       let name = jQuery('#name').val()
       let email = jQuery('#email').val()
       let locale = jQuery('#locale').val();
+
+      const username = $('#username').val()
+      const password = $('#password').val()
+
+      const optionalFields = document.querySelectorAll('[data-optional=""]')
+      const optionalValues = {}
+
+      optionalFields.forEach((node) => {
+        if (node.value) {
+          optionalValues[node.id] = node.value
+        }
+      })
 
       let corresponds_to_contact = null
       if ( typeof window.contact_record !== 'undefined' ) {
@@ -807,7 +850,20 @@ jQuery(document).ready(function($) {
         spinner_span.html(spinner)
         submit_button.prop('disabled', true)
 
-        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact, "locale": locale, 'user-roles':roles, return_contact: true })
+        makeRequest(
+          "POST",
+          `users/create`,
+          {
+            "user-email": email,
+            "user-display": name,
+            "user-username": username || null,
+            "user-password": password || null,
+            "user-optional-fields": optionalValues !== {} ? optionalValues : null,
+            "corresponds_to_contact": corresponds_to_contact,
+            "locale": locale,
+            'user-roles':roles,
+            return_contact: true
+          })
           .done(response=>{
             const { user_id, corresponds_to_contact: contact_id } = response
             result_div.html('')
