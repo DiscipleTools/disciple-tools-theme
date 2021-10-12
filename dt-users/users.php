@@ -296,7 +296,7 @@ class Disciple_Tools_Users
      * @param bool $return_contact_id
      * @return int|WP_Error|array
      */
-    public static function create_user( $user_name, $user_email, $display_name, array $user_roles = [ 'multiplier' ], $corresponds_to_contact = null, $locale = null, bool $return_contact_id = false ){
+    public static function create_user( $user_name, $user_email, $display_name, array $user_roles = [ 'multiplier' ], $corresponds_to_contact = null, $locale = null, bool $return_contact_id = false, $password = null, $optional_fields = null ){
         if ( !current_user_can( "create_users" ) && !DT_User_Management::non_admins_can_make_users() ){
             return new WP_Error( "no_permissions", "You don't have permissions to create users", [ 'status' => 401 ] );
         }
@@ -337,6 +337,9 @@ class Disciple_Tools_Users
             if ( is_wp_error( $user_id ) ){
                 return $user_id;
             }
+            if ( $password ) {
+                wp_set_password( $password, $user_id );
+            }
             $user = get_user_by( 'id', $user_id );
             $user->display_name = $display_name;
             wp_update_user( $user );
@@ -346,6 +349,16 @@ class Disciple_Tools_Users
         global $wpdb;
         update_user_meta( $user_id, $wpdb->prefix . 'user_status', 'active' );
         update_user_meta( $user_id, $wpdb->prefix . 'workload_status', 'active' );
+
+        if ( $optional_fields ) {
+            foreach ($optional_fields as $key => $value) {
+                if ( $key === "gender" ) {
+                    update_user_option( $user_id, 'user_gender', $value );
+                } else {
+                    update_user_meta( $user_id, $key, $value );
+                }
+            }
+        }
 
         if ( $corresponds_to_contact ) {
             update_user_meta( $user_id, $wpdb->prefix . 'corresponds_to_contact', $corresponds_to_contact );

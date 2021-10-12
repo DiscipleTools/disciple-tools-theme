@@ -275,7 +275,7 @@ class DT_User_Hooks_And_Configuration {
             }
         }
 
-        $message = self::common_user_invite_text( $user->user_email, $blogname, home_url(), $display_name );
+        $message = self::common_user_invite_text( $user->user_login, $blogname, home_url(), $display_name );
         $message .= __( 'To set your password, visit the following address:', 'disciple_tools' ) . "\r\n\r\n";
         $message .= home_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) . "\r\n\r\n";
 
