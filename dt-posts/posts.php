@@ -1531,14 +1531,19 @@ class Disciple_Tools_Posts
                 delete: true
              *
              * Add by grid_id
-             * location_grid => 12345
+             * grid_id => 12345
              *
-             * Add by Mabox Response
+             * Add by Mapbox Response
              * lng => 0,
              * lat => 0,
              * level => (country,local,place,nieghborhood,address,admin0,admin1,admin2,admin3,admin4, or admin5),
              * label: readable address,
              * source: (ip, user),
+             *
+             * Add by Longitude, Latitude
+             * lng => 20
+             * lat => 30
+             * source: (ip, user) (optional)
              *
              ********************************************************/
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location_meta" ) ){
@@ -1563,12 +1568,13 @@ class Disciple_Tools_Posts
                         Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value["grid_meta_id"], $existing_post );
                     }
 
-                    // is new but has provided grid_id
+                    // Add by grid_id
                     else if ( isset( $value["grid_id"] ) && ! empty( $value["grid_id"] ) ) {
                         $grid = $geocoder->query_by_grid_id( $value["grid_id"] );
                         if ( $grid ) {
                             $location_meta_grid = [];
 
+                            // creates the full record from the grid_id
                             Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
                             $location_meta_grid['post_id'] = $post_id;
                             $location_meta_grid['post_type'] = $post_type;
@@ -1584,9 +1590,8 @@ class Disciple_Tools_Posts
                             }
                         }
                     }
-                    // new
-                    else {
-
+                    // Add by Mapbox Response
+                    else if ( isset( $value["label"], $value["level"], $value["lng"], $value["lat"] ) ) {
                         Location_Grid_Meta::validate_location_grid_meta( $value );
 
                         if ( $value['level'] === 'country' ) {
@@ -1603,6 +1608,30 @@ class Disciple_Tools_Posts
 
                             $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $value );
                             if ( is_wp_error( $potential_error ) ){
+                                return $potential_error;
+                            }
+                        }
+                    }
+                    // Add by Longitude, Latitude
+                    else if ( isset( $value["lng"], $value["lat"] ) ) {
+                        $grid = $geocoder->get_grid_id_by_lnglat( $value['lng'], $value['lat'] );
+                        if ( $grid ) {
+                            $location_meta_grid = [];
+
+                            $full_name = Disciple_Tools_Mapping_Queries::get_full_name_by_grid_id( $grid["grid_id"] );
+
+                            // creates the full record from the grid_id
+                            Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                            $location_meta_grid['post_id'] = $post_id;
+                            $location_meta_grid['post_type'] = $post_type;
+                            $location_meta_grid['grid_id'] = $grid["grid_id"];
+                            $location_meta_grid['lng'] = $grid["longitude"];
+                            $location_meta_grid['lat'] = $grid["latitude"];
+                            $location_meta_grid['level'] = $grid["level_name"];
+                            $location_meta_grid['label'] = $full_name;
+
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                            if (is_wp_error( $potential_error )) {
                                 return $potential_error;
                             }
                         }
