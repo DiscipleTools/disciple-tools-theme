@@ -2318,22 +2318,33 @@ class Disciple_Tools_Posts
     }
 
 
-    public static function get_all_connected_fields_on_list( $field_settings, &$records, $fields_to_return = [] ){
+    /**
+     * Get all connection fields on a list of records
+     *
+     * @param $field_settings
+     * @param $records
+     * @param array $fields_to_return
+     */
+    public static function get_all_connected_fields_on_list( $field_settings, &$records, array $fields_to_return = [] ){
         global $wpdb;
-        $p2p_types = [];
         $post_ids = array_map( function ( $r ){
             return $r["ID"];
         }, $records );
         $ids_sql = dt_array_to_sql( $post_ids );
+        $p2p_types = [];
+        $connection_fields = [];
         foreach ( $field_settings as $field_key => $field_value){
-            if ( $field_value["type"] === "connection" ){
-                if ( ( empty( $fields_to_return ) || in_array( $field_key, $fields_to_return ) ) && !empty( $records ) ){
-                    $p2p_types[$field_value["p2p_key"]] = $field_value;
-                    $p2p_types[$field_value["p2p_key"]]["field_key"] = $field_key;
-                }
+            if ( $field_value["type"] === "connection" && ( empty( $fields_to_return ) || in_array( $field_key, $fields_to_return ) ) && !empty( $records ) ){
+                $p2p_types[$field_value["p2p_key"]] = $field_value;
+                $p2p_types[$field_value["p2p_key"]]["field_key"] = $field_key;
+                $connection_fields[$field_key] = $field_value;
             }
         }
 
+
+        /**
+         * get all the p2p row for the records
+         */
         $connection_types_sql = dt_array_to_sql( array_keys( $p2p_types ) );
         //phpcs:disable
         //WordPress.WP.PreparedSQL.NotPrepare
@@ -2348,17 +2359,25 @@ class Disciple_Tools_Posts
 
 
         $connected_post_ids = [];
-        foreach ( $p2p_records as &$p2p_record_row ){
+        $p2p_values_mapped_by_post_id = [];
+        $p2p_ids = [];
+        foreach ( $p2p_records as $p2p_record_row ){
             $connected_post_ids[] = $p2p_record_row["p2p_to"];
             $connected_post_ids[] = $p2p_record_row["p2p_from"];
-            $p2p_record_row["p2p_to"] = (int) $p2p_record_row["p2p_to"];
-            $p2p_record_row["p2p_from"] = (int) $p2p_record_row["p2p_from"];
+            $p2p_values_mapped_by_post_id[$p2p_record_row["p2p_to"]][] = $p2p_record_row;
+            $p2p_values_mapped_by_post_id[$p2p_record_row["p2p_from"]][] = $p2p_record_row;
+            $p2p_ids[] = $p2p_record_row["p2p_id"];
         }
+
+        /**
+         * Get post information for the connected items
+         */
         $connected_post_ids_sql = dt_array_to_sql( array_unique( $connected_post_ids ) );
         //phpcs:disable
         //WordPress.WP.PreparedSQL.NotPrepare
         $connected_posts = $wpdb->get_results("
-            SELECT * FROM $wpdb->posts p
+            SELECT ID, post_type, post_date_gmt, post_date, post_title
+            FROM $wpdb->posts p
             WHERE p.ID in ( $connected_post_ids_sql )
         ", ARRAY_A );
         //phpcs:enable
@@ -2366,9 +2385,11 @@ class Disciple_Tools_Posts
         foreach ( $connected_posts as $cp ){
             $connected_posts_mapped[$cp["ID"]] = $cp;
         }
-        $p2p_ids = dt_array_to_sql( array_map( function ( $p ){
-            return $p["p2p_id"];
-        }, $p2p_records ));
+
+        /**
+         * Get meta values for connections
+         */
+        $p2p_ids_sql = dt_array_to_sql( $p2p_ids );
         //phpcs:disable
         //WordPress.WP.PreparedSQL.NotPrepare
         $all_p2p_meta = $wpdb->get_results( "
@@ -2377,31 +2398,31 @@ class Disciple_Tools_Posts
             WHERE p2p_id in ( $p2p_ids )
         ", ARRAY_A);
         //phpcs:enable
+
+
+        //add connection values and connection meta to the records
         foreach ( $records as &$record ){
-            $record["ID"] = (int) $record["ID"];
-            foreach ( $field_settings as $field_key => $field_value ){
-                if ( $field_value["type"] === "connection" && isset( $field_value["p2p_key"] ) ) {
-                    if ( !isset( $record[$field_key] ) ) {
-                        $record[$field_key] = [];
-                    }
-                    foreach ( $p2p_records as $p2p_record ){
-                        if ( ( $p2p_record["p2p_to"] === $record["ID"] || $p2p_record["p2p_from"] === $record["ID"] ) && $p2p_record["p2p_type"] === $field_value["p2p_key"] ){
-                            $connection_id = 0;
-                            if ( ( $field_value["p2p_direction"] === "from" || $field_value["p2p_direction"] === "any" ) && $p2p_record["p2p_to"] != $record["ID"] ) {
-                                $connection_id = $p2p_record["p2p_to"];
-                            } else if ( ( $field_value["p2p_direction"] === "to" || $field_value["p2p_direction"] === "any" ) && $p2p_record["p2p_from"] != $record["ID"] ){
-                                $connection_id = $p2p_record["p2p_from"];
-                            }
-                            if ( $connection_id ){
-                                $connection_post = $connected_posts_mapped[$connection_id];
-                                $connection_meta = [];
-                                foreach ( $all_p2p_meta as $meta ){
-                                    if ( $meta["p2p_id"] === $p2p_record["p2p_id"] ){
-                                        $connection_meta[$meta["meta_key"]] = $meta["meta_value"];
-                                    }
+            foreach ( $connection_fields as $field_key => $field_value ){
+                if ( !isset( $record[$field_key] ) ) {
+                    $record[$field_key] = [];
+                }
+                foreach ( ( $p2p_values_mapped_by_post_id[$record["ID"]] ?? [] ) as $p2p_record ){
+                    if ( $p2p_record["p2p_type"] === $field_value["p2p_key"] ){
+                        $connection_id = 0;
+                        if ( ( $field_value["p2p_direction"] === "from" || $field_value["p2p_direction"] === "any" ) && $p2p_record["p2p_to"] != $record["ID"] ) {
+                            $connection_id = $p2p_record["p2p_to"];
+                        } else if ( ( $field_value["p2p_direction"] === "to" || $field_value["p2p_direction"] === "any" ) && $p2p_record["p2p_from"] != $record["ID"] ){
+                            $connection_id = $p2p_record["p2p_from"];
+                        }
+                        if ( $connection_id ){
+                            $connection_post = $connected_posts_mapped[$connection_id];
+                            $connection_meta = [];
+                            foreach ( $all_p2p_meta as $meta ){
+                                if ( $meta["p2p_id"] == $p2p_record["p2p_id"] ){
+                                    $connection_meta[$meta["meta_key"]] = $meta["meta_value"];
                                 }
-                                $record[$field_key][] = self::filter_wp_post_object_fields( $connection_post, $connection_meta );
                             }
+                            $record[$field_key][] = self::filter_wp_post_object_fields( $connection_post, $connection_meta );
                         }
                     }
                 }
