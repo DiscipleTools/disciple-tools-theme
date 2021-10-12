@@ -96,7 +96,10 @@ jQuery(function() {
         if (dateRegex.test(objectNote)) {
           newObjectNote = objectNote.replace(dateRegex, timestamptoDate);
         }
-          activityDetails += `<li>${newObjectNote}</li>`
+        if (action === 'comment') {
+          newObjectNote = window.SHAREDFUNCTIONS.formatComment(newObjectNote)
+        }
+        activityDetails += `<li>${newObjectNote}</li>`
       })
 
       groupedActivitiesHtml += `
