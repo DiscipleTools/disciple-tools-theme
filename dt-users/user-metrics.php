@@ -60,6 +60,14 @@ class DT_User_Metrics {
         array_push( $allowed_post_types, 'post' );
         $allowed_post_types_sql = dt_array_to_sql( $allowed_post_types );
 
+        /**
+         * This hard coded array has come from the filter dt_render_field_for_display_allowed_types
+         * and needs to be refactored for both here and there.
+         */
+        $allowed_field_types = [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ];
+        array_push( $allowed_field_types, '' );
+        $allowed_field_types_sql = dt_array_to_sql( $allowed_field_types );
+
         //phpcs:disable
         $user_activity = $wpdb->get_results( $wpdb->prepare( "
             SELECT hist_time, action, object_name, meta_key, meta_value, object_type, object_id, object_subtype, object_note, p.post_type, a.field_type
@@ -69,6 +77,7 @@ class DT_User_Metrics {
             WHERE user_id = %s
             AND action IN ( $allowed_actions_sql )
             AND p.post_type IN ( $allowed_post_types_sql )
+            AND a.field_type IN ( $allowed_field_types_sql )
             ORDER BY `hist_time` DESC
             LIMIT 100
         ", $user_id ) );
