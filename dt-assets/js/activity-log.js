@@ -90,8 +90,13 @@ jQuery(function() {
           : window.lodash.escape(object_note)
       }
       let activityDetails = ''
+      dateRegex = /\{(\d+)\}+/;
       object_notes.forEach((objectNote) => {
-        activityDetails += `<li>${objectNote}</li>`
+        let newObjectNote = `${objectNote}`
+        if (dateRegex.test(objectNote)) {
+          newObjectNote = objectNote.replace(dateRegex, timestamptoDate);
+        }
+          activityDetails += `<li>${newObjectNote}</li>`
       })
 
       groupedActivitiesHtml += `
@@ -155,6 +160,10 @@ jQuery(function() {
       }
     })
     return groupedActivities
+  }
+
+  function timestamptoDate(match, timestamp) {
+    return window.SHAREDFUNCTIONS.formatDate(timestamp)
   }
 
   window.dtActivityLogs = {
