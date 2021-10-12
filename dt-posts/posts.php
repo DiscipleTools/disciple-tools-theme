@@ -2395,7 +2395,7 @@ class Disciple_Tools_Posts
         $all_p2p_meta = $wpdb->get_results( "
             SELECT *
             FROM $wpdb->p2pmeta
-            WHERE p2p_id in ( $p2p_ids )
+            WHERE p2p_id in ( $p2p_ids_sql )
         ", ARRAY_A);
         //phpcs:enable
 
