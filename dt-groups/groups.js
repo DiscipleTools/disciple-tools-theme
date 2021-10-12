@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
   let health_keys = Object.keys(field_settings.health_metrics.default);
 
   function fillOutChurchHealthMetrics() {
-    let practiced_items = window.detailsSettings.post_fields.health_metrics;
+    let practiced_items = window.detailsSettings.post_fields.health_metrics || [];
 
     /* Make church commitment circle green */
     if ( practiced_items.indexOf( 'church_commitment' ) !== -1 ) {
@@ -53,7 +53,7 @@ jQuery(document).ready(function($) {
         if ( $( this ).attr( 'id' ) === 'church_commitment' ) {
           $( '#health-items-container' ).toggleClass( 'committed' );
           $( this ).toggleClass( 'practiced-button' );
-          return true; 
+          return true;
         }
         /* Toggle church health circle item color */
         $( this ).children( 'img' ).toggleClass( 'practiced-item' );
@@ -112,7 +112,7 @@ jQuery(document).ready(function($) {
     items.each(function() {
         let X = Math.round( width / 2 + radius * Math.cos(angle) - $( this ).width() / 2 );
         let y = Math.round( height / 2 + radius * Math.sin(angle) - $( this ).height() / 2 ) + y_offset;
-        
+
         if ( item_count == 1 ) {
             X = 112.5;
             y = 68;
