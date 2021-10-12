@@ -2318,20 +2318,25 @@ class Disciple_Tools_Posts
     }
 
 
-    public static function get_all_connected_fields_on_list( $field_settings, &$records, $fields_to_return = []  ){
+    public static function get_all_connected_fields_on_list( $field_settings, &$records, $fields_to_return = [] ){
         global $wpdb;
         $p2p_types = [];
-        $post_ids = array_map( function($r){return $r["ID"];}, $records);
+        $post_ids = array_map( function ( $r ){
+            return $r["ID"];
+        }, $records );
         $ids_sql = dt_array_to_sql( $post_ids );
         foreach ( $field_settings as $field_key => $field_value){
-            if( $field_value["type"] === "connection" ){
+            if ( $field_value["type"] === "connection" ){
                 if ( ( empty( $fields_to_return ) || in_array( $field_key, $fields_to_return ) ) && !empty( $records ) ){
                     $p2p_types[$field_value["p2p_key"]] = $field_value;
                     $p2p_types[$field_value["p2p_key"]]["field_key"] = $field_key;
                 }
             }
         }
+
         $connection_types_sql = dt_array_to_sql( array_keys( $p2p_types ) );
+        //phpcs:disable
+        //WordPress.WP.PreparedSQL.NotPrepare
         $p2p_records = $wpdb->get_results = $wpdb->get_results( "
             SELECT *
             FROM $wpdb->p2p
@@ -2339,6 +2344,8 @@ class Disciple_Tools_Posts
             OR p2p_from IN ( $ids_sql )
             AND p2p_type IN ( $connection_types_sql )
         ", ARRAY_A );
+        //phpcs:enable
+
 
         $connected_post_ids = [];
         foreach ( $p2p_records as &$p2p_record_row ){
@@ -2347,11 +2354,14 @@ class Disciple_Tools_Posts
             $p2p_record_row["p2p_to"] = (int) $p2p_record_row["p2p_to"];
             $p2p_record_row["p2p_from"] = (int) $p2p_record_row["p2p_from"];
         }
-        $connected_post_ids_sql = dt_array_to_sql( array_unique( $connected_post_ids ));
+        $connected_post_ids_sql = dt_array_to_sql( array_unique( $connected_post_ids ) );
+        //phpcs:disable
+        //WordPress.WP.PreparedSQL.NotPrepare
         $connected_posts = $wpdb->get_results("
             SELECT * FROM $wpdb->posts p
             WHERE p.ID in ( $connected_post_ids_sql )
         ", ARRAY_A );
+        //phpcs:enable
         $connected_posts_mapped = [];
         foreach ( $connected_posts as $cp ){
             $connected_posts_mapped[$cp["ID"]] = $cp;
@@ -2359,13 +2369,15 @@ class Disciple_Tools_Posts
         $p2p_ids = dt_array_to_sql( array_map( function ( $p ){
             return $p["p2p_id"];
         }, $p2p_records ));
+        //phpcs:disable
+        //WordPress.WP.PreparedSQL.NotPrepare
         $all_p2p_meta = $wpdb->get_results( "
             SELECT *
             FROM $wpdb->p2pmeta
             WHERE p2p_id in ( $p2p_ids )
         ", ARRAY_A);
-
-        foreach( $records as &$record ){
+        //phpcs:enable
+        foreach ( $records as &$record ){
             $record["ID"] = (int) $record["ID"];
             foreach ( $field_settings as $field_key => $field_value ){
                 if ( $field_value["type"] === "connection" && isset( $field_value["p2p_key"] ) ) {
