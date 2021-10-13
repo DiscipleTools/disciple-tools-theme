@@ -468,7 +468,9 @@ class DT_Posts extends Disciple_Tools_Posts {
         /**
          * add connections
          */
-        self::get_all_connection_fields( $field_settings, $post_id, $fields );
+        $p = [ (array) $wp_post ];
+        self::get_all_connected_fields_on_list( $field_settings, $p );
+        $fields = $p[0];
         $fields["ID"] = $post_id;
         $fields["post_date"] = [
             "timestamp" => is_numeric( $wp_post->post_date ) ? $wp_post->post_date : dt_format_date( $wp_post->post_date, "U" ),
@@ -540,23 +542,12 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $post_settings = self::get_post_settings( $post_type );
         $records = $data["posts"];
-        foreach ( $post_settings["connection_types"] as $connection_type ){
-            if ( ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) ) && !empty( $records ) ){
-                $p2p_type = $post_settings["fields"][$connection_type]["p2p_key"];
-                $p2p_direction = $post_settings["fields"][$connection_type]["p2p_direction"];
-                $q = p2p_type( $p2p_type )->set_direction( $p2p_direction )->get_connected( $records, [ "nopaging" => true ], 'abstract' );
-                $raw_connected = array();
-                foreach ( $q->items as $item ){
-                    $raw_connected[] = $item->get_object();
-                }
-                p2p_distribute_connected( $records, $raw_connected, $connection_type );
-            }
-        }
 
         $ids = [];
-        foreach ( $records as $record ) {
-            $record->post_title = wp_specialchars_decode( $record->post_title );
-            $ids[] = $record->ID;
+        foreach ( $records as &$record ) {
+            $record = (array) $record;
+            $record["post_title"] = wp_specialchars_decode( $record["post_title"] );
+            $ids[] = $record["ID"];
         }
         $ids_sql = dt_array_to_sql( $ids );
         $field_keys = [];
@@ -566,6 +557,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         $field_keys_sql = dt_array_to_sql( $field_keys );
 
         global $wpdb;
+
+
         $all_posts = [];
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
@@ -606,16 +599,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             $all_post_user_meta[$meta_row["post_id"]][] = $meta_row;
         }
 
+        self::get_all_connected_fields_on_list( $post_settings["fields"], $records, $fields_to_return );
         $site_url = site_url();
         foreach ( $records as  &$record ){
-            foreach ( $post_settings["connection_types"] as $connection_type ){
-                if ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) ) {
-                    foreach ( $record->$connection_type as &$post ) {
-                        $post = self::filter_wp_post_object_fields( $post );
-                    }
-                }
-            }
-            $record = (array) $record;
 
             self::adjust_post_custom_fields( $post_type, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
