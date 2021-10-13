@@ -49,3 +49,18 @@
     }
 
 }
+
+#user-add-user {
+    label {
+        font-weight: bold;
+    }
+
+    .grid-x {
+        justify-content: space-between;
+    }
+    @media print, screen and (min-width: 40em) {
+        .grid-x>.medium-6 {
+            width: 48%;
+        }
+    }
+}
