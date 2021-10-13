@@ -479,7 +479,6 @@
               values = field_value.map(v => {
                 let meta = []
                 if ( field_settings.meta_fields ){
-                  console.log(field_settings.meta_fields);
                   Object.keys(field_settings.meta_fields).forEach(key=>{
                     if ( v.meta && v.meta[key] ){
                       meta.push(v.meta[key])
