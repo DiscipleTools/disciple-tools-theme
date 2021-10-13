@@ -5,6 +5,12 @@ jQuery(document).ready(function() {
 
   function my_stats() {
     "use strict";
+    const metricsContentDiv = jQuery('#metrics-content')
+
+    metricsContentDiv.removeClass(function (index, className) {
+      return (className.match (/(^|\s)large-\S+/g) || []).join(' ');
+    })
+    metricsContentDiv.addClass('large-6')
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsActivity.data
     let translations = dtMetricsActivity.data.translations
