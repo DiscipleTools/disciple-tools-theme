@@ -42,6 +42,7 @@ class Disciple_Tools_Metrics{
 
                 require_once( get_template_directory() . '/dt-metrics/personal/mapbox-contacts-maps.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/mapbox-groups-maps.php' );
+                require_once( get_template_directory() . '/dt-metrics/personal/activity-highlights.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/activity-log.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/overview.php' );
 

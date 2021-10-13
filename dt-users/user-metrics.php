@@ -33,6 +33,14 @@ class DT_User_Metrics {
                 'permission_callback' => $can_view_user_stats
             ]
         );
+
+        register_rest_route(
+            $namespace, 'activity-highlights', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'get_highlights_endpoint' ],
+                'permission_callback' => $can_view_user_stats
+            ]
+        );
     }
 
     public function get_activity_endpoint( WP_REST_Request $request ){
@@ -43,6 +51,19 @@ class DT_User_Metrics {
         }
         $include = [ 'comment', 'field_update', 'created' ];
         return self::get_user_activity( $user_id, $include );
+
+    }
+
+    public function get_highlights_endpoint( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $user_id = get_current_user_id();
+        if ( isset( $params["date_start"] ) && !empty( $params["date_start"] ) ){
+            $date_start = (int) $params["date_start"];
+        }
+        if ( isset( $params["date_end"] ) && !empty( $params["date_end"] ) ){
+            $date_end = (int) $params["date_end"];
+        }
+        return self::get_user_highlights( $user_id, $date_start, $date_end );
 
     }
 
@@ -108,6 +129,14 @@ class DT_User_Metrics {
         }
 
         return $user_activity;
+    }
+
+    static public function get_user_highlights($user_id, $date_start, $date_end) {
+        return [
+            $user_id,
+            $date_start,
+            $date_end,
+        ];
     }
 
     /**
