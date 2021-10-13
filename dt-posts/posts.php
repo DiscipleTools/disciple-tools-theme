@@ -1998,6 +1998,8 @@ class Disciple_Tools_Posts
                                     return $potential_error;
                                 }
                                 $fields["added_fields"][$connection_type] = $potential_error;
+                            } else if ( isset( $connection_value["meta"] ) ){
+                                self::update_connection_meta( $post_settings["post_type"], $existing_contact, $connection_type, $connection_value );
                             }
                         }
                     } else {
@@ -2019,6 +2021,42 @@ class Disciple_Tools_Posts
             }
         }
         return $fields;
+    }
+
+    private static function update_connection_meta( $post_type, $existing_contact, $field_key, $update_value ){
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        $connected_id = $update_value["value"];
+        global $wpdb;
+        if ( empty( $update_value["meta"] ) ){
+            return;
+        }
+        $continue = false;
+        foreach ( $update_value["meta"] as $meta_key => $meta_value ){
+            if ( !isset( $existing_contact[$field_key]["meta"][$meta_key] ) || $existing_contact[$field_key]["meta"][$meta_key] !== $meta_value ){
+                $continue = true;
+            }
+        }
+        if ( !$continue ){
+            return;
+        }
+        $p2p_id = null;
+        if ( $field_settings[$field_key]["p2p_direction"] === "to" || $field_settings[$field_key]["p2p_direction"] === "any" ){
+            $p2p_id = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_id FROM $wpdb->p2p WHERE p2p_to = %s AND p2p_from = %s AND p2p_type = %s", $existing_contact["ID"], $connected_id, $field_settings[$field_key]["p2p_key"] ) );
+            if ( empty( $p2p_id ) ){
+                $p2p_id = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_id FROM $wpdb->p2p WHERE p2p_to = %s AND p2p_from = %s AND p2p_type = %s", $existing_contact["ID"], $connected_id, $field_settings[$field_key]["p2p_key"] ) );
+            }
+        } elseif ( $field_settings[$field_key]["p2p_direction"] === "from" ){
+            $p2p_id = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_id FROM $wpdb->p2p WHERE p2p_to = %s AND p2p_from = %s AND p2p_type = %s", $existing_contact["ID"], $connected_id, $field_settings[$field_key]["p2p_key"] ) );
+        }
+        if ( $p2p_id ){
+            foreach ( $update_value["meta"] as $meta_key => $meta_value ){
+                if ( $meta_value === '' ){
+                    p2p_delete_meta( $p2p_id, $meta_key, $meta_value );
+                } else {
+                    p2p_update_meta( $p2p_id, $meta_key, $meta_value );
+                }
+            }
+        }
     }
 
     private static function add_connection_to_post( string $post_type, int $post_id, string $field_key, int $value, $meta = [] ){
