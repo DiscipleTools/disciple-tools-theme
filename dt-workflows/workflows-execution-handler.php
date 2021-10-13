@@ -110,6 +110,8 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         return self::condition_contains( $field_type, $field, $value );
                     case 'not_contain':
                         return self::condition_not_contains( $field_type, $field, $value );
+                    case 'is_set':
+                        return self::condition_is_set( $field_type, $field );
                     case 'not_set':
                         return self::condition_not_set( $field_type, $field );
                 }
@@ -311,6 +313,35 @@ class Disciple_Tools_Workflows_Execution_Handler {
         return false;
     }
 
+    private static function condition_is_set( $field_type, $field ): bool {
+        switch ( $field_type ) {
+            case 'text':
+            case 'number':
+            case 'boolean':
+            case 'tags':
+            case 'multi_select':
+            case 'communication_channel':
+            case 'location':
+            case 'connection':
+                return isset( $field ) && ! empty( $field );
+            case 'date':
+                return isset( $field['timestamp'] ) && ! empty( $field['timestamp'] );
+            case 'key_select':
+                return isset( $field['key'] ) && ! empty( $field['key'] );
+            case 'user_select':
+                return isset( $field['assigned-to'] ) && ! empty( $field['assigned-to'] );
+            case 'array':
+            case 'task':
+            case 'location_meta':
+            case 'post_user_meta':
+            case 'datetime_series':
+            case 'hash':
+                break;
+        }
+
+        return false;
+    }
+
     private static function condition_not_set( $field_type, $field ): bool {
         switch ( $field_type ) {
             case 'text':
@@ -422,6 +453,9 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         break;
                     case 'remove':
                         $updated_fields = self::action_remove( $field_type, $field_id, $value );
+                        break;
+                    case 'custom':
+                        do_action( strval( $value ), $post, $field_id, $value );
                         break;
                 }
 
