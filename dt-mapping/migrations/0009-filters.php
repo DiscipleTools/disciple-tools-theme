@@ -69,7 +69,7 @@ class DT_Mapping_Module_Migration_0009 extends DT_Mapping_Module_Migration {
 
         // load list to array, make geonameid key
         $geonames_ref = [];
-        $geonmes_ref_raw = array_map( function( $v){return str_getcsv( $v, "\t" );
+        $geonmes_ref_raw = array_map( function( $v ){return str_getcsv( $v, "\t" );
         }, file( $uploads_dir . "location_grid_download/geonames_ref_table.tsv" ) );
         if ( empty( $geonmes_ref_raw ) ) {
             throw new Exception( 'Failed to build array from remote file.' );

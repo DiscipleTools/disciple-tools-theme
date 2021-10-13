@@ -197,7 +197,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                 </label></dt>
                                                 <dd>
                                                     <select class="select-field" id="gender" style="width:auto; display: block" data-optional>
-                                                        <?php foreach ($gender_fields["default"] as $option_key => $option_value): ?>
+                                                        <?php foreach ( $gender_fields["default"] as $option_key => $option_value ): ?>
                                                             <option value="<?php echo esc_html( $option_key )?>">
                                                                 <?php echo esc_html( $option_value["label"] ) ?>
                                                             </option>

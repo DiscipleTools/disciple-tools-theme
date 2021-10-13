@@ -107,7 +107,7 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
         }
 
         $query = dt_queries()->tree( 'multiplying_groups_only' );
-        if ( is_wp_error( $query )){
+        if ( is_wp_error( $query ) ){
             return $this->_circular_structure_error( $query );
         }
         if ( empty( $query ) ) {
@@ -128,7 +128,7 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
         return $this->build_group_tree( 0, $menu_data, 0 );
     }
 
-    public function prepare_menu_array( $query) {
+    public function prepare_menu_array( $query ) {
         // prepare special array with parent-child relations
         $menu_data = array(
             'items' => array(),
@@ -143,10 +143,10 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
         return $menu_data;
     }
 
-    public function build_group_tree( $parent_id, $menu_data, $gen) {
+    public function build_group_tree( $parent_id, $menu_data, $gen ) {
         $html = '';
 
-        if (isset( $menu_data['parents'][$parent_id] ))
+        if ( isset( $menu_data['parents'][$parent_id] ) )
         {
             $first_section = '';
             if ( $gen === 0 ) {
@@ -155,7 +155,7 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
 
             $html = '<ul class="ul-gen-'.esc_html( $gen ).'">';
             $gen++;
-            foreach ($menu_data['parents'][$parent_id] as $item_id)
+            foreach ( $menu_data['parents'][$parent_id] as $item_id )
             {
                 $html .= '<li class="gen-node li-gen-' . esc_html( $gen ) . ' ' . esc_html( $first_section ) . '">';
                 $html .= '<span class="' . esc_html( $menu_data['items'][ $item_id ]['group_status'] ) . ' ' . esc_html( $menu_data['items'][ $item_id ]['group_type'] ) . '">(' . esc_html( $gen ) . ') ';

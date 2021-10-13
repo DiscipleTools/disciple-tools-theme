@@ -151,7 +151,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             $url = [];
             $root = $this->root;
             $types = self::list_types();
-            foreach ( $types as $type){
+            foreach ( $types as $type ){
                 $url[] = $root . '/'. $type;
             }
             return $url;
@@ -399,7 +399,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             if ( empty( $parts['public_key'] ) ) { // fail if not specific contact
                 return false;
             }
-            if ( empty( $parts['post_id'] )) { // fail if no post id
+            if ( empty( $parts['post_id'] ) ) { // fail if no post id
                 return false;
             }
             return $parts;

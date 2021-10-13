@@ -47,7 +47,7 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     public function after_setup_theme(){
-        if ( class_exists( 'Disciple_Tools_Post_Type_Template' )) {
+        if ( class_exists( 'Disciple_Tools_Post_Type_Template' ) ) {
             new Disciple_Tools_Post_Type_Template( "groups", __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ) );
         }
     }
@@ -742,7 +742,7 @@ class DT_Groups_Base extends DT_Module_Base {
     private static function check_requires_update( $group_id ){
         if ( get_current_user_id() ){
             $requires_update = get_post_meta( $group_id, "requires_update", true );
-            if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1"){
+            if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1" ){
                 //don't remove update needed if the user is a dispatcher (and not assigned to the groups.)
                 if ( DT_Posts::can_view_all( 'groups' ) ){
                     if ( dt_get_user_id_from_assigned_to( get_post_meta( $group_id, "assigned_to", true ) ) === get_current_user_id() ){
@@ -788,7 +788,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
         // set up the MySQL OR string to get multiple posts at once
         $members_post_ids = [];
-        foreach ($fields["members"] as $member) {
+        foreach ( $fields["members"] as $member ) {
             $member_id = $member['ID'];
             $members_post_ids[] = "post_id = $member_id";
         }
@@ -809,7 +809,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
         // order the results by id in a lookup array
         $results_by_post_id = [];
-        foreach ($results as $result) {
+        foreach ( $results as $result ) {
             if ( !key_exists( $result->post_id, $results_by_post_id ) ) {
                 $results_by_post_id[$result->post_id] = [];
             }
@@ -817,13 +817,13 @@ class DT_Groups_Base extends DT_Module_Base {
         }
 
         // pump the member metadata into the members array of the post
-        foreach ($fields["members"] as $key => $member) {
+        foreach ( $fields["members"] as $key => $member ) {
             $member_id = $member["ID"];
             $member_data = key_exists( $member_id, $results_by_post_id ) ? $results_by_post_id[$member_id] : [];
             $data = [
                 "milestones" => [],
             ];
-            foreach ($member_data as $meta) {
+            foreach ( $member_data as $meta ) {
                 if ( $meta->meta_key === 'milestones' && in_array( $meta->meta_value, $default_milestone_keys, true ) ) {
                     $data["milestones"][] = $milestone_settings[$meta->meta_value];
                 } elseif ( $meta->meta_key === 'overall_status' ) {
@@ -1139,7 +1139,7 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     public function dt_record_icon( $icon, $post_type, $contact_id ){
-        if ($post_type == 'groups') {
+        if ( $post_type == 'groups' ) {
             $icon = 'fi-torsos-all';
         }
         return $icon;

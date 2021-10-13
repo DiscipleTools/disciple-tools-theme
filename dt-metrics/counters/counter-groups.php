@@ -238,9 +238,9 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                 "total" => 0
             ];
         }
-        foreach ($elements as $element) {
+        foreach ( $elements as $element ) {
 
-            if ($element['parent_id'] == $parent_id) {
+            if ( $element['parent_id'] == $parent_id ) {
                 if ( in_array( $element['id'], $ids_to_include ) ) {
                     if ( $element["group_type"] === "pre-group" ) {
                         $counts[ $generation ]["pre-group"] ++;

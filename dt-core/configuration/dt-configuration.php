@@ -65,7 +65,7 @@ function dt_filter_handler( $approved, $commentdata ){
 }
 
 function dt_custom_dir_attr( $lang ){
-    if (is_admin()) {
+    if ( is_admin() ) {
         return $lang;
     }
 

@@ -15,7 +15,7 @@ class DT_Mapping_Module_Migration_0010 extends DT_Mapping_Module_Migration {
          */
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
-        foreach ( $expected_tables as $name => $table) {
+        foreach ( $expected_tables as $name => $table ) {
             $rv = $wpdb->query( $table ); // WPCS: unprepared SQL OK
             if ( $rv == false ) {
                 dt_write_log( "Got error when creating table $name: $wpdb->last_error" );

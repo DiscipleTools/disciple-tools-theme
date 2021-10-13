@@ -171,11 +171,11 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
 
         $tag_fields = [];
         $post_types = DT_Posts::get_post_types();
-        foreach ($post_types as $post_type) {
+        foreach ( $post_types as $post_type ) {
             $post_fields = DT_Posts::get_post_field_settings( $post_type );
 
-            foreach ($post_fields as $key => $post_field) {
-                if ($post_field['type'] === 'tags') {
+            foreach ( $post_fields as $key => $post_field ) {
+                if ( $post_field['type'] === 'tags' ) {
                     $tag_fields[] = $key;
                 }
             }
@@ -238,7 +238,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
             $tags = self::get_all_tags();
             $tags_amount = count( $tags );
 
-            for ( $i = 0; $i <= $tags_amount - 1; $i++): ?>
+            for ( $i = 0; $i <= $tags_amount - 1; $i++ ): ?>
                 <tr>
                     <td style="vertical-align: middle">
                         <input type="checkbox" name="checkbox_delete_tag[<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i]['meta_value'] ); ?>]" value="<?php echo esc_html( ( $tags[$i]['type'] ?? $tags[$i]['meta_key'] ) . ':' . ( $tags[$i]['old'] ?? $tags[$i]['meta_value'] ) ); ?>">

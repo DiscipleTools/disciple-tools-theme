@@ -68,12 +68,12 @@ if ( ! function_exists( 'dt_get_mapbox_endpoint' ) ) {
     }
 }
 if ( ! function_exists( 'dt_array_to_sql' ) ) {
-    function dt_array_to_sql( $values) {
-        if (empty( $values )) {
+    function dt_array_to_sql( $values ) {
+        if ( empty( $values ) ) {
             return 'NULL';
         }
-        foreach ($values as &$val) {
-            if ('\N' === $val) {
+        foreach ( $values as &$val ) {
+            if ( '\N' === $val ) {
                 $val = 'NULL';
             } else {
                 $val = "'" . esc_sql( trim( $val ) ) . "'";

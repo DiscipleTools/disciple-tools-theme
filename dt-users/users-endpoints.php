@@ -140,7 +140,7 @@ class Disciple_Tools_Users_Endpoints
             $search = $params['s'];
         }
         $get_all = 0;
-        if ( isset( $params["get_all"] )){
+        if ( isset( $params["get_all"] ) ){
             $get_all = $params["get_all"] === "1";
         }
         return Disciple_Tools_Users::get_assignable_users_compact( $search, $get_all );
@@ -195,7 +195,7 @@ class Disciple_Tools_Users_Endpoints
 
     public function save_user_filter( WP_REST_Request $request ){
         $params = $request->get_params();
-        if ( isset( $params["filter"], $params["post_type"] )){
+        if ( isset( $params["filter"], $params["post_type"] ) ){
             return Disciple_Tools_Users::save_user_filter( $params["filter"], $params["post_type"] );
         } else {
             return new WP_Error( "missing_error", "Missing filters", [ 'status' => 400 ] );
@@ -214,7 +214,7 @@ class Disciple_Tools_Users_Endpoints
         $params = $request->get_params();
 
         $user_id = get_current_user_id();
-        if ( isset( $params["password"] ) && $user_id){
+        if ( isset( $params["password"] ) && $user_id ){
             dt_write_log( $params["password"] );
 
             wp_set_password( $params["password"], $user_id );
@@ -239,16 +239,16 @@ class Disciple_Tools_Users_Endpoints
             }
             $user_login = $params["user-user_login"] ?? $params["user-email"];
             $user_login = $params["user-username"] ?? $user_login;
-            if (isset( $params["user-password"] ) ) {
+            if ( isset( $params["user-password"] ) ) {
                 $password = $params["user-password"];
             }
-            if (isset( $params["user-optional-fields"] ) ) {
+            if ( isset( $params["user-optional-fields"] ) ) {
                 $optional_fields = $params["user-optional-fields"];
             }
-            if (isset( $params["locale"] ) ) {
+            if ( isset( $params["locale"] ) ) {
                 $locale = $params["locale"];
             }
-            if (isset( $params["return_contact"] ) ) {
+            if ( isset( $params["return_contact"] ) ) {
                 $return_contact = true;
             }
             return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $user_roles, $params["corresponds_to_contact"] ?? null, $locale ?? null, $return_contact ?? false, $password, $optional_fields );

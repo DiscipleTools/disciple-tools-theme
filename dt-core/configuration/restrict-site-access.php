@@ -246,7 +246,7 @@ add_action( 'login_init', 'dt_redirect_logged_in' );
 //redirect already logged in users from the login page.
 function dt_redirect_logged_in() {
     global $action;
-    if ( 'logout' === $action || !is_user_logged_in()) {
+    if ( 'logout' === $action || !is_user_logged_in() ) {
         return;
     }
     if ( !empty( $_GET["redirect_to"] ) ) {
@@ -260,7 +260,7 @@ function dt_redirect_logged_in() {
 /**
  * Force password reset to remain on current site for multi-site installations.
  */
-add_filter("lostpassword_url", function ( $url, $redirect) {
+add_filter("lostpassword_url", function ( $url, $redirect ) {
 
     $args = array( 'action' => 'lostpassword' );
 
@@ -272,13 +272,13 @@ add_filter("lostpassword_url", function ( $url, $redirect) {
 }, 10, 2);
 
 // fixes other password reset related urls
-add_filter( 'network_site_url', function( $url, $path, $scheme) {
+add_filter( 'network_site_url', function( $url, $path, $scheme ) {
 
-    if (stripos( $url, "action=lostpassword" ) !== false) {
+    if ( stripos( $url, "action=lostpassword" ) !== false ) {
         return site_url( 'wp-login.php?action=lostpassword', $scheme );
     }
 
-    if (stripos( $url, "action=resetpass" ) !== false) {
+    if ( stripos( $url, "action=resetpass" ) !== false ) {
         return site_url( 'wp-login.php?action=resetpass', $scheme );
     }
 
@@ -286,7 +286,7 @@ add_filter( 'network_site_url', function( $url, $path, $scheme) {
 }, 10, 3 );
 
 // fixes URLs in email that goes out.
-function dt_multisite_retrieve_password_message( $message, $key, $user_login, $user_data) {
+function dt_multisite_retrieve_password_message( $message, $key, $user_login, $user_data ) {
     $message = __( 'Someone has requested a password reset for the following account:', 'disciple_tools' ) . "\r\n\r\n";
     /* translators: %s: Site name. */
     $message .= sprintf( __( 'DT Site Name: %s', 'disciple_tools' ), wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) ) . "\r\n\r\n";
@@ -300,7 +300,7 @@ function dt_multisite_retrieve_password_message( $message, $key, $user_login, $u
 add_filter( "retrieve_password_message", 'dt_multisite_retrieve_password_message', 99, 4 );
 
 // fixes email title
-add_filter("retrieve_password_title", function( $title) {
+add_filter("retrieve_password_title", function( $title ) {
     return "[" . wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) . "] Password Reset";
 });
 //add_filter( 'wp_handle_upload_prefilter', 'dt_disable_file_upload' ); //this breaks uploading plugins and themes
@@ -327,7 +327,7 @@ function restrict_super_admin( $caps, $cap, $user_id, $args ){
             }
         }
         //if it is not a D.T permission, continue as normal.
-        if ( !in_array( $cap, $dt_permissions, true )){
+        if ( !in_array( $cap, $dt_permissions, true ) ){
             return $caps;
         }
         //limit the super admin to the actions the administrator or dt_admin can take on a site.

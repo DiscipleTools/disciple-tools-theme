@@ -155,7 +155,7 @@ function dt_get_option( string $name ) {
 
         case 'dt_email_base_subject':
             $subject_base = get_option( "dt_email_base_subject", "Disciple Tools" );
-            if ( empty( $subject_base )){
+            if ( empty( $subject_base ) ){
                 update_option( "dt_email_base_subject", "Disciple Tools" );
             }
             return $subject_base;
@@ -171,7 +171,7 @@ function dt_get_option( string $name ) {
 
         case 'dt_working_languages':
             $languages = get_option( 'dt_working_languages', [] );
-            if ( empty( $languages )){
+            if ( empty( $languages ) ){
                 $languages = [
                     "en" => [ "label" => "English" ],
                     "fr" => [ "label" => "French" ],

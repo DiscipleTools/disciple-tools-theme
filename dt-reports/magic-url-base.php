@@ -228,8 +228,8 @@ abstract class DT_Magic_Url_Base {
 
         global $wp_styles;
         if ( isset( $wp_styles ) ) {
-            foreach ($wp_styles->queue as $key => $item) {
-                if ( !in_array( $item, $allowed_css )) {
+            foreach ( $wp_styles->queue as $key => $item ) {
+                if ( !in_array( $item, $allowed_css ) ) {
                     unset( $wp_styles->queue[$key] );
                 }
             }

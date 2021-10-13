@@ -77,7 +77,7 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
                 }
             }
             self::$generations[ $start . $end ] = $baptism_generations_this_year;
-            if ( !isset( self::$total[ $start . $end ] )){
+            if ( !isset( self::$total[ $start . $end ] ) ){
                 $total_baptisms = array_sum( $baptism_generations_this_year );
                 self::$total[$start . $end] = $total_baptisms;
             }
@@ -221,8 +221,8 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
                 "ids" => []
             ];
         }
-        foreach ($elements as $element_i => $element) {
-            if ($element['parent_id'] == $parent_id) {
+        foreach ( $elements as $element_i => $element ) {
+            if ( $element['parent_id'] == $parent_id ) {
                 //find and remove if the baptisms has already been counted on a longer path
                 //we keep the shorter path
                 $already_counted_in_deeper_path = false;
@@ -233,7 +233,7 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
                             unset( $counts[ $count_i ]["ids"][array_search( $element['id'], $count["ids"] )] );
                         }
                     } else {
-                        if (in_array( $element['id'], $count["ids"] )){
+                        if ( in_array( $element['id'], $count["ids"] ) ){
                             $already_counted_in_deeper_path = true;
                         }
                     }
@@ -310,7 +310,7 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
                 AND b.p2p_to = %s
             ", $contact_id), ARRAY_A);
             foreach ( $children as $child ){
-                if ( !in_array( $child["contact_id"], $parent_ids )){
+                if ( !in_array( $child["contact_id"], $parent_ids ) ){
                     self::reset_baptism_generations_on_contact_tree( $child["contact_id"], $parent_ids );
                 }
             }
