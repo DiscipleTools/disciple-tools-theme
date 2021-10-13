@@ -101,10 +101,14 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $data = [];
         $data['contacts_created'] = self::get_records_created( $from, $to, 'contacts' );
         $data['quick_actions_done'] = self::get_quick_actions_done( $from, $to, $contact_field_settings );
+        $data['seeker_path_changed'] = self::get_info_added( $from, $to, 'contacts', 'seeker_path', '%', $contact_field_settings);
+        $data['milestones_added'] = self::get_info_added( $from, $to, 'contacts', 'milestones', 'milestone_%', $contact_field_settings );
 
 
         $group_field_settings = DT_Posts::get_post_field_settings( 'groups' );
         $data['groups_created'] = self::get_records_created( $from, $to, 'groups' );
+        $data['health_metrics_added'] = self::get_info_added( $from, $to, 'groups', 'health_metrics', 'church_%', $group_field_settings);
+        $data['group_type_changed'] = self::get_info_added( $from, $to, 'groups', 'group_type', '%', $group_field_settings);
 
         return $data;
     }
@@ -178,6 +182,54 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 ], $row);
             }
         }
+        return $rows;
+    }
+
+    private static function get_info_added( $from, $to, $post_type, $subtype, $meta_value_like, $field_settings ) {
+        global $wpdb;
+
+        $prepare_args = [ $post_type, $subtype, $meta_value_like, get_current_user_id() ];
+        self::insert_dates( $from, $to, $prepare_args );
+
+        // phpcs:disable WordPress.DB.PreparedSQL
+        $sql = $wpdb->prepare( "
+            SELECT
+                meta_value as meta_changed, COUNT(meta_value) as count
+            FROM
+                $wpdb->dt_activity_log
+            WHERE
+                action = 'field_update'
+            AND
+                object_type = %s
+            AND
+                object_subtype = %s
+            AND
+                meta_value LIKE %s
+            AND
+                user_id = %d
+            AND 1=1 "
+                            . ( $from ? " AND hist_time >= %s " : "" )
+                            . ( $to ? " AND hist_time <= %s " : "" )
+                            . "
+            GROUP BY
+                meta_value;",
+            ...$prepare_args
+        );
+        // phpcs:enable
+
+        $rows = $wpdb->get_results( $sql, ARRAY_A );
+
+        if ( !empty($rows) ) {
+            foreach ($rows as $i => $row) {
+                $label = (isset($field_settings[$subtype]['default'][$row['meta_changed']]))
+                    ? $field_settings[$subtype]['default'][$row['meta_changed']]['label']
+                    : null;
+                $rows[$i] = array_merge([
+                    'label' => $label,
+                ], $row);
+            }
+        }
+
         return $rows;
     }
 
