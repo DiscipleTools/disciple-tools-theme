@@ -2066,7 +2066,6 @@ class Disciple_Tools_Posts
         if ( !isset( $field_setting["p2p_key"], $field_setting["p2p_direction"] ) ) {
             return new WP_Error( __FUNCTION__, "Could not add connection. Field settings missing", [ 'status' => 400 ] );
         }
-        $meta = array_merge( [ 'date' => current_time( 'mysql' ) ], $meta );
         if ( $field_setting["p2p_direction"] === "to" || $field_setting["p2p_direction"] === "any" ) {
             $connect = p2p_type( $field_setting["p2p_key"] )->connect(
                 $value, $post_id,
