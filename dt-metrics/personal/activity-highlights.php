@@ -46,7 +46,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'data' => [
-                    'highlights' => self::get_user_highlights()
+                    'highlights' => self::get_user_highlights('1970-01-01')
                 ],
                 'translations' => [
                     'title' => __( 'Activity Highlights', 'disciple_tools' ),
@@ -94,14 +94,101 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         }
     }
 
-    private static function get_user_highlights($date_start = null, $date_end = null) {
-        $user_id = get_current_user_id();
+    private static function get_user_highlights($from = null, $to = null) {
 
-        return [
-            $user_id,
-            $date_start,
-            $date_end,
-        ];
+        $contact_field_settings = DT_Posts::get_post_field_settings( 'contacts' );
+
+        $data = [];
+        $data['contacts_created'] = self::get_records_created( $from, $to, 'contacts' );
+        $data['quick_actions_done'] = self::get_quick_actions_done( $from, $to, $contact_field_settings );
+
+
+        $group_field_settings = DT_Posts::get_post_field_settings( 'groups' );
+        $data['groups_created'] = self::get_records_created( $from, $to, 'groups' );
+
+        return $data;
+    }
+
+    private static function get_records_created( $from, $to, $post_type = 'contacts' ) {
+        global $wpdb;
+
+        $prepare_args = [ $post_type, get_current_user_id() ];
+        self::insert_dates( $from, $to, $prepare_args );
+
+        // phpcs:disable WordPress.DB.PreparedSQL
+        $sql = $wpdb->prepare( "
+            SELECT
+                COUNT(action) as records_created
+            FROM
+                $wpdb->dt_activity_log
+            WHERE
+                object_type = %s
+                AND
+                    action = 'created'
+                AND
+                    user_id = %d
+                AND 1=1 "
+                               . ( $from ? " AND hist_time >= %s " : "" )
+                               . ( $to ? " AND hist_time <= %s " : "" )
+                               . "
+            GROUP BY
+                action;",
+            ...$prepare_args
+        );
+        $rows = $wpdb->get_results( $sql, ARRAY_A );
+        // phpcs:enable
+
+        return $rows[0]['records_created'];
+    }
+
+    private static function get_quick_actions_done( $from, $to, $contact_field_settings ) {
+        global $wpdb;
+
+        $prepare_args = [ get_current_user_id() ];
+        self::insert_dates( $from, $to, $prepare_args );
+
+        // phpcs:disable WordPress.DB.PreparedSQL
+        $sql = $wpdb->prepare( "
+            SELECT
+                object_subtype as quick_button, COUNT(object_subtype) as count
+            FROM
+                $wpdb->dt_activity_log
+            WHERE
+                action = 'field_update'
+            AND
+                object_subtype LIKE 'quick_button_%'
+            AND
+                user_id = %d
+            AND 1=1 "
+                            . ( $from ? " AND hist_time >= %s " : "" )
+                            . ( $to ? " AND hist_time <= %s " : "" )
+                            . "
+            GROUP BY
+                object_subtype;",
+            ...$prepare_args
+        );
+        // phpcs:enable
+
+        $rows = $wpdb->get_results( $sql, ARRAY_A );
+
+        if ( !empty($rows) ) {
+            foreach ($rows as $i => $row) {
+                $rows[$i] = array_merge([
+                    'label' => $contact_field_settings[$row['quick_button']]['name'],
+                ], $row);
+            }
+        }
+        return $rows;
+    }
+
+    private static function insert_dates( $from, $to, &$prepare_args )
+    {
+        if ( $from ) {
+            $prepare_args[] = strtotime( $from );
+        }
+        if ( $to ) {
+            $prepare_args[] = strtotime( $to );
+        }
     }
 
 }
