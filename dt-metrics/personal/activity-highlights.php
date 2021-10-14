@@ -224,16 +224,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $rows = $wpdb->get_results( $sql, ARRAY_A );
 
-        if ( !empty($rows) ) {
-            foreach ($rows as $i => $row) {
-                $label = (isset($field_settings[$subtype]['default'][$row['meta_changed']]))
-                    ? $field_settings[$subtype]['default'][$row['meta_changed']]['label']
-                    : null;
-                $rows[$i] = array_merge([
-                    'label' => $label,
-                ], $row);
-            }
-        }
+        $rows = self::insert_labels( $rows, $subtype, $field_settings );
 
         return $rows;
     }
@@ -322,6 +313,12 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $rows = $wpdb->get_results( $sql, ARRAY_A );
 
+        $rows = self::insert_labels( $rows, $subtype, $field_settings );
+
+        return $rows;
+    }
+
+    private static function insert_labels( $rows, $subtype, $field_settings ) {
         if ( !empty($rows) ) {
             foreach ($rows as $i => $row) {
                 $label = (isset($field_settings[$subtype]['default'][$row['meta_changed']]))
