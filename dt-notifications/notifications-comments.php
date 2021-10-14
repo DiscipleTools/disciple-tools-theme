@@ -28,7 +28,7 @@ class Disciple_Tools_Notifications_Comments
         if ( is_null( $comment ) ) {
             $comment = get_comment( $comment_id );
         }
-        if ( $comment->comment_type === "comment") {
+        if ( $comment->comment_type === "comment" ) {
 
             $comment_with_users       = self::match_mention( $comment->comment_content ); // fail if no match for mention found
             $comment->comment_content = $comment_with_users["comment"];

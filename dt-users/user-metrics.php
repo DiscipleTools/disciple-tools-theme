@@ -85,7 +85,7 @@ class DT_User_Metrics {
 
         if ( ! empty( $user_activity ) ) {
 
-            foreach ($user_activity as $a) {
+            foreach ( $user_activity as $a ) {
                 $post_settings = DT_Posts::get_post_settings( $a->post_type );
                 $post_fields = DT_Posts::get_post_field_settings( $a->post_type );
                 $a->object_note = DT_Posts::format_activity_message( $a, $post_settings );
@@ -97,21 +97,21 @@ class DT_User_Metrics {
                     $a->object_subtype = "name";
                 }
 
-                if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
+                if ( $a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from' ) {
                     $a->object_note_short = __( "Updated fields", 'disciple_tools' );
                     $a->field = $a->action === 'field_update' ? $post_fields[ $a->object_subtype ]["name"] : null;
                 }
-                if ($a->action == 'comment') {
+                if ( $a->action == 'comment' ) {
                     $a->object_note_short = __( "Made %n comments", "disciple_tools" );
                 }
-                if ($a->action == 'created') {
+                if ( $a->action == 'created' ) {
                     $a->object_note = __( 'Created record', 'disciple_tools' );
                 }
-                if ($a->action === "logged_in") {
+                if ( $a->action === "logged_in" ) {
                     $a->object_note_short = __( "Logged In %n times", 'disciple_tools' );
                     $a->object_note = __( "Logged In", 'disciple_tools' );
                 }
-                if ($a->action === 'assignment_decline') {
+                if ( $a->action === 'assignment_decline' ) {
                     $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
                 }
             }
@@ -370,14 +370,14 @@ class DT_User_Metrics {
             $one_year
         ), ARRAY_A );
         $days_active = [];
-        foreach ($days_active_results as $a) {
+        foreach ( $days_active_results as $a ) {
             $days_active[$a["day"]] = $a;
         }
         $first = isset( $days_active_results[0]['day'] ) ? strtotime( $days_active_results[0]['day'] ) : time();
         $first_week_start = gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $first ) . ' days', $first ) );
         $current = strtotime( $first_week_start );
         $daily_activity = [];
-        while ($current < time()) {
+        while ( $current < time() ) {
 
             $activity = $days_active[gmdate( 'Y-m-d', $current )]["activity_count"] ?? 0;
 

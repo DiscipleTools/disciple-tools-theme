@@ -367,7 +367,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 //update tiles fields belong to.
                 $custom_fields = dt_get_option( "dt_field_customizations" );
                 foreach ( $order as $tile_order ){
-                    foreach ( $tile_order["fields"] as $field_key){
+                    foreach ( $tile_order["fields"] as $field_key ){
                         if ( !isset( $custom_fields[$post_type][$field_key] ) ){
                             $custom_fields[$post_type][$field_key] = [];
                         }
@@ -419,7 +419,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
         $tile_options = DT_Posts::get_post_tiles( $post_type, false );
 
-        if ( !isset( $tile_options[$tile_key] )){
+        if ( !isset( $tile_options[$tile_key] ) ){
             self::admin_notice( __( "Tile not found", 'disciple_tools' ), "error" );
             return;
         }
@@ -518,7 +518,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         $post_type = $post_submission["post_type"];
         $tile_options = dt_get_option( "dt_custom_tiles" );
         $tile_key = $post_submission["tile_key"];
-        if ( !isset( $tile_options[$post_type][$tile_key] )){
+        if ( !isset( $tile_options[$post_type][$tile_key] ) ){
             $tile_options[$post_type][$tile_key] = [];
         }
         $post_fields = $this->get_post_fields( $post_type );
@@ -527,7 +527,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         }
         $custom_tile = $tile_options[$post_type][$tile_key];
 
-        if ( isset( $post_submission["tile_label"] ) && $post_submission["tile_label"] != ( $custom_tile["label"] ?? $tile_key )){
+        if ( isset( $post_submission["tile_label"] ) && $post_submission["tile_label"] != ( $custom_tile["label"] ?? $tile_key ) ){
             $custom_tile["label"] = $post_submission["tile_label"];
         }
         if ( isset( $post_submission["hide_tile"] ) ){
@@ -552,7 +552,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
 
         //move option  up or down
-        if ( isset( $post_submission["move_up"] ) || isset( $post_submission["move_down"] )){
+        if ( isset( $post_submission["move_up"] ) || isset( $post_submission["move_down"] ) ){
             $option_key = $post_submission["move_up"] ?? $post_submission["move_down"];
             $direction = isset( $post_submission["move_up"] ) ? -1 : 1;
             $keys = $custom_tile["order"] ?? [];
@@ -575,7 +575,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             $custom_tile["order"] = $order;
         }
 
-        if ( !empty( $custom_tile )){
+        if ( !empty( $custom_tile ) ){
             $tile_options[$post_type][$tile_key] = $custom_tile;
         }
 

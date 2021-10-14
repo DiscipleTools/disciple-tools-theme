@@ -573,7 +573,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          * @param      $bind_function
          * @param null $grid_id
          */
-        public function drill_down_widget( $bind_function, $grid_id = null) {
+        public function drill_down_widget( $bind_function, $grid_id = null ) {
             $dd_array = $this->drill_down_array( $grid_id );
 
             if ( empty( $dd_array[0]['list'] ) ) {

@@ -53,7 +53,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         $post_types = array_values( array_diff( $post_types, [ "peoplegroups" ] ) ); //skip people groups for now.
         $this->post_types = $post_types;
         $post_type_options = [];
-        foreach ($post_types as $post_type) {
+        foreach ( $post_types as $post_type ) {
             $post_type_options[$post_type] = DT_Posts::get_label_for_post_type( $post_type );
         }
 
@@ -239,7 +239,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
         $field_settings = [];
 
-        foreach ($post_field_settings as $key => $setting) {
+        foreach ( $post_field_settings as $key => $setting ) {
             if ( array_key_exists( 'hidden', $setting ) && $setting['hidden'] === true ) {
                 continue;
             }
@@ -256,7 +256,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
     public function create_select_options_from_field_settings( $field_settings ) {
         $select_options = [];
-        foreach ($field_settings as $key => $setting) {
+        foreach ( $field_settings as $key => $setting ) {
             $select_options[$key] = $setting['name'];
         }
         asort( $select_options );

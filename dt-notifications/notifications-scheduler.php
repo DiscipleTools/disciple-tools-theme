@@ -98,7 +98,7 @@ class Disciple_Tools_Notifications_Scheduler {
 
         $notifications_by_user_by_post = [];
         // sort the notifications by user, and then by record
-        foreach ($unsent_notifications as $notification) {
+        foreach ( $unsent_notifications as $notification ) {
             $user_id = $notification["user_id"];
             $post_id = $notification["post_id"];
             if ( ! isset( $notifications_by_user_by_post[$user_id] ) ) {
@@ -121,11 +121,11 @@ class Disciple_Tools_Notifications_Scheduler {
 
             $email_body = '';
             $sent_notifications = [];
-            foreach ($notifications_by_post as $post_id => $notifications) {
+            foreach ( $notifications_by_post as $post_id => $notifications ) {
                 $sent_notifications = array_merge( $sent_notifications, $notifications );
 
                 $post_notifications_email = '## ' . dt_make_post_email_subject( $post_id ) . "\r\n";
-                foreach ($notifications as $notification) {
+                foreach ( $notifications as $notification ) {
                     $email_body_for_notification = $this->notifications_manager->get_notification_message_html( $notification, true, true );
                     $post_notifications_email .= "\r\n" . $email_body_for_notification;
                 }
@@ -135,7 +135,7 @@ class Disciple_Tools_Notifications_Scheduler {
             $email_body .= "\r\n" . dt_make_email_footer();
 
             $subject = '';
-            switch ($time_schedule) {
+            switch ( $time_schedule ) {
                 case 'hourly':
                     $subject = esc_html__( "Hourly Digest", "disciple_tools" );
                     break;

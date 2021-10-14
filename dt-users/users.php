@@ -116,14 +116,14 @@ class Disciple_Tools_Users
             $assure_unique = [];
             foreach ( $dispatchers as $index ){
                 $id = $index->user_id;
-                if ( $id && !in_array( $id, $assure_unique )){
+                if ( $id && !in_array( $id, $assure_unique ) ){
                     $assure_unique[] = $id;
                     $users[] = get_user_by( "ID", $id );
                 }
             }
             foreach ( $users_ids as $index ){
                 $id = $index[0];
-                if ( $id && !in_array( $id, $assure_unique )){
+                if ( $id && !in_array( $id, $assure_unique ) ){
                     $assure_unique[] = $id;
                     $users[] = get_user_by( "ID", $id );
                 }
@@ -215,7 +215,7 @@ class Disciple_Tools_Users
      * @return int|WP_Error|null the contact ID
      */
     public static function get_contact_for_user( $user_id ){
-        if ( !current_user_can( "access_contacts" )){
+        if ( !current_user_can( "access_contacts" ) ){
             return new WP_Error( 'no_permission', __( "Insufficient permissions", 'disciple_tools' ), [ 'status' => 403 ] );
         }
         $contact_id = get_user_option( "corresponds_to_contact", $user_id );
@@ -351,7 +351,7 @@ class Disciple_Tools_Users
         update_user_meta( $user_id, $wpdb->prefix . 'workload_status', 'active' );
 
         if ( $optional_fields ) {
-            foreach ($optional_fields as $key => $value) {
+            foreach ( $optional_fields as $key => $value ) {
                 if ( $key === "gender" ) {
                     update_user_option( $user_id, 'user_gender', $value );
                 } else {
@@ -385,7 +385,7 @@ class Disciple_Tools_Users
         $user = get_user_by( 'id', $user_id );
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
         if ( $user && $user->has_cap( 'access_contacts' ) && is_user_member_of_blog( $user_id ) ) {
-            if ( empty( $corresponds_to_contact )){
+            if ( empty( $corresponds_to_contact ) ){
                 $args = [
                     'post_type'  => 'contacts',
                     'relation'   => 'AND',
@@ -406,7 +406,7 @@ class Disciple_Tools_Users
                     update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
                 }
             }
-            if ( empty( $corresponds_to_contact )){
+            if ( empty( $corresponds_to_contact ) ){
                 $args = [
                     'post_type'  => 'contacts',
                     'relation'   => 'AND',
@@ -431,7 +431,7 @@ class Disciple_Tools_Users
                     "type"                => "user",
                     "corresponds_to_user" => $user_id,
                 ], true, false );
-                if ( !is_wp_error( $new_user_contact )){
+                if ( !is_wp_error( $new_user_contact ) ){
                     update_user_option( $user_id, "corresponds_to_contact", $new_user_contact["ID"] );
                     return $new_user_contact["ID"];
                 }
@@ -650,7 +650,7 @@ class Disciple_Tools_Users
         }
         if ( !empty( $body["add_languages"] ) ){
             $languages = get_user_option( "user_languages", $user->ID ) ?: [];
-            if ( !in_array( $body["add_languages"], $languages )){
+            if ( !in_array( $body["add_languages"], $languages ) ){
                 $languages[] = $body["add_languages"];
             }
             update_user_option( $user->ID, "user_languages", $languages );
@@ -658,7 +658,7 @@ class Disciple_Tools_Users
         }
         if ( !empty( $body["remove_languages"] ) ){
             $languages = get_user_option( "user_languages", $user->ID );
-            if ( in_array( $body["remove_languages"], $languages )){
+            if ( in_array( $body["remove_languages"], $languages ) ){
                 unset( $languages[array_search( $body["remove_languages"], $languages )] );
             }
             update_user_option( $user->ID, "user_languages", $languages );
@@ -666,7 +666,7 @@ class Disciple_Tools_Users
         }
         if ( !empty( $body["add_people_groups"] ) ){
             $people_groups = get_user_option( "user_people_groups", $user->ID ) ?: [];
-            if ( !in_array( $body["add_people_groups"], $people_groups )){
+            if ( !in_array( $body["add_people_groups"], $people_groups ) ){
                 $people_groups[] = $body["add_people_groups"];
             }
             update_user_option( $user->ID, "user_people_groups", $people_groups );
@@ -674,7 +674,7 @@ class Disciple_Tools_Users
         }
         if ( !empty( $body["remove_people_groups"] ) ){
             $people_groups = get_user_option( "user_people_groups", $user->ID );
-            if ( in_array( $body["remove_people_groups"], $people_groups )){
+            if ( in_array( $body["remove_people_groups"], $people_groups ) ){
                 unset( $people_groups[array_search( $body["remove_people_groups"], $people_groups )] );
             }
             update_user_option( $user->ID, "user_people_groups", $people_groups );
@@ -688,7 +688,7 @@ class Disciple_Tools_Users
         }
         try {
             do_action( 'dt_update_user', $user, $body );
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             return new WP_Error( __FUNCTION__, $e->getMessage(), [ 'status' => $e->getCode() ] );
         }
         return true;
@@ -716,7 +716,7 @@ class Disciple_Tools_Users
         if ( $value === '' ){
             $status = update_metadata( 'user', $user_id, $preference_key, $default ? '0' : '1' );
             $label = $default ? "false" : "true";
-        } elseif ( $value === '0'){
+        } elseif ( $value === '0' ){
             $status = update_metadata( 'user', $user_id, $preference_key, "1" );
             $label = "true";
         } else {
@@ -1006,7 +1006,7 @@ class Disciple_Tools_Users
             $geocoder = new Location_Grid_Geocoder();
 
             $grid = $geocoder->query_by_grid_id( $location_grid_meta["grid_id"] );
-            if ($grid) {
+            if ( $grid ) {
                 $lgm = [];
 
                 Location_Grid_Meta::validate_location_grid_meta( $lgm );
@@ -1019,14 +1019,14 @@ class Disciple_Tools_Users
                 $lgm['label'] = $geocoder->_format_full_name( $grid );
 
                 $umeta_id = Location_Grid_Meta::add_user_location_grid_meta( $user_id, $lgm );
-                if (is_wp_error( $umeta_id )) {
+                if ( is_wp_error( $umeta_id ) ) {
                     return $umeta_id;
                 }
             }
         // use lng lat as base value
         } else {
 
-            if (empty( $location_grid_meta['lng'] ) || empty( $location_grid_meta['lat'] )) {
+            if ( empty( $location_grid_meta['lng'] ) || empty( $location_grid_meta['lat'] ) ) {
                 return new WP_Error( __METHOD__, 'Missing required lng or lat' );
             }
 

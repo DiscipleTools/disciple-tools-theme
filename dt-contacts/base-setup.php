@@ -46,7 +46,7 @@ class DT_Contacts_Base {
 
 
     public function after_setup_theme(){
-        if ( class_exists( 'Disciple_Tools_Post_Type_Template' )) {
+        if ( class_exists( 'Disciple_Tools_Post_Type_Template' ) ) {
             new Disciple_Tools_Post_Type_Template( "contacts", __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ) );
         }
     }
@@ -549,7 +549,7 @@ class DT_Contacts_Base {
 
     //list page filters function
     private static function add_default_custom_list_filters( $filters ){
-        if ( empty( $filters )){
+        if ( empty( $filters ) ){
             $filters = [];
         }
         $default_filters = [
@@ -645,10 +645,10 @@ class DT_Contacts_Base {
 
     }
     public function dt_record_icon( $icon, $post_type, $dt_post ){
-        if ($post_type == 'contacts') {
+        if ( $post_type == 'contacts' ) {
             $gender = isset( $dt_post["gender"] ) ? $dt_post["gender"]["key"] : "male";
             $icon = 'fi-torso';
-            if ($gender == 'female') {
+            if ( $gender == 'female' ) {
                 $icon = $icon.'-'.$gender;
             }
         }

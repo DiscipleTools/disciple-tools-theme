@@ -124,12 +124,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     if ( ! function_exists( 'dt_array_to_sql' ) ) {
-        function dt_array_to_sql( $values) {
-            if (empty( $values )) {
+        function dt_array_to_sql( $values ) {
+            if ( empty( $values ) ) {
                 return 'NULL';
             }
-            foreach ($values as &$val) {
-                if ('\N' === $val) {
+            foreach ( $values as &$val ) {
+                if ( '\N' === $val ) {
                     $val = 'NULL';
                 } else {
                     $val = "'" . esc_sql( trim( $val ) ) . "'";
@@ -147,19 +147,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @return bool|int|string
      */
     if ( ! function_exists( 'dt_format_date' ) ) {
-        function dt_format_date( $date, $format = 'short') {
+        function dt_format_date( $date, $format = 'short' ) {
             $date_format = get_option( 'date_format' );
             $time_format = get_option( 'time_format' );
-            if ($format === 'short') {
+            if ( $format === 'short' ) {
                 // $format = $date_format;
                 // formatting it with internationally understood date, as there was a
                 // struggle getting dates to show in user's selected language and not
                 // in the site language.
                 $format = 'Y-m-d';
-            } else if ($format === 'long') {
+            } else if ( $format === 'long' ) {
                 $format = $date_format . ' ' . $time_format;
             }
-            if (is_numeric( $date )) {
+            if ( is_numeric( $date ) ) {
                 $formatted = date_i18n( $format, $date );
             } else {
                 $formatted = mysql2date( $format, $date );
@@ -182,14 +182,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
     if ( ! function_exists( 'dt_get_year_from_timestamp' ) ) {
-        function dt_get_year_from_timestamp( int $time) {
+        function dt_get_year_from_timestamp( int $time ) {
             return gmdate( "Y", $time );
         }
     }
 
     if ( ! function_exists( 'dt_sanitize_array_html' ) ) {
-        function dt_sanitize_array_html( $array) {
-            array_walk_recursive($array, function ( &$v) {
+        function dt_sanitize_array_html( $array ) {
+            array_walk_recursive($array, function ( &$v ) {
                 $v = filter_var( trim( $v ), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
             });
             return $array;
@@ -222,7 +222,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     if ( ! function_exists( 'dt_get_available_languages' ) ) {
-        function dt_get_available_languages( $code_as_key = false) {
+        function dt_get_available_languages( $code_as_key = false ) {
             $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
             array_unshift( $available_language_codes, 'en_US' );
             $available_translations = [];
@@ -427,7 +427,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             ];
 
             foreach ( $available_language_codes as $code ){
-                if ( isset( $translations[$code] )){
+                if ( isset( $translations[$code] ) ){
                     $translations[$code]['site_default'] = $site_default_locale === $translations[$code]["language"];
                     if ( !$code_as_key ){
                         $available_translations[] = $translations[$code];
@@ -500,19 +500,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
         $metadata = get_post_meta( $contact_id, $key = 'assigned_to', true );
 
-        if ( !empty( $metadata )) {
+        if ( !empty( $metadata ) ) {
             $meta_array = explode( '-', $metadata ); // Separate the type and id
             $type = $meta_array[0];
             $id = $meta_array[1];
 
-            if ($type == 'user') {
+            if ( $type == 'user' ) {
                 $value = get_user_by( 'id', $id );
                 $rv = $value->display_name;
             } else {
                 $value = get_term( $id );
                 $rv = $value->name;
             }
-            if ($return) {
+            if ( $return ) {
                 return $rv;
             } else {
                 echo esc_html( $rv );
@@ -632,7 +632,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <?php if ( !isset( $fields[$field_key]["default"]["none"] ) && empty( $fields[$field_key]["select_cannot_be_empty"] ) ) : ?>
                         <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: "selected" ) ?>></option>
                     <?php endif; ?>
-                    <?php foreach ($fields[$field_key]["default"] as $option_key => $option_value):
+                    <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ):
                         if ( !$show_hidden && isset( $option_value["hidden"] ) && $option_value["hidden"] === true ){
                             continue;
                         }

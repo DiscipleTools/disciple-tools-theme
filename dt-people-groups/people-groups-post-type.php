@@ -379,7 +379,7 @@ class Disciple_Tools_People_Groups_Post_Type
 
         echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( 'update_peoplegroup_info' ) ) . '" />';
         ?>
-        <?php foreach ($dt_available_languages as $language) {
+        <?php foreach ( $dt_available_languages as $language ) {
             echo '<label for="dt_translation_' . esc_attr( $language["language"] ) . '">' . esc_attr( $language["native_name"] ) . '</label><br/>';
             echo '<input type="text" name="dt_translation_' . esc_attr( $language["language"] ) . '" id="dt_translation_' . esc_attr( $language["language"] ) . '" class="text-input" value="' . esc_attr( get_post_meta( $post->ID, $language["language"], true ) ). '" /><br/>';
         }
@@ -563,7 +563,7 @@ class Disciple_Tools_People_Groups_Post_Type
 
         $dt_available_languages = Disciple_Tools_Core_Endpoints::get_settings();
 
-        foreach ($dt_available_languages["available_translations"] as $language) {
+        foreach ( $dt_available_languages["available_translations"] as $language ) {
             if ( isset( $_POST['dt_translation_' . $language["language"]] ) )
             {
                 $translated_text_value = sanitize_text_field( wp_unslash( $_POST['dt_translation_' . $language["language"]] ) );
@@ -620,7 +620,7 @@ class Disciple_Tools_People_Groups_Post_Type
         return $post_types;
     }
     public function dt_get_post_type_settings( $settings, $post_type ){
-        if ( $post_type === $this->post_type){
+        if ( $post_type === $this->post_type ){
             $fields = $this->get_custom_fields_settings();
             $settings = [
                 'fields' => $fields,

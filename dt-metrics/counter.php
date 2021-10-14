@@ -57,7 +57,7 @@ class Disciple_Tools_Counter
      */
     public static function critical_path( string $step_name = 'all', $start = null, $end = null, $args = [] ) {
 
-        if ( $start === null){
+        if ( $start === null ){
             $start = 0;
         }
         if ( $end === null ){
@@ -693,7 +693,7 @@ class Disciple_Tools_Queries
             $parent_id = $node["parent_id"] ?? $node["parentId"];
             if ( in_array( (int) $parent_id, $node_ids ) ){
                 //if the node is already in the tree
-                if ( in_array( (int) $node["id"], $parents, true )){
+                if ( in_array( (int) $node["id"], $parents, true ) ){
                     return (int) $node["id"]; //return the ID of the node
                 }
                 $node["done"] = true; //lets us look at what nodes where not processed later

@@ -93,7 +93,7 @@ class Disciple_Tools_Roles
      */
     public function set_roles_if_needed() {
         $current_number = get_option( 'dt_roles_number' );
-        if ($current_number === false || intval( $current_number ) < self::$target_roles_version_number) {
+        if ( $current_number === false || intval( $current_number ) < self::$target_roles_version_number ) {
             $this->set_roles();
         }
     }

@@ -195,7 +195,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
         $data = [];
         $manual_additions = Disciple_Tools_Counter_Outreach::get_monthly_reports_count( $start, $end );
         foreach ( $manual_additions as $addition_key => $addition ) {
-            if ( $addition["section"] == "outreach") {
+            if ( $addition["section"] == "outreach" ) {
                 $data[] = [
                     "description" => $addition["description"],
                     "key" => $addition_key,
@@ -336,7 +336,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
             "type" => "ongoing"
         ];
         foreach ( $manual_additions as $addition_key => $addition ) {
-            if ( $addition["section"] == "movement") {
+            if ( $addition["section"] == "movement" ) {
                 $data[] = [
                     "description" => $addition["description"],
                     "key" => $addition_key,
