@@ -69,19 +69,19 @@ class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
             curl_setopt( $ch_start, CURLOPT_SSL_VERIFYPEER, 0 );
             curl_setopt( $ch_start, CURLOPT_FILE, $zip_resource );
             $page = curl_exec( $ch_start );
-            if ( !$page)
+            if ( !$page )
             {
                 error_log( "Error :- ".curl_error( $ch_start ) );
             }
             curl_close( $ch_start );
 
-            if ( ! class_exists( 'ZipArchive' )){
+            if ( ! class_exists( 'ZipArchive' ) ){
                 error_log( "PHP ZipArchive is not installed or enabled." );
                 throw new Exception( 'PHP ZipArchive is not installed or enabled.' );
             }
             $zip = new ZipArchive();
             $extract_path = $uploads_dir . 'location_grid_download';
-            if ($zip->open( $zip_file ) != "true")
+            if ( $zip->open( $zip_file ) != "true" )
             {
                 error_log( "Error :- Unable to open the Zip File" );
             }
@@ -98,7 +98,7 @@ class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
 
             // load list to array, make geonameid key
             $geonames_ref = [];
-            $geonmes_ref_raw = array_map( function( $v){return str_getcsv( $v, "\t" );
+            $geonmes_ref_raw = array_map( function( $v ){return str_getcsv( $v, "\t" );
             }, file( $uploads_dir . "location_grid_download/geonames_ref_table.tsv" ) );
             if ( empty( $geonmes_ref_raw ) ) {
                 throw new Exception( 'Failed to build array from remote file.' );

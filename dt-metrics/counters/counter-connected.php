@@ -33,7 +33,7 @@ class Disciple_Tools_Counter_Connected extends Disciple_Tools_Counter_Base  {
         global $wpdb;
 
         $post_type = 'contacts';
-        if ($type == 'groups_to_groups') { $post_type = 'groups'; }
+        if ( $type == 'groups_to_groups' ) { $post_type = 'groups'; }
 
         // Get values
         $total_contacts = wp_count_posts( $post_type )->publish;
@@ -77,8 +77,8 @@ class Disciple_Tools_Counter_Connected extends Disciple_Tools_Counter_Base  {
         ), ARRAY_A );
         $p2p_distinct = array_unique( $p2p_array_to, SORT_REGULAR );
 
-        foreach ($p2p_distinct as $item) {
-            if ($this->get_number_disciples( $item, $p2p_array_to ) >= $min_number) {
+        foreach ( $p2p_distinct as $item ) {
+            if ( $this->get_number_disciples( $item, $p2p_array_to ) >= $min_number ) {
                 $i++;
             };
         }
@@ -110,8 +110,8 @@ class Disciple_Tools_Counter_Connected extends Disciple_Tools_Counter_Base  {
         ), ARRAY_A );
         $p2p_distinct = array_unique( $p2p_array_to, SORT_REGULAR );
 
-        foreach ($p2p_distinct as $item) {
-            if ($this->get_number_disciples( $item, $p2p_array_to ) == $exact_number) {
+        foreach ( $p2p_distinct as $item ) {
+            if ( $this->get_number_disciples( $item, $p2p_array_to ) == $exact_number ) {
                 $i++;
             };
         }
@@ -129,8 +129,8 @@ class Disciple_Tools_Counter_Connected extends Disciple_Tools_Counter_Base  {
     protected function get_number_disciples( $contact, $column ) {
         $i = 0;
 
-        foreach ($column as $item) {
-            if ($item == $contact) {
+        foreach ( $column as $item ) {
+            if ( $item == $contact ) {
                 $i++;
             }
         }

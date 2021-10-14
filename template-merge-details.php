@@ -45,28 +45,28 @@ $dt_data = array(
     'contact_facebook' => array()
 );
 
-foreach (array_keys( $dt_fields ) as $key) {
-    foreach ($dt_contact[$key] ?? [] as $vals) {
-        if ( !isset( $c_fields[$key] )) {
+foreach ( array_keys( $dt_fields ) as $key ) {
+    foreach ( $dt_contact[$key] ?? [] as $vals ) {
+        if ( !isset( $c_fields[$key] ) ) {
             $c_fields[$key] = array();
         }
         array_push( $c_fields[$key], $vals['value'] );
     }
-    foreach ($dt_duplicate_contact[$key] ?? [] as $vals) {
-        if ( !isset( $d_fields[$key] )) {
+    foreach ( $dt_duplicate_contact[$key] ?? [] as $vals ) {
+        if ( !isset( $d_fields[$key] ) ) {
             $d_fields[$key] = array();
         }
         array_push( $d_fields[$key], $vals['value'] );
     }
 }
 
-foreach (array_keys( $dt_fields ) as $field) {
+foreach ( array_keys( $dt_fields ) as $field ) {
     $max = max( array( count( $c_fields[$field] ?? [] ), count( $d_fields[$field] ?? [] ) ) );
-    for ($i = 0; $i < $max; $i++) {
+    for ( $i = 0; $i < $max; $i++ ) {
         $hide = false;
         $o_value = $c_fields[$field][$i] ?? null;
         $d_value = $d_fields[$field][$i] ?? null;
-        if (in_array( $o_value, $d_fields[$field] ?? [] )) { $hide = true; }
+        if ( in_array( $o_value, $d_fields[$field] ?? [] ) ) { $hide = true; }
         array_push($dt_data[$field], array(
             'original' => array(
                 'hide' => $hide,
@@ -155,7 +155,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
                 </div>
 
                 <?php
-                foreach ($dt_fields as $dt_key => $dt_field) {
+                foreach ( $dt_fields as $dt_key => $dt_field ) {
                     foreach ( $dt_data[$dt_key] as $dt_idx => $dt_type ) : ?>
                         <div class='line-wrap'>
                             <div class='merge-column'><span class='bold'><?php echo esc_html( $dt_field ); ?></span></div>

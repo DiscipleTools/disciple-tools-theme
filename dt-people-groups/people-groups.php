@@ -25,7 +25,7 @@ class Disciple_Tools_People_Groups
         $jp_csv = [];
         $handle = fopen( __DIR__ . "/csv/jp.csv", "r" );
         if ( $handle !== false ) {
-            while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
+            while ( ( $data = fgetcsv( $handle, 0, "," ) ) !== false ) {
                 $jp_csv[] = $data;
             }
             fclose( $handle );
@@ -41,7 +41,7 @@ class Disciple_Tools_People_Groups
         $imb_csv = [];
         $handle = fopen( __DIR__ . "/csv/imb.csv", "r" );
         if ( $handle !== false ) {
-            while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
+            while ( ( $data = fgetcsv( $handle, 0, "," ) ) !== false ) {
                 $imb_csv[] = $data;
             }
             fclose( $handle );
@@ -301,7 +301,7 @@ class Disciple_Tools_People_Groups
      * @return array|WP_Error
      */
     public static function get_people_groups_compact( $search ) {
-        if ( !current_user_can( "access_contacts" )){
+        if ( !current_user_can( "access_contacts" ) ){
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $locale = get_user_locale();
@@ -317,7 +317,7 @@ class Disciple_Tools_People_Groups
         $list = [];
         foreach ( $query->posts as $post ) {
             $translation = get_post_meta( $post->ID, $locale, true );
-            if ($translation !== "") {
+            if ( $translation !== "" ) {
                 $label = $translation;
             } else {
                 $label = $post->post_title;
@@ -346,7 +346,7 @@ class Disciple_Tools_People_Groups
         $meta_query = new WP_Query( $meta_query_args );
         foreach ( $meta_query->posts as $post ) {
             $translation = get_post_meta( $post->ID, $locale, true );
-            if ($translation !== "") {
+            if ( $translation !== "" ) {
                 $label = $translation;
             } else {
                 $label = $post->post_title;

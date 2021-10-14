@@ -1873,8 +1873,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
 
-        public function dt_sanitize_array_html( $array) {
-            array_walk_recursive($array, function ( &$v) {
+        public function dt_sanitize_array_html( $array ) {
+            array_walk_recursive($array, function ( &$v ) {
                 $v = filter_var( trim( $v ), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
             });
             return $array;
@@ -1892,7 +1892,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             $selected_location_grid = sanitize_text_field( wp_unslash( $migration_values["geoid"] ) );
                             $migration_type = sanitize_text_field( wp_unslash( $migration_values["migration_type"] ) );
                             $location = get_post( $location_id );
-                            if ( empty( $selected_location_grid )){
+                            if ( empty( $selected_location_grid ) ){
                                 $selected_location_grid = '1';
                             }
                             $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( $selected_location_grid );
@@ -2422,19 +2422,19 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             curl_setopt( $ch_start, CURLOPT_SSL_VERIFYPEER, 0 );
             curl_setopt( $ch_start, CURLOPT_FILE, $zip_resource );
             $page = curl_exec( $ch_start );
-            if ( !$page)
+            if ( !$page )
             {
                 error_log( "Error :- ".curl_error( $ch_start ) );
             }
             curl_close( $ch_start );
 
-            if ( !class_exists( 'ZipArchive' )){
+            if ( !class_exists( 'ZipArchive' ) ){
                 error_log( "PHP ZipArchive is not installed or enabled." );
                 return;
             }
             $zip = new ZipArchive();
             $extract_path = $uploads_dir . 'location_grid_download';
-            if ($zip->open( $zip_file ) != "true")
+            if ( $zip->open( $zip_file ) != "true" )
             {
                 error_log( "Error :- Unable to open the Zip File" );
             }
@@ -2751,7 +2751,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $uploads_dir = trailingslashit( $dir['basedir'] );
             // load list to array, make geonameid key
             $geonames_ref = [];
-            $geonmes_ref_raw = array_map( function( $v){return str_getcsv( $v, "\t" );
+            $geonmes_ref_raw = array_map( function( $v ){return str_getcsv( $v, "\t" );
             }, file( $uploads_dir . "location_grid_download/geonames_ref_table.tsv" ) );
             if ( empty( $geonmes_ref_raw ) ) {
                 throw new Exception( 'Failed to build array from remote file.' );
@@ -2780,7 +2780,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             unset( $filter["query"]["locations"] );
                             foreach ( $filter["labels"] as &$label ){
                                 if ( $label["field"] === "locations" ){
-                                    if ( isset( $migrated[$label["id"]]["selected_location_grid"] )){
+                                    if ( isset( $migrated[$label["id"]]["selected_location_grid"] ) ){
                                         $label["field"] = "location_grid";
                                         $label["id"] = $migrated[$label["id"]]["selected_location_grid"];
                                     }
@@ -2798,8 +2798,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             unset( $filter["query"]["locations"] );
                             unset( $filter["query"]["geonames"] );
                             foreach ( $filter["labels"] as &$label ){
-                                if ( $label["field"] === "geonames") {
-                                    if ( isset( $geonames_ref[ $label["id"]] )){
+                                if ( $label["field"] === "geonames" ) {
+                                    if ( isset( $geonames_ref[ $label["id"]] ) ){
                                         $label["field"] = "location_grid";
                                         $label["id"] = $geonames_ref[ $label["id"]]["grid_id"];
                                     }

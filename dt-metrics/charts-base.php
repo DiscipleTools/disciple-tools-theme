@@ -131,7 +131,7 @@ abstract class DT_Metrics_Chart_Base
     public function _no_results() {
         return '<p>'. esc_attr__( 'No Results', 'disciple_tools' ) .'</p>';
     }
-    public function _circular_structure_error( $wp_error) {
+    public function _circular_structure_error( $wp_error ) {
         $link = false;
         $data = $wp_error->get_error_data();
 

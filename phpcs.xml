@@ -155,9 +155,9 @@
     <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceBeforeCloseParenthesis" /> -->
     <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceBeforeOpenParenthesis" /> -->
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterCloseParenthesis" />
-    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis" />
+<!--    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis" />-->
     <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterStructureOpen" /> -->
-    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis" />
+<!--    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis" />-->
     <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeOpenParenthesis" /> -->
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBetweenStructureColon" />
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.OpenBraceNotSameLine" />
