@@ -104,11 +104,16 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $data['seeker_path_changed'] = self::get_info_added( $from, $to, 'contacts', 'seeker_path', '%', $contact_field_settings);
         $data['milestones_added'] = self::get_info_added( $from, $to, 'contacts', 'milestones', 'milestone_%', $contact_field_settings );
 
+        $data['milestones_added_by_others'] = self::get_info_added_by_others( $from, $to, 'contacts', 'milestones', 'milestone_', $contact_field_settings );
+        $data['seeker_path_changed_by_others'] = self::get_info_added_by_others( $from, $to, 'contacts', 'seeker_path', '', $contact_field_settings);
 
         $group_field_settings = DT_Posts::get_post_field_settings( 'groups' );
         $data['groups_created'] = self::get_records_created( $from, $to, 'groups' );
         $data['health_metrics_added'] = self::get_info_added( $from, $to, 'groups', 'health_metrics', 'church_%', $group_field_settings);
         $data['group_type_changed'] = self::get_info_added( $from, $to, 'groups', 'group_type', '%', $group_field_settings);
+
+        $data['health_metrics_added_by_others'] = self::get_info_added_by_others( $from, $to, 'groups', 'health_metrics', 'church_', $group_field_settings);
+        $data['group_type_changed_by_others'] = self::get_info_added_by_others( $from, $to, 'groups', 'group_type', '', $group_field_settings);
 
         return $data;
     }
@@ -194,9 +199,9 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
             SELECT
-                meta_value as meta_changed, COUNT(meta_value) as count
+                a.meta_value as meta_changed, COUNT(a.meta_value) as count
             FROM
-                $wpdb->dt_activity_log
+                $wpdb->dt_activity_log AS a
             WHERE
                 action = 'field_update'
             AND
@@ -204,9 +209,107 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             AND
                 object_subtype = %s
             AND
-                meta_value LIKE %s
+                a.meta_value LIKE %s
             AND
                 user_id = %d
+            AND 1=1 "
+                            . ( $from ? " AND hist_time >= %s " : "" )
+                            . ( $to ? " AND hist_time <= %s " : "" )
+                            . "
+            GROUP BY
+                a.meta_value;",
+            ...$prepare_args
+        );
+        // phpcs:enable
+
+        $rows = $wpdb->get_results( $sql, ARRAY_A );
+
+        if ( !empty($rows) ) {
+            foreach ($rows as $i => $row) {
+                $label = (isset($field_settings[$subtype]['default'][$row['meta_changed']]))
+                    ? $field_settings[$subtype]['default'][$row['meta_changed']]['label']
+                    : null;
+                $rows[$i] = array_merge([
+                    'label' => $label,
+                ], $row);
+            }
+        }
+
+        return $rows;
+    }
+
+    private static function get_info_added_by_others( $from, $to, $post_type, $subtype, $meta_value_like, $field_settings ) {
+        global $wpdb;
+
+        $user_id = get_current_user_id();
+        $users_contact_id = Disciple_Tools_Users::get_contact_for_user( $user_id );
+
+        $coaching_p2p_key = $post_type === 'contacts' ? 'contacts_to_contacts' : 'groups_to_coaches';
+
+        $prepare_args = [ "user-$user_id", $coaching_p2p_key, $users_contact_id ];
+
+        if ( $post_type === 'contacts' ) {
+            $prepare_args[] = $users_contact_id;
+        }
+
+        $prepare_args = array_merge( $prepare_args, [ $post_type, $subtype, get_current_user_id() ] );
+        self::insert_dates( $from, $to, $prepare_args );
+
+
+        // phpcs:disable WordPress.DB.PreparedSQL
+        $sql = $wpdb->prepare( "
+            SELECT
+                meta_value as meta_changed, COUNT(meta_value) as count
+            FROM (
+                SELECT
+                    a.*
+                FROM
+                    $wpdb->postmeta pm
+                JOIN
+                    $wpdb->dt_activity_log a
+                ON
+                    pm.post_id = a.object_id
+                WHERE
+                    pm.meta_key = 'assigned_to'
+                AND
+                    pm.meta_value = %s
+                UNION SELECT
+                        a.*
+                    FROM
+                        $wpdb->p2p p
+                    JOIN
+                        $wpdb->dt_activity_log a
+                    ON
+                        p.p2p_from = a.object_id
+                    WHERE
+                        p.p2p_type = %s
+                    AND
+                        p.p2p_to = %d " . (
+                $post_type === 'contacts' ? "
+                UNION SELECT
+                        a.*
+                    FROM
+                        $wpdb->p2p p
+                    JOIN
+                        $wpdb->dt_activity_log a
+                    ON
+                        p.p2p_to = a.object_id
+                    WHERE
+                        p.p2p_type = 'contacts_to_subassigned'
+                    AND
+                        p.p2p_from = %d " : '' )
+            . "
+            ) as a
+            WHERE
+                action = 'field_update'
+            AND
+                object_type = %s
+            AND
+                object_subtype = %s
+            AND
+                meta_value REGEXP '" . ( $meta_value_like === '' ? '^' : "^$meta_value_like" ) . "'
+            AND
+                user_id != %d
             AND 1=1 "
                             . ( $from ? " AND hist_time >= %s " : "" )
                             . ( $to ? " AND hist_time <= %s " : "" )
