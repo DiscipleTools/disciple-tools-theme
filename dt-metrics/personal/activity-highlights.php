@@ -110,6 +110,9 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $data['baptisms'] = self::get_baptisms( $from, $to );
         $data['baptisms_by_others'] = self::get_baptisms_by_others( $from, $to );
 
+        $data['comments_posted'] = self::get_comments_posted( $from, $to );
+        $data['comments_liked'] = self::get_comments_liked( $from, $to );
+
         $group_field_settings = DT_Posts::get_post_field_settings( 'groups' );
         $data['groups_created'] = self::get_records_created( $from, $to, 'groups' );
         $data['health_metrics_added'] = self::get_info_added( $from, $to, 'groups', 'health_metrics', 'church_%', $group_field_settings);
@@ -235,7 +238,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
     private static function get_info_added_by_others( $from, $to, $post_type, $subtype, $meta_value_like, $field_settings ) {
         global $wpdb;
 
-        $records_connected_to_sql = self::get_record_connections_sql( $post_type );
+        $records_connected_to_sql = self::get_activity_logs_by_others_sql( $post_type );
 
         $prepare_args = [ $post_type, $subtype, get_current_user_id() ];
 
@@ -341,7 +344,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $prepare_args = [ $users_contact_id ];
         self::insert_dates( $from, $to, $prepare_args );
 
-        $activity_by_others = self::get_record_connections_sql( 'contacts' );
+        $activity_by_others = self::get_activity_logs_by_others_sql( 'contacts' );
 
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
@@ -392,7 +395,88 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         return $rows;
     }
 
-    private static function get_record_connections_sql( $post_type ) {
+    private static function get_comments_posted( $from, $to ) {
+        global $wpdb;
+
+        $user_id = get_current_user_id();
+
+        $prepare_args = [ $user_id ];
+        self::insert_dates( $from, $to, $prepare_args, false );
+
+        // phpcs:disable WordPress.DB.PreparedSQL
+        $sql = $wpdb->prepare( "
+            SELECT
+                c.comment_date, c.comment_content, p.post_title, p.post_type
+            FROM
+                $wpdb->comments c
+            JOIN
+                $wpdb->posts p
+            ON
+                c.comment_post_ID = p.ID
+            WHERE
+                user_id = %d
+            AND 1=1 "
+                            . ( $from ? " AND comment_date >= %s " : "" )
+                            . ( $to ? " AND comment_date <= %s " : "" )
+                            . "
+            ", $prepare_args);
+
+        $rows = $wpdb->get_results( $sql, ARRAY_A );
+        // phpcs:enable
+
+        return $rows;
+    }
+
+    private static function get_comments_liked( $from, $to ) {
+        global $wpdb;
+
+        $user_id = get_current_user_id();
+
+        $prepare_args = [ $user_id ];
+        self::insert_dates( $from, $to, $prepare_args, false );
+
+        // phpcs:disable WordPress.DB.PreparedSQL
+        $sql = $wpdb->prepare( "
+            SELECT
+                c.comment_id, c.comment_date, c.comment_content, p.post_title, p.post_type, cm.meta_key as reaction_type
+            FROM
+                $wpdb->comments c
+            JOIN
+                $wpdb->posts p
+            ON
+                c.comment_post_ID = p.ID
+            JOIN
+                $wpdb->commentmeta cm
+            ON
+                cm.comment_id = c.comment_id
+            WHERE
+                cm.meta_value = %d
+            AND
+                cm.meta_key REGEXP '^reaction_'
+            AND 1=1 "
+                            . ( $from ? " AND comment_date >= %s " : "" )
+                            . ( $to ? " AND comment_date <= %s " : "" )
+                            . "
+            ", $prepare_args);
+
+        $rows = $wpdb->get_results( $sql, ARRAY_A );
+        // phpcs:enable
+
+        $reaction_options = apply_filters( 'dt_comments_reaction_options', dt_get_site_custom_lists( 'comment_reaction_options' ) );
+
+        if ( !empty($rows) ) {
+            foreach ($rows as $i => $row) {
+                $reaction_key = str_replace( 'reaction_', '', $row['reaction_type'] );
+                $rows[$i] = array_merge([
+                    'reaction' => isset($reaction_options[$reaction_key]) ? $reaction_options[$reaction_key] : null,
+                ], $row);
+            }
+        }
+
+        return $rows;
+    }
+
+    private static function get_activity_logs_by_others_sql( $post_type ) {
         global $wpdb;
 
         $user_id = get_current_user_id();
@@ -464,13 +548,13 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         return $rows;
     }
 
-    private static function insert_dates( $from, $to, &$prepare_args )
+    private static function insert_dates( $from, $to, &$prepare_args, $epoch_timestamp = true )
     {
         if ( $from ) {
-            $prepare_args[] = strtotime( $from );
+            $prepare_args[] = $epoch_timestamp ? strtotime( $from ) : $from;
         }
         if ( $to ) {
-            $prepare_args[] = strtotime( $to );
+            $prepare_args[] = $epoch_timestamp ? strtotime( $to ) : $to;
         }
     }
 
