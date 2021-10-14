@@ -1,6 +1,6 @@
 language: php
 
-dist: xenial
+dist: focal
 node_js:
   - '14'
 sudo: required # this seems to be required for some reason to get MySQL to work
