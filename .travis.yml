@@ -21,8 +21,8 @@ matrix:
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS testdb'
   - mysql -e "GRANT ALL ON testdb.* TO 'travis'@'localhost'"
-  - nvm install 14
-  - nvm use 14
+  - nvm install 16
+  - nvm use 16
   - npm install -g gulp-cli eslint@4 babel-eslint
   - npm install
 before_script:
