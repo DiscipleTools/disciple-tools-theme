@@ -107,6 +107,9 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $data['milestones_added_by_others'] = self::get_info_added_by_others( $from, $to, 'contacts', 'milestones', 'milestone_', $contact_field_settings );
         $data['seeker_path_changed_by_others'] = self::get_info_added_by_others( $from, $to, 'contacts', 'seeker_path', '', $contact_field_settings);
 
+        $data['baptisms'] = self::get_baptisms( $from, $to );
+        $data['baptisms_by_others'] = self::get_baptisms_by_others( $from, $to );
+
         $group_field_settings = DT_Posts::get_post_field_settings( 'groups' );
         $data['groups_created'] = self::get_records_created( $from, $to, 'groups' );
         $data['health_metrics_added'] = self::get_info_added( $from, $to, 'groups', 'health_metrics', 'church_%', $group_field_settings);
@@ -232,64 +235,18 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
     private static function get_info_added_by_others( $from, $to, $post_type, $subtype, $meta_value_like, $field_settings ) {
         global $wpdb;
 
-        $user_id = get_current_user_id();
-        $users_contact_id = Disciple_Tools_Users::get_contact_for_user( $user_id );
+        $records_connected_to_sql = self::get_record_connections_sql( $post_type );
 
-        $coaching_p2p_key = $post_type === 'contacts' ? 'contacts_to_contacts' : 'groups_to_coaches';
+        $prepare_args = [ $post_type, $subtype, get_current_user_id() ];
 
-        $prepare_args = [ "user-$user_id", $coaching_p2p_key, $users_contact_id ];
-
-        if ( $post_type === 'contacts' ) {
-            $prepare_args[] = $users_contact_id;
-        }
-
-        $prepare_args = array_merge( $prepare_args, [ $post_type, $subtype, get_current_user_id() ] );
         self::insert_dates( $from, $to, $prepare_args );
-
 
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
             SELECT
                 meta_value as meta_changed, COUNT(meta_value) as count
             FROM (
-                SELECT
-                    a.*
-                FROM
-                    $wpdb->postmeta pm
-                JOIN
-                    $wpdb->dt_activity_log a
-                ON
-                    pm.post_id = a.object_id
-                WHERE
-                    pm.meta_key = 'assigned_to'
-                AND
-                    pm.meta_value = %s
-                UNION SELECT
-                        a.*
-                    FROM
-                        $wpdb->p2p p
-                    JOIN
-                        $wpdb->dt_activity_log a
-                    ON
-                        p.p2p_from = a.object_id
-                    WHERE
-                        p.p2p_type = %s
-                    AND
-                        p.p2p_to = %d " . (
-                $post_type === 'contacts' ? "
-                UNION SELECT
-                        a.*
-                    FROM
-                        $wpdb->p2p p
-                    JOIN
-                        $wpdb->dt_activity_log a
-                    ON
-                        p.p2p_to = a.object_id
-                    WHERE
-                        p.p2p_type = 'contacts_to_subassigned'
-                    AND
-                        p.p2p_from = %d " : '' )
-            . "
+                $records_connected_to_sql
             ) as a
             WHERE
                 action = 'field_update'
@@ -316,6 +273,180 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $rows = self::insert_labels( $rows, $subtype, $field_settings );
 
         return $rows;
+    }
+
+    private static function get_baptisms( $from, $to ) {
+        global $wpdb;
+
+        $user_id = get_current_user_id();
+        $users_contact_id = Disciple_Tools_Users::get_contact_for_user( $user_id );
+
+        $prepare_args = [ $users_contact_id ];
+        self::insert_dates( $from, $to, $prepare_args );
+
+        // phpcs:disable WordPress.DB.PreparedSQL
+        $sql = $wpdb->prepare( "
+            SELECT
+                a1.meta_value as baptism_date
+            FROM (
+                SELECT
+                    *
+                FROM
+                    $wpdb->dt_activity_log
+                WHERE
+                    meta_key = 'baptism_date'
+            ) as a1
+            JOIN (
+                SELECT
+                    *
+                FROM
+                    $wpdb->dt_activity_log
+                WHERE
+                    meta_key = 'baptizer_to_baptized'
+            ) as a2
+            INNER JOIN
+                $wpdb->postmeta pm
+            ON
+                a1.meta_key = pm.meta_key
+            AND
+                a1.meta_value = pm.meta_value
+            AND
+                a1.object_id = pm.post_id
+            WHERE
+                a1.action = 'field_update'
+            AND
+                a1.object_id = a2.meta_value
+            AND
+                a2.object_id = %d
+            AND 1=1 "
+                            . ( $from ? " AND a1.meta_value >= %s " : "" )
+                            . ( $to ? " AND a1.meta_value <= %s " : "" )
+                            . "
+            ",
+            ...$prepare_args
+        );
+
+        $rows = $wpdb->get_results( $sql, ARRAY_A );
+        // phpcs:enable
+
+        return $rows;
+    }
+
+    private static function get_baptisms_by_others( $from, $to ) {
+        global $wpdb;
+
+        $user_id = get_current_user_id();
+        $users_contact_id = Disciple_Tools_Users::get_contact_for_user( $user_id );
+
+        $prepare_args = [ $users_contact_id ];
+        self::insert_dates( $from, $to, $prepare_args );
+
+        $activity_by_others = self::get_record_connections_sql( 'contacts' );
+
+        // phpcs:disable WordPress.DB.PreparedSQL
+        $sql = $wpdb->prepare( "
+            SELECT
+                a1.meta_value as baptism_date, a2.object_name as baptizer_name
+            FROM (
+                SELECT
+                    *
+                FROM (
+                    $activity_by_others
+                ) as a
+                WHERE
+                    a.meta_key = 'baptism_date'
+            ) as a1
+            JOIN (
+                SELECT
+                    *
+                FROM
+                    $wpdb->dt_activity_log
+                WHERE
+                    meta_key = 'baptizer_to_baptized'
+            ) as a2
+            INNER JOIN
+                $wpdb->postmeta pm
+            ON
+                a1.meta_key = pm.meta_key
+            AND
+                a1.meta_value = pm.meta_value
+            AND
+                a1.object_id = pm.post_id
+            WHERE
+                a1.action = 'field_update'
+            AND
+                a1.object_id = a2.meta_value
+            AND
+                a2.object_id != %d
+            AND 1=1 "
+                            . ( $from ? " AND a1.meta_value >= %s " : "" )
+                            . ( $to ? " AND a1.meta_value <= %s " : "" )
+                            . "
+            ",
+            ...$prepare_args
+        );
+
+        $rows = $wpdb->get_results( $sql, ARRAY_A );
+        // phpcs:enable
+
+        return $rows;
+    }
+
+    private static function get_record_connections_sql( $post_type ) {
+        global $wpdb;
+
+        $user_id = get_current_user_id();
+        $users_contact_id = Disciple_Tools_Users::get_contact_for_user( $user_id );
+
+        $coaching_p2p_key = $post_type === 'contacts' ? 'contacts_to_contacts' : 'groups_to_coaches';
+
+        $prepare_args = [ "user-$user_id", $coaching_p2p_key, $users_contact_id ];
+
+        if ( $post_type === 'contacts' ) {
+            $prepare_args[] = $users_contact_id;
+        }
+
+        $records_connected_to_sql = $wpdb->prepare( "
+            SELECT
+                a.*
+            FROM
+                $wpdb->postmeta pm
+            JOIN
+                $wpdb->dt_activity_log a
+            ON
+                pm.post_id = a.object_id
+            WHERE
+                pm.meta_key = 'assigned_to'
+            AND
+                pm.meta_value = %s
+            UNION SELECT
+                    a.*
+                FROM
+                    $wpdb->p2p p
+                JOIN
+                    $wpdb->dt_activity_log a
+                ON
+                    p.p2p_from = a.object_id
+                WHERE
+                    p.p2p_type = %s
+                AND
+                    p.p2p_to = %d " . (
+            $post_type === 'contacts' ? "
+            UNION SELECT
+                    a.*
+                FROM
+                    $wpdb->p2p p
+                JOIN
+                    $wpdb->dt_activity_log a
+                ON
+                    p.p2p_to = a.object_id
+                WHERE
+                    p.p2p_type = 'contacts_to_subassigned'
+                AND
+                    p.p2p_from = %d " : '' ) . "
+            ", $prepare_args );
+
+        return $records_connected_to_sql;
     }
 
     private static function insert_labels( $rows, $subtype, $field_settings ) {
