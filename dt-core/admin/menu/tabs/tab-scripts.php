@@ -81,12 +81,10 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
         <?php
 
         $post_types = DT_Posts::get_post_types();
-        $count_fields = [];
         foreach ( $post_types as $post_type ){
             $field_settings = DT_Posts::get_post_field_settings( $post_type );
             foreach ( $field_settings as $field_key => $field_value ){
                 if ( isset( $field_value["connection_count_field"]["post_type"] ) && $field_value["connection_count_field"]["post_type"] === $post_type ){
-                    $count_fields[$field_key] = $field_value;
                     $name = $field_settings[$field_value["connection_count_field"]["field_key"]]["name"];
                     ?>
                     <tr id="<?php echo esc_html( $post_type . '_' . $field_key ); ?>">
@@ -100,7 +98,6 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
                             <span class="current"></span><span class="total"></span>
                             <span class="loading-spinner"></span>
                         </td>
-
                     </tr>
                     <?php
                 }

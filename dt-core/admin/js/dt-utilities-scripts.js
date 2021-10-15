@@ -26,19 +26,17 @@ jQuery(document).ready(function ($) {
     make_admin_request( "POST", "reset_count_field", { post_type, field_key }).then(resp=>{
       let interval = setInterval( ()=>{
         make_admin_request( "GET", 'reset_count_field_progress', { post_type, field_key } ).then(status=>{
-          $(`#${post_type}_${field_key} .progress .current`).text(status.count)
+          $(`#${post_type}_${field_key} .progress .current`).text(resp.count - status.count)
           if ( status.count === 0 ){
-            $(`#${post_type}_${field_key} .progress`).text("done")
-            clearInterval( interval )
+            show_done()
           }
         })
       }, 5000)
       let check_status = function (){
-        make_admin_request( "GET", 'reset_count_field_progress', { post_type, field_key, process:true } ).then(resp=>{
-          $(`#${post_type}_${field_key} .progress .current`).text(resp.count)
-          if ( resp.count === 0 ){
-            $(`#${post_type}_${field_key} .progress`).text("done")
-            clearInterval( interval )
+        make_admin_request( "GET", 'reset_count_field_progress', { post_type, field_key, process:true } ).then(status=>{
+          $(`#${post_type}_${field_key} .progress .current`).text(resp.count - status.count)
+          if ( status.count === 0 ){
+            show_done()
           } else {
             check_status()
           }
@@ -49,6 +47,13 @@ jQuery(document).ready(function ($) {
         })
       }
       check_status();
+      let show_done = ()=>{
+        $(`#${post_type}_${field_key} .progress .current`).text("done")
+        $(`#${post_type}_${field_key} .progress .total`).text("")
+        clearInterval( interval )
+        $(`#${post_type}_${field_key} .progress .loading-spinner`).removeClass( "active" )
+      }
+      $(`#${post_type}_${field_key} .progress .current`).text( 0 )
       $(`#${post_type}_${field_key} .progress .total`).text( '/' + resp.count)
     })
   })

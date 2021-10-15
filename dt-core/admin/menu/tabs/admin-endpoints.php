@@ -36,7 +36,7 @@ class DT_Admin_Endpoints {
                 global $wpdb;
                 $posts_to_update = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", $params["post_type"] ), ARRAY_A );
                 foreach ( $posts_to_update as $row ){
-                    wp_queue()->push( new DT_Resect_Count_On_Field_Job( $params["post_type"], $row["ID"], $params["field_key"] ), 0, $params["post_type"] . '_' . $params["field_key"] );
+                    wp_queue()->push( new DT_Reset_Count_On_Field_Job( $params["post_type"], $row["ID"], $params["field_key"] ), 0, $params["post_type"] . '_' . $params["field_key"] );
                 }
                 return [
                     "count" => wp_queue_count_jobs( $params["post_type"] . '_' . $params["field_key"] )
@@ -64,7 +64,7 @@ class DT_Admin_Endpoints {
 }
 
 use WP_Queue\Job;
-class DT_Resect_Count_On_Field_Job extends Job {
+class DT_Reset_Count_On_Field_Job extends Job {
      /**
      * @var int
      */
@@ -77,8 +77,8 @@ class DT_Resect_Count_On_Field_Job extends Job {
      */
     public function __construct( $post_type, $post_id, $field_key ){
         $this->post_type = $post_type;
-        $this->$post_id = $post_id;
-        $this->email_address = $field_key;
+        $this->post_id = $post_id;
+        $this->field_key = $field_key;
     }
 
     /**

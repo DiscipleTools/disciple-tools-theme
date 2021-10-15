@@ -2255,7 +2255,7 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
                     $fields[$key] = maybe_unserialize( $value[0] );
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'number' ) {
-                    $fields[$key] = ( maybe_unserialize( $value[0] ) ?? 0 ) + 0;
+                    $fields[$key] = maybe_unserialize( empty( $value[0] ) ? 0 : $value[0] ) + 0;
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
                     if ( isset( $value[0] ) && !empty( $value[0] ) ){
                         $fields[$key] = [
