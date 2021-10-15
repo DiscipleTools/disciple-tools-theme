@@ -166,7 +166,7 @@ function makeCommentsSection(data) {
           <div class="comment">
             <div>${info.post_type} ${info.post_title} <span class="comment-date">${info.comment_date}</span></div>
             <div>
-              <div class="comment-bubble">${info.comment_content}</div>
+              <div class="comment-bubble">${window.SHAREDFUNCTIONS.formatComment(info.comment_content)}</div>
               <div class="comment-controls">
                 <div class="comment-reactions">
                   ${info.reactions && info.reactions.reduce((reactionsHtml, { name, emoji, path }) => {
