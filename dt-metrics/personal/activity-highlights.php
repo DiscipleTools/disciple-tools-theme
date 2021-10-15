@@ -45,6 +45,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
+                'reaction_options' => apply_filters( 'dt_comments_reaction_options', dt_get_site_custom_lists( 'comment_reaction_options' ) ),
                 'data' => [
                     'highlights' => self::get_user_highlights('1970-01-01')
                 ],
@@ -52,6 +53,9 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                     'title' => __( 'Activity Highlights', 'disciple_tools' ),
                     'all_time' => __( "All Time", 'disciple_tools' ),
                     'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
+                    'all' => __( "All", 'disciple_tools' ),
+                    'contact' => __( "Contact", 'disciple_tools' ),
+                    'group' => __( "Group", 'disciple_tools' ),
                 ],
             ]
         );

@@ -95,8 +95,22 @@ function buildHighlights(data, label = "all time") {
     <h4 class="section-header">Comments posted</h4>
       ${makeCommentsSection(comments_posted)}
     <h4 class="section-header">Comments liked</h4>
+      ${makeCommentFilterSelect()}
       ${makeCommentsSection(comments_liked)}
     `)
+
+    const filterComments = (e) => {
+      const { value } = e.target
+
+      if (value === 'all') {
+        jQuery('.liked-comments').show()
+      } else {
+        jQuery('.liked-comments').hide()
+        jQuery(`.comment.${value}`).show()
+      }
+    }
+
+    document.querySelector('#comment-filter').addEventListener('change' , filterComments)
 }
 
 function makeTitle(title) {
@@ -171,14 +185,24 @@ function makeCommentsSection(data) {
   if (empty(data)) {
     return 'None'
   }
+  const { group, contact } = dtMetricsActivity.translations
+
+  const postTypeLabels = {
+    'contacts': lodash.escape(contact),
+    'groups': lodash.escape(group),
+  }
 
   return `
     <div id="comment-activity-section">
       ${data.reduce((html, info) => {
+        const reactionClasses = info.reactions
+          ? [{key: 'liked-comments'}, ...info.reactions].map((reaction) => reaction.key).join(' ')
+          : ''
+
         return `
           ${html}
-          <div class="comment">
-            <div>${info.post_type} ${info.post_title} <span class="comment-date">${info.comment_date}</span></div>
+          <div class="comment ${reactionClasses}">
+            <div>${postTypeLabels[info.post_type]}: ${info.post_title} <span class="comment-date">${info.comment_date}</span></div>
             <div>
               <div class="comment-bubble">${window.SHAREDFUNCTIONS.formatComment(info.comment_content)}</div>
               <div class="comment-controls">
@@ -189,7 +213,7 @@ function makeCommentsSection(data) {
                             ${reactionsHtml}
                             <div class="comment-reaction" title="${name}">
                               <span>
-                                ${(emoji && emoji !== '') ? emoji : `<img class="emoji" src="${path}">`}
+                                ${displayReaction({ path, emoji })}
                               </span>
                             </div>`
                         }, '')
@@ -210,6 +234,25 @@ function makeContactsCreatedSection(data) {
 
 function makeGroupsCreatedSection(data) {
   return data
+}
+
+function makeCommentFilterSelect() {
+  const { reaction_options, translations } = dtMetricsActivity
+
+  const { all } = translations
+
+  return `
+    <select id="comment-filter">
+      <option value="all">${lodash.escape(all)}</option>
+      ${Object.entries(reaction_options).map(([key, reaction]) => `
+        <option value="${key}">${displayReaction(reaction)}</option>
+      `)}
+    </select>
+  `
+}
+
+function displayReaction({ emoji, path }) {
+  return (emoji && emoji !== '') ? emoji : `<img class="emoji" src="${path}">`
 }
 
 function empty(data) {
