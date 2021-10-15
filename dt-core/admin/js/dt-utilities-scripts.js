@@ -24,16 +24,27 @@ jQuery(document).ready(function ($) {
     let field_key = $(this).data('key')
     $(`#${post_type}_${field_key} .progress .loading-spinner`).addClass( "active" )
     make_admin_request( "POST", "reset_count_field", { post_type, field_key }).then(resp=>{
-      let check_status = function (){
-        make_admin_request( "GET", 'reset_count_field_progress', { post_type, field_key } ).then(resp=>{
-          $(`#${post_type}_${field_key} .progress .current`).text(resp.count)
-          fetch( window.dt_admin_scripts.site_url + '/wp-cron.php?doing_wp_cron' )
-          if ( resp.count !== 0 ){
-            setTimeout( ()=> {
-              check_status()
-            }, 10000)
-          } else {
+      let interval = setInterval( ()=>{
+        make_admin_request( "GET", 'reset_count_field_progress', { post_type, field_key } ).then(status=>{
+          $(`#${post_type}_${field_key} .progress .current`).text(status.count)
+          if ( status.count === 0 ){
             $(`#${post_type}_${field_key} .progress`).text("done")
+            clearInterval( interval )
+          }
+        })
+      }, 5000)
+      let check_status = function (){
+        make_admin_request( "GET", 'reset_count_field_progress', { post_type, field_key, process:true } ).then(resp=>{
+          $(`#${post_type}_${field_key} .progress .current`).text(resp.count)
+          if ( resp.count === 0 ){
+            $(`#${post_type}_${field_key} .progress`).text("done")
+            clearInterval( interval )
+          } else {
+            check_status()
+          }
+        }).catch(err=>{
+          if ( err?.statusText === "timeout" ){
+            check_status();
           }
         })
       }

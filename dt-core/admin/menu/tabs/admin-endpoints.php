@@ -50,7 +50,9 @@ class DT_Admin_Endpoints {
     public function reset_count_field_progress( WP_REST_Request $request ){
         $params = $request->get_params();
         if ( isset( $params["post_type"], $params["field_key"] ) ){
-//            wp_queue()->worker( 5 )->process();
+            if ( isset( $params["process"] ) && !empty( $params["process"] ) ){
+                wp_queue()->cron()->cron_worker();
+            }
             return [
                 "count" => (int) wp_queue_count_jobs( $params["post_type"] . '_' . $params["field_key"] ),
             ];

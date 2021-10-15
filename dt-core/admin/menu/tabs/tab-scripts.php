@@ -55,7 +55,6 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
 
             $this->template( 'begin' );
 
-            $this->process_settings();
             $this->display_settings();
 
             $this->template( 'right_column' );
@@ -64,13 +63,6 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
 
         endif;
     }
-
-    private function process_settings() {
-        if ( isset( $_POST['email_error_logs_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['email_error_logs_nonce'] ) ), 'email_error_logs_nonce' ) ) {
-
-        }
-    }
-
 
     private function display_settings() {
 
