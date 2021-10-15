@@ -20,7 +20,7 @@ class DT_Posts_Posts_Format_Activity_Message extends WP_UnitTestCase {
                     "name" => 'My Field'
                 ]
             ]
-        ]);
+        ] );
         // Replace this with some actual testing code.
         $this->assertEquals( "tag-name added to My Field", $message );
     }
@@ -40,7 +40,7 @@ class DT_Posts_Posts_Format_Activity_Message extends WP_UnitTestCase {
                     "name" => 'My Field'
                 ]
             ]
-        ]);
+        ] );
         // Replace this with some actual testing code.
         $this->assertEquals( "old-tag removed from My Field", $message );
     }

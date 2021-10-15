@@ -10,10 +10,10 @@ class Disciple_Tools_Migration_0013 extends Disciple_Tools_Migration {
         $custom_field_options = dt_get_option( "dt_field_customizations" );
 
         foreach ( $custom_lists as $list_key => $list_field ){
-            if ( in_array( $list_key, [ "seeker_path", "custom_status", "custom_reason_closed", "custom_reason_pause", "custom_reason_unassignable" ] )){
+            if ( in_array( $list_key, [ "seeker_path", "custom_status", "custom_reason_closed", "custom_reason_pause", "custom_reason_unassignable" ] ) ){
                 $list_key = str_replace( "custom_status", "overall_status", $list_key );
                 $key = str_replace( "custom_", "", $list_key );
-                if ( !isset( $custom_field_options["contacts"][$key] )){
+                if ( !isset( $custom_field_options["contacts"][$key] ) ){
                     $custom_field_options["contacts"][$key] = [
                         "default" => []
                     ];
@@ -24,9 +24,9 @@ class Disciple_Tools_Migration_0013 extends Disciple_Tools_Migration {
                     }
                 }
             }
-            if ( in_array( $list_key, [ "custom_church" ] )){
+            if ( in_array( $list_key, [ "custom_church" ] ) ){
                 $key = str_replace( "custom_", "", $list_key );
-                if ( !isset( $custom_field_options["groups"][$key] )){
+                if ( !isset( $custom_field_options["groups"][$key] ) ){
                     $custom_field_options["groups"][$key] = [
                         "default" => []
                     ];

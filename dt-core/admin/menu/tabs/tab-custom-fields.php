@@ -204,7 +204,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $select_options = [];
         $selected_post_type = sanitize_text_field( wp_unslash( $selected_post_type ) );
         $fields = $this->get_post_fields( $selected_post_type );
-        uasort($fields, function( $a, $b) {
+        uasort($fields, function( $a, $b ) {
             return $a['name'] <=> $b['name'];
         });
         if ( $fields ){
@@ -704,7 +704,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             return;
         }
 
-        if ( isset( $post_fields[$post_submission["field_key"]] )){
+        if ( isset( $post_fields[$post_submission["field_key"]] ) ){
             if ( !isset( $field_customizations[$post_type][$field_key] ) ){
                 $field_customizations[$post_type][$field_key] = [];
             }
@@ -757,10 +757,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $custom_field["tile"] = $post_submission["tile_select"];
             }
             // key_select and multi_options
-            if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" )){
+            if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" ) ){
                 $field_options = $field["default"];
                 foreach ( $post_submission as $key => $val ){
-                    if ( strpos( $key, "field_option_" ) === 0) {
+                    if ( strpos( $key, "field_option_" ) === 0 ) {
                         if ( strpos( $key, 'translation' ) !== false ) {
                             $option_key           = substr( $key, 13, strpos( $key, 'translation' ) - 14 );
                             $translation_langcode = substr( $key, strpos( $key, 'translation' ) + strlen( 'translation-' ) );
@@ -793,7 +793,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         }
                     }
 
-                    if ( strpos( $key, "option_description_" ) === 0) {
+                    if ( strpos( $key, "option_description_" ) === 0 ) {
                         if ( strpos( $key, 'translation' ) !== false ) {
                             $option_key = substr( $key, strlen( "option_description_" ), strpos( $key, 'translation' ) - ( strlen( "option_description_" ) + 1 ) );
                             $translation_langcode = substr( $key, strpos( $key, 'translation' ) + strlen( 'translation-' ) );
@@ -842,7 +842,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $field_options[ $post_submission["restore_option"] ]["deleted"] = false;
                 }
                 //move option  up or down
-                if ( isset( $post_submission["move_up"] ) || isset( $post_submission["move_down"] )){
+                if ( isset( $post_submission["move_up"] ) || isset( $post_submission["move_down"] ) ){
                     $option_key = $post_submission["move_up"] ?? $post_submission["move_down"];
                     $direction = isset( $post_submission["move_up"] ) ? -1 : 1;
                     $active_field_options = [];
@@ -861,8 +861,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                  */
                 if ( !empty( $post_submission["add_option"] ) ){
                     $option_key = dt_create_field_key( $post_submission["add_option"] );
-                    if ( !isset( $field_options[$option_key] )){
-                        if ( !empty( $option_key ) && !empty( $post_submission["add_option"] )){
+                    if ( !isset( $field_options[$option_key] ) ){
+                        if ( !empty( $option_key ) && !empty( $post_submission["add_option"] ) ){
                             $field_options[ $option_key ] = [ "label" => $post_submission["add_option"] ];
                             $custom_field["default"][$option_key] = [ "label" => $post_submission["add_option"] ];
                         }
@@ -1073,7 +1073,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $field_private = false;
             }
             $post_fields = $this->get_post_fields( $post_type );
-            if ( isset( $post_fields[ $field_key ] )){
+            if ( isset( $post_fields[ $field_key ] ) ){
                 self::admin_notice( __( "Field already exists", 'disciple_tools' ), "error" );
                 return false;
             }

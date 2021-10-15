@@ -262,7 +262,7 @@ dt_please_log_in();
                         ?>
                         <ul class="ul-no-bullets" style="">
                         <?php foreach ( $post_settings["fields"] as $field_key => $field_values ):
-                            if ( !empty( $field_values["hidden"] )){
+                            if ( !empty( $field_values["hidden"] ) ){
                                 continue;
                             }
                             ?>
@@ -326,7 +326,7 @@ dt_please_log_in();
                                         </div>
                                         <select id="overall_status" class="select-field">
                                             <option></option>
-                                            <?php foreach ($field_options["overall_status"]["default"] as $key => $option){
+                                            <?php foreach ( $field_options["overall_status"]["default"] as $key => $option ){
                                                 $value = $option["label"] ?? "";?>
                                                     <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
                                             <?php } ?>
@@ -566,8 +566,8 @@ dt_please_log_in();
                     uasort( $field_options, function ( $a, $b ){
                         return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
                     });
-                    foreach ( $field_options as $field_key => $field){
-                        if ( $field_key && in_array( $field["type"] ?? "", $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
+                    foreach ( $field_options as $field_key => $field ){
+                        if ( $field_key && in_array( $field["type"] ?? "", $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] ) ){
                             $fields[] = $field_key;
                         }
                     }

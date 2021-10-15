@@ -634,7 +634,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     </label></td>
                                     <td>
                                         <select class="select-field" id="<?php echo esc_html( $field_key ); ?>" style="width:auto; display: block">
-                                            <?php foreach ($contact_fields[$field_key]["default"] as $option_key => $option_value):
+                                            <?php foreach ( $contact_fields[$field_key]["default"] as $option_key => $option_value ):
                                                 $selected = $user_field === $option_key; ?>
                                                 <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
                                                 <?php echo esc_html( $option_value["label"] ) ?>

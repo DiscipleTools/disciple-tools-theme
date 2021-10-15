@@ -60,15 +60,24 @@ class DT_User_Metrics {
         array_push( $allowed_post_types, 'post' );
         $allowed_post_types_sql = dt_array_to_sql( $allowed_post_types );
 
+        /**
+         * This hard coded array has come from the filter dt_render_field_for_display_allowed_types
+         * and needs to be refactored for both here and there.
+         */
+        $allowed_field_types = [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ];
+        array_push( $allowed_field_types, '' );
+        $allowed_field_types_sql = dt_array_to_sql( $allowed_field_types );
+
         //phpcs:disable
         $user_activity = $wpdb->get_results( $wpdb->prepare( "
-            SELECT hist_time, action, object_name, meta_key, object_type, object_id, object_subtype, object_note, p.post_type
+            SELECT hist_time, action, object_name, meta_key, meta_value, object_type, object_id, object_subtype, object_note, p.post_type, a.field_type
             FROM $wpdb->dt_activity_log a
             LEFT JOIN $wpdb->posts p
             ON a.object_id = p.ID
             WHERE user_id = %s
             AND action IN ( $allowed_actions_sql )
             AND p.post_type IN ( $allowed_post_types_sql )
+            AND a.field_type IN ( $allowed_field_types_sql )
             ORDER BY `hist_time` DESC
             LIMIT 100
         ", $user_id ) );
@@ -76,9 +85,10 @@ class DT_User_Metrics {
 
         if ( ! empty( $user_activity ) ) {
 
-            foreach ($user_activity as $a) {
+            foreach ( $user_activity as $a ) {
+                $post_settings = DT_Posts::get_post_settings( $a->post_type );
                 $post_fields = DT_Posts::get_post_field_settings( $a->post_type );
-                $a->object_note = sanitize_text_field( $a->object_note );
+                $a->object_note = DT_Posts::format_activity_message( $a, $post_settings );
 
                 $a->icon = apply_filters( 'dt_record_icon', null, $a->post_type, [] );
                 $a->post_type_label = $a->post_type ? DT_Posts::get_label_for_post_type( $a->post_type ) : null;
@@ -87,21 +97,21 @@ class DT_User_Metrics {
                     $a->object_subtype = "name";
                 }
 
-                if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
+                if ( $a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from' ) {
                     $a->object_note_short = __( "Updated fields", 'disciple_tools' );
                     $a->field = $a->action === 'field_update' ? $post_fields[ $a->object_subtype ]["name"] : null;
                 }
-                if ($a->action == 'comment') {
+                if ( $a->action == 'comment' ) {
                     $a->object_note_short = __( "Made %n comments", "disciple_tools" );
                 }
-                if ($a->action == 'created') {
+                if ( $a->action == 'created' ) {
                     $a->object_note = __( 'Created record', 'disciple_tools' );
                 }
-                if ($a->action === "logged_in") {
+                if ( $a->action === "logged_in" ) {
                     $a->object_note_short = __( "Logged In %n times", 'disciple_tools' );
                     $a->object_note = __( "Logged In", 'disciple_tools' );
                 }
-                if ($a->action === 'assignment_decline') {
+                if ( $a->action === 'assignment_decline' ) {
                     $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
                 }
             }
@@ -360,14 +370,14 @@ class DT_User_Metrics {
             $one_year
         ), ARRAY_A );
         $days_active = [];
-        foreach ($days_active_results as $a) {
+        foreach ( $days_active_results as $a ) {
             $days_active[$a["day"]] = $a;
         }
         $first = isset( $days_active_results[0]['day'] ) ? strtotime( $days_active_results[0]['day'] ) : time();
         $first_week_start = gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $first ) . ' days', $first ) );
         $current = strtotime( $first_week_start );
         $daily_activity = [];
-        while ($current < time()) {
+        while ( $current < time() ) {
 
             $activity = $days_active[gmdate( 'Y-m-d', $current )]["activity_count"] ?? 0;
 

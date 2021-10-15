@@ -421,12 +421,12 @@ class DT_Contacts_Access extends DT_Module_Base {
                 <?php
                 $active_color = "#366184";
                 $current_key = $contact["overall_status"]["key"] ?? "";
-                if ( isset( $contact_fields["overall_status"]["default"][ $current_key ]["color"] )){
+                if ( isset( $contact_fields["overall_status"]["default"][ $current_key ]["color"] ) ){
                     $active_color = $contact_fields["overall_status"]["default"][ $current_key ]["color"];
                 }
                 ?>
                 <select id="overall_status" class="select-field color-select" style="margin-bottom:0; background-color: <?php echo esc_html( $active_color ) ?>">
-                    <?php foreach ($contact_fields["overall_status"]["default"] as $key => $option){
+                    <?php foreach ( $contact_fields["overall_status"]["default"] as $key => $option ){
                         $value = $option["label"] ?? "";
                         if ( $contact["overall_status"]["key"] === $key ) {
                             ?>
@@ -442,13 +442,13 @@ class DT_Contacts_Access extends DT_Module_Base {
                         $hide_edit_button = false;
                         $status_key = isset( $contact["overall_status"]["key"] ) ? $contact["overall_status"]["key"] : "";
                         if ( $status_key === "paused" &&
-                            isset( $contact["reason_paused"]["label"] )){
+                            isset( $contact["reason_paused"]["label"] ) ){
                             echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
                         } else if ( $status_key === "closed" &&
-                            isset( $contact["reason_closed"]["label"] )){
+                            isset( $contact["reason_closed"]["label"] ) ){
                             echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
                         } else if ( $status_key === "unassignable" &&
-                            isset( $contact["reason_unassignable"]["label"] )){
+                            isset( $contact["reason_unassignable"]["label"] ) ){
                             echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
                         } else {
                             if ( !in_array( $status_key, [ "paused", "closed", "unassignable" ] ) ){
@@ -555,7 +555,7 @@ class DT_Contacts_Access extends DT_Module_Base {
 
         if ( isset( $post["post_type"] ) && $post["post_type"] === "contacts" && $field_key === "assigned_to"
             && isset( $contact_fields[$field_key] ) && !empty( $contact_fields[$field_key]["custom_display"] )
-            && empty( $contact_fields[$field_key]["hidden"] )){
+            && empty( $contact_fields[$field_key]["hidden"] ) ){
             $button_class =( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'list_users' ) ) ? "advanced_user_select" : "search_assigned_to"
             ?>
             <div class="section-subheader">
@@ -695,10 +695,10 @@ class DT_Contacts_Access extends DT_Module_Base {
                     self::handle_quick_action_button_event( $post_id, [ $field_key => $value ] );
                 }
             }
-            if ( isset( $fields["overall_status"], $fields["reason_paused"] ) && $fields["overall_status"] === "paused"){
+            if ( isset( $fields["overall_status"], $fields["reason_paused"] ) && $fields["overall_status"] === "paused" ){
                 $fields["requires_update"] = false;
             }
-            if ( isset( $fields["overall_status"], $fields["reason_closed"] ) && $fields["overall_status"] === "closed"){
+            if ( isset( $fields["overall_status"], $fields["reason_closed"] ) && $fields["overall_status"] === "closed" ){
                 $fields["requires_update"] = false;
             }
         }
@@ -759,9 +759,9 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
         if ( !isset( $fields["overall_status"] ) ){
             $current_roles = wp_get_current_user()->roles;
-            if (in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true )) {
+            if ( in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true ) ) {
                 $fields["overall_status"] = "new";
-            } else if (in_array( "multiplier", $current_roles, true ) ) {
+            } else if ( in_array( "multiplier", $current_roles, true ) ) {
                 $fields["overall_status"] = "active";
             } else {
                 $fields["overall_status"] = "new";
@@ -1059,7 +1059,7 @@ class DT_Contacts_Access extends DT_Module_Base {
 
     //list page filters function
     private static function add_default_custom_list_filters( $filters ){
-        if ( empty( $filters )){
+        if ( empty( $filters ) ){
             $filters = [];
         }
         $default_filters = [
@@ -1329,7 +1329,7 @@ class DT_Contacts_Access extends DT_Module_Base {
     private static function check_requires_update( $contact_id ){
         if ( get_current_user_id() ){
             $requires_update = get_post_meta( $contact_id, "requires_update", true );
-            if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1"){
+            if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1" ){
                 //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
                 if ( current_user_can( 'dt_all_access_contacts' ) ){
                     if ( dt_get_user_id_from_assigned_to( get_post_meta( $contact_id, "assigned_to", true ) ) === get_current_user_id() ){
@@ -1377,7 +1377,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             } else {
                 $assign_to_id = 0;
                 $last_activity = DT_Posts::get_most_recent_activity_for_field( $contact_id, "assigned_to" );
-                if ( isset( $last_activity->user_id )){
+                if ( isset( $last_activity->user_id ) ){
                     $assign_to_id = $last_activity->user_id;
                 } else {
                     $base_user = dt_get_base_user( true );
@@ -1447,7 +1447,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                     'meta_value' => true
                 ] );
                 foreach ( $following_all as $user ){
-                    if ( !in_array( $user->ID, $users_to_notify )){
+                    if ( !in_array( $user->ID, $users_to_notify ) ){
                         $users_to_notify[] = $user->ID;
                     }
                 }
@@ -1473,7 +1473,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
         foreach ( $user_data as $user ) {
             $roles = maybe_unserialize( $user["roles"] );
-            if ( isset( $roles["multiplier"] ) || isset( $roles["dt_admin"] ) || isset( $roles["dispatcher"] ) || isset( $roles["marketer"] )) {
+            if ( isset( $roles["multiplier"] ) || isset( $roles["dt_admin"] ) || isset( $roles["dispatcher"] ) || isset( $roles["marketer"] ) ) {
                 $u = [
                     "name" => $user["display_name"],
                     "ID" => $user["ID"],

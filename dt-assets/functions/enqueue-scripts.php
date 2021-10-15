@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 /**
  * Load scripts, in a way that implements cache-busting
@@ -85,7 +85,7 @@ function dt_site_scripts() {
     dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
 
     // Comment reply script for threaded comments
-    if ( is_singular() && comments_open() && ( get_option( 'thread_comments' ) == 1 )) {
+    if ( is_singular() && comments_open() && ( get_option( 'thread_comments' ) == 1 ) ) {
         wp_enqueue_script( 'comment-reply' );
     }
 
@@ -148,7 +148,7 @@ function dt_site_scripts() {
     $post_types = DT_Posts::get_post_types();
     if ( is_singular( $post_types ) ) {
         $post = DT_Posts::get_post( get_post_type(), get_the_ID() );
-        if ( !is_wp_error( $post )){
+        if ( !is_wp_error( $post ) ){
             $post_settings = DT_Posts::get_post_settings( $post_type );
             dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.min.js', array( 'jquery' ), true );
@@ -280,8 +280,9 @@ function dt_site_scripts() {
 
     $is_new_post = strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types );
 
+    $path_without_params = untrailingslashit( dt_get_url_path( true ) );
     //list page
-    if ( !get_post_type() && in_array( $post_type, $post_types ) && !$is_new_post ){
+    if ( !get_post_type() && in_array( $path_without_params, $post_types ) ){
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $translations = [
@@ -315,7 +316,7 @@ function dt_site_scripts() {
         }
     }
 
-    if ($is_new_post){
+    if ( $is_new_post ){
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){

@@ -185,7 +185,7 @@ jQuery(document).ready(function($) {
       }
     })
     html += `<br>`
-    if (dupe.post.overall_status.key === 'closed' && dupe.post.reason_closed) {
+    if (dupe.post.overall_status?.key === 'closed' && dupe.post.reason_closed) {
       html += `${window.lodash.escape(window.detailsSettings.post_settings.fields.reason_closed.name)}: <strong>${window.lodash.escape(dupe.post.reason_closed.label)}</strong>`
       html += `<br>`
     }

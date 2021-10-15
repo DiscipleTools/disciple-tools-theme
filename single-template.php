@@ -12,7 +12,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 ( function () {
     $post_type = get_post_type();
     $post_id = get_the_ID();
-    if ( !DT_Posts::can_view( $post_type, $post_id )){
+    if ( !DT_Posts::can_view( $post_type, $post_id ) ){
         get_template_part( "403" );
         die();
     }
@@ -87,7 +87,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         $order = $tiles['status']["order"] ?? [];
                         foreach ( $post_settings["fields"] as $key => $option ){
                             if ( isset( $option["tile"] ) && $option["tile"] === 'status' ){
-                                if ( !in_array( $key, $order )){
+                                if ( !in_array( $key, $order ) ){
                                     $order[] = $key;
                                 }
                             }
@@ -142,7 +142,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             $order = $tiles['details']["order"] ?? [];
                             foreach ( $post_settings["fields"] as $key => $option ){
                                 if ( isset( $option["tile"] ) && $option["tile"] === 'details' && $option['type'] === "communication_channel" ){
-                                    if ( !in_array( $key, $order )){
+                                    if ( !in_array( $key, $order ) ){
                                         $order[] = $key;
                                     }
                                 }
@@ -153,7 +153,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 }
 
                                 $field = $post_settings["fields"][$field_key];
-                                if ( isset( $field["tile"] ) && $field["tile"] === 'details'){
+                                if ( isset( $field["tile"] ) && $field["tile"] === 'details' ){
                                     ?>
                                     <div class="detail-snippet" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
                                         <?php if ( isset( $field["icon"] ) ) : ?>
@@ -190,7 +190,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                     continue;
                                 }
 
-                                if ( isset( $field["tile"] ) && $field["tile"] === 'details'){
+                                if ( isset( $field["tile"] ) && $field["tile"] === 'details' ){
                                     ?>
                                         <div class="detail-snippet" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
                                             <?php if ( isset( $field["icon"] ) ) : ?>
@@ -218,7 +218,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 $order = $tiles['details']["order"] ?? [];
                                 foreach ( $post_settings["fields"] as $key => $option ){
                                     if ( isset( $option["tile"] ) && $option["tile"] === 'details' ){
-                                        if ( !in_array( $key, $order )){
+                                        if ( !in_array( $key, $order ) ){
                                             $order[] = $key;
                                         }
                                     }
@@ -234,7 +234,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                         continue;
                                     }
 
-                                    if ( isset( $field["tile"] ) && $field["tile"] === 'details'){ ?>
+                                    if ( isset( $field["tile"] ) && $field["tile"] === 'details' ){ ?>
                                         <div class="cell small-12 medium-6">
                                             <?php render_field_for_display( $field_key, $post_settings["fields"], $dt_post ); ?>
                                         </div>
@@ -301,7 +301,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                                     }
 
                                                     $field = $post_settings["fields"][$field_key];
-                                                    if ( isset( $field["tile"] ) && $field["tile"] === $tile_key){
+                                                    if ( isset( $field["tile"] ) && $field["tile"] === $tile_key ){
                                                         render_field_for_display( $field_key, $post_settings["fields"], $dt_post, true );
                                                     }
                                                 }

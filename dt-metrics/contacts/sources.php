@@ -125,18 +125,18 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
             return new WP_Error( __FUNCTION__, "Permission required: view all contacts", [ 'status' => 403 ] );
         }
         try {
-            if (isset( $params['from'] ) && isset( $params['to'] ) ) {
+            if ( isset( $params['from'] ) && isset( $params['to'] ) ) {
                 self::check_date_string( $params['from'] );
                 self::check_date_string( $params['to'] );
                 return self::get_source_data_from_db( $params['from'], $params['to'] );
-            } if (isset( $params['start'] ) && isset( $params['end'] ) ) {
+            } if ( isset( $params['start'] ) && isset( $params['end'] ) ) {
                 self::check_date_string( $params['start'] );
                 self::check_date_string( $params['end'] );
                 return self::get_source_data_from_db( $params['start'], $params['end'] );
             } else {
                 return self::get_source_data_from_db();
             }
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             error_log( $e );
             return new WP_Error( __FUNCTION__, "got error ", [ 'status' => 500 ] );
         }
@@ -202,16 +202,16 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
 
         $rv = [];
 
-        foreach ($rows as $row) {
+        foreach ( $rows as $row ) {
             $source = $row['sources'] ?? 'null';
             $status = 'status_' . ( $row['overall_status'] ?? 'null' );
             $rv[$source]['name_of_source'] = $source;
             $rv[$source][$status] = ( $rv[$source][$status] ?? 0 ) + (int) $row['count'];
             $rv[$source]['total'] = ( $rv[$source]['total'] ?? 0 ) + (int) $row['count'];
-            if ( !isset( $rv[$source]['total_active_seeker_path'] )) {
+            if ( !isset( $rv[$source]['total_active_seeker_path'] ) ) {
                 $rv[$source]['total_active_seeker_path'] = 0;
             }
-            if ($row['overall_status'] == 'active') {
+            if ( $row['overall_status'] == 'active' ) {
                 $rv[$source]['total_active_seeker_path'] += (int) $row['count'];
                 $rv[$source]['active_seeker_path_' . ( $row['seeker_path'] ?? 'null' )] = (int) $row['count'];
             }
@@ -226,8 +226,8 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
 
         $milestones = self::get_sources_milestones( $from, $to );
 
-        foreach ($milestones as $source => $milestone_data) {
-            foreach ($milestone_data as $key => $value) {
+        foreach ( $milestones as $source => $milestone_data ) {
+            foreach ( $milestone_data as $key => $value ) {
                 $rv[$source][$key] = $value;
             }
         }
@@ -275,7 +275,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
         // phpcs:enable
 
         $rv = [];
-        foreach ($rows as $row) {
+        foreach ( $rows as $row ) {
             $source = $row['sources'] ?? 'null';
             $rv[$source]['name_of_source'] = $source;
             $rv[$source]['active_' . $row['milestone']] = (int) $row['count'];

@@ -264,7 +264,7 @@ class Disciple_Tools_Contacts_Transfer
 
 
         $comment = sprintf( __( 'This contact was transferred to %s for further follow-up.', 'disciple_tools' ), esc_attr( get_the_title( $site_post_id ) ) );
-        if ( isset( $result_body->created_id )){
+        if ( isset( $result_body->created_id ) ){
             $comment .= ' [link](https://' . $site['url'] . '/contacts/' . esc_attr( $result_body->created_id ) . ')';
         }
         // add note that the record was transferred

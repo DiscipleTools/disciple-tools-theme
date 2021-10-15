@@ -95,7 +95,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $post_date = null;
-        if ( isset( $fields["post_date"] )){
+        if ( isset( $fields["post_date"] ) ){
             $post_date = $fields["post_date"];
             unset( $fields["post_date"] );
         }
@@ -155,7 +155,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $post_user_meta[$field_key] = $field_value;
                 unset( $fields[ $field_key ] );
             }
-            if ( $field_type === 'date' && !is_numeric( $field_value )){
+            if ( $field_type === 'date' && !is_numeric( $field_value ) ){
                 if ( $is_private ) {
                     $post_user_meta[$field_key] = strtotime( $field_value );
                     unset( $fields[ $field_key ] );
@@ -207,36 +207,36 @@ class DT_Posts extends Disciple_Tools_Posts {
             $post["post_date"] = $post_date;
         }
         $post_id = wp_insert_post( $post );
-        if ( is_wp_error( $post_id )){
+        if ( is_wp_error( $post_id ) ){
             return $post_id;
         }
         $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $contact_methods_and_connections );
-        if ( is_wp_error( $potential_error )){
+        if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
 
         $potential_error = self::update_connections( $post_settings, $post_id, $contact_methods_and_connections, null );
-        if ( is_wp_error( $potential_error )){
+        if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
 
         $potential_error = self::update_multi_select_fields( $post_settings["fields"], $post_id, $multi_select_fields, null );
-        if ( is_wp_error( $potential_error )){
+        if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
 
         $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $location_meta, $post_type, null );
-        if (is_wp_error( $potential_error )) {
+        if ( is_wp_error( $potential_error ) ) {
             return $potential_error;
         }
 
         $potential_error = self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $post_user_meta, [] );
-        if ( is_wp_error( $potential_error )){
+        if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
 
         $potential_error = self::update_post_user_select( $post_type, $post_id, $user_select_fields );
-        if ( is_wp_error( $potential_error )){
+        if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
 
@@ -354,32 +354,32 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $fields, $existing_post );
-        if ( is_wp_error( $potential_error )){
+        if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
 
         $potential_error = self::update_connections( $post_settings, $post_id, $fields, $existing_post );
-        if ( is_wp_error( $potential_error )){
+        if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
 
         $potential_error = self::update_multi_select_fields( $post_settings["fields"], $post_id, $fields, $existing_post );
-        if ( is_wp_error( $potential_error )){
+        if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
 
         $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $fields, $post_type, $existing_post );
-        if (is_wp_error( $potential_error )) {
+        if ( is_wp_error( $potential_error ) ) {
             return $potential_error;
         }
 
         $potential_error = self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $fields, $existing_post );
-        if ( is_wp_error( $potential_error )){
+        if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
 
         $potential_error = self::update_post_user_select( $post_type, $post_id, $fields );
-        if ( is_wp_error( $potential_error )){
+        if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
 
@@ -468,7 +468,9 @@ class DT_Posts extends Disciple_Tools_Posts {
         /**
          * add connections
          */
-        self::get_all_connection_fields( $field_settings, $post_id, $fields );
+        $p = [ (array) $wp_post ];
+        self::get_all_connected_fields_on_list( $field_settings, $p );
+        $fields = $p[0];
         $fields["ID"] = $post_id;
         $fields["post_date"] = [
             "timestamp" => is_numeric( $wp_post->post_date ) ? $wp_post->post_date : dt_format_date( $wp_post->post_date, "U" ),
@@ -496,9 +498,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !isset( $all_post_user_meta[$meta_row["post_id"]] ) ){
                 $all_post_user_meta[$meta_row["post_id"]] = [];
             }
-            if ($field_settings[$meta_row['meta_key']]['type'] === 'task') {
+            if ( $field_settings[$meta_row['meta_key']]['type'] === 'task' ) {
                 $all_post_user_meta[$meta_row["post_id"]][] = $meta_row;
-            } else if (isset( $field_settings[$meta_row['meta_key']]['private'] ) && $field_settings[$meta_row['meta_key']]['private']) {
+            } else if ( isset( $field_settings[$meta_row['meta_key']]['private'] ) && $field_settings[$meta_row['meta_key']]['private'] ) {
                 $all_post_user_meta[$meta_row["post_id"]][] = $meta_row;
             }
         }
@@ -540,23 +542,12 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $post_settings = self::get_post_settings( $post_type );
         $records = $data["posts"];
-        foreach ( $post_settings["connection_types"] as $connection_type ){
-            if ( ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) ) && !empty( $records ) ){
-                $p2p_type = $post_settings["fields"][$connection_type]["p2p_key"];
-                $p2p_direction = $post_settings["fields"][$connection_type]["p2p_direction"];
-                $q = p2p_type( $p2p_type )->set_direction( $p2p_direction )->get_connected( $records, [ "nopaging" => true ], 'abstract' );
-                $raw_connected = array();
-                foreach ( $q->items as $item ){
-                    $raw_connected[] = $item->get_object();
-                }
-                p2p_distribute_connected( $records, $raw_connected, $connection_type );
-            }
-        }
 
         $ids = [];
-        foreach ( $records as $record ) {
-            $record->post_title = wp_specialchars_decode( $record->post_title );
-            $ids[] = $record->ID;
+        foreach ( $records as &$record ) {
+            $record = (array) $record;
+            $record["post_title"] = wp_specialchars_decode( $record["post_title"] );
+            $ids[] = $record["ID"];
         }
         $ids_sql = dt_array_to_sql( $ids );
         $field_keys = [];
@@ -566,6 +557,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         $field_keys_sql = dt_array_to_sql( $field_keys );
 
         global $wpdb;
+
+
         $all_posts = [];
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
@@ -606,16 +599,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             $all_post_user_meta[$meta_row["post_id"]][] = $meta_row;
         }
 
+        self::get_all_connected_fields_on_list( $post_settings["fields"], $records, $fields_to_return );
         $site_url = site_url();
         foreach ( $records as  &$record ){
-            foreach ( $post_settings["connection_types"] as $connection_type ){
-                if ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) ) {
-                    foreach ( $record->$connection_type as &$post ) {
-                        $post = self::filter_wp_post_object_fields( $post );
-                    }
-                }
-            }
-            $record = (array) $record;
 
             self::adjust_post_custom_fields( $post_type, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
@@ -833,7 +819,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             foreach ( $posts as $post ) {
                 $translation = get_post_meta( $post->ID, $locale, true );
-                if ($translation !== "") {
+                if ( $translation !== "" ) {
                     $label = $translation;
                 } else {
                     $label = $post->post_title;
@@ -902,7 +888,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        if ( !$silent && !is_wp_error( $created_comment_id )){
+        if ( !$silent && !is_wp_error( $created_comment_id ) ){
             Disciple_Tools_Notifications_Comments::insert_notification_for_comment( $created_comment_id );
         }
         if ( !is_wp_error( $created_comment_id ) ){
@@ -927,7 +913,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $update = wp_update_comment( $comment );
         if ( $update === 1 ){
             return $comment_id;
-        } else if ( is_wp_error( $update )) {
+        } else if ( is_wp_error( $update ) ) {
               return $update;
         } else {
             return new WP_Error( __FUNCTION__, "Error updating comment with id: " . $comment_id, [ 'status' => 500 ] );
@@ -951,8 +937,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         // If the reaction exists for this user, then delete it
         $reactions = get_comment_meta( $comment_id, $reaction );
-        foreach ($reactions as $reaction_user_id) {
-            if ($reaction_user_id == $user_id) {
+        foreach ( $reactions as $reaction_user_id ) {
+            if ( $reaction_user_id == $user_id ) {
                 delete_comment_meta( $comment_id, $reaction, $reaction_user_id );
                 return true;
             }
@@ -1013,7 +999,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         // phpcs:enable
 
         $comments_meta_dict = [];
-        foreach ($comments_meta as $meta) {
+        foreach ( $comments_meta as $meta ) {
             if ( !array_key_exists( $meta->comment_id, $comments_meta_dict ) ) {
                 $comments_meta_dict[$meta->comment_id] = [];
             }
@@ -1434,14 +1420,14 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                 foreach ( $field["default"] as $option_key => $option_value ){
-                    if ( !is_array( $option_value )){
+                    if ( !is_array( $option_value ) ){
                         $fields[$field_key]["default"][$option_key] = [ "label" => $option_value ];
                     }
                 }
             }
         }
         $custom_field_options = dt_get_option( "dt_field_customizations" );
-        if ( isset( $custom_field_options[$post_type] )){
+        if ( isset( $custom_field_options[$post_type] ) ){
             foreach ( $custom_field_options[$post_type] as $key => $field ){
                 $field_type = $field["type"] ?? $fields[$key]["type"] ?? "";
                 if ( $field_type ) {
@@ -1560,7 +1546,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        uasort($tile_options[$post_type], function( $a, $b) {
+        uasort($tile_options[$post_type], function( $a, $b ) {
             return ( $a['tile_priority'] ?? 100 ) <=> ( $b['tile_priority'] ?? 100 );
         });
         foreach ( $tile_options[$post_type] as $tile_key => &$tile_value ){

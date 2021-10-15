@@ -34,8 +34,8 @@ class Disciple_Tools_Counter_Generations extends Disciple_Tools_Counter_Base  {
         $i = 0;
         $list = $this->generation_status_list( $type );
 
-        foreach ($list as $item) {
-            if ($item == $level) {
+        foreach ( $list as $item ) {
+            if ( $item == $level ) {
                 $i++; // counts how many records at that generation level
             }
         }
@@ -75,9 +75,9 @@ class Disciple_Tools_Counter_Generations extends Disciple_Tools_Counter_Base  {
         $full_p2p_array = array_unique( array_merge( $full_p2p_array, $p2p_array_to, $p2p_array_from ), SORT_REGULAR );
 
         // Run checks on every contact in discipleship
-        foreach ($full_p2p_array as $contact) {
+        foreach ( $full_p2p_array as $contact ) {
             // Check if contact is first generation. If true, create array item and move to next item in loop.
-            if ($this->zero_generation_check( $contact, $p2p_array_from )) {
+            if ( $this->zero_generation_check( $contact, $p2p_array_from ) ) {
                 $gen_count[ $contact ] = 0;
             }
 
@@ -89,8 +89,8 @@ class Disciple_Tools_Counter_Generations extends Disciple_Tools_Counter_Base  {
                 $gen_ids = [];
                 $i = 1;
 
-                while (true) {
-                    if ( ! $this->zero_generation_check( $target_inc, $p2p_array_from )) { // is initial condition true
+                while ( true ) {
+                    if ( ! $this->zero_generation_check( $target_inc, $p2p_array_from ) ) { // is initial condition true
 
                         // get the parent id & replace target with parent id
                         $parent_id = $this->get_parent_id( $target_inc, $p2p_array );
@@ -121,8 +121,8 @@ class Disciple_Tools_Counter_Generations extends Disciple_Tools_Counter_Base  {
     protected function get_parent_id( $target, $p2p_array ) {
         $parent = '';
 
-        foreach ($p2p_array as $row) {
-            if ($row['p2p_from'] == $target) {
+        foreach ( $p2p_array as $row ) {
+            if ( $row['p2p_from'] == $target ) {
                 $parent = $row['p2p_to'];
             }
         }
@@ -138,8 +138,8 @@ class Disciple_Tools_Counter_Generations extends Disciple_Tools_Counter_Base  {
      * @return bool
      */
     protected function zero_generation_check( $contact, $p2p_array_from ) {
-        foreach ($p2p_array_from as $value) {
-            if ($value == $contact) {
+        foreach ( $p2p_array_from as $value ) {
+            if ( $value == $contact ) {
                 return false;
             }
         }

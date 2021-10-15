@@ -14,7 +14,7 @@ class DT_Posts_Hooks {
      * @return mixed
      */
     public static function dt_get_custom_fields_translation( $fields ) {
-        if (is_admin()) {
+        if ( is_admin() ) {
             return $fields;
         } else {
             $user_locale = get_user_locale();
@@ -45,7 +45,7 @@ class DT_Posts_Hooks {
      * @return mixed
      */
     public static function dt_get_field_options_translation( $field_options ) {
-        if (is_admin()) {
+        if ( is_admin() ) {
             return $field_options;
         }
         $user_locale = get_user_locale();
@@ -63,7 +63,7 @@ class DT_Posts_Hooks {
         } else {
             $user_locale = get_user_locale();
             foreach ( $custom_tiles as $post_type => $tile_keys ) {
-                foreach ( $tile_keys as $key => $value) {
+                foreach ( $tile_keys as $key => $value ) {
                     if ( !empty( $custom_tiles[$post_type][$key][$user_locale] ) ) {
                         $custom_tiles[$post_type][$key]['label'] = $custom_tiles[$post_type][$key][$user_locale];
                     }

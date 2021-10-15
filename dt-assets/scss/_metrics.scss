@@ -21,6 +21,8 @@
 
 .post-activities__title {
     color: #3f729b;
+    display: flex;
+    justify-content: space-between;
 }
 
 .post-activities__item {
@@ -32,11 +34,12 @@
     background-color: rgba(63,114,155,.19);
 }
 
-.activity__more-state {
+.activity__more-state,
+.fields__more-state {
     display: none;
 }
 
-.activity__more-link, .activity__less-link {
+.fields__more-link, .fields__less-link {
     color: #3f729b;
     text-decoration: underline;
     display: inline;
@@ -44,29 +47,47 @@
     padding: 0 0.5rem;
 }
 
-.activity__less-link {
+.activity__less-link,
+.fields__less-link {
     display: none;
 }
 
-.activity__more-details {
+.activity__more-details,
+.fields__more-details {
     opacity: 0;
     max-height: 0;
     font-size: 0;
     transition: .25s ease;
 }
 
-.activity__more-state:checked {
-    & ~ .activity__more-details {
+.fields__more-state:checked {
+    & ~ .fields__more-details {
         opacity: 1;
         font-size: inherit;
         max-height: 100em;
     }
 
-    & ~ .activity__more-link {
+    & ~ .fields__more-link {
         display: none;
     }
 
-    & ~ .activity__less-link {
+    & ~ .fields__less-link {
+        display: inline;
+    }
+}
+
+.activity__more-state:checked {
+    & ~ .post-activities__item .activity__more-details {
+        opacity: 1;
+        font-size: inherit;
+        max-height: 100em;
+    }
+
+    & + .post-activities__title .activity__more-link {
+        display: none;
+    }
+
+    & + .post-activities__title .activity__less-link {
         display: inline;
     }
 }
