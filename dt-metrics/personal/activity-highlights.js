@@ -171,15 +171,17 @@ function makeCommentsSection(data) {
               <div class="comment-bubble">${window.SHAREDFUNCTIONS.formatComment(info.comment_content)}</div>
               <div class="comment-controls">
                 <div class="comment-reactions">
-                  ${info.reactions && info.reactions.reduce((reactionsHtml, { name, emoji, path }) => {
-                    return `
-                    ${reactionsHtml}
-                    <div class="comment-reaction" title="${name}">
-                      <span>
-                         ${(emoji && emoji !== '') ? emoji : `<img class="emoji" src="${path}">`}
-                      </span>
-                    </div>`
-                  }, '')}
+                  ${info.reactions
+                      ? info.reactions.reduce((reactionsHtml, { name, emoji, path }) => {
+                          return `
+                            ${reactionsHtml}
+                            <div class="comment-reaction" title="${name}">
+                              <span>
+                                ${(emoji && emoji !== '') ? emoji : `<img class="emoji" src="${path}">`}
+                              </span>
+                            </div>`
+                        }, '')
+                      : ''}
                 </div>
               </div>
             </div>
