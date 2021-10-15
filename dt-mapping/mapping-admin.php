@@ -321,7 +321,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         public function content() {
 
-            if ( ! current_user_can( 'manage_dt' ) ) { // manage dt is a permission that is specific to Disciple Tools and allows admins, strategists and dispatchers into the wp-admin
+            if ( ! current_user_can( 'manage_dt' ) ) { // manage dt is a permission that is specific to Disciple.Tools and allows admins, strategists and dispatchers into the wp-admin
                 wp_die( esc_attr__( 'You do not have sufficient permissions to access this page.' ) );
             }
             if ( (int) get_option( 'dt_mapping_module_migration_lock', 0 ) ) {
@@ -1292,7 +1292,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tbody>
                     <tr>
                         <td>
-                            <p>By default, administrative levels 0-2 are installed in the Disciple Tools system, if available for the country. This means that the country record (level 0), the state record (level 1),
+                            <p>By default, administrative levels 0-2 are installed in the Disciple.Tools system, if available for the country. This means that the country record (level 0), the state record (level 1),
                                 the county or variously named second level administrative level (level 2) is installed. But some countries have administrative divisions 3 - 5. The drop down list below contains
                                 those countries with extra administrative levels.
                             </p>
@@ -1447,7 +1447,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     list_results.empty()
 
                     jQuery.each( selection.list, function (i, v) {
-                        var row = 
+                        var row =
                         `<tr>
                             <td>
                                 <a class="open_next_drilldown"
@@ -1461,7 +1461,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <td>`;
                             if( v.is_custom_location === "1" ) {
                                 row += `<a class="button delete-button" data-grid_id="${window.lodash.escape( v.grid_id ) }">Delete</a>`;
-                            } 
+                            }
                         row += `</td>
                             </tr>`;
                         list_results.append( row );

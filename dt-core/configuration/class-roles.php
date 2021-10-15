@@ -99,7 +99,7 @@ class Disciple_Tools_Roles
     }
 
     /**
-     * Install Disciple Tools Roles
+     * Install Disciple.Tools Roles
      *
      * @return string
      */

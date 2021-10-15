@@ -1,6 +1,6 @@
 <?php
 /**
- * Disciple Tools Functions.php
+ * Disciple.Tools Functions.php
  *
  * @package Disciple Tools
  * @class Disciple_Tools
@@ -24,7 +24,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
      * Feel free to use PHP 7 features in other files, but not in this one.
      */
 
-    new WP_Error( 'php_version_fail', 'Disciple Tools theme requires PHP version 7.0 or greater. Your current version is: '.phpversion().' Please upgrade PHP or uninstall this theme' );
+    new WP_Error( 'php_version_fail', 'Disciple.Tools theme requires PHP version 7.0 or greater. Your current version is: '.phpversion().' Please upgrade PHP or uninstall this theme' );
     add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
 }
 else {

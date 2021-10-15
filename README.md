@@ -31,7 +31,7 @@ Visit our [online guidebook](https://disciple.tools/user-docs)
 
 ## Theme
 
-This repository contains only the WordPress theme. There are a growing number of plugin extensions to the theme, but the core of the Disciple Tools system is this theme.
+This repository contains only the WordPress theme. There are a growing number of plugin extensions to the theme, but the core of the Disciple.Tools system is this theme.
 
 ## Support
 
@@ -60,13 +60,13 @@ The goal of the project is to create a disciple-making CRM that is incredibly si
 - Use the `choose file` button to find the disciple-tools-theme.zip file you saved in step 1, and upload that file and wait for Wordpress to install it.
 
 ### Step 4
-- Once uploaded, you will see the new Disciple Tools Theme installed with other themes. Next `Activate` the theme.
+- Once uploaded, you will see the new Disciple.Tools Theme installed with other themes. Next `Activate` the theme.
 
 Done! You now have a complete coalition management system for your movement.
 You can access it by clicking on the home button at the top of the navigation bar.
 
  Blessings!
- 
+
 
 
 
@@ -111,6 +111,6 @@ PHP Code Sniffer
 If you discover a security vulnerability in these WordPress plugins and/or themes, or in the website https://disciple.tools , please send an email to supportXXXXdisciple.tools , replacing XXXX with the @ symbol. We ask that you give us a reasonable amount of time to correct the issue before you make the vulnerability public. Please do not submit a GitHub issue or a GitHub pull request, as these are public.
 
 ## Community Projects
-1. [Installing Disciple Tools with Kubernetes on Google](https://github.com/cairocoder01/disciple-tools-kubernetes) (Github Project)
+1. [Installing Disciple.Tools with Kubernetes on Google](https://github.com/cairocoder01/disciple-tools-kubernetes) (Github Project)
 2. [Docker Image of DT](https://github.com/cairocoder01/dt-docker) (Github Project)
-1. [Disciple Tools Mobile API](https://github.com/cairocoder01/dt-mobile-api) (Github Project)
+1. [Disciple.Tools Mobile API](https://github.com/cairocoder01/dt-mobile-api) (Github Project)

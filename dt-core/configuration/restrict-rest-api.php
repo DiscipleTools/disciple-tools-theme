@@ -10,7 +10,7 @@
  */
 
 /**
- * Integrated into Disciple Tools core to require authentication for all Rest API interactions.
+ * Integrated into Disciple.Tools core to require authentication for all Rest API interactions.
  *
  * @since 0.1.0
  */
@@ -87,13 +87,13 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
 
     $authorized = false;
     /**
-     * External integrations to a Disciple Tools site can be done through the /dt-public/ route, which is left open to non-logged in external access
+     * External integrations to a Disciple.Tools site can be done through the /dt-public/ route, which is left open to non-logged in external access
      */
     if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/dt-public/' ) !== false ) {
         $authorized = true;
     }
     /**
-     * JWT token authentication is also open on the Disciple Tools use of WP REST API
+     * JWT token authentication is also open on the Disciple.Tools use of WP REST API
      */
     $path = dt_get_url_path();
     if ( $path == "wp-json/jwt-auth/v1/token" || $path == "wp-json/jwt-auth/v1/token/validate" ) {
