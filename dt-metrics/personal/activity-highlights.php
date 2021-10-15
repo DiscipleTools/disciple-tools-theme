@@ -202,12 +202,15 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $prepare_args = [ $post_type, $subtype, $meta_value_like, get_current_user_id() ];
         self::insert_dates( $from, $to, $prepare_args );
 
+        $postmeta_join_sql = self::get_postmeta_join_sql();
+
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
             SELECT
-                a.meta_value as meta_changed, COUNT(a.meta_value) as count
+                a1.meta_value as meta_changed, COUNT(a1.meta_value) as count
             FROM
-                $wpdb->dt_activity_log AS a
+                $wpdb->dt_activity_log AS a1
+            $postmeta_join_sql
             WHERE
                 action = 'field_update'
             AND
@@ -215,7 +218,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             AND
                 object_subtype = %s
             AND
-                a.meta_value LIKE %s
+                a1.meta_value LIKE %s
             AND
                 user_id = %d
             AND 1=1 "
@@ -223,7 +226,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                             . ( $to ? " AND hist_time <= %s " : "" )
                             . "
             GROUP BY
-                a.meta_value;",
+                a1.meta_value;",
             ...$prepare_args
         );
         // phpcs:enable
@@ -240,6 +243,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $records_connected_to_sql = self::get_activity_logs_by_others_sql( $post_type );
 
+        $postmeta_join_sql = self::get_postmeta_join_sql();
+
         $prepare_args = [ $post_type, $subtype, get_current_user_id() ];
 
         self::insert_dates( $from, $to, $prepare_args );
@@ -247,10 +252,11 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
             SELECT
-                meta_value as meta_changed, COUNT(meta_value) as count
+                a1.meta_value as meta_changed, COUNT(a1.meta_value) as count
             FROM (
                 $records_connected_to_sql
-            ) as a
+            ) as a1
+            $postmeta_join_sql
             WHERE
                 action = 'field_update'
             AND
@@ -258,7 +264,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             AND
                 object_subtype = %s
             AND
-                meta_value REGEXP '" . ( $meta_value_like === '' ? '^' : "^$meta_value_like" ) . "'
+                a1.meta_value REGEXP '" . ( $meta_value_like === '' ? '^' : "^$meta_value_like" ) . "'
             AND
                 user_id != %d
             AND 1=1 "
@@ -266,7 +272,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                             . ( $to ? " AND hist_time <= %s " : "" )
                             . "
             GROUP BY
-                meta_value;",
+                a1.meta_value;",
             ...$prepare_args
         );
         // phpcs:enable
@@ -286,6 +292,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $prepare_args = [ $users_contact_id ];
         self::insert_dates( $from, $to, $prepare_args );
+
+        $postmeta_join_sql = self::get_postmeta_join_sql();
 
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
@@ -307,14 +315,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 WHERE
                     meta_key = 'baptizer_to_baptized'
             ) as a2
-            INNER JOIN
-                $wpdb->postmeta pm
-            ON
-                a1.meta_key = pm.meta_key
-            AND
-                a1.meta_value = pm.meta_value
-            AND
-                a1.object_id = pm.post_id
+            $postmeta_join_sql
             WHERE
                 a1.action = 'field_update'
             AND
@@ -345,6 +346,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         self::insert_dates( $from, $to, $prepare_args );
 
         $activity_by_others = self::get_activity_logs_by_others_sql( 'contacts' );
+        $postmeta_join_sql = self::get_postmeta_join_sql();
 
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
@@ -367,14 +369,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 WHERE
                     meta_key = 'baptizer_to_baptized'
             ) as a2
-            INNER JOIN
-                $wpdb->postmeta pm
-            ON
-                a1.meta_key = pm.meta_key
-            AND
-                a1.meta_value = pm.meta_value
-            AND
-                a1.object_id = pm.post_id
+            $postmeta_join_sql
             WHERE
                 a1.action = 'field_update'
             AND
@@ -531,6 +526,22 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             ", $prepare_args );
 
         return $records_connected_to_sql;
+    }
+
+    private static function get_postmeta_join_sql()
+    {
+        global $wpdb;
+
+        return "
+        INNER JOIN
+            $wpdb->postmeta pm
+        ON
+            a1.meta_key = pm.meta_key
+        AND
+            a1.meta_value = pm.meta_value
+        AND
+            a1.object_id = pm.post_id
+        ";
     }
 
     private static function insert_labels( $rows, $subtype, $field_settings ) {
