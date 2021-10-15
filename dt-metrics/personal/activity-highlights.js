@@ -108,6 +108,10 @@ function makeTitle(title) {
 }
 
 function makeDataTable(data) {
+  if (empty(data)) {
+    return 'None'
+  }
+
   return `
     <table class="highlights-table striped">
       <tbody>
@@ -145,6 +149,10 @@ function makeBaptismsSection(data) {
 }
 
 function makeBaptismsByOthersSection(data) {
+  if (empty(data)) {
+    return 'None'
+  }
+
   return `
     <div>
       ${data.reduce((html, info) => {
@@ -160,6 +168,10 @@ function makeBaptismsByOthersSection(data) {
 }
 
 function makeCommentsSection(data) {
+  if (empty(data)) {
+    return 'None'
+  }
+
   return `
     <div id="comment-activity-section">
       ${data.reduce((html, info) => {
@@ -198,4 +210,8 @@ function makeContactsCreatedSection(data) {
 
 function makeGroupsCreatedSection(data) {
   return data
+}
+
+function empty(data) {
+  return !data || data.length === 0
 }
