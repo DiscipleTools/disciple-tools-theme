@@ -409,6 +409,7 @@ else {
                 require_once( 'dt-core/admin/menu/tabs/tab-people-groups.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-utilities-overview.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-fields.php' );
+                require_once( 'dt-core/admin/menu/tabs/tab-scripts.php' );
 
                 require_once( 'dt-core/admin/menu/tabs/tab-gdpr.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-error-logs.php' );
@@ -423,6 +424,7 @@ else {
                 require_once( 'dt-core/setup-functions.php' );
 
             }
+            require_once( 'dt-core/admin/menu/tabs/admin-endpoints.php' );
 
             //create scheduler for job queue
             wp_queue()->cron();

@@ -204,7 +204,6 @@ if ( ! function_exists( 'wp_queue_count_jobs' ) ) {
 	 * wp_queue_count_jobs function.
 	 *
 	 * @access public
-	 * @return void
 	 */
 	function wp_queue_count_jobs( $category = '' ) {
 
