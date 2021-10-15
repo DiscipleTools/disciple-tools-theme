@@ -91,3 +91,18 @@
         display: inline;
     }
 }
+
+.highlights-table {
+    table-layout: fixed;
+
+    tr td:first-child {
+        width: 90%;
+    }
+
+    &.striped {
+        tr:nth-child(even) {
+            background-color: #ecf5fc;
+            border-bottom: 0;
+        }
+    }
+}

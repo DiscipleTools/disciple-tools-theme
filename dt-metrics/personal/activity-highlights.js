@@ -109,16 +109,18 @@ function makeTitle(title) {
 
 function makeDataTable(data) {
   return `
-    <table>
-      ${data.reduce((html, info) => {
-        return `
-          ${html}
-          <tr>
-            <td>${info.label}</td>
-            <td>${info.count}</td>
-          </tr>
-        `
-      }, '')}
+    <table class="highlights-table striped">
+      <tbody>
+        ${data.reduce((html, info) => {
+          return `
+            ${html}
+            <tr>
+              <td>${info.label}</td>
+              <td>${info.count}</td>
+            </tr>
+          `
+        }, '')}
+      </tbody>
     </table>
   `
 }
