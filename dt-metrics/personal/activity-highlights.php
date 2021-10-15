@@ -127,6 +127,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
     private static function get_records_created( $from, $to, $post_type = 'contacts' ) {
         global $wpdb;
 
+        $post_settings = apply_filters( 'dt_get_post_type_settings', [], $post_type );
+
         $prepare_args = [ $post_type, get_current_user_id() ];
         self::insert_dates( $from, $to, $prepare_args );
 
@@ -153,7 +155,9 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $rows = $wpdb->get_results( $sql, ARRAY_A );
         // phpcs:enable
 
-        return $rows[0]['records_created'];
+        $records_created = $rows[0]['records_created'];
+
+        return sprintf( esc_html__( '%1$d %2$s created', 'disciple_tools' ), $records_created, $records_created === 1 ? $post_settings['label_singular'] : $post_settings['label_plural']  );
     }
 
     private static function get_quick_actions_done( $from, $to, $contact_field_settings ) {
@@ -333,7 +337,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $rows = $wpdb->get_results( $sql, ARRAY_A );
         // phpcs:enable
 
-        return $rows;
+        return count($rows);
     }
 
     private static function get_baptisms_by_others( $from, $to ) {
@@ -459,16 +463,33 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $reaction_options = apply_filters( 'dt_comments_reaction_options', dt_get_site_custom_lists( 'comment_reaction_options' ) );
 
+        $comments = [];
+
         if ( !empty($rows) ) {
-            foreach ($rows as $i => $row) {
+            foreach ($rows as $row) {
                 $reaction_key = str_replace( 'reaction_', '', $row['reaction_type'] );
-                $rows[$i] = array_merge([
-                    'reaction' => isset($reaction_options[$reaction_key]) ? $reaction_options[$reaction_key] : null,
+                $reaction = isset($reaction_options[$reaction_key]) ? $reaction_options[$reaction_key] : null;
+
+                if ( !$reaction ) continue;
+
+                $reaction['key'] = $reaction_key;
+
+                $comment_id = $row['comment_id'];
+                $comments[$comment_id] = array_merge([
+                    'reactions' => isset($comments[$comment_id])
+                        ? array_merge($comments[$comment_id]['reactions'], [$reaction])
+                        : [$reaction],
                 ], $row);
             }
         }
 
-        return $rows;
+        $merged_comments = [];
+
+        foreach ($comments as $comment) {
+            $merged_comments[] = $comment;
+        }
+
+        return $merged_comments;
     }
 
     private static function get_activity_logs_by_others_sql( $post_type ) {
