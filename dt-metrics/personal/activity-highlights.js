@@ -66,35 +66,35 @@ function buildHighlights(data, label = "all time") {
   const chartDiv = jQuery('#charts')
 
   chartDiv.html(`
-    <h4>Contacts Created</h4>
+    <h4 class="section-header">Contacts Created</h4>
       ${makeContactsCreatedSection(contacts_created)}
-    <h4>Quick actions done</h4>
+    <h4 class="section-header">Quick actions done</h4>
       ${makeSentence(quick_actions_done)}
-    <h4>Milestones added</h4>
+    <h4 class="section-header">Milestones added</h4>
       ${makeDataTable(milestones_added)}
-    <h4>Milestones added by others</h4>
+    <h4 class="section-header">Milestones added by others</h4>
       ${makeDataTable(milestones_added_by_others)}
-    <h4>Seeker paths changed</h4>
+    <h4 class="section-header">Seeker paths changed</h4>
       ${makeDataTable(seeker_path_changed)}
-    <h4>Seeker paths changed by others</h4>
+    <h4 class="section-header">Seeker paths changed by others</h4>
       ${makeDataTable(seeker_path_changed_by_others)}
-    <h4>Baptisms</h4>
+    <h4 class="section-header">Baptisms</h4>
       ${makeBaptismsSection(baptisms)}
-    <h4>Baptisms by others</h4>
+    <h4 class="section-header">Baptisms by others</h4>
       ${makeBaptismsByOthersSection(baptisms_by_others)}
-    <h4>Groups Created</h4>
+    <h4 class="section-header">Groups Created</h4>
       ${makeGroupsCreatedSection(groups_created)}
-    <h4>Group Types changed</h4>
+    <h4 class="section-header">Group Types changed</h4>
       ${makeDataTable(group_type_changed)}
-    <h4>Group Types changed by others</h4>
+    <h4 class="section-header">Group Types changed by others</h4>
       ${makeDataTable(group_type_changed_by_others)}
-    <h4>Health Metrics added</h4>
+    <h4 class="section-header">Health Metrics added</h4>
       ${makeDataTable(health_metrics_added)}
-    <h4>Health Metrics added by others</h4>
+    <h4 class="section-header">Health Metrics added by others</h4>
       ${makeDataTable(health_metrics_added_by_others)}
-    <h4>Comments posted</h4>
+    <h4 class="section-header">Comments posted</h4>
       ${makeCommentsSection(comments_posted)}
-    <h4>Comments liked</h4>
+    <h4 class="section-header">Comments liked</h4>
       ${makeCommentsSection(comments_liked)}
     `)
 }
