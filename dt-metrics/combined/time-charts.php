@@ -53,7 +53,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         $post_types = array_values( array_diff( $post_types, [ "peoplegroups" ] ) ); //skip people groups for now.
         $this->post_types = $post_types;
         $post_type_options = [];
-        foreach ($post_types as $post_type) {
+        foreach ( $post_types as $post_type ) {
             $post_type_options[$post_type] = DT_Posts::get_label_for_post_type( $post_type );
         }
 
@@ -86,7 +86,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
 
         $post_type = $this->post_types[0];
-        $field = array_key_first( $this->post_field_select_options );
+        $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
                 'root'               => esc_url_raw( rest_url() ),
@@ -110,7 +110,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     "added_label" => __( 'Added', 'disciple_tools' ),
                     "tooltip_label" => _x( '%1$s in %2$s', 'Total in January', 'disciple_tools' ),
                     "date_select_label" => __( 'Date', 'disciple_tools' ),
-                    "all_time" => __( 'All time', 'disciple_tools' ),
+                    "all_time" => __( 'All Time', 'disciple_tools' ),
                     "stacked_chart_title" => __( 'All cumulative totals', 'disciple_tools' ),
                     "cumulative_chart_title" => __( 'Single cumulative totals', 'disciple_tools' ),
                     "additions_chart_title" => __( 'Number added', 'disciple_tools' ),
@@ -239,7 +239,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
         $field_settings = [];
 
-        foreach ($post_field_settings as $key => $setting) {
+        foreach ( $post_field_settings as $key => $setting ) {
             if ( array_key_exists( 'hidden', $setting ) && $setting['hidden'] === true ) {
                 continue;
             }
@@ -256,7 +256,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
     public function create_select_options_from_field_settings( $field_settings ) {
         $select_options = [];
-        foreach ($field_settings as $key => $setting) {
+        foreach ( $field_settings as $key => $setting ) {
             $select_options[$key] = $setting['name'];
         }
         asort( $select_options );

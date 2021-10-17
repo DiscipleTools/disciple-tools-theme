@@ -288,7 +288,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                             'search_location' => __( 'Search Location', 'disciple_tools' ),
                             'delete_location' => __( 'Delete Location', 'disciple_tools' ),
                             'open_mapping' => __( 'Open Mapping', 'disciple_tools' ),
-                            'clear' => __( 'clear', 'disciple_tools' )
+                            'clear' => __( 'Clear', 'disciple_tools' )
                         )
                     )
                 );
@@ -523,7 +523,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
             // main theme check
             $is_theme_dt = strpos( $wp_theme->get_template(), "disciple-tools-theme" ) !== false || $wp_theme->name === "Disciple Tools";
-            if ($is_theme_dt) {
+            if ( $is_theme_dt ) {
                 return true;
             }
 

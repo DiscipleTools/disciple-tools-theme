@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Migration_Engine
 {
 
-    public static $migration_number = 44;
+    public static $migration_number = 45;
 
     protected static $migrations = null;
 
@@ -34,7 +34,7 @@ class Disciple_Tools_Migration_Engine
         $expected_migration_number = 0;
         $rv = [];
         foreach ( $filenames as $filename ) {
-            if ( $filename[0] !== "." && $filename !== "abstract.php"){
+            if ( $filename[0] !== "." && $filename !== "abstract.php" ){
                 if ( preg_match( '/^([0-9][0-9][0-9][0-9])(-.*)?\.php$/i', $filename, $matches ) ) {
                     $got_migration_number = intval( $matches[1] );
                     if ( $expected_migration_number !== $got_migration_number ) {
@@ -98,7 +98,7 @@ class Disciple_Tools_Migration_Engine
             error_log( gmdate( " Y-m-d H:i:s T" ) . " Starting migrating to number $activating_migration_number" );
             try {
                 $migration->up();
-            } catch (Throwable $e) {
+            } catch ( Throwable $e ) {
                 update_option( 'dt_migrate_last_error', [
                     'message' => $e->getMessage(),
                     'code' => $e->getCode(),
@@ -151,8 +151,8 @@ class Disciple_Tools_Migration_Lock_Exception extends Exception
          * error logs, but this is a bit more user-friendly.
          */
         $last_migration_error = get_option( 'dt_migrate_last_error' );
-        if ($message === null) {
-            if ($last_migration_error === false) {
+        if ( $message === null ) {
+            if ( $last_migration_error === false ) {
                 $message = "Cannot migrate, as migration lock is held";
             } else {
                 $message =

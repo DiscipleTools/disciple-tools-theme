@@ -132,14 +132,14 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
             $active_plugins[] = $plugin;
         }
         foreach ( $plugins as $i => $v ){
-            if ( !isset( $v["Name"], $v["Version"] )){
+            if ( !isset( $v["Name"], $v["Version"] ) ){
                 continue;
             }
             ?>
             <tr>
             <td><?php echo esc_html( $v["Name"] ); ?> version: <?php echo esc_html( $v["Version"] ); ?></td>
             <td>
-            <?php if ( in_array( $i, $active_plugins )): ?>
+            <?php if ( in_array( $i, $active_plugins ) ): ?>
                 Plugin Active
             <?php endif; ?>
 

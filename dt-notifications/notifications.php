@@ -471,7 +471,7 @@ class Disciple_Tools_Notifications
         /** Determine which condition meets "this" notification timestamp */
 
         /** The following 6 sprintf() items are the only items in this function that need to be translated in WP */
-        if ($range->minutes < 60) {
+        if ( $range->minutes < 60 ) {
             /** The exact number our minutes if this timestamp is < 60 minutes ago */
             $message = sprintf( _n( '%s minute ago', '%s minutes ago', $range->minutes, 'disciple_tools' ), $range->minutes );
         }
@@ -694,14 +694,14 @@ class Disciple_Tools_Notifications
         // Don't fire off notifications when the contact represents a user.
         if ( $post_type === "contacts" ){
             $contact_type = get_post_meta( $post_id, "type", true );
-            if ($contact_type === "user"){
+            if ( $contact_type === "user" ){
                 return;
             }
         }
 
         if ( isset( $fields["assigned_to"] ) ){
             $user_id = dt_get_user_id_from_assigned_to( $fields["assigned_to"] );
-            if ( $user_id && $user_id != get_current_user_id()){
+            if ( $user_id && $user_id != get_current_user_id() ){
                 $notification = [
                     'user_id'             => $user_id,
                     'source_user_id'      => get_current_user_id(),
@@ -722,7 +722,7 @@ class Disciple_Tools_Notifications
     }
 
     public static function insert_notification_for_post_update( $post_type, $fields, $old_fields, $fields_changed_keys ){
-        if ( isset( $fields["type"] ) && $fields["type"] === "user"){
+        if ( isset( $fields["type"] ) && $fields["type"] === "user" ){
             return;
         }
         $notification_on_fields = [];
@@ -736,7 +736,7 @@ class Disciple_Tools_Notifications
                 ( !isset( $old_fields["requires_update"] ) || $old_fields["requires_update"] != $fields["requires_update"] ) ){
                 $notification_on_fields[] = "requires_update";
             } elseif ( strpos( $key, "contact_" ) === 0 && isset( $fields[$key] ) &&
-                ( !isset( $old_fields[$key] ) || $old_fields[$key] != $fields[$key] )){
+                ( !isset( $old_fields[$key] ) || $old_fields[$key] != $fields[$key] ) ){
                 $notification_on_fields[] = "contact_info_update";
             } elseif ( $key === "milestones" && isset( $fields[$key] ) && sizeof( $fields[$key] ) > sizeof( $old_fields[$key] ?? [] ) ){
                 $notification_on_fields[] = "milestone";

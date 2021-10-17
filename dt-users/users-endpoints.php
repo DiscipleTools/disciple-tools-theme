@@ -17,7 +17,7 @@ class Disciple_Tools_Users_Endpoints
      * Disciple_Tools_Users_Endpoints constructor.
      */
     public function __construct() {
-        $this->namespace = $this->context . "/v" . intval( $this->version );
+        $this->namespace = $this->context . "/v" . $this->version;
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
@@ -129,9 +129,9 @@ class Disciple_Tools_Users_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|\WP_Error
+     * @return array|WP_Error
      */
     public function get_users( WP_REST_Request $request ) {
         $params = $request->get_params();
@@ -140,18 +140,16 @@ class Disciple_Tools_Users_Endpoints
             $search = $params['s'];
         }
         $get_all = 0;
-        if ( isset( $params["get_all"] )){
+        if ( isset( $params["get_all"] ) ){
             $get_all = $params["get_all"] === "1";
         }
-        $users = Disciple_Tools_Users::get_assignable_users_compact( $search, $get_all );
-
-        return $users;
+        return Disciple_Tools_Users::get_assignable_users_compact( $search, $get_all );
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|\WP_Error
+     * @return array|WP_Error
      */
     public function switch_preference( WP_REST_Request $request ) {
         $params = $request->get_params();
@@ -192,11 +190,12 @@ class Disciple_Tools_Users_Endpoints
         if ( isset( $params["post_type"] ) ) {
             return Disciple_Tools_Users::get_user_filters( $params["post_type"], $force_refresh );
         }
+        return [];
     }
 
     public function save_user_filter( WP_REST_Request $request ){
         $params = $request->get_params();
-        if ( isset( $params["filter"], $params["post_type"] )){
+        if ( isset( $params["filter"], $params["post_type"] ) ){
             return Disciple_Tools_Users::save_user_filter( $params["filter"], $params["post_type"] );
         } else {
             return new WP_Error( "missing_error", "Missing filters", [ 'status' => 400 ] );
@@ -215,7 +214,7 @@ class Disciple_Tools_Users_Endpoints
         $params = $request->get_params();
 
         $user_id = get_current_user_id();
-        if ( isset( $params["password"] ) && $user_id){
+        if ( isset( $params["password"] ) && $user_id ){
             dt_write_log( $params["password"] );
 
             wp_set_password( $params["password"], $user_id );
@@ -239,13 +238,20 @@ class Disciple_Tools_Users_Endpoints
                 $user_roles =$params["user-roles"];
             }
             $user_login = $params["user-user_login"] ?? $params["user-email"];
-            if (isset( $params["locale"] ) ) {
+            $user_login = $params["user-username"] ?? $user_login;
+            if ( isset( $params["user-password"] ) ) {
+                $password = $params["user-password"];
+            }
+            if ( isset( $params["user-optional-fields"] ) ) {
+                $optional_fields = $params["user-optional-fields"];
+            }
+            if ( isset( $params["locale"] ) ) {
                 $locale = $params["locale"];
             }
-            if (isset( $params["return_contact"] ) ) {
+            if ( isset( $params["return_contact"] ) ) {
                 $return_contact = true;
             }
-            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $user_roles, $params["corresponds_to_contact"] ?? null, $locale ?? null, $return_contact );
+            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $user_roles, $params["corresponds_to_contact"] ?? null, $locale ?? null, $return_contact ?? false, $password, $optional_fields );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
@@ -383,97 +389,12 @@ class Disciple_Tools_Users_Endpoints
     }
 
     public function update_user( WP_REST_Request $request ){
-        $get_params = $request->get_params();
         $body = $request->get_json_params() ?? $request->get_body_params();
         $user = wp_get_current_user();
         if ( !$user ) {
             return new WP_Error( "update_user", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
         }
-        if ( !empty( $body["add_unavailability"] ) ){
-            if ( !empty( $body["add_unavailability"]["start_date"] ) && !empty( $body["add_unavailability"]["end_date"] ) ) {
-                $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-                if ( !$dates_unavailable ){
-                    $dates_unavailable = [];
-                }
-                $max_id = 0;
-                foreach ( $dates_unavailable as $range ){
-                    $max_id = max( $max_id, $range["id"] ?? 0 );
-                }
-
-                $dates_unavailable[] = [
-                    "id" => $max_id + 1,
-                    "start_date" => $body["add_unavailability"]["start_date"],
-                    "end_date" => $body["add_unavailability"]["end_date"],
-                ];
-                update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
-                return $dates_unavailable;
-            }
-        }
-        if ( !empty( $body["remove_unavailability"] ) ) {
-            $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-            foreach ( $dates_unavailable as $index => $range ) {
-                if ( $body["remove_unavailability"] === $range["id"] ){
-                    unset( $dates_unavailable[$index] );
-                }
-            }
-            $dates_unavailable = array_values( $dates_unavailable );
-            update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
-            return $dates_unavailable;
-        }
-        if ( !empty( $body["locale"] ) ){
-            $e = wp_update_user( [
-                'ID' => $user->ID,
-                'locale' => $body["locale"]
-            ] );
-            return is_wp_error( $e ) ? $e : true;
-        }
-        if ( !empty( $body["workload_status"] ) ) {
-            update_user_option( $user->ID, 'workload_status', $body["workload_status"] );
-        }
-        if ( !empty( $body["add_languages"] ) ){
-            $languages = get_user_option( "user_languages", $user->ID ) ?: [];
-            if ( !in_array( $body["add_languages"], $languages )){
-                $languages[] = $body["add_languages"];
-            }
-            update_user_option( $user->ID, "user_languages", $languages );
-            return $languages;
-        }
-        if ( !empty( $body["remove_languages"] ) ){
-            $languages = get_user_option( "user_languages", $user->ID );
-            if ( in_array( $body["remove_languages"], $languages )){
-                unset( $languages[array_search( $body["remove_languages"], $languages )] );
-            }
-            update_user_option( $user->ID, "user_languages", $languages );
-            return $languages;
-        }
-        if ( !empty( $body["add_people_groups"] ) ){
-            $people_groups = get_user_option( "user_people_groups", $user->ID ) ?: [];
-            if ( !in_array( $body["add_people_groups"], $people_groups )){
-                $people_groups[] = $body["add_people_groups"];
-            }
-            update_user_option( $user->ID, "user_people_groups", $people_groups );
-            return $people_groups;
-        }
-        if ( !empty( $body["remove_people_groups"] ) ){
-            $people_groups = get_user_option( "user_people_groups", $user->ID );
-            if ( in_array( $body["remove_people_groups"], $people_groups )){
-                unset( $people_groups[array_search( $body["remove_people_groups"], $people_groups )] );
-            }
-            update_user_option( $user->ID, "user_people_groups", $people_groups );
-            return $people_groups;
-        }
-        if ( !empty( $body["gender"] ) ) {
-            update_user_option( $user->ID, 'user_gender', $body["gender"] );
-        }
-        if ( !empty( $body["email-preference"] ) ) {
-            update_user_meta( $user->ID, 'email_preference', $body["email-preference"] );
-        }
-        try {
-            do_action( 'dt_update_user', $user, $body );
-        } catch (Exception $e) {
-            return new WP_Error( __FUNCTION__, $e->getMessage(), [ 'status' => $e->getCode() ] );
-        }
-        return new WP_REST_Response( true );
+        return Disciple_Tools_Users::update_settings_on_user( $user->ID, $body );
     }
 
 

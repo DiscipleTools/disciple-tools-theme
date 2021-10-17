@@ -1,60 +1,133 @@
 "use strict"
 jQuery(document).ready(function($) {
 
-  let post_id        = window.detailsSettings.post_id
-  let post_type      = window.detailsSettings.post_type
-  let post           = window.detailsSettings.post_fields
-  let field_settings = window.detailsSettings.post_settings.fields
+  let post_id        = window.detailsSettings.post_id;
+  let post_type      = window.detailsSettings.post_type;
+  let post           = window.detailsSettings.post_fields;
+  let field_settings = window.detailsSettings.post_settings.fields;
 
-  /* Church Metrics */
-  let health_keys = Object.keys(field_settings.health_metrics.default)
+  /* Health Metrics */
+  let health_keys = Object.keys(field_settings.health_metrics.default);
+
   function fillOutChurchHealthMetrics() {
-    if ( $("#health-metrics").length ) {
-      let svgItem = document.getElementById("church-svg-wrapper").contentDocument
+    let practiced_items = window.detailsSettings.post_fields.health_metrics || [];
 
-      let churchWheel = $(svgItem).find('svg')
-      health_keys.forEach(m=>{
-        if (post[`health_metrics`] && post.health_metrics.includes(m) ){
-          churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", "1")
-          $(`#${m}`).css("opacity", "1")
-        } else {
-          churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", ".1")
-          $(`#${m}`).css("opacity", ".4")
-        }
-      })
-      if ( !(post.health_metrics ||[]).includes("church_commitment") ){
-        churchWheel.find('#group').css("opacity", "1")
-        $(`#church_commitment`).css("opacity", ".4")
-      } else {
-        churchWheel.find('#group').css("opacity", ".1")
-        $(`#church_commitment`).css("opacity", "1")
-      }
-
-      $(".js-progress-bordered-box").removeClass("half-opacity")
+    /* Make church commitment circle green */
+    if ( practiced_items.indexOf( 'church_commitment' ) !== -1 ) {
+      $('#health-items-container').addClass( 'committed' );
+      $('#is-church-switch').prop('checked', true);
     }
-  }
-  $('#church-svg-wrapper').on('load', function() {
-    fillOutChurchHealthMetrics()
-  })
-  fillOutChurchHealthMetrics()
 
-  $('.group-progress-button').on('click', function () {
-    let fieldId = $(this).attr('id')
-    $(this).css('opacity', ".6");
-    let already_set = window.lodash.get(post, `health_metrics`, []).includes(fieldId)
-    let update = {values:[{value:fieldId}]}
+    /* Color church circle items that are being practiced */
+    let items = $( 'div[id^="icon_"]' );
+
+    items.each( function( k, v ) {
+        if ( practiced_items.indexOf( v.id.replace( 'icon_', '' ), practiced_items ) !== -1 ) {
+            $( this ).children( 'img' ).attr( 'class','practiced-item' );
+        }
+    });
+
+    /* Color group progress buttons */
+    let icons = $( '.group-progress-button' );
+    icons.each( function( k, v ) {
+      if ( practiced_items.indexOf( v.id, practiced_items ) !== -1 ) {
+        $( this ).addClass( 'practiced-button' );
+      }
+    });
+  }
+
+  fillOutChurchHealthMetrics();
+  distributeItems();
+
+  $('.health-item').on( 'click', function() {
+    let fieldId = $( this ).attr( 'id' ).replace('icon_', '');
+    let already_set = window.lodash.get(post, 'health_metrics', []).includes( fieldId );
+    let update = { values: [ { value : fieldId } ] };
     if ( already_set ){
       update.values[0].delete = true;
     }
-    API.update_post( post_type, post_id, {"health_metrics": update })
-      .then(groupData=>{
-        post = groupData
-        fillOutChurchHealthMetrics()
-      }).catch(err=>{
-        console.log(err)
-    })
+    API.update_post( post_type, post_id, { 'health_metrics': update })
+      .then( groupData => {
+        post = groupData;
+        /* Update icon */
+        if ( $( this ).attr( 'id' ) === 'church_commitment' ) {
+          $( '#health-items-container' ).toggleClass( 'committed' );
+          $( this ).toggleClass( 'practiced-button' );
+          return true;
+        }
+        /* Toggle church health circle item color */
+        $( this ).children( 'img' ).toggleClass( 'practiced-item' );
+      }).catch( err=>{
+        console.log( err );
+    });
+  });
+
+  $('#is-church-switch').on( 'click', function() {
+    let fieldId = 'church_commitment';
+    let already_set = window.lodash.get(post, 'health_metrics', []).includes( fieldId );
+    let update = { values: [ { value : fieldId } ] };
+    if ( already_set ){
+      update.values[0].delete = true;
+    }
+    API.update_post( post_type, post_id, { 'health_metrics': update })
+      .then( groupData => {
+        post = groupData;
+        /* Update commitment circle */
+        $( '#health-items-container' ).toggleClass( 'committed' );
+      }).catch( err=>{
+        console.log( err );
+    });
   })
-  /* end Church fields*/
+
+  /* Dynamically distribute items in Church Health Circle
+     according to amount of health metric elements */
+  function distributeItems() {
+    let radius = 75;
+    let items = $( '.health-item' ),
+        container = $( '#health-items-container' ),
+        item_count = items.length,
+        fade_delay = 45,
+        width = container.width(),
+        height = container.height() + 66,
+        angle = 0,
+        step = (2*Math.PI) / items.length,
+        y_offset = -35;
+
+        if ( item_count >= 5 && item_count < 7 ) {
+            radius = 90;
+        }
+
+        if ( item_count >= 7 & item_count < 11 ) {
+            radius = 100;
+        }
+
+        if ( item_count >= 11 ) {
+            radius = 110;
+        }
+
+        if ( item_count == 3 ) {
+            angle = 22.5;
+        }
+
+    items.each(function() {
+        let X = Math.round( width / 2 + radius * Math.cos(angle) - $( this ).width() / 2 );
+        let y = Math.round( height / 2 + radius * Math.sin(angle) - $( this ).height() / 2 ) + y_offset;
+
+        if ( item_count == 1 ) {
+            X = 112.5;
+            y = 68;
+        }
+
+        $(this).css({
+            left: X + 'px',
+            top: y + 'px',
+        });
+        $(this).delay(fade_delay).fadeIn( 1000, 'linear' );
+        angle += step;
+        fade_delay += 45;
+    });
+  }
+  /* End Health Metrics*/
 
 
   /* Member List*/
@@ -208,61 +281,6 @@ jQuery(document).ready(function($) {
   })
   /* End Four Fields */
 
-  /**
-   * Assigned_to
-   */
-  let assigned_to_input = $(`.js-typeahead-assigned_to`)
-  $.typeahead({
-    input: '.js-typeahead-assigned_to',
-    minLength: 0,
-    maxItem: 0,
-    accent: true,
-    searchOnFocus: true,
-    source: TYPEAHEADS.typeaheadUserSource(),
-    templateValue: "{{name}}",
-    template: function (query, item) {
-      return `<div class="assigned-to-row" dir="auto">
-        <span>
-            <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-            ${window.lodash.escape( item.name )}
-        </span>
-        ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
-        ${ item.update_needed && item.update_needed > 0 ? `<span>
-          <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-          <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
-        </span>` : '' }
-      </div>`
-    },
-    dynamic: true,
-    hint: true,
-    emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
-    callback: {
-      onClick: function(node, a, item){
-        API.update_post('groups', post_id, {assigned_to: 'user-' + item.ID}).then(function (response) {
-          window.lodash.set(post, "assigned_to", response.assigned_to)
-          assigned_to_input.val(post.assigned_to.display)
-          assigned_to_input.blur()
-        }).catch(err => { console.error(err) })
-      },
-      onResult: function (node, query, result, resultCount) {
-        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#assigned_to-result-container').html(text);
-      },
-      onHideLayout: function () {
-        $('.assigned_to-result-container').html("");
-      },
-      onReady: function () {
-        if (window.lodash.get(post,  "assigned_to.display")){
-          $('.js-typeahead-assigned_to').val(post.assigned_to.display)
-        }
-      }
-    },
-  });
-  $('.search_assigned_to').on('click', function () {
-    assigned_to_input.val("")
-    assigned_to_input.trigger('input.typeahead')
-    assigned_to_input.focus()
-  })
 
   //update the end date input when group is closed.
   $( document ).on( 'select-field-updated', function (e, new_group, field_key, val) {

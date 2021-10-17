@@ -50,7 +50,7 @@ class Disciple_Tools_Contacts_Transfer
             ?>
             <section class="cell small-12">
                 <div class="bordered-box detail-notification-box" style="background-color:#3F729B">
-                    <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact has been transferred', 'disciple_tools' ) ?>.</h4>
+                    <h4><img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg?v=2' ) ?>"/><?php esc_html_e( 'This contact has been transferred', 'disciple_tools' ) ?>.</h4>
                     <p><?php esc_html_e( 'This contact has been transferred to', 'disciple_tools' )?>: <?php echo isset( $contact['transfer_site_link_post_id'] ) ? esc_html( get_the_title( $contact['transfer_site_link_post_id'] ) ) : ''; ?></p>
                 </div>
             </section>
@@ -264,7 +264,7 @@ class Disciple_Tools_Contacts_Transfer
 
 
         $comment = sprintf( __( 'This contact was transferred to %s for further follow-up.', 'disciple_tools' ), esc_attr( get_the_title( $site_post_id ) ) );
-        if ( isset( $result_body->created_id )){
+        if ( isset( $result_body->created_id ) ){
             $comment .= ' [link](https://' . $site['url'] . '/contacts/' . esc_attr( $result_body->created_id ) . ')';
         }
         // add note that the record was transferred

@@ -17,7 +17,7 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
     public function up() {
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
-        foreach ( $expected_tables as $name => $table) {
+        foreach ( $expected_tables as $name => $table ) {
             $rv = $wpdb->query( $table ); // WPCS: unprepared SQL OK
             if ( $rv == false ) {
                 throw new Exception( "Got error when creating table $name: $wpdb->last_error" );
@@ -31,7 +31,7 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
     public function down() {
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
-        foreach ( $expected_tables as $name => $table) {
+        foreach ( $expected_tables as $name => $table ) {
             $rv = $wpdb->query( "DROP TABLE `{$name}`" ); // WPCS: unprepared SQL OK
             if ( $rv == false ) {
                 throw new Exception( "Got error when dropping table $name: $wpdb->last_error" );

@@ -261,9 +261,23 @@ jQuery(document).on("click", ".help-button-tile", function () {
         html += `<p>${window.lodash.escape(field.description)}</p>`;
 
         if (window.lodash.isObject(field.default)) {
-          let list_html = `<ul>`;
+          let list_html = ``;
+          let first_field_option = true;
           window.lodash.forOwn(field.default, (field_options, field_key) => {
-            list_html += `<li><strong>${window.lodash.escape(
+            if( field_options.hasOwnProperty('icon') ) {
+              if ( first_field_option ) {
+                list_html += `<ul class="help-modal-icon">`;
+                first_field_option = false;
+              }
+              list_html += `<li><img src="${window.lodash.escape(field_options.icon)}">`;
+            } else {
+              if ( first_field_option ) {
+                list_html + `<ul>`;
+                first_field_option = false;
+              }
+              list_html += `<li>`;
+            }
+            list_html += `<strong>${window.lodash.escape(
               field_options.label
             )}</strong> ${window.lodash.escape(
               !field_options.description ? "" : "- " + field_options.description
@@ -418,7 +432,7 @@ window.TYPEAHEADS = {
   },
   contactListRowTemplate: function (query, item) {
     let img = item.user
-      ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg">`
+      ? `<img class="dt-blue-icon" src="${wpApiShare.template_dir}/dt-assets/images/profile.svg?v=2">`
       : "";
     let statusStyle = item.status === "closed" ? 'style="color:gray"' : "";
       return `<span dir="auto" ${statusStyle}>
@@ -582,6 +596,48 @@ window.SHAREDFUNCTIONS = {
 
     return formattedDate;
   },
+  /*
+  * Allow links and @ mentions to be displayed in comments section
+  */
+  formatComment(comment) {
+    if(comment){
+      let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g
+      comment = comment.replace(mentionRegex, (match, text, id)=>{
+        /* dir=auto means that @ will be put to the left of the name if the
+          * mentioned name is LTR, and to the right if the mentioned name is
+          * RTL, instead of letting the surrounding dir determine the placement
+          * of @ */
+        return `<a dir="auto">@${text}</a>`
+      })
+      let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
+      comment = comment.replace(urlRegex, (match)=>{
+        let url = match
+        if(match.indexOf("@") === -1 && match.indexOf("[") === -1 && match.indexOf("(") === -1 && match.indexOf("href") === -1) {
+          if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
+            url = match
+          }
+          else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
+            url = "http://" + match
+          }
+          else if (match.indexOf("www.") === -1) {
+            url = "http://www." + match
+          }
+          return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
+        }
+        return match
+      })
+      let linkRegex = /\[(.*?)\]\((.+?)\)/g; //format [text](link)
+      comment = comment.replace(linkRegex, (match, text, url)=>{
+        if (text.includes("http") && !url.includes("http")){
+          [url, text] = [text, url]
+        }
+        url = url.includes('http') ? url : `${window.wpApiShare.site_url}/${window.wpApiShare.post_type}/${url}`
+        return `<a href="${url}">${text}</a>`
+      })
+
+    }
+    return comment
+  },
   convertArabicToEnglishNumbers(string) {
     return string
       .replace(/[\u0660-\u0669]/g, function (c) {
@@ -628,7 +684,7 @@ window.SHAREDFUNCTIONS = {
       return match
     })
     $(selector).html(elem_text)
-  }
+  },
 };
 
 window.METRICS = {

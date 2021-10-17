@@ -64,7 +64,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     $comment_html = esc_html( $user_name . $setting["comment"] );
                     DT_Posts::add_post_comment( "contacts", $contact->ID, $comment_html, "comment", [
                         "user_id" => 0,
-                        "comment_author" => __( "Updated Needed", 'disciple_tools' )
+                        "comment_author" => __( "Update Needed", 'disciple_tools' )
                     ], false, true );
                     DT_Posts::update_post( "contacts", $contact->ID, [ "requires_update" => true ], false );
                 }
@@ -102,7 +102,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     $comment_html = esc_html( $user_name . $setting["comment"] );
                     DT_Posts::add_post_comment( "groups", $group->ID, $comment_html, "updated_needed", [
                         "user_id" => 0,
-                        "comment_author" => __( "Updated Needed", 'disciple_tools' )
+                        "comment_author" => __( "Update Needed", 'disciple_tools' )
                     ], false, true );
                     DT_Posts::update_post( "groups", $group->ID, [ "requires_update" => true ], false );
                 }

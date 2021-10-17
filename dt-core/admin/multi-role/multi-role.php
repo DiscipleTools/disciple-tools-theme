@@ -63,7 +63,7 @@ class Disciple_Tools_Multi_Roles {
         require_once( 'inc/functions-roles.php' );
         require_once( 'inc/functions-users.php' );
 
-        if (is_admin()) {
+        if ( is_admin() ) {
 
             // General admin functions.
             require_once( 'functions-admin.php' );

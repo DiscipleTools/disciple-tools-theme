@@ -450,7 +450,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         $dt_roles = dt_multi_role_get_editable_role_names();
         $user_invite_allowed = get_option( 'dt_user_invite_setting', false );
         ?>
-        <p><?php esc_html_e( "User Roles that can view all other Disciple Tools users names" ) ?></p>
+        <p><?php esc_html_e( "User Roles that can view all other Disciple.Tools users names" ) ?></p>
         <form method="post" >
             <table class="widefat">
             <?php foreach ( $dt_roles as $role_key => $name ) : ?>
@@ -470,7 +470,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             </table>
             <br>
             <p>
-                <label><?php esc_html_e( 'Allow multipliers to invite contacts to become users with the multiplier role.' ) ?></label>
+                <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role.' ) ?></label>
                 <input type="checkbox" name="user_invite_check" id="user_invite_check" value="user_invite" <?php echo $user_invite_allowed ? 'checked' : '' ?> />
             </p>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>

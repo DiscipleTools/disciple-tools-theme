@@ -53,7 +53,7 @@ if ( !current_user_can( 'access_disciple_tools' ) && !current_user_can( "view_pr
 
             </div>
 
-            <div class="large-10 medium-9 small-12 cell ">
+            <div id="metrics-content" class="large-10 medium-9 small-12 cell ">
 
                 <section id="metrics-container" class="medium-12 cell">
 

@@ -29,7 +29,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         //display tiles and fields
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
         add_action( 'dt_record_top_above_details', [ $this, 'dt_record_top_above_details' ], 20, 2 );
-        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 4 );
+        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 5 );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
@@ -96,7 +96,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "color" => "#2196F3",
                 "description" => __( 'Someone to follow-up with', 'disciple_tools' ),
                 "visibility" => __( "Collaborators", 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg?v=2",
                 "order" => 20
             ];
 
@@ -106,9 +106,10 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'type'        => 'user_select',
                 'default'     => '',
                 'tile'        => 'status',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/assigned-to.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/assigned-to.svg?v=2",
                 "show_in_table" => 25,
-                "only_for_types" => [ "access", "user" ]
+                "only_for_types" => [ "access", "user" ],
+                "custom_display" => true
             ];
             $fields['seeker_path'] = [
                 'name'        => __( 'Seeker Path', 'disciple_tools' ),
@@ -148,7 +149,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile' => 'followup',
                 "show_in_table" => 15,
                 "only_for_types" => [ "access" ],
-                "icon" => get_template_directory_uri() . '/dt-assets/images/sign-post.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/sign-post.svg?v=2',
             ];
 
             $fields['overall_status'] = [
@@ -187,7 +188,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile'     => 'status',
                 'customizable' => 'add_only',
                 'custom_display' => true,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/status.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/status.svg?v=2",
                 "show_in_table" => 10,
                 "only_for_types" => [ "access" ],
                 "select_cannot_be_empty" => true
@@ -315,7 +316,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile'     => 'details',
                 'customizable' => 'all',
                 'display' => "typeahead",
-                'icon' => get_template_directory_uri() . "/dt-assets/images/source.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/source.svg?v=2",
                 "only_for_types" => [ "access" ],
                 "in_create_form" => [ "access" ]
             ];
@@ -326,7 +327,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile' => 'details',
                 'type'        => 'tags',
                 'default'     => [],
-                'icon' => get_template_directory_uri() . "/dt-assets/images/megaphone.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/megaphone.svg?v=2",
                 'only_for_types' => [ 'access' ],
             ];
 
@@ -369,6 +370,15 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "permission_callback" => '__return_true',
             ]
         );
+
+        register_rest_route(
+            $namespace, '/contacts/assignment-list', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_dispatch_list' ],
+                "permission_callback" => '__return_true',
+            ]
+        );
+
     }
 
     public function dt_details_additional_tiles( $sections, $post_type = "" ){
@@ -392,7 +402,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         return $sections;
     }
 
-    public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag ){
+    public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag, $display_field_id ){
         $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
 
         if ( isset( $post["post_type"] ) && $post["post_type"] === "contacts" && $field_key === "overall_status"
@@ -403,22 +413,20 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( !dt_field_enabled_for_record_type( $contact_fields[$field_key], $post ) ){
                 return;
             }
-            $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
-
             ?>
                 <div class="section-subheader">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
-                    <?php esc_html_e( "Status", 'disciple_tools' ) ?>
+                    <img src="<?php echo esc_url( $contact_fields[$field_key]["icon"] ) ?>">
+                    <?php echo esc_html( $contact_fields[$field_key]["name"] ) ?>
                 </div>
                 <?php
                 $active_color = "#366184";
                 $current_key = $contact["overall_status"]["key"] ?? "";
-                if ( isset( $contact_fields["overall_status"]["default"][ $current_key ]["color"] )){
+                if ( isset( $contact_fields["overall_status"]["default"][ $current_key ]["color"] ) ){
                     $active_color = $contact_fields["overall_status"]["default"][ $current_key ]["color"];
                 }
                 ?>
                 <select id="overall_status" class="select-field color-select" style="margin-bottom:0; background-color: <?php echo esc_html( $active_color ) ?>">
-                    <?php foreach ($contact_fields["overall_status"]["default"] as $key => $option){
+                    <?php foreach ( $contact_fields["overall_status"]["default"] as $key => $option ){
                         $value = $option["label"] ?? "";
                         if ( $contact["overall_status"]["key"] === $key ) {
                             ?>
@@ -434,13 +442,13 @@ class DT_Contacts_Access extends DT_Module_Base {
                         $hide_edit_button = false;
                         $status_key = isset( $contact["overall_status"]["key"] ) ? $contact["overall_status"]["key"] : "";
                         if ( $status_key === "paused" &&
-                            isset( $contact["reason_paused"]["label"] )){
+                            isset( $contact["reason_paused"]["label"] ) ){
                             echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
                         } else if ( $status_key === "closed" &&
-                            isset( $contact["reason_closed"]["label"] )){
+                            isset( $contact["reason_closed"]["label"] ) ){
                             echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
                         } else if ( $status_key === "unassignable" &&
-                            isset( $contact["reason_unassignable"]["label"] )){
+                            isset( $contact["reason_unassignable"]["label"] ) ){
                             echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
                         } else {
                             if ( !in_array( $status_key, [ "paused", "closed", "unassignable" ] ) ){
@@ -544,6 +552,96 @@ class DT_Contacts_Access extends DT_Module_Base {
             <?php
         }
 
+
+        if ( isset( $post["post_type"] ) && $post["post_type"] === "contacts" && $field_key === "assigned_to"
+            && isset( $contact_fields[$field_key] ) && !empty( $contact_fields[$field_key]["custom_display"] )
+            && empty( $contact_fields[$field_key]["hidden"] ) ){
+            $button_class =( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'list_users' ) ) ? "advanced_user_select" : "search_assigned_to"
+            ?>
+            <div class="section-subheader">
+                <img src="<?php echo esc_url( $contact_fields[$field_key]["icon"] ) ?>">
+                <?php echo esc_html( $contact_fields[$field_key]["name"] ) ?>
+            </div>
+            <div id="<?php echo esc_html( $field_key ); ?>" class="<?php echo esc_html( $display_field_id ); ?> dt_user_select">
+                <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container <?php echo esc_html( $display_field_id ); ?>-result-container"></var>
+                <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-<?php echo esc_html( $display_field_id ); ?>" class="scrollable-typeahead">
+                    <div class="typeahead__container" style="margin-bottom: 0">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" dir="auto"
+                                       name="<?php echo esc_html( $display_field_id ); ?>[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                                       data-field_type="user_select"
+                                       data-field="<?php echo esc_html( $field_key ); ?>"
+                                       autocomplete="off">
+                            </span>
+                            <span class="typeahead__button">
+                                <button type="button" class="<?php echo esc_html( $button_class ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $field_key ); ?>">
+                                    <i class="fi-magnifying-glass"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+            $is_dispatcher = dt_current_user_has_role( 'dispatcher' ) || current_user_can( 'dt_all_access_contacts' );
+            $roles = [
+                'multiplier' => [
+                    "label" => __( "Multipliers", 'disciple_tools' )
+                ],
+                'dispatcher' => [
+                    "label" => __( "Dispatchers", 'disciple_tools' )
+                ],
+                'marketer' => [
+                    "label" => __( "Digital Responders", 'disciple_tools' )
+                ],
+            ];
+            if ( $is_dispatcher ) { ?>
+            <div class="reveal" id="assigned_to_user_modal" data-reveal>
+                <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
+                    <div class="cell dt-filter-tabs">
+                        <h4 class="section-header"><?php esc_html_e( 'Assign To', "disciple_tools" ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span></h4>
+                        <div class="section-body">
+                            <ul class="horizontal tabs" data-tabs id="assign-role-tabs">
+                                <?php foreach ( $roles as $key => $value ) : ?>
+                                    <li class="tabs-title <?php echo esc_html( $key === "multiplier" ? "is-active" : "" ); ?>">
+                                        <a href="#<?php echo esc_html( $key ); ?>" data-field="<?php echo esc_html( $key ); ?>">
+                                            <?php echo esc_html( $value["label"] ); ?>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <div class="tabs-column-right users-select-panel" style="margin-top:20px; display: none">
+                                <div id="defined-lists" style="padding-top:0">
+                                    <div class="grid-x grid-margin-x" style="margin-top:5px">
+                                        <div class="medium-4 cell">
+                                            <div class="input-group">
+                                                <input id="search-users-filtered" class="input-group-field" type="text" placeholder="Multipliers">
+                                                <div class="input-group-button">
+                                                    <button type="button" class="button hollow"><i class="fi-magnifying-glass"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="medium-8 cell">
+                                            <div id="user-list-filters" style="margin-bottom:3px">
+                                                <!--filters is filled out by js-->
+                                            </div>
+                                            <div class="populated-list">
+                                                <!--users list is filled out by js-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php }
+        }
     }
 
 
@@ -597,10 +695,10 @@ class DT_Contacts_Access extends DT_Module_Base {
                     self::handle_quick_action_button_event( $post_id, [ $field_key => $value ] );
                 }
             }
-            if ( isset( $fields["overall_status"], $fields["reason_paused"] ) && $fields["overall_status"] === "paused"){
+            if ( isset( $fields["overall_status"], $fields["reason_paused"] ) && $fields["overall_status"] === "paused" ){
                 $fields["requires_update"] = false;
             }
-            if ( isset( $fields["overall_status"], $fields["reason_closed"] ) && $fields["overall_status"] === "closed"){
+            if ( isset( $fields["overall_status"], $fields["reason_closed"] ) && $fields["overall_status"] === "closed" ){
                 $fields["requires_update"] = false;
             }
         }
@@ -661,9 +759,9 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
         if ( !isset( $fields["overall_status"] ) ){
             $current_roles = wp_get_current_user()->roles;
-            if (in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true )) {
+            if ( in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true ) ) {
                 $fields["overall_status"] = "new";
-            } else if (in_array( "multiplier", $current_roles, true ) ) {
+            } else if ( in_array( "multiplier", $current_roles, true ) ) {
                 $fields["overall_status"] = "active";
             } else {
                 $fields["overall_status"] = "new";
@@ -961,7 +1059,7 @@ class DT_Contacts_Access extends DT_Module_Base {
 
     //list page filters function
     private static function add_default_custom_list_filters( $filters ){
-        if ( empty( $filters )){
+        if ( empty( $filters ) ){
             $filters = [];
         }
         $default_filters = [
@@ -1143,6 +1241,17 @@ class DT_Contacts_Access extends DT_Module_Base {
             wp_enqueue_script( 'dt_contacts_access', get_template_directory_uri() . '/dt-contacts/contacts_access.js', [
                 'jquery',
             ], filemtime( get_theme_file_path() . '/dt-contacts/contacts_access.js' ), true );
+            wp_localize_script( 'dt_contacts_access', 'dt_contacts_access', [
+                "translations" => [
+                    "all" => __( "All", "disciple_tools" ),
+                    "ready" => __( "Ready", "disciple_tools" ),
+                    "recent" => __( "Recent", "disciple_tools" ),
+                    "location" => __( "Location", "disciple_tools" ),
+                    "assign" => __( "Assign", "disciple_tools" ),
+                    "language" => __( "Language", "disciple_tools" ),
+                    "gender" => __( "Gender", "disciple_tools" ),
+                ],
+            ] );
         }
     }
 
@@ -1220,7 +1329,7 @@ class DT_Contacts_Access extends DT_Module_Base {
     private static function check_requires_update( $contact_id ){
         if ( get_current_user_id() ){
             $requires_update = get_post_meta( $contact_id, "requires_update", true );
-            if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1"){
+            if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1" ){
                 //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
                 if ( current_user_can( 'dt_all_access_contacts' ) ){
                     if ( dt_get_user_id_from_assigned_to( get_post_meta( $contact_id, "assigned_to", true ) ) === get_current_user_id() ){
@@ -1268,7 +1377,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             } else {
                 $assign_to_id = 0;
                 $last_activity = DT_Posts::get_most_recent_activity_for_field( $contact_id, "assigned_to" );
-                if ( isset( $last_activity->user_id )){
+                if ( isset( $last_activity->user_id ) ){
                     $assign_to_id = $last_activity->user_id;
                 } else {
                     $base_user = dt_get_base_user( true );
@@ -1338,12 +1447,161 @@ class DT_Contacts_Access extends DT_Module_Base {
                     'meta_value' => true
                 ] );
                 foreach ( $following_all as $user ){
-                    if ( !in_array( $user->ID, $users_to_notify )){
+                    if ( !in_array( $user->ID, $users_to_notify ) ){
                         $users_to_notify[] = $user->ID;
                     }
                 }
             }
         }
         return $users_to_notify;
+    }
+
+
+    public function get_dispatch_list( WP_REST_Request $request ) {
+        if ( !current_user_can( 'dt_all_access_contacts' ) || !current_user_can( 'list_users' ) ){
+            return new WP_Error( __FUNCTION__, __( "No permission" ), [ 'status' => 403 ] );
+        }
+        $params = $request->get_query_params();
+
+        $user_data = DT_User_Management::get_users( true );
+
+        $last_assignments = $this->get_assignments();
+        $location_data = $this->get_location_data( $params["location_ids"] );
+        $gender_data = $this->get_gender_data();
+
+        $list = [];
+        $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
+        foreach ( $user_data as $user ) {
+            $roles = maybe_unserialize( $user["roles"] );
+            if ( isset( $roles["multiplier"] ) || isset( $roles["dt_admin"] ) || isset( $roles["dispatcher"] ) || isset( $roles["marketer"] ) ) {
+                $u = [
+                    "name" => $user["display_name"],
+                    "ID" => $user["ID"],
+                    "avatar" => get_avatar_url( $user["ID"], [ 'size' => '16' ] ),
+                    "last_assignment" => $last_assignments[$user["ID"]] ?? null,
+                    "roles" => array_keys( $roles ),
+                    "location" => null,
+                    "languages" => [],
+                    "gender" => null,
+                ];
+                $user_languages = get_user_option( "user_languages", $user["ID"] );
+                if ( $user_languages ) {
+                    $u["languages"] = $user_languages;
+                }
+                //extra information for the dispatcher
+                $workload_status = $user["workload_status"] ?? null;
+                if ( $workload_status && isset( $workload_status_options[$workload_status]["color"] ) ) {
+                    $u['status'] = $workload_status;
+                    $u['status_color'] = $workload_status_options[$workload_status]["color"];
+                }
+                if ( isset( $location_data[$user["ID"]] ) ){
+                    $u["location"] = $location_data[$user["ID"]]["level"];
+                    $u["best_location_match"] = $location_data[$user["ID"]]["match_name"];
+                }
+                if ( isset( $gender_data[$user["ID"]] ) ) {
+                    $u["gender"] = $gender_data[$user["ID"]];
+                }
+
+                $u["update_needed"] = (int) $user["number_update"] ?? 0;
+
+                $list[] = $u;
+            }
+        }
+
+        return $list;
+    }
+
+    private function get_assignments() {
+        global $wpdb;
+        $last_assignment_query = $wpdb->get_results( "
+            SELECT meta_value as user, MAX(hist_time) as assignment_date
+            from $wpdb->dt_activity_log as log
+            WHERE meta_key = 'assigned_to'
+            GROUP by meta_value",
+        ARRAY_A );
+        $last_assignments =[];
+        foreach ( $last_assignment_query as $assignment ){
+            $user_id = str_replace( 'user-', '', $assignment["user"] );
+            $last_assignments[$user_id] = $assignment["assignment_date"];
+        }
+
+        return $last_assignments;
+    }
+
+    private function get_location_data( $location_ids ) {
+        global $wpdb;
+
+        $location_data = [];
+        if ( isset( $location_ids ) ) {
+            foreach ( $location_ids as $grid_id ){
+                $location = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid WHERE grid_id = %s", esc_sql( $grid_id ) ), ARRAY_A );
+                $levels = [];
+
+                if ( $grid_id === "1" ){
+                    $match_location_ids = "( 1 )";
+                } else {
+                    $match_location_ids = "( ";
+                    for ( $i = 0; $i <= ( (int) $location["level"] ); $i++ ) {
+                        $levels[ $location["admin". $i . "_grid_id"]] = [ "level" => $i ];
+                        $match_location_ids .= $location["admin". $i . "_grid_id"] . ', ';
+                    }
+                    $match_location_ids .= ')';
+
+                }
+
+                $match_location_ids = str_replace( ', )', ' )', $match_location_ids );
+                //phpcs:disable
+                //already sanitized IN value
+                $location_names = $wpdb->get_results( "
+                    SELECT alt_name, grid_id
+                    FROM $wpdb->dt_location_grid
+                    WHERE grid_id IN $match_location_ids
+                ", ARRAY_A);
+
+                //get users with the same location grid.
+                $users_in_location = $wpdb->get_results( $wpdb->prepare("
+                    SELECT user_id, meta_value as grid_id
+                    FROM $wpdb->usermeta um
+                    WHERE um.meta_key = %s
+                    AND um.meta_value IN $match_location_ids
+                ", "{$wpdb->prefix}location_grid"), ARRAY_A );
+                //phpcs:enable
+
+                foreach ( $location_names as $l ){
+                    if ( isset( $levels[$l["grid_id"]] ) ) {
+                        $levels[$l["grid_id"]]["name"] = $l["alt_name"];
+                    }
+                }
+
+                //0 if the location is exact match. 1 if the matched location is the parent etc
+                foreach ( $users_in_location as $l ){
+                    $level = (int) $location["level"] - $levels[$l["grid_id"]]["level"];
+                    if ( !isset( $location_data[$l["user_id"]] ) || $location_data[$l["user_id"]]["level"] > $level ){
+                        $location_data[$l["user_id"]] = [
+                            "level" => $level,
+                            "match_name" => $levels[$l["grid_id"]]["name"]
+                        ];
+                    }
+                }
+            }
+        }
+        return $location_data;
+    }
+
+    private function get_gender_data() {
+        global $wpdb;
+        $gender_data = [];
+
+        $gender_query = $wpdb->get_results( $wpdb->prepare("
+            SELECT user_id, meta_value as gender
+            from $wpdb->usermeta
+            WHERE meta_key = %s", "{$wpdb->prefix}user_gender"),
+        ARRAY_A );
+
+        foreach ( $gender_query as $data ){
+            $gender_data[$data["user_id"]] = $data["gender"];
+        }
+
+        return $gender_data;
     }
 }

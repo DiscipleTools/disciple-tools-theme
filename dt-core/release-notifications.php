@@ -8,7 +8,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function dt_release_modal() {
-    $show_notification_for_theme_version = '1.12.0'; // increment this number with each new release modal
+    if ( !is_user_logged_in() ){
+        return;
+    }
+    $url = dt_get_url_path();
+    //bail if not an a D.T front end page.
+    if ( !is_archive() && !is_single() && !isset( apply_filters( "desktop_navbar_menu_options", [] )[str_replace( '/', '', $url )] ) ){
+        return;
+    }
+    $show_notification_for_theme_version = '1.14.0'; // increment this number with each new release modal
 
     $theme_version = wp_get_theme()->version;
     $last_release_notification = get_user_meta( get_current_user_id(), 'dt_release_notification', true );

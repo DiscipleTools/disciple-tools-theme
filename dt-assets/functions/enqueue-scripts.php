@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 /**
  * Load scripts, in a way that implements cache-busting
@@ -85,7 +85,7 @@ function dt_site_scripts() {
     dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
 
     // Comment reply script for threaded comments
-    if ( is_singular() && comments_open() && ( get_option( 'thread_comments' ) == 1 )) {
+    if ( is_singular() && comments_open() && ( get_option( 'thread_comments' ) == 1 ) ) {
         wp_enqueue_script( 'comment-reply' );
     }
 
@@ -148,7 +148,7 @@ function dt_site_scripts() {
     $post_types = DT_Posts::get_post_types();
     if ( is_singular( $post_types ) ) {
         $post = DT_Posts::get_post( get_post_type(), get_the_ID() );
-        if ( !is_wp_error( $post )){
+        if ( !is_wp_error( $post ) ){
             $post_settings = DT_Posts::get_post_settings( $post_type );
             dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.min.js', array( 'jquery' ), true );
@@ -166,7 +166,6 @@ function dt_site_scripts() {
                 'comments', 'commentsSettings', [
                     "post" => get_post(),
                     'post_with_fields' => $post,
-                    'txt_created' => __( "Created record on {}", "disciple_tools" ),
                     'template_dir' => get_template_directory_uri(),
                     'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : "",
                     'translations' => [
@@ -230,13 +229,11 @@ function dt_site_scripts() {
     if ( 'settings' === $url_path ) {
 
         $dependencies = [ 'jquery', 'jquery-ui', 'lodash', 'moment' ];
-        $contact_id = dt_get_associated_user_id( get_current_user_id(), 'user' );
-        $contact = [];
+        $contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
         if ( DT_Mapbox_API::get_key() ) {
             DT_Mapbox_API::load_mapbox_search_widget_users();
             $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';
-            $contact = DT_Posts::get_post( 'contacts', intval( $contact_id ), false, false );
         } else {
             DT_Mapping_Module::instance()->drilldown_script();
             $dependencies[] = 'mapping-drill-down';
@@ -252,7 +249,7 @@ function dt_site_scripts() {
                 'template_dir'          => get_template_directory_uri(),
                 'associated_contact_id' => $contact_id,
                 'translations'          => apply_filters( 'dt_settings_js_translations', [
-                    'delete' => __( 'delete', 'disciple_tools' ),
+                    'delete' => __( 'Delete', 'disciple_tools' ),
                     'responsible_for_locations' => __( "Locations you are responsible for", 'disciple_tools' ),
                     'add' => __( 'Add', 'disciple_tools' ),
                     'save' => __( 'Save', 'disciple_tools' ),
@@ -283,8 +280,9 @@ function dt_site_scripts() {
 
     $is_new_post = strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types );
 
+    $path_without_params = untrailingslashit( dt_get_url_path( true ) );
     //list page
-    if ( !get_post_type() && in_array( $post_type, $post_types ) && !$is_new_post ){
+    if ( !get_post_type() && in_array( $path_without_params, $post_types ) ){
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $translations = [
@@ -318,7 +316,7 @@ function dt_site_scripts() {
         }
     }
 
-    if ($is_new_post){
+    if ( $is_new_post ){
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){
@@ -337,7 +335,7 @@ function dt_site_scripts() {
     dt_theme_enqueue_script( 'dt-advanced-search', 'dt-assets/js/advanced-search.js', array( 'jquery' ), true );
     wp_localize_script( 'dt-advanced-search', 'advanced_search_settings', array(
         'template_dir_uri' => esc_html( get_template_directory_uri() ),
-        'fetch_more_text' => __( 'load more', 'disciple_tools' ) // Support translations
+        'fetch_more_text' => __( 'Load More', 'disciple_tools' ) // Support translations
     ) );
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );

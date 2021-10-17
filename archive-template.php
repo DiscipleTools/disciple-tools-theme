@@ -20,11 +20,11 @@ dt_please_log_in();
              class="second-bar list-actions-bar">
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
                 <a class="button dt-green create-post-desktop" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
+                    <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php echo esc_html( sprintf( _x( "Create New %s", "Create New record", 'disciple_tools' ), $post_settings["label_singular"] ?? $post_type ) ) ?></span>
                 </a>
                 <a class="button filter-posts-desktop" data-open="filter-modal">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
+                    <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "Filters", 'disciple_tools' ) ?></span>
                 </a>
                 <?php do_action( "archive_template_action_bar_buttons", $post_type ) ?>
@@ -58,7 +58,7 @@ dt_please_log_in();
                     </a>
                 </div>
                 <a class="button" id="search">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
+                    <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
                 </a>
             </div>
@@ -100,13 +100,13 @@ dt_please_log_in();
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
         </a>
         <a class="button filter-posts-mobile" data-open="filter-modal">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
         </a>
         <a class="button" id="open-search">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
             <div class="search-wrapper">
@@ -189,7 +189,7 @@ dt_please_log_in();
                     <div class="section-body">
                         <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
                         <div style="margin-bottom: 5px">
-                            <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                            <a data-open="filter-modal"><img class="dt-blue-icon dt-icon" style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
                         </div>
                         <div class="custom-filters"></div>
                     </div>
@@ -262,7 +262,7 @@ dt_please_log_in();
                         ?>
                         <ul class="ul-no-bullets" style="">
                         <?php foreach ( $post_settings["fields"] as $field_key => $field_values ):
-                            if ( !empty( $field_values["hidden"] )){
+                            if ( !empty( $field_values["hidden"] ) ){
                                 continue;
                             }
                             ?>
@@ -326,7 +326,7 @@ dt_please_log_in();
                                         </div>
                                         <select id="overall_status" class="select-field">
                                             <option></option>
-                                            <?php foreach ($field_options["overall_status"]["default"] as $key => $option){
+                                            <?php foreach ( $field_options["overall_status"]["default"] as $key => $option ){
                                                 $value = $option["label"] ?? "";?>
                                                     <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
                                             <?php } ?>
@@ -454,25 +454,30 @@ dt_please_log_in();
                                     </div>
                                     <?php
                                 }
-                                $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status','tags' ];
-                                foreach ( $field_options as $field_option => $value ) {
-                                    if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) ) { ?>
-                                        <div class="cell small-12 medium-<?php echo esc_attr( $value["type"] === "multi_select" ? "12" : "4" ) ?>">
+                                //move multi_select fields to the end
+                                function multiselect_at_end( $a, $b ){
+                                    return ( $a["type"] === "multi_select" && ( $a["display"] ?? "" ) !== "typeahead" ) ? 1 : 0;
+                                };
+                                uasort( $field_options, "multiselect_at_end" );
+                                $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status' ];
+                                $allowed_types = [ "user_select", "multi_select", "key_select", "date", "location", "location_meta", "connection", "tags", "text", "textarea", "number" ];
+                                foreach ( $field_options as $field_option => $value ) :
+                                    if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && in_array( $value["type"], $allowed_types )
+                                        && $value['type'] != "communication_channel" && empty( $value["hidden"] ) ) : ?>
+                                        <div class="cell small-12 medium-<?php echo esc_attr( ( $value["type"] === "multi_select" && ( $value["display"] ?? "" ) !== "typeahead" ) ? "12" : "4" ) ?>">
                                             <?php $field_options[$field_option]["custom_display"] = false;
                                             render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
                                         </div>
-                                    <?php }
-                                }?>
+                                    <?php endif;
+                                endforeach;
+                                ?>
                             </div>
                         </div>
 
-                        <button class="button dt-green" id="bulk_edit_submit"><span id="bulk_edit_submit_text" style="    text-transform:capitalize">Update <?php
-                        if ( $post_type == "contacts" ) {
-                            esc_html_e( 'Contacts', 'disciple_tools' );
-                        } elseif ( $post_type == "groups" ) {
-                            esc_html_e( 'Groups', 'disciple_tools' );
-                        }
-                        ?></span>
+                        <button class="button dt-green" id="bulk_edit_submit">
+                            <span id="bulk_edit_submit_text" style="    text-transform:capitalize">
+                                <?php echo esc_html( sprintf( __( "Update %s", "disciple_tools" ), $post_settings["label_plural"] ) ); ?>
+                            </span>
                         <span id="bulk_edit_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
                         </button>
                     </div>
@@ -508,14 +513,22 @@ dt_please_log_in();
                                         }
                                     }
                                     $columns = array_unique( array_merge( $fields_to_show_in_table, $columns ) );
+                                    if ( in_array( 'favorite', $columns ) ) {
+                                        ?>
+                                        <th style="width:36px; background-image:none; cursor:default"></th>
+                                        <?php
+                                    }
                                     foreach ( $columns as $field_key ):
-                                        if ( $field_key === "name" ): ?>
-                                            <th class="all" data-id="name"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
-                                        <?php elseif ( isset( $post_settings["fields"][$field_key]["name"] ) ) : ?>
-                                            <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
-                                                <?php echo esc_html( $post_settings["fields"][$field_key]["name"] ) ?>
-                                            </th>
-                                        <?php endif;
+                                        if ( ! in_array( $field_key, [ 'favorite' ] ) ):
+                                            if ( $field_key === "name" ): ?>
+                                                <th class="all"
+                                                    data-id="name"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
+                                            <?php elseif ( isset( $post_settings["fields"][ $field_key ]["name"] ) ) : ?>
+                                                <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
+                                                    <?php echo esc_html( $post_settings["fields"][ $field_key ]["name"] ) ?>
+                                                </th>
+                                            <?php endif;
+                                        endif;
                                     endforeach ?>
                                 </tr>
                             </thead>
@@ -553,8 +566,8 @@ dt_please_log_in();
                     uasort( $field_options, function ( $a, $b ){
                         return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
                     });
-                    foreach ( $field_options as $field_key => $field){
-                        if ( $field_key && in_array( $field["type"] ?? "", $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
+                    foreach ( $field_options as $field_key => $field ){
+                        if ( $field_key && in_array( $field["type"] ?? "", $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] ) ){
                             $fields[] = $field_key;
                         }
                     }

@@ -17,7 +17,7 @@ if ( isset( $_POST['user_update_nonce'] ) ) {
 /* Build variables for page */
 $dt_user = wp_get_current_user(); // Returns WP_User object
 $dt_user_meta = get_user_meta( $dt_user->ID ); // Full array of user meta data
-$dt_user_contact_id = dt_get_associated_user_id( $dt_user->ID, 'user' );
+$dt_user_contact_id = Disciple_Tools_Users::get_contact_for_user( $dt_user->ID );
 
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings
@@ -215,7 +215,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                                 <!-- gender -->
                                 <strong style="display: inline-block"><?php echo esc_html( $contact_fields[$field_key]["name"] ) ?></strong>
-                                <p><?php echo esc_html( $user_field ); ?></p>
+                                <p><?php echo esc_html( isset( $contact_fields[$field_key]["default"][$user_field]["label"] ) ? $contact_fields[$field_key]["default"][$user_field]["label"] : $user_field ); ?></p>
                             </div>
                         </div>
 
@@ -634,7 +634,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     </label></td>
                                     <td>
                                         <select class="select-field" id="<?php echo esc_html( $field_key ); ?>" style="width:auto; display: block">
-                                            <?php foreach ($contact_fields[$field_key]["default"] as $option_key => $option_value):
+                                            <?php foreach ( $contact_fields[$field_key]["default"] as $option_key => $option_value ):
                                                 $selected = $user_field === $option_key; ?>
                                                 <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
                                                 <?php echo esc_html( $option_value["label"] ) ?>

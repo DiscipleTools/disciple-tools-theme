@@ -14,7 +14,7 @@
 <use xlink:href="#path0_fill" fill="white" transform="translate(-995.214 357.787)"/>
 </mask>
 <g mask="url(#mask0_outline_ins)">
-<use xlink:href="#path1_stroke_2x" transform="translate(-995.214 357.787)" fill="#333333"/>
+<use xlink:href="#path1_stroke_2x" transform="translate(-995.214 357.787)" fill="#000000"/>
 </g>
 </g>
 </g>
@@ -24,7 +24,7 @@
 <use xlink:href="#path2_fill" fill="white" transform="translate(-1002 351)"/>
 </mask>
 <g mask="url(#mask1_outline_ins)">
-<use xlink:href="#path3_stroke_2x" transform="translate(-1002 351)" fill="#333333"/>
+<use xlink:href="#path3_stroke_2x" transform="translate(-1002 351)" fill="#000000"/>
 </g>
 </g>
 </g>

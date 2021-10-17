@@ -906,7 +906,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $this->meta_box_content( 'non_wp' );
             ?>
             <p id="description">
-                The site link system is built to easily connect Disciple Tools systems together, but can be extended to provide token validation
+                The site link system is built to easily connect Disciple.Tools systems together, but can be extended to provide token validation
                 for other system integrations. Please refer to our <a href="https://github.com/DiscipleTools/disciple-tools-theme/wiki">developer wiki</a> for more information.
             </p>
             <?php
@@ -1287,9 +1287,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     if ( is_wp_error( $result ) ) {
                         // Second request failed too. Return appropriate error
                         $error_message = $result->get_error_message() ?? '';
-                        if (strpos( $error_message, 'not resolve' ) > -1 || strpos( $error_message, 'timed out' ) > -1) {
+                        if ( strpos( $error_message, 'not resolve' ) > -1 || strpos( $error_message, 'timed out' ) > -1 ) {
                             return new WP_Error( "site_check_error", $not_found, [ 'status' => 400 ] );
-                        } else if ( strpos( $error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1 || strpos( $error_message, 'certificate verification failed' ) > -1) {
+                        } else if ( strpos( $error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1 || strpos( $error_message, 'certificate verification failed' ) > -1 ) {
                             return new WP_Error( "site_check_error", $no_ssl, [ 'status' => 400 ] );
                         }
                         return $result;
@@ -1382,12 +1382,12 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          */
         public static function get_real_ip_address() {
             $ip = '';
-            if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ))   //check ip from share internet
+            if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) )   //check ip from share internet
             {
                 // @codingStandardsIgnoreLine
                 $ip = $_SERVER['HTTP_CLIENT_IP'];
             }
-            elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ))   //to check ip is pass from proxy
+            elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) )   //to check ip is pass from proxy
             {
                 // @codingStandardsIgnoreLine
                 $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];

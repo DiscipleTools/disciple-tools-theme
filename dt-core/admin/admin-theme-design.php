@@ -32,7 +32,7 @@ if ( is_admin() ) {
  */
 function dt_post_type_menu() {
     $image_url = 'dashicons-admin-page';
-    add_menu_page( __( 'Post Types (DT)', 'disciple_tools' ), __( 'Post Types (DT)', 'disciple_tools' ), 'manage_dt', 'dt_post_types', '', $image_url, 5 );
+    add_menu_page( __( 'Post Types (D.T)', 'disciple_tools' ), __( 'Post Types (D.T)', 'disciple_tools' ), 'manage_dt', 'dt_post_types', '', $image_url, 5 );
 }
 
 /**

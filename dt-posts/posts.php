@@ -276,16 +276,16 @@ class Disciple_Tools_Posts
 
         // Build variables
         $p2p_type = $activity->meta_key;
-        if ($p2p_type === "baptizer_to_baptized"){
-            if ($action === "connected to"){
+        if ( $p2p_type === "baptizer_to_baptized" ){
+            if ( $action === "connected to" ){
                 $object_note_to = sprintf( esc_html_x( 'Baptized %s', 'Baptized contact1', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( 'Baptized by %s', 'Baptized by contact1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'Did not baptize %s', 'Did not baptize contact1', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( 'Not baptized by %s', 'Not baptized by contact1', 'disciple_tools' ), $to_title );
             }
-        } else if ($p2p_type === "contacts_to_groups"){
-            if ($action == "connected to"){
+        } else if ( $p2p_type === "contacts_to_groups" ){
+            if ( $action == "connected to" ){
                 $object_note_to = sprintf( esc_html_x( '%s added to members', 'contact1 added to members', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( 'Added to group %s', 'Added to group group1', 'disciple_tools' ), $to_title );
             } else {
@@ -293,48 +293,48 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( 'Removed from group %s', 'Removed from group group1', 'disciple_tools' ), $to_title );
             }
         }
-        else if ( $p2p_type === "contacts_to_contacts"){
-            if ($action === "connected to"){
+        else if ( $p2p_type === "contacts_to_contacts" ){
+            if ( $action === "connected to" ){
                 $object_note_to = sprintf( esc_html_x( 'Coaching %s', 'Coaching contact1', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( 'Coached by %s', 'Coached by contact1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'No longer coaching %s', 'No longer coaching contact1', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( 'No longer coached by %s', 'No longer coached by contact1', 'disciple_tools' ), $to_title );
             }
-        } else if ( $p2p_type === "contacts_to_subassigned"){
-            if ($action === "connected to"){
+        } else if ( $p2p_type === "contacts_to_subassigned" ){
+            if ( $action === "connected to" ){
                 $object_note_to = sprintf( esc_html_x( 'Sub-assigned %s', 'Sub-assigned contact1', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( 'Sub-assigned on %s', 'Sub-assigned on contact1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'Removed sub-assigned %s', 'Removed sub-assigned contact1', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( 'No longer sub-assigned on %s', 'No longer sub-assigned on contact1', 'disciple_tools' ), $to_title );
             }
-        } else if ( $p2p_type === "contacts_to_peoplegroups" || $p2p_type === "groups_to_peoplegroups"){
-            if ($action == "connected to"){
+        } else if ( $p2p_type === "contacts_to_peoplegroups" || $p2p_type === "groups_to_peoplegroups" ){
+            if ( $action == "connected to" ){
                 $object_note_to = sprintf( esc_html_x( '%1$s added as people group on %2$s', 'Shaikh added as people group on contact1', 'disciple_tools' ), $to_title, $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s added to people groups', 'Shaikh added to people groups', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( '%1$s removed from people groups on %2$s', 'Shaikh removed from people groups on contact1', 'disciple_tools' ), $to_title, $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s removed from people groups', 'Shaikh removed from people groups', 'disciple_tools' ), $to_title );
             }
-        } else if ( $p2p_type === "groups_to_leaders"){
-            if ($action == "connected to"){
+        } else if ( $p2p_type === "groups_to_leaders" ){
+            if ( $action == "connected to" ){
                 $object_note_to = sprintf( esc_html_x( '%1$s added as leader on %2$s', 'contact1 added as leader on group1', 'disciple_tools' ), $to_title, $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s added to leaders', 'contact1 added to leaders', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( '%1$s removed from leaders on %2$s', 'contact1 removed from leaders on group1', 'disciple_tools' ), $to_title, $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s removed from leaders', 'contact1 removed from leaders', 'disciple_tools' ), $to_title );
             }
-        } else if ( $p2p_type === "groups_to_coaches"){
-            if ($action == "connected to"){
+        } else if ( $p2p_type === "groups_to_coaches" ){
+            if ( $action == "connected to" ){
                 $object_note_to = sprintf( esc_html_x( '%1$s added as coach on %2$s', 'contact1 added as coach on group1', 'disciple_tools' ), $to_title, $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s added to coaches', 'contact1 added to coaches', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( '%1$s removed from coaches on %2$s', 'contact1 removed from coaches on group2', 'disciple_tools' ), $to_title, $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s removed from coaches', 'contact1 removed from coaches', 'disciple_tools' ), $to_title );
             }
-        } else if ( $p2p_type === "groups_to_groups"){
-            if ($action == "connected to"){
+        } else if ( $p2p_type === "groups_to_groups" ){
+            if ( $action == "connected to" ){
                 $object_note_to = sprintf( esc_html_x( '%s added to child groups', 'group2 added to child groups', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s added to parent groups', 'group1 added to parent groups', 'disciple_tools' ), $to_title );
             } else {
@@ -342,16 +342,16 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( '%s removed from parent groups', 'group1 removed from parent groups', 'disciple_tools' ), $to_title );
             }
         }
-        else if ( $p2p_type === "groups_to_peers"){
-            if ($action == "connected to"){
+        else if ( $p2p_type === "groups_to_peers" ){
+            if ( $action == "connected to" ){
                 $object_note_to = sprintf( esc_html_x( '%s added to peer groups', 'group1 added to peer groups', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s added to peer groups', 'group1 added to peer groups', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( '%s removed from peer groups', 'group1 removed from peer groups', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s removed from peer groups', 'group1 removed from peer groups', 'disciple_tools' ), $to_title );
             }
-        } else if ( $p2p_type === "contacts_to_relation"){
-            if ($action == "connected to"){
+        } else if ( $p2p_type === "contacts_to_relation" ){
+            if ( $action == "connected to" ){
                 $object_note_to = sprintf( esc_html_x( 'Connected to %s', 'Connected to contact1', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( 'Connected to %s', 'Connected to contact1', 'disciple_tools' ), $to_title );
             } else {
@@ -359,7 +359,7 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( 'Removed connection to %s', 'Removed connection to contact1', 'disciple_tools' ), $to_title );
             }
         } else {
-            if ($action == "connected to"){
+            if ( $action == "connected to" ){
                 $object_note_to = sprintf( esc_html_x( 'Connected to %s', 'Connected to contact1', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( 'Connected to %s', 'Connected to contact1', 'disciple_tools' ), $to_title );
             } else {
@@ -380,19 +380,19 @@ class Disciple_Tools_Posts
         $message = "";
         if ( $activity->action == "field_update" ){
             if ( isset( $fields[$activity->meta_key] ) ){
-                if ( $activity->meta_key === "assigned_to"){
+                if ( $activity->meta_key === "assigned_to" ){
                     $meta_array = explode( '-', $activity->meta_value ); // Separate the type and id
                     if ( isset( $meta_array[1] ) ) {
                         $user = get_user_by( "ID", $meta_array[1] );
                         $message = sprintf( _x( 'Assigned to: %s', 'Assigned to: User1', 'disciple_tools' ), ( $user ? $user->display_name : __( "Nobody", 'disciple_tools' ) ) );
                     }
                 }
-                if ( $fields[$activity->meta_key]["type"] === "text"){
+                if ( $fields[$activity->meta_key]["type"] === "text" ){
                     if ( !empty( $activity->meta_value ) ){
                         $message = sprintf( _x( '%1$s changed to %2$s', "field1 changed to 'text'", 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
                     }
                 }
-                if ( $fields[$activity->meta_key]["type"] === "textarea"){
+                if ( $fields[$activity->meta_key]["type"] === "textarea" ){
                     if ( !empty( $activity->meta_value ) ){
                         $message = sprintf( _x( '%1$s changed to %2$s', "field1 changed to 'text'", 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
                     }
@@ -428,12 +428,12 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "boolean" ){
                     if ( $activity->meta_value === true || $activity->meta_value === '1' ){
-                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "yes", 'disciple_tools' );
+                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "Yes", 'disciple_tools' );
                     } else {
-                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "no", 'disciple_tools' );
+                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "No", 'disciple_tools' );
                     }
                 }
-                if ($fields[$activity->meta_key]["type"] === "number"){
+                if ( $fields[$activity->meta_key]["type"] === "number" ){
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                 }
                 if ( $fields[$activity->meta_key]["type"] === "date" ){
@@ -481,15 +481,15 @@ class Disciple_Tools_Posts
                     if ( !empty( $name ) && !empty( $original ) ){
                         $object_note = $name . ' "'. $original .'" ';
                         if ( is_array( $meta_value ) ){
-                            foreach ($meta_value as $k => $v){
+                            foreach ( $meta_value as $k => $v ){
                                 $prev_value = $activity->old_value;
-                                if (is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v){
+                                if ( is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v ){
                                     continue;
                                 }
-                                if ($k === "verified") {
+                                if ( $k === "verified" ) {
                                     $object_note .= $v ? _x( "verified", 'message', 'disciple_tools' ) : _x( "not verified", 'message', 'disciple_tools' );
                                 }
-                                if ($k === "invalid") {
+                                if ( $k === "invalid" ) {
                                     $object_note .= $v ? _x( "invalidated", 'message', 'disciple_tools' ) : _x( "not invalidated", 'message', 'disciple_tools' );
                                 }
                                 $object_note .= ', ';
@@ -507,7 +507,7 @@ class Disciple_Tools_Posts
                     if ( isset( $channel[1] ) ) {
                         $channel_key = "";
                         for ( $i = 1; $i < $channel_key_count; $i++ ) {
-                            if ($channel_key) {
+                            if ( $channel_key ) {
                                 $channel_key = $channel_key . '_' . $channel[$i];
                             } else {
                                 $channel_key = $channel[$i];
@@ -526,7 +526,7 @@ class Disciple_Tools_Posts
                     }
                 } else if ( $activity->meta_key == "title" ){
                     $message = sprintf( _x( "Name changed to: %s", 'message', 'disciple_tools' ), $activity->meta_value );
-                } else if ( $activity->meta_key === "_sample"){
+                } else if ( $activity->meta_key === "_sample" ){
                     $message = _x( "Created from Demo Plugin", 'message', 'disciple_tools' );
                 } else {
                     $message = $activity->meta_key . ": " . $activity->meta_value;
@@ -541,7 +541,7 @@ class Disciple_Tools_Posts
         } elseif ( $activity->object_subtype === "p2p" ){
             $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action, $post_type_settings["fields"] );
         } elseif ( $activity->object_subtype === "share" ){
-            if ($activity->action === "share"){
+            if ( $activity->action === "share" ){
                 $message = sprintf( _x( "Shared with %s", 'message', 'disciple_tools' ), dt_get_user_display_name( $activity->meta_value ) );
             } else if ( $activity->action === "remove" ){
                 $message = sprintf( _x( "Unshared with %s", 'message', 'disciple_tools' ), dt_get_user_display_name( $activity->meta_value ) );
@@ -980,7 +980,7 @@ class Disciple_Tools_Posts
                 } else {
                     return new WP_Error( __FUNCTION__, "One or more fields do not exist", [ 'key' => $query_key, 'status' => 400 ] );
                 }
-                if ( !empty( $where_sql )){
+                if ( !empty( $where_sql ) ){
                     $index_pos++;
 
                     $args["where_sql"] .= ( ( $index_pos > 1 ) ? $operator : " " ) . " (";
@@ -1021,24 +1021,24 @@ class Disciple_Tools_Posts
         $post_fields = $post_settings["fields"];
 
         $search = "";
-        if ( isset( $query["text"] )){
+        if ( isset( $query["text"] ) ){
             $search = sanitize_text_field( $query["text"] );
             unset( $query["text"] );
         }
         $offset = 0;
-        if ( isset( $query["offset"] )){
+        if ( isset( $query["offset"] ) ){
             $offset = esc_sql( sanitize_text_field( $query["offset"] ) );
             unset( $query["offset"] );
         }
         $limit = 100;
-        if ( isset( $query["limit"] )){
+        if ( isset( $query["limit"] ) ){
             $limit = esc_sql( sanitize_text_field( $query["limit"] ) );
             $limit = MIN( $limit, 1000 );
             unset( $query["limit"] );
         }
         $sort = "";
         $sort_dir = "asc";
-        if ( isset( $query["sort"] )){
+        if ( isset( $query["sort"] ) ){
             $sort = esc_sql( sanitize_text_field( $query["sort"] ) );
             if ( strpos( $sort, "-" ) === 0 ){
                 $sort_dir = "desc";
@@ -1047,11 +1047,11 @@ class Disciple_Tools_Posts
             unset( $query["sort"] );
         }
         $fields_to_search = [];
-        if ( isset( $query["fields_to_search"] )){
+        if ( isset( $query["fields_to_search"] ) ){
             $fields_to_search = $query["fields_to_search"];
             unset( $query ["fields_to_search"] );
         }
-        if ( isset( $query["combine"] )){
+        if ( isset( $query["combine"] ) ){
             unset( $query["combine"] ); //remove deprecated combine
         }
 
@@ -1062,7 +1062,7 @@ class Disciple_Tools_Posts
         $joins = "";
         $post_query = "";
 
-        if ( !empty( $search )){
+        if ( !empty( $search ) ){
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
 
             if ( empty( $fields_to_search ) ) {
@@ -1103,7 +1103,7 @@ class Disciple_Tools_Posts
                     AND meta_value LIKE '%" . esc_sql( $search ) . "%'
                     ) ";
                 } else {
-                    if ( in_array( 'comment', $fields_to_search )) {
+                    if ( in_array( 'comment', $fields_to_search ) ) {
                         if ( substr( $post_query, -6 ) !== 'AND ( ' ) {
                             $post_query .= "OR ";
                         }
@@ -1141,7 +1141,7 @@ class Disciple_Tools_Posts
         }
 
         $sort_sql = "";
-        if ( $sort === "name" || $sort === "post_title"){
+        if ( $sort === "name" || $sort === "post_title" ){
             $sort_sql = "p.post_title  " . $sort_dir;
         } elseif ( $sort === "post_date" ){
             $sort_sql = "p.post_date  " . $sort_dir;
@@ -1166,7 +1166,7 @@ class Disciple_Tools_Posts
                 }
                 $sort_sql .= "else 98 end ";
                 $sort_sql .= $sort_dir;
-            } elseif ( $post_fields[$sort]["type"] === "multi_select" && !empty( $post_fields[$sort]["default"] )){
+            } elseif ( $post_fields[$sort]["type"] === "multi_select" && !empty( $post_fields[$sort]["default"] ) ){
                 $sort_sql = "CASE ";
                 $joins = "";
                 $keys = array_reverse( array_keys( $post_fields[$sort]["default"] ) );
@@ -1217,7 +1217,7 @@ class Disciple_Tools_Posts
         ];
         $permissions = apply_filters( "dt_filter_access_permissions", $permissions, $post_type );
 
-        if ( $check_permissions && !empty( $permissions )){
+        if ( $check_permissions && !empty( $permissions ) ){
             $query[] = $permissions;
         }
 
@@ -1432,7 +1432,7 @@ class Disciple_Tools_Posts
 
         foreach ( $fields as $field_key => $field ){
             if ( isset( $field_settings[$field_key] ) && ( in_array( $field_settings[$field_key]["type"], [ "multi_select", "tags" ] ) ) ){
-                if ( !isset( $field["values"] )){
+                if ( !isset( $field["values"] ) ){
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
                 if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
@@ -1440,7 +1440,7 @@ class Disciple_Tools_Posts
                     $existing_contact[ $field_key ] = [];
                 }
                 foreach ( $field["values"] as $value ){
-                    if ( isset( $value["value"] )){
+                    if ( isset( $value["value"] ) ){
                         if ( isset( $value["delete"] ) && $value["delete"] == true ){
                             if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
                                 if ( !$current_user_id ){
@@ -1507,7 +1507,7 @@ class Disciple_Tools_Posts
                     $existing_post[ $field_key ] = [];
                 }
                 foreach ( $field["values"] as $value ){
-                    if ( isset( $value["value"] )){
+                    if ( isset( $value["value"] ) ){
                         if ( isset( $value["delete"] ) && $value["delete"] == true ){
                             delete_post_meta( $post_id, $field_key, $value["value"] );
                         } else {
@@ -1531,14 +1531,19 @@ class Disciple_Tools_Posts
                 delete: true
              *
              * Add by grid_id
-             * location_grid => 12345
+             * grid_id => 12345
              *
-             * Add by Mabox Response
+             * Add by Mapbox Response
              * lng => 0,
              * lat => 0,
              * level => (country,local,place,nieghborhood,address,admin0,admin1,admin2,admin3,admin4, or admin5),
              * label: readable address,
              * source: (ip, user),
+             *
+             * Add by Longitude, Latitude
+             * lng => 20
+             * lat => 30
+             * source: (ip, user) (optional)
              *
              ********************************************************/
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location_meta" ) ){
@@ -1551,7 +1556,7 @@ class Disciple_Tools_Posts
                 if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
                     delete_post_meta( $post_id, 'location_grid' );
                     delete_post_meta( $post_id, 'location_grid_meta' );
-                    Location_Grid_Meta::delete_location_grid_meta( $post_id, 'all', null );
+                    Location_Grid_Meta::delete_location_grid_meta( $post_id, 'all', 0 );
                     $existing_post[ $field_key ] = [];
                 }
 
@@ -1563,12 +1568,13 @@ class Disciple_Tools_Posts
                         Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value["grid_meta_id"], $existing_post );
                     }
 
-                    // is new but has provided grid_id
+                    // Add by grid_id
                     else if ( isset( $value["grid_id"] ) && ! empty( $value["grid_id"] ) ) {
                         $grid = $geocoder->query_by_grid_id( $value["grid_id"] );
                         if ( $grid ) {
                             $location_meta_grid = [];
 
+                            // creates the full record from the grid_id
                             Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
                             $location_meta_grid['post_id'] = $post_id;
                             $location_meta_grid['post_type'] = $post_type;
@@ -1584,9 +1590,8 @@ class Disciple_Tools_Posts
                             }
                         }
                     }
-                    // new
-                    else {
-
+                    // Add by Mapbox Response
+                    else if ( isset( $value["label"], $value["level"], $value["lng"], $value["lat"] ) ) {
                         Location_Grid_Meta::validate_location_grid_meta( $value );
 
                         if ( $value['level'] === 'country' ) {
@@ -1603,6 +1608,30 @@ class Disciple_Tools_Posts
 
                             $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $value );
                             if ( is_wp_error( $potential_error ) ){
+                                return $potential_error;
+                            }
+                        }
+                    }
+                    // Add by Longitude, Latitude
+                    else if ( isset( $value["lng"], $value["lat"] ) ) {
+                        $grid = $geocoder->get_grid_id_by_lnglat( $value['lng'], $value['lat'] );
+                        if ( $grid ) {
+                            $location_meta_grid = [];
+
+                            $full_name = Disciple_Tools_Mapping_Queries::get_full_name_by_grid_id( $grid["grid_id"] );
+
+                            // creates the full record from the grid_id
+                            Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                            $location_meta_grid['post_id'] = $post_id;
+                            $location_meta_grid['post_type'] = $post_type;
+                            $location_meta_grid['grid_id'] = $grid["grid_id"];
+                            $location_meta_grid['lng'] = $grid["longitude"];
+                            $location_meta_grid['lat'] = $grid["latitude"];
+                            $location_meta_grid['level'] = $grid["level_name"];
+                            $location_meta_grid['label'] = $full_name;
+
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                            if ( is_wp_error( $potential_error ) ) {
                                 return $potential_error;
                             }
                         }
@@ -1678,8 +1707,8 @@ class Disciple_Tools_Posts
                 }
             }
             foreach ( $values as $field ){
-                if ( isset( $field["delete"] ) && $field["delete"] == true){
-                    if ( !isset( $field["key"] )){
+                if ( isset( $field["delete"] ) && $field["delete"] == true ){
+                    if ( !isset( $field["key"] ) ){
                         return new WP_Error( __FUNCTION__, "missing key on: " . $details_key, [ 'status' => 400 ] );
                     }
                     //delete field
@@ -1725,7 +1754,7 @@ class Disciple_Tools_Posts
         global $wpdb;
         foreach ( $fields as $field_key => $field ) {
             if ( isset( $field_settings[ $field_key ] ) && ( $field_settings[ $field_key ]["type"] === "task" ) ) {
-                if ( !isset( $field["values"] )){
+                if ( !isset( $field["values"] ) ){
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
 
@@ -1821,7 +1850,7 @@ class Disciple_Tools_Posts
                         $field_value = false;
                     }
                 }
-                if ( $field_settings[ $field_key ]["type"] === "date" && !is_numeric( $fields[$field_key] )) {
+                if ( $field_settings[ $field_key ]["type"] === "date" && !is_numeric( $fields[$field_key] ) ) {
                         $field_value = strtotime( $fields[$field_key] );
                 } else {
                     $field_value = $fields[$field_key];
@@ -1932,12 +1961,12 @@ class Disciple_Tools_Posts
             $details = isset( $old_details ) ? $old_details : [];
             $new_value = false;
             foreach ( $values as $detail_key => $detail_value ) {
-                if ( !isset( $details[$detail_key] ) || $details[$detail_key] !== $detail_value){
+                if ( !isset( $details[$detail_key] ) || $details[$detail_key] !== $detail_value ){
                     $new_value = true;
                 }
                 $details[ $detail_key ] = $detail_value;
             }
-            if ($new_value){
+            if ( $new_value ){
                 update_post_meta( $post_id, $details_key, $details );
             }
         }
@@ -1949,19 +1978,19 @@ class Disciple_Tools_Posts
         //update connections (groups, locations, etc)
         foreach ( $post_settings["connection_types"] as $connection_type ){
             if ( isset( $fields[$connection_type] ) ){
-                if ( !isset( $fields[$connection_type]["values"] )){
+                if ( !isset( $fields[$connection_type]["values"] ) ){
                     return new WP_Error( __FUNCTION__, "Missing values field on connection: " . $connection_type, [ 'status' => 500 ] );
                 }
                 $existing_connections = [];
                 if ( isset( $existing_contact[$connection_type] ) ){
-                    foreach ( $existing_contact[$connection_type] as $connection){
+                    foreach ( $existing_contact[$connection_type] as $connection ){
                         $existing_connections[] = isset( $connection->ID ) ? $connection->ID : $connection["ID"];
                     }
                 }
                 //check for new connections
                 $connection_field = $fields[$connection_type];
                 $new_connections = [];
-                foreach ($connection_field["values"] as $connection_value ){
+                foreach ( $connection_field["values"] as $connection_value ){
                     if ( isset( $connection_value["value"] ) && !is_numeric( $connection_value["value"] ) ){
                         if ( filter_var( $connection_value["value"], FILTER_VALIDATE_EMAIL ) ){
                             $user = get_user_by( "email", $connection_value["value"] );
@@ -1981,23 +2010,25 @@ class Disciple_Tools_Posts
                         }
                     }
 
-                    if ( isset( $connection_value["value"] ) && is_numeric( $connection_value["value"] )){
+                    if ( isset( $connection_value["value"] ) && is_numeric( $connection_value["value"] ) ){
                         if ( isset( $connection_value["delete"] ) && $connection_value["delete"] == true ){
-                            if ( in_array( $connection_value["value"], $existing_connections )){
+                            if ( in_array( $connection_value["value"], $existing_connections ) ){
                                 $potential_error = self::remove_connection_from_post( $post_settings["post_type"], $post_id, $connection_type, $connection_value["value"] );
                                 if ( is_wp_error( $potential_error ) ) {
                                     return $potential_error;
                                 }
                             }
-                        } else if ( !empty( $connection_value["value"] )) {
+                        } else if ( !empty( $connection_value["value"] ) ) {
                             $new_connections[] = $connection_value["value"];
-                            if ( !in_array( $connection_value["value"], $existing_connections )){
-                                $potential_error = self::add_connection_to_post( $post_settings["post_type"], $post_id, $connection_type, $connection_value["value"] );
+                            if ( !in_array( $connection_value["value"], $existing_connections ) ){
+                                $potential_error = self::add_connection_to_post( $post_settings["post_type"], $post_id, $connection_type, $connection_value["value"], $connection_value["meta"] ?? [] );
                                 $existing_connections[] = $connection_value["value"];
                                 if ( is_wp_error( $potential_error ) ) {
                                     return $potential_error;
                                 }
                                 $fields["added_fields"][$connection_type] = $potential_error;
+                            } else if ( isset( $connection_value["meta"] ) ){
+                                self::update_connection_meta( $post_settings["post_type"], $existing_contact, $connection_type, $connection_value );
                             }
                         }
                     } else {
@@ -2007,8 +2038,8 @@ class Disciple_Tools_Posts
                 }
                 //check for deleted connections
                 if ( isset( $connection_field["force_values"] ) && $connection_field["force_values"] == true ){
-                    foreach ($existing_connections as $connection_value ){
-                        if ( !in_array( $connection_value, $new_connections )){
+                    foreach ( $existing_connections as $connection_value ){
+                        if ( !in_array( $connection_value, $new_connections ) ){
                             $potential_error = self::remove_connection_from_post( $post_settings["post_type"], $post_id, $connection_type, $connection_value );
                             if ( is_wp_error( $potential_error ) ) {
                                 return $potential_error;
@@ -2021,7 +2052,43 @@ class Disciple_Tools_Posts
         return $fields;
     }
 
-    private static function add_connection_to_post( string $post_type, int $post_id, string $field_key, int $value ){
+    private static function update_connection_meta( $post_type, $existing_contact, $field_key, $update_value ){
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        $connected_id = $update_value["value"];
+        global $wpdb;
+        if ( empty( $update_value["meta"] ) ){
+            return;
+        }
+        $continue = false;
+        foreach ( $update_value["meta"] as $meta_key => $meta_value ){
+            if ( !isset( $existing_contact[$field_key]["meta"][$meta_key] ) || $existing_contact[$field_key]["meta"][$meta_key] !== $meta_value ){
+                $continue = true;
+            }
+        }
+        if ( !$continue ){
+            return;
+        }
+        $p2p_id = null;
+        if ( $field_settings[$field_key]["p2p_direction"] === "to" || $field_settings[$field_key]["p2p_direction"] === "any" ){
+            $p2p_id = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_id FROM $wpdb->p2p WHERE p2p_to = %s AND p2p_from = %s AND p2p_type = %s", $existing_contact["ID"], $connected_id, $field_settings[$field_key]["p2p_key"] ) );
+            if ( empty( $p2p_id ) ){
+                $p2p_id = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_id FROM $wpdb->p2p WHERE p2p_to = %s AND p2p_from = %s AND p2p_type = %s", $existing_contact["ID"], $connected_id, $field_settings[$field_key]["p2p_key"] ) );
+            }
+        } elseif ( $field_settings[$field_key]["p2p_direction"] === "from" ){
+            $p2p_id = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_id FROM $wpdb->p2p WHERE p2p_to = %s AND p2p_from = %s AND p2p_type = %s", $existing_contact["ID"], $connected_id, $field_settings[$field_key]["p2p_key"] ) );
+        }
+        if ( $p2p_id ){
+            foreach ( $update_value["meta"] as $meta_key => $meta_value ){
+                if ( $meta_value === '' ){
+                    p2p_delete_meta( $p2p_id, $meta_key, $meta_value );
+                } else {
+                    p2p_update_meta( $p2p_id, $meta_key, $meta_value );
+                }
+            }
+        }
+    }
+
+    private static function add_connection_to_post( string $post_type, int $post_id, string $field_key, int $value, $meta = [] ){
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $connect = null;
         $field_setting = $post_settings["fields"][$field_key] ?? [];
@@ -2031,12 +2098,12 @@ class Disciple_Tools_Posts
         if ( $field_setting["p2p_direction"] === "to" || $field_setting["p2p_direction"] === "any" ) {
             $connect = p2p_type( $field_setting["p2p_key"] )->connect(
                 $value, $post_id,
-                [ 'date' => current_time( 'mysql' ) ]
+                $meta
             );
         } elseif ( $field_setting["p2p_direction"] === "from" ){
             $connect = p2p_type( $field_setting["p2p_key"] )->connect(
                 $post_id, $value,
-                [ 'date' => current_time( 'mysql' ) ]
+                $meta
             );
         }
         if ( is_wp_error( $connect ) ) {
@@ -2101,7 +2168,7 @@ class Disciple_Tools_Posts
             $meta_fields = get_post_custom( $post_id );
         }
         foreach ( $meta_fields as $key => $value ) {
-            if ( empty( $fields_to_return ) || in_array( $key, $fields_to_return ) || strpos( $key, "contact_" ) === 0) {
+            if ( empty( $fields_to_return ) || in_array( $key, $fields_to_return ) || strpos( $key, "contact_" ) === 0 ) {
                 //if is contact details and is in a channel
                 $key_without_ramdomizers = null;
                 if ( strpos( $key, "contact_" ) === 0 ){
@@ -2188,7 +2255,7 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
                     $fields[$key] = maybe_unserialize( $value[0] );
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'number' ) {
-                    $fields[$key] = maybe_unserialize( $value[0] ) + 0;
+                    $fields[$key] = maybe_unserialize( empty( $value[0] ) ? 0 : $value[0] ) + 0;
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
                     if ( isset( $value[0] ) && !empty( $value[0] ) ){
                         $fields[$key] = [
@@ -2220,7 +2287,7 @@ class Disciple_Tools_Posts
         }
 
         if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() ) {
-            if ( isset( $fields['location_grid_meta'] )){
+            if ( isset( $fields['location_grid_meta'] ) ){
                 $ids = dt_get_keys_map( $fields['location_grid'] ?? [], 'id' );
                 foreach ( $fields['location_grid_meta'] as $meta ) {
                     foreach ( ( $fields['location_grid'] ?? [] ) as $index => $grid ){
@@ -2318,38 +2385,115 @@ class Disciple_Tools_Posts
 
 
     /**
-     * Find and format all p2p connection fields for a record
+     * Get all connection fields on a list of records
      *
      * @param $field_settings
-     * @param $post_id
-     * @param array $fields
-     * @return array
+     * @param $records
+     * @param array $fields_to_return
      */
-    public static function get_all_connection_fields( $field_settings, $post_id, array &$fields ){
+    public static function get_all_connected_fields_on_list( $field_settings, &$records, array $fields_to_return = [] ){
         global $wpdb;
-        $posts = $wpdb->get_results( $wpdb->prepare( "
+        $post_ids = array_map( function ( $r ){
+            return $r["ID"];
+        }, $records );
+        $ids_sql = dt_array_to_sql( $post_ids );
+        $p2p_types = [];
+        $connection_fields = [];
+        foreach ( $field_settings as $field_key => $field_value ){
+            if ( $field_value["type"] === "connection" && ( empty( $fields_to_return ) || in_array( $field_key, $fields_to_return ) ) && !empty( $records ) ){
+                $p2p_types[$field_value["p2p_key"]] = $field_value;
+                $p2p_types[$field_value["p2p_key"]]["field_key"] = $field_key;
+                $connection_fields[$field_key] = $field_value;
+            }
+        }
+
+
+        /**
+         * get all the p2p row for the records
+         */
+        $connection_types_sql = dt_array_to_sql( array_keys( $p2p_types ) );
+        //phpcs:disable
+        //WordPress.WP.PreparedSQL.NotPrepare
+        $p2p_records = $wpdb->get_results = $wpdb->get_results( "
             SELECT *
             FROM $wpdb->p2p
-            WHERE p2p_to = %s
-            OR p2p_from = %s
-        ", esc_sql( $post_id ), esc_sql( $post_id ) ), ARRAY_A );
-        foreach ( $field_settings as $field_key => $field_value ){
-            if ( $field_value["type"] === "connection" && isset( $field_value["p2p_key"] ) ) {
-                if ( !isset( $fields[$field_key] ) ) {
-                    $fields[$field_key] = [];
+            WHERE p2p_to IN ( $ids_sql )
+            OR p2p_from IN ( $ids_sql )
+            AND p2p_type IN ( $connection_types_sql )
+        ", ARRAY_A );
+        //phpcs:enable
+
+
+        $connected_post_ids = [];
+        $p2p_values_mapped_by_post_id = [];
+        $p2p_ids = [];
+        foreach ( $p2p_records as $p2p_record_row ){
+            $connected_post_ids[] = $p2p_record_row["p2p_to"];
+            $connected_post_ids[] = $p2p_record_row["p2p_from"];
+            $p2p_values_mapped_by_post_id[$p2p_record_row["p2p_to"]][] = $p2p_record_row;
+            $p2p_values_mapped_by_post_id[$p2p_record_row["p2p_from"]][] = $p2p_record_row;
+            $p2p_ids[] = $p2p_record_row["p2p_id"];
+        }
+
+        /**
+         * Get post information for the connected items
+         */
+        $connected_post_ids_sql = dt_array_to_sql( array_unique( $connected_post_ids ) );
+        //phpcs:disable
+        //WordPress.WP.PreparedSQL.NotPrepare
+        $connected_posts = $wpdb->get_results("
+            SELECT ID, post_type, post_date_gmt, post_date, post_title
+            FROM $wpdb->posts p
+            WHERE p.ID in ( $connected_post_ids_sql )
+        ", ARRAY_A );
+        //phpcs:enable
+        $connected_posts_mapped = [];
+        foreach ( $connected_posts as $cp ){
+            $connected_posts_mapped[$cp["ID"]] = $cp;
+        }
+
+        /**
+         * Get meta values for connections
+         */
+        $p2p_ids_sql = dt_array_to_sql( $p2p_ids );
+        //phpcs:disable
+        //WordPress.WP.PreparedSQL.NotPrepare
+        $all_p2p_meta = $wpdb->get_results( "
+            SELECT *
+            FROM $wpdb->p2pmeta
+            WHERE p2p_id in ( $p2p_ids_sql )
+        ", ARRAY_A);
+        //phpcs:enable
+
+
+        //add connection values and connection meta to the records
+        foreach ( $records as &$record ){
+            foreach ( $connection_fields as $field_key => $field_value ){
+                if ( !isset( $record[$field_key] ) ) {
+                    $record[$field_key] = [];
                 }
-                foreach ( $posts as $post ){
-                    if ( $post["p2p_type"] === $field_value["p2p_key"] ){
-                        if ( ( $field_value["p2p_direction"] === "from" || $field_value["p2p_direction"] === "any" ) && $post["p2p_to"] != $post_id ) {
-                            $fields[$field_key][] = self::filter_wp_post_object_fields( get_post( $post["p2p_to"] ) );
-                        } else if ( ( $field_value["p2p_direction"] === "to" || $field_value["p2p_direction"] === "any" ) && $post["p2p_from"] != $post_id ) {
-                            $fields[$field_key][] = self::filter_wp_post_object_fields( get_post( $post["p2p_from"] ) );
+                foreach ( ( $p2p_values_mapped_by_post_id[$record["ID"]] ?? [] ) as $p2p_record ){
+                    if ( $p2p_record["p2p_type"] === $field_value["p2p_key"] ){
+                        $connection_id = 0;
+                        if ( ( $field_value["p2p_direction"] === "from" || $field_value["p2p_direction"] === "any" ) && $p2p_record["p2p_to"] != $record["ID"] ) {
+                            $connection_id = $p2p_record["p2p_to"];
+                        } else if ( ( $field_value["p2p_direction"] === "to" || $field_value["p2p_direction"] === "any" ) && $p2p_record["p2p_from"] != $record["ID"] ){
+                            $connection_id = $p2p_record["p2p_from"];
+                        }
+                        if ( $connection_id ){
+                            $connection_post = $connected_posts_mapped[$connection_id];
+                            $connection_meta = [];
+                            foreach ( $all_p2p_meta as $meta ){
+                                if ( $meta["p2p_id"] == $p2p_record["p2p_id"] ){
+                                    $connection_meta[$meta["meta_key"]] = $meta["meta_value"];
+                                }
+                            }
+                            $record[$field_key][] = self::filter_wp_post_object_fields( $connection_post, $connection_meta );
                         }
                     }
                 }
             }
         }
-        return $fields;
     }
 
     /**
@@ -2358,19 +2502,22 @@ class Disciple_Tools_Posts
      * @param object $post
      * @return array
      */
-    public static function filter_wp_post_object_fields( $post ){
+    public static function filter_wp_post_object_fields( $post, $meta = null ){
         $filtered_post = [
-            "ID" => $post->ID,
-            "post_type" => $post->post_type,
-            "post_date_gmt" => $post->post_date_gmt,
-            "post_date" => $post->post_date,
-            "post_title" => wp_specialchars_decode( $post->post_title ),
-            "permalink" => get_permalink( $post->ID )
+            "ID" => $post["ID"],
+            "post_type" => $post["post_type"],
+            "post_date_gmt" => $post["post_date_gmt"],
+            "post_date" => $post["post_date"],
+            "post_title" => wp_specialchars_decode( $post["post_title"] ),
+            "permalink" => get_permalink( $post["ID"] )
         ];
-        if ( $post->post_type === "peoplegroups" ){
+        if ( $meta ){
+            $filtered_post["meta"] = $meta;
+        }
+        if ( $post["post_type"] === "peoplegroups" ){
             $locale = get_user_locale();
-            $translation = get_post_meta( $post->ID, $locale, true );
-            $label  = ( $translation ? $translation : $post->post_title );
+            $translation = get_post_meta( $post["ID"], $locale, true );
+            $label = ( $translation ? $translation : $post["post_title"] );
             $filtered_post["label"] = $label;
         }
 

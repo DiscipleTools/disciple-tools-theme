@@ -477,7 +477,15 @@
               })
             } else if ( field_settings.type === "connection" ){
               values = field_value.map(v => {
-                return `${window.lodash.escape( v.post_title )}`;
+                let meta = []
+                if ( field_settings.meta_fields ){
+                  Object.keys(field_settings.meta_fields).forEach(key=>{
+                    if ( v.meta && v.meta[key] ){
+                      meta.push(v.meta[key])
+                    }
+                  })
+                }
+                return `${window.lodash.escape( v.post_title )}${meta.length? ` (${meta.join(',')})` : ''}`;
               })
             } else if ( field_settings.type === "boolean" ){
               if (field_key === "favorite") {
@@ -519,13 +527,19 @@
           if (values[0] === `<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`) {
             values[0] = '&#9733;'
           }
-          row_fields_html += `
+          let tmp_html = `
             <td title="${values.join(', ')}">
               <ul>
                 ${values_html}
               </ul>
             </td>
           `
+
+          if (field_key === "favorite") {
+            row_fields_html = tmp_html + row_fields_html;
+          } else {
+            row_fields_html += tmp_html;
+          }
         }
       })
 
@@ -656,18 +670,19 @@
     let fields_filtered = window.lodash.uniq(new_filter_labels.map(f=>f.field))
     fields_filtered.forEach(field=>{
       let type = window.lodash.get(list_settings, `post_type_settings.fields.${field}.type` )
-      if ( type === "connection" || type === "user_select" ){
-        const allConnections = $(`#${field} .all-connections`)
-        const withoutConnections = $(`#${field} .all-without-connections`)
         if (type === "connection") {
+          const allConnections = $(`#${field} .all-connections`)
+          const withoutConnections = $(`#${field} .all-without-connections`)
           if (allConnections.prop('checked') === true) {
             search_query.push( { [field] : [ALL_ID] } )
           } else if (withoutConnections.prop('checked') === true) {
             search_query.push( { [field] : [ALL_WITHOUT_ID] } )
+          } else {
+            search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
           }
-        } else {
-          search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
         }
+      if ( type === "user_select" ){
+          search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
       } else if ( type === "multi_select" ){
         search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
       } else if ( type === "tags" ){
@@ -765,7 +780,7 @@
 
 
   let load_multi_select_typeaheads = async function load_multi_select_typeaheads() {
-    for (let input of $(".multi_select .typeahead__query input")) {
+    for (let input of $("#filter-modal .multi_select .typeahead__query input")) {
       let field = $(input).data('field')
       let typeahead_name = `.js-typeahead-${field}`
 
@@ -1606,7 +1621,7 @@
       })
     }
 
-    if (comment) {
+    if (comment.commentText) {
       promises.push( API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => { console.error(err);}));
     }
 
@@ -1759,7 +1774,6 @@
             event.preventDefault()
             this.hideLayout();
             this.resetInput();
-            //masonGrid.masonry('layout')
           },
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -1769,10 +1783,8 @@
             if ( !query ){
               $(`#${element_id}-result-container`).empty()
             }
-            //masonGrid.masonry('layout')
           },
           onShowLayout (){
-            //masonGrid.masonry('layout')
           }
         }
       })
@@ -1851,6 +1863,75 @@
         onHideLayout: function () {
           $('#location_grid-result-container').html("");
         }
+      }
+    });
+  })
+
+  $('#bulk_edit_picker .tags input, #bulk_edit_picker .multi_select input').each((key, input)=>{
+    let field = $(input).data('field') || 'tags'
+    let field_options = window.lodash.get(list_settings, `post_type_settings.fields.${field}.default`, {})
+    $.typeahead({
+      input: input,
+      minLength: 0,
+      maxItem: 20,
+      searchOnFocus: true,
+      source: {
+        tags: {
+          display: ["name"],
+          ajax: {
+            url: window.wpApiShare.root + `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
+            data: {
+              s: "{{query}}",
+              field: field
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                return (data || []).map(tag => {
+                  let label = window.lodash.get(field_options, tag + ".label", tag)
+                  return {name: label || tag, key: tag}
+                })
+              }
+            }
+          }
+        }
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["key"],
+        callback: {
+            onCancel: function (node, item) {
+              $(node).removeData( `bulk_key_${field}` );
+            }
+          },
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          let multiUserArray;
+          if ( node.data(`bulk_key_${field}`) ) {
+            multiUserArray = node.data(`bulk_key_${field}`).values;
+          } else {
+            multiUserArray = [];
+          }
+          multiUserArray.push({"value":item.key});
+
+          node.data(`bulk_key_${field}`, {values: multiUserArray});
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $(`#${field}-result-container`).html(text);
+        },
+        onHideLayout: function () {
+          $(`#${field}-result-container`).html("");
+        },
       }
     });
   })

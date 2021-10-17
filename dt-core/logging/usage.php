@@ -159,12 +159,13 @@ class Disciple_Tools_Usage {
     public function activity() {
         global $wpdb;
         $results = $wpdb->get_row("
-        SELECT
-
-        (
-        SELECT COUNT(DISTINCT user_id)
-        FROM $wpdb->dt_activity_log
-        WHERE action = 'logged_in' AND from_unixtime(`hist_time`) BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
+        SELECT (
+            SELECT COUNT(DISTINCT user_id)
+            FROM $wpdb->dt_activity_log
+            WHERE action = 'logged_in'
+            AND user_id != 0
+            AND from_unixtime(`hist_time`) BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
+            AND user_id
         ) as active_users;
         ", ARRAY_A );
 

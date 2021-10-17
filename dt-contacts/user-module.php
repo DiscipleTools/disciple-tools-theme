@@ -99,22 +99,16 @@ class DT_Contacts_User {
                             <p><strong><?php echo esc_html_x( "This contact is already connected to a user.", 'Make user modal', 'disciple_tools' ) ?></strong></p>
                         <?php else : ?>
 
-                        <p><?php echo esc_html_x( "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier', but you can change that in the dropdown below.", 'Make user modal', 'disciple_tools' ) ?></p>
-                        <p><?php echo esc_html_x( "In the fields below, enter their username, email address, a 'Display Name' which they can change later and a User Role.", 'Make user modal', 'disciple_tools' ) ?></p>
+                            <p><?php echo esc_html__( "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'.", 'disciple_tools' ) ?></p>
 
                         <form id="create-user-form">
-                            <label for="user-username">
-                                <?php esc_html_e( "Username", "disciple_tools" ); ?>
-                            </label>
-                            <input name="user-user_login" id="user-user_login" type="text" placeholder="username" required aria-describedby="username-help-text">
-                            <p class="help-text" id="username-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
                             <label for="user-email">
                                 <?php esc_html_e( "Email", "disciple_tools" ); ?>
                             </label>
                             <input name="user-email" id="user-email" type="email" value="<?php echo ( isset( $contact['contact_email'][0]['value'] ) ) ? esc_html( $contact['contact_email'][0]['value'] ) : ''; ?>" placeholder="user@example.com" required aria-describedby="email-help-text">
                             <p class="help-text" id="email-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
                             <label for="user-display">
-                                <?php esc_html_e( "Display Name", "disciple_tools" ); ?>
+                                <?php esc_html_e( "Display Name", "disciple_tools" ); ?> (<?php esc_html_e( "Can be changed later", "disciple_tools" ); ?>)
                                 <input name="user-display" id="user-display" type="text"
                                        value="<?php the_title_attribute(); ?>"
                                        placeholder="<?php esc_html_e( "Display Name", 'disciple_tools' ) ?>">
@@ -156,7 +150,7 @@ class DT_Contacts_User {
                                     <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                                 </button>
                                 <button class="button loader" type="submit" id="create-user-return">
-                                    <?php esc_html_e( 'Create user', 'disciple_tools' ); ?>
+                                    <?php esc_html_e( 'Create User', 'disciple_tools' ); ?>
                                 </button>
                                 <button class="close-button" data-close aria-label="Close modal" type="button">
                                     <span aria-hidden="true">&times;</span>

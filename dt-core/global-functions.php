@@ -124,12 +124,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     if ( ! function_exists( 'dt_array_to_sql' ) ) {
-        function dt_array_to_sql( $values) {
-            if (empty( $values )) {
+        function dt_array_to_sql( $values ) {
+            if ( empty( $values ) ) {
                 return 'NULL';
             }
-            foreach ($values as &$val) {
-                if ('\N' === $val) {
+            foreach ( $values as &$val ) {
+                if ( '\N' === $val ) {
                     $val = 'NULL';
                 } else {
                     $val = "'" . esc_sql( trim( $val ) ) . "'";
@@ -147,19 +147,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @return bool|int|string
      */
     if ( ! function_exists( 'dt_format_date' ) ) {
-        function dt_format_date( $date, $format = 'short') {
+        function dt_format_date( $date, $format = 'short' ) {
             $date_format = get_option( 'date_format' );
             $time_format = get_option( 'time_format' );
-            if ($format === 'short') {
+            if ( $format === 'short' ) {
                 // $format = $date_format;
                 // formatting it with internationally understood date, as there was a
                 // struggle getting dates to show in user's selected language and not
                 // in the site language.
                 $format = 'Y-m-d';
-            } else if ($format === 'long') {
+            } else if ( $format === 'long' ) {
                 $format = $date_format . ' ' . $time_format;
             }
-            if (is_numeric( $date )) {
+            if ( is_numeric( $date ) ) {
                 $formatted = date_i18n( $format, $date );
             } else {
                 $formatted = mysql2date( $format, $date );
@@ -182,14 +182,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
     if ( ! function_exists( 'dt_get_year_from_timestamp' ) ) {
-        function dt_get_year_from_timestamp( int $time) {
+        function dt_get_year_from_timestamp( int $time ) {
             return gmdate( "Y", $time );
         }
     }
 
     if ( ! function_exists( 'dt_sanitize_array_html' ) ) {
-        function dt_sanitize_array_html( $array) {
-            array_walk_recursive($array, function ( &$v) {
+        function dt_sanitize_array_html( $array ) {
+            array_walk_recursive($array, function ( &$v ) {
                 $v = filter_var( trim( $v ), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
             });
             return $array;
@@ -222,7 +222,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     if ( ! function_exists( 'dt_get_available_languages' ) ) {
-        function dt_get_available_languages( $code_as_key = false) {
+        function dt_get_available_languages( $code_as_key = false ) {
             $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
             array_unshift( $available_language_codes, 'en_US' );
             $available_translations = [];
@@ -427,7 +427,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             ];
 
             foreach ( $available_language_codes as $code ){
-                if ( isset( $translations[$code] )){
+                if ( isset( $translations[$code] ) ){
                     $translations[$code]['site_default'] = $site_default_locale === $translations[$code]["language"];
                     if ( !$code_as_key ){
                         $available_translations[] = $translations[$code];
@@ -500,19 +500,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
         $metadata = get_post_meta( $contact_id, $key = 'assigned_to', true );
 
-        if ( !empty( $metadata )) {
+        if ( !empty( $metadata ) ) {
             $meta_array = explode( '-', $metadata ); // Separate the type and id
             $type = $meta_array[0];
             $id = $meta_array[1];
 
-            if ($type == 'user') {
+            if ( $type == 'user' ) {
                 $value = get_user_by( 'id', $id );
                 $rv = $value->display_name;
             } else {
                 $value = get_term( $id );
                 $rv = $value->name;
             }
-            if ($return) {
+            if ( $return ) {
                 return $rv;
             } else {
                 echo esc_html( $rv );
@@ -578,7 +578,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
         $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
         $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
-        $is_private = ( isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true ) ? true : false;
+        $is_private = isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true;
+        $display_field_id = $field_key;
+        if ( !empty( $field_id_prefix ) ) {
+            $display_field_id = $field_id_prefix . $field_key;
+        }
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
@@ -588,10 +592,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 return;
             }
 
-            $display_field_id = $field_key;
-            if ( !empty( $field_id_prefix ) ) {
-                $display_field_id = $field_id_prefix . $field_key;
-            }
 
             ?>
             <div class="section-subheader">
@@ -632,7 +632,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <?php if ( !isset( $fields[$field_key]["default"]["none"] ) && empty( $fields[$field_key]["select_cannot_be_empty"] ) ) : ?>
                         <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: "selected" ) ?>></option>
                     <?php endif; ?>
-                    <?php foreach ($fields[$field_key]["default"] as $option_key => $option_value):
+                    <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ):
                         if ( !$show_hidden && isset( $option_value["hidden"] ) && $option_value["hidden"] === true ){
                             continue;
                         }
@@ -643,25 +643,27 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <?php endforeach; ?>
                 </select>
             <?php elseif ( $field_type === "tags" ) : ?>
-                <div class="tags">
+                <div id="<?php echo esc_html( $display_field_id ); ?>" class="tags">
                     <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
                     <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                           data-field="<?php echo esc_html( $display_field_id );?>"
+                                           data-field="<?php echo esc_html( $field_key );?>"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]"
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                            autocomplete="off"
                                            data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
                                            data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
                                 </span>
+                                <?php if ( $show_extra_controls ) : ?>
                                 <span class="typeahead__button">
-                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $display_field_id );?>">
+                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $field_key );?>">
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
                                     </button>
                                 </span>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -669,14 +671,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php elseif ( $field_type === "multi_select" ) :
                 if ( isset( $fields[$field_key]["display"] ) && $fields[$field_key]["display"] === "typeahead" ){
                     ?>
-                    <div class="multi_select">
+                    <div class="multi_select" id="<?php echo esc_html( $display_field_id ); ?>" >
                         <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
-                        <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
+                        <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-multi_select" class="scrollable-typeahead typeahead-margin-when-active">
                             <div class="typeahead__container">
                                 <div class="typeahead__field">
                                     <span class="typeahead__query">
                                         <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                               data-field="<?php echo esc_html( $display_field_id );?>"
+                                               data-field="<?php echo esc_html( $field_key );?>"
                                                name="<?php echo esc_html( $display_field_id ); ?>[query]"
                                                placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                                autocomplete="off">
@@ -691,7 +693,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <?php
                             $class = ( in_array( $option_key, $post[$field_key] ?? [] ) ) ?
                                 "selected-select-button" : "empty-select-button"; ?>
-                            <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $display_field_id ); ?>"
+                            <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $field_key ); ?>"
                                     class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
                                 <?php if ( !empty( $option_value["icon"] ) ) { ?>
                                     <img class="dt-icon" src="<?php echo esc_html( $option_value["icon"] ) ?>" >
@@ -727,7 +729,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
-                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" data-field="<?php echo esc_html( $field_key ); ?>"
+                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
+                                           data-field="<?php echo esc_html( $field_key ); ?>"
                                            data-post_type="<?php echo esc_html( $fields[$field_key]["post_type"] ) ?>"
                                            data-field_type="connection"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]"
@@ -772,7 +775,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                           data-field="<?php echo esc_html( $display_field_id ); ?>"
+                                           data-field="<?php echo esc_html( $field_key ); ?>"
                                            data-field_type="location"
                                            name="<?php echo esc_html( $field_key ); ?>[query]"
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
@@ -788,7 +791,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         <div class="input-group">
                             <input id="<?php echo esc_html( $field_value["key"] ) ?>"
                                    type="text"
-                                   data-field="<?php echo esc_html( $display_field_id ); ?>"
+                                   data-field="<?php echo esc_html( $field_key ); ?>"
                                    value="<?php echo esc_html( $field_value["value"] ) ?>"
                                    class="dt-communication-channel input-group-field" dir="auto"/>
                             <div class="input-group-button">
@@ -819,7 +822,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            autocomplete="off">
                                 </span>
                                 <span class="typeahead__button">
-                                    <button type="button" class="search_<?php echo esc_html( $display_field_id ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $display_field_id ); ?>_t">
+                                    <button type="button" class="search_<?php echo esc_html( $field_key ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $field_key ); ?>">
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                     </button>
                                 </span>
@@ -829,7 +832,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 </div>
             <?php endif;
         }
-        do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag );
+        do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id );
     }
 
     function dt_increment( &$var, $val ){
