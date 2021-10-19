@@ -450,7 +450,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         $dt_roles = dt_multi_role_get_editable_role_names();
         $user_invite_allowed = get_option( 'dt_user_invite_setting', false );
         ?>
-        <p><?php esc_html_e( "User Roles that can view all other Disciple Tools users names" ) ?></p>
+        <p><?php esc_html_e( "User Roles that can view all other Disciple.Tools users names" ) ?></p>
         <form method="post" >
             <table class="widefat">
             <?php foreach ( $dt_roles as $role_key => $name ) : ?>

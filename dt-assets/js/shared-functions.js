@@ -257,7 +257,8 @@ jQuery(document).on("click", ".help-button-tile", function () {
         (field.description || window.lodash.isObject(field.default)) &&
         !field.hidden
       ) {
-        html += `<h2>${window.lodash.escape(field.name)}</h2>`;
+        let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_options&tab=custom-fields&post_type=${window.wpApiShare.post_type}&field-select=${window.wpApiShare.post_type}_${field_key}`
+        html += `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
         html += `<p>${window.lodash.escape(field.description)}</p>`;
 
         if (window.lodash.isObject(field.default)) {
