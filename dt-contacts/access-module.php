@@ -245,7 +245,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             ];
 
             $fields['reason_closed'] = [
-                'name'        => __( 'Reason Closed', 'disciple_tools' ),
+                'name'        => __( 'Reason Archived', 'disciple_tools' ),
                 'description' => _x( "A closed contact is one you can't or don't wish to interact with.", 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'key_select',
                 'default'     => [
