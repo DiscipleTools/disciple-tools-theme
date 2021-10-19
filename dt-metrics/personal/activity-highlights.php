@@ -47,7 +47,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 'current_user_id' => get_current_user_id(),
                 'reaction_options' => apply_filters( 'dt_comments_reaction_options', dt_get_site_custom_lists( 'comment_reaction_options' ) ),
                 'data' => [
-                    'highlights' => self::get_user_highlights('1970-01-01')
+                    'highlights' => self::get_user_highlights( '1970-01-01' )
                 ],
                 'translations' => [
                     'title' => __( 'Activity Highlights', 'disciple_tools' ),
@@ -61,8 +61,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         );
     }
 
-    public function add_api_routes()
-    {
+    public function add_api_routes() {
         register_rest_route(
             $this->namespace, 'highlights_data', [
                 'methods'  => 'GET',
@@ -75,18 +74,18 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
     public function api_highlights_data( WP_REST_Request $request ) {
         $params = $request->get_params();
         try {
-            if (isset( $params['from'] ) && isset( $params['to'] ) ) {
+            if ( isset( $params['from'] ) && isset( $params['to'] ) ) {
                 self::check_date_string( $params['from'] );
                 self::check_date_string( $params['to'] );
                 return self::get_user_highlights( $params['from'], $params['to'] );
-            } if (isset( $params['start'] ) && isset( $params['end'] ) ) {
+            } if ( isset( $params['start'] ) && isset( $params['end'] ) ) {
                 self::check_date_string( $params['start'] );
                 self::check_date_string( $params['end'] );
                 return self::get_user_highlights( $params['start'], $params['end'] );
             } else {
                 return self::get_user_highlights();
             }
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             error_log( $e );
             return new WP_Error( __FUNCTION__, "got error ", [ 'status' => 500 ] );
         }
@@ -98,18 +97,18 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         }
     }
 
-    private static function get_user_highlights($from = null, $to = null) {
+    private static function get_user_highlights( $from = null, $to = null ) {
 
         $contact_field_settings = DT_Posts::get_post_field_settings( 'contacts' );
 
         $data = [];
         $data['contacts_created'] = self::get_records_created( $from, $to, 'contacts' );
         $data['quick_actions_done'] = self::get_quick_actions_done( $from, $to, $contact_field_settings );
-        $data['seeker_path_changed'] = self::get_info_added( $from, $to, 'contacts', 'seeker_path', '%', $contact_field_settings);
+        $data['seeker_path_changed'] = self::get_info_added( $from, $to, 'contacts', 'seeker_path', '%', $contact_field_settings );
         $data['milestones_added'] = self::get_info_added( $from, $to, 'contacts', 'milestones', 'milestone_%', $contact_field_settings );
 
         $data['milestones_added_by_others'] = self::get_info_added_by_others( $from, $to, 'contacts', 'milestones', 'milestone_', $contact_field_settings );
-        $data['seeker_path_changed_by_others'] = self::get_info_added_by_others( $from, $to, 'contacts', 'seeker_path', '', $contact_field_settings);
+        $data['seeker_path_changed_by_others'] = self::get_info_added_by_others( $from, $to, 'contacts', 'seeker_path', '', $contact_field_settings );
 
         $data['baptisms'] = self::get_baptisms( $from, $to );
         $data['baptisms_by_others'] = self::get_baptisms_by_others( $from, $to );
@@ -119,11 +118,11 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $group_field_settings = DT_Posts::get_post_field_settings( 'groups' );
         $data['groups_created'] = self::get_records_created( $from, $to, 'groups' );
-        $data['health_metrics_added'] = self::get_info_added( $from, $to, 'groups', 'health_metrics', 'church_%', $group_field_settings);
-        $data['group_type_changed'] = self::get_info_added( $from, $to, 'groups', 'group_type', '%', $group_field_settings);
+        $data['health_metrics_added'] = self::get_info_added( $from, $to, 'groups', 'health_metrics', 'church_%', $group_field_settings );
+        $data['group_type_changed'] = self::get_info_added( $from, $to, 'groups', 'group_type', '%', $group_field_settings );
 
-        $data['health_metrics_added_by_others'] = self::get_info_added_by_others( $from, $to, 'groups', 'health_metrics', 'church_', $group_field_settings);
-        $data['group_type_changed_by_others'] = self::get_info_added_by_others( $from, $to, 'groups', 'group_type', '', $group_field_settings);
+        $data['health_metrics_added_by_others'] = self::get_info_added_by_others( $from, $to, 'groups', 'health_metrics', 'church_', $group_field_settings );
+        $data['group_type_changed_by_others'] = self::get_info_added_by_others( $from, $to, 'groups', 'group_type', '', $group_field_settings );
 
         return $data;
     }
@@ -161,7 +160,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $records_created = $rows[0]['records_created'];
 
-        return sprintf( esc_html__( '%1$d %2$s created', 'disciple_tools' ), $records_created, $records_created === 1 ? $post_settings['label_singular'] : $post_settings['label_plural']  );
+        return sprintf( esc_html__( '%1$d %2$s created', 'disciple_tools' ), $records_created, $records_created === 1 ? $post_settings['label_singular'] : $post_settings['label_plural'] );
     }
 
     private static function get_quick_actions_done( $from, $to, $contact_field_settings ) {
@@ -194,8 +193,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $rows = $wpdb->get_results( $sql, ARRAY_A );
 
-        if ( !empty($rows) ) {
-            foreach ($rows as $i => $row) {
+        if ( !empty( $rows ) ) {
+            foreach ( $rows as $i => $row ) {
                 $rows[$i] = array_merge([
                     'label' => $contact_field_settings[$row['quick_button']]['name'],
                 ], $row);
@@ -341,7 +340,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $rows = $wpdb->get_results( $sql, ARRAY_A );
         // phpcs:enable
 
-        return count($rows);
+        return count( $rows );
     }
 
     private static function get_baptisms_by_others( $from, $to ) {
@@ -469,27 +468,27 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $comments = [];
 
-        if ( !empty($rows) ) {
-            foreach ($rows as $row) {
+        if ( !empty( $rows ) ) {
+            foreach ( $rows as $row ) {
                 $reaction_key = str_replace( 'reaction_', '', $row['reaction_type'] );
-                $reaction = isset($reaction_options[$reaction_key]) ? $reaction_options[$reaction_key] : null;
+                $reaction = isset( $reaction_options[$reaction_key] ) ? $reaction_options[$reaction_key] : null;
 
-                if ( !$reaction ) continue;
+                if ( !$reaction ) { continue; }
 
                 $reaction['key'] = $reaction_key;
 
                 $comment_id = $row['comment_id'];
                 $comments[$comment_id] = array_merge([
-                    'reactions' => isset($comments[$comment_id])
-                        ? array_merge($comments[$comment_id]['reactions'], [$reaction])
-                        : [$reaction],
+                    'reactions' => isset( $comments[$comment_id] )
+                        ? array_merge( $comments[$comment_id]['reactions'], [ $reaction ] )
+                        : [ $reaction ],
                 ], $row);
             }
         }
 
         $merged_comments = [];
 
-        foreach ($comments as $comment) {
+        foreach ( $comments as $comment ) {
             $merged_comments[] = $comment;
         }
 
@@ -553,8 +552,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         return $records_connected_to_sql;
     }
 
-    private static function get_postmeta_join_sql()
-    {
+    private static function get_postmeta_join_sql() {
         global $wpdb;
 
         return "
@@ -570,9 +568,9 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
     }
 
     private static function insert_labels( $rows, $subtype, $field_settings ) {
-        if ( !empty($rows) ) {
-            foreach ($rows as $i => $row) {
-                $label = (isset($field_settings[$subtype]['default'][$row['meta_changed']]))
+        if ( !empty( $rows ) ) {
+            foreach ( $rows as $i => $row ) {
+                $label = ( isset( $field_settings[$subtype]['default'][$row['meta_changed']] ) )
                     ? $field_settings[$subtype]['default'][$row['meta_changed']]['label']
                     : null;
                 $rows[$i] = array_merge([
@@ -584,8 +582,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         return $rows;
     }
 
-    private static function insert_dates( $from, $to, &$prepare_args, $epoch_timestamp = true )
-    {
+    private static function insert_dates( $from, $to, &$prepare_args, $epoch_timestamp = true ) {
         if ( $from ) {
             $prepare_args[] = $epoch_timestamp ? strtotime( $from ) : $from;
         }
