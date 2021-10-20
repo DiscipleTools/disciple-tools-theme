@@ -1198,6 +1198,9 @@ class Disciple_Tools_Posts
             } elseif ( $post_fields[$sort]["type"] === "boolean" ){
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value $sort_dir";
+            } elseif ( $post_fields[$sort]["type"] === "number" ){
+                $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', CAST( sort.meta_value as UNSIGNED ) $sort_dir";
             } else {
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', sort.meta_value $sort_dir";
