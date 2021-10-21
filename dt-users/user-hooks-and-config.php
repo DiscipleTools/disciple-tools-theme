@@ -206,7 +206,7 @@ class DT_User_Hooks_And_Configuration {
     public static function add_user_role( $user_id, $role ){
         if ( user_can( $user_id, "access_specific_sources" ) ){
             $allowed_sources = get_user_option( "allowed_sources", $user_id ) ?: [];
-            if ( in_array( "restrict_all_sources", $allowed_sources ) || empty( $allowed_sources ) ){
+            if ( in_array( "restrict_all_sources", $allowed_sources ) ){
                 $allowed_sources = [ "restrict_all_sources" ];
                 update_user_option( $user_id, "allowed_sources", $allowed_sources );
             }
