@@ -60,7 +60,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                         <?php if ( DT_User_Management::non_admins_can_make_users() || current_user_can( 'create_users ' ) ): ?>
 
-                            <li><a href="/user-management/add-user"><?php esc_html_e( 'Invite User', 'disciple_tools' ) ?></a></li>
+                            <li><a href="<?php echo esc_html( home_url( '/' ) ); ?>user-management/add-user"><?php esc_html_e( 'Invite User', 'disciple_tools' ) ?></a></li>
 
                         <?php endif; ?>
 
