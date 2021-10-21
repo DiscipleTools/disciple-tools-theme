@@ -166,7 +166,18 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                 </dd>
                                                 <dt><label for="last_name"><?php esc_html_e( 'Last Name', 'disciple_tools' )?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)</label></dt>
                                                 <dd><input class="input" type="text" class="input" id="last_name" data-optional name="last_name" placeholder="<?php esc_html_e( 'Last Name', 'disciple_tools' )?>"/></dd>
-
+                                                <dt><label for="gender">
+                                                        <?php esc_html_e( 'Gender', 'disciple_tools' ) ?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)
+                                                    </label></dt>
+                                                <dd>
+                                                    <select class="select-field" id="gender" style="width:auto; display: block" data-optional>
+                                                        <?php foreach ( $gender_fields["default"] as $option_key => $option_value ): ?>
+                                                            <option value="<?php echo esc_html( $option_key )?>">
+                                                                <?php echo esc_html( $option_value["label"] ) ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </dd>
 
                                                 <?php // site defined fields
                                                 foreach ( $dt_user_fields as $dt_field ) {
@@ -194,18 +205,6 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                         rows="5"
                                                         data-optional
                                                     ></textarea>
-                                                </dd>
-                                                <dt><label for="gender">
-                                                    <?php esc_html_e( 'Gender', 'disciple_tools' ) ?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)
-                                                </label></dt>
-                                                <dd>
-                                                    <select class="select-field" id="gender" style="width:auto; display: block" data-optional>
-                                                        <?php foreach ( $gender_fields["default"] as $option_key => $option_value ): ?>
-                                                            <option value="<?php echo esc_html( $option_key )?>">
-                                                                <?php echo esc_html( $option_value["label"] ) ?>
-                                                            </option>
-                                                        <?php endforeach; ?>
-                                                    </select>
                                                 </dd>
                                             </dl>
                                         </div>
