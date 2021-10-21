@@ -86,7 +86,7 @@ class Disciple_Tools_Contacts_Transfer
                 if ( ! is_wp_error( $result ) ) {
 
                     $remote_contact = json_decode( $result['body'], true );
-                    if ( ! empty( $remote_contact ) && ! is_wp_error( $remote_contact ) && isset( $remote_contact['ID'] ) ) {
+                    if ( ! empty( $remote_contact ) && ! is_wp_error( $remote_contact ) ) {
 
                         // Fetch desired remote record contact summary information
                         $field_settings      = DT_Posts::get_post_field_settings( 'contacts' );
@@ -116,27 +116,16 @@ class Disciple_Tools_Contacts_Transfer
                                 <div class="section-subheader">
                                     <img style="max-height: 14px; max-width: 14px;"
                                          src="<?php echo esc_html( $status_settings['icon'] ); ?>">
-                                    <?php echo esc_html( $status_settings['name'] ); ?>
+                                    <?php echo esc_html( $status_settings['name'] ); ?> : <?php echo esc_html( $status['label'] ); ?>
                                 </div>
-                                <select disabled class="select-field color-select"
-                                        style="margin-bottom:0; background-color: #808080">
-                                    <option
-                                        value="<?php echo esc_html( $status['key'] ); ?>"><?php echo esc_html( $status['label'] ); ?></option>
-                                </select>
-                                <br><br>
 
                                 <!-- Seeker Path -->
                                 <div class="section-subheader">
                                     <img style="max-height: 15px; max-width: 15px;"
                                          src="<?php echo esc_html( $seeker_settings['icon'] ); ?>">
-                                    <?php echo esc_html( $seeker_settings['name'] ); ?>
+                                    <?php echo esc_html( $seeker_settings['name'] ); ?> : <?php echo esc_html( $seeker['label'] ); ?>
                                 </div>
-                                <select disabled class="select-field color-select"
-                                        style="margin-bottom:0; background-color: #808080">
-                                    <option
-                                        value="<?php echo esc_html( $seeker['key'] ); ?>"><?php echo esc_html( $seeker['label'] ); ?></option>
-                                </select>
-                                <br><br>
+                                <br>
 
                                 <!-- Milestones -->
                                 <div class="section-subheader">
@@ -144,20 +133,20 @@ class Disciple_Tools_Contacts_Transfer
                                          src="<?php echo esc_html( $milestones_settings['icon'] ); ?>">
                                     <?php echo esc_html( $milestones_settings['name'] ); ?>
                                 </div>
-                                <div class="small button-group" style="display: inline-block">
-                                    <?php
-                                    foreach ( $milestones_settings['default'] ?? [] as $key => $milestone ) {
-                                        $selected_html = in_array( $key, $milestones ) ? 'selected' : 'empty';
+
+                                <?php
+                                foreach ( $milestones_settings['default'] ?? [] as $key => $milestone ) {
+                                    if ( in_array( $key, $milestones ) ) {
                                         ?>
-                                        <button type="button"
-                                                class="<?php echo esc_html( $selected_html ); ?>-select-button select-button button ">
-                                            <img class="dt-icon" src="<?php echo esc_html( $milestone['icon'] ); ?>">
-                                            <?php echo esc_html( $milestone['label'] ); ?>
-                                        </button>
+                                        <img class="dt-icon" src="<?php echo esc_html( $milestone['icon'] ); ?>">
+                                        <?php echo esc_html( $milestone['label'] ); ?>
                                         <?php
                                     }
-                                    ?>
-                                </div>
+                                }
+                                if ( empty( $milestones ) ) {
+                                    echo esc_html( __( 'Milestones Currently Unavailable', 'disciple_tools' ) );
+                                }
+                                ?>
                                 <hr>
 
                                 <!-- Comments -->
@@ -679,12 +668,39 @@ class Disciple_Tools_Contacts_Transfer
             return new WP_Error( __METHOD__, 'Missing contact_id or transfer_foreign_key', [ "status" => 400 ] );
         }
 
+        if ( ! current_user_can( "update_own_contacts" ) ) {
+            return new WP_Error( __METHOD__, 'Missing permissions', [ "status" => 400 ] );
+        }
+        global $wp_session;
+        if ( ! isset( $wp_session["logged_in_as_site_link"] ) ) {
+            return new WP_Error( __METHOD__, 'Missing permissions', [ "status" => 400 ] );
+        }
+
+        // Fetch local post id for summary details
         $post_id = $this->get_local_post_id( $params['contact_id'], $params['transfer_foreign_key'] );
         if ( empty( $post_id ) ) {
             return new WP_Error( __METHOD__, 'Could not find post id to fetch summary', [ "status" => 404 ] );
 
         } else {
-            return DT_Posts::get_post( 'contacts', $post_id, true, false, true );
+            $post = DT_Posts::get_post( 'contacts', $post_id, true, false, true );
+            if ( ! empty( $post ) && ! is_wp_error( $post ) ) {
+                $response = [];
+
+                if ( isset( $post['overall_status'] ) ) {
+                    $response['overall_status'] = $post['overall_status'];
+                }
+                if ( isset( $post['seeker_path'] ) ) {
+                    $response['seeker_path'] = $post['seeker_path'];
+                }
+                if ( isset( $post['milestones'] ) ) {
+                    $response['milestones'] = $post['milestones'];
+                }
+
+                return $response;
+
+            } else {
+                return new WP_Error( __METHOD__, 'Could not find post record to fetch summary', [ "status" => 404 ] );
+            }
         }
     }
 
