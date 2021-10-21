@@ -337,7 +337,7 @@ class Disciple_Tools_Users
             if ( is_wp_error( $user_id ) ){
                 return $user_id;
             }
-            if ( $password ) {
+            if ( $password && current_user_can( "create_users" ) ) {
                 wp_set_password( $password, $user_id );
             }
             $user = get_user_by( 'id', $user_id );

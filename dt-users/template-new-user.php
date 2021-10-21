@@ -90,7 +90,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                             </dl>
                                             <div id="contact-result"></div>
                                             <dl>
-                                                <dt><label for="name"><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' ); ?></label></dt>
+                                                <dt><label for="name"><?php esc_html_e( 'Display Name', 'disciple_tools' ); ?></label></dt>
                                                 <dd><input type="text" class="input" id="name" placeholder="<?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' ); ?>" required /> </dd>
                                                 <dt><label for="email"><?php esc_html_e( 'Email', 'disciple_tools' ); ?></label></dt>
                                                 <dd><input type="email" class="input" id="email" placeholder="<?php esc_html_e( 'Email', 'disciple_tools' ); ?>" required /> </dd>
@@ -100,6 +100,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                     <dt><label for="password"><?php esc_html_e( 'Password', 'disciple_tools' ); ?></label></dt>
                                                     <dd><input type="password" class="input" id="password" placeholder="<?php esc_html_e( 'Password', 'disciple_tools' ); ?>" /> </dd>
                                                 </div>
+                                                <?php if ( $current_user_can_managage_users ) : ?>
                                                 <div id="show-shield-banner" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">
                                                     <a class="button clear" id="show-hidden-fields" style="margin:0;padding:3px 0; width:100%">
                                                         <?php esc_html_e( 'See More Options', 'disciple_tools' ); ?>
@@ -108,6 +109,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                         <?php esc_html_e( 'See Fewer Options', 'disciple_tools' ); ?>
                                                     </a>
                                                 </div>
+                                                <?php endif; ?>
                                                 <dt><label for="new-user-language-dropdown"><?php esc_html_e( 'Language', 'disciple_tools' ); ?></label></dt>
                                                 <dd id="new-user-language-dropdown"></dd>
                                                 <?php if ( $current_user_can_managage_users ): ?>
@@ -153,6 +155,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                 </dd>
                                                 <?php endif; ?>
                                             </dl>
+                                            <button type="submit" class="submit button" id="create-user"><?php esc_html_e( 'Create User', 'disciple_tools' ); ?></button> <span class="spinner"></span>
                                         </div>
 
                                         <div id="optional-fields" class="cell medium-6 show-for-medium">
@@ -218,7 +221,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                         </a>
                                     </div>
 
-                                    <button type="submit" class="submit button" id="create-user"><?php esc_html_e( 'Create User', 'disciple_tools' ); ?></button> <span class="spinner"></span>
+
 
                                 </form>
                             </div>
