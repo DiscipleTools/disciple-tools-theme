@@ -506,7 +506,7 @@ class Disciple_Tools_Contacts_Transfer
         // add transfer elements
         $post_args['meta_input']['transfer_id'] = $post_args['ID'];
         $post_args['meta_input']['transfer_guid'] = $post_args['guid'];
-        $post_args['meta_input']['transfer_foreign_key'] = isset( $contact_data['transfer_foreign_key'] ) ? $contact_data['transfer_foreign_key'] : Site_Link_System::generate_token();
+        $post_args['meta_input']['transfer_foreign_key'] = ( isset( $contact_data['transfer_foreign_key'] ) && !empty( $contact_data['transfer_foreign_key'] ) ) ? $contact_data['transfer_foreign_key'] : Site_Link_System::generate_token();
         $post_args['meta_input']['transfer_site_link_post_id'] = $site_link_post_id;
 
         unset( $post_args['guid'] );
