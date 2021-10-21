@@ -368,8 +368,10 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                                 <ul id="allowed_sources" class="ul-no-bullets">
                                                     <?php foreach ( $sources as $source_key => $source_value ) : ?>
                                                         <li>
-                                                            <input type="checkbox" name="allowed_sources[]" value="<?php echo esc_html( $source_key ) ?>"/>
-                                                            <?php echo esc_html( $source_value["label"] ) ?>
+                                                            <label>
+                                                                <input type="checkbox" name="allowed_sources[]" value="<?php echo esc_html( $source_key ) ?>"/>
+                                                                <?php echo esc_html( $source_value["label"] ) ?>
+                                                            </label>
                                                         </li>
                                                     <?php endforeach; ?>
                                                 </ul>

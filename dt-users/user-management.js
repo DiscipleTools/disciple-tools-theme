@@ -125,7 +125,7 @@ jQuery(document).ready(function($) {
           user_data.allowed_sources.forEach(source=>{
             $(`#allowed_sources_options [value="${source}"]`).prop('checked', true)
           })
-          if ( user_data.length === 0 ){
+          if ( user_data.allowed_sources.length === 0 ){
             $(`#allowed_sources_options [value="all"]`).prop('checked', true)
           }
         } else {
