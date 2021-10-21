@@ -250,7 +250,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             if ( ! empty( $connection_type ) ) {
                 self::add_capabilities_required_by_type( $connection_type, $site_link_label, $decrypted_key );
             }
-
+            global $wp_session;
+            $wp_session['logged_in_as_site_link'] = $keys[$decrypted_key];
             return true;
         }
 

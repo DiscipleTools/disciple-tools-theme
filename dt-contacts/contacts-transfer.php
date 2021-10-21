@@ -37,6 +37,7 @@ class Disciple_Tools_Contacts_Transfer
     public function site_link_capabilities( $args ) {
         if ( 'contact_sharing' === $args['connection_type'] ) {
             $args['capabilities'][] = 'create_contacts';
+            $args['capabilities'][] = 'update_own_contacts';
         }
         if ( 'contact_receiving' === $args['connection_type'] ) {
             $args['capabilities'][] = 'create_contacts';
@@ -737,7 +738,13 @@ class Disciple_Tools_Contacts_Transfer
             return new WP_Error( __METHOD__, 'Missing contact_id or transfer_foreign_key or update', [ "status" => 400 ] );
         }
 
-        $success = false;
+        if ( !current_user_can( "update_own_contacts" ) ){
+            return new WP_Error( __METHOD__, 'Missing permissions', [ "status" => 400 ] );
+        }
+        global $wp_session;
+        if ( !isset( $wp_session["logged_in_as_site_link"] ) ){
+            return new WP_Error( __METHOD__, 'Missing permissions', [ "status" => 400 ] );
+        }
 
         // Fetch local post id to be updated
         $post_id = $this->get_local_post_id( $params['contact_id'], $params['transfer_foreign_key'] );
@@ -748,7 +755,7 @@ class Disciple_Tools_Contacts_Transfer
 
             $args               = [
                 "user_id"        => 0,
-                "comment_author" => __( "Transfer Bot", 'disciple_tools' )
+                "comment_author" => __( "Transfer Bot", 'disciple_tools' ) . " - " . $wp_session["logged_in_as_site_link"]["label"],
             ];
             $created_comment_id = DT_Posts::add_post_comment( 'contacts', $post_id, $params['update'], 'comment', $args, false, true );
             $success            = ( ! empty( $created_comment_id ) && ! is_wp_error( $created_comment_id ) );
