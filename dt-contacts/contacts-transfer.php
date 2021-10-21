@@ -55,6 +55,129 @@ class Disciple_Tools_Contacts_Transfer
                 </div>
             </section>
             <?php
+
+            // Display remote summary
+            $this->contact_transfer_summary( $post_type, $contact );
+        }
+    }
+
+    private function contact_transfer_summary( $post_type, $contact ) {
+        if ( $post_type === "contacts" && isset( $contact['reason_closed']['key'] ) && $contact['reason_closed']['key'] === 'transfer' && isset( $contact['transfer_foreign_key'], $contact['transfer_site_link_post_id'] ) ) {
+
+            $site = Site_Link_System::get_site_connection_vars( $contact['transfer_site_link_post_id'] );
+            if ( ! is_wp_error( $site ) ) {
+
+                // Prepare record summary request payload
+                $args = [
+                    'method'  => 'POST',
+                    'timeout' => 20,
+                    'body'    => [
+                        'contact_id'           => $contact['ID'],
+                        'transfer_foreign_key' => $contact['transfer_foreign_key']
+                    ],
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $site['transfer_token']
+                    ]
+                ];
+
+                // Request record summary from remote site
+                $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/transfer/summary', $args );
+                if ( ! is_wp_error( $result ) ) {
+
+                    $remote_contact = json_decode( $result['body'], true );
+                    if ( ! empty( $remote_contact ) && ! is_wp_error( $remote_contact ) && isset( $remote_contact['ID'] ) ) {
+
+                        // Fetch desired remote record contact summary information
+                        $field_settings      = DT_Posts::get_post_field_settings( 'contacts' );
+
+                        $status          = $remote_contact['overall_status'] ?? [
+                                'key'   => 'empty',
+                                'label' => __( 'Status Currently Unavailable', 'disciple_tools' )
+                            ];
+                        $status_settings = $field_settings['overall_status'];
+
+                        $seeker          = $remote_contact['seeker_path'] ?? [
+                                'key'   => 'empty',
+                                'label' => __( 'Seeker Path Currently Unavailable', 'disciple_tools' )
+                            ];
+                        $seeker_settings = $field_settings['seeker_path'];
+
+                        $milestones          = $remote_contact['milestones'] ?? [];
+                        $milestones_settings = $field_settings['milestones'];
+
+                        ?>
+                        <section class="cell small-12">
+                            <div class="bordered-box detail-notification-box"
+                                 style="background-color:#FFFFFF; color: #000000;">
+                                <h4><?php esc_html_e( 'Remote Contact Summary', 'disciple_tools' ) ?></h4>
+
+                                <!-- Status -->
+                                <div class="section-subheader">
+                                    <img style="max-height: 14px; max-width: 14px;"
+                                         src="<?php echo esc_html( $status_settings['icon'] ); ?>">
+                                    <?php echo esc_html( $status_settings['name'] ); ?>
+                                </div>
+                                <select disabled class="select-field color-select"
+                                        style="margin-bottom:0; background-color: #808080">
+                                    <option
+                                        value="<?php echo esc_html( $status['key'] ); ?>"><?php echo esc_html( $status['label'] ); ?></option>
+                                </select>
+                                <br><br>
+
+                                <!-- Seeker Path -->
+                                <div class="section-subheader">
+                                    <img style="max-height: 15px; max-width: 15px;"
+                                         src="<?php echo esc_html( $seeker_settings['icon'] ); ?>">
+                                    <?php echo esc_html( $seeker_settings['name'] ); ?>
+                                </div>
+                                <select disabled class="select-field color-select"
+                                        style="margin-bottom:0; background-color: #808080">
+                                    <option
+                                        value="<?php echo esc_html( $seeker['key'] ); ?>"><?php echo esc_html( $seeker['label'] ); ?></option>
+                                </select>
+                                <br><br>
+
+                                <!-- Milestones -->
+                                <div class="section-subheader">
+                                    <img style="max-height: 15px; max-width: 15px;"
+                                         src="<?php echo esc_html( $milestones_settings['icon'] ); ?>">
+                                    <?php echo esc_html( $milestones_settings['name'] ); ?>
+                                </div>
+                                <div class="small button-group" style="display: inline-block">
+                                    <?php
+                                    foreach ( $milestones_settings['default'] ?? [] as $key => $milestone ) {
+                                        $selected_html = in_array( $key, $milestones ) ? 'selected' : 'empty';
+                                        ?>
+                                        <button type="button"
+                                                class="<?php echo esc_html( $selected_html ); ?>-select-button select-button button ">
+                                            <img class="dt-icon" src="<?php echo esc_html( $milestone['icon'] ); ?>">
+                                            <?php echo esc_html( $milestone['label'] ); ?>
+                                        </button>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                                <hr>
+
+                                <!-- Comments -->
+                                <textarea id="transfer_contact_summary_update_comment"
+                                          placeholder="<?php esc_html_e( "Write your comment or note here", 'disciple_tools' ) ?>"
+                                          style="overflow: hidden; height: 50px;"></textarea>
+
+                                <div class="shrink cell">
+                                    <button id="transfer_contact_summary_update_button" class="button loader">
+                                        <?php esc_html_e( "Submit Update", 'disciple_tools' ) ?>
+                                    </button>
+                                </div>
+                                <br>
+                                <span id="transfer_contact_summary_update_message" style="display: none;"></span>
+
+                            </div>
+                        </section>
+                        <?php
+                    }
+                }
+            }
         }
     }
 
@@ -67,6 +190,27 @@ class Disciple_Tools_Contacts_Transfer
             $namespace, '/contacts/transfer', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'contact_transfer_endpoint' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contacts/transfer/summary', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'contact_transfer_summary_endpoint' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contacts/transfer/summary/send-update', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'contact_transfer_summary_send_update_endpoint' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contacts/transfer/summary/receive-update', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'contact_transfer_summary_receive_update_endpoint' ],
                 'permission_callback' => '__return_true',
             ]
         );
@@ -494,6 +638,25 @@ class Disciple_Tools_Contacts_Transfer
         }
     }
 
+    public function get_local_post_id( $remote_contact_id, $transfer_foreign_key ) {
+        global $wpdb;
+
+        return $wpdb->get_var( $wpdb->prepare( "
+            SELECT post_id FROM $wpdb->postmeta
+            WHERE post_id IN (
+                SELECT post_id FROM $wpdb->postmeta
+                WHERE meta_key = 'transfer_id'
+                AND meta_value = %d
+                GROUP BY post_id
+            )
+            AND (
+                meta_key = 'transfer_foreign_key'
+                AND meta_value = %d
+            )
+            LIMIT 1", $remote_contact_id, $transfer_foreign_key )
+        );
+    }
+
     public function contact_transfer_endpoint( WP_REST_Request $request ){
 
         if ( ! ( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'manage_dt' ) ) ) {
@@ -507,6 +670,93 @@ class Disciple_Tools_Contacts_Transfer
 
         return self::contact_transfer( $params['contact_id'], $params['site_post_id'] );
 
+    }
+
+    public function contact_transfer_summary_endpoint( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( ! isset( $params['contact_id'], $params['transfer_foreign_key'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing contact_id or transfer_foreign_key', [ "status" => 400 ] );
+        }
+
+        $post_id = $this->get_local_post_id( $params['contact_id'], $params['transfer_foreign_key'] );
+        if ( empty( $post_id ) ) {
+            return new WP_Error( __METHOD__, 'Could not find post id to fetch summary', [ "status" => 404 ] );
+
+        } else {
+            return DT_Posts::get_post( 'contacts', $post_id, true, false, true );
+        }
+    }
+
+    public function contact_transfer_summary_send_update_endpoint( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( ! isset( $params['contact_id'], $params['update'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing contact_id or update', [ "status" => 400 ] );
+        }
+
+        $success = false;
+
+        // Fetch corresponding post and ensure required transfer information is set
+        $contact = DT_Posts::get_post( 'contacts', $params['contact_id'], true, false, true );
+        if ( ! empty( $contact ) && ! is_wp_error( $contact ) && isset( $contact['transfer_foreign_key'], $contact['transfer_site_link_post_id'] ) ) {
+
+            // Fetch transferred site connection details
+            $site = Site_Link_System::get_site_connection_vars( $contact['transfer_site_link_post_id'] );
+            if ( ! empty( $site ) && ! is_wp_error( $site ) ) {
+
+                // Prepare record summary update request payload
+                $args = [
+                    'method'  => 'POST',
+                    'timeout' => 20,
+                    'body'    => [
+                        'contact_id'           => $contact['ID'],
+                        'transfer_foreign_key' => $contact['transfer_foreign_key'],
+                        'update'               => $params['update']
+                    ],
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $site['transfer_token']
+                    ]
+                ];
+
+                // Post summary update payload
+                $response = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/transfer/summary/receive-update', $args );
+                if ( ! empty( $response ) && ! is_wp_error( $response ) ) {
+                    $result  = json_decode( $response['body'], true );
+                    $success = ( ! empty( $result ) && ! is_wp_error( $result ) && isset( $result['success'] ) ) ? $result['success'] : false;
+                }
+            }
+        }
+
+        return [
+            'success' => $success
+        ];
+    }
+
+    public function contact_transfer_summary_receive_update_endpoint( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( ! isset( $params['contact_id'], $params['transfer_foreign_key'], $params['update'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing contact_id or transfer_foreign_key or update', [ "status" => 400 ] );
+        }
+
+        $success = false;
+
+        // Fetch local post id to be updated
+        $post_id = $this->get_local_post_id( $params['contact_id'], $params['transfer_foreign_key'] );
+        if ( empty( $post_id ) ) {
+            return new WP_Error( __METHOD__, 'Could not find post id to update', [ "status" => 404 ] );
+
+        } else {
+
+            $args               = [
+                "user_id"        => 0,
+                "comment_author" => __( "Transfer Bot", 'disciple_tools' )
+            ];
+            $created_comment_id = DT_Posts::add_post_comment( 'contacts', $post_id, $params['update'], 'comment', $args, false, true );
+            $success            = ( ! empty( $created_comment_id ) && ! is_wp_error( $created_comment_id ) );
+        }
+
+        return [
+            'success' => $success
+        ];
     }
 
     public function receive_transfer_endpoint( WP_REST_Request $request ){
