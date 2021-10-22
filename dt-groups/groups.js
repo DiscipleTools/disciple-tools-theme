@@ -181,6 +181,7 @@ jQuery(document).ready(function($) {
     memberCountInput.val( post.member_count )
     leaderCountInput.val( post.leader_count )
     window.masonGrid.masonry('layout')
+    document.dispatchEvent(new CustomEvent("dt-member-list-populated", {detail: post}))
   }
   populateMembersList()
 
