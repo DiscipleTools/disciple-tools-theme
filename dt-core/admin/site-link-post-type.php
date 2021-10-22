@@ -413,7 +413,18 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     'with_front' => false
                 ], /* you can specify its url slug */
                 'has_archive'         => false, /* you can rename the slug here */
-                'capability_type'     => 'post',
+                'capabilities'     => [
+                    "read_post" => "manage_dt",
+                    "edit_post" => "manage_dt",
+                    "delete_post" => "manage_dt",
+                    "edit_posts" => "manage_dt",
+                    "edit_others_posts" => "manage_dt",
+                    "publish_posts" => "manage_dt",
+                    "read_private_posts" => "manage_dt",
+                    "delete_others_posts" => "manage_dt",
+                    "delete_posts" => "manage_dt",
+                    "delete_published_posts" => "manage_dt",
+                ],
                 'hierarchical'        => false,
                 /* the next one is important, it tells what's enabled in the post editor */
                 'supports'            => [ 'title' ]
