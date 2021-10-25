@@ -441,9 +441,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     if ( !function_exists( 'dt_language_select' ) ){
-        function dt_language_select(){
+        function dt_language_select( $user_id = null ){
+            if ( $user_id === null ){
+                $user_id = get_current_user_id();
+            }
             $languages = dt_get_available_languages();
-            $dt_user_locale = get_user_locale( get_current_user_id() );
+            $dt_user_locale = get_user_locale( $user_id );
             ?>
             <select name="locale">
                 <?php foreach ( $languages as $language ){ ?>

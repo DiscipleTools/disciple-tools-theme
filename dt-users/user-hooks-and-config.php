@@ -201,6 +201,9 @@ class DT_User_Hooks_And_Configuration {
             }
             update_user_option( $user_id, "allowed_sources", $allowed_sources );
         }
+        if ( !empty( $_POST["locale"] ) ){
+            update_user_meta( $user_id, "locale", sanitize_text_field( wp_unslash( $_POST["locale"] ) ) );
+        }
     }
 
     public static function add_user_role( $user_id, $role ){
@@ -492,9 +495,7 @@ class DT_User_Hooks_And_Configuration {
             <tr>
                 <th><label for="dt_locale"><?php esc_html_e( "User Language", 'disciple_tools' ) ?></label></th>
                 <td>
-                    <?php
-                    dt_language_select()
-                    ?>
+                    <?php dt_language_select( $user->ID ); ?>
                 </td>
             </tr>
         </table>
