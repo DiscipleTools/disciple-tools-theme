@@ -150,7 +150,7 @@ class Disciple_Tools_Contacts_Transfer
                                     }
                                 }
                                 if ( empty( $milestones ) ) {
-                                    echo esc_html( __( 'Milestones Currently Unavailable', 'disciple_tools' ) );
+                                    echo esc_html__( "None Set", "disciple_tools" );
                                 }
                                 ?>
                                 <hr>
