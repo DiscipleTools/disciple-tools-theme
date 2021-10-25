@@ -185,6 +185,12 @@ window.API = {
       site_post_id: siteId,
     }),
 
+  transfer_contact_summary_update: (contactId, update) =>
+    makeRequestOnPosts("POST", "contacts/transfer/summary/send-update", {
+      contact_id: contactId,
+      update: update,
+    }),
+
   request_record_access: (post_type, postId, userId) =>
     makeRequestOnPosts("POST", `${post_type}/${postId}/request_record_access`, {
       user_id: userId,
