@@ -5,7 +5,7 @@ jQuery(document).ready(function ($) {
   }
 
   function display_daily_activity() {
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#contacts-menu'));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
 
     let chartDiv = jQuery('#chart');
 

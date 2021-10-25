@@ -694,34 +694,36 @@ window.SHAREDFUNCTIONS = {
   },
 };
 
+let date_ranges = {
+  "All time": [moment(0), moment().endOf("year")],
+  [moment().format("MMMM YYYY")]: [
+    moment().startOf("month"),
+    moment().endOf("month"),
+  ],
+  [moment().subtract(1, "month").format("MMMM YYYY")]: [
+    moment().subtract(1, "month").startOf("month"),
+    moment().subtract(1, "month").endOf("month"),
+  ],
+  [moment().format("YYYY")]: [
+    moment().startOf("year"),
+    moment().endOf("year"),
+  ],
+  [moment().subtract(1, "year").format("YYYY")]: [
+    moment().subtract(1, "year").startOf("year"),
+    moment().subtract(1, "year").endOf("year"),
+  ],
+  [moment().subtract(2, "year").format("YYYY")]: [
+    moment().subtract(2, "year").startOf("year"),
+    moment().subtract(2, "year").endOf("year"),
+  ],
+};
+
 window.METRICS = {
   setupDatePicker: function (endpoint_url, callback, startDate, endDate) {
     $(".date_range_picker").daterangepicker(
       {
         showDropdowns: true,
-        ranges: {
-          "All time": [moment(0), moment().endOf("year")],
-          [moment().format("MMMM YYYY")]: [
-            moment().startOf("month"),
-            moment().endOf("month"),
-          ],
-          [moment().subtract(1, "month").format("MMMM YYYY")]: [
-            moment().subtract(1, "month").startOf("month"),
-            moment().subtract(1, "month").endOf("month"),
-          ],
-          [moment().format("YYYY")]: [
-            moment().startOf("year"),
-            moment().endOf("year"),
-          ],
-          [moment().subtract(1, "year").format("YYYY")]: [
-            moment().subtract(1, "year").startOf("year"),
-            moment().subtract(1, "year").endOf("year"),
-          ],
-          [moment().subtract(2, "year").format("YYYY")]: [
-            moment().subtract(2, "year").startOf("year"),
-            moment().subtract(2, "year").endOf("year"),
-          ],
-        },
+        ranges: date_ranges,
         linkedCalendars: false,
         locale: {
           format: "YYYY-MM-DD",
@@ -762,5 +764,21 @@ window.METRICS = {
       }
     );
   },
-
+  setupDatePickerWithoutEndpoint: function (callback, startDate, endDate) {
+    $(".date_range_picker").daterangepicker(
+      {
+        showDropdowns: true,
+        ranges: date_ranges,
+        linkedCalendars: false,
+        locale: {
+          format: "YYYY-MM-DD",
+        },
+        startDate: startDate || moment(0),
+        endDate: endDate || moment().endOf("year").format("YYYY-MM-DD"),
+      },
+      function (start, end, label) {
+        callback(start, end, label);
+      }
+    );
+  }
 };
