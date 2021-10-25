@@ -62,6 +62,12 @@ class Disciple_Tools_Contacts_Transfer
         }
     }
 
+    /**
+     * Tile to show details from the contact transferred to a remote instance
+     * @param $post_type
+     * @param $contact
+     * @return void
+     */
     private function contact_transfer_summary( $post_type, $contact ) {
         if ( $post_type === "contacts" && isset( $contact['reason_closed']['key'] ) && $contact['reason_closed']['key'] === 'transfer' && isset( $contact['transfer_foreign_key'], $contact['transfer_site_link_post_id'] ) ) {
 
@@ -176,6 +182,7 @@ class Disciple_Tools_Contacts_Transfer
      */
     public function add_api_routes() {
         $namespace = "dt-posts/v2";
+        //Transfer a contact to another instance
         register_rest_route(
             $namespace, '/contacts/transfer', [
                 "methods"  => "POST",
@@ -183,6 +190,7 @@ class Disciple_Tools_Contacts_Transfer
                 'permission_callback' => '__return_true',
             ]
         );
+        //Provide summary details on a contact received by transfer
         register_rest_route(
             $namespace, '/contacts/transfer/summary', [
                 "methods"  => "POST",
@@ -190,6 +198,7 @@ class Disciple_Tools_Contacts_Transfer
                 'permission_callback' => '__return_true',
             ]
         );
+        //Send an update to a transferred contact
         register_rest_route(
             $namespace, '/contacts/transfer/summary/send-update', [
                 "methods"  => "POST",
@@ -197,6 +206,7 @@ class Disciple_Tools_Contacts_Transfer
                 'permission_callback' => '__return_true',
             ]
         );
+        //Receive an update on a contact received by transfer
         register_rest_route(
             $namespace, '/contacts/transfer/summary/receive-update', [
                 "methods"  => "POST",
@@ -662,6 +672,11 @@ class Disciple_Tools_Contacts_Transfer
 
     }
 
+    /**
+     * Provide summary details on a contact received by transfer
+     * @param WP_REST_Request $request
+     * @return array|WP_Error, the summary (overall_status, seeker_path, milestones)
+     */
     public function contact_transfer_summary_endpoint( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( ! isset( $params['contact_id'], $params['transfer_foreign_key'] ) ) {
@@ -704,10 +719,20 @@ class Disciple_Tools_Contacts_Transfer
         }
     }
 
+
+    /**
+     * Send an update to a transferred contact on another instance
+     * A comment is currently the only update supported
+     * @param WP_REST_Request $request
+     * @return false[]|WP_Error
+     */
     public function contact_transfer_summary_send_update_endpoint( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( ! isset( $params['contact_id'], $params['update'] ) ) {
             return new WP_Error( __METHOD__, 'Missing contact_id or update', [ "status" => 400 ] );
+        }
+        if ( ! ( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'manage_dt' ) ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions' );
         }
 
         $success = false;
@@ -748,6 +773,11 @@ class Disciple_Tools_Contacts_Transfer
         ];
     }
 
+    /**
+     * Receive an update on a contact received by transfer
+     * @param WP_REST_Request $request
+     * @return bool[]|WP_Error
+     */
     public function contact_transfer_summary_receive_update_endpoint( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( ! isset( $params['contact_id'], $params['transfer_foreign_key'], $params['update'] ) ) {
