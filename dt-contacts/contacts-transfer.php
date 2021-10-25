@@ -856,6 +856,14 @@ class Disciple_Tools_Contacts_Transfer {
             return new WP_Error( __METHOD__, 'Missing date range', [ "status" => 400 ] );
         }
 
+        if ( ! current_user_can( "update_own_contacts" ) ) {
+            return new WP_Error( __METHOD__, 'Missing permissions', [ "status" => 400 ] );
+        }
+        global $wp_session;
+        if ( ! isset( $wp_session["logged_in_as_site_link"] ) ) {
+            return new WP_Error( __METHOD__, 'Missing permissions', [ "status" => 400 ] );
+        }
+
         $metrics = [
             'statuses'     => [],
             'seeker_paths' => [],
