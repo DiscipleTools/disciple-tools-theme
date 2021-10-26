@@ -19,7 +19,7 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
         if ( ! $this->has_permission() ) {
             return;
         }
-        $this->title      = __( 'Site Links', 'disciple_tools' );
+        $this->title      = __( 'Transferred Contacts', 'disciple_tools' );
         $this->base_title = __( 'Project', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
@@ -67,16 +67,20 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
                 ],
                 'translations'        => [
                     'headings' => [
-                        'header'                 => __( "Site Links", 'disciple_tools' ),
-                        'sub_header'             => __( "Filter by date range and available site links", 'disciple_tools' ),
-                        'date_range_header'      => __( "Date Ranges", 'disciple_tools' ),
-                        'date_range_none_header' => __( "None Set", 'disciple_tools' ),
-                        'site_links_header'      => __( "Site Links", 'disciple_tools' ),
-                        'site_links_none_header' => __( "None Set", 'disciple_tools' ),
-                        'refresh_but_header'     => __( "Refresh", 'disciple_tools' ),
-                        'status_header'          => __( "Current Statuses", 'disciple_tools' ),
-                        'seeker_path_header'     => __( "Seeker Paths", 'disciple_tools' ),
-                        'milestones_header'      => __( "Faith Milestones", 'disciple_tools' )
+                        'header'                     => __( "Transferred Contacts", 'disciple_tools' ),
+                        'sub_header'                 => __( "Filter by date range and available site links", 'disciple_tools' ),
+                        'date_range_header'          => __( "Date Ranges", 'disciple_tools' ),
+                        'date_range_none_header'     => __( "None Set", 'disciple_tools' ),
+                        'site_links_header'          => __( "Site Links", 'disciple_tools' ),
+                        'site_links_none_header'     => __( "None Set", 'disciple_tools' ),
+                        'refresh_but_header'         => __( "Refresh", 'disciple_tools' ),
+                        'totals_header'              => __( "Total Number Of Transferred Contacts", 'disciple_tools' ),
+                        'status_created_header'      => __( "Current Statuses", 'disciple_tools' ),
+                        'status_changes_header'      => __( "Status Changes", 'disciple_tools' ),
+                        'seeker_path_created_header' => __( "Current Seeker Paths", 'disciple_tools' ),
+                        'seeker_path_changes_header' => __( "Seeker Path Changes", 'disciple_tools' ),
+                        'milestones_created_header'  => __( "Current Faith Milestones", 'disciple_tools' ),
+                        'milestones_changes_header'  => __( "Faith Milestone Changes", 'disciple_tools' )
                     ]
                 ]
             ]

@@ -36,19 +36,70 @@ jQuery(document).ready(function ($) {
 
     <div style="display: inline-block" class="loading-spinner"></div>
 
+    <div id="totals_div" style="display: none;">
+        <table>
+            <thead>
+                <tr>
+                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.totals_header)}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="total_transferred"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <div id="status_div" style="display: none;">
-        <h2>${window.lodash.escape(window.wp_js_object.translations.headings.status_header)}</h2><hr>
-        <div id="status_chart" style="height: 400px;"></div><br>
+        <table>
+            <thead>
+                <tr>
+                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.status_created_header)}</th>
+                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.status_changes_header)}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><div id="status_created_chart" style="height: 300px;"></div></td>
+                    <td><div id="status_changes_chart" style="height: 300px;"></div></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div id="seeker_div" style="display: none;">
-        <h2>${window.lodash.escape(window.wp_js_object.translations.headings.seeker_path_header)}</h2><hr>
-        <div id="seeker_chart" style="height: 400px;"></div><br>
+        <table>
+            <thead>
+                <tr>
+                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.seeker_path_created_header)}</th>
+                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.seeker_path_changes_header)}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><div id="seeker_created_chart" style="height: 300px;"></div></td>
+                    <td><div id="seeker_changes_chart" style="height: 300px;"></div></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div id="milestones_div" style="display: none;">
-        <h2>${window.lodash.escape(window.wp_js_object.translations.headings.milestones_header)}</h2><hr>
-        <div id="milestones_chart" style="height: 400px;"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.milestones_created_header)}</th>
+                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.milestones_changes_header)}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><div id="milestones_created_chart" style="height: 300px;"></div></td>
+                    <td><div id="milestones_changes_chart" style="height: 300px;"></div></td>
+                </tr>
+            </tbody>
+        </table>
     </div>`);
 
     // Activate date range picker
@@ -98,6 +149,7 @@ jQuery(document).ready(function ($) {
 
   function refresh_charts() {
     // Hide various charts
+    $('#totals_div').fadeOut('fast');
     $('#status_div').fadeOut('fast');
     $('#seeker_div').fadeOut('fast');
     $('#milestones_div').fadeOut('fast');
@@ -122,9 +174,8 @@ jQuery(document).ready(function ($) {
       .done(function (data) {
         // Disable loading spinner
         $(".loading-spinner").removeClass("active");
-
         if (data) {
-          display_site_link_charts(data['statuses'], data['seeker_paths'], data['milestones']);
+          display_site_link_charts(data['total'], data['statuses_current'], data['statuses_changes'], data['seeker_paths_current'], data['seeker_paths_changes'], data['milestones_current'], data['milestones_changes']);
         }
       })
       .fail(function (err) {
@@ -133,38 +184,61 @@ jQuery(document).ready(function ($) {
       });
   }
 
-  function display_site_link_charts(statuses, seeker_paths, milestones) {
+  function display_site_link_charts(total, statuses_current, statuses_changes, seeker_paths_current, seeker_paths_changes, milestones_current, milestones_changes) {
     // Ensure overwritten charts are automatically disposed.
     am4core.options.autoDispose = true;
     am4core.useTheme(am4themes_animated);
 
-    // Proceed with current statuses chart creation.
+    // Proceed with total metrics.
+    $('#totals_div').fadeOut('fast', function () {
+      display_site_link_charts_total(total, function () {
+        $('#totals_div').fadeIn('fast');
+      });
+    });
+
+    // Proceed with status metrics.
     $('#status_div').fadeOut('fast', function () {
-      display_site_link_charts_status(statuses, function () {
-        $('#status_div').fadeIn('fast');
+      display_site_link_charts_status(statuses_current, 'status_created_chart', function () {
+        $('#status_div').fadeIn('slow');
+      });
+      display_site_link_charts_status(statuses_changes, 'status_changes_chart', function () {
+        $('#status_div').fadeIn('slow');
       });
     });
 
-    // Proceed with current statuses chart creation.
+    // Proceed with seeker path metrics.
     $('#seeker_div').fadeOut('fast', function () {
-      display_site_link_charts_seeker(seeker_paths, function () {
-        $('#seeker_div').fadeIn('fast');
+      display_site_link_charts_seeker(seeker_paths_current, 'seeker_created_chart', function () {
+        $('#seeker_div').fadeIn('slow');
+      });
+      display_site_link_charts_seeker(seeker_paths_changes, 'seeker_changes_chart', function () {
+        $('#seeker_div').fadeIn('slow');
       });
     });
 
-    // Proceed with current statuses chart creation.
+    // Proceed with milestone metrics.
     $('#milestones_div').fadeOut('fast', function () {
-      display_site_link_charts_milestones(milestones, function () {
-        $('#milestones_div').fadeIn('fast');
+      display_site_link_charts_milestones(milestones_current, 'milestones_created_chart', function () {
+        $('#milestones_div').fadeIn('slow');
+      });
+      display_site_link_charts_milestones(milestones_changes, 'milestones_changes_chart', function () {
+        $('#milestones_div').fadeIn('slow');
       });
     });
   }
 
-  function display_site_link_charts_status(statuses, callback) {
+  function display_site_link_charts_total(total, callback) {
+    if (total) {
+      $('#total_transferred').html(total);
+      callback();
+    }
+  }
+
+  function display_site_link_charts_status(statuses, chart_div, callback) {
     am4core.ready(function () {
 
       // Create chart instance
-      let chart = am4core.create("status_chart", am4charts.PieChart);
+      let chart = am4core.create(chart_div, am4charts.PieChart);
 
       // Add data
       chart.data = [];
@@ -197,11 +271,11 @@ jQuery(document).ready(function ($) {
     }); // end am4core.ready()
   }
 
-  function display_site_link_charts_seeker(seeker_paths, callback) {
+  function display_site_link_charts_seeker(seeker_paths, chart_div, callback) {
     am4core.ready(function () {
 
       // Create chart instance
-      let chart = am4core.create("seeker_chart", am4charts.XYChart);
+      let chart = am4core.create(chart_div, am4charts.XYChart);
 
       // Add data
       chart.data = [];
@@ -261,11 +335,11 @@ jQuery(document).ready(function ($) {
     }); // end am4core.ready()
   }
 
-  function display_site_link_charts_milestones(milestones, callback) {
+  function display_site_link_charts_milestones(milestones, chart_div, callback) {
     am4core.ready(function () {
 
       // Create chart instance
-      let chart = am4core.create("milestones_chart", am4charts.XYChart);
+      let chart = am4core.create(chart_div, am4charts.XYChart);
 
       // Add data
       chart.data = [];

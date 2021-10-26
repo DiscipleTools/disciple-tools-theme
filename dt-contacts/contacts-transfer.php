@@ -862,10 +862,15 @@ class Disciple_Tools_Contacts_Transfer {
             return new WP_Error( __METHOD__, 'Missing permissions', [ "status" => 400 ] );
         }
 
+        $site_link_post_id = $wp_session["logged_in_as_site_link"]["post_id"];
+
         $metrics = [
-            'statuses'     => [],
-            'seeker_paths' => [],
-            'milestones'   => []
+            'statuses_current'     => [],
+            'statuses_changes'     => [],
+            'seeker_paths_current' => [],
+            'seeker_paths_changes' => [],
+            'milestones_current'   => [],
+            'milestones_changes'   => []
         ];
 
         $start = $params['start'];
@@ -875,87 +880,200 @@ class Disciple_Tools_Contacts_Transfer {
         global $wpdb;
         $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
 
-        $statuses = $wpdb->get_results( $wpdb->prepare( "
-        SELECT COUNT(DISTINCT(log.object_id)) AS count, log.meta_value AS status FROM $wpdb->dt_activity_log log
-        INNER JOIN $wpdb->postmeta AS type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
+        // Total Transferred/Created
+        $total_transferred = $wpdb->get_var( $wpdb->prepare( "
+        SELECT COUNT(DISTINCT(log.object_id)) AS count FROM $wpdb->dt_activity_log log
         INNER JOIN $wpdb->postmeta AS src ON ( log.object_id = src.post_id AND src.meta_key = 'sources' AND src.meta_value = 'transfer' )
-        WHERE log.meta_key = 'overall_status'
+        INNER JOIN $wpdb->postmeta AS id ON ( log.object_id = id.post_id AND id.meta_key = 'transfer_site_link_post_id' AND id.meta_value = %d )
+        WHERE log.action = 'created'
+        AND log.object_type = 'contacts'
+        AND log.hist_time BETWEEN %d AND %d", $site_link_post_id, $start, $end ) );
+        if ( ! empty( $total_transferred ) ) {
+            $metrics['total'] = $total_transferred;
+        }
+
+        // Created Contact Current Statuses
+        $statuses_current = $wpdb->get_results( $wpdb->prepare( "
+        SELECT COUNT(DISTINCT(log.object_id)) AS count, os.meta_value AS status FROM $wpdb->dt_activity_log log
+        INNER JOIN $wpdb->postmeta AS src ON ( log.object_id = src.post_id AND src.meta_key = 'sources' AND src.meta_value = 'transfer' )
+        INNER JOIN $wpdb->postmeta AS id ON ( log.object_id = id.post_id AND id.meta_key = 'transfer_site_link_post_id' AND id.meta_value = %d )
+        INNER JOIN $wpdb->postmeta AS os ON ( log.object_id = os.post_id AND os.meta_key = 'overall_status' )
+        WHERE log.action = 'created'
         AND log.object_type = 'contacts'
         AND log.hist_time BETWEEN %d AND %d
-        GROUP BY log.meta_value", $start, $end ), ARRAY_A );
-        foreach ( $statuses ?? [] as $row ) {
+        GROUP BY os.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
+        foreach ( $statuses_current ?? [] as $row ) {
             if ( ! empty( $row['status'] && ! empty( $row['count'] ) ) ) {
-                $metrics['statuses'][] = [
+                $metrics['statuses_current'][] = [
                     'status' => $field_settings['overall_status']['default'][ $row['status'] ]['label'],
                     'count'  => $row['count']
                 ];
             }
         }
 
-        $seeker_paths = $wpdb->get_results( $wpdb->prepare( "
+        // Status Contact Changes
+        $statuses_changes = $wpdb->get_results( $wpdb->prepare( "
+        SELECT COUNT(log.meta_value) AS count, log.meta_value AS status FROM $wpdb->dt_activity_log log
+        INNER JOIN $wpdb->postmeta AS src ON ( log.object_id = src.post_id AND src.meta_key = 'sources' AND src.meta_value = 'transfer' )
+        INNER JOIN $wpdb->postmeta AS id ON ( log.object_id = id.post_id AND id.meta_key = 'transfer_site_link_post_id' AND id.meta_value = %d )
+        WHERE log.meta_key = 'overall_status'
+        AND log.object_type = 'contacts'
+        AND log.hist_time BETWEEN %d AND %d
+        GROUP BY log.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
+        foreach ( $statuses_changes ?? [] as $row ) {
+            if ( ! empty( $row['status'] && ! empty( $row['count'] ) ) ) {
+                $metrics['statuses_changes'][] = [
+                    'status' => $field_settings['overall_status']['default'][ $row['status'] ]['label'],
+                    'count'  => $row['count']
+                ];
+            }
+        }
+
+        // Created Contact Current Seeker Paths
+        $seeker_paths_current = $wpdb->get_results( $wpdb->prepare( "
         SELECT b.meta_value AS seeker_path, COUNT( DISTINCT(a.ID) ) AS count
         FROM $wpdb->posts AS a
         JOIN $wpdb->postmeta AS b
         ON a.ID = b.post_id
-          AND b.meta_key = 'seeker_path'
+            AND b.meta_key = 'seeker_path'
         JOIN $wpdb->postmeta AS c
         ON a.ID = c.post_id
-          AND c.meta_key = 'overall_status'
-          AND c.meta_value = 'active'
+            AND c.meta_key = 'sources'
+            AND c.meta_value = 'transfer'
         JOIN $wpdb->postmeta AS d
         ON a.ID = d.post_id
-          AND d.meta_key = 'sources'
-          AND d.meta_value = 'transfer'
+            AND d.meta_key = 'transfer_site_link_post_id'
+            AND d.meta_value = %d
         JOIN $wpdb->dt_activity_log AS log
         ON a.ID = log.object_id
-          AND log.object_type = 'contacts'
-          AND log.hist_time BETWEEN %d AND %d
+            AND log.action = 'created'
+            AND log.object_type = 'contacts'
+            AND log.hist_time BETWEEN %d AND %d
         WHERE a.post_status = 'publish'
         AND a.post_type = 'contacts'
         AND a.ID NOT IN (
-          SELECT post_id FROM $wpdb->postmeta
-          WHERE meta_key = 'type' AND meta_value = 'user'
-          GROUP BY post_id
+            SELECT post_id FROM $wpdb->postmeta
+            WHERE meta_key = 'type' AND meta_value = 'user'
+            GROUP BY post_id
         )
-        GROUP BY b.meta_value", $start, $end ), ARRAY_A );
-        foreach ( $seeker_paths ?? [] as $row ) {
+        GROUP BY b.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
+        foreach ( $seeker_paths_current ?? [] as $row ) {
             if ( ! empty( $row['seeker_path'] && ! empty( $row['count'] ) ) ) {
-                $metrics['seeker_paths'][] = [
+                $metrics['seeker_paths_current'][] = [
                     'seeker_path' => $field_settings['seeker_path']['default'][ $row['seeker_path'] ]['label'],
                     'count'       => $row['count']
                 ];
             }
         }
 
-        $milestones = $wpdb->get_results( $wpdb->prepare( "
-        SELECT COUNT( DISTINCT(log.object_id) ) AS 'value', log.meta_value AS milestones
+        // Seeker Path Contact Changes
+        $seeker_paths_changes = $wpdb->get_results( $wpdb->prepare( "
+        SELECT log.meta_value AS seeker_path, COUNT( log.meta_value ) AS count
+        FROM $wpdb->posts AS a
+        JOIN $wpdb->postmeta AS b
+        ON a.ID = b.post_id
+            AND b.meta_key = 'seeker_path'
+        JOIN $wpdb->postmeta AS c
+        ON a.ID = c.post_id
+            AND c.meta_key = 'sources'
+            AND c.meta_value = 'transfer'
+        JOIN $wpdb->postmeta AS d
+        ON a.ID = d.post_id
+            AND d.meta_key = 'transfer_site_link_post_id'
+            AND d.meta_value = %d
+        JOIN $wpdb->dt_activity_log AS log
+        ON a.ID = log.object_id
+            AND log.object_type = 'contacts'
+            AND log.meta_key = 'seeker_path'
+            AND log.hist_time BETWEEN %d AND %d
+        WHERE a.post_status = 'publish'
+        AND a.post_type = 'contacts'
+        AND a.ID NOT IN (
+            SELECT post_id FROM $wpdb->postmeta
+            WHERE meta_key = 'type' AND meta_value = 'user'
+            GROUP BY post_id
+        )
+        GROUP BY log.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
+        foreach ( $seeker_paths_changes ?? [] as $row ) {
+            if ( ! empty( $row['seeker_path'] && ! empty( $row['count'] ) ) ) {
+                $metrics['seeker_paths_changes'][] = [
+                    'seeker_path' => $field_settings['seeker_path']['default'][ $row['seeker_path'] ]['label'],
+                    'count'       => $row['count']
+                ];
+            }
+        }
+
+        // Created Contact Current Faith Milestones
+        $milestones_current = $wpdb->get_results( $wpdb->prepare( "
+        SELECT COUNT( DISTINCT(log.object_id) ) AS 'value', pm.meta_value AS milestones
         FROM $wpdb->dt_activity_log log
-        INNER JOIN $wpdb->postmeta AS type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
         INNER JOIN $wpdb->posts post
         ON (
-        post.ID = log.object_id
-        AND post.post_type = 'contacts'
-        AND post.post_status = 'publish'
+            post.ID = log.object_id
+            AND post.post_type = 'contacts'
+            AND post.post_status = 'publish'
         )
         INNER JOIN $wpdb->postmeta pm
         ON (
-        post.ID = pm.post_id
-        AND pm.meta_key = 'milestones'
-        AND pm.meta_value = log.meta_value
+            post.ID = pm.post_id
+            AND pm.meta_key = 'milestones'
+        )
+        INNER JOIN $wpdb->postmeta id
+        ON (
+            post.ID = id.post_id
+            AND id.meta_key = 'transfer_site_link_post_id'
+            AND id.meta_value = %d
         )
         INNER JOIN $wpdb->postmeta src
         ON (
-        post.ID = src.post_id
-        AND src.meta_key = 'sources'
-        AND src.meta_value = 'transfer'
+            post.ID = src.post_id
+            AND src.meta_key = 'sources'
+            AND src.meta_value = 'transfer'
         )
-        WHERE log.meta_key = 'milestones'
+        WHERE log.action = 'created'
         AND log.object_type = 'contacts'
         AND log.hist_time BETWEEN %d AND %d
-        GROUP BY log.meta_value", $start, $end ), ARRAY_A );
-        foreach ( $milestones ?? [] as $row ) {
+        GROUP BY pm.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
+        foreach ( $milestones_current ?? [] as $row ) {
             if ( ! empty( $row['milestones'] && ! empty( $row['value'] ) ) ) {
-                $metrics['milestones'][] = [
+                $metrics['milestones_current'][] = [
+                    'milestone' => $field_settings['milestones']['default'][ $row['milestones'] ]['label'],
+                    'count'     => $row['value']
+                ];
+            }
+        }
+
+        // Faith Milestone Contact Changes
+        $milestones_changes = $wpdb->get_results( $wpdb->prepare( "
+        SELECT COUNT(log.meta_value) AS 'value', log.meta_value AS milestones
+        FROM $wpdb->dt_activity_log log
+        INNER JOIN $wpdb->posts post
+        ON (
+            post.ID = log.object_id
+            AND post.post_type = 'contacts'
+            AND post.post_status = 'publish'
+        )
+        INNER JOIN $wpdb->postmeta id
+        ON (
+            post.ID = id.post_id
+            AND id.meta_key = 'transfer_site_link_post_id'
+            AND id.meta_value = %d
+        )
+        INNER JOIN $wpdb->postmeta src
+        ON (
+            post.ID = src.post_id
+            AND src.meta_key = 'sources'
+            AND src.meta_value = 'transfer'
+        )
+        WHERE log.object_type = 'contacts'
+        AND log.meta_key = 'milestones'
+        AND (log.meta_value != 'value_deleted')
+        AND (log.meta_value != '')
+        AND log.hist_time BETWEEN %d AND %d
+        GROUP BY log.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
+        foreach ( $milestones_changes ?? [] as $row ) {
+            if ( ! empty( $row['milestones'] && ! empty( $row['value'] ) ) ) {
+                $metrics['milestones_changes'][] = [
                     'milestone' => $field_settings['milestones']['default'][ $row['milestones'] ]['label'],
                     'count'     => $row['value']
                 ];
