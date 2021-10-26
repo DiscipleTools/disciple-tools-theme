@@ -284,9 +284,7 @@ class Disciple_Tools_Contacts_Transfer {
                     </div>
                 <?php endif; ?>
 
-                <div class="cell" id="transfer-form" <?php if ( $foreign_key_exists ) {
-                    echo 'style="display:none;"';
-                } ?>>
+                <div class="cell" id="transfer-form" <?php if ( $foreign_key_exists ) { echo 'style="display:none;"'; } ?>>
                     <h6><a href="https://disciple.tools/user-docs/getting-started-info/admin/site-links/"
                            target="_blank"> <img class="help-icon"
                                                  src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/></a> <?php esc_html_e( 'Transfer this contact to:', 'disciple_tools' ) ?>
