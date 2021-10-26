@@ -227,36 +227,36 @@ jQuery(document).ready(function ($) {
         let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
         valueAxis.renderer.opposite = true;
 
-        // Create series
-        function createSeries(field, name) {
-          let series = chart.series.push(new am4charts.ColumnSeries());
-          series.dataFields.valueX = field;
-          series.dataFields.categoryY = "seeker_path";
-          series.name = name;
-          series.columns.template.tooltipText = "{categoryY}: [bold]{valueX}[/]";
-          series.columns.template.height = am4core.percent(100);
-          series.sequencedInterpolation = true;
-
-          let valueLabel = series.bullets.push(new am4charts.LabelBullet());
-          valueLabel.label.text = "{valueX}";
-          valueLabel.label.horizontalCenter = "left";
-          valueLabel.label.dx = 10;
-          valueLabel.label.hideOversized = false;
-          valueLabel.label.truncate = false;
-
-          let categoryLabel = series.bullets.push(new am4charts.LabelBullet());
-          categoryLabel.label.text = "{name}";
-          categoryLabel.label.horizontalCenter = "right";
-          categoryLabel.label.dx = -10;
-          categoryLabel.label.fill = am4core.color("#fff");
-          categoryLabel.label.hideOversized = false;
-          categoryLabel.label.truncate = false;
-        }
-
         createSeries("count", "");
 
         // Execute callback() function
         callback();
+      }
+
+      // Create series
+      function createSeries(field, name) {
+        let series = chart.series.push(new am4charts.ColumnSeries());
+        series.dataFields.valueX = field;
+        series.dataFields.categoryY = "seeker_path";
+        series.name = name;
+        series.columns.template.tooltipText = "{categoryY}: [bold]{valueX}[/]";
+        series.columns.template.height = am4core.percent(100);
+        series.sequencedInterpolation = true;
+
+        let valueLabel = series.bullets.push(new am4charts.LabelBullet());
+        valueLabel.label.text = "{valueX}";
+        valueLabel.label.horizontalCenter = "left";
+        valueLabel.label.dx = 10;
+        valueLabel.label.hideOversized = false;
+        valueLabel.label.truncate = false;
+
+        let categoryLabel = series.bullets.push(new am4charts.LabelBullet());
+        categoryLabel.label.text = "{name}";
+        categoryLabel.label.horizontalCenter = "right";
+        categoryLabel.label.dx = -10;
+        categoryLabel.label.fill = am4core.color("#fff");
+        categoryLabel.label.hideOversized = false;
+        categoryLabel.label.truncate = false;
       }
     }); // end am4core.ready()
   }
