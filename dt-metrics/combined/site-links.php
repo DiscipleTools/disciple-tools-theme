@@ -139,7 +139,7 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
             ];
 
             // Request records metrics from remote site
-            $result = wp_remote_post( 'http://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/transfer/metrics', $args );
+            $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/transfer/metrics', $args );
             if ( ! is_wp_error( $result ) ) {
                 $remote_metrics = json_decode( $result['body'], true );
                 if ( ! empty( $remote_metrics ) && ! is_wp_error( $remote_metrics ) ) {
