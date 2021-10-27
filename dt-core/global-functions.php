@@ -314,6 +314,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'english_name' => 'Croatian',
                     'native_name' => 'Hrvatski'
                 ],
+                'hu_HU' => [
+                    'language' => 'hu_HU',
+                    'english_name' => 'Hungarian',
+                    'native_name' => 'Magyar'
+                ],
                 'id_ID' => [
                     'language' => 'id_ID',
                     'english_name' => 'Indonesian',
