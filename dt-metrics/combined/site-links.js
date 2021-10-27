@@ -27,14 +27,12 @@ jQuery(document).ready(function ($) {
             <tr>
                 <td>` + date_ranges_select_html() + `</td>
                 <td>` + site_links_select_html() + `</td>
-                <td>
-                    <button id="chart_refresh_but" class="button">${window.lodash.escape(window.wp_js_object.translations.headings.refresh_but_header)}</button>
-                </td>
             </tr>
         </tbody>
     </table>
 
     <div style="display: inline-block" class="loading-spinner"></div>
+    <span id="metrics_msg" style="color: red; font-weight: bold;"></span>
 
     <div id="totals_div" style="display: none;">
         <table>
@@ -51,52 +49,87 @@ jQuery(document).ready(function ($) {
         </table>
     </div>
 
-    <div id="status_div" style="display: none;">
+    <div id="status_created_div" style="display: none;">
         <table>
             <thead>
                 <tr>
                     <th>${window.lodash.escape(window.wp_js_object.translations.headings.status_created_header)}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><div id="status_created_chart" style="height: 350px;"></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="seeker_created_div" style="display: none;">
+        <table>
+            <thead>
+                <tr>
+                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.seeker_path_created_header)}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><div id="seeker_created_chart" style="height: 350px;"></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="milestones_created_div" style="display: none;">
+        <table>
+            <thead>
+                <tr>
+                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.milestones_created_header)}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><div id="milestones_created_chart" style="height: 350px;"></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div id="status_changes_div" style="display: none;">
+        <table>
+            <thead>
+                <tr>
                     <th>${window.lodash.escape(window.wp_js_object.translations.headings.status_changes_header)}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><div id="status_created_chart" style="height: 300px;"></div></td>
-                    <td><div id="status_changes_chart" style="height: 300px;"></div></td>
+                    <td><div id="status_changes_chart" style="height: 350px;"></div></td>
                 </tr>
             </tbody>
         </table>
     </div>
-
-    <div id="seeker_div" style="display: none;">
+    <div id="seeker_changes_div" style="display: none;">
         <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.seeker_path_created_header)}</th>
                     <th>${window.lodash.escape(window.wp_js_object.translations.headings.seeker_path_changes_header)}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><div id="seeker_created_chart" style="height: 300px;"></div></td>
-                    <td><div id="seeker_changes_chart" style="height: 300px;"></div></td>
+                    <td><div id="seeker_changes_chart" style="height: 350px;"></div></td>
                 </tr>
             </tbody>
         </table>
     </div>
-
-    <div id="milestones_div" style="display: none;">
+    <div id="milestones_changes_div" style="display: none;">
         <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.milestones_created_header)}</th>
                     <th>${window.lodash.escape(window.wp_js_object.translations.headings.milestones_changes_header)}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><div id="milestones_created_chart" style="height: 300px;"></div></td>
-                    <td><div id="milestones_changes_chart" style="height: 300px;"></div></td>
+                    <td><div id="milestones_changes_chart" style="height: 350px;"></div></td>
                 </tr>
             </tbody>
         </table>
@@ -106,14 +139,14 @@ jQuery(document).ready(function ($) {
     window.METRICS.setupDatePickerWithoutEndpoint(
       function (start, end, label) {
         $('.date_range_picker span').html(label);
+        refresh_charts();
       },
       moment().startOf('year'),
       moment().endOf('year')
     );
 
-    // Listen out for refresh requests
-    $('#chart_refresh_but').on('click', function () {
-      $(".loading-spinner").addClass("active");
+    // Trigger data refreshes, following a site link change
+    $('#site_links_filter').on('change', function () {
       refresh_charts();
     });
 
@@ -148,11 +181,21 @@ jQuery(document).ready(function ($) {
   }
 
   function refresh_charts() {
-    // Hide various charts
+    // Hide various charts and messages
     $('#totals_div').fadeOut('fast');
-    $('#status_div').fadeOut('fast');
-    $('#seeker_div').fadeOut('fast');
-    $('#milestones_div').fadeOut('fast');
+
+    $('#status_created_div').fadeOut('fast');
+    $('#seeker_created_div').fadeOut('fast');
+    $('#milestones_created_div').fadeOut('fast');
+
+    $('#status_changes_div').fadeOut('fast');
+    $('#seeker_changes_div').fadeOut('fast');
+    $('#milestones_changes_div').fadeOut('fast');
+
+    $('#metrics_msg').fadeOut('fast');
+
+    // Indicate something is happening..!
+    $(".loading-spinner").addClass("active");
 
     // Fetch current parameters
     let drp = $('.date_range_picker').data('daterangepicker');
@@ -174,14 +217,28 @@ jQuery(document).ready(function ($) {
       .done(function (data) {
         // Disable loading spinner
         $(".loading-spinner").removeClass("active");
-        if (data) {
+
+        if (no_data_available(data)) {
+          display_msg(window.wp_js_object.translations.general.no_data_msg);
+        } else {
           display_site_link_charts(data['total'], data['statuses_current'], data['statuses_changes'], data['seeker_paths_current'], data['seeker_paths_changes'], data['milestones_current'], data['milestones_changes']);
         }
       })
       .fail(function (err) {
         console.log("error");
         console.log(err);
+        display_msg(err);
       });
+  }
+
+  function no_data_available(data) {
+    return !data || data.length === 0 || (!data['total'] && data['statuses_current'].length === 0 && data['statuses_changes'].length === 0 && data['seeker_paths_current'].length === 0 && data['seeker_paths_changes'].length === 0 && data['milestones_current'].length === 0 && data['milestones_changes'].length === 0);
+  }
+
+  function display_msg(msg) {
+    $('#metrics_msg').fadeOut('fast', function () {
+      $('#metrics_msg').html(msg).fadeIn('fast');
+    });
   }
 
   function display_site_link_charts(total, statuses_current, statuses_changes, seeker_paths_current, seeker_paths_changes, milestones_current, milestones_changes) {
@@ -189,40 +246,44 @@ jQuery(document).ready(function ($) {
     am4core.options.autoDispose = true;
     am4core.useTheme(am4themes_animated);
 
-    // Proceed with total metrics.
+    // Display total transferred metrics.
     $('#totals_div').fadeOut('fast', function () {
       display_site_link_charts_total(total, function () {
         $('#totals_div').fadeIn('fast');
       });
     });
 
-    // Proceed with status metrics.
-    $('#status_div').fadeOut('fast', function () {
+    // Display created based metrics
+    $('#status_created_div').fadeOut('fast', function () {
       display_site_link_charts_status(statuses_current, 'status_created_chart', function () {
-        $('#status_div').fadeIn('slow');
-      });
-      display_site_link_charts_status(statuses_changes, 'status_changes_chart', function () {
-        $('#status_div').fadeIn('slow');
+        $('#status_created_div').fadeIn('slow');
       });
     });
-
-    // Proceed with seeker path metrics.
-    $('#seeker_div').fadeOut('fast', function () {
+    $('#seeker_created_div').fadeOut('fast', function () {
       display_site_link_charts_seeker(seeker_paths_current, 'seeker_created_chart', function () {
-        $('#seeker_div').fadeIn('slow');
+        $('#seeker_created_div').fadeIn('slow');
       });
-      display_site_link_charts_seeker(seeker_paths_changes, 'seeker_changes_chart', function () {
-        $('#seeker_div').fadeIn('slow');
+    });
+    $('#milestones_created_div').fadeOut('fast', function () {
+      display_site_link_charts_milestones(milestones_current, 'milestones_created_chart', function () {
+        $('#milestones_created_div').fadeIn('slow');
       });
     });
 
-    // Proceed with milestone metrics.
-    $('#milestones_div').fadeOut('fast', function () {
-      display_site_link_charts_milestones(milestones_current, 'milestones_created_chart', function () {
-        $('#milestones_div').fadeIn('slow');
+    // Display changes based metrics
+    $('#status_changes_div').fadeOut('fast', function () {
+      display_site_link_charts_status(statuses_changes, 'status_changes_chart', function () {
+        $('#status_changes_div').fadeIn('slow');
       });
+    });
+    $('#seeker_changes_div').fadeOut('fast', function () {
+      display_site_link_charts_seeker(seeker_paths_changes, 'seeker_changes_chart', function () {
+        $('#seeker_changes_div').fadeIn('slow');
+      });
+    });
+    $('#milestones_changes_div').fadeOut('fast', function () {
       display_site_link_charts_milestones(milestones_changes, 'milestones_changes_chart', function () {
-        $('#milestones_div').fadeIn('slow');
+        $('#milestones_changes_div').fadeIn('slow');
       });
     });
   }

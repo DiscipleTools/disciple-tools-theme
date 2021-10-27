@@ -73,14 +73,16 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
                         'date_range_none_header'     => __( "None Set", 'disciple_tools' ),
                         'site_links_header'          => __( "Site Links", 'disciple_tools' ),
                         'site_links_none_header'     => __( "None Set", 'disciple_tools' ),
-                        'refresh_but_header'         => __( "Refresh", 'disciple_tools' ),
-                        'totals_header'              => __( "Total Number Of Transferred Contacts", 'disciple_tools' ),
-                        'status_created_header'      => __( "Current Statuses", 'disciple_tools' ),
-                        'status_changes_header'      => __( "Status Changes", 'disciple_tools' ),
-                        'seeker_path_created_header' => __( "Current Seeker Paths", 'disciple_tools' ),
-                        'seeker_path_changes_header' => __( "Seeker Path Changes", 'disciple_tools' ),
-                        'milestones_created_header'  => __( "Current Faith Milestones", 'disciple_tools' ),
-                        'milestones_changes_header'  => __( "Faith Milestone Changes", 'disciple_tools' )
+                        'totals_header'              => _x( 'Contacts transferred during date range', 'Contacts transferred during date range', 'disciple_tools' ),
+                        'status_created_header'      => sprintf( _x( '%s of contacts created in date range', 'Current statuses of contacts created in date range', 'disciple_tools' ), 'Current statuses' ),
+                        'status_changes_header'      => sprintf( _x( '%s changes during date range', 'Status changes during date range', 'disciple_tools' ), 'Status' ),
+                        'seeker_path_created_header' => sprintf( _x( '%s of contacts created in date range', 'Seeker Paths of contacts created in date range', 'disciple_tools' ), 'Seeker Paths' ),
+                        'seeker_path_changes_header' => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), 'Seeker Path' ),
+                        'milestones_created_header'  => sprintf( _x( '%s of contacts created in date range', 'Faith milestones of contacts created in date range', 'disciple_tools' ), 'Faith milestones' ),
+                        'milestones_changes_header'  => sprintf( _x( '%s changes during date range', 'Faith milestone changes during date range', 'disciple_tools' ), 'Faith milestone' )
+                    ],
+                    'general'  => [
+                        'no_data_msg' => __( "No Data Available", 'disciple_tools' )
                     ]
                 ]
             ]
