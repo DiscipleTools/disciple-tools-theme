@@ -74,12 +74,12 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
                         'site_links_header'          => __( "Site Links", 'disciple_tools' ),
                         'site_links_none_header'     => __( "None Set", 'disciple_tools' ),
                         'totals_header'              => _x( 'Contacts transferred during date range', 'Contacts transferred during date range', 'disciple_tools' ),
-                        'status_created_header'      => sprintf( _x( '%s of contacts created in date range', 'Current statuses of contacts created in date range', 'disciple_tools' ), 'Current statuses' ),
-                        'status_changes_header'      => sprintf( _x( '%s changes during date range', 'Status changes during date range', 'disciple_tools' ), 'Status' ),
-                        'seeker_path_created_header' => sprintf( _x( '%s of contacts created in date range', 'Seeker Paths of contacts created in date range', 'disciple_tools' ), 'Seeker Paths' ),
-                        'seeker_path_changes_header' => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), 'Seeker Path' ),
-                        'milestones_created_header'  => sprintf( _x( '%s of contacts created in date range', 'Faith milestones of contacts created in date range', 'disciple_tools' ), 'Faith milestones' ),
-                        'milestones_changes_header'  => sprintf( _x( '%s changes during date range', 'Faith milestone changes during date range', 'disciple_tools' ), 'Faith milestone' )
+                        'status_created_header'      => sprintf( _x( '%s of contacts created in date range', 'Current statuses of contacts created in date range', 'disciple_tools' ), __( 'Current statuses', 'disciple_tools' ) ),
+                        'status_changes_header'      => sprintf( _x( '%s changes during date range', 'Status changes during date range', 'disciple_tools' ), __( 'Status', 'disciple_tools' ) ),
+                        'seeker_path_created_header' => sprintf( _x( '%s of contacts created in date range', 'Seeker Paths of contacts created in date range', 'disciple_tools' ), __( 'Seeker Paths', 'disciple_tools' ) ),
+                        'seeker_path_changes_header' => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), __( 'Seeker Path', 'disciple_tools' ) ),
+                        'milestones_created_header'  => sprintf( _x( '%s of contacts created in date range', 'Faith milestones of contacts created in date range', 'disciple_tools' ), __( 'Faith milestones', 'disciple_tools' ) ),
+                        'milestones_changes_header'  => sprintf( _x( '%s changes during date range', 'Faith milestone changes during date range', 'disciple_tools' ), __( 'Faith milestone', 'disciple_tools' ) )
                     ],
                     'general'  => [
                         'no_data_msg' => __( "No Data Available", 'disciple_tools' )
@@ -139,7 +139,7 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
             ];
 
             // Request records metrics from remote site
-            $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/transfer/metrics', $args );
+            $result = wp_remote_post( 'http://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/transfer/metrics', $args );
             if ( ! is_wp_error( $result ) ) {
                 $remote_metrics = json_decode( $result['body'], true );
                 if ( ! empty( $remote_metrics ) && ! is_wp_error( $remote_metrics ) ) {
