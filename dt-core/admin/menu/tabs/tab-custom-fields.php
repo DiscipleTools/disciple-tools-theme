@@ -586,7 +586,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <tr style="background-color: #eee">
                             <td><?php echo esc_html( $key ) ?></td>
                             <td><?php echo esc_html( $label ) ?></td>
-                            <td colspan="5"></td>
+                            <td colspan="8"></td>
                             <td>
                                 <button type="submit" name="restore_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Restore", 'disciple_tools' ) ?></button>
                             </td>
