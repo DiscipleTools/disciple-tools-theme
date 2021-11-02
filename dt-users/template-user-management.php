@@ -271,12 +271,17 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
                                     <!-- user profile -->
                                     <div class="bordered-box">
-                                        <h4><?php esc_html_e( 'User Profile', 'disciple_tools' ); ?></h4>
-                                        Display Name
-                                        <span id="<?php echo esc_html( "update_display_name" ); ?>-spinner" class="loading-spinner"></span>
-                                        <input type="text" id="update_display_name" class="text-input">
 
-                                        Gender
+                                        <h4><?php esc_html_e( 'User Profile', 'disciple_tools' ); ?></h4>
+
+                                        <button id="corresponds_to_contact_link" class="button" type="button"><?php esc_html_e( 'View contact record', 'disciple_tools' ); ?></button>
+                                        <p>
+                                            <?php esc_html_e( 'Display Name', 'disciple_tools' ); ?>
+                                            <span id="<?php echo esc_html( "update_display_name" ); ?>-spinner" class="loading-spinner"></span>
+                                            <input type="text" id="update_display_name" class="text-input">
+                                        </p>
+
+                                        <?php esc_html_e( 'Gender', 'disciple_tools' ); ?>
                                         <span id="<?php echo esc_html( "gender" ); ?>-spinner" class="loading-spinner"></span>
                                         <select class="select-field" id="gender">
                                             <option></option>
