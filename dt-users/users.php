@@ -686,6 +686,16 @@ class Disciple_Tools_Users
         if ( !empty( $body["email-preference"] ) ) {
             update_user_meta( $user->ID, 'email_preference', $body["email-preference"] );
         }
+        $dt_user_fields = dt_get_site_custom_lists( 'user_fields' );
+        foreach ( $dt_user_fields as $field ){
+            if ( isset( $body[$field["key"]] ) ){
+                update_user_meta( $user->ID, $field["key"], $body[$field["key"]] );
+            }
+        }
+        if ( isset( $body["description"] ) ) {
+            update_user_meta( $user->ID, 'description', $body["description"] );
+        }
+
         try {
             do_action( 'dt_update_user', $user, $body );
         } catch ( Exception $e ) {
