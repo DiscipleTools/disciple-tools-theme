@@ -122,10 +122,11 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
         }
         $user_fields = $site_custom_lists['user_fields'];
+        $user_fields_types = $site_custom_lists['user_fields_types'];
         foreach ( $user_fields as $field ) {
             echo '<tr>
                         <td>' . esc_attr( $field['label'] ) . '</td>
-                        <td>' . esc_attr( $field['type'] ) . '</td>
+                        <td>' . esc_attr( isset( $user_fields_types[$field['type']]["label"] ) ? $user_fields_types[$field['type']]["label"] : $field['type'] ) . '</td>
                         <td>' . esc_attr( $field['description'] ) . ' </td>
                         <td><input name="user_fields[' . esc_attr( $field['key'] ) . ']" type="checkbox" ' . ( $field['enabled'] ? "checked" : "" ) . ' /></td>
                         <td><button type="submit" name="delete_field" value="' . esc_attr( $field['key'] ) . '" class="button small" >' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button> </td>
@@ -141,7 +142,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
         echo '<select name="add_input_field[type]" id="add_input_field_type">';
         // Iterate the options
-        $user_fields_types = $site_custom_lists['user_fields_types'];
         foreach ( $user_fields_types as $value ) {
             echo '<option value="' . esc_attr( $value['key'] ) . '" >' . esc_attr( $value['label'] ) . '</option>';
         }
