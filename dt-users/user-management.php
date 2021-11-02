@@ -256,7 +256,11 @@ class DT_User_Management
             $user_response['user_location'] = Disciple_Tools_Users::get_user_location( $user->ID );
             $user_response["gender"] = get_user_option( 'user_gender', $user_id );
             $user_response["languages"] = get_user_option( 'user_languages', $user_id );
+            $user_response["description"] = get_user_meta( $user_id, 'description', true );
             $user_response["corresponds_to_contact"] = Disciple_Tools_Users::get_contact_for_user( $user_id );
+            $dt_user_meta = get_user_meta( $user_id ); // Full array of user meta data
+            $user_response["user_fields"] = dt_build_user_fields_display( $dt_user_meta );
+
         }
 
         $modules = dt_get_option( "dt_post_type_modules" );

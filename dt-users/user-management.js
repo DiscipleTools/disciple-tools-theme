@@ -273,7 +273,7 @@ jQuery(document).ready(function($) {
   }
 
 
-  $('input.text-input').change(function(){
+  $('textarea.text-input, input.text-input').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
     $(`#${id}-spinner`).addClass('active')
@@ -378,6 +378,7 @@ jQuery(document).ready(function($) {
     $('#day_activity_chart').html(spinner)
     $('#mapbox-wrapper').html(spinner)
     $('#location-grid-meta-results').html(spinner)
+    $('#profile_loading').addClass("active")
 
     $('#status-select').val('')
     $('#workload-select').val('')
@@ -395,6 +396,7 @@ jQuery(document).ready(function($) {
     makeRequest( "get", `user?user=${user_id}&section=details`, null , 'user-management/v1/')
       .done(details=>{
         if ( window.current_user_lookup === user_id ) {
+          $('#profile_loading').removeClass("active")
           user_details = details
           $("#user_name").html(window.lodash.escape(details.display_name))
           $("#update_display_name").val(window.lodash.escape(details.display_name));
@@ -403,6 +405,11 @@ jQuery(document).ready(function($) {
           })
 
           $('#gender').val(details.gender)
+          $('#description').val(details.description)
+          details.user_fields.forEach(field=>{
+            $(`#${field.key}`).val(field.value)
+          })
+
           $('#user_status').val(window.lodash.escape(details.user_status))
           if ( details.user_status !== "0" ){
           }

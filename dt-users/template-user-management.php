@@ -272,7 +272,7 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                     <!-- user profile -->
                                     <div class="bordered-box">
 
-                                        <h4><?php esc_html_e( 'User Profile', 'disciple_tools' ); ?></h4>
+                                        <h4><?php esc_html_e( 'User Profile', 'disciple_tools' ); ?><span id="profile_loading" class="loading-spinner active"></span></h4>
 
                                         <button id="corresponds_to_contact_link" class="button" type="button"><?php esc_html_e( 'View contact record', 'disciple_tools' ); ?></button>
                                         <p>
@@ -288,6 +288,44 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                             <option value="male"><?php esc_html_e( 'Male', 'disciple_tools' ); ?></option>
                                             <option value="female"><?php esc_html_e( 'Female', 'disciple_tools' ); ?></option>
                                         </select>
+
+                                        <?php // site defined fields
+                                        $dt_user_fields = dt_get_site_custom_lists( 'user_fields' );
+                                        foreach ( $dt_user_fields as $dt_field ) {
+                                            if ( empty( $dt_field["enabled"] ) ){
+                                                continue;
+                                            }
+                                            ?>
+                                            <dt>
+                                                <label for="<?php echo esc_attr( $dt_field['key'] ) ?>"><?php echo esc_html( $dt_field['label'] ) ?>
+                                                    <span id="<?php echo esc_html( $dt_field['key'] ); ?>-spinner" class="loading-spinner"></span>
+                                                </label>
+                                            </dt>
+                                            <dd><input type="text"
+                                                       data-optional
+                                                       class="input text-input"
+                                                       id="<?php echo esc_attr( $dt_field['key'] ) ?>"
+                                                       name="<?php echo esc_attr( $dt_field['key'] ) ?>"
+                                                       placeholder="<?php echo esc_html( $dt_field['label'] ) ?>"
+                                                       value=""/>
+                                            </dd>
+                                            <?php
+                                        } // end foreach
+                                        ?>
+                                        <dt>
+                                            <label for="description"><?php esc_html_e( 'Biography', 'disciple_tools' )?>
+                                                <span id="<?php echo esc_html( "description" ); ?>-spinner" class="loading-spinner"></span>
+                                            </label>
+                                        </dt>
+                                            <dd><textarea
+                                                    type="text" class="input text-input" id="description"
+                                                    name="description"
+                                                    placeholder="<?php esc_html_e( 'Biography', 'disciple_tools' )?>"
+                                                    rows="5"
+                                                    data-optional
+                                                ></textarea>
+                                            </dd>
+
 
                                     </div>
 

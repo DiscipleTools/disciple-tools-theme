@@ -28,7 +28,6 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 125 );
         add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 125, 1 );
         add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 125, 1 );
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
 
         parent::__construct();
