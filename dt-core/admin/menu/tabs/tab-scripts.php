@@ -111,15 +111,20 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
         $this->box( 'bottom' );
     }
 
-    public function admin_enqueue_scripts(){
+    public function admin_enqueue_scripts() {
+        wp_enqueue_media();
         wp_enqueue_script( 'dt_utilities_scripts_script', disciple_tools()->admin_js_url . 'dt-utilities-scripts.js', [
-            'jquery',
+            'jquery'
         ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-scripts.js' ), true );
         wp_localize_script(
             "dt_utilities_scripts_script", "dt_admin_scripts", [
-                'site_url' => site_url(),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'site_url'  => site_url(),
+                'nonce'     => wp_create_nonce( 'wp_rest' ),
                 'rest_root' => esc_url_raw( rest_url() ),
+                'upload'    => [
+                    'title'      => __( 'Upload Icon', 'disciple_tools' ),
+                    'button_txt' => __( 'Upload', 'disciple_tools' )
+                ]
             ]
         );
     }

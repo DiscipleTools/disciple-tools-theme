@@ -403,6 +403,38 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         </div>
                     </td>
                 </tr>
+                <?php if ( isset( $field["icon"] ) && ! empty( $field["icon"] ) ): ?>
+                    <tr>
+                        <th><?php esc_html_e( "Icon", 'disciple_tools' ) ?></th>
+                        <td>
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <img src="<?php echo esc_attr( $field["icon"] ); ?>"
+                                             style="width: 20px; vertical-align: middle;">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="field_icon"
+                                               placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
+                                               value="<?php echo esc_attr( $field["icon"] ); ?>">
+                                    </td>
+                                    <td>
+                                        <button class="button file-upload-display-uploader" data-form="field_edit_form"
+                                                data-icon-input="field_icon"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
+                                    </td>
+                                    <td>
+                                        <?php if ( isset( $defaults[ $field_key ]["icon"] ) && $defaults[ $field_key ]["icon"] !== $field["icon"] ): ?>
+                                            <button type="submit" class="button" name="restore_field_icon"
+                                                    value="<?php echo esc_attr( $field_key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                <?php endif; ?>
                 <tr>
                     <th>
                         <button type="submit" name="save" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
@@ -456,6 +488,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <td><?php esc_html_e( "Icon", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Icon Link", 'disciple_tools' ) ?></td>
                         <td></td>
+                        <td></td>
                         <?php
                     endif;
                     ?>
@@ -501,6 +534,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <td>
                                     <input type="text" name="field_option_icon_<?php echo esc_html( $key ) ?>" placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
                                            value="<?php echo esc_attr( isset( $option["icon"] ) ? $option["icon"] : '' ); ?>">
+                                </td>
+                                <td>
+                                    <button class="button file-upload-display-uploader" data-form="field_edit_form"
+                                            data-icon-input="field_option_icon_<?php echo esc_html( $key ) ?>"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
                                 </td>
                                 <td>
                                     <?php if ( isset( $defaults[ $field_key ]["default"][ $key ]["icon"] ) && $defaults[ $field_key ]["default"][ $key ]["icon"] !== $option["icon"] ): ?>
@@ -766,6 +803,18 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             if ( isset( $post_submission["tile_select"] ) ){
                 $custom_field["tile"] = $post_submission["tile_select"];
             }
+
+            //field icon
+            if ( isset( $post_submission["field_icon"] ) ) {
+                $custom_field["icon"] = $post_submission["field_icon"];
+            }
+
+            //restore field icon
+            if ( isset( $post_submission["restore_field_icon"] ) ) {
+                $restore_icon_defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+                $custom_field["icon"]  = $restore_icon_defaults[ $field_key ]["icon"];
+            }
+
             // key_select and multi_options
             if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" ) ){
                 $field_options = $field["default"];
