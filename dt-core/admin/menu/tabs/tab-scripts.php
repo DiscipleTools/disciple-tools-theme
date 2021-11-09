@@ -31,6 +31,32 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
 
+        // Allow SVG uploads
+        add_filter( 'upload_mimes', function ( $mime_types ) {
+            $mime_types['svg']  = 'image/svg+xml';
+            $mime_types['svgz'] = 'image/svg+xml';
+
+            return $mime_types;
+        } );
+
+        // Ensure WP is able to correctly identify SVGs
+        add_filter( 'wp_check_filetype_and_ext', function ( $data = null, $file = null, $filename = null, $mimes = null ) {
+            $ext = $data['ext'] ?? '';
+            if ( strlen( $ext ) < 1 ) {
+                $exploded = explode( '.', $filename );
+                $ext      = strtolower( end( $exploded ) );
+            }
+            if ( $ext === 'svg' ) {
+                $data['type'] = 'image/svg+xml';
+                $data['ext']  = 'svg';
+            } elseif ( $ext === 'svgz' ) {
+                $data['type'] = 'image/svg+xml';
+                $data['ext']  = 'svgz';
+            }
+
+            return $data;
+        }, 75, 4 );
+
         parent::__construct();
     } // End __construct()
 
