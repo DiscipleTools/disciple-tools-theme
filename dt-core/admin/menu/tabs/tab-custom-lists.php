@@ -278,7 +278,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         <td>
                             <input type="text" name="channel_icon[<?php echo esc_html( $channel_key ) ?>]" value="<?php echo esc_html( $channel_option["icon"] ?? "" ) ?>">
                             <?php if ( !empty( $channel_option["icon"] ) ) : ?>
-                            <button type="submit" class="button" name="channel_reset_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( "Reset link", 'disciple_tools' ) ?></button>
+                                <button class="button file-upload-display-uploader" data-form="channels_box"
+                                        data-icon-input="channel_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
+
+                                <button type="submit" class="button" name="channel_reset_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( "Reset link", 'disciple_tools' ) ?></button>
                             <?php endif; ?>
                         </td>
                         <td>
@@ -593,6 +596,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <td></td>
                     <td><?php esc_html_e( 'Name', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Icon link (must be https)', 'disciple_tools' ) ?></td>
+                    <td></td>
                     <td><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></td>
                 </tr>
                 </thead>
@@ -604,7 +608,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         }?>
                         <tr>
                             <td>
-                                <img src="<?php echo esc_attr( $field_settings['icon'] ); ?>" class="quick-action-menu">
+                                <img style="width: 20px; vertical-align: middle;" src="<?php echo esc_attr( $field_settings['icon'] ); ?>" class="quick-action-menu">
                             </td>
                             <td>
                                 <?php
@@ -616,6 +620,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                 } ?>
                             </td>
                             <td class="quick-action-menu"><input type="text" name="edit_field_icon[<?php echo esc_attr( $field_key ); ?>]" value="<?php echo esc_html( $field_settings['icon'] ) ?>"></td>
+                            <td>
+                                <button class="button file-upload-display-uploader" data-form="quick_actions_box"
+                                        data-icon-input="edit_field_icon[<?php echo esc_attr( $field_key ); ?>]"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
+                            </td>
                             <td>
                                 <?php
                                 if ( !isset( $default_fields[$field_key] ) ){
