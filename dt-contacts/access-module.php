@@ -758,10 +758,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
         }
         if ( !isset( $fields["overall_status"] ) ){
-            $current_roles = wp_get_current_user()->roles;
-            if ( in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true ) ) {
-                $fields["overall_status"] = "new";
-            } else if ( in_array( "multiplier", $current_roles, true ) ) {
+            if ( get_current_user_id() ){
                 $fields["overall_status"] = "active";
             } else {
                 $fields["overall_status"] = "new";
