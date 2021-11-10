@@ -56,7 +56,7 @@ jQuery(document).ready(function($) {
           updateCriticalPath(response.seeker_path.key)
         }
       }
-      if (key === "overall_status" ){
+      if (key === "overall_status" || key === "assigned_to"){
         setStatus(response)
       }
     })
