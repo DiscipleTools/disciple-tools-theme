@@ -701,6 +701,10 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( isset( $fields["overall_status"], $fields["reason_closed"] ) && $fields["overall_status"] === "closed" ){
                 $fields["requires_update"] = false;
             }
+            //if a contact type is changed to access, set the status to active if there is no status
+            if ( isset( $fields["type"] ) && $fields["type"] === "access" && !isset( $existing_post["overall_status"] ) && !isset( $fields["overall_status"] ) ){
+                $fields["overall_status"] = "active";
+            }
         }
         return $fields;
     }
