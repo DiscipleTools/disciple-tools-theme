@@ -365,8 +365,7 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
             $grid_id = $geocoder->get_grid_id_by_lnglat( $ip_result['longitude'], $ip_result['latitude'], $ip_result['country_code'] );
 
             if ( empty( $label ) ) {
-                $admin0_grid_id = Disciple_Tools_Mapping_Queries::get_by_grid_id( $grid_id['admin0_grid_id'] );
-                $label = $grid_id['name'] . ', ' . $admin0_grid_id['name'];
+                $label = $geocoder->_format_full_name( $grid_id );
             }
 
             $location_grid_meta = [
