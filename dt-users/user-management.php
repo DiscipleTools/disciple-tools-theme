@@ -183,6 +183,8 @@ class DT_User_Management
                         'view_contact' => __( 'View Contact', 'disciple_tools' ),
                         'more' => __( 'More', 'disciple_tools' ),
                         'less' => __( 'Less', 'disciple_tools' ),
+                        'here' => __( 'here', 'disciple_tools' ),
+                        'user_contact_created' => __( 'A user contact has been created for this record', 'disciple_tools' ),
                     ],
                     'language_dropdown' => dt_get_available_languages(),
                     'has_permission' => $this->has_permission(),

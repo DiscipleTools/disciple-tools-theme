@@ -240,6 +240,51 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
 
     </div> <!-- end #inner-content -->
 
+    <div class="reveal" id="confirm-user-upgrade" data-reveal data-reset-on-close>
+        <h3><?php esc_html_e( 'Upgrading a contact', 'disciple_tools' ); ?></h3>
+        <p>
+            <img class="dt-icon dt-red-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' ) ?>"/>
+            <?php esc_html_e( "The new user will have access to all the fields and comments on this contact record. We suggest creating a new contact if this record contains sensitive data or comments.", "disciple_tools" ); ?>
+        </p>
+        <div class="grid-x">
+            <div class="button-group">
+                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                     <?php echo esc_html__( 'Back', 'disciple_tools' )?>
+                 </button>
+                 <button class="button" id="continue-user-creation" data-close><?php esc_html_e( 'Continue', 'disciple_tools' ); ?></button>
+                 <button class="button" id="create-new-contact" data-close><?php esc_html_e( 'Create new record', 'disciple_tools' ); ?></button>
+            </div>
+             <button class="close-button" data-close aria-label="Close modal" type="button">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+         </div>
+    </div>
+
+    <div class="reveal" id="merge-contact-details" data-reveal data-reset-on-close>
+        <h3><?php esc_html_e( 'Merge Contact Details', 'disciple_tools' ); ?></h3>
+        <p>
+            <?php esc_html_e( 'A new contact record has been created.', 'disciple_tools' ); ?> <a id="new-contact-record" href="" target="_blank"><img style="height:20px; width:20px; vertical-align: text-bottom" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a>
+        </p>
+        <p>
+            <?php esc_html_e( 'The old one is now closed.', 'disciple_tools' ); ?> <a id="existing-contact-record" herf="" target="_blank"><img style="height:20px; width:20px; vertical-align: text-bottom" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a>
+        </p>
+        <p>
+            <?php esc_html_e( 'Do you wish to merge fields from the old record to the new one?', 'disciple_tools' ); ?>
+        </p>
+
+        <div class="grid-x">
+            <div class="button-group">
+                 <button class="button button-cancel" data-close aria-label="Close reveal" type="button">
+                     <?php echo esc_html__( 'Close', 'disciple_tools' )?>
+                 </button>
+                <a class="button" href="" id="merge-new-contact-link" data-close><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></a>
+            </div>
+             <button class="close-button" data-close aria-label="Close modal" type="button">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+         </div>
+    </div>
+
 </div> <!-- end #content -->
 
 <?php get_footer(); ?>

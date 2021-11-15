@@ -1,4 +1,6 @@
 jQuery(document).ready(function($) {
+  let escaped_translations = window.SHAREDFUNCTIONS.escapeObject(window.dt_user_management_localized.translations)
+
   if( window.wpApiShare.url_path.includes('user-management/users') ) {
     write_users_list()
   } else if ( window.wpApiShare.url_path.includes('user-management/user/')){
@@ -195,7 +197,7 @@ jQuery(document).ready(function($) {
   /**
    * Locations
    */
-  if ( typeof dtMapbox === "undefined" ) {
+  if ( typeof dtMapbox === "undefined" && $('.js-typeahead-location_grid').length) {
     let typeaheadTotals = {}
     if (!window.Typeahead['.js-typeahead-location_grid'] ){
       $.typeahead({
@@ -294,7 +296,7 @@ jQuery(document).ready(function($) {
     let fieldKey = $(this).data("field-key")
     let optionKey = $(this).attr('id')
     $(`#${fieldKey}-spinner`).addClass("active")
-    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
+    let field = $(`[data-field-key="${fieldKey}"]#${optionKey}`)
     field.addClass("submitting-select-button")
     let action = "add"
     let update_request = null
@@ -441,7 +443,7 @@ jQuery(document).ready(function($) {
             dtMapbox.user_location = details.user_location
             write_results_box()
 
-            jQuery( '#new-mapbox-search' ).on( "click", function() {
+            $( '#new-mapbox-search' ).on( "click", function() {
               dtMapbox.post_type = 'users'
               dtMapbox.user_id = user_id
               dtMapbox.user_location = details.user_location
@@ -553,7 +555,7 @@ jQuery(document).ready(function($) {
             let unattemped_contacts_html = ``
             response.unattempted_contacts.forEach(contact => {
               let days = contact.time / 60 / 60 / 24;
-              let line = window.lodash.escape(dt_user_management_localized.translations.no_contact_attempt_time)
+              let line = escaped_translations.no_contact_attempt_time
               .replace('%1$s', window.lodash.escape(contact.name))
               .replace('%2$s', days.toFixed(1))
               unattemped_contacts_html += `<li>
@@ -582,7 +584,7 @@ jQuery(document).ready(function($) {
             response.contact_attempts.forEach(contact => {
               let days = contact.time / 60 / 60 / 24;
               avg_contact_attempt += days
-              let line = window.lodash.escape(dt_user_management_localized.translations.contact_attempt_time)
+              let line = escaped_translations.contact_attempt_time
               .replace('%1$s', window.lodash.escape(contact.name))
               .replace('%2$s', moment.unix(contact.date_attempted).format("MMM Do"))
               .replace('%3$s', days.toFixed(1))
@@ -833,14 +835,56 @@ jQuery(document).ready(function($) {
 
     $('#new-user-language-dropdown').html(write_language_dropdown(dt_user_management_localized.language_dropdown))
 
-    let result_div = jQuery('#result-link')
-    let submit_button = jQuery('#create-user')
+    let result_div = $('#result-link')
+    let submit_button = $('#create-user')
 
-    jQuery(document).on("submit", function(ev) {
+    $(document).on("submit", function(ev) {
       ev.preventDefault();
-      let name = jQuery('#name').val()
-      let email = jQuery('#email').val()
-      let locale = jQuery('#locale').val();
+      if ( typeof window.contact_record !== 'undefined' ) {
+        $('#confirm-user-upgrade').foundation('open');
+      } else {
+        create_user()
+      }
+    });
+
+    $('#continue-user-creation').on('click', function (){
+      let corresponds_to_contact = null
+      if ( typeof window.contact_record !== 'undefined' ) {
+        corresponds_to_contact = window.contact_record.ID
+      }
+      create_user(corresponds_to_contact)
+    })
+
+    $('#create-new-contact').on('click',function (){
+      let created_promise = create_user()
+      if ( created_promise ){
+        let old_corresponds_to_contact = null
+        if ( typeof window.contact_record !== 'undefined' ) {
+          old_corresponds_to_contact = window.contact_record.ID
+        }
+        created_promise.then((a)=>{
+          if ( a.corresponds_to_contact && old_corresponds_to_contact){
+            $('.loading-spinner').addClass('active')
+              window.API.update_post( "contacts", old_corresponds_to_contact, { "overall_status": 'closed', 'reason_closed': 'duplicate' }).then(resp=>{
+                window.API.post_comment( "contacts", old_corresponds_to_contact, escaped_translations.user_contact_created + `: [${escaped_translations.here}](${a.corresponds_to_contact})` );
+                $('.loading-spinner').removeClass('active')
+                $('#merge-contact-details').foundation('open')
+                $('#new-contact-record')
+                  .attr('href', window.wpApiShare.site_url + '/contacts/' + a.corresponds_to_contact)
+                $('#existing-contact-record')
+                  .attr('href', window.wpApiShare.site_url + '/contacts/' + old_corresponds_to_contact)
+                $('#merge-new-contact-link').attr('href', window.wpApiShare.site_url + `/contacts/mergedetails?currentid=${old_corresponds_to_contact}&dupeid=${a.corresponds_to_contact}&comments=false`)
+              })
+          }
+        })
+      }
+    })
+
+    let create_user = (corresponds_to_contact)=>{
+
+      let name = $('#name').val()
+      let email = $('#email').val()
+      let locale = $('#locale').val();
 
       const username = $('#username').val()
       const password = $('#password').val()
@@ -854,10 +898,6 @@ jQuery(document).ready(function($) {
         }
       })
 
-      let corresponds_to_contact = null
-      if ( typeof window.contact_record !== 'undefined' ) {
-        corresponds_to_contact = window.contact_record.ID
-      }
       let roles = [];
       $('#user_roles_list input:checked').each(function () {
         roles.push($(this).val())
@@ -867,7 +907,7 @@ jQuery(document).ready(function($) {
         $('#create-user').addClass('loading')
         submit_button.prop('disabled', true)
 
-        makeRequest(
+        return makeRequest(
           "POST",
           `users/create`,
           {
@@ -881,38 +921,40 @@ jQuery(document).ready(function($) {
             'user-roles':roles,
             return_contact: true
           })
-          .done(response=>{
-            const { user_id, corresponds_to_contact: contact_id } = response
-            result_div.html('')
-            if ( dt_user_management_localized.has_permission ) {
-              result_div.append(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(user_id)}">
+        .done(response=>{
+          const { user_id, corresponds_to_contact: contact_id } = response
+          result_div.html('')
+          if ( dt_user_management_localized.has_permission ) {
+            result_div.append(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(user_id)}">
               ${ window.lodash.escape( dt_user_management_localized.translations.view_new_user ) }</a>
             `)
-            }
-            result_div.append(`<br /><a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape(contact_id)}">
+          }
+          result_div.append(`<br /><a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape(contact_id)}">
               ${ window.lodash.escape( dt_user_management_localized.translations.view_new_contact ) }</a>
             `)
-            jQuery('#new-user-form').empty()
-          })
-          .catch(err=>{
-            $('#create-user').removeClass('loading')
-            if ( err.status === 409) {
-              submit_button.prop('disabled', false)
+          $('#new-user-form').empty()
+          return response
+        })
+        .catch(err=>{
+          $('#create-user').removeClass('loading')
+          if ( err.status === 409) {
+            submit_button.prop('disabled', false)
 
-              if ( err.responseJSON.code === 'email_exists' ) {
-                result_div.html(`${ window.lodash.escape( dt_user_management_localized.translations.email_already_in_system ) }`)
-              }
-              else if ( err.responseJSON.code === 'username_exists' ) {
-                result_div.html(`${ window.lodash.escape( dt_user_management_localized.translations.username_in_system ) }`)
-              }
-
-            } else {
-              submit_button.prop('disabled', false)
-              result_div.html(`Oops. Something went wrong.`)
+            if ( err.responseJSON.code === 'email_exists' ) {
+              result_div.html(`${ window.lodash.escape( dt_user_management_localized.translations.email_already_in_system ) }`)
             }
-          })
+            else if ( err.responseJSON.code === 'username_exists' ) {
+              result_div.html(`${ window.lodash.escape( dt_user_management_localized.translations.username_in_system ) }`)
+            }
+
+          } else {
+            submit_button.prop('disabled', false)
+            result_div.html(`Oops. Something went wrong.`)
+          }
+          return false;
+        })
       }
-    });
+    }
 
     function getContact(id, isUser = false, overwriteTypeahead = false) {
       $('.loading-spinner').addClass('active')
@@ -923,21 +965,21 @@ jQuery(document).ready(function($) {
             $(".js-typeahead-subassigned").val(window.lodash.escape(response.name))
           }
           if ( isUser || ( response.corresponds_to_user >= 0 ) ) {
-            jQuery('#name').val( window.lodash.escape(response.name) )
+            $('#name').val( window.lodash.escape(response.name) )
             if ( response.contact_email && response.contact_email.length > 0 ) {
-              jQuery('#email').val( window.lodash.escape(response.contact_email[0].value) )
+              $('#email').val( window.lodash.escape(response.contact_email[0].value) )
             }
-            jQuery('#contact-result').html(window.lodash.escape(dt_user_management_localized.translations.already_user))
+            $('#contact-result').html(escaped_translations.already_user)
             if ( window.dt_user_management_localized.has_permission ) {
-              jQuery('#contact-result').append(`<br /> <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${window.lodash.escape(dt_user_management_localized.translations.view_user)}</a>`)
+              $('#contact-result').append(`<br /> <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${escaped_translations.view_user}</a>`)
             }
-            jQuery('#contact-result').append(`<br /> <a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${id}">${window.lodash.escape(dt_user_management_localized.translations.view_contact)}</a>`)
+            $('#contact-result').append(`<br /> <a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${id}">${escaped_translations.view_contact}</a>`)
           } else {
             window.contact_record = response
             submit_button.prop('disabled', false)
-            jQuery('#name').val( window.lodash.escape(response.title) )
+            $('#name').val( window.lodash.escape(response.title) )
             if ( response.contact_email && response.contact_email[0] !== 'undefined' ) {
-              jQuery('#email').val( window.lodash.escape(response.contact_email[0].value) )
+              $('#email').val( window.lodash.escape(response.contact_email[0].value) )
             }
 
           }
