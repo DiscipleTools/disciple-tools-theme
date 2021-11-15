@@ -125,30 +125,34 @@ class Disciple_Tools_Reports
         );
 
         $report_id = $wpdb->insert_id;
+        if ( ! $report_id ) {
+            return $report_id;
+        }
+        else {
+            $args['id'] = $report_id;
+        }
 
-        if ( !empty( $args['meta_input'] ) ) {
+        if ( ! empty( $args['meta_input'] ) ) {
             foreach ( $args['meta_input'] as $meta_key => $meta_value ) {
                 self::add_meta( $report_id, $meta_key, $meta_value );
             }
         }
 
-        if ( ! defined( 'SHORTINIT' ) ) {
-            dt_activity_insert(
-                [
-                    'action'            => 'create_report',
-                    'object_type'       => $args['type'],
-                    'object_subtype'    => empty( $args['subtype'] ) ? ' ' : $args['subtype'],
-                    'object_id'         => $args['post_id'],
-                    'object_name'       => 'report',
-                    'meta_id'           => $report_id ,
-                    'meta_key'          => ' ',
-                    'object_note'       => __( 'Added new report', 'disciple_tools' ),
-                ]
-            );
+        dt_activity_insert(
+            [
+                'action'            => 'create_report',
+                'object_type'       => $args['type'],
+                'object_subtype'    => empty( $args['subtype'] ) ? ' ' : $args['subtype'],
+                'object_id'         => $args['post_id'],
+                'object_name'       => 'report',
+                'meta_id'           => $report_id ,
+                'meta_key'          => ' ',
+                'object_note'       => __( 'Added new report', 'disciple_tools' ),
+            ]
+        );
 
-            // Final action on insert.
-            do_action( 'dt_insert_report', $args, $report_id );
-        }
+        // Final action on insert.
+        do_action( 'dt_insert_report', $args );
 
         return $report_id;
     }
