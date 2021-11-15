@@ -799,7 +799,6 @@ jQuery(document).ready(function($) {
   }
 
   function write_add_user() {
-    let spinner = ' <span class="loading-spinner users-spinner active"></span> '
     const showOptionsButton = $('#show-hidden-fields')
     const hideOptionsButton = $('#hide-hidden-fields')
     const hiddenFields = $('.hidden-fields')
@@ -836,7 +835,6 @@ jQuery(document).ready(function($) {
 
     let result_div = jQuery('#result-link')
     let submit_button = jQuery('#create-user')
-    let spinner_span = jQuery('.spinner')
 
     jQuery(document).on("submit", function(ev) {
       ev.preventDefault();
@@ -866,7 +864,7 @@ jQuery(document).ready(function($) {
       })
 
       if ( name !== '' && email !== '' )  {
-        spinner_span.html(spinner)
+        $('#create-user').addClass('loading')
         submit_button.prop('disabled', true)
 
         makeRequest(
@@ -897,8 +895,8 @@ jQuery(document).ready(function($) {
             jQuery('#new-user-form').empty()
           })
           .catch(err=>{
+            $('#create-user').removeClass('loading')
             if ( err.status === 409) {
-              spinner_span.html(``)
               submit_button.prop('disabled', false)
 
               if ( err.responseJSON.code === 'email_exists' ) {
@@ -909,7 +907,6 @@ jQuery(document).ready(function($) {
               }
 
             } else {
-              spinner_span.html(``)
               submit_button.prop('disabled', false)
               result_div.html(`Oops. Something went wrong.`)
             }
@@ -918,6 +915,7 @@ jQuery(document).ready(function($) {
     });
 
     function getContact(id, isUser = false, overwriteTypeahead = false) {
+      $('.loading-spinner').addClass('active')
       makeRequest('GET', 'contacts/'+id, null, 'dt-posts/v2/' )
         .done(function(response){
 
@@ -943,7 +941,7 @@ jQuery(document).ready(function($) {
             }
 
           }
-          spinner_span.html(``)
+          $('.loading-spinner').removeClass('active')
         })
     }
 
@@ -987,7 +985,7 @@ jQuery(document).ready(function($) {
 
     // Prefill the form if contact_id is in the query params
     const url = new URL(window.location.href)
-    contactId = url.searchParams.get('contact_id')
+    let contactId = url.searchParams.get('contact_id')
     if ( contactId !== null && contactId !== '' && !isNaN(contactId) ) {
       getContact(parseInt(contactId), false, true)
     }

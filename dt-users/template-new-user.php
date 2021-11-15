@@ -3,8 +3,8 @@
  * Name: User Management
 */
 
-$current_user_can_managage_users = current_user_can( 'list_users' ) || current_user_can( 'manage_dt' );
-if ( !$current_user_can_managage_users && !DT_User_Management::non_admins_can_make_users() ) {
+$current_user_can_manage_users = current_user_can( 'list_users' ) || current_user_can( 'manage_dt' );
+if ( !$current_user_can_manage_users && !DT_User_Management::non_admins_can_make_users() ) {
     wp_safe_redirect( '/registered' );
     exit();
 }
@@ -23,7 +23,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
-        <?php if ( $current_user_can_managage_users ): ?>
+        <?php if ( $current_user_can_manage_users ): ?>
 
         <div class="large-2 medium-3 small-12 cell hide-for-small-only" id="side-nav-container">
 
@@ -52,12 +52,14 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
         <?php endif; ?>
 
         <!-- List Section -->
-        <div class="<?php echo ( $current_user_can_managage_users ) ? "large-10 medium-9 small-12" : "" ?> cell ">
+        <div class="<?php echo ( $current_user_can_manage_users ) ? "large-10 medium-9 small-12" : "" ?> cell ">
             <section id="metrics-container" class="medium-12 cell">
                 <div class="bordered-box">
                     <div id="chart">
                         <div class="grid-x">
-                            <div id="page-title" class="cell"><h3><?php esc_html_e( 'Add New User', 'disciple_tools' ); ?></h3></div>
+                            <div id="page-title" class="cell">
+                                <h3><?php esc_html_e( 'Add New User', 'disciple_tools' ); ?><span class="loading-spinner" style="margin-inline-start: 5px"></span></h3>
+                            </div>
 
                             <div class="cell medium-12">
 
@@ -100,7 +102,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                     <dt><label for="password"><?php esc_html_e( 'Password', 'disciple_tools' ); ?></label></dt>
                                                     <dd><input type="password" class="input" id="password" placeholder="<?php esc_html_e( 'Password', 'disciple_tools' ); ?>" /> </dd>
                                                 </div>
-                                                <?php if ( $current_user_can_managage_users ) : ?>
+                                                <?php if ( $current_user_can_manage_users ) : ?>
                                                 <div id="show-shield-banner" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">
                                                     <a class="button clear" id="show-hidden-fields" style="margin:0;padding:3px 0; width:100%">
                                                         <?php esc_html_e( 'See More Options', 'disciple_tools' ); ?>
@@ -112,7 +114,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                 <?php endif; ?>
                                                 <dt><label for="new-user-language-dropdown"><?php esc_html_e( 'Language', 'disciple_tools' ); ?></label></dt>
                                                 <dd id="new-user-language-dropdown"></dd>
-                                                <?php if ( $current_user_can_managage_users ): ?>
+                                                <?php if ( $current_user_can_manage_users ): ?>
                                                 <dt><?php esc_html_e( 'Role', 'disciple_tools' ); ?></dt>
                                                 <dd>
                                                     <?php
@@ -155,7 +157,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                 </dd>
                                                 <?php endif; ?>
                                             </dl>
-                                            <button type="submit" class="submit button" id="create-user"><?php esc_html_e( 'Create User', 'disciple_tools' ); ?></button> <span class="spinner"></span>
+                                            <button type="submit" class="submit button loader" id="create-user"><?php esc_html_e( 'Create User', 'disciple_tools' ); ?></button>
                                         </div>
 
                                         <div id="optional-fields" class="cell medium-6 show-for-medium">
