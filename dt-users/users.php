@@ -431,6 +431,7 @@ class Disciple_Tools_Users
                     "title"               => $user->display_name,
                     "type"                => "user",
                     "corresponds_to_user" => $user_id,
+                    "contact_email"       => [ "values" => [ [ "value" => $user->user_email ] ] ],
                 ], true, false );
                 if ( !is_wp_error( $new_user_contact ) ){
                     update_user_option( $user_id, "corresponds_to_contact", $new_user_contact["ID"] );

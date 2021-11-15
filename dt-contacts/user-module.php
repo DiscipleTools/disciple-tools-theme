@@ -75,7 +75,6 @@ class DT_Contacts_User {
     }
 
     public static function dt_record_admin_actions( $post_type, $post_id ){
-        global $wp_roles;
         if ( $post_type === "contacts" ){
             $contact = DT_Posts::get_post( $post_type, $post_id );
             if ( current_user_can( "create_users" ) || DT_User_Management::non_admins_can_make_users() ){
