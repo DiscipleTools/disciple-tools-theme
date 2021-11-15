@@ -262,7 +262,6 @@ class DT_User_Hooks_And_Configuration {
         if ( $master_contact_type === "user" || $non_master_contact_type === "user" ){
             //keep both records as type "user"
             update_post_meta( $master_id, "type", "user" );
-            update_post_meta( $non_master_id, "type", "user" );
         }
     }
 

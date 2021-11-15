@@ -10,7 +10,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 }
 
 if ( !isset( $_GET['currentid'], $_GET['dupeid'] ) ) {
-    header( "Location: /contacts" );
+    return wp_redirect( "/contacts" );
 }
 $dt_current_id = sanitize_text_field( wp_unslash( $_GET['currentid'] ) );
 $dt_dupe_id = sanitize_text_field( wp_unslash( $_GET['dupeid'] ) );
@@ -102,136 +102,125 @@ $dt_used_values = array(
 $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='".esc_html__( 'Edit', 'disciple_tools' )."' class='fi-pencil'></a><a class='fi-x hide cancel' title='".esc_html__( 'Cancel', 'disciple_tools' )."'></a><a class='fi-check hide save' title='".esc_html__( 'Save', 'disciple_tools' )."'></a></span>";
 ?>
 
-<div id="content"  class="template-merge-details">
+<div id="content" class="template-merge-details">
 
     <div id="inner-content" class="grid-x grid-margin-x">
 
         <main id="main" class="large-12 medium-12 cell" role="main">
-          <div class="bordered-box">
-            <h2 class="center"><?php esc_html_e( "Merge Duplicate Contacts", 'disciple_tools' ) ?></h2>
-            <p class="center"><?php esc_html_e( "When you merge, the master record is updated with the values you choose, and relationships to other items are shifted to the master record", 'disciple_tools' ) ?></p>
-            <div class="merge-wrap">
-                <div class="label-wrap">
-                  <div class="merge-column">
-                    &nbsp;
-                  </div>
-                  <div class="merge-column">
-                    <a class='contact_name' href="<?php echo esc_html( get_site_url() . "/contacts/" . $dt_current_id ) ?>"><?php echo esc_html( $dt_contact_name ) ?></a>
-                    <span class='row-edit'>
-                        <a onclick='editRow(this, edit);' title='<?php esc_html_e( "Edit", 'disciple_tools' ) ?>' class='fi-pencil'></a><a class='fi-x hide cancel' title='<?php esc_html_e( "Cancel", 'disciple_tools' ) ?>'></a>
-                        <a class='fi-check hide save' title='<?php esc_html_e( "Save", 'disciple_tools' ) ?>'></a>
-                    </span>
-                    <br>
-                    <span><?php echo esc_html( '#' . $dt_contact["ID"] ) ?></span><br>
-                    <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_contact["overall_status"]["label"] ?? "" ) ?></span><br>
-                    <span><?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), dt_format_date( $dt_contact["post_date"]["timestamp"] ) ) ); ?></span><br>
-                    <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
-                  </div>
-                  <div class="merge-column">
-                    <a class='contact_name' href="<?php echo esc_html( get_site_url() . "/contacts/" . $dt_dupe_id ) ?>"><?php echo esc_html( $dt_duplicate_contact_name ) ?></a>
-                    <span class='row-edit'><a onclick='editRow(this, edit);' title='<?php esc_html_e( "Edit", 'disciple_tools' ) ?>' class='fi-pencil'></a><a class='fi-x hide cancel' title='<?php esc_html_e( "Cancel", 'disciple_tools' ) ?>'></a><a class='fi-check hide save' title='<?php esc_html_e( "Save", 'disciple_tools' ) ?>'></a></span>
-                    <br>
-                    <span><?php echo esc_html( '#' . $dt_duplicate_contact["ID"] ) ?></span><br>
-                    <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_duplicate_contact["overall_status"]["label"] ?? "" ) ?></span><br>
-                    <span><?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), dt_format_date( $dt_duplicate_contact["post_date"]["timestamp"] ) ) ); ?></span><br>
-                    <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
-                  </div>
-                </div>
-
-                <form id="merge-form">
-
-                <div class="line-wrap">
-                  <div class="merge-column">
-                    <span class="bold"><?php esc_html_e( "Master Record", 'disciple_tools' ) ?></span>
-                  </div>
-                  <div class="merge-column">
-                    <input type="hidden" name="contact1" value="<?php echo esc_html( $dt_current_id ); ?>">
-                    <input type="hidden" name="contact2" value="<?php echo esc_html( $dt_duplicate_contact["ID"] ); ?>">
-                    <input type="radio" required name="master-record" value="<?php echo esc_html( $dt_current_id ); ?>"> <?php esc_html_e( "Use as master", 'disciple_tools' ) ?>
-                  </div>
-                  <div class="merge-column blueBackground">
-                    <input type="radio" checked required name="master-record" value="<?php echo esc_html( $dt_duplicate_contact["ID"] ); ?>"> <?php esc_html_e( "Use as master", 'disciple_tools' ) ?>
-                  </div>
-                </div>
-
-                <?php
-                foreach ( $dt_fields as $dt_key => $dt_field ) {
-                    foreach ( $dt_data[$dt_key] as $dt_idx => $dt_type ) : ?>
-                        <div class='line-wrap'>
-                            <div class='merge-column'><span class='bold'><?php echo esc_html( $dt_field ); ?></span></div>
-                            <?php foreach ( $dt_type as $dt_vals ) {
-                                $dt_value = $dt_vals['value']; ?>
-                                <div class='merge-column'>
-                                    <?php if ( $dt_value ): ?>
-                                    <input type='checkbox' name='<?php echo esc_html( strtolower( $dt_field ) ); ?>[]' value='<?php echo esc_html( $dt_value ); ?>'><?php echo esc_html( $dt_value ); ?>
-                                    <span class='row-edit'><a onclick='editRow(this, edit);' title='<?php esc_html_e( 'Edit', 'disciple_tools' ); ?>' class='fi-pencil'></a>
-                                        <a class='fi-x hide cancel' title='<?php esc_html_e( 'Cancel', 'disciple_tools' ); ?>'></a>
-                                        <a class='fi-check hide save' title='<?php esc_html_e( 'Save', 'disciple_tools' ); ?>'></a>
-                                    </span>
-
-                                    <?php else : ?>
-                                        <div class='empty'></div>
-                                    <?php endif; ?>
-                                </div>
-                            <?php } ?>
+            <div class="bordered-box">
+                <h2 class="center"><?php esc_html_e( "Merge Duplicate Contacts", 'disciple_tools' ) ?></h2>
+                <p class="center"><?php esc_html_e( "When you merge, the master record is updated with the values you choose, and relationships to other items are shifted to the master record", 'disciple_tools' ) ?></p>
+                <div class="merge-wrap">
+                    <div class="label-wrap">
+                        <div class="merge-column">
+                            &nbsp;
                         </div>
-                    <?php endforeach;
-                } ?>
+                        <div class="merge-column">
+                            <a class='contact_name' href="<?php echo esc_html( get_site_url() . "/contacts/" . $dt_current_id ) ?>"><?php echo esc_html( $dt_contact_name ) ?></a>
+                            <span class='row-edit'>
+                                <a onclick='editRow(this, edit);'
+                                   title='<?php esc_html_e( "Edit", 'disciple_tools' ) ?>'
+                                   class='fi-pencil'></a>
+                                <a class='fi-x hide cancel'
+                                   title='<?php esc_html_e( "Cancel", 'disciple_tools' ) ?>'></a>
+                                <a class='fi-check hide save'
+                                   title='<?php esc_html_e( "Save", 'disciple_tools' ) ?>'></a>
+                            </span>
+                            <br>
+                            <span><?php echo esc_html( '#' . $dt_contact["ID"] ) ?></span><br>
+                            <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?><?php echo esc_html( $dt_contact["overall_status"]["label"] ?? "" ) ?></span><br>
+                            <span><?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), dt_format_date( $dt_contact["post_date"]["timestamp"] ) ) ); ?></span><br>
+                            <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
+                        </div>
+                        <div class="merge-column">
+                            <a class='contact_name'
+                               href="<?php echo esc_html( get_site_url() . "/contacts/" . $dt_dupe_id ) ?>"><?php echo esc_html( $dt_duplicate_contact_name ) ?></a>
+                            <span class='row-edit'>
+                                <a onclick='editRow(this, edit);'
+                                   title='<?php esc_html_e( "Edit", 'disciple_tools' ) ?>'
+                                   class='fi-pencil'></a>
+                                <a class='fi-x hide cancel'
+                                   title='<?php esc_html_e( "Cancel", 'disciple_tools' ) ?>'></a>
+                                <a class='fi-check hide save'
+                                   title='<?php esc_html_e( "Save", 'disciple_tools' ) ?>'></a>
+                            </span>
+                            <br>
+                            <span><?php echo esc_html( '#' . $dt_duplicate_contact["ID"] ) ?></span><br>
+                            <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?><?php echo esc_html( $dt_duplicate_contact["overall_status"]["label"] ?? "" ) ?></span><br>
+                            <span><?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), dt_format_date( $dt_duplicate_contact["post_date"]["timestamp"] ) ) ); ?></span><br>
+                            <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
+                        </div>
+                    </div>
 
-                <span id="merge_errors" style="margin-top: 30px; color: red; text-align: right;"></span>
-                <button class='button loader' id="submit-merge" name='merge-submit' type='button' onclick='merge()' value='Merge'><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></button>
-                </form>
+                    <form id="merge-form">
+
+                        <div class="line-wrap">
+                            <div class="merge-column">
+                                <span class="bold"><?php esc_html_e( "Master Record", 'disciple_tools' ) ?></span>
+                            </div>
+                            <div class="merge-column">
+                                <input type="hidden" name="contact1" value="<?php echo esc_html( $dt_current_id ); ?>">
+                                <input type="hidden" name="contact2"
+                                       value="<?php echo esc_html( $dt_duplicate_contact["ID"] ); ?>">
+                                <input type="radio" required name="master-record"
+                                       value="<?php echo esc_html( $dt_current_id ); ?>"> <?php esc_html_e( "Use as master", 'disciple_tools' ) ?>
+                            </div>
+                            <div class="merge-column blueBackground">
+                                <input type="radio" checked required name="master-record"
+                                       value="<?php echo esc_html( $dt_duplicate_contact["ID"] ); ?>"> <?php esc_html_e( "Use as master", 'disciple_tools' ) ?>
+                            </div>
+                        </div>
+
+                        <?php
+                        foreach ( $dt_fields as $dt_key => $dt_field ){
+                            foreach ( $dt_data[$dt_key] as $dt_idx => $dt_type ) : ?>
+                                <div class='line-wrap'>
+                                    <div class='merge-column'><span
+                                            class='bold'><?php echo esc_html( $dt_field ); ?></span></div>
+                                    <?php foreach ( $dt_type as $dt_vals ){
+                                        $dt_value = $dt_vals['value']; ?>
+                                        <div class='merge-column'>
+                                            <?php if ( $dt_value ): ?>
+                                                <input type='checkbox'
+                                                       name='<?php echo esc_html( strtolower( $dt_field ) ); ?>[]'
+                                                       value='<?php echo esc_html( $dt_value ); ?>'><?php echo esc_html( $dt_value ); ?>
+                                                <span class='row-edit'>
+                                                    <a onclick='editRow(this, edit);'
+                                                       title='<?php esc_html_e( 'Edit', 'disciple_tools' ); ?>'
+                                                       class='fi-pencil'></a>
+                                                    <a class='fi-x hide cancel'
+                                                       title='<?php esc_html_e( 'Cancel', 'disciple_tools' ); ?>'></a>
+                                                    <a class='fi-check hide save'
+                                                       title='<?php esc_html_e( 'Save', 'disciple_tools' ); ?>'></a>
+                                                </span>
+                                            <?php else : ?>
+                                                <div class='empty'></div>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            <?php endforeach;
+                        } ?>
+
+                        <div class="center" style="margin-top: 30px">
+                            <label>
+                                <strong><?php esc_html_e( 'Merge other fields', 'disciple_tools' ); ?></strong>
+                                <input type="checkbox" name="merge_all_fields" checked>
+                            </label>
+                            <label>
+                                <strong><?php esc_html_e( 'Merge comments', 'disciple_tools' ); ?></strong>
+                                <input type="checkbox"
+                                       name="merge_comments" <?php checked( !isset( $_GET["comments"] ) ) ?>>
+                            </label>
+                            <span id="merge_errors"></span>
+                            <button class='button loader' id="submit-merge" name='merge-submit' type='button'
+                                    onclick='merge()'
+                                    value='Merge'><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></button>
+                        </div>
+                    </form>
+                </div>
             </div>
-          </div>
         </main> <!-- end #main -->
-        <style>
-        .blueBackground{
-          background-color:#30c2ff;
-          border-radius:7px;
-        }
-        .merge-column{
-          width:33%;
-          float:left;
-          min-height: 45px;
-        }
-        .bold{
-          font-weight:bold;
-        }
-        .line-wrap{
-          overflow:hidden;
-          border-bottom:1px solid grey;
-          clear:both;
-        }
-        .line-wrap:last-of-type{
-          margin-bottom:20px;
-        }
-        .merge-column input{
-          margin-top:15px;
-        }
-        .merge-column .bold{
-          position:relative;
-          top:10px;
-        }
-        #merge-form{
-          display:inline-block;
-          width:100%;
-        }
-        #merge-form button {
-          margin-top:20px;
-          float:right;
-          display:inline-block;
-        }
-        .shortText {
-            max-width: 250px;
-        }
-        .row-edit a {
-            margin-left: 10px;
-        }
-        .empty {
-            display: inline-block;
-            visibility: hidden;
-        }
-        </style>
         <script>
           bindInputs($("#merge-form input[type='checkbox']"));
           function selectAll(o) {

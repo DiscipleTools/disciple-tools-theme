@@ -785,3 +785,59 @@ select.color-select {
     margin-left: -15%;
     margin-top: -15%;
 }
+
+/**
+ *   Merge Duplicate Contacts Section
+ */
+#content.template-merge-details {
+    .blueBackground {
+        background-color: #30c2ff;
+        border-radius: 7px;
+    }
+    .merge-column {
+        width: 33%;
+        float: left;
+        min-height: 45px;
+    }
+    .bold {
+        font-weight: bold;
+    }
+    .line-wrap {
+        overflow: hidden;
+        border-bottom: 1px solid grey;
+        clear: both;
+    }
+    .line-wrap:last-of-type {
+        margin-bottom: 20px;
+    }
+    .merge-column input {
+        margin-top: 15px;
+    }
+    .merge-column .bold {
+        position: relative;
+        top: 10px;
+    }
+    #merge-form {
+        display: inline-block;
+        width: 100%;
+    }
+    #merge-form button {
+        margin-top: 20px;
+        display: inline-block;
+    }
+    #merge_errors {
+        margin-top: 30px;
+        color: red;
+        text-align: right;
+    }
+    .shortText {
+        max-width: 250px;
+    }
+    .row-edit a {
+        margin-left: 10px;
+    }
+    .empty {
+        display: inline-block;
+        visibility: hidden;
+    }
+}
