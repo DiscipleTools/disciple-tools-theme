@@ -366,6 +366,7 @@ class Disciple_Tools_Users
             update_post_meta( $corresponds_to_contact, 'type', 'user' );
         }
 
+        do_action( 'dt_user_created', $user_id );
         if ( $return_contact_id ) {
             return [
                 'user_id' => $user_id,

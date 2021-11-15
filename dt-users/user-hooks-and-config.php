@@ -19,6 +19,7 @@ class DT_User_Hooks_And_Configuration {
         add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
         add_action( 'signup_user_meta', [ $this, 'signup_user_meta' ], 10, 1 );
         add_action( 'wpmu_activate_user', [ $this, 'wpmu_activate_user' ], 10, 3 );
+        add_action( 'dt_user_created', [ $this, 'dt_user_created' ], 10, 1 );
 
         //invite user and edit user page modifications
         add_action( "user_new_form", [ &$this, "custom_user_profile_fields" ] );
@@ -147,16 +148,26 @@ class DT_User_Hooks_And_Configuration {
         if ( isset( $_POST["dt_locale"] ) ) {
             $userdata = get_user_by( 'id', $user_id );
 
-            if ( isset( $_POST["dt_locale"] ) ) {
-                if ( $_POST["dt_locale"] === "" ) {
-                    $locale = "en_US";
-                } else {
-                    $locale = sanitize_text_field( wp_unslash( $_POST["dt_locale"] ) );
-                }
-                $userdata->locale = sanitize_text_field( wp_unslash( $locale ) );
+            if ( $_POST["dt_locale"] === "" ) {
+                $locale = "en_US";
+            } else {
+                $locale = sanitize_text_field( wp_unslash( $_POST["dt_locale"] ) );
             }
+            $userdata->locale = sanitize_text_field( wp_unslash( $locale ) );
 
             wp_update_user( $userdata );
+        }
+    }
+
+    public function dt_user_created( $user_id ){
+        $contact_id = Disciple_Tools_Users::get_contact_for_user( $user_id );
+        if ( !empty( $contact_id ) ){
+            $user = get_user_by( 'id', $user_id );
+            $mention = '@[' . esc_html( $user->display_name ) . '](' . $user->ID . '), ';
+            $comment_html = $mention . "this is your contact record. Feel update the fields and @mention other users.";
+            DT_Posts::add_post_comment( "contacts", $contact_id, $comment_html, "comment", [
+                "user_id" => 0,
+            ], false );
         }
     }
 
