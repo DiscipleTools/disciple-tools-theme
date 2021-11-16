@@ -280,12 +280,18 @@ jQuery(document).on("click", ".help-button-tile", function () {
     } else {
       $("#help-modal-field-description").empty()
     }
-    let html = ``;
+    let order = window.wpApiShare.tiles[section]["order"] || [];
     window.lodash.forOwn(window.post_type_fields, (field, field_key) => {
+      if ( field.tile === section && !order.includes(field_key)){
+        order.push(field_key);
+      }
+    })
+    let html = ``;
+    order.forEach( field_key=>{
+      let field = window.post_type_fields[field_key]
       if (
-        field.tile === section &&
-        (field.description || window.lodash.isObject(field.default)) &&
-        !field.hidden
+        field && field.tile === section && !field.hidden &&
+        (field.description || window.lodash.isObject(field.default))
       ) {
         let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_options&tab=custom-fields&post_type=${window.wpApiShare.post_type}&field-select=${window.wpApiShare.post_type}_${field_key}`
         html += `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
@@ -303,7 +309,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
               list_html += `<li><img src="${window.lodash.escape(field_options.icon)}">`;
             } else {
               if ( first_field_option ) {
-                list_html + `<ul>`;
+                list_html += `<ul>`;
                 first_field_option = false;
               }
               list_html += `<li>`;
