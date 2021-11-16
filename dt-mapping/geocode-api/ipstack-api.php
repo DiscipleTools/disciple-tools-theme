@@ -382,6 +382,10 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
 
             return $location_grid_meta;
         }
+
+        public static function get_location_grid_meta_from_current_visitor() {
+            return self::convert_ip_result_to_location_grid_meta( self::geocode_current_visitor() );
+        }
     }
 }
 

@@ -185,6 +185,12 @@ window.API = {
       site_post_id: siteId,
     }),
 
+  transfer_contact_summary_update: (contactId, update) =>
+    makeRequestOnPosts("POST", "contacts/transfer/summary/send-update", {
+      contact_id: contactId,
+      update: update,
+    }),
+
   request_record_access: (post_type, postId, userId) =>
     makeRequestOnPosts("POST", `${post_type}/${postId}/request_record_access`, {
       user_id: userId,
@@ -250,12 +256,18 @@ jQuery(document).on("click", ".help-button-tile", function () {
     } else {
       $("#help-modal-field-description").empty()
     }
-    let html = ``;
+    let order = window.wpApiShare.tiles[section]["order"] || [];
     window.lodash.forOwn(window.post_type_fields, (field, field_key) => {
+      if ( field.tile === section && !order.includes(field_key)){
+        order.push(field_key);
+      }
+    })
+    let html = ``;
+    order.forEach( field_key=>{
+      let field = window.post_type_fields[field_key]
       if (
-        field.tile === section &&
-        (field.description || window.lodash.isObject(field.default)) &&
-        !field.hidden
+        field && field.tile === section && !field.hidden &&
+        (field.description || window.lodash.isObject(field.default))
       ) {
         let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_options&tab=custom-fields&post_type=${window.wpApiShare.post_type}&field-select=${window.wpApiShare.post_type}_${field_key}`
         html += `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
@@ -273,7 +285,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
               list_html += `<li><img src="${window.lodash.escape(field_options.icon)}">`;
             } else {
               if ( first_field_option ) {
-                list_html + `<ul>`;
+                list_html += `<ul>`;
                 first_field_option = false;
               }
               list_html += `<li>`;
@@ -688,34 +700,36 @@ window.SHAREDFUNCTIONS = {
   },
 };
 
+let date_ranges = {
+  "All time": [moment(0), moment().endOf("year")],
+  [moment().format("MMMM YYYY")]: [
+    moment().startOf("month"),
+    moment().endOf("month"),
+  ],
+  [moment().subtract(1, "month").format("MMMM YYYY")]: [
+    moment().subtract(1, "month").startOf("month"),
+    moment().subtract(1, "month").endOf("month"),
+  ],
+  [moment().format("YYYY")]: [
+    moment().startOf("year"),
+    moment().endOf("year"),
+  ],
+  [moment().subtract(1, "year").format("YYYY")]: [
+    moment().subtract(1, "year").startOf("year"),
+    moment().subtract(1, "year").endOf("year"),
+  ],
+  [moment().subtract(2, "year").format("YYYY")]: [
+    moment().subtract(2, "year").startOf("year"),
+    moment().subtract(2, "year").endOf("year"),
+  ],
+};
+
 window.METRICS = {
   setupDatePicker: function (endpoint_url, callback, startDate, endDate) {
     $(".date_range_picker").daterangepicker(
       {
         showDropdowns: true,
-        ranges: {
-          "All time": [moment(0), moment().endOf("year")],
-          [moment().format("MMMM YYYY")]: [
-            moment().startOf("month"),
-            moment().endOf("month"),
-          ],
-          [moment().subtract(1, "month").format("MMMM YYYY")]: [
-            moment().subtract(1, "month").startOf("month"),
-            moment().subtract(1, "month").endOf("month"),
-          ],
-          [moment().format("YYYY")]: [
-            moment().startOf("year"),
-            moment().endOf("year"),
-          ],
-          [moment().subtract(1, "year").format("YYYY")]: [
-            moment().subtract(1, "year").startOf("year"),
-            moment().subtract(1, "year").endOf("year"),
-          ],
-          [moment().subtract(2, "year").format("YYYY")]: [
-            moment().subtract(2, "year").startOf("year"),
-            moment().subtract(2, "year").endOf("year"),
-          ],
-        },
+        ranges: date_ranges,
         linkedCalendars: false,
         locale: {
           format: "YYYY-MM-DD",
@@ -756,5 +770,21 @@ window.METRICS = {
       }
     );
   },
-
+  setupDatePickerWithoutEndpoint: function (callback, startDate, endDate) {
+    $(".date_range_picker").daterangepicker(
+      {
+        showDropdowns: true,
+        ranges: date_ranges,
+        linkedCalendars: false,
+        locale: {
+          format: "YYYY-MM-DD",
+        },
+        startDate: startDate || moment(0),
+        endDate: endDate || moment().endOf("year").format("YYYY-MM-DD"),
+      },
+      function (start, end, label) {
+        callback(start, end, label);
+      }
+    );
+  }
 };

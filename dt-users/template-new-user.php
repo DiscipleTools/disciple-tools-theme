@@ -181,6 +181,9 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
 
                                                 <?php // site defined fields
                                                 foreach ( $dt_user_fields as $dt_field ) {
+                                                    if ( empty( $dt_field["enabled"] ) ){
+                                                        continue;
+                                                    }
                                                     ?>
                                                     <dt>
                                                         <label for="<?php echo esc_attr( $dt_field['key'] ) ?>"><?php echo esc_html( $dt_field['label'] ) ?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)</label>

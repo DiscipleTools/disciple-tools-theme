@@ -701,6 +701,17 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( isset( $fields["overall_status"], $fields["reason_closed"] ) && $fields["overall_status"] === "closed" ){
                 $fields["requires_update"] = false;
             }
+            //if a contact type is changed to access
+            if ( isset( $fields["type"] ) && $fields["type"] === "access" ){
+                //set the status to active if there is no status
+                if ( !isset( $existing_post["overall_status"] ) && !isset( $fields["overall_status"] ) ){
+                    $fields["overall_status"] = "active";
+                }
+                //assign the contact to the user
+                if ( !isset( $existing_post["assigned_to"] ) && !isset( $fields["assigned_to"] ) && get_current_user_id() ){
+                    $fields["assigned_to"] = get_current_user_id();
+                }
+            }
         }
         return $fields;
     }

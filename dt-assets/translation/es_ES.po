@@ -32,7 +32,7 @@ msgstr "404 - Página no encontrada"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "La página que estaba buscando no se encontró o se eliminó"
 
-#: dt-contacts/base-setup.php:316
+#: dt-contacts/base-setup.php:314
 #: dt-groups/base-setup.php:120
 #: dt-users/template-user-management.php:78
 #: dt-users/user-management.php:118
@@ -57,10 +57,10 @@ msgstr "Ver Duplicados"
 msgid "Search"
 msgstr "Buscar"
 
-#: dt-contacts/base-setup.php:561
-#: dt-contacts/base-setup.php:569
-#: dt-contacts/base-setup.php:586
-#: dt-contacts/base-setup.php:587
+#: dt-contacts/base-setup.php:559
+#: dt-contacts/base-setup.php:567
+#: dt-contacts/base-setup.php:584
+#: dt-contacts/base-setup.php:585
 msgid "Shared with me"
 msgstr "Compartidos conmigo"
 
@@ -76,7 +76,7 @@ msgid "Assigned To"
 msgstr "Asignado a"
 
 #: archive-template.php:643
-#: dt-assets/functions/enqueue-scripts.php:295
+#: dt-assets/functions/enqueue-scripts.php:297
 #: dt-posts/custom-post-type.php:162
 msgid "Creation Date"
 msgstr "Fecha de creación"
@@ -111,8 +111,8 @@ msgid "Clear"
 msgstr "Vaciar"
 
 #: archive-template.php:725
-#: dt-assets/functions/enqueue-scripts.php:256
-#: dt-assets/functions/enqueue-scripts.php:290
+#: dt-assets/functions/enqueue-scripts.php:258
+#: dt-assets/functions/enqueue-scripts.php:292
 #: template-merge-details.php:102
 #: template-merge-details.php:122
 #: template-merge-details.php:132
@@ -138,7 +138,7 @@ msgstr "Convertir a este contacto en usuario"
 msgid "Link to an existing user"
 msgstr "Enlazar contacto a un usuario existente"
 
-#: dt-contacts/base-setup.php:373
+#: dt-contacts/base-setup.php:371
 msgid "Merge with another contact"
 msgstr "Combinar contacto con otro contacto"
 
@@ -179,7 +179,7 @@ msgstr "Transferencia fallida. Compruebe la configuración de sitio a sitio."
 
 #: dt-assets/functions/enqueue-scripts.php:119
 #: dt-assets/functions/enqueue-scripts.php:173
-#: dt-assets/functions/enqueue-scripts.php:291
+#: dt-assets/functions/enqueue-scripts.php:293
 #: template-merge-details.php:102
 #: template-merge-details.php:121
 #: template-merge-details.php:132
@@ -191,30 +191,30 @@ msgstr "﻿Editar"
 
 #: dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:253
-#: dt-assets/functions/enqueue-scripts.php:292
+#: dt-assets/functions/enqueue-scripts.php:255
+#: dt-assets/functions/enqueue-scripts.php:294
 #: dt-assets/parts/loop-activity-comment.php:137
 #: single-template.php:370
 #, fuzzy
 msgid "Delete"
 msgstr "Eliminar"
 
-#: dt-assets/functions/enqueue-scripts.php:293
+#: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "Mostrando _START_ of _TOTAL_"
 
-#: dt-assets/functions/enqueue-scripts.php:294
+#: dt-assets/functions/enqueue-scripts.php:296
 msgid "Sorting By"
 msgstr "Clasificación por"
 
-#: dt-assets/functions/enqueue-scripts.php:296
+#: dt-assets/functions/enqueue-scripts.php:298
 msgid "Date Modified"
 msgstr "Fecha modificada"
 
 #: dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:63
-#: dt-contacts/base-setup.php:267
+#: dt-contacts/base-setup.php:265
 #: dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:128
@@ -228,17 +228,17 @@ msgstr "Fecha modificada"
 #: dt-metrics/contacts/seeker-path.php:26
 #: dt-metrics/contacts/sources.php:25
 #: dt-metrics/groups/overview.php:63
-#: dt-metrics/metrics.php:93
+#: dt-metrics/metrics.php:94
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
-#: dt-users/template-user-management.php:480
+#: dt-users/template-user-management.php:523
 msgid "Contacts"
 msgstr "Contactos"
 
 #: dt-groups/base-setup.php:50
 #: dt-groups/base-setup.php:63
 #: dt-groups/base-setup.php:461
-#: dt-groups/base-setup.php:610
+#: dt-groups/base-setup.php:618
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
@@ -248,7 +248,7 @@ msgstr "Contactos"
 #: dt-metrics/groups/overview.php:64
 #: dt-metrics/groups/overview.php:75
 #: dt-metrics/groups/tree.php:24
-#: dt-metrics/metrics.php:97
+#: dt-metrics/metrics.php:98
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
 msgid "Groups"
@@ -256,7 +256,7 @@ msgstr "Grupos"
 
 #. Template Name of the plugin/theme
 #: dt-metrics/combined/daily-activity.php:86
-#: dt-metrics/metrics.php:114
+#: dt-metrics/metrics.php:115
 msgid "Metrics"
 msgstr "Métricas"
 
@@ -307,7 +307,7 @@ msgstr "Declinar"
 #: dt-metrics/personal/group-tree.php:88
 #: dt-posts/dt-posts.php:1534
 #: dt-users/template-user-management.php:74
-#: dt-users/template-user-management.php:398
+#: dt-users/template-user-management.php:441
 #: single-template.php:78
 msgid "Status"
 msgstr "Estado"
@@ -320,15 +320,14 @@ msgstr "Subasignado a"
 msgid "Social Media"
 msgstr "Redes Sociales"
 
-#: dt-contacts/base-setup.php:222
-#: dt-core/configuration/config-site-defaults.php:455
+#: dt-contacts/base-setup.php:220
 #: dt-groups/base-setup.php:377
 #: template-settings.php:163
 msgid "Address"
 msgstr "Dirección"
 
 #: dt-assets/parts/modals/modal-help.php:103
-#: dt-contacts/base-setup.php:206
+#: dt-contacts/base-setup.php:204
 #: dt-groups/base-setup.php:359
 msgid "Locations"
 msgstr "Ubicaciones"
@@ -339,13 +338,14 @@ msgstr "Ubicaciones"
 msgid "People Groups"
 msgstr "Grupos Étnicos"
 
-#: dt-contacts/base-setup.php:290
+#: dt-contacts/base-setup.php:288
 msgid "Age"
 msgstr "Edad"
 
 #: dt-contacts/access-module.php:1252
-#: dt-contacts/base-setup.php:279
+#: dt-contacts/base-setup.php:277
 #: dt-users/template-new-user.php:170
+#: dt-users/template-user-management.php:284
 #: template-settings.php:633
 msgid "Gender"
 msgstr "Género"
@@ -465,7 +465,7 @@ msgstr "Eliminar comentario:"
 #: dt-assets/parts/modals/modal-share.php:50
 #: dt-assets/parts/modals/modal-tasks.php:46
 #: dt-contacts/dmm-module.php:519
-#: dt-groups/base-setup.php:586
+#: dt-groups/base-setup.php:594
 msgid "Close"
 msgstr "Cerrar"
 
@@ -591,7 +591,7 @@ msgstr "Ayuda"
 msgid "Ongoing Meetings"
 msgstr "Se Continúan Reuniones"
 
-#: dt-contacts/base-setup.php:305
+#: dt-contacts/base-setup.php:303
 #: dt-groups/base-setup.php:104
 msgid "Requires Update"
 msgstr "Actualización Requerida"
@@ -612,7 +612,7 @@ msgstr "Generación de Bautismo"
 
 #: dt-contacts/access-module.php:312
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:509
+#: dt-users/user-hooks-and-config.php:510
 msgid "Sources"
 msgstr "Fuentes"
 
@@ -620,32 +620,29 @@ msgstr "Fuentes"
 msgid "Un-Follow"
 msgstr "Dejar de Seguir"
 
-#: dt-contacts/base-setup.php:189
-#: dt-core/configuration/config-site-defaults.php:443
+#: dt-contacts/base-setup.php:187
 #: template-settings.php:152
 msgid "Phone"
 msgstr "Teléfono"
 
-#: dt-core/configuration/config-site-defaults.php:480
+#: dt-core/configuration/config-site-defaults.php:457
 msgid "Work"
 msgstr "Trabajo"
 
-#: dt-core/configuration/config-site-defaults.php:479
+#: dt-core/configuration/config-site-defaults.php:456
 msgid "Home"
 msgstr "Casa"
 
-#: dt-contacts/base-setup.php:452
-#: dt-core/configuration/config-site-defaults.php:459
-#: dt-core/configuration/config-site-defaults.php:481
-#: dt-groups/base-setup.php:611
+#: dt-contacts/base-setup.php:450
+#: dt-core/configuration/config-site-defaults.php:458
+#: dt-groups/base-setup.php:619
 #: template-settings.php:185
 msgid "Other"
 msgstr "Otro"
 
-#: dt-contacts/base-setup.php:197
+#: dt-contacts/base-setup.php:195
 #: dt-contacts/user-module.php:106
 #: dt-core/configuration/config-site-defaults.php:256
-#: dt-core/configuration/config-site-defaults.php:447
 #: dt-users/template-new-user.php:95
 #: dt-users/template-new-user.php:96
 #: template-settings.php:139
@@ -653,78 +650,79 @@ msgid "Email"
 msgstr "Correo"
 
 #: dt-contacts/access-module.php:289
-#: dt-contacts/base-setup.php:242
+#: dt-contacts/base-setup.php:240
 msgid "Facebook"
 msgstr "Facebook"
 
 #: dt-contacts/access-module.php:293
-#: dt-contacts/base-setup.php:250
+#: dt-contacts/base-setup.php:248
 msgid "Twitter"
 msgstr "Twitter"
 
-#: dt-contacts/contacts-transfer.php:30
+#: dt-contacts/contacts-transfer.php:31
 msgid "Contact Transfer Both Ways"
 msgstr "Transferencia de Contacto en Ambos Sentidos"
 
-#: dt-contacts/contacts-transfer.php:31
+#: dt-contacts/contacts-transfer.php:32
 msgid "Contact Transfer Sending Only"
 msgstr "Solo Envío de Transferencia de Contacto"
 
-#: dt-contacts/contacts-transfer.php:32
+#: dt-contacts/contacts-transfer.php:33
 msgid "Contact Transfer Receiving Only"
 msgstr "Solo Recibo de Transferencia de Contacto"
 
-#: dt-contacts/contacts-transfer.php:53
+#: dt-contacts/contacts-transfer.php:57
 msgid "This contact has been transferred"
 msgstr "Este contacto ha sido transferido"
 
-#: dt-contacts/contacts-transfer.php:54
+#: dt-contacts/contacts-transfer.php:59
 msgid "This contact has been transferred to"
 msgstr "Este contacto ha sido transferido a"
 
-#: dt-contacts/contacts-transfer.php:110
+#: dt-contacts/contacts-transfer.php:267
 msgid "another site"
 msgstr "otro sitio"
 
-#: dt-contacts/contacts-transfer.php:120
+#: dt-contacts/contacts-transfer.php:277
 msgid "Already transfered to %s"
 msgstr "Ya transferido a %s"
 
-#: dt-contacts/contacts-transfer.php:121
+#: dt-contacts/contacts-transfer.php:278
 msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
 msgstr "NOTA: Ya has transferido este contacto. Transferir de nuevo podría crear duplicados. ¿Aún desea anular esta advertencia y continuar con su transferencia?"
 
-#: dt-contacts/contacts-transfer.php:122
+#: dt-contacts/contacts-transfer.php:282
 msgid "Override and Continue"
 msgstr "Anular y Continuar"
 
-#: dt-contacts/contacts-transfer.php:127
+#: dt-contacts/contacts-transfer.php:290
 msgid "Transfer this contact to:"
 msgstr "Transfiere este contacto a:"
 
-#: dt-contacts/contacts-transfer.php:139
+#: dt-contacts/contacts-transfer.php:305
 msgid "Confirm Transfer"
 msgstr "Confirmar transferencia"
 
-#: dt-contacts/contacts-transfer.php:213
+#: dt-contacts/contacts-transfer.php:382
 msgid "Unknown error."
 msgstr "Error desconocido."
 
-#: dt-contacts/contacts-transfer.php:244
+#: dt-contacts/contacts-transfer.php:414
 msgid "Minor transfer error."
 msgstr "Error de transferencia menor."
 
-#: dt-contacts/contacts-transfer.php:402
-#: dt-contacts/contacts-transfer.php:417
-#: dt-contacts/contacts-transfer.php:447
+#: dt-contacts/contacts-transfer.php:573
+#: dt-contacts/contacts-transfer.php:588
+#: dt-contacts/contacts-transfer.php:618
+#: dt-contacts/contacts-transfer.php:833
 msgid "Transfer Bot"
 msgstr "Bot de transferencia"
 
-#: dt-contacts/contacts-transfer.php:399
+#: dt-contacts/contacts-transfer.php:570
 msgid "Contact transferred from site"
 msgstr "Contacto transferido desde el sitio"
 
-#: dt-contacts/contacts-transfer.php:409
+#: dt-contacts/contacts-transfer.php:580
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr "ALERTA: Posible contacto duplicado de una transferencia previa."
 
@@ -816,7 +814,7 @@ msgstr "Alguien ha solicitado un restablecimiento de contraseña para la siguien
 
 #. translators: %s: user login
 #: dt-core/configuration/restrict-site-access.php:294
-#: dt-users/user-hooks-and-config.php:346
+#: dt-users/user-hooks-and-config.php:349
 msgid "Username: %s"
 msgstr "Nombre de usuario: %s"
 
@@ -828,7 +826,7 @@ msgstr "Si esto fue un error, ignora este correo electrónico y no pasará nada.
 msgid "To reset your password, visit the following address:"
 msgstr "Para restablecer tu contraseña, visita la siguiente dirección:"
 
-#: dt-users/template-user-management.php:292
+#: dt-users/template-user-management.php:335
 #: template-settings.php:132
 msgid "Roles"
 msgstr "Roles"
@@ -1126,7 +1124,7 @@ msgstr "Contactos Asignados"
 #: dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:66
 #: dt-metrics/personal/overview.php:68
-#: dt-users/template-user-management.php:402
+#: dt-users/template-user-management.php:445
 msgid "Active Contacts"
 msgstr "Contactos Activos"
 
@@ -1140,9 +1138,9 @@ msgid "Baptizers"
 msgstr "Bautizadores"
 
 #: dt-contacts/access-module.php:281
-#: dt-contacts/base-setup.php:156
-#: dt-contacts/base-setup.php:537
-#: dt-metrics/metrics.php:84
+#: dt-contacts/base-setup.php:154
+#: dt-contacts/base-setup.php:535
+#: dt-metrics/metrics.php:85
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1203,8 +1201,9 @@ msgstr "Métricas de Salud de Grupo Activo"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:29
+#: dt-metrics/combined/site-links.php:23
 #: dt-metrics/combined/time-charts.php:43
-#: dt-metrics/metrics.php:89
+#: dt-metrics/metrics.php:90
 msgid "Project"
 msgstr "Proyecto"
 
@@ -1332,15 +1331,15 @@ msgstr "%1$s rechazó la asignación en: %2$s."
 msgid "People Group"
 msgstr "Grupo Étnico"
 
-#: dt-people-groups/people-groups-post-type.php:281
+#: dt-people-groups/people-groups-post-type.php:282
 msgid "Add/Update People Group"
 msgstr "Agregar / Actualizar Grupo Étnico"
 
-#: dt-people-groups/people-groups-post-type.php:282
+#: dt-people-groups/people-groups-post-type.php:283
 msgid "People Group Details"
 msgstr "Detalles del Grupo Étnicos"
 
-#: dt-people-groups/people-groups-post-type.php:589
+#: dt-people-groups/people-groups-post-type.php:590
 msgid "Enter the People Group title here"
 msgstr "Introduce el título del Grupo Étnico aquí"
 
@@ -1352,15 +1351,16 @@ msgstr "No hay permisos para asignar"
 msgid "Insufficient permissions"
 msgstr "Permisos insuficientes"
 
-#: dt-users/user-hooks-and-config.php:472
+#: dt-users/user-hooks-and-config.php:475
 msgid "Extra Disciple.Tools Information"
 msgstr "Información adicional de Disciple.Tools"
 
-#: dt-users/user-hooks-and-config.php:475
+#: dt-users/user-hooks-and-config.php:478
 msgid "Corresponds to Contact"
 msgstr "Corresponde a Contacto"
 
-#: dt-users/user-hooks-and-config.php:364
+#: dt-users/template-user-management.php:277
+#: dt-users/user-hooks-and-config.php:367
 msgid "View contact record"
 msgstr "Ver registro de contacto"
 
@@ -1405,6 +1405,7 @@ msgstr "Crear y aplicar etiqueta"
 #: dt-contacts/user-module.php:114
 #: dt-users/template-new-user.php:93
 #: dt-users/template-user-management.php:73
+#: dt-users/template-user-management.php:279
 msgid "Display Name"
 msgstr "Nombre para mostrar"
 
@@ -1417,8 +1418,8 @@ msgid "Click merge to continue."
 msgstr "Haz clic en combinar para continuar."
 
 #: dt-groups/base-setup.php:290
-#: dt-groups/base-setup.php:557
-#: dt-groups/base-setup.php:601
+#: dt-groups/base-setup.php:565
+#: dt-groups/base-setup.php:609
 msgid "Member List"
 msgstr "Lista de Miembros"
 
@@ -1509,8 +1510,10 @@ msgstr "Idioma"
 msgid "English"
 msgstr "Inglés"
 
-#: dt-users/template-new-user.php:200
-#: dt-users/template-new-user.php:204
+#: dt-users/template-new-user.php:203
+#: dt-users/template-new-user.php:207
+#: dt-users/template-user-management.php:316
+#: dt-users/template-user-management.php:323
 #: template-settings.php:209
 #: template-settings.php:625
 msgid "Biography"
@@ -1644,11 +1647,11 @@ msgstr "Un contacto puede provenir de más de una fuente y puede tener más de u
 msgid "Generation"
 msgstr "Generación"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:488
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "Agregue el nombre del registro de contacto al que corresponde este usuario."
 
-#: dt-users/user-hooks-and-config.php:486
+#: dt-users/user-hooks-and-config.php:489
 msgid "Learn more."
 msgstr "Aprende más."
 
@@ -1694,7 +1697,7 @@ msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "%1$s agregado a ubicaciones"
 
-#: dt-groups/base-setup.php:606
+#: dt-groups/base-setup.php:614
 msgid "Four Fields"
 msgstr "Cuatro Campos"
 
@@ -1712,15 +1715,15 @@ msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@%1$s, se requiere una actualización sobre %2$s."
 
-#: dt-core/configuration/config-site-defaults.php:490
+#: dt-core/configuration/config-site-defaults.php:467
 msgid "Accepting new contacts"
 msgstr "Aceptando nuevos contactos"
 
-#: dt-core/configuration/config-site-defaults.php:494
+#: dt-core/configuration/config-site-defaults.php:471
 msgid "I'm only investing in existing contacts"
 msgstr "Solo estoy invirtiendo en contactos existentes"
 
-#: dt-core/configuration/config-site-defaults.php:498
+#: dt-core/configuration/config-site-defaults.php:475
 msgid "I have too many contacts"
 msgstr "Tengo demasiados contactos"
 
@@ -1820,7 +1823,7 @@ msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Final de rango"
 
-#: dt-assets/functions/enqueue-scripts.php:254
+#: dt-assets/functions/enqueue-scripts.php:256
 msgid "Locations you are responsible for"
 msgstr "Ubicaciones de las que usted es responsable"
 
@@ -1844,7 +1847,7 @@ msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
 msgstr "El contacto ha sido asignado a alguien, pero aún no ha sido aceptado por esa persona."
 
-#: dt-contacts/base-setup.php:317
+#: dt-contacts/base-setup.php:315
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "El contacto está progresando y / o se está actualizando continuamente."
@@ -1854,7 +1857,7 @@ msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "Este contacto está actualmente en espera (es decir, en vacaciones o no responde)."
 
-#: dt-contacts/base-setup.php:323
+#: dt-contacts/base-setup.php:321
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
 msgstr "Este contacto ha hecho saber que ya no quieren continuar o usted ha decidido no continuar con él / ella."
@@ -2116,7 +2119,7 @@ msgstr "Escriba para buscar"
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:572
 #: dt-contacts/user-module.php:180
-#: dt-core/global-functions.php:819
+#: dt-core/global-functions.php:827
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Buscar usuarios"
@@ -2136,10 +2139,10 @@ msgstr "Escriba su comentario o nota aquí"
 #: archive-template.php:35
 #: archive-template.php:115
 #: archive-template.php:380
-#: dt-core/global-functions.php:655
-#: dt-core/global-functions.php:683
-#: dt-core/global-functions.php:737
-#: dt-core/global-functions.php:781
+#: dt-core/global-functions.php:663
+#: dt-core/global-functions.php:691
+#: dt-core/global-functions.php:745
+#: dt-core/global-functions.php:789
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:361
@@ -2199,12 +2202,12 @@ msgctxt "added to the end of a sentence"
 msgid "selected."
 msgstr "seleccionado."
 
-#: dt-groups/base-setup.php:576
+#: dt-groups/base-setup.php:584
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Agregar miembros de contactos existentes"
 
-#: dt-people-groups/people-groups-post-type.php:283
+#: dt-people-groups/people-groups-post-type.php:284
 msgid "Translations"
 msgstr "Traducciones"
 
@@ -2218,7 +2221,7 @@ msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "Ya no está subasignado a %s"
 
-#: dt-groups/base-setup.php:570
+#: dt-groups/base-setup.php:578
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "Para agregar nuevos miembros, haga clic en 'Crear' o 'Seleccionar'."
 
@@ -2227,7 +2230,7 @@ msgid "Filters"
 msgstr "Filtros"
 
 #: archive-template.php:541
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:341
 msgid "Load More"
 msgstr "Cargar más"
 
@@ -2245,8 +2248,8 @@ msgstr "Nombre del filtro"
 #: dt-contacts/access-module.php:484
 #: dt-contacts/access-module.php:515
 #: dt-contacts/access-module.php:543
-#: dt-contacts/base-setup.php:390
-#: dt-contacts/base-setup.php:425
+#: dt-contacts/base-setup.php:388
+#: dt-contacts/base-setup.php:423
 #: dt-contacts/user-module.php:150
 #: dt-contacts/user-module.php:202
 #: single-template.php:350
@@ -2287,11 +2290,11 @@ msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
 msgstr "No se han encontrado resultados que coincidan con “{{query}}”"
 
-#: dt-assets/functions/enqueue-scripts.php:297
+#: dt-assets/functions/enqueue-scripts.php:299
 msgid "No filters, create one below"
 msgstr "Sin filtros, crea uno a continuación"
 
-#: dt-assets/functions/enqueue-scripts.php:298
+#: dt-assets/functions/enqueue-scripts.php:300
 msgid "No records found matching your filter."
 msgstr "No se han encontrado registros que coincidan con el filtro."
 
@@ -2345,8 +2348,8 @@ msgstr "Recordatorio"
 msgid "No note set"
 msgstr "Ninguna nota establecida"
 
-#: dt-assets/functions/enqueue-scripts.php:299
-#: dt-contacts/base-setup.php:500
+#: dt-assets/functions/enqueue-scripts.php:301
+#: dt-contacts/base-setup.php:498
 msgctxt "All records"
 msgid "All %s"
 msgstr "Todos los %s"
@@ -2379,7 +2382,7 @@ msgid "For example, If you click the 'No Answer' button 4 times, we will log tha
 msgstr "Por ejemplo, si hace clic en el botón \"Sin respuesta\" 4 veces, registraremos que intentó comunicarse con este contacto 4 veces, pero no respondieron.\n"
 "                Esta acción también cambiará la \"Ruta del Buscador\" a “Se Intentó Contactar“."
 
-#: dt-groups/base-setup.php:607
+#: dt-groups/base-setup.php:615
 msgctxt "Optional Documentation"
 msgid "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
 msgstr "Hay 5 cuadrados en el diagrama de Cuatro Campos. Comenzando en el cuadrante superior izquierdo y yendo en el sentido de las agujas del reloj, el quinto siendo el medio, representan:"
@@ -2589,7 +2592,7 @@ msgid "Select the main person who is responsible for reporting on this contact."
 msgstr "Seleccione la persona principal que es responsable de informar sobre este contacto."
 
 #: dt-contacts/access-module.php:156
-#: dt-contacts/base-setup.php:311
+#: dt-contacts/base-setup.php:309
 msgid "Contact Status"
 msgstr "Estado de contacto"
 
@@ -2663,29 +2666,29 @@ msgstr "En Iglesia / Grupo"
 msgid "Starting Churches"
 msgstr "Iniciando Iglesias"
 
-#: dt-contacts/base-setup.php:282
-#: dt-users/template-user-management.php:283
+#: dt-contacts/base-setup.php:280
+#: dt-users/template-user-management.php:288
 msgid "Male"
 msgstr "Masculino"
 
-#: dt-contacts/base-setup.php:283
-#: dt-users/template-user-management.php:284
+#: dt-contacts/base-setup.php:281
+#: dt-users/template-user-management.php:289
 msgid "Female"
 msgstr "Mujer"
 
-#: dt-contacts/base-setup.php:294
+#: dt-contacts/base-setup.php:292
 msgid "Under 18 years old"
 msgstr "Menor de 18 años"
 
-#: dt-contacts/base-setup.php:295
+#: dt-contacts/base-setup.php:293
 msgid "18-25 years old"
 msgstr "18-25 años"
 
-#: dt-contacts/base-setup.php:296
+#: dt-contacts/base-setup.php:294
 msgid "26-40 years old"
 msgstr "26-40 años"
 
-#: dt-contacts/base-setup.php:297
+#: dt-contacts/base-setup.php:295
 msgid "Over 40 years old"
 msgstr "Mayor de 40 años"
 
@@ -2779,7 +2782,7 @@ msgctxt "Optional Documentation"
 msgid "The id of the user this contact corresponds to"
 msgstr "La identificación del usuario que este contacto usa"
 
-#: dt-contacts/base-setup.php:150
+#: dt-contacts/base-setup.php:148
 msgid "User"
 msgstr "Usuario"
 
@@ -2787,7 +2790,7 @@ msgstr "Usuario"
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: dt-contacts/base-setup.php:268
+#: dt-contacts/base-setup.php:266
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Relación que este contacto tiene con otro contacto en el sistema."
@@ -2834,7 +2837,7 @@ msgstr "Grupos al que pertenece este contacto."
 msgid "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr "Contacto o Usuario asiste al usuario Asignado a realizar un seguimiento del contacto."
 
-#: dt-contacts/base-setup.php:207
+#: dt-contacts/base-setup.php:205
 #: dt-groups/base-setup.php:360
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
@@ -2883,7 +2886,7 @@ msgid "Select the main person who is responsible for reporting on this group."
 msgstr "Seleccione la persona principal que es responsable de informar sobre este grupo."
 
 #: dt-groups/base-setup.php:192
-#: dt-groups/base-setup.php:602
+#: dt-groups/base-setup.php:610
 msgid "Church Health"
 msgstr "Salúd de la Iglesia"
 
@@ -3035,21 +3038,21 @@ msgstr "La persona que plantó y/o está entrenando a este grupo. Sólo una pers
 #: dt-metrics/contacts/milestones.php:68
 #: dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
-#: dt-users/template-user-management.php:446
+#: dt-users/template-user-management.php:489
 msgid "All Time"
 msgstr "Todo Tiempo"
 
-#: dt-users/template-user-management.php:442
+#: dt-users/template-user-management.php:485
 msgid "This Year"
 msgstr "Este Año"
 
 #: dt-metrics/combined/daily-activity.php:77
-#: dt-users/template-user-management.php:436
+#: dt-users/template-user-management.php:479
 msgid "Last Month"
 msgstr "Mes Pasado"
 
 #: dt-metrics/combined/daily-activity.php:76
-#: dt-users/template-user-management.php:432
+#: dt-users/template-user-management.php:475
 msgid "This Month"
 msgstr "Este mes"
 
@@ -3074,11 +3077,11 @@ msgstr "Sin actividad"
 msgid "Multiplier Name"
 msgstr "Nombre del multiplicador"
 
-#: dt-users/template-user-management.php:414
+#: dt-users/template-user-management.php:457
 msgid "Pending"
 msgstr "Pendiente"
 
-#: dt-users/template-user-management.php:421
+#: dt-users/template-user-management.php:464
 msgid "Unread Notifications"
 msgstr "Notificaciones no leídas"
 
@@ -3088,11 +3091,11 @@ msgid "User Status"
 msgstr "Estado de Usuario"
 
 #: dt-users/template-new-user.php:154
-#: dt-users/template-user-management.php:306
+#: dt-users/template-user-management.php:349
 msgid "Click here to see roles documentation"
 msgstr "Haga clic aquí para ver la documentación de roles"
 
-#: dt-users/template-user-management.php:334
+#: dt-users/template-user-management.php:377
 msgid "Save Roles"
 msgstr "Guardar roles"
 
@@ -3145,7 +3148,7 @@ msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "Rechazó la asignación de %s"
 
-#: dt-users/user-management.php:290
+#: dt-users/user-management.php:288
 msgid "%s days since last update"
 msgstr "%s días desde la última actualización"
 
@@ -3162,26 +3165,26 @@ msgstr "Estableció esta tarea en %1$s: %2$s"
 #: dt-contacts/access-module.php:465
 #: dt-contacts/access-module.php:496
 #: dt-contacts/access-module.php:527
-#: dt-contacts/base-setup.php:404
+#: dt-contacts/base-setup.php:402
 msgid "Choose an option:"
 msgstr "Elija una opción:"
 
 #: dt-contacts/access-module.php:487
 #: dt-contacts/access-module.php:518
 #: dt-contacts/access-module.php:546
-#: dt-contacts/base-setup.php:428
+#: dt-contacts/base-setup.php:426
 msgid "Confirm"
 msgstr "Confirmar"
 
-#: dt-groups/base-setup.php:560
+#: dt-groups/base-setup.php:568
 msgid "Create"
 msgstr "Crear"
 
-#: dt-groups/base-setup.php:565
+#: dt-groups/base-setup.php:573
 msgid "Select"
 msgstr "Seleccionar"
 
-#: dt-groups/base-setup.php:577
+#: dt-groups/base-setup.php:585
 msgctxt "Add members modal"
 msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
 msgstr "En el campo \"Lista de miembros\", escriba el nombre de un contacto existente para agregarlo a este grupo."
@@ -3235,7 +3238,7 @@ msgstr "Traduce con Traductor de Google"
 msgid "Hide Translation"
 msgstr "Ocultar traducción"
 
-#: dt-assets/functions/enqueue-scripts.php:255
+#: dt-assets/functions/enqueue-scripts.php:257
 msgid "Add"
 msgstr "Agregar"
 
@@ -3272,35 +3275,35 @@ msgstr "%s eliminado"
 msgid "Location"
 msgstr "Ubicación"
 
-#: dt-users/template-user-management.php:408
+#: dt-users/template-user-management.php:451
 msgid "Updates Needed"
 msgstr "Actualizaciones Necesarias"
 
-#: dt-users/template-user-management.php:428
+#: dt-users/template-user-management.php:471
 msgid "Assignments"
 msgstr "Tareas"
 
-#: dt-users/template-user-management.php:460
+#: dt-users/template-user-management.php:503
 msgid "Pace"
 msgstr "Ritmo"
 
-#: dt-users/template-user-management.php:461
+#: dt-users/template-user-management.php:504
 msgid "Assigned and not accepted"
 msgstr "Asignado y no aceptado"
 
-#: dt-users/template-user-management.php:463
+#: dt-users/template-user-management.php:506
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr "Tiempo de Asignado a Contacto Aceptado para los últimos 10 contactos"
 
-#: dt-users/template-user-management.php:465
+#: dt-users/template-user-management.php:508
 msgid "Accepted with no contact attempt"
 msgstr "Aceptado sin intento de contacto"
 
-#: dt-users/template-user-management.php:467
+#: dt-users/template-user-management.php:510
 msgid "Oldest 10 update needed"
 msgstr "Se necesita la actualización de los últimos 10"
 
-#: dt-users/template-user-management.php:469
+#: dt-users/template-user-management.php:512
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "Tiempo de Asignado a Intento de Contacto para los últimos 10 contactos"
 
@@ -3367,12 +3370,12 @@ msgstr "Marcar Todo Como Leído"
 msgid "Task Type"
 msgstr "Tipo de Tarea"
 
-#: dt-contacts/base-setup.php:312
+#: dt-contacts/base-setup.php:310
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
 msgstr "El Estado de Contacto describe nuestro progreso en la comunicación con el contacto."
 
-#: dt-contacts/base-setup.php:146
+#: dt-contacts/base-setup.php:144
 msgid "Contact Type"
 msgstr "Tipo de Contacto"
 
@@ -3434,7 +3437,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%s eliminado de grupos étnicos"
 
-#: dt-users/user-hooks-and-config.php:483
+#: dt-users/user-hooks-and-config.php:486
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "Ver Contacto"
@@ -3480,15 +3483,15 @@ msgstr "Creyente"
 msgid "Leader"
 msgstr "Líder"
 
-#: dt-contacts/contacts-transfer.php:574
+#: dt-contacts/contacts-transfer.php:1150
 msgid "redacted email"
 msgstr "correo electrónico redactado"
 
-#: dt-contacts/contacts-transfer.php:575
+#: dt-contacts/contacts-transfer.php:1151
 msgid "redacted name"
 msgstr "nombre redactado"
 
-#: dt-contacts/contacts-transfer.php:576
+#: dt-contacts/contacts-transfer.php:1152
 msgid "redacted"
 msgstr "redactado"
 
@@ -3587,30 +3590,30 @@ msgstr "Ubicaciones con usuarios activos"
 msgid "Locations with Inactive Assigned"
 msgstr "Ubicaciones con inactivos asignados"
 
-#: dt-users/template-user-management.php:342
+#: dt-users/template-user-management.php:385
 msgid "Access by Source"
 msgstr "Acceso por fuente"
 
-#: dt-users/template-user-management.php:348
-#: dt-users/user-hooks-and-config.php:516
+#: dt-users/template-user-management.php:391
+#: dt-users/user-hooks-and-config.php:517
 msgid "All Sources - gives access to all contacts"
 msgstr "Todas las fuentes - da acceso a todos los contactos"
 
-#: dt-users/template-user-management.php:354
-#: dt-users/user-hooks-and-config.php:523
+#: dt-users/template-user-management.php:397
+#: dt-users/user-hooks-and-config.php:524
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "Personalizado - Acceder a contactos propios y todos los contactos de las fuentes seleccionadas a continuación"
 
-#: dt-users/template-user-management.php:360
-#: dt-users/user-hooks-and-config.php:530
+#: dt-users/template-user-management.php:403
+#: dt-users/user-hooks-and-config.php:531
 msgid "No Sources - only own contacts"
 msgstr "Sin fuentes - sólo contactos propios"
 
-#: dt-users/template-user-management.php:366
+#: dt-users/template-user-management.php:409
 msgid "Sources List"
 msgstr "Lista de fuentes"
 
-#: dt-users/template-user-management.php:378
+#: dt-users/template-user-management.php:421
 msgid "Save Allowed Sources"
 msgstr "Guardar fuentes permitidas"
 
@@ -3663,7 +3666,7 @@ msgstr "Mi árbol de entrenamiento"
 msgid "My Groups Tree"
 msgstr "Mi árbol de grupos"
 
-#: dt-contacts/base-setup.php:370
+#: dt-contacts/base-setup.php:368
 msgid "See duplicates"
 msgstr "Ver duplicados"
 
@@ -3679,11 +3682,11 @@ msgstr "Duplicados en: %s"
 msgid "No duplicates found."
 msgstr "No se encontraron duplicados."
 
-#: dt-contacts/base-setup.php:180
+#: dt-contacts/base-setup.php:178
 msgid "Languages"
 msgstr "Idiomas"
 
-#: dt-contacts/contacts-transfer.php:266
+#: dt-contacts/contacts-transfer.php:436
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "Este contacto fue transferido a %s para más seguimiento."
 
@@ -3790,13 +3793,13 @@ msgstr "Compartir con:"
 
 #: archive-template.php:441
 #: dt-users/template-new-user.php:106
-#: dt-users/template-new-user.php:216
+#: dt-users/template-new-user.php:219
 msgid "See More Options"
 msgstr "Ver más opciones"
 
 #: archive-template.php:442
 #: dt-users/template-new-user.php:109
-#: dt-users/template-new-user.php:219
+#: dt-users/template-new-user.php:222
 msgid "See Fewer Options"
 msgstr "Ver menos opciones"
 
@@ -3848,7 +3851,7 @@ msgstr "Mi seguimiento"
 #: dt-contacts/access-module.php:904
 #: dt-contacts/access-module.php:927
 #: dt-contacts/access-module.php:951
-#: dt-groups/base-setup.php:902
+#: dt-groups/base-setup.php:910
 msgid "Assigned to me"
 msgstr "Asignado a mí"
 
@@ -3880,55 +3883,55 @@ msgstr "Administrador de usuario"
 msgid "Administrator"
 msgstr "Administrador"
 
-#: dt-contacts/base-setup.php:140
+#: dt-contacts/base-setup.php:138
 msgid "Nickname"
 msgstr "Apodo"
 
-#: dt-contacts/base-setup.php:151
+#: dt-contacts/base-setup.php:149
 msgid "Representing a User in the system"
 msgstr "Representa a un usuario del sistema"
 
-#: dt-contacts/base-setup.php:158
+#: dt-contacts/base-setup.php:156
 msgid "A friend, family member or acquaintance"
 msgstr "Un amigo, un familiar o conocido"
 
-#: dt-contacts/base-setup.php:159
+#: dt-contacts/base-setup.php:157
 #: dt-contacts/dmm-module.php:53
 msgid "Only me"
 msgstr "Sólo yo"
 
-#: dt-contacts/base-setup.php:215
+#: dt-contacts/base-setup.php:213
 #: dt-groups/base-setup.php:369
 msgid "Locations or Address"
 msgstr "Ubicaciones o dirección"
 
-#: dt-contacts/base-setup.php:267
+#: dt-contacts/base-setup.php:265
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Conexiones con otros %s"
 
-#: dt-contacts/base-setup.php:365
+#: dt-contacts/base-setup.php:363
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Cambiar el tipo de %s"
 
-#: dt-contacts/base-setup.php:494
+#: dt-contacts/base-setup.php:492
 msgid "Default Filters"
 msgstr "Filtros por defecto"
 
-#: dt-contacts/base-setup.php:504
+#: dt-contacts/base-setup.php:502
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Todos los %s que puedo ver"
 
-#: dt-contacts/base-setup.php:514
-#: dt-groups/base-setup.php:1012
+#: dt-contacts/base-setup.php:512
+#: dt-groups/base-setup.php:1020
 #: dt-posts/custom-post-type.php:331
 msgid "My Recently Viewed"
 msgstr "Vistos recientemente por mí"
 
-#: dt-contacts/base-setup.php:519
-#: dt-groups/base-setup.php:1017
+#: dt-contacts/base-setup.php:517
+#: dt-groups/base-setup.php:1025
 #: dt-posts/custom-post-type.php:336
 msgid "Last 30 viewed"
 msgstr "Últimos 30 vistos"
@@ -4026,12 +4029,12 @@ msgstr "Reporte nuevo agregado"
 msgid "Updated report"
 msgstr "Reporte actualizado"
 
-#: dt-assets/functions/enqueue-scripts.php:302
+#: dt-assets/functions/enqueue-scripts.php:304
 #: dt-assets/parts/modals/modal-advanced-search.php:74
 #: dt-contacts/access-module.php:1246
-#: dt-groups/base-setup.php:910
-#: dt-groups/base-setup.php:983
+#: dt-groups/base-setup.php:918
 #: dt-groups/base-setup.php:991
+#: dt-groups/base-setup.php:999
 #: dt-users/mapbox-coverage-map.php:77
 msgid "All"
 msgstr "Todos"
@@ -4059,7 +4062,7 @@ msgstr "Este %s requiere una actualización"
 msgid "Record"
 msgstr "Registro"
 
-#: dt-assets/functions/enqueue-scripts.php:219
+#: dt-assets/functions/enqueue-scripts.php:221
 #: template-merge-details.php:127
 #: template-merge-details.php:136
 msgctxt "Created on the 21st of August"
@@ -4099,34 +4102,34 @@ msgstr "Seleccione el tipo de %s:"
 msgid "Show all fields"
 msgstr "Mostrar todos los campos"
 
-#: dt-assets/functions/enqueue-scripts.php:300
+#: dt-assets/functions/enqueue-scripts.php:302
 msgid "start"
 msgstr "inicio"
 
-#: dt-assets/functions/enqueue-scripts.php:301
+#: dt-assets/functions/enqueue-scripts.php:303
 msgid "end"
 msgstr "fin"
 
-#: dt-contacts/base-setup.php:358
-#: dt-contacts/base-setup.php:385
+#: dt-contacts/base-setup.php:356
+#: dt-contacts/base-setup.php:383
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "Archivar %s"
 
-#: dt-contacts/base-setup.php:386
+#: dt-contacts/base-setup.php:384
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "¿Está seguro de que desea archivar %s?"
 
-#: dt-contacts/base-setup.php:393
+#: dt-contacts/base-setup.php:391
 msgid "Archive"
 msgstr "Archivo"
 
-#: dt-contacts/base-setup.php:639
+#: dt-contacts/base-setup.php:637
 msgid "This %s is archived"
 msgstr "Esta %s se archiva"
 
-#: dt-contacts/base-setup.php:641
+#: dt-contacts/base-setup.php:639
 msgid "Restore"
 msgstr "Restaurar"
 
@@ -4135,17 +4138,17 @@ msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
 msgstr "Mostrando %s artículos. Escriba para encontrar más."
 
-#: dt-assets/functions/enqueue-scripts.php:274
+#: dt-assets/functions/enqueue-scripts.php:276
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "Coincidencias encontradas:"
 
-#: dt-assets/functions/enqueue-scripts.php:275
+#: dt-assets/functions/enqueue-scripts.php:277
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "Descartar todas las coincidencias de %s"
 
-#: dt-contacts/base-setup.php:321
+#: dt-contacts/base-setup.php:319
 msgid "Archived"
 msgstr "Archivado"
 
@@ -4210,7 +4213,7 @@ msgstr "Buscar todos los campos"
 msgid "Choose which fields to search"
 msgstr "Elige qué campos buscar"
 
-#: dt-contacts/base-setup.php:258
+#: dt-contacts/base-setup.php:256
 msgid "Other Social Links"
 msgstr "Otros enlaces sociales"
 
@@ -4233,11 +4236,11 @@ msgstr[1] "Hace más de %s años"
 msgid "Hide fields"
 msgstr "Ocultar campos"
 
-#: dt-core/global-functions.php:657
+#: dt-core/global-functions.php:665
 msgid "Add new tag \"%s\""
 msgstr "Agregar nueva etiqueta \"%s\""
 
-#: dt-core/global-functions.php:658
+#: dt-core/global-functions.php:666
 msgid "Tag \"%s\" is already being used"
 msgstr "Etiqueta \"%s\" ya se está utilizando"
 
@@ -4296,37 +4299,37 @@ msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s y %1$s reaccionaron con el emoji %2$s"
 
-#: dt-core/configuration/config-site-defaults.php:466
+#: dt-core/configuration/config-site-defaults.php:443
 #, fuzzy
 msgid "thumbs up"
 msgstr "pulgares hacia arriba"
 
-#: dt-core/configuration/config-site-defaults.php:467
+#: dt-core/configuration/config-site-defaults.php:444
 msgid "heart"
 msgstr "corazon"
 
-#: dt-core/configuration/config-site-defaults.php:468
+#: dt-core/configuration/config-site-defaults.php:445
 msgid "laugh"
 msgstr "reir"
 
-#: dt-core/configuration/config-site-defaults.php:469
+#: dt-core/configuration/config-site-defaults.php:446
 msgid "wow"
 msgstr "guau"
 
-#: dt-core/configuration/config-site-defaults.php:470
+#: dt-core/configuration/config-site-defaults.php:447
 msgid "sad"
 msgstr "triste"
 
-#: dt-posts/dt-posts.php:1594
+#: dt-posts/dt-posts.php:1597
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr "@[%1$s](%2$s) - El usuario %3$s pidió acceso a %4$s [%5$s](%6$s). Si quieres, comparte este archivo con el usuario para darle acceso."
 
-#: dt-posts/dt-posts.php:1600
+#: dt-posts/dt-posts.php:1603
 msgid "Access Request"
 msgstr "Acceso requerido"
 
-#: dt-assets/functions/enqueue-scripts.php:257
+#: dt-assets/functions/enqueue-scripts.php:259
 #: template-settings.php:266
 msgid "link"
 msgstr "enlace"
@@ -4438,18 +4441,21 @@ msgstr "Todos %1$s con %2$s"
 
 #: archive-template.php:650
 #: archive-template.php:657
+#: dt-contacts/contacts-transfer.php:158
+#: dt-metrics/combined/site-links.php:74
+#: dt-metrics/combined/site-links.php:76
 msgid "None Set"
 msgstr "Ninguno establecido"
 
-#: dt-contacts/base-setup.php:525
-#: dt-groups/base-setup.php:1000
+#: dt-contacts/base-setup.php:523
+#: dt-groups/base-setup.php:1008
 #: dt-posts/custom-post-type.php:316
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Favorito %s"
 
-#: dt-contacts/base-setup.php:531
-#: dt-groups/base-setup.php:1006
+#: dt-contacts/base-setup.php:529
+#: dt-groups/base-setup.php:1014
 #: dt-posts/custom-post-type.php:168
 #: dt-posts/custom-post-type.php:322
 msgid "Favorite"
@@ -4466,17 +4472,17 @@ msgstr "Más"
 msgid "Magic Link Submission"
 msgstr "Envío de enlace mágico"
 
-#: dt-assets/functions/enqueue-scripts.php:258
+#: dt-assets/functions/enqueue-scripts.php:260
 #: template-settings.php:267
 msgid "copy"
 msgstr "copiar"
 
 #: dt-contacts/user-module.php:140
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:496
 msgid "User Language"
 msgstr "Idioma del usuario"
 
-#: dt-core/configuration/config-site-defaults.php:471
+#: dt-core/configuration/config-site-defaults.php:448
 msgid "prayer"
 msgstr "oración"
 
@@ -4510,20 +4516,20 @@ msgstr "Está registrado, pero un administrador necesita asignarle permisos de a
 msgid "Role"
 msgstr "Rol"
 
-#: dt-users/user-hooks-and-config.php:268
-#: dt-users/user-hooks-and-config.php:306
+#: dt-users/user-hooks-and-config.php:271
+#: dt-users/user-hooks-and-config.php:309
 msgid "[%s] Login Details"
 msgstr "[%s] detalles de registro"
 
-#: dt-users/user-hooks-and-config.php:279
+#: dt-users/user-hooks-and-config.php:282
 msgid "To set your password, visit the following address:"
 msgstr "Para configurar su contraseña, visite la siguiente dirección:"
 
-#: dt-users/user-hooks-and-config.php:302
+#: dt-users/user-hooks-and-config.php:305
 msgid "To log in click here: %s"
 msgstr "Para iniciar sesión, haga clic aquí: %s"
 
-#: dt-users/user-hooks-and-config.php:344
+#: dt-users/user-hooks-and-config.php:347
 msgid "Hi %s,"
 msgstr "Hola %s,"
 
@@ -4531,7 +4537,7 @@ msgstr "Hola %s,"
 msgid "Click on a timeline day summary to display a detailed list of metrics below."
 msgstr "Haga clic en un resumen del día de la línea de tiempo para mostrar una lista detallada de las métricas a continuación."
 
-#: dt-users/user-hooks-and-config.php:345
+#: dt-users/user-hooks-and-config.php:348
 msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Has sido invitado para unirte a %1$s en %2$s"
@@ -4559,7 +4565,7 @@ msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Todos %1$s sin %2$s"
 
-#: dt-assets/functions/enqueue-scripts.php:303
+#: dt-assets/functions/enqueue-scripts.php:305
 msgid "Without"
 msgstr "Sin"
 
@@ -4647,24 +4653,92 @@ msgstr "Se puede cambiar más tarde"
 msgid "Update %s"
 msgstr "Actualizar %s"
 
-#: dt-users/template-user-management.php:274
+#: dt-users/template-user-management.php:275
 msgid "User Profile"
 msgstr "Perfil del usuario"
 
 #: dt-users/template-new-user.php:163
 #: dt-users/template-new-user.php:167
 #: dt-users/template-new-user.php:170
-#: dt-users/template-new-user.php:186
-#: dt-users/template-new-user.php:200
+#: dt-users/template-new-user.php:189
+#: dt-users/template-new-user.php:203
 msgid "optional"
 msgstr "opcional"
 
 #. Description of the theme
 #: 
 msgid "Disciple.Tools is a coalition management system for disciple making movements."
-msgstr ""
+msgstr "Disciple.Tools es un sistema de administración de coaliciones para movimientos de hacedores de discípulos"
 
 #: dt-contacts/access-module.php:248
 msgid "Reason Archived"
+msgstr "Motivo de archivado"
+
+#: dt-assets/functions/enqueue-scripts.php:219
+msgid "Transfer update failed. Check site-to-site configuration."
+msgstr "La actualización de transferencia falló. Revise la configuración sitio-a-sitio."
+
+#: dt-assets/functions/enqueue-scripts.php:220
+msgid "Transfer update successful."
+msgstr "Actualización de transferencia exitosa."
+
+#: dt-contacts/contacts-transfer.php:107
+msgid "Status Currently Unavailable"
+msgstr "Estado momentáneamente no disponible"
+
+#: dt-contacts/contacts-transfer.php:113
+msgid "Seeker Path Currently Unavailable"
+msgstr "Camino del buscador momentáneamente no disponible"
+
+#: dt-contacts/contacts-transfer.php:124
+msgid "Remote Contact Summary"
+msgstr "Resumen de contacto remoto"
+
+#: dt-contacts/contacts-transfer.php:165
+msgid "Write your comment or note here"
+msgstr "Escriba su comentario o nota aquí"
+
+#: dt-contacts/contacts-transfer.php:170
+msgid "Submit Update"
+msgstr "Enviar actualización"
+
+#: dt-metrics/combined/site-links.php:22
+#: dt-metrics/combined/site-links.php:71
+msgid "Transferred Contacts"
+msgstr ""
+
+#: dt-metrics/combined/site-links.php:72
+msgid "Filter by date range and available site links"
+msgstr ""
+
+#: dt-metrics/combined/site-links.php:73
+msgid "Date Ranges"
+msgstr ""
+
+#: dt-metrics/combined/site-links.php:75
+msgid "Site Links"
+msgstr ""
+
+#: dt-metrics/combined/site-links.php:77
+msgctxt "Contacts transferred during date range"
+msgid "Contacts transferred during date range"
+msgstr ""
+
+#: dt-metrics/combined/site-links.php:78
+#: dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:80
+msgctxt "Seeker Path of contacts created in date range"
+msgid "%s of contacts created in date range"
+msgstr ""
+
+#: dt-metrics/combined/site-links.php:81
+#: dt-metrics/combined/site-links.php:82
+#: dt-metrics/combined/site-links.php:83
+msgctxt "Seeker Path changes during date range"
+msgid "%s changes during date range"
+msgstr ""
+
+#: dt-metrics/combined/site-links.php:86
+msgid "No Data Available"
 msgstr ""
 

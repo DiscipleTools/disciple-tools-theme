@@ -20,6 +20,7 @@
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
   window.post_type_fields = list_settings.post_type_settings.fields
+  window.records_list = { posts:[], total:0 }
 
   const ALL_ID = '*'
   const ALL_WITHOUT_ID = '-*'
@@ -601,13 +602,14 @@
       } else  {
         items = response.posts || []
       }
-      window.records_list = response // adds global access to current list for plugins
+      window.records_list.posts = items // adds global access to current list for plugins
+      window.records_list.total = response.total
 
       // save
       if (response.hasOwnProperty('posts') && response.posts.length > 0) {
         let records_list_ids_and_type = [];
 
-        $.each(response.posts, function(id, post_object ) {
+        $.each(items, function(id, post_object ) {
           records_list_ids_and_type.push({ ID: post_object.ID });
         });
 

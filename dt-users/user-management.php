@@ -211,7 +211,7 @@ class DT_User_Management
         $user_response = [
             "display_name" => $user->display_name,
             "user_id" => $user->ID,
-            "contact_id" => 0,
+            "corresponds_to_contact" => 0,
             "contact" => [],
             "user_status" => '',
             "workload_status" => '',
@@ -253,20 +253,18 @@ class DT_User_Management
             }
             $user_response['dates_unavailable'] = $dates_unavailable;
 
-            /* counts section */
-            $assigned_counts = DT_User_Metrics::get_user_assigned_contacts_summary( $user_id );
-
-            $user_response['contact_statuses'] = Disciple_Tools_Counter_Contacts::get_contact_statuses( $user->ID );
-            $user_response['active_contacts'] = DT_User_Metrics::get_user_active_contacts_count( $user_id );
-            $user_response['assigned_counts'] = isset( $assigned_counts[0] ) ? $assigned_counts[0] : [];
-            $user_response['unread_notifications'] = DT_User_Metrics::get_user_unread_notifications_count( $user_id );
-
+            $user_response['user_location'] = Disciple_Tools_Users::get_user_location( $user->ID );
             $user_response["gender"] = get_user_option( 'user_gender', $user_id );
             $user_response["languages"] = get_user_option( 'user_languages', $user_id );
+            $user_response["description"] = get_user_meta( $user_id, 'description', true );
+            $user_response["corresponds_to_contact"] = Disciple_Tools_Users::get_contact_for_user( $user_id );
+            $dt_user_meta = get_user_meta( $user_id ); // Full array of user meta data
+            $user_response["user_fields"] = dt_build_user_fields_display( $dt_user_meta );
+
         }
 
         $modules = dt_get_option( "dt_post_type_modules" );
-        if ( ( $section === 'details' || $section === 'pace' || $section === null ) && isset( $modules["access_module"]["enabled"] ) && $modules["access_module"]["enabled"] ) {
+        if ( ( $section === 'stats' || $section === 'pace' || $section === null ) && isset( $modules["access_module"]["enabled"] ) && $modules["access_module"]["enabled"] ) {
             $to_accept = DT_Posts::search_viewable_post( "contacts", [
                 'overall_status' => [ 'assigned' ],
                 'assigned_to' => [ $user->ID ]
@@ -295,8 +293,14 @@ class DT_User_Management
         }
 
         /* Locations section */
-        if ( $section === 'locations' || $section === null ) {
-            $user_response['user_location'] = Disciple_Tools_Users::get_user_location( $user->ID );
+        if ( $section === 'stats' || $section === null ) {
+            /* counts section */
+            $assigned_counts = DT_User_Metrics::get_user_assigned_contacts_summary( $user_id );
+
+            $user_response['contact_statuses'] = Disciple_Tools_Counter_Contacts::get_contact_statuses( $user->ID );
+            $user_response['active_contacts'] = DT_User_Metrics::get_user_active_contacts_count( $user_id );
+            $user_response['assigned_counts'] = isset( $assigned_counts[0] ) ? $assigned_counts[0] : [];
+            $user_response['unread_notifications'] = DT_User_Metrics::get_user_unread_notifications_count( $user_id );
         }
 
         if ( $section === 'activity' || $section === null ) {

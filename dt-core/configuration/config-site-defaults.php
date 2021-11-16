@@ -427,37 +427,14 @@ function dt_get_site_custom_lists( string $list_title = null ) {
             'key'         => 'dt_user_work_facebook',
             'type'        => 'social',
             'description' => __( 'Work Facebook is for distribution to contacts and seekers.', 'disciple_tools' ),
-            'enabled'     => true,
+            'enabled'     => false,
         ],
         'dt_user_work_whatsapp'    => [
             'label'       => __( 'Work WhatsApp', 'disciple_tools' ),
             'key'         => 'dt_user_work_whatsapp',
             'type'        => 'other',
             'description' => __( 'Work WhatsApp is for distribution to contacts and seekers.', 'disciple_tools' ),
-            'enabled'     => true,
-        ],
-    ];
-
-    $fields['user_fields_types'] = [
-        'phone'   => [
-            'label' => __( 'Phone', 'disciple_tools' ),
-            'key'   => 'phone',
-        ],
-        'email'   => [
-            'label' => __( 'Email', 'disciple_tools' ),
-            'key'   => 'email',
-        ],
-        'social'  => [
-            'label' => __( 'Social Media', 'disciple_tools' ),
-            'key'   => 'social',
-        ],
-        'address' => [
-            'label' => __( 'Address', 'disciple_tools' ),
-            'key'   => 'address',
-        ],
-        'other'   => [
-            'label' => __( 'Other', 'disciple_tools' ),
-            'key'   => 'other',
+            'enabled'     => false,
         ],
     ];
 

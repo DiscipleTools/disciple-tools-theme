@@ -21,7 +21,7 @@ $dt_user_contact_id = Disciple_Tools_Users::get_contact_for_user( $dt_user->ID )
 
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings
-$dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+$translations = dt_get_available_languages( true );
 
 $dt_user_locale = get_user_locale( $dt_user->ID );
 
