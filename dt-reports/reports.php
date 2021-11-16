@@ -31,13 +31,8 @@ class Disciple_Tools_Reports
      */
     public static function insert( array $args ) {
         global $wpdb;
-        dt_write_log( $args );
         if ( ! isset( $args['type'] ) ){
             return false;
-        }
-
-        if ( ! isset( $args['post_id'] ) ){
-            $args['post_id'] = 0;
         }
 
         $args = wp_parse_args(
