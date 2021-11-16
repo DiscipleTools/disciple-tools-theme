@@ -759,10 +759,18 @@ class Disciple_Tools_Users
         $value = get_user_option( $preference_key );
         $hash = dt_create_unique_key();
 
+        $contact = Disciple_Tools_Users::get_contact_for_user( $user_id );
+
         if ( $value === '' || $value === false || $value === '0' ){
+            if ( isset( $contact ) ) {
+                update_post_meta( $contact, $preference_key, $hash );
+            }
             $status = update_user_option( $user_id, $preference_key, $hash );
             $action = $hash;
         } else {
+            if ( isset( $contact ) ) {
+                delete_post_meta( $contact, $preference_key);
+            }
             $status = delete_user_option( $user_id, $preference_key );
             $action = 'removed';
         }
