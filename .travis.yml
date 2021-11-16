@@ -48,6 +48,7 @@ script:
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       composer require "phpunit/phpunit=7.5.*"
+      composer require "yoast/phpunit-polyfills"
       vendor/phpunit/phpunit/phpunit --version
       WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
     fi
