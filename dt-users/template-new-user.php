@@ -251,7 +251,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                  <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                      <?php echo esc_html__( 'Back', 'disciple_tools' )?>
                  </button>
-                 <button class="button" id="continue-user-creation" data-close><?php esc_html_e( 'Continue', 'disciple_tools' ); ?></button>
+                 <button class="button" id="continue-user-creation" data-close><?php esc_html_e( 'Continue with existing record', 'disciple_tools' ); ?></button>
                  <button class="button" id="create-new-contact" data-close><?php esc_html_e( 'Create new record', 'disciple_tools' ); ?></button>
             </div>
              <button class="close-button" data-close aria-label="Close modal" type="button">
