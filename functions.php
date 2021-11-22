@@ -2,7 +2,7 @@
 /**
  * Disciple.Tools Functions.php
  *
- * @package Disciple Tools
+ * @package Disciple.Tools
  * @class Disciple_Tools
  */
 
