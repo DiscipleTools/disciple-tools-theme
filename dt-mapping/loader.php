@@ -14,7 +14,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Loader' ) ) {
             if ( ! isset( $dt_mapping ) ) {
                 /**
                  * This global must be used through the mapping system so that the dt-mapping module continues to be an independent
-                 * module, able to be included in non-disciple tools themes.
+                 * module, able to be included in non-Disciple.Tools themes.
                  *
                  * it can be included in functions like other globals:
                  *      global $dt_mapping;

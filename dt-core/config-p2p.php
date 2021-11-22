@@ -1,7 +1,7 @@
 <?php
 /**
  * Initialization of the Post to Post library
- * This is the key configuration file for the post-to-post system in Disciple Tools.
+ * This is the key configuration file for the post-to-post system in Disciple.Tools.
  *
  * @see https://github.com/scribu/wp-posts-to-posts/wiki
  */

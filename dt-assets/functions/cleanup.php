@@ -170,7 +170,7 @@ function dt_change_admin_color( $result ) {
 /**
  * Removes Post WP Admin menu item
  *
- * @note Removing the posts menu is to clean the admin menu and because it is unnecissary to the disciple tools system.
+ * @note Removing the posts menu is to clean the admin menu and because it is unnecissary to the Disciple.Tools system.
  */
 function dt_remove_post_admin_menus() {
 
