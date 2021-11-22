@@ -807,7 +807,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             $fields['non_wp'] = [
                 'name'        => __( 'Disciple.Tools Site' ),
-                'description' => __( 'Is this connection to a Disciple Tools/Wordpress system.' ),
+                'description' => __( 'Is this connection to a Disciple.Tools/Wordpress system.' ),
                 'type'        => 'key_select',
                 'default'     => [
                     0 => __( 'Yes, connected to another Disciple.Tools site (default)' ),

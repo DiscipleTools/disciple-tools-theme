@@ -29,7 +29,7 @@ jQuery(document).ready(function () {
 });
 
 /**
-* Custom javascript for Disciple Tools
+* Custom javascript for Disciple.Tools
 *
 * */
 jQuery(document).ready($ => {
