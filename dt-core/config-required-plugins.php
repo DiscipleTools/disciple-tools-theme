@@ -66,7 +66,7 @@ function dt_register_required_plugins() {
         'capability'   => 'manage_options',    // Capability needed to view plugin install page, should be a capability associated with the parent menu used.
         'has_notices'  => true,                    // Show admin notices or not.
         'dismissable'  => true,                    // If false, a user cannot dismiss the nag message.
-        'dismiss_msg'  => 'These are recommended plugins to complement your disciple tools system.',                      // If 'dismissable' is false, this message will be output at top of nag.
+        'dismiss_msg'  => 'These are recommended plugins to complement your Disciple.Tools system.',                      // If 'dismissable' is false, this message will be output at top of nag.
         'is_automatic' => true,                   // Automatically activate plugins after installation or not.
         'message'      => '',                      // Message to output right before the plugins table.
     );

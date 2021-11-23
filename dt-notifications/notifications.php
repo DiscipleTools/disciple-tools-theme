@@ -123,6 +123,11 @@ class Disciple_Tools_Notifications
         if ( $args['user_id'] == $args['source_user_id'] ) { // check if source of the event and notification target are the same, if so, don't create notification. i.e. I don't want notifications of my own actions.
             return;
         }
+        //check if the user exists and is on this subsite (if multisite)
+        $user = get_user_by( "ID", $args['user_id'] );
+        if ( empty( $user ) || !is_user_member_of_blog( $user->ID ) ){
+            return;
+        }
 
         $wpdb->insert(
             $wpdb->dt_notifications,
@@ -557,7 +562,7 @@ class Disciple_Tools_Notifications
 
     public static function send_notification_on_channels( $user_id, $notification, $notification_type, $already_sent = [] ){
         $user = get_userdata( $user_id );
-        if ( ! $user ) {
+        if ( !$user || !is_user_member_of_blog( $user->ID ) ){
             return;
         }
         dt_switch_locale_for_notifications( $notification["user_id"] );

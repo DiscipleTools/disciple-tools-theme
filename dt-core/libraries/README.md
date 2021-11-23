@@ -1,6 +1,6 @@
 # Libraries
 
-Libraries folder is where we host a few external libraries and bundle them into Disciple Tools.
+Libraries folder is where we host a few external libraries and bundle them into Disciple.Tools.
 
 Note that some libraries are found in other folders, for instance,
 `dt-core/admin/multi-role` and others.

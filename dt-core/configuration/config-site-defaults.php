@@ -22,7 +22,7 @@ add_filter( 'language_attributes', 'dt_custom_dir_attr' );
 
 
 /**
- * Admin panel svg icon for disciple tools.
+ * Admin panel svg icon for Disciple.Tools.
  *
  * @return string
  */
@@ -154,9 +154,9 @@ function dt_get_option( string $name ) {
             break;
 
         case 'dt_email_base_subject':
-            $subject_base = get_option( "dt_email_base_subject", "Disciple Tools" );
+            $subject_base = get_option( "dt_email_base_subject", "Disciple.Tools" );
             if ( empty( $subject_base ) ){
-                update_option( "dt_email_base_subject", "Disciple Tools" );
+                update_option( "dt_email_base_subject", "Disciple.Tools" );
             }
             return $subject_base;
             break;

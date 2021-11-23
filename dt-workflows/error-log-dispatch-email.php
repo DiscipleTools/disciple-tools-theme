@@ -30,7 +30,7 @@ function find_new_error_logs() {
 
         // Build and dispatch notification email.
         $email_to      = get_bloginfo( 'admin_email' );
-        $email_subject = "Disciple Tools: Error Logs Detected";
+        $email_subject = "Disciple.Tools: Error Logs Detected";
         $email_body    = build_email_body( $count, $deltas, $logs_url );
         $email_headers = array( 'Content-Type: text/html; charset=UTF-8' );
         wp_mail( $email_to, $email_subject, $email_body, $email_headers );
@@ -47,7 +47,7 @@ function build_email_body( $count, $deltas, $logs_url ): string {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Disciple Tools: Error Logs Detected</title>
+  <title>Disciple.Tools: Error Logs Detected</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 </head>

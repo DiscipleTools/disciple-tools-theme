@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Disciple Tools
+ * Disciple.Tools
  *
  * @class      Disciple_Tools_Critical_Path_Tab
  * @version    0.1.0

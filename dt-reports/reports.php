@@ -31,22 +31,18 @@ class Disciple_Tools_Reports
      */
     public static function insert( array $args ) {
         global $wpdb;
-
         if ( ! isset( $args['type'] ) ){
             return false;
-        }
-
-        if ( ! isset( $args['post_id'] ) ){
-            $args['post_id'] = 0;
         }
 
         $args = wp_parse_args(
             $args,
             [
+                'user_id' => null,
                 'parent_id' => null,
-                'post_id' => 0,
+                'post_id' => null,
                 'post_type' => null,
-                // 'type' => null, // required
+                'type' => null, // required
                 'subtype' => null,
                 'payload' => null,
                 'value' => 1,
@@ -56,7 +52,7 @@ class Disciple_Tools_Reports
                 'label' => null,
                 'grid_id' => null,
                 'time_begin' => null,
-                'time_end' => time(),
+                'time_end' => null,
                 'hash' => null,
                 'meta_input' => [],
             ]
@@ -84,6 +80,7 @@ class Disciple_Tools_Reports
         $wpdb->insert(
             $wpdb->dt_reports,
             [
+                'user_id' => $args['user_id'],
                 'parent_id' => $args['parent_id'],
                 'post_id' => $args['post_id'],
                 'post_type' => $args['post_type'],
@@ -102,6 +99,7 @@ class Disciple_Tools_Reports
                 'hash' => $args['hash'],
             ],
             [
+                '%d', // user_id
                 '%d', // parent_id
                 '%d', // post_id
                 '%s', // post_type
@@ -122,8 +120,14 @@ class Disciple_Tools_Reports
         );
 
         $report_id = $wpdb->insert_id;
+        if ( ! $report_id ) {
+            return $report_id;
+        }
+        else {
+            $args['id'] = $report_id;
+        }
 
-        if ( !empty( $args['meta_input'] ) ) {
+        if ( ! empty( $args['meta_input'] ) ) {
             foreach ( $args['meta_input'] as $meta_key => $meta_value ) {
                 self::add_meta( $report_id, $meta_key, $meta_value );
             }
@@ -131,11 +135,11 @@ class Disciple_Tools_Reports
 
         dt_activity_insert(
             [
-                'action' => 'create_report',
-                'object_type' => $args['type'],
-                'object_subtype' => empty( $args['subtype'] ) ? ' ' : $args['subtype'],
-                'object_id' => $args['post_id'],
-                'object_name' => 'report',
+                'action'            => 'create_report',
+                'object_type'       => $args['type'],
+                'object_subtype'    => empty( $args['subtype'] ) ? ' ' : $args['subtype'],
+                'object_id'         => $args['post_id'],
+                'object_name'       => 'report',
                 'meta_id'           => $report_id ,
                 'meta_key'          => ' ',
                 'object_note'       => __( 'Added new report', 'disciple_tools' ),
@@ -174,8 +178,9 @@ class Disciple_Tools_Reports
         $wpdb->update(
             $wpdb->dt_reports,
             [
-                'hash' => $args['hash'],
+                'user_id' => $args['user_id'],
                 'post_id' => $args['post_id'],
+                'post_type' => $args['post_type'],
                 'type' => $args['type'],
                 'subtype' => $args['subtype'],
                 'payload' => maybe_serialize( $args['payload'] ),
@@ -188,13 +193,15 @@ class Disciple_Tools_Reports
                 'time_begin' => $args['time_begin'],
                 'time_end' => $args['time_end'],
                 'timestamp' => time(),
+                'hash' => $args['hash'],
             ],
             [
                 'id' => $args['id'],
             ],
             [
-                '%s', // hash
+                '%d', // user_id
                 '%d', // post_id
+                '%s', // post_type
                 '%s', // type
                 '%s', // subtype
                 '%s', // payload
@@ -207,6 +214,7 @@ class Disciple_Tools_Reports
                 '%d', // time_begin
                 '%d', // time_end
                 '%d', // timestamp
+                '%s', // hash
             ]
         );
 
@@ -366,10 +374,6 @@ class Disciple_Tools_Reports
     }
 
 
-
-
-
-
     /**
      * Gets a single report including metadata by the report id
      *
@@ -443,4 +447,5 @@ class Disciple_Tools_Reports
 
         return $meta_value['meta_value'];
     }
+
 }
