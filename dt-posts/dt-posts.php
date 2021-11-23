@@ -1284,6 +1284,10 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
+        $user = get_user_by( "ID", $user_id );
+        if ( empty( $user ) || !is_user_member_of_blog( $user->ID ) ){
+            return false;
+        }
 
         $table = $wpdb->dt_share;
         $data = [
