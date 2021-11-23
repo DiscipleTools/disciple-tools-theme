@@ -65,6 +65,10 @@ class Disciple_Tools_Migration_Engine
      * @throws \Throwable ...
      */
     public static function migrate( int $target_migration_number ) {
+        //don't migrations run while doing cron to avoid race conditions
+        if ( wp_doing_cron() ){
+            return;
+        }
         if ( $target_migration_number >= count( self::get_migrations() ) ) {
             throw new Exception( "Migration number $target_migration_number does not exist" );
         }
