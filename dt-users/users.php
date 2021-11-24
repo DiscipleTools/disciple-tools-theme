@@ -35,6 +35,12 @@ class Disciple_Tools_Users
         }
         return false;
     }
+
+    /**
+     * If the current user can view the user record and info
+     * @param int $user_id
+     * @return bool
+     */
     public static function can_view( int $user_id ){
         if ( get_current_user_id() === $user_id ){
             return true;
@@ -46,6 +52,49 @@ class Disciple_Tools_Users
 
     public static function current_user_can_upgrade_users(){
         return current_user_can( "list_users" ) || current_user_can( "promote_users" ) || current_user_can( "manage_dt" );
+    }
+
+    /**
+     * If the current user can see the queried user in a list
+     * @param int $user_id
+     * @return bool
+     */
+    public static function can_list( int $user_id ): bool{
+        // I can list myself
+        if ( get_current_user_id() === $user_id ){
+            return true;
+        }
+        // if I have permission to list all users
+        if ( current_user_can( "list_users" ) || current_user_can( "dt_list_users" ) || current_user_can( "promote_users" ) || current_user_can( "manage_dt" ) ){
+            return true;
+        }
+        //check if there is a record shared with both users
+        global $wpdb;
+        $has_a_user_connection = $wpdb->get_var( $wpdb->prepare("
+            SELECT user_id
+            FROM $wpdb->dt_share
+            WHERE post_id IN (
+            SELECT post_id
+                FROM $wpdb->dt_share
+                WHERE user_id = %d
+            )
+            AND user_id = %d
+            GROUP BY user_id
+        ", get_current_user_id(), esc_sql( $user_id ) ) );
+        if ( !is_wp_error( $has_a_user_connection ) && !empty( $has_a_user_connection ) ){
+            return true;
+        }
+        // I can list all dispatchers
+        $dispatchers = $wpdb->get_results( $wpdb->prepare( "
+            SELECT user_id FROM $wpdb->usermeta um
+            WHERE meta_key = '{$wpdb->prefix}capabilities'
+            AND user_id = %d
+            AND meta_value LIKE %s
+        ", esc_sql( $user_id ), '%dispatcher%' ), ARRAY_A );
+        if ( !is_wp_error( $dispatchers ) && !empty( $dispatchers ) ){
+            return true;
+        }
+        return false;
     }
 
     /**
