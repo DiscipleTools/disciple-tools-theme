@@ -53,6 +53,10 @@ get_header(); ?>
                                             onclick="toggle_buttons('new'); get_notifications( all = false, true );"
                                             class="button"><?php esc_html_e( 'Unread', 'disciple_tools' )?>
                                     </button>
+                                    <button id="mentions" type="button"
+                                            onclick="get_notifications( all = false, true, false, 20, true );"
+                                            class="button"><?php esc_html_e( 'Mentions', 'disciple_tools' ) ?>
+                                    </button>
                                 </div>
                             </div>
                             <div class="small-4 medium-5 cell" style="text-align:right;">

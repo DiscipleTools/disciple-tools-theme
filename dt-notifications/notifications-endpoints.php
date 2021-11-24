@@ -169,7 +169,7 @@ class Disciple_Tools_Notifications_Endpoints
         $params = $request->get_params();
         $all = isset( $params['all'] ) ? $params['all'] : false;
         if ( isset( $params['page'] ) && isset( $params['limit'] ) ) {
-            $result = Disciple_Tools_Notifications::get_notifications( $all, $params['page'], $params['limit'] );
+            $result = Disciple_Tools_Notifications::get_notifications( $all, $params['page'], $params['limit'], $params['mentions'] );
             if ( !is_wp_error( $result ) ) {
                 return $result;
             } else {

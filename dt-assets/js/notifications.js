@@ -92,7 +92,25 @@ let all_offset
 let new_offset
 let page
 
-function get_notifications (all, reset, dropdown = false, limit = 20) {
+function get_notifications (all, reset, dropdown = false, limit = 20, mentions = false) {
+  /**
+   * If an @mentions request has been requested, then determine filter type and
+   * proceed accordingly.
+   */
+  if (mentions === true) {
+    switch (determine_mentions_notification_filter_type()) {
+      case 'all':
+        all = true;
+        break;
+      case 'new':
+        all = false;
+        break;
+      default:
+        all = false;
+        break;
+    }
+  }
+
   /* Processing the offset of the query request. Using the limit variable to increment the sql offset. */
   if (all === true) {
     new_offset = 0
@@ -145,7 +163,7 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
   const jQueryElements = jQueryElementsDict[dropdown ? 'dropdown' : 'default']
 
   // return notifications if query successful
-  return makeRequest('post', 'notifications/get_notifications', { all, page, limit }).done(data => {
+  return makeRequest('post', 'notifications/get_notifications', { all, page, limit, mentions }).done(data => {
     if (data) {
       if (reset) {
         jQueryElements.notificationList.empty()
@@ -181,6 +199,37 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
       jQueryElements.nextNew && jQueryElements.nextNew.hide()
     }
   }).fail(handleAjaxError)
+}
+
+function determine_mentions_notification_filter_type() {
+  let all_but = jQuery('#all');
+  let new_but = jQuery('#new');
+  let dropdown_all_but = jQuery('#dropdown-all');
+  let dropdown_new_but = jQuery('#dropdown-new');
+
+  if (all_but && all_but.is(':visible') && all_but.length > 0) {
+    if (!all_but.hasClass('hollow')) {
+      return 'all';
+    }
+  }
+  if (new_but && new_but.is(':visible') && new_but.length > 0) {
+    if (!new_but.hasClass('hollow')) {
+      return 'new';
+    }
+  }
+
+  if (dropdown_all_but && dropdown_all_but.is(':visible') && dropdown_all_but.length > 0) {
+    if (!dropdown_all_but.hasClass('hollow')) {
+      return 'all';
+    }
+  }
+  if (dropdown_new_but && dropdown_new_but.is(':visible') && dropdown_new_but.length > 0) {
+    if (!dropdown_new_but.hasClass('hollow')) {
+      return 'new';
+    }
+  }
+
+  return 'new';
 }
 
 function groupNotificationsByDayAndRecord(data) {

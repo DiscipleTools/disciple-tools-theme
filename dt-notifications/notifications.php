@@ -375,13 +375,8 @@ class Disciple_Tools_Notifications
      *
      * @return array
      */
-    public static function get_notifications( bool $all, int $page, int $limit ) {
+    public static function get_notifications( bool $all, int $page, int $limit, bool $mentions ) {
         global $wpdb;
-
-        $all_where = '';
-        if ( !$all ) {
-            $all_where = " AND is_new = '1'";
-        }
 
         $user_id = get_current_user_id();
 
@@ -398,11 +393,13 @@ class Disciple_Tools_Notifications
                  channels LIKE %s
                  OR channels IS NULL
                  )
+             AND notification_name LIKE %s
              ORDER BY date_notified
              DESC LIMIT %d OFFSET %d",
             $user_id,
             $all ? '%' : '1',
             '%web%',
+            $mentions ? '%mention%' : '%',
             $limit,
             $page
         ), ARRAY_A );
