@@ -61,6 +61,14 @@ function dt_get_user_display_name( $user_id ) {
     return $display_name;
 }
 
+function dt_get_user_mention_syntax( $user_id ){
+    $user = get_userdata( $user_id );
+    if ( ! $user ) {
+        return ''; // return blank if user id does not exist
+    }
+    return "@[" . $user->display_name . "](" . $user_id . ")";
+}
+
 function dt_get_user_id_from_assigned_to( $user_meta ){
     if ( is_numeric( $user_meta ) ) {
         return (int) $user_meta;

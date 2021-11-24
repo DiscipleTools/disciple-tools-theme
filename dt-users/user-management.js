@@ -855,32 +855,15 @@ jQuery(document).ready(function($) {
       create_user(corresponds_to_contact)
     })
 
-    $('#create-new-contact').on('click',function (){
-      let created_promise = create_user()
-      if ( created_promise ){
-        let old_corresponds_to_contact = null
-        if ( typeof window.contact_record !== 'undefined' ) {
-          old_corresponds_to_contact = window.contact_record.ID
-        }
-        created_promise.then((a)=>{
-          if ( a.corresponds_to_contact && old_corresponds_to_contact){
-            $('.loading-spinner').addClass('active')
-              window.API.update_post( "contacts", old_corresponds_to_contact, { "overall_status": 'closed', 'reason_closed': 'duplicate' }).then(resp=>{
-                window.API.post_comment( "contacts", old_corresponds_to_contact, escaped_translations.user_contact_created + `: [${escaped_translations.here}](${a.corresponds_to_contact})` );
-                $('.loading-spinner').removeClass('active')
-                $('#merge-contact-details').foundation('open')
-                $('#new-contact-record')
-                  .attr('href', window.wpApiShare.site_url + '/contacts/' + a.corresponds_to_contact)
-                $('#existing-contact-record')
-                  .attr('href', window.wpApiShare.site_url + '/contacts/' + old_corresponds_to_contact)
-                $('#merge-new-contact-link').attr('href', window.wpApiShare.site_url + `/contacts/mergedetails?currentid=${old_corresponds_to_contact}&dupeid=${a.corresponds_to_contact}&comments=false`)
-              })
-          }
-        })
+    $('#continue-archive-comments').on('click',function (){
+      let old_corresponds_to_contact = null
+      if ( typeof window.contact_record !== 'undefined' ) {
+        old_corresponds_to_contact = window.contact_record.ID
       }
+      create_user(old_corresponds_to_contact, true)
     })
 
-    let create_user = (corresponds_to_contact)=>{
+    let create_user = (corresponds_to_contact, archive_comments = false)=>{
 
       let name = $('#name').val()
       let email = $('#email').val()
@@ -919,7 +902,8 @@ jQuery(document).ready(function($) {
             "corresponds_to_contact": corresponds_to_contact,
             "locale": locale,
             'user-roles':roles,
-            return_contact: true
+            return_contact: true,
+            archive_comments: archive_comments,
           })
         .done(response=>{
           const { user_id, corresponds_to_contact: contact_id } = response

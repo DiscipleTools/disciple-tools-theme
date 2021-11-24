@@ -244,15 +244,15 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
         <h3><?php esc_html_e( 'Upgrading a contact', 'disciple_tools' ); ?></h3>
         <p>
             <img class="dt-icon dt-red-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' ) ?>"/>
-            <?php esc_html_e( "The new user will have access to all the fields and comments on this contact record. We suggest creating a new contact if this record contains sensitive data or comments.", "disciple_tools" ); ?>
+            <?php esc_html_e( "The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data.", "disciple_tools" ); ?>
         </p>
         <div class="grid-x">
             <div class="button-group">
                  <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                      <?php echo esc_html__( 'Back', 'disciple_tools' )?>
                  </button>
-                 <button class="button" id="continue-user-creation" data-close><?php esc_html_e( 'Continue with existing record', 'disciple_tools' ); ?></button>
-                 <button class="button" id="create-new-contact" data-close><?php esc_html_e( 'Create new record', 'disciple_tools' ); ?></button>
+                 <button class="button clear" id="continue-archive-comments" data-close><?php esc_html_e( 'Continue and archive comments', 'disciple_tools' ); ?></button>
+                 <button class="button" id="continue-user-creation" data-close><?php esc_html_e( 'Continue, keeping comments', 'disciple_tools' ); ?></button>
             </div>
              <button class="close-button" data-close aria-label="Close modal" type="button">
                  <span aria-hidden="true">&times;</span>

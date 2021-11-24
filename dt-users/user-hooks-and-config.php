@@ -111,13 +111,6 @@ class DT_User_Hooks_And_Configuration {
         if ( dt_is_rest() ){
             $data = json_decode( WP_REST_Server::get_raw_data(), true );
 
-            if ( isset( $data["locale"] ) && !empty( $data["locale"] ) ){
-                $locale = $data["locale"];
-                switch_to_locale( $locale );
-                $user = get_user_by( 'id', $user_id );
-                $user->locale = $locale;
-                wp_update_user( $user );
-            }
             if ( isset( $data["corresponds_to_contact"] ) ){
                 $corresponds_to_contact = $data["corresponds_to_contact"];
                 update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
@@ -127,6 +120,13 @@ class DT_User_Hooks_And_Configuration {
                 ]);
                 $user = get_user_by( 'id', $user_id );
                 $user->display_name = $contact["title"];
+                wp_update_user( $user );
+            }
+            if ( isset( $data["locale"] ) && !empty( $data["locale"] ) ){
+                $locale = $data["locale"];
+                switch_to_locale( $locale );
+                $user = get_user_by( 'id', $user_id );
+                $user->locale = $locale;
                 wp_update_user( $user );
             }
         }
