@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disciple Tools 1.16.0\n"
+"Project-Id-Version: Disciple Tools 1.17.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-theme\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-11-09T15:39:39+00:00\n"
+"POT-Creation-Date: 2021-11-24T16:18:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: disciple_tools\n"
@@ -230,7 +230,7 @@ msgstr ""
 #: archive-template.php:322
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1534
+#: dt-posts/dt-posts.php:1542
 #: dt-users/template-user-management.php:74
 #: dt-users/template-user-management.php:441
 #: single-template.php:78
@@ -647,7 +647,7 @@ msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:304
 #: dt-assets/parts/modals/modal-advanced-search.php:74
-#: dt-contacts/access-module.php:1246
+#: dt-contacts/access-module.php:1254
 #: dt-groups/base-setup.php:918
 #: dt-groups/base-setup.php:991
 #: dt-groups/base-setup.php:999
@@ -1589,64 +1589,64 @@ msgstr ""
 msgid "Decline"
 msgstr ""
 
-#: dt-contacts/access-module.php:872
-#: dt-contacts/access-module.php:882
+#: dt-contacts/access-module.php:880
+#: dt-contacts/access-module.php:890
 msgid "My Follow-Up"
 msgstr ""
 
-#: dt-contacts/access-module.php:883
-#: dt-contacts/access-module.php:904
-#: dt-contacts/access-module.php:927
-#: dt-contacts/access-module.php:951
+#: dt-contacts/access-module.php:891
+#: dt-contacts/access-module.php:912
+#: dt-contacts/access-module.php:935
+#: dt-contacts/access-module.php:959
 #: dt-groups/base-setup.php:910
 msgid "Assigned to me"
 msgstr ""
 
-#: dt-contacts/access-module.php:884
-#: dt-contacts/access-module.php:905
-#: dt-contacts/access-module.php:928
-#: dt-contacts/access-module.php:952
+#: dt-contacts/access-module.php:892
+#: dt-contacts/access-module.php:913
+#: dt-contacts/access-module.php:936
+#: dt-contacts/access-module.php:960
 msgid "Sub-assigned to me"
 msgstr ""
 
-#: dt-contacts/access-module.php:988
+#: dt-contacts/access-module.php:996
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr ""
 
-#: dt-contacts/access-module.php:996
+#: dt-contacts/access-module.php:1004
 msgid "All Follow-Up"
 msgstr ""
 
-#: dt-contacts/access-module.php:1096
-#: dt-contacts/access-module.php:1097
+#: dt-contacts/access-module.php:1104
+#: dt-contacts/access-module.php:1105
 msgid "Subassigned only"
 msgstr ""
 
-#: dt-contacts/access-module.php:1247
+#: dt-contacts/access-module.php:1255
 msgid "Ready"
 msgstr ""
 
-#: dt-contacts/access-module.php:1248
+#: dt-contacts/access-module.php:1256
 msgid "Recent"
 msgstr ""
 
-#: dt-contacts/access-module.php:1249
+#: dt-contacts/access-module.php:1257
 #: dt-users/template-user-management.php:79
 msgid "Location"
 msgstr ""
 
-#: dt-contacts/access-module.php:1250
+#: dt-contacts/access-module.php:1258
 msgid "Assign"
 msgstr ""
 
-#: dt-contacts/access-module.php:1251
+#: dt-contacts/access-module.php:1259
 #: dt-users/template-new-user.php:113
 #: template-settings.php:199
 msgid "Language"
 msgstr ""
 
-#: dt-contacts/access-module.php:1252
+#: dt-contacts/access-module.php:1260
 #: dt-contacts/base-setup.php:277
 #: dt-users/template-new-user.php:170
 #: dt-users/template-user-management.php:284
@@ -1654,11 +1654,11 @@ msgstr ""
 msgid "Gender"
 msgstr ""
 
-#: dt-contacts/access-module.php:1425
+#: dt-contacts/access-module.php:1433
 msgid "This record might be a duplicate of: "
 msgstr ""
 
-#: dt-contacts/access-module.php:1431
+#: dt-contacts/access-module.php:1439
 #: dt-contacts/duplicates-merging.php:515
 #: dt-contacts/duplicates-merging.php:578
 msgid "Duplicate Checker"
@@ -3110,7 +3110,7 @@ msgstr ""
 #: dt-metrics/combined/daily-activity.php:80
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
-#: dt-notifications/notifications.php:496
+#: dt-notifications/notifications.php:501
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] ""
@@ -3541,102 +3541,102 @@ msgstr ""
 msgid "Daily Digest"
 msgstr ""
 
-#: dt-notifications/notifications.php:476
+#: dt-notifications/notifications.php:481
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:481
+#: dt-notifications/notifications.php:486
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:486
+#: dt-notifications/notifications.php:491
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:491
+#: dt-notifications/notifications.php:496
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:510
+#: dt-notifications/notifications.php:515
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:514
+#: dt-notifications/notifications.php:519
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:910
+#: dt-notifications/notifications.php:915
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
 msgstr ""
 
-#: dt-notifications/notifications.php:912
+#: dt-notifications/notifications.php:917
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr ""
 
-#: dt-notifications/notifications.php:918
+#: dt-notifications/notifications.php:923
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
 msgstr ""
 
-#: dt-notifications/notifications.php:921
-#: dt-notifications/notifications.php:928
-#: dt-notifications/notifications.php:935
-#: dt-notifications/notifications.php:939
-#: dt-notifications/notifications.php:949
-#: dt-notifications/notifications.php:956
+#: dt-notifications/notifications.php:926
+#: dt-notifications/notifications.php:933
+#: dt-notifications/notifications.php:940
+#: dt-notifications/notifications.php:944
+#: dt-notifications/notifications.php:954
+#: dt-notifications/notifications.php:961
 msgid "System"
 msgstr ""
 
-#: dt-notifications/notifications.php:922
+#: dt-notifications/notifications.php:927
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
 msgstr ""
 
-#: dt-notifications/notifications.php:929
+#: dt-notifications/notifications.php:934
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr ""
 
-#: dt-notifications/notifications.php:936
+#: dt-notifications/notifications.php:941
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
 msgstr ""
 
-#: dt-notifications/notifications.php:940
+#: dt-notifications/notifications.php:945
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
 msgstr ""
 
-#: dt-notifications/notifications.php:950
+#: dt-notifications/notifications.php:955
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
 msgstr ""
 
-#: dt-notifications/notifications.php:953
+#: dt-notifications/notifications.php:958
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr ""
 
-#: dt-notifications/notifications.php:957
+#: dt-notifications/notifications.php:962
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
 msgstr ""
 
-#: dt-notifications/notifications.php:960
+#: dt-notifications/notifications.php:965
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr ""
@@ -3686,21 +3686,21 @@ msgstr ""
 msgid "D.T System"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1342
+#: dt-posts/dt-posts.php:1350
 msgid "Post already shared with user."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1535
+#: dt-posts/dt-posts.php:1543
 #: single-template.php:120
 msgid "Details"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1597
+#: dt-posts/dt-posts.php:1605
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1603
+#: dt-posts/dt-posts.php:1611
 msgid "Access Request"
 msgstr ""
 
@@ -4006,11 +4006,11 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr ""
 
-#: dt-reports/reports.php:141
+#: dt-reports/reports.php:145
 msgid "Added new report"
 msgstr ""
 
-#: dt-reports/reports.php:230
+#: dt-reports/reports.php:238
 msgid "Updated report"
 msgstr ""
 
@@ -4400,23 +4400,23 @@ msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr ""
 
-#: dt-users/users.php:60
+#: dt-users/users.php:109
 msgid "No permissions to assign"
 msgstr ""
 
-#: dt-users/users.php:219
+#: dt-users/users.php:268
 msgid "Insufficient permissions"
 msgstr ""
 
-#: dt-users/users.php:325
+#: dt-users/users.php:374
 msgid "Email already exists and is a user on this site"
 msgstr ""
 
-#: dt-users/users.php:331
+#: dt-users/users.php:380
 msgid "Failed to add user to site."
 msgstr ""
 
-#: dt-users/users.php:514
+#: dt-users/users.php:563
 msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr ""
