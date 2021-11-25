@@ -276,10 +276,6 @@ $dt_nav_tabs = dt_default_menu_array();
                                         onclick="toggle_dropdown_buttons('new'); get_notifications( all = false, true, true, 5 );"
                                         class="button"><?php esc_html_e( 'Unread', 'disciple_tools' )?>
                                 </button>
-                                <button id="dropdown-mentions" type="button"
-                                        onclick="get_notifications( all = false, true, true, 5, true );"
-                                        class="button"><?php esc_html_e( 'Mentions', 'disciple_tools' ) ?>
-                                </button>
                             </div>
                         </div>
                         <div class="small-3 medium-3 cell" style="text-align:right;">
