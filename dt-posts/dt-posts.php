@@ -463,12 +463,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !$wp_post ){
             return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 400 ] );
         }
-        $fields = [];
 
         /**
          * add connections
          */
-        $p = [ (array) $wp_post ];
+        $p = [ [ "ID" => $post_id ] ];
         self::get_all_connected_fields_on_list( $field_settings, $p );
         $fields = $p[0];
         $fields["ID"] = $post_id;
