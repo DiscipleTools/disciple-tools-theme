@@ -1,6 +1,3 @@
-console.log("lege");
-
-
 jQuery(document).ready(function ($) {
   function make_admin_request(type, part, data) {
     const options = {
