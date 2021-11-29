@@ -1628,8 +1628,8 @@ class Disciple_Tools_Posts
                             $location_meta_grid['post_id'] = $post_id;
                             $location_meta_grid['post_type'] = $post_type;
                             $location_meta_grid['grid_id'] = $grid["grid_id"];
-                            $location_meta_grid['lng'] = $grid["longitude"];
-                            $location_meta_grid['lat'] = $grid["latitude"];
+                            $location_meta_grid['lng'] = $value["lng"];
+                            $location_meta_grid['lat'] = $value["lat"];
                             $location_meta_grid['level'] = $grid["level_name"];
                             $location_meta_grid['label'] = $full_name;
 
