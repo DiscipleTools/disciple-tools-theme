@@ -209,7 +209,7 @@ class DT_User_Management
         }
 
         $user_response = [
-            "display_name" => $user->display_name,
+            "display_name" => wp_specialchars_decode( $user->display_name ),
             "user_id" => $user->ID,
             "corresponds_to_contact" => 0,
             "contact" => [],

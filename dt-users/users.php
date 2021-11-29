@@ -228,7 +228,7 @@ class Disciple_Tools_Users
         foreach ( $users as $user ) {
             if ( user_can( $user, "access_contacts" ) ) {
                 $u = [
-                    "name" => $user->display_name,
+                    "name" => wp_specialchars_decode( $user->display_name ),
                     "ID"   => $user->ID,
                     "avatar" => get_avatar_url( $user->ID, [ 'size' => '16' ] ),
                     "contact_id" => self::get_contact_for_user( $user->ID )
