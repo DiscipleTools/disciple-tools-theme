@@ -92,7 +92,7 @@ jQuery(function() {
       let activityDetails = ''
       dateRegex = /\{(\d+)\}+/;
       object_notes.forEach((objectNote) => {
-        let newObjectNote = `${objectNote}`
+        let newObjectNote = `${window.lodash.escape(objectNote)}`
         if (dateRegex.test(objectNote)) {
           newObjectNote = objectNote.replace(dateRegex, timestamptoDate);
         }
