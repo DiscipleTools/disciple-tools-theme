@@ -53,7 +53,7 @@ get_header(); ?>
                                             onclick="toggle_buttons('new'); get_notifications( all = false, true );"
                                             class="button"><?php esc_html_e( 'Unread', 'disciple_tools' )?>
                                     </button>
-                                    <div style="margin-inline-start:10px;margin-inline-end:5px;">
+                                    <div style="margin-inline-start:5px;margin-inline-end:5px;margin-top:2px;">
                                         <span
                                             style="font-size: small;vertical-align: bottom;"><?php esc_html_e( 'Mentions', 'disciple_tools' ) ?>:</span>
                                         <input type="checkbox" id="mentions" class="dt-switch"/>
