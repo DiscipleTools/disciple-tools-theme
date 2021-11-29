@@ -55,9 +55,9 @@ get_header(); ?>
                                     </button>
                                     <div style="margin-inline-start:10px;margin-inline-end:5px;">
                                         <span
-                                            style="font-size: small;"><?php esc_html_e( 'Mentions', 'disciple_tools' ) ?>:</span>
+                                            style="font-size: small;vertical-align: bottom;"><?php esc_html_e( 'Mentions', 'disciple_tools' ) ?>:</span>
                                         <input type="checkbox" id="mentions" class="dt-switch"/>
-                                        <label class="dt-switch" for="mentions" style="vertical-align: top;"></label>
+                                        <label class="dt-switch" for="mentions" style="vertical-align: middle;"></label>
                                     </div>
                                 </div>
                             </div>

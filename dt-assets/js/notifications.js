@@ -190,6 +190,10 @@ function include_mentions() {
   return (mentions && mentions.is(':checked'));
 }
 
+jQuery('#mentions').on('click', function () {
+  get_notifications(!jQuery('#all').hasClass('hollow'), true);
+});
+
 function groupNotificationsByDayAndRecord(data) {
 
   function getDate(dateString) {
