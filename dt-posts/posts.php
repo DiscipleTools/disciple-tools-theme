@@ -2233,7 +2233,7 @@ class Disciple_Tools_Posts
                                 $fields[$key] = [
                                     "id" => $id,
                                     "type" => $type,
-                                    "display" => ( $user ? $user->display_name : "Nobody" ),
+                                    "display" => wp_specialchars_decode( $user ? $user->display_name : "Nobody" ),
                                     "assigned-to" => $value[0]
                                 ];
                             }

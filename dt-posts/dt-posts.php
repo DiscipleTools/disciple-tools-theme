@@ -1020,7 +1020,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $c = [
                 "comment_ID" => $comment->comment_ID,
-                "comment_author" => !empty( $display_name ) ? $display_name : $comment->comment_author,
+                "comment_author" => !empty( $display_name ) ? $display_name : wp_specialchars_decode( $comment->comment_author ),
                 "comment_author_email" => $comment->comment_author_email,
                 "comment_date" => $comment->comment_date,
                 "comment_date_gmt" => $comment->comment_date_gmt,
@@ -1112,7 +1112,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $activity_simple[] = [
                     "meta_key" => $a->meta_key,
                     "gravatar" => isset( $a->gravatar ) ? $a->gravatar : "",
-                    "name" => isset( $a->name ) ? $a->name : __( "D.T System", 'disciple_tools' ),
+                    "name" => isset( $a->name ) ? wp_specialchars_decode( $a->name ) : __( "D.T System", 'disciple_tools' ),
                     "object_note" => $a->object_note,
                     "hist_time" => $a->hist_time,
                     "meta_id" => $a->meta_id,
