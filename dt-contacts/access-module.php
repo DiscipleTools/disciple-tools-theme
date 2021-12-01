@@ -1207,14 +1207,17 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
             //check if the user has access to all posts of a specific source
             if ( current_user_can( 'access_specific_sources' ) ){
-                $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-                if ( empty( $sources ) || in_array( 'all', $sources ) ) {
-                    return true;
-                }
-                $post_sources = get_post_meta( $post_id, 'sources' );
-                foreach ( $post_sources as $s ){
-                    if ( in_array( $s, $sources ) ){
+                $contact_type = get_post_meta( $post_id, "type", true );
+                if ( $contact_type === "access" ){
+                    $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+                    if ( empty( $sources ) || in_array( 'all', $sources ) ) {
                         return true;
+                    }
+                    $post_sources = get_post_meta( $post_id, 'sources' );
+                    foreach ( $post_sources as $s ){
+                        if ( in_array( $s, $sources ) ){
+                            return true;
+                        }
                     }
                 }
             }
@@ -1230,14 +1233,17 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
         //check if the user has access to all posts of a specific source
         if ( current_user_can( 'access_specific_sources' ) ){
-            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-            if ( empty( $sources ) || in_array( 'all', $sources ) ) {
-                return true;
-            }
-            $post_sources = get_post_meta( $post_id, 'sources' );
-            foreach ( $post_sources as $s ){
-                if ( in_array( $s, $sources ) ){
+            $contact_type = get_post_meta( $post_id, "type", true );
+            if ( $contact_type === "access" ){
+                $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+                if ( empty( $sources ) || in_array( 'all', $sources ) ){
                     return true;
+                }
+                $post_sources = get_post_meta( $post_id, 'sources' );
+                foreach ( $post_sources as $s ){
+                    if ( in_array( $s, $sources ) ){
+                        return true;
+                    }
                 }
             }
         }
