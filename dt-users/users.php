@@ -431,7 +431,7 @@ class Disciple_Tools_Users
                     $wpdb->query( $wpdb->prepare( "INSERT INTO $wpdb->dt_share (user_id, post_id) SELECT DISTINCT user_id, %s FROM $wpdb->dt_share WHERE post_id = %d AND user_id != %d", $archive_contact["ID"], $corresponds_to_contact, $current_user_id ) );
                     //add @mention to the person who archived the comments
                     $mention = dt_get_user_mention_syntax( $current_user_id );
-                    $comment = __( "These are the archived comment for the new user", 'disciple_tools' );
+                    $comment = sprintf( _x( 'These are archived comments for %1$s', 'These are archived comments for contact John Doe', 'disciple_tools' ), '[' . $existing_contact["title"] . '](' . $existing_contact["permalink"] .')' );
                     wp_set_current_user( 0 );
                     DT_Posts::add_post_comment( "contacts", $archive_contact["ID"], $mention . " " . $comment, "comment", [], false, false );
                     wp_set_current_user( $current_user_id );

@@ -176,7 +176,7 @@ jQuery(document).ready(function($) {
       rows += `<tr>
         <td>${window.lodash.escape(range.start_date)}</td>
         <td>${window.lodash.escape(range.end_date)}</td>
-        <td><button class="button remove_dates_unavailable" data-id="${window.lodash.escape(range.id)}">${ window.lodash.escape( dt_user_management_localized.translations.remove ) }</button></td>
+        <td><button class="button remove_dates_unavailable" data-id="${window.lodash.escape(range.id)}">${ escaped_translations.remove }</button></td>
       </tr>`
     })
     date_unavailable_table.html(rows)
@@ -525,7 +525,7 @@ jQuery(document).ready(function($) {
             response.contact_accepts.forEach(contact => {
               let days = contact.time / 60 / 60 / 24;
               avg_contact_accept += days
-              let accept_line = dt_user_management_localized.translations.accept_time
+              let accept_line = escaped_translations.accept_time
               .replace('%1$s', contact.name)
               .replace('%2$s', moment.unix(contact.date_accepted).format("MMM Do"))
               .replace('%3$s', days.toFixed(1))
@@ -612,7 +612,7 @@ jQuery(document).ready(function($) {
       .done(activity=>{
         if ( window.current_user_lookup === user_id ) {
           let activity_div = $('#activity')
-          let activity_html = window.dtActivityLogs.makeActivityList(activity.user_activity, window.dt_user_management_localized.translations)
+          let activity_html = window.dtActivityLogs.makeActivityList(activity.user_activity, escaped_translations)
           activity_div.html(activity_html)
         }
       }).catch((e)=>{
@@ -910,11 +910,11 @@ jQuery(document).ready(function($) {
           result_div.html('')
           if ( dt_user_management_localized.has_permission ) {
             result_div.append(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(user_id)}">
-              ${ window.lodash.escape( dt_user_management_localized.translations.view_new_user ) }</a>
+              ${ escaped_translations.view_new_user }</a>
             `)
           }
           result_div.append(`<br /><a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape(contact_id)}">
-              ${ window.lodash.escape( dt_user_management_localized.translations.view_new_contact ) }</a>
+              ${ escaped_translations.view_new_contact }</a>
             `)
           $('#new-user-form').empty()
           return response
@@ -925,10 +925,10 @@ jQuery(document).ready(function($) {
             submit_button.prop('disabled', false)
 
             if ( err.responseJSON.code === 'email_exists' ) {
-              result_div.html(`${ window.lodash.escape( dt_user_management_localized.translations.email_already_in_system ) }`)
+              result_div.html(`${ escaped_translations.email_already_in_system }`)
             }
             else if ( err.responseJSON.code === 'username_exists' ) {
-              result_div.html(`${ window.lodash.escape( dt_user_management_localized.translations.username_in_system ) }`)
+              result_div.html(`${ escaped_translations.username_in_system }`)
             }
 
           } else {
