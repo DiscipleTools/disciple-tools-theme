@@ -1179,15 +1179,15 @@ class DT_Contacts_Access extends DT_Module_Base {
     public static function dt_filter_access_permissions( $permissions, $post_type ){
         if ( $post_type === "contacts" ){
             if ( DT_Posts::can_view_all( $post_type ) ){
-                $permissions["type"] = [ "access" ];
+                $permissions["type"] = [ "access", "user" ];
             } else if ( current_user_can( "dt_all_access_contacts" ) ){
                 //give user permission to all contacts af type 'access'
-                $permissions[] = [ "type" => [ "access" ] ];
+                $permissions[] = [ "type" => [ "access", "user" ] ];
             } else if ( current_user_can( 'access_specific_sources' ) ){
                 //give user permission to all 'access' that also have a source the user can view.
                 $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
                 if ( in_array( 'all', $allowed_sources, true ) || empty( $allowed_sources ) ){
-                    $permissions["type"] = [ "access" ];
+                    $permissions["type"] = [ "access", "user" ];
                 } elseif ( !in_array( "restrict_all_sources", $allowed_sources ) ){
                     $permissions[] = [ "type" => [ "access" ], "sources" => $allowed_sources];
                 }
@@ -1201,7 +1201,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         if ( $post_type === "contacts" ){
             if ( current_user_can( 'dt_all_access_contacts' ) ){
                 $contact_type = get_post_meta( $post_id, "type", true );
-                if ( $contact_type === "access" ){
+                if ( $contact_type === "access" || $contact_type === "user" ){
                     return true;
                 }
             }
@@ -1227,7 +1227,7 @@ class DT_Contacts_Access extends DT_Module_Base {
     public function can_update_permission_filter( $has_permission, $post_id, $post_type ){
         if ( current_user_can( 'dt_all_access_contacts' ) ){
             $contact_type = get_post_meta( $post_id, "type", true );
-            if ( $contact_type === "access" ){
+            if ( $contact_type === "access" || $contact_type === "user" ){
                 return true;
             }
         }
