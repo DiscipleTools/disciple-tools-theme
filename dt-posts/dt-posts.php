@@ -463,12 +463,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !$wp_post ){
             return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 400 ] );
         }
-        $fields = [];
 
         /**
          * add connections
          */
-        $p = [ (array) $wp_post ];
+        $p = [ [ "ID" => $post_id ] ];
         self::get_all_connected_fields_on_list( $field_settings, $p );
         $fields = $p[0];
         $fields["ID"] = $post_id;
@@ -1021,7 +1020,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $c = [
                 "comment_ID" => $comment->comment_ID,
-                "comment_author" => !empty( $display_name ) ? $display_name : $comment->comment_author,
+                "comment_author" => !empty( $display_name ) ? $display_name : wp_specialchars_decode( $comment->comment_author ),
                 "comment_author_email" => $comment->comment_author_email,
                 "comment_date" => $comment->comment_date,
                 "comment_date_gmt" => $comment->comment_date_gmt,
@@ -1113,7 +1112,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $activity_simple[] = [
                     "meta_key" => $a->meta_key,
                     "gravatar" => isset( $a->gravatar ) ? $a->gravatar : "",
-                    "name" => isset( $a->name ) ? $a->name : __( "D.T System", 'disciple_tools' ),
+                    "name" => isset( $a->name ) ? wp_specialchars_decode( $a->name ) : __( "D.T System", 'disciple_tools' ),
                     "object_note" => $a->object_note,
                     "hist_time" => $a->hist_time,
                     "meta_id" => $a->meta_id,
@@ -1284,6 +1283,10 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
+        if ( $check_permissions && !Disciple_Tools_Users::can_list( $user_id ) ){
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
+        }
+        // if the user we are sharing with does not existing or is not on this subsite
         $user = get_user_by( "ID", $user_id );
         if ( empty( $user ) || !is_user_member_of_blog( $user->ID ) ){
             return false;

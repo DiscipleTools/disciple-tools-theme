@@ -401,7 +401,7 @@ jQuery(document).ready(function($) {
           $('#profile_loading').removeClass("active")
           user_details = details
           $("#user_name").html(window.lodash.escape(details.display_name))
-          $("#update_display_name").val(window.lodash.escape(details.display_name));
+          $("#update_display_name").val(details.display_name);
           (details.languages || []).forEach(l=>{
             $(`#${l}`).addClass('selected-select-button').removeClass('empty-select-button')
           })

@@ -16,7 +16,7 @@ function dt_release_modal() {
     if ( !is_archive() && !is_single() && !isset( apply_filters( "desktop_navbar_menu_options", [] )[str_replace( '/', '', $url )] ) ){
         return;
     }
-    $show_notification_for_theme_version = '1.17.0'; // increment this number with each new release modal
+    $show_notification_for_theme_version = '1.18.0'; // increment this number with each new release modal
 
     $theme_version = wp_get_theme()->version;
     $last_release_notification = get_user_meta( get_current_user_id(), 'dt_release_notification', true );

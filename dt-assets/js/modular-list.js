@@ -490,8 +490,8 @@
               })
             } else if ( field_settings.type === "boolean" ){
               if (field_key === "favorite") {
-                values = [`<svg class='icon-star selected' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
-              } else {
+                values = [`<svg class='icon-star${field_value === true ? ' selected' : ''}' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
+              } else if ( field_value === true ) {
                 values = ['&check;']
               }
             }
