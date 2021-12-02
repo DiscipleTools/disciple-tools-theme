@@ -345,7 +345,7 @@ class Disciple_Tools_Users
      * @param bool $return_contact_id
      * @return int|WP_Error|array
      */
-    public static function create_user( $user_name, $user_email, $display_name, array $user_roles = [ 'multiplier' ], $corresponds_to_contact = null, $locale = null, bool $return_contact_id = false, $password = null, $optional_fields = null ){
+    public static function create_user( $user_name, $user_email, $display_name, array $user_roles = [ 'multiplier' ], $corresponds_to_contact = null, $locale = null, bool $return_contact_id = false, $password = null, $optional_fields = null, $archive_comments = false ){
         if ( !current_user_can( "create_users" ) && !DT_User_Management::non_admins_can_make_users() ){
             return new WP_Error( "no_permissions", "You don't have permissions to create users", [ 'status' => 401 ] );
         }
@@ -355,6 +355,9 @@ class Disciple_Tools_Users
             if ( $corresponds_to_contact && ! DT_Posts::can_view( 'contacts', (int) $corresponds_to_contact ) ) {
                 return new WP_Error( "no_permissions", "You don't have permission to create a user for this contact", [ 'status' => 401 ] );
             }
+        }
+        if ( $corresponds_to_contact ){
+            $existing_contact = DT_Posts::get_post( "contacts", $corresponds_to_contact, true, false );
         }
 
         $user_email = sanitize_email( wp_unslash( $user_email ) );
@@ -413,8 +416,30 @@ class Disciple_Tools_Users
             update_user_meta( $user_id, $wpdb->prefix . 'corresponds_to_contact', $corresponds_to_contact );
             update_post_meta( $corresponds_to_contact, 'corresponds_to_user', $user_id );
             update_post_meta( $corresponds_to_contact, 'type', 'user' );
+
+            if ( $archive_comments && !is_wp_error( $existing_contact ) ){
+                $archive_contact = DT_Posts::create_post( "contacts", [
+                    "type" => $existing_contact["type"]["key"],
+                    "overall_status" => "closed",
+                    "title" => $existing_contact["title"] . " - " . __( "archived", 'disciple_tools' ),
+                ] );
+                if ( isset( $archive_contact["ID"] ) ){
+                    $current_user_id = get_current_user_id();
+                    //move comments to new archive post
+                    $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->comments SET comment_post_ID = %d WHERE comment_post_ID = %d", $archive_contact["ID"], $corresponds_to_contact ) );
+                    //share with same users
+                    $wpdb->query( $wpdb->prepare( "INSERT INTO $wpdb->dt_share (user_id, post_id) SELECT DISTINCT user_id, %s FROM $wpdb->dt_share WHERE post_id = %d AND user_id != %d", $archive_contact["ID"], $corresponds_to_contact, $current_user_id ) );
+                    //add @mention to the person who archived the comments
+                    $mention = dt_get_user_mention_syntax( $current_user_id );
+                    $comment = sprintf( _x( 'These are archived comments for %1$s', 'These are archived comments for contact John Doe', 'disciple_tools' ), '[' . $existing_contact["title"] . '](' . $existing_contact["permalink"] .')' );
+                    wp_set_current_user( 0 );
+                    DT_Posts::add_post_comment( "contacts", $archive_contact["ID"], $mention . " " . $comment, "comment", [], false, false );
+                    wp_set_current_user( $current_user_id );
+                }
+            }
         }
 
+        do_action( 'dt_user_created', $user_id );
         if ( $return_contact_id ) {
             return [
                 'user_id' => $user_id,
@@ -479,6 +504,7 @@ class Disciple_Tools_Users
                     "title"               => $user->display_name,
                     "type"                => "user",
                     "corresponds_to_user" => $user_id,
+                    "contact_email"       => [ "values" => [ [ "value" => $user->user_email ] ] ],
                 ], true, false );
                 if ( !is_wp_error( $new_user_contact ) ){
                     update_user_option( $user_id, "corresponds_to_contact", $new_user_contact["ID"] );
