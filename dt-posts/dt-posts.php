@@ -114,6 +114,20 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+
+        if ( isset( $fields["additional_meta"] ) ){
+            if ( isset( $fields["additional_meta"]["created_from"], $fields["additional_meta"]["add_connection"], $post_settings["fields"][$fields["additional_meta"]["add_connection"]]["p2p_key"] ) ){
+                $connection_field = $fields["additional_meta"]["add_connection"];
+                foreach ( $post_settings["fields"] as $field_key => $field_options ){
+                    if ( $post_settings["fields"][$fields["additional_meta"]["add_connection"]]["p2p_key"] === $field_options["p2p_key"] && $field_key !== $fields["additional_meta"]["add_connection"] ){
+                        $connection_field = $field_key;
+                    }
+                }
+                $fields[$connection_field] = [ "values" => [ [ "value" => $fields["additional_meta"]["created_from"] ] ] ];
+            }
+            unset( $fields["additional_meta"] );
+        }
+
         $allowed_fields = apply_filters( "dt_post_create_allow_fields", [], $post_type );
         $bad_fields = self::check_for_invalid_post_fields( $post_settings, $fields, $allowed_fields );
         if ( !empty( $bad_fields ) ) {
