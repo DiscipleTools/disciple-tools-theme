@@ -21,6 +21,7 @@ class DT_Contacts_User {
         //display tiles and fields
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
+        add_action( 'dt_record_notifications_section', [ $this, "dt_record_notifications_section" ], 10, 2 );
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 20, 2 );
@@ -61,6 +62,28 @@ class DT_Contacts_User {
     public function dt_details_additional_tiles( $sections, $post_type = "" ) {
         return $sections;
     }
+
+    public function dt_record_notifications_section( $post_type, $dt_post ){
+        if ( $post_type === "contacts" && $dt_post["type"]["key"] === "user" ): ?>
+            <section class="cell small-12 user-contact-notification">
+                <div class="bordered-box detail-notification-box" style="background-color:#3F729B">
+                    <?php if ( isset( $dt_post["corresponds_to_user"] ) && (int) $dt_post["corresponds_to_user"] === get_current_user_id() ):
+                        ?>
+                        <h4><?php esc_html_e( 'This contact represents you as a user.', 'disciple_tools' )?></h4>
+                        <p><?php esc_html_e( 'Please update contact details on your profile page instead of here.', 'disciple_tools' ); ?> <a style="color:white; font-weight: bold" href="<?php echo esc_html( site_url( '/settings' ) ); ?>"><?php echo esc_html( "Profile Settings" ); ?> <img class="dt-icon dt-white-icon" style="margin:0" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a></p>
+                    <?php else : ?>
+                        <h4>
+                        <?php esc_html_e( 'This contact represents a user.', 'disciple_tools' );
+                        if ( !empty( $dt_post["corresponds_to_user"] && DT_User_Management::has_permission() ) ): ?>
+                            <a style="color:white; " href="<?php echo esc_html( site_url( '/user-management/user/'. $dt_post["corresponds_to_user"] ) ); ?>"><?php echo esc_html( "View" ); ?> <img class="dt-icon dt-white-icon" style="margin:0" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a>
+                        <?php endif; ?>
+                        </h4>
+                    <?php endif; ?>
+                </div>
+            </section>
+        <?php endif;
+    }
+
 
     public function dt_details_additional_section( $section, $post_type ){
     }
