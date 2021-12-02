@@ -750,6 +750,12 @@ class DT_Contacts_Access extends DT_Module_Base {
         if ( $post_type !== "contacts" ){
             return $fields;
         }
+        if ( isset( $fields["additional_meta"]["created_from"] ) ){
+            $from_post = DT_Posts::get_post( "contacts", $fields["additional_meta"]["created_from"], true, false );
+            if ( !is_wp_error( $from_post ) && isset( $from_post["type"]["key"] ) && $from_post["type"]["key"] === "access" ){
+                $fields["type"] = "access_placeholder";
+            }
+        }
         if ( !isset( $fields["type"] ) && isset( $fields["sources"] ) ){
             if ( !empty( $fields["sources"] ) ){
                 $fields["type"] = "access";
