@@ -530,20 +530,21 @@ jQuery(document).ready(function($) {
     let update_field = connection_type;
     API.create_post( field_settings[update_field].post_type, {
       title,
+      additional_meta: {
+        created_from: post_id,
+        add_connection: connection_type
+      }
     }).then((newRecord)=>{
-      return API.update_post( post_type, post_id, { [update_field]: { values: [ { value:newRecord.ID }]}}).then(response=>{
-        $(".js-create-record-button").attr("disabled", false).removeClass("loading");
-        $(".reveal-after-record-create").show()
-        $("#new-record-link").html(`<a href="${window.lodash.escape( newRecord.permalink )}">${window.lodash.escape( title )}</a>`)
-        $(".hide-after-record-create").hide()
-        $('#go-to-record').attr('href', window.lodash.escape( newRecord.permalink ));
-        post = response
-        $( document ).trigger( "dt-post-connection-created", [ post, update_field ] );
-        if ( Typeahead[`.js-typeahead-${connection_type}`] ){
-          Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
-          masonGrid.masonry('layout')
-        }
-      })
+      $(".js-create-record-button").attr("disabled", false).removeClass("loading");
+      $(".reveal-after-record-create").show()
+      $("#new-record-link").html(`<a href="${window.lodash.escape( newRecord.permalink )}">${window.lodash.escape( title )}</a>`)
+      $(".hide-after-record-create").hide()
+      $('#go-to-record').attr('href', window.lodash.escape( newRecord.permalink ));
+      $( document ).trigger( "dt-post-connection-created", [ post, update_field ] );
+      if ( Typeahead[`.js-typeahead-${connection_type}`] ){
+        Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
+        masonGrid.masonry('layout')
+      }
     })
     .catch(function(error) {
       $(".js-create-record-button").removeClass("loading").addClass("alert");
