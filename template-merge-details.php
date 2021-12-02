@@ -204,11 +204,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
 
                         <div class="center" style="margin-top: 30px">
                             <label>
-                                <strong><?php esc_html_e( 'Merge other fields', 'disciple_tools' ); ?></strong>
-                                <input type="checkbox" name="merge_all_fields" checked>
-                            </label>
-                            <label>
-                                <strong><?php esc_html_e( 'Merge comments', 'disciple_tools' ); ?></strong>
+                                <strong><?php esc_html_e( 'Copy comments to master record', 'disciple_tools' ); ?></strong>
                                 <input type="checkbox"
                                        name="merge_comments" <?php checked( !isset( $_GET["comments"] ) ) ?>>
                             </label>
