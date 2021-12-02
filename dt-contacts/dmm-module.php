@@ -51,6 +51,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "icon" => get_template_directory_uri() . "/dt-assets/images/network.svg?v=2",
                 "order" => 40,
                 "visibility" => __( "Only me", 'disciple_tools' ),
+                "in_create_form" => false,
             ];
             $fields["milestones"] = [
                 "name"    => __( 'Faith Milestones', 'disciple_tools' ),

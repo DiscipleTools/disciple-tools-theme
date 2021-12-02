@@ -92,12 +92,21 @@ class DT_Contacts_Access extends DT_Module_Base {
         $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
             $fields["type"]["default"]["access"] = [
-                "label" => __( 'Access', 'disciple_tools' ),
+                "label" => __( 'Team', 'disciple_tools' ),
                 "color" => "#2196F3",
                 "description" => __( 'Someone to follow-up with', 'disciple_tools' ),
                 "visibility" => __( "Collaborators", 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg?v=2",
                 "order" => 20
+            ];
+            $fields["type"]["default"]["access_placeholder"] = [
+                "label" => __( 'Access Connection', 'disciple_tools' ),
+                "color" => "#FF9800",
+                "description" => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg?v=2",
+                "order" => 40,
+                "visibility" => __( "Collaborators", 'disciple_tools' ),
+                "in_create_form" => false,
             ];
 
             $fields['assigned_to'] = [
@@ -741,6 +750,12 @@ class DT_Contacts_Access extends DT_Module_Base {
         if ( $post_type !== "contacts" ){
             return $fields;
         }
+        if ( isset( $fields["additional_meta"]["created_from"] ) ){
+            $from_post = DT_Posts::get_post( "contacts", $fields["additional_meta"]["created_from"], true, false );
+            if ( !is_wp_error( $from_post ) && isset( $from_post["type"]["key"] ) && $from_post["type"]["key"] === "access" ){
+                $fields["type"] = "access_placeholder";
+            }
+        }
         if ( !isset( $fields["type"] ) && isset( $fields["sources"] ) ){
             if ( !empty( $fields["sources"] ) ){
                 $fields["type"] = "access";
@@ -1179,15 +1194,15 @@ class DT_Contacts_Access extends DT_Module_Base {
     public static function dt_filter_access_permissions( $permissions, $post_type ){
         if ( $post_type === "contacts" ){
             if ( DT_Posts::can_view_all( $post_type ) ){
-                $permissions["type"] = [ "access" ];
+                $permissions["type"] = [ "access", "user", "access_placeholder" ];
             } else if ( current_user_can( "dt_all_access_contacts" ) ){
                 //give user permission to all contacts af type 'access'
-                $permissions[] = [ "type" => [ "access" ] ];
+                $permissions[] = [ "type" => [ "access", "user", "access_placeholder" ] ];
             } else if ( current_user_can( 'access_specific_sources' ) ){
                 //give user permission to all 'access' that also have a source the user can view.
                 $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
                 if ( in_array( 'all', $allowed_sources, true ) || empty( $allowed_sources ) ){
-                    $permissions["type"] = [ "access" ];
+                    $permissions["type"] = [ "access", "access_placeholder" ];
                 } elseif ( !in_array( "restrict_all_sources", $allowed_sources ) ){
                     $permissions[] = [ "type" => [ "access" ], "sources" => $allowed_sources];
                 }
@@ -1201,7 +1216,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         if ( $post_type === "contacts" ){
             if ( current_user_can( 'dt_all_access_contacts' ) ){
                 $contact_type = get_post_meta( $post_id, "type", true );
-                if ( $contact_type === "access" ){
+                if ( $contact_type === "access" || $contact_type === "user" || $contact_type === "access_placeholder" ){
                     return true;
                 }
             }
@@ -1227,7 +1242,7 @@ class DT_Contacts_Access extends DT_Module_Base {
     public function can_update_permission_filter( $has_permission, $post_id, $post_type ){
         if ( current_user_can( 'dt_all_access_contacts' ) ){
             $contact_type = get_post_meta( $post_id, "type", true );
-            if ( $contact_type === "access" ){
+            if ( $contact_type === "access" || $contact_type === "user" || $contact_type === "access_placeholder" ){
                 return true;
             }
         }
