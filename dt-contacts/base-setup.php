@@ -148,10 +148,11 @@ class DT_Contacts_Base {
                         "label" => __( 'User', 'disciple_tools' ),
                         "description" => __( "Representing a User in the system", 'disciple_tools' ),
                         "color" => "#3F729B",
-                        "hidden" => true
+                        "hidden" => true,
+                        "in_create_form" => false,
                     ],
                     'personal' => [
-                        "label" => __( 'Personal', 'disciple_tools' ),
+                        "label" => __( 'Private', 'disciple_tools' ),
                         "color" => "#9b379b",
                         "description" => __( "A friend, family member or acquaintance", 'disciple_tools' ),
                         "visibility" => __( "Only me", 'disciple_tools' ),
