@@ -419,7 +419,7 @@ class Disciple_Tools_Users
 
             if ( $archive_comments && !is_wp_error( $existing_contact ) ){
                 $archive_contact = DT_Posts::create_post( "contacts", [
-                    "type" => $existing_contact["type"]["key"],
+                    "type" => 'placeholder',
                     "overall_status" => "closed",
                     "title" => $existing_contact["title"] . " - " . __( "archived", 'disciple_tools' ),
                 ] );
