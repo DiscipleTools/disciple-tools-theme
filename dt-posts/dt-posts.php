@@ -1301,8 +1301,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         // if the user we are sharing with does not existing or is not on this subsite
-        $user = get_user_by( "ID", $user_id );
-        if ( empty( $user ) || !is_user_member_of_blog( $user->ID ) ){
+        if ( !Disciple_Tools_Users::is_instance_user( $user_id ) ){
             return false;
         }
 
