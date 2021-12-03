@@ -1214,7 +1214,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( is_wp_error( $display_name ) ) {
                 $display_name = 'Not Found';
             }
-            $share['display_name'] = $display_name;
+            $share['display_name'] = wp_specialchars_decode( $display_name );
             $shared_with_list[] = $share;
         }
 

@@ -1489,7 +1489,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $roles = maybe_unserialize( $user["roles"] );
             if ( isset( $roles["multiplier"] ) || isset( $roles["dt_admin"] ) || isset( $roles["dispatcher"] ) || isset( $roles["marketer"] ) ) {
                 $u = [
-                    "name" => $user["display_name"],
+                    "name" => wp_specialchars_decode( $user["display_name"] ),
                     "ID" => $user["ID"],
                     "avatar" => get_avatar_url( $user["ID"], [ 'size' => '16' ] ),
                     "last_assignment" => $last_assignments[$user["ID"]] ?? null,
