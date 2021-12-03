@@ -323,8 +323,8 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
         }
 
         public function determine_meta_key( $current_key ) {
-            if ( ! empty( $_REQUEST['parts']['instance_id'] ) ) {
-                return $_REQUEST['parts']['meta_key'];
+            if ( ! empty( $_REQUEST['parts']['instance_id'] ) && ! empty( $_REQUEST['parts']['meta_key'] ) ) {
+                return sanitize_text_field( wp_unslash( $_REQUEST['parts']['meta_key'] ) );
             }
 
             return $current_key;

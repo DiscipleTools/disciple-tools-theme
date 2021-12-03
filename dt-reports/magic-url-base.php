@@ -20,7 +20,7 @@ abstract class DT_Magic_Url_Base {
 
         // incoming instance id...?
         $id = $this->fetch_incoming_link_param( 'id' );
-        $this->instance_id = ( ! empty( $id ) ) ? $id : '' ;
+        $this->instance_id = ( ! empty( $id ) ) ? $id : '';
 
         // register type
         $this->magic = new DT_Magic_URL( $this->root );

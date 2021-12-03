@@ -252,7 +252,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                             } else {
                                 foreach ( $apps_list as $app_key => $app_value ) :
                                     $display = $app_value['settings_display'] ?? true;
-                                    if($display === true) {
+                                    if ( $display === true ) {
                                         $app_user_key = get_user_option( $app_key );
                                         $app_url_base = trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] );
                                         $app_link = false;
