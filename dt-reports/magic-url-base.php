@@ -14,8 +14,13 @@ abstract class DT_Magic_Url_Base {
     ];
 
     public $module = ""; // lets a magic url be a module as well
+    public $instance_id = "";
 
     public function __construct() {
+
+        // incoming instance id...?
+        $id = $this->fetch_incoming_link_param( 'id' );
+        $this->instance_id = ( ! empty( $id ) ) ? $id : '' ;
 
         // register type
         $this->magic = new DT_Magic_URL( $this->root );
@@ -49,6 +54,23 @@ abstract class DT_Magic_Url_Base {
 
         add_action( 'dt_blank_head', [ $this, '_header' ] );
         add_action( 'dt_blank_footer', [ $this, '_footer' ] );
+    }
+
+    /**
+     * Extract incoming link specific parameters; E.g. instance id...
+     *
+     * @param $param
+     *
+     * @return string
+     */
+    public function fetch_incoming_link_param( $param ): string {
+        if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+            parse_str( parse_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_QUERY ), $link_params );
+
+            return $link_params[ $param ] ?? '';
+        }
+
+        return '';
     }
 
     /**
@@ -107,13 +129,15 @@ abstract class DT_Magic_Url_Base {
         if ( ! isset( $types[$this->root] ) ) {
             $types[$this->root] = [];
         }
+        $meta_key_appendage              = ( ! empty( $this->instance_id ) ) ? '_' . $this->instance_id : '';
         $types[$this->root][$this->type] = [
             'name' => $this->type_name,
             'root' => $this->root,
             'type' => $this->type,
-            'meta_key' => $this->meta_key ?? $this->root . '_' . $this->type . '_magic_key',
+            'meta_key' => $this->root . '_' . $this->type . '_magic_key' . $meta_key_appendage,
             'actions' => $this->type_actions,
             'post_type' => $this->post_type,
+            'instance_id' => $this->instance_id
         ];
         return $types;
     }
