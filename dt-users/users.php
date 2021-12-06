@@ -98,6 +98,19 @@ class Disciple_Tools_Users
     }
 
     /**
+     * Check if a user exists and is part of the current site
+     * @param $user_id
+     * @return bool
+     */
+    public static function is_instance_user( $user_id ){
+        $user = get_user_by( "ID", $user_id );
+        if ( !empty( $user ) && ( is_user_member_of_blog( $user->ID ) || is_super_admin( $user->ID ) ) ){
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Get assignable users
      *
      * @param string|null $search_string

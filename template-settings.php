@@ -265,33 +265,36 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <?php
                             } else {
                                 foreach ( $apps_list as $app_key => $app_value ) :
-                                    $app_user_key = get_user_option( $app_key );
-                                    $app_url_base = trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] );
-                                    $app_link = false;
-                                    if ( $app_user_key ) {
-                                        $app_link = $app_url_base . $app_user_key;
+                                    $display = $app_value['settings_display'] ?? true;
+                                    if ( $display === true ) {
+                                        $app_user_key = get_user_option( $app_key );
+                                        $app_url_base = trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] );
+                                        $app_link = false;
+                                        if ( $app_user_key ) {
+                                            $app_link = $app_url_base . $app_user_key;
+                                        }
+                                        ?>
+                                        <tr>
+                                            <td class="tall-3"><?php echo esc_html( $app_value["label"] )?></td>
+                                            <td class="tall-3"><?php echo esc_html( $app_value["description"] )?></td>
+                                            <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url( $app_url_base ) ?>">
+                                                <?php if ( $app_link ) { ?>
+                                                    <a class="button small"  href="<?php echo esc_url( $app_link ) ?>" title="<?php esc_html_e( 'link', 'disciple_tools' ) ?>"><i class="fi-link"></i></a>
+                                                    <button class="button small copy_to_clipboard" data-value="<?php echo esc_url( $app_link ) ?>" title="<?php esc_html_e( 'copy', 'disciple_tools' ) ?>"><i class="fi-page-copy"></i></button>
+                                                <?php } ?>
+                                            </td>
+                                            <td class="tall-3">
+                                                <input class="switch-input" id="app_state_<?php echo esc_attr( $app_key )?>" type="checkbox" name="follow_all"
+                                                       onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
+                                                <label class="switch-paddle" for="app_state_<?php echo esc_attr( $app_key )?>">
+                                                    <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
+                                                    <span class="switch-active" aria-hidden="true" style="color:white;"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
+                                                    <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <?php
                                     }
-                                    ?>
-                                    <tr>
-                                        <td class="tall-3"><?php echo esc_html( $app_value["label"] )?></td>
-                                        <td class="tall-3"><?php echo esc_html( $app_value["description"] )?></td>
-                                        <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url( $app_url_base ) ?>">
-                                            <?php if ( $app_link ) { ?>
-                                                <a class="button small"  href="<?php echo esc_url( $app_link ) ?>" title="<?php esc_html_e( 'link', 'disciple_tools' ) ?>"><i class="fi-link"></i></a>
-                                                <button class="button small copy_to_clipboard" data-value="<?php echo esc_url( $app_link ) ?>" title="<?php esc_html_e( 'copy', 'disciple_tools' ) ?>"><i class="fi-page-copy"></i></button>
-                                            <?php } ?>
-                                        </td>
-                                        <td class="tall-3">
-                                            <input class="switch-input" id="app_state_<?php echo esc_attr( $app_key )?>" type="checkbox" name="follow_all"
-                                                   onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
-                                            <label class="switch-paddle" for="app_state_<?php echo esc_attr( $app_key )?>">
-                                                <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
-                                                <span class="switch-active" aria-hidden="true" style="color:white;"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
-                                                <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <?php
                                 endforeach;
                             }
                             ?>

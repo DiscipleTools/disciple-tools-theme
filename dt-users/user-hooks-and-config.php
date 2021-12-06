@@ -175,7 +175,7 @@ class DT_User_Hooks_And_Configuration {
      */
     public static function user_login_hook( $user_name, $user ){
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user->ID );
-        if ( empty( $corresponds_to_contact ) && is_user_member_of_blog( $user->ID ) ){
+        if ( empty( $corresponds_to_contact ) && Disciple_Tools_Users::is_instance_user( $user->ID ) ){
             Disciple_Tools_Users::create_contact_for_user( $user->ID );
         }
     }

@@ -124,8 +124,7 @@ class Disciple_Tools_Notifications
             return;
         }
         //check if the user exists and is on this subsite (if multisite)
-        $user = get_user_by( "ID", $args['user_id'] );
-        if ( empty( $user ) || !is_user_member_of_blog( $user->ID ) ){
+        if ( !Disciple_Tools_Users::is_instance_user( $args['user_id'] ) ){
             return;
         }
 
@@ -559,7 +558,7 @@ class Disciple_Tools_Notifications
 
     public static function send_notification_on_channels( $user_id, $notification, $notification_type, $already_sent = [] ){
         $user = get_userdata( $user_id );
-        if ( !$user || !is_user_member_of_blog( $user->ID ) ){
+        if ( !Disciple_Tools_Users::is_instance_user( $user->ID ) ){
             return;
         }
         dt_switch_locale_for_notifications( $notification["user_id"] );

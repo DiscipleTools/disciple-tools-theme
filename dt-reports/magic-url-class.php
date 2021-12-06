@@ -181,6 +181,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     'action' => '',
                     'post_id' => '',
                     'post_type' => '',
+                    'instance_id' => ''
                 ];
                 if ( isset( $parts[0] ) && ! empty( $parts[0] ) ){
                     $elements['root'] = $parts[0];
@@ -236,6 +237,10 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 if ( isset( $all_types[$elements['root']][$elements['type']]['post_type'] ) ) {
                     $elements['post_type'] = $all_types[$elements['root']][$elements['type']]['post_type'];
                 }
+                $instance_id = $types[ $elements['type'] ]['instance_id'];
+                if ( ! empty( $instance_id ) ) {
+                    $elements['instance_id'] = $instance_id;
+                }
                 return $elements;
             }
             return false;
@@ -288,7 +293,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     if ( ! isset( $types[$elements['type']]['meta_key'] ) ) {
                         return false;
                     }
-                    $elements['meta_key'] = $types[$elements['type']]['meta_key'];
+                    $elements['meta_key'] = self::determine_meta_key( $types[ $elements['type'] ]['meta_key'] );
 
                     if ( 'user' === $types[$elements['type']]['post_type'] ) {
                         // if user
@@ -315,6 +320,14 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 return $elements;
             }
             return false;
+        }
+
+        public function determine_meta_key( $current_key ) {
+            if ( ! empty( $_REQUEST['parts']['instance_id'] ) && ! empty( $_REQUEST['parts']['meta_key'] ) ) {
+                return sanitize_text_field( wp_unslash( $_REQUEST['parts']['meta_key'] ) );
+            }
+
+            return $current_key;
         }
 
         /**
