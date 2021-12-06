@@ -14,11 +14,11 @@ abstract class DT_Magic_Url_Base {
     ];
 
     public $module = ""; // lets a magic url be a module as well
-    public $instance_id = "";
+    public $instance_id = ""; // allows having multiple versions of the same magic link for a user. Creating different meta_keys.
 
     public function __construct() {
 
-        // incoming instance id...?
+        // check for an instance_id in the magic_link url
         $id = $this->fetch_incoming_link_param( 'id' );
         $this->instance_id = ( ! empty( $id ) ) ? $id : '';
 
@@ -27,8 +27,6 @@ abstract class DT_Magic_Url_Base {
         add_filter( 'dt_magic_url_register_types', [ $this, 'dt_magic_url_register_types' ], 10, 1 );
         // register REST and REST access
         add_filter( 'dt_allow_rest_access', [ $this, 'authorize_url' ], 10, 1 );
-
-        // Tests for url
 
         // fail if not valid url
         $this->parts = $this->magic->parse_url_parts();
