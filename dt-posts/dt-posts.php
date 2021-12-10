@@ -1544,6 +1544,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     public static function get_default_list_column_order( $post_type ){
         $fields = self::get_post_field_settings( $post_type );
+        $columns = [];
         uasort( $fields, function( $a, $b ){
             $a_order = 0;
             if ( isset( $a["show_in_table"] ) ){
