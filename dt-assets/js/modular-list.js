@@ -2018,6 +2018,14 @@
   })
 
 
+  /*****
+   * Bulk Send App
+   */
+  $('#bulk_send_app_controls').on('click', function(){
+    $('#bulk_send_app_picker').toggle();
+    $('#records-table').toggleClass('bulk_edit_on');
+  })
+
 
 
 })(window.jQuery, window.list_settings, window.Foundation);

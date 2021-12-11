@@ -242,6 +242,13 @@ dt_please_log_in();
                                 <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ) ?>"/>
                             </button>
                         </span>
+                        <span style="display:inline-block">
+                            <button class="button clear" id="bulk_send_app_controls" style="margin:0; padding:0">
+                                <?php esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
+                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ) ?>"/>
+                            </button>
+                        </span>
+
                     </div>
                     <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
@@ -482,6 +489,47 @@ dt_please_log_in();
                         </button>
                     </div>
 
+                    <!-- begin bulk send app -->
+                    <div id="bulk_send_app_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+                        <p style="font-weight:bold"><?php
+                            echo sprintf( esc_html__( 'Select all the  %1$s to whom you want to distribute app links', 'disciple_tools' ), esc_html( $post_type ) );?></p>
+                        <div class="grid-x grid-margin-x">
+                            <div class="cell">
+                                Short Note
+                                <input type="text" class="" />
+                            </div>
+                            <div class="cell">
+                                Select App
+                                <?php
+//                                dt_write_log($field_options);
+                                foreach( $field_options as $fo_v ) {
+                                    if ( $fo_v['type'] === 'hash' ) {
+                                        dt_write_log( $fo_v);
+                                    }
+                                }
+
+                                ?>
+                                <div class="dt-radio button-group toggle">
+                                    <input type="radio" id="r1" name="r-group">
+                                    <label class="button" for="r1">Portal App</label>
+                                    <input type="radio" id="r2" name="r-group">
+                                    <label class="button" for="r2">Share App</label>
+                                    <input type="radio" id="r3" name="r-group">
+                                    <label class="button" for="r3">Prayer App</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <button class="button dt-green" id="bulk_send_app_submit">
+                            <span id="bulk_send_app_submit_text" style="    text-transform:capitalize">
+                                <?php echo esc_html( __( "Send App Links", "disciple_tools" ) ); ?>
+                            </span>
+                            <span id="bulk_send_app_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
+                        </button>
+                    </div>
+                    <!-- end bulk send app -->
+
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
                     <div>
@@ -489,7 +537,7 @@ dt_please_log_in();
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
                                     <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
-                                    <input type="checkbox" name="bulk_edit_id" value="" id="bulk_edit_master_checkbox">
+                                    <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
                                     <th style="width:32px; background-image:none; cursor:default"></th>
 
