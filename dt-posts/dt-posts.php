@@ -1542,6 +1542,28 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $fields;
     }
 
+    public static function get_default_list_column_order( $post_type ){
+        $fields = self::get_post_field_settings( $post_type );
+        $columns = [];
+        uasort( $fields, function( $a, $b ){
+            $a_order = 0;
+            if ( isset( $a["show_in_table"] ) ){
+                $a_order = is_numeric( $a["show_in_table"] ) ? $a["show_in_table"] : 90;
+            }
+            $b_order = 0;
+            if ( isset( $b["show_in_table"] ) ){
+                $b_order = is_numeric( $b["show_in_table"] ) ? $b["show_in_table"] : 90;
+            }
+            return $a_order <=> $b_order;
+        });
+        foreach ( $fields as $field_key => $field_value ){
+            if ( ( isset( $field_value["show_in_table"] ) && $field_value["show_in_table"] ) ){
+                $columns[] = $field_key;
+            }
+        }
+        return $columns;
+    }
+
 
 
     public static function get_post_tiles( $post_type, $return_cache = true ){
