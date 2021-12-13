@@ -523,7 +523,7 @@ dt_please_log_in();
 
                         <button class="button dt-green" id="bulk_send_app_submit">
                             <span id="bulk_send_app_submit_text" style="    text-transform:capitalize">
-                                <?php echo esc_html( __( "Send App Links", "disciple_tools" ) ); ?>
+                                <?php echo esc_html( __( "Send Links", "disciple_tools" ) ); ?>
                             </span>
                             <span id="bulk_send_app_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
                         </button>
