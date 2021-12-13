@@ -169,3 +169,5 @@ class DT_Send_Email_Job extends Job{
         wp_mail( $this->email_address, $this->email_subject, $this->email_message );
     }
 }
+
+
