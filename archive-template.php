@@ -502,11 +502,11 @@ dt_please_log_in();
                                 Select App
                                 <?php
 //                                dt_write_log($field_options);
-                                foreach( $field_options as $fo_v ) {
-                                    if ( $fo_v['type'] === 'hash' ) {
+//                                foreach ( $field_options as $fo_v ) {
+//                                    if ( $fo_v['type'] === 'hash' ) {
 //                                        dt_write_log( $fo_v);
-                                    }
-                                }
+//                                    }
+//                                }
 
                                 ?>
                                 <div class="dt-radio button-group toggle">

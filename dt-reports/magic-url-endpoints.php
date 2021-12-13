@@ -105,7 +105,7 @@ class Disciple_Tools_Magic_Endpoints
         $errors = [];
         $success = [];
 
-        foreach( $params['post_ids'] as $post_id ) {
+        foreach ( $params['post_ids'] as $post_id ) {
             $post_record = DT_Posts::get_post( $params['post_type'], $post_id, true, true );
             if ( is_wp_error( $post_record ) || empty( $post_record ) ){
                 $errors[] = new WP_Error( __METHOD__, 'No permission to this record', [ 'status' => 400, 'post_id' => $post_id ] );
@@ -137,7 +137,7 @@ class Disciple_Tools_Magic_Endpoints
             // build email
             $email = $post_record['contact_email'][0]['value'];
             $subject = 'App link';
-            $message_plain_text =  $note . '
+            $message_plain_text = $note . '
 
 App link: ' . $link;
 
