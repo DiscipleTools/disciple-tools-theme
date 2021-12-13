@@ -242,12 +242,12 @@ dt_please_log_in();
                                 <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ) ?>"/>
                             </button>
                         </span>
-                        <span style="display:inline-block">
-                            <button class="button clear" id="bulk_send_app_controls" style="margin:0; padding:0">
-                                <?php esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
-                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ) ?>"/>
-                            </button>
-                        </span>
+<!--                        <span style="display:inline-block">-->
+<!--                            <button class="button clear" id="bulk_send_app_controls" style="margin:0; padding:0">-->
+<!--                                --><?php //esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
+<!--                                <img class="dt-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ) ?><!--"/>-->
+<!--                            </button>-->
+<!--                        </span>-->
 
                     </div>
                     <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
@@ -504,7 +504,7 @@ dt_please_log_in();
 //                                dt_write_log($field_options);
                                 foreach( $field_options as $fo_v ) {
                                     if ( $fo_v['type'] === 'hash' ) {
-                                        dt_write_log( $fo_v);
+//                                        dt_write_log( $fo_v);
                                     }
                                 }
 
