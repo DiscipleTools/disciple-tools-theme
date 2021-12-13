@@ -47,7 +47,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                         }
                         foreach ( $post_settings["fields"]["type"]["default"] as $option_key => $type_option ) {
                             //order fields alphabetically by Name
-                            if ( empty( $type_option["hidden"] ) ){ ?>
+                            if ( empty( $type_option["hidden"] ) && ( !isset( $type_option["in_create_form"] ) || $type_option["in_create_form"] !== false ) ){ ?>
                                 <div class="type-option" id="<?php echo esc_html( $option_key ); ?>">
                                     <div class="type-option-border">
                                         <input type="radio" name="type" value="<?php echo esc_html( $option_key ); ?>" style="display: none">

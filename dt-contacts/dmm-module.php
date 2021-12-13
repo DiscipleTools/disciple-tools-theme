@@ -45,12 +45,13 @@ class DT_Contacts_DMM  extends DT_Module_Base {
         $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
             $fields["type"]["default"]["placeholder"] = [
-                "label" => __( 'Connection', 'disciple_tools' ),
+                "label" => __( 'Private Connection', 'disciple_tools' ),
                 "color" => "#FF9800",
                 "description" => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/network.svg?v=2",
                 "order" => 40,
                 "visibility" => __( "Only me", 'disciple_tools' ),
+                "in_create_form" => false,
             ];
             $fields["milestones"] = [
                 "name"    => __( 'Faith Milestones', 'disciple_tools' ),
