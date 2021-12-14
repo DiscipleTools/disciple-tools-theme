@@ -746,6 +746,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                 $fields["type"] = "access";
             }
         }
+        if ( !isset( $fields["type"] ) && get_current_user_id() === 0 ){
+            $fields["type"] = "access";
+        }
         if ( !isset( $fields["type"] ) || $fields["type"] !== "access" ){
             return $fields;
         }
