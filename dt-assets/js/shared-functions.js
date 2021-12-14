@@ -585,9 +585,8 @@ window.SHAREDFUNCTIONS = {
   },
   get_months_labels(format = 'long'){
     let langcode = window.SHAREDFUNCTIONS.get_langcode();
-    let now = new Date()
     const int_format = new Intl.DateTimeFormat(langcode, {month:format}).format;
-    return [...Array(12).keys()].map((month) => int_format(new Date( Date.UTC(2021, month+1, 1))));
+    return [...Array(12).keys()].map((month) => int_format(new Date( Date.UTC(2021, month, 1))));
   },
   formatDate(date, with_time = false) {
     let langcode = window.SHAREDFUNCTIONS.get_langcode();

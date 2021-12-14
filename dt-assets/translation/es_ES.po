@@ -75,18 +75,18 @@ msgstr "Agregar filtro nuevo"
 msgid "Assigned To"
 msgstr "Asignado a"
 
-#: archive-template.php:643
+#: archive-template.php:628
 #: dt-assets/functions/enqueue-scripts.php:297
 #: dt-posts/custom-post-type.php:162
 msgid "Creation Date"
 msgstr "Fecha de creación"
 
-#: archive-template.php:634
+#: archive-template.php:619
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Filtro para subasignado o asignado a"
 
-#: archive-template.php:671
-#: archive-template.php:672
+#: archive-template.php:656
+#: archive-template.php:657
 #: dt-metrics/combined/time-charts.php:118
 #: dt-posts/posts.php:433
 #: template-settings.php:278
@@ -95,8 +95,8 @@ msgstr "Filtro para subasignado o asignado a"
 msgid "No"
 msgstr "No"
 
-#: archive-template.php:678
-#: archive-template.php:679
+#: archive-template.php:663
+#: archive-template.php:664
 #: dt-metrics/combined/time-charts.php:117
 #: dt-posts/posts.php:431
 #: template-settings.php:277
@@ -104,13 +104,13 @@ msgstr "No"
 msgid "Yes"
 msgstr "Si"
 
-#: archive-template.php:686
-#: archive-template.php:697
+#: archive-template.php:671
+#: archive-template.php:682
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Vaciar"
 
-#: archive-template.php:725
+#: archive-template.php:710
 #: dt-assets/functions/enqueue-scripts.php:258
 #: dt-assets/functions/enqueue-scripts.php:292
 #: template-merge-details.php:102
@@ -305,7 +305,7 @@ msgstr "Declinar"
 #: archive-template.php:322
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1554
+#: dt-posts/dt-posts.php:1580
 #: dt-users/template-user-management.php:74
 #: dt-users/template-user-management.php:441
 #: single-template.php:78
@@ -350,7 +350,7 @@ msgstr "Edad"
 msgid "Gender"
 msgstr "Género"
 
-#: archive-template.php:525
+#: archive-template.php:510
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
@@ -399,7 +399,7 @@ msgstr "Pilares de la fe"
 msgid "Group"
 msgstr "Grupo"
 
-#: archive-template.php:536
+#: archive-template.php:521
 msgid "Loading..."
 msgstr "Cargando…"
 
@@ -1034,7 +1034,7 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "Eliminado %1$s: %2$s"
 
-#: dt-posts/dt-posts.php:1362
+#: dt-posts/dt-posts.php:1366
 msgid "Post already shared with user."
 msgstr "Publicación ya ha sido compartida con usuario."
 
@@ -1813,12 +1813,12 @@ msgstr "Grupo Subsiguiente"
 msgid "Not Ready"
 msgstr "No está listo"
 
-#: archive-template.php:683
+#: archive-template.php:668
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Inicio de rango"
 
-#: archive-template.php:693
+#: archive-template.php:678
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Final de rango"
@@ -2110,7 +2110,7 @@ msgstr "Sin compartir con %s"
 msgid "Quick Actions"
 msgstr "Acciones rápidas"
 
-#: archive-template.php:615
+#: archive-template.php:600
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Escriba para buscar"
@@ -2229,17 +2229,17 @@ msgstr "Para agregar nuevos miembros, haga clic en 'Crear' o 'Seleccionar'."
 msgid "Filters"
 msgstr "Filtros"
 
-#: archive-template.php:541
-#: dt-assets/functions/enqueue-scripts.php:341
+#: archive-template.php:526
+#: dt-assets/functions/enqueue-scripts.php:342
 msgid "Load More"
 msgstr "Cargar más"
 
-#: archive-template.php:553
+#: archive-template.php:538
 msgid "Filter Name"
 msgstr "Nombre del filtro"
 
 #: 403.php:55
-#: archive-template.php:717
+#: archive-template.php:702
 #: dt-assets/parts/merge-details.php:70
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
@@ -2263,7 +2263,7 @@ msgstr "Nombre del filtro"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: archive-template.php:722
+#: archive-template.php:707
 msgid "Filter Records"
 msgstr "Registro de Filtros"
 
@@ -3706,7 +3706,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s unió %2$s a este archivo"
 
-#: dt-posts/dt-posts.php:1129
+#: dt-posts/dt-posts.php:1133
 msgid "D.T System"
 msgstr "Sistema D.T"
 
@@ -4016,7 +4016,7 @@ msgstr "Mapa de contactos"
 msgid "Groups Maps"
 msgstr "Mapa de grupos"
 
-#: dt-posts/dt-posts.php:1555
+#: dt-posts/dt-posts.php:1581
 #: single-template.php:120
 msgid "Details"
 msgstr "Detalles"
@@ -4320,12 +4320,12 @@ msgstr "guau"
 msgid "sad"
 msgstr "triste"
 
-#: dt-posts/dt-posts.php:1617
+#: dt-posts/dt-posts.php:1643
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr "@[%1$s](%2$s) - El usuario %3$s pidió acceso a %4$s [%5$s](%6$s). Si quieres, comparte este archivo con el usuario para darle acceso."
 
-#: dt-posts/dt-posts.php:1623
+#: dt-posts/dt-posts.php:1649
 msgid "Access Request"
 msgstr "Acceso requerido"
 
@@ -4434,13 +4434,13 @@ msgstr "Activación de la Aplicación"
 msgid "No apps installed"
 msgstr "Ninguna aplicación instalada"
 
-#: archive-template.php:624
+#: archive-template.php:609
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Todos %1$s con %2$s"
 
-#: archive-template.php:650
-#: archive-template.php:657
+#: archive-template.php:635
+#: archive-template.php:642
 #: dt-contacts/contacts-transfer.php:158
 #: dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76
@@ -4467,7 +4467,7 @@ msgstr "Favorito"
 msgid "More"
 msgstr "Más"
 
-#: dt-posts/dt-posts.php:1123
+#: dt-posts/dt-posts.php:1127
 #, fuzzy
 msgid "Magic Link Submission"
 msgstr "Envío de enlace mágico"
@@ -4560,7 +4560,7 @@ msgstr "Preferencias de correo electrónico"
 msgid "Real time"
 msgstr "Tiempo real"
 
-#: archive-template.php:627
+#: archive-template.php:612
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Todos %1$s sin %2$s"

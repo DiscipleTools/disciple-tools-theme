@@ -309,6 +309,7 @@ function dt_site_scripts() {
         wp_localize_script( 'modular-list-js', 'list_settings', array(
             'post_type' => $post_type,
             'post_type_settings' => $post_settings,
+            'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
             'translations' => apply_filters( 'dt_list_js_translations', $translations ),
             'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
         ) );
