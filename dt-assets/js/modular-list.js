@@ -76,16 +76,7 @@
 
   //determine list columns
   if ( window.lodash.isEmpty(fields_to_show_in_table)){
-    window.lodash.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
-      if (window.lodash.get(field_settings, 'show_in_table')===true || window.lodash.get(field_settings, 'show_in_table') > 0) {
-        fields_to_show_in_table.push(field_key)
-      }
-    })
-    fields_to_show_in_table.sort((a,b)=>{
-      let a_order = list_settings.post_type_settings.fields[a].show_in_table ? ( list_settings.post_type_settings.fields[a].show_in_table === true ? 50 : list_settings.post_type_settings.fields[a].show_in_table ) : 200
-      let b_order = list_settings.post_type_settings.fields[b].show_in_table ? ( list_settings.post_type_settings.fields[b].show_in_table === true ? 50 : list_settings.post_type_settings.fields[b].show_in_table ) : 200
-      return a_order > b_order ? 1 : -1
-    })
+    fields_to_show_in_table = list_settings.fields_to_show_in_table
   }
 
   // get records on load and when a filter is clicked
