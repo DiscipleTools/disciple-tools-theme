@@ -245,13 +245,13 @@ dt_please_log_in();
                                 <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ) ?>"/>
                             </button>
                         </span>
-                        <?php if ( ! empty( $dt_magic_apps ) ) : ?>
-                        <span style="display:inline-block">
-                            <button class="button clear" id="bulk_send_app_controls" style="margin:0; padding:0">
-                                <?php esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
-                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ) ?>"/>
-                            </button>
-                        </span>
+                        <?php if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) : ?>
+                            <span style="display:inline-block">
+                                <button class="button clear" id="bulk_send_app_controls" style="margin:0; padding:0">
+                                    <?php esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
+                                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ) ?>"/>
+                                </button>
+                            </span>
                         <?php endif; ?>
 
                     </div>
@@ -349,7 +349,7 @@ dt_please_log_in();
                                         <div class="section-subheader">
                                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
                                                 <?php echo esc_html( $field_options["reason_paused"]["name"] ?? '' ) ?>
-                                                </button>
+<!--                                                </button>-->
                                             </div>
 
                                         <select id="reason-paused-options">
@@ -487,33 +487,34 @@ dt_please_log_in();
                         </div>
 
                         <button class="button dt-green" id="bulk_edit_submit">
-                            <span id="bulk_edit_submit_text" style="    text-transform:capitalize">
-                                <?php echo esc_html( sprintf( __( "Update %s", "disciple_tools" ), $post_settings["label_plural"] ) ); ?>
+                            <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Update', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html( $post_settings["label_plural"] ); ?>" style="text-transform:capitalize;">
+                                <?php echo esc_html( __( "Make Selections Below", "disciple_tools" ) ); ?>
                             </span>
-                        <span id="bulk_edit_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
+                        <span id="bulk_edit_submit-spinner" style="display: inline-block;" class="loading-spinner"></span>
                         </button>
                     </div>
 
                     <!-- begin bulk send app -->
-                    <?php if ( ! empty( $dt_magic_apps ) ) : ?>
+                    <?php if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) :  ?>
                         <div id="bulk_send_app_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                             <p style="font-weight:bold"><?php
-                                echo sprintf( esc_html__( 'Select all the  %1$s to whom you want to distribute app links', 'disciple_tools' ), esc_html( $post_type ) );?></p>
+                                echo sprintf( esc_html__( 'Select all the %1$s to whom you want to send app links.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                             <div class="grid-x grid-margin-x">
                                 <div class="cell">
-                                    Short Note
-                                    <input type="text" class="" />
+                                    <label for="bulk_send_app_note"><?php echo esc_html__( 'Add optional greeting', 'disciple_tools' ); ?></label>
+                                    <input type="text" id="bulk_send_app_note" placeholder="<?php echo esc_html__( 'Add short greeting to be added above the app link.', 'disciple_tools' ); ?>" />
                                 </div>
                                 <div class="cell">
-                                    Select App
-                                    <div class="dt-radio button-group toggle">
+                                    <label for="bulk_send_app_required_selection"><?php echo esc_html__( 'Select app to email', 'disciple_tools' ); ?></label>
+                                    <span id="bulk_send_app_required_selection" style="display:none;color:red;"><?php echo esc_html__( 'You must select an app', 'disciple_tools' ); ?></span>
+                                    <div class="bulk_send_app dt-radio button-group toggle ">
                                         <?php
                                         foreach ( $dt_magic_apps as $root ) {
                                             foreach ( $root as $type ) {
                                                 if ( isset( $type['show_bulk_send'] ) && $type['show_bulk_send'] ) {
                                                     ?>
-                                                    <input type="radio" id="<?php echo $type['meta_key'] ?>" name="r-group">
-                                                    <label class="button" for="<?php echo $type['meta_key'] ?>"><?php echo $type['name'] ?></label>
+                                                    <input type="radio" id="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>" data-root="<?php echo esc_attr( $type['root'] ) ?>" data-type="<?php echo esc_attr( $type['type'] ) ?>" name="r-group">
+                                                    <label class="button" for="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>"><?php echo esc_html( $type['name'] ) ?></label>
                                                     <?php
                                                 }
                                             }
@@ -521,13 +522,22 @@ dt_please_log_in();
                                         ?>
                                     </div>
                                 </div>
+                                <div class="cell">
+                                    <label for="bulk_send_app_required_elements"><?php echo esc_html__( 'Send to selected records', 'disciple_tools' ); ?></label>
+                                    <span id="bulk_send_app_required_elements" style="display:none;color:red;"><?php echo esc_html__( 'You must select at least one record', 'disciple_tools' ); ?></span>
+                                    <div>
+                                    <button class="button dt-green" id="bulk_send_app_submit">
+                                        <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Send', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html__( 'Links', 'disciple_tools' ); ?>" style="text-transform:capitalize;">
+                                            <?php echo esc_html( __( "Make Selections Below", "disciple_tools" ) ); ?>
+                                        </span>
+                                        <span id="bulk_send_app_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
+                                    </button>
+
+                                    </div>
+                                    <span id="bulk_send_app_submit-message"></span>
+                                </div>
                             </div>
-                            <button class="button dt-green" id="bulk_send_app_submit">
-                                <span id="bulk_send_app_submit_text" style="    text-transform:capitalize">
-                                    <?php echo esc_html( __( "Send Links", "disciple_tools" ) ); ?>
-                                </span>
-                                <span id="bulk_send_app_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
-                            </button>
+
                         </div>
                      <?php endif; ?>
                     <!-- end bulk send app -->
@@ -675,7 +685,7 @@ dt_please_log_in();
 
                         <?php else : ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>"" id="<?php echo esc_html( $field ) ?>">
-                                <div class="section-header"><?php echo esc_html( $field === "post_date" ? __( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
+                                <div class="section-header"><?php echo esc_html( $field === "post_date" ? esc_html__( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :
                                         if ( !isset( $field_options[$field]["default"]["none"] ) ) :?>
@@ -689,7 +699,7 @@ dt_please_log_in();
                                         foreach ( $field_options[$field]["default"] as $option_key => $option_value ) :
                                             $label = $option_value["label"] ?? "";
                                             if ( empty( $label ) && ( $option_key === "" || $option_key === "none" ) ){
-                                                $label = __( "None Set", "disciple_tools" );
+                                                $label = esc_html__( "None Set", "disciple_tools" );
                                             }
                                             ?>
                                             <div class="key_select_options">
