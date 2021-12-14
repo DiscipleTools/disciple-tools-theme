@@ -39,6 +39,18 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+if ( ! function_exists( 'dt_registered_types') ) {
+    /**
+     * Retrieve magic link registered types array.
+     * @see DT_Magic_URL registered_types() for description
+     * @return array
+     */
+    function dt_get_registered_types() {
+        return DT_Magic_URL::registered_types_static();
+    }
+}
+
+
 if ( ! class_exists( 'DT_Magic_URL' ) ) {
     class DT_Magic_URL {
 
@@ -64,6 +76,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
              * Expected structure of type response
              * 'root_name' => [
              *      'type_name' => [
+             *          'name' => 'Name' (string)
              *          'root' => 'root_name' (string),
              *          'type' => 'type_name' (string),
              *          'meta_key' => 'rootname_typename_public_key' (string),
@@ -71,11 +84,14 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
              *              '' => 'Home' (string),
              *              'edit' => 'Edit' (string),
              *              'instructions' => 'Instructions' (string),
-             *          ] (array)
+             *          ] (array),
+             *          'instance_id' => 0 (int),
+             *          'show_bulk_send' => false (bool)
              *      ] (array)
              * ], (array)
              * 'root_name' => [
              *      'type_name' => [
+             *          'name' => 'Name' (string)
              *          'root' => 'root_name' (string),
              *          'type' => 'type_name' (string),
              *          'meta_key' => 'rootname_typename_public_key' (string),
@@ -83,10 +99,16 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
              *              '' => 'Home' (string),
              *              'edit' => 'Edit' (string),
              *              'instructions' => 'Instructions' (string),
-             *          ] (array)
+             *          ] (array),
+             *          'instance_id' => 0 (int),
+             *          'show_bulk_send' => false (bool)
              *      ] (array)
              * ] (array)
              */
+            return apply_filters( 'dt_magic_url_register_types', $types = [] );
+        }
+
+        public static function registered_types_static() : array {
             return apply_filters( 'dt_magic_url_register_types', $types = [] );
         }
 
@@ -507,6 +529,26 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
         public function api_create_key( WP_REST_Request $request ){
             return self::create_unique_key();
+        }
+
+        /**
+         * Filters and returns registered types that allow bulk send.
+         * @return array
+         */
+        public static function list_bulk_send() {
+            $registered_list = self::registered_types_static();
+            $bulk_send_list = [];
+            foreach ( $registered_list as $root_key => $root_values ) {
+                foreach ( $root_values as $type_key => $type_values ) {
+                    if ( isset( $type_values['show_bulk_send'] ) && $type_values['show_bulk_send'] ) {
+                        if ( ! isset( $bulk_send_list[$root_key] ) ) {
+                            $bulk_send_list[$root_key] = [];
+                        }
+                        $bulk_send_list[$root_key][$type_key] = $type_values;
+                    }
+                }
+            }
+            return $bulk_send_list;
         }
     }
 }

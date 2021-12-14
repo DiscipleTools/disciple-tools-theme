@@ -40,7 +40,6 @@ class Disciple_Tools_Magic_Endpoints
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
-
         return self::$_instance;
     } // End instance()
 
@@ -102,6 +101,14 @@ class Disciple_Tools_Magic_Endpoints
             return new WP_Error( __METHOD__, "Missing list of post ids", [ 'status' => 400 ] );
         }
 
+        $magic = new DT_Magic_URL( $params['root'] );
+        $type = $magic->list_types();
+        if ( ! isset( $type[$params['type']] ) ) {
+            return new WP_Error( __METHOD__, "Magic link type not found", [ 'status' => 400 ] );
+        } else {
+            $name = $type[$params['type']]['name'] ?? '';
+        }
+
         $errors = [];
         $success = [];
 
@@ -118,9 +125,6 @@ class Disciple_Tools_Magic_Endpoints
 
             // check if magic key exists, or needs created
             if ( ! isset( $post_record[$params['magic_key']] ) ) {
-
-                // @todo test valid magic key
-
                 $key = dt_create_unique_key();
                 update_post_meta( $post_id, $params['magic_key'], $key );
                 $link = DT_Magic_URL::get_link_url( $params['root'], $params['type'], $key );
@@ -136,18 +140,18 @@ class Disciple_Tools_Magic_Endpoints
 
             // build email
             $email = $post_record['contact_email'][0]['value'];
-            $subject = 'App link';
+            $subject = $name;
             $message_plain_text = $note . '
 
-App link: ' . $link;
+'           . $name . ': ' . $link;
 
             // send email
             $sent = dt_send_email( $email, $subject, $message_plain_text );
-            if ( is_wp_error( $sent ) ) {
-                $errors[] = $sent;
+            if ( is_wp_error( $sent ) || ! $sent ) {
+                $errors[$post_id] = $sent;
             }
             else {
-                $success[] = $sent;
+                $success[$post_id] = $sent;
             }
         }
 

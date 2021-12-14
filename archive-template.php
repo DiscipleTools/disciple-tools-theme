@@ -12,6 +12,9 @@ dt_please_log_in();
     $post_settings = DT_Posts::get_post_settings( $post_type );
 
     $field_options = $post_settings["fields"];
+
+    $dt_magic_apps = DT_Magic_URL::list_bulk_send();
+
     get_header();
     ?>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
@@ -242,12 +245,14 @@ dt_please_log_in();
                                 <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ) ?>"/>
                             </button>
                         </span>
-<!--                        <span style="display:inline-block">-->
-<!--                            <button class="button clear" id="bulk_send_app_controls" style="margin:0; padding:0">-->
-<!--                                --><?php //esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
-<!--                                <img class="dt-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ) ?><!--"/>-->
-<!--                            </button>-->
-<!--                        </span>-->
+                        <?php if ( ! empty( $dt_magic_apps ) ) : ?>
+                        <span style="display:inline-block">
+                            <button class="button clear" id="bulk_send_app_controls" style="margin:0; padding:0">
+                                <?php esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
+                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ) ?>"/>
+                            </button>
+                        </span>
+                        <?php endif; ?>
 
                     </div>
                     <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
@@ -490,44 +495,41 @@ dt_please_log_in();
                     </div>
 
                     <!-- begin bulk send app -->
-                    <div id="bulk_send_app_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
-                        <p style="font-weight:bold"><?php
-                            echo sprintf( esc_html__( 'Select all the  %1$s to whom you want to distribute app links', 'disciple_tools' ), esc_html( $post_type ) );?></p>
-                        <div class="grid-x grid-margin-x">
-                            <div class="cell">
-                                Short Note
-                                <input type="text" class="" />
-                            </div>
-                            <div class="cell">
-                                Select App
-                                <?php
-//                                dt_write_log($field_options);
-//                                foreach ( $field_options as $fo_v ) {
-//                                    if ( $fo_v['type'] === 'hash' ) {
-//                                        dt_write_log( $fo_v);
-//                                    }
-//                                }
-
-                                ?>
-                                <div class="dt-radio button-group toggle">
-                                    <input type="radio" id="r1" name="r-group">
-                                    <label class="button" for="r1">Portal App</label>
-                                    <input type="radio" id="r2" name="r-group">
-                                    <label class="button" for="r2">Share App</label>
-                                    <input type="radio" id="r3" name="r-group">
-                                    <label class="button" for="r3">Prayer App</label>
+                    <?php if ( ! empty( $dt_magic_apps ) ) : ?>
+                        <div id="bulk_send_app_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+                            <p style="font-weight:bold"><?php
+                                echo sprintf( esc_html__( 'Select all the  %1$s to whom you want to distribute app links', 'disciple_tools' ), esc_html( $post_type ) );?></p>
+                            <div class="grid-x grid-margin-x">
+                                <div class="cell">
+                                    Short Note
+                                    <input type="text" class="" />
+                                </div>
+                                <div class="cell">
+                                    Select App
+                                    <div class="dt-radio button-group toggle">
+                                        <?php
+                                        foreach ( $dt_magic_apps as $root ) {
+                                            foreach ( $root as $type ) {
+                                                if ( isset( $type['show_bulk_send'] ) && $type['show_bulk_send'] ) {
+                                                    ?>
+                                                    <input type="radio" id="<?php echo $type['meta_key'] ?>" name="r-group">
+                                                    <label class="button" for="<?php echo $type['meta_key'] ?>"><?php echo $type['name'] ?></label>
+                                                    <?php
+                                                }
+                                            }
+                                        }
+                                        ?>
+                                    </div>
                                 </div>
                             </div>
-
+                            <button class="button dt-green" id="bulk_send_app_submit">
+                                <span id="bulk_send_app_submit_text" style="    text-transform:capitalize">
+                                    <?php echo esc_html( __( "Send Links", "disciple_tools" ) ); ?>
+                                </span>
+                                <span id="bulk_send_app_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
+                            </button>
                         </div>
-
-                        <button class="button dt-green" id="bulk_send_app_submit">
-                            <span id="bulk_send_app_submit_text" style="    text-transform:capitalize">
-                                <?php echo esc_html( __( "Send Links", "disciple_tools" ) ); ?>
-                            </span>
-                            <span id="bulk_send_app_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
-                        </button>
-                    </div>
+                     <?php endif; ?>
                     <!-- end bulk send app -->
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>

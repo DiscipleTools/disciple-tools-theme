@@ -34,7 +34,7 @@ if ( !defined( 'ABSPATH' ) ) {
 function dt_send_email( $email, $subject, $message_plain_text ) {
 
     /**
-     * Filter for developement use.
+     * Filter for development use.
      * If set to true this filter will catch all email traffic from the system and generate a log report,
      * this protects against accidental email sending when working on systems with live data.
      */
