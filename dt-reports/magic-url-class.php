@@ -39,7 +39,7 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-if ( ! function_exists( 'dt_registered_types') ) {
+if ( ! function_exists( 'dt_registered_types' ) ) {
     /**
      * Retrieve magic link registered types array.
      * @see DT_Magic_URL registered_types() for description

@@ -93,7 +93,7 @@ class Disciple_Tools_Magic_Endpoints
     public function email_magic( WP_REST_Request $request ) {
         $params = $request->get_params();
 
-        if ( ! isset( $params['root'], $params['type'], $params['magic_key'], $params['post_type'] ) ) {
+        if ( ! isset( $params['root'], $params['type'], $params['post_type'] ) ) {
             return new WP_Error( __METHOD__, "Missing essential params", [ 'status' => 400 ] );
         }
 
@@ -107,6 +107,7 @@ class Disciple_Tools_Magic_Endpoints
             return new WP_Error( __METHOD__, "Magic link type not found", [ 'status' => 400 ] );
         } else {
             $name = $type[$params['type']]['name'] ?? '';
+            $meta_key = $type[$params['type']]['meta_key'];
         }
 
         $errors = [];
@@ -115,22 +116,24 @@ class Disciple_Tools_Magic_Endpoints
         foreach ( $params['post_ids'] as $post_id ) {
             $post_record = DT_Posts::get_post( $params['post_type'], $post_id, true, true );
             if ( is_wp_error( $post_record ) || empty( $post_record ) ){
-                $errors[] = new WP_Error( __METHOD__, 'No permission to this record', [ 'status' => 400, 'post_id' => $post_id ] );
+                $errors[$post_id] = 'no permission';
+                continue;
             }
 
             // check if email exists to send to
             if ( ! isset( $post_record['contact_email'][0] ) ) {
-                $errors[] = new WP_Error( __METHOD__, 'No email found', [ 'status' => 400, 'post_id' => $post_id ] );
+                $errors[$post_id] = 'no email';
+                continue;
             }
 
             // check if magic key exists, or needs created
-            if ( ! isset( $post_record[$params['magic_key']] ) ) {
+            if ( ! isset( $post_record[$meta_key] ) ) {
                 $key = dt_create_unique_key();
-                update_post_meta( $post_id, $params['magic_key'], $key );
+                update_post_meta( $post_id, $meta_key, $key );
                 $link = DT_Magic_URL::get_link_url( $params['root'], $params['type'], $key );
             }
             else {
-                $link = DT_Magic_URL::get_link_url( $params['root'], $params['type'], $post_record[$params['magic_key']] );
+                $link = DT_Magic_URL::get_link_url( $params['root'], $params['type'], $post_record[$meta_key] );
             }
 
             $note = '';
@@ -152,10 +155,20 @@ class Disciple_Tools_Magic_Endpoints
             }
             else {
                 $success[$post_id] = $sent;
+                dt_activity_insert( [
+                    'action'            => 'sent_app_link',
+                    'object_type'       => $params['post_type'],
+                    'object_subtype'    => 'email',
+                    'object_id'         => $post_id,
+                    'object_name'       => $post_record['title'],
+                    'object_note'       => $name . ' (app) sent to ' . $email,
+                ] );
             }
         }
 
         return [
+            'total_unsent' => ( ! empty( $success ) ) ? count( $errors ) : 0,
+            'total_sent' => ( ! empty( $success ) ) ? count( $success ) : 0,
             'errors' => $errors,
             'success' => $success
         ];
