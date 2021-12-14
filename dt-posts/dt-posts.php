@@ -116,14 +116,18 @@ class DT_Posts extends Disciple_Tools_Posts {
 
 
         if ( isset( $fields["additional_meta"] ) ){
-            if ( isset( $fields["additional_meta"]["created_from"], $fields["additional_meta"]["add_connection"], $post_settings["fields"][$fields["additional_meta"]["add_connection"]]["p2p_key"] ) ){
-                $connection_field = $fields["additional_meta"]["add_connection"];
-                foreach ( $post_settings["fields"] as $field_key => $field_options ){
-                    if ( $post_settings["fields"][$fields["additional_meta"]["add_connection"]]["p2p_key"] === $field_options["p2p_key"] && $field_key !== $fields["additional_meta"]["add_connection"] ){
-                        $connection_field = $field_key;
+            if ( isset( $fields["additional_meta"]["created_from"], $fields["additional_meta"]["add_connection"] ) ){
+                $created_from_post_type = get_post_type( $fields["additional_meta"]["created_from"] );
+                $created_from_field_settings = self::get_post_field_settings( $created_from_post_type );
+                if ( isset( $created_from_field_settings[$fields["additional_meta"]["add_connection"]]["p2p_key"] ) ){
+                    $connection_field = $fields["additional_meta"]["add_connection"];
+                    foreach ( $post_settings["fields"] as $field_key => $field_options ){
+                        if ( $created_from_field_settings[$fields["additional_meta"]["add_connection"]]["p2p_key"] === $field_options["p2p_key"] && $field_key !== $fields["additional_meta"]["add_connection"] ){
+                            $connection_field = $field_key;
+                        }
                     }
+                    $fields[$connection_field] = [ "values" => [ [ "value" => $fields["additional_meta"]["created_from"] ] ] ];
                 }
-                $fields[$connection_field] = [ "values" => [ [ "value" => $fields["additional_meta"]["created_from"] ] ] ];
             }
             unset( $fields["additional_meta"] );
         }
