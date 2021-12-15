@@ -110,7 +110,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         //test contact update
         $user_2 = wp_create_user( "multiplier_user_select2", "test", "multiplier_user_select2@example.com" );
-        DT_Posts::update_post( "contacts", $contact["ID"], [ "assigned_to" => $user_2 ], true, false );
+        $update = DT_Posts::update_post( "contacts", $contact["ID"], [ "assigned_to" => $user_2 ], true, false );
+        $this->assertNotWPError( $update );
         $contact_shared_with = DT_Posts::get_shared_with( "contacts", $contact["ID"], false );
         $user_ids = array_map(  function ( $post ){
             return (int) $post["user_id"];
@@ -118,4 +119,28 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertContains( (int) $user_id, $user_ids );
         $this->assertContains( (int) $user_2, $user_ids );
     }
+
+    public function test_connection_creation_via_additional_meta(){
+        $contact1 = DT_Posts::create_post( "contacts", [ "name" => "one" ], true, false );
+        $this->assertNotWPError( $contact1 );
+        //indicated that the new contact is created from the "baptized" field
+        $contact2 = DT_Posts::create_post( "contacts", [ "name" => "two", "additional_meta" => [ "created_from" => $contact1["ID"], "add_connection" => "baptized" ] ], true, false );
+        $this->assertNotWPError( $contact2 );
+        //check that the new contact has the "baptized_by" field set correctly
+        $this->assertSame( (int) $contact2["baptized_by"][0]["ID"], (int) $contact1["ID"] );
+
+        //indicate the the new group is created from the contact's groups field
+        $group1 = DT_Posts::create_post( "groups", [ "name" => "group1", "additional_meta" => [ "created_from" => $contact1["ID"], "add_connection" => "groups" ] ], true, false );
+        $this->assertNotWPError( $group1 );
+        //check that the new group has the contact in it's members field
+        $this->assertSame( (int) $group1["members"][0]["ID"], (int) $contact1["ID"] );
+
+        //check that the initial contact has the group and the baptized field correctly filled out
+        $contact1 = DT_Posts::get_post( "contacts", $contact1["ID"], false, false );
+        $this->assertNotWPError( $contact1 );
+        $this->assertSame( (int) $contact1["groups"][0]["ID"], (int) $group1["ID"] );
+        $this->assertSame( (int) $contact1["baptized"][0]["ID"], (int) $contact2["ID"] );
+
+    }
+
 }

@@ -38,12 +38,24 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
 
     public function test_search_fields_structure(){
         $group1 = DT_Posts::create_post( "groups", $this->sample_group, true, false );
+        $this->assertNotWPError( $group1 );
         $group2 = DT_Posts::create_post( "groups", $this->sample_group, true, false );
+        $this->assertNotWPError( $group2 );
         $sample_contact = DT_Posts::create_post( "contacts", $this->sample_contact, true, false );
+        $this->assertNotWPError( $sample_contact );
         $contact1 = DT_Posts::create_post( 'contacts', [ "name" => "a", "groups" => [ "values" => [ [ "value" => $group1["ID"] ] ] ] ], true, false );
+        $this->assertNotWPError( $contact1 );
         $contact2 = DT_Posts::create_post( 'contacts', [ "name" => "b", "groups" => [ "values" => [ [ "value" => $group2["ID"] ] ] ] ], true, false );
-        $empty_contact = DT_Posts::create_post( "contacts", [ "name" => "x" ], true, false );
+        $this->assertNotWPError( $contact2 );
+        $empty_contact = DT_Posts::create_post( "contacts", [ "name" => "x", "type" => "placeholder" ], true, false );
+        $this->assertNotWPError( $empty_contact );
         $empty_group = DT_Posts::create_post( "groups", [ "name" => "x" ], true, false );
+        $this->assertNotWPError( $empty_group );
+        $user_id = wp_create_user( "test_search_fields_structure", "test", "test_search@example.com" );
+        $user = get_user_by( "ID", $user_id );
+        $user->set_role( 'multiplier' );
+
+
 
         /**
          * connections
@@ -74,8 +86,10 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         /**
          * locations_grid
          */
-        DT_Posts::create_post( 'contacts', [ "name" => "a", "location_grid" => [ "values" => [ [ "value" => 100089652 ] ] ] ], true, false );
-        DT_Posts::create_post( 'contacts', [ "name" => "b", "location_grid" => [ "values" => [ [ "value" => 100089652 ] ] ] ], true, false );
+        $location_contact = DT_Posts::create_post( 'contacts', [ "name" => "a", "location_grid" => [ "values" => [ [ "value" => 100089652 ] ] ] ], true, false );
+        $this->assertNotWPError( $location_contact );
+        $location_contact_2 = DT_Posts::create_post( 'contacts', [ "name" => "b", "location_grid" => [ "values" => [ [ "value" => 100089652 ] ] ] ], true, false );
+        $this->assertNotWPError( $location_contact_2 );
         $res = DT_Posts::search_viewable_post( "contacts", [ "location_grid" => [ "100089652" ] ], false );
         $this->assertCount( 2, $res["posts"] );
         $all = DT_Posts::search_viewable_post( "contacts", [], false );
@@ -92,14 +106,19 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         /**
          * user_select
          */
-        DT_Posts::create_post( 'contacts', [ "assigned_to" => 1 ], true, false );
-        $res = DT_Posts::search_viewable_post( "contacts", [ "assigned_to" => [ 1 ] ], false );
+        $user_contact = DT_Posts::create_post( 'contacts', [ "name" => "user contact", "assigned_to" => $user_id ], true, false );
+        $this->assertNotWPError( $user_contact );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "assigned_to" => [ $user_id ] ], false );
         $this->assertCount( 1, $res["posts"] );
-        $res = DT_Posts::search_viewable_post( "contacts", [ "assigned_to" => [ -1, "-2" ] ], false );
+        $all = DT_Posts::search_viewable_post( "contacts", [], false );
+        //search for the contact not assigned to the users with ids $user_id and 493
+        $res = DT_Posts::search_viewable_post( "contacts", [ "assigned_to" => [ -$user_id, "-493" ] ], false );
         $this->assertEquals( $res["total"], $all["total"] - 1 );
+        //create contact with no assigned to
+        $personal_contact = DT_Posts::create_post( "contacts", [ "name" => "x", "type" => "placeholder" ], true, false );
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "assigned_to" => [] ], false );
-        $this->assertContains( $empty_contact["ID"], $this->map_ids( $res["posts"] ) );
+        $this->assertContains( $personal_contact["ID"], $this->map_ids( $res["posts"] ) );
         $this->assertNotContains( $sample_contact["ID"], $this->map_ids( $res["posts"] ) );
         //bad request
         $res = DT_Posts::search_viewable_post( "contacts", [ "assigned_to" => 1 ], false );
@@ -109,6 +128,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          * Date fields
          */
         $baptism = DT_Posts::create_post( 'contacts', [ "name" => "x", "baptism_date" => "1980-01-03" ], true, false );
+        $this->assertNotWPError( $baptism );
         $range = DT_Posts::search_viewable_post( "contacts", [ "baptism_date" => [ "start" => "1980-01-02", "end" => "1980-01-04" ] ], false );
         $exact = DT_Posts::search_viewable_post( "contacts", [ "baptism_date" => [ "start" => "1980-01-03", "end" => "1980-01-03" ] ], false );
         $start = DT_Posts::search_viewable_post( "contacts", [ "baptism_date" => [ "start" => "1980-01-03" ] ], false );
@@ -119,14 +139,17 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $this->assertEquals( $baptism["ID"], $end["posts"][0]->ID );
 
         $contact = DT_Posts::create_post( "contacts", ["name" => 'x', "post_date" => "2003-01-02" ], true, false );
+        $this->assertNotWPError( $contact );
         $res = DT_Posts::search_viewable_post( "contacts", [ "post_date" => [ "start" => "2003-01-02", "end" => "2003-01-02" ] ], false );
         $this->assertCount( 1, $res["posts"] );
         $this->assertEquals( $contact["ID"], $res["posts"][0]->ID );
         $contact = DT_Posts::create_post( "contacts", ["name" => 'x', "post_date" => "2002-01-02" ], true, false );
+        $this->assertNotWPError( $contact );
         $res = DT_Posts::search_viewable_post( "contacts", [ "name" => "x", [ "post_date" => [ "start" => "2002-01-02", "end" => "2002-01-02" ] ] ], false );
         $this->assertCount( 1, $res["posts"] );
         $this->assertEquals( $contact["ID"], $res["posts"][0]->ID );
         $contact = DT_Posts::create_post( "contacts", ["name" => 'x', "baptism_date" => "2003-01-02" ], true, false );
+        $this->assertNotWPError( $contact );
         $res = DT_Posts::search_viewable_post( "contacts", [ "baptism_date" => [ "start" => "2003-01-02", "end" => "2003-01-02" ] ], false );
         $this->assertCount( 1, $res["posts"] );
         $this->assertEquals( $contact["ID"], $res["posts"][0]->ID );
@@ -143,6 +166,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          * Boolean Fields
          */
         $group = DT_Posts::create_post( "groups", $this->sample_group, true, false );
+        $this->assertNotWPError( $group );
         $update_needed = DT_Posts::create_post( 'contacts', [ "name" => "x", "requires_update" => true, "groups" => [ "values" => [ [ "value" => $group["ID"] ] ] ] ], true, false );
         $update_not_needed = DT_Posts::create_post( 'contacts', [ "name" => "x", "requires_update" => false, "groups" => [ "values" => [ [ "value" => $group["ID"] ] ] ] ], true, false );
         $bool1 = DT_Posts::search_viewable_post( "contacts", [ "requires_update" => [ true ] , "groups" => [ $group["ID"] ] ], false );
@@ -169,6 +193,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          * communication_channels
          */
         $phone_contact = DT_Posts::create_post( 'contacts', [ "name" => "x", "contact_phone" => [ "values" => [ [ "value" => "798456781" ] ] ] ], true, false );
+        $this->assertNotWPError( $phone_contact );
         $phone = DT_Posts::search_viewable_post( "contacts", [ "contact_phone" => [ "798456780" ] ], false );
         $this->assertContains( $sample_contact["ID"], $this->map_ids( $phone["posts"] ) );
         $phone = DT_Posts::search_viewable_post( "contacts", [ "contact_phone" => [ "79845678" ] ], false );
@@ -208,6 +233,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          * text
          */
         $nick = DT_Posts::create_post( "contacts", [ "name" => 'a', 'nickname' => "Bob the teacher"], true, false );
+        $this->assertNotWPError( $nick );
         $res = DT_Posts::search_viewable_post( "contacts", [ "nickname" => [ "Bob the builder" ] ], false );
         $this->assertContains( $sample_contact["ID"], $this->map_ids( $res["posts"] ) );
         $res = DT_Posts::search_viewable_post( "contacts", [ "nickname" => [ "build" ] ], false );
@@ -255,6 +281,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          * key_select
          */
         $paused = DT_Posts::create_post( "contacts", [ "name" => "x", "overall_status" => 'paused' ], true, false );
+        $this->assertNotWPError( $paused );
         $res = DT_Posts::search_viewable_post( "contacts", [ "overall_status" => [ "paused", "active" ] ], false );
         $this->assertContains( $sample_contact["ID"], $this->map_ids( $res["posts"] ) );
         $this->assertContains( $paused["ID"], $this->map_ids( $res["posts"] ) );
@@ -286,6 +313,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          * multi_select
          */
         $in_group = DT_Posts::create_post( "contacts", [ "name" => "x", "milestones" => [ "values" => [ [ "value" =>'milestone_in_group' ] ] ] ], true, false );
+        $this->assertNotWPError( $in_group );
         $res = DT_Posts::search_viewable_post( "contacts", [ "milestones" => [ "milestone_has_bible" ] ], false );
         $this->assertContains( $sample_contact["ID"], $this->map_ids( $res["posts"] ) );
         $this->assertNotContains( $in_group["ID"], $this->map_ids( $res["posts"] ) );
@@ -309,6 +337,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          * tags
          */
         $in_group = DT_Posts::create_post( "contacts", [ "name" => "x", "tags" => [ "values" => [ [ "value" =>'in_group1' ] ] ] ], true, false );
+        $this->assertNotWPError( $in_group );
         $res = DT_Posts::search_viewable_post( "contacts", [ "tags" => [ "tag1" ] ], false );
         $this->assertContains( $sample_contact["ID"], $this->map_ids( $res["posts"] ) );
         $this->assertNotContains( $in_group["ID"], $this->map_ids( $res["posts"] ) );
@@ -333,6 +362,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          * Default fields
          */
         $contact = DT_Posts::create_post( "contacts", [ "name" => 'dh39ent' ], true, false );
+        $this->assertNotWPError( $contact );
         $res = DT_Posts::search_viewable_post( "contacts", [ "name" => [ "dh39ent" ] ], false );
         $this->assertEquals( $contact["ID"], $res["posts"][0]->ID );
         $this->assertCount( 1, $res["posts"] );
@@ -370,8 +400,11 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          * AND / OR layers
          */
         $group = DT_Posts::create_post( "groups", [ "name" => 'this_is_a_group1' ], true, false );
+        $this->assertNotWPError( $group );
         $c1 = DT_Posts::create_post( "contacts", [ "name" => 'this_is_a_test1', "assigned_to" => 1, "gender" => "male", "groups" => [ "values" => [ [ "value" => $group["ID"] ] ] ] ], true, false );
-        DT_Posts::create_post( "contacts", [ "name" => 'this_is_a_test2', "assigned_to" => 1, "gender" => "male", "groups" => [ "values" => [ [ "value" => $group["ID"] ] ] ] ], true, false );
+        $this->assertNotWPError( $c1 );
+        $c2 = DT_Posts::create_post( "contacts", [ "name" => 'this_is_a_test2', "assigned_to" => 1, "gender" => "male", "groups" => [ "values" => [ [ "value" => $group["ID"] ] ] ] ], true, false );
+        $this->assertNotWPError( $c2 );
         //name1 and name 2
         $res1 = DT_Posts::search_viewable_post( "contacts", [ [ "name" => [ "this_is_a_test1" ] ], [ "name" => [ "this_is_a_test2" ] ] ], false );
         //with fields key

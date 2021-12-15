@@ -746,6 +746,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 $fields["type"] = "access";
             }
         }
+        //If a contact is created via site link or externally without a source, make sure the contact is accessible
         if ( !isset( $fields["type"] ) && get_current_user_id() === 0 ){
             $fields["type"] = "access";
         }
