@@ -384,12 +384,14 @@ abstract class DT_Magic_Url_Base {
                     })
                     jQuery('.section-app-links.<?php echo esc_attr( $this->meta_key ); ?> .send').on('click', function(e){
                         jQuery('#modal-small-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $this->page_title )  ?></h3><span class="small-text"><?php echo esc_html__( 'Send a link via email through the system.', 'disciple_tools' ) ?></span><hr>`)
-                        jQuery('#modal-small-content').empty().html(`<div class="grid-x"><div class="cell"><input type="text" class="note <?php echo esc_attr( $this->meta_key ); ?>" placeholder="Add a note" /><br><button type="button" class="button <?php echo esc_attr( $this->meta_key ); ?>"><?php echo esc_html__( 'Send email with link', 'disciple_tools' ) ?></button></div></div>`)
+                        jQuery('#modal-small-content').empty().html(`<div class="grid-x"><div class="cell"><input type="text" class="note <?php echo esc_attr( $this->meta_key ); ?>" placeholder="Add a note" /><br><button type="button" class="button <?php echo esc_attr( $this->meta_key ); ?>"><?php echo esc_html__( 'Send email with link', 'disciple_tools' ) ?> <span class="<?php echo esc_attr( $this->meta_key ); ?> loading-spinner"></span></button></div></div>`)
                         jQuery('#modal-small').foundation('open')
                         jQuery('.button.<?php echo esc_attr( $this->meta_key ); ?>').on('click', function(e){
+                            jQuery('.<?php echo esc_attr( $this->meta_key ); ?>.loading-spinner').addClass('active')
                             let note = jQuery('.note.<?php echo esc_attr( $this->meta_key ); ?>').val()
                             makeRequest('POST', window.detailsSettings.post_type + '/email_magic', { root: '<?php echo esc_attr( $this->root ); ?>', type: '<?php echo esc_attr( $this->type ); ?>', note: note, post_ids: [ window.detailsSettings.post_id ] } )
                                 .done( data => {
+                                    jQuery('.<?php echo esc_attr( $this->meta_key ); ?>.loading-spinner').removeClass('active')
                                     jQuery('#modal-small').foundation('close')
                                 })
                         })
@@ -401,10 +403,11 @@ abstract class DT_Magic_Url_Base {
                     })
                     jQuery('.section-app-links.<?php echo esc_attr( $this->meta_key ); ?> .reset').on('click', function(e){
                         jQuery('#modal-small-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $this->page_title )  ?></h3><span class="small-text"><?php echo esc_html__( 'Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created.', 'disciple_tools' ) ?></span><hr>`)
-                        jQuery('#modal-small-content').empty().html(`<button type="button" class="button <?php echo esc_attr( $this->meta_key ); ?> delete-and-reset"><?php echo esc_html__( 'Delete and replace the app link', 'disciple_tools' ) ?></button> <span class="loading-spinner"></span>`)
+                        jQuery('#modal-small-content').empty().html(`<button type="button" class="button <?php echo esc_attr( $this->meta_key ); ?> delete-and-reset"><?php echo esc_html__( 'Delete and replace the app link', 'disciple_tools' ) ?>  <span class="<?php echo esc_attr( $this->meta_key ); ?> loading-spinner"></span></button>`)
                         jQuery('#modal-small').foundation('open')
                         jQuery('.button.<?php echo esc_attr( $this->meta_key ); ?>.delete-and-reset').on('click', function(e){
                             jQuery('.button.<?php echo esc_attr( $this->meta_key ); ?>.delete-and-reset').prop('disable', true)
+                            jQuery('.<?php echo esc_attr( $this->meta_key ); ?>.loading-spinner').addClass('active')
                             window.API.update_post('<?php echo esc_attr( $post_type ); ?>', <?php echo esc_attr( get_the_ID() ); ?>, { ['<?php echo esc_attr( $this->meta_key ); ?>']: window.sha256( Date.now() ) })
                                 .done( newPost => {
                                     jQuery('#modal-small').foundation('close')
