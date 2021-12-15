@@ -671,7 +671,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             //make sure and access contact is assigned to a user
             if ( isset( $fields["assigned_to"] ) ) {
                 if ( !isset( $existing_post["assigned_to"] ) || $fields["assigned_to"] !== $existing_post["assigned_to"]["assigned-to"] ){
-                    $user_id = explode( '-', $fields["assigned_to"] )[1];
+                    $user_id = dt_get_user_id_from_assigned_to( $fields["assigned_to"] );
                     if ( !isset( $fields["overall_status"] ) ){
                         if ( $user_id != get_current_user_id() ){
                             if ( current_user_can( "assign_any_contacts" ) ) {
@@ -746,6 +746,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 $fields["type"] = "access";
             }
         }
+        //If a contact is created via site link or externally without a source, make sure the contact is accessible
         if ( !isset( $fields["type"] ) && get_current_user_id() === 0 ){
             $fields["type"] = "access";
         }
