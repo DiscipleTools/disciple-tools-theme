@@ -1537,12 +1537,16 @@
 
   function bulk_edit_count() {
     let bulk_edit_total_checked = $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length;
-    let bulk_edit_submit_button_text = $('#bulk_edit_submit_text')
+    let bulk_edit_submit_button_text = $('.bulk_edit_submit_text')
 
     if (bulk_edit_total_checked == 0) {
-      bulk_edit_submit_button_text.text(`Update ${list_settings.post_type}`)
+      bulk_edit_submit_button_text.text(`${list_settings.translations.make_selections_below}`)
     } else {
-      bulk_edit_submit_button_text.text(`Update ${bulk_edit_total_checked} ${list_settings.post_type}`)
+      bulk_edit_submit_button_text.each(function( index ) {
+        let pretext = $( this ).data('pretext')
+        let posttext = $( this ).data('posttext')
+        $( this ).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`)
+      })
     }
   }
 
@@ -1628,8 +1632,6 @@
     window.location.reload();
   }
 
-
-
   let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`)
   if( bulk_assigned_to_input.length ) {
     $.typeahead({
@@ -1672,7 +1674,6 @@
       },
     });
   }
-
 
   /**
    * Bulk share
@@ -1722,7 +1723,6 @@
   /**
  * Bulk Typeahead
  */
-
   let field_settings = window.list_settings.post_type_settings.fields;
 
   $('#bulk_edit_picker .dt_typeahead').each((key, el)=>{
@@ -2018,6 +2018,66 @@
   })
 
 
+  /*****
+   * Bulk Send App
+   */
+  $('#bulk_send_app_controls').on('click', function(){
+    $('#bulk_send_app_picker').toggle();
+    $('#records-table').toggleClass('bulk_edit_on');
+  })
 
+  let bulk_send_app_button = $('#bulk_send_app_submit');
+  bulk_send_app_button.on('click', function(e) {
+    bulk_send_app();
+  });
+
+  function bulk_send_app() {
+
+    let note = $('#bulk_send_app_note').val()
+
+    let selected_input = jQuery('.bulk_send_app.dt-radio.button-group input:checked')
+    if ( selected_input.length < 1 ) {
+      $("#bulk_send_app_required_selection").show()
+      return
+    } else {
+      $("#bulk_send_app_required_selection").hide()
+    }
+
+    let root = selected_input.data('root')
+    let type = selected_input.data('type')
+
+    let queue =  [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        let postId = parseInt($(this).val());
+        queue.push( postId );
+      }
+    });
+
+    if ( queue.length < 1 ) {
+      $('#bulk_send_app_required_elements').show()
+      return;
+    } else {
+      $('#bulk_send_app_required_elements').hide()
+    }
+
+    $('#bulk_send_app_submit-spinner').addClass('active')
+
+    makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, note: note, post_ids: queue } )
+      .done( data => {
+        $('#bulk_send_app_submit-spinner').removeClass('active')
+        $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)
+        $('#bulk_edit_master_checkbox').prop("checked", false);
+        $('.bulk_edit_checkbox input').prop("checked", false);
+        bulk_edit_count()
+        console.log(data)
+        // window.location.reload();
+      })
+      .fail( e => {
+        $('#bulk_send_app_submit-spinner').removeClass('active')
+        $('#bulk_send_app_submit-message').html('Oops. Something went wrong! Check log.')
+        console.log( e )
+      })
+  }
 
 })(window.jQuery, window.list_settings, window.Foundation);

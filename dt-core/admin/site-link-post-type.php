@@ -528,14 +528,12 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 7  => sprintf( '%s saved.', $this->singular ),
                 8  => sprintf( '%1$s submitted. %2$s%3$s%4$s', $this->singular, strtolower( $this->singular ), '', '' ),
                 9  => sprintf(
-                    '%1$s scheduled for: %1$s. %2$s%2$s%3$6$s',
+                    '%1$s scheduled for: %2$s. %3$s',
                     $this->singular,
                     strtolower( $this->singular ),
                     // translators: Publish box date format, see http://php.net/date
                     '<strong>' . date_i18n( __( 'M j, Y @ G:i' ),
-                    strtotime( $post->post_date ) ) . '</strong>',
-                    '',
-                    ''
+                    strtotime( $post->post_date ) ) . '</strong>'
                 ),
                 10 => sprintf( '%1$s draft updated. %2$s%3$s%4$s', $this->singular, strtolower( $this->singular ), '', '' ),
             ];

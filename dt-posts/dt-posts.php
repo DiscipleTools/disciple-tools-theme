@@ -122,7 +122,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 if ( isset( $created_from_field_settings[$fields["additional_meta"]["add_connection"]]["p2p_key"] ) ){
                     $connection_field = $fields["additional_meta"]["add_connection"];
                     foreach ( $post_settings["fields"] as $field_key => $field_options ){
-                        if ( $created_from_field_settings[$fields["additional_meta"]["add_connection"]]["p2p_key"] === $field_options["p2p_key"] && $field_key !== $fields["additional_meta"]["add_connection"] ){
+                        if ( $created_from_field_settings[$fields["additional_meta"]["add_connection"]]["p2p_key"] === ( $field_options["p2p_key"] ?? "" ) && $field_key !== $fields["additional_meta"]["add_connection"] ){
                             $connection_field = $field_key;
                         }
                     }
