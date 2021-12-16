@@ -685,7 +685,7 @@ dt_please_log_in();
 
                         <?php else : ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>"" id="<?php echo esc_html( $field ) ?>">
-                                <div class="section-header"><?php echo esc_html( $field === "post_date" ? esc_html__( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
+                                <div class="section-header"><?php echo esc_html( $field === "post_date" ? __( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :
                                         if ( !isset( $field_options[$field]["default"]["none"] ) ) :?>

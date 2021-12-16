@@ -1540,7 +1540,7 @@
     let bulk_edit_submit_button_text = $('.bulk_edit_submit_text')
 
     if (bulk_edit_total_checked == 0) {
-      bulk_edit_submit_button_text.text(`Make Selections Below`)
+      bulk_edit_submit_button_text.text(`${list_settings.translations.make_selections_below}`)
     } else {
       bulk_edit_submit_button_text.each(function( index ) {
         let pretext = $( this ).data('pretext')
@@ -2066,7 +2066,7 @@
     makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, note: note, post_ids: queue } )
       .done( data => {
         $('#bulk_send_app_submit-spinner').removeClass('active')
-        $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> sent!<br><strong>${data.total_unsent}</strong> not sent (likely missing valid email)`)
+        $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)
         $('#bulk_edit_master_checkbox').prop("checked", false);
         $('.bulk_edit_checkbox input').prop("checked", false);
         bulk_edit_count()
