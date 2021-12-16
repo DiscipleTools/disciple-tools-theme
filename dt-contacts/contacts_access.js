@@ -125,7 +125,7 @@ jQuery(document).ready(function($) {
     $('#assigned_to_user_modal').foundation('open');
     if ( dispatch_users_promise === null ){
       $('#assigned_to_user_modal #dispatch-tile-loader').addClass('active')
-      dispatch_users_promise = window.makeRequest( 'GET', 'assignment-list', {location_ids: (post.location_grid||[]).map(l=>l.id)}, 'dt-posts/v2/contacts' )
+      dispatch_users_promise = window.makeRequest( 'GET', 'assignment-list', {location_ids: (post.location_grid||[]).map(l=>l.id), 'post_id': post_id, 'post_type': post_type}, 'dt-posts/v2/contacts' )
       dispatch_users_promise.then(response=>{
         $('#assigned_to_user_modal #dispatch-tile-loader').removeClass('active')
         dispatch_users = response
@@ -159,6 +159,13 @@ jQuery(document).ready(function($) {
     let users_with_role = dispatch_users.filter(u => u.roles.includes(tab))
     let filter_options = {
       all: users_with_role.sort((a,b)=>a.name.localeCompare(b.name)),
+      suggest: users_with_role.filter(u => u.weight).sort((a, b) => {
+        if (a.weight === b.weight) {
+          return 0;
+        } else {
+          return (a.weight > b.weight) ? -1 : 1;
+        }
+      }),
       ready: users_with_role.filter(m=>m.status==='active'),
       recent: users_with_role.concat().sort((a,b)=>b.last_assignment-a.last_assignment),
       language: users_with_role.filter(({ languages }) => languages.some(language => contact_languages.includes(language))),
@@ -166,6 +173,7 @@ jQuery(document).ready(function($) {
       location: users_with_role.concat().filter(m=>m.location!==null).sort((a,b)=>a.location-b.location)
     }
     populate_users_list( users_with_role )
+    filters += `<a data-id="suggest">${window.lodash.escape(window.dt_contacts_access.translations.suggest)}</a> | `
     filters += `<a data-id="ready">${window.lodash.escape(window.dt_contacts_access.translations.ready)}</a> | `
     filters += `<a data-id="recent">${window.lodash.escape(window.dt_contacts_access.translations.recent)}</a> | `
     filters += `<a data-id="language">${window.lodash.escape(window.dt_contacts_access.translations.language)}</a> | `

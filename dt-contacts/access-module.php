@@ -1262,6 +1262,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             wp_localize_script( 'dt_contacts_access', 'dt_contacts_access', [
                 "translations" => [
                     "all" => __( "All", "disciple_tools" ),
+                    "suggest" => __( "Suggestions", "disciple_tools" ),
                     "ready" => __( "Ready", "disciple_tools" ),
                     "recent" => __( "Recent", "disciple_tools" ),
                     "location" => __( "Location", "disciple_tools" ),
@@ -1526,7 +1527,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
         }
 
-        return $list;
+        return apply_filters( "dt_get_dispatch_list", $list, DT_Posts::get_post( $params['post_type'], $params['post_id'], true, false ) );
     }
 
     private function get_assignments() {
