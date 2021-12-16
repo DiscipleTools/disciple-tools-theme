@@ -158,12 +158,15 @@ jQuery(document).ready(function($) {
     defined_list_section.show()
     let users_with_role = dispatch_users.filter(u => u.roles.includes(tab))
     let filter_options = {
-      all: users_with_role.sort((a,b)=>a.name.localeCompare(b.name)),
-      suggest: users_with_role.filter(u => u.weight).sort((a, b) => {
-        if (a.weight === b.weight) {
-          return 0;
+      all: users_with_role.sort((a, b) => {
+        if (a.weight && b.weight) {
+          if (a.weight === b.weight) {
+            return 0;
+          } else {
+            return (a.weight > b.weight) ? -1 : 1;
+          }
         } else {
-          return (a.weight > b.weight) ? -1 : 1;
+          return a.name.localeCompare(b.name);
         }
       }),
       ready: users_with_role.filter(m=>m.status==='active'),
@@ -173,7 +176,6 @@ jQuery(document).ready(function($) {
       location: users_with_role.concat().filter(m=>m.location!==null).sort((a,b)=>a.location-b.location)
     }
     populate_users_list( users_with_role )
-    filters += `<a data-id="suggest">${window.lodash.escape(window.dt_contacts_access.translations.suggest)}</a> | `
     filters += `<a data-id="ready">${window.lodash.escape(window.dt_contacts_access.translations.ready)}</a> | `
     filters += `<a data-id="recent">${window.lodash.escape(window.dt_contacts_access.translations.recent)}</a> | `
     filters += `<a data-id="language">${window.lodash.escape(window.dt_contacts_access.translations.language)}</a> | `
