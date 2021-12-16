@@ -26,10 +26,10 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-touch-cmd": "0.0.1",
     "gulp-uglify": "^3.0.2",
+    "jquery": "^3.6.0",
     "motion-ui": "^2.0.3",
     "sass": "^1.39.0",
-    "what-input": "^5.2.10",
-    "jquery": "^3.6.0"
+    "what-input": "^5.2.10"
   },
   "browserslist": [
     "last 2 version",
