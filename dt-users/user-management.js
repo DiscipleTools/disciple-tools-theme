@@ -985,7 +985,6 @@ jQuery(document).ready(function($) {
         dynamic: true,
         callback: {
           onClick: function(node, a, item, event){
-            spinner_span.html(spinner)
             submit_button.prop('disabled', true)
 
             getContact(item.ID, item.user)
