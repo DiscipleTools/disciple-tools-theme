@@ -439,6 +439,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 }
             endforeach;
             update_option( 'dt_options_roles_and_permissions', $role_options );
+            dt_setup_roles_and_permissions();
 
             if ( isset( $_POST['user_invite_check'] ) && $_POST['user_invite_check'] === 'user_invite' ) {
                 update_option( 'dt_user_invite_setting', true );
@@ -460,7 +461,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <?php
                 $role_object = get_role( $role_key );
                 ?>
-                <?php if ( $role_object && !array_key_exists( 'dt_all_access_contacts', $role_object->capabilities ) ) : ?>
+                <?php if ( $role_object && !array_key_exists( 'dt_all_access_contacts', $role_object->capabilities ) && !array_key_exists( 'list_users', $role_object->capabilities ) ) : ?>
                 <tr>
                     <td>
                         <input type="checkbox" name="<?php echo esc_attr( $role_key ); ?>" <?php checked( array_key_exists( 'dt_list_users', $role_object->capabilities ) ); ?>/> <?php echo esc_attr( $name ); ?>
