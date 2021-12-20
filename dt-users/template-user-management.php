@@ -73,10 +73,12 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                     <th class="all"><?php esc_html_e( 'Display Name', 'disciple_tools' ); ?></th>
                                     <th class="select-filter desktop"><?php esc_html_e( 'Status', 'disciple_tools' ); ?></th>
                                     <th class="select-filter desktop"><?php esc_html_e( 'Workload Status', 'disciple_tools' ); ?></th>
+                                    <th class="select-filter desktop"><?php esc_html_e( 'Role', 'disciple_tools' ); ?></th>
+                                    <th class="select-filter desktop"><?php esc_html_e( 'Language', 'disciple_tools' ); ?></th>
                                     <th class="desktop"><?php esc_html_e( 'Accept Needed', 'disciple_tools' ); ?></th>
                                     <th class="desktop"><?php esc_html_e( 'Update Needed', 'disciple_tools' ); ?></th>
                                     <th class="desktop"><?php esc_html_e( 'Active', 'disciple_tools' ); ?></th>
-                                    <th class="desktop"><?php esc_html_e( 'Location', 'disciple_tools' ); ?></th>
+                                    <th class="select-filter desktop"><?php esc_html_e( 'Location', 'disciple_tools' ); ?></th>
                                     <th class="desktop"><?php esc_html_e( 'Last Activity', 'disciple_tools' ); ?></th>
                                 </tr>
                             </thead>
@@ -90,6 +92,33 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                 <td data-user="<?php echo esc_html( $user["ID"] ) ?>"><?php echo esc_html( $user["display_name"] ) ?></td>
                                 <td><?php echo esc_html( ( isset( $user["user_status"] ) && isset( $user_management_options["user_status_options"][$user["user_status"]] ) ) ? $user_management_options["user_status_options"][$user["user_status"]] : "" ) ?></td>
                                 <td><?php echo esc_html( isset( $user["workload_status"], $workload_status_options[ $user["workload_status"] ] ) ? $workload_status_options[ $user["workload_status"] ]["label"] : "" ) ?></td>
+                                <td>
+                                    <?php
+                                    if ( isset( $user['roles'] ) ) {
+                                        $roles = maybe_unserialize( $user['roles'] );
+                                        if ( ! empty( $roles ) ) {
+                                            echo esc_html( implode( ', ', array_keys( $roles ) ) );
+                                        }
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $user_languages = get_user_option( "user_languages", $user["ID"] );
+                                    if ( ! empty( $user_languages ) ) {
+                                        $languages = [];
+                                        foreach ( $contact_fields["languages"]["default"] as $option_key => $option_value ) {
+                                            if ( in_array( $option_key, $user_languages ) ) {
+                                                $languages[] = $option_value['label'];
+                                            }
+                                        }
+
+                                        if ( ! empty( $languages ) ) {
+                                            echo esc_html( implode( ', ', $languages ) );
+                                        }
+                                    }
+                                    ?>
+                                </td>
                                 <td><?php echo esc_html( $user["number_new_assigned"] ) ?></td>
                                 <td>
                                     <?php if ( $user["number_update"] > 5 ) : ?>
@@ -100,13 +129,39 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                 <td><?php echo esc_html( $user["number_active"] ) ?></td>
                                 <td>
                                     <?php
-                                    if ( DT_Mapbox_API::get_key() ) {
-                                        if ( isset( $user["location_grid_meta"] ) && ! empty( $user["location_grid_meta"] ) ) {
-                                            echo '<span style="color:limegreen">&#10004;</span>';
+
+                                    $contact_id = get_user_option( "corresponds_to_contact", $user['ID'] );
+                                    if ( $contact_id && ! is_wp_error( $contact_id ) ) {
+                                        $user_contact = DT_Posts::get_post( 'contacts', $contact_id );
+
+                                        $locations = [];
+                                        if ( ! empty( $user_contact ) && ! is_wp_error( $user_contact ) ) {
+
+                                            $field_key = '';
+                                            if ( isset( $user_contact["location_grid_meta"] ) && ! empty( $user_contact["location_grid_meta"] ) ) {
+                                                $field_key = 'location_grid_meta';
+                                            } elseif ( isset( $user_contact["location_grid"] ) && ! empty( $user_contact["location_grid"] ) ) {
+                                                $field_key = 'location_grid';
+                                            }
+
+                                            foreach ( $user_contact[ $field_key ] ?? [] as $location ) {
+                                                $locations[] = $location['label'];
+                                            }
+                                        }
+
+                                        if ( ! empty( $locations ) ) {
+                                            echo esc_html( implode( ', ', $locations ) );
                                         }
                                     } else {
-                                        if ( isset( $user["location_grid"] ) && ! empty( $user["location_grid"] ) ) {
-                                            echo '<span style="color:limegreen">&#10004;</span>';
+
+                                        if ( DT_Mapbox_API::get_key() ) {
+                                            if ( isset( $user["location_grid_meta"] ) && ! empty( $user["location_grid_meta"] ) ) {
+                                                echo '<span style="color:limegreen">&#10004;</span>';
+                                            }
+                                        } else {
+                                            if ( isset( $user["location_grid"] ) && ! empty( $user["location_grid"] ) ) {
+                                                echo '<span style="color:limegreen">&#10004;</span>';
+                                            }
                                         }
                                     }
                                     ?>
