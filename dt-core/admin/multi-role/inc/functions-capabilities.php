@@ -27,6 +27,16 @@ function dt_multi_role_sanitize_cap( $cap ) {
 }
 
 /**
+ * Return all registered capabilities
+ *
+ * @access public
+ * @return Array
+ */
+function dt_capabilities() {
+    return Disciple_Tools_Capability_Factory::get_instance()->get_capabilities();
+}
+
+/**
  * Conditional tag for checking whether a capability exists.
  *
  * @since  0.1.0
@@ -139,6 +149,10 @@ function dt_multi_role_get_role_capabilities() {
 
     // Return the capabilities array, making sure there are no duplicates.
     return array_unique( $capabilities );
+}
+
+function dt_multi_role_get_capability( $capability ) {
+    return Disciple_Tools_Capability_Factory::get_instance()->get_capability($capability);
 }
 
 /**

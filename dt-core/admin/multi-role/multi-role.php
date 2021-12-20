@@ -55,6 +55,8 @@ class Disciple_Tools_Multi_Roles {
         // Load class files.
         require_once( 'inc/class-role.php' );
         require_once( 'inc/class-role-factory.php' );
+        require_once( 'inc/class-capability.php' );
+        require_once( 'inc/class-capability-factory.php' );
 
         // Load includes files.
         require_once( 'inc/functions.php' );

@@ -38,6 +38,14 @@ class Disciple_Tools_Multi_Role {
     public $name = '';
 
     /**
+     * The role source.
+     *
+     * @access public
+     * @var    string
+     */
+    public $source = '';
+
+    /**
      * Whether the role can be edited.
      *
      * @since  0.1.0
@@ -182,5 +190,15 @@ class Disciple_Tools_Multi_Role {
 
         // Check if we have caps.
         $this->has_caps = 0 < $this->granted_cap_count;
+    }
+
+    /**
+     * Return the capabilities as objects
+     * @return Array
+     */
+    public function get_capability_objects() {
+        return Disciple_Tools_Capability_Factory::get_instance()->get_capabilities(
+            $this->granted_caps
+        );
     }
 }
