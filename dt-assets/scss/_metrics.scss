@@ -92,21 +92,30 @@
     }
 }
 
-.highlights-table {
-    table-layout: fixed;
+#activity_highlights {
 
-    tr td:first-child {
-        width: 90%;
-    }
 
-    &.striped {
-        tr:nth-child(even) {
-            background-color: #ecf5fc;
-            border-bottom: 0;
+    .highlights-table {
+        table-layout: fixed;
+
+        tr td:first-child {
+            width: 90%;
         }
-    }
-}
 
-#comment-filter {
-    width: 60px;
+        &.striped {
+            tr:nth-child(even) {
+                background-color: #ecf5fc;
+                border-bottom: 0;
+            }
+        }
+
+    }
+    h4 {
+        color: #3f729b;
+        margin-top: 1em;
+    }
+
+    #comment-filter {
+        width: 60px;
+    }
 }

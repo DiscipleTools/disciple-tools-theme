@@ -25,7 +25,7 @@ jQuery(document).ready(function() {
       <div style="display: inline-block" class="loading-spinner"></div>
       <hr>
 
-      <div id="charts"></div>
+      <div id="activity_highlights"></div>
     `)
 
     window.METRICS.setupDatePicker(
@@ -63,42 +63,42 @@ function buildHighlights(data, label = "all time") {
     seeker_path_changed_by_others,
   } = data
 
-  const chartDiv = jQuery('#charts')
+  const chartDiv = jQuery('#activity_highlights')
 
   chartDiv.html(`
-    <div class="grid-x grid-margin-x">
-      <div class="cell large-6">
-        <h4 class="section-header">Contacts Created</h4>
+    <div className="grid-x grid-margin-x">
+      <div className="cell large-6">
+        <h4>Contacts I Created</h4>
           ${makeContactsCreatedSection(contacts_created)}
-        <h4 class="section-header">Quick actions done</h4>
+        <h4>Quick actions I made</h4>
           ${makeSentence(quick_actions_done)}
-        <h4 class="section-header">Milestones added</h4>
+        <h4>Milestones I added</h4>
           ${makeDataTable(milestones_added)}
-        <h4 class="section-header">Milestones added by others</h4>
+        <h4>Milestones added by others on my contacts</h4>
           ${makeDataTable(milestones_added_by_others)}
-        <h4 class="section-header">Seeker paths changed</h4>
+        <h4>Seeker paths I changed</h4>
           ${makeDataTable(seeker_path_changed)}
-        <h4 class="section-header">Seeker paths changed by others</h4>
+        <h4>Seeker paths changed by others on my contacts</h4>
           ${makeDataTable(seeker_path_changed_by_others)}
-        <h4 class="section-header">Baptisms</h4>
+        <h4>Contacts I Baptized</h4>
           ${makeBaptismsSection(baptisms)}
-        <h4 class="section-header">Baptisms by others</h4>
+        <h4>Baptisms by others on my contacts</h4>
           ${makeBaptismsByOthersSection(baptisms_by_others)}
-        <h4 class="section-header">Groups Created</h4>
+        <h4>Groups I Created</h4>
           ${makeGroupsCreatedSection(groups_created)}
-        <h4 class="section-header">Group Types changed</h4>
+        <h4>Group Types I changed</h4>
           ${makeDataTable(group_type_changed)}
-        <h4 class="section-header">Group Types changed by others</h4>
+        <h4>Group Types changed by others on my groups</h4>
           ${makeDataTable(group_type_changed_by_others)}
-        <h4 class="section-header">Health Metrics added</h4>
+        <h4>Health Metrics I added</h4>
           ${makeDataTable(health_metrics_added)}
-        <h4 class="section-header">Health Metrics added by others</h4>
+        <h4>Health Metrics added by others on my groups</h4>
           ${makeDataTable(health_metrics_added_by_others)}
       </div>
-      <div class="cell large-6">
-        <h4 class="section-header">Comments posted</h4>
+      <div className="cell large-6">
+        <h4>Comments I posted</h4>
           ${makeCommentsSection(comments_posted)}
-        <h4 class="section-header">Comments liked</h4>
+        <h4>Comments I liked</h4>
           ${makeCommentFilterSelect()}
           ${makeCommentsSection(comments_liked)}
       </div>

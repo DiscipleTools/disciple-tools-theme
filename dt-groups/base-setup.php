@@ -31,7 +31,6 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 10, 3 );
 
         // hooks
-        add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
         add_filter( "dt_post_update_fields", [ $this, "dt_post_update_fields" ], 10, 3 );
         add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 10, 2 );
@@ -295,6 +294,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_groups",
                 "icon" => get_template_directory_uri() . '/dt-assets/images/list.svg?v=2',
+                "connection_count_field" => [ "post_type" => "groups", "field_key" => "member_count", "connection_field" => "members" ]
             ];
             $fields["leaders"] = [
                 "name" => __( 'Leaders', 'disciple_tools' ),
@@ -303,7 +303,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "from",
                 "p2p_key" => "groups_to_leaders",
-                "show_in_table" => 30
+                "show_in_table" => 30,
+                "connection_count_field" => [ "post_type" => "groups", "field_key" => "leader_count", "connection_field" => "leaders" ]
             ];
             $fields["leader_count"] = [
                 'name' => __( 'Leader Count', 'disciple_tools' ),
@@ -466,7 +467,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "tile" => "other",
                 'icon' => get_template_directory_uri() . "/dt-assets/images/group-type.svg?v=2",
                 'create-icon' => get_template_directory_uri() . "/dt-assets/images/add-group.svg?v=2",
-                "show_in_table" => 35
+                "show_in_table" => 35,
+                "connection_count_field" => [ "post_type" => "groups", "field_key" => "member_count", "connection_field" => "members" ]
             ];
             $fields["group_leader"] = [
                 "name" => __( "Leader of Group", 'disciple_tools' ),
@@ -476,6 +478,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 "post_type" => "groups",
                 "tile" => "no_tile",
                 'icon' => get_template_directory_uri() . "/dt-assets/images/foot.svg?v=2",
+                "connection_count_field" => [ "post_type" => "groups", "field_key" => "leader_count", "connection_field" => "leaders" ]
             ];
         }
         return $fields;
@@ -623,10 +626,6 @@ class DT_Groups_Base extends DT_Module_Base {
                         DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false );
                     }
                 }
-                self::update_group_member_count( $post_id );
-            }
-            if ( $field_key === "leaders" ){
-                self::update_group_leader_count( $post_id );
             }
             if ( $field_key === "coaches" ){
                 // share the group with the coach when a coach is added.
@@ -637,7 +636,6 @@ class DT_Groups_Base extends DT_Module_Base {
             }
         }
         if ( $post_type === "contacts" && $field_key === "groups" ){
-            self::update_group_member_count( $value );
             // share the group with the owner of the contact.
             $assigned_to = get_post_meta( $post_id, "assigned_to", true );
             if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
@@ -649,20 +647,6 @@ class DT_Groups_Base extends DT_Module_Base {
         }
     }
 
-    //action when a post connection is removed during create or update
-    public function post_connection_removed( $post_type, $post_id, $field_key, $value ){
-        if ( $post_type === "groups" ){
-            if ( $field_key === "members" ){
-                self::update_group_member_count( $post_id, "removed" );
-            }
-            if ( $field_key === "leaders" ){
-                self::update_group_leader_count( $post_id, "removed" );
-            }
-        }
-        if ( $post_type === "contacts" && $field_key === "groups" ){
-            self::update_group_member_count( $value, "removed" );
-        }
-    }
 
     //filter at the start of post update
     public function dt_post_update_fields( $fields, $post_type, $post_id ){
@@ -697,43 +681,6 @@ class DT_Groups_Base extends DT_Module_Base {
             }
         }
         return $fields;
-    }
-
-    //update the group member count when members and added or removed.
-    private static function update_group_member_count( $group_id, $action = "added" ){
-        $group = get_post( $group_id );
-        $args = [
-            'connected_type'   => "contacts_to_groups",
-            'connected_direction' => 'to',
-            'connected_items'  => $group,
-            'nopaging'         => true,
-            'suppress_filters' => false,
-        ];
-        $members = get_posts( $args );
-        $member_count = get_post_meta( $group_id, 'member_count', true );
-        if ( sizeof( $members ) > intval( $member_count ) ){
-            update_post_meta( $group_id, 'member_count', sizeof( $members ) );
-        } elseif ( $action === "removed" ){
-            update_post_meta( $group_id, 'member_count', intval( $member_count ) - 1 );
-        }
-    }
-
-    private static function update_group_leader_count( $group_id, $action = "added" ){
-        $list = get_post( $group_id );
-        $args = [
-            'connected_type'   => "groups_to_leaders",
-            'connected_direction' => 'from',
-            'connected_items'  => $list,
-            'nopaging'         => true,
-            'suppress_filters' => false,
-        ];
-        $leaders = get_posts( $args );
-        $leader_count = get_post_meta( $group_id, 'leader_count', true );
-        if ( sizeof( $leaders ) > intval( $leader_count ) ){
-            update_post_meta( $group_id, 'leader_count', sizeof( $leaders ) );
-        } elseif ( $action === "removed" ){
-            update_post_meta( $group_id, 'leader_count', intval( $leader_count - 1 ) );
-        }
     }
 
 

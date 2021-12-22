@@ -23,7 +23,6 @@ jQuery(document).ready(function() {
     window.METRICS.setupDatePicker(
       `${window.wp_js_object.rest_endpoints_base}/sources_chart_data/`,
       function (data, label) {
-        console.log(data, label)
         if (data) {
           $('.date_range_picker span').html(label);
           draw_data(data, label)

@@ -252,7 +252,7 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                                     Then go to APIs & Services > Credentials and "Create Credentials" API Key. Copy this key.
                                 </li>
                                 <li>
-                                    Paste the key into the "Google API Key" field in the box above here in the Disciple Tools Mapping Admin.
+                                    Paste the key into the "Google API Key" field in the box above here in the Disciple.Tools Mapping Admin.
                                 </li>
                                 <li>
                                     Again, in Google Cloud Console, in APIs & Services go to Library. Find and enable: (1) Maps Javascript API,
