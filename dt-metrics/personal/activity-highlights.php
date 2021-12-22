@@ -160,7 +160,10 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $records_created = $rows[0]['records_created'];
 
-        return sprintf( esc_html__( '%1$d %2$s created', 'disciple_tools' ), $records_created, $records_created === 1 ? $post_settings['label_singular'] : $post_settings['label_plural'] );
+        return [
+            'count' => $records_created,
+            'label' => sprintf( esc_html__( '%1$d %2$s created', 'disciple_tools' ), $records_created, $records_created === 1 ? $post_settings['label_singular'] : $post_settings['label_plural'] ),
+        ];
     }
 
     private static function get_quick_actions_done( $from, $to, $contact_field_settings ) {

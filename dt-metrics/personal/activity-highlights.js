@@ -69,7 +69,7 @@ function buildHighlights(data, label = "all time") {
     <div class="grid-x grid-margin-x">
       <div class="cell large-6">
         <h4>Contacts I Created</h4>
-          ${makeContactsCreatedSection(contacts_created)}
+          ${makeRecordsCreatedSection(contacts_created)}
         <h4>Quick actions I made</h4>
           ${makeDataTable(quick_actions_done)}
         <h4>Milestones I added</h4>
@@ -85,7 +85,7 @@ function buildHighlights(data, label = "all time") {
         <h4>Baptisms by others on my contacts</h4>
           ${makeBaptismsByOthersSection(baptisms_by_others)}
         <h4>Groups I Created</h4>
-          ${makeGroupsCreatedSection(groups_created)}
+          ${makeRecordsCreatedSection(groups_created)}
         <h4>Group Types I changed</h4>
           ${makeDataTable(group_type_changed)}
         <h4>Group Types changed by others on my groups</h4>
@@ -136,6 +136,10 @@ function makeDataTable(data) {
     <table class="highlights-table striped">
       <tbody>
         ${data.reduce((html, info) => {
+          if (empty(info.label)) {
+            return html;
+          }
+
           return `
             ${html}
             <tr>
@@ -165,6 +169,10 @@ function makeSentence(data) {
 }
 
 function makeBaptismsSection(data) {
+  if (empty(data)) {
+    return 'None'
+  }
+
   return data
 }
 
@@ -234,12 +242,12 @@ function makeCommentsSection(data) {
   `
 }
 
-function makeContactsCreatedSection(data) {
-  return data
-}
+function makeRecordsCreatedSection(data) {
+  if (empty(data.count)) {
+    return 'None';
+  }
 
-function makeGroupsCreatedSection(data) {
-  return data
+  return data.label;
 }
 
 function makeCommentFilterSelect() {
