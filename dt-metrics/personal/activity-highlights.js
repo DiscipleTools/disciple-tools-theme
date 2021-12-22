@@ -66,12 +66,12 @@ function buildHighlights(data, label = "all time") {
   const chartDiv = jQuery('#activity_highlights')
 
   chartDiv.html(`
-    <div className="grid-x grid-margin-x">
-      <div className="cell large-6">
+    <div class="grid-x grid-margin-x">
+      <div class="cell large-6">
         <h4>Contacts I Created</h4>
           ${makeContactsCreatedSection(contacts_created)}
         <h4>Quick actions I made</h4>
-          ${makeSentence(quick_actions_done)}
+          ${makeDataTable(quick_actions_done)}
         <h4>Milestones I added</h4>
           ${makeDataTable(milestones_added)}
         <h4>Milestones added by others on my contacts</h4>
@@ -95,7 +95,7 @@ function buildHighlights(data, label = "all time") {
         <h4>Health Metrics added by others on my groups</h4>
           ${makeDataTable(health_metrics_added_by_others)}
       </div>
-      <div className="cell large-6">
+      <div class="cell large-6">
         <h4>Comments I posted</h4>
           ${makeCommentsSection(comments_posted)}
         <h4>Comments I liked</h4>
