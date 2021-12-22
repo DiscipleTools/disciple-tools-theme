@@ -69,7 +69,9 @@ function buildHighlights(data, label = "all time") {
     <div class="grid-x grid-margin-x">
       <div class="cell large-6">
         <h4>Contacts I Created</h4>
-          ${makeRecordsCreatedSection(contacts_created)}
+          <div class="left-margin">
+            ${makeRecordsCreatedSection(contacts_created)}
+          </div>
         <h4>Quick actions I made</h4>
           ${makeDataTable(quick_actions_done)}
         <h4>Milestones I added</h4>
@@ -81,11 +83,17 @@ function buildHighlights(data, label = "all time") {
         <h4>Seeker paths changed by others on my contacts</h4>
           ${makeDataTable(seeker_path_changed_by_others)}
         <h4>Contacts I Baptized</h4>
-          ${makeBaptismsSection(baptisms)}
+          <div class="left-margin">
+            ${makeBaptismsSection(baptisms)}
+          </div>
         <h4>Baptisms by others on my contacts</h4>
-          ${makeBaptismsByOthersSection(baptisms_by_others)}
+          <div class="left-margin">
+            ${makeBaptismsByOthersSection(baptisms_by_others)}
+          </div>
         <h4>Groups I Created</h4>
-          ${makeRecordsCreatedSection(groups_created)}
+          <div class="left-margin">
+            ${makeRecordsCreatedSection(groups_created)}
+          </div>
         <h4>Group Types I changed</h4>
           ${makeDataTable(group_type_changed)}
         <h4>Group Types changed by others on my groups</h4>
@@ -97,10 +105,14 @@ function buildHighlights(data, label = "all time") {
       </div>
       <div class="cell large-6">
         <h4>Comments I posted</h4>
-          ${makeCommentsSection(comments_posted)}
+          <div class="left-margin">
+            ${makeCommentsSection(comments_posted)}
+          </div>
         <h4>Comments I liked</h4>
-          ${makeCommentFilterSelect()}
-          ${makeCommentsSection(comments_liked)}
+          <div class="left-margin">
+            ${makeCommentFilterSelect()}
+            ${makeCommentsSection(comments_liked)}
+          </div>
       </div>
     </div>
     `)
@@ -247,7 +259,7 @@ function makeRecordsCreatedSection(data) {
     return 'None';
   }
 
-  return data.label;
+  return styleToMatchTables(data.label);
 }
 
 function makeCommentFilterSelect() {
