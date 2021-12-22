@@ -123,6 +123,10 @@ class Disciple_Tools_Notifications
         if ( $args['user_id'] == $args['source_user_id'] ) { // check if source of the event and notification target are the same, if so, don't create notification. i.e. I don't want notifications of my own actions.
             return;
         }
+        //check if the user exists and is on this subsite (if multisite)
+        if ( !Disciple_Tools_Users::is_instance_user( $args['user_id'] ) ){
+            return;
+        }
 
         $wpdb->insert(
             $wpdb->dt_notifications,
@@ -375,13 +379,8 @@ class Disciple_Tools_Notifications
      *
      * @return array
      */
-    public static function get_notifications( bool $all, int $page, int $limit ) {
+    public static function get_notifications( bool $all, int $page, int $limit, bool $mentions ) {
         global $wpdb;
-
-        $all_where = '';
-        if ( !$all ) {
-            $all_where = " AND is_new = '1'";
-        }
 
         $user_id = get_current_user_id();
 
@@ -398,11 +397,13 @@ class Disciple_Tools_Notifications
                  channels LIKE %s
                  OR channels IS NULL
                  )
+             AND notification_name LIKE %s
              ORDER BY date_notified
              DESC LIMIT %d OFFSET %d",
             $user_id,
             $all ? '%' : '1',
             '%web%',
+            $mentions ? '%mention%' : '%',
             $limit,
             $page
         ), ARRAY_A );
@@ -557,7 +558,7 @@ class Disciple_Tools_Notifications
 
     public static function send_notification_on_channels( $user_id, $notification, $notification_type, $already_sent = [] ){
         $user = get_userdata( $user_id );
-        if ( ! $user ) {
+        if ( !Disciple_Tools_Users::is_instance_user( $user->ID ) ){
             return;
         }
         dt_switch_locale_for_notifications( $notification["user_id"] );

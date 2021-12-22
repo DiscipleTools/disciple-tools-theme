@@ -216,6 +216,8 @@ function dt_site_scripts() {
                     'dismissed_duplicates' => __( "Dismissed Duplicates", 'disciple_tools' ),
                     'duplicates_on' => __( "Duplicates on: %s", 'disciple_tools' ),
                     'transfer_error' => __( 'Transfer failed. Check site-to-site configuration.', 'disciple_tools' ),
+                    'transfer_update_error' => __( 'Transfer update failed. Check site-to-site configuration.', 'disciple_tools' ),
+                    'transfer_update_success' => __( 'Transfer update successful.', 'disciple_tools' ),
                     'created_on' => _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ),
                 ]
             ]);
@@ -301,12 +303,16 @@ function dt_site_scripts() {
             'range_end' => __( 'end', 'disciple_tools' ),
             'all' => __( 'All', 'disciple_tools' ),
             'without' => __( 'Without', 'disciple_tools' ),
+            'make_selections_below' => __( 'Make Selections Below', 'disciple_tools' ),
+            'sent' => _x( 'sent', 'Number of emails sent. i.e. 20 sent!', 'disciple_tools' ),
+            'not_sent' => _x( 'not sent (likely missing valid email)', 'Preceded with number of emails not sent. i.e. 20 not sent!', 'disciple_tools' )
         ];
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
         dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );
         wp_localize_script( 'modular-list-js', 'list_settings', array(
             'post_type' => $post_type,
             'post_type_settings' => $post_settings,
+            'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
             'translations' => apply_filters( 'dt_list_js_translations', $translations ),
             'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
         ) );

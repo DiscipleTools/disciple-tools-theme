@@ -311,7 +311,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',
-                "icon" => get_template_directory_uri() . '/dt-assets/images/tallying.svg?v=2',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/groups/leaders.svg',
             ];
 
             $fields["parent_groups"] = [
@@ -370,7 +370,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type'        => 'location_meta',
                 "tile"      => "details",
                 'mapbox'    => false,
-                'hidden' => true
+                'hidden' => true,
+                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
             ];
 
             $fields["contact_address"] = [
@@ -507,6 +508,14 @@ class DT_Groups_Base extends DT_Module_Base {
                                 <?php else : ?>
                                     <?php foreach ( $fields['health_metrics']['default'] as $key => $option ) : ?>
                                         <?php if ( $key !== 'church_commitment' ) : ?>
+                                            <?php
+                                            if ( empty( $option['icon'] ) || ! isset( $option['icon'] ) ) {
+                                                $option['icon'] = get_template_directory_uri() . '/dt-assets/images/groups/missing.svg';
+                                            }
+                                            if ( ! isset( $option['description'] ) ) {
+                                                $option['description'] = '';
+                                            }
+                                            ?>
                                             <div class="health-item" id="icon_<?php echo esc_attr( strtolower( $key ) ) ?>" title="<?php echo esc_attr( $option['description'] ); ?>">
                                                 <img src="<?php echo esc_attr( $option['icon'] ); ?>">
                                             </div>

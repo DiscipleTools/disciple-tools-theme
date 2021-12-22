@@ -145,7 +145,8 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
   const jQueryElements = jQueryElementsDict[dropdown ? 'dropdown' : 'default']
 
   // return notifications if query successful
-  return makeRequest('post', 'notifications/get_notifications', { all, page, limit }).done(data => {
+  let mentions = include_mentions();
+  return makeRequest('post', 'notifications/get_notifications', { all, page, limit, mentions }).done(data => {
     if (data) {
       if (reset) {
         jQueryElements.notificationList.empty()
@@ -182,6 +183,16 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
     }
   }).fail(handleAjaxError)
 }
+
+function include_mentions() {
+  let mentions = jQuery('#mentions');
+
+  return (mentions && mentions.is(':checked'));
+}
+
+jQuery('#mentions').on('click', function () {
+  get_notifications(!jQuery('#all').hasClass('hollow'), true);
+});
 
 function groupNotificationsByDayAndRecord(data) {
 

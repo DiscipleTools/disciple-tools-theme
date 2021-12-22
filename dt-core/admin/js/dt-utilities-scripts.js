@@ -1,6 +1,3 @@
-console.log("lege");
-
-
 jQuery(document).ready(function ($) {
   function make_admin_request(type, part, data) {
     const options = {
@@ -57,4 +54,72 @@ jQuery(document).ready(function ($) {
       $(`#${post_type}_${field_key} .progress .total`).text( '/' + resp.count)
     })
   })
+
+  /**
+   * FILE UPLOADS
+   */
+  $('.file-upload-display-uploader').on('click', function (e) {
+    e.preventDefault();
+
+    // Fetch handle to key workflow elements
+    let parent_form = $("form[name='" + $(e.currentTarget).data('form') + "']");
+    let icon_input = $("input[name='" + $(e.currentTarget).data('icon-input') + "']");
+
+    // Build media uploader modal
+    let mediaFrame = wp.media({
+
+      // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
+      // Determines what kind of library should be rendered.
+      frame: 'select',
+
+      // Modal title.
+      title: window.lodash.escape(window.dt_admin_scripts.upload.title),
+
+      // Enable/disable multiple select
+      multiple: false,
+
+      // Library wordpress query arguments.
+      library: {
+        order: 'DESC',
+
+        // [ 'name', 'author', 'date', 'title', 'modified', 'uploadedTo', 'id', 'post__in', 'menuOrder' ]
+        orderby: 'date',
+
+        // mime type. e.g. 'image', 'image/jpeg'
+        type: ['image'],
+
+        // Searches the attachment title.
+        search: null,
+
+        // Includes media only uploaded to the specified post (ID)
+        uploadedTo: null // wp.media.view.settings.post.id (for current post ID)
+      },
+
+      button: {
+        text: window.lodash.escape(window.dt_admin_scripts.upload.button_txt)
+      }
+
+    });
+
+    // Handle selected files
+    mediaFrame.on('select', function () {
+
+      // Fetch and convert selected into json object
+      let selected = mediaFrame.state().get('selection').first().toJSON();
+
+      // Update form icon link
+      icon_input.val(selected.url);
+
+      // Auto-submit so as to refresh changes
+      parent_form.submit();
+
+    });
+
+    // Open the media uploader.
+    mediaFrame.open();
+
+  });
+  /**
+   * FILE UPLOADS
+   */
 })

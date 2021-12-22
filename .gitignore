@@ -16,3 +16,4 @@ package-lock.json
 */development-only/*
 
 /composer.lock
+/.phpunit.result.cache

@@ -93,6 +93,9 @@ class DT_User_Metrics {
                 $a->icon = apply_filters( 'dt_record_icon', null, $a->post_type, [] );
                 $a->post_type_label = $a->post_type ? DT_Posts::get_label_for_post_type( $a->post_type ) : null;
 
+                if ( $a->object_name ){
+                    $a->object_name = wp_specialchars_decode( $a->object_name );
+                }
                 if ( $a->object_subtype === "title" ){
                     $a->object_subtype = "name";
                 }

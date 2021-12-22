@@ -120,8 +120,6 @@ class DT_Contacts_Base {
         $expected_roles["dt_admin"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );
         $expected_roles["dt_admin"]["permissions"]['manage_dt'] = true;
         $expected_roles["dt_admin"]["permissions"]['view_project_metrics'] = true;
-        $expected_roles["dt_admin"]["permissions"]['edit_page'] = true; //site links
-        $expected_roles["dt_admin"]["permissions"]['edit_posts'] = true; //site links
 
         //strategist
         $expected_roles["strategist"]["permissions"]['view_project_metrics'] = true;
@@ -216,7 +214,8 @@ class DT_Contacts_Base {
                 'type'        => 'location_meta',
                 "tile"      => "details",
                 'mapbox'    => false,
-                'hidden' => true
+                'hidden' => true,
+                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
             ];
             $fields["contact_address"] = [
                 "name" => __( 'Address', 'disciple_tools' ),

@@ -671,7 +671,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             //make sure and access contact is assigned to a user
             if ( isset( $fields["assigned_to"] ) ) {
                 if ( !isset( $existing_post["assigned_to"] ) || $fields["assigned_to"] !== $existing_post["assigned_to"]["assigned-to"] ){
-                    $user_id = explode( '-', $fields["assigned_to"] )[1];
+                    $user_id = dt_get_user_id_from_assigned_to( $fields["assigned_to"] );
                     if ( !isset( $fields["overall_status"] ) ){
                         if ( $user_id != get_current_user_id() ){
                             if ( current_user_can( "assign_any_contacts" ) ) {
@@ -700,6 +700,17 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
             if ( isset( $fields["overall_status"], $fields["reason_closed"] ) && $fields["overall_status"] === "closed" ){
                 $fields["requires_update"] = false;
+            }
+            //if a contact type is changed to access
+            if ( isset( $fields["type"] ) && $fields["type"] === "access" ){
+                //set the status to active if there is no status
+                if ( !isset( $existing_post["overall_status"] ) && !isset( $fields["overall_status"] ) ){
+                    $fields["overall_status"] = "active";
+                }
+                //assign the contact to the user
+                if ( !isset( $existing_post["assigned_to"] ) && !isset( $fields["assigned_to"] ) && get_current_user_id() ){
+                    $fields["assigned_to"] = get_current_user_id();
+                }
             }
         }
         return $fields;
@@ -735,6 +746,10 @@ class DT_Contacts_Access extends DT_Module_Base {
                 $fields["type"] = "access";
             }
         }
+        //If a contact is created via site link or externally without a source, make sure the contact is accessible
+        if ( !isset( $fields["type"] ) && get_current_user_id() === 0 ){
+            $fields["type"] = "access";
+        }
         if ( !isset( $fields["type"] ) || $fields["type"] !== "access" ){
             return $fields;
         }
@@ -758,10 +773,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
         }
         if ( !isset( $fields["overall_status"] ) ){
-            $current_roles = wp_get_current_user()->roles;
-            if ( in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true ) ) {
-                $fields["overall_status"] = "new";
-            } else if ( in_array( "multiplier", $current_roles, true ) ) {
+            if ( get_current_user_id() ){
                 $fields["overall_status"] = "active";
             } else {
                 $fields["overall_status"] = "new";
@@ -1178,9 +1190,9 @@ class DT_Contacts_Access extends DT_Module_Base {
             } else if ( current_user_can( 'access_specific_sources' ) ){
                 //give user permission to all 'access' that also have a source the user can view.
                 $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-                if ( in_array( 'all', $allowed_sources, true ) ){
+                if ( in_array( 'all', $allowed_sources, true ) || empty( $allowed_sources ) ){
                     $permissions["type"] = [ "access" ];
-                } elseif ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
+                } elseif ( !in_array( "restrict_all_sources", $allowed_sources ) ){
                     $permissions[] = [ "type" => [ "access" ], "sources" => $allowed_sources];
                 }
             }
@@ -1199,14 +1211,17 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
             //check if the user has access to all posts of a specific source
             if ( current_user_can( 'access_specific_sources' ) ){
-                $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-                if ( empty( $sources ) || in_array( 'all', $sources ) ) {
-                    return true;
-                }
-                $post_sources = get_post_meta( $post_id, 'sources' );
-                foreach ( $post_sources as $s ){
-                    if ( in_array( $s, $sources ) ){
+                $contact_type = get_post_meta( $post_id, "type", true );
+                if ( $contact_type === "access" ){
+                    $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+                    if ( empty( $sources ) || in_array( 'all', $sources ) ) {
                         return true;
+                    }
+                    $post_sources = get_post_meta( $post_id, 'sources' );
+                    foreach ( $post_sources as $s ){
+                        if ( in_array( $s, $sources ) ){
+                            return true;
+                        }
                     }
                 }
             }
@@ -1222,14 +1237,17 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
         //check if the user has access to all posts of a specific source
         if ( current_user_can( 'access_specific_sources' ) ){
-            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-            if ( empty( $sources ) || in_array( 'all', $sources ) ) {
-                return true;
-            }
-            $post_sources = get_post_meta( $post_id, 'sources' );
-            foreach ( $post_sources as $s ){
-                if ( in_array( $s, $sources ) ){
+            $contact_type = get_post_meta( $post_id, "type", true );
+            if ( $contact_type === "access" ){
+                $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+                if ( empty( $sources ) || in_array( 'all', $sources ) ){
                     return true;
+                }
+                $post_sources = get_post_meta( $post_id, 'sources' );
+                foreach ( $post_sources as $s ){
+                    if ( in_array( $s, $sources ) ){
+                        return true;
+                    }
                 }
             }
         }
@@ -1475,7 +1493,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $roles = maybe_unserialize( $user["roles"] );
             if ( isset( $roles["multiplier"] ) || isset( $roles["dt_admin"] ) || isset( $roles["dispatcher"] ) || isset( $roles["marketer"] ) ) {
                 $u = [
-                    "name" => $user["display_name"],
+                    "name" => wp_specialchars_decode( $user["display_name"] ),
                     "ID" => $user["ID"],
                     "avatar" => get_avatar_url( $user["ID"], [ 'size' => '16' ] ),
                     "last_assignment" => $last_assignments[$user["ID"]] ?? null,

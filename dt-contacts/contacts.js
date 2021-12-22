@@ -299,4 +299,52 @@ jQuery(document).ready(function($) {
     })
   });
 
+  /**
+   * Transfer Contact Summary Update
+   */
+  $('#transfer_contact_summary_update_button').on('click', function () {
+    $(this).addClass('loading');
+    let comments = $('#transfer_contact_summary_update_comment');
+
+    let update = comments.val().trim();
+    if (!update) {
+      $(this).removeClass('loading');
+      return;
+    }
+
+    API.transfer_contact_summary_update(post_id, update)
+      .then(data => {
+        $(this).removeClass('loading');
+        transfer_contact_summary_update_results(data);
+
+      }).catch(err => {
+      console.error(err)
+      // try a second time.
+      API.transfer_contact_summary_update(post_id, update)
+        .then(data => {
+          $(this).removeClass('loading');
+          transfer_contact_summary_update_results(data);
+
+        }).catch(err => {
+        console.error(err);
+        $(this).removeClass('loading');
+        $('#transfer_contact_summary_update_message').fadeOut('fast').html(window.detailsSettings.translations.transfer_update_error).fadeIn('fast');
+
+      });
+    });
+
+    // Clear comments textarea
+    comments.val('');
+  });
+
+  function transfer_contact_summary_update_results(data) {
+    let message = $('#transfer_contact_summary_update_message');
+
+    if (data['success']) {
+      message.fadeOut('fast').html(window.detailsSettings.translations.transfer_update_success).fadeIn('fast');
+    } else {
+      message.fadeOut('fast').html(window.detailsSettings.translations.transfer_update_error).fadeIn('fast');
+    }
+  }
+
 })

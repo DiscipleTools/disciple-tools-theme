@@ -129,7 +129,7 @@ class Disciple_Tools_Notifications_Comments
 
             // get user_id by name match
             $user = get_user_by( 'id', $match );
-            if ( $user ) {
+            if ( Disciple_Tools_Users::is_instance_user( $user->ID ) ) {
                 if ( !in_array( $user->ID, $user_ids ) ){
                     $user_ids[] = $user->ID;
                 }

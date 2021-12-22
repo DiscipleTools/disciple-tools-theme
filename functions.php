@@ -2,7 +2,7 @@
 /**
  * Disciple.Tools Functions.php
  *
- * @package Disciple Tools
+ * @package Disciple.Tools
  * @class Disciple_Tools
  */
 
@@ -23,11 +23,8 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
      * For this to work, this file must be compatible with old PHP versions.
      * Feel free to use PHP 7 features in other files, but not in this one.
      */
-
-    new WP_Error( 'php_version_fail', 'Disciple.Tools theme requires PHP version 7.0 or greater. Your current version is: '.phpversion().' Please upgrade PHP or uninstall this theme' );
     add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
-}
-else {
+} else {
 
     /**
      * Adds the Disciple_Tools Class and runs database and roles version checks.
@@ -146,7 +143,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.14.1';
+            $this->version = '1.19.2';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -178,6 +175,7 @@ else {
             require_once( 'dt-core/configuration/dt-configuration.php' ); //settings and configuration to alter default WP
             require_once( 'dt-reports/magic-url-class.php' );
             require_once( 'dt-reports/magic-url-base.php' );
+            require_once( 'dt-reports/magic-url-endpoints.php' );
 
 
             /**
@@ -511,9 +509,7 @@ else {
 function dt_theme_admin_notice_required_php_version() {
     ?>
     <div class="notice notice-error">
-        <p><?php esc_html_e( 'Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:', 'disciple_tools' );
-            echo esc_html( phpversion() );
-            esc_html_e( 'Please upgrade PHP or uninstall this theme', 'disciple_tools' ); ?></p>
+        <p><?php echo esc_html( 'Disciple.Tools theme requires PHP version 7.0 or greater. Your current version is: ' . phpversion() . ' Please upgrade PHP.' );?></p>
     </div>
     <?php
 }

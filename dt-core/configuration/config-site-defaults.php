@@ -22,7 +22,7 @@ add_filter( 'language_attributes', 'dt_custom_dir_attr' );
 
 
 /**
- * Admin panel svg icon for disciple tools.
+ * Admin panel svg icon for Disciple.Tools.
  *
  * @return string
  */
@@ -154,9 +154,9 @@ function dt_get_option( string $name ) {
             break;
 
         case 'dt_email_base_subject':
-            $subject_base = get_option( "dt_email_base_subject", "Disciple Tools" );
+            $subject_base = get_option( "dt_email_base_subject", "Disciple.Tools" );
             if ( empty( $subject_base ) ){
-                update_option( "dt_email_base_subject", "Disciple Tools" );
+                update_option( "dt_email_base_subject", "Disciple.Tools" );
             }
             return $subject_base;
             break;
@@ -427,37 +427,14 @@ function dt_get_site_custom_lists( string $list_title = null ) {
             'key'         => 'dt_user_work_facebook',
             'type'        => 'social',
             'description' => __( 'Work Facebook is for distribution to contacts and seekers.', 'disciple_tools' ),
-            'enabled'     => true,
+            'enabled'     => false,
         ],
         'dt_user_work_whatsapp'    => [
             'label'       => __( 'Work WhatsApp', 'disciple_tools' ),
             'key'         => 'dt_user_work_whatsapp',
             'type'        => 'other',
             'description' => __( 'Work WhatsApp is for distribution to contacts and seekers.', 'disciple_tools' ),
-            'enabled'     => true,
-        ],
-    ];
-
-    $fields['user_fields_types'] = [
-        'phone'   => [
-            'label' => __( 'Phone', 'disciple_tools' ),
-            'key'   => 'phone',
-        ],
-        'email'   => [
-            'label' => __( 'Email', 'disciple_tools' ),
-            'key'   => 'email',
-        ],
-        'social'  => [
-            'label' => __( 'Social Media', 'disciple_tools' ),
-            'key'   => 'social',
-        ],
-        'address' => [
-            'label' => __( 'Address', 'disciple_tools' ),
-            'key'   => 'address',
-        ],
-        'other'   => [
-            'label' => __( 'Other', 'disciple_tools' ),
-            'key'   => 'other',
+            'enabled'     => false,
         ],
     ];
 

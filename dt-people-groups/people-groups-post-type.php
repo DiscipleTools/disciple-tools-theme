@@ -146,15 +146,16 @@ class Disciple_Tools_People_Groups_Post_Type
             'feeds'      => false,
         ];
         $capabilities = [
-            'edit_post'           => 'edit_peoplegroups',
-            'read_post'           => 'read_peoplegroups',
-            'delete_post'         => 'delete_peoplegroups',
-            'delete_others_posts' => 'delete_others_peoplegroups',
-            'delete_posts'        => 'delete_peoplegroups',
-            'edit_posts'          => 'edit_peoplegroups',
-            'edit_others_posts'   => 'edit_peoplegroups',
-            'publish_posts'       => 'publish_peoplegroups',
-            'read_private_posts'  => 'read_private_peoplegroups',
+            "read_post" => "manage_dt",
+            "edit_post" => "manage_dt",
+            "delete_post" => "manage_dt",
+            "edit_posts" => "manage_dt",
+            "edit_others_posts" => "manage_dt",
+            "publish_posts" => "manage_dt",
+            "read_private_posts" => "manage_dt",
+            "delete_others_posts" => "manage_dt",
+            "delete_posts" => "manage_dt",
+            "delete_published_posts" => "manage_dt",
         ];
         $defaults = [
             'labels'                => $labels,
