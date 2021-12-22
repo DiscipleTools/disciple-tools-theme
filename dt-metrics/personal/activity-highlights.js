@@ -66,37 +66,43 @@ function buildHighlights(data, label = "all time") {
   const chartDiv = jQuery('#charts')
 
   chartDiv.html(`
-    <h4 class="section-header">Contacts Created</h4>
-      ${makeContactsCreatedSection(contacts_created)}
-    <h4 class="section-header">Quick actions done</h4>
-      ${makeSentence(quick_actions_done)}
-    <h4 class="section-header">Milestones added</h4>
-      ${makeDataTable(milestones_added)}
-    <h4 class="section-header">Milestones added by others</h4>
-      ${makeDataTable(milestones_added_by_others)}
-    <h4 class="section-header">Seeker paths changed</h4>
-      ${makeDataTable(seeker_path_changed)}
-    <h4 class="section-header">Seeker paths changed by others</h4>
-      ${makeDataTable(seeker_path_changed_by_others)}
-    <h4 class="section-header">Baptisms</h4>
-      ${makeBaptismsSection(baptisms)}
-    <h4 class="section-header">Baptisms by others</h4>
-      ${makeBaptismsByOthersSection(baptisms_by_others)}
-    <h4 class="section-header">Groups Created</h4>
-      ${makeGroupsCreatedSection(groups_created)}
-    <h4 class="section-header">Group Types changed</h4>
-      ${makeDataTable(group_type_changed)}
-    <h4 class="section-header">Group Types changed by others</h4>
-      ${makeDataTable(group_type_changed_by_others)}
-    <h4 class="section-header">Health Metrics added</h4>
-      ${makeDataTable(health_metrics_added)}
-    <h4 class="section-header">Health Metrics added by others</h4>
-      ${makeDataTable(health_metrics_added_by_others)}
-    <h4 class="section-header">Comments posted</h4>
-      ${makeCommentsSection(comments_posted)}
-    <h4 class="section-header">Comments liked</h4>
-      ${makeCommentFilterSelect()}
-      ${makeCommentsSection(comments_liked)}
+    <div class="grid-x grid-margin-x">
+      <div class="cell large-6">
+        <h4 class="section-header">Contacts Created</h4>
+          ${makeContactsCreatedSection(contacts_created)}
+        <h4 class="section-header">Quick actions done</h4>
+          ${makeSentence(quick_actions_done)}
+        <h4 class="section-header">Milestones added</h4>
+          ${makeDataTable(milestones_added)}
+        <h4 class="section-header">Milestones added by others</h4>
+          ${makeDataTable(milestones_added_by_others)}
+        <h4 class="section-header">Seeker paths changed</h4>
+          ${makeDataTable(seeker_path_changed)}
+        <h4 class="section-header">Seeker paths changed by others</h4>
+          ${makeDataTable(seeker_path_changed_by_others)}
+        <h4 class="section-header">Baptisms</h4>
+          ${makeBaptismsSection(baptisms)}
+        <h4 class="section-header">Baptisms by others</h4>
+          ${makeBaptismsByOthersSection(baptisms_by_others)}
+        <h4 class="section-header">Groups Created</h4>
+          ${makeGroupsCreatedSection(groups_created)}
+        <h4 class="section-header">Group Types changed</h4>
+          ${makeDataTable(group_type_changed)}
+        <h4 class="section-header">Group Types changed by others</h4>
+          ${makeDataTable(group_type_changed_by_others)}
+        <h4 class="section-header">Health Metrics added</h4>
+          ${makeDataTable(health_metrics_added)}
+        <h4 class="section-header">Health Metrics added by others</h4>
+          ${makeDataTable(health_metrics_added_by_others)}
+      </div>
+      <div class="cell large-6">
+        <h4 class="section-header">Comments posted</h4>
+          ${makeCommentsSection(comments_posted)}
+        <h4 class="section-header">Comments liked</h4>
+          ${makeCommentFilterSelect()}
+          ${makeCommentsSection(comments_liked)}
+      </div>
+    </div>
     `)
 
     const filterComments = (e) => {
