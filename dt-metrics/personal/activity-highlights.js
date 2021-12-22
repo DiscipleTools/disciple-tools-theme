@@ -101,14 +101,10 @@ function buildHighlights(data, label = "all time") {
           ${makeDataTable(seeker_path_changed_by_others)}
 
         <h4>${baptism_by_me}</h4>
-          <div class="left-margin">
-            ${makeBaptismsSection(baptisms)}
-          </div>
+          ${makeBaptismsSection(baptisms)}
 
         <h4>${baptism_by_others}</h4>
-          <div class="left-margin">
-            ${makeBaptismsByOthersSection(baptisms_by_others)}
-          </div>
+          ${makeBaptismsByOthersSection(baptisms_by_others)}
 
         <h4>${makeTitle(groups_created, field_I_made)}</h4>
           <div class="left-margin">
@@ -218,6 +214,33 @@ function makeBaptismsSection(data) {
     return none()
   }
 
+  const { date, contact } = SHAREDFUNCTIONS.escapeObject( dtMetricsActivity.translations )
+
+  return `
+    <div>
+      <p class="left-margin">${data.length}</p>
+      <table class="striped">
+        <thead>
+          <tr>
+            <td>${date}</td>
+            <td>${contact}</td>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.reduce((html, info) => {
+            return `
+              ${html}
+              <tr>
+                <td>${window.SHAREDFUNCTIONS.formatDate(info.baptism_date)}</td>
+                <td><a href="/contacts/${info.ID}">${info.contact}</a></td>
+              </tr>
+            `
+          }, '')}
+        </tbody>
+      </table>
+    </div>
+  `
+
   return data
 }
 
@@ -226,16 +249,31 @@ function makeBaptismsByOthersSection(data) {
     return none()
   }
 
+  const { date, contact, baptized_by } = SHAREDFUNCTIONS.escapeObject( dtMetricsActivity.translations )
+
   return `
     <div>
-      ${data.reduce((html, info) => {
-        return `
-          ${html}
-          <p>
-            <span>${window.SHAREDFUNCTIONS.formatDate(info.baptism_date)}</span> by ${info.baptizer_name}
-          </p>
-        `
-      }, '')}
+      <table class="striped">
+        <thead>
+          <tr>
+            <td>${date}</td>
+            <td>${contact}</td>
+            <td>${baptized_by}</td>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.reduce((html, info) => {
+            return `
+              ${html}
+              <tr>
+                <td>${window.SHAREDFUNCTIONS.formatDate(info.baptism_date)}</td>
+                <td><a href="/contacts/${info.ID}">${info.contact}</a></td>
+                <td>${info.baptizer_name}</td>
+              </tr>
+            `
+          }, '')}
+        </tbody>
+      </table>
     </div>
   `
 }

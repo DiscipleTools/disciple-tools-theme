@@ -64,6 +64,9 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                     'baptism_by_others' => __( "Baptisms by others on my contacts", 'disciple_tools' ),
                     'comments_I_liked' => __( "Comments I Liked", 'disciple_tools' ),
                     'comments_I_posted' => __( "Comments I Posted", 'disciple_tools' ),
+                    'date' => __( "Date", 'disciple_tools' ),
+                    'baptized_by' => __( "Baptized by", 'disciple_tools' ),
+                    'contact' => __( "Contact", 'disciple_tools' ),
                 ],
             ]
         );
@@ -182,7 +185,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         self::insert_dates( $from, $to, $prepare_args );
 
 
-        // phpcs:disable WordPress.DB.PreparedSQL
+        // phpcs:disable
         $rows = $wpdb->get_results( $wpdb->prepare( "
             SELECT
                 object_subtype as quick_button, COUNT(object_subtype) as count
@@ -325,7 +328,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
             SELECT
-                a1.meta_value as baptism_date
+                a1.meta_value as baptism_date, p.ID, p.post_title as contact
             FROM (
                 SELECT
                     *
@@ -343,6 +346,10 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                     meta_key = 'baptizer_to_baptized'
             ) as a2
             $postmeta_join_sql
+            JOIN
+                $wpdb->posts as p
+            ON
+                a1.object_id = p.ID
             WHERE
                 a1.action = 'field_update'
             AND
@@ -360,7 +367,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $rows = $wpdb->get_results( $sql, ARRAY_A );
         // phpcs:enable
 
-        return count( $rows );
+        return $rows;
     }
 
     private static function get_baptisms_by_others( $from, $to ) {
@@ -378,7 +385,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
             SELECT
-                a1.meta_value as baptism_date, a2.object_name as baptizer_name
+                a1.meta_value as baptism_date, a2.object_name as baptizer_name, p.post_title as contact, p.ID
             FROM (
                 SELECT
                     *
@@ -397,6 +404,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                     meta_key = 'baptizer_to_baptized'
             ) as a2
             $postmeta_join_sql
+            JOIN $wpdb->posts as p
+            ON a1.object_id = p.ID
             WHERE
                 a1.action = 'field_update'
             AND
