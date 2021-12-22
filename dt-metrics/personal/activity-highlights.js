@@ -240,8 +240,6 @@ function makeBaptismsSection(data) {
       </table>
     </div>
   `
-
-  return data
 }
 
 function makeBaptismsByOthersSection(data) {
