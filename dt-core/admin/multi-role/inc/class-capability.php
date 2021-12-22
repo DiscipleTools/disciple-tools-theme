@@ -65,4 +65,13 @@ class Disciple_Tools_Capability {
         $this->source = $source;
         $this->description = $description;
     }
+
+    public function to_array() {
+        return [
+            'slug' => $this->slug,
+            'name' => $this->name,
+            'description' => $this->description,
+            'source' => $this->source
+        ];
+    }
 }
