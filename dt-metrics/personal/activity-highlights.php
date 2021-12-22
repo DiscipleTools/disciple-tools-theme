@@ -56,6 +56,14 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                     'all' => __( "All", 'disciple_tools' ),
                     'contact' => __( "Contact", 'disciple_tools' ),
                     'group' => __( "Group", 'disciple_tools' ),
+                    'none' => __( "None", 'disciple_tools' ),
+                    'field_I_changed' => __( "%s$1 I Changed", 'disciple_tools' ),
+                    'field_I_made' => __( "%s$1 I Made", 'disciple_tools' ),
+                    'baptism_by_me' => __( "Contacts I Baptized", 'disciple_tools' ),
+                    'field_others_changed' => __( "%s$1 changed by others on my %s$2", 'disciple_tools' ),
+                    'baptism_by_others' => __( "Baptisms by others on my contacts", 'disciple_tools' ),
+                    'comments_I_liked' => __( "Comments I Liked", 'disciple_tools' ),
+                    'comments_I_posted' => __( "Comments I Posted", 'disciple_tools' ),
                 ],
             ]
         );
@@ -161,6 +169,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $records_created = $rows[0]['records_created'];
 
         return [
+            'field_label' => $post_settings['label_plural'],
             'count' => $records_created,
             'label' => sprintf( esc_html__( '%1$d %2$s created', 'disciple_tools' ), $records_created, $records_created === 1 ? $post_settings['label_singular'] : $post_settings['label_plural'] ),
         ];
@@ -203,7 +212,10 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 ], $row);
             }
         }
-        return $rows;
+        return [
+            'field_label' => __( 'Quick Actions', 'disciple_tools' ),
+            'rows' => $rows,
+        ];
     }
 
     private static function get_info_added( $from, $to, $post_type, $subtype, $meta_value_like, $field_settings ) {
@@ -245,7 +257,10 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $rows = self::insert_labels( $rows, $subtype, $field_settings );
 
-        return $rows;
+        return [
+            'field_label' => $field_settings[$subtype]["name"],
+            'rows' => $rows,
+        ];
     }
 
     private static function get_info_added_by_others( $from, $to, $post_type, $subtype, $meta_value_like, $field_settings ) {
@@ -291,7 +306,13 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $rows = self::insert_labels( $rows, $subtype, $field_settings );
 
-        return $rows;
+        $post_settings = apply_filters( 'dt_get_post_type_settings', [], $post_type );
+
+        return [
+            'field_label' => $field_settings[$subtype]['name'],
+            'post_type_label' => $post_settings['label_plural'],
+            'rows' => $rows,
+        ];
     }
 
     private static function get_baptisms( $from, $to ) {

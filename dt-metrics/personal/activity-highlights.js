@@ -11,11 +11,13 @@ jQuery(document).ready(function() {
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
-    const title = makeTitle(window.lodash.escape( translations.title ))
+    const title = window.lodash.escape( translations.title )
 
     /* highlights */
     chartDiv.empty().html(`
-      ${title}
+      <div class="cell center">
+        <h3>${ title }</h3>
+      </div>
       <div class="section-subheader">${window.lodash.escape(translations.filter_contacts_to_date_range)}</div>
       <div class="date_range_picker">
           <i class="fi-calendar"></i>&nbsp;
@@ -63,52 +65,75 @@ function buildHighlights(data, label = "all time") {
     seeker_path_changed_by_others,
   } = data
 
+  const {
+    field_I_changed,
+    field_I_made,
+    baptism_by_me,
+    field_others_changed,
+    baptism_by_others,
+    comments_I_liked,
+    comments_I_posted,
+  } = SHAREDFUNCTIONS.escapeObject(dtMetricsActivity.translations)
+
   const chartDiv = jQuery('#activity_highlights')
 
   chartDiv.html(`
     <div class="grid-x grid-margin-x">
       <div class="cell large-6">
-        <h4>Contacts I Created</h4>
+        <h4>${makeTitle(contacts_created, field_I_made)}</h4>
           <div class="left-margin">
             ${makeRecordsCreatedSection(contacts_created)}
           </div>
-        <h4>Quick actions I made</h4>
+
+        <h4>${makeTitle(quick_actions_done, field_I_changed)}</h4>
           ${makeDataTable(quick_actions_done)}
-        <h4>Milestones I added</h4>
+
+        <h4>${makeTitle(milestones_added, field_I_changed)}</h4>
           ${makeDataTable(milestones_added)}
-        <h4>Milestones added by others on my contacts</h4>
+
+        <h4>${makeTitle(milestones_added_by_others, field_others_changed)}</h4>
           ${makeDataTable(milestones_added_by_others)}
-        <h4>Seeker paths I changed</h4>
+
+        <h4>${makeTitle(seeker_path_changed, field_I_changed)}</h4>
           ${makeDataTable(seeker_path_changed)}
-        <h4>Seeker paths changed by others on my contacts</h4>
+
+        <h4>${makeTitle(seeker_path_changed_by_others, field_others_changed)}</h4>
           ${makeDataTable(seeker_path_changed_by_others)}
-        <h4>Contacts I Baptized</h4>
+
+        <h4>${baptism_by_me}</h4>
           <div class="left-margin">
             ${makeBaptismsSection(baptisms)}
           </div>
-        <h4>Baptisms by others on my contacts</h4>
+
+        <h4>${baptism_by_others}</h4>
           <div class="left-margin">
             ${makeBaptismsByOthersSection(baptisms_by_others)}
           </div>
-        <h4>Groups I Created</h4>
+
+        <h4>${makeTitle(groups_created, field_I_made)}</h4>
           <div class="left-margin">
             ${makeRecordsCreatedSection(groups_created)}
           </div>
-        <h4>Group Types I changed</h4>
+
+        <h4>${makeTitle(group_type_changed, field_I_changed)}</h4>
           ${makeDataTable(group_type_changed)}
-        <h4>Group Types changed by others on my groups</h4>
+
+        <h4>${makeTitle(group_type_changed_by_others, field_others_changed)}</h4>
           ${makeDataTable(group_type_changed_by_others)}
-        <h4>Health Metrics I added</h4>
+
+        <h4>${makeTitle(health_metrics_added, field_I_changed)}</h4>
           ${makeDataTable(health_metrics_added)}
-        <h4>Health Metrics added by others on my groups</h4>
+
+        <h4>${makeTitle(health_metrics_added_by_others, field_others_changed)}</h4>
           ${makeDataTable(health_metrics_added_by_others)}
+
       </div>
       <div class="cell large-6">
-        <h4>Comments I posted</h4>
+        <h4>${comments_I_posted}</h4>
           <div class="left-margin">
             ${makeCommentsSection(comments_posted)}
           </div>
-        <h4>Comments I liked</h4>
+        <h4>${comments_I_liked}</h4>
           <div class="left-margin">
             ${makeCommentFilterSelect()}
             ${makeCommentsSection(comments_liked)}
@@ -131,23 +156,31 @@ function buildHighlights(data, label = "all time") {
     document.querySelector('#comment-filter').addEventListener('change' , filterComments)
 }
 
-function makeTitle(title) {
-  return `
-    <div class="cell center">
-      <h3>${ title }</h3>
-    </div>
-  `
+function makeTitle(data, title_text) {
+  const { field_label, post_type_label } = data
+
+  let title = title_text.replace('%s$1', field_label);
+
+  if (post_type_label) {
+    title = title.replace('%s$2', post_type_label)
+  }
+
+  return title;
 }
 
 function makeDataTable(data) {
-  if (empty(data)) {
-    return 'None'
+  if (empty(data.rows)) {
+    return `
+    <div class="left-margin">
+      ${none()}
+    </div>
+    `
   }
 
   return `
     <table class="highlights-table striped">
       <tbody>
-        ${data.reduce((html, info) => {
+        ${data.rows.reduce((html, info) => {
           if (empty(info.label)) {
             return html;
           }
@@ -182,7 +215,7 @@ function makeSentence(data) {
 
 function makeBaptismsSection(data) {
   if (empty(data)) {
-    return 'None'
+    return none()
   }
 
   return data
@@ -190,7 +223,7 @@ function makeBaptismsSection(data) {
 
 function makeBaptismsByOthersSection(data) {
   if (empty(data)) {
-    return 'None'
+    return none()
   }
 
   return `
@@ -209,7 +242,7 @@ function makeBaptismsByOthersSection(data) {
 
 function makeCommentsSection(data) {
   if (empty(data)) {
-    return 'None'
+    return none()
   }
   const { group, contact } = dtMetricsActivity.translations
 
@@ -262,7 +295,7 @@ function makeCommentsSection(data) {
 
 function makeRecordsCreatedSection(data) {
   if (empty(data.count)) {
-    return 'None';
+    return none();
   }
 
   return data.label;
@@ -289,4 +322,10 @@ function displayReaction({ emoji, path }) {
 
 function empty(data) {
   return !data || data.length === 0
+}
+
+function none() {
+  const { none } = SHAREDFUNCTIONS.escapeObject(dtMetricsActivity.translations)
+
+  return none;
 }
