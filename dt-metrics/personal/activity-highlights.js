@@ -159,10 +159,10 @@ function buildHighlights(data, label = "all time") {
 function makeTitle(data, title_text) {
   const { field_label, post_type_label } = data
 
-  let title = title_text.replace('%s$1', field_label);
+  let title = title_text.replace('%1$s', field_label);
 
   if (post_type_label) {
-    title = title.replace('%s$2', post_type_label)
+    title = title.replace('%2$s', post_type_label)
   }
 
   return title;

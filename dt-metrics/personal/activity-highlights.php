@@ -57,10 +57,10 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                     'contact' => __( "Contact", 'disciple_tools' ),
                     'group' => __( "Group", 'disciple_tools' ),
                     'none' => __( "None", 'disciple_tools' ),
-                    'field_I_changed' => __( "%s$1 I Changed", 'disciple_tools' ),
-                    'field_I_made' => __( "%s$1 I Made", 'disciple_tools' ),
+                    'field_I_changed' => __( "%1\$s I Changed", 'disciple_tools' ),
+                    'field_I_made' => __( "%1\$s I Made", 'disciple_tools' ),
                     'baptism_by_me' => __( "Contacts I Baptized", 'disciple_tools' ),
-                    'field_others_changed' => __( "%s$1 changed by others on my %s$2", 'disciple_tools' ),
+                    'field_others_changed' => __( "%1\$s changed by others on my %2\$s", 'disciple_tools' ),
                     'baptism_by_others' => __( "Baptisms by others on my contacts", 'disciple_tools' ),
                     'comments_I_liked' => __( "Comments I Liked", 'disciple_tools' ),
                     'comments_I_posted' => __( "Comments I Posted", 'disciple_tools' ),
@@ -181,8 +181,9 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $prepare_args = [ get_current_user_id() ];
         self::insert_dates( $from, $to, $prepare_args );
 
+
         // phpcs:disable WordPress.DB.PreparedSQL
-        $sql = $wpdb->prepare( "
+        $rows = $wpdb->get_results( $wpdb->prepare( "
             SELECT
                 object_subtype as quick_button, COUNT(object_subtype) as count
             FROM
@@ -200,10 +201,9 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             GROUP BY
                 object_subtype;",
             ...$prepare_args
-        );
+        ), ARRAY_A );
         // phpcs:enable
 
-        $rows = $wpdb->get_results( $sql, ARRAY_A );
 
         if ( !empty( $rows ) ) {
             foreach ( $rows as $i => $row ) {
@@ -227,7 +227,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $postmeta_join_sql = self::get_postmeta_join_sql();
 
         // phpcs:disable WordPress.DB.PreparedSQL
-        $sql = $wpdb->prepare( "
+        $rows = $wpdb->get_results( $wpdb->prepare( "
             SELECT
                 a1.meta_value as meta_changed, COUNT(a1.meta_value) as count
             FROM
@@ -250,10 +250,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             GROUP BY
                 a1.meta_value;",
             ...$prepare_args
-        );
+        ), ARRAY_A );
         // phpcs:enable
-
-        $rows = $wpdb->get_results( $sql, ARRAY_A );
 
         $rows = self::insert_labels( $rows, $subtype, $field_settings );
 
@@ -275,7 +273,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         self::insert_dates( $from, $to, $prepare_args );
 
         // phpcs:disable WordPress.DB.PreparedSQL
-        $sql = $wpdb->prepare( "
+        $rows = $wpdb->get_results( $wpdb->prepare( "
             SELECT
                 a1.meta_value as meta_changed, COUNT(a1.meta_value) as count
             FROM (
@@ -299,10 +297,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             GROUP BY
                 a1.meta_value;",
             ...$prepare_args
-        );
+        ), ARRAY_A );
         // phpcs:enable
-
-        $rows = $wpdb->get_results( $sql, ARRAY_A );
 
         $rows = self::insert_labels( $rows, $subtype, $field_settings );
 
@@ -535,6 +531,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             $prepare_args[] = $users_contact_id;
         }
 
+        //phpcs:disable WordPress.DB.PreparedSQL
         $records_connected_to_sql = $wpdb->prepare( "
             SELECT
                 a.*
@@ -574,6 +571,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 AND
                     p.p2p_from = %d " : '' ) . "
             ", $prepare_args );
+            //phpcs:enable
 
         return $records_connected_to_sql;
     }
