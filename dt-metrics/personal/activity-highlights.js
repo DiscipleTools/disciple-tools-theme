@@ -230,7 +230,11 @@ function makeCommentsSection(data) {
         return `
           ${html}
           <div class="comment ${reactionClasses}">
-            <div>${postTypeLabels[info.post_type]}: ${info.post_title} <span class="comment-date">${SHAREDFUNCTIONS.formatDate(epochDateTime, false, true)}</span></div>
+            <div>
+              ${postTypeLabels[info.post_type]}:
+              <a href="/${info.post_type}/${info.ID}">${info.post_title}</a>
+              <span class="comment-date">${SHAREDFUNCTIONS.formatDate(epochDateTime, false, true)}</span>
+            </div>
             <div>
               <div class="comment-bubble">${window.SHAREDFUNCTIONS.formatComment(info.comment_content)}</div>
               <div class="comment-controls">

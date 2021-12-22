@@ -411,7 +411,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
             SELECT
-                c.comment_date, c.comment_content, p.post_title, p.post_type
+                c.comment_date, c.comment_content, p.post_title, p.post_type, p.ID
             FROM
                 $wpdb->comments c
             JOIN
@@ -444,7 +444,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
             SELECT
-                c.comment_id, c.comment_date, c.comment_content, p.post_title, p.post_type, cm.meta_key as reaction_type
+                c.comment_id, c.comment_date, c.comment_content, p.post_title, p.post_type, p.ID, cm.meta_key as reaction_type
             FROM
                 $wpdb->comments c
             JOIN
@@ -463,6 +463,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                             . ( $from ? " AND comment_date >= %s " : "" )
                             . ( $to ? " AND comment_date <= %s " : "" )
                             . "
+            ORDER BY c.comment_date desc
             ", $prepare_args);
 
         $rows = $wpdb->get_results( $sql, ARRAY_A );
