@@ -225,10 +225,12 @@ function makeCommentsSection(data) {
           ? [{key: 'liked-comments'}, ...info.reactions].map((reaction) => reaction.key).join(' ')
           : ''
 
+        const epochDateTime = (new Date(info.comment_date)).getTime() / 1000;
+
         return `
           ${html}
           <div class="comment ${reactionClasses}">
-            <div>${postTypeLabels[info.post_type]}: ${info.post_title} <span class="comment-date">${info.comment_date}</span></div>
+            <div>${postTypeLabels[info.post_type]}: ${info.post_title} <span class="comment-date">${SHAREDFUNCTIONS.formatDate(epochDateTime, false, true)}</span></div>
             <div>
               <div class="comment-bubble">${window.SHAREDFUNCTIONS.formatComment(info.comment_content)}</div>
               <div class="comment-controls">
@@ -259,7 +261,7 @@ function makeRecordsCreatedSection(data) {
     return 'None';
   }
 
-  return styleToMatchTables(data.label);
+  return data.label;
 }
 
 function makeCommentFilterSelect() {

@@ -424,6 +424,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                             . ( $from ? " AND comment_date >= %s " : "" )
                             . ( $to ? " AND comment_date <= %s " : "" )
                             . "
+            ORDER BY c.comment_date desc
             ", $prepare_args);
 
         $rows = $wpdb->get_results( $sql, ARRAY_A );
