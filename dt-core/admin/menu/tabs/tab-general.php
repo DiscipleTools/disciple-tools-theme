@@ -426,16 +426,20 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function process_user_preferences(){
         if ( isset( $_POST['user_preferences_nonce'] ) &&
              wp_verify_nonce( sanitize_key( wp_unslash( $_POST['user_preferences_nonce'] ) ), 'user_preferences' . get_current_user_id() ) ) {
-
+            $role_options = get_option( 'dt_options_roles_and_permissions', [] );
             $dt_roles = dt_multi_role_get_editable_role_names();
             foreach ( $dt_roles as $role_key => $name ) :
                 $role_object = get_role( $role_key );
                 if ( isset( $_POST[$role_key] ) && !array_key_exists( 'dt_list_users', $role_object->capabilities ) ) {
-                    $role_object->add_cap( 'dt_list_users' );
+                    $role_options[$role_key]["permissions"]["dt_list_users"] = true;
                 } else if ( !isset( $_POST[$role_key] ) && array_key_exists( 'dt_list_users', $role_object->capabilities ) ) {
-                    $role_object->remove_cap( 'dt_list_users' );
+                    if ( isset( $role_options[$role_key]["permissions"]["dt_list_users"] ) ){
+                        unset( $role_options[$role_key]["permissions"]["dt_list_users"] );
+                    }
                 }
             endforeach;
+            update_option( 'dt_options_roles_and_permissions', $role_options );
+            dt_setup_roles_and_permissions();
 
             if ( isset( $_POST['user_invite_check'] ) && $_POST['user_invite_check'] === 'user_invite' ) {
                 update_option( 'dt_user_invite_setting', true );
@@ -457,7 +461,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <?php
                 $role_object = get_role( $role_key );
                 ?>
-                <?php if ( $role_object && !array_key_exists( 'dt_all_access_contacts', $role_object->capabilities ) ) : ?>
+                <?php if ( $role_object && !array_key_exists( 'dt_all_access_contacts', $role_object->capabilities ) && !array_key_exists( 'list_users', $role_object->capabilities ) ) : ?>
                 <tr>
                     <td>
                         <input type="checkbox" name="<?php echo esc_attr( $role_key ); ?>" <?php checked( array_key_exists( 'dt_list_users', $role_object->capabilities ) ); ?>/> <?php echo esc_attr( $name ); ?>
