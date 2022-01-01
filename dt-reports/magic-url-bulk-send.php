@@ -28,7 +28,7 @@ if ( 'contacts' === dt_get_post_type() ) {
      */
     add_action( 'dt_post_bulk_list_section', 'dt_post_bulk_list_section_apps', 20, 3 );
     function dt_post_bulk_list_section_apps( $post_type, $post_settings, $dt_magic_apps ){
-       if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) :  ?>
+        if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) :  ?>
             <div id="bulk_send_app_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                 <p style="font-weight:bold"><?php
                     echo sprintf( esc_html__( 'Select all the %1$s to whom you want to send app links.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
@@ -41,18 +41,18 @@ if ( 'contacts' === dt_get_post_type() ) {
                         <label for="bulk_send_app_required_selection"><?php echo esc_html__( 'Select app to email', 'disciple_tools' ); ?></label>
                         <span id="bulk_send_app_required_selection" style="display:none;color:red;"><?php echo esc_html__( 'You must select an app', 'disciple_tools' ); ?></span>
                         <div class="bulk_send_app dt-radio button-group toggle ">
-                            <?php
-                            foreach ( $dt_magic_apps as $root ) {
-                                foreach ( $root as $type ) {
-                                    if ( isset( $type['show_bulk_send'] ) && $type['show_bulk_send'] ) {
-                                        ?>
+                             <?php
+                                foreach ( $dt_magic_apps as $root ) {
+                                    foreach ( $root as $type ) {
+                                        if ( isset( $type['show_bulk_send'] ) && $type['show_bulk_send'] ) {
+                                            ?>
                                         <input type="radio" id="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>" data-root="<?php echo esc_attr( $type['root'] ) ?>" data-type="<?php echo esc_attr( $type['type'] ) ?>" name="r-group">
                                         <label class="button" for="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>"><?php echo esc_html( $type['name'] ) ?></label>
-                                        <?php
+                                            <?php
+                                        }
                                     }
                                 }
-                            }
-                            ?>
+                                ?>
                         </div>
                     </div>
                     <div class="cell">
@@ -72,7 +72,7 @@ if ( 'contacts' === dt_get_post_type() ) {
                 </div>
 
             </div>
-         <?php endif;
+          <?php endif;
     };
 }
 
