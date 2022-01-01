@@ -26,7 +26,7 @@ if ( 'contacts' === dt_get_post_type() ) {
     /**
      * Adds hidden toggle body
      */
-    add_action( 'dt_post_bulk_list_section', 'dt_post_bulk_list_section_apps', 10, 3 );
+    add_action( 'dt_post_bulk_list_section', 'dt_post_bulk_list_section_apps', 20, 3 );
     function dt_post_bulk_list_section_apps( $post_type, $post_settings, $dt_magic_apps ){
        if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) :  ?>
             <div id="bulk_send_app_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">

@@ -262,7 +262,7 @@ dt_please_log_in();
                      */
                     do_action( 'dt_post_bulk_list_section', $post_type, $post_settings, $dt_magic_apps );
                     ?>
-                    
+
                     <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
                         <?php
