@@ -988,7 +988,7 @@ jQuery(document).ready(function($) {
             }
             let value = window.lodash.escape(v.value)
             if ( field_key === 'contact_phone' ){
-              values_html += `<a dir="auto" href="tel:${value}" title="${value}">${value}</a>`
+              values_html += `<a dir="auto" class="phone-link" href="tel:${value}" title="${value}">${value}</a>`
             } else if (field_key === "contact_email") {
               values_html += `<a dir="auto" href="mailto:${value}" title="${value}">${value}</a>`
             } else {
@@ -1024,9 +1024,43 @@ jQuery(document).ready(function($) {
       }
 
     })
+    phoneLinkClick();
     $( document ).trigger( "dt_record_details_reset", [post] );
   }
-  resetDetailsFields()
+  resetDetailsFields();
+
+  function phoneLinkClick() {
+    $('.phone-link').on('click', function(event){
+      event.preventDefault();
+
+      if ($('.phone-open-with-container').length) {
+        $('.phone-open-with-container').remove();
+      } else {
+        let phoneNumber = this.href.substring(4).replaceAll(/\s/g, "");
+        let PhoneLink = this;
+        let WhatsAppLink = `https://api.whatsapp.com/send?phone=${phoneNumber.replace(/^((\+)|(00))/,"")}`;
+        let SignalLink = `https://signal.me/#p/${phoneNumber}`;
+        let iMessageLink = `iMessage://${phoneNumber}`
+
+        let openWithDiv = `<div class=phone-open-with-container>
+        <strong>Open With...</strong>
+          <ul>
+            <li><a href="${PhoneLink}" title="Open With Telephone" target="_blank" class="phone-open-with-link">Phone</a></li>
+            <li><a href="${WhatsAppLink}" title="Open With Whatsapp" target="_blank" class="phone-open-with-link">Whatsapp</a></li>
+            <li><a href="${SignalLink}" title="Open With Signal" target="_blank" class="phone-open-with-link">Signal</a></li>
+            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="${iMessageLink}" title="Open With Signal" target="_blank" class="phone-open-with-link">iMessage</a></li>` : ""
+            }
+          </ul>
+        </div>`
+
+        this.insertAdjacentHTML("afterend", openWithDiv);
+
+        $('.phone-open-with-link').on('click', function() {
+          $(this).parents('.phone-open-with-container').remove();
+        })
+      }
+      });
+  };
 
   $('#delete-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
