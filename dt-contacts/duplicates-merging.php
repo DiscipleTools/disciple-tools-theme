@@ -266,7 +266,7 @@ class DT_Duplicate_Checker_And_Merging {
             return $post;
         }
         $duplicate_data = isset( $post['duplicate_data'] ) ? ( is_array( $post['duplicate_data'] ) ? $post['duplicate_data'] : unserialize( $post['duplicate_data'] ) ) : [];
-        if ( !in_array( $dismiss_id, $duplicate_data["override"] ) ) {
+        if ( !in_array( $dismiss_id, $duplicate_data["override"] ?? [] ) ) {
             $duplicate_data["override"][] = $dismiss_id;
         }
         update_post_meta( $post_id, "duplicate_data", $duplicate_data );
@@ -281,7 +281,7 @@ class DT_Duplicate_Checker_And_Merging {
         $possible_duplicates = self::ids_of_non_dismissed_duplicates( $post_type, $post_id, false );
 
         foreach ( $possible_duplicates["ids"] as $dup_id ){
-            if ( !in_array( $dup_id, $duplicate_data["override"] ) ) {
+            if ( !in_array( $dup_id, $duplicate_data["override"] ?? [] ) ) {
                 $duplicate_data["override"][] = $dup_id;
             }
         }
