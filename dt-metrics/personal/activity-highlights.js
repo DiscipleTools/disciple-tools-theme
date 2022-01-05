@@ -249,6 +249,8 @@ function makeBaptismsByOthersSection(data) {
 
   const { date, contact, baptized_by } = SHAREDFUNCTIONS.escapeObject( dtMetricsActivity.translations )
 
+  const baptisms = []
+
   return `
     <div>
       <table class="striped">
@@ -267,8 +269,16 @@ function makeBaptismsByOthersSection(data) {
             const baptizer_to_baptized_direction = connection_direction === 'connection to';
 
             const baptizer_name = baptizer_to_baptized_direction ? from_name : to_name
+            const baptizer_id = baptizer_to_baptized_direction ? from_id : to_id
             const contact = baptizer_to_baptized_direction ? to_name : from_name
             const contact_id = baptizer_to_baptized_direction ? to_id : from_id
+
+            // Don't display duplicate baptisms
+            const baptism = { baptizer_id, contact_id, baptism_date }
+
+            if (baptisms.find((b) => b.baptizer_id === baptizer_id && b.contact_id === contact_id)) return html
+
+            baptisms.push(baptism)
 
             return `
               ${html}

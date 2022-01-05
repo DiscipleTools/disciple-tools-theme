@@ -390,7 +390,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 a2.object_id as from_id,
                 p.post_title as to_name,
                 p.ID as to_id,
-                a2.field_type as connection_direction
+                a2.field_type as connection_direction,
+                a2.action
             FROM (
                 SELECT
                     *
@@ -410,7 +411,11 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             ) as a2
             $postmeta_join_sql
             JOIN $wpdb->posts as p
-            ON a1.object_id = p.ID
+                ON a1.object_id = p.ID
+            JOIN $wpdb->p2p as p2p
+                ON p2p.p2p_from = IF(a2.field_type = 'connection to', a2.meta_value, a2.object_id)
+                AND p2p.p2p_to = IF(a2.field_type = 'connection to', a2.object_id, a2.meta_value)
+                AND p2p.p2p_type = 'baptizer_to_baptized'
             WHERE
                 a1.action = 'field_update'
             AND
