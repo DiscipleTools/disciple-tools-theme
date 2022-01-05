@@ -131,8 +131,8 @@ function dt_print_details_bar(
                             </button>
                         </div>
                         <?php endif; ?>
-                        <div class="cell shrink center-items">
                         <?php if ( $disable_following_toggle_function ) : ?>
+                        <div class="cell shrink center-items">
                             <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?>
                                 <i class="fi-eye"></i>
                             </button>
@@ -146,8 +146,8 @@ function dt_print_details_bar(
                                     <i class="fi-eye"></i>
                                 </button>
                             <?php endif; ?>
-                        <?php endif; ?>
                         </div>
+                        <?php endif; ?>
                         <?php if ( $share_button ): ?>
                         <div class="cell shrink center-items ">
                             <button class="center-items open-share">
@@ -272,6 +272,7 @@ function dt_print_details_bar(
             </div>
         </div>
     </nav>
+    <?php endif; ?>
     </div>
-    <?php endif;
+    <?php
 }
