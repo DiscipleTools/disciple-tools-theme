@@ -261,12 +261,21 @@ function makeBaptismsByOthersSection(data) {
         </thead>
         <tbody>
           ${data.reduce((html, info) => {
+
+            const {from_name, from_id, to_name, to_id, connection_direction, baptism_date} = info
+
+            const baptizer_to_baptized_direction = connection_direction === 'connection to';
+
+            const baptizer_name = baptizer_to_baptized_direction ? from_name : to_name
+            const contact = baptizer_to_baptized_direction ? to_name : from_name
+            const contact_id = baptizer_to_baptized_direction ? to_id : from_id
+
             return `
               ${html}
               <tr>
-                <td>${window.SHAREDFUNCTIONS.formatDate(info.baptism_date)}</td>
-                <td><a href="/contacts/${info.ID}">${info.contact}</a></td>
-                <td>${info.baptizer_name}</td>
+                <td>${window.SHAREDFUNCTIONS.formatDate(baptism_date)}</td>
+                <td><a href="/contacts/${contact_id}">${contact}</a></td>
+                <td>${baptizer_name}</td>
               </tr>
             `
           }, '')}

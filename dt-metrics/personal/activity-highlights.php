@@ -379,18 +379,23 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $prepare_args = [ $users_contact_id ];
         self::insert_dates( $from, $to, $prepare_args );
 
-        $activity_by_others = self::get_activity_logs_by_others_sql( 'contacts' );
+        $activity_by_others_sql = self::get_activity_logs_by_others_sql( 'contacts' );
         $postmeta_join_sql = self::get_postmeta_join_sql();
 
         // phpcs:disable WordPress.DB.PreparedSQL
         $sql = $wpdb->prepare( "
             SELECT
-                a1.meta_value as baptism_date, a2.object_name as baptizer_name, p.post_title as contact, p.ID
+                a1.meta_value as baptism_date,
+                a2.object_name as from_name,
+                a2.object_id as from_id,
+                p.post_title as to_name,
+                p.ID as to_id,
+                a2.field_type as connection_direction
             FROM (
                 SELECT
                     *
                 FROM (
-                    $activity_by_others
+                    $activity_by_others_sql
                 ) as a
                 WHERE
                     a.meta_key = 'baptism_date'
