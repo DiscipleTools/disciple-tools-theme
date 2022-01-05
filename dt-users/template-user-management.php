@@ -9,6 +9,20 @@ if ( !current_user_can( 'list_users' ) && !current_user_can( 'manage_dt' ) ) {
 $dt_url_path = dt_get_url_path();
 $user_management_options = DT_User_Management::user_management_options();
 $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
+$default_user_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+
+function fetch_user_locations( $user_id ): array {
+    global $wpdb;
+
+    return $wpdb->get_results( $wpdb->prepare( "
+    SELECT user_meta.meta_value id, loca_grid.name
+    FROM $wpdb->usermeta user_meta
+    INNER JOIN $wpdb->dt_location_grid loca_grid ON user_meta.meta_value = loca_grid.grid_id
+    WHERE user_meta.user_id = %d AND user_meta.meta_key = 'wp_location_grid'
+    GROUP BY user_meta.meta_value
+    ", $user_id ), ARRAY_A );
+}
+
 ?>
 
 <?php get_header(); ?>
@@ -96,8 +110,18 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                     <?php
                                     if ( isset( $user['roles'] ) ) {
                                         $roles = maybe_unserialize( $user['roles'] );
-                                        if ( ! empty( $roles ) ) {
-                                            echo esc_html( implode( ', ', array_keys( $roles ) ) );
+                                        if ( ! empty( $roles ) && ! empty( $default_user_roles ) ) {
+
+                                            $user_roles = [];
+                                            foreach ( $roles as $key => $role ) {
+                                                if ( isset( $default_user_roles[ $key ] ) ) {
+                                                    $user_roles[] = $default_user_roles[ $key ]['label'];
+                                                }
+                                            }
+
+                                            if ( ! empty( $user_roles ) ) {
+                                                echo esc_html( implode( ', ', $user_roles ) );
+                                            }
                                         }
                                     }
                                     ?>
@@ -130,23 +154,11 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                 <td>
                                     <?php
 
-                                    $contact_id = get_user_option( "corresponds_to_contact", $user['ID'] );
-                                    if ( $contact_id && ! is_wp_error( $contact_id ) ) {
-                                        $user_contact = DT_Posts::get_post( 'contacts', $contact_id );
-
+                                    $user_locations = fetch_user_locations( $user["ID"] );
+                                    if ( ! empty( $user_locations ) ) {
                                         $locations = [];
-                                        if ( ! empty( $user_contact ) && ! is_wp_error( $user_contact ) ) {
-
-                                            $field_key = '';
-                                            if ( isset( $user_contact["location_grid_meta"] ) && ! empty( $user_contact["location_grid_meta"] ) ) {
-                                                $field_key = 'location_grid_meta';
-                                            } elseif ( isset( $user_contact["location_grid"] ) && ! empty( $user_contact["location_grid"] ) ) {
-                                                $field_key = 'location_grid';
-                                            }
-
-                                            foreach ( $user_contact[ $field_key ] ?? [] as $location ) {
-                                                $locations[] = $location['label'];
-                                            }
+                                        foreach ( $user_locations as $location ) {
+                                            $locations[] = $location['name'];
                                         }
 
                                         if ( ! empty( $locations ) ) {
