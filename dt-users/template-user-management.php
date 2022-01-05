@@ -113,9 +113,9 @@ function fetch_user_locations( $user_id ): array {
                                         if ( ! empty( $roles ) && ! empty( $default_user_roles ) ) {
 
                                             $user_roles = [];
-                                            foreach ( $roles as $key => $role ) {
-                                                if ( isset( $default_user_roles[ $key ] ) ) {
-                                                    $user_roles[] = $default_user_roles[ $key ]['label'];
+                                            foreach ( $roles as $role_key => $role_val ) {
+                                                if ( isset( $default_user_roles[ $role_key ] ) ) {
+                                                    $user_roles[] = $default_user_roles[ $role_key ]['label'];
                                                 }
                                             }
 
