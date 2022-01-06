@@ -32,6 +32,8 @@ jQuery(document).ready(function($) {
         { "orderSequence": [ "desc", "asc" ] },
         { "orderSequence": [ "desc", "asc" ] },
         { "orderSequence": [ "desc", "asc" ] },
+        { "orderSequence": [ "desc", "asc" ] },
+        { "orderSequence": [ "desc", "asc" ] },
         { "orderSequence": [ "asc", "desc" ] },
       ],
       columnDefs: [ {
@@ -51,7 +53,7 @@ jQuery(document).ready(function($) {
       )
       .on( 'change', function () {
         that
-        .search( '^'+$(this).val() , true, false )
+        .search( $(this).val() , true, false )
         .draw();
       } );
 
@@ -61,7 +63,16 @@ jQuery(document).ready(function($) {
       .sort()
       .unique()
       .each( function ( d ) {
-        select.append( $('<option value="'+d+'">'+d+'</option>') );
+        // Split concatenated strings
+        let options = d.split(",");
+        $.each(options, function (idx) {
+          let option = options[idx].trim();
+
+          // Safeguard against duplicate entries
+          if (select.find('option[value="' + option + '"]').length === 0) {
+            select.append($('<option value="' + option + '">' + option + '</option>'));
+          }
+        });
       } );
     } );
     multipliers_table.on( 'order.dt search.dt', function () {
