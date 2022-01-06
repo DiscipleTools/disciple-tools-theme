@@ -687,7 +687,14 @@ select.color-select {
         display: inline-block;
         span, a {
             font-size: 10px;
+            vertical-align: baseline;
+            margin: 0;
         }
+    }
+    .dt-record-type-icon {
+        height: 10px;
+        width: 10px;
+        vertical-align: baseline;
     }
 }
 
