@@ -734,7 +734,7 @@ class Disciple_Tools_Users
             }
         }
         if ( !empty( $body["locale"] ) ){
-            return self::update_user_locale( $body["locale"], $user->ID );
+            return self::update_user_locale( $user->ID, $body["locale"] );
         }
         if ( !empty( $body["add_languages"] ) ){
             $languages = get_user_option( "user_languages", $user->ID ) ?: [];

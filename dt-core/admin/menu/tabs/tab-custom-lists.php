@@ -122,7 +122,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
         }
         $user_fields = $site_custom_lists['user_fields'];
-        $user_fields_types = $site_custom_lists['user_fields_types'];
+        $user_fields_types = $site_custom_lists['user_fields_types'] ?? [];
         foreach ( $user_fields as $field ) {
             echo '<tr>
                         <td>' . esc_attr( $field['label'] ) . '</td>

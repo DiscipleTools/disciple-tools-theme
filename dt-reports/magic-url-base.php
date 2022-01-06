@@ -10,14 +10,16 @@ abstract class DT_Magic_Url_Base {
     public $type_name = '';
     private $meta_key;
     public $page_title = '';
+    public $page_description = '';
     public $type_actions = [
         '' => "Manage",
     ];
     public $show_bulk_send = false; // enables bulk send of magic links from list page
     public $show_app_tile = false; // enables addition to "app" tile sharing features
 
-    public $module = ""; // lets a magic url be a module as well
-    public $instance_id = ""; // allows having multiple versions of the same magic link for a user. Creating different meta_keys.
+    public $module = ""; // Lets a magic url be a module as well
+    public $instance_id = ""; // Allows having multiple versions of the same magic link for a user. Creating different meta_keys.
+    public $meta = []; // Allows for instance specific data.
 
     public function __construct() {
 
@@ -132,23 +134,30 @@ abstract class DT_Magic_Url_Base {
      * @param array $types
      * @return array
      */
-    public function dt_magic_url_register_types( array $types ) : array {
-        if ( ! isset( $types[$this->root] ) ) {
-            $types[$this->root] = [];
+    public function dt_magic_url_register_types( array $types ): array {
+        if ( ! isset( $types[ $this->root ] ) ) {
+            $types[ $this->root ] = [];
         }
-        $meta_key_appendage              = ( ! empty( $this->instance_id ) ) ? '_' . $this->instance_id : '';
-        $this->meta_key = $this->root . '_' . $this->type . '_magic_key' . $meta_key_appendage;
-        $types[$this->root][$this->type] = [
-            'name' => $this->type_name,
-            'root' => $this->root,
-            'type' => $this->type,
-            'meta_key' => $this->meta_key,
-            'actions' => $this->type_actions,
-            'post_type' => $this->post_type,
-            'instance_id' => $this->instance_id,
+
+        $meta_key_appendage                  = ( ! empty( $this->instance_id ) ) ? '_' . $this->instance_id : '';
+        $this->meta_key                      = $this->root . '_' . $this->type . '_magic_key' . $meta_key_appendage;
+        $types[ $this->root ][ $this->type ] = [
+            'name'           => $this->type_name,
+            'root'           => $this->root,
+            'type'           => $this->type,
+            'meta_key'       => $this->meta_key,
+            'actions'        => $this->type_actions,
+            'post_type'      => $this->post_type,
+            'instance_id'    => $this->instance_id,
             'show_bulk_send' => $this->show_bulk_send,
-            'show_app_tile' => $this->show_app_tile,
+            'show_app_tile'  => $this->show_app_tile,
+            'key'            => $this->root . '_' . $this->type . '_magic_key',
+            'url_base'       => $this->root . '/' . $this->type,
+            'label'          => $this->page_title,
+            'description'    => $this->page_description,
+            'meta'           => $this->meta
         ];
+
         return $types;
     }
 

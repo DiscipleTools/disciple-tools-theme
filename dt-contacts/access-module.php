@@ -1541,7 +1541,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
         }
 
-        return $list;
+        return apply_filters( "dt_get_dispatch_list", $list, $params['post_type'], $params['post_id'] );
     }
 
     private function get_assignments() {

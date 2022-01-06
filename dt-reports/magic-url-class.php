@@ -86,7 +86,13 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
              *              'instructions' => 'Instructions' (string),
              *          ] (array),
              *          'instance_id' => 0 (int),
-             *          'show_bulk_send' => false (bool)
+             *          'show_bulk_send' => false (bool),
+             *          'show_app_tile' => false (bool),
+             *          'key' => 'rootname_typename_public_key' (string),
+             *          'url_base' => 'rootname/typename' (string),
+             *          'label' => 'page_title' (string),
+             *          'description' => 'page_description' (string),
+             *          'meta' => [] (array)
              *      ] (array)
              * ], (array)
              * 'root_name' => [
@@ -101,7 +107,13 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
              *              'instructions' => 'Instructions' (string),
              *          ] (array),
              *          'instance_id' => 0 (int),
-             *          'show_bulk_send' => false (bool)
+             *          'show_bulk_send' => false (bool),
+             *          'show_app_tile' => false (bool),
+             *          'key' => 'rootname_typename_public_key' (string),
+             *          'url_base' => 'rootname/typename' (string),
+             *          'label' => 'page_title' (string),
+             *          'description' => 'page_description' (string),
+             *          'meta' => [] (array)
              *      ] (array)
              * ] (array)
              */
