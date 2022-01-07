@@ -564,8 +564,9 @@ class DT_Contacts_Base {
                 ],
                 'labels' => [
                     [
-                        'id' => 'my_shared',
+                        'id' => 'me',
                         'name' => __( 'Shared with me', 'disciple_tools' ),
+                        "field" => "shared_with"
                     ],
                 ],
             ]

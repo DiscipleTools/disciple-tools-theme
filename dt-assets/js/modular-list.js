@@ -95,6 +95,114 @@
     }
   })
 
+  // Remove filter labels
+  $(document).on('click', '.current-filter-close', function () {
+    let label = $(this).parent();
+    remove_current_filter_label(label, get_current_filter_label_field_details(label));
+  });
+
+  function get_current_filter_label_field_details(label) {
+    let field_id = null;
+    let field_name = $(label).children().remove().end().text();
+
+    let label_classes = $(label).attr('class').split(/\s+/);
+    $.each(label_classes, function (idx, cls) {
+      if (cls !== 'current-filter') {
+        field_id = cls;
+      }
+    });
+
+    return {
+      'id': field_id,
+      'name': field_name
+    };
+  }
+
+  function remove_current_filter_label(label, field_details) {
+    if (current_filter && current_filter.labels /*&& current_filter.query.fields*/) {
+      if (field_details && field_details.id && field_details.name) {
+
+        // Update current filter's labels
+        let id = null;
+        let labels = [];
+        $.each(current_filter.labels, function (idx, val) {
+          if ((field_details.id === val.field) && (field_details.name === val.name)) {
+            id = val.id;
+
+          } else {
+            labels.push(val);
+          }
+        });
+        current_filter.labels = labels;
+
+
+        // Update current filter's query object
+        if (id) {
+
+          // Determine query object shape
+          if (current_filter.query['fields']) {
+
+            let fields = [];
+            $.each(current_filter.query['fields'], function (idx, val) {
+
+              // Do we have a match...?
+              let field = val[field_details.id];
+              if (field) {
+
+                let field_values = [];
+                $.each(field, function (field_idx, field_val) {
+
+                  if (id !== field_val) {
+                    field_values.push(field_val);
+                  }
+                });
+
+                // Update new fields array, if still populated
+                if (field_values.length > 0) {
+                  let updated_field = {};
+                  updated_field[field_details.id] = field_values;
+                  fields.push(updated_field);
+                }
+
+              } else {
+                fields.push(val);
+              }
+
+            });
+            current_filter.query['fields'] = fields;
+
+          } else if (current_filter.query[field_details.id]) {
+
+            let field_values = [];
+            $.each(current_filter.query[field_details.id], function (idx, val) {
+
+              if (id !== val) {
+                field_values.push(val);
+              }
+
+            });
+
+            // Update query field, if still populated
+            if (field_values.length > 0) {
+              current_filter.query[field_details.id] = field_values;
+
+            } else {
+              delete current_filter.query[field_details.id];
+            }
+
+          }
+        }
+      }
+    }
+
+    // Remove label from view
+    $(label).remove();
+
+    // Refresh view records
+    get_records_for_current_filter();
+
+  }
+
   /**
    * Looks for all query params called 'filter' (allows for multiple filters to be applied)
    * from url like base_url?filter=foo&filter=bar
@@ -306,8 +414,14 @@
     let filter = current_filter
     if (filter && filter.labels){
       filter.labels.forEach(label=>{
-        html+= `<span class="current-filter ${window.lodash.escape( label.field )}">${window.lodash.escape( label.name )}</span>`
-      })
+        html += `<span class="current-filter ${window.lodash.escape(label.field)}">${window.lodash.escape(label.name)}`;
+
+        if (label.id && label.field && label.name) {
+          html += `<span class="current-filter-close">x</span>`;
+        }
+
+        html += `</span>`;
+      });
     } else {
       let query = filter.query
       window.lodash.forOwn( query, query_key=> {
