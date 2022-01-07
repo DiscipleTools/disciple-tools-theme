@@ -167,7 +167,7 @@ class DT_User_Hooks_And_Configuration {
      */
     public static function user_login_hook( $user_name, $user ){
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user->ID );
-        if ( empty( $corresponds_to_contact ) && is_user_member_of_blog( $user->ID ) ){
+        if ( empty( $corresponds_to_contact ) && Disciple_Tools_Users::is_instance_user( $user->ID ) ){
             Disciple_Tools_Users::create_contact_for_user( $user->ID );
         }
     }
@@ -201,12 +201,15 @@ class DT_User_Hooks_And_Configuration {
             }
             update_user_option( $user_id, "allowed_sources", $allowed_sources );
         }
+        if ( !empty( $_POST["locale"] ) ){
+            update_user_meta( $user_id, "locale", sanitize_text_field( wp_unslash( $_POST["locale"] ) ) );
+        }
     }
 
     public static function add_user_role( $user_id, $role ){
         if ( user_can( $user_id, "access_specific_sources" ) ){
             $allowed_sources = get_user_option( "allowed_sources", $user_id ) ?: [];
-            if ( in_array( "restrict_all_sources", $allowed_sources ) || empty( $allowed_sources ) ){
+            if ( in_array( "restrict_all_sources", $allowed_sources ) ){
                 $allowed_sources = [ "restrict_all_sources" ];
                 update_user_option( $user_id, "allowed_sources", $allowed_sources );
             }
@@ -492,9 +495,7 @@ class DT_User_Hooks_And_Configuration {
             <tr>
                 <th><label for="dt_locale"><?php esc_html_e( "User Language", 'disciple_tools' ) ?></label></th>
                 <td>
-                    <?php
-                    dt_language_select()
-                    ?>
+                    <?php dt_language_select( $user->ID ); ?>
                 </td>
             </tr>
         </table>

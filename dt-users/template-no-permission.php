@@ -6,8 +6,9 @@ class Disciple_Tools_No_Permission extends DT_Magic_Url_Base
     public $magic = false;
     public $parts = false;
     public $page_title = 'Home';
-    public $root = "porch_app";
-    public $type = 'home';
+    public $root = "system_app";
+    public $type = 'no_permission';
+    public $type_name = 'no_permission';
 
     private static $_instance = null;
     public static function instance() {

@@ -12,6 +12,9 @@ dt_please_log_in();
     $post_settings = DT_Posts::get_post_settings( $post_type );
 
     $field_options = $post_settings["fields"];
+
+    $dt_magic_apps = DT_Magic_URL::list_bulk_send();
+
     get_header();
     ?>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
@@ -242,7 +245,24 @@ dt_please_log_in();
                                 <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ) ?>"/>
                             </button>
                         </span>
+
+                        <?php
+                        /**
+                         * Adds link to the end top list
+                         * @see /dt-reports/bulk-extension for example of using this action
+                         */
+                        do_action( 'dt_post_bulk_list_link', $post_type, $post_settings, $dt_magic_apps );
+                        ?>
+
                     </div>
+                    <?php
+                    /**
+                     * Adds link to the end top list
+                     * @see /dt-reports/bulk-extension for example of using this action
+                     */
+                    do_action( 'dt_post_bulk_list_section', $post_type, $post_settings, $dt_magic_apps );
+                    ?>
+
                     <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
                         <?php
@@ -337,7 +357,7 @@ dt_please_log_in();
                                         <div class="section-subheader">
                                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
                                                 <?php echo esc_html( $field_options["reason_paused"]["name"] ?? '' ) ?>
-                                                </button>
+<!--                                                </button>-->
                                             </div>
 
                                         <select id="reason-paused-options">
@@ -475,10 +495,10 @@ dt_please_log_in();
                         </div>
 
                         <button class="button dt-green" id="bulk_edit_submit">
-                            <span id="bulk_edit_submit_text" style="    text-transform:capitalize">
-                                <?php echo esc_html( sprintf( __( "Update %s", "disciple_tools" ), $post_settings["label_plural"] ) ); ?>
+                            <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Update', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html( $post_settings["label_plural"] ); ?>" style="text-transform:capitalize;">
+                                <?php echo esc_html( __( "Make Selections Below", "disciple_tools" ) ); ?>
                             </span>
-                        <span id="bulk_edit_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
+                        <span id="bulk_edit_submit-spinner" style="display: inline-block;" class="loading-spinner"></span>
                         </button>
                     </div>
 
@@ -489,28 +509,13 @@ dt_please_log_in();
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
                                     <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
-                                    <input type="checkbox" name="bulk_edit_id" value="" id="bulk_edit_master_checkbox">
+                                    <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
                                     <th style="width:32px; background-image:none; cursor:default"></th>
 
                                     <?php $columns = [];
                                     if ( empty( $fields_to_show_in_table ) ){
-                                        uasort( $post_settings["fields"], function( $a, $b ){
-                                            $a_order = 0;
-                                            if ( isset( $a["show_in_table"] ) ){
-                                                $a_order = is_numeric( $a["show_in_table"] ) ? $a["show_in_table"] : 90;
-                                            }
-                                            $b_order = 0;
-                                            if ( isset( $b["show_in_table"] ) ){
-                                                $b_order = is_numeric( $b["show_in_table"] ) ? $b["show_in_table"] : 90;
-                                            }
-                                            return $a_order <=> $b_order;
-                                        });
-                                        foreach ( $post_settings["fields"] as $field_key => $field_value ){
-                                            if ( ( isset( $field_value["show_in_table"] ) && $field_value["show_in_table"] ) ){
-                                                $columns[] = $field_key;
-                                            }
-                                        }
+                                        $columns = DT_Posts::get_default_list_column_order( $post_type );
                                     }
                                     $columns = array_unique( array_merge( $fields_to_show_in_table, $columns ) );
                                     if ( in_array( 'favorite', $columns ) ) {
@@ -654,7 +659,7 @@ dt_please_log_in();
                                         foreach ( $field_options[$field]["default"] as $option_key => $option_value ) :
                                             $label = $option_value["label"] ?? "";
                                             if ( empty( $label ) && ( $option_key === "" || $option_key === "none" ) ){
-                                                $label = __( "None Set", "disciple_tools" );
+                                                $label = esc_html__( "None Set", "disciple_tools" );
                                             }
                                             ?>
                                             <div class="key_select_options">

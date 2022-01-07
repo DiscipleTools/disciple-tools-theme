@@ -35,6 +35,12 @@ class Disciple_Tools_Users
         }
         return false;
     }
+
+    /**
+     * If the current user can view the user record and info
+     * @param int $user_id
+     * @return bool
+     */
     public static function can_view( int $user_id ){
         if ( get_current_user_id() === $user_id ){
             return true;
@@ -46,6 +52,62 @@ class Disciple_Tools_Users
 
     public static function current_user_can_upgrade_users(){
         return current_user_can( "list_users" ) || current_user_can( "promote_users" ) || current_user_can( "manage_dt" );
+    }
+
+    /**
+     * If the current user can see the queried user in a list
+     * @param int $user_id
+     * @return bool
+     */
+    public static function can_list( int $user_id ): bool{
+        // I can list myself
+        if ( get_current_user_id() === $user_id ){
+            return true;
+        }
+        // if I have permission to list all users
+        if ( current_user_can( "list_users" ) || current_user_can( "dt_list_users" ) || current_user_can( "promote_users" ) || current_user_can( "manage_dt" ) ){
+            return true;
+        }
+        //check if there is a record shared with both users
+        global $wpdb;
+        $has_a_user_connection = $wpdb->get_var( $wpdb->prepare("
+            SELECT user_id
+            FROM $wpdb->dt_share
+            WHERE post_id IN (
+            SELECT post_id
+                FROM $wpdb->dt_share
+                WHERE user_id = %d
+            )
+            AND user_id = %d
+            GROUP BY user_id
+        ", get_current_user_id(), esc_sql( $user_id ) ) );
+        if ( !is_wp_error( $has_a_user_connection ) && !empty( $has_a_user_connection ) ){
+            return true;
+        }
+        // I can list all dispatchers
+        $dispatchers = $wpdb->get_results( $wpdb->prepare( "
+            SELECT user_id FROM $wpdb->usermeta um
+            WHERE meta_key = '{$wpdb->prefix}capabilities'
+            AND user_id = %d
+            AND meta_value LIKE %s
+        ", esc_sql( $user_id ), '%dispatcher%' ), ARRAY_A );
+        if ( !is_wp_error( $dispatchers ) && !empty( $dispatchers ) ){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if a user exists and is part of the current site
+     * @param $user_id
+     * @return bool
+     */
+    public static function is_instance_user( $user_id ){
+        $user = get_user_by( "ID", $user_id );
+        if ( !empty( $user ) && ( is_user_member_of_blog( $user->ID ) || is_super_admin( $user->ID ) ) ){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -179,7 +241,7 @@ class Disciple_Tools_Users
         foreach ( $users as $user ) {
             if ( user_can( $user, "access_contacts" ) ) {
                 $u = [
-                    "name" => $user->display_name,
+                    "name" => wp_specialchars_decode( $user->display_name ),
                     "ID"   => $user->ID,
                     "avatar" => get_avatar_url( $user->ID, [ 'size' => '16' ] ),
                     "contact_id" => self::get_contact_for_user( $user->ID )
@@ -337,7 +399,7 @@ class Disciple_Tools_Users
             if ( is_wp_error( $user_id ) ){
                 return $user_id;
             }
-            if ( $password ) {
+            if ( $password && current_user_can( "create_users" ) ) {
                 wp_set_password( $password, $user_id );
             }
             $user = get_user_by( 'id', $user_id );
@@ -646,7 +708,7 @@ class Disciple_Tools_Users
             }
         }
         if ( !empty( $body["locale"] ) ){
-            return self::update_user_locale( $body["locale"], $user->ID );
+            return self::update_user_locale( $user->ID, $body["locale"] );
         }
         if ( !empty( $body["add_languages"] ) ){
             $languages = get_user_option( "user_languages", $user->ID ) ?: [];
@@ -686,6 +748,16 @@ class Disciple_Tools_Users
         if ( !empty( $body["email-preference"] ) ) {
             update_user_meta( $user->ID, 'email_preference', $body["email-preference"] );
         }
+        $dt_user_fields = dt_get_site_custom_lists( 'user_fields' );
+        foreach ( $dt_user_fields as $field ){
+            if ( isset( $body[$field["key"]] ) ){
+                update_user_meta( $user->ID, $field["key"], $body[$field["key"]] );
+            }
+        }
+        if ( isset( $body["description"] ) ) {
+            update_user_meta( $user->ID, 'description', $body["description"] );
+        }
+
         try {
             do_action( 'dt_update_user', $user, $body );
         } catch ( Exception $e ) {
@@ -749,10 +821,18 @@ class Disciple_Tools_Users
         $value = get_user_option( $preference_key );
         $hash = dt_create_unique_key();
 
+        $contact = self::get_contact_for_user( $user_id );
+
         if ( $value === '' || $value === false || $value === '0' ){
+            if ( isset( $contact ) ) {
+                update_post_meta( $contact, $preference_key, $hash );
+            }
             $status = update_user_option( $user_id, $preference_key, $hash );
             $action = $hash;
         } else {
+            if ( isset( $contact ) ) {
+                delete_post_meta( $contact, $preference_key );
+            }
             $status = delete_user_option( $user_id, $preference_key );
             $action = 'removed';
         }

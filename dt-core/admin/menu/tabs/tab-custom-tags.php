@@ -5,7 +5,7 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Disciple Tools
+ * Disciple.Tools
  *
  * @class      Disciple_Tools_Tab_Custom_Fields
  * @version    0.1.0

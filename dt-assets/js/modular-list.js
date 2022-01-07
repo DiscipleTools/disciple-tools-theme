@@ -20,6 +20,7 @@
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
   window.post_type_fields = list_settings.post_type_settings.fields
+  window.records_list = { posts:[], total:0 }
 
   const ALL_ID = '*'
   const ALL_WITHOUT_ID = '-*'
@@ -75,16 +76,7 @@
 
   //determine list columns
   if ( window.lodash.isEmpty(fields_to_show_in_table)){
-    window.lodash.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
-      if (window.lodash.get(field_settings, 'show_in_table')===true || window.lodash.get(field_settings, 'show_in_table') > 0) {
-        fields_to_show_in_table.push(field_key)
-      }
-    })
-    fields_to_show_in_table.sort((a,b)=>{
-      let a_order = list_settings.post_type_settings.fields[a].show_in_table ? ( list_settings.post_type_settings.fields[a].show_in_table === true ? 50 : list_settings.post_type_settings.fields[a].show_in_table ) : 200
-      let b_order = list_settings.post_type_settings.fields[b].show_in_table ? ( list_settings.post_type_settings.fields[b].show_in_table === true ? 50 : list_settings.post_type_settings.fields[b].show_in_table ) : 200
-      return a_order > b_order ? 1 : -1
-    })
+    fields_to_show_in_table = list_settings.fields_to_show_in_table
   }
 
   // get records on load and when a filter is clicked
@@ -489,8 +481,8 @@
               })
             } else if ( field_settings.type === "boolean" ){
               if (field_key === "favorite") {
-                values = [`<svg class='icon-star selected' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
-              } else {
+                values = [`<svg class='icon-star${field_value === true ? ' selected' : ''}' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
+              } else if ( field_value === true ) {
                 values = ['&check;']
               }
             }
@@ -601,13 +593,14 @@
       } else  {
         items = response.posts || []
       }
-      window.records_list = response // adds global access to current list for plugins
+      window.records_list.posts = items // adds global access to current list for plugins
+      window.records_list.total = response.total
 
       // save
       if (response.hasOwnProperty('posts') && response.posts.length > 0) {
         let records_list_ids_and_type = [];
 
-        $.each(response.posts, function(id, post_object ) {
+        $.each(items, function(id, post_object ) {
           records_list_ids_and_type.push({ ID: post_object.ID });
         });
 
@@ -1544,12 +1537,16 @@
 
   function bulk_edit_count() {
     let bulk_edit_total_checked = $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length;
-    let bulk_edit_submit_button_text = $('#bulk_edit_submit_text')
+    let bulk_edit_submit_button_text = $('.bulk_edit_submit_text')
 
     if (bulk_edit_total_checked == 0) {
-      bulk_edit_submit_button_text.text(`Update ${list_settings.post_type}`)
+      bulk_edit_submit_button_text.text(`${list_settings.translations.make_selections_below}`)
     } else {
-      bulk_edit_submit_button_text.text(`Update ${bulk_edit_total_checked} ${list_settings.post_type}`)
+      bulk_edit_submit_button_text.each(function( index ) {
+        let pretext = $( this ).data('pretext')
+        let posttext = $( this ).data('posttext')
+        $( this ).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`)
+      })
     }
   }
 
@@ -1635,8 +1632,6 @@
     window.location.reload();
   }
 
-
-
   let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`)
   if( bulk_assigned_to_input.length ) {
     $.typeahead({
@@ -1679,7 +1674,6 @@
       },
     });
   }
-
 
   /**
    * Bulk share
@@ -1729,7 +1723,6 @@
   /**
  * Bulk Typeahead
  */
-
   let field_settings = window.list_settings.post_type_settings.fields;
 
   $('#bulk_edit_picker .dt_typeahead').each((key, el)=>{
@@ -2025,6 +2018,66 @@
   })
 
 
+  /*****
+   * Bulk Send App
+   */
+  $('#bulk_send_app_controls').on('click', function(){
+    $('#bulk_send_app_picker').toggle();
+    $('#records-table').toggleClass('bulk_edit_on');
+  })
 
+  let bulk_send_app_button = $('#bulk_send_app_submit');
+  bulk_send_app_button.on('click', function(e) {
+    bulk_send_app();
+  });
+
+  function bulk_send_app() {
+
+    let note = $('#bulk_send_app_note').val()
+
+    let selected_input = jQuery('.bulk_send_app.dt-radio.button-group input:checked')
+    if ( selected_input.length < 1 ) {
+      $("#bulk_send_app_required_selection").show()
+      return
+    } else {
+      $("#bulk_send_app_required_selection").hide()
+    }
+
+    let root = selected_input.data('root')
+    let type = selected_input.data('type')
+
+    let queue =  [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        let postId = parseInt($(this).val());
+        queue.push( postId );
+      }
+    });
+
+    if ( queue.length < 1 ) {
+      $('#bulk_send_app_required_elements').show()
+      return;
+    } else {
+      $('#bulk_send_app_required_elements').hide()
+    }
+
+    $('#bulk_send_app_submit-spinner').addClass('active')
+
+    makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, note: note, post_ids: queue } )
+      .done( data => {
+        $('#bulk_send_app_submit-spinner').removeClass('active')
+        $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)
+        $('#bulk_edit_master_checkbox').prop("checked", false);
+        $('.bulk_edit_checkbox input').prop("checked", false);
+        bulk_edit_count()
+        console.log(data)
+        // window.location.reload();
+      })
+      .fail( e => {
+        $('#bulk_send_app_submit-spinner').removeClass('active')
+        $('#bulk_send_app_submit-message').html('Oops. Something went wrong! Check log.')
+        console.log( e )
+      })
+  }
 
 })(window.jQuery, window.list_settings, window.Foundation);

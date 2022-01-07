@@ -274,7 +274,7 @@ class Disciple_Tools_Users_Endpoints
      * POST user_location endpoint
      *
      * If no user_id is supplied, then the add request applies to logged in user. If request is made for non-logged in
-     * user, then the current user must have be a disciple tools admin.
+     * user, then the current user must have be a Disciple.Tools admin.
      *
      * {
             user_id: {user_id},

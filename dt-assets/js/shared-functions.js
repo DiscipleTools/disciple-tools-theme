@@ -185,6 +185,12 @@ window.API = {
       site_post_id: siteId,
     }),
 
+  transfer_contact_summary_update: (contactId, update) =>
+    makeRequestOnPosts("POST", "contacts/transfer/summary/send-update", {
+      contact_id: contactId,
+      update: update,
+    }),
+
   request_record_access: (post_type, postId, userId) =>
     makeRequestOnPosts("POST", `${post_type}/${postId}/request_record_access`, {
       user_id: userId,
@@ -250,14 +256,21 @@ jQuery(document).on("click", ".help-button-tile", function () {
     } else {
       $("#help-modal-field-description").empty()
     }
-    let html = ``;
+    let order = window.wpApiShare.tiles[section]["order"] || [];
     window.lodash.forOwn(window.post_type_fields, (field, field_key) => {
+      if ( field.tile === section && !order.includes(field_key)){
+        order.push(field_key);
+      }
+    })
+    let html = ``;
+    order.forEach( field_key=>{
+      let field = window.post_type_fields[field_key]
       if (
-        field.tile === section &&
-        (field.description || window.lodash.isObject(field.default)) &&
-        !field.hidden
+        field && field.tile === section && !field.hidden &&
+        (field.description || window.lodash.isObject(field.default))
       ) {
-        html += `<h2>${window.lodash.escape(field.name)}</h2>`;
+        let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_options&tab=custom-fields&post_type=${window.wpApiShare.post_type}&field-select=${window.wpApiShare.post_type}_${field_key}`
+        html += `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
         html += `<p>${window.lodash.escape(field.description)}</p>`;
 
         if (window.lodash.isObject(field.default)) {
@@ -272,7 +285,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
               list_html += `<li><img src="${window.lodash.escape(field_options.icon)}">`;
             } else {
               if ( first_field_option ) {
-                list_html + `<ul>`;
+                list_html += `<ul>`;
                 first_field_option = false;
               }
               list_html += `<li>`;
@@ -572,9 +585,8 @@ window.SHAREDFUNCTIONS = {
   },
   get_months_labels(format = 'long'){
     let langcode = window.SHAREDFUNCTIONS.get_langcode();
-    let now = new Date()
     const int_format = new Intl.DateTimeFormat(langcode, {month:format}).format;
-    return [...Array(12).keys()].map((month) => int_format(new Date( Date.UTC(2021, month+1, 1))));
+    return [...Array(12).keys()].map((month) => int_format(new Date( Date.UTC(2021, month, 1))));
   },
   formatDate(date, with_time = false) {
     let langcode = window.SHAREDFUNCTIONS.get_langcode();
@@ -687,34 +699,36 @@ window.SHAREDFUNCTIONS = {
   },
 };
 
+let date_ranges = {
+  "All time": [moment(0), moment().endOf("year")],
+  [moment().format("MMMM YYYY")]: [
+    moment().startOf("month"),
+    moment().endOf("month"),
+  ],
+  [moment().subtract(1, "month").format("MMMM YYYY")]: [
+    moment().subtract(1, "month").startOf("month"),
+    moment().subtract(1, "month").endOf("month"),
+  ],
+  [moment().format("YYYY")]: [
+    moment().startOf("year"),
+    moment().endOf("year"),
+  ],
+  [moment().subtract(1, "year").format("YYYY")]: [
+    moment().subtract(1, "year").startOf("year"),
+    moment().subtract(1, "year").endOf("year"),
+  ],
+  [moment().subtract(2, "year").format("YYYY")]: [
+    moment().subtract(2, "year").startOf("year"),
+    moment().subtract(2, "year").endOf("year"),
+  ],
+};
+
 window.METRICS = {
   setupDatePicker: function (endpoint_url, callback, startDate, endDate) {
     $(".date_range_picker").daterangepicker(
       {
         showDropdowns: true,
-        ranges: {
-          "All time": [moment(0), moment().endOf("year")],
-          [moment().format("MMMM YYYY")]: [
-            moment().startOf("month"),
-            moment().endOf("month"),
-          ],
-          [moment().subtract(1, "month").format("MMMM YYYY")]: [
-            moment().subtract(1, "month").startOf("month"),
-            moment().subtract(1, "month").endOf("month"),
-          ],
-          [moment().format("YYYY")]: [
-            moment().startOf("year"),
-            moment().endOf("year"),
-          ],
-          [moment().subtract(1, "year").format("YYYY")]: [
-            moment().subtract(1, "year").startOf("year"),
-            moment().subtract(1, "year").endOf("year"),
-          ],
-          [moment().subtract(2, "year").format("YYYY")]: [
-            moment().subtract(2, "year").startOf("year"),
-            moment().subtract(2, "year").endOf("year"),
-          ],
-        },
+        ranges: date_ranges,
         linkedCalendars: false,
         locale: {
           format: "YYYY-MM-DD",
@@ -755,5 +769,155 @@ window.METRICS = {
       }
     );
   },
-
+  setupDatePickerWithoutEndpoint: function (callback, startDate, endDate) {
+    $(".date_range_picker").daterangepicker(
+      {
+        showDropdowns: true,
+        ranges: date_ranges,
+        linkedCalendars: false,
+        locale: {
+          format: "YYYY-MM-DD",
+        },
+        startDate: startDate || moment(0),
+        endDate: endDate || moment().endOf("year").format("YYYY-MM-DD"),
+      },
+      function (start, end, label) {
+        callback(start, end, label);
+      }
+    );
+  }
 };
+
+/**
+ * use the class .copy_to_clipboard to copy the contents of data-value="" to the clipboard.
+ */
+jQuery(document).ready(function(){
+  jQuery('.copy_to_clipboard').on('click', function(){
+    let str = jQuery(this).data('value')
+    const el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    const selected =
+      document.getSelection().rangeCount > 0
+        ? document.getSelection().getRangeAt(0)
+        : false;
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    if (selected) {
+      document.getSelection().removeAllRanges();
+      document.getSelection().addRange(selected);
+    }
+    alert('Copied')
+  })
+})
+
+/**
+ * Magic Link Support
+ */
+window.sha256 = (ascii) => {
+  function rightRotate(value, amount) {
+    return (value>>>amount) | (value<<(32 - amount));
+  }
+
+  var mathPow = Math.pow;
+  var maxWord = mathPow(2, 32);
+  var lengthProperty = 'length'
+  var i, j; // Used as a counter across the whole file
+  var result = ''
+
+  var words = [];
+  var asciiBitLength = ascii[lengthProperty]*8;
+
+  //* caching results is optional - remove/add slash from front of this line to toggle
+  // Initial hash value: first 32 bits of the fractional parts of the square roots of the first 8 primes
+  // (we actually calculate the first 64, but extra values are just ignored)
+  var hash = sha256.h = sha256.h || [];
+  // Round constants: first 32 bits of the fractional parts of the cube roots of the first 64 primes
+  var k = sha256.k = sha256.k || [];
+  var primeCounter = k[lengthProperty];
+  /*/
+  var hash = [], k = [];
+  var primeCounter = 0;
+  //*/
+
+  var isComposite = {};
+  for (var candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (i = 0; i < 313; i += candidate) {
+        isComposite[i] = candidate;
+      }
+      hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
+      k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
+    }
+  }
+
+  ascii += '\x80' // Append Ƈ' bit (plus zero padding)
+  while (ascii[lengthProperty]%64 - 56) ascii += '\x00' // More zero padding
+  for (i = 0; i < ascii[lengthProperty]; i++) {
+    j = ascii.charCodeAt(i);
+    if (j>>8) return; // ASCII check: only accept characters in range 0-255
+    words[i>>2] |= j << ((3 - i)%4)*8;
+  }
+  words[words[lengthProperty]] = ((asciiBitLength/maxWord)|0);
+  words[words[lengthProperty]] = (asciiBitLength)
+
+  // process each chunk
+  for (j = 0; j < words[lengthProperty];) {
+    var w = words.slice(j, j += 16); // The message is expanded into 64 words as part of the iteration
+    var oldHash = hash;
+    // This is now the undefinedworking hash", often labelled as variables a...g
+    // (we have to truncate as well, otherwise extra entries at the end accumulate
+    hash = hash.slice(0, 8);
+
+    for (i = 0; i < 64; i++) {
+      var i2 = i + j;
+      // Expand the message into 64 words
+      // Used below if
+      var w15 = w[i - 15], w2 = w[i - 2];
+
+      // Iterate
+      var a = hash[0], e = hash[4];
+      var temp1 = hash[7]
+        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) // S1
+        + ((e&hash[5])^((~e)&hash[6])) // ch
+        + k[i]
+        // Expand the message schedule if needed
+        + (w[i] = (i < 16) ? w[i] : (
+            w[i - 16]
+            + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3)) // s0
+            + w[i - 7]
+            + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10)) // s1
+          )|0
+        );
+      // This is only used once, so *could* be moved below, but it only saves 4 bytes and makes things unreadble
+      var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) // S0
+        + ((a&hash[1])^(a&hash[2])^(hash[1]&hash[2])); // maj
+
+      hash = [(temp1 + temp2)|0].concat(hash); // We don't bother trimming off the extra ones, they're harmless as long as we're truncating when we do the slice()
+      hash[4] = (hash[4] + temp1)|0;
+    }
+
+    for (i = 0; i < 8; i++) {
+      hash[i] = (hash[i] + oldHash[i])|0;
+    }
+  }
+
+  for (i = 0; i < 8; i++) {
+    for (j = 3; j + 1; j--) {
+      var b = (hash[i]>>(j*8))&255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
+    }
+  }
+  return result;
+};
+window.make_magic_link = ( site, root, type, hash, action ) => {
+  let link = site + '/' + root + '/' + type + '/' + hash + '/'
+  if ( action ) {
+    link = link + action
+  }
+  return link
+}

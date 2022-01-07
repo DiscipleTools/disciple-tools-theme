@@ -114,6 +114,24 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+
+        if ( isset( $fields["additional_meta"] ) ){
+            if ( isset( $fields["additional_meta"]["created_from"], $fields["additional_meta"]["add_connection"] ) ){
+                $created_from_post_type = get_post_type( $fields["additional_meta"]["created_from"] );
+                $created_from_field_settings = self::get_post_field_settings( $created_from_post_type );
+                if ( isset( $created_from_field_settings[$fields["additional_meta"]["add_connection"]]["p2p_key"] ) ){
+                    $connection_field = $fields["additional_meta"]["add_connection"];
+                    foreach ( $post_settings["fields"] as $field_key => $field_options ){
+                        if ( $created_from_field_settings[$fields["additional_meta"]["add_connection"]]["p2p_key"] === ( $field_options["p2p_key"] ?? "" ) && $field_key !== $fields["additional_meta"]["add_connection"] ){
+                            $connection_field = $field_key;
+                        }
+                    }
+                    $fields[$connection_field] = [ "values" => [ [ "value" => $fields["additional_meta"]["created_from"] ] ] ];
+                }
+            }
+            unset( $fields["additional_meta"] );
+        }
+
         $allowed_fields = apply_filters( "dt_post_create_allow_fields", [], $post_type );
         $bad_fields = self::check_for_invalid_post_fields( $post_settings, $fields, $allowed_fields );
         if ( !empty( $bad_fields ) ) {
@@ -463,12 +481,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !$wp_post ){
             return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 400 ] );
         }
-        $fields = [];
 
         /**
          * add connections
          */
-        $p = [ (array) $wp_post ];
+        $p = [ [ "ID" => $post_id ] ];
         self::get_all_connected_fields_on_list( $field_settings, $p );
         $fields = $p[0];
         $fields["ID"] = $post_id;
@@ -1021,7 +1038,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $c = [
                 "comment_ID" => $comment->comment_ID,
-                "comment_author" => !empty( $display_name ) ? $display_name : $comment->comment_author,
+                "comment_author" => !empty( $display_name ) ? $display_name : wp_specialchars_decode( $comment->comment_author ),
                 "comment_author_email" => $comment->comment_author_email,
                 "comment_date" => $comment->comment_date,
                 "comment_date_gmt" => $comment->comment_date_gmt,
@@ -1113,7 +1130,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $activity_simple[] = [
                     "meta_key" => $a->meta_key,
                     "gravatar" => isset( $a->gravatar ) ? $a->gravatar : "",
-                    "name" => isset( $a->name ) ? $a->name : __( "D.T System", 'disciple_tools' ),
+                    "name" => isset( $a->name ) ? wp_specialchars_decode( $a->name ) : __( "D.T System", 'disciple_tools' ),
                     "object_note" => $a->object_note,
                     "hist_time" => $a->hist_time,
                     "meta_id" => $a->meta_id,
@@ -1201,7 +1218,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( is_wp_error( $display_name ) ) {
                 $display_name = 'Not Found';
             }
-            $share['display_name'] = $display_name;
+            $share['display_name'] = wp_specialchars_decode( $display_name );
             $shared_with_list[] = $share;
         }
 
@@ -1283,6 +1300,13 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
+        }
+        if ( $check_permissions && !Disciple_Tools_Users::can_list( $user_id ) ){
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
+        }
+        // if the user we are sharing with does not existing or is not on this subsite
+        if ( !Disciple_Tools_Users::is_instance_user( $user_id ) ){
+            return false;
         }
 
         $table = $wpdb->dt_share;
@@ -1522,6 +1546,28 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $fields;
     }
 
+    public static function get_default_list_column_order( $post_type ){
+        $fields = self::get_post_field_settings( $post_type );
+        $columns = [];
+        uasort( $fields, function( $a, $b ){
+            $a_order = 0;
+            if ( isset( $a["show_in_table"] ) ){
+                $a_order = is_numeric( $a["show_in_table"] ) ? $a["show_in_table"] : 90;
+            }
+            $b_order = 0;
+            if ( isset( $b["show_in_table"] ) ){
+                $b_order = is_numeric( $b["show_in_table"] ) ? $b["show_in_table"] : 90;
+            }
+            return $a_order <=> $b_order;
+        });
+        foreach ( $fields as $field_key => $field_value ){
+            if ( ( isset( $field_value["show_in_table"] ) && $field_value["show_in_table"] ) ){
+                $columns[] = $field_key;
+            }
+        }
+        return $columns;
+    }
+
 
 
     public static function get_post_tiles( $post_type, $return_cache = true ){
@@ -1552,6 +1598,9 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $tile_options[$post_type] as $tile_key => &$tile_value ){
             if ( !isset( $tile_value["tile_priority"] ) ){
                 $tile_options[$post_type][$tile_key]["tile_priority"] = ( array_search( $tile_key, array_keys( $tile_options[$post_type] ) ) + 1 ) * 10;
+            }
+            if ( isset( $tile_value["order"] ) ){
+                $tile_value["order"] = array_values( $tile_value["order"] );
             }
         }
 

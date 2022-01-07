@@ -37,13 +37,13 @@ get_header(); ?>
                 <div class="grid-x">
                     <div class="cell">
                         <div class="grid-x grid-margin-x " style="border-bottom: 1px solid #ccc;">
-                            <div class="small-4 medium-5 cell">
+                            <div class="small-4 medium-3 cell">
                                 <div class="grid-x align-middle">
                                     <span class="badge alert notification-count" style="display:none;">&nbsp;</span>
                                     <div class="new-notification-label"><strong><?php esc_html_e( 'New', 'disciple_tools' )?></strong></div>
                                 </div>
                             </div>
-                            <div class="small-4 medium-2 cell">
+                            <div class="small-4 medium-6 cell">
                                 <div class="expanded small button-group">
                                     <button id="all" type="button"
                                             onclick="toggle_buttons('all'); get_notifications( all = true, true, );"
@@ -53,9 +53,15 @@ get_header(); ?>
                                             onclick="toggle_buttons('new'); get_notifications( all = false, true );"
                                             class="button"><?php esc_html_e( 'Unread', 'disciple_tools' )?>
                                     </button>
+                                    <div style="margin-inline-start:5px;margin-inline-end:5px;margin-top:2px;">
+                                        <span
+                                            style="font-size: small;vertical-align: bottom;"><?php esc_html_e( 'Mentions', 'disciple_tools' ) ?>:</span>
+                                        <input type="checkbox" id="mentions" class="dt-switch"/>
+                                        <label class="dt-switch" for="mentions" style="vertical-align: middle;"></label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="small-4 medium-5 cell" style="text-align:right;">
+                            <div class="small-4 medium-3 cell" style="text-align:right;">
                                 <span class="hide-for-small-only">
                                     <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark all as read', 'disciple_tools' ) ?></a>  -
                                     <a href="<?php echo esc_url( home_url( '/' ) ); ?>settings/#notifications">

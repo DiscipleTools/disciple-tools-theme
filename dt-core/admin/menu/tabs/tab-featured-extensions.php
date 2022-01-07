@@ -282,7 +282,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         foreach ( $array as $key ) {
             if ( gettype( $key ) != 'array' ) {
                 $key = " " . $key;
-                if ( strpos( $key, $find ) !== false ) {
+                if ( strpos( $key, $find . "/" ) !== false ) {
+                    return $key;
+                } elseif ( strpos( $key, $find . ".php" ) !== false ){
                     return $key;
                 }
             }
