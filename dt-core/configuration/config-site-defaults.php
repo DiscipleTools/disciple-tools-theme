@@ -161,6 +161,14 @@ function dt_get_option( string $name ) {
             return $subject_base;
             break;
 
+        case 'dt_email_base_address':
+            $address_base = get_option( "dt_email_base_address", "" );
+            if ( empty( $address_base ) ){
+                update_option( "dt_email_base_address", "" );
+            }
+            return $address_base;
+            break;
+
         case 'group_type':
             $site_options = dt_get_option( "dt_site_custom_lists" );
             return $site_options["group_type"];
