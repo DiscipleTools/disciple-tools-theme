@@ -70,12 +70,17 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
     }
     $is_sent = true;
     /**
-     * Determine email address to be sent from. Use default, if
+     * Determine email address and name to be sent from. Use defaults, if
      * none available.
      */
     if ( ! empty( dt_get_option( "dt_email_base_address" ) ) ) {
         add_filter( 'wp_mail_from', function ( $email ) {
             return dt_get_option( "dt_email_base_address" );
+        } );
+    }
+    if ( ! empty( dt_get_option( "dt_email_base_name" ) ) ) {
+        add_filter( 'wp_mail_from_name', function ( $name ) {
+            return dt_get_option( "dt_email_base_name" );
         } );
     }
     /**
