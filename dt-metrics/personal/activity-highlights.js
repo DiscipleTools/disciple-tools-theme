@@ -211,7 +211,11 @@ function makeSentence(data) {
 
 function makeBaptismsSection(data) {
   if (empty(data)) {
-    return none()
+    return `
+    <div class="left-margin">
+      ${none()}
+    </div>
+    `
   }
 
   const { date, contact } = SHAREDFUNCTIONS.escapeObject( dtMetricsActivity.translations )
@@ -244,7 +248,11 @@ function makeBaptismsSection(data) {
 
 function makeBaptismsByOthersSection(data) {
   if (empty(data)) {
-    return none()
+    return `
+    <div class="left-margin">
+      ${none()}
+    </div>
+    `
   }
 
   const { date, contact, baptized_by } = SHAREDFUNCTIONS.escapeObject( dtMetricsActivity.translations )
@@ -299,6 +307,7 @@ function makeCommentsSection(data) {
   if (empty(data)) {
     return none()
   }
+
   const { group, contact } = dtMetricsActivity.translations
 
   const postTypeLabels = {
