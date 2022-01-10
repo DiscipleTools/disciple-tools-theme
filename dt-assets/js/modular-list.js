@@ -418,6 +418,9 @@
 
         if (label.id && label.field && label.name) {
           html += `<span class="current-filter-close">x</span>`;
+
+        } else {
+          html += `&nbsp;`;
         }
 
         html += `</span>`;
@@ -429,10 +432,10 @@
 
           query[query_key].forEach(q => {
 
-            html += `<span class="current-filter ${window.lodash.escape( query_key )}">${window.lodash.escape( q )}</span>`
+            html += `<span class="current-filter ${window.lodash.escape( query_key )}">${window.lodash.escape( q )}&nbsp;</span>`
           })
         } else {
-          html += `<span class="current-filter search">${window.lodash.escape( query[query_key] )}</span>`
+          html += `<span class="current-filter search">${window.lodash.escape( query[query_key] )}&nbsp;</span>`
         }
       })
     }
@@ -452,7 +455,7 @@
       }
       html += `<span class="current-filter" data-id="sort">
           ${window.lodash.escape( list_settings.translations.sorting_by )}: ${window.lodash.escape( sortLabel )}
-      </span>`
+      &nbsp;</span>`
     }
     currentFilters.html(html)
   }
