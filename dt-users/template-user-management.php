@@ -18,9 +18,9 @@ function fetch_user_locations( $user_id ): array {
     SELECT user_meta.meta_value id, loca_grid.name
     FROM $wpdb->usermeta user_meta
     INNER JOIN $wpdb->dt_location_grid loca_grid ON user_meta.meta_value = loca_grid.grid_id
-    WHERE user_meta.user_id = %d AND user_meta.meta_key = 'wp_location_grid'
+    WHERE user_meta.user_id = %d AND user_meta.meta_key = %s
     GROUP BY user_meta.meta_value
-    ", $user_id ), ARRAY_A );
+    ", $user_id, $wpdb->prefix . 'location_grid' ), ARRAY_A );
 }
 
 ?>
