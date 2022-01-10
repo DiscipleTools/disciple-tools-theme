@@ -291,7 +291,7 @@ function fetch_user_locations( $user_id ): array {
                                             <span style="display: inline-block;"><?php esc_html_e( 'Languages you are comfortable speaking', 'disciple_tools' )?></span>
                                             <span id="languages-spinner" style="display: inline-block" class="loading-spinner"></span>
                                         </h4>
-                                        <div class="small button-group" style="display: inline-block">
+                                        <div class="small button-group" style="display: inline-block" id="languages_multi_select">
                                             <?php foreach ( $contact_fields["languages"]["default"] as $option_key => $option_value ): ?>
                                                 <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( "languages" ) ?>"
                                                         class="dt_multi_select empty-select-button select-button button ">
