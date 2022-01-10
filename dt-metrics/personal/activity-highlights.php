@@ -62,11 +62,10 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                     'baptism_by_me' => __( "Contacts I Baptized", 'disciple_tools' ),
                     'field_others_changed' => __( "%1\$s changed by others on my %2\$s", 'disciple_tools' ),
                     'baptism_by_others' => __( "Baptisms by others on my contacts", 'disciple_tools' ),
-                    'comments_I_liked' => __( "Comments I Liked", 'disciple_tools' ),
+                    'comments_I_liked' => __( "Comments I Reacted To", 'disciple_tools' ),
                     'comments_I_posted' => __( "Comments I Posted", 'disciple_tools' ),
                     'date' => __( "Date", 'disciple_tools' ),
                     'baptized_by' => __( "Baptized by", 'disciple_tools' ),
-                    'contact' => __( "Contact", 'disciple_tools' ),
                 ],
             ]
         );
