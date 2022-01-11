@@ -891,9 +891,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                     'sort' => 'overall_status',
                 ],
                 "labels" => [
-                    [ "name" => __( "My Follow-Up", 'disciple_tools' ), ],
-                    [ "name" => __( "Assigned to me", 'disciple_tools' ) ],
-                    [ "name" => __( "Sub-assigned to me", 'disciple_tools' ) ],
+                    [ "name" => __( "My Follow-Up", 'disciple_tools' ), "field" => "combine", "id" => "subassigned" ],
+                    [ "name" => __( "Assigned to me", 'disciple_tools' ), "field" => "assigned_to", "id" => "me" ],
+                    [ "name" => __( "Sub-assigned to me", 'disciple_tools' ), "field" => "subassigned", "id" => "me" ],
                 ],
                 "count" => $total_my,
             ];
@@ -913,8 +913,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                         ],
                         "labels" => [
                             [ "name" => $status_value["label"] ],
-                            [ "name" => __( "Assigned to me", 'disciple_tools' ) ],
-                            [ "name" => __( "Sub-assigned to me", 'disciple_tools' ) ],
+                            [ "name" => __( "Assigned to me", 'disciple_tools' ), "field" => "assigned_to", "id" => "me" ],
+                            [ "name" => __( "Sub-assigned to me", 'disciple_tools' ), "field" => "subassigned", "id" => "me" ],
                         ],
                         "count" => $status_counts[$status_key],
                         'subfilter' => 1
@@ -936,8 +936,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                                 ],
                                 "labels" => [
                                     [ "name" => $fields["requires_update"]["name"] ],
-                                    [ "name" => __( "Assigned to me", 'disciple_tools' ) ],
-                                    [ "name" => __( "Sub-assigned to me", 'disciple_tools' ) ],
+                                    [ "name" => __( "Assigned to me", 'disciple_tools' ), "field" => "assigned_to", "id" => "me" ],
+                                    [ "name" => __( "Sub-assigned to me", 'disciple_tools' ), "field" => "subassigned", "id" => "me" ],
                                 ],
                                 "count" => $update_needed,
                                 'subfilter' => 2
@@ -960,8 +960,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                                     ],
                                     "labels" => [
                                         [ "name" => $seeker_path_value["label"] ],
-                                        [ "name" => __( "Assigned to me", 'disciple_tools' ) ],
-                                        [ "name" => __( "Sub-assigned to me", 'disciple_tools' ) ],
+                                        [ "name" => __( "Assigned to me", 'disciple_tools' ), "field" => "assigned_to", "id" => "me" ],
+                                        [ "name" => __( "Sub-assigned to me", 'disciple_tools' ), "field" => "subassigned", "id" => "me" ],
                                     ],
                                     "count" => $active_counts[$seeker_path_key],
                                     'subfilter' => 2
@@ -1087,7 +1087,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 ],
                 'labels' => [
                     [
-                        'id' => 'my_subassigned',
+                        'id' => 'me',
                         'name' => 'Subassigned to me',
                         'field' => 'subassigned',
                     ],
