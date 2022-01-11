@@ -405,7 +405,8 @@ jQuery(function($) {
         },
         onResult: function (node, query, result, resultCount) {
           let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-          $(`#${field}-result-container`).html(text);
+          //adding the result text moves the input. timeout keeps the dropdown from closing as the user clicks and cursor moves away from the input.
+          setTimeout(()=>{$(`#${field}-result-container`).html(text);}, 200);
         },
         onHideLayout: function () {
           $(`#${field}-result-container`).html("");
