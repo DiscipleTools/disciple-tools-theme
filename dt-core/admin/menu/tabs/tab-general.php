@@ -232,7 +232,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td>
                         <label
-                            for="email_address"><?php esc_html_e( sprintf( "Specify notification from email address. Leave blank to use default (%s)", apply_filters( 'wp_mail_from', '' ) ), 'disciple_tools' ) ?></label>
+                            for="email_address"><?php echo esc_html( sprintf( "Specify notification from email address. Leave blank to use default (%s)", apply_filters( 'wp_mail_from', '' ) ) ) ?></label>
                     </td>
                     <td>
                         <input name="email_address" id="email_address"
@@ -242,7 +242,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td>
                         <label
-                            for="email_name"><?php esc_html_e( sprintf( "Specify notification from name. Leave blank to use default (%s)", apply_filters( 'wp_mail_from_name', '' ) ), 'disciple_tools' ) ?></label>
+                            for="email_name"><?php echo esc_html( sprintf( "Specify notification from name. Leave blank to use default (%s)", apply_filters( 'wp_mail_from_name', '' ) ) ) ?></label>
                     </td>
                     <td>
                         <input name="email_name" id="email_name"
