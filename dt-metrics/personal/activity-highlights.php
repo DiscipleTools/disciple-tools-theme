@@ -24,7 +24,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
 
         $url_path = dt_get_url_path();
-        if ( "metrics/$this->base_slug/$this->slug" === $url_path || "metrics" === $url_path ) {
+        if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 10 );
         }
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
