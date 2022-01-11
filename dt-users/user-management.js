@@ -368,6 +368,8 @@ jQuery(document).ready(function($) {
 
     $('.users-spinner').addClass("active")
 
+    $('#languages_multi_select .dt_multi_select').addClass('empty-select-button').removeClass('selected-select-button');
+
     // load spinners
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
     $("#user_name").html(spinner)

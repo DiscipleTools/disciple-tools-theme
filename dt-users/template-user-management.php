@@ -18,9 +18,9 @@ function fetch_user_locations( $user_id ): array {
     SELECT user_meta.meta_value id, loca_grid.name
     FROM $wpdb->usermeta user_meta
     INNER JOIN $wpdb->dt_location_grid loca_grid ON user_meta.meta_value = loca_grid.grid_id
-    WHERE user_meta.user_id = %d AND user_meta.meta_key = 'wp_location_grid'
+    WHERE user_meta.user_id = %d AND user_meta.meta_key = %s
     GROUP BY user_meta.meta_value
-    ", $user_id ), ARRAY_A );
+    ", $user_id, $wpdb->prefix . 'location_grid' ), ARRAY_A );
 }
 
 ?>
@@ -291,7 +291,7 @@ function fetch_user_locations( $user_id ): array {
                                             <span style="display: inline-block;"><?php esc_html_e( 'Languages you are comfortable speaking', 'disciple_tools' )?></span>
                                             <span id="languages-spinner" style="display: inline-block" class="loading-spinner"></span>
                                         </h4>
-                                        <div class="small button-group" style="display: inline-block">
+                                        <div class="small button-group" style="display: inline-block" id="languages_multi_select">
                                             <?php foreach ( $contact_fields["languages"]["default"] as $option_key => $option_value ): ?>
                                                 <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( "languages" ) ?>"
                                                         class="dt_multi_select empty-select-button select-button button ">

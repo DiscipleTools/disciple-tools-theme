@@ -376,7 +376,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 ],
                 'labels' => [
                     [
-                        'id' => 'my_coached',
+                        'id' => 'me',
                         'name' => __( 'Coached by me', 'disciple_tools' ),
                         'field' => 'coached_by',
                     ],
