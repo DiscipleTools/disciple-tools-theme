@@ -211,15 +211,26 @@ jQuery(document).ready(function($) {
     let id = $(this).data('id');
     makeRequestOnPosts('POST', `${post_type}/${post_id}/dismiss-duplicates`, {'id':id}).then(resp=>{
       post.duplicate_data = resp;
-      loadDuplicates()
+      loadDuplicates();
+      adjust_duplicates_detected_notice_display(post.ID);
     })
   })
   $('#dismiss_all_duplicates').on( 'click', function () {
     makeRequestOnPosts('POST', `${post_type}/${post.ID}/dismiss-duplicates`, {'id':'all'}).then(resp=> {
       post.duplicate_data = resp;
-      loadDuplicates()
+      loadDuplicates();
+      adjust_duplicates_detected_notice_display(post.ID);
     })
   })
+
+  function adjust_duplicates_detected_notice_display(orig_post_id) {
+    window.makeRequestOnPosts("GET", `contacts/${orig_post_id}/duplicates`).then(response => {
+      if (response.ids && response.ids.length === 0) {
+        $('#duplicates-detected-notice').hide();
+      }
+    });
+  }
+
   //open duplicates modal if 'open-duplicates' param is is url
   let open_duplicates = window.SHAREDFUNCTIONS.get_url_param("open-duplicates")
   if ( open_duplicates === '1' ){
