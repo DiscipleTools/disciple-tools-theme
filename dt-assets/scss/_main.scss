@@ -875,6 +875,10 @@ button.loader {
     opacity: 0.5;
 }
 
+.typeahead__cancel-button {
+    padding: 4px 4px 4px 4px !important;
+}
+
 html[dir='rtl'] {
     .typeahead__label {
         padding-left: 0;
