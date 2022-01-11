@@ -125,15 +125,15 @@ function buildHighlights(data, label = "all time") {
 
       </div>
       <div class="cell large-6">
-        <h4>${comments_I_posted}</h4>
-          <div class="left-margin">
-            ${makeCommentsSection(comments_posted)}
-          </div>
         <h4>${comments_I_liked}</h4>
-          <div class="left-margin">
-            ${makeCommentFilterSelect()}
-            ${makeCommentsSection(comments_liked)}
-          </div>
+        <div class="left-margin">
+          ${makeCommentFilterSelect()}
+          ${makeCommentsSection(comments_liked)}
+        </div>
+        <h4>${comments_I_posted}</h4>
+        <div class="left-margin">
+          ${makeCommentsSection(comments_posted)}
+        </div>
       </div>
     </div>
     `)

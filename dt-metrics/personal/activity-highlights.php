@@ -460,6 +460,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                             . ( $to ? " AND comment_date <= %s " : "" )
                             . "
             ORDER BY c.comment_date desc
+            LIMIT 1000
             ", $prepare_args);
 
         $rows = $wpdb->get_results( $sql, ARRAY_A );
@@ -499,6 +500,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                             . ( $to ? " AND comment_date <= %s " : "" )
                             . "
             ORDER BY c.comment_date desc
+            LIMIT 1000
             ", $prepare_args);
 
         $rows = $wpdb->get_results( $sql, ARRAY_A );
