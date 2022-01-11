@@ -245,16 +245,24 @@ dt_please_log_in();
                                 <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ) ?>"/>
                             </button>
                         </span>
-                        <?php if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) : ?>
-                            <span style="display:inline-block">
-                                <button class="button clear" id="bulk_send_app_controls" style="margin:0; padding:0">
-                                    <?php esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
-                                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ) ?>"/>
-                                </button>
-                            </span>
-                        <?php endif; ?>
+
+                        <?php
+                        /**
+                         * Adds link to the end top list
+                         * @see /dt-reports/bulk-extension for example of using this action
+                         */
+                        do_action( 'dt_post_bulk_list_link', $post_type, $post_settings, $dt_magic_apps );
+                        ?>
 
                     </div>
+                    <?php
+                    /**
+                     * Adds link to the end top list
+                     * @see /dt-reports/bulk-extension for example of using this action
+                     */
+                    do_action( 'dt_post_bulk_list_section', $post_type, $post_settings, $dt_magic_apps );
+                    ?>
+
                     <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
                         <?php
@@ -493,54 +501,6 @@ dt_please_log_in();
                         <span id="bulk_edit_submit-spinner" style="display: inline-block;" class="loading-spinner"></span>
                         </button>
                     </div>
-
-                    <!-- begin bulk send app -->
-                    <?php if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) :  ?>
-                        <div id="bulk_send_app_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
-                            <p style="font-weight:bold"><?php
-                                echo sprintf( esc_html__( 'Select all the %1$s to whom you want to send app links.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
-                            <div class="grid-x grid-margin-x">
-                                <div class="cell">
-                                    <label for="bulk_send_app_note"><?php echo esc_html__( 'Add optional greeting', 'disciple_tools' ); ?></label>
-                                    <input type="text" id="bulk_send_app_note" placeholder="<?php echo esc_html__( 'Add short greeting to be added above the app link.', 'disciple_tools' ); ?>" />
-                                </div>
-                                <div class="cell">
-                                    <label for="bulk_send_app_required_selection"><?php echo esc_html__( 'Select app to email', 'disciple_tools' ); ?></label>
-                                    <span id="bulk_send_app_required_selection" style="display:none;color:red;"><?php echo esc_html__( 'You must select an app', 'disciple_tools' ); ?></span>
-                                    <div class="bulk_send_app dt-radio button-group toggle ">
-                                        <?php
-                                        foreach ( $dt_magic_apps as $root ) {
-                                            foreach ( $root as $type ) {
-                                                if ( isset( $type['show_bulk_send'] ) && $type['show_bulk_send'] ) {
-                                                    ?>
-                                                    <input type="radio" id="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>" data-root="<?php echo esc_attr( $type['root'] ) ?>" data-type="<?php echo esc_attr( $type['type'] ) ?>" name="r-group">
-                                                    <label class="button" for="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>"><?php echo esc_html( $type['name'] ) ?></label>
-                                                    <?php
-                                                }
-                                            }
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="cell">
-                                    <label for="bulk_send_app_required_elements"><?php echo esc_html__( 'Send to selected records', 'disciple_tools' ); ?></label>
-                                    <span id="bulk_send_app_required_elements" style="display:none;color:red;"><?php echo esc_html__( 'You must select at least one record', 'disciple_tools' ); ?></span>
-                                    <div>
-                                    <button class="button dt-green" id="bulk_send_app_submit">
-                                        <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Send', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html__( 'Links', 'disciple_tools' ); ?>" style="text-transform:capitalize;">
-                                            <?php echo esc_html( __( "Make Selections Below", "disciple_tools" ) ); ?>
-                                        </span>
-                                        <span id="bulk_send_app_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
-                                    </button>
-
-                                    </div>
-                                    <span id="bulk_send_app_submit-message"></span>
-                                </div>
-                            </div>
-
-                        </div>
-                     <?php endif; ?>
-                    <!-- end bulk send app -->
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
