@@ -168,7 +168,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $rows = $wpdb->get_results( $sql, ARRAY_A );
         // phpcs:enable
 
-        $records_created = empty($rows) ? 0 : $rows[0]['records_created'];
+        $records_created = empty( $rows ) ? 0 : $rows[0]['records_created'];
 
         return [
             'field_label' => $post_settings['label_plural'],
@@ -210,7 +210,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         if ( !empty( $rows ) ) {
             foreach ( $rows as $i => $row ) {
                 $rows[$i] = array_merge([
-                    'label' => key_exists($row['quick_button'], $contact_field_settings) ? $contact_field_settings[$row['quick_button']]['name'] : '--',
+                    'label' => key_exists( $row['quick_button'], $contact_field_settings ) ? $contact_field_settings[$row['quick_button']]['name'] : '--',
                 ], $row);
             }
         }
