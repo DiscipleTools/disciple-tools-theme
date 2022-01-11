@@ -162,8 +162,8 @@ function dt_print_details_bar(
         </nav>
     </div>
 
-    <div data-sticky-container class="show-for-small-only details-second-bar" style="z-index: 9">
     <?php if ( $comment_button || $share_button ): ?>
+    <div data-sticky-container class="show-for-small-only details-second-bar" style="z-index: 9">
     <nav role="navigation"
         data-sticky data-options="marginTop:0;" data-sticky-on="small" data-top-anchor="95" style="width:100%; border-color: <?php echo esc_html( $type_color ); ?>"
         class="second-bar" id="second-bar-small">

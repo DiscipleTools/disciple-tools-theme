@@ -605,6 +605,9 @@ window.SHAREDFUNCTIONS = {
       options.month = "short"
     }
 
+    if ( isNaN(date) ){
+      return false
+    }
     const formattedDate = new Intl.DateTimeFormat(langcode, options).format(
       date * 1000
     );
