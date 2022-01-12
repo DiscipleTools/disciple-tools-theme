@@ -232,7 +232,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td>
                         <label
-                            for="email_address"><?php echo esc_html( sprintf( "Specify notification from email address. Leave blank to use default (%s)", apply_filters( 'wp_mail_from', '' ) ) ) ?></label>
+                            for="email_address"><?php echo esc_html( sprintf( "Specify notification from email address. Leave blank to use default (%s)", self::default_email_address() ) ) ?></label>
                     </td>
                     <td>
                         <input name="email_address" id="email_address"
@@ -242,7 +242,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td>
                         <label
-                            for="email_name"><?php echo esc_html( sprintf( "Specify notification from name. Leave blank to use default (%s)", apply_filters( 'wp_mail_from_name', '' ) ) ) ?></label>
+                            for="email_name"><?php echo esc_html( sprintf( "Specify notification from name. Leave blank to use default (%s)", self::default_email_name() ) ) ?></label>
                     </td>
                     <td>
                         <input name="email_name" id="email_name"
@@ -267,6 +267,33 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                                class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button></span>
         </form>
         <?php
+    }
+
+    private function default_email_address(): string {
+        $default_addr = apply_filters( 'wp_mail_from', '' );
+
+        if ( empty( $default_addr ) ) {
+
+            // Get the site domain and get rid of www.
+            $sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
+            if ( 'www.' === substr( $sitename, 0, 4 ) ) {
+                $sitename = substr( $sitename, 4 );
+            }
+
+            $default_addr = 'wordpress@' . $sitename;
+        }
+
+        return $default_addr;
+    }
+
+    private function default_email_name(): string {
+        $default_name = apply_filters( 'wp_mail_from_name', '' );
+
+        if ( empty( $default_name ) ) {
+            $default_name = 'WordPress';
+        }
+
+        return $default_name;
     }
 
     /**
