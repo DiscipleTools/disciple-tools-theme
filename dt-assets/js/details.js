@@ -1041,15 +1041,17 @@ jQuery(document).ready(function($) {
         let WhatsAppLink = `https://api.whatsapp.com/send?phone=${phoneNumber.replace(/^((\+)|(00))/,"")}`;
         let SignalLink = `https://signal.me/#p/${phoneNumber}`;
         let iMessageLink = `iMessage://${phoneNumber}`
+        let ViberLink = `viber://chat?number=${phoneNumber}`
 
         let openWithDiv = `<div class=phone-open-with-container>
         <strong>Open With...</strong>
           <ul>
-            <li><a href="${PhoneLink}" title="Open With Telephone" target="_blank" class="phone-open-with-link">Phone</a></li>
-            <li><a href="${WhatsAppLink}" title="Open With Whatsapp" target="_blank" class="phone-open-with-link">Whatsapp</a></li>
-            <li><a href="${SignalLink}" title="Open With Signal" target="_blank" class="phone-open-with-link">Signal</a></li>
-            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="${iMessageLink}" title="Open With Signal" target="_blank" class="phone-open-with-link">iMessage</a></li>` : ""
+            <li><a href="${PhoneLink}" title="Open With Telephone" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/phone.svg"/> Phone</a></li>
+            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="${iMessageLink}" title="Open With Signal" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/imessage.svg"/> iMessage</a></li>` : ""
             }
+            <li><a href="${SignalLink}" title="Open With Signal" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/signal.svg"/> Signal</a></li>
+            <li></li><a href="${ViberLink}" title="Open With Signal" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/viber.svg"/> Viber</a></li>
+            <li><a href="${WhatsAppLink}" title="Open With Whatsapp" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/whatsapp.svg"/> Whatsapp</a></li>
           </ul>
         </div>`
 
