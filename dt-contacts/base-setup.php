@@ -125,8 +125,10 @@ class DT_Contacts_Base {
         $expected_roles["strategist"]["permissions"]['view_project_metrics'] = true;
         $expected_roles["strategist"]["permissions"]['access_disciple_tools'] = true;
 
-        $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
-        $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );
+        $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["administrator"]["permissions"], $multiplier_permissions );
+        $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["administrator"]["permissions"], $user_management_permissions );
+        $expected_roles["administrator"]["permissions"]['manage_dt'] = true;
+        $expected_roles["administrator"]["permissions"]['view_project_metrics'] = true;
         $expected_roles["administrator"]["permissions"]["dt_all_admin_contacts"] = true;
 
         return $expected_roles;
