@@ -620,13 +620,16 @@ class DT_Duplicate_Checker_And_Merging {
         $field_settings = DT_Posts::get_post_field_settings( "contacts" );
         $return = [];
 
+        $types_to_search = dt_array_to_sql( apply_filters( "dt_duplicates_find_types", [ "access" ] ) );
+
         //get all the most recently modified access contacts
         global $wpdb;
+        //phpcs:disable
         $recent_contacts = $wpdb->get_results( $wpdb->prepare( "
             SELECT posts.post_title, pm.meta_value as last_modified, posts.ID, posts.post_date
             FROM $wpdb->posts posts
             INNER JOIN $wpdb->postmeta pm ON ( posts.ID = pm.post_id and pm.meta_key = 'last_modified' )
-            INNER JOIN $wpdb->postmeta type ON ( posts.ID = type.post_id and type.meta_key = 'type' AND type.meta_value = 'access' )
+            INNER JOIN $wpdb->postmeta type ON ( posts.ID = type.post_id and type.meta_key = 'type' AND type.meta_value IN ( " . $types_to_search . " ) )
             WHERE posts.post_type = 'contacts'
             ORDER BY posts.post_date DESC
             LIMIT %d, 100
@@ -636,9 +639,10 @@ class DT_Duplicate_Checker_And_Merging {
         $total = $wpdb->get_var("
             SELECT count(posts.ID)
             FROM $wpdb->posts posts
-            INNER JOIN $wpdb->postmeta type ON ( posts.ID = type.post_id and type.meta_key = 'type' AND type.meta_value = 'access' )
+            INNER JOIN $wpdb->postmeta type ON ( posts.ID = type.post_id and type.meta_key = 'type' AND type.meta_value IN ( " . $types_to_search . " ) )
             WHERE posts.post_type = 'contacts'
         " );
+        //phpcs:enable
 
         //search for duplicates on each post
         foreach ( $recent_contacts as &$contact ){
