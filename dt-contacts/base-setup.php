@@ -155,7 +155,7 @@ class DT_Contacts_Base {
                         "in_create_form" => false,
                     ],
                     'personal' => [
-                        "label" => __( 'Private', 'disciple_tools' ),
+                        "label" => __( 'Private Contact', 'disciple_tools' ),
                         "color" => "#9b379b",
                         "description" => __( "A friend, family member or acquaintance", 'disciple_tools' ),
                         "visibility" => __( "Only me", 'disciple_tools' ),

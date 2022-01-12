@@ -92,10 +92,10 @@ class DT_Contacts_Access extends DT_Module_Base {
         $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
             $fields["type"]["default"]["access"] = [
-                "label" => __( 'Team', 'disciple_tools' ),
+                "label" => __( 'Standard Contact', 'disciple_tools' ),
                 "color" => "#2196F3",
                 "description" => __( 'A contact to collaborate on', 'disciple_tools' ),
-                "visibility" => __( "Me and others", 'disciple_tools' ),
+                "visibility" => __( "Me and project leadership", 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg?v=2",
                 "order" => 20
             ];
