@@ -232,12 +232,76 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function email_settings(){
         ?>
         <form method="POST">
-            <input type="hidden" name="email_base_subject_nonce" id="email_base_subject_nonce" value="<?php echo esc_attr( wp_create_nonce( 'email_subject' ) )?>" />
-            <label for="email_subject"><?php esc_html_e( "Configure the first part of the subject line in email sent by Disciple.Tools", 'disciple_tools' ) ?></label>
-            <input name="email_subject" id="email_subject" value="<?php echo esc_html( dt_get_option( "dt_email_base_subject" ) ) ?>" />
-            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button></span>
+            <input type="hidden" name="email_base_subject_nonce" id="email_base_subject_nonce"
+                   value="<?php echo esc_attr( wp_create_nonce( 'email_subject' ) ) ?>"/>
+
+            <table class="widefat">
+                <tbody>
+                <tr>
+                    <td>
+                        <label
+                            for="email_address"><?php echo esc_html( sprintf( "Specify notification from email address. Leave blank to use default (%s)", self::default_email_address() ) ) ?></label>
+                    </td>
+                    <td>
+                        <input name="email_address" id="email_address"
+                               value="<?php echo esc_html( dt_get_option( "dt_email_base_address" ) ) ?>"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label
+                            for="email_name"><?php echo esc_html( sprintf( "Specify notification from name. Leave blank to use default (%s)", self::default_email_name() ) ) ?></label>
+                    </td>
+                    <td>
+                        <input name="email_name" id="email_name"
+                               value="<?php echo esc_html( dt_get_option( "dt_email_base_name" ) ) ?>"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label
+                            for="email_subject"><?php esc_html_e( "Configure the first part of the subject line in email sent by Disciple.Tools", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <input name="email_subject" id="email_subject"
+                               value="<?php echo esc_html( dt_get_option( "dt_email_base_subject" ) ) ?>"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <br>
+            <span style="float:right;"><button type="submit"
+                                               class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button></span>
         </form>
         <?php
+    }
+
+    private function default_email_address(): string {
+        $default_addr = apply_filters( 'wp_mail_from', '' );
+
+        if ( empty( $default_addr ) ) {
+
+            // Get the site domain and get rid of www.
+            $sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
+            if ( 'www.' === substr( $sitename, 0, 4 ) ) {
+                $sitename = substr( $sitename, 4 );
+            }
+
+            $default_addr = 'wordpress@' . $sitename;
+        }
+
+        return $default_addr;
+    }
+
+    private function default_email_name(): string {
+        $default_name = apply_filters( 'wp_mail_from_name', '' );
+
+        if ( empty( $default_name ) ) {
+            $default_name = 'WordPress';
+        }
+
+        return $default_name;
     }
 
     /**
@@ -248,6 +312,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             if ( isset( $_POST['email_subject'] ) ) {
                 $email_subject = sanitize_text_field( wp_unslash( $_POST['email_subject'] ) );
                 update_option( 'dt_email_base_subject', $email_subject );
+            }
+
+            if ( isset( $_POST['email_address'] ) ) {
+                $email_subject = sanitize_text_field( wp_unslash( $_POST['email_address'] ) );
+                update_option( 'dt_email_base_address', $email_subject );
+            }
+
+            if ( isset( $_POST['email_name'] ) ) {
+                $email_subject = sanitize_text_field( wp_unslash( $_POST['email_name'] ) );
+                update_option( 'dt_email_base_name', $email_subject );
             }
         }
     }
