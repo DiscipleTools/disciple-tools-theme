@@ -97,7 +97,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "description" => __( 'A contact to collaborate on', 'disciple_tools' ),
                 "visibility" => __( "Me and project leadership", 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg?v=2",
-                "order" => 20
+                "order" => 20,
+                "default" => true,
             ];
             $fields["type"]["default"]["access_placeholder"] = [
                 "label" => __( 'Team Connection', 'disciple_tools' ),
