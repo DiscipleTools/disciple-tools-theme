@@ -157,5 +157,5 @@ install_composer() {
 
 install_wp
 install_test_suite
-install_db
 install_composer
+install_db
