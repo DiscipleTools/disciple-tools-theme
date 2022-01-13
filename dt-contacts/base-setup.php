@@ -142,6 +142,7 @@ class DT_Contacts_Base {
                 'tile' => 'details',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/nametag.svg?v=2",
             ];
+            $contact_preferences = get_option( 'dt_contact_preferences', [] );
             $fields["type"] = [
                 'name'        => __( 'Contact Type', 'disciple_tools' ),
                 'type'        => 'key_select',
@@ -150,15 +151,17 @@ class DT_Contacts_Base {
                         "label" => __( 'User', 'disciple_tools' ),
                         "description" => __( "Representing a User in the system", 'disciple_tools' ),
                         "color" => "#3F729B",
-                        "hidden" => true
+                        "hidden" => true,
+                        "in_create_form" => false,
                     ],
                     'personal' => [
-                        "label" => __( 'Personal', 'disciple_tools' ),
+                        "label" => __( 'Private Contact', 'disciple_tools' ),
                         "color" => "#9b379b",
                         "description" => __( "A friend, family member or acquaintance", 'disciple_tools' ),
                         "visibility" => __( "Only me", 'disciple_tools' ),
                         "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg?v=2",
-                        "order" => 50
+                        "order" => 50,
+                        "hidden" => !empty( $contact_preferences["hide_personal_contact_type"] )
                     ],
                 ],
                 "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
