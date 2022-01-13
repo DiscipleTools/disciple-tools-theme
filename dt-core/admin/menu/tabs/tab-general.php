@@ -51,7 +51,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( 'general' == $tab ) :
 
             $modules = dt_get_option( "dt_post_type_modules" );
-            $this->template( 'begin', 2 );
+            $this->template( 'begin', 1 );
 
             /* Base User */
             $this->box( 'top', 'Base User' );
@@ -111,6 +111,19 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->show_dt_contact_preferences();
             $this->box( 'bottom' );
             /* Contact Setup */
+
+
+            if ( is_multisite() ) {
+                $registration = get_site_option( 'registration' );
+                if ( 'all' === $registration || 'user' === $registration ) {
+                    /* Disable Registration  */
+                    $this->box( 'top', 'Disable Registration' );
+                    $this->process_multisite_disable_registration();
+                    $this->show_multisite_disable_registration();
+                    $this->box( 'bottom' );
+                    /* Disable Registration */
+                }
+            }
 
 
             $this->template( 'right_column' );
@@ -675,6 +688,37 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             update_option( "dt_post_type_modules", $module_option );
 
         }
+    }
+
+    public function process_multisite_disable_registration(){
+        if ( isset( $_POST['multisite_disable_registration_nonce'] ) &&
+            wp_verify_nonce( sanitize_key( wp_unslash( $_POST['multisite_disable_registration_nonce'] ) ), 'multisite_disable_registration' . get_current_user_id() ) ) {
+            if ( isset( $_POST['dt_disable_registration'] ) ) {
+                update_option( 'dt_disable_registration', 1, true );
+            } else {
+                delete_option( 'dt_disable_registration' );
+            }
+        }
+    }
+
+    public function show_multisite_disable_registration(){
+        $this_site_setting = get_option( 'dt_disable_registration' );
+        ?>
+        <form method="post" >
+            <table class="widefat">
+                <tr>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="dt_disable_registration" <?php echo checked( $this_site_setting ) ?> /> Disable Registrations<br>
+                        </label>
+                    </td>
+                </tr>
+                <?php wp_nonce_field( 'multisite_disable_registration' . get_current_user_id(), 'multisite_disable_registration_nonce' )?>
+            </table>
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
+        </form>
+        <?php
     }
 
 }
