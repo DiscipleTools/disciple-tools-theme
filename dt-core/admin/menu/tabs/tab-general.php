@@ -51,7 +51,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( 'general' == $tab ) :
 
             $modules = dt_get_option( "dt_post_type_modules" );
-            $this->template( 'begin', 2 );
+            $this->template( 'begin', 1 );
 
             /* Base User */
             $this->box( 'top', 'Base User' );
@@ -103,6 +103,27 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->update_user_preferences();
             $this->box( 'bottom' );
             /* User Visibility */
+
+
+            /* Contact setup  */
+            $this->box( 'top', 'Contact Preferences' );
+            $this->process_dt_contact_preferences();
+            $this->show_dt_contact_preferences();
+            $this->box( 'bottom' );
+            /* Contact Setup */
+
+
+            if ( is_multisite() ) {
+                $registration = get_site_option( 'registration' );
+                if ( 'all' === $registration || 'user' === $registration ) {
+                    /* Disable Registration  */
+                    $this->box( 'top', 'Disable Registration' );
+                    $this->process_multisite_disable_registration();
+                    $this->show_multisite_disable_registration();
+                    $this->box( 'bottom' );
+                    /* Disable Registration */
+                }
+            }
 
 
             $this->template( 'right_column' );
@@ -224,12 +245,76 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function email_settings(){
         ?>
         <form method="POST">
-            <input type="hidden" name="email_base_subject_nonce" id="email_base_subject_nonce" value="<?php echo esc_attr( wp_create_nonce( 'email_subject' ) )?>" />
-            <label for="email_subject"><?php esc_html_e( "Configure the first part of the subject line in email sent by Disciple.Tools", 'disciple_tools' ) ?></label>
-            <input name="email_subject" id="email_subject" value="<?php echo esc_html( dt_get_option( "dt_email_base_subject" ) ) ?>" />
-            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button></span>
+            <input type="hidden" name="email_base_subject_nonce" id="email_base_subject_nonce"
+                   value="<?php echo esc_attr( wp_create_nonce( 'email_subject' ) ) ?>"/>
+
+            <table class="widefat">
+                <tbody>
+                <tr>
+                    <td>
+                        <label
+                            for="email_address"><?php echo esc_html( sprintf( "Specify notification from email address. Leave blank to use default (%s)", self::default_email_address() ) ) ?></label>
+                    </td>
+                    <td>
+                        <input name="email_address" id="email_address"
+                               value="<?php echo esc_html( dt_get_option( "dt_email_base_address" ) ) ?>"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label
+                            for="email_name"><?php echo esc_html( sprintf( "Specify notification from name. Leave blank to use default (%s)", self::default_email_name() ) ) ?></label>
+                    </td>
+                    <td>
+                        <input name="email_name" id="email_name"
+                               value="<?php echo esc_html( dt_get_option( "dt_email_base_name" ) ) ?>"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label
+                            for="email_subject"><?php esc_html_e( "Configure the first part of the subject line in email sent by Disciple.Tools", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <input name="email_subject" id="email_subject"
+                               value="<?php echo esc_html( dt_get_option( "dt_email_base_subject" ) ) ?>"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <br>
+            <span style="float:right;"><button type="submit"
+                                               class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button></span>
         </form>
         <?php
+    }
+
+    private function default_email_address(): string {
+        $default_addr = apply_filters( 'wp_mail_from', '' );
+
+        if ( empty( $default_addr ) ) {
+
+            // Get the site domain and get rid of www.
+            $sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
+            if ( 'www.' === substr( $sitename, 0, 4 ) ) {
+                $sitename = substr( $sitename, 4 );
+            }
+
+            $default_addr = 'wordpress@' . $sitename;
+        }
+
+        return $default_addr;
+    }
+
+    private function default_email_name(): string {
+        $default_name = apply_filters( 'wp_mail_from_name', '' );
+
+        if ( empty( $default_name ) ) {
+            $default_name = 'WordPress';
+        }
+
+        return $default_name;
     }
 
     /**
@@ -240,6 +325,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             if ( isset( $_POST['email_subject'] ) ) {
                 $email_subject = sanitize_text_field( wp_unslash( $_POST['email_subject'] ) );
                 update_option( 'dt_email_base_subject', $email_subject );
+            }
+
+            if ( isset( $_POST['email_address'] ) ) {
+                $email_subject = sanitize_text_field( wp_unslash( $_POST['email_address'] ) );
+                update_option( 'dt_email_base_address', $email_subject );
+            }
+
+            if ( isset( $_POST['email_name'] ) ) {
+                $email_subject = sanitize_text_field( wp_unslash( $_POST['email_name'] ) );
+                update_option( 'dt_email_base_name', $email_subject );
             }
         }
     }
@@ -406,12 +501,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             <table class="widefat">
                 <tr>
                     <td>
-                        <input type="checkbox" name="church_metrics" <?php echo empty( $group_preferences['church_metrics'] ) ? '' : 'checked' ?> /> Church Metrics
+                        <label>
+                            <input type="checkbox" name="church_metrics" <?php echo empty( $group_preferences['church_metrics'] ) ? '' : 'checked' ?> /> Church Metrics
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="checkbox" name="four_fields" <?php echo empty( $group_preferences['four_fields'] ) ? '' : 'checked' ?> /> Four Fields
+                        <label>
+                            <input type="checkbox" name="four_fields" <?php echo empty( $group_preferences['four_fields'] ) ? '' : 'checked' ?> /> Four Fields
+                        </label>
                     </td>
                 </tr>
                 <?php wp_nonce_field( 'group_preferences' . get_current_user_id(), 'group_preferences_nonce' )?>
@@ -464,7 +563,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <?php if ( $role_object && !array_key_exists( 'dt_all_access_contacts', $role_object->capabilities ) && !array_key_exists( 'list_users', $role_object->capabilities ) ) : ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="<?php echo esc_attr( $role_key ); ?>" <?php checked( array_key_exists( 'dt_list_users', $role_object->capabilities ) ); ?>/> <?php echo esc_attr( $name ); ?>
+                        <label>
+                            <input type="checkbox" name="<?php echo esc_attr( $role_key ); ?>" <?php checked( array_key_exists( 'dt_list_users', $role_object->capabilities ) ); ?>/> <?php echo esc_attr( $name ); ?>
+                        </label>
                     </td>
                 </tr>
                 <?php endif; ?>
@@ -474,9 +575,48 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             </table>
             <br>
             <p>
-                <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role.' ) ?></label>
-                <input type="checkbox" name="user_invite_check" id="user_invite_check" value="user_invite" <?php echo $user_invite_allowed ? 'checked' : '' ?> />
+                <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role.' ) ?>
+                    <input type="checkbox" name="user_invite_check" id="user_invite_check" value="user_invite" <?php echo $user_invite_allowed ? 'checked' : '' ?> />
+                </label>
             </p>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
+        </form>
+        <?php
+    }
+
+    /** Group Preferences */
+    public function process_dt_contact_preferences(){
+
+        if ( isset( $_POST['dt_contact_preferences_nonce'] ) &&
+            wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_contact_preferences_nonce'] ) ), 'dt_contact_preferences' . get_current_user_id() ) ) {
+
+            $contact_preferences = get_option( "dt_contact_preferences" );
+            if ( isset( $_POST['hide_personal_contact_type'] ) && ! empty( $_POST['hide_personal_contact_type'] ) ) {
+                $contact_preferences["hide_personal_contact_type"] = false;
+            } else {
+                $contact_preferences["hide_personal_contact_type"] = true;
+            }
+
+            update_option( 'dt_contact_preferences', $contact_preferences, true );
+        }
+
+    }
+
+    public function show_dt_contact_preferences(){
+        $contact_preferences = get_option( 'dt_contact_preferences', [] );
+        ?>
+        <form method="post" >
+            <table class="widefat">
+                <tr>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hide_personal_contact_type" <?php echo empty( $contact_preferences['hide_personal_contact_type'] ) ? 'checked' : '' ?> /> Personal Contact Type Enabled
+                        </label>
+                    </td>
+                </tr>
+                <?php wp_nonce_field( 'dt_contact_preferences' . get_current_user_id(), 'dt_contact_preferences_nonce' )?>
+            </table>
+            <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
         </form>
         <?php
@@ -548,6 +688,37 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             update_option( "dt_post_type_modules", $module_option );
 
         }
+    }
+
+    public function process_multisite_disable_registration(){
+        if ( isset( $_POST['multisite_disable_registration_nonce'] ) &&
+            wp_verify_nonce( sanitize_key( wp_unslash( $_POST['multisite_disable_registration_nonce'] ) ), 'multisite_disable_registration' . get_current_user_id() ) ) {
+            if ( isset( $_POST['dt_disable_registration'] ) ) {
+                update_option( 'dt_disable_registration', 1, true );
+            } else {
+                delete_option( 'dt_disable_registration' );
+            }
+        }
+    }
+
+    public function show_multisite_disable_registration(){
+        $this_site_setting = get_option( 'dt_disable_registration' );
+        ?>
+        <form method="post" >
+            <table class="widefat">
+                <tr>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="dt_disable_registration" <?php echo checked( $this_site_setting ) ?> /> Disable Registrations<br>
+                        </label>
+                    </td>
+                </tr>
+                <?php wp_nonce_field( 'multisite_disable_registration' . get_current_user_id(), 'multisite_disable_registration_nonce' )?>
+            </table>
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
+        </form>
+        <?php
     }
 
 }

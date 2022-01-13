@@ -1,4 +1,5 @@
 jQuery(function($) {
+  window.post_type_fields = window.new_record_localized.post_type_settings.fields
   let new_post = {}
   document.querySelector('.form-fields input').focus()
   $('.type-option').on('click', function(){
@@ -8,7 +9,6 @@ jQuery(function($) {
     $(`#${type} input`).prop('checked', true)
     $('.form-fields').show();
     $(`.form-field`).hide()
-    $(`.type-control-field`).hide()
     $(`.form-field.all`).show()
     $(`.form-field.${type}`).show()
     $('#show-shield-banner').show()

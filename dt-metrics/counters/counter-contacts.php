@@ -159,7 +159,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                     GROUP BY post_id
                 )",
                 dt_format_date( $start, 'Y-m-d' ),
-                dt_format_date( $end, 'Y-m-d' )
+                dt_format_date( $end + DAY_IN_SECONDS, 'Y-m-d' )
             )
         );
         return $res;

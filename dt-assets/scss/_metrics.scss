@@ -91,3 +91,39 @@
         display: inline;
     }
 }
+
+#activity_highlights {
+
+
+    .highlights-table {
+        table-layout: fixed;
+
+        tr td:first-child {
+            width: 90%;
+        }
+
+        &.striped {
+            tr:nth-child(even) {
+                background-color: #ecf5fc;
+                border-bottom: 0;
+            }
+        }
+
+    }
+    h4 {
+        color: #3f729b;
+        margin-top: 1em;
+    }
+
+    #comment-filter {
+        width: 60px;
+    }
+
+    .left-margin {
+        margin-left: calc(1rem *2 / 3);
+    }
+
+    .comment {
+        margin-bottom: 0.5rem;
+    }
+}

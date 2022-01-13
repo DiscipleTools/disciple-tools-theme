@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disciple Tools 1.20.0\n"
+"Project-Id-Version: Disciple Tools 1.20.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-theme\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-01-10T13:05:35+00:00\n"
+"POT-Creation-Date: 2022-01-13T11:21:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: disciple_tools\n"
@@ -72,8 +72,8 @@ msgstr ""
 #: dt-contacts/access-module.php:484
 #: dt-contacts/access-module.php:515
 #: dt-contacts/access-module.php:543
-#: dt-contacts/base-setup.php:389
-#: dt-contacts/base-setup.php:424
+#: dt-contacts/base-setup.php:391
+#: dt-contacts/base-setup.php:426
 #: dt-contacts/user-module.php:150
 #: dt-contacts/user-module.php:202
 #: single-template.php:350
@@ -393,7 +393,7 @@ msgstr ""
 
 #: dt-assets/functions/details-bar.php:44
 #: dt-assets/functions/details-bar.php:220
-#: dt-core/configuration/config-site-defaults.php:279
+#: dt-core/configuration/config-site-defaults.php:295
 #: dt-users/template-user-management.php:93
 #: dt-workflows/update-required.php:67
 #: dt-workflows/update-required.php:105
@@ -639,7 +639,7 @@ msgid "No records found matching your filter."
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:301
-#: dt-contacts/base-setup.php:499
+#: dt-contacts/base-setup.php:501
 msgctxt "All records"
 msgid "All %s"
 msgstr ""
@@ -658,6 +658,7 @@ msgstr ""
 #: dt-groups/base-setup.php:919
 #: dt-groups/base-setup.php:992
 #: dt-groups/base-setup.php:1000
+#: dt-metrics/personal/activity-highlights.php:56
 #: dt-users/mapbox-coverage-map.php:77
 msgid "All"
 msgstr ""
@@ -989,7 +990,7 @@ msgid "By clicking 'Edit', you will be able adjust things like the language that
 msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:103
-#: dt-contacts/base-setup.php:204
+#: dt-contacts/base-setup.php:206
 #: dt-groups/base-setup.php:359
 msgid "Locations"
 msgstr ""
@@ -1285,7 +1286,7 @@ msgid "Being Coached"
 msgstr ""
 
 #: dt-contacts/access-module.php:156
-#: dt-contacts/base-setup.php:310
+#: dt-contacts/base-setup.php:312
 msgid "Contact Status"
 msgstr ""
 
@@ -1500,9 +1501,10 @@ msgid "Accepted"
 msgstr ""
 
 #: dt-contacts/access-module.php:281
-#: dt-contacts/base-setup.php:154
-#: dt-contacts/base-setup.php:536
-#: dt-metrics/metrics.php:85
+#: dt-contacts/base-setup.php:156
+#: dt-contacts/base-setup.php:538
+#: dt-metrics/metrics.php:86
+#: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1512,17 +1514,17 @@ msgid "Personal"
 msgstr ""
 
 #: dt-contacts/access-module.php:285
-#: dt-core/configuration/config-site-defaults.php:259
+#: dt-core/configuration/config-site-defaults.php:275
 msgid "Web"
 msgstr ""
 
 #: dt-contacts/access-module.php:289
-#: dt-contacts/base-setup.php:241
+#: dt-contacts/base-setup.php:243
 msgid "Facebook"
 msgstr ""
 
 #: dt-contacts/access-module.php:293
-#: dt-contacts/base-setup.php:249
+#: dt-contacts/base-setup.php:251
 msgid "Twitter"
 msgstr ""
 
@@ -1562,14 +1564,14 @@ msgstr ""
 #: dt-contacts/access-module.php:465
 #: dt-contacts/access-module.php:496
 #: dt-contacts/access-module.php:527
-#: dt-contacts/base-setup.php:403
+#: dt-contacts/base-setup.php:405
 msgid "Choose an option:"
 msgstr ""
 
 #: dt-contacts/access-module.php:487
 #: dt-contacts/access-module.php:518
 #: dt-contacts/access-module.php:546
-#: dt-contacts/base-setup.php:427
+#: dt-contacts/base-setup.php:429
 msgid "Confirm"
 msgstr ""
 
@@ -1661,7 +1663,7 @@ msgid "Language"
 msgstr ""
 
 #: dt-contacts/access-module.php:1270
-#: dt-contacts/base-setup.php:278
+#: dt-contacts/base-setup.php:280
 #: dt-users/template-new-user.php:170
 #: dt-users/template-user-management.php:351
 #: template-settings.php:636
@@ -1680,12 +1682,13 @@ msgstr ""
 
 #: dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62
+#: dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr ""
 
 #: dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:63
-#: dt-contacts/base-setup.php:266
+#: dt-contacts/base-setup.php:268
 #: dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:128
@@ -1699,7 +1702,7 @@ msgstr ""
 #: dt-metrics/contacts/seeker-path.php:26
 #: dt-metrics/contacts/sources.php:25
 #: dt-metrics/groups/overview.php:63
-#: dt-metrics/metrics.php:94
+#: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
 #: dt-users/template-user-management.php:590
@@ -1732,223 +1735,223 @@ msgstr ""
 msgid "Administrator"
 msgstr ""
 
-#: dt-contacts/base-setup.php:138
+#: dt-contacts/base-setup.php:140
 msgid "Nickname"
 msgstr ""
 
-#: dt-contacts/base-setup.php:144
+#: dt-contacts/base-setup.php:146
 msgid "Contact Type"
 msgstr ""
 
-#: dt-contacts/base-setup.php:148
+#: dt-contacts/base-setup.php:150
 msgid "User"
 msgstr ""
 
-#: dt-contacts/base-setup.php:149
+#: dt-contacts/base-setup.php:151
 msgid "Representing a User in the system"
 msgstr ""
 
-#: dt-contacts/base-setup.php:156
+#: dt-contacts/base-setup.php:158
 msgid "A friend, family member or acquaintance"
 msgstr ""
 
-#: dt-contacts/base-setup.php:157
+#: dt-contacts/base-setup.php:159
 #: dt-contacts/dmm-module.php:53
 msgid "Only me"
 msgstr ""
 
-#: dt-contacts/base-setup.php:178
+#: dt-contacts/base-setup.php:180
 msgid "Languages"
 msgstr ""
 
-#: dt-contacts/base-setup.php:187
+#: dt-contacts/base-setup.php:189
 #: template-settings.php:152
 msgid "Phone"
 msgstr ""
 
-#: dt-contacts/base-setup.php:195
+#: dt-contacts/base-setup.php:197
 #: dt-contacts/user-module.php:106
-#: dt-core/configuration/config-site-defaults.php:256
+#: dt-core/configuration/config-site-defaults.php:272
 #: dt-users/template-new-user.php:95
 #: dt-users/template-new-user.php:96
 #: template-settings.php:139
 msgid "Email"
 msgstr ""
 
-#: dt-contacts/base-setup.php:205
+#: dt-contacts/base-setup.php:207
 #: dt-groups/base-setup.php:360
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr ""
 
-#: dt-contacts/base-setup.php:213
+#: dt-contacts/base-setup.php:215
 #: dt-groups/base-setup.php:369
 msgid "Locations or Address"
 msgstr ""
 
-#: dt-contacts/base-setup.php:221
+#: dt-contacts/base-setup.php:223
 #: dt-groups/base-setup.php:378
 #: template-settings.php:163
 msgid "Address"
 msgstr ""
 
-#: dt-contacts/base-setup.php:257
+#: dt-contacts/base-setup.php:259
 msgid "Other Social Links"
 msgstr ""
 
-#: dt-contacts/base-setup.php:266
+#: dt-contacts/base-setup.php:268
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr ""
 
-#: dt-contacts/base-setup.php:267
+#: dt-contacts/base-setup.php:269
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr ""
 
-#: dt-contacts/base-setup.php:281
+#: dt-contacts/base-setup.php:283
 #: dt-users/template-user-management.php:355
 msgid "Male"
 msgstr ""
 
-#: dt-contacts/base-setup.php:282
+#: dt-contacts/base-setup.php:284
 #: dt-users/template-user-management.php:356
 msgid "Female"
 msgstr ""
 
-#: dt-contacts/base-setup.php:289
+#: dt-contacts/base-setup.php:291
 msgid "Age"
 msgstr ""
 
-#: dt-contacts/base-setup.php:293
+#: dt-contacts/base-setup.php:295
 msgid "Under 18 years old"
 msgstr ""
 
-#: dt-contacts/base-setup.php:294
+#: dt-contacts/base-setup.php:296
 msgid "18-25 years old"
 msgstr ""
 
-#: dt-contacts/base-setup.php:295
+#: dt-contacts/base-setup.php:297
 msgid "26-40 years old"
 msgstr ""
 
-#: dt-contacts/base-setup.php:296
+#: dt-contacts/base-setup.php:298
 msgid "Over 40 years old"
 msgstr ""
 
-#: dt-contacts/base-setup.php:304
+#: dt-contacts/base-setup.php:306
 #: dt-groups/base-setup.php:104
 msgid "Requires Update"
 msgstr ""
 
-#: dt-contacts/base-setup.php:311
+#: dt-contacts/base-setup.php:313
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
 msgstr ""
 
-#: dt-contacts/base-setup.php:315
+#: dt-contacts/base-setup.php:317
 #: dt-groups/base-setup.php:120
 #: dt-users/template-user-management.php:94
 #: dt-users/user-management.php:118
 msgid "Active"
 msgstr ""
 
-#: dt-contacts/base-setup.php:316
+#: dt-contacts/base-setup.php:318
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr ""
 
-#: dt-contacts/base-setup.php:320
+#: dt-contacts/base-setup.php:322
 msgid "Archived"
 msgstr ""
 
-#: dt-contacts/base-setup.php:322
+#: dt-contacts/base-setup.php:324
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
 msgstr ""
 
-#: dt-contacts/base-setup.php:357
-#: dt-contacts/base-setup.php:384
+#: dt-contacts/base-setup.php:359
+#: dt-contacts/base-setup.php:386
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr ""
 
-#: dt-contacts/base-setup.php:364
+#: dt-contacts/base-setup.php:366
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr ""
 
-#: dt-contacts/base-setup.php:369
+#: dt-contacts/base-setup.php:371
 msgid "See duplicates"
 msgstr ""
 
-#: dt-contacts/base-setup.php:372
+#: dt-contacts/base-setup.php:374
 msgid "Merge with another contact"
 msgstr ""
 
-#: dt-contacts/base-setup.php:385
+#: dt-contacts/base-setup.php:387
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr ""
 
-#: dt-contacts/base-setup.php:392
+#: dt-contacts/base-setup.php:394
 msgid "Archive"
 msgstr ""
 
-#: dt-contacts/base-setup.php:451
-#: dt-core/configuration/config-site-defaults.php:458
+#: dt-contacts/base-setup.php:453
+#: dt-core/configuration/config-site-defaults.php:474
 #: dt-groups/base-setup.php:620
 #: template-settings.php:185
 msgid "Other"
 msgstr ""
 
-#: dt-contacts/base-setup.php:493
+#: dt-contacts/base-setup.php:495
 msgid "Default Filters"
 msgstr ""
 
-#: dt-contacts/base-setup.php:503
+#: dt-contacts/base-setup.php:505
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr ""
 
-#: dt-contacts/base-setup.php:513
+#: dt-contacts/base-setup.php:515
 #: dt-groups/base-setup.php:1021
 #: dt-posts/custom-post-type.php:331
 msgid "My Recently Viewed"
 msgstr ""
 
-#: dt-contacts/base-setup.php:518
+#: dt-contacts/base-setup.php:520
 #: dt-groups/base-setup.php:1026
 #: dt-posts/custom-post-type.php:336
 msgid "Last 30 viewed"
 msgstr ""
 
-#: dt-contacts/base-setup.php:524
+#: dt-contacts/base-setup.php:526
 #: dt-groups/base-setup.php:1009
 #: dt-posts/custom-post-type.php:316
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr ""
 
-#: dt-contacts/base-setup.php:530
+#: dt-contacts/base-setup.php:532
 #: dt-groups/base-setup.php:1015
 #: dt-posts/custom-post-type.php:168
 #: dt-posts/custom-post-type.php:322
 msgid "Favorite"
 msgstr ""
 
-#: dt-contacts/base-setup.php:560
-#: dt-contacts/base-setup.php:568
-#: dt-contacts/base-setup.php:585
-#: dt-contacts/base-setup.php:586
+#: dt-contacts/base-setup.php:562
+#: dt-contacts/base-setup.php:570
+#: dt-contacts/base-setup.php:588
+#: dt-contacts/base-setup.php:589
 msgid "Shared with me"
 msgstr ""
 
-#: dt-contacts/base-setup.php:638
+#: dt-contacts/base-setup.php:641
 msgid "This %s is archived"
 msgstr ""
 
-#: dt-contacts/base-setup.php:640
+#: dt-contacts/base-setup.php:643
 msgid "Restore"
 msgstr ""
 
@@ -2169,6 +2172,7 @@ msgid "Who is coaching this contact"
 msgstr ""
 
 #: dt-contacts/dmm-module.php:189
+#: dt-metrics/personal/activity-highlights.php:68
 msgid "Baptized by"
 msgstr ""
 
@@ -2226,6 +2230,7 @@ msgid "Coached by me"
 msgstr ""
 
 #: dt-contacts/dmm-module.php:408
+#: dt-metrics/personal/activity-highlights.php:218
 msgid "Quick Actions"
 msgstr ""
 
@@ -2339,144 +2344,144 @@ msgstr ""
 msgid "Subscriber"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:264
+#: dt-core/configuration/config-site-defaults.php:280
 msgid "Newly Assigned Contact"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:269
+#: dt-core/configuration/config-site-defaults.php:285
 msgid "@Mentions"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:274
+#: dt-core/configuration/config-site-defaults.php:290
 msgid "New Comments"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:284
+#: dt-core/configuration/config-site-defaults.php:300
 msgid "Contact Info Changed"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:289
+#: dt-core/configuration/config-site-defaults.php:305
 #: dt-core/migrations/0012-typo-rename.php:8
 msgid "Contact Milestones and Group Health metrics"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:314
+#: dt-core/configuration/config-site-defaults.php:330
 msgid "This contact is active but there is no record of anybody contacting them. Please do contact them."
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:320
+#: dt-core/configuration/config-site-defaults.php:336
 msgid "Please try connecting with this contact again."
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:326
-#: dt-core/configuration/config-site-defaults.php:332
-#: dt-core/configuration/config-site-defaults.php:338
-#: dt-core/configuration/config-site-defaults.php:344
-#: dt-core/configuration/config-site-defaults.php:350
+#: dt-core/configuration/config-site-defaults.php:342
+#: dt-core/configuration/config-site-defaults.php:348
+#: dt-core/configuration/config-site-defaults.php:354
+#: dt-core/configuration/config-site-defaults.php:360
+#: dt-core/configuration/config-site-defaults.php:366
 msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:360
+#: dt-core/configuration/config-site-defaults.php:376
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:391
+#: dt-core/configuration/config-site-defaults.php:407
 msgid "Personal Phone"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:394
+#: dt-core/configuration/config-site-defaults.php:410
 msgid "Personal phone is private to the team, not for distribution."
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:398
+#: dt-core/configuration/config-site-defaults.php:414
 msgid "Personal Email"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:401
+#: dt-core/configuration/config-site-defaults.php:417
 msgid "Personal email is private to the team, not for distribution."
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:405
+#: dt-core/configuration/config-site-defaults.php:421
 msgid "Personal Address"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:408
+#: dt-core/configuration/config-site-defaults.php:424
 msgid "Personal address is private to the team, not for distribution."
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:412
+#: dt-core/configuration/config-site-defaults.php:428
 msgid "Work Phone"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:415
+#: dt-core/configuration/config-site-defaults.php:431
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:419
+#: dt-core/configuration/config-site-defaults.php:435
 msgid "Work Email"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:422
+#: dt-core/configuration/config-site-defaults.php:438
 msgid "Work email is for distribution to contacts and seekers."
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:426
+#: dt-core/configuration/config-site-defaults.php:442
 msgid "Work Facebook"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:429
+#: dt-core/configuration/config-site-defaults.php:445
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:433
+#: dt-core/configuration/config-site-defaults.php:449
 msgid "Work WhatsApp"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:436
+#: dt-core/configuration/config-site-defaults.php:452
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:443
+#: dt-core/configuration/config-site-defaults.php:459
 msgid "thumbs up"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:444
+#: dt-core/configuration/config-site-defaults.php:460
 msgid "heart"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:445
+#: dt-core/configuration/config-site-defaults.php:461
 msgid "laugh"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:446
+#: dt-core/configuration/config-site-defaults.php:462
 msgid "wow"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:447
+#: dt-core/configuration/config-site-defaults.php:463
 msgid "sad"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:448
+#: dt-core/configuration/config-site-defaults.php:464
 msgid "prayer"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:456
+#: dt-core/configuration/config-site-defaults.php:472
 msgid "Home"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:457
+#: dt-core/configuration/config-site-defaults.php:473
 msgid "Work"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:467
+#: dt-core/configuration/config-site-defaults.php:483
 msgid "Accepting new contacts"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:471
+#: dt-core/configuration/config-site-defaults.php:487
 msgid "I'm only investing in existing contacts"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:475
+#: dt-core/configuration/config-site-defaults.php:491
 msgid "I have too many contacts"
 msgstr ""
 
@@ -2531,6 +2536,7 @@ msgstr ""
 #: dt-groups/base-setup.php:62
 #: dt-groups/base-setup.php:168
 #: dt-metrics/groups/overview.php:80
+#: dt-metrics/personal/activity-highlights.php:58
 #: dt-metrics/personal/group-tree.php:165
 #: dt-metrics/personal/overview.php:74
 msgid "Group"
@@ -2549,7 +2555,7 @@ msgstr ""
 #: dt-metrics/groups/overview.php:64
 #: dt-metrics/groups/overview.php:75
 #: dt-metrics/groups/tree.php:24
-#: dt-metrics/metrics.php:98
+#: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
 msgid "Groups"
@@ -2978,7 +2984,7 @@ msgstr ""
 #: dt-metrics/combined/mapbox-maps.php:29
 #: dt-metrics/combined/site-links.php:23
 #: dt-metrics/combined/time-charts.php:43
-#: dt-metrics/metrics.php:90
+#: dt-metrics/metrics.php:91
 msgid "Project"
 msgstr ""
 
@@ -3102,6 +3108,7 @@ msgstr ""
 #: dt-metrics/contacts/milestones.php:69
 #: dt-metrics/contacts/seeker-path.php:65
 #: dt-metrics/contacts/sources.php:89
+#: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
 msgstr ""
 
@@ -3136,7 +3143,7 @@ msgstr ""
 
 #. Template Name of the theme
 #: dt-metrics/combined/daily-activity.php:86
-#: dt-metrics/metrics.php:115
+#: dt-metrics/metrics.php:116
 msgid "Metrics"
 msgstr ""
 
@@ -3236,6 +3243,7 @@ msgid "%1$s in %2$s"
 msgstr ""
 
 #: dt-metrics/combined/time-charts.php:112
+#: dt-metrics/personal/activity-highlights.php:67
 msgid "Date"
 msgstr ""
 
@@ -3243,6 +3251,7 @@ msgstr ""
 #: dt-metrics/contacts/milestones.php:68
 #: dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
 #: dt-users/template-user-management.php:556
 msgid "All Time"
 msgstr ""
@@ -3470,6 +3479,47 @@ msgstr ""
 msgid "View Group"
 msgstr ""
 
+#: dt-metrics/personal/activity-highlights.php:22
+#: dt-metrics/personal/activity-highlights.php:53
+msgid "Activity Highlights"
+msgstr ""
+
+#: dt-metrics/personal/activity-highlights.php:59
+msgid "None"
+msgstr ""
+
+#: dt-metrics/personal/activity-highlights.php:60
+msgid "%1$s I Changed"
+msgstr ""
+
+#: dt-metrics/personal/activity-highlights.php:61
+msgid "%1$s I Made"
+msgstr ""
+
+#: dt-metrics/personal/activity-highlights.php:62
+msgid "Contacts I Baptized"
+msgstr ""
+
+#: dt-metrics/personal/activity-highlights.php:63
+msgid "%1$s changed by others on my %2$s"
+msgstr ""
+
+#: dt-metrics/personal/activity-highlights.php:64
+msgid "Baptisms by others on my contacts"
+msgstr ""
+
+#: dt-metrics/personal/activity-highlights.php:65
+msgid "Comments I Reacted To"
+msgstr ""
+
+#: dt-metrics/personal/activity-highlights.php:66
+msgid "Comments I Posted"
+msgstr ""
+
+#: dt-metrics/personal/activity-highlights.php:176
+msgid "%1$d %2$s created"
+msgstr ""
+
 #: dt-metrics/personal/activity-log.php:22
 #: dt-metrics/personal/activity-log.php:52
 msgid "Activity Log"
@@ -3532,16 +3582,16 @@ msgstr ""
 msgid "stats as of"
 msgstr ""
 
-#: dt-notifications/notifications-email.php:124
+#: dt-notifications/notifications-email.php:138
 msgid "Click here to view or reply"
 msgstr ""
 
-#: dt-notifications/notifications-email.php:130
+#: dt-notifications/notifications-email.php:144
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
 msgstr ""
 
-#: dt-notifications/notifications-email.php:134
+#: dt-notifications/notifications-email.php:148
 msgid "Do not reply directly to this email."
 msgstr ""
 
