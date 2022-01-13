@@ -1038,10 +1038,14 @@ jQuery(document).ready(function($) {
       } else {
         $('.phone-open-with-container').remove();
         let PhoneLink = this;
-        let WhatsAppLink = `https://api.whatsapp.com/send?phone=${phoneNumber.replace(/^((\+)|(00))/,"")}`;
-        let SignalLink = `https://signal.me/#p/${phoneNumber}`;
-        let iMessageLink = `iMessage://${phoneNumber}`
-        let ViberLink = `viber://chat?number=${phoneNumber}`
+        let messagingServices = window.post_type_fields.contact_phone.messagingServices;
+        let messagingServicesLinks = ``;
+
+        for (const service in messagingServices) {
+          let link = messagingServices[service].link.replace('PHONE_NUMBER_NO_PLUS', phoneNumber.replace(/^((\+)|(00))/,"")).replace('PHONE_NUMBER', phoneNumber);
+
+          messagingServicesLinks = messagingServicesLinks + `<li><a href="${link}" title="Open With ${service}" target="_blank" class="phone-open-with-link"><img src="${messagingServices[service].icon}"/>${service}</a></li>`
+        }
 
         let openWithDiv = `<div class="phone-open-with-container __${phoneNumber.replace(/^((\+)|(00))/,"")}">
         <strong>Open With...</strong>
@@ -1049,9 +1053,7 @@ jQuery(document).ready(function($) {
             <li><a href="${PhoneLink}" title="Open With Telephone" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/phone.svg"/> Phone</a></li>
             ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="${iMessageLink}" title="Open With Signal" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/imessage.svg"/> iMessage</a></li>` : ""
             }
-            <li><a href="${SignalLink}" title="Open With Signal" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/signal.svg"/> Signal</a></li>
-            <li></li><a href="${ViberLink}" title="Open With Signal" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/viber.svg"/> Viber</a></li>
-            <li><a href="${WhatsAppLink}" title="Open With Whatsapp" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/whatsapp.svg"/> Whatsapp</a></li>
+            ${messagingServicesLinks}
           </ul>
         </div>`
 
@@ -1061,7 +1063,7 @@ jQuery(document).ready(function($) {
           $(this).parents('.phone-open-with-container').remove();
         })
       }
-      });
+    });
   };
 
   $('#delete-record').on('click', function(){
