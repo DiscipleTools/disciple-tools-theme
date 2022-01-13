@@ -1032,18 +1032,18 @@ jQuery(document).ready(function($) {
   function phoneLinkClick() {
     $('.phone-link').on('click', function(event){
       event.preventDefault();
-
-      if ($('.phone-open-with-container').length) {
-        $('.phone-open-with-container').remove();
+      let phoneNumber = this.href.substring(4).replaceAll(/\s/g, "");
+      if ($(`.phone-open-with-container.__${phoneNumber.replace(/^((\+)|(00))/,"")}`).length && $(this).next(`.phone-open-with-container.__${phoneNumber.replace(/^((\+)|(00))/,"")}`)) {
+          $(`.phone-open-with-container.__${phoneNumber.replace(/^((\+)|(00))/,"")}`).remove();
       } else {
-        let phoneNumber = this.href.substring(4).replaceAll(/\s/g, "");
+        $('.phone-open-with-container').remove();
         let PhoneLink = this;
         let WhatsAppLink = `https://api.whatsapp.com/send?phone=${phoneNumber.replace(/^((\+)|(00))/,"")}`;
         let SignalLink = `https://signal.me/#p/${phoneNumber}`;
         let iMessageLink = `iMessage://${phoneNumber}`
         let ViberLink = `viber://chat?number=${phoneNumber}`
 
-        let openWithDiv = `<div class=phone-open-with-container>
+        let openWithDiv = `<div class="phone-open-with-container __${phoneNumber.replace(/^((\+)|(00))/,"")}">
         <strong>Open With...</strong>
           <ul>
             <li><a href="${PhoneLink}" title="Open With Telephone" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/phone.svg"/> Phone</a></li>
