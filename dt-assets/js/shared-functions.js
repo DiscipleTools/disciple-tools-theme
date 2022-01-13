@@ -315,6 +315,7 @@ jQuery(document).on("click", ".help-button-field", function () {
     $("#help-modal-field-title").html(window.lodash.escape(field.name));
     if (field.description) {
       $("#help-modal-field-description").html(window.lodash.escape(field.description));
+      window.SHAREDFUNCTIONS.make_links_clickable('#help-modal-field-description' )
     } else {
       $("#help-modal-field-description").empty()
     }
