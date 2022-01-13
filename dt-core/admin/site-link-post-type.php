@@ -1455,7 +1455,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         // Adds the type of connection to the site link system
         public function default_site_link_type( $type ) {
             $type['create_contacts'] = __( 'Create Contacts', 'disciple_tools' );
-            $type['create_update_contacts'] = __( 'Create and Update contacts', 'disciple_tools' );
+            $type['create_update_contacts'] = __( 'Create and Update Contacts', 'disciple_tools' );
+            $type['view_any_contacts'] = __( 'View Any Contacts', 'disciple_tools' );
             return $type;
         }
 
@@ -1466,6 +1467,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
             if ( 'create_update_contacts' === $args['connection_type'] ) {
                 $args['capabilities'][] = 'create_contacts';
+                $args['capabilities'][] = 'update_any_contacts';
+            }
+            if ( 'view_any_contacts' === $args['connection_type'] ) {
+                $args['capabilities'][] = 'view_any_contacts';
                 $args['capabilities'][] = 'update_any_contacts';
             }
 

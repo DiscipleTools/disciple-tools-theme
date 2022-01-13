@@ -879,6 +879,12 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
+
+        // If present, ensure specified date format is correct
+        if ( isset( $args["comment_date"] ) && ! dt_validate_date( $args["comment_date"] ) ) {
+            return new WP_Error( __FUNCTION__, "Invalid date! Correct format should be: Y-m-d H:i:s", [ 'status' => 403 ] );
+        }
+
         //limit comment length to 5000
         $comments = str_split( $comment_html, 4999 );
         $user = wp_get_current_user();

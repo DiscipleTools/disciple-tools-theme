@@ -895,6 +895,17 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
+     * Validate specified date format
+     */
+    if ( ! function_exists( 'dt_validate_date' ) ) {
+        function dt_validate_date( string $date, string $format = 'Y-m-d H:i:s' ): bool {
+            $date_time = DateTime::createFromFormat( $format, $date );
+
+            return $date_time && $date_time->format( $format ) === $date;
+        }
+    }
+
+    /**
      * All code above here.
      */
 } // end if ( ! defined( 'DT_FUNCTIONS_READY' ) )
