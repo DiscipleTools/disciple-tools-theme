@@ -101,7 +101,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "default" => true,
             ];
             $fields["type"]["default"]["access_placeholder"] = [
-                "label" => __( 'Team Connection', 'disciple_tools' ),
+                "label" => __( 'Connection', 'disciple_tools' ),
                 "color" => "#FF9800",
                 "description" => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg?v=2",
