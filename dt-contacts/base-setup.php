@@ -164,6 +164,7 @@ class DT_Contacts_Base {
                         "hidden" => !empty( $contact_preferences["hide_personal_contact_type"] )
                     ],
                 ],
+                "description" => "See full documentation here: https://disciple.tools/user-docs/getting-started-info/contacts/contact-types",
                 "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
                 'customizable' => false
             ];
@@ -384,7 +385,12 @@ class DT_Contacts_Base {
     public function dt_record_footer( $post_type, $post_id ){
         if ( $post_type === "contacts" ) :
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
-            $post = DT_Posts::get_post( $post_type, $post_id ); ?>
+            $post = DT_Posts::get_post( $post_type, $post_id );
+
+            //replace urls with links
+            $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
+            $contact_fields["type"]["description"] = preg_replace( $url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', $contact_fields["type"]["description"] );
+            ?>
             <div class="reveal" id="archive-record-modal" data-reveal data-reset-on-close>
                 <h3><?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></h3>
                 <p><?php echo esc_html( sprintf( _x( "Are you sure you want to archive %s?", "Are you sure you want to archive name?", 'disciple_tools' ), $post["name"] ) ) ?></p>
@@ -404,7 +410,7 @@ class DT_Contacts_Base {
 
             <div class="reveal" id="contact-type-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields["type"]["name"] ?? '' )?></h3>
-                <p><?php echo esc_html( $contact_fields["type"]["description"] ?? '' )?></p>
+                <p><?php echo nl2br( wp_kses_post( $contact_fields["type"]["description"] ?? '' ) )?></p>
                 <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
 
                 <select id="type-options">

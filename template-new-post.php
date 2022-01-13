@@ -36,7 +36,12 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                     <?php if ( $type_choice_present ){ ?>
                     <div class="type-control-field" style="margin-top:20px">
                         <strong>
-                        <?php echo esc_html( sprintf( __( 'Select the %s type:', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
+                            <?php echo esc_html( sprintf( __( 'Select the %s type:', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
+                            <?php if ( $dt_post_type === "contacts" ) : ?>
+                            <button class="help-button-field" type="button" data-section="type-help-text">
+                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                            </button>
+                            <?php endif; ?>
                         </strong>
                     </div>
                     <div class="type-options">
