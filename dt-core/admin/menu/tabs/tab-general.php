@@ -105,6 +105,14 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             /* User Visibility */
 
 
+            /* Contact setup  */
+            $this->box( 'top', 'Contact Preferences' );
+            $this->process_dt_contact_preferences();
+            $this->show_dt_contact_preferences();
+            $this->box( 'bottom' );
+            /* Contact Setup */
+
+
             $this->template( 'right_column' );
 
             $this->template( 'end' );
@@ -480,12 +488,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             <table class="widefat">
                 <tr>
                     <td>
-                        <input type="checkbox" name="church_metrics" <?php echo empty( $group_preferences['church_metrics'] ) ? '' : 'checked' ?> /> Church Metrics
+                        <label>
+                            <input type="checkbox" name="church_metrics" <?php echo empty( $group_preferences['church_metrics'] ) ? '' : 'checked' ?> /> Church Metrics
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="checkbox" name="four_fields" <?php echo empty( $group_preferences['four_fields'] ) ? '' : 'checked' ?> /> Four Fields
+                        <label>
+                            <input type="checkbox" name="four_fields" <?php echo empty( $group_preferences['four_fields'] ) ? '' : 'checked' ?> /> Four Fields
+                        </label>
                     </td>
                 </tr>
                 <?php wp_nonce_field( 'group_preferences' . get_current_user_id(), 'group_preferences_nonce' )?>
@@ -538,7 +550,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <?php if ( $role_object && !array_key_exists( 'dt_all_access_contacts', $role_object->capabilities ) && !array_key_exists( 'list_users', $role_object->capabilities ) ) : ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="<?php echo esc_attr( $role_key ); ?>" <?php checked( array_key_exists( 'dt_list_users', $role_object->capabilities ) ); ?>/> <?php echo esc_attr( $name ); ?>
+                        <label>
+                            <input type="checkbox" name="<?php echo esc_attr( $role_key ); ?>" <?php checked( array_key_exists( 'dt_list_users', $role_object->capabilities ) ); ?>/> <?php echo esc_attr( $name ); ?>
+                        </label>
                     </td>
                 </tr>
                 <?php endif; ?>
@@ -548,9 +562,48 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             </table>
             <br>
             <p>
-                <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role.' ) ?></label>
-                <input type="checkbox" name="user_invite_check" id="user_invite_check" value="user_invite" <?php echo $user_invite_allowed ? 'checked' : '' ?> />
+                <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role.' ) ?>
+                    <input type="checkbox" name="user_invite_check" id="user_invite_check" value="user_invite" <?php echo $user_invite_allowed ? 'checked' : '' ?> />
+                </label>
             </p>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
+        </form>
+        <?php
+    }
+
+    /** Group Preferences */
+    public function process_dt_contact_preferences(){
+
+        if ( isset( $_POST['dt_contact_preferences_nonce'] ) &&
+            wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_contact_preferences_nonce'] ) ), 'dt_contact_preferences' . get_current_user_id() ) ) {
+
+            $contact_preferences = get_option( "dt_contact_preferences" );
+            if ( isset( $_POST['hide_personal_contact_type'] ) && ! empty( $_POST['hide_personal_contact_type'] ) ) {
+                $contact_preferences["hide_personal_contact_type"] = false;
+            } else {
+                $contact_preferences["hide_personal_contact_type"] = true;
+            }
+
+            update_option( 'dt_contact_preferences', $contact_preferences, true );
+        }
+
+    }
+
+    public function show_dt_contact_preferences(){
+        $contact_preferences = get_option( 'dt_contact_preferences', [] );
+        ?>
+        <form method="post" >
+            <table class="widefat">
+                <tr>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hide_personal_contact_type" <?php echo empty( $contact_preferences['hide_personal_contact_type'] ) ? 'checked' : '' ?> /> Personal Contact Type Enabled
+                        </label>
+                    </td>
+                </tr>
+                <?php wp_nonce_field( 'dt_contact_preferences' . get_current_user_id(), 'dt_contact_preferences_nonce' )?>
+            </table>
+            <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
         </form>
         <?php

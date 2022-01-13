@@ -44,13 +44,16 @@ class DT_Contacts_DMM  extends DT_Module_Base {
     public function dt_custom_fields_settings( $fields, $post_type ){
         $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
+            $contact_preferences = get_option( 'dt_contact_preferences', [] );
             $fields["type"]["default"]["placeholder"] = [
-                "label" => __( 'Connection', 'disciple_tools' ),
+                "label" => __( 'Private Connection', 'disciple_tools' ),
                 "color" => "#FF9800",
                 "description" => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/network.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg?v=2",
                 "order" => 40,
                 "visibility" => __( "Only me", 'disciple_tools' ),
+                "in_create_form" => false,
+                "hidden" => !empty( $contact_preferences["hide_personal_contact_type"] ),
             ];
             $fields["milestones"] = [
                 "name"    => __( 'Faith Milestones', 'disciple_tools' ),

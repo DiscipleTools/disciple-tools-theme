@@ -8,7 +8,6 @@ jQuery(function($) {
     $(`#${type} input`).prop('checked', true)
     $('.form-fields').show();
     $(`.form-field`).hide()
-    $(`.type-control-field`).hide()
     $(`.form-field.all`).show()
     $(`.form-field.${type}`).show()
     $('#show-shield-banner').show()
