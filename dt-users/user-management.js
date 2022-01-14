@@ -204,6 +204,11 @@ jQuery(document).ready(function($) {
       window.open(window.wpApiShare.site_url + "/contacts/" + user_details.corresponds_to_contact, '_blank');
     }
   })
+  $('#wp_admin_edit_user').on( "click", function (){
+    if ( user_details.user_id ){
+      window.open(window.wpApiShare.site_url + "/wp-admin/user-edit.php?user_id=" + user_details.user_id, '_blank');
+    }
+  })
 
   /**
    * Locations

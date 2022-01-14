@@ -341,7 +341,16 @@ function fetch_user_locations( $user_id ): array {
 
                                         <h4><?php esc_html_e( 'User Profile', 'disciple_tools' ); ?><span id="profile_loading" class="loading-spinner active"></span></h4>
 
-                                        <button id="corresponds_to_contact_link" class="button" type="button"><?php esc_html_e( 'View contact record', 'disciple_tools' ); ?></button>
+                                        <button id="corresponds_to_contact_link" class="button" type="button">
+                                            <?php esc_html_e( 'View contact record', 'disciple_tools' ); ?>
+                                            <img class="dt-icon dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/>
+                                        </button>
+                                        <?php if ( current_user_can( "promote_users" ) ) : ?>
+                                            <button id="wp_admin_edit_user" class="button" type="button">
+                                                <?php esc_html_e( 'Edit User', 'disciple_tools' ); ?>
+                                                <img class="dt-icon dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/>
+                                            </button>
+                                        <?php endif; ?>
                                         <p>
                                             <?php esc_html_e( 'Email', 'disciple_tools' ); ?>: <span id="user_email"></span>
                                         </p>
