@@ -1044,7 +1044,7 @@ jQuery(document).ready(function($) {
         for (const service in messagingServices) {
           let link = messagingServices[service].link.replace('PHONE_NUMBER_NO_PLUS', phoneNumber.replace(/^((\+)|(00))/,"")).replace('PHONE_NUMBER', phoneNumber);
 
-          messagingServicesLinks = messagingServicesLinks + `<li><a href="${link}" title="Open With ${service}" target="_blank" class="phone-open-with-link"><img src="${messagingServices[service].icon}"/>${service}</a></li>`
+          messagingServicesLinks = messagingServicesLinks + `<li><a href="${link}" title="Open With ${messagingServices[service].name}" target="_blank" class="phone-open-with-link"><img src="${messagingServices[service].icon}"/>${messagingServices[service].name}</a></li>`
         }
 
         let openWithDiv = `<div class="phone-open-with-container __${phoneNumber.replace(/^((\+)|(00))/,"")}">
