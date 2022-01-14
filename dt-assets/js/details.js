@@ -1064,7 +1064,7 @@ jQuery(document).ready(function($) {
         })
       }
     });
-  };
+  }
 
   $('#delete-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
