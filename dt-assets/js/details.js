@@ -1051,7 +1051,7 @@ jQuery(document).ready(function($) {
         <strong>Open With...</strong>
           <ul>
             <li><a href="${PhoneLink}" title="Open With Telephone" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/phone.svg"/> Phone</a></li>
-            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="${iMessageLink}" title="Open With Signal" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/imessage.svg"/> iMessage</a></li>` : ""
+            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="iMessage://${phoneNumber}" title="Open With Signal" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/imessage.svg"/> iMessage</a></li>` : ""
             }
             ${messagingServicesLinks}
           </ul>
