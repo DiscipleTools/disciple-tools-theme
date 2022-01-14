@@ -415,6 +415,7 @@ jQuery(document).ready(function($) {
           user_details = details
           $("#user_name").html(window.lodash.escape(details.display_name))
           $("#update_display_name").val(details.display_name);
+          $("#user_email").html(details.user_email);
           (details.languages || []).forEach(l=>{
             $(`#${l}`).addClass('selected-select-button').removeClass('empty-select-button')
           })

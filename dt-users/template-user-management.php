@@ -343,6 +343,9 @@ function fetch_user_locations( $user_id ): array {
 
                                         <button id="corresponds_to_contact_link" class="button" type="button"><?php esc_html_e( 'View contact record', 'disciple_tools' ); ?></button>
                                         <p>
+                                            <?php esc_html_e( 'Email', 'disciple_tools' ); ?>: <span id="user_email"></span>
+                                        </p>
+                                        <p>
                                             <?php esc_html_e( 'Display Name', 'disciple_tools' ); ?>
                                             <span id="<?php echo esc_html( "update_display_name" ); ?>-spinner" class="loading-spinner"></span>
                                             <input type="text" id="update_display_name" class="text-input">
