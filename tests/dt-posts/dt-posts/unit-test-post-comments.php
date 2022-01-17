@@ -47,10 +47,13 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
         $this->assertSame( $comment_html, $comments['comments'][0]['comment_content'] );
     }
 
-    public function test_comment_creation_with_invalid_data() {
+    /**
+     * @dataProvider invalid_dates_data_provider
+     */
+    public function test_comment_creation_with_invalid_data( $comment_date ) {
 
         $comment_args  = [
-            'comment_date' => '0000-00-00 00:00:00'
+            'comment_date' => $comment_date
         ];
         $comment_html  = 'Invalid data comments test';
         $comment_error = DT_Posts::add_post_comment( self::$contact['post_type'], self::$contact['ID'], $comment_html, 'comment', $comment_args, false, true );
@@ -58,6 +61,16 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
         $error_msg = 'Invalid date! Correct format should be: Y-m-d H:i:s';
         $this->assertWPError( $comment_error );
         $this->assertSame( $error_msg, $comment_error->get_error_message() );
+    }
+
+    public function invalid_dates_data_provider(): array {
+        return [
+            [ '' ],
+            [ 'null' ],
+            [ '0000-00-00 00:00:00' ],
+            [ '7/6/2009 14:16' ],
+            [ 'Y-m-d H:i:s' ]
+        ];
     }
 
     public function test_comment_updates() {
