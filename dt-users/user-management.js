@@ -204,6 +204,11 @@ jQuery(document).ready(function($) {
       window.open(window.wpApiShare.site_url + "/contacts/" + user_details.corresponds_to_contact, '_blank');
     }
   })
+  $('#wp_admin_edit_user').on( "click", function (){
+    if ( user_details.user_id ){
+      window.open(window.wpApiShare.site_url + "/wp-admin/user-edit.php?user_id=" + user_details.user_id, '_blank');
+    }
+  })
 
   /**
    * Locations
@@ -415,6 +420,7 @@ jQuery(document).ready(function($) {
           user_details = details
           $("#user_name").html(window.lodash.escape(details.display_name))
           $("#update_display_name").val(details.display_name);
+          $("#user_email").html(details.user_email);
           (details.languages || []).forEach(l=>{
             $(`#${l}`).addClass('selected-select-button').removeClass('empty-select-button')
           })
