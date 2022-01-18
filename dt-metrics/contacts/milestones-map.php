@@ -112,17 +112,6 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
 
     public function add_milestones_data( $data, $force_refresh = false ) {
 
-
-        if ( isset( $_SERVER["SERVER_NAME"] ) ) {
-            $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) )
-                ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) )
-                : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) );
-            if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-                $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
-            }
-        }
-        $url_path = trim( str_replace( get_site_url(), "", $url ), '/' );
-
         /**
          * Step 1
          * Extract the labels and data from the data section of the filter

@@ -563,8 +563,7 @@ class Disciple_Tools_Mapping_Queries {
     }
 
     /**
-     * Count post types, churches and groups in each used location and across admin levels
-     * @todo rewrite. user is no longer found here and these are listing milstones
+     * Count key select and multiselect fields used location and across admin levels
      */
     public static function get_location_grid_totals_on_field( $post_type, $field, $force_refresh = false ) : array {
 
@@ -574,7 +573,7 @@ class Disciple_Tools_Mapping_Queries {
             return get_transient( "get_location_grid_totals_{$post_type}_{$field}" );
         }
 
-        $results = $wpdb->get_results("
+        $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT
                 t1.admin0_grid_id as grid_id,
                 t1.type,
@@ -584,10 +583,10 @@ class Disciple_Tools_Mapping_Queries {
                     g.admin0_grid_id,
                     gt.meta_value as type
                 FROM $wpdb->postmeta as p
-                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID and pp.post_type = %s
                     LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value
-                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                    LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'milestones'
+                    JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = %s
+                    JOIN $wpdb->postmeta as type on ( p.post_ID = type.post_ID AND ( pp.post_type != 'contacts' OR ( type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' ) ) ) )
                 WHERE p.meta_key = 'location_grid'
             ) as t1
             WHERE t1.admin0_grid_id != ''
@@ -602,10 +601,10 @@ class Disciple_Tools_Mapping_Queries {
                     g.admin1_grid_id,
                     gt.meta_value as type
                 FROM $wpdb->postmeta as p
-                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID and pp.post_type = %s
                     LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value
-                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                    LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'milestones'
+                    JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = %s
+                    JOIN $wpdb->postmeta as type on ( p.post_ID = type.post_ID AND ( pp.post_type != 'contacts' OR ( type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' ) ) ) )
                 WHERE p.meta_key = 'location_grid'
             ) as t2
             WHERE t2.admin1_grid_id != ''
@@ -620,10 +619,10 @@ class Disciple_Tools_Mapping_Queries {
                     g.admin2_grid_id,
                     gt.meta_value as type
                 FROM $wpdb->postmeta as p
-                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID and pp.post_type = %s
                     LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value
-                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                    LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'milestones'
+                    JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = %s
+                    JOIN $wpdb->postmeta as type on ( p.post_ID = type.post_ID AND ( pp.post_type != 'contacts' OR ( type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' ) ) ) )
                 WHERE p.meta_key = 'location_grid'
             ) as t3
             WHERE t3.admin2_grid_id != ''
@@ -638,18 +637,18 @@ class Disciple_Tools_Mapping_Queries {
                     g.admin3_grid_id,
                     gt.meta_value as type
                 FROM $wpdb->postmeta as p
-                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID and pp.post_type = %s
                     LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value
-                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                    LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'milestones'
+                    JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = %s
+                    JOIN $wpdb->postmeta as type on ( p.post_ID = type.post_ID AND ( pp.post_type != 'contacts' OR ( type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' ) ) ) )
                 WHERE p.meta_key = 'location_grid'
             ) as t4
             WHERE t4.admin3_grid_id != ''
             GROUP BY t4.admin3_grid_id, t4.type;
-        ", ARRAY_A );
+        ", $post_type, $field, $post_type, $field, $post_type, $field, $post_type, $field ), ARRAY_A );
 
 
-        set_transient( "get_location_grid_totals_{$post_type}_{$field}", $results, 60 * 60 * 24 );
+        set_transient( "get_location_grid_totals_{$post_type}_{$field}", $results, HOUR_IN_SECONDS );
 
 
         if ( empty( $results ) ) {
