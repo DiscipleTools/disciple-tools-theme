@@ -1,9 +1,8 @@
 <?php
 
 /**
- * Role factory class.
+ * A helper class for working with capabilities
  *
- * @since  0.1.0
  * @access public
  */
 final class Disciple_Tools_Capabilities {
@@ -27,20 +26,38 @@ final class Disciple_Tools_Capabilities {
         return $instance;
     }
 
+    /**
+     * Disciple_Tools_Capabilities constructor.
+     * @param $factory
+     */
     public function __construct( $factory ) {
         $this->factory = $factory;
     }
 
+    /**
+     * Get all the registered capabilities as an array
+     * @return mixed
+     */
     public function all() {
         return $this->factory->get_capabilities();
     }
 
+    /**
+     * Only get capabiliteis from a particular source
+     * "Wordpress" or 'Disciple Tools" or any other source registered by a plugin
+     * @param $source
+     * @return mixed
+     */
     public function from_source( $source ) {
         return array_filter( $this->all(), function ( $capability ) use ( $source ) {
             return $capability->source === $source;
         } );
     }
 
+    /**
+     * Get an array of all registered sources.
+     * @return mixed
+     */
     public function sources() {
         return array_reduce($this->all(), function($sources, $capability) {
             if (!$capability->source) {

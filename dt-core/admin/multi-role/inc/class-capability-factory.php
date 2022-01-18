@@ -231,7 +231,11 @@ final class Disciple_Tools_Capability_Factory {
         return $instance;
     }
 
-
+    /**
+     * Convert the slug to a human-readable name.
+     * @param $capability
+     * @return string
+     */
     private function name_from_slug( $capability ) {
         $string = str_replace( "_", ' ', $capability );
 
@@ -270,7 +274,9 @@ final class Disciple_Tools_Capability_Factory {
         return $string;
     }
 
-
+    /**
+     * Register all capabilities from multi-role, the dt_capabilities filter
+     */
     public function setup_capabilities() {
         $capabilities = [];
 

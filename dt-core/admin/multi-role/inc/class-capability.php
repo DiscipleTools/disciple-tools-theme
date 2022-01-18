@@ -7,7 +7,7 @@
  */
 
 /**
- * Role class.
+ * Capability class.
  *
  * @since  0.1.0
  * @access public
@@ -23,8 +23,6 @@ class Disciple_Tools_Capability {
 
     /**
      * The capability name.
-     *
-
      * @access public
      * @var    string
      */
@@ -66,6 +64,10 @@ class Disciple_Tools_Capability {
         $this->description = $description;
     }
 
+    /**
+     * Get the capability as an array
+     * @return array
+     */
     public function to_array() {
         return [
             'slug' => $this->slug,
