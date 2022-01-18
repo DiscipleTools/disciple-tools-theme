@@ -42,7 +42,7 @@ jQuery(document).ready(function() {
 
       chartDiv.find(".js-loading").remove()
 
-      let filteringOutText = `${window.lodash.escape(window.wp_js_object.translations.milestones)} ${label}.`;
+      let filteringOutText = `${window.lodash.escape(window.wp_js_object.translations.sources_filter_out_text)} ${label}.`;
 
       chartsDiv.append($("<div>").html(`
 
