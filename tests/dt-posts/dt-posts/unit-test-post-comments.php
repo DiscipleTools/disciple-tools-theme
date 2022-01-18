@@ -33,10 +33,13 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
         self::$contact = DT_Posts::create_post( "contacts", self::$sample_contact, true, false );
     }
 
-    public function test_comment_creation_with_valid_data() {
+    /**
+     * @dataProvider valid_dates_data_provider
+     */
+    public function test_comment_creation_with_valid_data( $comment_date ) {
 
         $comment_args = [
-            'comment_date' => '2022-01-13 12:00:00'
+            'comment_date' => $comment_date
         ];
         $comment_html = 'Valid data comments test';
         $comment_id   = DT_Posts::add_post_comment( self::$contact['post_type'], self::$contact['ID'], $comment_html, 'comment', $comment_args, false, true );
@@ -45,6 +48,13 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
         $this->assertNotWPError( $comment_id );
         $this->assertSame( 1, (int) $comments['total'] );
         $this->assertSame( $comment_html, $comments['comments'][0]['comment_content'] );
+    }
+
+    public function valid_dates_data_provider(): array {
+        return [
+            [ '' ],
+            [ '2022-01-13 12:00:00' ]
+        ];
     }
 
     /**
@@ -65,7 +75,6 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
 
     public function invalid_dates_data_provider(): array {
         return [
-            [ '' ],
             [ 'null' ],
             [ '0000-00-00 00:00:00' ],
             [ '7/6/2009 14:16' ],

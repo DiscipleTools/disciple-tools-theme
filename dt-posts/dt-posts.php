@@ -881,15 +881,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         // If present, ensure specified date format is correct
-        if ( isset( $args["comment_date"] ) ) {
-
-            $error_msg = "Invalid date! Correct format should be: Y-m-d H:i:s";
-            if ( empty( $args["comment_date"] ) ) {
-                return new WP_Error( __FUNCTION__, $error_msg, [ 'status' => 403 ] );
-
-            } elseif ( ! dt_validate_date( $args["comment_date"] ) ) {
-                return new WP_Error( __FUNCTION__, $error_msg, [ 'status' => 403 ] );
-            }
+        if ( ! empty( $args["comment_date"] ) && ! dt_validate_date( $args["comment_date"] ) ) {
+            return new WP_Error( __FUNCTION__, "Invalid date! Correct format should be: Y-m-d H:i:s", [ 'status' => 403 ] );
         }
 
         //limit comment length to 5000
