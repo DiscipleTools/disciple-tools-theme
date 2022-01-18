@@ -102,10 +102,18 @@ details.flyout > summary {
     padding-right: 10px;
 }
 
+details.flyout .button {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+
 [data-tooltip] {
     position: relative;
     cursor: help;
 }
+
 
 [data-tooltip]::after {
     position: absolute;

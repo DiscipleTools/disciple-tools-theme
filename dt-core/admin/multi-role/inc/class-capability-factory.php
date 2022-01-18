@@ -150,8 +150,7 @@ final class Disciple_Tools_Capability_Factory {
 
         $capability = $this->get_capability( $slug );
 
-        if (!$this->get_capability( $slug )) {
-            //Handle the case that we've already registered this capability
+        if (!$capability) {
             $capability = new Disciple_Tools_Capability(
                 $slug,
                 $source,
@@ -164,6 +163,7 @@ final class Disciple_Tools_Capability_Factory {
             $capability->description = $description;
         }
         $this->capabilities[ $slug ] = $capability;
+
         ksort( $this->capabilities );
     }
 
@@ -279,6 +279,7 @@ final class Disciple_Tools_Capability_Factory {
             dt_multi_role_get_plugin_capabilities()
         );
 
+
         foreach ($dt_capabilities as $capability) {
             $capabilities[ $capability ] = [
                 'source'      => __( 'Disciple Tools', 'disciple_tools' ),
@@ -287,7 +288,7 @@ final class Disciple_Tools_Capability_Factory {
         }
 
         $wordpress_capabilities = dt_multi_role_get_wp_capabilities();
-        foreach ($wordpress_capabilities as $capability) {
+        foreach ($wordpress_capabilities as $key => $capability) {
             $capabilities[ $capability ] = [
                 'source'      => __( 'WordPress', 'disciple_tools' ),
                 'description' => isset( $this->default_descriptions()[ $capability ] ) ? $this->default_descriptions()[ $capability ] : ''
@@ -296,9 +297,11 @@ final class Disciple_Tools_Capability_Factory {
 
         $capabilities = apply_filters( 'dt_capabilities', $capabilities );
 
-
         foreach ($capabilities as $capability => $options) {
-            $this->add_capability( $capability, $options );
+            //There are some random capabilities registered that are just numbers?
+            if (!is_numeric($capability)) {
+                $this->add_capability( $capability, $options );
+            }
         }
     }
 }
