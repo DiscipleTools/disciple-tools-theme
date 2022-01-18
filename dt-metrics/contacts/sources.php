@@ -181,7 +181,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
                 a.meta_value sources, b.meta_value overall_status, c.meta_value seeker_path, COUNT(p.ID) count
             FROM
                 $wpdb->posts p
-            INNER JOIN $wpdb->postmeta as type ON ( p.ID = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
+            INNER JOIN $wpdb->postmeta as type on ( a.ID = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' ) )
             LEFT JOIN
                 $wpdb->postmeta a ON p.ID = a.post_id AND a.meta_key = 'sources'
             LEFT JOIN
@@ -254,7 +254,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
                 a.meta_value sources, b.meta_value milestone, COUNT(p.ID) count
             FROM
                 $wpdb->posts p
-            INNER JOIN $wpdb->postmeta as type ON ( p.ID = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
+            INNER JOIN $wpdb->postmeta as type on ( a.ID = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' ) )
             LEFT JOIN
                 $wpdb->postmeta a ON p.ID = a.post_id AND a.meta_key = 'sources'
             JOIN
