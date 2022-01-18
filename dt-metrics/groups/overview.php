@@ -58,21 +58,13 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
     public function data() {
         return [
             'translations' => [
-                'title_overview' => __( 'Project Overview', 'disciple_tools' ),
                 'title_groups_overview' => __( 'Groups Overview', 'disciple_tools' ),
-                'title_contacts' => __( 'Contacts', 'disciple_tools' ),
-                'title_groups' => __( 'Groups', 'disciple_tools' ),
-                'title_all_contacts' => __( 'All Contacts', 'disciple_tools' ),
-                'title_active_contacts' => __( 'Active Contacts', 'disciple_tools' ),
-                'title_waiting_on_accept' => __( 'Waiting on Accept', 'disciple_tools' ),
-                'title_waiting_on_update' => __( 'Waiting on Update', 'disciple_tools' ),
                 'title_total_groups' => __( 'Total Groups', 'disciple_tools' ),
                 'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
                 'title_group_types' => __( 'Group Types', 'disciple_tools' ),
                 'title_teams' => __( 'Teams', 'disciple_tools' ),
                 'label_follow_up_progress' => __( 'Follow-up of all active contacts', 'disciple_tools' ),
                 'label_group_needs_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
-                'label_groups' => strtolower( __( 'Groups', 'disciple_tools' ) ),
                 'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
                 'label_generation' => __( 'Generation', 'disciple_tools' ),
                 'label_group_types' => __( 'Group Types', 'disciple_tools' ),
@@ -156,28 +148,10 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
     public function chart_project_hero_stats() {
 
         $stats = $this->query_project_hero_stats();
-        $group_health = $this->query_project_group_health();
-        $needs_training = 0; // @todo remove
-
-        if ( ! empty( $group_health ) ) {
-            foreach ( $group_health as $value ) {
-                $count = intval( $value['out_of'] ) - intval( $value['count'] );
-                if ( $count > $needs_training ) {
-                    $needs_training = $count;
-                }
-            }
-        }
 
         $results = [
-            'total_contacts' => $stats["total_contacts"], // @todo remove
-            'active_contacts' => $stats['active_contacts'], // @todo remove
-            'needs_accepted' => $stats['needs_accept'], // @todo remove
-            'updates_needed' => $stats['needs_update'], // @todo remove
             'total_groups' => $stats['groups'],
-            'needs_training' => $needs_training,
-            'fully_practicing' => (int) $stats['groups'] - (int) $needs_training, // @todo
             'teams' => $stats['teams'],
-            'generations' => 0, // @todo remove
         ];
 
         return $results;
@@ -254,61 +228,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
         $numbers["total_contacts"] = Disciple_Tools_Counter::critical_path( 'new_contacts' );
 
         $results = $wpdb->get_results( "
-            SELECT (
-                SELECT count(a.ID)
-                FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as b
-                ON a.ID = b.post_id
-                AND b.meta_key = 'overall_status'
-                AND b.meta_value = 'active'
-                WHERE a.post_status = 'publish'
-                AND a.post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
-            )
-            as active_contacts,
-            (SELECT count(a.ID)
-                FROM $wpdb->posts as a
-                    JOIN $wpdb->postmeta as b
-                    ON a.ID=b.post_id
-                       AND b.meta_key = 'accepted'
-                       AND (b.meta_value = '' OR b.meta_value = 'no')
-                JOIN $wpdb->postmeta as d
-                ON a.ID=d.post_id
-                   AND d.meta_key = 'overall_status'
-                   AND d.meta_value = 'assigned'
-                WHERE a.post_status = 'publish'
-                AND a.post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
-            )
-            as needs_accept,
-            (SELECT count(a.ID)
-                FROM $wpdb->posts as a
-                    JOIN $wpdb->postmeta as b
-                    ON a.ID=b.post_id
-                       AND b.meta_key = 'requires_update'
-                       AND b.meta_value = '1'
-                JOIN $wpdb->postmeta as d
-                ON a.ID=d.post_id
-                    AND d.meta_key = 'overall_status'
-                AND d.meta_value = 'active'
-                WHERE a.post_status = 'publish'
-                AND a.post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
-            )
-            as needs_update,
-            (SELECT count(a.ID)
+            SELECT (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as d
                 ON a.ID=d.post_id
