@@ -17,7 +17,7 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
     public $js_file_name = '/dt-metrics/common/maps_library.js'; // should be full file name plus extension
     public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
     public $namespace = 'dt-metrics/contacts';
-    public $base_filter = [ "type" => [ "access" ] ];
+    public $base_filter = [ "type" => [ "access", "access_placeholder" ] ];
 
     public function __construct() {
         if ( ! DT_Mapbox_API::get_key() ) {
