@@ -369,6 +369,12 @@ nav.second-bar {
             vertical-align: middle;
         }
     }
+    .dropdown.menu .is-submenu-item a:hover {
+        color:white;
+    }
+    .dropdown.menu .is-submenu-item:hover {
+        background-color: $primary-color;
+    }
 }
 
 .search-input {

@@ -488,12 +488,12 @@ class DT_Contacts_DMM  extends DT_Module_Base {
         ?>
         <div class="reveal" id="baptism-modal" data-reveal data-close-on-click="false">
 
-            <h3><?php echo esc_html( $field_settings["baptized"]["name"] )?></h3>
+            <h3><?php echo esc_html( $field_settings["baptized"]["name"] ?? '' )?></h3>
             <p><?php esc_html_e( "Who was this contact baptized by and when?", 'disciple_tools' )?></p>
 
             <div>
                 <div class="section-subheader">
-                    <?php echo esc_html( $field_settings["baptized_by"]["name"] )?>
+                    <?php echo esc_html( $field_settings["baptized_by"]["name"] ?? '' )?>
                 </div>
                 <div class="modal_baptized_by details">
                     <var id="modal_baptized_by-result-container" class="result-container modal_baptized_by-result-container"></var>

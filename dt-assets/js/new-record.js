@@ -1,6 +1,10 @@
 jQuery(function($) {
   window.post_type_fields = window.new_record_localized.post_type_settings.fields
   let new_post = {}
+  let temp_type = $('.type-options .selected').attr('id')
+  if ( temp_type ){
+    new_post.type = temp_type;
+  }
   document.querySelector('.form-fields input').focus()
   $('.type-option').on('click', function(){
     let type = $(this).attr('id')
