@@ -506,9 +506,13 @@ DT comments and activity
         background: #fefefe;
         border: 1px solid #cacaca;
         border-radius: 5px;
-        ul li {
+        ul {
+            margin: 0;
+            li {
             list-style: none;
+            }
         }
+
     }
 }
 

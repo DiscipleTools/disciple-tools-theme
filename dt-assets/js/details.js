@@ -1044,14 +1044,14 @@ jQuery(document).ready(function($) {
         for (const service in messagingServices) {
           let link = messagingServices[service].link.replace('PHONE_NUMBER_NO_PLUS', phoneNumber.replace(/^((\+)|(00))/,"")).replace('PHONE_NUMBER', phoneNumber);
 
-          messagingServicesLinks = messagingServicesLinks + `<li><a href="${link}" title="Open With ${messagingServices[service].name}" target="_blank" class="phone-open-with-link"><img src="${messagingServices[service].icon}"/>${messagingServices[service].name}</a></li>`
+          messagingServicesLinks = messagingServicesLinks + `<li><a href="${link}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} ${messagingServices[service].name}" target="_blank" class="phone-open-with-link"><img src="${messagingServices[service].icon}"/>${messagingServices[service].name}</a></li>`
         }
 
         let openWithDiv = `<div class="phone-open-with-container __${phoneNumber.replace(/^((\+)|(00))/,"")}">
-        <strong>Open With...</strong>
+        <strong>${window.lodash.escape(window.detailsSettings.translations.Open_with)}...</strong>
           <ul>
-            <li><a href="${PhoneLink}" title="Open With Telephone" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/phone.svg"/> Phone</a></li>
-            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="iMessage://${phoneNumber}" title="Open With Signal" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/imessage.svg"/> iMessage</a></li>` : ""
+            <li><a href="${PhoneLink}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} ${window.post_type_fields.contact_phone.name}" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/phone.svg"/> Phone</a></li>
+            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="iMessage://${phoneNumber}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} iMessage" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/imessage.svg"/> iMessage</a></li>` : ""
             }
             ${messagingServicesLinks}
           </ul>
