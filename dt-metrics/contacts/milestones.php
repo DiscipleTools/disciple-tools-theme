@@ -117,7 +117,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
         $res = $wpdb->get_results( $wpdb->prepare( "
             SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as milestones
             FROM $wpdb->dt_activity_log log
-            INNER JOIN $wpdb->postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
+            JOIN $wpdb->postmeta as type on ( log.object_id = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' ) )
             INNER JOIN $wpdb->posts post
             ON (
                 post.ID = log.object_id
