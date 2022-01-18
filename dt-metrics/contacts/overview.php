@@ -95,22 +95,13 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
 
         $results = $wpdb->get_results( "
             SELECT b.meta_value as seeker_path, count( a.ID ) as count
-             FROM $wpdb->posts as a
-               JOIN $wpdb->postmeta as b
-                 ON a.ID=b.post_id
-                    AND b.meta_key = 'seeker_path'
-               JOIN $wpdb->postmeta as d
-                 ON a.ID=d.post_id
-                    AND d.meta_key = 'overall_status'
-                    AND d.meta_value = 'active'
-             WHERE a.post_status = 'publish'
-                AND a.post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
-             GROUP BY b.meta_value
+            FROM $wpdb->posts as a
+            JOIN $wpdb->postmeta as type on ( a.ID = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' ) )
+            JOIN $wpdb->postmeta as b ON a.ID=b.post_id AND b.meta_key = 'seeker_path'
+            JOIN $wpdb->postmeta as d ON a.ID=d.post_id AND d.meta_key = 'overall_status' AND d.meta_value = 'active'
+            WHERE a.post_status = 'publish'
+            AND a.post_type = 'contacts'
+            GROUP BY b.meta_value
         ", ARRAY_A );
 
         $query_results = [];
