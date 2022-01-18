@@ -63,7 +63,6 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
                 'title_active_contacts' => __( 'Active Contacts', 'disciple_tools' ),
                 'title_waiting_on_accept' => __( 'Waiting on Accept', 'disciple_tools' ),
                 'title_waiting_on_update' => __( 'Waiting on Update', 'disciple_tools' ),
-                'title_total_groups' => __( 'Total Groups', 'disciple_tools' ),
                 'title_status_chart' => $contact_fields["overall_status"]["name"],
                 'label_follow_up_progress' => __( 'Follow-up of all active contacts', 'disciple_tools' ),
             ],
@@ -136,28 +135,11 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
     public function chart_project_hero_stats() {
 
         $stats = $this->query_project_hero_stats();
-        $group_health = $this->query_project_group_health();
-        $needs_training = 0; // @todo remove
-
-        if ( ! empty( $group_health ) ) {
-            foreach ( $group_health as $value ) {
-                $count = intval( $value['out_of'] ) - intval( $value['count'] );
-                if ( $count > $needs_training ) {
-                    $needs_training = $count;
-                }
-            }
-        }
-
         $results = [
-            'total_contacts' => $stats["total_contacts"], // @todo remove
-            'active_contacts' => $stats['active_contacts'], // @todo remove
-            'needs_accepted' => $stats['needs_accept'], // @todo remove
-            'updates_needed' => $stats['needs_update'], // @todo remove
-            'total_groups' => $stats['groups'],
-            'needs_training' => $needs_training,
-            'fully_practicing' => (int) $stats['groups'] - (int) $needs_training, // @todo
-            'teams' => $stats['teams'],
-            'generations' => 0, // @todo remove
+            'total_contacts' => $stats["total_contacts"],
+            'active_contacts' => $stats['active_contacts'],
+            'needs_accepted' => $stats['needs_accept'],
+            'updates_needed' => $stats['needs_update'],
         ];
 
         return $results;
@@ -223,33 +205,7 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
                     GROUP BY post_id
                 )
             )
-            as needs_update,
-            (SELECT count(a.ID)
-                FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as d
-                ON a.ID=d.post_id
-                    AND d.meta_key = 'group_status'
-                AND d.meta_value = 'active'
-                JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                     AND e.meta_key = 'group_type'
-                     AND e.meta_value != 'team'
-                WHERE a.post_status = 'publish'
-                AND a.post_type = 'groups')
-            as `groups`,
-            (SELECT count(a.ID)
-                FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as d
-                ON a.ID=d.post_id
-                    AND d.meta_key = 'group_status'
-                AND d.meta_value = 'active'
-                JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                     AND e.meta_key = 'group_type'
-                     AND e.meta_value = 'team'
-                WHERE a.post_status = 'publish'
-                AND a.post_type = 'groups')
-            as `teams`
+            as needs_update
         ",
         ARRAY_A );
 
@@ -262,45 +218,6 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
         }
 
         return $numbers;
-    }
-
-    public function query_project_group_health() {
-        global $wpdb;
-
-        $results = $wpdb->get_results( "
-            SELECT d.meta_value as health_key,
-              count(distinct(a.ID)) as count,
-              ( SELECT count(*)
-              FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as c
-                  ON a.ID=c.post_id
-                     AND c.meta_key = 'group_status'
-                     AND c.meta_value = 'active'
-                JOIN $wpdb->postmeta as d
-                  ON a.ID=d.post_id
-                     AND d.meta_key = 'group_type'
-                     AND ( d.meta_value = 'group' OR d.meta_value = 'church' )
-              WHERE a.post_status = 'publish'
-                    AND a.post_type = 'groups'
-              ) as out_of
-              FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as c
-                  ON a.ID=c.post_id
-                     AND c.meta_key = 'group_status'
-                     AND c.meta_value = 'active'
-                JOIN $wpdb->postmeta as d
-                  ON ( a.ID=d.post_id
-                    AND d.meta_key = 'health_metrics' )
-                JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                     AND e.meta_key = 'group_type'
-                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
-              WHERE a.post_status = 'publish'
-                    AND a.post_type = 'groups'
-              GROUP BY d.meta_value
-        ", ARRAY_A );
-
-        return $results;
     }
 
 }
