@@ -501,6 +501,19 @@ DT comments and activity
             max-width: 100%;
         }
     }
+    .phone-open-with-container {
+        padding: 0.5em;
+        background: #fefefe;
+        border: 1px solid #cacaca;
+        border-radius: 5px;
+        ul {
+            margin: 0;
+            li {
+            list-style: none;
+            }
+        }
+
+    }
 }
 
 html[dir="rtl"] {

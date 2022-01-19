@@ -196,6 +196,23 @@ class DT_Contacts_Base {
                 "tile" => "details",
                 "customizable" => false,
                 "in_create_form" => true,
+                "messagingServices" => [
+                    'Signal' => [
+                        'name' => __( "Signal", 'disciple_tools' ),
+                        "link" => "https://signal.me/#p/PHONE_NUMBER",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/signal.svg"
+                    ],
+                    'Viber' => [
+                        'name' => __( "Viber", 'disciple_tools' ),
+                        "link" => "viber://chat?number=PHONE_NUMBER",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/viber.svg"
+                    ],
+                    'Whatsapp' => [
+                        'name' => __( "Whatsapp", 'disciple_tools' ),
+                        "link" => "https://api.whatsapp.com/send?phone=PHONE_NUMBER_NO_PLUS",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/signal.svg"
+                    ],
+                ]
             ];
             $fields["contact_email"] = [
                 "name" => __( 'Email', 'disciple_tools' ),
