@@ -17,6 +17,7 @@ get_header();
 $post_settings = DT_Posts::get_post_settings( $dt_post_type );
 
 $type_choice_present = false;
+$selected_type = null;
 if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields"]["type"]["default"] ) > 1 ){
     $type_choice_present = true;
 }
@@ -51,6 +52,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                             });
                         }
                         foreach ( $post_settings["fields"]["type"]["default"] as $option_key => $type_option ) {
+                            $selected_type = !empty( $type_option["default"] ) ? $option_key : $selected_type;
                             //order fields alphabetically by Name
                             if ( empty( $type_option["hidden"] ) && ( !isset( $type_option["in_create_form"] ) || $type_option["in_create_form"] !== false ) ){ ?>
                                 <div class="type-option <?php echo esc_html( !empty( $type_option["default"] ) ? "selected" : '' ); ?>" id="<?php echo esc_html( $option_key ); ?>">
@@ -93,14 +95,19 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                                 continue;
                             }
                             $classes = "";
+                            $show_field = false;
                             //add types the field should show up on as classes
                             if ( !empty( $field_settings['in_create_form'] ) ){
                                 if ( is_array( $field_settings['in_create_form'] ) ){
                                     foreach ( $field_settings['in_create_form'] as $type_key ){
                                         $classes .= $type_key . " ";
+                                        if ( $type_key === $selected_type ){
+                                            $show_field = true;
+                                        }
                                     }
                                 } elseif ( $field_settings['in_create_form'] === true ){
                                     $classes = "all";
+                                    $show_field = true;
                                 }
                             } else {
                                 $classes = "other-fields";
@@ -108,7 +115,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
 
                             ?>
                             <!-- hide the fields that were not selected to be displayed by default in the create form -->
-                            <div <?php echo esc_html( $classes === "other-fields" ? "style=display:none" : "" ); ?>
+                            <div <?php echo esc_html( !$show_field ? "style=display:none" : "" ); ?>
                                 class="form-field <?php echo esc_html( $classes ); ?>">
                             <?php
                             render_field_for_display( $field_key, $post_settings['fields'], [] );
