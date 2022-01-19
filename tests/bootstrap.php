@@ -19,7 +19,7 @@ if ( !file_exists( $_tests_dir . '/includes/functions.php' ) ) {
 // Give access to tests_add_filter() function.
 require_once $_tests_dir . '/includes/functions.php';
 
-if (file_exists( $_tests_dir . '/vendor/autoload.php')) {
+if ( file_exists( $_tests_dir . '/vendor/autoload.php' ) ) {
     require_once __DIR__ . '/../vendor/autoload.php';
 }
 

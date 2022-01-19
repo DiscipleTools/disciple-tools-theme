@@ -50,7 +50,7 @@ final class Disciple_Tools_Capability_Factory {
             'access_disciple_tools'   => __( 'In Disicple.Tools, allows user to login to Disciple.Tools.', 'disciple-tools' ),
             'access_groups'           => __( 'In Disciple.Tools, allows user to access groups.', 'disciple-tools' ),
             'access_peoplegroups'     => __( 'In WordPress, allows user to access People Groups to add or edit imported people groups.', 'disciple-tools' ),
-            'access_specific_sources' => __( '', 'disciple-tools' ),
+            'access_specific_sources' => '',
             'activate_plugins'        => __( 'In WordPress, allows user to activate installed plugins.', 'disciple-tools' ),
             'add_users'               => __( 'In WordPress, allows user to change the role on an existing user.', 'disciple-tools' ),
             'assign_any_contacts'     => __( 'In Disciple.Tools, allows user to assign any contact to another user.', 'disciple-tools' ),
@@ -58,80 +58,80 @@ final class Disciple_Tools_Capability_Factory {
             'create_groups'           => __( 'In Disciple.Tools, allows user to create new groups.', 'disciple-tools' ),
             'create_roles'            => __( 'In Disciple.Tools, allows user to create new roles.', 'disciple-tools' ),
             'create_users'            => __( 'In WordPress, allows user to create new users.', 'disciple-tools' ),
-            'delete_others_pages'     => __( '', 'disciple-tools' ),
-            'delete_others_posts'     => __( '', 'disciple-tools' ),
-            'delete_pages'            => __( '', 'disciple-tools' ),
-            'delete_plugins'          => __( '', 'disciple-tools' ),
-            'delete_posts'            => __( '', 'disciple-tools' ),
-            'delete_private_pages'    => __( '', 'disciple-tools' ),
-            'delete_private_posts'    => __( '', 'disciple-tools' ),
-            'delete_published_pages'  => __( '', 'disciple-tools' ),
-            'delete_published_posts'  => __( '', 'disciple-tools' ),
+            'delete_others_pages'     => '',
+            'delete_others_posts'     => '',
+            'delete_pages'            => '',
+            'delete_plugins'          => '',
+            'delete_posts'            => '',
+            'delete_private_pages'    => '',
+            'delete_private_posts'    => '',
+            'delete_published_pages'  => '',
+            'delete_published_posts'  => '',
             'delete_roles'            => __( 'In Disciple.Tools, allows user to remove roles', 'disciple-tools' ),
-            'delete_themes'           => __( '', 'disciple-tools' ),
-            'delete_users'            => __( '', 'disciple-tools' ),
+            'delete_themes'           => '',
+            'delete_users'            => '',
             'dt_all_access_contacts'  => __( 'In Disciple.Tools, allows user to view all contacts regardless of who they are assigned to', 'disciple-tools' ),
             'dt_all_admin_contacts'   => __( 'In Disciple.Tools, allows user to edit all contacts regardless of who they are assigned to', 'disciple-tools' ),
             'dt_all_admin_groups'     => __( 'In Disciple.Tools, allows user to edit all contacts regardless of who they are assigned to', 'disciple-tools' ),
             'dt_list_users'           => __( 'In Disciple.Tools, allows user to see list of users', 'disciple-tools' ),
-            'edit_dashboard'          => __( '', 'disciple-tools' ),
-            'edit_files'              => __( '', 'disciple-tools' ),
-            'edit_others_pages'       => __( '', 'disciple-tools' ),
-            'edit_others_posts'       => __( '', 'disciple-tools' ),
-            'edit_pages'              => __( '', 'disciple-tools' ),
+            'edit_dashboard'          => '',
+            'edit_files'              => '',
+            'edit_others_pages'       => '',
+            'edit_others_posts'       => '',
+            'edit_pages'              => '',
             'edit_peoplegroups'       => __( 'In Wordpress, allows user to edit People Groups', 'disciple-tools' ),
-            'edit_plugins'            => __( '', 'disciple-tools' ),
-            'edit_posts'              => __( '', 'disciple-tools' ),
-            'edit_private_pages'      => __( '', 'disciple-tools' ),
-            'edit_private_posts'      => __( '', 'disciple-tools' ),
-            'edit_published_pages'    => __( '', 'disciple-tools' ),
-            'edit_published_posts'    => __( '', 'disciple-tools' ),
+            'edit_plugins'            => '',
+            'edit_posts'              => '',
+            'edit_private_pages'      => '',
+            'edit_private_posts'      => '',
+            'edit_published_pages'    => '',
+            'edit_published_posts'    => '',
             'edit_roles'              => __( 'In Disciple.Tools,  allows user to make changes to roles', 'disciple-tools' ),
-            'edit_theme_options'      => __( '', 'disciple-tools' ),
-            'edit_themes'             => __( '', 'disciple-tools' ),
-            'edit_users'              => __( '', 'disciple-tools' ),
-            'export'                  => __( '', 'disciple-tools' ),
-            'import'                  => __( '', 'disciple-tools' ),
-            'install_plugins'         => __( '', 'disciple-tools' ),
-            'install_themes'          => __( '', 'disciple-tools' ),
-            'level_0'                 => __( '', 'disciple-tools' ),
-            'level_1'                 => __( '', 'disciple-tools' ),
-            'level_10'                => __( '', 'disciple-tools' ),
-            'level_2'                 => __( '', 'disciple-tools' ),
-            'level_3'                 => __( '', 'disciple-tools' ),
-            'level_4'                 => __( '', 'disciple-tools' ),
-            'level_5'                 => __( '', 'disciple-tools' ),
-            'level_6'                 => __( '', 'disciple-tools' ),
-            'level_7'                 => __( '', 'disciple-tools' ),
-            'level_8'                 => __( '', 'disciple-tools' ),
-            'level_9'                 => __( '', 'disciple-tools' ),
-            'list_peoplegroups'       => __( '', 'disciple-tools' ),
+            'edit_theme_options'      => '',
+            'edit_themes'             => '',
+            'edit_users'              => '',
+            'export'                  => '',
+            'import'                  => '',
+            'install_plugins'         => '',
+            'install_themes'          => '',
+            'level_0'                 => '',
+            'level_1'                 => '',
+            'level_10'                => '',
+            'level_2'                 => '',
+            'level_3'                 => '',
+            'level_4'                 => '',
+            'level_5'                 => '',
+            'level_6'                 => '',
+            'level_7'                 => '',
+            'level_8'                 => '',
+            'level_9'                 => '',
+            'list_peoplegroups'       => '',
             'list_roles'              => __( 'In Disciple.Tools, allows user to see a list of the roles', 'disciple-tools' ),
-            'list_users'              => __( '', 'disciple-tools' ),
-            'manage_categories'       => __( '', 'disciple-tools' ),
+            'list_users'              => '',
+            'manage_categories'       => '',
             'manage_dt'               => __( 'In Disciple.Tools, allows user to administer Disciple.Tools application', 'disciple-tools' ),
-            'manage_links'            => __( '', 'disciple-tools' ),
-            'manage_options'          => __( '', 'disciple-tools' ),
-            'moderate_comments'       => __( '', 'disciple-tools' ),
-            'promote_users'           => __( '', 'disciple-tools' ),
-            'publish_pages'           => __( '', 'disciple-tools' ),
-            'publish_posts'           => __( '', 'disciple-tools' ),
-            'read'                    => __( '', 'disciple-tools' ),
+            'manage_links'            => '',
+            'manage_options'          => '',
+            'moderate_comments'       => '',
+            'promote_users'           => '',
+            'publish_pages'           => '',
+            'publish_posts'           => '',
+            'read'                    => '',
             'read_location'           => __( 'In Disciple.Tools, allows user to read a users location', 'disciple-tools' ),
-            'read_private_pages'      => __( '', 'disciple-tools' ),
-            'read_private_posts'      => __( '', 'disciple-tools' ),
-            'remove_users'            => __( '', 'disciple-tools' ),
-            'restrict_content'        => __( '', 'disciple-tools' ),
-            'switch_themes'           => __( '', 'disciple-tools' ),
-            'unfiltered_html'         => __( '', 'disciple-tools' ),
-            'unfiltered_upload'       => __( '', 'disciple-tools' ),
-            'update_any_groups'       => __( '', 'disciple-tools' ),
-            'update_core'             => __( '', 'disciple-tools' ),
-            'update_plugins'          => __( '', 'disciple-tools' ),
-            'update_themes'           => __( '', 'disciple-tools' ),
-            'upload_files'            => __( '', 'disciple-tools' ),
-            'view_any_groups'         => __( '', 'disciple-tools' ),
-            'view_project_metrics'    => __( '', 'disciple-tools' )
+            'read_private_pages'      => '',
+            'read_private_posts'      => '',
+            'remove_users'            => '',
+            'restrict_content'        => '',
+            'switch_themes'           => '',
+            'unfiltered_html'         => '',
+            'unfiltered_upload'       => '',
+            'update_any_groups'       => '',
+            'update_core'             => '',
+            'update_plugins'          => '',
+            'update_themes'           => '',
+            'upload_files'            => '',
+            'view_any_groups'         => '',
+            'view_project_metrics'    => ''
         ];
     }
 
@@ -144,13 +144,13 @@ final class Disciple_Tools_Capability_Factory {
      * @access public
      */
     public function add_capability( $slug, $options ) {
-        $source = $options[ 'source' ];
-        $name = isset( $options[ 'name' ] ) ? $options[ 'name' ] : $this->name_from_slug( $slug );
-        $description = isset( $options[ 'description' ] ) ? $options[ 'description' ] : '';
+        $source = $options['source'];
+        $name = isset( $options['name'] ) ? $options['name'] : $this->name_from_slug( $slug );
+        $description = isset( $options['description'] ) ? $options['description'] : '';
 
         $capability = $this->get_capability( $slug );
 
-        if (!$capability) {
+        if ( !$capability ) {
             $capability = new Disciple_Tools_Capability(
                 $slug,
                 $source,
@@ -190,7 +190,7 @@ final class Disciple_Tools_Capability_Factory {
      */
     public function remove_capability( $capability ) {
 
-        if (isset( $this->capabilities[ $capability ] )) {
+        if ( isset( $this->capabilities[ $capability ] ) ) {
             unset( $this->capabilities[ $capability ] );
         }
     }
@@ -203,7 +203,7 @@ final class Disciple_Tools_Capability_Factory {
      * @access public
      */
     public function get_capabilities( $capabilities = [] ) {
-        if (!count( $capabilities )) {
+        if ( !count( $capabilities ) ) {
             return $this->capabilities;
         }
 
@@ -223,7 +223,7 @@ final class Disciple_Tools_Capability_Factory {
 
         static $instance = null;
 
-        if (is_null( $instance )) {
+        if ( is_null( $instance ) ) {
             $instance = new Disciple_Tools_Capability_Factory();
             $instance->setup_capabilities();
         }
@@ -241,22 +241,43 @@ final class Disciple_Tools_Capability_Factory {
 
         /* Words that should be entirely lower-case */
         $articles_conjunctions_prepositions = [
-            'a', 'an', 'the',
-            'and', 'but', 'or', 'nor',
-            'if', 'then', 'else', 'when',
-            'at', 'by', 'from', 'for', 'in',
-            'off', 'on', 'out', 'over', 'to', 'into', 'with'
+            'a',
+        'an',
+        'the',
+            'and',
+        'but',
+        'or',
+        'nor',
+            'if',
+        'then',
+        'else',
+        'when',
+            'at',
+        'by',
+        'from',
+        'for',
+        'in',
+            'off',
+        'on',
+        'out',
+        'over',
+        'to',
+        'into',
+        'with'
         ];
         /* Words that should be entirely upper-case (need to be lower-case in this list!) */
         $acronyms_and_such = [
-            'asap', 'unhcr', 'wpse', 'wtf'
+            'asap',
+        'unhcr',
+        'wpse',
+        'wtf'
         ];
         /* split title string into array of words */
         $words = explode( ' ', mb_strtolower( $string ) );
         /* iterate over words */
-        foreach ($words as $position => $word) {
+        foreach ( $words as $position => $word ) {
             /* re-capitalize acronyms */
-            if (in_array( $word, $acronyms_and_such )) {
+            if ( in_array( $word, $acronyms_and_such ) ) {
                 $words[ $position ] = mb_strtoupper( $word );
                 /* capitalize first letter of all other words, if... */
             } elseif (
@@ -286,7 +307,7 @@ final class Disciple_Tools_Capability_Factory {
         );
 
 
-        foreach ($dt_capabilities as $capability) {
+        foreach ( $dt_capabilities as $capability ) {
             $capabilities[ $capability ] = [
                 'source'      => __( 'Disciple Tools', 'disciple_tools' ),
                 'description' => isset( $this->default_descriptions()[ $capability ] ) ? $this->default_descriptions()[ $capability ] : ''
@@ -294,7 +315,7 @@ final class Disciple_Tools_Capability_Factory {
         }
 
         $wordpress_capabilities = dt_multi_role_get_wp_capabilities();
-        foreach ($wordpress_capabilities as $key => $capability) {
+        foreach ( $wordpress_capabilities as $key => $capability ) {
             $capabilities[ $capability ] = [
                 'source'      => __( 'WordPress', 'disciple_tools' ),
                 'description' => isset( $this->default_descriptions()[ $capability ] ) ? $this->default_descriptions()[ $capability ] : ''
@@ -303,9 +324,9 @@ final class Disciple_Tools_Capability_Factory {
 
         $capabilities = apply_filters( 'dt_capabilities', $capabilities );
 
-        foreach ($capabilities as $capability => $options) {
+        foreach ( $capabilities as $capability => $options ) {
             //There are some random capabilities registered that are just numbers?
-            if (!is_numeric($capability)) {
+            if ( !is_numeric( $capability ) ) {
                 $this->add_capability( $capability, $options );
             }
         }

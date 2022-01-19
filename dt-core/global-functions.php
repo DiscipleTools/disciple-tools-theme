@@ -898,9 +898,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * Dump and die
      */
     if ( ! function_exists( 'dd' ) ) {
-        function dd(...$params) {
-            foreach($params as $param) {
-                var_dump($param);
+        function dd( ...$params ) {
+            foreach ( $params as $param ) {
+                var_dump( $param );
             }
 
             exit;

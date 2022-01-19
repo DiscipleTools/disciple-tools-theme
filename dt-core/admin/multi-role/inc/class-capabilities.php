@@ -17,7 +17,7 @@ final class Disciple_Tools_Capabilities {
 
         static $instance = null;
 
-        if (is_null( $instance )) {
+        if ( is_null( $instance ) ) {
             $instance = new Disciple_Tools_Capabilities(
                 Disciple_Tools_Capability_Factory::get_instance()
             );
@@ -59,12 +59,12 @@ final class Disciple_Tools_Capabilities {
      * @return mixed
      */
     public function sources() {
-        return array_reduce($this->all(), function($sources, $capability) {
-            if (!$capability->source) {
+        return array_reduce($this->all(), function( $sources, $capability ) {
+            if ( !$capability->source ) {
                 return $sources;
             }
 
-            if (!in_array($capability->source, $sources)) {
+            if ( !in_array( $capability->source, $sources ) ) {
                 $sources[] = $capability->source;
             }
 

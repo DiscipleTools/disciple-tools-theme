@@ -152,7 +152,7 @@ function dt_multi_role_get_role_capabilities() {
 }
 
 function dt_multi_role_get_capability( $capability ) {
-    return Disciple_Tools_Capability_Factory::get_instance()->get_capability($capability);
+    return Disciple_Tools_Capability_Factory::get_instance()->get_capability( $capability );
 }
 
 /**

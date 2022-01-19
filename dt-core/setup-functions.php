@@ -7,7 +7,7 @@
 /**
  * make sure roles and permissions conform to the values set by the modules
  */
-add_action( 'init', "dt_setup_roles_and_permissions");
+add_action( 'init', "dt_setup_roles_and_permissions" );
 add_filter( 'dt_set_roles_and_permissions', "dt_set_custom_roles_and_permissions", 11, 1 );
 
 
@@ -73,14 +73,14 @@ function dt_setup_roles_and_permissions(){
     }
 }
 
-function dt_set_custom_roles_and_permissions($roles) {
+function dt_set_custom_roles_and_permissions( $roles ) {
     global $wpdb;
 
-    $custom_roles = $wpdb->get_results("SELECT * FROM {$wpdb->dt_roles}");
-    foreach($custom_roles as $role) {
+    $custom_roles = $wpdb->get_results( "SELECT * FROM {$wpdb->dt_roles}" );
+    foreach ( $custom_roles as $role ) {
         $roles[$role->role_slug] = [
             'label' => $role->role_label,
-            'permissions' => json_decode($role->role_capabilities,true),
+            'permissions' => json_decode( $role->role_capabilities, true ),
             'description' => $role->role_description,
             'custom' => true
         ];

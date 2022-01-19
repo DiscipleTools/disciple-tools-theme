@@ -57,7 +57,7 @@ class Disciple_Tools_Capability {
      * @param string $name
      * @param string $description
      */
-    public function __construct( $capability, $source, $name = '', $description = '') {
+    public function __construct( $capability, $source, $name = '', $description = '' ) {
         $this->slug = $capability;
         $this->name = $name;
         $this->source = $source;
