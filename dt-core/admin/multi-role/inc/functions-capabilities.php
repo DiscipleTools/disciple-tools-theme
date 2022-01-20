@@ -167,7 +167,7 @@ function dt_multi_role_get_plugin_capabilities() {
 
     return [
         'list_roles',       // View roles list.
-        'create_roles',       // Create new roles.
+        'create_roles',     // Create new roles.
         'delete_roles',       // Delete roles.
         'edit_roles',       // Edit a role's caps.
         'restrict_content' // Restrict content (content permissions component).

@@ -26,5 +26,19 @@ class CapabilitiesTest extends WP_UnitTestCase {
             $this->assertArrayHasKey( $slug, $capabilities );
         }
     }
+
+
+    public function test_has_capabilities() {
+        $slugs = [ 'update_any_groups', 'unfiltered_upload' ];
+        $factory = Disciple_Tools_Capability_Factory::get_instance();
+        $capabilities = $factory->get_capabilities( $slugs );
+
+        $this->assertEquals( 2, count( $capabilities ) );
+
+        foreach ( $slugs as $slug ) {
+            $this->assertArrayHasKey( $slug, $capabilities );
+        }
+    }
+
 }
 

@@ -80,7 +80,7 @@ class Disciple_Tools_Roles
             'create_users' => true,
             'delete_users' => true,
             'list_users' => true,
-            'dt_list_users' => true,
+            'dt_list_users' => true
         ];
     }
 

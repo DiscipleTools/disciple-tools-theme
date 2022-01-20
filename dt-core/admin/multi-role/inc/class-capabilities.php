@@ -39,7 +39,11 @@ final class Disciple_Tools_Capabilities {
      * @return mixed
      */
     public function all() {
-        return $this->factory->get_capabilities();
+        $capabilities = $this->factory->get_capabilities();
+        usort($capabilities, function($a, $b) {
+            return strcmp($a->name, $b->name);
+        });
+        return $capabilities;
     }
 
     /**
@@ -70,5 +74,13 @@ final class Disciple_Tools_Capabilities {
 
             return $sources;
         }, []);
+    }
+
+    /**
+     * Get the capabilities of a role
+     * @return mixed
+     */
+    public function for_role() {
+        return $this->all();
     }
 }
