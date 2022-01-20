@@ -54,7 +54,7 @@ class Disciple_Tools_Activity_Log_API {
                 'object_id'      => '0',
                 'hist_ip'        => '0',
                 'hist_time'      => time(),
-                'object_note'    => '0',
+                'object_note'    => '',
                 'meta_id'        => '0',
                 'meta_key'       => '0',
                 'meta_value'     => '0',
@@ -92,12 +92,10 @@ class Disciple_Tools_Activity_Log_API {
             if ( isset( $args[$field] ) && strlen( $args[$field] ) >= 250 ) {
                 $args[$field] = is_serialized( $args[$field] ) ? "" : substr( $args[$field], 0, 250 ) . "...";
             }
-        }
-        if ( $args["object_name"] === null ){
-            $args["object_name"] = "";
-        }
-        if ( $args["old_value"] === null ){
-            $args["old_value"] = "";
+            //make sure strings are not null
+            if ( $args[$field] === null ){
+                $args[$field] = "";
+            }
         }
 
         $wpdb->insert(
