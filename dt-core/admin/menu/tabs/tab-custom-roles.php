@@ -595,7 +595,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         $role = $roles[ $key ];
         $label = "Copy of " . $role['label'];
         $description = $role['description'];
-        $role_capabilities = get_role( $key )->capabilities;
+        $role_capabilities = array_keys( get_role( $key )->capabilities );
         ?>
         <form id="role-manager"
               method="POST"
