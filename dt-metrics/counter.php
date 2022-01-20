@@ -416,6 +416,7 @@ class Disciple_Tools_Queries
                       0            as parent_id,
                       a.post_title as name
                     FROM $wpdb->posts as a
+                    JOIN $wpdb->postmeta as type on ( a.ID = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' or type.meta_value = 'user' ) )
                     WHERE a.post_status = 'publish'
                     AND a.post_type = 'contacts'
                     AND a.ID NOT IN (
@@ -429,6 +430,7 @@ class Disciple_Tools_Queries
                       p.p2p_to    as parent_id,
                       (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
                     FROM $wpdb->p2p as p
+                    JOIN $wpdb->postmeta as type on ( p.p2p_from = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' or type.meta_value = 'user' ) )
                     WHERE p.p2p_type = 'baptizer_to_baptized'
                 ", ARRAY_A );
                 break;
@@ -440,6 +442,7 @@ class Disciple_Tools_Queries
                       0            as parent_id,
                       a.post_title as name
                     FROM $wpdb->posts as a
+                    JOIN $wpdb->postmeta as type on ( a.ID = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' or type.meta_value = 'user' ) )
                     WHERE a.post_status = 'publish'
                     AND a.post_type = 'contacts'
                     AND a.ID NOT IN (
@@ -460,6 +463,7 @@ class Disciple_Tools_Queries
                       p.p2p_to    as parent_id,
                       (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
                     FROM $wpdb->p2p as p
+                    JOIN $wpdb->postmeta as type on ( p.p2p_from = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' or type.meta_value = 'user' ) )
                     WHERE p.p2p_type = 'baptizer_to_baptized'
                 ", ARRAY_A );
                 break;
@@ -546,6 +550,7 @@ class Disciple_Tools_Queries
                       0            as parent_id,
                       a.post_title as name
                     FROM $wpdb->posts as a
+                    JOIN $wpdb->postmeta as type on ( a.ID = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' or type.meta_value = 'user' ) )
                     WHERE a.post_status = 'publish'
                     AND a.post_type = 'contacts'
                     AND a.ID NOT IN (
@@ -559,6 +564,7 @@ class Disciple_Tools_Queries
                       p.p2p_to                            as parent_id,
                       (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
                     FROM $wpdb->p2p as p
+                    JOIN $wpdb->postmeta as type on ( p.p2p_from = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' or type.meta_value = 'user' ) )
                     WHERE p.p2p_type = 'contacts_to_contacts'
                 ", ARRAY_A );
                 break;
@@ -570,6 +576,7 @@ class Disciple_Tools_Queries
                       0            as parent_id,
                       a.post_title as name
                     FROM $wpdb->posts as a
+                    JOIN $wpdb->postmeta as type on ( a.ID = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' or type.meta_value = 'user' ) )
                     WHERE a.post_status = 'publish'
                     AND a.post_type = 'contacts'
                     AND a.ID NOT IN (
@@ -590,7 +597,9 @@ class Disciple_Tools_Queries
                       p.p2p_to    as parent_id,
                       (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
                     FROM $wpdb->p2p as p
+                    JOIN $wpdb->postmeta as type on ( p.p2p_from = type.post_ID AND type.meta_key = 'type' and ( type.meta_value = 'access' or type.meta_value = 'access_placeholder' or type.meta_value = 'user' ) )
                     WHERE p.p2p_type = 'contacts_to_contacts'
+
                 ", ARRAY_A );
                 break;
 
