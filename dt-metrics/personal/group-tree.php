@@ -83,7 +83,6 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
                 'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
                 'highlight_churches' => __( 'Highlight Churches', 'disciple_tools' ),
                 'members' => __( 'Members', 'disciple_tools' ),
-                'view_record' => __( "View Record", "disciple_tools" ),
                 'assigned_to' => __( "Assigned To", "disciple_tools" ),
                 'status' => __( "Status", "disciple_tools" ),
                 'total_members' => __( "Total Members", "disciple_tools" ),
