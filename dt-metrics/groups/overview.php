@@ -63,7 +63,6 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
                 'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
                 'title_group_types' => __( 'Group Types', 'disciple_tools' ),
                 'title_teams' => __( 'Teams', 'disciple_tools' ),
-                'label_follow_up_progress' => __( 'Follow-up of all active contacts', 'disciple_tools' ),
                 'label_group_needs_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
                 'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
                 'label_generation' => __( 'Generation', 'disciple_tools' ),
@@ -225,7 +224,6 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
         global $wpdb;
 
         $numbers = [];
-        $numbers["total_contacts"] = Disciple_Tools_Counter::critical_path( 'new_contacts' );
 
         $results = $wpdb->get_results( "
             SELECT (SELECT count(a.ID)
