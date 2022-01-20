@@ -1,5 +1,10 @@
 jQuery(function($) {
+  window.post_type_fields = window.new_record_localized.post_type_settings.fields
   let new_post = {}
+  let temp_type = $('.type-options .selected').attr('id')
+  if ( temp_type ){
+    new_post.type = temp_type;
+  }
   document.querySelector('.form-fields input').focus()
   $('.type-option').on('click', function(){
     let type = $(this).attr('id')
@@ -8,7 +13,6 @@ jQuery(function($) {
     $(`#${type} input`).prop('checked', true)
     $('.form-fields').show();
     $(`.form-field`).hide()
-    $(`.type-control-field`).hide()
     $(`.form-field.all`).show()
     $(`.form-field.${type}`).show()
     $('#show-shield-banner').show()
@@ -405,7 +409,8 @@ jQuery(function($) {
         },
         onResult: function (node, query, result, resultCount) {
           let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-          $(`#${field}-result-container`).html(text);
+          //adding the result text moves the input. timeout keeps the dropdown from closing as the user clicks and cursor moves away from the input.
+          setTimeout(()=>{$(`#${field}-result-container`).html(text);}, 200);
         },
         onHideLayout: function () {
           $(`#${field}-result-container`).html("");

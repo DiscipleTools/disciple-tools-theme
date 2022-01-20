@@ -44,4 +44,15 @@ if ( is_multisite() ) {
         <?php
     }
     add_action( 'activate_wp_head', 'dt_custom_activate_head' );
+
+    function dt_multisite_disable_registration() {
+        $registration = get_site_option( 'registration' );
+        if ( 'all' === $registration || 'user' === $registration ){
+            if ( get_option( 'dt_disable_registration' ) ) {
+                return 0;
+            }
+        }
+        return 1;
+    }
+    add_filter( 'option_users_can_register', 'dt_multisite_disable_registration', 100 );
 }

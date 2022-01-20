@@ -16,9 +16,10 @@ if ( ! current_user_can( 'create_' . $dt_post_type ) ) {
 get_header();
 $post_settings = DT_Posts::get_post_settings( $dt_post_type );
 
-$force_type_choice = false;
+$type_choice_present = false;
+$selected_type = null;
 if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields"]["type"]["default"] ) > 1 ){
-    $force_type_choice = true;
+    $type_choice_present = true;
 }
 ?>
 
@@ -33,10 +34,15 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                     </h3>
 
                     <!-- choose the record type -->
-                    <?php if ( $force_type_choice ){ ?>
-                    <div class="type-control-field" style="margin:20px 0">
+                    <?php if ( $type_choice_present ){ ?>
+                    <div class="type-control-field" style="margin-top:20px">
                         <strong>
-                        <?php echo esc_html( sprintf( __( 'Select the %s type:', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
+                            <?php echo esc_html( sprintf( __( 'Select the %s type:', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
+                            <?php if ( $dt_post_type === "contacts" ) : ?>
+                            <button class="help-button-field" type="button" data-section="type-help-text">
+                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                            </button>
+                            <?php endif; ?>
                         </strong>
                     </div>
                     <div class="type-options">
@@ -46,9 +52,10 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                             });
                         }
                         foreach ( $post_settings["fields"]["type"]["default"] as $option_key => $type_option ) {
+                            $selected_type = !empty( $type_option["default"] ) ? $option_key : $selected_type;
                             //order fields alphabetically by Name
-                            if ( empty( $type_option["hidden"] ) ){ ?>
-                                <div class="type-option" id="<?php echo esc_html( $option_key ); ?>">
+                            if ( empty( $type_option["hidden"] ) && ( !isset( $type_option["in_create_form"] ) || $type_option["in_create_form"] !== false ) ){ ?>
+                                <div class="type-option <?php echo esc_html( !empty( $type_option["default"] ) ? "selected" : '' ); ?>" id="<?php echo esc_html( $option_key ); ?>">
                                     <div class="type-option-border">
                                         <input type="radio" name="type" value="<?php echo esc_html( $option_key ); ?>" style="display: none">
                                         <div class="type-option-rows">
@@ -76,7 +83,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                     <?php } ?>
 
 
-                    <div class="form-fields" <?php echo esc_html( $force_type_choice ? "style=display:none" : "" ); ?>>
+                    <div class="form-fields">
                         <?php foreach ( $post_settings["fields"] as $field_key => $field_settings ) {
                             if ( !empty( $field_settings["hidden"] ) && empty( $field_settings["custom_display"] ) ){
                                 continue;
@@ -88,22 +95,27 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                                 continue;
                             }
                             $classes = "";
+                            $show_field = false;
                             //add types the field should show up on as classes
                             if ( !empty( $field_settings['in_create_form'] ) ){
                                 if ( is_array( $field_settings['in_create_form'] ) ){
                                     foreach ( $field_settings['in_create_form'] as $type_key ){
                                         $classes .= $type_key . " ";
+                                        if ( $type_key === $selected_type ){
+                                            $show_field = true;
+                                        }
                                     }
                                 } elseif ( $field_settings['in_create_form'] === true ){
                                     $classes = "all";
+                                    $show_field = true;
                                 }
                             } else {
                                 $classes = "other-fields";
                             }
 
                             ?>
-                            <!-- hide fields until the post type is chosen. hide the fields that were not selected to be displayed by default in the create form -->
-                            <div <?php echo esc_html( ( $force_type_choice || $classes === "other-fields" ) ? "style=display:none" : "" ); ?>
+                            <!-- hide the fields that were not selected to be displayed by default in the create form -->
+                            <div <?php echo esc_html( !$show_field ? "style=display:none" : "" ); ?>
                                 class="form-field <?php echo esc_html( $classes ); ?>">
                             <?php
                             render_field_for_display( $field_key, $post_settings['fields'], [] );

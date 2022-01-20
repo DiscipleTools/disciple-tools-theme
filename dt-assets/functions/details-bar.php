@@ -84,7 +84,8 @@ function dt_print_details_bar(
                             <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
                             $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
 
-                             $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
+                            $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
+                            $type_icon = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["icon"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["icon"] : false;
                             if ( !empty( $picture ) ) : ?>
                                 <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                             <?php else : ?>
@@ -95,7 +96,11 @@ function dt_print_details_bar(
                             <?php do_action( 'dt_post_record_name_tagline' ); ?>
                             <span class="record-name-tagline">
                             <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
-                                <a data-open="contact-type-modal"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                                <a data-open="contact-type-modal">
+                                <?php if ( $type_icon ) : ?>
+                                    <img class="dt-record-type-icon" src="<?php echo esc_html( $type_icon ) ?>"/>
+                                <?php endif; ?>
+                                <?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
                             <?php endif; ?>
                                 <span class="details-bar-created-on"></span>
                                 <?php if ( $dt_post["post_author_display_name"] ):
@@ -162,8 +167,8 @@ function dt_print_details_bar(
         </nav>
     </div>
 
-    <div data-sticky-container class="show-for-small-only details-second-bar" style="z-index: 9">
     <?php if ( $comment_button || $share_button ): ?>
+    <div data-sticky-container class="show-for-small-only details-second-bar" style="z-index: 9">
     <nav role="navigation"
         data-sticky data-options="marginTop:0;" data-sticky-on="small" data-top-anchor="95" style="width:100%; border-color: <?php echo esc_html( $type_color ); ?>"
         class="second-bar" id="second-bar-small">
