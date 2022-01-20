@@ -112,7 +112,7 @@ class DT_Contacts_Base {
 
         $user_management_permissions = Disciple_Tools_Roles::default_user_management_caps();
 
-        $role_caps = array_reduce(dt_multi_role_get_plugin_capabilities(), function($caps, $slug) {
+        $role_caps = array_reduce(dt_multi_role_get_plugin_capabilities(), function( $caps, $slug ) {
             $caps[$slug] = true;
             return $caps;
         }, []);
@@ -127,7 +127,7 @@ class DT_Contacts_Base {
         // D.T Admin
         $expected_roles["dt_admin"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
         $expected_roles["dt_admin"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );
-        $expected_roles['dt_admin']['permissions'] = array_merge($expected_roles["dt_admin"]["permissions"], $role_caps );
+        $expected_roles['dt_admin']['permissions'] = array_merge( $expected_roles["dt_admin"]["permissions"], $role_caps );
         $expected_roles["dt_admin"]["permissions"]['manage_dt'] = true;
         $expected_roles["dt_admin"]["permissions"]['view_project_metrics'] = true;
 
@@ -137,7 +137,7 @@ class DT_Contacts_Base {
 
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["administrator"]["permissions"], $user_management_permissions );
-        $expected_roles['administrator']['permissions'] = array_merge($expected_roles["administrator"]["permissions"], $role_caps );
+        $expected_roles['administrator']['permissions'] = array_merge( $expected_roles["administrator"]["permissions"], $role_caps );
 
         $expected_roles["administrator"]["permissions"]["dt_all_admin_contacts"] = true;
 
@@ -150,8 +150,8 @@ class DT_Contacts_Base {
         $custom_roles = $wpdb->get_results( "SELECT * FROM {$wpdb->dt_roles}" );
         foreach ( $custom_roles as $role ) {
             $permission_keys = json_decode( $role->role_capabilities, true );
-            if (is_array($permission_keys)) {
-                $permissions = array_reduce($permission_keys, function($permissions, $key) {
+            if ( is_array( $permission_keys ) ) {
+                $permissions = array_reduce($permission_keys, function( $permissions, $key ) {
                     $permissions[$key] = true;
                     return $permissions;
                 }, []);

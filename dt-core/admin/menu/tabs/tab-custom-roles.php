@@ -318,7 +318,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
 
     /**
      * Show an error notice
-     * @param $error
+     * @param WP_Error $error
      */
     private function show_error( WP_Error $error ) {
         if ( $error ) {

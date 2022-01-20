@@ -40,8 +40,8 @@ final class Disciple_Tools_Capabilities {
      */
     public function all() {
         $capabilities = $this->factory->get_capabilities();
-        usort($capabilities, function($a, $b) {
-            return strcmp($a->name, $b->name);
+        usort($capabilities, function( $a, $b ) {
+            return strcmp( $a->name, $b->name );
         });
         return $capabilities;
     }
