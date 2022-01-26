@@ -1,4 +1,19 @@
 jQuery(document).ready(function($) {
+
+  highlight_current_menu_item();
+
+  function highlight_current_menu_item() {
+    let url_path = window.wpApiShare.url_path;
+    if (url_path && (url_path.includes('/users') || url_path.includes('/add-user') || url_path.includes('/hover-map'))) {
+
+      // Determine actual selected user menu item
+      let item = $('#metrics-side-section a[href*="' + url_path + '"]').last();
+
+      // Apply class highlight
+      item.parent().addClass('side-menu-item-highlight');
+    }
+  }
+
   let escaped_translations = window.SHAREDFUNCTIONS.escapeObject(window.dt_user_management_localized.translations)
 
   if( window.wpApiShare.url_path.includes('user-management/users') ) {
