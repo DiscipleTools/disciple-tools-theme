@@ -11,6 +11,7 @@ $(function () {
 
       // Apply class highlight
       metric.parent().addClass('side-menu-item-highlight');
+      metric.parent().parent().parent().find('a').first().addClass('side-menu-item-highlight');
     }
   }
 
