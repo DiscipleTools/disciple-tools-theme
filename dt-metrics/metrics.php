@@ -129,9 +129,7 @@ class Disciple_Tools_Metrics{
             'lodash'
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics.js' ), true );
         wp_localize_script(
-            'dt_metrics_script_bob', 'dt_metrics', [
-
-            ]
+            'dt_metrics_script_bob', 'dt_metrics', []
         );
     }
 }
