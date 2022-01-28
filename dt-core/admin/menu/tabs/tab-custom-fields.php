@@ -556,7 +556,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <input name="field_color_option_<?php echo esc_html( $key ) ?>" type="text"
                                        class="color-display-picker" data-alpha-enabled="true"
                                        value="<?php echo esc_attr( $default_color ); ?>"
-                                    <?php echo ( ! empty( $default_color ) ) ? 'data-default-color="' . $default_color . '"' : '' ?>
+                                    <?php echo ( ! empty( $default_color ) ) ? 'data-default-color="' . esc_attr( $default_color ) . '"' : '' ?>
                                 />
                             </td>
                             <td>
