@@ -492,6 +492,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php
                     endif;
                     ?>
+                    <td><?php esc_html_e( "Color", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
@@ -548,6 +549,16 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <?php endif; ?>
                                 </td>
                             <?php endif; ?>
+                            <td>
+                                <?php
+                                $default_color = $option['color'] ?? '';
+                                ?>
+                                <input name="field_color_option_<?php echo esc_html( $key ) ?>" type="text"
+                                       class="color-display-picker" data-alpha-enabled="true"
+                                       value="<?php echo esc_attr( $default_color ); ?>"
+                                    <?php echo ( ! empty( $default_color ) ) ? 'data-default-color="' . $default_color . '"' : '' ?>
+                                />
+                            </td>
                             <td>
                                 <button class="button small expand_translations">
                                     <?php
@@ -872,6 +883,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             }
                             $field_options[$option_key]["description"] = $val;
                         }
+                    }
+
+                    if ( strpos( $key, "field_color_option_" ) === 0 ) {
+                        $option_key = substr( $key, strlen( "field_color_option_" ) );
+                        if ( ( ! isset( $field_options[ $option_key ]["color"] ) && ! empty( $val ) ) || ( isset( $field_options[ $option_key ]["color"] ) && $field_options[ $option_key ]["color"] !== $val ) ) {
+                            $custom_field["default"][ $option_key ]["color"] = $val;
+                        }
+                        $field_options[ $option_key ]["color"] = $val;
                     }
                 }
                 //delete icon
