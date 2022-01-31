@@ -27,6 +27,19 @@ abstract class DT_Magic_Url_Base {
         $id = $this->fetch_incoming_link_param( 'id' );
         $this->instance_id = ( ! empty( $id ) ) ? $id : '';
 
+        // determine language locale to be adopted
+        $lang = $this->fetch_incoming_link_param( 'lang' );
+        if ( ! empty( $lang ) ) {
+            add_filter( 'determine_locale', function ( $locale ) use ( $lang ) {
+                $lang_code = sanitize_text_field( wp_unslash( $lang ) );
+                if ( ! empty( $lang_code ) ) {
+                    return $lang_code;
+                }
+
+                return $locale;
+            } );
+        }
+
         // register type
         $this->magic = new DT_Magic_URL( $this->root );
         add_filter( 'dt_magic_url_register_types', [ $this, 'dt_magic_url_register_types' ], 10, 1 );
