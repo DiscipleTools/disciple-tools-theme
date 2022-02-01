@@ -33,7 +33,7 @@ abstract class DT_Magic_Url_Base {
             add_filter( 'determine_locale', function ( $locale ) use ( $lang ) {
                 $lang_code = sanitize_text_field( wp_unslash( $lang ) );
                 if ( ! empty( $lang_code ) ) {
-                    return $lang_code;
+                    return apply_filters( 'ml_locale_change', $lang_code );
                 }
 
                 return $locale;
