@@ -125,8 +125,10 @@ class DT_Contacts_Base {
         $expected_roles["strategist"]["permissions"]['view_project_metrics'] = true;
         $expected_roles["strategist"]["permissions"]['access_disciple_tools'] = true;
 
-        $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
-        $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );
+        $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["administrator"]["permissions"], $multiplier_permissions );
+        $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["administrator"]["permissions"], $user_management_permissions );
+        $expected_roles["administrator"]["permissions"]['manage_dt'] = true;
+        $expected_roles["administrator"]["permissions"]['view_project_metrics'] = true;
         $expected_roles["administrator"]["permissions"]["dt_all_admin_contacts"] = true;
 
         return $expected_roles;
@@ -140,6 +142,7 @@ class DT_Contacts_Base {
                 'tile' => 'details',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/nametag.svg?v=2",
             ];
+            $contact_preferences = get_option( 'dt_contact_preferences', [] );
             $fields["type"] = [
                 'name'        => __( 'Contact Type', 'disciple_tools' ),
                 'type'        => 'key_select',
@@ -148,17 +151,20 @@ class DT_Contacts_Base {
                         "label" => __( 'User', 'disciple_tools' ),
                         "description" => __( "Representing a User in the system", 'disciple_tools' ),
                         "color" => "#3F729B",
-                        "hidden" => true
+                        "hidden" => true,
+                        "in_create_form" => false,
                     ],
                     'personal' => [
-                        "label" => __( 'Personal', 'disciple_tools' ),
+                        "label" => __( 'Private Contact', 'disciple_tools' ),
                         "color" => "#9b379b",
                         "description" => __( "A friend, family member or acquaintance", 'disciple_tools' ),
                         "visibility" => __( "Only me", 'disciple_tools' ),
                         "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg?v=2",
-                        "order" => 50
+                        "order" => 50,
+                        "hidden" => !empty( $contact_preferences["hide_personal_contact_type"] )
                     ],
                 ],
+                "description" => "See full documentation here: https://disciple.tools/user-docs/getting-started-info/contacts/contact-types",
                 "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
                 'customizable' => false
             ];
@@ -190,6 +196,23 @@ class DT_Contacts_Base {
                 "tile" => "details",
                 "customizable" => false,
                 "in_create_form" => true,
+                "messagingServices" => [
+                    'Signal' => [
+                        'name' => __( "Signal", 'disciple_tools' ),
+                        "link" => "https://signal.me/#p/PHONE_NUMBER",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/signal.svg"
+                    ],
+                    'Viber' => [
+                        'name' => __( "Viber", 'disciple_tools' ),
+                        "link" => "viber://chat?number=PHONE_NUMBER",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/viber.svg"
+                    ],
+                    'Whatsapp' => [
+                        'name' => __( "Whatsapp", 'disciple_tools' ),
+                        "link" => "https://api.whatsapp.com/send?phone=PHONE_NUMBER_NO_PLUS",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/signal.svg"
+                    ],
+                ]
             ];
             $fields["contact_email"] = [
                 "name" => __( 'Email', 'disciple_tools' ),
@@ -215,6 +238,7 @@ class DT_Contacts_Base {
                 "tile"      => "details",
                 'mapbox'    => false,
                 'hidden' => true,
+                "in_create_form" => true,
                 "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
             ];
             $fields["contact_address"] = [
@@ -379,7 +403,12 @@ class DT_Contacts_Base {
     public function dt_record_footer( $post_type, $post_id ){
         if ( $post_type === "contacts" ) :
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
-            $post = DT_Posts::get_post( $post_type, $post_id ); ?>
+            $post = DT_Posts::get_post( $post_type, $post_id );
+
+            //replace urls with links
+            $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
+            $contact_fields["type"]["description"] = preg_replace( $url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', $contact_fields["type"]["description"] );
+            ?>
             <div class="reveal" id="archive-record-modal" data-reveal data-reset-on-close>
                 <h3><?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></h3>
                 <p><?php echo esc_html( sprintf( _x( "Are you sure you want to archive %s?", "Are you sure you want to archive name?", 'disciple_tools' ), $post["name"] ) ) ?></p>
@@ -399,7 +428,7 @@ class DT_Contacts_Base {
 
             <div class="reveal" id="contact-type-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields["type"]["name"] ?? '' )?></h3>
-                <p><?php echo esc_html( $contact_fields["type"]["description"] ?? '' )?></p>
+                <p><?php echo nl2br( wp_kses_post( $contact_fields["type"]["description"] ?? '' ) )?></p>
                 <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
 
                 <select id="type-options">
@@ -564,8 +593,9 @@ class DT_Contacts_Base {
                 ],
                 'labels' => [
                     [
-                        'id' => 'my_shared',
+                        'id' => 'me',
                         'name' => __( 'Shared with me', 'disciple_tools' ),
+                        "field" => "shared_with"
                     ],
                 ],
             ]

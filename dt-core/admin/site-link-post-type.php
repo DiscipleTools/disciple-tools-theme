@@ -1455,7 +1455,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         // Adds the type of connection to the site link system
         public function default_site_link_type( $type ) {
             $type['create_contacts'] = __( 'Create Contacts', 'disciple_tools' );
-            $type['create_update_contacts'] = __( 'Create and Update contacts', 'disciple_tools' );
+            $type['create_update_contacts'] = __( 'Create and Update Contacts', 'disciple_tools' );
+
             return $type;
         }
 

@@ -369,6 +369,12 @@ nav.second-bar {
             vertical-align: middle;
         }
     }
+    .dropdown.menu .is-submenu-item a:hover {
+        color:white;
+    }
+    .dropdown.menu .is-submenu-item:hover {
+        background-color: $primary-color;
+    }
 }
 
 .search-input {
@@ -873,6 +879,10 @@ button.loader {
 
 .half-opacity {
     opacity: 0.5;
+}
+
+.typeahead__cancel-button {
+    padding: 4px 6px !important;
 }
 
 html[dir='rtl'] {
@@ -1380,6 +1390,9 @@ img.dt-white-icon {
 }
 img.dt-green-icon {
     filter: invert(52%) sepia(77%) saturate(383%) hue-rotate(73deg) brightness(98%) contrast(83%);
+}
+img.dt-red-icon {
+    filter: invert(23%) sepia(34%) saturate(4972%) hue-rotate(343deg) brightness(121%) contrast(92%);
 }
 
 .template-new-post {

@@ -651,8 +651,13 @@ class Disciple_Tools_Queries
                 break;
         }
 
+        // guarantee only one record with one parent.
+        $list = [];
+        foreach ( $query as $q ) {
+            $list[$q['id']] = $q;
+        }
 
-        return $this->check_tree_health( $query );
+        return $this->check_tree_health( $list );
 
 
     }

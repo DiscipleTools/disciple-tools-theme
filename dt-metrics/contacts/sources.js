@@ -30,7 +30,6 @@ jQuery(document).ready(function() {
       }
     )
 
-
     function draw_data(data, label = "all time") {
       if (!data) {
         data = window.wp_js_object.data.sources

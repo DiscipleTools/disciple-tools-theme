@@ -260,7 +260,7 @@ class Disciple_Tools_Post_Type_Template {
      * register p2p connections dynamically based on the connection field declaration
      */
     public function register_p2p_connections(){
-        $fields = DT_Posts::get_post_field_settings( $this->post_type );
+        $fields = DT_Posts::get_post_field_settings( $this->post_type, false );
         foreach ( $fields as $field_key => &$field ){
             if ( !isset( $field["name"] ) ){
                 $field["name"] = $field_key; //set a field name so integration can depend on it.

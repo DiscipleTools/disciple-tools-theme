@@ -44,13 +44,16 @@ class DT_Contacts_DMM  extends DT_Module_Base {
     public function dt_custom_fields_settings( $fields, $post_type ){
         $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
+            $contact_preferences = get_option( 'dt_contact_preferences', [] );
             $fields["type"]["default"]["placeholder"] = [
-                "label" => __( 'Connection', 'disciple_tools' ),
+                "label" => __( 'Private Connection', 'disciple_tools' ),
                 "color" => "#FF9800",
                 "description" => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/network.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg?v=2",
                 "order" => 40,
                 "visibility" => __( "Only me", 'disciple_tools' ),
+                "in_create_form" => false,
+                "hidden" => !empty( $contact_preferences["hide_personal_contact_type"] ),
             ];
             $fields["milestones"] = [
                 "name"    => __( 'Faith Milestones', 'disciple_tools' ),
@@ -375,7 +378,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 ],
                 'labels' => [
                     [
-                        'id' => 'my_coached',
+                        'id' => 'me',
                         'name' => __( 'Coached by me', 'disciple_tools' ),
                         'field' => 'coached_by',
                     ],
@@ -485,12 +488,12 @@ class DT_Contacts_DMM  extends DT_Module_Base {
         ?>
         <div class="reveal" id="baptism-modal" data-reveal data-close-on-click="false">
 
-            <h3><?php echo esc_html( $field_settings["baptized"]["name"] )?></h3>
+            <h3><?php echo esc_html( $field_settings["baptized"]["name"] ?? '' )?></h3>
             <p><?php esc_html_e( "Who was this contact baptized by and when?", 'disciple_tools' )?></p>
 
             <div>
                 <div class="section-subheader">
-                    <?php echo esc_html( $field_settings["baptized_by"]["name"] )?>
+                    <?php echo esc_html( $field_settings["baptized_by"]["name"] ?? '' )?>
                 </div>
                 <div class="modal_baptized_by details">
                     <var id="modal_baptized_by-result-container" class="result-container modal_baptized_by-result-container"></var>

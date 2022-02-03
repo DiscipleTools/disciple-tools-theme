@@ -43,7 +43,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
         <div class="large-3 medium-3 small-12 cell " data-sticky-container>
 
-            <section id="" class="small-12 cell sticky" data-sticky data-top-anchor="settings" data-sticky-on="medium" data-margin-top="5">
+            <section id="" class="small-12 cell sticky" data-sticky data-top-anchor="settings" data-sticky-on="medium" data-margin-top="4">
 
                 <div class="bordered-box">
 
@@ -60,7 +60,21 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                         <?php if ( DT_User_Management::non_admins_can_make_users() || current_user_can( 'create_users ' ) ): ?>
 
-                            <li><a href="<?php echo esc_html( home_url( '/' ) ); ?>user-management/add-user"><?php esc_html_e( 'Invite User', 'disciple_tools' ) ?></a></li>
+                            <li>
+                                <a href="<?php echo esc_html( home_url( '/' ) ); ?>user-management/add-user"><?php esc_html_e( 'Invite User', 'disciple_tools' ) ?>
+                                    <img class="dt-icon" style="margin:0; vertical-align: bottom" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/>
+                                </a>
+                            </li>
+
+                        <?php endif; ?>
+
+                        <?php if ( $dt_user_contact_id && DT_Posts::can_view( "contacts", $dt_user_contact_id ) ): ?>
+
+                            <li>
+                                <a href="<?php echo esc_html( home_url( '/contacts/' . $dt_user_contact_id ) ); ?>"><?php esc_html_e( 'View Contact Record', 'disciple_tools' ) ?>
+                                    <img class="dt-icon" style="margin:0; vertical-align: bottom" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/>
+                                </a>
+                            </li>
 
                         <?php endif; ?>
 

@@ -2,7 +2,7 @@
 
 class DT_User_Management
 {
-    public $permissions = [ 'list_users', 'manage_dt' ];
+    public static $permissions = [ 'list_users', 'manage_dt' ];
 
     private static $_instance = null;
     public static function instance() {
@@ -14,13 +14,13 @@ class DT_User_Management
 
     public function __construct() {
         $url_path = dt_get_url_path();
-        if ( $this->has_permission() || self::non_admins_can_make_users() ) {
+        if ( self::has_permission() || self::non_admins_can_make_users() ) {
             if ( strpos( $url_path, 'user-management/user' ) !== false || ( strpos( $url_path, 'user-management/add-user' ) !== false && ( current_user_can( "create_users" ) || self::non_admins_can_make_users() ) ) ){
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
                 add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
             }
         }
-        if ( $this->has_permission() ){
+        if ( self::has_permission() ){
             if ( strpos( $url_path, 'user-management' ) !== false || strpos( $url_path, 'user-management' ) !== false ) {
                 add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 20 );
             }
@@ -45,9 +45,9 @@ class DT_User_Management
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
-    public function has_permission(){
+    public static function has_permission(){
         $pass = false;
-        foreach ( $this->permissions as $permission ){
+        foreach ( self::$permissions as $permission ){
             if ( current_user_can( $permission ) ){
                 $pass = true;
             }
@@ -185,7 +185,7 @@ class DT_User_Management
                         'less' => __( 'Less', 'disciple_tools' ),
                     ],
                     'language_dropdown' => dt_get_available_languages(),
-                    'has_permission' => $this->has_permission(),
+                    'has_permission' => self::has_permission(),
                 ]
             );
 
@@ -198,7 +198,7 @@ class DT_User_Management
 
 
     public function get_dt_user( $user_id, $section = null ) {
-        if ( ! $this->has_permission() ) {
+        if ( ! self::has_permission() ) {
             return new WP_Error( __METHOD__, "Permission error", [ 'status' => 403 ] );
         }
 
@@ -210,6 +210,7 @@ class DT_User_Management
 
         $user_response = [
             "display_name" => wp_specialchars_decode( $user->display_name ),
+            "user_email" => $user->user_email,
             "user_id" => $user->ID,
             "corresponds_to_contact" => 0,
             "contact" => [],
@@ -340,7 +341,7 @@ class DT_User_Management
     }
 
     public function get_user_endpoint( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ) {
+        if ( !self::has_permission() ) {
             return new WP_Error( "get_user", "Missing Permissions", [ 'status' => 401 ] );
         }
 
@@ -355,7 +356,7 @@ class DT_User_Management
     }
 
     public function get_users_endpoints( WP_REST_Request $request ){
-        if ( !$this->has_permission() ){
+        if ( !self::has_permission() ){
             return new WP_Error( "get_user", "Missing Permissions", [ 'status' => 401 ] );
         }
         $params = $request->get_params();
@@ -500,7 +501,7 @@ class DT_User_Management
     }
 
     public function update_settings_on_user( WP_REST_Request $request ){
-        if ( !$this->has_permission() ){
+        if ( !self::has_permission() ){
             return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 401 ] );
         }
 

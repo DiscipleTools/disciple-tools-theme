@@ -476,7 +476,7 @@ dt_please_log_in();
                                 }
                                 //move multi_select fields to the end
                                 function multiselect_at_end( $a, $b ){
-                                    return ( $a["type"] === "multi_select" && ( $a["display"] ?? "" ) !== "typeahead" ) ? 1 : 0;
+                                    return ( $a["type"] ?? "" === "multi_select" && ( $a["display"] ?? "" ) !== "typeahead" ) ? 1 : 0;
                                 };
                                 uasort( $field_options, "multiselect_at_end" );
                                 $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status' ];

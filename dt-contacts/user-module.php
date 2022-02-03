@@ -21,6 +21,7 @@ class DT_Contacts_User {
         //display tiles and fields
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
+        add_action( 'dt_record_notifications_section', [ $this, "dt_record_notifications_section" ], 10, 2 );
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 20, 2 );
@@ -62,6 +63,28 @@ class DT_Contacts_User {
         return $sections;
     }
 
+    public function dt_record_notifications_section( $post_type, $dt_post ){
+        if ( $post_type === "contacts" && $dt_post["type"]["key"] === "user" ): ?>
+            <section class="cell small-12 user-contact-notification">
+                <div class="bordered-box detail-notification-box" style="background-color:#3F729B">
+                    <?php if ( isset( $dt_post["corresponds_to_user"] ) && (int) $dt_post["corresponds_to_user"] === get_current_user_id() ):
+                        ?>
+                        <h4><?php esc_html_e( 'This contact represents you as a user.', 'disciple_tools' )?></h4>
+                        <p><?php esc_html_e( 'Please update contact details on your profile page instead of here.', 'disciple_tools' ); ?> <a style="color:white; font-weight: bold" href="<?php echo esc_html( site_url( '/settings' ) ); ?>"><?php echo esc_html( "Profile Settings" ); ?> <img class="dt-icon dt-white-icon" style="margin:0" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a></p>
+                    <?php else : ?>
+                        <h4>
+                        <?php esc_html_e( 'This contact represents a user.', 'disciple_tools' );
+                        if ( isset( $dt_post["corresponds_to_user"] ) && !empty( $dt_post["corresponds_to_user"] && DT_User_Management::has_permission() ) ): ?>
+                            <a style="color:white; " href="<?php echo esc_html( site_url( '/user-management/user/'. $dt_post["corresponds_to_user"] ) ); ?>"><?php echo esc_html( "View" ); ?> <img class="dt-icon dt-white-icon" style="margin:0" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a>
+                        <?php endif; ?>
+                        </h4>
+                    <?php endif; ?>
+                </div>
+            </section>
+        <?php endif;
+    }
+
+
     public function dt_details_additional_section( $section, $post_type ){
     }
 
@@ -75,15 +98,16 @@ class DT_Contacts_User {
     }
 
     public static function dt_record_admin_actions( $post_type, $post_id ){
-        global $wp_roles;
         if ( $post_type === "contacts" ){
             $contact = DT_Posts::get_post( $post_type, $post_id );
             if ( current_user_can( "create_users" ) || DT_User_Management::non_admins_can_make_users() ){
                 ?>
-                <li><a data-open="make-user-from-contact-modal">
+                <li>
+                    <a target="_blank" href="<?php echo esc_html( home_url( '/' ) ); ?>user-management/add-user?contact_id=<?php echo esc_html( $post_id ); ?>">
                         <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/arrow-user.svg' ) ?>"/>
-                        <?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>
-
+                        <?php esc_html_e( 'Make a user from this contact', 'disciple_tools' ) ?>
+                    </a>
+                </li>
                 <?php if ( current_user_can( "create_users" ) ): ?>
 
                     <li><a data-open="link-to-user-modal">
@@ -92,73 +116,6 @@ class DT_Contacts_User {
 
                 <?php endif; ?>
 
-                <div class="reveal" id="make-user-from-contact-modal" data-reveal data-reset-on-close>
-                    <h3><?php echo esc_html_x( 'Make User From Contact', 'Make user modal', 'disciple_tools' )?></h3>
-
-                        <?php if ( isset( $contact['corresponds_to_user'] ) ) : ?>
-                            <p><strong><?php echo esc_html_x( "This contact is already connected to a user.", 'Make user modal', 'disciple_tools' ) ?></strong></p>
-                        <?php else : ?>
-
-                            <p><?php echo esc_html__( "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'.", 'disciple_tools' ) ?></p>
-
-                        <form id="create-user-form">
-                            <label for="user-email">
-                                <?php esc_html_e( "Email", "disciple_tools" ); ?>
-                            </label>
-                            <input name="user-email" id="user-email" type="email" value="<?php echo ( isset( $contact['contact_email'][0]['value'] ) ) ? esc_html( $contact['contact_email'][0]['value'] ) : ''; ?>" placeholder="user@example.com" required aria-describedby="email-help-text">
-                            <p class="help-text" id="email-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
-                            <label for="user-display">
-                                <?php esc_html_e( "Display Name", "disciple_tools" ); ?> (<?php esc_html_e( "Can be changed later", "disciple_tools" ); ?>)
-                                <input name="user-display" id="user-display" type="text"
-                                       value="<?php the_title_attribute(); ?>"
-                                       placeholder="<?php esc_html_e( "Display Name", 'disciple_tools' ) ?>">
-                            </label>
-
-                            <?php if ( current_user_can( "create_users" ) ): ?>
-
-                                <label for="user-roles">
-                                    <?php esc_html_e( "User Role", "disciple_tools" ); ?>
-                                </label>
-                                <select name="user-user_role">
-                                    <?php
-
-                                    foreach ( $wp_roles->role_names as $role_key => $role_name ):
-
-                                        if ( 'administrator' === $role_key || 'dt_admin' === $role_key ):
-                                            continue;
-                                        endif;
-
-                                        ?>
-                                    <option value="<?php echo esc_attr( $role_key ); ?>" <?php if ( 'multiplier' === $role_key ): ?> selected <?php endif; ?>><?php echo esc_html( $role_name ); ?></option>
-
-                                    <?php endforeach; ?>
-                                </select>
-
-                            <?php endif; ?>
-
-                            <label for="locale">
-                                <?php esc_html_e( "User Language", "disciple_tools" ); ?>
-                            </label>
-                            <?php
-                            dt_language_select()
-                            ?>
-                            <div class="grid-x">
-                                <p id="create-user-errors" style="color: red"></p>
-                            </div>
-                            <div class="grid-x">
-                                <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
-                                </button>
-                                <button class="button loader" type="submit" id="create-user-return">
-                                    <?php esc_html_e( 'Create User', 'disciple_tools' ); ?>
-                                </button>
-                                <button class="close-button" data-close aria-label="Close modal" type="button">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        </form>
-                    <?php endif; ?>
-                </div>
                 <div class="reveal" id="link-to-user-modal" data-reveal data-reset-on-close style="min-height:500px">
 
                      <h3><?php esc_html_e( "Link this contact to an existing user", 'disciple_tools' )?></h3>

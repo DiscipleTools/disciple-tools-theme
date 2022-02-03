@@ -988,7 +988,7 @@ jQuery(document).ready(function($) {
             }
             let value = window.lodash.escape(v.value)
             if ( field_key === 'contact_phone' ){
-              values_html += `<a dir="auto" href="tel:${value}" title="${value}">${value}</a>`
+              values_html += `<a dir="auto" class="phone-link" href="tel:${value}" title="${value}">${value}</a>`
             } else if (field_key === "contact_email") {
               values_html += `<a dir="auto" href="mailto:${value}" title="${value}">${value}</a>`
             } else {
@@ -1024,9 +1024,47 @@ jQuery(document).ready(function($) {
       }
 
     })
+    phoneLinkClick();
     $( document ).trigger( "dt_record_details_reset", [post] );
   }
-  resetDetailsFields()
+  resetDetailsFields();
+
+  function phoneLinkClick() {
+    $('.phone-link').on('click', function(event){
+      event.preventDefault();
+      let phoneNumber = this.href.substring(4).replaceAll(/\s/g, "");
+      if ($(`.phone-open-with-container.__${phoneNumber.replace(/^((\+)|(00))/,"")}`).length && $(this).next(`.phone-open-with-container.__${phoneNumber.replace(/^((\+)|(00))/,"")}`)) {
+          $(`.phone-open-with-container.__${phoneNumber.replace(/^((\+)|(00))/,"")}`).remove();
+      } else {
+        $('.phone-open-with-container').remove();
+        let PhoneLink = this;
+        let messagingServices = window.post_type_fields.contact_phone.messagingServices;
+        let messagingServicesLinks = ``;
+
+        for (const service in messagingServices) {
+          let link = messagingServices[service].link.replace('PHONE_NUMBER_NO_PLUS', phoneNumber.replace(/^((\+)|(00))/,"")).replace('PHONE_NUMBER', phoneNumber);
+
+          messagingServicesLinks = messagingServicesLinks + `<li><a href="${link}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} ${messagingServices[service].name}" target="_blank" class="phone-open-with-link"><img src="${messagingServices[service].icon}"/>${messagingServices[service].name}</a></li>`
+        }
+
+        let openWithDiv = `<div class="phone-open-with-container __${phoneNumber.replace(/^((\+)|(00))/,"")}">
+        <strong>${window.lodash.escape(window.detailsSettings.translations.Open_with)}...</strong>
+          <ul>
+            <li><a href="${PhoneLink}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} ${window.post_type_fields.contact_phone.name}" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/phone.svg"/>${window.post_type_fields.contact_phone.name}</a></li>
+            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="iMessage://${phoneNumber}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} iMessage" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/imessage.svg"/> iMessage</a></li>` : ""
+            }
+            ${messagingServicesLinks}
+          </ul>
+        </div>`
+
+        this.insertAdjacentHTML("afterend", openWithDiv);
+
+        $('.phone-open-with-link').on('click', function() {
+          $(this).parents('.phone-open-with-container').remove();
+        })
+      }
+    });
+  }
 
   $('#delete-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");

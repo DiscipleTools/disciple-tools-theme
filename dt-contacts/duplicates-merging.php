@@ -265,8 +265,8 @@ class DT_Duplicate_Checker_And_Merging {
         if ( is_wp_error( $post ) ){
             return $post;
         }
-        $duplicate_data = isset( $post['duplicate_data'] ) ? ( is_array( $post['duplicate_data'] ) ? $post['duplicate_data'] : unserialize( $post['duplicate_data'] ) ) : array();
-        if ( !in_array( $dismiss_id, $duplicate_data["override"] ) ) {
+        $duplicate_data = isset( $post['duplicate_data'] ) ? ( is_array( $post['duplicate_data'] ) ? $post['duplicate_data'] : unserialize( $post['duplicate_data'] ) ) : [];
+        if ( !in_array( $dismiss_id, $duplicate_data["override"] ?? [] ) ) {
             $duplicate_data["override"][] = $dismiss_id;
         }
         update_post_meta( $post_id, "duplicate_data", $duplicate_data );
@@ -277,11 +277,11 @@ class DT_Duplicate_Checker_And_Merging {
         if ( is_wp_error( $post ) ){
             return $post;
         }
-        $duplicate_data = isset( $post['duplicate_data'] ) ? ( is_array( $post['duplicate_data'] ) ? $post['duplicate_data'] : unserialize( $post['duplicate_data'] ) ) : array();
+        $duplicate_data = isset( $post['duplicate_data'] ) ? ( is_array( $post['duplicate_data'] ) ? $post['duplicate_data'] : unserialize( $post['duplicate_data'] ) ) : [];
         $possible_duplicates = self::ids_of_non_dismissed_duplicates( $post_type, $post_id, false );
 
         foreach ( $possible_duplicates["ids"] as $dup_id ){
-            if ( !in_array( $dup_id, $duplicate_data["override"] ) ) {
+            if ( !in_array( $dup_id, $duplicate_data["override"] ?? [] ) ) {
                 $duplicate_data["override"][] = $dup_id;
             }
         }
@@ -317,12 +317,11 @@ class DT_Duplicate_Checker_And_Merging {
         if ( is_wp_error( $non_master ) ) { return $non_master; }
 
 
-        $current = array(
-            'contact_phone' => array(),
-            'contact_email' => array(),
-            'contact_address' => array(),
-            // 'contact_facebook' => array()
-        );
+        $current = [
+            'contact_phone' => [],
+            'contact_email' => [],
+            'contact_address' => [],
+        ];
 
         foreach ( $contact as $key => $fields ) {
             if ( strpos( $key, "contact_" ) === 0 ) {
@@ -331,134 +330,132 @@ class DT_Duplicate_Checker_And_Merging {
                     continue;
                 }
                 $new_key = $split[0] . "_" . $split[1];
-                foreach ( $contact[ $new_key ] ?? array() as $values ) {
+                foreach ( $contact[ $new_key ] ?? [] as $values ) {
                     $current[ $new_key ][ $values['key'] ] = $values['value'];
                 }
             }
         }
 
-        $update = array(
-            'contact_phone' => array( 'values' => array() ),
-            'contact_email' => array( 'values' => array() ),
-            'contact_address' => array( 'values' => array() ),
-            // 'contact_facebook' => array( 'values' => array() )
-        );
+        $update = [
+            'contact_phone' => [ 'values' => [] ],
+            'contact_email' => [ 'values' => [] ],
+            'contact_address' => [ 'values' => [] ],
+        ];
 
         $update_for_duplicate = [];
 
-        $ignore_keys = array();
+        $ignore_keys = [];
 
         foreach ( $phones as $phone ) {
             $index = array_search( $phone, $current['contact_phone'] );
             if ( $index !== false ) { $ignore_keys[] = $index;
                 continue; }
-            array_push( $update['contact_phone']['values'], [ 'value' => $phone ] );
+            $update['contact_phone']['values'][] = [ 'value' => $phone ];
         }
         foreach ( $emails as $email ) {
             $index = array_search( $email, $current['contact_email'] );
             if ( $index !== false ) { $ignore_keys[] = $index;
                 continue; }
-            array_push( $update['contact_email']['values'], [ 'value' => $email ] );
+            $update['contact_email']['values'][] = [ 'value' => $email ];
         }
         foreach ( $addresses as $address ) {
             $index = array_search( $address, $current['contact_address'] );
             if ( $index !== false ) { $ignore_keys[] = $index;
                 continue; }
-            array_push( $update['contact_address']['values'], [ 'value' => $address ] );
+            $update['contact_address']['values'][] = [ 'value' => $address ];
         }
 
         /*
             Merge social media + other contact data from the non master to master
         */
-        foreach ( $non_master as $key => $fields ) {
-            if ( !empty( $fields ) && isset( $contact_fields[ $key ] ) && ( ! isset( $contact_fields[ $key ]['private'] ) || ( isset( $contact_fields[ $key ]['private'] ) && ! $contact_fields[ $key ]['private'] ) ) ) {
-                if ( $contact_fields[ $key ]["type"] === "multi_select" ) {
-                    $update[ $key ]["values"] = [];
-                    foreach ( $fields as $field_value ) {
-                        $update[ $key ]["values"][] = [ "value" => $field_value ];
+        $fields_no_to_copy = [ 'overall_status', 'reason_closed' ];
+        foreach ( $non_master as $key => $fields ){
+            if ( !empty( $fields ) && isset( $contact_fields[$key] ) && !in_array( $key, $fields_no_to_copy ) && ( !isset( $contact_fields[$key]['private'] ) || !$contact_fields[$key]['private'] ) ){
+                if ( $contact_fields[$key]["type"] === "multi_select" ){
+                    $update[$key]["values"] = [];
+                    foreach ( $fields as $field_value ){
+                        $update[$key]["values"][] = [ "value" => $field_value ];
                     }
                 }
-                if ( $contact_fields[ $key ]["type"] === "key_select" && ( ! isset( $contact[ $key ] ) || $contact[ $key ]['key'] === "none" || $contact[ $key ]['key'] === "not-set" || $contact[ $key ]['key'] === "" ) ) {
-                    $update[ $key ] = $fields["key"];
+                if ( $contact_fields[$key]["type"] === "key_select" && ( !isset( $contact[$key] ) || $contact[$key]['key'] === "none" || $contact[$key]['key'] === "not-set" || $contact[$key]['key'] === "" ) ){
+                    $update[$key] = $fields["key"];
                 }
-                if ( $contact_fields[ $key ]["type"] === "text" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
-                    $update[ $key ] = $fields;
+                if ( $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) ) ){
+                    $update[$key] = $fields;
                 }
-                if ( $contact_fields[ $key ]["type"] === "textarea" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
-                    $update[ $key ] = $fields;
+                if ( $contact_fields[$key]["type"] === "textarea" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) ) ){
+                    $update[$key] = $fields;
                 }
-                if ( $contact_fields[ $key ]["type"] === "number" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
-                    $update[ $key ] = $fields;
+                if ( $contact_fields[$key]["type"] === "number" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) ) ){
+                    $update[$key] = $fields;
                 }
-                if ( $contact_fields[ $key ]["type"] === "date" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
-                    $update[ $key ] = $fields["timestamp"] ?? "";
+                if ( $contact_fields[$key]["type"] === "date" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) ) ){
+                    $update[$key] = $fields["timestamp"] ?? "";
                 }
-                if ( $contact_fields[ $key ]["type"] === "array" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
-                    if ( $key != "duplicate_data" ) {
-                        $update[ $key ] = $fields;
+                if ( $contact_fields[$key]["type"] === "array" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) ) ){
+                    if ( $key != "duplicate_data" ){
+                        $update[$key] = $fields;
                     }
                 }
-                if ( $contact_fields[ $key ]["type"] === "boolean" && ( ! isset( $contact[ $key ] ) || empty( $contact[ $key ] ) ) ) {
-                    $update[ $key ] = $fields;
+                if ( $contact_fields[$key]["type"] === "boolean" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) ) ){
+                    $update[$key] = $fields;
                 }
-                if ( $contact_fields[ $key ]["type"] === "tags" ) {
-                    $update[ $key ]["values"] = [];
-                    foreach ( $fields as $field_value ) {
-                        $update[ $key ]["values"][] = [ "value" => $field_value ];
+                if ( $contact_fields[$key]["type"] === "tags" ){
+                    $update[$key]["values"] = [];
+                    foreach ( $fields as $field_value ){
+                        $update[$key]["values"][] = [ "value" => $field_value ];
                     }
                 }
-                if ( $contact_fields[ $key ]["type"] === "location_meta" ) {
-                    $update[ $key ]["values"] = [];
-                    foreach ( $fields as $field_value ) {
-                        if ( isset( $field_value['lng'] ) && isset( $field_value['lat'] ) && isset( $field_value['level'] ) && isset( $field_value['label'] ) && isset( $field_value['source'] ) ) {
-                            if ( ! self::has_location_meta_label_duplicates( $contact, $key, $field_value["label"] ) ) {
-                                $update[ $key ]["values"][] = [
-                                    "lng"    => $field_value["lng"],
-                                    "lat"    => $field_value["lat"],
-                                    "level"  => $field_value["level"],
-                                    "label"  => $field_value["label"],
+                if ( $contact_fields[$key]["type"] === "location_meta" ){
+                    $update[$key]["values"] = [];
+                    foreach ( $fields as $field_value ){
+                        if ( isset( $field_value['lng'] ) && isset( $field_value['lat'] ) && isset( $field_value['level'] ) && isset( $field_value['label'] ) && isset( $field_value['source'] ) ){
+                            if ( !self::has_location_meta_label_duplicates( $contact, $key, $field_value["label"] ) ){
+                                $update[$key]["values"][] = [
+                                    "lng" => $field_value["lng"],
+                                    "lat" => $field_value["lat"],
+                                    "level" => $field_value["level"],
+                                    "label" => $field_value["label"],
                                     "source" => $field_value["source"],
                                 ];
                             }
                         }
                     }
                 }
-                if ( $contact_fields[ $key ]["type"] === "location" ) {
-                    $update[ $key ]["values"] = [];
-                    foreach ( $fields as $field_value ) {
-                        $update[ $key ]["values"][] = [ "value" => $field_value['id'] ];
+                if ( $contact_fields[$key]["type"] === "location" ){
+                    $update[$key]["values"] = [];
+                    foreach ( $fields as $field_value ){
+                        $update[$key]["values"][] = [ "value" => $field_value['id'] ];
                     }
                 }
-                if ( $contact_fields[ $key ]["type"] === "connection" ) {
-                    $update[ $key ]["values"]               = [];
-                    $update_for_duplicate[ $key ]["values"] = [];
-                    foreach ( $fields as $field_value ) {
-                        $update[ $key ]["values"][]               = [ "value" => $field_value["ID"] ];
-                        $update_for_duplicate[ $key ]["values"][] = [
-                            "value"  => $field_value["ID"],
+                if ( $contact_fields[$key]["type"] === "connection" ){
+                    $update[$key]["values"] = [];
+                    $update_for_duplicate[$key]["values"] = [];
+                    foreach ( $fields as $field_value ){
+                        $update[$key]["values"][] = [ "value" => $field_value["ID"] ];
+                        $update_for_duplicate[$key]["values"][] = [
+                            "value" => $field_value["ID"],
                             "delete" => true
                         ];
                     }
                 }
-                if ( $contact_fields[ $key ]["type"] === "communication_channel" ) {
-                    $update[ $key ] = array(
-                        'values' => array()
-                    );
-                    foreach ( $non_master[ $key ] ?? array() as $values ) {
-                        $index = array_search( $values['value'], $current[ $key ] ?? array() );
-                        if ( $index !== false ) {
+                if ( $contact_fields[$key]["type"] === "communication_channel" ){
+                    $update[$key] = [
+                        'values' => []
+                    ];
+                    foreach ( $non_master[$key] ?? [] as $values ){
+                        $index = array_search( $values['value'], $current[$key] ?? [] );
+                        if ( $index !== false ){
                             $ignore_keys[] = $index;
                             continue;
                         }
-                        array_push( $update[ $key ]['values'], array(
-                            'value' => $values['value']
-                        ) );
+                        $update[$key]['values'][] = [ 'value' => $values['value'] ];
                     }
                 }
             }
         }
 
-        $delete_fields = array();
+        $delete_fields = [];
         if ( $update['contact_phone']['values'] ) { $delete_fields[] = 'contact_phone'; }
         if ( $update['contact_email']['values'] ) { $delete_fields[] = 'contact_email'; }
         if ( $update['contact_address']['values'] ) { $delete_fields[] = 'contact_address'; }
@@ -467,15 +464,17 @@ class DT_Duplicate_Checker_And_Merging {
             self::remove_fields( $master_id, $delete_fields, $ignore_keys );
         }
 
-        //copy over comments
-        $comments = DT_Posts::get_post_comments( "contacts", $non_master_id );
-        foreach ( $comments["comments"] as $comment ){
-            $comment["comment_post_ID"] = $master_id;
-            if ( $comment["comment_type"] === "comment" ){
-                $comment["comment_content"] = sprintf( esc_html_x( '(From Duplicate): %s', 'duplicate comment', 'disciple_tools' ), $comment["comment_content"] );
-            }
-            if ( $comment["comment_type"] !== "duplicate" && !empty( $comment["comment_content"] ) ) {
-                wp_insert_comment( $comment );
+        if ( isset( $args["merge_comments"] ) ){
+            //copy over comments
+            $comments = DT_Posts::get_post_comments( "contacts", $non_master_id );
+            foreach ( $comments["comments"] as $comment ){
+                $comment["comment_post_ID"] = $master_id;
+                if ( $comment["comment_type"] === "comment" ){
+                    $comment["comment_content"] = sprintf( esc_html_x( '(From Duplicate): %s', 'duplicate comment', 'disciple_tools' ), $comment["comment_content"] );
+                }
+                if ( $comment["comment_type"] !== "duplicate" && !empty( $comment["comment_content"] ) ) {
+                    wp_insert_comment( $comment );
+                }
             }
         }
 
