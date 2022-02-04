@@ -827,8 +827,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
 
             // key_select and multi_options
+            $field_options = $field["default"];
             if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" ) ){
-                $field_options = $field["default"];
                 foreach ( $post_submission as $key => $val ){
                     if ( strpos( $key, "field_option_" ) === 0 ) {
                         if ( strpos( $key, 'translation' ) !== false ) {
@@ -952,6 +952,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( "dt_field_customizations", $field_customizations );
             wp_cache_delete( $post_type . "_field_settings" );
+
+            // Support seeker path option triggers
+            if ( $field_key === 'seeker_path' ) {
+                dt_seeker_path_triggers_update( $field_options );
+            }
         }
     }
 
