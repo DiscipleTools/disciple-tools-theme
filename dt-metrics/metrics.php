@@ -103,9 +103,6 @@ class Disciple_Tools_Metrics{
                 }
                 return $content;
             }, 10 ); //load menu links
-
-            // Register metrics script
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 10 );
         }
 
         /**
@@ -121,16 +118,6 @@ class Disciple_Tools_Metrics{
             }, 25 );
         }
 
-    }
-
-    public function scripts() {
-        wp_enqueue_script( 'dt_metrics_script_bob', get_template_directory_uri() . '/dt-metrics/metrics.js', [
-            'jquery',
-            'lodash'
-        ], filemtime( get_theme_file_path() . '/dt-metrics/metrics.js' ), true );
-        wp_localize_script(
-            'dt_metrics_script_bob', 'dt_metrics', []
-        );
     }
 }
 
