@@ -482,7 +482,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 "connection_count_field" => [ "post_type" => "groups", "field_key" => "leader_count", "connection_field" => "leaders" ]
             ];
             $fields["group_coach"] = [
-                "name" => __( "Group Coach", 'disciple_tools' ),
+                "name" => __( "Coach of Group", 'disciple_tools' ),
                 "type" => "connection",
                 "p2p_direction" => "to",
                 "p2p_key" => "groups_to_coaches",
