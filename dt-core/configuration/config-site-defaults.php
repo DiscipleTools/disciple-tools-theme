@@ -73,7 +73,7 @@ function dt_seeker_path_trigger_deltas( $update_required_options, $options ): ar
                 'status'      => 'active',
                 'seeker_path' => $opt_key,
                 'days'        => 3,
-                'comment'     => __( '', 'disciple_tools' )
+                'comment'     => ''
             ];
         }
     }
