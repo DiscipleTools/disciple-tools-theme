@@ -240,6 +240,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'english_name' => 'Amharic (Ethiopia)'
                 ],
                 'ar' => [
+                    'default_locale' => 'ar_MA',
                     'language' => 'ar',
                     'english_name' => 'Arabic',
                     'native_name' => 'العربية'
@@ -310,6 +311,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'native_name' => 'हिन्दी'
                 ],
                 'hr' => [
+                    'default_locale' => 'hr',
                     'language' => 'hr',
                     'english_name' => 'Croatian',
                     'native_name' => 'Hrvatski'
@@ -330,6 +332,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'native_name' => 'Italiano'
                 ],
                 'ja' => [
+                    'default_locale' => 'ja',
                     'language' => 'ja',
                     'english_name' => 'Japanese',
                     'native_name' => '日本語'
@@ -345,6 +348,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'native_name' => 'Македонски јазик'
                 ],
                 'mr' => [
+                    'default_locale' => 'mr',
                     'language' => 'mr',
                     'english_name' => 'Marathi',
                     'native_name' => 'मराठी'
@@ -395,16 +399,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'english_name' => 'Serbian'
                 ],
                 'sw' => [
+                    'default_locale' => 'sw',
                     'language' => 'sw',
                     'native_name' => 'Kiswahili',
                     'english_name' => 'Swahili'
                 ],
                 'th' => [
+                    'default_locale' => 'th',
                     'language' => 'th',
                     'english_name' => 'Thai',
                     'native_name' => 'ไทย'
                 ],
                 'tl' => [
+                    'default_locale' => 'tl',
                     'language' => 'tl',
                     'english_name' => 'Tagalog',
                     'native_name' => 'Tagalog'
@@ -415,6 +422,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'native_name' => 'Türkçe'
                 ],
                 'vi' => [
+                    'default_locale' => 'vi',
                     'language' => 'vi',
                     'english_name' => 'Vietnamese',
                     'native_name' => 'Tiếng Việt'

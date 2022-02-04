@@ -110,13 +110,23 @@ abstract class DT_Magic_Url_Base {
                 $contact = DT_Posts::get_post( $parts['post_type'], $parts['post_id'] );
                 if ( ! empty( $contact ) && ! is_wp_error( $contact ) ) {
                     foreach ( $contact['languages'] ?? [] as $lang ) {
-                        switch ( $lang ) {
-                            case 'en':
-                                return 'en_US';
-                            case 'fr':
-                                return 'fr_FR';
-                            case 'es':
-                                return 'es_ES';
+
+                        // First, ensure $lang is not already within required locale shape
+                        if ( str_contains( $lang, '_' ) ) {
+                            return $lang;
+                        }
+
+                        // Next, attempt to locate corresponding default locale within global languages list
+                        $global_lang_list = dt_get_global_languages_list();
+                        if ( ! empty( $global_lang_list ) && isset( $global_lang_list[ $lang ], $global_lang_list[ $lang ]['default_locale'] ) ) {
+                            return $global_lang_list[ $lang ]['default_locale'];
+                        }
+
+                        // If not found, then attempt to locate within available languages list
+                        foreach ( dt_get_available_languages() ?? [] as $avail_lang ) {
+                            if ( $avail_lang['language'] === $lang && isset( $avail_lang['default_locale'] ) ) {
+                                return $avail_lang['default_locale'];
+                            }
                         }
                     }
                 }
