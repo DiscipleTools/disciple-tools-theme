@@ -582,7 +582,7 @@ function dt_get_global_languages_list(){
         "ar_TN" => [ "label" => "Arabic (Tunisia)" ],
         "ar_AE" => [ "label" => "Arabic (United Arab Emirates)" ],
         "ar_YE" => [ "label" => "Arabic (Yemen)" ],
-        "ar" => [ "label" => "Arabic", "default_locale" => "ar_MA" ],
+        "ar" => [ "label" => "Arabic", "default_locale" => "ar" ],
         "hy_AM" => [ "label" => "Armenian (Armenia)" ],
         "hy" => [ "label" => "Armenian" ],
         "as_IN" => [ "label" => "Assamese (India)" ],

@@ -124,8 +124,8 @@ abstract class DT_Magic_Url_Base {
 
                         // If not found, then attempt to locate within available languages list
                         foreach ( dt_get_available_languages() ?? [] as $avail_lang ) {
-                            if ( $avail_lang['language'] === $lang && isset( $avail_lang['default_locale'] ) ) {
-                                return $avail_lang['default_locale'];
+                            if ( isset( $avail_lang['language'] ) && $avail_lang['language'] === $lang ) {
+                                return $avail_lang['language'];
                             }
                         }
                     }
