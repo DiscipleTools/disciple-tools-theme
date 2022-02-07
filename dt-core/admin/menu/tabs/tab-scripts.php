@@ -138,8 +138,10 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
 
     public function admin_enqueue_scripts() {
         wp_enqueue_media();
+        wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_script( 'dt_utilities_scripts_script', disciple_tools()->admin_js_url . 'dt-utilities-scripts.js', [
-            'jquery'
+            'jquery',
+            'wp-color-picker'
         ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-scripts.js' ), true );
         wp_localize_script(
             "dt_utilities_scripts_script", "dt_admin_scripts", [

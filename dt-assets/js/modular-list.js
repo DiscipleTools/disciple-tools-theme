@@ -621,7 +621,7 @@
                 </ul>
               </div>
               <div class="mobile-list-field-value">
-                <ul style="line-height:20px" >
+                <ul style="line-height:20px" dir="auto">
                   ${values.join(', ')}
                 </ul>
               </div>
@@ -637,7 +637,7 @@
             values[0] = '&#9733;'
           }
           let tmp_html = `
-            <td title="${values.join(', ')}">
+            <td dir="auto" title="${values.join(', ')}">
               <ul>
                 ${values_html}
               </ul>

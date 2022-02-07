@@ -119,8 +119,16 @@ jQuery(document).ready(function ($) {
     mediaFrame.open();
 
   });
+  /**
+   * FILE UPLOADS
+   */
 
   /**
+   * COLOR PICKER
+   */
+  $('.color-display-picker').wpColorPicker();
+ 
+   /**
    * Flyout menu
    */
   const details = [...document.querySelectorAll('details.flyout')];
