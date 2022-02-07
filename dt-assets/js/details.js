@@ -312,7 +312,12 @@ jQuery(document).ready(function($) {
         onHideLayout: function () {
           $(`.${field_key}-result-container`).html("");
         },
-        onReady: function () {
+        onReady: function (node) {
+          //if the input is disabled don't allow clicks on the cancel button.
+          if($(node).attr('disabled') == 'disabled') {
+           let cancelButton = $(`#${el.id} .typeahead__cancel-button`);
+           cancelButton.css('pointerEvents','none');
+         }
           if (window.lodash.get(post,  `${field_key}.display`)){
             $(`.js-typeahead-${field_key}`).val(post[field_key].display)
           }
@@ -375,6 +380,13 @@ jQuery(document).ready(function($) {
         }
       },
       callback: {
+        onReady: function(node) {
+          //if the input is disabled don't allow clicks on the cancel button.
+           if($(node).attr('disabled') == 'disabled') {
+            let cancelButton = $(`#${el.id} .typeahead__cancel-button`);
+            cancelButton.css('pointerEvents','none');
+          }
+        },
         onClick: function(node, a, item, event){
           $(`#${field_id}-spinner`).addClass('active')
           API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).then(new_post=>{
