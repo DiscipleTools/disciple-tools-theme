@@ -585,7 +585,13 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      */
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
         $disabled = 'disabled';
-        if ( current_user_can( "update_" . $post['post_type'] ) || ( isset( $post["assigned_to"]["id"] ) && $post["assigned_to"]["id"] == get_current_user_id() ) ) {
+        if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
+            $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
+        } else {
+            $can_update = true;
+        }
+// $can_update = true;
+        if ( $can_update || isset( $post["assigned_to"]["id"] ) && $post["assigned_to"]["id"] == get_current_user_id() ) {
             $disabled = '';
         }
         $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
