@@ -66,7 +66,7 @@ function write_input_widget() {
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
-        <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" autocomplete="off" />
+        <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto" />
         <div class="input-group-button">
             <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
             <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ window.lodash.escape( dtMapbox.translations.clear ) /*Delete Location*/}" >&times;</button>

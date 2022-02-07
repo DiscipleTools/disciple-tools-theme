@@ -122,4 +122,12 @@ jQuery(document).ready(function ($) {
   /**
    * FILE UPLOADS
    */
+
+  /**
+   * COLOR PICKER
+   */
+  $('.color-display-picker').wpColorPicker();
+  /**
+   * COLOR PICKER
+   */
 })

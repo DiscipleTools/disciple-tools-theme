@@ -481,6 +481,15 @@ class DT_Groups_Base extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . "/dt-assets/images/foot.svg?v=2",
                 "connection_count_field" => [ "post_type" => "groups", "field_key" => "leader_count", "connection_field" => "leaders" ]
             ];
+            $fields["group_coach"] = [
+                "name" => __( "Coach of Group", 'disciple_tools' ),
+                "type" => "connection",
+                "p2p_direction" => "to",
+                "p2p_key" => "groups_to_coaches",
+                "post_type" => "groups",
+                "tile" => "no_tile",
+                'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg?v=2',
+            ];
         }
         return $fields;
     }

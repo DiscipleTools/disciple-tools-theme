@@ -33,8 +33,10 @@
         <?php
         $instance_name = get_bloginfo( 'name' );
         if ( is_single() ) {
+            $post_type_key = get_post_type();
             if ( DT_Posts::can_view( get_post_type(), GET_THE_ID() ) ){
-                $title_string = single_post_title( '' ) . ' - ' . ucwords( get_post_type() );
+                $post_type_label = isset( $post_type_settings["label_plural"] ) ? $post_type_settings["label_plural"] : $post_type_key;
+                $title_string = single_post_title( '' ) . ' - ' . ucwords( $post_type_label );
                 echo esc_html( $title_string . ' - ' .$instance_name );
             } else {
                 echo esc_html( __( "D.T Record", 'disciple_tools' ) );
@@ -42,8 +44,10 @@
         } else if ( is_archive() ){
             echo post_type_archive_title();
         } else {
-            $title_string = ucwords( str_replace( '/', ' - ', dt_get_url_path() ) );
-            echo esc_html( $title_string . ' - ' . $instance_name );
+            $title_string = str_replace( '/', ' - ', dt_get_url_path() );
+            $post_type_settings = apply_filters( 'dt_get_post_type_settings', [], $title_string );
+            $label = isset( $post_type_settings["label_plural"] ) ? $post_type_settings["label_plural"] : ucwords( $title_string );
+            echo esc_html( $label . ' - ' . $instance_name );
         }
         ?>
         </title>
