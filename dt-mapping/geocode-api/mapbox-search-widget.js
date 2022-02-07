@@ -184,7 +184,7 @@ window.write_input_widget = function write_input_widget() {
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true" data-add-address="true">
-        <input id="mapbox-search" type="text" name="mapbox_search" class="input-group-field" autocomplete="off" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
+        <input id="mapbox-search" type="text" name="mapbox_search" class="input-group-field" autocomplete="off" dir="auto" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
         <div class="input-group-button">
             <button id="mapbox-spinner-button" class="button hollow" style="display:none;border-color:lightgrey;">
                 <span class="" style="border-radius: 50%;width: 24px;height: 24px;border: 0.25rem solid lightgrey;border-top-color: black;animation: spin 1s infinite linear;display: inline-block;"></span>
