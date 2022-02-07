@@ -397,7 +397,7 @@ function mapbox_autocomplete(address){
 
     let add_address = jQuery('#mapbox-autocomplete').data('add-address')
     if ( typeof add_address === 'undefined' || add_address === true ) {
-      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: "${window.lodash.escape( address )}"</div>`)
+      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
     }
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -432,7 +432,7 @@ function google_autocomplete(address){
 
       let add_address = jQuery('#mapbox-autocomplete').data('add-address')
       if ( typeof add_address === 'undefined' || add_address === true ) {
-        list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: "${window.lodash.escape( address )}"</div>`)
+        list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
       }
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -444,7 +444,7 @@ function google_autocomplete(address){
     }
     else if ( status === 'ZERO_RESULTS' ) {
       list.append(`<div>No Results Found</div>`)
-      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: "${window.lodash.escape( address )}"</div>`)
+      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
         close_all_lists(e.target.attributes['data-value'].value);
