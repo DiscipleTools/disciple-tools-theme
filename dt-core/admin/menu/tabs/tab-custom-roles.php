@@ -254,12 +254,13 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
      * =     */
     public function create() {
         global $wpdb;
+
         if ( !isset( $_POST['role_create_nonce'] ) || !wp_verify_nonce( sanitize_key( $_POST['role_create_nonce'] ), 'role_create' ) ) {
             $error = new WP_Error( 401, __( "Unauthorized", "disciple_tools" ) );
             $this->show_error( $error );
             return;
         }
-
+        $roles = apply_filters( 'dt_set_roles_and_permissions', [] );
         $label = isset( $_POST['label'] ) ? sanitize_text_field( wp_unslash( $_POST['label'] ) ) : null;
         $description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( $_POST['description'] ) ) : null;
 
@@ -278,6 +279,15 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         }
 
         $slug = 'custom_' . strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '_', $label ), '_' ) );
+
+        //Make sure the slug is unique.
+        $i = 0;
+        $slug_base = $slug;
+        while ( array_key_exists( $slug, $roles ) ) {
+            $i++;
+            $slug = $slug_base . '_' . $i;
+        }
+
         $row = $wpdb->insert( $wpdb->dt_roles,
             [
                 'role_description'  => $description,

@@ -904,7 +904,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             return $date_time && $date_time->format( $format ) === $date;
         }
     }
-    
+
     /**
      * Dump and die
      */
