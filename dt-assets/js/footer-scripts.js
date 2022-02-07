@@ -60,30 +60,17 @@ function top_bar_menu_more_button () {
  */
 jQuery(document).ready(function () {
 
-  let url_path = window.wpApiShare.url_path;
-  if (url_path.includes('metrics')) {
-    highlight_current_menu_item_metrics();
+  // Determine selected menu item
+  let selected_menu_item = (window.wpApiShare.url_path === 'metrics') ? 'metrics/personal/overview' : window.wpApiShare.url_path;
+  let item = $('#metrics-side-section a[href*="' + selected_menu_item + '"]').last();
 
-  } else if (url_path.includes('user-management/')) {
-    highlight_current_menu_item_users();
-  }
+  // Apply class highlight for initial
+  item.parent().addClass('side-menu-item-highlight');
 
-  function highlight_current_menu_item_metrics() {
-    // Determine actual selected metric menu item
-    let selected_metric_name = (window.wpApiShare.url_path === 'metrics') ? 'metrics/personal/overview' : window.wpApiShare.url_path;
-    let metric = $('#metrics-side-section a[href$="' + selected_metric_name + '"]').last();
-
-    // Apply class highlight
-    metric.parent().addClass('side-menu-item-highlight');
-    metric.parent().parent().parent().find('a').first().addClass('side-menu-item-highlight');
-  }
-
-  function highlight_current_menu_item_users() {
-    // Determine actual selected user menu item
-    let item = $('#metrics-side-section a[href*="' + window.wpApiShare.url_path + '"]').last();
-
-    // Apply class highlight
-    item.parent().addClass('side-menu-item-highlight');
+  // Also apply additional highlights, if required parent structure detected
+  let required_parent = item.parent().parent().parent();
+  if (required_parent.parent() && required_parent.parent().is('ul')) {
+    required_parent.find('a').first().addClass('side-menu-item-highlight');
   }
 
 });
