@@ -414,8 +414,10 @@ class DT_Contacts_Access extends DT_Module_Base {
 
     public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag, $display_field_id ){
         $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
+
+        $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
         $disabled = 'disabled';
-        if ( current_user_can( "update_" . $post['post_type'] ) || isset( $post["assigned_to"]["id"] ) && $post["assigned_to"]["id"] == get_current_user_id() ) {
+        if ( $can_update || isset( $post["assigned_to"]["id"] ) && $post["assigned_to"]["id"] == get_current_user_id() ) {
             $disabled = '';
         }
         if ( isset( $post["post_type"] ) && $post["post_type"] === "contacts" && $field_key === "overall_status"

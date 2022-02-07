@@ -584,8 +584,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @param string $field_id_prefix // add a prefix to avoid fields with duplicate ids.
      */
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
-        dt_write_log(get_userdata( get_current_user_id() )->allcaps);
-        dt_write_log("update_" . $post['post_type'] );
         $disabled = 'disabled';
         if ( current_user_can( "update_" . $post['post_type'] ) || ( isset( $post["assigned_to"]["id"] ) && $post["assigned_to"]["id"] == get_current_user_id() ) ) {
             $disabled = '';
