@@ -1,5 +1,4 @@
 jQuery(document).ready(function($) {
-
   let escaped_translations = window.SHAREDFUNCTIONS.escapeObject(window.dt_user_management_localized.translations)
 
   if( window.wpApiShare.url_path.includes('user-management/users') ) {

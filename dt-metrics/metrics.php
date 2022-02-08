@@ -103,6 +103,7 @@ class Disciple_Tools_Metrics{
                 }
                 return $content;
             }, 10 ); //load menu links
+
         }
 
         /**
