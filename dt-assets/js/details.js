@@ -341,7 +341,7 @@ jQuery(document).ready(function($) {
       minLength: 0,
       accent: true,
       maxItem: 30,
-      searchOnFocus: true,
+      searchOnFocus: $(el).hasClass('disabled') ? false : true,
       template: window.TYPEAHEADS.contactListRowTemplate,
       matcher: function (item) {
         return parseInt(item.ID) !== parseInt(post_id)
