@@ -31,6 +31,23 @@ function dt_svg_icon() {
 }
 
 /**
+ * Capture pre-existing path options; created outside of update flow
+ *
+ * @param $site_options
+ *
+ * @return array
+ */
+function dt_seeker_path_triggers_capture_pre_existing_options( $site_options ): array {
+    if ( ! empty( $site_options ) && isset( $site_options['update_required'] ) ) {
+        $options      = DT_Posts::get_post_field_settings( 'contacts', false, true )['seeker_path']['default'];
+        $deltas       = dt_seeker_path_trigger_deltas( $site_options['update_required']['options'], $options );
+        $site_options = dt_seeker_path_triggers_update_by_deltas( $site_options, $deltas );
+    }
+
+    return $site_options;
+}
+
+/**
  * Add new options to existing seeker path triggers list
  *
  * @param $options
@@ -45,12 +62,7 @@ function dt_seeker_path_triggers_update( $options ): void {
         $deltas = dt_seeker_path_trigger_deltas( $site_options['update_required']['options'], $options );
 
         // Assign identified deltas and update option
-        if ( ! empty( $deltas ) ) {
-            foreach ( $deltas as $delta ) {
-                $site_options['update_required']['options'][] = $delta;
-            }
-            update_option( 'dt_site_options', $site_options, true );
-        }
+        dt_seeker_path_triggers_update_by_deltas( $site_options, $deltas );
     }
 }
 
@@ -72,13 +84,27 @@ function dt_seeker_path_trigger_deltas( $update_required_options, $options ): ar
             $deltas[] = [
                 'status'      => 'active',
                 'seeker_path' => $opt_key,
-                'days'        => 3,
-                'comment'     => ''
+                'days'        => 30,
+                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tool' )
             ];
         }
     }
 
     return $deltas;
+}
+
+function dt_seeker_path_triggers_update_by_deltas( $site_options, $deltas ): array {
+    if ( ! empty( $deltas ) ) {
+        foreach ( $deltas as $delta ) {
+            $site_options['update_required']['options'][] = $delta;
+        }
+        update_option( 'dt_site_options', $site_options, true );
+
+        // Reload....
+        $site_options = dt_get_option( 'dt_site_options' );
+    }
+
+    return $site_options;
 }
 
 /**
