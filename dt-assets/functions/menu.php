@@ -44,7 +44,7 @@ function dt_default_menu_array() : array {
             'site' => [
                 'label' => __( 'Disciple.Tools', 'disciple_tools' ),
                 'link' => site_url(),
-                'icon' => get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png",
+                'icon' => apply_filters( 'dt_default_logo', get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" ),
                 'hidden' => false,
             ],
             'profile' => [
