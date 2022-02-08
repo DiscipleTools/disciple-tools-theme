@@ -161,7 +161,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                         <?php else : ?>
                                             <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
                                         <?php endif ?>
-                                        <span class="collapsed-items"></span>
+                                        <span class="collapsed-items" dir="auto"></span>
                                     </div>
                                     <?php
                                 }
@@ -198,7 +198,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                             <?php else : ?>
                                                 <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
                                             <?php endif ?>
-                                                <span class="collapsed-items"></span>
+                                                <span class="collapsed-items" dir="auto"></span>
                                         </div>
                                     <?php
                                 }
