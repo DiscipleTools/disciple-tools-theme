@@ -31,6 +31,83 @@ function dt_svg_icon() {
 }
 
 /**
+ * Capture pre-existing path options; created outside of update flow
+ *
+ * @param $site_options
+ *
+ * @return array
+ */
+function dt_seeker_path_triggers_capture_pre_existing_options( $site_options ): array {
+    if ( ! empty( $site_options ) && isset( $site_options['update_required'] ) ) {
+        $options      = DT_Posts::get_post_field_settings( 'contacts', false, true )['seeker_path']['default'];
+        $deltas       = dt_seeker_path_trigger_deltas( $site_options['update_required']['options'], $options );
+        $site_options = dt_seeker_path_triggers_update_by_deltas( $site_options, $deltas );
+    }
+
+    return $site_options;
+}
+
+/**
+ * Add new options to existing seeker path triggers list
+ *
+ * @param $options
+ *
+ * @return void
+ */
+function dt_seeker_path_triggers_update( $options ): void {
+    $site_options = dt_get_option( 'dt_site_options' );
+    if ( ! empty( $options ) && isset( $site_options['update_required'] ) ) {
+
+        // Fetch any/all available deltas
+        $deltas = dt_seeker_path_trigger_deltas( $site_options['update_required']['options'], $options );
+
+        // Assign identified deltas and update option
+        dt_seeker_path_triggers_update_by_deltas( $site_options, $deltas );
+    }
+}
+
+function dt_seeker_path_trigger_deltas( $update_required_options, $options ): array {
+    $deltas = [];
+
+    foreach ( $options ?? [] as $opt_key => $opt_val ) {
+        $found = false;
+        foreach ( $update_required_options ?? [] as $required ) {
+
+            // Is there already a trigger specified?
+            if ( $required['seeker_path'] === $opt_key ) {
+                $found = true;
+            }
+        }
+
+        // If not, then assign as new delta
+        if ( ! $found ) {
+            $deltas[] = [
+                'status'      => 'active',
+                'seeker_path' => $opt_key,
+                'days'        => 30,
+                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tool' )
+            ];
+        }
+    }
+
+    return $deltas;
+}
+
+function dt_seeker_path_triggers_update_by_deltas( $site_options, $deltas ): array {
+    if ( ! empty( $deltas ) ) {
+        foreach ( $deltas as $delta ) {
+            $site_options['update_required']['options'][] = $delta;
+        }
+        update_option( 'dt_site_options', $site_options, true );
+
+        // Reload....
+        $site_options = dt_get_option( 'dt_site_options' );
+    }
+
+    return $site_options;
+}
+
+/**
  * Using the dt_get_option guarantees the existence of the option and upgrades to the current plugin version defaults,
  * while returning the options array.
  *

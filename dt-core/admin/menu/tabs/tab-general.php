@@ -384,18 +384,33 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function update_required_options(){
-        $site_options = dt_get_option( 'dt_site_options' );
+        $site_options            = dt_seeker_path_triggers_capture_pre_existing_options( dt_get_option( 'dt_site_options' ) );
         $update_required_options = $site_options['update_required']["options"];
-        $field_options = DT_Posts::get_post_field_settings( "contacts" );
+        $field_options           = DT_Posts::get_post_field_settings( "contacts" );
         ?>
         <h3><?php esc_html_e( "Contacts", 'disciple_tools' ) ?></h3>
         <form method="post" name="update_required-form">
             <button type="submit" class="button-like-link" name="run_update_required" value="1"><?php esc_html_e( "Run checker now", 'disciple_tools' ) ?></button>
             <p><?php esc_html_e( "Change how long to wait before a contact needs an update", 'disciple_tools' ) ?></p>
-            <p>
-                <?php esc_html_e( "Update needed triggers enabled", 'disciple_tools' ) ?>
-                <input type="checkbox" name="triggers_enabled" <?php echo esc_html( $site_options['update_required']["enabled"] ) ? 'checked' : '' ?> />
-            </p>
+
+            <table style="min-width: 100%;">
+                <tbody>
+                <tr>
+                    <td style="text-align: left; padding: 0;">
+                        <p>
+                            <?php esc_html_e( "Update needed triggers enabled", 'disciple_tools' ) ?>
+                            <input type="checkbox"
+                                   name="triggers_enabled" <?php echo esc_html( $site_options['update_required']["enabled"] ) ? 'checked' : '' ?> />
+                        </p>
+                    </td>
+                    <td style="text-align: right; padding: 0;">
+                        <a href="<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_options&tab=custom-fields&post_type=contacts&field-select=contacts_seeker_path&field_selected">
+                            <?php esc_html_e( "Update seeker path options", 'disciple_tools' ) ?>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
             <input type="hidden" name="update_required_nonce" id="update_required_nonce" value="' <?php echo esc_attr( wp_create_nonce( 'update_required' ) ) ?>'" />
 
