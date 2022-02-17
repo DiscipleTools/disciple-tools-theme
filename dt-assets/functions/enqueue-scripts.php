@@ -282,7 +282,8 @@ function dt_site_scripts() {
         );
     }
 
-    $is_new_post = strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types );
+    $is_new_post      = str_contains( $url_path, "/new" ) && in_array( str_replace( "/new", "", $url_path ), $post_types );
+    $is_new_bulk_post = str_contains( $url_path, "/new-bulk" ) && in_array( str_replace( "/new-bulk", "", $url_path ), $post_types );
 
     $path_without_params = untrailingslashit( dt_get_url_path( true ) );
     //list page
@@ -324,7 +325,7 @@ function dt_site_scripts() {
         }
     }
 
-    if ( $is_new_post ){
+    if ( $is_new_post || $is_new_bulk_post ){
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){
