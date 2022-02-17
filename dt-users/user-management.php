@@ -125,7 +125,7 @@ class DT_User_Management
 
     public function scripts() {
         $url_path = dt_get_url_path();
-        if ( strpos( $url_path, "user-management/user" ) !== false|| strpos( $url_path, "user-management/add-user" ) !== false ) {
+        if ( strpos( $url_path, "user-management/user" ) !== false || strpos( $url_path, "user-management/add-user" ) !== false ) {
 
             $dependencies = [
                 'jquery',
