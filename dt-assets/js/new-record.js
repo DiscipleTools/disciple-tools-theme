@@ -675,6 +675,9 @@ jQuery(function($) {
       typeahead_multi_select_init(true, new_records_count);
       typeahead_tags_init(true, new_records_count);
 
+      // Apply latest field filters
+      apply_field_filters();
+
     }).catch(function (error) {
       console.error(error);
     });
@@ -831,6 +834,23 @@ jQuery(function($) {
     default_filter_fields = list_currently_displayed_fields();
   }
 
+  $('#choose_fields_to_show_in_records').on('click', function (evt) {
+    evt.preventDefault();
+    $('#list_fields_picker').toggle();
+  });
+
+  $('#save_fields_choices').on('click', function (evt) {
+    evt.preventDefault();
+
+    apply_field_filters();
+  });
+
+  $('#reset_fields_choices').on('click', function (evt) {
+    evt.preventDefault();
+
+    reset_field_filters();
+  });
+
   function adjust_selected_field_filters_by_currently_displayed_record_fields() {
 
     let fields = list_currently_displayed_fields();
@@ -909,35 +929,6 @@ jQuery(function($) {
     return window.lodash.uniq(fields);
   }
 
-  $('#choose_fields_to_show_in_records').on('click', function (evt) {
-    evt.preventDefault();
-    $('#list_fields_picker').toggle();
-  });
-
-  $('#save_fields_choices').on('click', function (evt) {
-    evt.preventDefault();
-
-    let new_selected = [];
-    $('#list_fields_picker input:checked').each((index, elem) => {
-      new_selected.push($(elem).val())
-    });
-
-    let fields_to_show_in_records = window.lodash.intersection([], new_selected); // remove unchecked
-    fields_to_show_in_records = window.lodash.uniq(window.lodash.union(fields_to_show_in_records, new_selected));
-
-    refresh_displayed_fields(fields_to_show_in_records);
-    $('#list_fields_picker').toggle(false);
-    adjust_selected_field_filters_by_currently_displayed_record_fields();
-  });
-
-  $('#reset_fields_choices').on('click', function (evt) {
-    evt.preventDefault();
-
-    refresh_displayed_fields(default_filter_fields);
-    $('#list_fields_picker').toggle(false);
-    adjust_selected_field_filters_by_currently_displayed_record_fields();
-  });
-
   function refresh_displayed_fields(filter_fields) {
     $('#form_fields_records').find('.form-fields-record').each((key, record) => {
 
@@ -979,6 +970,26 @@ jQuery(function($) {
         $(entry).parent().parent().parent().parent().parent().parent().toggle(window.lodash.includes(filter_fields, $(entry).data('field')));
       });
     });
+  }
+
+  function apply_field_filters() {
+    let new_selected = [];
+    $('#list_fields_picker input:checked').each((index, elem) => {
+      new_selected.push($(elem).val())
+    });
+
+    let fields_to_show_in_records = window.lodash.intersection([], new_selected); // remove unchecked
+    fields_to_show_in_records = window.lodash.uniq(window.lodash.union(fields_to_show_in_records, new_selected));
+
+    refresh_displayed_fields(fields_to_show_in_records);
+    $('#list_fields_picker').toggle(false);
+    adjust_selected_field_filters_by_currently_displayed_record_fields();
+  }
+
+  function reset_field_filters() {
+    refresh_displayed_fields(default_filter_fields);
+    $('#list_fields_picker').toggle(false);
+    adjust_selected_field_filters_by_currently_displayed_record_fields();
   }
 
   /**
