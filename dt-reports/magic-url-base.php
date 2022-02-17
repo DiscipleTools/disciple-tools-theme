@@ -112,7 +112,7 @@ abstract class DT_Magic_Url_Base {
                     foreach ( $contact['languages'] ?? [] as $lang ) {
 
                         // First, ensure $lang is not already within required locale shape
-                        if ( str_contains( $lang, '_' ) ) {
+                        if ( strpos( $lang, "_" ) !== false ) {
                             return $lang;
                         }
 
