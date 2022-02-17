@@ -282,8 +282,8 @@ function dt_site_scripts() {
         );
     }
 
-    $is_new_post      = str_contains( $url_path, "/new" ) && in_array( str_replace( "/new", "", $url_path ), $post_types );
-    $is_new_bulk_post = str_contains( $url_path, "/new-bulk" ) && in_array( str_replace( "/new-bulk", "", $url_path ), $post_types );
+    $is_new_post      = ( strpos( $url_path, "/new" ) !== false ) && in_array( str_replace( "/new", "", $url_path ), $post_types );
+    $is_new_bulk_post = ( strpos( $url_path, "/new-bulk" ) !== false ) && in_array( str_replace( "/new-bulk", "", $url_path ), $post_types );
 
     $path_without_params = untrailingslashit( dt_get_url_path( true ) );
     //list page
