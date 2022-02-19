@@ -918,19 +918,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
-    if ( !function_exists( 'dt_sanitize_array' ) ) {
-        function dt_sanitize_array( &$array ) {
-            foreach ( $array as &$value ) {
-                if ( !is_array( $value ) ) {
-                    $value = sanitize_text_field( wp_unslash( $value ) );
-                } else {
-                    dt_sanitize_array( $value );
-                }
-            }
-            return $array;
-        }
-    }
-
     /**
      * Convert a slug like 'name_or_title' to a label like 'Name or Title'
      */

@@ -222,7 +222,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
 
         // phpcs:ignore
         $capabilities = isset( $_POST['capabilities'] ) ? wp_unslash( (array)$_POST['capabilities'] ) : [];
-        dt_sanitize_array( $capabilities );
+        dt_recursive_sanitize_array( $capabilities );
 
         if ( !$slug ) {
             return $this->show_error( new WP_Error( 400, 'The slug field is required.' ) );
@@ -278,7 +278,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
 
         // phpcs:ignore
         $capabilities = isset( $_POST['capabilities'] ) ? wp_unslash( (array)$_POST['capabilities'] ) : [];
-        dt_sanitize_array( $capabilities );
+        dt_recursive_sanitize_array( $capabilities );
 
         if ( !$label ) {
             $this->show_error( new WP_Error( 400, 'The label field is required.' ) );
@@ -592,7 +592,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
             $description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( $_POST['description'] ) ) : null;
             // phpcs:ignore
             $capabilities = isset( $_POST['capabilities'] ) ? wp_unslash( (array)$_POST['capabilities'] ) : [];
-            dt_sanitize_array( $capabilities );
+            dt_recursive_sanitize_array( $capabilities );
         }
         ?>
         <form id="role-manager"
