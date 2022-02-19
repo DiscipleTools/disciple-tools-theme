@@ -181,8 +181,13 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
 
         // phpcs:ignore
         if ( isset( $_POST['role_create_nonce'] ) ) {
-            $this->create();
-            $this->show();
+            $success = $this->create();
+
+            if ( $success ) {
+                $this->show();
+            } else {
+                $this->view_create_role();
+            }
             return;
         }
 
@@ -258,7 +263,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         if ( !isset( $_POST['role_create_nonce'] ) || !wp_verify_nonce( sanitize_key( $_POST['role_create_nonce'] ), 'role_create' ) ) {
             $error = new WP_Error( 401, __( "Unauthorized", "disciple_tools" ) );
             $this->show_error( $error );
-            return;
+            return false;
         }
         $roles = apply_filters( 'dt_set_roles_and_permissions', [] );
         $label = isset( $_POST['label'] ) ? sanitize_text_field( wp_unslash( $_POST['label'] ) ) : null;
@@ -270,12 +275,12 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
 
         if ( !$label ) {
             $this->show_error( new WP_Error( 400, 'The label field is required.' ) );
-            return;
+            return false;
         }
 
         if ( !$description ) {
             $this->show_error( new WP_Error( 400, 'The description field is required.' ) );
-            return;
+            return false;
         }
 
         $slug = 'custom_' . strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '_', $label ), '_' ) );
@@ -300,8 +305,10 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         if ( $row === false ) {
             $error = $wpdb->last_error;
             $this->show_error( new WP_Error( 400, $error ? $error : __( 'The role could not be created.', 'disciple-tools' ) ) );
-            return;
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -423,7 +430,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
                             <?php
                             if ( $is_active ) { ?>
                                 <?php $editable ?
-                                    $this->edit_role( $key, $role ) :
+                                    $this->view_edit_role( $key, $role ) :
                                     $this->view_role( $key, $role );
                                 ?>
                             <?php }
@@ -518,7 +525,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
      * View for edit role form
      * @param $key
      */
-    private function edit_role( $key ) {
+    private function view_edit_role( $key ) {
         global $wpdb;
         $role = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->dt_roles} WHERE role_slug = %s", [ $key ] ) );
         $label = $role->role_label;
@@ -559,6 +566,17 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
      * View for create role form
      */
     private function view_create_role() {
+        $label = null;
+        $description = null;
+        $capabilities = [];
+
+        if ( isset( $_POST['role_create_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['role_create_nonce'] ), 'role_create' ) ) {
+            $label = isset( $_POST['label'] ) ? sanitize_text_field( wp_unslash( $_POST['label'] ) ) : null;
+            $description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( $_POST['description'] ) ) : null;
+            // phpcs:ignore
+            $capabilities = isset( $_POST['capabilities'] ) ? wp_unslash( (array)$_POST['capabilities'] ) : [];
+            dt_sanitize_array( $capabilities );
+        }
         ?>
         <form id="role-manager"
               method="POST"
@@ -567,7 +585,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
                    name="role_create_nonce"
                    id="role-create-nonce"
                    value="<?php echo esc_attr( wp_create_nonce( 'role_create' ) ) ?>"/>
-            <?php $this->view_role_form_table( '', '', [] ); ?>
+            <?php $this->view_role_form_table( $label, $description, $capabilities ); ?>
             <table>
                 <tfoot>
                 <tr>
@@ -745,6 +763,9 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         <?php
     }
 
+    /**
+     * View for delete form
+     */
     private function view_delete() {
         global $wpdb;
         if ( !isset( $_GET['role'] ) ) {
