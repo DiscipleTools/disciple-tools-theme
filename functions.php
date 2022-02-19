@@ -496,7 +496,6 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
         $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
         $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
         $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
-        $wpdb->dt_roles = $wpdb->prefix . 'dt_roles';
 
         $more_tables = apply_filters( 'dt_custom_tables', [] );
         foreach ( $more_tables as $table ){

@@ -19,6 +19,8 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base {
     private static $_instance = null;
+    private const OPTION_NAME = 'dt_custom_roles';
+
     protected $url_base;
     protected $capabilities;
 
@@ -40,6 +42,13 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+        $option = get_option( self::OPTION_NAME, false );
+
+        //Make sure we have an option
+        if ( !$option ) {
+            $option = add_option( self::OPTION_NAME, [] );
+        }
+
         $this->url_base = esc_url( admin_url() ) . "admin.php?page=dt_options&tab=roles";
         $this->capabilities = Disciple_Tools_Capabilities::get_instance();
 
@@ -208,7 +217,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         }
 
         $label = isset( $_POST['label'] ) ? sanitize_text_field( wp_unslash( $_POST['label'] ) ) : null;
-        $slug = isset( $_POST['role_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['role_slug'] ) ) : null;
+        $slug = isset( $_POST['slug'] ) ? sanitize_text_field( wp_unslash( $_POST['slug'] ) ) : null;
         $description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( $_POST['description'] ) ) : null;
 
         // phpcs:ignore
@@ -227,22 +236,20 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
             return $this->show_error( new WP_Error( 400, 'The description field is required.' ) );
         }
 
-        $row = $wpdb->update( $wpdb->dt_roles,
-            [
-                'role_description'  => $description,
-                'role_label'        => $label,
-                'role_slug'         => $slug,
-                'role_capabilities' => json_encode( array_values( $capabilities ) )
-            ],
-            [
-                'role_slug' => $slug
-            ]
-        );
+        $option = get_option( self::OPTION_NAME, [] );
 
-        if ( $row === false ) {
-            $error = $wpdb->last_error;
-            $this->show_error( new WP_Error( 400, $error ? $error : __( 'The role could not be saved.', 'disciple-tools' ) ) );
-            return;
+        $option[ $slug ] = [
+            'description'  => $description,
+            'label'        => $label,
+            'slug'         => $slug,
+            'capabilities' => array_values( $capabilities )
+        ];
+
+        $success = update_option( self::OPTION_NAME, $option );
+
+        if ( !$success ) {
+            $this->show_error( new WP_Error( 400, __( 'The role could not be saved.', 'disciple-tools' ) ) );
+            return false;
         }
 
         ?>
@@ -293,18 +300,19 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
             $slug = $slug_base . '_' . $i;
         }
 
-        $row = $wpdb->insert( $wpdb->dt_roles,
-            [
-                'role_description'  => $description,
-                'role_label'        => $label,
-                'role_slug'         => $slug,
-                'role_capabilities' => json_encode( $capabilities )
-            ]
-        );
+        $option = get_option( self::OPTION_NAME, [] );
 
-        if ( $row === false ) {
-            $error = $wpdb->last_error;
-            $this->show_error( new WP_Error( 400, $error ? $error : __( 'The role could not be created.', 'disciple-tools' ) ) );
+        $option[ $slug ] = [
+            'description'  => $description,
+            'label'        => $label,
+            'slug'         => $slug,
+            'capabilities' => $capabilities
+        ];
+
+        $success = update_option( self::OPTION_NAME, $option );
+
+        if ( !$success ) {
+            $this->show_error( new WP_Error( 400, __( 'The role could not be created.', 'disciple-tools' ) ) );
             return false;
         }
 
@@ -323,9 +331,18 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
 
         $slug = sanitize_text_field( wp_unslash( $_GET['role'] ) );
 
-        $wpdb->delete( $wpdb->dt_roles, [
-            'role_slug' => $slug
-        ] );
+        $option = get_option( self::OPTION_NAME, [] );
+
+        unset( $option[ $slug ] );
+
+        $success = update_option( self::OPTION_NAME, $option );
+
+        if ( !$success ) {
+            $this->show_error( new WP_Error( 400, __( 'The role could not be deleted.', 'disciple-tools' ) ) );
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -442,7 +459,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
                 <?php if ( current_user_can( 'create_roles' ) ): ?>
                     <tfoot colspan="4">
                     <tr>
-                        <td>
+                        <td colspan="3">
                             <a class="button button-primary button-large"
                                title=" <?php esc_html_e( 'Create New Role', 'disciple-tools' ); ?>"
                                href="<?php echo esc_url( $this->url_base . '&' . http_build_query( [ 'action' => 'create' ] ) ) ?>">
@@ -526,11 +543,11 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
      * @param $key
      */
     private function view_edit_role( $key ) {
-        global $wpdb;
-        $role = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->dt_roles} WHERE role_slug = %s", [ $key ] ) );
-        $label = $role->role_label;
-        $description = $role->role_description;
-        $role_capabilities = json_decode( $role->role_capabilities, 1 );
+        $role = get_option( self::OPTION_NAME, [] )[ $key ];
+
+        $label = $role['label'];
+        $description = $role['description'];
+        $role_capabilities = $role['capabilities'];
         ?>
 
         <form id="role-manager"
@@ -540,8 +557,8 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
                    id="role-edit-nonce"
                    value="<?php echo esc_attr( wp_create_nonce( 'role_edit' ) ) ?>"/>
             <input type="hidden"
-                   name="role_slug"
-                   id="role_slug"
+                   name="slug"
+                   id="slug"
                    value="<?php echo esc_attr( $key ) ?>"/>
             <?php $this->view_role_form_table( $label, $description, $role_capabilities ); ?>
             <table>
@@ -774,8 +791,8 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         }
 
         $key = sanitize_text_field( wp_unslash( $_GET['role'] ) );
-        $role = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->dt_roles} WHERE role_slug = %s", [ $key ] ) );
-        $label = esc_html( $role->role_label );
+        $role = get_option( self::OPTION_NAME )[ $key ];
+        $label = esc_html( $role['label'] );
         $this->box( 'top', __( "Are you sure you want to delete the role: ", 'disciple_tools' ) . esc_attr( $label ) . __( "?", 'disciple_tools' ) );
         ?>
         <p>

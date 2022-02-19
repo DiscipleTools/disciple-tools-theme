@@ -145,9 +145,9 @@ class DT_Contacts_Base {
     public function dt_set_custom_roles_and_permissions( $roles ) {
         global $wpdb;
 
-        $custom_roles = $wpdb->get_results( "SELECT * FROM {$wpdb->dt_roles}" );
+        $custom_roles = get_option( 'dt_custom_roles' );
         foreach ( $custom_roles as $role ) {
-            $permission_keys = json_decode( $role->role_capabilities, true );
+            $permission_keys = $role['capabilities'];
             if ( is_array( $permission_keys ) ) {
                 $permissions = array_reduce($permission_keys, function( $permissions, $key ) {
                     $permissions[$key] = true;
@@ -156,10 +156,10 @@ class DT_Contacts_Base {
             } else {
                 $permissions = [];
             }
-            $roles[$role->role_slug] = [
-                'label' => $role->role_label,
+            $roles[$role['slug']] = [
+                'label' => $role['label'],
                 'permissions' => $permissions,
-                'description' => $role->role_description,
+                'description' => $role['description'],
                 'custom' => true
             ];
         }
