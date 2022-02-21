@@ -1074,89 +1074,90 @@ jQuery(function($) {
       apply_dynamic_layout();
     });
 
-    function is_landscape_layout() {
-      return $(window).width() > 1000;
+  }
+
+  function is_landscape_layout() {
+    return $(window).width() > 1000;
+  }
+
+  function apply_dynamic_layout() {
+
+    // Landscape
+    if (is_landscape_layout() && $('#bulk_records_current_layout').val() !== 'landscape') {
+
+      // Update current layout flag
+      $('#bulk_records_current_layout').val('landscape');
+
+      // Iterate over available records in order to start reformatting layout.
+      $('#form_fields_records').find('.form-fields-record').each((key, record) => {
+        switch_to_landscape_layout(record);
+      });
+
+      // Portrait
+    } else if (!is_landscape_layout() && $('#bulk_records_current_layout').val() !== 'portrait') {
+
+      // Update current layout flag
+      $('#bulk_records_current_layout').val('portrait');
+
+      // Iterate over available records in order to start reformatting layout.
+      $('#form_fields_records').find('.form-fields-record').each((key, record) => {
+        switch_to_portrait_layout(record);
+      });
+
     }
+  }
 
-    function apply_dynamic_layout() {
+  function switch_to_landscape_layout(record) {
+    if (record) {
 
-      // Landscape
-      if (is_landscape_layout() && $('#bulk_records_current_layout').val() !== 'landscape') {
+      // Obtain handle onto landscape section parent.
+      let landscape_layout = $(record).find('#bulk_record_landscape_layout');
 
-        // Update current layout flag
-        $('#bulk_records_current_layout').val('landscape');
+      // Prepare layout table.
+      let landscape_table = $('<table>');
+      let landscape_table_row = $('<tr>');
 
-        // Iterate over available records in order to start reformatting layout.
-        $('#form_fields_records').find('.form-fields-record').each((key, record) => {
-          switch_to_landscape_layout(record);
-        });
+      // Start re-housing elements within new landscape tabular layout.
+      $(record).find('.form-field').each((key, field_div) => {
 
-        // Portrait
-      } else if (!is_landscape_layout() && $('#bulk_records_current_layout').val() !== 'portrait') {
+        let landscape_table_row_data = $('<td>');
+        landscape_table_row_data.css('padding', '10px');
+        landscape_table_row_data.css('vertical-align', 'top');
 
-        // Update current layout flag
-        $('#bulk_records_current_layout').val('portrait');
+        // Determine visibility.
+        let is_visible = $(field_div).is(':visible');
 
-        // Iterate over available records in order to start reformatting layout.
-        $('#form_fields_records').find('.form-fields-record').each((key, record) => {
-          switch_to_portrait_layout(record);
-        });
+        // All fields to be placed into respective column; however, only visible field columns to be shown.
+        landscape_table_row_data.append($(field_div));
 
-      }
-    }
-
-    function switch_to_landscape_layout(record) {
-      if (record) {
-
-        // Obtain handle onto landscape section parent.
-        let landscape_layout = $(record).find('#bulk_record_landscape_layout');
-
-        // Prepare layout table.
-        let landscape_table = $('<table>');
-        let landscape_table_row = $('<tr>');
-
-        // Start re-housing elements within new landscape tabular layout.
-        $(record).find('.form-field').each((key, field_div) => {
-
-          let landscape_table_row_data = $('<td>');
-          landscape_table_row_data.css('padding', '10px');
-          landscape_table_row_data.css('vertical-align', 'top');
-
-          // Determine visibility.
-          let is_visible = $(field_div).is(':visible');
-
-          // All fields to be placed into respective column; however, only visible field columns to be shown.
-          landscape_table_row_data.append($(field_div));
-
-          // Hide column accordingly.
-          if (!is_visible) {
-            landscape_table_row_data.hide();
-          }
-
-          // Append to respective parents.
-          $(landscape_table_row).append($(landscape_table_row_data));
-          $(landscape_table).append($(landscape_table_row));
-          $(landscape_layout).append($(landscape_table));
-
-        });
-      }
-    }
-
-    function switch_to_portrait_layout(record) {
-      if (record) {
-
-        // Obtain handle onto landscape section parent.
-        let landscape_layout = $(record).find('#bulk_record_landscape_layout');
-
-        // Ensure we have stuff to work with.
-        if ($(landscape_layout).contents().length > 0) {
-
-          // Move all field elements back to record root.
-          $(record).append($(landscape_layout).find('.form-field'));
-
-          // Reset landscape layout section.
-          $(landscape_layout).empty();
+        // Hide column accordingly.
+        if (!is_visible) {
+          landscape_table_row_data.hide();
         }
+
+        // Append to respective parents.
+        $(landscape_table_row).append($(landscape_table_row_data));
+        $(landscape_table).append($(landscape_table_row));
+        $(landscape_layout).append($(landscape_table));
+
+      });
+    }
+  }
+
+  function switch_to_portrait_layout(record) {
+    if (record) {
+
+      // Obtain handle onto landscape section parent.
+      let landscape_layout = $(record).find('#bulk_record_landscape_layout');
+
+      // Ensure we have stuff to work with.
+      if ($(landscape_layout).contents().length > 0) {
+
+        // Move all field elements back to record root.
+        $(record).append($(landscape_layout).find('.form-field'));
+
+        // Reset landscape layout section.
+        $(landscape_layout).empty();
       }
     }
   }
