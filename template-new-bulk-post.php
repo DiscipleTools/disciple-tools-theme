@@ -26,9 +26,10 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
 
     <div id="content" class="template-new-post">
         <div id="inner-content" class="grid-x grid-margin-x">
-            <div class="large-2 medium-12 small-12 cell"></div>
+            <div class="large-0 medium-12 small-12 cell"></div>
 
-            <div class="large-8 medium-12 small-12 cell">
+            <div class="large-12 medium-12 small-12 cell">
+                <input type="hidden" id="bulk_records_current_layout" value="">
                 <form class="js-create-post-bulk bordered-box display-fields">
                     <h3 class="section-header">
                         <?php echo esc_html( sprintf( __( 'New Bulk %s', 'disciple_tools' ), $post_settings["label_plural"] ) ) ?>
@@ -138,6 +139,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                         <div id="form_fields_records">
                             <div class="form-fields-record">
                                 <input type="hidden" id="bulk_record_id" value="1">
+                                <div id="bulk_record_landscape_layout"></div>
                                 <?php
                                 render_new_bulk_record_fields( $dt_post_type );
                                 ?>
@@ -163,7 +165,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
 
             </div>
 
-            <div class="large-2 medium-12 small-12 cell"></div>
+            <div class="large-0 medium-12 small-12 cell"></div>
         </div>
     </div>
 
