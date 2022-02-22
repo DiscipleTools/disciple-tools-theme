@@ -195,8 +195,6 @@ jQuery(function($) {
                 onCancel: function (node, item) {
                   if (!is_bulk) {
                     window.lodash.pullAllBy(new_post[field_key].values, [{value: item.ID}], "value");
-                  } else {
-                    handle_bulk_typeahead_on_cancel(bulk_id, field_key, item.ID);
                   }
                 }
               }
@@ -215,8 +213,6 @@ jQuery(function($) {
                     new_post[field_key] = {values: []}
                   }
                   new_post[field_key].values.push({value: item.ID})
-                } else {
-                  handle_bulk_typeahead_on_click(bulk_id, field_key, item.ID);
                 }
                 //get list from opening again
                 this.addMultiselectItemLayout(item)
@@ -274,8 +270,6 @@ jQuery(function($) {
                 onCancel: function (node, item) {
                   if (!is_bulk) {
                     window.lodash.pullAllBy(new_post[field_key].values, [{value: item.ID}], "value");
-                  } else {
-                    handle_bulk_typeahead_on_cancel(bulk_id, field_key, item.ID);
                   }
                 }
               }
@@ -287,8 +281,6 @@ jQuery(function($) {
                     new_post[field_key] = {values: []}
                   }
                   new_post[field_key].values.push({value: item.ID})
-                } else {
-                  handle_bulk_typeahead_on_click(bulk_id, field_key, item.ID);
                 }
                 //get list from opening again
                 this.addMultiselectItemLayout(item)
@@ -342,8 +334,6 @@ jQuery(function($) {
               onClick: function(node, a, item){
                 if (!is_bulk) {
                   new_post[field_key] = item.ID;
-                } else {
-                  handle_bulk_typeahead_on_click(bulk_id, field_key, item.ID);
                 }
               },
               onResult: function (node, query, result, resultCount) {
@@ -432,8 +422,6 @@ jQuery(function($) {
             onCancel: function (node, item, event) {
               if (!is_bulk) {
                 window.lodash.pullAllBy(new_post[field].values, [{value: item.key}], "value");
-              } else {
-                handle_bulk_typeahead_on_cancel(bulk_id, field, item.key);
               }
             }
           }
@@ -445,8 +433,6 @@ jQuery(function($) {
                 new_post[field] = {values: []}
               }
               new_post[field].values.push({value: item.key})
-            } else {
-              handle_bulk_typeahead_on_click(bulk_id, field, item.key);
             }
             this.addMultiselectItemLayout(item)
             event.preventDefault()
@@ -525,8 +511,6 @@ jQuery(function($) {
                 new_post[field] = {values: []}
               }
               new_post[field].values.push({value: tag})
-            } else {
-              handle_bulk_typeahead_on_click(bulk_id, field, tag);
             }
             typeahead.addMultiselectItemLayout({value: tag})
             event.preventDefault()
@@ -544,8 +528,6 @@ jQuery(function($) {
             onCancel: function (node, item) {
               if (!is_bulk) {
                 window.lodash.pullAllBy(new_post[field].values, [{value: item.value}], "value");
-              } else {
-                handle_bulk_typeahead_on_cancel(bulk_id, field, item.value);
               }
             }
           },
@@ -557,8 +539,6 @@ jQuery(function($) {
                 new_post[field] = {values: []}
               }
               new_post[field].values.push({value: item.value})
-            } else {
-              handle_bulk_typeahead_on_click(bulk_id, field, item.value);
             }
             this.addMultiselectItemLayout(item)
             event.preventDefault()
@@ -629,30 +609,6 @@ jQuery(function($) {
   }
 
   /*
-   * Typeahead helper functions
-   */
-
-  let typeahead_staging_states = {};
-
-  function handle_bulk_typeahead_on_cancel(bulk_record_id, field_key, value) {
-    if (typeahead_staging_states[bulk_record_id][field_key]) {
-      window.lodash.pullAllBy(typeahead_staging_states[bulk_record_id][field_key].values, [{value: value}], "value");
-    }
-  }
-
-  function handle_bulk_typeahead_on_click(bulk_record_id, field_key, value) {
-    if (!typeahead_staging_states[bulk_record_id]) {
-      typeahead_staging_states[bulk_record_id] = {}
-    }
-
-    if (!typeahead_staging_states[bulk_record_id][field_key]) {
-      typeahead_staging_states[bulk_record_id][field_key] = {values: []}
-    }
-
-    typeahead_staging_states[bulk_record_id][field_key].values.push({value: value});
-  }
-
-  /*
    * Respond to new bulk record addition requests.
    */
 
@@ -678,6 +634,10 @@ jQuery(function($) {
       // Apply latest layout orientation
       let new_record = $('#form_fields_records').find('.form-fields-record').last();
       is_landscape_layout() ? switch_to_landscape_layout(new_record) : switch_to_portrait_layout(new_record);
+
+      // Apply and initialise copy controls
+      apply_field_value_copy_controls_by_record(new_record);
+      field_value_copy_controls_button_init();
 
       // Apply latest field filters
       apply_field_filters();
@@ -803,18 +763,36 @@ jQuery(function($) {
 
       // Package any available typeahead values
       let bulk_record_id = $(record).find('#bulk_record_id').val();
-      if (typeahead_staging_states[bulk_record_id]) {
-        for (let field_key in typeahead_staging_states[bulk_record_id]) {
-          new_post[field_key] = typeahead_staging_states[bulk_record_id][field_key];
+      $(record).find('.typeahead__query input').each((index, entry) => {
+        let field_id = $(entry).data('field');
+        let typeahead_selector = '.js-typeahead-' + field_id + '-' + bulk_record_id;
+        let typeahead = window.Typeahead[typeahead_selector];
+
+        // Ensure typeahead contains stuff...!
+        if (typeahead && typeahead.items.length > 0) {
+
+          // Instantiate new values array if required.
+          if (!new_post[field_id]) {
+            new_post[field_id] = {values: []};
+          }
+
+          // Populate values accordingly.
+          $.each(typeahead.items, function (idx, item) {
+            if (item.ID) {
+              new_post[field_id].values.push({
+                "value": item.ID
+              });
+            }
+          });
         }
-      }
+      });
 
       // Save new record post!
       API.create_post(window.new_record_localized.post_type, new_post).promise().then(function (data) {
 
         // Only redirect once all records have been processed!
         if (++records_counter >= records_total) {
-          window.location = data.permalink;
+          window.location = window.new_record_localized.bulk_save_redirect_uri;
         } else {
           $(record).slideUp('slow');
         }
@@ -1159,6 +1137,134 @@ jQuery(function($) {
         // Reset landscape layout section.
         $(landscape_layout).empty();
       }
+    }
+  }
+
+  /*
+   * Handle field value copying across records.
+   */
+
+  if (!is_normal_new_record) {
+    apply_field_value_copy_controls();
+    field_value_copy_controls_button_init();
+  }
+
+  function field_value_copy_controls_button_init() {
+    $(".field-value-copy-controls-button").on("click", function (evt) {
+      let field_div = $(evt.currentTarget).parent().parent().parent();
+      let record_id = $(evt.currentTarget).data('record-id');
+      let field_class = $(evt.currentTarget).data('field-class');
+      let field_id = $(evt.currentTarget).data('field-id');
+      copy_field_value_across_records(record_id, field_div, field_class, field_id);
+    });
+  }
+
+  function apply_field_value_copy_controls() {
+    $('#form_fields_records').find('.form-fields-record').each((key, record) => {
+      apply_field_value_copy_controls_by_record(record);
+    });
+  }
+
+  function apply_field_value_copy_controls_by_record(record) {
+    let bulk_record_id = $(record).find('#bulk_record_id').val();
+
+    $(record).find('.form-field').each((index, field_div) => {
+
+      // Only focus on required class field types.
+      if ($(field_div).find('.text-input').length !== 0) {
+        apply_field_value_copy_controls_button(bulk_record_id, field_div, 'text-input', $(field_div).find('.text-input').attr('id'));
+
+      } else if ($(field_div).find('.select-field').length !== 0) {
+        apply_field_value_copy_controls_button(bulk_record_id, field_div, 'select-field', $(field_div).find('.select-field').attr('id'));
+
+      } else if ($(field_div).find('.typeahead__query input').length !== 0) {
+        apply_field_value_copy_controls_button(bulk_record_id, field_div, 'typeahead__query input', $(field_div).find('.typeahead__query input').data('field'));
+
+      }
+
+    });
+  }
+
+  function apply_field_value_copy_controls_button(record_id, field_div, field_class, field_id) {
+    if ($(field_div).find('.field-value-copy-controls').length === 0) {
+      let button_html = '<button data-field-class="' + field_class + '" data-field-id="' + field_id + '" data-record-id="' + record_id + '" class="field-value-copy-controls-button" type="button"><img src="' + window.new_record_localized.bulk_copy_control_but_uri + '"></button>';
+      $(field_div).find('.section-subheader').append('<span class="field-value-copy-controls" style="float: right; padding: 0; margin: 0;">' + button_html + '</span>');
+    }
+  }
+
+  function copy_field_value_across_records(record_id, field_div, field_class, field_id) {
+
+    // First, source field value to be copied. Ensure typeaheads are handled with a little more tlc..! ;)
+    let value = null;
+    if (field_class === 'typeahead__query input') {
+
+      let typeahead_selector = '.js-typeahead-' + field_id + '-' + record_id;
+      let typeahead = window.Typeahead[typeahead_selector];
+
+      value = {
+        items: typeahead.items,
+        items_compared: typeahead.comparedItems,
+        items_label_container: typeahead.label.container
+      };
+
+    } else {
+      value = $(field_div).find('.' + field_class).val();
+    }
+
+    // Assuming we have a valid value, proceed with copying across records.
+    if (value) {
+      $('#form_fields_records').find('.form-fields-record').each((key, record) => {
+
+        // Ignore primary source record!
+        if (record_id != $(record).find('#bulk_record_id').val()) {
+
+          // Copy value across to other record fields.
+          $(record).find('.text-input').each((index, field) => {
+            if ($(field).attr('id') == field_id) {
+              $(field).val(value);
+            }
+          });
+
+          $(record).find('.select-field').each((index, field) => {
+            if ($(field).attr('id') == field_id) {
+              $(field).val(value);
+            }
+          });
+
+          // Again, handle typeaheads slightly differently!
+          $(record).find('.typeahead__query input').each((index, field) => {
+            if ($(field).data('field') == field_id) {
+
+              let typeahead_selector = '.js-typeahead-' + field_id + '-' + $(record).find('#bulk_record_id').val();
+              let typeahead = window.Typeahead[typeahead_selector];
+
+              // Assuming we have a valid handle, proceed.
+              if (typeahead) {
+
+                // Append copied items.
+                typeahead.items = [];
+                $.each(value.items, function (idx, item) {
+                  typeahead.items.push(item);
+                });
+
+                // Append copied compared item values.
+                typeahead.comparedItems = [];
+                $.each(value.items_compared, function (idx, compared) {
+                  typeahead.comparedItems.push(compared);
+                });
+
+                // Append visual labels.
+                $(typeahead.label.container).empty();
+                $(value.items_label_container).children().each((idx, label) => {
+
+                  // Ensure to clone, so as to avoid a forced element move from source field; following an append() gotcha!
+                  $(typeahead.label.container).append($(label).clone());
+                });
+              }
+            }
+          });
+        }
+      });
     }
   }
 
