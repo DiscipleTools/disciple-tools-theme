@@ -1860,3 +1860,18 @@ img.dt-red-icon {
 .side-menu-item-highlight {
     font-weight: bold;
 }
+
+.release-banner {
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    color: white;
+    border-bottom: 1px solid #cacaca;
+    background: linear-gradient(0deg, rgba(121,162,194,1) 0%, rgba(62,114,154,1) 100%);
+}
+
+.release-banner-text {
+    margin: 8px;
+}

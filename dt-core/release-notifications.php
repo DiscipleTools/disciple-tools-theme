@@ -25,23 +25,28 @@ function dt_release_modal() {
         $last_release_notification = '1.0.0';
     }
 
-    if ( version_compare( $last_release_notification, $show_notification_for_theme_version, '>=' ) ){
-        return;
-    }
+    // if ( version_compare( $last_release_notification, $show_notification_for_theme_version, '>=' ) ){
+    //     return;
+    // }
     require_once( get_template_directory().'/dt-core/libraries/parsedown/Parsedown.php' );
 
     update_user_meta( get_current_user_id(), 'dt_release_notification', $show_notification_for_theme_version );
     ?>
     <script>
       jQuery(document).ready(function() {
+        jQuery('#release-modal > p > button.close-button').css('color', 'white');
         let content = jQuery('.off-canvas-content')
 
         content.append(`
             <div id='release-modal' class='reveal medium' data-reveal>
-
-                <h3>Release Announcement!</h3>
-                <h4>Disciple.Tools Theme Version <?php echo esc_html( $show_notification_for_theme_version ); ?></h4>
-                <hr>
+                <div class="release-banner">
+                    <div class="release-banner-text">
+                        <h3>Release Announcement!</h3>
+                        <h4>Disciple.Tools Theme Version <?php echo esc_html( $show_notification_for_theme_version ); ?></h4>
+                    </div>
+                </div>
+                <div style="margin-bottom: 75px;">
+                </div>
                 <?php echo wp_kses_post( dt_load_github_release_markdown( $show_notification_for_theme_version ) ); ?>
                 <hr>
                 <h5>See all D.T News <a href="https://disciple.tools/news" target="_blank">here</a></h5>
@@ -53,11 +58,11 @@ function dt_release_modal() {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
         `);
 
         let div = jQuery('#release-modal');
         new Foundation.Reveal( div );
+        jQuery('#release-modal > p > button.close-button').css('color', 'white');
         div.foundation('open');
       })
     </script>
