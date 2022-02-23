@@ -70,15 +70,14 @@
 <?php
 
 function build_post_types_option_list_html( $group_name ) {
-    echo '<input id="all" type="radio" class="advanced-search-modal-post-types" name="' . esc_html( $group_name ) . '" value="all" checked>';
-    echo '<label for="all">' . esc_html__( 'All', 'disciple_tools' ) . '</label><br>';
+    echo '<label style="cursor: pointer;"><input id="all" type="radio" class="advanced-search-modal-post-types" name="' . esc_html( $group_name ) . '" value="all" checked>'. esc_html__( 'All', 'disciple_tools' ) . '</label>';
 
     $search_post_types = DT_Posts::get_post_types();
     foreach ( $search_post_types as $search_post_type ) {
         $post_settings = DT_Posts::get_post_settings( $search_post_type );
         $name          = $post_settings['label_plural'];
         if ( ! empty( $name ) && ( $search_post_type !== 'peoplegroups' ) ) {
-            echo '<input id="' . esc_html( $search_post_type ) . '" type="radio" class="advanced-search-modal-post-types" name="' . esc_html( $group_name ) . '" value="' . esc_html( $search_post_type ) . '"><label for="' . esc_html( $search_post_type ) . '">' . esc_html( $name ) . '</label><br>';
+            echo '<label style="cursor: pointer; white-space: nowrap;"><input id="' . esc_html( $search_post_type ) . '" type="radio" class="advanced-search-modal-post-types" name="' . esc_html( $group_name ) . '" value="' . esc_html( $search_post_type ) . '">' . esc_html( $name ) . '</label>';
         }
     }
 }
