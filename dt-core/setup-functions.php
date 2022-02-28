@@ -71,6 +71,9 @@ function dt_setup_roles_and_permissions(){
     }
 }
 
+/**
+ * Add custom roles and permissions from the roles manager.
+ */
 add_filter( 'dt_set_roles_and_permissions', 'dt_setup_custom_roles_and_permissions', 11, 1 );
 
 function dt_setup_custom_roles_and_permissions( $roles ) {
