@@ -150,12 +150,6 @@ install_db() {
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
-install_composer() {
-    cd $WP_TESTS_DIR
-    composer require "yoast/phpunit-polyfills"
-}
-
 install_wp
 install_test_suite
-install_composer
 install_db
