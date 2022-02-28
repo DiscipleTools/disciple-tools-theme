@@ -246,7 +246,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                                 </li>
                                 <?php
                             }
-                            
+
                             if ( in_array( 'proof-of-concept', explode( ',', $plugin->categories ) ) ): ?>
                             <li>
                                 <a class="warning-pill">POC</a>
