@@ -29,7 +29,6 @@ final class Disciple_Tools_Capability_Factory {
      */
     public $capabilities = [];
 
-
     /**
      * Private constructor method to prevent a new instance of the object.
      *
@@ -37,7 +36,8 @@ final class Disciple_Tools_Capability_Factory {
      * @since  0.1.0
      * @access public
      */
-    private function __construct() {
+    public function __construct() {
+        add_action( 'init', [ $this, 'setup_capabilities' ] );
     }
 
     /**
@@ -225,7 +225,6 @@ final class Disciple_Tools_Capability_Factory {
 
         if ( is_null( $instance ) ) {
             $instance = new Disciple_Tools_Capability_Factory();
-            $instance->setup_capabilities();
         }
 
         return $instance;
@@ -257,6 +256,7 @@ final class Disciple_Tools_Capability_Factory {
                 'description' => isset( $this->default_descriptions()[ $capability ] ) ? $this->default_descriptions()[ $capability ] : ''
             ];
         }
+
 
         $capabilities = apply_filters( 'dt_capabilities', $capabilities );
 
