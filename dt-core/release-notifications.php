@@ -25,16 +25,15 @@ function dt_release_modal() {
         $last_release_notification = '1.0.0';
     }
 
-    // if ( version_compare( $last_release_notification, $show_notification_for_theme_version, '>=' ) ){
-    //     return;
-    // }
+    if ( version_compare( $last_release_notification, $show_notification_for_theme_version, '>=' ) ){
+        return;
+    }
     require_once( get_template_directory().'/dt-core/libraries/parsedown/Parsedown.php' );
 
     update_user_meta( get_current_user_id(), 'dt_release_notification', $show_notification_for_theme_version );
     ?>
     <script>
       jQuery(document).ready(function() {
-        jQuery('#release-modal > p > button.close-button').css('color', 'white');
         let content = jQuery('.off-canvas-content')
 
         content.append(`
@@ -54,7 +53,7 @@ function dt_release_modal() {
 
                 <p class="center"><button type="button" class="button hollow" data-close>Close</button>
 
-                <button class="close-button" data-close aria-label="Close Accessible Modal" type="button">
+                <button class="close-button white-button" data-close aria-label="Close Accessible Modal" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -62,7 +61,6 @@ function dt_release_modal() {
 
         let div = jQuery('#release-modal');
         new Foundation.Reveal( div );
-        jQuery('#release-modal > p > button.close-button').css('color', 'white');
         div.foundation('open');
       })
     </script>
