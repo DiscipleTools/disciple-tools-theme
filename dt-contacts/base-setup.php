@@ -16,7 +16,6 @@ class DT_Contacts_Base {
         //setup post type
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_custom_roles_and_permissions' ], 11, 1 );
 
         //setup tiles and fields
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
@@ -140,31 +139,6 @@ class DT_Contacts_Base {
         $expected_roles["administrator"]["permissions"]["dt_all_admin_contacts"] = true;
 
         return $expected_roles;
-    }
-
-    public function dt_set_custom_roles_and_permissions( $roles ) {
-        global $wpdb;
-
-        $custom_roles = get_option( 'dt_custom_roles' );
-        foreach ( $custom_roles as $role ) {
-            $permission_keys = $role['capabilities'];
-            if ( is_array( $permission_keys ) ) {
-                $permissions = array_reduce($permission_keys, function( $permissions, $key ) {
-                    $permissions[$key] = true;
-                    return $permissions;
-                }, []);
-            } else {
-                $permissions = [];
-            }
-            $roles[$role['slug']] = [
-                'label' => $role['label'],
-                'permissions' => $permissions,
-                'description' => $role['description'],
-                'custom' => true
-            ];
-        }
-
-        return $roles;
     }
 
     public function dt_custom_fields_settings( $fields, $post_type ){
