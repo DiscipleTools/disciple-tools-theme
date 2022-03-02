@@ -3750,12 +3750,12 @@ msgstr "सिस्टम की भाषा"
 #: archive-template.php:184
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "$s फ़िल्टर"
+msgstr "%s फ़िल्टर"
 
 #: archive-template.php:207
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "$s सूची"
+msgstr "%s सूची"
 
 #: archive-template.php:238
 msgid "Fields"
@@ -3809,7 +3809,7 @@ msgstr "व्यवस्थापन क्रिया"
 #: single-template.php:362
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "$s हटाएं"
+msgstr "%s हटाएं"
 
 #: dt-assets/functions/enqueue-scripts.php:213
 msgid "Duplicates Detected"
@@ -3911,7 +3911,7 @@ msgstr "अन्य$s से कनेक्शन"
 #: dt-contacts/base-setup.php:388
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "$s प्रकार बदलें"
+msgstr "%s प्रकार बदलें"
 
 #: dt-contacts/base-setup.php:522
 msgid "Default Filters"
@@ -4040,7 +4040,7 @@ msgstr "सब"
 #: dt-users/mapbox-coverage-map.php:78
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "उपयोगकर्ता को इसमें जोड़ें:$s"
+msgstr "उपयोगकर्ता को इसमें जोड़ें:%s"
 
 #: dt-users/mapbox-coverage-map.php:81
 msgid "Responsibility Coverage"
@@ -4065,13 +4065,13 @@ msgstr "अभिलेख"
 #: template-merge-details.php:150
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "$s पर बनाया गया"
+msgstr "%s पर बनाया गया"
 
 #: dt-assets/functions/details-bar.php:107
 #: dt-assets/functions/details-bar.php:261
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "$s द्वारा"
+msgstr "%s द्वारा"
 
 #: single-template.php:211
 msgid "Edit all details fields"
@@ -4094,7 +4094,7 @@ msgstr "मेन्यू"
 
 #: template-new-post.php:40
 msgid "Select the %s type:"
-msgstr "$s प्रकार चुनें:"
+msgstr "%s प्रकार चुनें:"
 
 #: template-new-post.php:129
 msgid "Show all fields"
@@ -4134,7 +4134,7 @@ msgstr "पुनर्स्थापित"
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "$s आइटम दिखा रहा है। अधिक खोजने के लिए लिखें।"
+msgstr "%s आइटम दिखा रहा है। अधिक खोजने के लिए लिखें।"
 
 #: dt-assets/functions/enqueue-scripts.php:277
 msgctxt "Matches for duplicate contacts found: 230"
@@ -4144,7 +4144,7 @@ msgstr "मिला मिलान:"
 #: dt-assets/functions/enqueue-scripts.php:278
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "$s के लिए सभी मैचों को खारिज करें"
+msgstr "%s के लिए सभी मैचों को खारिज करें"
 
 #: dt-contacts/base-setup.php:344
 msgid "Archived"

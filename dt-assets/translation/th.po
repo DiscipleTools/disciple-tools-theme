@@ -730,7 +730,7 @@ msgstr "ALERT: รายชื่อติดต่อที่อาจซ้�
 #: dt-contacts/duplicates-merging.php:473
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(จากรายการซ้ำ):$s"
+msgstr "(จากรายการซ้ำ):%s"
 
 #: dt-contacts/base-setup.php:83
 msgid "Strategist"
@@ -816,7 +816,7 @@ msgstr "มีคนขอรีเซ็ตรหัสผ่านสำหร
 #: dt-core/configuration/restrict-site-access.php:294
 #: dt-users/user-hooks-and-config.php:356
 msgid "Username: %s"
-msgstr "ชื่อผู้ใช้:$s"
+msgstr "ชื่อผู้ใช้:%s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -928,7 +928,7 @@ msgstr "%1$s ถูกลบออกจากผู้นำใน %2$s"
 #: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "$s ถูกลบออกจากผู้นำ"
+msgstr "%s ถูกลบออกจากผู้นำ"
 
 #: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
@@ -948,7 +948,7 @@ msgstr "ลบ %1$s ออกจากโค้ชเมื่อ %2$s"
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "$s ถูกลบออกจากโค้ช"
+msgstr "%s ถูกลบออกจากโค้ช"
 
 #: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
@@ -1001,7 +1001,7 @@ msgstr "ลบการเชื่อมต่อกับ$s แล้ว"
 #: dt-posts/posts.php:387
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "มอบหมายให้:$s"
+msgstr "มอบหมายให้:%s"
 
 #: dt-posts/posts.php:387
 msgid "Nobody"
@@ -1790,7 +1790,7 @@ msgstr "จำนวนผู้ติดต่อหรือผู้ใช้
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "Generation$s คริสตจักร"
+msgstr "Generation%s คริสตจักร"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
@@ -2071,7 +2071,7 @@ msgstr "ไม่ถูกต้อง"
 #: dt-posts/posts.php:528
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "เปลี่ยนชื่อเป็น:$s"
+msgstr "เปลี่ยนชื่อเป็น:%s"
 
 #: dt-posts/posts.php:530
 msgctxt "message"
@@ -2081,7 +2081,7 @@ msgstr "สร้างจาก Demo Plugin"
 #: dt-posts/posts.php:537
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "$s ปฏิเสธงาน"
+msgstr "%s ปฏิเสธงาน"
 
 #: dt-posts/posts.php:537
 #: dt-posts/posts.php:540
@@ -2845,7 +2845,7 @@ msgstr "ตำแหน่งทั่วไปที่ผู้ติดต่
 #: dt-contacts/contacts.php:1759
 msgctxt "My records"
 msgid "My %s"
-msgstr "$s ของฉัน"
+msgstr "%s ของฉัน"
 
 #: dt-core/configuration/restrict-site-access.php:234
 msgid "ERROR: Invalid username/password combination."
@@ -3150,7 +3150,7 @@ msgstr "ปฏิเสธการมอบหมายเมื่อ$s"
 
 #: dt-users/user-management.php:289
 msgid "%s days since last update"
-msgstr "$s วันนับตั้งแต่การอัปเดตครั้งล่าสุด"
+msgstr "%s วันนับตั้งแต่การอัปเดตครั้งล่าสุด"
 
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
@@ -3192,22 +3192,22 @@ msgstr "ในฟิลด์ 'รายชื่อสมาชิก' พิ�
 #: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "$s นาทีที่แล้ว"
+msgstr[0] "%s นาทีที่แล้ว"
 
 #: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "$s ชั่วโมงที่แล้ว"
+msgstr[0] "%s ชั่วโมงที่แล้ว"
 
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "$s วันที่แล้ว"
+msgstr[0] "%s วันที่แล้ว"
 
 #: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "$s สัปดาห์ที่แล้ว"
+msgstr[0] "%s สัปดาห์ที่แล้ว"
 
 #: dt-metrics/combined/daily-activity.php:78
 #: dt-metrics/combined/daily-activity.php:79
@@ -3217,12 +3217,12 @@ msgstr[0] "$s สัปดาห์ที่แล้ว"
 #: dt-notifications/notifications.php:497
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "$s เดือนที่แล้ว"
+msgstr[0] "%s เดือนที่แล้ว"
 
 #: dt-notifications/notifications.php:511
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "$s ปีที่แล้ว"
+msgstr[0] "%s ปีที่แล้ว"
 
 #: dt-assets/functions/enqueue-scripts.php:175
 msgid "Translate with Google Translate"
@@ -3497,7 +3497,7 @@ msgstr "พันธมิตร"
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "ชื่อไซต์ DT:$s"
+msgstr "ชื่อไซต์ DT:%s"
 
 #: dt-metrics/charts-base.php:132
 msgid "No Results"
@@ -3668,7 +3668,7 @@ msgstr "ปิดรายการที่ซ้ำกัน"
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr "รายการซ้ำเมื่อ:$s"
+msgstr "รายการซ้ำเมื่อ:%s"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
@@ -3744,12 +3744,12 @@ msgstr "ภาษาของระบบ"
 #: archive-template.php:184
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "$s ตัวกรอง"
+msgstr "%s ตัวกรอง"
 
 #: archive-template.php:207
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "$s รายการ"
+msgstr "%s รายการ"
 
 #: archive-template.php:238
 msgid "Fields"
@@ -3914,7 +3914,7 @@ msgstr "ตัวกรองเริ่มต้น"
 #: dt-contacts/base-setup.php:532
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "$s ทั้งหมดที่ฉันสามารถดูได้"
+msgstr "%s ทั้งหมดที่ฉันสามารถดูได้"
 
 #: dt-contacts/base-setup.php:542
 #: dt-groups/base-setup.php:1030
@@ -4034,7 +4034,7 @@ msgstr "ทั้งหมด"
 #: dt-users/mapbox-coverage-map.php:78
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "เพิ่มผู้ใช้ใน:$s"
+msgstr "เพิ่มผู้ใช้ใน:%s"
 
 #: dt-users/mapbox-coverage-map.php:81
 msgid "Responsibility Coverage"
@@ -4047,7 +4047,7 @@ msgstr "D.T บันทึก"
 #: single-template.php:53
 #: single-template.php:61
 msgid "This %s needs an update."
-msgstr "$s นี้ต้องการการอัปเดต"
+msgstr "%s นี้ต้องการการอัปเดต"
 
 #: dt-assets/functions/details-bar.php:103
 #: dt-assets/functions/details-bar.php:257

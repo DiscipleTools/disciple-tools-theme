@@ -1770,7 +1770,7 @@ msgstr "시간 범위 종료 시 %s의 연락자 수"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "$s이(가) 구도자 경로에 설정된 연락자 수"
+msgstr "%s이(가) 구도자 경로에 설정된 연락자 수"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid "Number of baptized contact with a baptism date in date range and baptized by connection"

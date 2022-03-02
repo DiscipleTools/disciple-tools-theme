@@ -816,7 +816,7 @@ msgstr "কেউ নিম্নলিখিত অ্যাকাউন্ট�
 #: dt-core/configuration/restrict-site-access.php:294
 #: dt-users/user-hooks-and-config.php:356
 msgid "Username: %s"
-msgstr "ইউজারের নাম:$s"
+msgstr "ইউজারের নাম:%s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -3269,7 +3269,7 @@ msgstr "যোগ করুন"
 
 #: dt-posts/posts.php:441
 msgid "%s removed"
-msgstr "$s সরানো হয়েছে"
+msgstr "%s সরানো হয়েছে"
 
 #: dt-contacts/access-module.php:1283
 #: dt-users/template-user-management.php:95
@@ -3504,7 +3504,7 @@ msgstr "অংশীদার"
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "টিটি সাইটের নাম:$s"
+msgstr "টিটি সাইটের নাম:%s"
 
 #: dt-metrics/charts-base.php:132
 msgid "No Results"
@@ -3675,7 +3675,7 @@ msgstr "নকল খারিজ"
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr "অনুলিপিগুলি:$s"
+msgstr "অনুলিপিগুলি:%s"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
@@ -3751,12 +3751,12 @@ msgstr "সিস্টেম ভাষা"
 #: archive-template.php:184
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "$s ফিল্টার"
+msgstr "%s ফিল্টার"
 
 #: archive-template.php:207
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "$s তালিকা"
+msgstr "%s তালিকা"
 
 #: archive-template.php:238
 msgid "Fields"
@@ -3810,7 +3810,7 @@ msgstr "প্রশাসনের পদক্ষেপগুলি"
 #: single-template.php:362
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "$s মুছুন"
+msgstr "%s মুছুন"
 
 #: dt-assets/functions/enqueue-scripts.php:213
 msgid "Duplicates Detected"
@@ -3864,7 +3864,7 @@ msgstr "আমার কাছে সাব-এসাইনড"
 #: dt-contacts/access-module.php:1016
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "$s অনুসরণ করুন"
+msgstr "%s অনুসরণ করুন"
 
 #: dt-contacts/access-module.php:1024
 msgid "All Follow-Up"
@@ -3912,7 +3912,7 @@ msgstr "অন্যান্য$s এর সাথে সংযোগ রয়
 #: dt-contacts/base-setup.php:388
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "$s প্রকার পরিবর্তন করুন"
+msgstr "%s প্রকার পরিবর্তন করুন"
 
 #: dt-contacts/base-setup.php:522
 msgid "Default Filters"
@@ -4041,7 +4041,7 @@ msgstr "সব"
 #: dt-users/mapbox-coverage-map.php:78
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "ব্যবহারকারীকে এতে যুক্ত করুন:$s"
+msgstr "ব্যবহারকারীকে এতে যুক্ত করুন:%s"
 
 #: dt-users/mapbox-coverage-map.php:81
 msgid "Responsibility Coverage"
@@ -4066,13 +4066,13 @@ msgstr "রেকর্ড"
 #: template-merge-details.php:150
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "$s এ তৈরি করা হয়েছে"
+msgstr "%s এ তৈরি করা হয়েছে"
 
 #: dt-assets/functions/details-bar.php:107
 #: dt-assets/functions/details-bar.php:261
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "$s দ্বারা"
+msgstr "%s দ্বারা"
 
 #: single-template.php:211
 msgid "Edit all details fields"
@@ -4095,7 +4095,7 @@ msgstr "তালিকা"
 
 #: template-new-post.php:40
 msgid "Select the %s type:"
-msgstr "$s প্রকারটি নির্বাচন করুন:"
+msgstr "%s প্রকারটি নির্বাচন করুন:"
 
 #: template-new-post.php:129
 msgid "Show all fields"

@@ -898,7 +898,7 @@ msgstr "Вече не обучаван от %s"
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
-msgstr "Подвъзложи $s"
+msgstr "Подвъзложи %s"
 
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
@@ -3750,12 +3750,12 @@ msgstr "Език на системата"
 #: archive-template.php:184
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "$s филтри"
+msgstr "%s филтри"
 
 #: archive-template.php:207
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "$s Списък"
+msgstr "%s Списък"
 
 #: archive-template.php:238
 msgid "Fields"
@@ -4040,7 +4040,7 @@ msgstr "всичко"
 #: dt-users/mapbox-coverage-map.php:78
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "Добавяне на потребител към:$s"
+msgstr "Добавяне на потребител към:%s"
 
 #: dt-users/mapbox-coverage-map.php:81
 msgid "Responsibility Coverage"

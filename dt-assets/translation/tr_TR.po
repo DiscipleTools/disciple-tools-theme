@@ -4120,7 +4120,7 @@ msgstr "%s Arşiv"
 #: dt-contacts/base-setup.php:414
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "$s dosyasını arşivlemek istediğinizden emin misiniz?\n"
+msgstr "%s dosyasını arşivlemek istediğinizden emin misiniz?\n"
 ""
 
 #: dt-contacts/base-setup.php:421

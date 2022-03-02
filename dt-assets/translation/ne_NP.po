@@ -730,7 +730,7 @@ msgstr "चेतावनी: पहिलेको स्थान्तरण
 #: dt-contacts/duplicates-merging.php:473
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(नक्कलबाट):$s"
+msgstr "(नक्कलबाट):%s"
 
 #: dt-contacts/base-setup.php:83
 msgid "Strategist"
@@ -816,7 +816,7 @@ msgstr "कसैले निम्न खाताको लागि पा�
 #: dt-core/configuration/restrict-site-access.php:294
 #: dt-users/user-hooks-and-config.php:356
 msgid "Username: %s"
-msgstr "प्रयोगकर्तानाम:$s"
+msgstr "प्रयोगकर्तानाम:%s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -863,7 +863,7 @@ msgstr "कसै द्वारा बप्तिस्मा गरेको
 #: dt-posts/posts.php:289
 msgctxt "contact1 added to members"
 msgid "%s added to members"
-msgstr "$s सदस्यहरूमा थपियो"
+msgstr "%s सदस्यहरूमा थपियो"
 
 #: dt-posts/posts.php:290
 msgctxt "Added to group group1"
@@ -883,7 +883,7 @@ msgstr "समूह$s बाट हटाइयो"
 #: dt-posts/posts.php:298
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
-msgstr "शिक्षा दिदै $s"
+msgstr "शिक्षा दिदै %s"
 
 #: dt-posts/posts.php:299
 msgctxt "Coached by contact1"
@@ -903,7 +903,7 @@ msgstr "सब-असाइन$s/  उप-तोकियाको "
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "$s मा सब-असाइन गरिएको"
+msgstr "%s मा सब-असाइन गरिएको"
 
 #: dt-posts/posts.php:309
 msgctxt "Removed sub-assigned contact1"
@@ -918,7 +918,7 @@ msgstr "%1$s %2$s मा अगुवाको रूपमा जोडिय�
 #: dt-posts/posts.php:323
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "$s अगुवाहरूमा थपियो"
+msgstr "%s अगुवाहरूमा थपियो"
 
 #: dt-posts/posts.php:325
 msgctxt "contact1 removed from leaders on group1"
@@ -928,7 +928,7 @@ msgstr "%1$s %2$s मा अगुवाहरूबाट हटाइयो"
 #: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "$s अगुवाहरूबाट हटाइयो"
+msgstr "%s अगुवाहरूबाट हटाइयो"
 
 #: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
@@ -938,7 +938,7 @@ msgstr "%1$s %2$s मा प्रशिक्षकको रूपमा थ�
 #: dt-posts/posts.php:331
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "$s प्रशिक्षकहरूमा थपियो"
+msgstr "%s प्रशिक्षकहरूमा थपियो"
 
 #: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
@@ -948,39 +948,39 @@ msgstr "%1$s %2$s मा प्रशिक्षकहरूबाट हटा
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "$s प्रशिक्षकहरुबाट हटाइयो"
+msgstr "%s प्रशिक्षकहरुबाट हटाइयो"
 
 #: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "$s लाई बाल समूहमा थपियो"
+msgstr "%s लाई बाल समूहमा थपियो"
 
 #: dt-posts/posts.php:339
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "$s लाई अभिभावक समूहमा थपियो"
+msgstr "%s लाई अभिभावक समूहमा थपियो"
 
 #: dt-posts/posts.php:341
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "$s बाल समूहबाट हटाइयो"
+msgstr "%s बाल समूहबाट हटाइयो"
 
 #: dt-posts/posts.php:342
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "$s अभिभावक समूहहरुबाट हटाइयो"
+msgstr "%s अभिभावक समूहहरुबाट हटाइयो"
 
 #: dt-posts/posts.php:347
 #: dt-posts/posts.php:348
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "$s साथी समूहमा थपियो"
+msgstr "%s साथी समूहमा थपियो"
 
 #: dt-posts/posts.php:350
 #: dt-posts/posts.php:351
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "$s साथी समूहहरुबाट हटाइयो"
+msgstr "%s साथी समूहहरुबाट हटाइयो"
 
 #: dt-posts/posts.php:355
 #: dt-posts/posts.php:356
@@ -988,7 +988,7 @@ msgstr "$s साथी समूहहरुबाट हटाइयो"
 #: dt-posts/posts.php:364
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "$s मा जडित"
+msgstr "%s मा जडित"
 
 #: dt-posts/posts.php:358
 #: dt-posts/posts.php:359
@@ -996,12 +996,12 @@ msgstr "$s मा जडित"
 #: dt-posts/posts.php:367
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "$s मा जडान हटाइयो"
+msgstr "%s मा जडान हटाइयो"
 
 #: dt-posts/posts.php:387
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "असाइन गरिएको:$s"
+msgstr "असाइन गरिएको:%s"
 
 #: dt-posts/posts.php:387
 msgid "Nobody"
@@ -1276,7 +1276,7 @@ msgstr "%1$s # %2$s मा अद्यावधिक गर्नुहोस�
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "$s सिर्जना गरियो र तपाईंलाई असाइन गरियो।"
+msgstr "%s सिर्जना गरियो र तपाईंलाई असाइन गरियो।"
 
 #: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
@@ -1778,11 +1778,11 @@ msgstr "मिति दायरामा बप्तिस्माको म
 
 #: dt-metrics/combined/critical-path.php:277
 msgid "Generation %s Baptisms"
-msgstr "पुस्ता $s बप्तिस्मा "
+msgstr "पुस्ता %s बप्तिस्मा "
 
 #: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
-msgstr "पुस्ता $s बप्तिस्मको संख्या"
+msgstr "पुस्ता %s बप्तिस्मको संख्या"
 
 #: dt-metrics/combined/critical-path.php:289
 msgid "Number of contacts or users who have baptized a contact"
@@ -1790,7 +1790,7 @@ msgstr "सम्पर्क वा प्रयोगकर्ताहरू�
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "पुस्ता $s मण्डलीहरु "
+msgstr "पुस्ता %s मण्डलीहरु "
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
@@ -2071,7 +2071,7 @@ msgstr "अवैध छैन"
 #: dt-posts/posts.php:528
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "नाम परिवर्तन गरियो:$s"
+msgstr "नाम परिवर्तन गरियो:%s"
 
 #: dt-posts/posts.php:530
 msgctxt "message"
@@ -2092,7 +2092,7 @@ msgstr " प्रयोगकर्ता"
 #: dt-posts/posts.php:540
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "$s स्वीकार्य असाइनमेन्ट"
+msgstr "%s स्वीकार्य असाइनमेन्ट"
 
 #: dt-posts/posts.php:545
 msgctxt "message"
@@ -2213,12 +2213,12 @@ msgstr "अनुवादहरु "
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "$s द्वारा अब कोच गरिएको छैन"
+msgstr "%s द्वारा अब कोच गरिएको छैन"
 
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "$s मा उप-कार्य निर्दिष्ट छैन"
+msgstr "%s मा उप-कार्य निर्दिष्ट छैन"
 
 #: dt-groups/base-setup.php:588
 msgid "To add new members, click on 'Create' or 'Select'."
@@ -2549,7 +2549,7 @@ msgstr "कागजात पढ्नुहोस्"
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "$s मा फर्कियको "
+msgstr "%s मा फर्कियको "
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid "Set a reminder or a task with a note and receive a notification on the due date."
@@ -3145,7 +3145,7 @@ msgstr "लग इन/ प्रवेश "
 #: dt-users/user-metrics.php:118
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "$s मा कार्य अस्वीकार गरियो"
+msgstr "%s मा कार्य अस्वीकार गरियो"
 
 #: dt-users/user-management.php:289
 msgid "%s days since last update"
@@ -3191,26 +3191,26 @@ msgstr "सदस्य सूची' फिल्डमा, यस समूह
 #: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "$s मिनेट अघि"
-msgstr[1] "बहुवचन:$s मिनेट अघि"
+msgstr[0] "%s मिनेट अघि"
+msgstr[1] "बहुवचन:%s मिनेट अघि"
 
 #: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "$s घण्टा अघि"
-msgstr[1] "बहुवचन:$s घण्टा अघि"
+msgstr[0] "%s घण्टा अघि"
+msgstr[1] "बहुवचन:%s घण्टा अघि"
 
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "$s दिन अघि"
-msgstr[1] "बहुवचन:$s दिन अघि"
+msgstr[0] "%s दिन अघि"
+msgstr[1] "बहुवचन:%s दिन अघि"
 
 #: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "$s हप्ता अघि"
-msgstr[1] "बहुवचन:$s हप्ता अघि"
+msgstr[0] "%s हप्ता अघि"
+msgstr[1] "बहुवचन:%s हप्ता अघि"
 
 #: dt-metrics/combined/daily-activity.php:78
 #: dt-metrics/combined/daily-activity.php:79
@@ -3220,14 +3220,14 @@ msgstr[1] "बहुवचन:$s हप्ता अघि"
 #: dt-notifications/notifications.php:497
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "$s महिना अघि"
-msgstr[1] "बहुवचन:$s महिना अघि"
+msgstr[0] "%s महिना अघि"
+msgstr[1] "बहुवचन:%s महिना अघि"
 
 #: dt-notifications/notifications.php:511
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "$s वर्ष पहिले"
-msgstr[1] "बहुवचन:$s वर्ष पहिले"
+msgstr[0] "%s वर्ष पहिले"
+msgstr[1] "बहुवचन:%s वर्ष पहिले"
 
 #: dt-assets/functions/enqueue-scripts.php:175
 msgid "Translate with Google Translate"
@@ -3267,7 +3267,7 @@ msgstr "थप्नुहोस्"
 
 #: dt-posts/posts.php:441
 msgid "%s removed"
-msgstr "$s हटाइयो"
+msgstr "%s हटाइयो"
 
 #: dt-contacts/access-module.php:1283
 #: dt-users/template-user-management.php:95
@@ -3424,7 +3424,7 @@ msgstr "%1$s व्यक्ति %2$s मा समूहको रूपम�
 #: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "$s व्यक्ति समूहमा थपियो"
+msgstr "%s व्यक्ति समूहमा थपियो"
 
 #: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"
@@ -3434,7 +3434,7 @@ msgstr "%2$s मा व्यक्ति समूहबाट% 1 s हटा�
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "$s व्यक्ति समूहबाट हटाइयो"
+msgstr "%s व्यक्ति समूहबाट हटाइयो"
 
 #: dt-users/user-hooks-and-config.php:493
 #: dt-users/user-management.php:183
@@ -3502,7 +3502,7 @@ msgstr "साझेदार "
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "डीटी साइटको  नाम:$s"
+msgstr "डीटी साइटको  नाम:%s"
 
 #: dt-metrics/charts-base.php:132
 msgid "No Results"
@@ -3673,7 +3673,7 @@ msgstr "नक्कलहरू खारेज गरियो"
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr "मा नक्कल:$s"
+msgstr "मा नक्कल:%s"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
@@ -3749,12 +3749,12 @@ msgstr "प्रणाली भाषा"
 #: archive-template.php:184
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "$s फिल्टरहरू"
+msgstr "%s फिल्टरहरू"
 
 #: archive-template.php:207
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "$s सूची"
+msgstr "%s सूची"
 
 #: archive-template.php:238
 msgid "Fields"
@@ -3808,7 +3808,7 @@ msgstr "प्रशासन कार्यहरू"
 #: single-template.php:362
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "$s मेटाउनुहोस्"
+msgstr "%s मेटाउनुहोस्"
 
 #: dt-assets/functions/enqueue-scripts.php:213
 msgid "Duplicates Detected"
@@ -3910,7 +3910,7 @@ msgstr "अन्य$s मा जडान"
 #: dt-contacts/base-setup.php:388
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "$s प्रकार परिवर्तन गर्नुहोस्"
+msgstr "%s प्रकार परिवर्तन गर्नुहोस्"
 
 #: dt-contacts/base-setup.php:522
 msgid "Default Filters"
@@ -4064,13 +4064,13 @@ msgstr "रेकर्ड"
 #: template-merge-details.php:150
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "$s मा बनाइएको"
+msgstr "%s मा बनाइएको"
 
 #: dt-assets/functions/details-bar.php:107
 #: dt-assets/functions/details-bar.php:261
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "$s द्वारा"
+msgstr "%s द्वारा"
 
 #: single-template.php:211
 msgid "Edit all details fields"
@@ -4093,7 +4093,7 @@ msgstr "मेनू"
 
 #: template-new-post.php:40
 msgid "Select the %s type:"
-msgstr "$s प्रकार चयन गर्नुहोस्:"
+msgstr "%s प्रकार चयन गर्नुहोस्:"
 
 #: template-new-post.php:129
 msgid "Show all fields"
@@ -4133,7 +4133,7 @@ msgstr "पुनर्स्थापना गर्नुहोस्"
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "$s आईटमहरू देखाउँदै। अधिक फेला पार्न टाइप गर्नुहोस्।"
+msgstr "%s आईटमहरू देखाउँदै। अधिक फेला पार्न टाइप गर्नुहोस्।"
 
 #: dt-assets/functions/enqueue-scripts.php:277
 msgctxt "Matches for duplicate contacts found: 230"
@@ -4143,7 +4143,7 @@ msgstr "खेलहरू भेटिए:"
 #: dt-assets/functions/enqueue-scripts.php:278
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "$s का लागि सबै मेल खारेज गर्नुहोस्"
+msgstr "%s का लागि सबै मेल खारेज गर्नुहोस्"
 
 #: dt-contacts/base-setup.php:344
 msgid "Archived"
@@ -4225,7 +4225,7 @@ msgstr "प्रयोगकर्ताको भूमिका"
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "$s वर्ष पहिले"
+msgstr[0] "%s वर्ष पहिले"
 msgstr[1] ""
 
 #: template-new-post.php:132
@@ -4234,11 +4234,11 @@ msgstr "फिल्डहरू लुकाउनुहोस्"
 
 #: dt-core/global-functions.php:665
 msgid "Add new tag \"%s\""
-msgstr "नयाँ ट्याग \"$s\" थप्नुहोस्"
+msgstr "नयाँ ट्याग \"%s\" थप्नुहोस्"
 
 #: dt-core/global-functions.php:666
 msgid "Tag \"%s\" is already being used"
-msgstr "ट्याग \"$s\" पहिले नै प्रयोग भइरहेको छ"
+msgstr "ट्याग \"%s\" पहिले नै प्रयोग भइरहेको छ"
 
 #: dt-groups/base-setup.php:475
 msgid "Leader of Group"

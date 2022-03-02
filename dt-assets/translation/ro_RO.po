@@ -687,7 +687,7 @@ msgstr "un alt site"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid "Already transfered to %s"
-msgstr "Deja transferat către $s"
+msgstr "Deja transferat către %s"
 
 #: dt-contacts/contacts-transfer.php:278
 msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
@@ -731,7 +731,7 @@ msgstr "ALERTĂ: Posibil contact duplicat dintr-un transfer anterior."
 #: dt-contacts/duplicates-merging.php:473
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(Din duplicatul):$s"
+msgstr "(Din duplicatul):%s"
 
 #: dt-contacts/base-setup.php:83
 msgid "Strategist"
@@ -817,7 +817,7 @@ msgstr "Cineva a solicitat resetarea parolei pentru următorul cont:"
 #: dt-core/configuration/restrict-site-access.php:294
 #: dt-users/user-hooks-and-config.php:356
 msgid "Username: %s"
-msgstr "Nume utilizator: $s"
+msgstr "Nume utilizator: %s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -854,7 +854,7 @@ msgstr "A fost botezat de %s"
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "Nu a botezat pe $s"
+msgstr "Nu a botezat pe %s"
 
 #: dt-posts/posts.php:285
 msgctxt "Not baptized by contact1"
@@ -864,37 +864,37 @@ msgstr "Nu a fost botezat de %s"
 #: dt-posts/posts.php:289
 msgctxt "contact1 added to members"
 msgid "%s added to members"
-msgstr "$s a fost adăugat la membri"
+msgstr "%s a fost adăugat la membri"
 
 #: dt-posts/posts.php:290
 msgctxt "Added to group group1"
 msgid "Added to group %s"
-msgstr "Adăugat în grupul $s"
+msgstr "Adăugat în grupul %s"
 
 #: dt-posts/posts.php:292
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
-msgstr "S-a eliminat $s din grup"
+msgstr "S-a eliminat %s din grup"
 
 #: dt-posts/posts.php:293
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
-msgstr "S-a eliminat din grupul $s"
+msgstr "S-a eliminat din grupul %s"
 
 #: dt-posts/posts.php:298
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
-msgstr "Antrenează pe $s"
+msgstr "Antrenează pe %s"
 
 #: dt-posts/posts.php:299
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "Antrenat de $s"
+msgstr "Antrenat de %s"
 
 #: dt-posts/posts.php:301
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
-msgstr "Nu mai antrenează $s"
+msgstr "Nu mai antrenează %s"
 
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
@@ -904,12 +904,12 @@ msgstr "Reatribuit %s"
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "Reatribuit la $s"
+msgstr "Reatribuit la %s"
 
 #: dt-posts/posts.php:309
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
-msgstr "A fost eliminată reatribuirea $s"
+msgstr "A fost eliminată reatribuirea %s"
 
 #: dt-posts/posts.php:322
 msgctxt "contact1 added as leader on group1"
@@ -919,7 +919,7 @@ msgstr "%1$s a fost adăugat ca lider la %2$s"
 #: dt-posts/posts.php:323
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "$s a fost adăugat liderilor"
+msgstr "%s a fost adăugat liderilor"
 
 #: dt-posts/posts.php:325
 msgctxt "contact1 removed from leaders on group1"
@@ -929,7 +929,7 @@ msgstr "%1$s a fost eliminat de la lideri pe %2$s"
 #: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "$s a fost eliminat de la lideri"
+msgstr "%s a fost eliminat de la lideri"
 
 #: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
@@ -939,7 +939,7 @@ msgstr "%1$s a fost adăugat ca trainer la %2$s"
 #: dt-posts/posts.php:331
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "$s a fost adăugat la traineri"
+msgstr "%s a fost adăugat la traineri"
 
 #: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
@@ -949,39 +949,39 @@ msgstr "%1$s a fost eliminat de la traineri pe %2$s"
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "$s a fost eliminat de la traineri"
+msgstr "%s a fost eliminat de la traineri"
 
 #: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "$s a fost adăugat la grupurile fiică"
+msgstr "%s a fost adăugat la grupurile fiică"
 
 #: dt-posts/posts.php:339
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "$s a fost adăugat la grupurile mamă"
+msgstr "%s a fost adăugat la grupurile mamă"
 
 #: dt-posts/posts.php:341
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "$s a fost eliminat din grupurile fiică"
+msgstr "%s a fost eliminat din grupurile fiică"
 
 #: dt-posts/posts.php:342
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "$s a fost eliminat din grupurile mamă"
+msgstr "%s a fost eliminat din grupurile mamă"
 
 #: dt-posts/posts.php:347
 #: dt-posts/posts.php:348
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "$s a fost adăugat la grupurile de acelaș nivel"
+msgstr "%s a fost adăugat la grupurile de acelaș nivel"
 
 #: dt-posts/posts.php:350
 #: dt-posts/posts.php:351
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "$s a fost eliminan din grupurile de aceași nivel"
+msgstr "%s a fost eliminan din grupurile de aceași nivel"
 
 #: dt-posts/posts.php:355
 #: dt-posts/posts.php:356
@@ -989,7 +989,7 @@ msgstr "$s a fost eliminan din grupurile de aceași nivel"
 #: dt-posts/posts.php:364
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "Conectat cu $s"
+msgstr "Conectat cu %s"
 
 #: dt-posts/posts.php:358
 #: dt-posts/posts.php:359
@@ -997,12 +997,12 @@ msgstr "Conectat cu $s"
 #: dt-posts/posts.php:367
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "A fost eliminată conexiunea la $s"
+msgstr "A fost eliminată conexiunea la %s"
 
 #: dt-posts/posts.php:387
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "Atribuit către: $s"
+msgstr "Atribuit către: %s"
 
 #: dt-posts/posts.php:387
 msgid "Nobody"
@@ -1277,7 +1277,7 @@ msgstr "Actualizare la %1$s # %2$s"
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "$s a fost creat și v-a fost atribuit."
+msgstr "%s a fost creat și v-a fost atribuit."
 
 #: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
@@ -1767,11 +1767,11 @@ msgstr "Numărul de contacte care aveau starea activă"
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "Numărul de contacte de pe$s la sfârșitul intervalului de timp"
+msgstr "Numărul de contacte de pe%s la sfârșitul intervalului de timp"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "Numărul de contacte unde$s a fost pus pe Calea Căutătorului"
+msgstr "Numărul de contacte unde%s a fost pus pe Calea Căutătorului"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid "Number of baptized contact with a baptism date in date range and baptized by connection"
@@ -1779,11 +1779,11 @@ msgstr "Numărul contactului botezat cu o dată de botez în intervalul de date 
 
 #: dt-metrics/combined/critical-path.php:277
 msgid "Generation %s Baptisms"
-msgstr "Generația $s de Botezuri"
+msgstr "Generația %s de Botezuri"
 
 #: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
-msgstr "Numărul generației $s de botezuri"
+msgstr "Numărul generației %s de botezuri"
 
 #: dt-metrics/combined/critical-path.php:289
 msgid "Number of contacts or users who have baptized a contact"
@@ -1791,11 +1791,11 @@ msgstr "Numărul de contacte sau de utilizatori care au botezat un contact"
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "Generația $s de Biserici"
+msgstr "Generația %s de Biserici"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "Numărul de generații $s de biserici la sfârșitul intervalului de timp"
+msgstr "Numărul de generații %s de biserici la sfârșitul intervalului de timp"
 
 #: dt-metrics/combined/critical-path.php:333
 msgid "Number of contacts or users who have started a church and are marked as the church coach"
@@ -2072,7 +2072,7 @@ msgstr "validat"
 #: dt-posts/posts.php:528
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "Numele s-a schimbat în: $s"
+msgstr "Numele s-a schimbat în: %s"
 
 #: dt-posts/posts.php:530
 msgctxt "message"
@@ -2082,7 +2082,7 @@ msgstr "Creat din Demo Plugin"
 #: dt-posts/posts.php:537
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "$s a refuzat atribuirea"
+msgstr "%s a refuzat atribuirea"
 
 #: dt-posts/posts.php:537
 #: dt-posts/posts.php:540
@@ -2093,17 +2093,17 @@ msgstr "Un utilizator"
 #: dt-posts/posts.php:540
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "$s a acceptat atribuirea"
+msgstr "%s a acceptat atribuirea"
 
 #: dt-posts/posts.php:545
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "Partajat cu $s"
+msgstr "Partajat cu %s"
 
 #: dt-posts/posts.php:547
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "Nepartajat cu $s"
+msgstr "Nepartajat cu %s"
 
 #: dt-contacts/dmm-module.php:411
 #: dt-metrics/personal/activity-highlights.php:218
@@ -2148,7 +2148,7 @@ msgstr "Scrieți comentariul sau nota dvs. aici"
 #: template-settings.php:378
 msgctxt "Search 'something'"
 msgid "Search %s"
-msgstr "Căutați $s"
+msgstr "Căutați %s"
 
 #: dt-metrics/contacts/sources.php:95
 #: dt-metrics/contacts/sources.php:97
@@ -2214,12 +2214,12 @@ msgstr "Traduceri"
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "Nu mai este antrenat de $s"
+msgstr "Nu mai este antrenat de %s"
 
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "Nu mai este reatribuit pe $s"
+msgstr "Nu mai este reatribuit pe %s"
 
 #: dt-groups/base-setup.php:588
 msgid "To add new members, click on 'Create' or 'Select'."
@@ -2331,7 +2331,7 @@ msgstr "Filtre personalizate"
 #: archive-template.php:27
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "Creați $s nouă"
+msgstr "Creați %s nouă"
 
 #: dt-assets/functions/enqueue-scripts.php:210
 msgid "No task created"
@@ -2350,7 +2350,7 @@ msgstr "Nicio notă setată"
 #: dt-contacts/base-setup.php:528
 msgctxt "All records"
 msgid "All %s"
-msgstr "Toate $s"
+msgstr "Toate %s"
 
 #: dt-assets/functions/menu.php:45
 msgid "Disciple.Tools"
@@ -2551,7 +2551,7 @@ msgstr "Citiți documentația"
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "Înapoi la $s"
+msgstr "Înapoi la %s"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid "Set a reminder or a task with a note and receive a notification on the due date."
@@ -3147,11 +3147,11 @@ msgstr "Conectate"
 #: dt-users/user-metrics.php:118
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "Alocare refuzată la $s"
+msgstr "Alocare refuzată la %s"
 
 #: dt-users/user-management.php:289
 msgid "%s days since last update"
-msgstr "$s zile de la ultima actualizare"
+msgstr "%s zile de la ultima actualizare"
 
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
@@ -3193,32 +3193,32 @@ msgstr "În câmpul „Listă de membri”, tastați numele unui contact existen
 #: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "acum $s minute\n"
-"Plural: acum $s minute"
+msgstr[0] "acum %s minute\n"
+"Plural: acum %s minute"
 msgstr[1] ""
 msgstr[2] ""
 
 #: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "acum $s oră\n"
-"Plural: acum $s ore"
+msgstr[0] "acum %s oră\n"
+"Plural: acum %s ore"
 msgstr[1] ""
 msgstr[2] ""
 
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "acum$s zi\n"
-"Plural: acum $s zile"
+msgstr[0] "acum%s zi\n"
+"Plural: acum %s zile"
 msgstr[1] ""
 msgstr[2] ""
 
 #: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "$s acum o săptămână\n"
-"Plural: acum $s săptămâni"
+msgstr[0] "%s acum o săptămână\n"
+"Plural: acum %s săptămâni"
 msgstr[1] ""
 msgstr[2] ""
 
@@ -3230,16 +3230,16 @@ msgstr[2] ""
 #: dt-notifications/notifications.php:497
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "$s acum o lună\n"
-"Plural: acum $s luni"
+msgstr[0] "%s acum o lună\n"
+"Plural: acum %s luni"
 msgstr[1] ""
 msgstr[2] ""
 
 #: dt-notifications/notifications.php:511
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "$s acum un an\n"
-"Plural: acum $s ani"
+msgstr[0] "%s acum un an\n"
+"Plural: acum %s ani"
 msgstr[1] ""
 msgstr[2] ""
 
@@ -3281,7 +3281,7 @@ msgstr "adăuga"
 
 #: dt-posts/posts.php:441
 msgid "%s removed"
-msgstr "$s a fost eliminat"
+msgstr "%s a fost eliminat"
 
 #: dt-contacts/access-module.php:1283
 #: dt-users/template-user-management.php:95
@@ -3438,7 +3438,7 @@ msgstr "%1$s a fost adăugat ca grup de persoane pe %2$s"
 #: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "$s a fost adăugat la grupurile de persoane"
+msgstr "%s a fost adăugat la grupurile de persoane"
 
 #: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"
@@ -3448,7 +3448,7 @@ msgstr "%1$s a fost eliminat din grupurile de persoane din %2$s"
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "$s a fost eliminat din grupurile de persoane"
+msgstr "%s a fost eliminat din grupurile de persoane"
 
 #: dt-users/user-hooks-and-config.php:493
 #: dt-users/user-management.php:183
@@ -3516,7 +3516,7 @@ msgstr "Partener"
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "Numele site-ului DT: $s"
+msgstr "Numele site-ului DT: %s"
 
 #: dt-metrics/charts-base.php:132
 msgid "No Results"
@@ -3687,7 +3687,7 @@ msgstr "Duplicate retrase"
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr "Duplicate pe:$s"
+msgstr "Duplicate pe:%s"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
@@ -3699,7 +3699,7 @@ msgstr "Limbi"
 
 #: dt-contacts/contacts-transfer.php:436
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "Acest contact a fost transferat la $s pentru urmărire ulterioară."
+msgstr "Acest contact a fost transferat la %s pentru urmărire ulterioară."
 
 #: dt-contacts/duplicates-merging.php:573
 msgctxt "This record duplicated and was merged into Contact2"
@@ -3763,12 +3763,12 @@ msgstr "Limbajul sistemului"
 #: archive-template.php:184
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "Filtrele $s"
+msgstr "Filtrele %s"
 
 #: archive-template.php:207
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "Lista $s"
+msgstr "Lista %s"
 
 #: archive-template.php:238
 msgid "Fields"
@@ -3822,7 +3822,7 @@ msgstr "Acțiuni Admin"
 #: single-template.php:362
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "Ștergeți $s"
+msgstr "Ștergeți %s"
 
 #: dt-assets/functions/enqueue-scripts.php:213
 msgid "Duplicates Detected"
@@ -3876,7 +3876,7 @@ msgstr "Reatribuite mie"
 #: dt-contacts/access-module.php:1016
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "Monitorizare $s"
+msgstr "Monitorizare %s"
 
 #: dt-contacts/access-module.php:1024
 msgid "All Follow-Up"
@@ -3919,12 +3919,12 @@ msgstr "Locații sau adresă"
 #: dt-contacts/base-setup.php:290
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Conexiuni cu alte $s"
+msgstr "Conexiuni cu alte %s"
 
 #: dt-contacts/base-setup.php:388
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "Schimbați tipul $s"
+msgstr "Schimbați tipul %s"
 
 #: dt-contacts/base-setup.php:522
 msgid "Default Filters"
@@ -3933,7 +3933,7 @@ msgstr "Filtre implicite"
 #: dt-contacts/base-setup.php:532
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "Toate $s care le pot vedea"
+msgstr "Toate %s care le pot vedea"
 
 #: dt-contacts/base-setup.php:542
 #: dt-groups/base-setup.php:1030
@@ -3980,7 +3980,7 @@ msgstr "Credinţă"
 #: dt-contacts/dmm-module.php:359
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "$s conectate "
+msgstr "%s conectate "
 
 #: dt-groups/base-setup.php:623
 msgid "Coaches"
@@ -4053,7 +4053,7 @@ msgstr "Toate"
 #: dt-users/mapbox-coverage-map.php:78
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "Adăugați utilizator la:$s"
+msgstr "Adăugați utilizator la:%s"
 
 #: dt-users/mapbox-coverage-map.php:81
 msgid "Responsibility Coverage"
@@ -4066,7 +4066,7 @@ msgstr "D.T Înregistrare"
 #: single-template.php:53
 #: single-template.php:61
 msgid "This %s needs an update."
-msgstr "Acestă $s are nevoie de o actualizare."
+msgstr "Acestă %s are nevoie de o actualizare."
 
 #: dt-assets/functions/details-bar.php:103
 #: dt-assets/functions/details-bar.php:257
@@ -4078,13 +4078,13 @@ msgstr "Înregistrare"
 #: template-merge-details.php:150
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Creat la$s"
+msgstr "Creat la%s"
 
 #: dt-assets/functions/details-bar.php:107
 #: dt-assets/functions/details-bar.php:261
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "de $s"
+msgstr "de %s"
 
 #: single-template.php:211
 msgid "Edit all details fields"
@@ -4098,7 +4098,7 @@ msgstr "Creați o etichetă și aplicați-o la această înregistrare."
 #: single-template.php:363
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "Sigur doriți să ștergeți $s?"
+msgstr "Sigur doriți să ștergeți %s?"
 
 #: dt-assets/functions/menu.php:39
 #: template-metrics.php:25
@@ -4107,7 +4107,7 @@ msgstr "Meniul"
 
 #: template-new-post.php:40
 msgid "Select the %s type:"
-msgstr "Selectați tipul $s:"
+msgstr "Selectați tipul %s:"
 
 #: template-new-post.php:129
 msgid "Show all fields"
@@ -4125,12 +4125,12 @@ msgstr "Sfârșit"
 #: dt-contacts/base-setup.php:413
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "Arhivează $s"
+msgstr "Arhivează %s"
 
 #: dt-contacts/base-setup.php:414
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "Sigur doriți să arhivați $s?"
+msgstr "Sigur doriți să arhivați %s?"
 
 #: dt-contacts/base-setup.php:421
 msgid "Archive"
@@ -4138,7 +4138,7 @@ msgstr "Arhivează"
 
 #: dt-contacts/base-setup.php:668
 msgid "This %s is archived"
-msgstr "Acest $s este arhivat"
+msgstr "Acest %s este arhivat"
 
 #: dt-contacts/base-setup.php:670
 msgid "Restore"
@@ -4147,7 +4147,7 @@ msgstr "Restabiliți"
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "Se afișează $s articole. Tastați pentru a găsi mai multe."
+msgstr "Se afișează %s articole. Tastați pentru a găsi mai multe."
 
 #: dt-assets/functions/enqueue-scripts.php:277
 msgctxt "Matches for duplicate contacts found: 230"
@@ -4157,7 +4157,7 @@ msgstr "Asemănări găsite:"
 #: dt-assets/functions/enqueue-scripts.php:278
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Respingeți toate asemănprile pentru$s"
+msgstr "Respingeți toate asemănprile pentru%s"
 
 #: dt-contacts/base-setup.php:344
 msgid "Archived"

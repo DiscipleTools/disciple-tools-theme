@@ -1782,7 +1782,7 @@ msgstr "Generación %s Bautizos"
 
 #: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
-msgstr "Número de generación $s bautizos"
+msgstr "Número de generación %s bautizos"
 
 #: dt-metrics/combined/critical-path.php:289
 msgid "Number of contacts or users who have baptized a contact"

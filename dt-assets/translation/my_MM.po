@@ -695,7 +695,7 @@ msgstr "အခြားဆိုဒ်"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid "Already transfered to %s"
-msgstr "$s သို့လွှဲပြောင်းပြီးဖြစ်သည်"
+msgstr "%s သို့လွှဲပြောင်းပြီးဖြစ်သည်"
 
 #: dt-contacts/contacts-transfer.php:278
 msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
@@ -741,7 +741,7 @@ msgstr "သတိပေးချက် - ယခင်လွှဲပြောင
 #: dt-contacts/duplicates-merging.php:473
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(ပုံတူပွားခြင်းမှ):$s"
+msgstr "(ပုံတူပွားခြင်းမှ):%s"
 
 #: dt-contacts/base-setup.php:83
 msgid "Strategist"
@@ -831,7 +831,7 @@ msgstr "တစ်စုံတစ်ယောက်ကအောက်ပါအက
 #: dt-core/configuration/restrict-site-access.php:294
 #: dt-users/user-hooks-and-config.php:356
 msgid "Username: %s"
-msgstr "အသုံးပြုသူအမည်:$s"
+msgstr "အသုံးပြုသူအမည်:%s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -859,32 +859,32 @@ msgstr "ခေါင်းဆောင်များ"
 #: dt-posts/posts.php:281
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
-msgstr "$s နှစ်ခြင်းခံခဲ့သည်"
+msgstr "%s နှစ်ခြင်းခံခဲ့သည်"
 
 #: dt-posts/posts.php:282
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
-msgstr "$s အားဖြင့်နှစ်ခြင်းခံခဲ့သည်"
+msgstr "%s အားဖြင့်နှစ်ခြင်းခံခဲ့သည်"
 
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "$s ကိုနှစ်ခြင်းမပေးခဲ့ပါ"
+msgstr "%s ကိုနှစ်ခြင်းမပေးခဲ့ပါ"
 
 #: dt-posts/posts.php:285
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
-msgstr "$s အားဖြင့်နှစ်ခြင်းမခံပါ"
+msgstr "%s အားဖြင့်နှစ်ခြင်းမခံပါ"
 
 #: dt-posts/posts.php:289
 msgctxt "contact1 added to members"
 msgid "%s added to members"
-msgstr "$s အသင်းဝင်များသို့ထည့်သွင်းထားသည်"
+msgstr "%s အသင်းဝင်များသို့ထည့်သွင်းထားသည်"
 
 #: dt-posts/posts.php:290
 msgctxt "Added to group group1"
 msgid "Added to group %s"
-msgstr "$s အုပ်စုထဲသို့ထည့်သွင်းခဲ့သည်"
+msgstr "%s အုပ်စုထဲသို့ထည့်သွင်းခဲ့သည်"
 
 #: dt-posts/posts.php:292
 msgctxt "Removed contact1 from group"
@@ -899,27 +899,27 @@ msgstr "အုပ်စု$s မှဖယ်ရှားထားသည်"
 #: dt-posts/posts.php:298
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
-msgstr "$s ကိုနည်းပြပေးသည်"
+msgstr "%s ကိုနည်းပြပေးသည်"
 
 #: dt-posts/posts.php:299
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "$s မှသင်ကြားပေးသည်"
+msgstr "%s မှသင်ကြားပေးသည်"
 
 #: dt-posts/posts.php:301
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
-msgstr "$s နည်းပြမလုပ်တော့ပါ"
+msgstr "%s နည်းပြမလုပ်တော့ပါ"
 
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
-msgstr "$s ခွဲဝေထားသည် "
+msgstr "%s ခွဲဝေထားသည် "
 
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "$s တွင်ခွဲဝေပေးသည်"
+msgstr "%s တွင်ခွဲဝေပေးသည်"
 
 #: dt-posts/posts.php:309
 msgctxt "Removed sub-assigned contact1"
@@ -934,7 +934,7 @@ msgstr "%2$s တွင် %1$s ကိုခေါင်းဆောင်အဖ�
 #: dt-posts/posts.php:323
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "ခေါင်းဆောင်များသို့ $s ထည့်သွင်းခဲ့သည်"
+msgstr "ခေါင်းဆောင်များသို့ %s ထည့်သွင်းခဲ့သည်"
 
 #: dt-posts/posts.php:325
 msgctxt "contact1 removed from leaders on group1"
@@ -944,7 +944,7 @@ msgstr "%2$s တွင် %1$s အားခေါင်းဆောင်မျ�
 #: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "ခေါင်းဆောင်များမှ $s ဖယ်ရှားခဲ့သည်"
+msgstr "ခေါင်းဆောင်များမှ %s ဖယ်ရှားခဲ့သည်"
 
 #: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
@@ -954,7 +954,7 @@ msgstr "%2$s တွင် %1$s ကိုနည်းပြအဖြစ်ထည�
 #: dt-posts/posts.php:331
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "$s ကိုနည်းပြများသို့ထည့်သွင်းခဲ့သည်"
+msgstr "%s ကိုနည်းပြများသို့ထည့်သွင်းခဲ့သည်"
 
 #: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
@@ -964,39 +964,39 @@ msgstr "%2$s တွင် %1$s ကိုနည်းပြများထံမ�
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "$s ကိုနည်းပြများထံမှဖယ်ရှားခဲ့သည်"
+msgstr "%s ကိုနည်းပြများထံမှဖယ်ရှားခဲ့သည်"
 
 #: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "$s ကိုကလေးအုပ်စုများတွင်ထည့်သွင်းခဲ့သည်"
+msgstr "%s ကိုကလေးအုပ်စုများတွင်ထည့်သွင်းခဲ့သည်"
 
 #: dt-posts/posts.php:339
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "$s ကိုမိဘအုပ်စုများသို့ထည့်သွင်းခဲ့သည်"
+msgstr "%s ကိုမိဘအုပ်စုများသို့ထည့်သွင်းခဲ့သည်"
 
 #: dt-posts/posts.php:341
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "$s ကိုကလေးအုပ်စုများမှဖယ်ထုတ်ခဲ့သည်"
+msgstr "%s ကိုကလေးအုပ်စုများမှဖယ်ထုတ်ခဲ့သည်"
 
 #: dt-posts/posts.php:342
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "$s ကိုမိဘအုပ်စုများမှဖယ်ရှားခဲ့သည်"
+msgstr "%s ကိုမိဘအုပ်စုများမှဖယ်ရှားခဲ့သည်"
 
 #: dt-posts/posts.php:347
 #: dt-posts/posts.php:348
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "$s ကိုသက်တူရွယ်တူအုပ်စုများထဲသို့ထည့်သွင်းခဲ့သည်"
+msgstr "%s ကိုသက်တူရွယ်တူအုပ်စုများထဲသို့ထည့်သွင်းခဲ့သည်"
 
 #: dt-posts/posts.php:350
 #: dt-posts/posts.php:351
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "$s ကိုသက်တူရွယ်တူအုပ်စုများမှဖယ်ရှားခဲ့သည်"
+msgstr "%s ကိုသက်တူရွယ်တူအုပ်စုများမှဖယ်ရှားခဲ့သည်"
 
 #: dt-posts/posts.php:355
 #: dt-posts/posts.php:356
@@ -1004,7 +1004,7 @@ msgstr "$s ကိုသက်တူရွယ်တူအုပ်စုမျာ
 #: dt-posts/posts.php:364
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "$s သို့ချိတ်ဆက်ထားသည်"
+msgstr "%s သို့ချိတ်ဆက်ထားသည်"
 
 #: dt-posts/posts.php:358
 #: dt-posts/posts.php:359
@@ -1012,13 +1012,13 @@ msgstr "$s သို့ချိတ်ဆက်ထားသည်"
 #: dt-posts/posts.php:367
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "$s သို့ဆက်သွယ်မှုအားဖယ်ရှားခဲ့သည်"
+msgstr "%s သို့ဆက်သွယ်မှုအားဖယ်ရှားခဲ့သည်"
 
 #: dt-posts/posts.php:387
 #, fuzzy
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "$s ကိုတာဝန်ပေးအပ်ထားသည်"
+msgstr "%s ကိုတာဝန်ပေးအပ်ထားသည်"
 
 #: dt-posts/posts.php:387
 msgid "Nobody"
@@ -1298,7 +1298,7 @@ msgstr "%1$s # %2$s တွင်အဆင့်မြင့်တင်သည်
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "$s ကိုဖန်တီးပြီး၊သင့်အားတာဝန်ပေးအပ်သည်။"
+msgstr "%s ကိုဖန်တီးပြီး၊သင့်အားတာဝန်ပေးအပ်သည်။"
 
 #: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
@@ -1722,7 +1722,7 @@ msgstr "ကမ္ဘာကြီး"
 #: dt-posts/custom-post-type.php:128
 #: template-new-post.php:33
 msgid "New %s"
-msgstr "$s အသစ်"
+msgstr "%s အသစ်"
 
 #: dt-posts/posts.php:452
 #: dt-posts/posts.php:469
@@ -1826,7 +1826,7 @@ msgstr "အဆက်အသွယ်ဗတ္တိဇံကိုခံသော
 #: dt-metrics/combined/critical-path.php:321
 #, fuzzy
 msgid "Generation %s Churches"
-msgstr "$s အသင်းတော်များမျိုးဆက်"
+msgstr "%s အသင်းတော်များမျိုးဆက်"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
@@ -2116,7 +2116,7 @@ msgstr "တရားဝင်"
 #, fuzzy
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "အမည်ပြောင်းထားပါသည်:$s"
+msgstr "အမည်ပြောင်းထားပါသည်:%s"
 
 #: dt-posts/posts.php:530
 msgctxt "message"
@@ -2126,7 +2126,7 @@ msgstr "Demo Plugin မှဖန်တီးသည်"
 #: dt-posts/posts.php:537
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "$s သည်တာဝန်ကိုငြင်းဆန်ခဲ့သည်"
+msgstr "%s သည်တာဝန်ကိုငြင်းဆန်ခဲ့သည်"
 
 #: dt-posts/posts.php:537
 #: dt-posts/posts.php:540
@@ -2137,17 +2137,17 @@ msgstr "အသုံးပြုသူ"
 #: dt-posts/posts.php:540
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "$s တာဝန်ကိုလက်ခံခဲ့သည်"
+msgstr "%s တာဝန်ကိုလက်ခံခဲ့သည်"
 
 #: dt-posts/posts.php:545
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "$s နှင့်မျှဝေခဲ့သည်"
+msgstr "%s နှင့်မျှဝေခဲ့သည်"
 
 #: dt-posts/posts.php:547
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "$s နှင့်မမျှဝေပါ"
+msgstr "%s နှင့်မမျှဝေပါ"
 
 #: dt-contacts/dmm-module.php:411
 #: dt-metrics/personal/activity-highlights.php:218
@@ -2193,7 +2193,7 @@ msgstr "သင်၏ထင်မြင်ချက်/မှတ်ချက်�
 #: template-settings.php:378
 msgctxt "Search 'something'"
 msgid "Search %s"
-msgstr "$s ကိုရှာပါ"
+msgstr "%s ကိုရှာပါ"
 
 #: dt-metrics/contacts/sources.php:95
 #: dt-metrics/contacts/sources.php:97
@@ -2260,12 +2260,12 @@ msgstr "ဘာသာပြန်ချက်များ"
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "$s မှနည်းပြမလုပ်တော့ပါ"
+msgstr "%s မှနည်းပြမလုပ်တော့ပါ"
 
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "$s တွင်ခွဲဝေချထားမှုမရှိတော့ပါ"
+msgstr "%s တွင်ခွဲဝေချထားမှုမရှိတော့ပါ"
 
 #: dt-groups/base-setup.php:588
 msgid "To add new members, click on 'Create' or 'Select'."
@@ -2380,7 +2380,7 @@ msgstr "စိတ်တိုင်းကျ filter များ"
 #: archive-template.php:27
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "$s အသစ်ဖန်တီးပါ"
+msgstr "%s အသစ်ဖန်တီးပါ"
 
 #: dt-assets/functions/enqueue-scripts.php:210
 msgid "No task created"
@@ -2399,7 +2399,7 @@ msgstr "မှတ်စုသတ်မှတ်မထားပါ"
 #: dt-contacts/base-setup.php:528
 msgctxt "All records"
 msgid "All %s"
-msgstr "$s အားလုံး"
+msgstr "%s အားလုံး"
 
 #: dt-assets/functions/menu.php:45
 msgid "Disciple.Tools"
@@ -2604,7 +2604,7 @@ msgstr "စာရွက်စာတမ်းများကိုဖတ်ပါ
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "$s သို့ပြန်သွားသည်"
+msgstr "%s သို့ပြန်သွားသည်"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid "Set a reminder or a task with a note and receive a notification on the due date."
@@ -3207,11 +3207,11 @@ msgstr "ဝင်သည်"
 #: dt-users/user-metrics.php:118
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "$s ပေါ်တွင်တာဝန်ဖျက်သိမ်းမှု"
+msgstr "%s ပေါ်တွင်တာဝန်ဖျက်သိမ်းမှု"
 
 #: dt-users/user-management.php:289
 msgid "%s days since last update"
-msgstr "နောက်ဆုံးပြင်ဆင်မှု မှစ၍ $s ရက်"
+msgstr "နောက်ဆုံးပြင်ဆင်မှု မှစ၍ %s ရက်"
 
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
@@ -3324,7 +3324,7 @@ msgstr "ထည့်ပါ"
 
 #: dt-posts/posts.php:441
 msgid "%s removed"
-msgstr "$s ဖယ်ရှားထားသည်"
+msgstr "%s ဖယ်ရှားထားသည်"
 
 #: dt-contacts/access-module.php:1283
 #: dt-users/template-user-management.php:95
@@ -3483,7 +3483,7 @@ msgstr "%2$s ၌ %1$s ကိုလူအုပ်စုအဖြစ်ထည့�
 #: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "$s ကိုလူအုပ်စုများသို့ထည့်သွင်းခဲ့သည်"
+msgstr "%s ကိုလူအုပ်စုများသို့ထည့်သွင်းခဲ့သည်"
 
 #: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"
@@ -3493,7 +3493,7 @@ msgstr "%2$s ၌ လူအုပ်စုများမှ %1$s ကိုဖယ
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "$s အားလူအုပ်စုများမှဖယ်ရှားခဲ့သည်"
+msgstr "%s အားလူအုပ်စုများမှဖယ်ရှားခဲ့သည်"
 
 #: dt-users/user-hooks-and-config.php:493
 #: dt-users/user-management.php:183
@@ -3561,7 +3561,7 @@ msgstr "လုပ်ဖော်ကိုင်ဖက်"
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "DT ဆိုက်အမည်:$s"
+msgstr "DT ဆိုက်အမည်:%s"
 
 #: dt-metrics/charts-base.php:132
 msgid "No Results"
@@ -3736,7 +3736,7 @@ msgstr "ပုံတူပွားများ ထုပ်ပစ်ခဲ့�
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr ":$s တွင် ပုံတူပွားများ"
+msgstr ":%s တွင် ပုံတူပွားများ"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
@@ -3814,12 +3814,12 @@ msgstr "စနစ်ဘာသာစကား"
 #, fuzzy
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "$s filter များ"
+msgstr "%s filter များ"
 
 #: archive-template.php:207
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "$s စာရင်း"
+msgstr "%s စာရင်း"
 
 #: archive-template.php:238
 msgid "Fields"
@@ -3874,7 +3874,7 @@ msgstr "အက်မင်လုပ်ဆောင်ချက်များ"
 #: single-template.php:362
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "$s ကိုဖျက်ပါ"
+msgstr "%s ကိုဖျက်ပါ"
 
 #: dt-assets/functions/enqueue-scripts.php:213
 msgid "Duplicates Detected"
@@ -3928,7 +3928,7 @@ msgstr "ကျွန်တော့်ကိုခွဲပေးလိုက်
 #: dt-contacts/access-module.php:1016
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "$s နောက်ဆက်တွဲထားမှု"
+msgstr "%s နောက်ဆက်တွဲထားမှု"
 
 #: dt-contacts/access-module.php:1024
 msgid "All Follow-Up"
@@ -3977,7 +3977,7 @@ msgstr "အခြား$s သို့ဆက်သွယ်မှုများ
 #: dt-contacts/base-setup.php:388
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "$s အမျိုးအစားပြောင်းပါ"
+msgstr "%s အမျိုးအစားပြောင်းပါ"
 
 #: dt-contacts/base-setup.php:522
 #, fuzzy
@@ -3987,7 +3987,7 @@ msgstr "ပုံမှန် filter များ"
 #: dt-contacts/base-setup.php:532
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "$s အားလုံးကျွန်ုပ်ကြည့်နိုင်သည်"
+msgstr "%s အားလုံးကျွန်ုပ်ကြည့်နိုင်သည်"
 
 #: dt-contacts/base-setup.php:542
 #: dt-groups/base-setup.php:1030
@@ -4035,7 +4035,7 @@ msgstr "ယုံကြည်ခြင်း"
 #: dt-contacts/dmm-module.php:359
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "$s ချိတ်ဆက်သည်"
+msgstr "%s ချိတ်ဆက်သည်"
 
 #: dt-groups/base-setup.php:623
 msgid "Coaches"
@@ -4108,7 +4108,7 @@ msgstr "အားလုံး"
 #: dt-users/mapbox-coverage-map.php:78
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "$s သို့အသုံးပြုသူထည့်သွင်းရန်"
+msgstr "%s သို့အသုံးပြုသူထည့်သွင်းရန်"
 
 #: dt-users/mapbox-coverage-map.php:81
 #, fuzzy
@@ -4122,7 +4122,7 @@ msgstr "D.T မှတ်တမ်း"
 #: single-template.php:53
 #: single-template.php:61
 msgid "This %s needs an update."
-msgstr "ဤ $s သည်အသစ်ပြုပြင်ရန်လိုအပ်သည်"
+msgstr "ဤ %s သည်အသစ်ပြုပြင်ရန်လိုအပ်သည်"
 
 #: dt-assets/functions/details-bar.php:103
 #: dt-assets/functions/details-bar.php:257
@@ -4134,13 +4134,13 @@ msgstr "မှတ်တမ်း"
 #: template-merge-details.php:150
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "$s တွင်ဖန်တီးထားသည်"
+msgstr "%s တွင်ဖန်တီးထားသည်"
 
 #: dt-assets/functions/details-bar.php:107
 #: dt-assets/functions/details-bar.php:261
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "$s အားဖြင့်"
+msgstr "%s အားဖြင့်"
 
 #: single-template.php:211
 #, fuzzy
@@ -4155,7 +4155,7 @@ msgstr "tag တစ်ခု ဖန်တီး၍ ဤမှတ်တမ်းတ
 #: single-template.php:363
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "$s ကိုသင်ဖျက်ဖို့သေချာပါသလား။"
+msgstr "%s ကိုသင်ဖျက်ဖို့သေချာပါသလား။"
 
 #: dt-assets/functions/menu.php:39
 #: template-metrics.php:25
@@ -4164,7 +4164,7 @@ msgstr "မီနူး"
 
 #: template-new-post.php:40
 msgid "Select the %s type:"
-msgstr "$s အမျိုးအစားကိုရွေးပါ။"
+msgstr "%s အမျိုးအစားကိုရွေးပါ။"
 
 #: template-new-post.php:129
 msgid "Show all fields"

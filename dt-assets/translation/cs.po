@@ -688,7 +688,7 @@ msgstr "jiná stránka"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid "Already transfered to %s"
-msgstr "Již převedeno na$s"
+msgstr "Již převedeno na%s"
 
 #: dt-contacts/contacts-transfer.php:278
 msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
@@ -732,7 +732,7 @@ msgstr "UPOZORNĚNÍ: Možný duplicitní kontakt z předchozího přenosu."
 #: dt-contacts/duplicates-merging.php:473
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(Z duplikátu):$s"
+msgstr "(Z duplikátu):%s"
 
 #: dt-contacts/base-setup.php:83
 msgid "Strategist"
@@ -820,7 +820,7 @@ msgstr "Někdo požádal o resetování hesla pro následující účet:"
 #: dt-core/configuration/restrict-site-access.php:294
 #: dt-users/user-hooks-and-config.php:356
 msgid "Username: %s"
-msgstr "Uživatelské jméno:$s"
+msgstr "Uživatelské jméno:%s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -847,7 +847,7 @@ msgstr "Vedoucí"
 #: dt-posts/posts.php:281
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
-msgstr "Pokřtěn$s"
+msgstr "Pokřtěn%s"
 
 #: dt-posts/posts.php:282
 msgctxt "Baptized by contact1"
@@ -857,32 +857,32 @@ msgstr "Pokřtěn (kým)$s"
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "Nekřtil$s"
+msgstr "Nekřtil%s"
 
 #: dt-posts/posts.php:285
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
-msgstr "Není pokřtěn (kým) $s"
+msgstr "Není pokřtěn (kým) %s"
 
 #: dt-posts/posts.php:289
 msgctxt "contact1 added to members"
 msgid "%s added to members"
-msgstr "$s přidáno ke členům"
+msgstr "%s přidáno ke členům"
 
 #: dt-posts/posts.php:290
 msgctxt "Added to group group1"
 msgid "Added to group %s"
-msgstr "Přidáno do skupiny$s"
+msgstr "Přidáno do skupiny%s"
 
 #: dt-posts/posts.php:292
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
-msgstr "Odebráno$s ze skupiny"
+msgstr "Odebráno%s ze skupiny"
 
 #: dt-posts/posts.php:293
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
-msgstr "Odebráno ze skupiny$s"
+msgstr "Odebráno ze skupiny%s"
 
 #. Coaching? Mentoring? Something else?
 #: dt-posts/posts.php:298
@@ -893,22 +893,22 @@ msgstr "Koučování$s"
 #: dt-posts/posts.php:299
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "Koučován/a (kým) $s"
+msgstr "Koučován/a (kým) %s"
 
 #: dt-posts/posts.php:301
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
-msgstr "Již nekoučován$s"
+msgstr "Již nekoučován%s"
 
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
-msgstr "Přiřazeno$s"
+msgstr "Přiřazeno%s"
 
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "Přiřazeno na $s"
+msgstr "Přiřazeno na %s"
 
 #: dt-posts/posts.php:309
 msgctxt "Removed sub-assigned contact1"
@@ -923,7 +923,7 @@ msgstr "%1$s přidán jako vůdce na %2$s"
 #: dt-posts/posts.php:323
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "$s přidáno k vedoucím"
+msgstr "%s přidáno k vedoucím"
 
 #: dt-posts/posts.php:325
 msgctxt "contact1 removed from leaders on group1"
@@ -933,7 +933,7 @@ msgstr "%1$s odstraněn z vedoucích na %2$s"
 #: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "$s odstraněn z vedoucích"
+msgstr "%s odstraněn z vedoucích"
 
 #: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
@@ -944,7 +944,7 @@ msgstr "%1$s přidán jako trenér na %2$s"
 #: dt-posts/posts.php:331
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "$s přidáno do trenérů"
+msgstr "%s přidáno do trenérů"
 
 #: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
@@ -954,39 +954,39 @@ msgstr "%1$s odstraněn z trenérů na %2$s"
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "$s odebráno z trenérů"
+msgstr "%s odebráno z trenérů"
 
 #: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "$s přidáno do skupin dalších generací"
+msgstr "%s přidáno do skupin dalších generací"
 
 #: dt-posts/posts.php:339
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "$s přidáno do nadřazených skupin"
+msgstr "%s přidáno do nadřazených skupin"
 
 #: dt-posts/posts.php:341
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "$s odstraněno ze skupin dalších generací"
+msgstr "%s odstraněno ze skupin dalších generací"
 
 #: dt-posts/posts.php:342
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "$s odebráno z nadřazených skupin"
+msgstr "%s odebráno z nadřazených skupin"
 
 #: dt-posts/posts.php:347
 #: dt-posts/posts.php:348
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "$s přidáno do partnerských skupin"
+msgstr "%s přidáno do partnerských skupin"
 
 #: dt-posts/posts.php:350
 #: dt-posts/posts.php:351
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "$s odebráno z partnerských skupin"
+msgstr "%s odebráno z partnerských skupin"
 
 #: dt-posts/posts.php:355
 #: dt-posts/posts.php:356
@@ -994,7 +994,7 @@ msgstr "$s odebráno z partnerských skupin"
 #: dt-posts/posts.php:364
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "Propojeno s$s"
+msgstr "Propojeno s%s"
 
 #: dt-posts/posts.php:358
 #: dt-posts/posts.php:359
@@ -1002,12 +1002,12 @@ msgstr "Propojeno s$s"
 #: dt-posts/posts.php:367
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "Odebráno propojení k$s"
+msgstr "Odebráno propojení k%s"
 
 #: dt-posts/posts.php:387
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "Přiřazeno:$s"
+msgstr "Přiřazeno:%s"
 
 #: dt-posts/posts.php:387
 msgid "Nobody"
@@ -1283,7 +1283,7 @@ msgstr "Aktualizace na %1$s # %2$s"
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "$s byl vytvořen a přiřazen vám."
+msgstr "%s byl vytvořen a přiřazen vám."
 
 #: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
@@ -1774,11 +1774,11 @@ msgstr "Počet kontaktů, které měly aktivní stav"
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "Počet kontaktů na$s na konci časového rozsahu"
+msgstr "Počet kontaktů na%s na konci časového rozsahu"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "Počet kontaktů, kde bylo na cestě hledajícího nastaveno$s"
+msgstr "Počet kontaktů, kde bylo na cestě hledajícího nastaveno%s"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid "Number of baptized contact with a baptism date in date range and baptized by connection"
@@ -1786,7 +1786,7 @@ msgstr "Počet pokřtěných kontaktů s datem křtu v rozsahu dat a pokřtěni 
 
 #: dt-metrics/combined/critical-path.php:277
 msgid "Generation %s Baptisms"
-msgstr "Křtiny$s"
+msgstr "Křtiny%s"
 
 #: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
@@ -1798,7 +1798,7 @@ msgstr "Počet kontaktů nebo uživatelů, kteří pokřtili kontakt"
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "Generace$s církví"
+msgstr "Generace%s církví"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
@@ -2079,7 +2079,7 @@ msgstr "není zneplatněn"
 #: dt-posts/posts.php:528
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "Název změněn na:$s"
+msgstr "Název změněn na:%s"
 
 #: dt-posts/posts.php:530
 msgctxt "message"
@@ -2089,7 +2089,7 @@ msgstr "Vytvořeno z ukázkového pluginu"
 #: dt-posts/posts.php:537
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "$s odmítl úkol"
+msgstr "%s odmítl úkol"
 
 #: dt-posts/posts.php:537
 #: dt-posts/posts.php:540
@@ -2100,17 +2100,17 @@ msgstr "Uživatel"
 #: dt-posts/posts.php:540
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "$s přijal úkol"
+msgstr "%s přijal úkol"
 
 #: dt-posts/posts.php:545
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "Sdíleno s$s"
+msgstr "Sdíleno s%s"
 
 #: dt-posts/posts.php:547
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "Nesdíleno s$s"
+msgstr "Nesdíleno s%s"
 
 #: dt-contacts/dmm-module.php:411
 #: dt-metrics/personal/activity-highlights.php:218
@@ -2155,7 +2155,7 @@ msgstr "Sem napište komentář nebo poznámku"
 #: template-settings.php:378
 msgctxt "Search 'something'"
 msgid "Search %s"
-msgstr "Hledat$s"
+msgstr "Hledat%s"
 
 #: dt-metrics/contacts/sources.php:95
 #: dt-metrics/contacts/sources.php:97
@@ -2221,12 +2221,12 @@ msgstr "Překlady"
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "Již není trénováno$s"
+msgstr "Již není trénováno%s"
 
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "Již nepřiděleno na$s"
+msgstr "Již nepřiděleno na%s"
 
 #: dt-groups/base-setup.php:588
 msgid "To add new members, click on 'Create' or 'Select'."
@@ -2357,7 +2357,7 @@ msgstr "Není nastavena žádná nota"
 #: dt-contacts/base-setup.php:528
 msgctxt "All records"
 msgid "All %s"
-msgstr "Všechny$s"
+msgstr "Všechny%s"
 
 #: dt-assets/functions/menu.php:45
 msgid "Disciple.Tools"
@@ -2558,7 +2558,7 @@ msgstr "Přečtěte si dokumentaci"
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "Zpět na$s"
+msgstr "Zpět na%s"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid "Set a reminder or a task with a note and receive a notification on the due date."
@@ -2853,7 +2853,7 @@ msgstr "Obecné umístění, kde se tento kontakt nachází."
 #: dt-contacts/contacts.php:1759
 msgctxt "My records"
 msgid "My %s"
-msgstr "Moje$s"
+msgstr "Moje%s"
 
 #: dt-core/configuration/restrict-site-access.php:234
 msgid "ERROR: Invalid username/password combination."
@@ -3154,11 +3154,11 @@ msgstr "Přihlášen"
 #: dt-users/user-metrics.php:118
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "Odmítnuté přiřazení na$s"
+msgstr "Odmítnuté přiřazení na%s"
 
 #: dt-users/user-management.php:289
 msgid "%s days since last update"
-msgstr "$s dní od poslední aktualizace"
+msgstr "%s dní od poslední aktualizace"
 
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
@@ -3200,28 +3200,28 @@ msgstr "Do pole „Seznam členů“ zadejte jméno existujícího kontaktu a p�
 #: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "před$s minutou"
+msgstr[0] "před%s minutou"
 msgstr[1] ""
 msgstr[2] ""
 
 #: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "před$s hodinou"
+msgstr[0] "před%s hodinou"
 msgstr[1] ""
 msgstr[2] ""
 
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "před$s dnem"
+msgstr[0] "před%s dnem"
 msgstr[1] ""
 msgstr[2] ""
 
 #: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "před$s týdnem"
+msgstr[0] "před%s týdnem"
 msgstr[1] ""
 msgstr[2] ""
 
@@ -3233,7 +3233,7 @@ msgstr[2] ""
 #: dt-notifications/notifications.php:497
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "před$s měsícem"
+msgstr[0] "před%s měsícem"
 msgstr[1] ""
 msgstr[2] ""
 
@@ -3282,7 +3282,7 @@ msgstr "přidat"
 
 #: dt-posts/posts.php:441
 msgid "%s removed"
-msgstr "$s odstraněno"
+msgstr "%s odstraněno"
 
 #: dt-contacts/access-module.php:1283
 #: dt-users/template-user-management.php:95
@@ -3439,7 +3439,7 @@ msgstr "%1$s přidán jako skupina lidí na %2$s"
 #: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "$s přidáno do skupin lidí"
+msgstr "%s přidáno do skupin lidí"
 
 #: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"
@@ -3449,7 +3449,7 @@ msgstr "%1$s odebráno ze skupin lidí na %2$s"
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "$s odebráno ze skupin lidí"
+msgstr "%s odebráno ze skupin lidí"
 
 #: dt-users/user-hooks-and-config.php:493
 #: dt-users/user-management.php:183
@@ -3517,7 +3517,7 @@ msgstr "Partner"
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "Název stránky DT:$s"
+msgstr "Název stránky DT:%s"
 
 #: dt-metrics/charts-base.php:132
 msgid "No Results"
@@ -3688,7 +3688,7 @@ msgstr "Odmítnuté duplikáty"
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr "Duplikáty na:$s"
+msgstr "Duplikáty na:%s"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
@@ -3700,7 +3700,7 @@ msgstr "Jazyky"
 
 #: dt-contacts/contacts-transfer.php:436
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "Tento kontakt byl přenesen do společnosti$s pro další sledování."
+msgstr "Tento kontakt byl přenesen do společnosti%s pro další sledování."
 
 #: dt-contacts/duplicates-merging.php:573
 msgctxt "This record duplicated and was merged into Contact2"
@@ -3764,12 +3764,12 @@ msgstr "Systémový jazyk"
 #: archive-template.php:184
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "$s filtry"
+msgstr "%s filtry"
 
 #: archive-template.php:207
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "Seznam$s"
+msgstr "Seznam%s"
 
 #: archive-template.php:238
 msgid "Fields"
@@ -3823,7 +3823,7 @@ msgstr "Akce správce"
 #: single-template.php:362
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "Smazat$s"
+msgstr "Smazat%s"
 
 #: dt-assets/functions/enqueue-scripts.php:213
 msgid "Duplicates Detected"
@@ -3920,12 +3920,12 @@ msgstr "Umístění nebo adresa"
 #: dt-contacts/base-setup.php:290
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Připojení k jiným$s"
+msgstr "Připojení k jiným%s"
 
 #: dt-contacts/base-setup.php:388
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "Změnit$s typ"
+msgstr "Změnit%s typ"
 
 #: dt-contacts/base-setup.php:522
 msgid "Default Filters"
@@ -3934,7 +3934,7 @@ msgstr "Výchozí filtry"
 #: dt-contacts/base-setup.php:532
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "Všechna$s mohu zobrazit"
+msgstr "Všechna%s mohu zobrazit"
 
 #: dt-contacts/base-setup.php:542
 #: dt-groups/base-setup.php:1030
@@ -3981,7 +3981,7 @@ msgstr "Víra"
 #: dt-contacts/dmm-module.php:359
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "Připojeno$s"
+msgstr "Připojeno%s"
 
 #: dt-groups/base-setup.php:623
 msgid "Coaches"
@@ -4054,7 +4054,7 @@ msgstr "Všechno"
 #: dt-users/mapbox-coverage-map.php:78
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "Přidat uživatele do:$s"
+msgstr "Přidat uživatele do:%s"
 
 #: dt-users/mapbox-coverage-map.php:81
 msgid "Responsibility Coverage"
@@ -4067,7 +4067,7 @@ msgstr "D.T Record"
 #: single-template.php:53
 #: single-template.php:61
 msgid "This %s needs an update."
-msgstr "Tento$s potřebuje aktualizaci."
+msgstr "Tento%s potřebuje aktualizaci."
 
 #: dt-assets/functions/details-bar.php:103
 #: dt-assets/functions/details-bar.php:257
@@ -4079,13 +4079,13 @@ msgstr "Záznam"
 #: template-merge-details.php:150
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Vytvořeno$s"
+msgstr "Vytvořeno%s"
 
 #: dt-assets/functions/details-bar.php:107
 #: dt-assets/functions/details-bar.php:261
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "o$s"
+msgstr "o%s"
 
 #: single-template.php:211
 msgid "Edit all details fields"
@@ -4099,7 +4099,7 @@ msgstr "Vytvořte značku a použijte ji na tento záznam."
 #: single-template.php:363
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "Opravdu chcete smazat$s?"
+msgstr "Opravdu chcete smazat%s?"
 
 #: dt-assets/functions/menu.php:39
 #: template-metrics.php:25
@@ -4108,7 +4108,7 @@ msgstr "Jídelní lístek"
 
 #: template-new-post.php:40
 msgid "Select the %s type:"
-msgstr "Vyberte typ$s:"
+msgstr "Vyberte typ%s:"
 
 #: template-new-post.php:129
 msgid "Show all fields"
@@ -4126,12 +4126,12 @@ msgstr "konec"
 #: dt-contacts/base-setup.php:413
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "Archivovat$s"
+msgstr "Archivovat%s"
 
 #: dt-contacts/base-setup.php:414
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "Opravdu chcete archivovat$s?"
+msgstr "Opravdu chcete archivovat%s?"
 
 #: dt-contacts/base-setup.php:421
 msgid "Archive"
@@ -4139,7 +4139,7 @@ msgstr "Archiv"
 
 #: dt-contacts/base-setup.php:668
 msgid "This %s is archived"
-msgstr "Toto$s je archivováno"
+msgstr "Toto%s je archivováno"
 
 #: dt-contacts/base-setup.php:670
 msgid "Restore"
@@ -4148,7 +4148,7 @@ msgstr "Obnovit"
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "Zobrazují se$s položky. Zadejte další informace."
+msgstr "Zobrazují se%s položky. Zadejte další informace."
 
 #: dt-assets/functions/enqueue-scripts.php:277
 msgctxt "Matches for duplicate contacts found: 230"
@@ -4158,7 +4158,7 @@ msgstr "Nalezené zápasy:"
 #: dt-assets/functions/enqueue-scripts.php:278
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Odmítnout všechny shody pro$s"
+msgstr "Odmítnout všechny shody pro%s"
 
 #: dt-contacts/base-setup.php:344
 msgid "Archived"
