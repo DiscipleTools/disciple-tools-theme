@@ -44,9 +44,9 @@ function dt_release_modal() {
                         <h4>Disciple.Tools Theme Version <?php echo esc_html( $show_notification_for_theme_version ); ?></h4>
                     </div>
                 </div>
-                <div style="margin-bottom: 75px;">
+                <div id="release-modal-content">
+                    <?php echo wp_kses_post( dt_load_github_release_markdown( $show_notification_for_theme_version ) ); ?>
                 </div>
-                <?php echo wp_kses_post( dt_load_github_release_markdown( $show_notification_for_theme_version ) ); ?>
                 <hr>
                 <h5>See all D.T News <a href="https://disciple.tools/news" target="_blank">here</a></h5>
                 <br>
