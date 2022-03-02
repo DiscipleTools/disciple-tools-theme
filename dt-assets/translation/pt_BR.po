@@ -125,7 +125,7 @@ msgstr "Salvar"
 
 #: dt-assets/functions/details-bar.php:44
 #: dt-assets/functions/details-bar.php:225
-#: dt-core/configuration/config-site-defaults.php:295
+#: dt-core/configuration/config-site-defaults.php:372
 #: dt-users/template-user-management.php:93
 #: dt-workflows/update-required.php:67
 #: dt-workflows/update-required.php:105
@@ -163,7 +163,7 @@ msgstr "Compartilhar"
 #: archive-template.php:433
 #: dt-assets/parts/loop-activity-comment.php:80
 #: dt-assets/parts/loop-activity-comment.php:158
-#: dt-assets/parts/modals/modal-advanced-search.php:97
+#: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "Comentários"
 
@@ -631,23 +631,23 @@ msgstr "Deixar de seguir"
 msgid "Phone"
 msgstr "Telefone"
 
-#: dt-core/configuration/config-site-defaults.php:473
+#: dt-core/configuration/config-site-defaults.php:550
 msgid "Work"
 msgstr "Trabalho"
 
-#: dt-core/configuration/config-site-defaults.php:472
+#: dt-core/configuration/config-site-defaults.php:549
 msgid "Home"
 msgstr "Residencial"
 
 #: dt-contacts/base-setup.php:480
-#: dt-core/configuration/config-site-defaults.php:474
+#: dt-core/configuration/config-site-defaults.php:551
 #: dt-groups/base-setup.php:629
 #: template-settings.php:199
 msgid "Other"
 msgstr "Outros"
 
 #: dt-contacts/base-setup.php:218
-#: dt-core/configuration/config-site-defaults.php:272
+#: dt-core/configuration/config-site-defaults.php:349
 #: dt-users/template-new-user.php:97
 #: dt-users/template-new-user.php:98
 #: dt-users/template-user-management.php:355
@@ -767,40 +767,40 @@ msgstr "Registrado"
 msgid "Subscriber"
 msgstr "Assinante"
 
-#: dt-core/configuration/config-site-defaults.php:280
+#: dt-core/configuration/config-site-defaults.php:357
 msgid "Newly Assigned Contact"
 msgstr "Contato recém-atribuído"
 
-#: dt-core/configuration/config-site-defaults.php:285
+#: dt-core/configuration/config-site-defaults.php:362
 msgid "@Mentions"
 msgstr "@menções"
 
-#: dt-core/configuration/config-site-defaults.php:300
+#: dt-core/configuration/config-site-defaults.php:377
 msgid "Contact Info Changed"
 msgstr "Informações de contato alteradas"
 
-#: dt-core/configuration/config-site-defaults.php:305
+#: dt-core/configuration/config-site-defaults.php:382
 #: dt-core/migrations/0012-typo-rename.php:8
 msgid "Contact Milestones and Group Health metrics"
 msgstr "Marcos de contato e métricas de integridade de grupo"
 
-#: dt-core/configuration/config-site-defaults.php:330
+#: dt-core/configuration/config-site-defaults.php:407
 msgid "This contact is active but there is no record of anybody contacting them. Please do contact them."
 msgstr "Este contato está ativo, mas não há registro de alguém entrar em contato com eles. Favor entrar em contato com eles."
 
-#: dt-core/configuration/config-site-defaults.php:336
+#: dt-core/configuration/config-site-defaults.php:413
 msgid "Please try connecting with this contact again."
 msgstr "Favor tentar conectar-se a esse contato novamente."
 
-#: dt-core/configuration/config-site-defaults.php:342
-#: dt-core/configuration/config-site-defaults.php:348
-#: dt-core/configuration/config-site-defaults.php:354
-#: dt-core/configuration/config-site-defaults.php:360
-#: dt-core/configuration/config-site-defaults.php:366
+#: dt-core/configuration/config-site-defaults.php:419
+#: dt-core/configuration/config-site-defaults.php:425
+#: dt-core/configuration/config-site-defaults.php:431
+#: dt-core/configuration/config-site-defaults.php:437
+#: dt-core/configuration/config-site-defaults.php:443
 msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
 msgstr "Não ouvimos falar dessa pessoa há algum tempo. Você tem uma atualização para este contato?"
 
-#: dt-core/configuration/config-site-defaults.php:376
+#: dt-core/configuration/config-site-defaults.php:453
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "Não ouvimos falar desse grupo há algum tempo. Você tem uma atualização?"
 
@@ -1528,7 +1528,7 @@ msgid "Type of Notification"
 msgstr "Tipo de Notificação"
 
 #: dt-contacts/access-module.php:295
-#: dt-core/configuration/config-site-defaults.php:275
+#: dt-core/configuration/config-site-defaults.php:352
 msgid "Web"
 msgstr "Rede"
 
@@ -1720,15 +1720,15 @@ msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@%1$s, uma atualização é solicitada em %2$s."
 
-#: dt-core/configuration/config-site-defaults.php:483
+#: dt-core/configuration/config-site-defaults.php:560
 msgid "Accepting new contacts"
 msgstr "Aceitando novos contatos"
 
-#: dt-core/configuration/config-site-defaults.php:487
+#: dt-core/configuration/config-site-defaults.php:564
 msgid "I'm only investing in existing contacts"
 msgstr "Só estou investindo em contatos existentes"
 
-#: dt-core/configuration/config-site-defaults.php:491
+#: dt-core/configuration/config-site-defaults.php:568
 msgid "I have too many contacts"
 msgstr "Tenho muitos contatos"
 
@@ -1972,59 +1972,59 @@ msgctxt "Reason Closed label"
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: dt-core/configuration/config-site-defaults.php:407
+#: dt-core/configuration/config-site-defaults.php:484
 msgid "Personal Phone"
 msgstr "Telefone pessoal"
 
-#: dt-core/configuration/config-site-defaults.php:410
+#: dt-core/configuration/config-site-defaults.php:487
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "O telefone pessoal fica reservado à equipe, não para distribuição."
 
-#: dt-core/configuration/config-site-defaults.php:414
+#: dt-core/configuration/config-site-defaults.php:491
 msgid "Personal Email"
 msgstr "E-mail pessoal"
 
-#: dt-core/configuration/config-site-defaults.php:417
+#: dt-core/configuration/config-site-defaults.php:494
 msgid "Personal email is private to the team, not for distribution."
 msgstr "O e-mail pessoal fica reservado à equipe, não para distribuição."
 
-#: dt-core/configuration/config-site-defaults.php:421
+#: dt-core/configuration/config-site-defaults.php:498
 msgid "Personal Address"
 msgstr "Endereço pessoal"
 
-#: dt-core/configuration/config-site-defaults.php:424
+#: dt-core/configuration/config-site-defaults.php:501
 msgid "Personal address is private to the team, not for distribution."
 msgstr "O endereço pessoal fica reservado à equipe, não para distribuição."
 
-#: dt-core/configuration/config-site-defaults.php:428
+#: dt-core/configuration/config-site-defaults.php:505
 msgid "Work Phone"
 msgstr "Telefone comercial"
 
-#: dt-core/configuration/config-site-defaults.php:431
+#: dt-core/configuration/config-site-defaults.php:508
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "O telefone comercial é para distribuição aos contatos e interessados."
 
-#: dt-core/configuration/config-site-defaults.php:435
+#: dt-core/configuration/config-site-defaults.php:512
 msgid "Work Email"
 msgstr "E-mail de trabalho"
 
-#: dt-core/configuration/config-site-defaults.php:438
+#: dt-core/configuration/config-site-defaults.php:515
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "O e-mail comercial é para distribuição aos contatos e interessados."
 
-#: dt-core/configuration/config-site-defaults.php:442
+#: dt-core/configuration/config-site-defaults.php:519
 msgid "Work Facebook"
 msgstr "Facebook Comercial"
 
-#: dt-core/configuration/config-site-defaults.php:445
+#: dt-core/configuration/config-site-defaults.php:522
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "O Facebook Comercial é para distribuição aos contatos e interessados."
 
-#: dt-core/configuration/config-site-defaults.php:449
+#: dt-core/configuration/config-site-defaults.php:526
 msgid "Work WhatsApp"
 msgstr "WhatsApp Comercial"
 
-#: dt-core/configuration/config-site-defaults.php:452
+#: dt-core/configuration/config-site-defaults.php:529
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "O WhatsApp Comercial é para distribuição aos contatos e interessados."
 
@@ -3389,7 +3389,7 @@ msgstr "Nome do Contato"
 msgid "Last Modified"
 msgstr "Última modificação"
 
-#: dt-core/configuration/config-site-defaults.php:290
+#: dt-core/configuration/config-site-defaults.php:367
 msgid "New Comments"
 msgstr "Novos comentários"
 
@@ -4033,7 +4033,7 @@ msgid "Updated report"
 msgstr "Relatório atualizado"
 
 #: dt-assets/functions/enqueue-scripts.php:305
-#: dt-assets/parts/modals/modal-advanced-search.php:74
+#: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/access-module.php:1280
 #: dt-groups/base-setup.php:928
 #: dt-groups/base-setup.php:1001
@@ -4301,23 +4301,23 @@ msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s e %1$s reagiram com emoji de %2$s"
 
-#: dt-core/configuration/config-site-defaults.php:459
+#: dt-core/configuration/config-site-defaults.php:536
 msgid "thumbs up"
 msgstr "afirmativo"
 
-#: dt-core/configuration/config-site-defaults.php:460
+#: dt-core/configuration/config-site-defaults.php:537
 msgid "heart"
 msgstr "coração"
 
-#: dt-core/configuration/config-site-defaults.php:461
+#: dt-core/configuration/config-site-defaults.php:538
 msgid "laugh"
 msgstr "risada"
 
-#: dt-core/configuration/config-site-defaults.php:462
+#: dt-core/configuration/config-site-defaults.php:539
 msgid "wow"
 msgstr "uau"
 
-#: dt-core/configuration/config-site-defaults.php:463
+#: dt-core/configuration/config-site-defaults.php:540
 msgid "sad"
 msgstr "triste"
 
@@ -4408,7 +4408,7 @@ msgstr "Minha árvore genealógica de treinamento"
 msgid "My Group Generation Tree"
 msgstr "Minha árvore genealógica de grupo"
 
-#: dt-reports/magic-url-base.php:343
+#: dt-reports/magic-url-base.php:440
 #: template-settings.php:53
 msgid "Apps"
 msgstr "Aplicativos"
@@ -4483,7 +4483,7 @@ msgstr "Copiar"
 msgid "User Language"
 msgstr "Linguagem do usuário "
 
-#: dt-core/configuration/config-site-defaults.php:464
+#: dt-core/configuration/config-site-defaults.php:541
 msgid "prayer"
 msgstr "Oração "
 
@@ -4571,11 +4571,11 @@ msgstr "Todas %1$s sem %2$s"
 msgid "Without"
 msgstr "Sem"
 
-#: dt-assets/parts/modals/modal-advanced-search.php:91
+#: dt-assets/parts/modals/modal-advanced-search.php:90
 msgid "Names"
 msgstr "Nomes"
 
-#: dt-assets/parts/modals/modal-advanced-search.php:103
+#: dt-assets/parts/modals/modal-advanced-search.php:102
 msgid "Communication"
 msgstr "Comunicação"
 
@@ -4804,27 +4804,27 @@ msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "Não enviado (provavelmente faltando e-mail válido)"
 
-#: dt-reports/magic-url-base.php:344
+#: dt-reports/magic-url-base.php:441
 msgid "Apps available on this record."
 msgstr "Aplicativos disponíveis nesse registro."
 
-#: dt-reports/magic-url-base.php:395
+#: dt-reports/magic-url-base.php:492
 msgid "Send a link via email through the system."
 msgstr "Enviar um link via e-mail através do sistema."
 
-#: dt-reports/magic-url-base.php:396
+#: dt-reports/magic-url-base.php:493
 msgid "Send email with link"
 msgstr "Enviar e-mail com link"
 
-#: dt-reports/magic-url-base.php:409
+#: dt-reports/magic-url-base.php:506
 msgid "QR codes are useful for passing the coaching links to mobile devices."
 msgstr "QR codes são úteis para enviar os links de treinamento para aparelhos móveis. "
 
-#: dt-reports/magic-url-base.php:414
+#: dt-reports/magic-url-base.php:511
 msgid "Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
 msgstr "Apague o código de segurança. Nenhum dado é removido. O link anterior será desabilitado e outro será criado."
 
-#: dt-reports/magic-url-base.php:415
+#: dt-reports/magic-url-base.php:512
 msgid "Delete and replace the app link"
 msgstr "Excluir e substituir o link do aplicativo"
 
