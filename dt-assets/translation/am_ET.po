@@ -8,209 +8,216 @@ msgstr ""
 "Language: am\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: 403.php:12
+#: 403.php:22
 msgid "Permission denied"
 msgstr "ፈቃዱ ተከልክሏል"
 
-#: 403.php:25
+#: 403.php:35
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
 msgstr "ይቅርታ ፣ %1$s ን ከ id %2$s ጋር ለመመልከት ፈቃድ የለዎትም።"
 
-#: 403.php:26
+#: 403.php:36
 msgid "Request permission from your administrator."
 msgstr "ከአስተዳዳሪዎ ፈቃድ ይጠይቁ።"
 
-#: 403.php:29
+#: 403.php:39
+#: dt-users/template-new-user.php:252
 msgid "Back"
 msgstr "ተመለስ"
 
-#: 404.php:16
+#: 404.php:25
 msgid "Epic 404 - Not Found"
 msgstr "Epic 404 - አልተገኘም"
 
-#: 404.php:20
+#: 404.php:29
 msgid "The page you were looking for was not found or was deleted"
 msgstr "የሚፈልጉት ገጽ አልተገኘም ወይም ተሰር wasል"
 
-#: dt-contacts/base-setup.php:298
-#: dt-groups/base-setup.php:156
-#: dt-users/template-user-management.php:78
-#: dt-users/user-management.php:100
+#: dt-contacts/base-setup.php:339
+#: dt-groups/base-setup.php:120
+#: dt-users/template-user-management.php:94
+#: dt-users/user-management.php:118
 msgid "Active"
 msgstr "ንቁ"
 
-#: dt-assets/parts/nav-topbar.php:236
+#: dt-assets/parts/nav-topbar.php:267
 #: template-notifications.php:43
 msgid "New"
 msgstr "አዲስ"
 
-#: dt-contacts/access-module.php:173
+#: dt-contacts/access-module.php:186
 msgid "Waiting to be accepted"
 msgstr "ተቀባይነት ለማግኘት በመጠበቅ ላይ"
 
-#: dt-contacts/duplicates-merging.php:541
+#: dt-contacts/duplicates-merging.php:598
 msgid "View Duplicates"
 msgstr "ብዜቶችን ይመልከቱ"
 
-#: archive-template.php:57
-#: archive-template.php:131
+#: archive-template.php:65
+#: archive-template.php:142
 msgid "Search"
 msgstr "ፈልግ"
 
-#: dt-contacts/base-setup.php:570
-#: dt-contacts/base-setup.php:578
-#: dt-contacts/base-setup.php:595
-#: dt-contacts/base-setup.php:596
+#: dt-contacts/base-setup.php:589
+#: dt-contacts/base-setup.php:597
+#: dt-contacts/base-setup.php:615
+#: dt-contacts/base-setup.php:616
 msgid "Shared with me"
 msgstr "ከእኔ ጋር ተጋርቷል"
 
-#: archive-template.php:183
+#: archive-template.php:195
 msgid "Add new filter"
 msgstr "አዲስ ማጣሪያ ያክሉ"
 
-#: dt-contacts/access-module.php:101
-#: dt-groups/base-setup.php:124
-#: dt-metrics/groups/tree.php:85
-#: dt-metrics/personal/group-tree.php:86
+#: dt-contacts/access-module.php:114
+#: dt-groups/base-setup.php:137
+#: dt-metrics/groups/tree.php:86
+#: dt-metrics/personal/group-tree.php:87
 msgid "Assigned To"
 msgstr "ተመድቧል ለ"
 
-#: archive-template.php:559
-#: dt-assets/functions/enqueue-scripts.php:307
-#: dt-posts/custom-post-type.php:161
+#: archive-template.php:648
+#: dt-assets/functions/enqueue-scripts.php:298
+#: dt-posts/custom-post-type.php:162
 msgid "Creation Date"
 msgstr "የተፈጠረበት ቀን"
 
-#: archive-template.php:550
+#: archive-template.php:639
 msgid "Filter for subassigned OR Assigned To"
 msgstr "ለክፍለ-ነገር ለመመደብ ወይም ለመመደብ ማጣሪያ"
 
-#: archive-template.php:575
-#: archive-template.php:576
-#: template-settings.php:405
+#: archive-template.php:676
+#: archive-template.php:677
+#: dt-metrics/combined/time-charts.php:118
+#: dt-posts/posts.php:433
+#: template-settings.php:292
+#: template-settings.php:535
 msgid "No"
 msgstr "አይ"
 
-#: archive-template.php:582
-#: archive-template.php:583
-#: template-settings.php:404
+#: archive-template.php:683
+#: archive-template.php:684
+#: dt-metrics/combined/time-charts.php:117
+#: dt-posts/posts.php:431
+#: template-settings.php:291
+#: template-settings.php:534
 msgid "Yes"
 msgstr "አዎ"
 
-#: archive-template.php:590
-#: archive-template.php:601
+#: archive-template.php:691
+#: archive-template.php:702
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "ግልጽ"
 
-#: archive-template.php:629
-#: dt-assets/functions/enqueue-scripts.php:272
-#: dt-assets/functions/enqueue-scripts.php:302
+#: archive-template.php:730
+#: dt-assets/functions/enqueue-scripts.php:259
+#: dt-assets/functions/enqueue-scripts.php:293
 #: template-merge-details.php:102
-#: template-merge-details.php:122
-#: template-merge-details.php:132
-#: template-merge-details.php:170
-#: template-settings.php:544
+#: template-merge-details.php:127
+#: template-merge-details.php:145
+#: template-merge-details.php:194
+#: template-settings.php:678
 msgid "Save"
 msgstr "አስቀምጥ"
 
-#: dt-assets/functions/details-bar.php:37
-#: dt-assets/functions/details-bar.php:175
-#: dt-core/configuration/config-site-defaults.php:279
-#: dt-users/template-user-management.php:77
+#: dt-assets/functions/details-bar.php:44
+#: dt-assets/functions/details-bar.php:225
+#: dt-core/configuration/config-site-defaults.php:372
+#: dt-users/template-user-management.php:93
+#: dt-workflows/update-required.php:67
+#: dt-workflows/update-required.php:105
 msgid "Update Needed"
 msgstr "ማዘመን ያስፈልጋል"
 
-#: dt-contacts/user-module.php:83
+#: dt-contacts/user-module.php:108
 msgid "Make a user from this contact"
 msgstr "ከዚህ ዕውቂያ ተጠቃሚ ያድርጉ"
 
-#: dt-contacts/user-module.php:86
+#: dt-contacts/user-module.php:115
 msgid "Link to an existing user"
 msgstr "ከአንድ ነባር ተጠቃሚ ጋር አገናኝ"
 
-#: dt-contacts/base-setup.php:388
+#: dt-contacts/base-setup.php:396
 msgid "Merge with another contact"
 msgstr "ከሌላ እውቂያ ጋር ይቀላቀሉ"
 
-#: dt-assets/functions/details-bar.php:97
-#: dt-assets/functions/details-bar.php:102
+#: dt-assets/functions/details-bar.php:141
+#: dt-assets/functions/details-bar.php:146
 msgid "Following"
 msgstr "በመከተል ላይ"
 
-#: archive-template.php:387
-#: dt-assets/functions/details-bar.php:106
-#: dt-contacts/base-setup.php:163
-#: dt-groups/base-setup.php:96
+#: archive-template.php:416
+#: dt-assets/functions/details-bar.php:150
+#: dt-posts/custom-post-type.php:184
 msgid "Follow"
 msgstr "ተከተል"
 
-#: dt-assets/functions/details-bar.php:116
+#: dt-assets/functions/details-bar.php:160
 msgid "Share"
 msgstr ".ር ያድርጉ"
 
-#: archive-template.php:40
+#: archive-template.php:48
+#: archive-template.php:433
 #: dt-assets/parts/loop-activity-comment.php:80
 #: dt-assets/parts/loop-activity-comment.php:158
+#: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "አስተያየቶች"
 
-#: dt-assets/functions/enqueue-scripts.php:158
+#: dt-assets/functions/enqueue-scripts.php:136
 msgid "You don't have any unread notifications"
 msgstr "ምንም ያልተነበቡ ማሳወቂያዎች የሉዎትም"
 
-#: dt-assets/functions/enqueue-scripts.php:159
+#: dt-assets/functions/enqueue-scripts.php:137
 msgid "You don't have any notifications"
 msgstr "ምንም ማሳወቂያዎች የሉዎትም"
 
-#: dt-assets/functions/enqueue-scripts.php:269
-msgid "delete"
-msgstr "ሰርዝ"
-
-#: dt-assets/functions/enqueue-scripts.php:232
+#: dt-assets/functions/enqueue-scripts.php:218
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "ማስተላለፍ አልተሳካም ከጣቢያ-ወደ ጣቢያ ውቅር ይፈትሹ።"
 
-#: dt-assets/functions/enqueue-scripts.php:196
-#: dt-assets/functions/enqueue-scripts.php:303
+#: dt-assets/functions/enqueue-scripts.php:119
+#: dt-assets/functions/enqueue-scripts.php:173
+#: dt-assets/functions/enqueue-scripts.php:294
 #: template-merge-details.php:102
-#: template-merge-details.php:121
-#: template-merge-details.php:132
-#: template-merge-details.php:168
-#: template-settings.php:69
-#: template-settings.php:420
+#: template-merge-details.php:122
+#: template-merge-details.php:140
+#: template-merge-details.php:189
+#: template-settings.php:116
+#: template-settings.php:563
 msgid "Edit"
 msgstr "አርትዕ"
 
-#: dt-assets/functions/enqueue-scripts.php:197
-#: dt-assets/functions/enqueue-scripts.php:222
-#: dt-assets/functions/enqueue-scripts.php:304
+#: dt-assets/functions/enqueue-scripts.php:174
+#: dt-assets/functions/enqueue-scripts.php:208
+#: dt-assets/functions/enqueue-scripts.php:256
+#: dt-assets/functions/enqueue-scripts.php:295
 #: dt-assets/parts/loop-activity-comment.php:137
-#: single-template.php:365
+#: single-template.php:370
 msgid "Delete"
 msgstr "ሰርዝ"
 
-#: dt-assets/functions/enqueue-scripts.php:305
+#: dt-assets/functions/enqueue-scripts.php:296
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "_START_ ከ _TOTAL_ ን በማሳየት ላይ"
 
-#: dt-assets/functions/enqueue-scripts.php:306
+#: dt-assets/functions/enqueue-scripts.php:297
 msgid "Sorting By"
 msgstr "መደርደር በ"
 
-#: dt-assets/functions/enqueue-scripts.php:308
+#: dt-assets/functions/enqueue-scripts.php:299
 msgid "Date Modified"
 msgstr "ቀን ተሻሽሏል"
 
-#: archive-template.php:422
 #: dt-contacts/base-setup.php:50
-#: dt-contacts/base-setup.php:264
-#: dt-contacts/dmm-module.php:305
-#: dt-groups/base-setup.php:654
+#: dt-contacts/base-setup.php:63
+#: dt-contacts/base-setup.php:290
 #: dt-mapping/columns/add-contacts-column.php:59
-#: dt-metrics/combined/hover-map.php:127
-#: dt-metrics/combined/locations-list.php:120
+#: dt-metrics/combined/daily-activity.php:89
+#: dt-metrics/combined/hover-map.php:128
+#: dt-metrics/combined/locations-list.php:121
 #: dt-metrics/contacts/baptism-tree.php:25
 #: dt-metrics/contacts/coaching-tree.php:25
 #: dt-metrics/contacts/mapbox-maps.php:31
@@ -220,101 +227,91 @@ msgstr "ቀን ተሻሽሏል"
 #: dt-metrics/contacts/seeker-path.php:26
 #: dt-metrics/contacts/sources.php:25
 #: dt-metrics/groups/overview.php:63
-#: dt-metrics/metrics.php:89
+#: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
-#: dt-users/template-user-management.php:232
+#: dt-users/template-user-management.php:602
 msgid "Contacts"
 msgstr "እውቂያዎች"
 
-#: archive-template.php:424
-#: dt-groups/base-setup.php:48
-#: dt-groups/base-setup.php:454
-#: dt-groups/base-setup.php:671
-#: dt-groups/base-setup.php:688
-#: dt-groups/base-setup.php:725
-#: dt-groups/base-setup.php:736
+#: dt-groups/base-setup.php:50
+#: dt-groups/base-setup.php:63
+#: dt-groups/base-setup.php:462
+#: dt-groups/base-setup.php:628
 #: dt-mapping/columns/add-groups-column.php:57
-#: dt-metrics/combined/hover-map.php:172
-#: dt-metrics/combined/locations-list.php:165
+#: dt-metrics/combined/daily-activity.php:90
+#: dt-metrics/combined/hover-map.php:173
+#: dt-metrics/combined/locations-list.php:166
 #: dt-metrics/groups/mapbox-maps.php:31
 #: dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:64
+#: dt-metrics/groups/overview.php:75
 #: dt-metrics/groups/tree.php:24
-#: dt-metrics/metrics.php:93
+#: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
 msgid "Groups"
 msgstr "ቡድኖች"
 
 #. Template Name of the plugin/theme
-#: dt-metrics/metrics.php:109
+#: dt-metrics/combined/daily-activity.php:86
+#: dt-metrics/metrics.php:116
 msgid "Metrics"
 msgstr "መለኪያዎች"
 
 #. Template Name of the plugin/theme
-#: dt-assets/functions/menu.php:64
+#: dt-assets/functions/menu.php:70
 #: dt-assets/parts/nav-offcanvas.php:48
-#: dt-assets/parts/nav-topbar.php:83
-#: dt-assets/parts/nav-topbar.php:188
+#: dt-assets/parts/nav-topbar.php:90
+#: dt-assets/parts/nav-topbar.php:211
 #: template-notifications.php:33
-#: template-settings.php:45
-#: template-settings.php:354
+#: template-settings.php:57
+#: template-settings.php:464
 msgid "Notifications"
 msgstr "ማሳወቂያዎች"
 
 #. Template Name of the plugin/theme
-#: dt-assets/functions/menu.php:70
 #: dt-assets/functions/menu.php:76
-#: dt-assets/parts/modals/modal-help.php:154
-#: dt-assets/parts/nav-topbar.php:91
-#: dt-assets/parts/nav-topbar.php:268
-#: template-notifications.php:62
+#: dt-assets/functions/menu.php:82
+#: dt-assets/parts/modals/modal-help.php:131
+#: dt-assets/parts/nav-topbar.php:98
+#: dt-assets/parts/nav-topbar.php:299
+#: template-notifications.php:68
 msgid "Settings"
 msgstr "ቅንብሮች"
 
-#: dt-assets/functions/menu.php:81
+#: dt-assets/functions/menu.php:88
 msgid "Admin"
 msgstr "አስተዳዳሪ"
-
-#: dt-assets/parts/nav-offcanvas.php:77
-#: dt-assets/parts/nav-topbar.php:211
-msgid "Log Off"
-msgstr "ጨርሰህ ውጣ"
 
 #: single-template.php:55
 #: single-template.php:63
 msgid "Please provide an update by posting a comment."
 msgstr "አስተያየት በመለጠፍ እባክዎ ዝመና ያቅርቡ።"
 
-#: dt-contacts/access-module.php:606
+#: dt-contacts/access-module.php:665
 msgid "This contact has been assigned to you."
 msgstr "ይህ እውቂያ ለእርስዎ ተመድቧል።"
 
-#: dt-contacts/access-module.php:607
+#: dt-contacts/access-module.php:666
 msgid "Accept"
 msgstr "ተቀበል"
 
-#: dt-contacts/access-module.php:608
+#: dt-contacts/access-module.php:667
 msgid "Decline"
 msgstr "ውድቅ አድርግ"
 
-#: dt-assets/parts/contact-details.php:41
-msgid "This contact represents a user."
-msgstr "ይህ ዕውቂያ ተጠቃሚን ይወክላል።"
-
-#: archive-template.php:313
-#: dt-contacts/access-module.php:411
-#: dt-metrics/groups/tree.php:86
-#: dt-metrics/personal/group-tree.php:87
-#: dt-posts/dt-posts.php:1392
-#: dt-users/template-user-management.php:74
-#: dt-users/template-user-management.php:159
+#: archive-template.php:342
+#: dt-metrics/groups/tree.php:87
+#: dt-metrics/personal/group-tree.php:88
+#: dt-posts/dt-posts.php:1586
+#: dt-users/template-user-management.php:88
+#: dt-users/template-user-management.php:520
 #: single-template.php:78
 msgid "Status"
 msgstr "ሁኔታ"
 
-#: dt-contacts/dmm-module.php:123
+#: dt-contacts/dmm-module.php:134
 msgid "Sub-assigned to"
 msgstr "ንዑስ ተመድቧል"
 
@@ -322,107 +319,109 @@ msgstr "ንዑስ ተመድቧል"
 msgid "Social Media"
 msgstr "ማህበራዊ ሚዲያ"
 
-#: dt-contacts/base-setup.php:220
-#: dt-core/configuration/config-site-defaults.php:455
-#: dt-groups/base-setup.php:385
-#: template-settings.php:130
+#: dt-contacts/base-setup.php:245
+#: dt-groups/base-setup.php:378
+#: template-settings.php:177
 msgid "Address"
 msgstr "አድራሻ"
 
-#: dt-assets/parts/modals/modal-help.php:126
-#: dt-contacts/base-setup.php:204
-#: dt-groups/base-setup.php:367
+#: dt-assets/parts/modals/modal-help.php:103
+#: dt-contacts/base-setup.php:227
+#: dt-groups/base-setup.php:359
 msgid "Locations"
 msgstr "አካባቢዎች"
 
-#: dt-contacts/dmm-module.php:189
-#: dt-contacts/dmm-module.php:304
-#: dt-groups/base-setup.php:406
-#: dt-groups/base-setup.php:724
+#: dt-contacts/dmm-module.php:212
+#: dt-groups/base-setup.php:399
 #: dt-people-groups/people-groups-post-type.php:132
 msgid "People Groups"
 msgstr "የህዝብ ቡድኖች"
 
-#: dt-contacts/access-module.php:194
+#: dt-contacts/base-setup.php:313
 msgid "Age"
 msgstr "ዕድሜ"
 
-#: dt-contacts/base-setup.php:276
-#: template-settings.php:507
+#: dt-contacts/access-module.php:1286
+#: dt-contacts/base-setup.php:302
+#: dt-users/template-new-user.php:172
+#: dt-users/template-user-management.php:363
+#: template-settings.php:650
 msgid "Gender"
 msgstr "ፆታ"
 
-#: archive-template.php:464
+#: archive-template.php:530
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
-#: dt-posts/custom-post-type.php:145
-#: template-settings.php:86
+#: dt-posts/custom-post-type.php:146
+#: template-settings.php:133
 msgid "Name"
 msgstr "ስም"
 
-#: archive-template.php:202
+#: archive-template.php:214
 msgid "Sort"
 msgstr "ደርድር"
 
-#: archive-template.php:206
+#: archive-template.php:218
 msgid "Newest"
 msgstr "በጣም አዲስ"
 
-#: archive-template.php:210
+#: archive-template.php:222
 msgid "Oldest"
 msgstr "በጣም ጥንታዊ"
 
-#: archive-template.php:214
+#: archive-template.php:226
 msgid "Most recently modified"
 msgstr "በጣም በቅርብ ጊዜ የተሻሻለው"
 
-#: archive-template.php:218
+#: archive-template.php:230
 msgid "Least recently modified"
 msgstr "ቢያንስ በቅርቡ ተሻሽሏል"
 
-#: dt-contacts/access-module.php:112
+#: dt-contacts/access-module.php:125
 #: dt-metrics/contacts/seeker-path.php:25
 #: dt-metrics/contacts/seeker-path.php:62
 msgid "Seeker Path"
 msgstr "ፈላጊ መንገድ"
 
 #. Could be either Hitos or Pilares
-#: dt-contacts/dmm-module.php:57
+#: dt-contacts/dmm-module.php:59
 msgid "Faith Milestones"
 msgstr "የእምነት ችካሎች"
 
-#: dt-groups/base-setup.php:48
-#: dt-groups/base-setup.php:178
+#: dt-groups/base-setup.php:50
+#: dt-groups/base-setup.php:62
+#: dt-groups/base-setup.php:168
 #: dt-metrics/groups/overview.php:80
-#: dt-metrics/personal/group-tree.php:164
+#: dt-metrics/personal/activity-highlights.php:58
+#: dt-metrics/personal/group-tree.php:165
 #: dt-metrics/personal/overview.php:74
 msgid "Group"
 msgstr "ቡድን"
 
-#: archive-template.php:474
+#: archive-template.php:541
 msgid "Loading..."
 msgstr "በመጫን ላይ ..."
 
-#: dt-groups/base-setup.php:134
+#: dt-groups/base-setup.php:146
 msgid "Group Coach / Church Planter"
 msgstr "የቡድን አሰልጣኝ / የቤተክርስቲያን ተከላ"
 
-#: dt-groups/base-setup.php:262
-#: dt-users/template-user-management.php:313
-#: template-settings.php:312
-#: template-settings.php:331
+#: dt-groups/base-setup.php:253
+#: dt-users/template-user-management.php:324
+#: template-settings.php:423
+#: template-settings.php:442
 msgid "Start Date"
 msgstr "የመጀመሪያ ቀን"
 
-#: dt-groups/base-setup.php:270
+#: dt-groups/base-setup.php:261
 msgid "Church Start Date"
 msgstr "ቤተክርስቲያን የሚጀመርበት ቀን"
 
-#: dt-groups/base-setup.php:279
-#: dt-users/template-user-management.php:314
-#: template-settings.php:318
-#: template-settings.php:332
+#: dt-groups/base-setup.php:270
+#: dt-users/template-user-management.php:325
+#: template-settings.php:429
+#: template-settings.php:443
 msgid "End Date"
 msgstr "የማብቂያ ቀን"
 
@@ -430,8 +429,9 @@ msgstr "የማብቂያ ቀን"
 msgid "Submit comment"
 msgstr "አስተያየት ያስገቡ"
 
+#: archive-template.php:421
 #: dt-assets/parts/loop-activity-comment.php:8
-#: dt-assets/parts/modals/modal-help.php:65
+#: dt-assets/parts/modals/modal-help.php:42
 msgid "Comments and Activity"
 msgstr "አስተያየቶች እና እንቅስቃሴ"
 
@@ -440,7 +440,7 @@ msgid "Showing:"
 msgstr "በማሳየት ላይ:"
 
 #: dt-assets/parts/loop-activity-comment.php:85
-#: dt-users/template-user-management.php:425
+#: dt-users/template-user-management.php:235
 msgid "Activity"
 msgstr "እንቅስቃሴ"
 
@@ -459,19 +459,20 @@ msgstr "አስተያየት ሰርዝ:"
 #: dt-assets/parts/loop-activity-comment.php:134
 #: dt-assets/parts/loop-activity-comment.php:181
 #: dt-assets/parts/merge-details.php:28
-#: dt-assets/parts/modals/modal-help.php:176
-#: dt-assets/parts/modals/modal-help.php:201
+#: dt-assets/parts/modals/modal-help.php:153
+#: dt-assets/parts/modals/modal-help.php:178
 #: dt-assets/parts/modals/modal-revert.php:15
 #: dt-assets/parts/modals/modal-share.php:50
 #: dt-assets/parts/modals/modal-tasks.php:46
-#: dt-contacts/dmm-module.php:559
-#: dt-groups/base-setup.php:629
+#: dt-contacts/dmm-module.php:522
+#: dt-groups/base-setup.php:604
+#: dt-users/template-new-user.php:278
 msgid "Close"
 msgstr "ገጠመ"
 
 #: dt-assets/parts/loop-activity-comment.php:144
 #: dt-assets/parts/loop-activity-comment.php:191
-#: template-merge-details.php:396
+#: template-merge-details.php:380
 msgid "Sorry, something went wrong"
 msgstr "ይቅርታ, የሆነ ችግር ተፈጥሯል"
 
@@ -483,6 +484,7 @@ msgstr "አስተያየቱ መሰረዝ አልተቻለም ፡፡"
 msgid "Edit Comment:"
 msgstr "አስተያየት ያርትዑ"
 
+#: archive-template.php:498
 #: dt-assets/parts/loop-activity-comment.php:184
 msgid "Update"
 msgstr "አዘምን"
@@ -507,7 +509,7 @@ msgstr "ሊሆኑ የሚችሉ ብዜቶች"
 msgid "Dismiss All"
 msgstr "ሁሉንም አሰናብት"
 
-#: dt-assets/functions/enqueue-scripts.php:229
+#: dt-assets/functions/enqueue-scripts.php:215
 msgid "Dismiss"
 msgstr "አሰናብት"
 
@@ -525,14 +527,13 @@ msgstr "ይህንን ማጣሪያ ለመጥራት ምን ይፈልጋሉ?"
 msgid "Delete Filter"
 msgstr "ማጣሪያን ሰርዝ"
 
-#: dt-groups/base-setup.php:146
+#: dt-groups/base-setup.php:115
 msgid "Group Status"
 msgstr "የቡድን ሁኔታ"
 
-#: dt-contacts/user-module.php:103
-#: dt-contacts/user-module.php:108
-#: single-template.php:340
-#: template-new-post.php:111
+#: single-template.php:345
+#: template-new-post.php:123
+#: template-new-post.php:159
 msgid "This is required"
 msgstr "ይህ ያስፈልጋል"
 
@@ -541,6 +542,7 @@ msgid "Revert Activity"
 msgstr "እንቅስቃሴን አድስ"
 
 #: dt-assets/parts/modals/modal-revert.php:5
+#: dt-metrics/combined/time-charts.php:108
 msgid "Field"
 msgstr "መስክ"
 
@@ -568,181 +570,173 @@ msgstr "ይህ ቡድን ለ:"
 msgid "This contact is shared with:"
 msgstr "ይህ ዕውቂያ የተጋራው ለ"
 
-#: dt-assets/functions/menu.php:57
+#: dt-assets/functions/menu.php:63
 msgid "Add New"
 msgstr "አዲስ አስገባ"
 
-#: dt-contacts/access-module.php:158
+#: dt-contacts/access-module.php:171
 msgid "New Contact"
 msgstr "አዲስ ዕውቂያ"
 
 #: dt-assets/functions/menu.php:51
-#: template-settings.php:42
+#: template-settings.php:51
 msgid "Profile"
 msgstr "መገለጫ"
 
-#: dt-assets/functions/menu.php:91
+#: dt-assets/functions/menu.php:100
 msgid "Help"
 msgstr "እገዛ"
 
-#: dt-contacts/access-module.php:137
-#: dt-metrics/counter.php:139
+#: dt-contacts/access-module.php:150
+#: dt-metrics/counter.php:140
 msgid "Ongoing Meetings"
 msgstr "ቀጣይ ስብሰባዎች"
 
-#: dt-contacts/base-setup.php:287
-#: dt-groups/base-setup.php:109
+#: dt-contacts/base-setup.php:328
+#: dt-groups/base-setup.php:104
 msgid "Requires Update"
 msgstr "ማዘመን ይፈልጋል"
 
-#: dt-contacts/dmm-module.php:82
-#: dt-contacts/dmm-module.php:179
-#: dt-contacts/dmm-module.php:274
+#: dt-contacts/dmm-module.php:89
+#: dt-contacts/dmm-module.php:202
 msgid "Baptized"
 msgstr "ተጠመቀ"
 
-#: dt-contacts/dmm-module.php:146
+#: dt-contacts/dmm-module.php:169
 msgid "Baptism Date"
 msgstr "የጥምቀት ቀን"
 
-#: dt-contacts/dmm-module.php:154
-#: dt-metrics/counter.php:156
+#: dt-contacts/dmm-module.php:177
+#: dt-metrics/counter.php:157
 msgid "Baptism Generation"
 msgstr "የጥምቀት ትውልድ"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/users.php:773
+#: dt-users/user-hooks-and-config.php:517
 msgid "Sources"
 msgstr "ምንጮች"
 
-#: dt-contacts/base-setup.php:169
-#: dt-groups/base-setup.php:103
+#: dt-posts/custom-post-type.php:190
 msgid "Un-Follow"
 msgstr "አትከተል"
 
-#: dt-contacts/base-setup.php:187
-#: dt-core/configuration/config-site-defaults.php:443
-#: template-settings.php:119
+#: dt-contacts/base-setup.php:193
+#: template-settings.php:166
 msgid "Phone"
 msgstr "ስልክ"
 
-#: dt-core/configuration/config-site-defaults.php:468
+#: dt-core/configuration/config-site-defaults.php:550
 msgid "Work"
 msgstr "ሥራ"
 
-#: dt-core/configuration/config-site-defaults.php:467
+#: dt-core/configuration/config-site-defaults.php:549
 msgid "Home"
 msgstr "ቤት"
 
-#: dt-contacts/base-setup.php:481
-#: dt-core/configuration/config-site-defaults.php:459
-#: dt-core/configuration/config-site-defaults.php:469
-#: dt-groups/base-setup.php:737
-#: template-settings.php:152
+#: dt-contacts/base-setup.php:480
+#: dt-core/configuration/config-site-defaults.php:551
+#: dt-groups/base-setup.php:629
+#: template-settings.php:199
 msgid "Other"
 msgstr "ሌላ"
 
-#: dt-contacts/base-setup.php:195
-#: dt-contacts/user-module.php:105
-#: dt-core/configuration/config-site-defaults.php:256
-#: dt-core/configuration/config-site-defaults.php:447
-#: dt-users/user-management.php:158
-#: template-settings.php:106
+#: dt-contacts/base-setup.php:218
+#: dt-core/configuration/config-site-defaults.php:349
+#: dt-users/template-new-user.php:97
+#: dt-users/template-new-user.php:98
+#: dt-users/template-user-management.php:355
+#: template-settings.php:153
 msgid "Email"
 msgstr "ኢሜል"
 
 #: dt-contacts/access-module.php:299
-#: dt-contacts/base-setup.php:239
+#: dt-contacts/base-setup.php:265
 msgid "Facebook"
 msgstr "ፌስቡክ"
 
 #: dt-contacts/access-module.php:303
-#: dt-contacts/base-setup.php:247
+#: dt-contacts/base-setup.php:273
 msgid "Twitter"
 msgstr "ትዊተር"
 
-#: dt-contacts/contacts-transfer.php:30
+#: dt-contacts/contacts-transfer.php:31
 msgid "Contact Transfer Both Ways"
 msgstr "ግንኙነትን በሁለቱም መንገዶች ያነጋግሩ"
 
-#: dt-contacts/contacts-transfer.php:31
+#: dt-contacts/contacts-transfer.php:32
 msgid "Contact Transfer Sending Only"
 msgstr "የእውቂያ ማስተላለፍን በመላክ ላይ ብቻ"
 
-#: dt-contacts/contacts-transfer.php:32
+#: dt-contacts/contacts-transfer.php:33
 msgid "Contact Transfer Receiving Only"
 msgstr "የእውቂያ ማስተላለፍን መቀበል ብቻ"
 
-#: dt-contacts/contacts-transfer.php:53
+#: dt-contacts/contacts-transfer.php:57
 msgid "This contact has been transferred"
 msgstr "ይህ እውቂያ ተላል hasል"
 
-#: dt-contacts/contacts-transfer.php:54
+#: dt-contacts/contacts-transfer.php:59
 msgid "This contact has been transferred to"
 msgstr "ይህ እውቂያ ተላል transferredል"
 
-#: dt-contacts/contacts-transfer.php:108
+#: dt-contacts/contacts-transfer.php:267
 msgid "another site"
 msgstr "ሌላ ጣቢያ"
 
-#: dt-contacts/contacts-transfer.php:118
+#: dt-contacts/contacts-transfer.php:277
 msgid "Already transfered to %s"
-msgstr "ቀድሞውኑ ወደ% s ተዛውሯል"
+msgstr "ቀድሞውኑ ወደ$s ተዛውሯል"
 
-#: dt-contacts/contacts-transfer.php:119
+#: dt-contacts/contacts-transfer.php:278
 msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
 msgstr "ማስታወሻ-ይህንን ዕውቂያ ቀድሞውኑ አስተላልፈዋል። እንደገና ማስተላለፍ ብዜቶችን ሊፈጥር ይችላል። አሁንም ይህንን ማስጠንቀቂያ ለመሻር እና በዝውውርዎ ለመቀጠል ይፈልጋሉ?"
 
-#: dt-contacts/contacts-transfer.php:120
+#: dt-contacts/contacts-transfer.php:282
 msgid "Override and Continue"
 msgstr "መሻር እና ቀጥል"
 
-#: dt-contacts/contacts-transfer.php:125
+#: dt-contacts/contacts-transfer.php:290
 msgid "Transfer this contact to:"
 msgstr "ይህንን ዕውቂያ ወደዚህ ያስተላልፉ"
 
-#: dt-contacts/contacts-transfer.php:137
+#: dt-contacts/contacts-transfer.php:305
 msgid "Confirm Transfer"
 msgstr "ማስተላለፍን ያረጋግጡ"
 
-#: dt-contacts/contacts-transfer.php:208
+#: dt-contacts/contacts-transfer.php:382
 msgid "Unknown error."
 msgstr "ያልታወቀ ስህተት።"
 
-#: dt-contacts/contacts-transfer.php:217
+#: dt-contacts/contacts-transfer.php:414
 msgid "Minor transfer error."
 msgstr "አነስተኛ የዝውውር ስህተት።"
 
-#: dt-contacts/contacts-transfer.php:364
-#: dt-contacts/contacts-transfer.php:382
-#: dt-contacts/contacts-transfer.php:399
+#: dt-contacts/contacts-transfer.php:573
+#: dt-contacts/contacts-transfer.php:588
+#: dt-contacts/contacts-transfer.php:618
+#: dt-contacts/contacts-transfer.php:833
 msgid "Transfer Bot"
 msgstr "ማስተላለፍ ቦት"
 
-#: dt-contacts/contacts-transfer.php:384
+#: dt-contacts/contacts-transfer.php:570
 msgid "Contact transferred from site"
 msgstr "ዕውቂያ ከጣቢያው ተላል transferredል"
 
-#: dt-contacts/contacts-transfer.php:391
+#: dt-contacts/contacts-transfer.php:580
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr "ማንቂያ: ከቀዳሚው ዝውውር ሊኖር የሚችል የተባዛ ግንኙነት።"
 
-#: dt-contacts/contacts.php:1312
-msgctxt "Contact1 is a duplicated and was merged into Contact2"
-msgid "%1$s is a duplicate and was merged into %2$s"
-msgstr "%1$s አንድ ቅጅ ነው እና ወደ %2$s ተቀላቅሏል"
-
-#: dt-contacts/duplicates-merging.php:444
+#: dt-contacts/duplicates-merging.php:473
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(ከተባዛ)% s"
+msgstr "(ከተባዛ)$s"
 
-#: dt-contacts/base-setup.php:61
+#: dt-contacts/base-setup.php:83
 msgid "Strategist"
 msgstr "ስትራቴጂስት"
 
-#: dt-contacts/access-module.php:70
+#: dt-contacts/access-module.php:72
 msgid "Dispatcher"
 msgstr "መላኪያ"
 
@@ -750,318 +744,317 @@ msgstr "መላኪያ"
 msgid "Digital Responder"
 msgstr "ዲጂታል ምላሽ ሰጪ"
 
-#: dt-contacts/base-setup.php:71
+#: dt-contacts/base-setup.php:95
 msgid "Disciple.Tools Admin"
 msgstr "ደቀ መዝሙር"
 
-#: dt-contacts/base-setup.php:56
-#: dt-groups/base-setup.php:54
+#: dt-contacts/base-setup.php:77
+#: dt-groups/base-setup.php:71
 msgid "Multiplier"
 msgstr "አባዢ"
 
-#: dt-core/configuration/class-roles.php:116
+#: dt-contacts/base-setup.php:70
+#: dt-core/configuration/class-roles.php:117
 msgid "Registered"
 msgstr "ተመዝግቧል"
 
-#: dt-core/configuration/class-roles.php:157
+#: dt-core/configuration/class-roles.php:158
 msgid "Subscriber"
 msgstr "ተመዝጋቢ"
 
-#: dt-core/configuration/config-site-defaults.php:264
+#: dt-core/configuration/config-site-defaults.php:357
 msgid "Newly Assigned Contact"
 msgstr "አዲስ የተመደበ ዕውቂያ"
 
-#: dt-core/configuration/config-site-defaults.php:269
+#: dt-core/configuration/config-site-defaults.php:362
 msgid "@Mentions"
 msgstr "@Mentions"
 
-#: dt-core/configuration/config-site-defaults.php:284
+#: dt-core/configuration/config-site-defaults.php:377
 msgid "Contact Info Changed"
 msgstr "የእውቂያ መረጃ ተለውጧል"
 
-#: dt-core/configuration/config-site-defaults.php:289
+#: dt-core/configuration/config-site-defaults.php:382
 #: dt-core/migrations/0012-typo-rename.php:8
 msgid "Contact Milestones and Group Health metrics"
 msgstr "የማይል ድንጋይዎችን እና የቡድን ጤናን መለኪያዎች ያነጋግሩ"
 
-#: dt-core/configuration/config-site-defaults.php:314
+#: dt-core/configuration/config-site-defaults.php:407
 msgid "This contact is active but there is no record of anybody contacting them. Please do contact them."
 msgstr "ይህ ዕውቂያ ንቁ ነው ነገር ግን ማንም የሚያነጋግራቸው መዝገብ የለም። እባክዎ ያነጋግሩዋቸው ፡፡"
 
-#: dt-core/configuration/config-site-defaults.php:320
+#: dt-core/configuration/config-site-defaults.php:413
 msgid "Please try connecting with this contact again."
 msgstr "እባክዎ ከዚህ እውቂያ ጋር እንደገና ለመገናኘት ይሞክሩ።"
 
-#: dt-core/configuration/config-site-defaults.php:326
-#: dt-core/configuration/config-site-defaults.php:332
-#: dt-core/configuration/config-site-defaults.php:338
-#: dt-core/configuration/config-site-defaults.php:344
-#: dt-core/configuration/config-site-defaults.php:350
+#: dt-core/configuration/config-site-defaults.php:419
+#: dt-core/configuration/config-site-defaults.php:425
+#: dt-core/configuration/config-site-defaults.php:431
+#: dt-core/configuration/config-site-defaults.php:437
+#: dt-core/configuration/config-site-defaults.php:443
 msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
 msgstr "ስለዚህ ሰው ለተወሰነ ጊዜ አልሰማንም ፡፡ ለዚህ ዕውቂያ ዝመና አለዎት?"
 
-#: dt-core/configuration/config-site-defaults.php:360
+#: dt-core/configuration/config-site-defaults.php:453
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "ስለዚህ ቡድን ለተወሰነ ጊዜ አልሰማንም ፡፡ ዝመና አለዎት?"
 
+#: dt-assets/functions/details-bar.php:75
+#: dt-assets/functions/details-bar.php:114
+#: dt-assets/functions/details-bar.php:236
+#: dt-assets/functions/details-bar.php:269
 #: dt-core/configuration/dt-configuration.php:75
 msgctxt "either rtl or ltr"
 msgid "ltr"
 msgstr "ltr"
 
-#: dt-core/configuration/restrict-site-access.php:288
+#: dt-core/configuration/restrict-site-access.php:290
 msgid "Someone has requested a password reset for the following account:"
 msgstr "አንድ ሰው ለሚከተለው መለያ የይለፍ ቃል ዳግም ማስጀመር ጠይቋል"
 
 #. translators: %s: user login
-#: dt-core/configuration/restrict-site-access.php:292
+#: dt-core/configuration/restrict-site-access.php:294
+#: dt-users/user-hooks-and-config.php:356
 msgid "Username: %s"
-msgstr "የተጠቃሚ ስም:% s"
+msgstr "የተጠቃሚ ስም:$s"
 
-#: dt-core/configuration/restrict-site-access.php:293
+#: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr "ይህ ስህተት ቢሆን ኖሮ ይህንን ኢሜል ችላ ይበሉ እና ምንም ነገር አይከሰትም ፡፡"
 
-#: dt-core/configuration/restrict-site-access.php:294
+#: dt-core/configuration/restrict-site-access.php:296
 msgid "To reset your password, visit the following address:"
 msgstr "የይለፍ ቃልዎን እንደገና ለማስጀመር የሚከተለውን አድራሻ ይጎብኙ"
 
-#: dt-users/template-user-management.php:326
-#: template-settings.php:99
+#: dt-users/template-user-management.php:414
+#: template-settings.php:146
 msgid "Roles"
 msgstr "ሚናዎች"
 
-#: dt-core/logging/hooks/class-hook-posts.php:28
+#: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
 msgstr "(ርዕስ የለውም)"
 
-#: dt-groups/base-setup.php:246
-#: dt-groups/base-setup.php:308
-#: dt-groups/base-setup.php:672
+#: dt-groups/base-setup.php:237
+#: dt-groups/base-setup.php:300
 msgid "Leaders"
 msgstr "መሪዎች"
 
-#: dt-posts/posts.php:248
+#: dt-posts/posts.php:281
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
-msgstr "ተጠመቀ% s"
+msgstr "ተጠመቀ$s"
 
-#: dt-posts/posts.php:249
+#: dt-posts/posts.php:282
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
-msgstr "በ% s ተጠመቀ"
+msgstr "በ$s ተጠመቀ"
 
-#: dt-posts/posts.php:251
+#: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "% S ን አላጠመቀም"
+msgstr "$s ን አላጠመቀም"
 
-#: dt-posts/posts.php:252
+#: dt-posts/posts.php:285
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
-msgstr "በ% s አልተጠመቀም"
-
-#: dt-posts/posts.php:256
-msgctxt "contact1 added to members"
-msgid "%s added to members"
-msgstr "% s ወደ አባላት ታክሏል"
-
-#: dt-posts/posts.php:257
-msgctxt "Added to group group1"
-msgid "Added to group %s"
-msgstr "ወደ ቡድን% s ታክሏል"
-
-#: dt-posts/posts.php:259
-msgctxt "Removed contact1 from group"
-msgid "Removed %s from group"
-msgstr "% S ከቡድን ተወግዷል"
-
-#: dt-posts/posts.php:260
-msgctxt "Removed from group group1"
-msgid "Removed from group %s"
-msgstr "ከቡድን% s ተወግዷል"
-
-#: dt-posts/posts.php:265
-msgctxt "Coaching contact1"
-msgid "Coaching %s"
-msgstr "% S ን በማሰልጠን ላይ"
-
-#: dt-posts/posts.php:266
-msgctxt "Coached by contact1"
-msgid "Coached by %s"
-msgstr "በ% s የሰለጠነ"
-
-#: dt-posts/posts.php:268
-msgctxt "No longer coaching contact1"
-msgid "No longer coaching %s"
-msgstr "% S ን ከእንግዲህ አያሰለጥንም"
-
-#: dt-posts/posts.php:273
-msgctxt "Sub-assigned contact1"
-msgid "Sub-assigned %s"
-msgstr "በንዑስ የተመደበ% s"
-
-#: dt-posts/posts.php:274
-msgctxt "Sub-assigned on contact1"
-msgid "Sub-assigned on %s"
-msgstr "በ% s ላይ ንዑስ ተመድቧል"
-
-#: dt-posts/posts.php:276
-msgctxt "Removed sub-assigned contact1"
-msgid "Removed sub-assigned %s"
-msgstr "በንዑስ የተመደበ% s ተወግዷል"
+msgstr "በ$s አልተጠመቀም"
 
 #: dt-posts/posts.php:289
+msgctxt "contact1 added to members"
+msgid "%s added to members"
+msgstr "$s ወደ አባላት ታክሏል"
+
+#: dt-posts/posts.php:290
+msgctxt "Added to group group1"
+msgid "Added to group %s"
+msgstr "ወደ ቡድን$s ታክሏል"
+
+#: dt-posts/posts.php:292
+msgctxt "Removed contact1 from group"
+msgid "Removed %s from group"
+msgstr "$s ከቡድን ተወግዷል"
+
+#: dt-posts/posts.php:293
+msgctxt "Removed from group group1"
+msgid "Removed from group %s"
+msgstr "ከቡድን$s ተወግዷል"
+
+#: dt-posts/posts.php:298
+msgctxt "Coaching contact1"
+msgid "Coaching %s"
+msgstr "$s ን በማሰልጠን ላይ"
+
+#: dt-posts/posts.php:299
+msgctxt "Coached by contact1"
+msgid "Coached by %s"
+msgstr "በ$s የሰለጠነ"
+
+#: dt-posts/posts.php:301
+msgctxt "No longer coaching contact1"
+msgid "No longer coaching %s"
+msgstr "$s ን ከእንግዲህ አያሰለጥንም"
+
+#: dt-posts/posts.php:306
+msgctxt "Sub-assigned contact1"
+msgid "Sub-assigned %s"
+msgstr "በንዑስ የተመደበ$s"
+
+#: dt-posts/posts.php:307
+msgctxt "Sub-assigned on contact1"
+msgid "Sub-assigned on %s"
+msgstr "በ$s ላይ ንዑስ ተመድቧል"
+
+#: dt-posts/posts.php:309
+msgctxt "Removed sub-assigned contact1"
+msgid "Removed sub-assigned %s"
+msgstr "በንዑስ የተመደበ$s ተወግዷል"
+
+#: dt-posts/posts.php:322
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
 msgstr "%1$s በ %2$s ላይ እንደ መሪ ታክሏል"
 
-#: dt-posts/posts.php:290
+#: dt-posts/posts.php:323
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "% s ወደ መሪዎች ታክሏል"
+msgstr "$s ወደ መሪዎች ታክሏል"
 
-#: dt-posts/posts.php:292
+#: dt-posts/posts.php:325
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
 msgstr "%1$s በ %2$s ላይ ከመሪዎች ተወግዷል"
 
-#: dt-posts/posts.php:293
+#: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "% s ከመሪዎች ተወግዷል"
+msgstr "$s ከመሪዎች ተወግዷል"
 
-#: dt-posts/posts.php:297
+#: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
 msgstr "%1$s በ %2$s ላይ እንደ አሰልጣኝ ታክሏል"
 
-#: dt-posts/posts.php:298
+#: dt-posts/posts.php:331
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "% s ወደ አሰልጣኞች ታክሏል"
+msgstr "$s ወደ አሰልጣኞች ታክሏል"
 
-#: dt-posts/posts.php:300
+#: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
 msgstr "%1$s በ %2$s ላይ ከአሠልጣኞች ተወግዷል"
 
-#: dt-posts/posts.php:301
+#: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "% s ከአሠልጣኞች ተወግዷል"
+msgstr "$s ከአሠልጣኞች ተወግዷል"
 
-#: dt-posts/posts.php:305
+#: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "% s ወደ የልጆች ቡድኖች ታክሏል"
+msgstr "$s ወደ የልጆች ቡድኖች ታክሏል"
 
-#: dt-posts/posts.php:306
+#: dt-posts/posts.php:339
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "% s ወደ ወላጅ ቡድኖች ታክሏል"
+msgstr "$s ወደ ወላጅ ቡድኖች ታክሏል"
 
-#: dt-posts/posts.php:308
+#: dt-posts/posts.php:341
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "% s ከልጆች ቡድኖች ተወግዷል"
+msgstr "$s ከልጆች ቡድኖች ተወግዷል"
 
-#: dt-posts/posts.php:309
+#: dt-posts/posts.php:342
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "% s ከወላጅ ቡድኖች ተወግዷል"
+msgstr "$s ከወላጅ ቡድኖች ተወግዷል"
 
-#: dt-posts/posts.php:314
-#: dt-posts/posts.php:315
+#: dt-posts/posts.php:347
+#: dt-posts/posts.php:348
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "% s ወደ አቻ ቡድኖች ታክሏል"
+msgstr "$s ወደ አቻ ቡድኖች ታክሏል"
 
-#: dt-posts/posts.php:317
-#: dt-posts/posts.php:318
+#: dt-posts/posts.php:350
+#: dt-posts/posts.php:351
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "% s ከእኩዮች ቡድኖች ተወግዷል"
+msgstr "$s ከእኩዮች ቡድኖች ተወግዷል"
 
-#: dt-posts/posts.php:322
-#: dt-posts/posts.php:323
-#: dt-posts/posts.php:330
-#: dt-posts/posts.php:331
+#: dt-posts/posts.php:355
+#: dt-posts/posts.php:356
+#: dt-posts/posts.php:363
+#: dt-posts/posts.php:364
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "ከ% s ጋር ተገናኝቷል"
+msgstr "ከ$s ጋር ተገናኝቷል"
 
-#: dt-posts/posts.php:325
-#: dt-posts/posts.php:326
-#: dt-posts/posts.php:333
-#: dt-posts/posts.php:334
+#: dt-posts/posts.php:358
+#: dt-posts/posts.php:359
+#: dt-posts/posts.php:366
+#: dt-posts/posts.php:367
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "ከ% s ጋር ያለው ግንኙነት ተወግዷል"
+msgstr "ከ$s ጋር ያለው ግንኙነት ተወግዷል"
 
-#: dt-posts/posts.php:354
+#: dt-posts/posts.php:387
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "ለ% s ተመድቧል"
+msgstr "ለ$s ተመድቧል"
 
-#: dt-posts/posts.php:354
+#: dt-posts/posts.php:387
 msgid "Nobody"
 msgstr "ማንም የለም"
 
-#: dt-posts/posts.php:367
+#: dt-posts/posts.php:405
+#: dt-posts/posts.php:416
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s ከ %2$s ተወግዷል"
 
-#: dt-posts/posts.php:370
+#: dt-posts/posts.php:408
+#: dt-posts/posts.php:419
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
 msgstr "%1$s ወደ %2$s ታክሏል"
 
-#: dt-posts/posts.php:382
-msgid "yes"
-msgstr "አዎ"
-
-#: dt-posts/posts.php:384
-msgid "no"
-msgstr "አይ"
-
-#: dt-posts/posts.php:463
+#: dt-posts/posts.php:520
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
 msgstr "%1$s ታክሏል %2$s"
 
-#: dt-posts/posts.php:465
+#: dt-posts/posts.php:522
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
 msgstr "%1$s ከ %2$s ወደ %3$s ዘምኗል"
 
-#: dt-posts/posts.php:467
+#: dt-posts/posts.php:524
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "ተሰር %ል %1$s: %2$s"
 
-#: dt-posts/dt-posts.php:1223
+#: dt-posts/dt-posts.php:1372
 msgid "Post already shared with user."
 msgstr "ልጥፍ አስቀድሞ ለተጠቃሚ ተጋርቷል።"
 
-#: dt-groups/base-setup.php:169
+#: dt-groups/base-setup.php:159
 msgid "Group Type"
 msgstr "የቡድን ዓይነት"
 
-#: dt-groups/base-setup.php:174
+#: dt-groups/base-setup.php:164
 #: dt-metrics/groups/overview.php:79
 #: dt-metrics/personal/overview.php:73
 msgid "Pre-Group"
 msgstr "ቅድመ-ቡድን"
 
-#: dt-groups/base-setup.php:182
+#: dt-groups/base-setup.php:172
 #: dt-metrics/groups/overview.php:81
 #: dt-metrics/personal/overview.php:75
 msgid "Church"
 msgstr "ቤተክርስቲያን"
 
-#: dt-groups/base-setup.php:290
+#: dt-groups/base-setup.php:281
 msgid "Member Count"
 msgstr "የአባል ቆጠራ"
 
@@ -1069,44 +1062,44 @@ msgstr "የአባል ቆጠራ"
 msgid "Map"
 msgstr "ካርታ"
 
-#: dt-metrics/combined/critical-path.php:218
-#: dt-metrics/counter.php:129
+#: dt-metrics/combined/critical-path.php:211
+#: dt-metrics/counter.php:130
 msgid "New Contacts"
 msgstr "አዲስ እውቂያዎች"
 
-#: dt-metrics/counter.php:134
+#: dt-metrics/counter.php:135
 msgid "First Meetings"
 msgstr "የመጀመሪያ ስብሰባዎች"
 
-#: dt-metrics/counter.php:144
+#: dt-metrics/counter.php:145
 msgid "Total Baptisms"
 msgstr "ጠቅላላ ጥምቀቶች"
 
-#: dt-metrics/counter.php:149
+#: dt-metrics/counter.php:150
 msgid "Total Baptizers"
 msgstr "ጠቅላላ አጥማቂዎች"
 
-#: dt-metrics/counter.php:162
+#: dt-metrics/counter.php:163
 msgid "Total Churches and Groups"
 msgstr "ጠቅላላ አብያተ ክርስቲያናት እና ቡድኖች"
 
-#: dt-metrics/combined/critical-path.php:305
+#: dt-metrics/combined/critical-path.php:298
 #: dt-metrics/combined/mapbox-maps.php:83
-#: dt-metrics/counter.php:167
+#: dt-metrics/counter.php:168
 msgid "Active Groups"
 msgstr "ንቁ ቡድኖች"
 
-#: dt-metrics/combined/critical-path.php:315
-#: dt-metrics/counter.php:172
+#: dt-metrics/combined/critical-path.php:308
+#: dt-metrics/counter.php:173
 msgid "Active Churches"
 msgstr "ንቁ አብያተ ክርስቲያናት"
 
-#: dt-metrics/counter.php:179
+#: dt-metrics/counter.php:180
 msgid "Church Generation"
 msgstr "የቤተክርስቲያን ትውልድ"
 
-#: dt-metrics/combined/critical-path.php:339
-#: dt-metrics/counter.php:185
+#: dt-metrics/combined/critical-path.php:332
+#: dt-metrics/counter.php:186
 msgid "Church Planters"
 msgstr "የቤተክርስቲያን ተከላዎች"
 
@@ -1117,36 +1110,38 @@ msgid "Milestones"
 msgstr "ትናንሽ ድንጋዮች"
 
 #: dt-metrics/combined/critical-path.php:24
-#: dt-metrics/combined/critical-path.php:55
-#: dt-metrics/combined/critical-path.php:88
+#: dt-metrics/combined/critical-path.php:46
+#: dt-metrics/combined/critical-path.php:79
 msgid "Critical Path"
 msgstr "ወሳኝ መንገድ"
 
-#: dt-metrics/combined/critical-path.php:228
+#: dt-metrics/combined/critical-path.php:221
 msgid "Assigned Contacts"
 msgstr "የተመደቡ እውቂያዎች"
 
-#: dt-metrics/combined/critical-path.php:237
+#: dt-metrics/combined/critical-path.php:230
 #: dt-metrics/combined/mapbox-maps.php:82
 #: dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:66
 #: dt-metrics/personal/overview.php:68
-#: dt-users/template-user-management.php:163
+#: dt-users/template-user-management.php:524
 msgid "Active Contacts"
 msgstr "ንቁ እውቂያዎች"
 
-#: dt-metrics/combined/critical-path.php:266
+#: dt-metrics/combined/critical-path.php:259
+#: dt-metrics/combined/daily-activity.php:91
 msgid "Baptisms"
 msgstr "ጥምቀቶች"
 
-#: dt-metrics/combined/critical-path.php:295
+#: dt-metrics/combined/critical-path.php:288
 msgid "Baptizers"
 msgstr "አጥማቂዎች"
 
 #: dt-contacts/access-module.php:291
-#: dt-contacts/base-setup.php:129
-#: dt-contacts/base-setup.php:545
-#: dt-metrics/metrics.php:80
+#: dt-contacts/base-setup.php:565
+#: dt-metrics/metrics.php:86
+#: dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
 #: dt-metrics/personal/group-tree.php:25
@@ -1202,10 +1197,13 @@ msgid "Active Group Health Metrics"
 msgstr "ንቁ የቡድን የጤና መለኪያዎች"
 
 #: dt-metrics/combined/critical-path.php:25
+#: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:29
-#: dt-metrics/metrics.php:85
+#: dt-metrics/combined/site-links.php:23
+#: dt-metrics/combined/time-charts.php:43
+#: dt-metrics/metrics.php:91
 msgid "Project"
 msgstr "ፕሮጀክት"
 
@@ -1227,12 +1225,12 @@ msgstr "የማሠልጠን ዛፍ"
 msgid "Project Overview"
 msgstr "የፕሮጀክት አጠቃላይ እይታ"
 
-#: dt-metrics/combined/critical-path.php:87
+#: dt-metrics/combined/critical-path.php:78
 msgid "Outreach"
 msgstr "መድረስ"
 
-#: dt-contacts/access-module.php:383
-#: dt-metrics/combined/critical-path.php:86
+#: dt-contacts/access-module.php:403
+#: dt-metrics/combined/critical-path.php:77
 msgid "Follow Up"
 msgstr "ክትትል"
 
@@ -1241,8 +1239,7 @@ msgstr "ክትትል"
 msgid "All Contacts"
 msgstr "ሁሉም እውቂያዎች"
 
-#: dt-metrics/groups/tree.php:80
-#: dt-metrics/personal/group-tree.php:81
+#: dt-metrics/groups/tree.php:81
 msgid "Group Generation Tree"
 msgstr "የቡድን ትውልድ ዛፍ"
 
@@ -1251,7 +1248,6 @@ msgid "Baptism Generation Tree"
 msgstr "የጥምቀት ትውልድ ዛፍ"
 
 #: dt-metrics/contacts/coaching-tree.php:57
-#: dt-metrics/personal/coaching-tree.php:58
 msgid "Coaching Generation Tree"
 msgstr "የአሠልጣኝ ትውልድ ዛፍ"
 
@@ -1259,77 +1255,74 @@ msgstr "የአሠልጣኝ ትውልድ ዛፍ"
 msgid "Teams"
 msgstr "ቡድኖች"
 
-#: dt-metrics/groups/overview.php:75
-msgid "groups"
-msgstr "ቡድኖች"
-
 #: dt-metrics/groups/overview.php:76
 msgid "generations"
 msgstr "ትውልዶች"
 
-#: dt-users/template-user-management.php:64
+#: dt-contacts/access-module.php:600
+#: dt-users/template-user-management.php:78
 msgid "Multipliers"
 msgstr "ማባዣዎች"
 
-#: dt-notifications/notifications-email.php:117
+#: dt-notifications/notifications-email.php:138
 msgid "Click here to view or reply"
 msgstr "ለማየት ወይም መልስ ለመስጠት እዚህ ጠቅ ያድርጉ"
 
-#: dt-notifications/notifications-email.php:123
+#: dt-notifications/notifications-email.php:144
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
 msgstr "በ %1$s # %2$s ላይ ያዘምኑ"
 
-#: dt-notifications/notifications.php:792
+#: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "% s ተፈጥሮ ለእርስዎ ተመደበ።"
+msgstr "$s ተፈጥሮ ለእርስዎ ተመደበ።"
 
-#: dt-notifications/notifications.php:800
+#: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
 msgstr "%1$s ከ %2$s እስከ %3$s ተመድቧል።"
 
-#: dt-notifications/notifications.php:803
-#: dt-notifications/notifications.php:810
-#: dt-notifications/notifications.php:817
-#: dt-notifications/notifications.php:821
-#: dt-notifications/notifications.php:831
-#: dt-notifications/notifications.php:838
+#: dt-notifications/notifications.php:922
+#: dt-notifications/notifications.php:929
+#: dt-notifications/notifications.php:936
+#: dt-notifications/notifications.php:940
+#: dt-notifications/notifications.php:950
+#: dt-notifications/notifications.php:957
 msgid "System"
 msgstr "ስርዓት"
 
-#: dt-notifications/notifications.php:804
+#: dt-notifications/notifications.php:923
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
 msgstr "%1$s %2$s ን ከእርስዎ ጋር ተጋርቷል።"
 
-#: dt-notifications/notifications.php:811
+#: dt-notifications/notifications.php:930
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr "%1$s በ %2$s ላይ ጠቅሶዎታል- %3$s"
 
-#: dt-notifications/notifications.php:818
+#: dt-notifications/notifications.php:937
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
 msgstr "%1$s በ %2$s ላይ አስተያየት ሰጥቷል- %3$s"
 
-#: dt-notifications/notifications.php:822
+#: dt-notifications/notifications.php:941
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
 msgstr "%1$s ን ለእርስዎ %2$s ን ተመድቧል።"
 
-#: dt-notifications/notifications.php:832
+#: dt-notifications/notifications.php:951
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
 msgstr "%1$s በ %3$s ላይ ጉልበቱን አክሏል %2$s"
 
-#: dt-notifications/notifications.php:839
+#: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
 msgstr "%1$s የተቀየረ የእውቂያ ዝርዝሮች በ %2$s ላይ።"
 
-#: dt-notifications/notifications.php:842
+#: dt-notifications/notifications.php:961
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s ውድቅ የሆነ ተልእኮ በ: %2$s"
@@ -1338,87 +1331,83 @@ msgstr "%1$s ውድቅ የሆነ ተልእኮ በ: %2$s"
 msgid "People Group"
 msgstr "የሰዎች ቡድን"
 
-#: dt-people-groups/people-groups-post-type.php:281
+#: dt-people-groups/people-groups-post-type.php:282
 msgid "Add/Update People Group"
 msgstr "የሰዎች ቡድንን ያክሉ / ያዘምኑ"
 
-#: dt-people-groups/people-groups-post-type.php:282
+#: dt-people-groups/people-groups-post-type.php:283
 msgid "People Group Details"
 msgstr "የሰዎች ቡድን ዝርዝሮች"
 
-#: dt-people-groups/people-groups-post-type.php:589
+#: dt-people-groups/people-groups-post-type.php:590
 msgid "Enter the People Group title here"
 msgstr "እዚህ የሰዎች ቡድን ርዕስ ያስገቡ"
 
-#: dt-users/users.php:62
+#: dt-users/users.php:122
 msgid "No permissions to assign"
 msgstr "ለመመደብ ምንም ፈቃዶች የሉም"
 
-#: dt-users/users.php:343
+#: dt-users/users.php:281
 msgid "Insufficient permissions"
 msgstr "በቂ ያልሆኑ ፈቃዶች"
 
-#: dt-users/users.php:744
+#: dt-users/user-hooks-and-config.php:482
 msgid "Extra Disciple.Tools Information"
 msgstr "ተጨማሪ ደቀ መዝሙር። የኩሬዎች መረጃ"
 
-#: dt-users/users.php:747
+#: dt-users/user-hooks-and-config.php:485
 msgid "Corresponds to Contact"
 msgstr "ከእውቂያ ጋር ይዛመዳል"
 
-#: dt-users/users.php:969
+#: dt-users/template-user-management.php:345
+#: dt-users/user-hooks-and-config.php:374
 msgid "View contact record"
 msgstr "የእውቂያ መዝገብ ይመልከቱ"
 
-#: dt-workflows/update-required.php:67
-#: dt-workflows/update-required.php:105
-msgid "Updated Needed"
-msgstr "ዘምኗል ተፈልጓል"
-
-#: functions.php:483
+#: functions.php:514
 msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
 msgstr "የደቀመዝሙር መሳሪያዎች ገጽታ PHP ስሪት 7.0 ወይም ከዚያ በላይ ይፈልጋል። የእርስዎ የአሁኑ ስሪት"
 
-#: functions.php:485
+#: functions.php:516
 msgid "Please upgrade PHP or uninstall this theme"
 msgstr "እባክዎ ፒኤችፒን ያሻሽሉ ወይም ይህን ገጽታ ያራግፉ"
 
-#: header.php:72
+#: header.php:78
 msgid "Javascript must be enabled for this site to function correctly."
 msgstr "ይህ ጣቢያ በትክክል እንዲሠራ ጃቫስክሪፕት መንቃት አለበት።"
 
-#: header.php:78
+#: header.php:84
 msgid "You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
 msgstr "ጊዜው ያለፈበት የድር አሳሽ የሚጠቀሙ ይመስላል። በጣም ዘመናዊው የአሳሽዎ ስሪት ከሌለው ይህ ጣቢያ በትክክል ላይሰራ ይችላል። እባክዎን ኢንተርኔት ኤክስፕሎረር እንደማይደገፍ ልብ ይበሉ ፡፡"
 
-#: header.php:80
+#: header.php:86
 msgid "See what browser you are using."
 msgstr "ምን አሳሽ እየተጠቀሙ እንደሆነ ይመልከቱ።"
 
-#: single-template.php:332
+#: single-template.php:337
+#: template-new-post.php:151
 msgid "Create Tag"
 msgstr "መለያ ፍጠር"
 
-#: single-template.php:337
-#: single-template.php:339
+#: single-template.php:342
+#: single-template.php:344
+#: template-new-post.php:156
+#: template-new-post.php:158
 msgid "Tag"
 msgstr "መለያ ይስጡ"
 
-#: single-template.php:348
+#: single-template.php:353
+#: template-new-post.php:167
 msgid "Create and apply tag"
 msgstr "መለያ ይፍጠሩ እና ይተግብሩ"
 
-#: dt-contacts/user-module.php:110
-#: dt-contacts/user-module.php:113
-#: dt-users/template-user-management.php:73
+#: dt-users/template-new-user.php:95
+#: dt-users/template-user-management.php:87
+#: dt-users/template-user-management.php:358
 msgid "Display Name"
 msgstr "መጠሪያው ስም"
 
-#: dt-contacts/user-module.php:140
-msgid "Create user"
-msgstr "ተጠቃሚ ይፍጠሩ"
-
-#: dt-contacts/user-module.php:151
+#: dt-contacts/user-module.php:121
 msgid "Link this contact to an existing user"
 msgstr "ይህንን ዕውቂያ ከአንድ ነባር ተጠቃሚ ጋር ያገናኙ"
 
@@ -1426,21 +1415,21 @@ msgstr "ይህንን ዕውቂያ ከአንድ ነባር ተጠቃሚ ጋር ያ
 msgid "Click merge to continue."
 msgstr "ለመቀጠል ውህደትን ጠቅ ያድርጉ።"
 
-#: dt-groups/base-setup.php:299
-#: dt-groups/base-setup.php:600
-#: dt-groups/base-setup.php:733
+#: dt-groups/base-setup.php:290
+#: dt-groups/base-setup.php:575
+#: dt-groups/base-setup.php:619
 msgid "Member List"
 msgstr "የአባልነት ዝርዝር"
 
-#: dt-groups/base-setup.php:326
+#: dt-groups/base-setup.php:318
 msgid "Parent Group"
 msgstr "የወላጅ ቡድን"
 
-#: dt-groups/base-setup.php:338
+#: dt-groups/base-setup.php:330
 msgid "Peer Group"
 msgstr "የእኩዮች ቡድን"
 
-#: template-new-post.php:127
+#: template-new-post.php:139
 msgid "Save and continue editing"
 msgstr "ያስቀምጡ እና አርትዖቱን ይቀጥሉ"
 
@@ -1452,146 +1441,158 @@ msgstr "የተባዙ እውቂያዎችን ያዋህዱ"
 msgid "When you merge, the master record is updated with the values you choose, and relationships to other items are shifted to the master record"
 msgstr "በሚዋሃዱበት ጊዜ ዋናው መዝገብ እርስዎ በመረጧቸው እሴቶች ዘምኗል ፣ እና ከሌሎች ዕቃዎች ጋር ያሉ ግንኙነቶች ወደ ማስተር ሪኮርዱ ይዛወራሉ"
 
-#: template-merge-details.php:126
-#: template-merge-details.php:135
+#: template-merge-details.php:131
+#: template-merge-details.php:149
 msgid "Status:"
 msgstr "ሁኔታ"
 
-#: template-merge-details.php:128
-#: template-merge-details.php:137
+#: template-merge-details.php:133
+#: template-merge-details.php:151
 msgid "Select All"
 msgstr "ሁሉንም ምረጥ"
 
-#: template-merge-details.php:145
+#: template-merge-details.php:159
 msgid "Master Record"
 msgstr "ማስተር መዝገብ"
 
-#: template-merge-details.php:150
-#: template-merge-details.php:153
+#: template-merge-details.php:166
+#: template-merge-details.php:170
 msgid "Use as master"
 msgstr "እንደ ዋና ይጠቀሙ"
 
-#: dt-assets/parts/nav-topbar.php:246
+#: dt-assets/parts/nav-topbar.php:277
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "ያልተነበበ"
 
-#: dt-assets/parts/nav-topbar.php:272
-#: template-notifications.php:66
+#: dt-assets/parts/nav-topbar.php:303
+#: template-notifications.php:72
 msgid "Mark All"
 msgstr "ሁሉንም ምልክት ያድርጉባቸው"
 
-#: dt-users/template-user-management.php:296
-#: template-settings.php:44
-#: template-settings.php:299
+#: dt-users/template-user-management.php:307
+#: template-settings.php:56
+#: template-settings.php:410
 msgid "Availability"
 msgstr "ተገኝነት"
 
-#: template-settings.php:67
+#: dt-assets/parts/modals/modal-help.php:95
+#: template-settings.php:114
 msgid "Your Profile"
 msgstr "የእርስዎ መገለጫ"
 
-#: dt-contacts/user-module.php:100
-#: template-settings.php:80
-#: template-settings.php:440
+#: dt-users/template-new-user.php:100
+#: dt-users/template-new-user.php:101
+#: template-settings.php:127
+#: template-settings.php:583
 msgid "Username"
 msgstr "የተጠቃሚ ስም"
 
-#: dt-users/user-management.php:157
-#: template-settings.php:93
-#: template-settings.php:475
+#: dt-users/template-new-user.php:96
+#: template-settings.php:140
+#: template-settings.php:618
 msgid "Nickname (Display Name)"
 msgstr "ቅጽል ስም (የማሳያ ስም)"
 
-#: template-settings.php:141
+#: template-settings.php:188
 msgid "Social"
 msgstr "ማህበራዊ"
 
-#: template-settings.php:166
+#: dt-contacts/access-module.php:1285
+#: dt-users/template-new-user.php:115
+#: dt-users/template-user-management.php:91
+#: template-settings.php:213
 msgid "Language"
 msgstr "ቋንቋ"
 
-#: template-settings.php:172
+#: template-settings.php:219
 msgid "English"
 msgstr "እንግሊዝኛ"
 
-#: template-settings.php:176
-#: template-settings.php:499
+#: dt-users/template-new-user.php:205
+#: dt-users/template-new-user.php:209
+#: dt-users/template-user-management.php:395
+#: dt-users/template-user-management.php:402
+#: template-settings.php:223
+#: template-settings.php:642
 msgid "Biography"
 msgstr "የሕይወት ታሪክ"
 
-#: template-settings.php:360
+#: template-settings.php:490
 msgid "Type of Notification"
 msgstr "የማሳወቂያ ዓይነት"
 
 #: dt-contacts/access-module.php:295
-#: dt-core/configuration/config-site-defaults.php:259
+#: dt-core/configuration/config-site-defaults.php:352
 msgid "Web"
 msgstr "ድር"
 
-#: template-settings.php:373
+#: template-settings.php:503
 msgid "required"
 msgstr "ያስፈልጋል"
 
-#: template-settings.php:396
+#: template-settings.php:526
 msgid "Follow all contacts"
 msgstr "ሁሉንም እውቂያዎች ተከተል"
 
-#: template-settings.php:403
+#: template-settings.php:290
+#: template-settings.php:533
 msgid "Enable"
 msgstr "አንቃ"
 
-#: template-settings.php:434
+#: template-settings.php:577
 msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
 msgstr "የደቀመዝሙር መሳሪያዎች ስርዓት ምስሎችን አያስቀምጥም ፡፡ ለመገለጫ ምስሎች ግራቫታር (በዓለም አቀፍ ደረጃ የታወቀ አምሳያ) እንጠቀማለን ፡፡ የደህንነት ስጋት ካለብዎ የግል ፎቶ እንዳይጠቀሙ እንመክራለን ፣ ግን ይልቁንስ እርስዎን ለመወከል የካርቱን ፣ ረቂቅ ወይም ቅጽል ፎቶን ይምረጡ ፡፡"
 
-#: template-settings.php:435
+#: template-settings.php:578
 msgid "edit image on gravatar.com"
 msgstr "በ gravatar.com ላይ ምስልን ያርትዑ"
 
-#: template-settings.php:441
-#: template-settings.php:442
+#: template-settings.php:584
+#: template-settings.php:585
 msgid "Username cannot be changed"
 msgstr "የተጠቃሚ ስም ሊለወጥ አይችልም"
 
-#: template-settings.php:109
-#: template-settings.php:446
+#: template-settings.php:156
+#: template-settings.php:589
 msgid "System Email"
 msgstr "የስርዓት ኢሜል"
 
-#: template-settings.php:447
+#: template-settings.php:590
 msgid "User email can be changed by site administrator."
 msgstr "የተጠቃሚ ኢሜል በጣቢያ አስተዳዳሪ ሊቀየር ይችላል ፡፡"
 
-#: template-settings.php:454
+#: dt-users/template-new-user.php:102
+#: dt-users/template-new-user.php:103
+#: template-settings.php:597
 msgid "Password"
 msgstr "የይለፍ ቃል"
 
-#: template-settings.php:455
+#: template-settings.php:598
 msgid "Use this email reset form to create a new password."
 msgstr "አዲስ የይለፍ ቃል ለመፍጠር ይህንን የኢሜይል ዳግም ማስጀመሪያ ቅጽ ይጠቀሙ።"
 
-#: template-settings.php:457
+#: template-settings.php:600
 msgid "go to password change form"
 msgstr "ወደ የይለፍ ቃል ለውጥ ቅጽ ይሂዱ"
 
-#: template-settings.php:464
+#: dt-users/template-new-user.php:165
+#: dt-users/template-new-user.php:167
+#: template-settings.php:607
 msgid "First Name"
 msgstr "የመጀመሪያ ስም"
 
-#: template-settings.php:470
+#: dt-users/template-new-user.php:169
+#: dt-users/template-new-user.php:170
+#: template-settings.php:613
 msgid "Last Name"
 msgstr "የአያት ሥም"
 
-#: template-settings.php:511
-msgid "Description"
-msgstr "መግለጫ"
-
-#: dt-notifications/notifications-email.php:118
+#: dt-notifications/notifications-email.php:148
 msgid "Do not reply directly to this email."
 msgstr "ለዚህ ኢሜል በቀጥታ መልስ አይመልሱ ፡፡"
 
-#: dt-core/configuration/restrict-site-access.php:236
+#: dt-core/configuration/restrict-site-access.php:238
 msgid "Reset password"
 msgstr "የይለፍ ቃል ዳግም ያስጀምሩ"
 
@@ -1611,11 +1612,11 @@ msgstr "አንድ ዕውቂያ ከአንድ በላይ ምንጮች ሊመጣ ይ
 msgid "Active contacts, by source and faith milestone"
 msgstr "ንቁ እውቂያዎች ፣ በመነሻ እና በእምነት ምዕራፍ"
 
-#: dt-metrics/combined/critical-path.php:89
+#: dt-metrics/combined/critical-path.php:80
 msgid "Filter Critical Path fields"
 msgstr "የወሳኝ ዱካ መስኮችን አጣራ"
 
-#: dt-metrics/combined/critical-path.php:90
+#: dt-metrics/combined/critical-path.php:81
 msgid "Movement Tracking"
 msgstr "የእንቅስቃሴ ክትትል"
 
@@ -1625,9 +1626,11 @@ msgstr "የእንቅስቃሴ ክትትል"
 msgid "Filter contacts to date range:"
 msgstr "እውቂያዎችን እስከ ቀን ክልል ያጣሩ"
 
+#: dt-metrics/combined/daily-activity.php:72
 #: dt-metrics/contacts/milestones.php:69
 #: dt-metrics/contacts/seeker-path.php:65
 #: dt-metrics/contacts/sources.php:89
+#: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
 msgstr "እስከ ቀን ክልል አጣራ"
 
@@ -1644,42 +1647,21 @@ msgstr "አንድ ግንኙነት ከአንድ በላይ ምንጮች ሊመጣ 
 msgid "Generation"
 msgstr "ትውልድ"
 
-#: dt-users/users.php:757
+#: dt-users/user-hooks-and-config.php:495
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "ይህ ተጠቃሚ የሚስማማውን የእውቂያ መዝገብ ስም ያክሉ።"
 
-#: dt-users/users.php:758
+#: dt-users/user-hooks-and-config.php:496
 msgid "Learn more."
 msgstr "ተጨማሪ እወቅ."
 
-#: dt-users/users.php:873
-msgid "Hi,\n"
-"\n"
-"You've been invited to join '%1$s' at\n"
-"%2$s with the role of %3$s.\n"
-"\n"
-"Please click the following link to confirm the invite:\n"
-"%4$s"
-msgstr "ሃይ,\n"
-"\n"
-"‹ %1$s› ን እንዲቀላቀሉ ተጋብዘዋል\n"
-"%2$s ከ %3$s ሚና ጋር።\n"
-"\n"
-"ግብዣውን ለማረጋገጥ እባክዎ የሚከተለውን አገናኝ ጠቅ ያድርጉ-\n"
-"%4$s"
-
-#. translators: Joining confirmation notification email subject. %s: Site title
-#: dt-users/users.php:884
-msgid "[%s] Joining Confirmation"
-msgstr "[% s] ማረጋገጫ በመቀላቀል ላይ"
-
-#: dt-core/configuration/restrict-site-access.php:237
+#: dt-core/configuration/restrict-site-access.php:239
 msgid "Lost your password"
 msgstr "የይለፍ ቃልዎን ጠፉ"
 
 #: dt-mapping/columns/add-churches-column.php:57
-#: dt-metrics/combined/hover-map.php:217
-#: dt-metrics/combined/locations-list.php:210
+#: dt-metrics/combined/hover-map.php:218
+#: dt-metrics/combined/locations-list.php:211
 msgid "Churches"
 msgstr "አብያተ ክርስቲያናት"
 
@@ -1697,23 +1679,25 @@ msgstr "የህዝብ ብዛት"
 msgid "List"
 msgstr "ዝርዝር"
 
-#: dt-mapping/mapping.php:606
-#: dt-mapping/mapping.php:687
+#: dt-mapping/mapping.php:643
+#: dt-mapping/mapping.php:724
 msgid "World"
 msgstr "ዓለም"
 
-#: dt-posts/custom-post-type.php:127
-#: template-new-post.php:32
+#: dt-metrics/combined/daily-activity.php:89
+#: dt-metrics/combined/daily-activity.php:90
+#: dt-posts/custom-post-type.php:128
+#: template-new-post.php:33
 msgid "New %s"
-msgstr "አዲስ% s"
+msgstr "አዲስ$s"
 
-#: dt-posts/posts.php:403
-#: dt-posts/posts.php:412
+#: dt-posts/posts.php:452
+#: dt-posts/posts.php:469
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "%1$s ወደ አካባቢዎች ታክሏል"
 
-#: dt-groups/base-setup.php:735
+#: dt-groups/base-setup.php:624
 msgid "Four Fields"
 msgstr "አራት መስኮች"
 
@@ -1726,40 +1710,40 @@ msgstr "የተሸጎጠ መረጃን አድስ"
 msgid "Follow-up of all active contacts"
 msgstr "የሁሉም ንቁ እውቂያዎች ክትትል"
 
-#: dt-notifications/notifications.php:835
+#: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@ %1$s ፣ ዝመና በ %2$s ላይ ተጠይቋል።"
 
-#: dt-core/configuration/config-site-defaults.php:478
+#: dt-core/configuration/config-site-defaults.php:560
 msgid "Accepting new contacts"
 msgstr "አዳዲስ እውቂያዎችን መቀበል"
 
-#: dt-core/configuration/config-site-defaults.php:482
+#: dt-core/configuration/config-site-defaults.php:564
 msgid "I'm only investing in existing contacts"
 msgstr "አሁን ባሉ እውቂያዎች ላይ ብቻ ኢንቬስት እያደረኩ ነው"
 
-#: dt-core/configuration/config-site-defaults.php:486
+#: dt-core/configuration/config-site-defaults.php:568
 msgid "I have too many contacts"
 msgstr "በጣም ብዙ እውቂያዎች አሉኝ"
 
-#: template-settings.php:302
+#: template-settings.php:413
 msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
 msgstr "አዳዲስ እውቂያዎችን ለመቀበል ተላላኪው የእርስዎን ተገኝነት እንዲያውቅ የሚጓዙበትን ወይም የማይገኙበትን ቀን ያዘጋጁ"
 
-#: template-settings.php:306
+#: template-settings.php:417
 msgid "Schedule Travel or Dates Unavailable"
 msgstr "የጊዜ ሰሌዳ ጉዞ ወይም ቀናት አይገኙም"
 
-#: template-settings.php:323
+#: template-settings.php:434
 msgid "Add Unavailable dates"
 msgstr "የማይገኙ ቀናትን ያክሉ"
 
-#: template-settings.php:337
+#: template-settings.php:448
 msgid "No Travel Scheduled"
 msgstr "ምንም የጉዞ መርሐግብር አልተያዘለትም"
 
-#: template-settings.php:398
+#: template-settings.php:528
 msgid "You will receive a notification for any update that happens in the system."
 msgstr "በስርዓቱ ውስጥ ለሚከሰት ማንኛውም ዝመና ማሳወቂያ ይደርስዎታል።"
 
@@ -1768,117 +1752,117 @@ msgstr "በስርዓቱ ውስጥ ለሚከሰት ማንኛውም ዝመና ማ�
 msgid "Initial Comment"
 msgstr "የመጀመሪያ አስተያየት"
 
-#: dt-metrics/combined/critical-path.php:219
+#: dt-metrics/combined/critical-path.php:212
 msgid "Any new created contact"
 msgstr "ማንኛውም አዲስ የተፈጠረ ዕውቂያ"
 
-#: dt-metrics/combined/critical-path.php:229
+#: dt-metrics/combined/critical-path.php:222
 msgid "Number of contacts assigned for a face-to-face visit"
 msgstr "ለፊት-ለፊት ጉብኝት የተመደቡ የእውቂያዎች ብዛት"
 
-#: dt-metrics/combined/critical-path.php:238
+#: dt-metrics/combined/critical-path.php:231
 msgid "Number of contacts that had the active status"
 msgstr "የነቃ ሁኔታ የነበራቸው የእውቂያዎች ብዛት"
 
-#: dt-metrics/combined/critical-path.php:248
+#: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "በጊዜ ክልል መጨረሻ ላይ በ% s ላይ ያሉ የእውቂያዎች ብዛት"
+msgstr "በጊዜ ክልል መጨረሻ ላይ በ$s ላይ ያሉ የእውቂያዎች ብዛት"
 
-#: dt-metrics/combined/critical-path.php:250
+#: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "በአመልካች መንገድ ላይ% s የተቀናበረበት የእውቂያዎች ብዛት"
+msgstr "በአመልካች መንገድ ላይ$s የተቀናበረበት የእውቂያዎች ብዛት"
 
-#: dt-metrics/combined/critical-path.php:267
+#: dt-metrics/combined/critical-path.php:260
 msgid "Number of baptized contact with a baptism date in date range and baptized by connection"
 msgstr "የተጠመቀበት ቀን ከተጠቀሰው የጥምቀት ቀን ጋር እና በግንኙነት መጠመቅ"
 
-#: dt-metrics/combined/critical-path.php:284
+#: dt-metrics/combined/critical-path.php:277
 msgid "Generation %s Baptisms"
-msgstr "ትውልድ% s ጥምቀቶች"
+msgstr "ትውልድ$s ጥምቀቶች"
 
-#: dt-metrics/combined/critical-path.php:285
+#: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
 msgstr "የትውልድ ብዛት s s ጥምቀቶች"
 
-#: dt-metrics/combined/critical-path.php:296
+#: dt-metrics/combined/critical-path.php:289
 msgid "Number of contacts or users who have baptized a contact"
 msgstr "ዕውቂያ ያጠመቁ የእውቂያዎች ብዛት ወይም ተጠቃሚዎች"
 
-#: dt-metrics/combined/critical-path.php:328
+#: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "ትውልድ% s አብያተ ክርስቲያናት"
+msgstr "ትውልድ$s አብያተ ክርስቲያናት"
 
-#: dt-metrics/combined/critical-path.php:329
+#: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "በጊዜ ክልል መጨረሻ ላይ የትውልድ% s አብያተ ክርስቲያናት ብዛት"
+msgstr "በጊዜ ክልል መጨረሻ ላይ የትውልድ$s አብያተ ክርስቲያናት ብዛት"
 
-#: dt-metrics/combined/critical-path.php:340
+#: dt-metrics/combined/critical-path.php:333
 msgid "Number of contacts or users who have started a church and are marked as the church coach"
 msgstr "ቤተክርስቲያን የጀመሩ እና የቤተክርስቲያን አሰልጣኝ ተብለው ምልክት የተደረገባቸው የእውቂያዎች ወይም የተጠቃሚዎች ብዛት"
 
-#: dt-notifications/notifications.php:794
+#: dt-notifications/notifications.php:913
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "ተመድበዋል %1$s"
 
-#: dt-groups/base-setup.php:350
+#: dt-groups/base-setup.php:342
 msgid "Child Group"
 msgstr "የልጆች ቡድን"
 
-#: dt-contacts/access-module.php:163
+#: dt-contacts/access-module.php:176
 msgid "Not Ready"
 msgstr "ዝግጁ አይደለም"
 
-#: archive-template.php:587
+#: archive-template.php:688
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "የክልል ጅምር"
 
-#: archive-template.php:597
+#: archive-template.php:698
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "የክልል መጨረሻ"
 
-#: dt-assets/functions/enqueue-scripts.php:270
+#: dt-assets/functions/enqueue-scripts.php:257
 msgid "Locations you are responsible for"
 msgstr "እርስዎ ኃላፊነት የሚሰማቸውባቸው አካባቢዎች"
 
-#: dt-contacts/access-module.php:159
+#: dt-contacts/access-module.php:172
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
 msgstr "እውቂያው በሲስተሙ ውስጥ አዲስ ነው ፡፡"
 
-#: dt-contacts/access-module.php:164
+#: dt-contacts/access-module.php:177
 msgctxt "Contact Status field description"
 msgid "There is not enough information to move forward with the contact at this time."
 msgstr "በዚህ ጊዜ ከእውቂያ ጋር ወደፊት ለመሄድ በቂ መረጃ የለም ፡፡"
 
-#: dt-contacts/access-module.php:169
+#: dt-contacts/access-module.php:182
 msgctxt "Contact Status field description"
 msgid "This contact needs to be assigned to a multiplier."
 msgstr "ይህ ዕውቂያ ለአንድ ብዜት መመደብ አለበት።"
 
-#: dt-contacts/access-module.php:174
+#: dt-contacts/access-module.php:187
 msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
 msgstr "እውቂያው ለአንድ ሰው ተሰጥቷል ፣ ግን ያ ሰው እስካሁን አልተቀበለውም ፡፡"
 
-#: dt-contacts/base-setup.php:299
+#: dt-contacts/base-setup.php:340
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "እውቂያው እየተሻሻለ እና / ወይም በተከታታይ እየተዘመነ ነው።"
 
-#: dt-contacts/access-module.php:180
+#: dt-contacts/access-module.php:193
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "ይህ እውቂያ በአሁኑ ጊዜ በእረፍት ላይ ነው (ማለትም በእረፍት ጊዜ ወይም ምላሽ የማይሰጥ)።"
 
-#: dt-contacts/base-setup.php:305
+#: dt-contacts/base-setup.php:346
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
 msgstr "ይህ ግንኙነት ከእንግዲህ ለመቀጠል እንደማይፈልጉ ወይም ከእሱ / ከእሷ ጋር ላለመቀጠል እንደወሰኑ እንዲያውቅ አድርጓል ፡፡"
 
-#: dt-contacts/access-module.php:113
+#: dt-contacts/access-module.php:126
 msgctxt "Seeker Path field description"
 msgid "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
 msgstr "የዕድገትዎን ሁኔታ ከእውቂያው ጋር ያዘጋጁ። እውቂያ ወደፊት እንዲጓዝ ለማገዝ በተወሰነ ቅደም ተከተል የሚከሰቱ እርምጃዎች ናቸው።"
@@ -1983,59 +1967,59 @@ msgctxt "Reason Closed label"
 msgid "Unknown"
 msgstr "ያልታወቀ"
 
-#: dt-core/configuration/config-site-defaults.php:391
+#: dt-core/configuration/config-site-defaults.php:484
 msgid "Personal Phone"
 msgstr "የግል ስልክ"
 
-#: dt-core/configuration/config-site-defaults.php:394
+#: dt-core/configuration/config-site-defaults.php:487
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "የግል ስልክ ለቡድኑ የግል እንጂ ለማሰራጨት አይደለም ፡፡"
 
-#: dt-core/configuration/config-site-defaults.php:398
+#: dt-core/configuration/config-site-defaults.php:491
 msgid "Personal Email"
 msgstr "የግል ኢሜል"
 
-#: dt-core/configuration/config-site-defaults.php:401
+#: dt-core/configuration/config-site-defaults.php:494
 msgid "Personal email is private to the team, not for distribution."
 msgstr "የግል ኢሜል ለቡድኑ የግል እንጂ ለማሰራጨት አይደለም ፡፡"
 
-#: dt-core/configuration/config-site-defaults.php:405
+#: dt-core/configuration/config-site-defaults.php:498
 msgid "Personal Address"
 msgstr "የግል አድራሻ"
 
-#: dt-core/configuration/config-site-defaults.php:408
+#: dt-core/configuration/config-site-defaults.php:501
 msgid "Personal address is private to the team, not for distribution."
 msgstr "የግል አድራሻ ለቡድኑ የግል እንጂ ለማሰራጨት አይደለም ፡፡"
 
-#: dt-core/configuration/config-site-defaults.php:412
+#: dt-core/configuration/config-site-defaults.php:505
 msgid "Work Phone"
 msgstr "የስራ ስልክ"
 
-#: dt-core/configuration/config-site-defaults.php:415
+#: dt-core/configuration/config-site-defaults.php:508
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "የሥራ ስልክ ለእውቂያዎች እና ፈላጊዎች ማሰራጨት ነው ፡፡"
 
-#: dt-core/configuration/config-site-defaults.php:419
+#: dt-core/configuration/config-site-defaults.php:512
 msgid "Work Email"
 msgstr "የሥራ ኢሜይል"
 
-#: dt-core/configuration/config-site-defaults.php:422
+#: dt-core/configuration/config-site-defaults.php:515
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "የሥራ ኢሜል ለእውቂያዎች እና ፈላጊዎች ለማሰራጨት ነው ፡፡"
 
-#: dt-core/configuration/config-site-defaults.php:426
+#: dt-core/configuration/config-site-defaults.php:519
 msgid "Work Facebook"
 msgstr "ስራ ፌስቡክ"
 
-#: dt-core/configuration/config-site-defaults.php:429
+#: dt-core/configuration/config-site-defaults.php:522
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "ሥራ ፌስቡክ ለእውቂያዎች እና ፈላጊዎች ማሰራጨት ነው ፡፡"
 
-#: dt-core/configuration/config-site-defaults.php:433
+#: dt-core/configuration/config-site-defaults.php:526
 msgid "Work WhatsApp"
 msgstr "ዋትስአፕ ይስሩ"
 
-#: dt-core/configuration/config-site-defaults.php:436
+#: dt-core/configuration/config-site-defaults.php:529
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "የስራ ዋትሳፕ ለግንኙነቶች እና ፈላጊዎች ማሰራጨት ነው ፡፡"
 
@@ -2043,171 +2027,163 @@ msgstr "የስራ ዋትሳፕ ለግንኙነቶች እና ፈላጊዎች ማ�
 msgid "Transfer"
 msgstr "ማስተላለፍ"
 
-#: dt-groups/base-setup.php:147
+#: dt-groups/base-setup.php:116
 msgctxt "field description"
 msgid "Set the current status of the group."
 msgstr "የቡድኑን ወቅታዊ ሁኔታ ያዘጋጁ ፡፡"
 
-#: dt-groups/base-setup.php:152
+#: dt-groups/base-setup.php:126
 msgctxt "field description"
 msgid "The group is no longer meeting."
 msgstr "ቡድኑ ከእንግዲህ እየተሰበሰበ አይደለም ፡፡"
 
-#: dt-groups/base-setup.php:157
+#: dt-groups/base-setup.php:121
 msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "ቡድኑ በንቃት እየተሰበሰበ ነው ፡፡"
 
-#: dt-posts/posts.php:400
-#: dt-posts/posts.php:409
+#: dt-posts/posts.php:449
+#: dt-posts/posts.php:462
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
 msgstr "%1$s ከስፍራዎች ተወግዷል"
 
-#: dt-posts/posts.php:433
+#: dt-posts/posts.php:490
 msgctxt "message"
 msgid "verified"
 msgstr "ተረጋግጧል"
 
-#: dt-posts/posts.php:433
+#: dt-posts/posts.php:490
 msgctxt "message"
 msgid "not verified"
 msgstr "አልተረጋገጠም"
 
-#: dt-posts/posts.php:436
+#: dt-posts/posts.php:493
 msgctxt "message"
 msgid "invalidated"
 msgstr "ዋጋ የለውም"
 
-#: dt-posts/posts.php:436
+#: dt-posts/posts.php:493
 msgctxt "message"
 msgid "not invalidated"
 msgstr "ዋጋ የለውም"
 
-#: dt-posts/posts.php:471
+#: dt-posts/posts.php:528
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "ስሙ ተቀይሯል ወደ% s"
+msgstr "ስሙ ተቀይሯል ወደ$s"
 
-#: dt-posts/posts.php:473
+#: dt-posts/posts.php:530
 msgctxt "message"
 msgid "Created from Demo Plugin"
 msgstr "ከደም ተሰኪ የተፈጠረ"
 
-#: dt-posts/posts.php:480
+#: dt-posts/posts.php:537
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "% s ውድቅ የተደረገ ተልእኮ"
+msgstr "$s ውድቅ የተደረገ ተልእኮ"
 
-#: dt-posts/posts.php:480
-#: dt-posts/posts.php:483
+#: dt-posts/posts.php:537
+#: dt-posts/posts.php:540
 msgctxt "message"
 msgid "A user"
 msgstr "ተጠቃሚ"
 
-#: dt-posts/posts.php:483
+#: dt-posts/posts.php:540
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "% s ተቀባይነት ያለው ተልእኮ"
+msgstr "$s ተቀባይነት ያለው ተልእኮ"
 
-#: dt-posts/posts.php:488
+#: dt-posts/posts.php:545
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "ከ% s ጋር ተጋርቷል"
+msgstr "ከ$s ጋር ተጋርቷል"
 
-#: dt-posts/posts.php:490
+#: dt-posts/posts.php:547
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "ከ% s ጋር አልተጋራም"
+msgstr "ከ$s ጋር አልተጋራም"
 
-#: dt-contacts/dmm-module.php:449
+#: dt-contacts/dmm-module.php:411
+#: dt-metrics/personal/activity-highlights.php:218
 msgid "Quick Actions"
 msgstr "ፈጣን እርምጃዎች"
 
-#: archive-template.php:541
+#: archive-template.php:620
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "ለመፈለግ ይተይቡ"
 
-#: archive-template.php:295
+#: archive-template.php:324
 #: dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/access-module.php:572
-#: dt-contacts/user-module.php:167
-#: dt-groups/base-setup.php:496
+#: dt-contacts/access-module.php:582
+#: dt-contacts/user-module.php:137
+#: dt-core/global-functions.php:827
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "የፍለጋ ተጠቃሚዎች"
 
 #: dt-assets/parts/merge-details.php:49
-#: dt-contacts/dmm-module.php:543
+#: dt-contacts/dmm-module.php:506
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "ብዙዎችን እና እውቂያዎችን ይፈልጉ"
 
+#: archive-template.php:426
 #: dt-assets/parts/loop-activity-comment.php:25
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "አስተያየትዎን ወይም ማስታወሻዎን እዚህ ይፃፉ"
 
-#: archive-template.php:33
-#: archive-template.php:108
-#: archive-template.php:371
-#: dt-contacts/base-setup.php:349
-#: dt-core/global-functions.php:419
-#: dt-core/global-functions.php:466
-#: dt-core/global-functions.php:510
-#: dt-groups/base-setup.php:531
+#: archive-template.php:38
+#: archive-template.php:118
+#: archive-template.php:400
+#: dt-core/global-functions.php:663
+#: dt-core/global-functions.php:691
+#: dt-core/global-functions.php:745
+#: dt-core/global-functions.php:789
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
-#: template-settings.php:262
+#: template-settings.php:378
 msgctxt "Search 'something'"
 msgid "Search %s"
-msgstr "% S ን ፈልግ"
+msgstr "$s ን ፈልግ"
 
 #: dt-metrics/contacts/sources.php:95
 #: dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
 msgstr "ይህ አሁን ላይ ‹ንቁ› ሁኔታ ያላቸውን ዕውቂያዎች ብቻ እያሳየ ነው ፡፡"
 
-#: dt-posts/posts.php:359
+#: dt-posts/posts.php:392
+#: dt-posts/posts.php:397
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "%1$s ወደ %2$s ተለውጧል"
 
-#: dt-contacts/dmm-module.php:529
+#: dt-contacts/dmm-module.php:492
 msgid "Who was this contact baptized by and when?"
 msgstr "ይህ ግንኙነት በማን እና መቼ ተጠመቀ?"
 
-#: dt-contacts/user-module.php:89
+#: dt-contacts/user-module.php:96
 msgctxt "Make user modal"
 msgid "Make User From Contact"
 msgstr "ከእውቂያ ተጠቃሚ ያድርጉ"
 
-#: dt-contacts/user-module.php:92
+#: dt-contacts/user-module.php:99
 msgctxt "Make user modal"
 msgid "This contact is already connected to a user."
 msgstr "ይህ ዕውቂያ አስቀድሞ ከተጠቃሚ ጋር ተገናኝቷል።"
 
-#: dt-contacts/user-module.php:94
-msgctxt "Make user modal"
-msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'."
-msgstr "ይህ የዚህ ስርዓት ተጠቃሚ እንዲሆኑ ይህ ዕውቂያ ይጋብዛል። በነባሪነት የ ‹ብዜት› ሚና ይሰጣቸዋል ፡፡"
-
-#: dt-contacts/user-module.php:95
-msgctxt "Make user modal"
-msgid "In the fields below, enter their email address and a 'Display Name' which they can change later."
-msgstr "ከዚህ በታች ባሉት መስኮች የኢሜል አድራሻቸውን እና በኋላ ሊለውጡት የሚችሏቸውን ‹የማሳያ ስም› ያስገቡ ፡፡"
-
-#: dt-contacts/user-module.php:154
+#: dt-contacts/user-module.php:124
 msgid "This contact already represents a user."
 msgstr "ይህ ዕውቂያ አስቀድሞ አንድ ተጠቃሚ ይወክላል።"
 
-#: dt-contacts/user-module.php:158
+#: dt-contacts/user-module.php:128
 msgctxt "Step 1 of link user"
 msgid "To link to an existing user, first, find the user using the field below."
 msgstr "ከአንድ ነባር ተጠቃሚ ጋር ለማገናኘት በመጀመሪያ ፣ ከዚህ በታች ያለውን መስክ በመጠቀም ተጠቃሚውን ያግኙ።"
 
-#: dt-contacts/user-module.php:182
+#: dt-contacts/user-module.php:152
 msgctxt "Step 2 of link user"
 msgid "To finish the linking, merge this contact with the existing user details."
 msgstr "ግንኙነቱን ለመጨረስ ይህንን ዕውቂያ ከነባር የተጠቃሚ ዝርዝሮች ጋር ያዋህዱ።"
@@ -2225,230 +2201,165 @@ msgctxt "added to the end of a sentence"
 msgid "selected."
 msgstr "ተመርጧል"
 
-#: dt-groups/base-setup.php:619
+#: dt-groups/base-setup.php:594
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "ከነባር እውቂያዎች አባላትን ያክሉ"
 
-#: dt-people-groups/people-groups-post-type.php:283
+#: dt-people-groups/people-groups-post-type.php:284
 msgid "Translations"
 msgstr "ትርጉሞች"
 
-#: dt-posts/posts.php:269
+#: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "ከእንግዲህ በ% s አይሰለጥንም"
+msgstr "ከእንግዲህ በ$s አይሰለጥንም"
 
-#: dt-posts/posts.php:277
+#: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "ከእንግዲህ በ% s ላይ አይመደብም"
+msgstr "ከእንግዲህ በ$s ላይ አይመደብም"
 
-#: dt-groups/base-setup.php:613
+#: dt-groups/base-setup.php:588
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "አዲስ አባላትን ለማከል ‹ፍጠር› ወይም ‹ምረጥ› ላይ ጠቅ ያድርጉ ፡፡"
 
-#: archive-template.php:28
+#: archive-template.php:31
 msgid "Filters"
 msgstr "ማጣሪያዎች"
 
-#: archive-template.php:479
+#: archive-template.php:546
+#: dt-assets/functions/enqueue-scripts.php:346
 msgid "Load More"
 msgstr "ተጨማሪ ይጫኑ"
 
-#: archive-template.php:491
+#: archive-template.php:558
 msgid "Filter Name"
 msgstr "የማጣሪያ ስም"
 
-#: archive-template.php:621
+#: 403.php:55
+#: archive-template.php:722
 #: dt-assets/parts/merge-details.php:70
+#: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:476
-#: dt-contacts/access-module.php:507
-#: dt-contacts/access-module.php:535
-#: dt-contacts/base-setup.php:405
-#: dt-contacts/base-setup.php:440
-#: dt-contacts/user-module.php:137
-#: dt-contacts/user-module.php:189
-#: single-template.php:345
-#: single-template.php:362
+#: dt-contacts/access-module.php:494
+#: dt-contacts/access-module.php:525
+#: dt-contacts/access-module.php:553
+#: dt-contacts/base-setup.php:418
+#: dt-contacts/base-setup.php:453
+#: dt-contacts/user-module.php:159
+#: single-template.php:350
+#: single-template.php:367
 #: template-merge-details.php:102
-#: template-merge-details.php:121
-#: template-merge-details.php:132
-#: template-merge-details.php:169
-#: template-new-post.php:126
+#: template-merge-details.php:125
+#: template-merge-details.php:143
+#: template-merge-details.php:192
+#: template-new-post.php:138
+#: template-new-post.php:164
 msgid "Cancel"
 msgstr "ሰርዝ"
 
-#: archive-template.php:626
+#: archive-template.php:727
 msgid "Filter Records"
 msgstr "የማጣሪያ መዝገቦች"
 
-#: dt-assets/functions/details-bar.php:90
+#: dt-assets/functions/details-bar.php:134
 #: dt-assets/parts/modals/modal-tasks.php:7
-#: dt-contacts/base-setup.php:175
-#: dt-groups/base-setup.php:115
+#: dt-posts/custom-post-type.php:196
 msgid "Tasks"
 msgstr "ተግባራት"
 
-#: dt-assets/functions/enqueue-scripts.php:123
-msgctxt "Dates"
-msgid "January"
-msgstr "ጥር"
-
-#: dt-assets/functions/enqueue-scripts.php:124
-msgctxt "Dates"
-msgid "February"
-msgstr "የካቲት"
-
-#: dt-assets/functions/enqueue-scripts.php:125
-msgctxt "Dates"
-msgid "March"
-msgstr "መጋቢት"
-
-#: dt-assets/functions/enqueue-scripts.php:126
-msgctxt "Dates"
-msgid "April"
-msgstr "ሚያዚያ"
-
-#: dt-assets/functions/enqueue-scripts.php:127
-msgctxt "Dates"
-msgid "May"
-msgstr "ግንቦት"
-
-#: dt-assets/functions/enqueue-scripts.php:128
-msgctxt "Dates"
-msgid "June"
-msgstr "ሰኔ"
-
-#: dt-assets/functions/enqueue-scripts.php:129
-msgctxt "Dates"
-msgid "July"
-msgstr "ሀምሌ"
-
-#: dt-assets/functions/enqueue-scripts.php:130
-msgctxt "Dates"
-msgid "August"
-msgstr "ነሐሴ"
-
-#: dt-assets/functions/enqueue-scripts.php:131
-msgctxt "Dates"
-msgid "September"
-msgstr "መስከረም"
-
-#: dt-assets/functions/enqueue-scripts.php:132
-msgctxt "Dates"
-msgid "October"
-msgstr "ጥቅምት"
-
-#: dt-assets/functions/enqueue-scripts.php:133
-msgctxt "Dates"
-msgid "November"
-msgstr "ህዳር"
-
-#: dt-assets/functions/enqueue-scripts.php:134
-msgctxt "Dates"
-msgid "December"
-msgstr "ታህሳስ"
-
-#: dt-assets/functions/enqueue-scripts.php:136
+#: dt-assets/functions/enqueue-scripts.php:113
 msgid "Regions of Focus"
 msgstr "የትኩረት ክልሎች"
 
-#: dt-assets/functions/enqueue-scripts.php:137
+#: dt-assets/functions/enqueue-scripts.php:114
 msgid "All Locations"
 msgstr "ሁሉም አካባቢዎች"
 
-#: dt-assets/functions/enqueue-scripts.php:138
+#: dt-assets/functions/enqueue-scripts.php:115
 msgid "Used Locations"
 msgstr "ያገለገሉ ቦታዎች"
 
-#: dt-assets/functions/enqueue-scripts.php:139
+#: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
 msgstr "ከ \"{{query}}\" ጋር የሚዛመድ ምንም ውጤቶች አልተገኙም"
 
-#: dt-assets/functions/enqueue-scripts.php:309
+#: dt-assets/functions/enqueue-scripts.php:300
 msgid "No filters, create one below"
 msgstr "ማጣሪያዎች የሉም ፣ ከዚህ በታች አንዱን ይፍጠሩ"
 
-#: dt-assets/functions/enqueue-scripts.php:310
+#: dt-assets/functions/enqueue-scripts.php:301
 msgid "No records found matching your filter."
 msgstr "ከማጣሪያዎ ጋር የሚዛመዱ ምንም መዝገቦች አልተገኙም።"
 
-#: dt-assets/parts/nav-topbar.php:242
-#: dt-groups/base-setup.php:1030
-#: dt-groups/base-setup.php:1103
-#: dt-groups/base-setup.php:1111
+#: dt-assets/parts/nav-topbar.php:273
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "ሁሉም"
 
-#: dt-contacts/access-module.php:1079
-#: dt-contacts/access-module.php:1080
+#: dt-contacts/access-module.php:1124
+#: dt-contacts/access-module.php:1125
 msgid "Subassigned only"
 msgstr "በንዑስ ተልእኮ ብቻ"
 
-#: dt-contacts/dmm-module.php:410
-#: dt-contacts/dmm-module.php:420
-#: dt-contacts/dmm-module.php:430
-#: dt-contacts/dmm-module.php:431
+#: dt-contacts/dmm-module.php:372
+#: dt-contacts/dmm-module.php:382
+#: dt-contacts/dmm-module.php:392
+#: dt-contacts/dmm-module.php:393
 msgid "Coached by me"
 msgstr "በእኔ የሰለጠንኩ"
 
-#: dt-groups/base-setup.php:1022
-msgctxt "List Filters"
-msgid "Assigned to me"
-msgstr "ለእኔ ተመደብኩ"
-
-#: dt-metrics/combined/critical-path.php:306
+#: dt-metrics/combined/critical-path.php:299
 msgid "Groups active at the end of the time range"
 msgstr "በጊዜ ክልል መጨረሻ ላይ ንቁ ቡድኖች"
 
-#: dt-metrics/combined/critical-path.php:316
+#: dt-metrics/combined/critical-path.php:309
 msgid "Churches active at the end of the time range"
 msgstr "በጊዜ ክልል መጨረሻ ላይ የሚሠሩ አብያተ ክርስቲያናት"
 
-#: dt-users/users.php:621
+#: dt-users/users.php:602
 msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "ብጁ ማጣሪያዎች"
 
-#: archive-template.php:24
+#: archive-template.php:27
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "አዲስ% s ፍጠር"
+msgstr "አዲስ$s ፍጠር"
 
-#: dt-assets/functions/enqueue-scripts.php:224
+#: dt-assets/functions/enqueue-scripts.php:210
 msgid "No task created"
 msgstr "ምንም ተግባር አልተፈጠረም"
 
-#: dt-assets/functions/enqueue-scripts.php:225
+#: dt-assets/functions/enqueue-scripts.php:211
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "አስታዋሽ"
 
-#: dt-assets/functions/enqueue-scripts.php:226
+#: dt-assets/functions/enqueue-scripts.php:212
 msgid "No note set"
 msgstr "ማስታወሻ አልተዘጋጀም"
 
-#: dt-assets/functions/enqueue-scripts.php:311
-#: dt-contacts/base-setup.php:520
+#: dt-assets/functions/enqueue-scripts.php:302
+#: dt-contacts/base-setup.php:528
 msgctxt "All records"
 msgid "All %s"
-msgstr "ሁሉም% s"
+msgstr "ሁሉም$s"
 
 #: dt-assets/functions/menu.php:45
 msgid "Disciple.Tools"
 msgstr "ደቀ መዝሙር"
 
-#: dt-assets/functions/enqueue-scripts.php:228
+#: dt-assets/functions/enqueue-scripts.php:214
 #: dt-assets/parts/merge-details.php:76
-#: dt-contacts/user-module.php:195
-#: template-merge-details.php:183
+#: dt-contacts/user-module.php:165
+#: dt-users/template-new-user.php:280
+#: template-merge-details.php:214
 msgid "Merge"
 msgstr "አዋህድ"
 
@@ -2469,219 +2380,169 @@ msgid "For example, If you click the 'No Answer' button 4 times, we will log tha
 msgstr "ለምሳሌ ፣ “መልስ የለም” የሚለውን ቁልፍ 4 ጊዜ ጠቅ ካደረጉ ፣ ይህንን ግንኙነት 4 ጊዜ ለመድረስ እንደሞከሩ እንገልፃለን ፣ ግን መልስ አልሰጡም ፡፡\n"
 "                ይህ እርምጃ እንዲሁ ‹ፈላጊ ዱካ› ወደ ‹የእውቂያ ሙከራ› ይለውጠዋል ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:195
-msgctxt "Optional Documentation"
-msgid "If the group/church regularly practices any of the elements listed, then click each element to add them inside the circle."
-msgstr "ቡድኑ / ቤተክርስቲያኑ ማንኛውንም የተዘረዘሩትን ንጥረ ነገሮች በመደበኛነት የሚለማመዱ ከሆነ በክበቡ ውስጥ ለማከል እያንዳንዱን ንጥረ ነገር ጠቅ ያድርጉ ፡፡"
-
-#: dt-assets/parts/modals/modal-help.php:196
-msgctxt "Optional Documentation"
-msgid "If the group has committed to be a church, indicate this by clicking the \"Church Commitment\" button to make the dotted line circle solid."
-msgstr "ቡድኑ ቤተክርስቲያን ለመሆን ቃል ከገባ ፣ የነጥብ መስመሩን ክብ ጠንካራ ለማድረግ የ “ቤተክርስቲያን ቃልኪዳን” ቁልፍን ጠቅ በማድረግ ይህንን ያመልክቱ።"
-
-#: dt-assets/parts/modals/modal-help.php:202
-msgctxt "Optional Documentation"
-msgid "This is the area where you manage the contacts that are a part of the group."
-msgstr "ይህ የቡድን አካል የሆኑ እውቂያዎችን የሚያስተዳድሩበት ቦታ ነው ፡፡"
-
-#: dt-assets/parts/modals/modal-help.php:207
-msgctxt "Optional Documentation"
-msgid "To remove a member, click the X icon to the right side of the member name. Click the footprint icon next to the members name to signify that this person is a leader of this group. (Multiple leaders can be assigned to a group)."
-msgstr "አባልን ለማስወገድ በአባላቱ ስም በቀኝ በኩል ያለውን የ X አዶን ጠቅ ያድርጉ። ይህ ሰው የዚህ ቡድን መሪ መሆኑን ለማሳየት ከአባላቱ ስም ቀጥሎ ያለውን አሻራ አዶ ጠቅ ያድርጉ። (ብዙ መሪዎች ለቡድን ሊመደቡ ይችላሉ) ፡፡"
-
-#: dt-assets/parts/modals/modal-help.php:208
-msgctxt "Optional Documentation"
-msgid "To add new members, click on the 'Create' or 'Select' and click on the name or search for them."
-msgstr "አዳዲስ አባላትን ለማከል በ ‹ፍጠር› ወይም ‹ምረጥ› ላይ ጠቅ ያድርጉ እና በስሙ ላይ ጠቅ ያድርጉ ወይም ለእነሱ ይፈልጉ ፡፡"
-
-#: dt-assets/parts/modals/modal-help.php:250
-msgctxt "Optional Documentation"
-msgid "Connections this group has with other groups in this system."
-msgstr "ይህ ቡድን በዚህ ስርዓት ውስጥ ካሉ ሌሎች ቡድኖች ጋር የሚያደርጋቸው ግንኙነቶች ፡፡"
-
-#: dt-assets/parts/modals/modal-help.php:49
-msgctxt "Optional Documentation"
-msgid "Four Fields"
-msgstr "አራት መስኮች"
-
-#: dt-assets/parts/modals/modal-help.php:50
+#: dt-groups/base-setup.php:625
 msgctxt "Optional Documentation"
 msgid "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
 msgstr "በአራቱ መስኮች ንድፍ ውስጥ 5 ካሬዎች አሉ። ከላይ ግራ አራት ማዕዘን ውስጥ በመጀመር በሰዓት አቅጣጫ መሄድ እና አምስተኛው በመሃል ላይ ሆነው ይቆማሉ ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:66
+#: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
 msgstr "ከስብሰባዎች እና ከውይይቶች ማስታወሻዎችን መቅዳት የሚችሉበት ቦታ ይህ ነው ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:67
+#: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid "Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
 msgstr "በአስተያየት ውስጥ እነሱን ለመጥቀስ @ እና የተጠቃሚ ስም ይተይቡ። ከዚያ ይህ ተጠቃሚ ማሳወቂያ ይቀበላል።"
 
-#: dt-assets/parts/modals/modal-help.php:68
+#: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
 msgid "This section also includes the history of activity, such as when the contact or group status became active etc."
 msgstr "ይህ ክፍል የእንቅስቃሴውን ታሪክም ያጠቃልላል ፣ ለምሳሌ የግንኙነት ወይም የቡድን ሁኔታ ንቁ በሚሆንበት ጊዜ ወዘተ ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:69
+#: dt-assets/parts/modals/modal-help.php:46
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr "ይህንን ክፍል በ ‹ሁሉም› ፣ በአስተያየቶች ወይም በ ‹እንቅስቃሴ› ማጣራት ይችላሉ ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:80
+#: dt-assets/parts/modals/modal-help.php:57
 msgctxt "Optional Documentation"
 msgid "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter."
 msgstr "ኃላፊነት በሚወስዷቸው እውቂያዎች ወይም ቡድኖች ላይ ለማተኮር እነዚህን ማጣሪያዎች ይጠቀሙ ፡፡ ነባሪ ማጣሪያዎቹ ከፍላጎቶችዎ ጋር የማይጣጣሙ ከሆነ የራስዎን ብጁ ማጣሪያ መፍጠር ይችላሉ ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:85
+#: dt-assets/parts/modals/modal-help.php:62
 msgctxt "Optional Documentation"
 msgid "Contacts List Tile"
 msgstr "የእውቂያዎች ዝርዝር ሰድር"
 
-#: dt-assets/parts/modals/modal-help.php:86
+#: dt-assets/parts/modals/modal-help.php:63
 msgctxt "Optional Documentation"
 msgid "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more."
 msgstr "የእርስዎ የእውቂያዎች ዝርዝር እዚህ ይታያል። እውቂያዎችን በሚያጣሩበት ጊዜ ሁሉ ዝርዝሩም እንዲሁ በዚህ ክፍል ውስጥ ይቀየራል ፡፡ እውቂያዎችዎን በአዲሱ ፣ በጣም ጥንታዊ ፣ በጣም በቅርብ በተሻሻለው እና ቢያንስ በቅርብ ጊዜ በተሻሻሉ መለየት ይችላሉ። ረጅም የእውቂያዎች ዝርዝር ካለዎት ሁሉም በአንድ ጊዜ አይጫኑም ፣ ስለሆነም ከዝርዝሩ ግርጌ ላይ ‘ተጨማሪ ጫን ተጨማሪ ዕውቂያ’ የሚለውን ቁልፍ ጠቅ ማድረግ የበለጠ እንዲጭኑ ያስችልዎታል።"
 
-#: dt-assets/parts/modals/modal-help.php:91
+#: dt-assets/parts/modals/modal-help.php:68
 msgctxt "Optional Documentation"
 msgid "Groups List Tile"
 msgstr "የቡድኖች ዝርዝር ሰድር"
 
-#: dt-assets/parts/modals/modal-help.php:92
+#: dt-assets/parts/modals/modal-help.php:69
 msgctxt "Optional Documentation"
 msgid "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more."
 msgstr "የቡድኖችዎ ዝርዝር እዚህ ይታያል። ቡድኖችን በሚያጣሩበት ጊዜ ሁሉ ዝርዝሩም እንዲሁ በዚህ ክፍል ውስጥ ይቀየራል ፡፡ ቡድኖችዎን በአዲስ ፣ በጣም ጥንታዊ ፣ በጣም በቅርብ በተሻሻለው እና ቢያንስ በቅርብ ጊዜ በተሻሻሉ መለየት ይችላሉ። ረጅም የቡድኖች ዝርዝር ካለዎት ሁሉም በአንድ ጊዜ አይጫኑም ፣ ስለሆነም ከዝርዝሩ ግርጌ ላይ ‘ጫን ተጨማሪ ቡድኖች’ የሚለውን ቁልፍ ጠቅ በማድረግ የበለጠ እንዲጭኑ ያስችሉዎታል።"
 
-#: dt-assets/parts/modals/modal-help.php:98
+#: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show closed contacts in the list."
 msgstr "በዝርዝሩ ውስጥ የተዘጉ ዕውቂያዎችን ለማሳየት ወይም ላለማሳየት ይህንን የመቀያየር መቀየሪያ ይጠቀሙ።"
 
-#: dt-assets/parts/modals/modal-help.php:104
+#: dt-assets/parts/modals/modal-help.php:81
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show inactive groups in the list."
 msgstr "በዝርዝሩ ውስጥ የማይንቀሳቀሱ ቡድኖችን ለማሳየት ወይም ላለማሳየት ይህንን የመቀያየር መቀየሪያ ይጠቀሙ።"
 
-#: dt-assets/parts/modals/modal-help.php:354
-msgctxt "Optional Documentation"
-msgid "The Initial Comment field is for any extra information. It will be saved as the first comment under the Activity and Comments Tile."
-msgstr "የመነሻ አስተያየት መስኩ ለማንኛውም ተጨማሪ መረጃ ነው ፡፡ በእንቅስቃሴ እና በአስተያየቶች ሰድር ስር እንደ መጀመሪያው አስተያየት ይቀመጣል።"
-
-#: dt-assets/parts/modals/modal-help.php:360
-msgctxt "Optional Documentation"
-msgid "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created."
-msgstr "የእውቂያውን ስም ከጻፉ በኋላ የተቻላቸውን ያህል ሌሎች መስኮችን ያጠናቅቁ ፣ ‹አስቀምጥ እና አርትዖትዎን ይቀጥሉ› የሚለውን ከመጫንዎ በፊት ፡፡ በሚቀጥለው ስክሪን ላይ ስለዚህ አዲስ ዕውቂያ ተጨማሪ መረጃ ማርትዕ እና ማከል አሁን ገና ተፈጥሯል ፡፡"
-
-#: dt-assets/parts/modals/modal-help.php:118
-msgctxt "Optional Documentation"
-msgid "Your Profile"
-msgstr "የእርስዎ መገለጫ"
-
-#: dt-assets/parts/modals/modal-help.php:119
+#: dt-assets/parts/modals/modal-help.php:96
 msgctxt "Optional Documentation"
 msgid "In this area you can see your user profile."
 msgstr "በዚህ አካባቢ የተጠቃሚዎን መገለጫ ማየት ይችላሉ ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:120
+#: dt-assets/parts/modals/modal-help.php:97
 msgctxt "Optional Documentation"
 msgid "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
 msgstr "ከእነዚህ የመገለጫ መስኮች ማናቸውንም እንዲሞሉ አይጠየቁም ፡፡ የቡድንዎን ፍላጎቶች ለማሟላት እንደ አማራጭ ናቸው ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:121
+#: dt-assets/parts/modals/modal-help.php:98
 msgctxt "Optional Documentation"
 msgid "By clicking 'Edit', you will be able adjust things like the language that this system operates in."
 msgstr "‹አርትዕ› ን ጠቅ በማድረግ ይህ ስርዓት የሚሠራበትን ቋንቋ ያሉ ነገሮችን ማስተካከል ይችላሉ ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:127
+#: dt-assets/parts/modals/modal-help.php:104
 msgctxt "Optional Documentation"
 msgid "These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
 msgstr "እርስዎ ኃላፊነት የሚሰማቸው እነዚህ አካባቢዎች ናቸው ፡፡ የ ‹አክል› ቁልፍን ጠቅ ማድረግ መምረጥ የሚቻልባቸውን አካባቢዎች ዝርዝር ያመጣል ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:132
+#: dt-assets/parts/modals/modal-help.php:109
 msgctxt "Optional Documentation"
 msgid "Your Notifications"
 msgstr "የእርስዎ ማሳወቂያዎች"
 
-#: dt-assets/parts/modals/modal-help.php:133
+#: dt-assets/parts/modals/modal-help.php:110
 msgctxt "Optional Documentation"
 msgid "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
 msgstr "በማሳወቂያ ምርጫዎችዎ ላይ በመመርኮዝ የድር ማሳወቂያዎችን እና የኢሜል ማሳወቂያዎችን ይቀበላሉ ፡፡ ምርጫዎን ለመቀየር የመቀየሪያ ቁልፎቹን ጠቅ ያድርጉ።"
 
-#: dt-assets/parts/modals/modal-help.php:135
+#: dt-assets/parts/modals/modal-help.php:112
 msgctxt "Optional Documentation"
 msgid "Notifications Turned On: The toggle will appear blue."
 msgstr "ማሳወቂያዎች በርተዋል-መቀየሪያው ሰማያዊ ይመስላል።"
 
-#: dt-assets/parts/modals/modal-help.php:136
+#: dt-assets/parts/modals/modal-help.php:113
 msgctxt "Optional Documentation"
 msgid "Notifications Turned Off: The toggle will appear grey."
 msgstr "ማሳወቂያዎች ጠፍተዋል-ተለዋጭው ግራጫማ ይመስላል።"
 
-#: dt-assets/parts/modals/modal-help.php:138
+#: dt-assets/parts/modals/modal-help.php:115
 msgctxt "Optional Documentation"
 msgid "Some of the types of notifications cannot be adjusted because they are required by the system."
 msgstr "አንዳንዶቹ የማሳወቂያ ዓይነቶች በስርዓቱ የሚፈለጉ በመሆናቸው ሊስተካከሉ አይችሉም ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:139
+#: dt-assets/parts/modals/modal-help.php:116
 msgctxt "Optional Documentation"
 msgid "Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
 msgstr "ስለ አዳዲስ አስተያየቶች ፣ የእውቂያ መረጃ ለውጦች ፣ የእውቂያ ማይልቶን እና የቡድን ጤና መለኪያዎች ማሳወቂያዎችን ማየት ይፈልጉ እንደሆነ እና በስርዓቱ ውስጥ ለሚከሰት ማናቸውም ዝመና ማሳወቂያ ይደርሰዎት እንደሆነ ያስተካክሉ ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:147
+#: dt-assets/parts/modals/modal-help.php:124
 msgctxt "Optional Documentation"
 msgid "Notifications Page"
 msgstr "የማሳወቂያዎች ገጽ"
 
-#: dt-assets/parts/modals/modal-help.php:148
+#: dt-assets/parts/modals/modal-help.php:125
 msgctxt "Optional Documentation"
 msgid "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
 msgstr "ይህ የማሳወቂያዎች ገጽ ለተጠቃሚዎች እና ለቡድኖች ዝመናዎችን የሚያነቡበት ነው። በእርስዎ መዝገብ ላይ ስለ እንቅስቃሴ ማሳወቂያዎችን ያሳያል።"
 
-#: dt-assets/parts/modals/modal-help.php:149
+#: dt-assets/parts/modals/modal-help.php:126
 msgctxt "Optional Documentation"
 msgid "All / Unread"
 msgstr "ሁሉም / ያልተነበበ"
 
-#: dt-assets/parts/modals/modal-help.php:150
+#: dt-assets/parts/modals/modal-help.php:127
 msgctxt "Optional Documentation"
 msgid "Click the 'All' button to show the full list of all of your notifications."
 msgstr "የሁሉም ማሳወቂያዎችዎን ሙሉ ዝርዝር ለማሳየት ‘ሁሉም’ የሚለውን ቁልፍ ጠቅ ያድርጉ።"
 
-#: dt-assets/parts/modals/modal-help.php:151
+#: dt-assets/parts/modals/modal-help.php:128
 msgctxt "Optional Documentation"
 msgid "Click the 'Unread' button to show the list of all of your unread notifications."
 msgstr "ሁሉንም ያልተነበቡ ማሳወቂያዎችዎን ዝርዝር ለማሳየት ‹ያልተነበበ› ቁልፍን ጠቅ ያድርጉ ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:153
+#: dt-assets/parts/modals/modal-help.php:130
 msgctxt "Optional Documentation"
 msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
 msgstr "ማሳወቂያው የተነበበ መሆኑን ለማሳየት በእያንዳንዱ ረድፍ በቀኝ በኩል በክብ የተሞሉ እያንዳንዱን ጠቅ ማድረግ ካልፈለጉ ታዲያ ሁሉንም ያሏቸውን መልዕክቶች በፍጥነት ለማስተካከል ከላይ ያለውን “ሁሉንም እንደ አንብ ምልክት ያድርጉ” የሚለውን አገናኝ ጠቅ ያድርጉ ፡፡ ተብሎ ተነበበ ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:155
+#: dt-assets/parts/modals/modal-help.php:132
 msgctxt "Optional Documentation"
 msgid "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
 msgstr "ስለ አዳዲስ አስተያየቶች ፣ ስለ የእውቂያ መረጃ ለውጦች ፣ ስለ ማይልስቶን እና ለቡድን ጤና መለኪያዎች ማሳወቂያዎችን ማየት ይፈልጉ እንደሆነ ለማስተካከል ወደ ‹ማሳወቂያዎች ቅንብሮች› አካባቢ ለመሄድ የ ‹ቅንብሮች› አገናኝን ጠቅ ያድርጉ እና በ ውስጥ ለሚከሰት ማንኛውም ዝመና ማሳወቂያ ይደርሰዎታል ፡፡ ስርዓቱን"
 
-#: dt-assets/parts/modals/modal-help.php:160
+#: dt-assets/parts/modals/modal-help.php:137
 msgctxt "Optional Documentation"
 msgid "Duplicate Contact page"
 msgstr "የተባዛ የእውቂያ ገጽ"
 
-#: dt-assets/parts/modals/modal-help.php:161
+#: dt-assets/parts/modals/modal-help.php:138
 msgctxt "Optional Documentation"
 msgid "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
 msgstr "ይህ የተባዛ የእውቂያ ገጽ በስርዓቱ የወሰዱትን እውቂያዎች (ስማቸውን ፣ ኢሜላቸውን እና ስልካቸውን በመፈተሽ) ምናልባት ቀድሞውኑ የሌላ ሌላ የእውቅያ ቅጂዎች ሊሆኑ የሚችሉበት ሁኔታዎችን መገምገም ፣ ውድቅ ማድረግ ወይም ማዋሃድ ነው ፡፡"
 
-#: dt-assets/parts/modals/modal-help.php:182
-#: dt-assets/parts/modals/modal-help.php:207
+#: dt-assets/parts/modals/modal-help.php:159
+#: dt-assets/parts/modals/modal-help.php:184
 msgctxt "Optional Documentation"
 msgid "Need more help?"
 msgstr "ተጨማሪ እገዛ ይፈልጋሉ?"
 
-#: dt-assets/parts/modals/modal-help.php:183
-#: dt-assets/parts/modals/modal-help.php:208
+#: dt-assets/parts/modals/modal-help.php:160
+#: dt-assets/parts/modals/modal-help.php:185
 msgctxt "Optional Documentation"
 msgid "Read the documentation"
 msgstr "ሰነዶቹን ያንብቡ"
@@ -2689,7 +2550,7 @@ msgstr "ሰነዶቹን ያንብቡ"
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "ወደ% s ተመለስ"
+msgstr "ወደ$s ተመለስ"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid "Set a reminder or a task with a note and receive a notification on the due date."
@@ -2711,119 +2572,121 @@ msgstr "ተግባር ፍጠር"
 msgid "Existing tasks for this record:"
 msgstr "ለዚህ መዝገብ ነባር ተግባራት"
 
-#: dt-assets/parts/nav-topbar.php:142
+#: dt-assets/parts/nav-topbar.php:155
 msgid "Theme Update Available!"
 msgstr "ገጽታ ዝመና ይገኛል!"
 
-#: dt-assets/functions/menu.php:86
+#: dt-assets/functions/menu.php:94
 #: dt-mapping/columns/add-users-column.php:56
-#: dt-metrics/combined/hover-map.php:264
-#: dt-metrics/combined/locations-list.php:257
-#: dt-users/template-user-management.php:62
-#: dt-users/user-management.php:90
+#: dt-metrics/combined/hover-map.php:265
+#: dt-metrics/combined/locations-list.php:258
+#: dt-users/template-user-management.php:76
+#: dt-users/user-management.php:108
 msgid "Users"
 msgstr "ተጠቃሚዎች"
 
-#: dt-contacts/access-module.php:102
+#: dt-contacts/access-module.php:115
 msgid "Select the main person who is responsible for reporting on this contact."
 msgstr "በዚህ ዕውቂያ ላይ ሪፖርት የማድረግ ኃላፊነት ያለበት ዋናውን ሰው ይምረጡ ፡፡"
 
-#: dt-contacts/access-module.php:153
-#: dt-contacts/base-setup.php:293
+#: dt-contacts/access-module.php:166
+#: dt-contacts/base-setup.php:334
 msgid "Contact Status"
 msgstr "የእውቂያ ሁኔታ"
 
-#: dt-contacts/access-module.php:168
+#: dt-contacts/access-module.php:181
 msgid "Dispatch Needed"
 msgstr "መላኪያ ያስፈልጋል"
 
-#: dt-contacts/access-module.php:179
+#: dt-contacts/access-module.php:192
 msgid "Paused"
 msgstr "ለአፍታ ቆሟል"
 
-#: dt-contacts/access-module.php:117
+#: dt-contacts/access-module.php:130
 msgid "Contact Attempt Needed"
 msgstr "የእውቂያ ሙከራ ያስፈልጋል"
 
-#: dt-contacts/access-module.php:121
+#: dt-contacts/access-module.php:134
 msgid "Contact Attempted"
 msgstr "እውቂያ ተሞከረ"
 
-#: dt-contacts/access-module.php:125
-#: dt-contacts/dmm-module.php:208
+#: dt-contacts/access-module.php:138
+#: dt-contacts/dmm-module.php:231
 msgid "Contact Established"
 msgstr "እውቂያ ተቋቋመ"
 
-#: dt-contacts/access-module.php:129
+#: dt-contacts/access-module.php:142
 msgid "First Meeting Scheduled"
 msgstr "የመጀመሪያ ስብሰባ መርሃግብር ተይዞለታል"
 
-#: dt-contacts/access-module.php:133
+#: dt-contacts/access-module.php:146
 msgid "First Meeting Complete"
 msgstr "የመጀመሪያ ስብሰባ ተጠናቅቋል"
 
-#: dt-contacts/access-module.php:141
+#: dt-contacts/access-module.php:154
 msgid "Being Coached"
 msgstr "አሰልጣኝ መሆን"
 
-#: dt-contacts/dmm-module.php:58
+#: dt-contacts/dmm-module.php:60
 msgctxt "Optional Documentation"
 msgid "Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
 msgstr "በእምነታቸው ጉዞ ውስጥ ግንኙነቱ የደረሰበትን የትኞቹን ወሳኝ ክስተቶች ይመድቡ ፡፡ እነዚህ በእውቂያ መንፈሳዊ ጉዞ ውስጥ ነጥቦችን ማክበር የሚገባቸው ነጥቦች ናቸው ነገር ግን በማንኛውም ቅደም ተከተል ሊከሰቱ ይችላሉ።"
 
-#: dt-contacts/dmm-module.php:62
+#: dt-contacts/dmm-module.php:64
 msgid "Has Bible"
 msgstr "መጽሐፍ ቅዱስ አለው"
 
-#: dt-contacts/dmm-module.php:66
+#: dt-contacts/dmm-module.php:69
 msgid "Reading Bible"
 msgstr "መጽሐፍ ቅዱስን ማንበብ"
 
-#: dt-contacts/dmm-module.php:70
+#: dt-contacts/dmm-module.php:74
 msgid "States Belief"
 msgstr "የክልሎች እምነት"
 
-#: dt-contacts/dmm-module.php:74
+#: dt-contacts/dmm-module.php:79
 msgid "Can Share Gospel/Testimony"
 msgstr "ወንጌል / ምስክርነት መጋራት ይችላል"
 
-#: dt-contacts/dmm-module.php:78
+#: dt-contacts/dmm-module.php:84
 msgid "Sharing Gospel/Testimony"
 msgstr "ወንጌል / ምስክርነት መጋራት"
 
-#: dt-contacts/dmm-module.php:86
+#: dt-contacts/dmm-module.php:94
 msgid "Baptizing"
 msgstr "ማጥመቅ"
 
-#: dt-contacts/dmm-module.php:90
+#: dt-contacts/dmm-module.php:99
 msgid "In Church/Group"
 msgstr "በቤተክርስቲያን / ቡድን ውስጥ"
 
-#: dt-contacts/dmm-module.php:94
+#: dt-contacts/dmm-module.php:104
 msgid "Starting Churches"
 msgstr "አብያተ ክርስቲያናትን ማስጀመር"
 
-#: dt-contacts/base-setup.php:279
+#: dt-contacts/base-setup.php:305
+#: dt-users/template-user-management.php:367
 msgid "Male"
 msgstr "ወንድ"
 
-#: dt-contacts/base-setup.php:280
+#: dt-contacts/base-setup.php:306
+#: dt-users/template-user-management.php:368
 msgid "Female"
 msgstr "ሴት"
 
-#: dt-contacts/access-module.php:198
+#: dt-contacts/base-setup.php:317
 msgid "Under 18 years old"
 msgstr "ከ 18 ዓመት በታች"
 
-#: dt-contacts/access-module.php:199
+#: dt-contacts/base-setup.php:318
 msgid "18-25 years old"
 msgstr "ከ 18-25 አመት"
 
-#: dt-contacts/access-module.php:200
+#: dt-contacts/base-setup.php:319
 msgid "26-40 years old"
 msgstr "ከ26-40 አመት"
 
-#: dt-contacts/access-module.php:201
+#: dt-contacts/base-setup.php:320
 msgid "Over 40 years old"
 msgstr "ከ 40 ዓመት በላይ"
 
@@ -2869,7 +2732,7 @@ msgctxt "Optional Documentation"
 msgid "A paused contact is one you are not currently interacting with but expect to in the future."
 msgstr "ለአፍታ የቆመ ግንኙነት በአሁኑ ጊዜ ከእርስዎ ጋር የማይገናኙት ነገር ግን ለወደፊቱ እንደሚጠብቁት ነው ፡፡"
 
-#: dt-contacts/access-module.php:258
+#: dt-contacts/access-module.php:248
 msgid "Reason Closed"
 msgstr "ምክንያት ተዘግቷል"
 
@@ -2892,96 +2755,89 @@ msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "ይህ ዕውቂያ ድር ጣቢያው ፣ ዝግጅቱ ወይም ስፍራው የመጣው ፡፡"
 
-#: dt-contacts/dmm-module.php:199
+#: dt-contacts/dmm-module.php:222
 msgid "No Answer"
 msgstr "መልስ የለም"
 
-#: dt-contacts/dmm-module.php:217
+#: dt-contacts/dmm-module.php:240
 msgid "Meeting Scheduled"
 msgstr "ስብሰባ መርሐግብር ተይዞለታል"
 
-#: dt-contacts/dmm-module.php:226
+#: dt-contacts/dmm-module.php:249
 msgid "Meeting Complete"
 msgstr "ስብሰባ ተጠናቅቋል"
 
-#: dt-contacts/dmm-module.php:235
+#: dt-contacts/dmm-module.php:258
 msgid "Meeting No-show"
 msgstr "ስብሰባ No-show"
 
-#: dt-contacts/user-module.php:39
+#: dt-contacts/user-module.php:42
 msgid "Corresponds to user"
 msgstr "ከተጠቃሚው ጋር ይዛመዳል"
 
-#: dt-contacts/user-module.php:40
+#: dt-contacts/user-module.php:43
 msgctxt "Optional Documentation"
 msgid "The id of the user this contact corresponds to"
 msgstr "ይህ ዕውቂያ የተጠቃሚው መታወቂያ ይዛመዳል"
 
-#: dt-contacts/base-setup.php:123
+#: dt-contacts/base-setup.php:151
 msgid "User"
 msgstr "ተጠቃሚ"
 
-#: dt-contacts/base-setup.php:154
-#: dt-groups/base-setup.php:87
+#: dt-posts/custom-post-type.php:176
 msgid "Tags"
 msgstr "መለያዎች"
 
-#: dt-contacts/base-setup.php:155
-#: dt-groups/base-setup.php:88
-msgctxt "Optional Documentation"
-msgid "A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags."
-msgstr "ተዛማጅ ዕቃዎችን በቡድን ለመመደብ ጠቃሚ መንገድ እና ከሚታወቁ ባህሪዎች ጋር የተዛመዱ የቡድን እውቂያዎችን ሊረዳ ይችላል ፡፡ ለምሳሌ የንግድ ሥራ ባለቤት ፣ ስፖርት አፍቃሪ ፡፡ እነዚህን መለያዎች በመጠቀም እውቂያዎቹም ሊጣሩ ይችላሉ ፡፡"
-
-#: dt-contacts/base-setup.php:265
+#: dt-contacts/base-setup.php:291
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "ይህ ዕውቂያ በሲስተሙ ውስጥ ካለው ሌላ ዕውቂያ ጋር ያለው ግንኙነት ፡፡"
 
-#: dt-contacts/dmm-module.php:159
+#: dt-contacts/dmm-module.php:182
 msgid "Coached by"
 msgstr "በሠለጠነ"
 
-#: dt-contacts/dmm-module.php:160
+#: dt-contacts/dmm-module.php:183
 msgctxt "Optional Documentation"
 msgid "Who is coaching this contact"
 msgstr "ይህንን ዕውቂያ ማን እያሰለጠነ ነው"
 
-#: dt-contacts/dmm-module.php:137
+#: dt-contacts/dmm-module.php:160
 msgctxt "Optional Documentation"
 msgid "Who is this contact coaching"
 msgstr "ይህ የግንኙነት ማሰልጠኛ ማነው?"
 
-#: dt-contacts/dmm-module.php:169
-#: dt-contacts/dmm-module.php:273
+#: dt-contacts/dmm-module.php:192
+#: dt-metrics/personal/activity-highlights.php:68
 msgid "Baptized by"
 msgstr "ተጠመቀ በ"
 
-#: dt-contacts/dmm-module.php:170
+#: dt-contacts/dmm-module.php:193
 msgctxt "Optional Documentation"
 msgid "Who baptized this contact"
 msgstr "ይህንን ግንኙነት ያጠመቀው ማን ነው"
 
-#: dt-contacts/dmm-module.php:180
+#: dt-contacts/dmm-module.php:203
 msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
 msgstr "ይህ ግንኙነት ማን ተጠመቀ?"
 
-#: dt-groups/base-setup.php:407
+#: dt-groups/base-setup.php:400
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
 msgstr "በዚህ ቡድን የተወከሉት የሰዎች ቡድኖች ፡፡"
 
-#: dt-groups/base-setup.php:455
+#: dt-groups/base-setup.php:463
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "ቡድኖች ይህ ግንኙነት አባል ነው።"
 
-#: dt-contacts/dmm-module.php:124
+#: dt-contacts/dmm-module.php:135
 msgid "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr "የተመደበውን ለተጠቃሚው እውቂያውን ለመከታተል ያነጋግሩ ወይም ተጠቃሚን ይረዱ ፡፡"
 
-#: dt-contacts/base-setup.php:205
-#: dt-groups/base-setup.php:368
+#: dt-contacts/base-setup.php:228
+#: dt-groups/base-setup.php:360
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "ይህ እውቂያ የሚገኝበት አጠቃላይ ቦታ።"
@@ -2989,244 +2845,243 @@ msgstr "ይህ እውቂያ የሚገኝበት አጠቃላይ ቦታ።"
 #: dt-contacts/contacts.php:1759
 msgctxt "My records"
 msgid "My %s"
-msgstr "የእኔ% s"
+msgstr "የእኔ$s"
 
-#: dt-core/configuration/restrict-site-access.php:232
+#: dt-core/configuration/restrict-site-access.php:234
 msgid "ERROR: Invalid username/password combination."
 msgstr "ስህተት: ልክ ያልሆነ የተጠቃሚ ስም / የይለፍ ቃል ጥምረት."
 
-#: dt-groups/base-setup.php:151
-#: dt-users/user-management.php:103
+#: dt-groups/base-setup.php:125
+#: dt-users/user-management.php:121
 msgid "Inactive"
 msgstr "እንቅስቃሴ-አልባ"
 
-#: dt-groups/base-setup.php:175
+#: dt-groups/base-setup.php:165
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
 msgstr "በአብዛኛው ቡድን የማያምኑ ሰዎች ቡድን።"
 
-#: dt-groups/base-setup.php:179
+#: dt-groups/base-setup.php:169
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr "3 ወይም ከዚያ በላይ አማኞች ያሉት ግን እንደ ቤተክርስቲያን የማይለይ ቡድን።"
 
-#: dt-groups/base-setup.php:183
+#: dt-groups/base-setup.php:173
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr "3 ወይም ከዚያ በላይ አማኞችን የያዘ እና እንደ ቤተክርስቲያን የሚለይ ቡድን።"
 
-#: dt-groups/base-setup.php:186
+#: dt-groups/base-setup.php:176
 msgid "Team"
 msgstr "ቡድን"
 
-#: dt-groups/base-setup.php:187
+#: dt-groups/base-setup.php:177
 msgctxt "Optional Documentation"
 msgid "A special group that is not meeting as a church (or trying to become church)."
 msgstr "እንደ ቤተክርስቲያን የማይሰበሰብ (ወይም ቤተክርስቲያን ለመሆን የማይሞክር) ልዩ ቡድን ፡፡"
 
-#: dt-groups/base-setup.php:125
+#: dt-groups/base-setup.php:138
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr "በዚህ ቡድን ላይ ሪፖርት የማድረግ ኃላፊነት ያለበት ዋናውን ሰው ይምረጡ ፡፡"
 
-#: dt-groups/base-setup.php:201
-#: dt-groups/base-setup.php:734
+#: dt-groups/base-setup.php:192
+#: dt-groups/base-setup.php:620
 msgid "Church Health"
 msgstr "የቤተክርስቲያን ጤና"
 
-#: dt-groups/base-setup.php:202
+#: dt-groups/base-setup.php:193
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "የአንድ ቡድን / ቤተክርስቲያን እድገት እና ጤና ይከታተሉ ፡፡"
 
-#: dt-groups/base-setup.php:206
-#: dt-metrics/personal/baptism-tree.php:138
+#: dt-groups/base-setup.php:197
+#: dt-metrics/personal/baptism-tree.php:139
 msgid "Baptism"
 msgstr "ጥምቀት"
 
-#: dt-groups/base-setup.php:207
+#: dt-groups/base-setup.php:198
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "ቡድኑ እየተጠመቀ ነው ፡፡"
 
-#: dt-groups/base-setup.php:211
+#: dt-groups/base-setup.php:202
 msgid "Bible Study"
 msgstr "የመጽሐፍ ቅዱስ ጥናት"
 
-#: dt-groups/base-setup.php:212
+#: dt-groups/base-setup.php:203
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "ቡድኑ መጽሐፍ ቅዱስን እያጠና ነው ፡፡"
 
-#: dt-groups/base-setup.php:216
+#: dt-groups/base-setup.php:207
 msgid "Communion"
 msgstr "ቁርባን"
 
-#: dt-groups/base-setup.php:217
+#: dt-groups/base-setup.php:208
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "ቡድኑ ቁርባን እየተለማመደ ነው ፡፡"
 
-#: dt-groups/base-setup.php:221
+#: dt-groups/base-setup.php:212
 msgid "Fellowship"
 msgstr "ህብረት"
 
-#: dt-groups/base-setup.php:222
+#: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "ቡድኑ ህብረት እያደረገ ነው ፡፡"
 
-#: dt-groups/base-setup.php:226
+#: dt-groups/base-setup.php:217
 msgid "Giving"
 msgstr "መስጠት"
 
-#: dt-groups/base-setup.php:227
+#: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "ቡድኑ እየሰጠ ነው ፡፡"
 
-#: dt-groups/base-setup.php:231
+#: dt-groups/base-setup.php:222
 msgid "Prayer"
 msgstr "ጸሎት"
 
-#: dt-groups/base-setup.php:232
+#: dt-groups/base-setup.php:223
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "ቡድኑ እየጸለየ ነው ፡፡"
 
-#: dt-groups/base-setup.php:236
+#: dt-groups/base-setup.php:227
 msgid "Praise"
 msgstr "ውዳሴ"
 
-#: dt-groups/base-setup.php:237
+#: dt-groups/base-setup.php:228
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "ቡድኑ እያደነቀ ነው ፡፡"
 
-#: dt-groups/base-setup.php:241
+#: dt-groups/base-setup.php:232
 msgid "Sharing the Gospel"
 msgstr "ወንጌልን መጋራት"
 
-#: dt-groups/base-setup.php:251
-#: dt-groups/base-setup.php:436
+#: dt-groups/base-setup.php:242
+#: dt-groups/base-setup.php:440
 msgid "Church Commitment"
 msgstr "የቤተክርስቲያን ቁርጠኝነት"
 
-#: dt-groups/base-setup.php:418
+#: dt-groups/base-setup.php:413
 msgid "Unbelievers"
 msgstr "የማያምኑ"
 
-#: dt-groups/base-setup.php:424
+#: dt-groups/base-setup.php:422
 msgid "Believers"
 msgstr "አማኞች"
 
-#: dt-groups/base-setup.php:430
+#: dt-groups/base-setup.php:431
 msgid "Accountable"
 msgstr "ተጠያቂነት ያለው"
 
-#: dt-groups/base-setup.php:437
+#: dt-groups/base-setup.php:441
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "ይህ ቤተክርስቲያን ነው - አዎ ወይስ አይደለም?"
 
-#: dt-groups/base-setup.php:442
+#: dt-groups/base-setup.php:449
 msgid "Multiplying"
 msgstr "ማባዛት"
 
-#: dt-groups/base-setup.php:443
+#: dt-groups/base-setup.php:450
 msgctxt "Optional Documentation"
 msgid "Number of people helping start other groups. How many members are multiplying?"
 msgstr "ሌሎች ቡድኖችን ለመጀመር የሚረዱ ሰዎች ብዛት። ስንት አባላት እየተባዙ ነው?"
 
-#: dt-groups/base-setup.php:263
+#: dt-groups/base-setup.php:254
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "ይህ ቡድን መገናኘት የጀመረበት ቀን ፡፡"
 
-#: dt-groups/base-setup.php:271
+#: dt-groups/base-setup.php:262
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "ይህ ቡድን ለመጀመሪያ ጊዜ ቤተክርስቲያን እንደሆነ የታወቀው ቀን ፡፡"
 
-#: dt-groups/base-setup.php:280
+#: dt-groups/base-setup.php:271
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "ይህ ቡድን ስብሰባውን ያቆመበት ቀን (የሚመለከተው ከሆነ)።"
 
-#: dt-groups/base-setup.php:327
+#: dt-groups/base-setup.php:319
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "ይህንን ቡድን የመሠረተው ቡድን ፡፡"
 
-#: dt-groups/base-setup.php:339
+#: dt-groups/base-setup.php:331
 msgctxt "Optional Documentation"
 msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
 msgstr "በግንኙነት ውስጥ ወላጅ / ልጅ ያልሆነ ተዛማጅ ቡድን። የሚተባበሩ ፣ ሊዋሃዱ ፣ በቅርቡ ሊከፋፈሉ ፣ ወዘተ ቡድኖችን ሊያመለክት ይችላል ፡፡"
 
-#: dt-groups/base-setup.php:351
+#: dt-groups/base-setup.php:343
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "ከዚህ ቡድን ውስጥ የተወለደው ቡድን ፡፡"
 
 #: dt-groups/base-setup.php:291
 msgctxt "Optional Documentation"
-msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group."
-msgstr "የዚህ ቡድን አባላት ብዛት። በአባላቱ ዝርዝር ውስጥ አዳዲስ አባላት ሲደመሩ ወይም ሲወገዱ በራስ-ሰር ይዘምናል። በስርዓቱ ውስጥ የሌሉ ነገር ግን የቡድኑ አባላት የሆኑ ሰዎችን ለማካተት ይህንን ቁጥር በእጅ ይለውጡ ፡፡"
-
-#: dt-groups/base-setup.php:300
-msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "የዚህ ቡድን አባላት የሆኑ እውቂያዎች።"
 
-#: dt-groups/base-setup.php:135
+#: dt-groups/base-setup.php:147
 msgctxt "Optional Documentation"
 msgid "The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
 msgstr "ይህንን ቡድን የተከላ እና / ወይም አሰልጣኝ የሆነው ሰው ፡፡ ለቡድን አንድ ሰው ብቻ ሊመደብ ይችላል ብዙ ሰዎች የዚህ ቡድን አሰልጣኞች / የቤተ ክርስቲያን ተከላዎች ሊሆኑ ይችላሉ ፡፡"
 
+#: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/contacts/milestones.php:68
 #: dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
-#: dt-users/template-user-management.php:207
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-users/template-user-management.php:568
 msgid "All Time"
 msgstr "ሁልጊዜ"
 
-#: dt-users/template-user-management.php:203
+#: dt-users/template-user-management.php:564
 msgid "This Year"
 msgstr "የህ አመት"
 
-#: dt-users/template-user-management.php:197
+#: dt-metrics/combined/daily-activity.php:77
+#: dt-users/template-user-management.php:558
 msgid "Last Month"
 msgstr "ባለፈው ወር"
 
-#: dt-users/template-user-management.php:193
+#: dt-metrics/combined/daily-activity.php:76
+#: dt-users/template-user-management.php:554
 msgid "This Month"
 msgstr "በዚህ ወር"
 
-#: dt-users/template-user-management.php:75
-#: dt-users/template-user-management.php:259
+#: dt-users/template-user-management.php:89
+#: dt-users/template-user-management.php:257
 msgid "Workload Status"
 msgstr "የሥራ ጫና ሁኔታ"
 
-#: dt-users/template-user-management.php:76
+#: dt-users/template-user-management.php:92
 msgid "Accept Needed"
 msgstr "ተቀበል ያስፈልጋል"
 
-#: dt-users/template-user-management.php:80
+#: dt-users/template-user-management.php:96
 msgid "Last Activity"
 msgstr "የመጨረሻ እንቅስቃሴ"
 
-#: dt-users/template-user-management.php:116
+#: dt-users/template-user-management.php:183
 msgid "No activity"
 msgstr "እንቅስቃሴ የለም"
 
-#: dt-users/template-user-management.php:140
+#: dt-users/template-user-management.php:207
 msgid "Multiplier Name"
 msgstr "የብዝሃ ስም"
 
-#: dt-users/template-user-management.php:175
+#: dt-users/template-user-management.php:536
 msgid "Pending"
 msgstr "በመጠባበቅ ላይ"
 
-#: dt-users/template-user-management.php:182
+#: dt-users/template-user-management.php:543
 msgid "Unread Notifications"
 msgstr "ያልተነበቡ ማሳወቂያዎች"
 
@@ -3235,96 +3090,67 @@ msgstr "ያልተነበቡ ማሳወቂያዎች"
 msgid "User Status"
 msgstr "የተጠቃሚ ሁኔታ"
 
-#: dt-users/template-user-management.php:334
+#: dt-users/template-new-user.php:156
+#: dt-users/template-user-management.php:428
 msgid "Click here to see roles documentation"
 msgstr "ሚናዎችን ሰነድ ለማየት እዚህ ጠቅ ያድርጉ"
 
-#: dt-users/template-user-management.php:362
+#: dt-users/template-user-management.php:456
 msgid "Save Roles"
 msgstr "ሚናዎችን ይቆጥቡ"
 
-#: dt-users/template-user-management.php:284
-#: template-settings.php:218
+#: dt-users/template-user-management.php:280
+#: template-settings.php:334
 msgid "Search Locations"
 msgstr "ቦታዎችን ይፈልጉ"
 
-#: dt-users/template-user-management.php:297
+#: dt-users/template-user-management.php:308
 msgid "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
 msgstr "አዳዲሶቹ አዳዲስ እውቂያዎችን ለመቀበል ተገኝነትዎን እንዲያውቅ የማይገኙባቸውን ቀናት ያዘጋጁ"
 
-#: dt-users/template-user-management.php:308
+#: dt-users/template-user-management.php:319
 msgid "Travel or Away Dates"
 msgstr "የጉዞ ወይም የሩቅ ቀናት"
 
-#: dt-users/template-user-management.php:419
+#: dt-users/template-user-management.php:229
 msgid "Daily Activity"
 msgstr "ዕለታዊ እንቅስቃሴ"
 
-#: dt-users/user-management.php:101
+#: dt-users/user-management.php:119
 msgid "Away"
 msgstr "ራቅ"
 
-#: dt-users/user-management.php:102
+#: dt-users/user-management.php:120
 msgid "Inconsistent"
 msgstr "ወጥነት የለውም"
 
-#: dt-users/user-management.php:149
+#: dt-users/user-management.php:172
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "%1$s ከ %3$s ቀናት በኋላ በ %2$s ላይ ተቀባይነት አግኝቷል"
 
-#: dt-users/user-management.php:150
+#: dt-users/user-management.php:173
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "%1$s ለ %2$s ቀናት የእውቂያ ሙከራን በመጠባበቅ ላይ"
 
-#: dt-users/user-management.php:151
+#: dt-users/user-management.php:174
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "ከ %1$s ጋር መገናኘት ከ %3$s ቀናት በኋላ በ %2$s ላይ ሙከራ ተደርጓል"
 
-#: dt-users/user-management.php:339
-msgctxt "Updated record Bob"
-msgid "Updated contact %s"
-msgstr "የዘመነ ዕውቂያ% s"
-
-#: dt-users/user-management.php:342
-msgctxt "Updated record Bob"
-msgid "Updated group %s"
-msgstr "የዘመነ ቡድን% s"
-
-#: dt-users/user-management.php:347
-msgctxt "Commented on record Bob"
-msgid "Commented on contact %s"
-msgstr "በእውቂያ% s ላይ አስተያየት ሰጥቷል"
-
-#: dt-users/user-management.php:350
-msgctxt "Commented on record Bob"
-msgid "Commented on group %s"
-msgstr "በቡድን% s ላይ አስተያየት ሰጠ"
-
-#: dt-users/user-management.php:355
-msgctxt "Created record Bob"
-msgid "Created contact %s"
-msgstr "እውቂያ ተፈጥሯል% s"
-
-#: dt-users/user-management.php:358
-msgctxt "Created record Bob"
-msgid "Created group %s"
-msgstr "ቡድን% s ተፈጥሯል"
-
-#: dt-users/user-management.php:362
+#: dt-users/user-metrics.php:115
 msgid "Logged In"
 msgstr "ገብቷል"
 
-#: dt-users/user-management.php:365
+#: dt-users/user-metrics.php:118
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "በ% s ላይ ውድቅ የሆነ ምደባ"
+msgstr "በ$s ላይ ውድቅ የሆነ ምደባ"
 
-#: dt-users/user-management.php:313
+#: dt-users/user-management.php:289
 msgid "%s days since last update"
-msgstr "ካለፈው ዝመና ጀምሮ% s ቀናት"
+msgstr "ካለፈው ዝመና ጀምሮ$s ቀናት"
 
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
@@ -3336,82 +3162,83 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "ይህንን ተግባር በ %1$s: %2$s ላይ አድርገውታል"
 
-#: dt-contacts/access-module.php:457
-#: dt-contacts/access-module.php:488
-#: dt-contacts/access-module.php:519
-#: dt-contacts/base-setup.php:419
+#: dt-contacts/access-module.php:475
+#: dt-contacts/access-module.php:506
+#: dt-contacts/access-module.php:537
+#: dt-contacts/base-setup.php:432
 msgid "Choose an option:"
 msgstr "አንድ አማራጭ ይምረጡ"
 
-#: dt-contacts/access-module.php:479
-#: dt-contacts/access-module.php:510
-#: dt-contacts/access-module.php:538
-#: dt-contacts/base-setup.php:443
+#: dt-contacts/access-module.php:497
+#: dt-contacts/access-module.php:528
+#: dt-contacts/access-module.php:556
+#: dt-contacts/base-setup.php:456
 msgid "Confirm"
 msgstr "አረጋግጥ"
 
-#: dt-groups/base-setup.php:603
+#: dt-groups/base-setup.php:578
 msgid "Create"
 msgstr "ፍጠር"
 
-#: dt-groups/base-setup.php:608
+#: dt-groups/base-setup.php:583
 msgid "Select"
 msgstr "ይምረጡ"
 
-#: dt-groups/base-setup.php:620
+#: dt-groups/base-setup.php:595
 msgctxt "Add members modal"
 msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
 msgstr "በ ‹አባል ዝርዝር› መስክ ውስጥ ከዚህ ቡድን ጋር ለማከል ነባር የእውቂያ ስም ይተይቡ ፡፡"
 
-#: dt-notifications/notifications.php:387
+#: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "ከ% s ደቂቃ በፊት"
+msgstr[0] "ከ$s ደቂቃ በፊት"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:392
+#: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "ከ% s ሰዓት በፊት"
+msgstr[0] "ከ$s ሰዓት በፊት"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:397
+#: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "ከ% s ቀን በፊት"
+msgstr[0] "ከ$s ቀን በፊት"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:402
+#: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "ከሳምንት በፊት ከ% s"
+msgstr[0] "ከሳምንት በፊት ከ$s"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:407
+#: dt-metrics/combined/daily-activity.php:78
+#: dt-metrics/combined/daily-activity.php:79
+#: dt-metrics/combined/daily-activity.php:80
+#: dt-metrics/combined/daily-activity.php:81
+#: dt-metrics/combined/daily-activity.php:82
+#: dt-notifications/notifications.php:497
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "% s ከወር በፊት"
+msgstr[0] "$s ከወር በፊት"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:421
+#: dt-notifications/notifications.php:511
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "ከዓመት በፊት% s"
+msgstr[0] "ከዓመት በፊት$s"
 msgstr[1] ""
 
-#: dt-assets/functions/enqueue-scripts.php:192
-msgid "Created record on {}"
-msgstr "መዝገብ በ {} ላይ ተፈጠረ"
-
-#: dt-assets/functions/enqueue-scripts.php:198
+#: dt-assets/functions/enqueue-scripts.php:175
 msgid "Translate with Google Translate"
 msgstr "በ Google ትርጉም ይተርጉሙ"
 
-#: dt-assets/functions/enqueue-scripts.php:199
+#: dt-assets/functions/enqueue-scripts.php:176
 msgid "Hide Translation"
 msgstr "ትርጉም ደብቅ"
 
-#: dt-assets/functions/enqueue-scripts.php:271
+#: dt-assets/functions/enqueue-scripts.php:258
 msgid "Add"
 msgstr "አክል"
 
@@ -3419,6 +3246,7 @@ msgstr "አክል"
 msgid "Comment"
 msgstr "አስተያየት"
 
+#: archive-template.php:441
 #: dt-assets/parts/loop-activity-comment.php:41
 msgid "Type:"
 msgstr "ዓይነት"
@@ -3433,108 +3261,74 @@ msgstr "ከሌላ ደቀመዝሙር. Tools ጣቢያ ጋር ከአጋርነት 
 
 #: dt-mapping/geocode-api/mapbox-api.php:286
 #: dt-mapping/geocode-api/mapbox-api.php:321
-#: dt-users/template-user-management.php:272
-#: template-settings.php:203
+#: dt-users/template-user-management.php:268
+#: template-settings.php:319
 msgid "add"
 msgstr "ጨምር"
 
-#: dt-posts/posts.php:392
+#: dt-posts/posts.php:441
 msgid "%s removed"
-msgstr "% s ተወግዷል"
+msgstr "$s ተወግዷል"
 
-#: dt-users/template-user-management.php:79
+#: dt-contacts/access-module.php:1283
+#: dt-users/template-user-management.php:95
 msgid "Location"
 msgstr "አካባቢ"
 
-#: dt-users/template-user-management.php:169
+#: dt-users/template-user-management.php:530
 msgid "Updates Needed"
 msgstr "ዝመናዎች ያስፈልጋሉ"
 
-#: dt-users/template-user-management.php:189
+#: dt-users/template-user-management.php:550
 msgid "Assignments"
 msgstr "ምደባዎች"
 
-#: dt-users/template-user-management.php:217
+#: dt-users/template-user-management.php:582
 msgid "Pace"
 msgstr "ፍጥነት"
 
-#: dt-users/template-user-management.php:218
+#: dt-users/template-user-management.php:583
 msgid "Assigned and not accepted"
 msgstr "ተመድቦ አልተቀበለም"
 
-#: dt-users/template-user-management.php:220
+#: dt-users/template-user-management.php:585
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr "ላለፉት 10 እውቂያዎች ከተቀበለው እስከ እውቂያ ጊዜ ድረስ ተቀባይነት አግኝቷል"
 
-#: dt-users/template-user-management.php:222
+#: dt-users/template-user-management.php:587
 msgid "Accepted with no contact attempt"
 msgstr "ያለ የግንኙነት ሙከራ ተቀበለ"
 
-#: dt-users/template-user-management.php:224
+#: dt-users/template-user-management.php:589
 msgid "Oldest 10 update needed"
 msgstr "በጣም የቆየ 10 ዝመና ያስፈልጋል"
 
-#: dt-users/template-user-management.php:226
+#: dt-users/template-user-management.php:591
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "ላለፉት 10 እውቂያዎች ለመገናኘት ሙከራ ከተመደበበት ጊዜ"
 
-#: dt-users/template-user-management.php:272
-#: dt-users/template-user-management.php:275
+#: dt-users/template-user-management.php:268
+#: dt-users/template-user-management.php:271
 msgid "Location Responsibility"
 msgstr "የአካባቢ ኃላፊነት"
 
-#: dt-users/template-user-management.php:299
+#: dt-users/template-user-management.php:310
 msgid "Schedule Unavailability"
 msgstr "የጊዜ ሰሌዳ አለመገኘት"
 
-#: dt-users/user-management.php:92
+#: dt-users/user-management.php:110
 msgid "Add User"
 msgstr "ተጠቃሚን አክል"
 
-#: dt-users/users.php:918
+#: dt-users/users.php:390
 msgid "Email already exists and is a user on this site"
 msgstr "ኢሜል ቀድሞውኑ አለ እናም በዚህ ጣቢያ ላይ ተጠቃሚ ነው"
 
-#: dt-users/users.php:924
+#: dt-users/users.php:396
 msgid "Failed to add user to site."
 msgstr "ተጠቃሚን ወደ ጣቢያ ማከል አልተሳካም።"
 
-#: dt-assets/functions/enqueue-scripts.php:114
-msgctxt "Abbreviation of Sunday"
-msgid "Su"
-msgstr "ሱ"
-
-#: dt-assets/functions/enqueue-scripts.php:115
-msgctxt "Abbreviation of Monday"
-msgid "Mo"
-msgstr "ሞ"
-
-#: dt-assets/functions/enqueue-scripts.php:116
-msgctxt "Abbreviation of Tuesday"
-msgid "Tu"
-msgstr "ቱ"
-
-#: dt-assets/functions/enqueue-scripts.php:117
-msgctxt "Abbreviation of Wednesday"
-msgid "We"
-msgstr "እኛ"
-
-#: dt-assets/functions/enqueue-scripts.php:118
-msgctxt "Abbreviation of Thursday"
-msgid "Th"
-msgstr "ኛ"
-
-#: dt-assets/functions/enqueue-scripts.php:119
-msgctxt "Abbreviation of Friday"
-msgid "Fr"
-msgstr "ኣብ ሕ.መ.ኣ."
-
-#: dt-assets/functions/enqueue-scripts.php:120
-msgctxt "Abbreviation of Saturday"
-msgid "Sa"
-msgstr "ሳ"
-
-#: dt-assets/functions/enqueue-scripts.php:223
+#: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
 msgstr "እንደ ተጠናቀቀ ምልክት ያድርጉ"
 
@@ -3546,30 +3340,29 @@ msgstr "2 እውቂያዎች ዝመና ይፈልጋሉ"
 msgid "Quick Action Buttons"
 msgstr "ፈጣን የድርጊት አዝራሮች"
 
-#: dt-groups/base-setup.php:655
-#: dt-metrics/groups/tree.php:83
-#: dt-metrics/personal/group-tree.php:84
+#: dt-metrics/groups/tree.php:84
+#: dt-metrics/personal/group-tree.php:85
 msgid "Members"
 msgstr "አባላት"
 
-#: dt-assets/parts/modals/modal-help.php:79
+#: dt-assets/parts/modals/modal-help.php:56
 msgctxt "Optional Documentation"
 msgid "Default and Custom Filters Tile"
 msgstr "ነባሪ እና ብጁ ማጣሪያዎች ሰድር"
 
-#: dt-assets/parts/modals/modal-help.php:97
+#: dt-assets/parts/modals/modal-help.php:74
 msgctxt "Optional Documentation"
 msgid "Closed Contacts Switch"
 msgstr "ዝግ እውቂያዎች ቀይር"
 
-#: dt-assets/parts/modals/modal-help.php:103
+#: dt-assets/parts/modals/modal-help.php:80
 msgctxt "Optional Documentation"
 msgid "Inactive Groups Switch"
 msgstr "እንቅስቃሴ-አልባ ቡድኖች ቀይር"
 
-#: dt-assets/parts/modals/modal-help.php:152
-#: dt-assets/parts/nav-topbar.php:266
-#: template-notifications.php:60
+#: dt-assets/parts/modals/modal-help.php:129
+#: dt-assets/parts/nav-topbar.php:297
+#: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "ሁሉም እንደተነበቡ ምልክት ያድርጉባቸው"
 
@@ -3577,87 +3370,90 @@ msgstr "ሁሉም እንደተነበቡ ምልክት ያድርጉባቸው"
 msgid "Task Type"
 msgstr "የተግባር ዓይነት"
 
-#: dt-contacts/base-setup.php:294
+#: dt-contacts/base-setup.php:335
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
 msgstr "የግንኙነት ሁኔታ ከእውቂያው ጋር በመግባባት ላይ ያለውን እድገት ይገልጻል ፡፡"
 
-#: dt-contacts/base-setup.php:119
+#: dt-contacts/base-setup.php:147
 msgid "Contact Type"
 msgstr "የእውቂያ ዓይነት"
 
-#: dt-posts/custom-post-type.php:154
+#: dt-posts/custom-post-type.php:155
 msgid "Last Modified"
 msgstr "ለመጨረሻ ጊዜ የተሻሻለው"
 
-#: dt-core/configuration/config-site-defaults.php:274
+#: dt-core/configuration/config-site-defaults.php:367
 msgid "New Comments"
 msgstr "አዲስ አስተያየቶች"
 
-#: dt-groups/base-setup.php:242
+#: dt-groups/base-setup.php:233
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "ቡድኑ ወንጌልን እያካፈለ ነው ፡፡"
 
-#: dt-groups/base-setup.php:247
+#: dt-groups/base-setup.php:238
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "ቡድኑ አመራሮች አሉት ፡፡"
 
-#: dt-groups/base-setup.php:252
+#: dt-groups/base-setup.php:243
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "ቡድኑ ቤተክርስቲያን ለመሆን ቃል ገብቷል ፡፡"
 
-#: dt-groups/base-setup.php:419
+#: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "በዚህ ቡድን ውስጥ የማያምኑ ሰዎች ቁጥር።"
 
-#: dt-groups/base-setup.php:425
+#: dt-groups/base-setup.php:423
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "በዚህ ቡድን ውስጥ ያሉት የአማኞች ብዛት።"
 
-#: dt-groups/base-setup.php:431
+#: dt-groups/base-setup.php:432
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "በተጠያቂነት ቡድን ውስጥ ያሉ ሰዎች ብዛት።"
 
-#: dt-posts/posts.php:281
+#: dt-posts/posts.php:314
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
 msgstr "%1$s በ %2$s ላይ እንደ ሰዎች ቡድን ታክሏል"
 
-#: dt-posts/posts.php:282
+#: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "% s ወደ ሰዎች ቡድኖች ታክሏል"
+msgstr "$s ወደ ሰዎች ቡድኖች ታክሏል"
 
-#: dt-posts/posts.php:284
+#: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
 msgstr "%1$s በ %2$s ላይ ከሰዎች ቡድኖች ተወግዷል"
 
-#: dt-posts/posts.php:285
+#: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "% s ከሰዎች ቡድኖች ተወግዷል"
+msgstr "$s ከሰዎች ቡድኖች ተወግዷል"
 
-#: dt-users/users.php:755
+#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "እውቂያ ይመልከቱ"
 
-#: template-notifications.php:80
-#: template-notifications.php:83
+#: template-notifications.php:86
+#: template-notifications.php:89
 msgid "Load more notifications"
 msgstr "ተጨማሪ ማሳወቂያዎችን ይጫኑ"
 
 #: dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:62
+#: dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "እውቂያ"
 
-#: dt-assets/functions/enqueue-scripts.php:141
+#: dt-assets/functions/enqueue-scripts.php:118
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
 msgstr "ከ %2$s ጋር የሚዛመዱ የ %1$s ንጥሎችን በማሳየት ላይ"
@@ -3667,7 +3463,7 @@ msgstr "ከ %2$s ጋር የሚዛመዱ የ %1$s ንጥሎችን በማሳየት
 msgid "Milestones Map"
 msgstr "የማይል ድንጋዮች ካርታ"
 
-#: dt-users/user-management.php:152
+#: dt-users/user-management.php:175
 msgid "Unable to update"
 msgstr "ማዘመን አልተቻለም"
 
@@ -3676,38 +3472,38 @@ msgctxt "Reason Closed label"
 msgid "GDPR request"
 msgstr "የ GDPR ጥያቄ"
 
-#: dt-contacts/dmm-module.php:109
+#: dt-contacts/dmm-module.php:120
 msgid "Seeker"
 msgstr "ፈላጊ"
 
-#: dt-contacts/dmm-module.php:112
+#: dt-contacts/dmm-module.php:123
 msgid "Believer"
 msgstr "አማኝ"
 
-#: dt-contacts/dmm-module.php:115
+#: dt-contacts/dmm-module.php:126
 msgid "Leader"
 msgstr "መሪ"
 
-#: dt-contacts/contacts-transfer.php:552
+#: dt-contacts/contacts-transfer.php:1150
 msgid "redacted email"
 msgstr "የተቀየረ ኢሜል"
 
-#: dt-contacts/contacts-transfer.php:553
+#: dt-contacts/contacts-transfer.php:1151
 msgid "redacted name"
 msgstr "የተቀየረ ስም"
 
-#: dt-contacts/contacts-transfer.php:554
+#: dt-contacts/contacts-transfer.php:1152
 msgid "redacted"
 msgstr "እንደገና ተቀይሯል"
 
-#: dt-contacts/access-module.php:63
+#: dt-contacts/access-module.php:64
 msgid "Partner"
 msgstr "አጋር"
 
 #. translators: %s: Site name.
-#: dt-core/configuration/restrict-site-access.php:290
+#: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "DT የጣቢያ ስም% s"
+msgstr "DT የጣቢያ ስም$s"
 
 #: dt-metrics/charts-base.php:132
 msgid "No Results"
@@ -3723,8 +3519,8 @@ msgstr "የማንዣበብ ካርታ"
 msgid "Locations List"
 msgstr "የቦታዎች ዝርዝር"
 
-#: dt-metrics/groups/tree.php:84
-#: dt-metrics/personal/group-tree.php:85
+#: dt-metrics/groups/tree.php:85
+#: dt-metrics/personal/group-tree.php:86
 msgid "View Record"
 msgstr "መዝገብ ይመልከቱ"
 
@@ -3744,23 +3540,23 @@ msgstr "ምንጮች ገበታ"
 msgid "Groups Overview"
 msgstr "የቡድኖች አጠቃላይ እይታ"
 
-#: dt-metrics/groups/tree.php:81
-#: dt-metrics/personal/group-tree.php:82
+#: dt-metrics/groups/tree.php:82
+#: dt-metrics/personal/group-tree.php:83
 msgid "Highlight Active"
 msgstr "ንቁ"
 
-#: dt-metrics/groups/tree.php:82
-#: dt-metrics/personal/group-tree.php:83
+#: dt-metrics/groups/tree.php:83
+#: dt-metrics/personal/group-tree.php:84
 msgid "Highlight Churches"
 msgstr "አብያተ ክርስቲያናትን አጉልተው ያሳዩ"
 
-#: dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88
+#: dt-metrics/groups/tree.php:88
+#: dt-metrics/personal/group-tree.php:89
 msgid "Total Members"
 msgstr "ጠቅላላ አባላት"
 
-#: dt-metrics/groups/tree.php:88
-#: dt-metrics/personal/group-tree.php:89
+#: dt-metrics/groups/tree.php:89
+#: dt-metrics/personal/group-tree.php:90
 msgid "View Group"
 msgstr "ቡድንን ይመልከቱ"
 
@@ -3768,7 +3564,7 @@ msgstr "ቡድንን ይመልከቱ"
 msgid "My Baptism Generation Tree"
 msgstr "የእኔ የጥምቀት ትውልድ ዛፍ"
 
-#: dt-metrics/personal/coaching-tree.php:142
+#: dt-metrics/personal/coaching-tree.php:143
 msgid "Disciple"
 msgstr "ደቀ መዝሙር"
 
@@ -3781,74 +3577,74 @@ msgstr "ስታትስቲክስ እንደ"
 msgid "Coverage Map"
 msgstr "የሽፋን ካርታ"
 
-#: dt-users/hover-coverage-map.php:140
+#: dt-users/hover-coverage-map.php:141
 msgid "Locations Covered"
 msgstr "የተሸፈኑ ቦታዎች"
 
-#: dt-users/hover-coverage-map.php:191
+#: dt-users/hover-coverage-map.php:192
 msgid "Locations with Active Users"
 msgstr "አካባቢዎች ንቁ ተጠቃሚዎች ያላቸው"
 
-#: dt-users/hover-coverage-map.php:242
+#: dt-users/hover-coverage-map.php:243
 msgid "Locations with Inactive Assigned"
 msgstr "እንቅስቃሴ-አልባ የተመደቡባቸው ቦታዎች"
 
-#: dt-users/template-user-management.php:370
+#: dt-users/template-user-management.php:464
 msgid "Access by Source"
 msgstr "መድረሻ በ ምንጭ"
 
-#: dt-users/template-user-management.php:376
-#: dt-users/users.php:780
+#: dt-users/template-user-management.php:470
+#: dt-users/user-hooks-and-config.php:524
 msgid "All Sources - gives access to all contacts"
 msgstr "ሁሉም ምንጮች - ለሁሉም እውቂያዎች መዳረሻ ይሰጣል"
 
-#: dt-users/template-user-management.php:382
-#: dt-users/users.php:787
+#: dt-users/template-user-management.php:476
+#: dt-users/user-hooks-and-config.php:531
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "ብጁ - የራሳቸውን እውቂያዎች እና ከዚህ በታች ያሉትን የተመረጡት ምንጮች ሁሉ ዕውቂያዎች ይድረሱባቸው"
 
-#: dt-users/template-user-management.php:388
-#: dt-users/users.php:794
+#: dt-users/template-user-management.php:482
+#: dt-users/user-hooks-and-config.php:538
 msgid "No Sources - only own contacts"
 msgstr "ምንም ምንጮች የሉም - የራሳቸው እውቂያዎች ብቻ ናቸው"
 
-#: dt-users/template-user-management.php:394
+#: dt-users/template-user-management.php:488
 msgid "Sources List"
 msgstr "ምንጮች ዝርዝር"
 
-#: dt-users/template-user-management.php:404
+#: dt-users/template-user-management.php:500
 msgid "Save Allowed Sources"
 msgstr "የተፈቀዱ ምንጮችን ያስቀምጡ"
 
-#: dt-users/user-management.php:153
+#: dt-users/template-new-user.php:61
 msgid "Add New User"
 msgstr "አዲስ ተጠቃሚ ያክሉ"
 
-#: dt-users/user-management.php:155
+#: dt-users/template-new-user.php:69
 msgid "There are some errors in your form."
 msgstr "በቅጽዎ ውስጥ አንዳንድ ስህተቶች አሉ።"
 
-#: dt-users/user-management.php:156
+#: dt-users/template-new-user.php:75
 msgid "Contact to make a user (optional)"
 msgstr "ተጠቃሚ ለማድረግ ዕውቂያ (አስገዳጅ ያልሆነ)"
 
-#: dt-users/user-management.php:159
+#: dt-users/template-new-user.php:160
 msgid "Create User"
 msgstr "ተጠቃሚ ይፍጠሩ"
 
-#: dt-users/user-management.php:160
+#: dt-users/user-management.php:178
 msgid "Email address is already in the system as a user!"
 msgstr "የኢሜል አድራሻ ቀደም ሲል እንደ ተጠቃሚ በስርዓቱ ውስጥ አለ!"
 
-#: dt-users/user-management.php:161
+#: dt-users/user-management.php:179
 msgid "Username is already in the system as a user!"
 msgstr "የተጠቃሚ ስም አስቀድሞ እንደ ተጠቃሚ በስርዓቱ ውስጥ አለ!"
 
-#: dt-users/user-management.php:162
+#: dt-users/template-new-user.php:84
 msgid "Search multipliers and contacts"
 msgstr "ብዙዎችን እና እውቂያዎችን ይፈልጉ"
 
-#: dt-users/user-management.php:163
+#: dt-users/user-management.php:180
 msgid "Remove"
 msgstr "አስወግድ"
 
@@ -3868,153 +3664,154 @@ msgstr "የእኔ አሰልጣኝ ዛፍ"
 msgid "My Groups Tree"
 msgstr "የእኔ ቡድኖች ዛፍ"
 
-#: dt-contacts/base-setup.php:385
+#: dt-contacts/base-setup.php:393
 msgid "See duplicates"
 msgstr "ብዜቶችን ይመልከቱ"
 
-#: dt-assets/functions/enqueue-scripts.php:230
+#: dt-assets/functions/enqueue-scripts.php:216
 msgid "Dismissed Duplicates"
 msgstr "የተሰናበቱ ብዜቶች"
 
-#: dt-assets/functions/enqueue-scripts.php:231
+#: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr "የተባዙት በ% s"
+msgstr "የተባዙት በ$s"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
 msgstr "ምንም ብዜቶች አልተገኙም።"
 
-#: dt-contacts/base-setup.php:179
+#: dt-contacts/base-setup.php:184
 msgid "Languages"
 msgstr "ቋንቋዎች"
 
-#: dt-contacts/contacts-transfer.php:239
+#: dt-contacts/contacts-transfer.php:436
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "ለቀጣይ ክትትል ይህ ዕውቂያ ወደ% s ተላል wasል።"
+msgstr "ለቀጣይ ክትትል ይህ ዕውቂያ ወደ$s ተላል wasል።"
 
-#: dt-contacts/duplicates-merging.php:516
+#: dt-contacts/duplicates-merging.php:573
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "ይህ መዝገብ አንድ ቅጅ ነው እና ወደ %2$s ተቀላቅሏል"
 
-#: dt-contacts/access-module.php:1404
-#: dt-contacts/duplicates-merging.php:469
-#: dt-contacts/duplicates-merging.php:520
+#: dt-contacts/access-module.php:1465
+#: dt-contacts/duplicates-merging.php:514
+#: dt-contacts/duplicates-merging.php:577
 msgid "Duplicate Checker"
 msgstr "የተባዛ ፈታሽ"
 
-#: dt-contacts/duplicates-merging.php:529
+#: dt-contacts/duplicates-merging.php:586
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s %2$s ን ወደዚህ መዝገብ ተቀላቅሏል"
 
-#: dt-posts/dt-posts.php:997
+#: dt-posts/dt-posts.php:1139
 msgid "D.T System"
 msgstr "ዲ.ቲ ስርዓት"
 
-#: dt-users/user-management.php:154
+#: dt-users/user-management.php:176
 msgid "View New User"
 msgstr "አዲስ ተጠቃሚን ይመልከቱ"
 
-#: dt-users/user-management.php:164
+#: dt-users/user-management.php:181
 msgid "This contact is already a user."
 msgstr "ይህ ዕውቂያ አስቀድሞ ተጠቃሚ ነው።"
 
-#: dt-users/user-management.php:165
+#: dt-users/user-management.php:182
 msgid "View User"
 msgstr "ተጠቃሚን ይመልከቱ"
 
-#: template-settings.php:43
-#: template-settings.php:195
+#: template-settings.php:55
+#: template-settings.php:311
 msgid "Multiplier Preferences"
 msgstr "የብዜት ምርጫዎች"
 
-#: template-settings.php:203
-#: template-settings.php:208
+#: template-settings.php:319
+#: template-settings.php:324
 msgid "Locations you are willing to be responsible for"
 msgstr "እርስዎ ኃላፊነት የሚሰማቸውባቸው ቦታዎች"
 
-#: template-settings.php:231
+#: dt-users/template-user-management.php:291
+#: template-settings.php:347
 msgid "Languages you are comfortable speaking"
 msgstr "ቋንቋዎች ለመናገር ምቹ ናቸው"
 
-#: template-settings.php:252
+#: template-settings.php:368
 msgid "People Groups you wish to serve"
 msgstr "ለማገልገል የሚፈልጉት የህዝብ ቡድኖች"
 
-#: template-settings.php:275
+#: template-settings.php:391
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "ከ Dispatcher እውቂያዎችን ለመቀበል ተገኝነት"
 
-#: template-settings.php:521
+#: template-settings.php:664
 msgid "System Language"
 msgstr "የስርዓት ቋንቋ"
 
-#: archive-template.php:172
+#: archive-template.php:184
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "% s ማጣሪያዎች"
+msgstr "$s ማጣሪያዎች"
 
-#: archive-template.php:195
+#: archive-template.php:207
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "% s ዝርዝር"
+msgstr "$s ዝርዝር"
 
-#: archive-template.php:226
+#: archive-template.php:238
 msgid "Fields"
 msgstr "መስኮች"
 
-#: archive-template.php:232
+#: archive-template.php:244
 msgid "Bulk Edit"
 msgstr "የጅምላ አርትዕ"
 
-#: archive-template.php:238
+#: archive-template.php:267
 msgid "Choose which fields to display as columns in the list"
 msgstr "በዝርዝሩ ውስጥ እንደ ዓምዶች የትኞቹን መስኮች እንደሚያሳዩ ይምረጡ"
 
-#: archive-template.php:90
-#: archive-template.php:163
-#: archive-template.php:271
+#: archive-template.php:98
+#: archive-template.php:175
+#: archive-template.php:300
 msgid "Apply"
 msgstr "ያመልክቱ"
 
-#: archive-template.php:91
-#: archive-template.php:164
-#: archive-template.php:272
+#: archive-template.php:99
+#: archive-template.php:176
+#: archive-template.php:301
 msgid "reset to default"
 msgstr "ወደ ነባሪ ዳግም አስጀምር"
 
-#: archive-template.php:277
+#: archive-template.php:306
 msgid "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "ከዝርዝሩ ሊያዘምኗቸው የሚፈልጓቸውን ሁሉንም %1$s ይምረጡ እና ከዚህ በታች ያዘምኗቸው"
 
-#: archive-template.php:173
-msgid "Assign To"
-msgstr "ይመድቡ ለ"
-
-#: archive-template.php:359
+#: archive-template.php:388
 msgid "Share with:"
 msgstr "ተካፈል:"
 
-#: archive-template.php:392
+#: archive-template.php:461
+#: dt-users/template-new-user.php:108
+#: dt-users/template-new-user.php:221
 msgid "See More Options"
 msgstr "ተጨማሪ አማራጮችን ይመልከቱ"
 
-#: archive-template.php:393
+#: archive-template.php:462
+#: dt-users/template-new-user.php:111
+#: dt-users/template-new-user.php:224
 msgid "See Fewer Options"
 msgstr "ያነሱ አማራጮችን ይመልከቱ"
 
-#: dt-assets/functions/details-bar.php:47
+#: dt-assets/functions/details-bar.php:55
 msgid "Admin Actions"
 msgstr "የአስተዳደር እርምጃዎች"
 
-#: dt-assets/functions/details-bar.php:52
-#: single-template.php:357
+#: dt-assets/functions/details-bar.php:60
+#: single-template.php:362
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "% S ን ሰርዝ"
+msgstr "$s ን ሰርዝ"
 
-#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:213
 msgid "Duplicates Detected"
 msgstr "የተባዙ ተገኝተዋል"
 
@@ -4031,156 +3828,150 @@ msgstr "መዝገብ ተፈጥሯል"
 msgid "Edit New Record"
 msgstr "አዲስ መዝገብ አርትዕ"
 
-#: dt-contacts/access-module.php:92
+#: dt-contacts/access-module.php:95
 msgid "Access"
 msgstr "መዳረሻ"
 
-#: dt-contacts/access-module.php:94
+#: dt-contacts/access-module.php:97
 msgid "Someone to follow-up with"
 msgstr "ክትትል የሚደረግበት ሰው"
 
-#: dt-contacts/access-module.php:95
+#: dt-contacts/access-module.php:109
 msgid "Collaborators"
 msgstr "ተባባሪዎች"
 
-#: dt-contacts/access-module.php:855
-#: dt-contacts/access-module.php:865
+#: dt-contacts/access-module.php:900
+#: dt-contacts/access-module.php:910
 msgid "My Follow-Up"
 msgstr "የእኔ ክትትል"
 
-#: dt-contacts/access-module.php:866
-#: dt-contacts/access-module.php:887
-#: dt-contacts/access-module.php:910
-#: dt-contacts/access-module.php:934
+#: dt-contacts/access-module.php:911
+#: dt-contacts/access-module.php:932
+#: dt-contacts/access-module.php:955
+#: dt-contacts/access-module.php:979
+#: dt-groups/base-setup.php:920
 msgid "Assigned to me"
 msgstr "ለእኔ ተመደብኩ"
 
-#: dt-contacts/access-module.php:867
-#: dt-contacts/access-module.php:888
-#: dt-contacts/access-module.php:911
-#: dt-contacts/access-module.php:935
+#: dt-contacts/access-module.php:912
+#: dt-contacts/access-module.php:933
+#: dt-contacts/access-module.php:956
+#: dt-contacts/access-module.php:980
 msgid "Sub-assigned to me"
 msgstr "ንዑስ-ተመደብኩኝ"
 
-#: dt-contacts/access-module.php:971
+#: dt-contacts/access-module.php:1016
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "ክትትል% s"
+msgstr "ክትትል$s"
 
-#: dt-contacts/access-module.php:979
+#: dt-contacts/access-module.php:1024
 msgid "All Follow-Up"
 msgstr "ሁሉም ክትትል"
 
-#: dt-contacts/access-module.php:1398
+#: dt-contacts/access-module.php:1459
 msgid "This record might be a duplicate of: "
 msgstr "ይህ መዝገብ አንድ የተባዛ ሊሆን ይችላል- "
 
-#: dt-contacts/base-setup.php:66
+#: dt-contacts/base-setup.php:89
 msgid "User Manager"
 msgstr "የተጠቃሚ ሥራ አስኪያጅ"
 
-#: dt-contacts/base-setup.php:76
+#: dt-contacts/base-setup.php:101
 msgid "Administrator"
 msgstr "አስተዳዳሪ"
 
-#: dt-contacts/base-setup.php:113
+#: dt-contacts/base-setup.php:140
 msgid "Nickname"
 msgstr "ቅጽል ስም"
 
-#: dt-contacts/base-setup.php:124
+#: dt-contacts/base-setup.php:152
 msgid "Representing a User in the system"
 msgstr "በስርዓቱ ውስጥ አንድ ተጠቃሚ መወከል"
 
-#: dt-contacts/base-setup.php:131
+#: dt-contacts/base-setup.php:160
 msgid "A friend, family member or acquaintance"
 msgstr "ጓደኛ ፣ የቤተሰብ አባል ወይም ጓደኛ"
 
-#: dt-contacts/base-setup.php:132
+#: dt-contacts/base-setup.php:161
 #: dt-contacts/dmm-module.php:54
 msgid "Only me"
 msgstr "እኔ ብቻ"
 
-#: dt-contacts/base-setup.php:213
-#: dt-groups/base-setup.php:377
+#: dt-contacts/base-setup.php:236
+#: dt-groups/base-setup.php:369
 msgid "Locations or Address"
 msgstr "አካባቢዎች ወይም አድራሻ"
 
-#: dt-contacts/base-setup.php:264
+#: dt-contacts/base-setup.php:290
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "ከሌላ% s ጋር ግንኙነቶች"
+msgstr "ከሌላ$s ጋር ግንኙነቶች"
 
-#: dt-contacts/base-setup.php:380
+#: dt-contacts/base-setup.php:388
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "% S ዓይነትን ይቀይሩ"
+msgstr "$s ዓይነትን ይቀይሩ"
 
-#: dt-contacts/base-setup.php:514
+#: dt-contacts/base-setup.php:522
 msgid "Default Filters"
 msgstr "ነባሪ ማጣሪያዎች"
 
-#: dt-contacts/base-setup.php:524
+#: dt-contacts/base-setup.php:532
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "ሁሉንም% s ማየት እችላለሁ"
+msgstr "ሁሉንም$s ማየት እችላለሁ"
 
-#: dt-contacts/base-setup.php:534
+#: dt-contacts/base-setup.php:542
+#: dt-groups/base-setup.php:1030
+#: dt-posts/custom-post-type.php:331
 msgid "My Recently Viewed"
 msgstr "በቅርብ የታየኝ"
 
-#: dt-contacts/base-setup.php:539
+#: dt-contacts/base-setup.php:547
+#: dt-groups/base-setup.php:1035
+#: dt-posts/custom-post-type.php:336
 msgid "Last 30 viewed"
 msgstr "ያለፉት 30 ታይተዋል"
 
-#: dt-contacts/dmm-module.php:49
+#: dt-contacts/access-module.php:104
 msgid "Connection"
 msgstr "ግንኙነት"
 
+#: dt-contacts/access-module.php:106
 #: dt-contacts/dmm-module.php:51
 msgid "Connected to a contact, or generational fruit"
 msgstr "ከእውቂያ ወይም ከትውልድ ፍሬ ጋር ተገናኝቷል"
 
-#: dt-contacts/dmm-module.php:104
+#: dt-contacts/dmm-module.php:115
 msgid "Faith Status"
 msgstr "የእምነት ሁኔታ"
 
-#: dt-contacts/dmm-module.php:136
+#: dt-contacts/dmm-module.php:159
 msgid "Is Coaching"
 msgstr "ማሠልጠን ነው"
 
-#: dt-contacts/dmm-module.php:190
+#: dt-contacts/dmm-module.php:213
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this contact."
 msgstr "በዚህ ግንኙነት የተወከሉት የሰዎች ቡድኖች ፡፡"
 
-#: dt-contacts/dmm-module.php:290
-msgid "Sub-assigned by"
-msgstr "ንዑስ የተመደበው"
-
-#: dt-contacts/dmm-module.php:291
+#: dt-contacts/dmm-module.php:312
 msgid "Sub-assigned"
 msgstr "ንዑስ-የተመደበ"
 
-#: dt-contacts/dmm-module.php:314
+#: dt-contacts/dmm-module.php:276
 msgid "Faith"
 msgstr "እምነት"
 
-#: dt-contacts/dmm-module.php:397
+#: dt-contacts/dmm-module.php:359
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "ተገናኝቷል% s"
+msgstr "ተገናኝቷል$s"
 
-#: dt-groups/base-setup.php:689
+#: dt-groups/base-setup.php:623
 msgid "Coaches"
 msgstr "አሰልጣኞች"
-
-#: dt-groups/base-setup.php:702
-msgid "Planted by"
-msgstr "የተተከለው በ"
-
-#: dt-groups/base-setup.php:703
-msgid "Planting"
-msgstr "መትከል"
 
 #: dt-mapping/geocode-api/mapbox-api.php:287
 msgid "Use"
@@ -4197,10 +3988,6 @@ msgstr "አካባቢን ሰርዝ"
 #: dt-mapping/geocode-api/mapbox-api.php:290
 msgid "Open Mapping"
 msgstr "ክፍት ካርታ"
-
-#: dt-mapping/geocode-api/mapbox-api.php:291
-msgid "clear"
-msgstr "ግልፅ"
 
 #: dt-metrics/combined/mapbox-maps.php:28
 msgid "Combined Maps"
@@ -4226,19 +4013,26 @@ msgstr "የእውቂያዎች ካርታዎች"
 msgid "Groups Maps"
 msgstr "የቡድኖች ካርታዎች"
 
-#: dt-posts/dt-posts.php:1393
-#: single-template.php:119
+#: dt-posts/dt-posts.php:1587
+#: single-template.php:120
 msgid "Details"
 msgstr "ዝርዝሮች"
 
-#: dt-reports/reports.php:141
+#: dt-reports/reports.php:145
 msgid "Added new report"
 msgstr "አዲስ ዘገባ ታክሏል"
 
-#: dt-reports/reports.php:230
+#: dt-reports/reports.php:238
 msgid "Updated report"
 msgstr "የዘመነ ሪፖርት"
 
+#: dt-assets/functions/enqueue-scripts.php:305
+#: dt-assets/parts/modals/modal-advanced-search.php:73
+#: dt-contacts/access-module.php:1280
+#: dt-groups/base-setup.php:928
+#: dt-groups/base-setup.php:1001
+#: dt-groups/base-setup.php:1009
+#: dt-metrics/personal/activity-highlights.php:56
 #: dt-users/mapbox-coverage-map.php:77
 msgid "All"
 msgstr "ሁሉም"
@@ -4246,213 +4040,935 @@ msgstr "ሁሉም"
 #: dt-users/mapbox-coverage-map.php:78
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "ተጠቃሚን አክል ወደ% s"
+msgstr "ተጠቃሚን አክል ወደ$s"
 
 #: dt-users/mapbox-coverage-map.php:81
 msgid "Responsibility Coverage"
 msgstr "የኃላፊነት ሽፋን"
 
-#: header.php:38
+#: header.php:42
 msgid "D.T Record"
 msgstr "የዲ.ቲ. መዝገብ"
 
 #: single-template.php:53
 #: single-template.php:61
 msgid "This %s needs an update."
-msgstr "ይህ% s ዝመና ይፈልጋል።"
+msgstr "ይህ$s ዝመና ይፈልጋል።"
 
-#: dt-assets/functions/details-bar.php:78
-#: dt-assets/functions/details-bar.php:196
+#: dt-assets/functions/details-bar.php:103
+#: dt-assets/functions/details-bar.php:257
 msgid "Record"
 msgstr "መዝገብ"
 
-#: dt-assets/functions/details-bar.php:80
-#: dt-assets/functions/details-bar.php:198
-#: template-merge-details.php:127
-#: template-merge-details.php:136
+#: dt-assets/functions/enqueue-scripts.php:221
+#: template-merge-details.php:132
+#: template-merge-details.php:150
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "በ% s ላይ የተፈጠረ"
+msgstr "በ$s ላይ የተፈጠረ"
 
-#: dt-assets/functions/details-bar.php:82
-#: dt-assets/functions/details-bar.php:200
+#: dt-assets/functions/details-bar.php:107
+#: dt-assets/functions/details-bar.php:261
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "በ% s"
+msgstr "በ$s"
 
 #: single-template.php:211
 msgid "Edit all details fields"
 msgstr "ሁሉንም ዝርዝሮች መስኮች ያርትዑ"
 
-#: single-template.php:333
+#: single-template.php:338
+#: template-new-post.php:152
 msgid "Create a tag and apply it to this record."
 msgstr "መለያ ይፍጠሩ እና በዚህ መዝገብ ላይ ይተግብሩ ፡፡"
 
-#: single-template.php:358
+#: single-template.php:363
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "እርግጠኛ ነዎት% s ን መሰረዝ ይፈልጋሉ?"
+msgstr "እርግጠኛ ነዎት$s ን መሰረዝ ይፈልጋሉ?"
 
 #: dt-assets/functions/menu.php:39
 #: template-metrics.php:25
 msgid "Menu"
 msgstr "ምናሌ"
 
-#: template-new-post.php:39
+#: template-new-post.php:40
 msgid "Select the %s type:"
-msgstr "የ% s አይነት ይምረጡ"
+msgstr "የ$s አይነት ይምረጡ"
 
-#: template-new-post.php:117
+#: template-new-post.php:129
 msgid "Show all fields"
 msgstr "ሁሉንም መስኮች አሳይ"
 
-#: dt-assets/functions/enqueue-scripts.php:312
+#: dt-assets/functions/enqueue-scripts.php:303
 msgid "start"
-msgstr ""
+msgstr "ጀምር"
 
-#: dt-assets/functions/enqueue-scripts.php:313
+#: dt-assets/functions/enqueue-scripts.php:304
 msgid "end"
-msgstr ""
+msgstr "መጨረሻ"
 
-#: dt-contacts/base-setup.php:373
-#: dt-contacts/base-setup.php:400
+#: dt-contacts/base-setup.php:381
+#: dt-contacts/base-setup.php:413
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr ""
+msgstr "% S ን በማህደር ያስቀምጡ"
 
-#: dt-contacts/base-setup.php:401
+#: dt-contacts/base-setup.php:414
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr ""
+msgstr "እርግጠኛ ነዎት% s ን በማህደር ማስቀመጥ ይፈልጋሉ?"
 
-#: dt-contacts/base-setup.php:408
+#: dt-contacts/base-setup.php:421
 msgid "Archive"
-msgstr ""
+msgstr "መዝገብ ቤት"
 
-#: dt-contacts/base-setup.php:648
+#: dt-contacts/base-setup.php:668
 msgid "This %s is archived"
-msgstr ""
+msgstr "ይህ% s በማህደር ተቀምጧል"
 
-#: dt-contacts/base-setup.php:650
+#: dt-contacts/base-setup.php:670
 msgid "Restore"
-msgstr ""
+msgstr "እነበረበት መልስ"
 
-#: dt-assets/functions/enqueue-scripts.php:140
+#: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr ""
+msgstr "% S ንጥሎችን በማሳየት ላይ። የበለጠ ለማግኘት ይተይቡ።"
 
-#: dt-assets/functions/enqueue-scripts.php:288
+#: dt-assets/functions/enqueue-scripts.php:277
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
-msgstr ""
+msgstr "ግጥሚያዎች ተገኝተዋል"
 
-#: dt-assets/functions/enqueue-scripts.php:289
+#: dt-assets/functions/enqueue-scripts.php:278
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr ""
+msgstr "ሁሉንም ተዛማጆች ለ% s ያሰናብቱ"
 
-#: dt-contacts/base-setup.php:303
+#: dt-contacts/base-setup.php:344
 msgid "Archived"
-msgstr ""
+msgstr "በማህደር ተቀምጧል"
 
-#: dt-groups/base-setup.php:317
+#: dt-groups/base-setup.php:310
 msgid "Leader Count"
-msgstr ""
-
-#: dt-groups/base-setup.php:318
-msgctxt "Optional Documentation"
-msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the training."
-msgstr ""
+msgstr "መሪ ቆጠራ"
 
 #: template-view-duplicates.php:21
 msgid "Duplicate Access Contacts"
-msgstr ""
+msgstr "የተባዙ የመዳረሻ እውቂያዎች"
 
 #: template-view-duplicates.php:27
 msgid "Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
-msgstr ""
+msgstr "በጣም በቅርብ በተሻሻሉ እውቂያዎች የሚጀምሩ የተባዙን መቃኘት ፡፡ ውጤቶች ከ 10 ያነሱ ትክክለኛ ግጥሚያዎች ባሉት ብቻ የተገደቡ ናቸው።"
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"
 msgid "Access contacts scanned:"
-msgstr ""
+msgstr "የመዳረሻ እውቂያዎችን ተቃኝተዋል"
 
 #: template-view-duplicates.php:31
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
-msgstr ""
+msgstr "የተባዙ ተገኝተዋል"
 
 #. Theme Name of the theme
 #: 
 msgid "Disciple Tools"
-msgstr ""
+msgstr "የደቀመዝሙር መሳሪያዎች"
 
 #. Theme URI of the theme
 #: 
 msgid "https://github.com/DiscipleTools/disciple-tools-theme"
-msgstr ""
+msgstr "https://github.com/DiscipleTools/disciple-tools-the"
 
 #. Description of the theme
 #: 
 msgid "Disciple Tools is a coalition management system for disciple making movements."
-msgstr ""
+msgstr "የደቀመዝሙር መሳሪያዎች ለደቀ መዛሙርት እንቅስቃሴ እንቅስቃሴ ጥምረት ጥምረት አስተዳደር ስርዓት ነው ፡፡"
 
 #. Author URI of the theme
 #: 
 msgid "https://github.com/DiscipleTools"
-msgstr ""
+msgstr "https://github.com/DiscipleTools"
 
-#: archive-template.php:34
-#: archive-template.php:35
-#: archive-template.php:109
-#: archive-template.php:110
+#: archive-template.php:43
+#: archive-template.php:44
+#: archive-template.php:123
+#: archive-template.php:124
+#: dt-assets/functions/menu.php:57
+#: dt-assets/parts/modals/modal-advanced-search.php:2
 msgid "Advanced Search"
-msgstr ""
+msgstr "የላቀ ፍለጋ"
 
-#: archive-template.php:70
-#: archive-template.php:143
+#: archive-template.php:78
+#: archive-template.php:155
 msgid "Search All Fields"
-msgstr ""
+msgstr "ሁሉንም መስኮች ይፈልጉ"
 
-#: archive-template.php:61
-#: archive-template.php:134
+#: archive-template.php:69
+#: archive-template.php:146
 msgid "Choose which fields to search"
-msgstr ""
+msgstr "የትኞቹን መስኮች እንደሚፈልጉ ይምረጡ"
 
-#: dt-contacts/base-setup.php:255
+#: dt-contacts/base-setup.php:281
 msgid "Other Social Links"
-msgstr ""
+msgstr "ሌሎች ማህበራዊ አገናኞች"
 
-#: dt-assets/parts/nav-topbar.php:253
+#: dt-assets/parts/nav-topbar.php:284
 msgid "See All"
-msgstr ""
+msgstr "ሁሉም ይዩ"
 
-#: dt-contacts/user-module.php:95
-msgctxt "Make user modal"
-msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier', but you can change that in the dropdown below."
-msgstr ""
-
-#: dt-contacts/user-module.php:96
-msgctxt "Make user modal"
-msgid "In the fields below, enter their username, email address, a 'Display Name' which they can change later and a User Role."
-msgstr ""
-
-#: dt-contacts/user-module.php:116
+#: dt-contacts/user-module.php:120
 msgid "User Role"
-msgstr ""
+msgstr "የተጠቃሚ ሚና"
 
-#: dt-notifications/notifications.php:425
+#: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] ""
+msgstr[0] "ከዓመት በፊት ከ% s በላይ"
 msgstr[1] ""
 
-#: dt-users/users.php:930
-msgid "Error setting user role to administrator or Disciple.Tools Admin."
-msgstr ""
-
-#: template-new-post.php:120
+#: template-new-post.php:132
 msgid "Hide fields"
-msgstr ""
+msgstr "መስኮችን ደብቅ"
+
+#: dt-core/global-functions.php:665
+msgid "Add new tag \"%s\""
+msgstr "አዲስ መለያ \"% s\" ያክሉ"
+
+#: dt-core/global-functions.php:666
+msgid "Tag \"%s\" is already being used"
+msgstr "መለያ \"% s\" አስቀድሞ ጥቅም ላይ ውሏል"
+
+#: dt-groups/base-setup.php:475
+msgid "Leader of Group"
+msgstr "የቡድን መሪ"
+
+#: dt-assets/functions/details-bar.php:74
+#: dt-assets/functions/details-bar.php:235
+msgid "Previous record"
+msgstr "ቀዳሚ መዝገብ"
+
+#: dt-assets/functions/details-bar.php:113
+#: dt-assets/functions/details-bar.php:268
+msgid "Next record"
+msgstr "ቀጣይ መዝገብ"
+
+#: dt-contacts/dmm-module.php:146
+msgid "Sub-assigned on other Contacts"
+msgstr "በሌሎች እውቂያዎች ላይ ንዑስ-ተመድቧል"
+
+#: dt-contacts/dmm-module.php:147
+msgid "Contacts this contacts is subassigned on"
+msgstr "እውቂያዎች እነዚህ እውቂያዎች በሱ ላይ ተመድበዋል"
+
+#: 403.php:37
+msgid "Request Record Access Permission"
+msgstr "የመመዝገቢያ መዳረሻ ፈቃድ ይጠይቁ"
+
+#: 403.php:46
+msgid "Request Record Access"
+msgstr "የመዝገብ መዳረሻ ይጠይቁ"
+
+#: 403.php:49
+msgid "Record owner to be notified of access request. Are you happy to proceed?"
+msgstr "የመዝገብ ጥያቄ ባለቤት የመድረሻ ጥያቄ እንዲነገርለት ፡፡ ለመቀጠል ደስተኛ ነዎት?"
+
+#: 403.php:52
+msgid "Submit Request"
+msgstr "ጥያቄ ያስገቡ"
+
+#: archive-template.php:39
+#: archive-template.php:119
+#: dt-mapping/geocode-api/mapbox-api.php:291
+msgid "Clear"
+msgstr "ግልጽ"
+
+#: dt-assets/functions/enqueue-scripts.php:177
+msgctxt "Bob reacted with heart emoji"
+msgid "%1$s reacted with %2$s emoji"
+msgstr "% 1 $ s ከ% 2 $ s ስሜት ገላጭ ምስል ጋር ምላሽ ተሰጥቷል"
+
+#: dt-assets/functions/enqueue-scripts.php:178
+msgctxt "Bob, Bill and Ben reacted with heart emoji"
+msgid "%3$s and %1$s reacted with %2$s emoji"
+msgstr "% 3 $ s እና% 1 $ s ከ% 2 $ s ገላጭ ምስል ጋር ምላሽ ሰጥተዋል"
+
+#: dt-core/configuration/config-site-defaults.php:536
+msgid "thumbs up"
+msgstr "አውራ ጣት"
+
+#: dt-core/configuration/config-site-defaults.php:537
+msgid "heart"
+msgstr "ልብ"
+
+#: dt-core/configuration/config-site-defaults.php:538
+msgid "laugh"
+msgstr "ሳቅ"
+
+#: dt-core/configuration/config-site-defaults.php:539
+msgid "wow"
+msgstr "ዋዉ"
+
+#: dt-core/configuration/config-site-defaults.php:540
+msgid "sad"
+msgstr "መከፋት"
+
+#: dt-posts/dt-posts.php:1649
+msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
+msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
+msgstr "@ [% 1 $ s] (% 2 $ s) - ተጠቃሚ% 3 $ s% 4 $ s [% 5 $ s] (% 6 $ s) መዳረሻ ጠይቋል። ከተፈለገ ለመድረስ ይህንን መዝገብ ለተጠቃሚው ያጋሩ ፡፡"
+
+#: dt-posts/dt-posts.php:1655
+msgid "Access Request"
+msgstr "የመዳረሻ ጥያቄ"
+
+#: dt-assets/functions/enqueue-scripts.php:260
+#: template-settings.php:282
+msgid "link"
+msgstr "አገናኝ"
+
+#: dt-assets/parts/modals/modal-advanced-search.php:11
+msgid "Search Query..."
+msgstr "ጥያቄን ፈልግ ..."
+
+#: dt-assets/parts/modals/modal-advanced-search.php:29
+msgid "Search Settings"
+msgstr "የፍለጋ ቅንብሮች"
+
+#: dt-assets/parts/modals/modal-advanced-search.php:42
+msgid "Record Hits:"
+msgstr "ሪኮርዶች"
+
+#: dt-contacts/access-module.php:335
+msgid "Campaigns"
+msgstr "ዘመቻዎች"
+
+#: dt-contacts/access-module.php:336
+msgctxt "Optional Documentation"
+msgid "Marketing campaigns or access activities that this contact interacted with."
+msgstr "የግብይት ዘመቻዎች ወይም ይህ ዕውቂያ የተገናኘባቸው የመዳረሻ እንቅስቃሴዎች።"
+
+#: dt-groups/base-setup.php:282
+msgctxt "Optional Documentation"
+msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
+msgstr "የዚህ ቡድን አባላት ብዛት። በአባላቱ ዝርዝር ውስጥ አዳዲስ አባላት ሲደመሩ ወይም ሲወገዱ በራስ-ሰር ይዘምናል። በስርዓቱ ውስጥ የሌሉ ነገር ግን የቡድኑ አባላት የሆኑ ሰዎችን ለማካተት ይህንን ቁጥር በእጅ ይለውጡ ፡፡"
+
+#: dt-metrics/combined/time-charts.php:42
+#: dt-metrics/combined/time-charts.php:106
+msgid "Fields over Time Charts"
+msgstr "መስኮች በጊዜ ገበታዎች ላይ"
+
+#: dt-metrics/combined/time-charts.php:107
+msgid "Post Type"
+msgstr "የልጥፍ ዓይነት"
+
+#: dt-metrics/combined/time-charts.php:109
+msgid "Total"
+msgstr "ድምር"
+
+#: dt-metrics/combined/time-charts.php:110
+msgid "Added"
+msgstr "ታክሏል"
+
+#: dt-metrics/combined/time-charts.php:111
+msgctxt "Total in January"
+msgid "%1$s in %2$s"
+msgstr "% 1 $ s በ% 2 $ s ውስጥ"
+
+#: dt-metrics/combined/time-charts.php:112
+#: dt-metrics/personal/activity-highlights.php:67
+msgid "Date"
+msgstr "ቀን"
+
+#: dt-metrics/combined/time-charts.php:114
+msgid "All cumulative totals"
+msgstr "ሁሉም ድምር ድምር"
+
+#: dt-metrics/combined/time-charts.php:115
+msgid "Single cumulative totals"
+msgstr "ነጠላ ድምር ድምር"
+
+#: dt-metrics/combined/time-charts.php:116
+msgid "Number added"
+msgstr "ቁጥር ታክሏል"
+
+#: dt-metrics/personal/coaching-tree.php:58
+msgid "My Coaching Generation Tree"
+msgstr "የእኔ አሰልጣኝ ትውልድ ዛፍ"
+
+#: dt-metrics/personal/group-tree.php:82
+msgid "My Group Generation Tree"
+msgstr "የእኔ ቡድን ትውልድ ዛፍ"
+
+#: dt-reports/magic-url-base.php:440
+#: template-settings.php:53
+msgid "Apps"
+msgstr "መተግበሪያዎች"
+
+#: template-settings.php:244
+msgid "Your Apps"
+msgstr "የእርስዎ መተግበሪያዎች"
+
+#: template-settings.php:249
+msgid "App Name"
+msgstr "የመተግበሪያ ስም"
+
+#: template-settings.php:250
+msgid "App Description"
+msgstr "የመተግበሪያ መግለጫ"
+
+#: template-settings.php:251
+msgid "App Link"
+msgstr "የመተግበሪያ አገናኝ"
+
+#: template-settings.php:252
+msgid "App Activation"
+msgstr "የመተግበሪያ ማግበር"
+
+#: template-settings.php:262
+msgid "No apps installed"
+msgstr "ምንም መተግበሪያዎች አልተጫኑም"
+
+#: archive-template.php:629
+msgctxt "All Contacts with Is Coaching"
+msgid "All %1$s with %2$s"
+msgstr "ሁሉም% 1 $ s ከ% 2 $ s ጋር"
+
+#: archive-template.php:655
+#: archive-template.php:662
+#: dt-contacts/contacts-transfer.php:158
+#: dt-metrics/combined/site-links.php:74
+#: dt-metrics/combined/site-links.php:76
+msgid "None Set"
+msgstr "አንድም አልተዘጋጀም"
+
+#: dt-contacts/base-setup.php:553
+#: dt-groups/base-setup.php:1018
+#: dt-posts/custom-post-type.php:316
+msgctxt "Favorite Contacts"
+msgid "Favorite %s"
+msgstr "ተወዳጅ% s"
+
+#: dt-contacts/base-setup.php:559
+#: dt-groups/base-setup.php:1024
+#: dt-posts/custom-post-type.php:168
+#: dt-posts/custom-post-type.php:322
+msgid "Favorite"
+msgstr "የሚወደድ"
+
+#: dt-assets/parts/nav-topbar.php:134
+#: dt-metrics/personal/activity-log.php:53
+#: dt-users/user-management.php:184
+msgid "More"
+msgstr "ተጨማሪ"
+
+#: dt-posts/dt-posts.php:1133
+msgid "Magic Link Submission"
+msgstr "አስማት አገናኝ ማስገቢያ"
+
+#: dt-assets/functions/enqueue-scripts.php:261
+#: template-settings.php:283
+msgid "copy"
+msgstr "ቅዳ"
+
+#: dt-users/user-hooks-and-config.php:503
+msgid "User Language"
+msgstr "የተጠቃሚ ቋንቋ"
+
+#: dt-core/configuration/config-site-defaults.php:541
+msgid "prayer"
+msgstr "ጸሎት"
+
+#: dt-metrics/combined/daily-activity.php:22
+#: dt-metrics/combined/daily-activity.php:71
+msgid "Activity by Day"
+msgstr "እንቅስቃሴ በቀን"
+
+#: dt-metrics/combined/daily-activity.php:75
+msgid "This Week"
+msgstr "በዚህ ሳምንት"
+
+#: dt-metrics/combined/daily-activity.php:87
+msgid "Count"
+msgstr "መቁጠር"
+
+#: dt-metrics/combined/daily-activity.php:88
+msgid "No Activity Detected!"
+msgstr "ምንም እንቅስቃሴ አልተገኘም!"
+
+#: dt-posts/custom-post-type.php:177
+msgctxt "Optional Documentation"
+msgid "A useful way to group related items."
+msgstr "ተዛማጅ ዕቃዎችን ለመቧደን ጠቃሚ መንገድ።"
+
+#: dt-users/template-no-permission.php:92
+msgid "You are registered but an administrator needs to assign you access permissions."
+msgstr "ተመዝግበዋል ነገር ግን አስተዳዳሪ የመዳረሻ ፈቃዶችን ሊመድብዎት ይገባል።"
+
+#: dt-users/template-new-user.php:118
+#: dt-users/template-user-management.php:90
+msgid "Role"
+msgstr "ሚና"
+
+#: dt-users/user-hooks-and-config.php:278
+#: dt-users/user-hooks-and-config.php:316
+msgid "[%s] Login Details"
+msgstr "[%s] የመግቢያ ዝርዝሮች"
+
+#: dt-users/user-hooks-and-config.php:289
+msgid "To set your password, visit the following address:"
+msgstr "የይለፍ ቃልህን ለማዘጋጀት የሚከተለውን አድራሻ ጎብኝ።"
+
+#: dt-users/user-hooks-and-config.php:312
+msgid "To log in click here: %s"
+msgstr "ለመግባት እዚህ ጠቅ ያድርጉ፡ %s"
+
+#: dt-users/user-hooks-and-config.php:354
+msgid "Hi %s,"
+msgstr "ሰላም %s፣"
+
+#: dt-metrics/combined/daily-activity.php:85
+msgid "Click on a timeline day summary to display a detailed list of metrics below."
+msgstr "ዝርዝር መለኪያዎችን ከታች ለማሳየት የጊዜ መስመር ቀን ማጠቃለያ ላይ ጠቅ ያድርጉ።"
+
+#: dt-users/user-hooks-and-config.php:355
+msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
+msgid "You've been invited to join %1$s at %2$s"
+msgstr "%1$s በ%2$s ላይ እንድትቀላቀል ተጋብዘሃል"
+
+#: dt-notifications/notifications-scheduler.php:140
+#: template-settings.php:479
+msgid "Hourly Digest"
+msgstr "የሰዓት ዳይጀስት"
+
+#: dt-notifications/notifications-scheduler.php:143
+#: template-settings.php:483
+msgid "Daily Digest"
+msgstr "ዕለታዊ ዳይጀስት"
+
+#: template-settings.php:469
+msgid "Email preferences"
+msgstr "የኢሜል ምርጫዎች"
+
+#: template-settings.php:475
+msgid "Real time"
+msgstr "በተመሳሳይ ሰዐት"
+
+#: archive-template.php:632
+msgctxt "All Contacts without Is Coaching"
+msgid "All %1$s without %2$s"
+msgstr "ሁሉም %1$s ያለ %2$s"
+
+#: dt-assets/functions/enqueue-scripts.php:306
+msgid "Without"
+msgstr "ያለ"
+
+#: dt-assets/parts/modals/modal-advanced-search.php:90
+msgid "Names"
+msgstr "ስሞች"
+
+#: dt-assets/parts/modals/modal-advanced-search.php:102
+msgid "Communication"
+msgstr "ግንኙነት"
+
+#: dt-assets/parts/nav-offcanvas.php:79
+#: dt-assets/parts/nav-topbar.php:241
+#: dt-users/template-no-permission.php:94
+msgid "Log Out"
+msgstr "ውጣ"
+
+#: dt-contacts/access-module.php:603
+msgid "Dispatchers"
+msgstr "ላኪዎች"
+
+#: dt-contacts/access-module.php:606
+msgid "Digital Responders"
+msgstr "ዲጂታል ምላሽ ሰጪዎች"
+
+#: dt-contacts/access-module.php:613
+msgid "Assign To"
+msgstr "ይመድቡ ለ"
+
+#: dt-contacts/access-module.php:1281
+msgid "Ready"
+msgstr "ዝግጁ"
+
+#: dt-contacts/access-module.php:1282
+msgid "Recent"
+msgstr "የቅርብ ጊዜ"
+
+#: dt-contacts/access-module.php:1284
+msgid "Assign"
+msgstr "መድብ"
+
+#: dt-metrics/personal/activity-log.php:22
+#: dt-metrics/personal/activity-log.php:52
+msgid "Activity Log"
+msgstr "የእንቅስቃሴ ምዝግብ ማስታወሻ"
+
+#: dt-metrics/personal/activity-log.php:54
+#: dt-users/user-management.php:185
+msgid "Less"
+msgstr "ያነሰ"
+
+#: dt-users/user-management.php:177
+msgid "View New Contact"
+msgstr "አዲስ እውቂያን ይመልከቱ"
+
+#: dt-users/user-metrics.php:104
+msgid "Updated fields"
+msgstr "የተሻሻሉ መስኮች"
+
+#: dt-users/user-metrics.php:108
+msgid "Made %n comments"
+msgstr "%n አስተያየቶችን ሰጥቷል"
+
+#: dt-users/user-metrics.php:111
+msgid "Created record"
+msgstr "መዝገብ ፈጠረ"
+
+#: dt-users/user-metrics.php:114
+msgid "Logged In %n times"
+msgstr "%n ጊዜ ገብቷል።"
+
+#: template-settings.php:64
+msgid "Invite User"
+msgstr "ተጠቃሚን ይጋብዙ"
+
+#: dt-contacts/user-module.php:102
+msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'."
+msgstr "ይህ ይህ እውቂያ የዚህ ስርዓት ተጠቃሚ እንዲሆን ይጋብዛል። በነባሪነት የ'ማባዛት' ሚና ይሰጣቸዋል።"
+
+#: dt-contacts/user-module.php:111
+msgid "Can be changed later"
+msgstr "በኋላ መቀየር ይቻላል"
+
+#: archive-template.php:479
+msgid "Update %s"
+msgstr "%s አዘምን"
+
+#: dt-users/template-user-management.php:342
+msgid "User Profile"
+msgstr "የተጠቃሚ መገለጫ"
+
+#: dt-users/template-new-user.php:165
+#: dt-users/template-new-user.php:169
+#: dt-users/template-new-user.php:172
+#: dt-users/template-new-user.php:191
+#: dt-users/template-new-user.php:205
+msgid "optional"
+msgstr "አማራጭ"
+
+#. Description of the theme
+#: 
+msgid "Disciple.Tools is a coalition management system for disciple making movements."
+msgstr "ደቀመዝሙር.መሳሪያዎች ደቀ መዛሙርት የሚያደርጉበት እንቅስቃሴ የማኔጅመንት ሥርዓት ነው።"
+
+#: dt-contacts/access-module.php:258
+msgid "Reason Archived"
+msgstr "ምክንያት ተመዝግቧል"
+
+#: dt-assets/functions/enqueue-scripts.php:219
+msgid "Transfer update failed. Check site-to-site configuration."
+msgstr "የዝውውር ማዘመን አልተሳካም። የጣቢያ-ወደ-ጣቢያ ውቅረትን ያረጋግጡ።"
+
+#: dt-assets/functions/enqueue-scripts.php:220
+msgid "Transfer update successful."
+msgstr "የዝውውር ማሻሻያ ተሳክቷል።"
+
+#: dt-contacts/contacts-transfer.php:107
+msgid "Status Currently Unavailable"
+msgstr "ሁኔታ በአሁኑ ጊዜ አይገኝም"
+
+#: dt-contacts/contacts-transfer.php:113
+msgid "Seeker Path Currently Unavailable"
+msgstr "የፈላጊ መንገድ በአሁኑ ጊዜ የለም።"
+
+#: dt-contacts/contacts-transfer.php:124
+msgid "Remote Contact Summary"
+msgstr "የርቀት እውቂያ ማጠቃለያ"
+
+#: dt-contacts/contacts-transfer.php:165
+msgid "Write your comment or note here"
+msgstr "አስተያየትህን ወይም ማስታወሻህን እዚህ ጻፍ"
+
+#: dt-contacts/contacts-transfer.php:170
+msgid "Submit Update"
+msgstr "ማሻሻያ አስገባ"
+
+#: dt-metrics/combined/site-links.php:22
+#: dt-metrics/combined/site-links.php:71
+msgid "Transferred Contacts"
+msgstr "የተላለፉ እውቂያዎች"
+
+#: dt-metrics/combined/site-links.php:72
+msgid "Filter by date range and available site links"
+msgstr "በቀን ክልል እና በሚገኙ የጣቢያ አገናኞች አጣራ"
+
+#: dt-metrics/combined/site-links.php:73
+msgid "Date Ranges"
+msgstr "የቀን ክልሎች"
+
+#: dt-metrics/combined/site-links.php:75
+msgid "Site Links"
+msgstr "የጣቢያ አገናኞች"
+
+#: dt-metrics/combined/site-links.php:77
+msgctxt "Contacts transferred during date range"
+msgid "Contacts transferred during date range"
+msgstr "እውቂያዎች በቀን ክልል ውስጥ ተላልፈዋል"
+
+#: dt-metrics/combined/site-links.php:78
+#: dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:80
+msgctxt "Seeker Path of contacts created in date range"
+msgid "%s of contacts created in date range"
+msgstr "በቀን ክልል ውስጥ የተፈጠሩ %s እውቂያዎች"
+
+#: dt-metrics/combined/site-links.php:81
+#: dt-metrics/combined/site-links.php:82
+#: dt-metrics/combined/site-links.php:83
+msgctxt "Seeker Path changes during date range"
+msgid "%s changes during date range"
+msgstr "በቀን ክልል ውስጥ %s ለውጦች"
+
+#: dt-metrics/combined/site-links.php:86
+msgid "No Data Available"
+msgstr "ምንም ውሂብ የለም"
+
+#: template-notifications.php:58
+msgid "Mentions"
+msgstr "ይጠቅሳል"
+
+#: dt-reports/magic-url-bulk-send.php:19
+msgid "Bulk Send App"
+msgstr "የጅምላ ላክ መተግበሪያ"
+
+#: archive-template.php:499
+#: dt-assets/functions/enqueue-scripts.php:307
+#: dt-reports/magic-url-bulk-send.php:64
+msgid "Make Selections Below"
+msgstr "ከዚህ በታች ምርጫዎችን ያድርጉ"
+
+#: dt-reports/magic-url-bulk-send.php:34
+msgid "Select all the %1$s to whom you want to send app links."
+msgstr "የመተግበሪያ አገናኞችን ለመላክ የሚፈልጉትን ሁሉንም %1$s ይምረጡ።"
+
+#: dt-reports/magic-url-bulk-send.php:37
+msgid "Add optional greeting"
+msgstr "አማራጭ ሰላምታ ያክሉ"
+
+#: dt-reports/magic-url-bulk-send.php:38
+msgid "Add short greeting to be added above the app link."
+msgstr "ከመተግበሪያው አገናኝ በላይ ለመጨመር አጭር ሰላምታ ያክሉ።"
+
+#: dt-reports/magic-url-bulk-send.php:41
+msgid "Select app to email"
+msgstr "ኢሜይል ለመላክ መተግበሪያን ይምረጡ"
+
+#: dt-reports/magic-url-bulk-send.php:42
+msgid "You must select an app"
+msgstr "መተግበሪያ መምረጥ አለብህ"
+
+#: dt-reports/magic-url-bulk-send.php:59
+msgid "Send to selected records"
+msgstr "ወደተመረጡት መዝገቦች ላክ"
+
+#: dt-reports/magic-url-bulk-send.php:60
+msgid "You must select at least one record"
+msgstr "ቢያንስ አንድ መዝገብ መምረጥ አለብህ"
+
+#: dt-reports/magic-url-bulk-send.php:63
+msgid "Send"
+msgstr "ላክ"
+
+#: dt-reports/magic-url-bulk-send.php:63
+msgid "Links"
+msgstr "አገናኞች"
+
+#: dt-assets/functions/enqueue-scripts.php:308
+msgctxt "Number of emails sent. i.e. 20 sent!"
+msgid "sent"
+msgstr "ተልኳል።"
+
+#: dt-assets/functions/enqueue-scripts.php:309
+msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
+msgid "not sent (likely missing valid email)"
+msgstr "አልተላከም (የሚሰራ ኢሜይል ሊጎድል ይችላል)"
+
+#: dt-reports/magic-url-base.php:441
+msgid "Apps available on this record."
+msgstr "በዚህ መዝገብ ላይ የሚገኙ መተግበሪያዎች።"
+
+#: dt-reports/magic-url-base.php:492
+msgid "Send a link via email through the system."
+msgstr "በስርዓቱ በኩል አገናኝ በኢሜል ይላኩ."
+
+#: dt-reports/magic-url-base.php:493
+msgid "Send email with link"
+msgstr "ከአገናኝ ጋር ኢሜል ይላኩ።"
+
+#: dt-reports/magic-url-base.php:506
+msgid "QR codes are useful for passing the coaching links to mobile devices."
+msgstr "የQR ኮዶች የአሰልጣኝ ማገናኛዎችን ወደ ተንቀሳቃሽ መሳሪያዎች ለማለፍ ጠቃሚ ናቸው።"
+
+#: dt-reports/magic-url-base.php:511
+msgid "Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
+msgstr "የደህንነት ኮዱን እንደገና ያስጀምሩ። ምንም ውሂብ አልተወገደም። መድረስ ብቻ። የቀደመው ማገናኛ ይሰናከላል እና ሌላ ይፈጠራል።"
+
+#: dt-reports/magic-url-base.php:512
+msgid "Delete and replace the app link"
+msgstr "የመተግበሪያውን አገናኝ ሰርዝ እና ተካ"
+
+#: dt-metrics/personal/activity-highlights.php:22
+#: dt-metrics/personal/activity-highlights.php:53
+msgid "Activity Highlights"
+msgstr "የእንቅስቃሴ ድምቀቶች"
+
+#: dt-metrics/personal/activity-highlights.php:59
+msgid "None"
+msgstr "ምንም"
+
+#: dt-metrics/personal/activity-highlights.php:60
+msgid "%1$s I Changed"
+msgstr "%1$s ተለውጫለሁ።"
+
+#: dt-metrics/personal/activity-highlights.php:61
+msgid "%1$s I Made"
+msgstr "%1$s ሰራሁ"
+
+#: dt-metrics/personal/activity-highlights.php:62
+msgid "Contacts I Baptized"
+msgstr "የተጠመቅኳቸው እውቂያዎች"
+
+#: dt-metrics/personal/activity-highlights.php:63
+msgid "%1$s changed by others on my %2$s"
+msgstr "%1$s በእኔ %2$s ላይ በሌሎች ተለውጧል"
+
+#: dt-metrics/personal/activity-highlights.php:64
+msgid "Baptisms by others on my contacts"
+msgstr "በእኔ እውቂያዎች ላይ በሌሎች የተጠመቁ"
+
+#: dt-metrics/personal/activity-highlights.php:65
+msgid "Comments I Reacted To"
+msgstr "ምላሽ የሰጠኋቸው አስተያየቶች"
+
+#: dt-metrics/personal/activity-highlights.php:66
+msgid "Comments I Posted"
+msgstr "የለጠፍኳቸው አስተያየቶች"
+
+#: dt-metrics/personal/activity-highlights.php:176
+msgid "%1$d %2$s created"
+msgstr "%1$d %2$s ተፈጥሯል።"
+
+#: dt-contacts/access-module.php:95
+msgid "Standard Contact"
+msgstr "መደበኛ ግንኙነት"
+
+#: dt-contacts/access-module.php:97
+msgid "A contact to collaborate on"
+msgstr "ለመተባበር እውቂያ"
+
+#: dt-contacts/access-module.php:98
+msgid "Me and project leadership"
+msgstr "እኔ እና የፕሮጀክት አመራር"
+
+#: dt-contacts/base-setup.php:158
+msgid "Private Contact"
+msgstr "የግል ግንኙነት"
+
+#: dt-contacts/dmm-module.php:49
+msgid "Private Connection"
+msgstr "የግል ግንኙነት"
+
+#: dt-contacts/user-module.php:72
+msgid "This contact represents you as a user."
+msgstr "ይህ እውቂያ እርስዎን እንደ ተጠቃሚ ይወክላል።"
+
+#: dt-contacts/user-module.php:73
+msgid "Please update contact details on your profile page instead of here."
+msgstr "እባክዎን የመገኛ አድራሻ ዝርዝሮችን ከዚህ ይልቅ በመገለጫ ገጽዎ ላይ ያዘምኑ።"
+
+#: dt-contacts/user-module.php:76
+msgid "This contact represents a user."
+msgstr "ይህ ዕውቂያ ተጠቃሚን ይወክላል።"
+
+#: dt-users/template-new-user.php:244
+msgid "Upgrading a contact"
+msgstr "እውቂያን በማሻሻል ላይ"
+
+#: dt-users/template-new-user.php:247
+msgid "The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
+msgstr "አዲሱ ተጠቃሚ በዚህ የእውቂያ መዝገብ ላይ ያሉትን ሁሉንም መስኮች እና አስተያየቶች መዳረሻ ይኖረዋል። አስተያየቶቹ ሚስጥራዊነት ያለው መረጃ ከያዙ በማህደር እንዲቀመጡ እንመክራለን።"
+
+#: dt-users/template-new-user.php:254
+msgid "Continue and archive comments"
+msgstr "ይቀጥሉ እና አስተያየቶችን በማህደር ያስቀምጡ"
+
+#: dt-users/template-new-user.php:255
+msgid "Continue, keeping comments"
+msgstr "አስተያየቶችን በማስቀመጥ ይቀጥሉ"
+
+#: dt-users/template-new-user.php:264
+msgid "Merge Contact Details"
+msgstr "የእውቂያ ዝርዝሮችን አዋህድ"
+
+#: dt-users/template-new-user.php:266
+msgid "A new contact record has been created."
+msgstr "አዲስ የእውቂያ መዝገብ ተፈጥሯል።"
+
+#: dt-users/template-new-user.php:269
+msgid "The old one is now closed."
+msgstr "አሮጌው አሁን ተዘግቷል."
+
+#: dt-users/template-new-user.php:272
+msgid "Do you wish to merge fields from the old record to the new one?"
+msgstr "መስኮችን ከአሮጌው መዝገብ ወደ አዲሱ ማዋሃድ ይፈልጋሉ?"
+
+#: dt-users/user-hooks-and-config.php:166
+msgid "Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
+msgstr "እንኳን በደህና መጡ %1$s፣ ይህ የእርስዎ የግል የእውቂያ መዝገብ ነው። መስኮቹን ለማዘመን ነፃነት ይሰማዎ እና @ እኔን ወይም ሌሎች ተጠቃሚዎችን ይጥቀሱ"
+
+#: dt-users/users.php:437
+msgid "archived"
+msgstr "በማህደር ተቀምጧል"
+
+#: dt-users/users.php:447
+msgctxt "These are archived comments for contact John Doe"
+msgid "These are archived comments for %1$s"
+msgstr "እነዚህ በማህደር የተቀመጡ ለ%1$s አስተያየቶች ናቸው።"
+
+#: template-merge-details.php:207
+msgid "Copy comments to master record"
+msgstr "አስተያየቶችን ወደ ዋና መዝገብ ይቅዱ"
+
+#: template-settings.php:74
+msgid "View Contact Record"
+msgstr "የእውቂያ መዝገብን ይመልከቱ"
+
+#: dt-assets/functions/enqueue-scripts.php:222
+msgid "Open With"
+msgstr "ክፈት በ"
+
+#: dt-contacts/base-setup.php:201
+msgid "Signal"
+msgstr "ሲግናል"
+
+#: dt-contacts/base-setup.php:206
+msgid "Viber"
+msgstr "ቫይበር"
+
+#: dt-contacts/base-setup.php:211
+msgid "Whatsapp"
+msgstr "WhatsApp"
+
+#: dt-users/template-user-management.php:350
+msgid "Edit User"
+msgstr "ተጠቃሚን ያርትዑ"
+
+#: dt-groups/base-setup.php:485
+msgid "Coach of Group"
+msgstr "የቡድን አሰልጣኝ"
 

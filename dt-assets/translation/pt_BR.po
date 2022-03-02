@@ -3756,12 +3756,12 @@ msgstr "Idioma do Sistema"
 #: archive-template.php:184
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "Filtros% s"
+msgstr "Filtros$s"
 
 #: archive-template.php:207
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "Lista% s"
+msgstr "Lista$s"
 
 #: archive-template.php:238
 msgid "Fields"
@@ -3815,7 +3815,7 @@ msgstr "Ações de Admin"
 #: single-template.php:362
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "Apagar% s"
+msgstr "Apagar$s"
 
 #: dt-assets/functions/enqueue-scripts.php:213
 msgid "Duplicates Detected"
@@ -3912,12 +3912,12 @@ msgstr "Locais ou endereço"
 #: dt-contacts/base-setup.php:290
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Conexões para outro% s"
+msgstr "Conexões para outro$s"
 
 #: dt-contacts/base-setup.php:388
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "Alterar o tipo de% s"
+msgstr "Alterar o tipo de$s"
 
 #: dt-contacts/base-setup.php:522
 msgid "Default Filters"
@@ -3926,7 +3926,7 @@ msgstr "Filtros padrão"
 #: dt-contacts/base-setup.php:532
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "Todos os% s que posso ver"
+msgstr "Todos os$s que posso ver"
 
 #: dt-contacts/base-setup.php:542
 #: dt-groups/base-setup.php:1030
@@ -3973,7 +3973,7 @@ msgstr "Fé"
 #: dt-contacts/dmm-module.php:359
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "Conectado% s"
+msgstr "Conectado$s"
 
 #: dt-groups/base-setup.php:623
 msgid "Coaches"
@@ -4046,7 +4046,7 @@ msgstr "Todos"
 #: dt-users/mapbox-coverage-map.php:78
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "Adicionar usuário a:% s"
+msgstr "Adicionar usuário a:$s"
 
 #: dt-users/mapbox-coverage-map.php:81
 msgid "Responsibility Coverage"
@@ -4059,7 +4059,7 @@ msgstr "Registro D.T"
 #: single-template.php:53
 #: single-template.php:61
 msgid "This %s needs an update."
-msgstr "Este% s precisa de uma atualização."
+msgstr "Este$s precisa de uma atualização."
 
 #: dt-assets/functions/details-bar.php:103
 #: dt-assets/functions/details-bar.php:257
@@ -4071,13 +4071,13 @@ msgstr "Registro"
 #: template-merge-details.php:150
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Criado em% s"
+msgstr "Criado em$s"
 
 #: dt-assets/functions/details-bar.php:107
 #: dt-assets/functions/details-bar.php:261
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "por% s"
+msgstr "por$s"
 
 #: single-template.php:211
 msgid "Edit all details fields"
@@ -4091,7 +4091,7 @@ msgstr "Crie uma tag e aplique-a a este registro."
 #: single-template.php:363
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "Tem certeza de que deseja excluir% s?"
+msgstr "Tem certeza de que deseja excluir$s?"
 
 #: dt-assets/functions/menu.php:39
 #: template-metrics.php:25
@@ -4100,7 +4100,7 @@ msgstr "Menu"
 
 #: template-new-post.php:40
 msgid "Select the %s type:"
-msgstr "Selecione o tipo% s:"
+msgstr "Selecione o tipo$s:"
 
 #: template-new-post.php:129
 msgid "Show all fields"
@@ -4118,12 +4118,12 @@ msgstr "fim"
 #: dt-contacts/base-setup.php:413
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "Arquivo % s"
+msgstr "Arquivo $s"
 
 #: dt-contacts/base-setup.php:414
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "Tem certeza que deseja arquivar % s?"
+msgstr "Tem certeza que deseja arquivar $s?"
 
 #: dt-contacts/base-setup.php:421
 msgid "Archive"
@@ -4140,7 +4140,7 @@ msgstr "Restaurar"
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "Mostrando % s itens. Digite para saber mais."
+msgstr "Mostrando $s itens. Digite para saber mais."
 
 #: dt-assets/functions/enqueue-scripts.php:277
 msgctxt "Matches for duplicate contacts found: 230"
@@ -4150,7 +4150,7 @@ msgstr "Duplicidades encontradas:"
 #: dt-assets/functions/enqueue-scripts.php:278
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Dispensar todas as duplicidades para % s"
+msgstr "Dispensar todas as duplicidades para $s"
 
 #: dt-contacts/base-setup.php:344
 msgid "Archived"
