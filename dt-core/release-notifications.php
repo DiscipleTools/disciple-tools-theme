@@ -38,22 +38,25 @@ function dt_release_modal() {
 
         content.append(`
             <div id='release-modal' class='reveal medium' data-reveal>
-
-                <h3>Release Announcement!</h3>
-                <h4>Disciple.Tools Theme Version <?php echo esc_html( $show_notification_for_theme_version ); ?></h4>
-                <hr>
-                <?php echo wp_kses_post( dt_load_github_release_markdown( $show_notification_for_theme_version ) ); ?>
+                <div class="release-banner">
+                    <div class="release-banner-text">
+                        <h3>Release Announcement!</h3>
+                        <h4>Disciple.Tools Theme Version <?php echo esc_html( $show_notification_for_theme_version ); ?></h4>
+                    </div>
+                </div>
+                <div id="release-modal-content">
+                    <?php echo wp_kses_post( dt_load_github_release_markdown( $show_notification_for_theme_version ) ); ?>
+                </div>
                 <hr>
                 <h5>See all D.T News <a href="https://disciple.tools/news" target="_blank">here</a></h5>
                 <br>
 
                 <p class="center"><button type="button" class="button hollow" data-close>Close</button>
 
-                <button class="close-button" data-close aria-label="Close Accessible Modal" type="button">
+                <button class="close-button white-button" data-close aria-label="Close Accessible Modal" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
         `);
 
         let div = jQuery('#release-modal');
