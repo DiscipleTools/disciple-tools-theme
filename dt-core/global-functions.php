@@ -897,11 +897,16 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     /**
      * Validate specified date format
      */
-    if ( ! function_exists( 'dt_validate_date' ) ) {
-        function dt_validate_date( string $date, string $format = 'Y-m-d H:i:s' ): bool {
-            $date_time = DateTime::createFromFormat( $format, $date );
-
-            return $date_time && $date_time->format( $format ) === $date;
+    if ( !function_exists( 'dt_validate_date' ) ){
+        function dt_validate_date( string $date ): bool{
+            $formats = [ 'Y-m-d', 'Y-m-d H:i:s', 'Y-m-d H:i:s.u', DateTimeInterface::ISO8601, DateTimeInterface::RFC3339 ];
+            foreach ( $formats as $format ){
+                $date_time = DateTime::createFromFormat( $format, $date );
+                if ( $date_time && $date_time->format( $format ) === $date ){
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
