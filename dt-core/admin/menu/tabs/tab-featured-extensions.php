@@ -30,8 +30,13 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         $nonce = wp_create_nonce( 'portal-nonce' );
         ?>
         <script type="text/javascript">
-            function install(plug) {
-                jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'installing', 'disciple_tools' ); ?>...</p>");
+            function install(plug, is_multisite = false) {
+                if ( is_multisite ) {
+                    jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'network installing', 'disciple_tools' ); ?>...</p>");    
+                } else {
+                    jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'installing', 'disciple_tools' ); ?>...</p>");
+                }
+
                 jQuery.post("",
                     {
                         install: plug,
@@ -42,8 +47,13 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     });
             }
 
-            function uninstall(plug) {
-                jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'uninstalling', 'disciple_tools' ); ?></p>");
+            function uninstall(plug, is_multisite = false ) {
+                if ( is_multisite ) {
+                    jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'network uninstalling', 'disciple_tools' ); ?>...</p>");
+                } else {
+                    jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'uninstalling', 'disciple_tools' ); ?>...</p>");
+                }
+
                 jQuery.post("",
                     {
                         uninstall: plug,
@@ -76,7 +86,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     function (data, status) {
                         location.reload();
                     });
-            }
+            }         
         </script>
         <?php
     }
@@ -126,7 +136,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             //activate the plugin
             activate_plugin( sanitize_text_field( wp_unslash( $_POST["activate"] ) ) );
             exit;
-        } elseif ( isset( $_POST ) && isset( $_POST['install'] ) && is_admin() && isset( $_POST['_ajax_nonce'] )
+        }
+            elseif ( isset( $_POST['install'] ) && is_admin() && isset( $_POST['_ajax_nonce'] )
             && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST['_ajax_nonce'] ) )
             && ( ( is_multisite() && is_super_admin() ) || ( ! is_multisite() && current_user_can( 'manage_dt' ) ) ) ) {
             //check for admin or multisite super admin
@@ -135,7 +146,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             exit;
         }
 
-        elseif ( isset( $_POST ) && isset( $_POST['uninstall'] ) && is_admin() && isset( $_POST['_ajax_nonce'] )
+        elseif ( isset( $_POST['uninstall'] ) && is_admin() && isset( $_POST['_ajax_nonce'] )
             && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST['_ajax_nonce'] ) )
             && ( ( is_multisite() && is_super_admin() ) || ( ! is_multisite() && current_user_can( 'manage_dt' ) ) ) ) {
             //check for admin or multisite super admin
@@ -221,7 +232,17 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                             if ( $result_name == -1 ) {
                                 if ( isset( $plugin->download_url ) && current_user_can( "install_plugins" ) ) : ?>
                                 <li>
-                                    <button class="button" onclick="install('<?php echo esc_html( $plugin->download_url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
+                                    <?php
+                                        if ( is_multisite() ) {
+                                            ?>
+                                                <button class="button" onclick="install('<?php echo esc_attr( $plugin->download_url ); ?>', true )"><?php echo esc_html__( 'Network Install', 'disciple_tools' ); ?></button>
+                                            <?php
+                                        } else {
+                                            ?>
+                                                <button class="button" onclick="install('<?php echo esc_attr( $plugin->download_url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
+                                            <?php
+                                        }
+                                    ?>
                                 </li>
                                 <?php else : ?>
                                     <li>
@@ -232,17 +253,46 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                             } elseif ( $this->partial_array_search( $active_plugins, $plugin->slug ) == -1 && isset( $_POST["activate"] ) == false ) {
                                 ?>
                                     <li>
-                                        <button class="button" onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                                        <?php
+                                            if ( is_multisite() ) {
+                                                ?>
+                                                    <a href="<?php echo esc_attr( network_admin_url() ); ?>plugins.php" class="button"><?php echo esc_html__( 'Network Activate', 'disciple_tools' ); ?></a>
+                                                <?php
+                                            } else {
+                                                ?>
+                                                    <button class="button" onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                                                <?php
+                                            }
+                                        ?>
                                     </li>
                                     <li>
-                                        <button class="button" onclick="uninstall('<?php echo esc_html( $plugin->slug ); ?>/<?php echo esc_html( $plugin->slug );?>.php')"><?php echo esc_html__( 'Uninstall', 'disciple_tools' ) ?></button>
-                                        <!-- <a class="button" href="http://localhost:10033/wp-admin/plugins.php?action=delete-selected&checked%5B0%5D=disciple-tools-demo-content%2Fdisciple-tools-demo-content.php&plugin_status=all&paged=1&s&_wpnonce=0d0ef6e4f1"><?php echo esc_html__( 'Uninstall', 'disciple_tools' ) ?></a> -->
+                                        <?php
+                                            if ( is_multisite() ) {
+                                                ?>
+                                                    <button class="button" onclick="uninstall('<?php echo esc_attr( $result_name ); ?>', true )"><?php echo esc_html__( 'Network Uninstall', 'disciple_tools' ); ?></button>
+                                                <?php
+                                            } else {
+                                                ?>
+                                                    <button class="button" onclick="uninstall('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Uninstall', 'disciple_tools' ) ?></button>
+                                                <?php
+                                            }
+                                        ?>
                                     </li>
                                 <?php
                             } else {
                                 ?>
                                 <li>
-                                    <button class="button" onclick="deactivate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Deactivate', 'disciple_tools' ) ?></button>
+                                    <?php
+                                        if ( is_multisite() ) {
+                                            ?>
+                                                <a href="<?php echo esc_attr( network_admin_url() ); ?>plugins.php" class="button"><?php echo esc_html__( 'Network Deactivate', 'disciple_tools' ); ?></a>
+                                            <?php
+                                        } else {
+                                            ?>
+                                                <button class="button" onclick="deactivate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Deactivate', 'disciple_tools' ) ?></button>
+                                            <?php
+                                        }
+                                    ?>
                                 </li>
                                 <?php
                             }
