@@ -231,19 +231,23 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                             $result_name = $this->partial_array_search( $all_plugins, $plugin->slug );
                             if ( $result_name == -1 ) {
                                 if ( isset( $plugin->download_url ) && current_user_can( "install_plugins" ) ) : ?>
-                                <li>
+                                
                                     <?php
                                         if ( is_multisite() ) {
                                             ?>
+                                            <li>
                                                 <button class="button" onclick="install('<?php echo esc_attr( $plugin->download_url ); ?>', true )"><?php echo esc_html__( 'Network Install', 'disciple_tools' ); ?></button>
+                                            </li>
                                             <?php
                                         } else {
                                             ?>
+                                            <li>
                                                 <button class="button" onclick="install('<?php echo esc_attr( $plugin->download_url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
+                                            </li>
                                             <?php
                                         }
                                     ?>
-                                </li>
+                                
                                 <?php else : ?>
                                     <li>
                                         <span>To install this plugin ask your network administrator</span>
@@ -252,48 +256,60 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
                             } elseif ( $this->partial_array_search( $active_plugins, $plugin->slug ) == -1 && isset( $_POST["activate"] ) == false ) {
                                 ?>
-                                    <li>
                                         <?php
                                             if ( is_multisite() ) {
                                                 ?>
+                                                <li>
                                                     <a href="<?php echo esc_attr( network_admin_url() ); ?>plugins.php" class="button"><?php echo esc_html__( 'Network Activate', 'disciple_tools' ); ?></a>
+                                                </li>
+                                                <li>
+                                                    <button class="button" onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Single Activate', 'disciple_tools' ) ?></button>  
+                                                </li>
                                                 <?php
                                             } else {
                                                 ?>
+                                                <li>
                                                     <button class="button" onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                                                </li>
                                                 <?php
                                             }
                                         ?>
-                                    </li>
-                                    <li>
                                         <?php
                                             if ( is_multisite() ) {
                                                 ?>
+                                                <li>
                                                     <button class="button" onclick="uninstall('<?php echo esc_attr( $result_name ); ?>', true )"><?php echo esc_html__( 'Network Uninstall', 'disciple_tools' ); ?></button>
+                                                </li>
                                                 <?php
                                             } else {
                                                 ?>
+                                                <li>
                                                     <button class="button" onclick="uninstall('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Uninstall', 'disciple_tools' ) ?></button>
+                                                </li>
                                                 <?php
                                             }
                                         ?>
-                                    </li>
                                 <?php
                             } else {
                                 ?>
-                                <li>
                                     <?php
                                         if ( is_multisite() ) {
                                             ?>
+                                            <li>
                                                 <a href="<?php echo esc_attr( network_admin_url() ); ?>plugins.php" class="button"><?php echo esc_html__( 'Network Deactivate', 'disciple_tools' ); ?></a>
+                                            </li>
+                                            <li>
+                                                <button class="button" onclick="deactivate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Single Deactivate', 'disciple_tools' ) ?></button>
+                                            </li>
                                             <?php
                                         } else {
                                             ?>
+                                            <li>
                                                 <button class="button" onclick="deactivate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Deactivate', 'disciple_tools' ) ?></button>
+                                            </li>
                                             <?php
                                         }
                                     ?>
-                                </li>
                                 <?php
                             }
 
