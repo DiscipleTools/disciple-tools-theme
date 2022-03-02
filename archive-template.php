@@ -303,7 +303,7 @@ dt_please_log_in();
 
                     <div id="bulk_edit_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                         <p style="font-weight:bold"><?php
-                        echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
+                        echo sprintf( esc_html__( "Select all the %s you want to update from the list, and update them below", 'disciple_tools' ), esc_html( $post_type ) );?></p>
                         <div class="grid-x grid-margin-x">
                             <?php if ( isset( $field_options["assigned_to"] ) ) : ?>
                             <div class="cell small-12 medium-4">
@@ -626,10 +626,10 @@ dt_please_log_in();
                                 </div>
                                 <?php if ( $field_options[$field]["type"] === 'connection' ) : ?>
                                     <p>
-                                        <label><?php echo esc_html( sprintf( _x( 'All %1$s with %2$s', 'All Contacts with Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
+                                        <label><?php echo esc_html( sprintf( _x( 'All %s with %s', 'All Contacts with Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
                                             <input class="all-connections" type="checkbox" value="all-connections" />
                                         </label>
-                                        <label><?php echo esc_html( sprintf( _x( 'All %1$s without %2$s', 'All Contacts without Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
+                                        <label><?php echo esc_html( sprintf( _x( 'All %s without %s', 'All Contacts without Is Coaching', 'disciple_tools' ), $post_settings["label_plural"], $field_options[$field]["name"] ) ) ?>
                                             <input class="all-without-connections" type="checkbox" value="all-without-connections" />
                                         </label>
                                     </p>
