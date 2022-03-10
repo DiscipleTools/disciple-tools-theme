@@ -48,8 +48,11 @@ function dt_release_modal() {
                     <?php echo wp_kses_post( dt_load_github_release_markdown( $show_notification_for_theme_version ) ); ?>
                 </div>
                 <hr>
-                <h5>See all D.T News <a href="https://disciple.tools/news" target="_blank">here</a></h5>
-                <br>
+                <p>
+                    <a href="https://disciple.tools/news" target="_blank">See all D.T News</a>
+                    <br>
+                    <a href="https://disciple.tools/translation/" target="_blank">Join the translation team</a>
+                </p>
 
                 <p class="center"><button type="button" class="button hollow" data-close>Close</button>
 
