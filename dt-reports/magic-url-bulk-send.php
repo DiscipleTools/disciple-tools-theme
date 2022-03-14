@@ -52,7 +52,23 @@ if ( 'contacts' === dt_get_post_type() ) {
                                         }
                                     }
                                 }
-                                ?>
+
+                             // Fetch available magic link templates
+                             $templates = apply_filters( 'dt_magic_link_templates', [] );
+                             foreach ( $templates ?? [] as $template ) {
+
+                                 // Explode template id into parts -> {root}_{id/type}_magic_key
+                                 $parts = explode( '_', $template['id'] );
+
+                                 ?>
+                                 <input type="radio" id="<?php echo esc_attr( $template['id'] ) ?>"
+                                        data-root="<?php echo esc_attr( $parts[0] ) ?>"
+                                        data-type="<?php echo esc_attr( $parts[1] ) ?>" name="r-group">
+                                 <label class="button"
+                                        for="<?php echo esc_attr( $template['id'] ) ?>"><?php echo esc_html( $template['name'] ) ?></label>
+                                 <?php
+                             }
+                             ?>
                         </div>
                     </div>
                     <div class="cell">
