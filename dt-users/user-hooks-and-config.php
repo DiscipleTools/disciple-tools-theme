@@ -32,9 +32,9 @@ class DT_User_Hooks_And_Configuration {
         add_filter( 'manage_users_columns', [ $this, 'new_modify_user_table' ] );
         add_filter( 'manage_users_custom_column', [ $this, 'new_modify_user_table_row' ], 10, 3 );
 
-        add_action( 'remove_user_from_blog', [ $this,'dt_delete_user_contact_meta' ], 10, 1 );
-        add_action( 'wpmu_delete_user', [ $this,'dt_multisite_delete_user_contact_meta' ], 10, 1 );
-        add_action( 'delete_user', [ $this,'dt_delete_user_contact_meta' ], 10, 1 );
+        add_action( 'remove_user_from_blog', [ $this,'dt_delete_user_from_blog' ], 10, 2 );
+        add_action( 'wpmu_delete_user', [ $this, 'dt_multisite_delete_user_contact_meta' ], 10, 1 );
+        add_action( 'delete_user', [ $this,'dt_delete_user' ], 10, 1 );
 
         // translate emails
         add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
@@ -402,21 +402,43 @@ class DT_User_Hooks_And_Configuration {
     }
 
 
+
+    public static function dt_delete_user( $user_id ){
+        dt_write_log( "dt_delete_user");
+        global $wpdb;
+        $wpdb->get_results(
+            $wpdb->prepare( "
+                DELETE FROM $wpdb->postmeta pm
+                WHERE meta_key = 'corresponds_to_user'
+                AND pm.meta_value = %d
+            ", $user_id )
+        );
+    }
+
+    public static function dt_delete_user_from_blog( $user_id, $blog_id ){
+        dt_write_log( "dt_delete_user_from_blog");
+        switch_to_blog( $blog_id );
+        global $wpdb;
+        $wpdb->get_results(
+            $wpdb->prepare( "
+                DELETE FROM $wpdb->postmeta pm
+                WHERE meta_key = 'corresponds_to_user'
+                AND pm.meta_value = %d
+            ", $user_id )
+        );
+
+        restore_current_blog();
+    }
+
     /** Multisite Only
      *  This will remove the 'corresponds_to_user' meta key and value from all sites on the network if deleted by a super admin
      */
     public static function dt_multisite_delete_user_contact_meta( $user_id ) {
+        dt_write_log( "dt_multisite_delete_user_contact_meta");
         $blogs = get_sites();
         if ( ! empty( $blogs ) ) {
             foreach ( $blogs as $blog ) {
-                switch_to_blog( $blog->userblog_id );
-                global $wpdb;
-                $wpdb->get_results(
-                    $wpdb->prepare( "DELETE FROM $wpdb->postmeta pm WHERE meta_key = 'corresponds_to_user' AND pm.meta_value = %d
-                    ", $user_id )
-                );
-
-                restore_current_blog();
+                self::dt_delete_user_from_blog( $user_id, $blog->userblog_id );
             }
         }
     }
