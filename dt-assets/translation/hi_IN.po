@@ -613,7 +613,7 @@ msgstr "बपतिस्मा की पीढ़ी"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "स्रोत"
 
@@ -1351,11 +1351,11 @@ msgstr "सौंपने की अनुमति नहीं है"
 msgid "Insufficient permissions"
 msgstr "अपर्याप्त अनुमति"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "अतिरिक्त Disciple.Tools की जानकारी"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "संपर्क के अनुकूल है"
 
@@ -1647,11 +1647,11 @@ msgstr "एक संपर्क एक से अधिक स्रोत स
 msgid "Generation"
 msgstr "पीढ़ी"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "यह उपयोगकर्ता जिस संपर्क रिकॉर्ड के अनुरूप है उसका नाम जोड़ें।"
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "और जानें।"
 
@@ -3437,7 +3437,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "लोगों के समूहों से हटाया गया"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "संपर्क देखें"
@@ -3594,17 +3594,17 @@ msgid "Access by Source"
 msgstr "स्रोत द्वारा अभिगम करें"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "सभी स्रोत - सभी संपर्कों तक पहुँच प्रदान करता है"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "कस्टम - नीचे दिए गए स्रोतों के सभी संपर्कों और अपने सभी संपर्कों तक पहुँँचें"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "कोई स्रोत नहीं - केवल स्वयं के संपर्क हैं"
 
@@ -4473,7 +4473,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 

@@ -618,7 +618,7 @@ msgstr "Pertence à geracao de batizados"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "Fontes"
 
@@ -1356,11 +1356,11 @@ msgstr "Nenhuma permissão para atribuir"
 msgid "Insufficient permissions"
 msgstr "Permissões insuficientes"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "Informações adicionais sobre Disciple.Tools"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "Corresponde ao contato"
 
@@ -1652,11 +1652,11 @@ msgstr "Um contato pode vir de mais de uma fonte e pode ter mais de um marco de 
 msgid "Generation"
 msgstr "Geração"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "Adicione o nome do registro de contato ao qual este usuário corresponde."
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "Saber mais."
 
@@ -3443,7 +3443,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%s removido de grupos de pessoas"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "Ver contato"
@@ -3600,17 +3600,17 @@ msgid "Access by Source"
 msgstr "Acesso por Fonte"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "Todas as Fontes: Dá acesso a todos os contatos"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "Personalizado: Dá acesso a contatos próprios e a todos os contatos das fontes selecionadas abaixo"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "Sem Fontes: Apenas contatos próprios"
 
@@ -4479,7 +4479,7 @@ msgstr "Pedir Link Mágico "
 msgid "copy"
 msgstr "Copiar"
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr "Linguagem do usuário "
 

@@ -614,7 +614,7 @@ msgstr "Generacija krsta"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "Viri"
 
@@ -1352,11 +1352,11 @@ msgstr "Ni dovoljenj za dodelitev"
 msgid "Insufficient permissions"
 msgstr "Nezadostna dovoljenja"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "Več informacij o Disciple.Tools"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "Ustreza stiku"
 
@@ -1648,11 +1648,11 @@ msgstr "Stik lahko prihaja iz večih virov in lahko ima več verskih prelomnic."
 msgid "Generation"
 msgstr "Generacija"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "Dodaj ime stika, ki mu ustreza ta uporabnik."
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "Nauči se več."
 
@@ -3450,7 +3450,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%s odstranjenih iz skupin ljudi"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "Ogled stika"
@@ -3607,17 +3607,17 @@ msgid "Access by Source"
 msgstr "Dostop do vira"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "Vsi viri – omogoča dostop do vseh stikov"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "Po meri – dostopajte do lastnih stikov in vseh stikov izbranih virov spodaj"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "Brez virov – samo lastni stiki"
 
@@ -4488,7 +4488,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 

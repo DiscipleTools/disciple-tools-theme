@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-03-02T18:12:28+00:00\n"
+"POT-Creation-Date: 2022-03-14T15:36:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: disciple_tools\n"
@@ -1556,7 +1556,7 @@ msgstr ""
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr ""
 
@@ -4382,17 +4382,17 @@ msgid "Access by Source"
 msgstr ""
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr ""
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr ""
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr ""
 
@@ -4474,28 +4474,28 @@ msgctxt "You've been invited to join Awesome Site at https://awesome_site.discip
 msgid "You've been invited to join %1$s at %2$s"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 

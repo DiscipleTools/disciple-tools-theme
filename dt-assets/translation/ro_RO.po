@@ -613,7 +613,7 @@ msgstr "Generație de Ucenici Botezați"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "Surse"
 
@@ -1352,11 +1352,11 @@ msgstr "Nu există permisiuni de atribuit"
 msgid "Insufficient permissions"
 msgstr "Permisiuni insuficiente"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "Disciple.Tools. Informație extra"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "Corespunde contactului"
 
@@ -1648,11 +1648,11 @@ msgstr "Un contact poate proveni din mai multe surse și poate avea mai mult de 
 msgid "Generation"
 msgstr "Generaţia"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "Adăugați numele de contact înregistrării căreia îi corespunde acest utilizator."
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "Află mai multe."
 
@@ -3450,7 +3450,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%s a fost eliminat din grupurile de persoane"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "Vizualizați contactul"
@@ -3607,17 +3607,17 @@ msgid "Access by Source"
 msgstr "Acces prin sursă"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "Toate sursele - oferă acces către toate contactele"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "Personalizat - Accesați propriile contacte și toate contactele din sursele selectate mai jos"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "Fără surse - doar propriile persoane de contact"
 
@@ -4487,7 +4487,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 

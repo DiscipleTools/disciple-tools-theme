@@ -613,7 +613,7 @@ msgstr "বাপ্তিস্ম প্রজন্ম"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "উৎসসমূহ"
 
@@ -1351,11 +1351,11 @@ msgstr "নিযুক্ত করার জন্য কোনো অনু�
 msgid "Insufficient permissions"
 msgstr "অপর্যাপ্ত অনুমতি"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "অতিরিক্ত Disciple.Tools তথ্য"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "পরিচিতির সঙ্গে যোগাযোগ করুন"
 
@@ -1647,11 +1647,11 @@ msgstr "একজন পরিচিতি একের অধিক উৎস �
 msgid "Generation"
 msgstr "প্রজন্ম"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "এই ইউজার যোগাযোগ রাখেন এমন পরিচিতি রেকর্ডের নাম যোগ করুন।"
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "আরও শিখুন।"
 
@@ -3438,7 +3438,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%s লোক সম্প্রদায় থেকে সরিয়ে ফেলা হয়েছে"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "পরিচিতি দেখাও"
@@ -3595,17 +3595,17 @@ msgid "Access by Source"
 msgstr "উত্স দ্বারা অ্যাক্সেস"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "সমস্ত উত্স - সমস্ত পরিচিতিতে অ্যাক্সেস দেয়"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "কাস্টম - নিজের পরিচিতি এবং নীচে নির্বাচিত উত্সগুলির সমস্ত পরিচিতিতে অ্যাক্সেস করুন"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "কোনও উত্স নয় - কেবল নিজস্ব পরিচিতি"
 
@@ -4474,7 +4474,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 

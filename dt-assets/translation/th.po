@@ -613,7 +613,7 @@ msgstr "การสร้างบัพติศมา"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "แหล่งที่มา"
 
@@ -1351,11 +1351,11 @@ msgstr "ไม่มีสิทธิ์ในการมอบหมาย"
 msgid "Insufficient permissions"
 msgstr "สิทธิ์ไม่เพียงพอ"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "ศิษย์พิเศษข้อมูลเครื่องมือ"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "สอดคล้องกับการติดต่อ"
 
@@ -1647,11 +1647,11 @@ msgstr "ผู้ติดต่อสามารถมาจากแหล่
 msgid "Generation"
 msgstr "เจนเนอเรชั่น"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "เพิ่มชื่อของเรกคอร์ดผู้ติดต่อที่ผู้ใช้รายนี้สอดคล้องกับ"
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "เรียนรู้เพิ่มเติม."
 
@@ -3431,7 +3431,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "ลบ$s ออกจากกลุ่มคนแล้ว"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "ดูผู้ติดต่อ"
@@ -3588,17 +3588,17 @@ msgid "Access by Source"
 msgstr "เข้าถึงตามแหล่งที่มา"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "แหล่งที่มาทั้งหมด - ให้การเข้าถึงผู้ติดต่อทั้งหมด"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "กำหนดเอง - เข้าถึงผู้ติดต่อของตัวเองและผู้ติดต่อทั้งหมดของแหล่งที่มาที่เลือกด้านล่าง"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "ไม่มีแหล่งที่มา - เฉพาะผู้ติดต่อของตัวเอง"
 
@@ -4466,7 +4466,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 

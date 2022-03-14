@@ -613,7 +613,7 @@ msgstr "جيل المعمودية"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "المصادر"
 
@@ -1352,11 +1352,11 @@ msgstr "لا يوجد إذن بالتعيين"
 msgid "Insufficient permissions"
 msgstr "إذن غير كافي"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "معلومات إضافية عن Disciple.Tools"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "يتوافق مع جهة الاتصال"
 
@@ -1648,11 +1648,11 @@ msgstr "يمكن أن تأتي جهة الاتصال من أكثر من مصدر
 msgid "Generation"
 msgstr "جيل"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "أضف اسم سجل جهة الاتصال الذي يتوافق معه هذا المستخدم."
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "اعرف المزيد."
 
@@ -3463,7 +3463,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "تمت إزالة %s من المجموعات البشرية"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "عرض جهة الاتصال"
@@ -3620,17 +3620,17 @@ msgid "Access by Source"
 msgstr "الدخول عن طريق المصدر"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "كل المصادر - تتيح الدخول إلى كافة جهات الاتصال"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "مخصص - الدخول إلى جهات الاتصال الخاصة وجميع جهات الاتصال الخاصة بالمصادر المحددة أدناه"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "لا توجد مصادر - جهات الاتصال الخاصة فقط"
 
@@ -4504,7 +4504,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 
