@@ -404,7 +404,6 @@ class DT_User_Hooks_And_Configuration {
 
 
     public static function dt_delete_user( $user_id ){
-        dt_write_log( "dt_delete_user");
         global $wpdb;
         $wpdb->get_results(
             $wpdb->prepare( "
@@ -416,7 +415,6 @@ class DT_User_Hooks_And_Configuration {
     }
 
     public static function dt_delete_user_from_blog( $user_id, $blog_id ){
-        dt_write_log( "dt_delete_user_from_blog");
         switch_to_blog( $blog_id );
         global $wpdb;
         $wpdb->get_results(
@@ -434,7 +432,6 @@ class DT_User_Hooks_And_Configuration {
      *  This will remove the 'corresponds_to_user' meta key and value from all sites on the network if deleted by a super admin
      */
     public static function dt_multisite_delete_user_contact_meta( $user_id ) {
-        dt_write_log( "dt_multisite_delete_user_contact_meta");
         $blogs = get_sites();
         if ( ! empty( $blogs ) ) {
             foreach ( $blogs as $blog ) {
