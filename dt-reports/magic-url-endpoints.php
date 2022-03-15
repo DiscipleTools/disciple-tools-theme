@@ -116,7 +116,6 @@ class Disciple_Tools_Magic_Endpoints
                 $name     = $template['name'];
                 $meta_key = $template['id'];
             }
-
         } elseif ( ! isset( $type[ $params['type'] ] ) ) {
             return new WP_Error( __METHOD__, "Magic link type not found", [ 'status' => 400 ] );
 
