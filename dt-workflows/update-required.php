@@ -40,9 +40,12 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
             $current_user = wp_get_current_user();
             $current_user->add_cap( "access_contacts" );
             $current_user->add_cap( "dt_all_access_contacts" );
+            $field_options           = DT_Posts::get_post_field_settings( "contacts" );
             foreach ( $update_needed_settings["options"] as $setting ) {
-                $date                 = time() - $setting["days"] * 24 * 60 * 60; // X days in seconds
-                $contacts_need_update = $wpdb->get_results( $wpdb->prepare( "
+                $deleted_flag = $field_options['seeker_path']['default'][ $setting['seeker_path'] ]['deleted'] ?? null;
+                if ( ! ( isset( $deleted_flag ) && ( $deleted_flag === true ) ) ) {
+                    $date                 = time() - $setting["days"] * 24 * 60 * 60; // X days in seconds
+                    $contacts_need_update = $wpdb->get_results( $wpdb->prepare( "
                     SELECT $wpdb->posts.ID
                     FROM $wpdb->posts
                     LEFT JOIN $wpdb->postmeta AS requires_update_field ON ($wpdb->posts.ID = requires_update_field.post_id AND requires_update_field.meta_key = 'requires_update' )
@@ -55,18 +58,19 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     AND %d >= ( SELECT MAX( hist_time ) FROM $wpdb->dt_activity_log WHERE object_id = $wpdb->posts.ID and user_id != 0 )
                     AND $wpdb->posts.post_type = 'contacts' AND $wpdb->posts.post_status = 'publish'
                     GROUP BY $wpdb->posts.ID ORDER BY $wpdb->posts.post_date DESC LIMIT 0, 50",
-                    esc_sql( $setting["status"] ),
-                    esc_sql( $setting["seeker_path"] ),
-                    $date
-                ), OBJECT );
-                foreach ( $contacts_need_update as $contact ) {
-                    $user_name    = ( "@" . dt_get_assigned_name( $contact->ID, true ) . " " ) ?? "";
-                    $comment_html = esc_html( $user_name . $setting["comment"] );
-                    DT_Posts::add_post_comment( "contacts", $contact->ID, $comment_html, "comment", [
-                        "user_id" => 0,
-                        "comment_author" => __( "Update Needed", 'disciple_tools' )
-                    ], false, true );
-                    DT_Posts::update_post( "contacts", $contact->ID, [ "requires_update" => true ], false );
+                        esc_sql( $setting["status"] ),
+                        esc_sql( $setting["seeker_path"] ),
+                        $date
+                    ), OBJECT );
+                    foreach ( $contacts_need_update as $contact ) {
+                        $user_name    = ( "@" . dt_get_assigned_name( $contact->ID, true ) . " " ) ?? "";
+                        $comment_html = esc_html( $user_name . $setting["comment"] );
+                        DT_Posts::add_post_comment( "contacts", $contact->ID, $comment_html, "comment", [
+                            "user_id"        => 0,
+                            "comment_author" => __( "Update Needed", 'disciple_tools' )
+                        ], false, true );
+                        DT_Posts::update_post( "contacts", $contact->ID, [ "requires_update" => true ], false );
+                    }
                 }
             }
         }
