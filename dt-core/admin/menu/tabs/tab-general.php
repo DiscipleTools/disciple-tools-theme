@@ -424,18 +424,21 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     </tr>
                 </thead>
                 <?php foreach ( $update_required_options as $option_key => $option ) : ?>
-                    <tr>
-                        <td><?php echo esc_html( $field_options["overall_status"]['default'][$option['status']]["label"] ?? '' ) ?></td>
-                        <td><?php echo esc_html( $field_options["seeker_path"]['default'][$option['seeker_path']]["label"] ?? '_missing_' ) ?></td>
-                        <td>
-                            <input name="<?php echo esc_html( $option_key ) ?>_days" type="number"
-                                value="<?php echo esc_html( $option["days"] ) ?>"  />
-                        </td>
-                        <td>
+                    <?php $deleted_flag = $field_options['seeker_path']['default'][ $option['seeker_path'] ]['deleted'] ?? null; ?>
+                    <?php if ( ! ( isset( $deleted_flag ) && ( $deleted_flag === true ) ) ) { ?>
+                        <tr>
+                            <td><?php echo esc_html( $field_options["overall_status"]['default'][ $option['status'] ]["label"] ?? '' ) ?></td>
+                            <td><?php echo esc_html( $field_options["seeker_path"]['default'][ $option['seeker_path'] ]["label"] ?? '_missing_' ) ?></td>
+                            <td>
+                                <input name="<?php echo esc_html( $option_key ) ?>_days" type="number"
+                                       value="<?php echo esc_html( $option["days"] ) ?>"/>
+                            </td>
+                            <td>
                             <textarea name="<?php echo esc_html( $option_key ) ?>_comment"
                                       style="width:100%"><?php echo esc_html( $option["comment"] ) ?></textarea>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+                    <?php } ?>
                 <?php endforeach; ?>
 
             </table>
