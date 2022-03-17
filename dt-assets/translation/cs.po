@@ -615,7 +615,7 @@ msgstr "Generace křtu"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "Zdroje"
 
@@ -1358,11 +1358,11 @@ msgstr "Žádná oprávnění k přiřazení"
 msgid "Insufficient permissions"
 msgstr "Nedostatečná oprávnění"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "Speciální Disciple.Tools informace"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "Odpovídá kontaktu"
 
@@ -1655,11 +1655,11 @@ msgstr "Kontakt může pocházet z více než jednoho zdroje a může mít souč
 msgid "Generation"
 msgstr "Generace"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "Přidejte název záznamu kontaktu, kterému tento uživatel odpovídá."
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "Zjistit více."
 
@@ -3451,7 +3451,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%s odebráno ze skupin lidí"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "Podívat se na kontakt"
@@ -3608,17 +3608,17 @@ msgid "Access by Source"
 msgstr "Přístup podle zdroje"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "Všechny zdroje - poskytuje přístup ke všem kontaktům"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "Vlastní - přístup k vlastním kontaktům a všem kontaktům vybraných zdrojů níže"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "Žádné zdroje - pouze vlastní kontakty"
 
@@ -4488,7 +4488,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 

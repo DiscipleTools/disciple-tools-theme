@@ -621,7 +621,7 @@ msgstr "နှစ်ခြင်းခံသည့်မျိုးဆက်"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "သတင်းရင်းမြစ်များ"
 
@@ -1378,12 +1378,12 @@ msgstr "သတ်မှတ်ပေးရန်ခွင့်ပြုချက
 msgid "Insufficient permissions"
 msgstr "မလုံလောက်သော ခွင့်ပြုချက်"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 #, fuzzy
 msgid "Extra Disciple.Tools Information"
 msgstr "အပို Disciple.Tools ပြန်ကြားရေး"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 #, fuzzy
 msgid "Corresponds to Contact"
 msgstr "ဆက်သွယ်ရန်နှင့်ကိုက်ညီ"
@@ -1680,11 +1680,11 @@ msgstr "အဆက်အသွယ်တစ်ခုသည်တစ်ခုထက
 msgid "Generation"
 msgstr "မျိုးဆက်"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "ဤအသုံးပြုသူနှင့်အဆက်အသွယ်ပြုထားသောအဆက်အသွယ်၏မှတ်တမ်းအမည်ကိုထည့်ပါ။"
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "ပိုမိုသိရှိရန်။"
 
@@ -3495,7 +3495,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%s အားလူအုပ်စုများမှဖယ်ရှားခဲ့သည်"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "အဆက်အသွယ် ကိုကြည့်ရန်"
@@ -3656,17 +3656,17 @@ msgid "Access by Source"
 msgstr "သတင်းရင်းမြစ်မှဝင်ရောက်"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "သတင်းရင်းမြစ် အားလုံး - အဆက်အသွယ်အားလုံးကိုဆက်သွယ်ခွင့်ပေးသည်"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "စိတ်ကြိုက် - ကိုယ်ပိုင်အဆက်အသွယ်များနှင့်အောက်ရှိရွေးချယ်ထားသောသတင်းရင်းမြစ်များ၏အဆက်အသွယ်များ ဝင်ရောက်"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "အရင်းအမြစ်မရှိ - ကိုယ်ပိုင်အဆက်အသွယ်များသာ"
 
@@ -4543,7 +4543,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 

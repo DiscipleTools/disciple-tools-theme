@@ -614,7 +614,7 @@ msgstr "Generacija krštenja"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "Izvori"
 
@@ -1352,12 +1352,12 @@ msgstr "Nema dozvola za dodjeljivanje"
 msgid "Insufficient permissions"
 msgstr "Nedovoljno dozvola"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "Dodatne informacije o Disciple.Tools\n"
 ""
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "Odgovara kontaktu"
 
@@ -1649,11 +1649,11 @@ msgstr "Kontakt može poticati iz više od jednog izvora i može imati više od 
 msgid "Generation"
 msgstr "Generacija"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "Dodajte ime zapisa kontakta kojem ovaj korisnik odgovara."
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "Saznajte više."
 
@@ -3464,7 +3464,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%s je uklonjen/a/o iz grupe ljudi"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "Pogledajte kontakt"
@@ -3621,17 +3621,17 @@ msgid "Access by Source"
 msgstr "Pristup iz izvora"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "Svi izvori - daje pristup svim kontaktima"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "Prilagođeno - pristupite vlastitim kontaktima i svim kontaktima odabranih izvora ispod"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "Nema izvora - samo vlastiti kontakti"
 
@@ -4532,7 +4532,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 

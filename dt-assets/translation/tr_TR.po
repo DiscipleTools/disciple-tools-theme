@@ -614,7 +614,7 @@ msgstr "Vaftiz Nesli"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "Kaynaklar"
 
@@ -1352,11 +1352,11 @@ msgstr "Atama izni yok"
 msgid "Insufficient permissions"
 msgstr "Yetersiz izin"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "Ekstra Disciple.Tools Bilgisi"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "Kişiyle Eşleşiyor"
 
@@ -1648,11 +1648,11 @@ msgstr "Bir kişi birden fazla kaynaktan gelip aynı zamanda birden fazla iman a
 msgid "Generation"
 msgstr "Nesil"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "Bu kullanıcı ile eşleşen kişi kaydını ekle."
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "Daha öğren."
 
@@ -3440,7 +3440,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%s insan gruplarından kaldırıldı"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "Kişiyi görüntüle"
@@ -3597,17 +3597,17 @@ msgid "Access by Source"
 msgstr "Kaynağa Göre Erişim"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "Tüm Kaynaklar - tüm bağlantılara erişim sağlar"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "Özel - Aşağıdaki seçili kaynaklardan kendi bağlantılarınızı ve tüm bağlantılara erişin"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "Kaynak Yok - yalnızca kendi bağlantıları"
 
@@ -4477,7 +4477,7 @@ msgstr "Magic Link Submission"
 msgid "copy"
 msgstr "kopyala"
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr "Kullanıcı Dili"
 

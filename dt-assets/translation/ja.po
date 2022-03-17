@@ -613,7 +613,7 @@ msgstr "バプテスマの生成"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "ソース"
 
@@ -1351,11 +1351,11 @@ msgstr "割り当てる権限がありません"
 msgid "Insufficient permissions"
 msgstr "不十分な権限"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "追加の弟子。ツール情報"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "連絡先に対応"
 
@@ -1647,11 +1647,11 @@ msgstr "連絡先は複数のソースから来る可能性があり、同時に
 msgid "Generation"
 msgstr "世代"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "このユーザーが対応する連絡先レコードの名前を追加します。"
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "もっと詳しく知る。"
 
@@ -3431,7 +3431,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "％sが人のグループから削除されました"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "連絡先を表示"
@@ -3588,17 +3588,17 @@ msgid "Access by Source"
 msgstr "ソースによるアクセス"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "すべてのソース-すべての連絡先へのアクセスを提供します"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "カスタム-自分の連絡先と、以下で選択したソースのすべての連絡先にアクセスします"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "ソースなし-自分の連絡先のみ"
 
@@ -4466,7 +4466,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 

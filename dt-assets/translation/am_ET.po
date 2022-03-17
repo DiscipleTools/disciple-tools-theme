@@ -613,7 +613,7 @@ msgstr "የጥምቀት ትውልድ"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "ምንጮች"
 
@@ -1351,11 +1351,11 @@ msgstr "ለመመደብ ምንም ፈቃዶች የሉም"
 msgid "Insufficient permissions"
 msgstr "በቂ ያልሆኑ ፈቃዶች"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "ተጨማሪ ደቀ መዝሙር። የኩሬዎች መረጃ"
 
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "ከእውቂያ ጋር ይዛመዳል"
 
@@ -1647,11 +1647,11 @@ msgstr "አንድ ግንኙነት ከአንድ በላይ ምንጮች ሊመጣ 
 msgid "Generation"
 msgstr "ትውልድ"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "ይህ ተጠቃሚ የሚስማማውን የእውቂያ መዝገብ ስም ያክሉ።"
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "ተጨማሪ እወቅ."
 
@@ -3437,7 +3437,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%s ከሰዎች ቡድኖች ተወግዷል"
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "እውቂያ ይመልከቱ"
@@ -3594,17 +3594,17 @@ msgid "Access by Source"
 msgstr "መድረሻ በ ምንጭ"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "ሁሉም ምንጮች - ለሁሉም እውቂያዎች መዳረሻ ይሰጣል"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "ብጁ - የራሳቸውን እውቂያዎች እና ከዚህ በታች ያሉትን የተመረጡት ምንጮች ሁሉ ዕውቂያዎች ይድረሱባቸው"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "ምንም ምንጮች የሉም - የራሳቸው እውቂያዎች ብቻ ናቸው"
 
@@ -4473,7 +4473,7 @@ msgstr "አስማት አገናኝ ማስገቢያ"
 msgid "copy"
 msgstr "ቅዳ"
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr "የተጠቃሚ ቋንቋ"
 

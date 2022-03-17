@@ -107,9 +107,9 @@ abstract class DT_Magic_Url_Base {
     public function fetch_incoming_contact_lang( $parts = [] ): string {
         if ( ! empty( $parts['post_type'] ) && ! empty( $parts['post_id'] ) ) {
             if ( $parts['post_type'] === 'contacts' ) {
-                $contact = DT_Posts::get_post( $parts['post_type'], $parts['post_id'] );
-                if ( ! empty( $contact ) && ! is_wp_error( $contact ) ) {
-                    foreach ( $contact['languages'] ?? [] as $lang ) {
+                $languages = get_post_meta( $parts['post_id'], 'languages', false );
+                if ( ! empty( $languages ) && ! is_wp_error( $languages ) ) {
+                    foreach ( $languages as $lang ) {
 
                         // First, ensure $lang is not already within required locale shape
                         if ( strpos( $lang, "_" ) !== false ) {

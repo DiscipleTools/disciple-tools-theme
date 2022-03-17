@@ -115,7 +115,7 @@ jQuery(document).ready(function($) {
         if (a.comment){ %>
           <% is_Comment = true; %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
-              <div class="comment-text" title="<%- date %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
+              <div class="comment-text" title="<%- a.date_formatted %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
             </div>
             <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
               <div class="translation-bubble" dir=auto></div>
@@ -166,7 +166,7 @@ jQuery(document).ready(function($) {
               </div>
 
         <% } else { %>
-            <p class="activity-bubble" title="<%- date %>" dir="auto"><%= a.text %> <% print(a.action) /* not escaped on purpose */ %></p>
+            <p class="activity-bubble" title="<%- a.date_formatted %>" dir="auto"><%= a.text %> <% print(a.action) /* not escaped on purpose */ %></p>
         <%  }
     }); %>
     <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate'
@@ -365,6 +365,7 @@ jQuery(document).ready(function($) {
       let obj = {
         name: name,
         date: d.date,
+        date_formatted: window.SHAREDFUNCTIONS.formatDate(moment(d.date).unix(), true),
         gravatar,
         text:d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
@@ -382,7 +383,7 @@ jQuery(document).ready(function($) {
         commentsWrapper.append(commentTemplate({
           name: array[0].name,
           gravatar: array[0].gravatar,
-          date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix(), true),
+          date: array[0].date_formatted,
           activity: array
         }))
         array = [obj]
@@ -392,7 +393,7 @@ jQuery(document).ready(function($) {
       commentsWrapper.append(commentTemplate({
         gravatar: array[0].gravatar,
         name: array[0].name,
-        date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix(), true),
+        date: array[0].date_formatted,
         activity: array
       }))
     }

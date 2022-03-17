@@ -616,7 +616,7 @@ msgstr "Kizazi Cha Ubatizo"
 
 #: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:517
+#: dt-users/user-hooks-and-config.php:539
 msgid "Sources"
 msgstr "Vyanzo"
 
@@ -1356,12 +1356,12 @@ msgstr "Hakuna ruhusa ya kumpa mwingine"
 msgid "Insufficient permissions"
 msgstr "Hakuna ruhusa ya kutosha"
 
-#: dt-users/user-hooks-and-config.php:482
+#: dt-users/user-hooks-and-config.php:504
 msgid "Extra Disciple.Tools Information"
 msgstr "Taarifa Zaidi Juu Ya Disciple.Tools"
 
 #. The Swahili written here literally means, "Relates to the Contact"
-#: dt-users/user-hooks-and-config.php:485
+#: dt-users/user-hooks-and-config.php:507
 msgid "Corresponds to Contact"
 msgstr "Inahusiana na Mwasiliani"
 
@@ -1653,11 +1653,11 @@ msgstr "Mawasiliano inaweza kutoka kwa chanzo zaidi ya moja, na inaweza kuwa na 
 msgid "Generation"
 msgstr "Kizazi"
 
-#: dt-users/user-hooks-and-config.php:495
+#: dt-users/user-hooks-and-config.php:517
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "Ongeza jina la rekodi ya mawasiliano ambayo mtumiaji huyu analingana nayo."
 
-#: dt-users/user-hooks-and-config.php:496
+#: dt-users/user-hooks-and-config.php:518
 msgid "Learn more."
 msgstr "Jifunze zaidi."
 
@@ -3443,7 +3443,7 @@ msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr " %s iliondolewa kwenye vikundi vya watu "
 
-#: dt-users/user-hooks-and-config.php:493
+#: dt-users/user-hooks-and-config.php:515
 #: dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "Tazama mwasiliani"
@@ -3600,17 +3600,17 @@ msgid "Access by Source"
 msgstr "Upatikanaji na Chanzo"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:524
+#: dt-users/user-hooks-and-config.php:546
 msgid "All Sources - gives access to all contacts"
 msgstr "Vyanzo vyote - hutoa ufikiaji wa anwani zote"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:531
+#: dt-users/user-hooks-and-config.php:553
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
 msgstr "Desturi - Fikia anwani mwenyewe na anwani zote za vyanzo vilivyochaguliwa hapa chini"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:538
+#: dt-users/user-hooks-and-config.php:560
 msgid "No Sources - only own contacts"
 msgstr "Hakuna Vyanzo - mawasiliano tu mwenyewe"
 
@@ -4479,7 +4479,7 @@ msgstr ""
 msgid "copy"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:503
+#: dt-users/user-hooks-and-config.php:525
 msgid "User Language"
 msgstr ""
 
