@@ -387,19 +387,19 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         public function register_post_type() {
             $args = [
                 'labels' => [
-                        'name'               => $this->plural, /* This is the Title of the Group */
-                        'singular_name'      => $this->singular, /* This is the individual type */
-                        'all_items'          => __( 'All' ) . ' ' . $this->plural, /* the all items menu item */
-                        'add_new'            => __( 'Add New' ), /* The add new menu item */
-                        'add_new_item'       => __( 'Add New' ) . ' ' . $this->singular, /* Add New Display Title */
-                        'edit'               => __( 'Edit' ), /* Edit Dialog */
-                        'edit_item'          => __( 'Edit' ) . ' ' . $this->singular, /* Edit Display Title */
-                        'new_item'           => __( 'New' ) . ' ' . $this->singular, /* New Display Title */
-                        'view_item'          => __( 'View' ) . ' ' . $this->singular, /* View Display Title */
-                        'search_items'       => __( 'Search' ) . ' ' . $this->plural, /* Search Custom Type Title */
-                        'not_found'          => __( 'Nothing found in the Database.' ), /* This displays if there are no entries yet */
-                        'not_found_in_trash' => __( 'Nothing found in Trash' ), /* This displays if there is nothing in the trash */
-                        'parent_item_colon'  => ''
+                    'name'               => $this->plural, /* This is the Title of the Group */
+                    'singular_name'      => $this->singular, /* This is the individual type */
+                    'all_items'          => __( 'All' ) . ' ' . $this->plural, /* the all items menu item */
+                    'add_new'            => __( 'Add New' ), /* The add new menu item */
+                    'add_new_item'       => __( 'Add New' ) . ' ' . $this->singular, /* Add New Display Title */
+                    'edit'               => __( 'Edit' ), /* Edit Dialog */
+                    'edit_item'          => __( 'Edit' ) . ' ' . $this->singular, /* Edit Display Title */
+                    'new_item'           => __( 'New' ) . ' ' . $this->singular, /* New Display Title */
+                    'view_item'          => __( 'View' ) . ' ' . $this->singular, /* View Display Title */
+                    'search_items'       => __( 'Search' ) . ' ' . $this->plural, /* Search Custom Type Title */
+                    'not_found'          => __( 'Nothing found in the Database.' ), /* This displays if there are no entries yet */
+                    'not_found_in_trash' => __( 'Nothing found in Trash' ), /* This displays if there is nothing in the trash */
+                    'parent_item_colon'  => ''
                 ], /* end of arrays */
 
                 'public'              => false,
@@ -483,8 +483,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         public function register_custom_column_headings( $defaults ) {
 
             $new_columns = array(
-            'linked' => __( 'Linked' ),
-            'type' => __( 'Type' )
+                'linked' => __( 'Linked' ),
+                'type' => __( 'Type' )
             );
 
             $last_item = [];
@@ -712,6 +712,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     delete_post_meta( $post_id, 'site2' );
                     delete_post_meta( $post_id, 'site_key' );
                     delete_post_meta( $post_id, 'approved_ip_address' );
+                    delete_post_meta( $post_id, 'dev_key' );
 
                     $this->build_cached_option(); // rebuilds cache for options
 
@@ -813,6 +814,13 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 ],
                 'section'     => 'non_wp',
             ];
+            $fields['dev_key'] = [
+                'name'        => __( 'Custom Key' ),
+                'description' => '',
+                'type'        => 'text',
+                'default'     => '',
+                'section'     => 'non_wp',
+            ];
 
             // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
             // @codingStandardsIgnoreLine
@@ -895,9 +903,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                     <!-- Footer Information -->
                     <p><?php esc_attr_e( 'Current Site' ) ?>: <span
-                                class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
+                            class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
                     <p class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span
-                                class="info-color"><?php echo esc_attr( current_time( 'Y-m-d H:i', 1 ) ) ?></span>
+                            class="info-color"><?php echo esc_attr( current_time( 'Y-m-d H:i', 1 ) ) ?></span>
                         <em>( <?php esc_attr_e( 'Compare this number to linked site. It should be identical.' ) ?> )</em></p>
                     <p><?php esc_attr_e( 'Server IP' ) ?>: <span
                           class="info-color">
@@ -1113,13 +1121,15 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                   meta3.meta_value as site1,
                   meta4.meta_value as site2,
                   meta1.meta_value as site_key,
-                  meta5.meta_value as approved_ip_address
+                  meta5.meta_value as approved_ip_address,
+                  meta6.meta_value as dev_key
                 FROM $wpdb->posts as post
                   JOIN $wpdb->postmeta as meta1 ON post.ID=meta1.post_id AND meta1.meta_key = 'site_key'
                   JOIN $wpdb->postmeta as meta2 ON post.ID=meta2.post_id AND meta2.meta_key = 'token'
                   JOIN $wpdb->postmeta as meta3 ON post.ID=meta3.post_id AND meta3.meta_key = 'site1'
                   JOIN $wpdb->postmeta as meta4 ON post.ID=meta4.post_id AND meta4.meta_key = 'site2'
                   LEFT JOIN $wpdb->postmeta as meta5 ON post.ID=meta5.post_id AND meta5.meta_key = 'approved_ip_address'
+                  LEFT JOIN $wpdb->postmeta as meta6 ON post.ID=meta6.post_id AND meta6.meta_key = 'dev_key'
                 WHERE post.post_status = 'publish' AND post.post_type = 'site_link_system'
             ", ARRAY_A  );
 
@@ -1132,6 +1142,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     'site1'     => $result['site1'],
                     'site2'     => $result['site2'],
                     'approved_ip_address' => $result['approved_ip_address'],
+                    'dev_key' => $result['dev_key']
                 ];
             }
 
