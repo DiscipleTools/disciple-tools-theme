@@ -85,7 +85,8 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
             return;
         }
         ?>
-        <a href="<?php esc_url( $this->url_base ) ?>"
+
+        <a href="<?php echo esc_url( $this->url_base ) ?>"
            class="nav-tab <?php echo esc_html( $tab == 'roles' ? 'nav-tab-active' : '' ) ?>">
             <?php echo esc_html__( 'Roles' ) ?>
         </a>
