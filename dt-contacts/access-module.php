@@ -438,7 +438,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 <select id="overall_status" class="select-field color-select" style="margin-bottom:0; background-color: <?php echo esc_html( $active_color ) ?>">
                     <?php foreach ( $contact_fields["overall_status"]["default"] as $key => $option ){
                         $value = $option["label"] ?? "";
-                        if ( $contact["overall_status"]["key"] === $key ) {
+                        if ( $current_key === $key ) {
                             ?>
                             <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
                         <?php } else { ?>
