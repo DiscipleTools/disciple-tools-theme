@@ -940,18 +940,12 @@ jQuery(document).ready(function($) {
         })
         .catch(err=>{
           $('#create-user').removeClass('loading')
-          if ( err.status === 409) {
-            submit_button.prop('disabled', false)
-
-            if ( err.responseJSON.code === 'email_exists' ) {
-              result_div.html(`${ escaped_translations.email_already_in_system }`)
-            }
-            else if ( err.responseJSON.code === 'username_exists' ) {
-              result_div.html(`${ escaped_translations.username_in_system }`)
-            }
-
+          submit_button.prop('disabled', false)
+          if ( err.responseJSON?.code === 'email_exists' ) {
+            result_div.html(`${ escaped_translations.email_already_in_system }`)
+          } else if ( err.responseJSON?.code === 'username_exists' ) {
+            result_div.html(`${ escaped_translations.username_in_system }`)
           } else {
-            submit_button.prop('disabled', false)
             result_div.html(`Oops. Something went wrong.`)
           }
           return false;

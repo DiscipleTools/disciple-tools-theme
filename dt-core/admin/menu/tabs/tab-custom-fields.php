@@ -492,7 +492,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php
                     endif;
                     ?>
-                    <td><?php esc_html_e( "Color", 'disciple_tools' ) ?></td>
+                    <?php if ( isset( $field['default_color'] ) && ! empty( $field['default_color'] ) ): ?>
+                        <td><?php esc_html_e( "Color", 'disciple_tools' ) ?></td>
+                    <?php endif; ?>
                     <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
@@ -549,16 +551,18 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <?php endif; ?>
                                 </td>
                             <?php endif; ?>
-                            <td>
-                                <?php
-                                $default_color = $option['color'] ?? '';
-                                ?>
-                                <input name="field_color_option_<?php echo esc_html( $key ) ?>" type="text"
-                                       class="color-display-picker" data-alpha-enabled="true"
-                                       value="<?php echo esc_attr( $default_color ); ?>"
-                                    <?php echo ( ! empty( $default_color ) ) ? 'data-default-color="' . esc_attr( $default_color ) . '"' : '' ?>
-                                />
-                            </td>
+                            <?php if ( isset( $field['default_color'] ) && ! empty( $field['default_color'] ) ): ?>
+                                <td>
+                                    <?php
+                                    $default_color = $option['color'] ?? '';
+                                    ?>
+                                    <input name="field_color_option_<?php echo esc_html( $key ) ?>" type="text"
+                                           class="color-display-picker" data-alpha-enabled="true"
+                                           value="<?php echo esc_attr( $default_color ); ?>"
+                                        <?php echo ( ! empty( $default_color ) ) ? 'data-default-color="' . esc_attr( $default_color ) . '"' : '' ?>
+                                    />
+                                </td>
+                            <?php endif; ?>
                             <td>
                                 <button class="button small expand_translations">
                                     <?php
@@ -827,8 +831,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
 
             // key_select and multi_options
+            $field_options = $field["default"];
             if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" ) ){
-                $field_options = $field["default"];
                 foreach ( $post_submission as $key => $val ){
                     if ( strpos( $key, "field_option_" ) === 0 ) {
                         if ( strpos( $key, 'translation' ) !== false ) {
@@ -952,6 +956,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( "dt_field_customizations", $field_customizations );
             wp_cache_delete( $post_type . "_field_settings" );
+
+            // Support seeker path option triggers
+            if ( $field_key === 'seeker_path' ) {
+                dt_seeker_path_triggers_update( $field_options );
+            }
         }
     }
 

@@ -16,7 +16,7 @@ function dt_release_modal() {
     if ( !is_archive() && !is_single() && !isset( apply_filters( "desktop_navbar_menu_options", [] )[str_replace( '/', '', $url )] ) ){
         return;
     }
-    $show_notification_for_theme_version = '1.21.0'; // increment this number with each new release modal
+    $show_notification_for_theme_version = '1.23.0'; // increment this number with each new release modal
 
     $theme_version = wp_get_theme()->version;
     $last_release_notification = get_user_meta( get_current_user_id(), 'dt_release_notification', true );
@@ -38,22 +38,28 @@ function dt_release_modal() {
 
         content.append(`
             <div id='release-modal' class='reveal medium' data-reveal>
-
-                <h3>Release Announcement!</h3>
-                <h4>Disciple.Tools Theme Version <?php echo esc_html( $show_notification_for_theme_version ); ?></h4>
+                <div class="release-banner">
+                    <div class="release-banner-text">
+                        <h3>Release Announcement!</h3>
+                        <h4>Disciple.Tools Theme Version <?php echo esc_html( $show_notification_for_theme_version ); ?></h4>
+                    </div>
+                </div>
+                <div id="release-modal-content">
+                    <?php echo wp_kses_post( dt_load_github_release_markdown( $show_notification_for_theme_version ) ); ?>
+                </div>
                 <hr>
-                <?php echo wp_kses_post( dt_load_github_release_markdown( $show_notification_for_theme_version ) ); ?>
-                <hr>
-                <h5>See all D.T News <a href="https://disciple.tools/news" target="_blank">here</a></h5>
-                <br>
+                <p>
+                    <a href="https://disciple.tools/news" target="_blank">See all D.T News</a>
+                    <br>
+                    <a href="https://disciple.tools/translation/" target="_blank">Join the translation team</a>
+                </p>
 
                 <p class="center"><button type="button" class="button hollow" data-close>Close</button>
 
-                <button class="close-button" data-close aria-label="Close Accessible Modal" type="button">
+                <button class="close-button white-button" data-close aria-label="Close Accessible Modal" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
         `);
 
         let div = jQuery('#release-modal');
