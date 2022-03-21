@@ -41,34 +41,22 @@ if ( 'contacts' === dt_get_post_type() ) {
                         <label for="bulk_send_app_required_selection"><?php echo esc_html__( 'Select app to email', 'disciple_tools' ); ?></label>
                         <span id="bulk_send_app_required_selection" style="display:none;color:red;"><?php echo esc_html__( 'You must select an app', 'disciple_tools' ); ?></span>
                         <div class="bulk_send_app dt-radio button-group toggle ">
-                             <?php
-                                foreach ( $dt_magic_apps as $root ) {
-                                    foreach ( $root as $type ) {
-                                        if ( isset( $type['show_bulk_send'] ) && $type['show_bulk_send'] ) {
-                                            ?>
-                                        <input type="radio" id="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>" data-root="<?php echo esc_attr( $type['root'] ) ?>" data-type="<?php echo esc_attr( $type['type'] ) ?>" name="r-group">
-                                        <label class="button" for="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>"><?php echo esc_html( $type['name'] ) ?></label>
-                                            <?php
-                                        }
+                            <?php
+                            foreach ( $dt_magic_apps as $root ) {
+                                foreach ( $root as $type ) {
+                                    if ( isset( $type['show_bulk_send'] ) && $type['show_bulk_send'] ) {
+                                        ?>
+                                        <input type="radio"
+                                               id="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>"
+                                               data-root="<?php echo esc_attr( $type['root'] ) ?>"
+                                               data-type="<?php echo esc_attr( $type['type'] ) ?>" name="r-group">
+                                        <label class="button"
+                                               for="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>"><?php echo esc_html( $type['name'] ) ?></label>
+                                        <?php
                                     }
                                 }
-
-                                // Fetch available magic link templates
-                                $templates = apply_filters( 'dt_magic_link_templates', [] );
-                                foreach ( $templates ?? [] as $template ) {
-
-                                 // Explode template id into parts -> {root}_{id/type}_magic_key
-                                    $parts = explode( '_', $template['id'] );
-
-                                    ?>
-                                 <input type="radio" id="<?php echo esc_attr( $template['id'] ) ?>"
-                                        data-root="<?php echo esc_attr( $parts[0] ) ?>"
-                                        data-type="<?php echo esc_attr( $parts[1] ) ?>" name="r-group">
-                                 <label class="button"
-                                        for="<?php echo esc_attr( $template['id'] ) ?>"><?php echo esc_html( $template['name'] ) ?></label>
-                                    <?php
-                                }
-                                ?>
+                            }
+                            ?>
                         </div>
                     </div>
                     <div class="cell">

@@ -103,20 +103,7 @@ class Disciple_Tools_Magic_Endpoints
 
         $magic = new DT_Magic_URL( $params['root'] );
         $type = $magic->list_types();
-
-        // Distinguish between regular types and templates
-        if ( isset( $type['template_id'], $type['template_id']['meta'], $type['template_id']['meta']['class_type'] ) && $type['template_id']['meta']['class_type'] === 'template' ) {
-
-            $template_id = $params['root'] . '_' . $params['type'] . '_magic_key';
-            $template    = call_user_func( $type['template_id']['meta']['get_template'], $template_id );
-            if ( empty( $template ) || is_wp_error( $template ) ) {
-                return new WP_Error( __METHOD__, "Magic link type not found", [ 'status' => 400 ] );
-
-            } else {
-                $name     = $template['name'];
-                $meta_key = $template['id'];
-            }
-        } elseif ( ! isset( $type[ $params['type'] ] ) ) {
+        if ( ! isset( $type[ $params['type'] ] ) ) {
             return new WP_Error( __METHOD__, "Magic link type not found", [ 'status' => 400 ] );
 
         } else {
