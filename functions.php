@@ -423,7 +423,6 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
                 require_once( 'dt-core/setup-functions.php' );
 
             }
-            require_once( 'dt-core/setup-custom-roles.php' );
             require_once( 'dt-core/admin/menu/tabs/admin-endpoints.php' );
 
             //create scheduler for job queue
