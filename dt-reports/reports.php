@@ -12,8 +12,8 @@ if ( !defined( 'ABSPATH' ) ) {
  *
  * @return mixed
  */
-function dt_report_insert( $args = [] ) {
-    return Disciple_Tools_Reports::insert( $args );
+function dt_report_insert( $args = [], $save_hash = true ) {
+    return Disciple_Tools_Reports::insert( $args, $save_hash );
 }
 
 /**
@@ -29,7 +29,7 @@ class Disciple_Tools_Reports
      * @param array $args
      * @return false|int
      */
-    public static function insert( array $args ) {
+    public static function insert( array $args, bool $save_hash = true ) {
         global $wpdb;
         if ( ! isset( $args['type'] ) ){
             return false;
@@ -58,24 +58,29 @@ class Disciple_Tools_Reports
             ]
         );
 
-        $args['hash'] = hash( 'sha256', maybe_serialize( $args ) );
-        $args['timestamp'] = time();
+        if ( $save_hash ) {
+            $args['hash'] = hash( 'sha256', maybe_serialize( $args ) );
 
-        // Make sure for non duplicate.
-        $check_duplicate = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT
+            // Make sure for non duplicate.
+            $check_duplicate = $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT
                     `id`
                 FROM
                     `$wpdb->dt_reports`
-                WHERE hash = %s;",
-                $args['hash']
-            )
-        );
+                WHERE hash = %s AND hash IS NOT NULL;",
+                    $args['hash']
+                )
+            );
 
-        if ( $check_duplicate ) {
-            return false;
+            if ( $check_duplicate ) {
+                return false;
+            }
+        } else {
+            $args['hash'] = null;
         }
+
+        $args['timestamp'] = time();
 
         $wpdb->insert(
             $wpdb->dt_reports,
