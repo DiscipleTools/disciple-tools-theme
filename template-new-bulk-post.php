@@ -26,56 +26,64 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
 
     <div id="content" class="template-new-post">
         <div id="inner-content" class="grid-x grid-margin-x">
-            <div class="large-0 medium-12 small-12 cell"></div>
+            <div class="large-0 medium-12 small-12 cell" style="display: none;"></div>
 
             <div class="large-12 medium-12 small-12 cell">
                 <input type="hidden" id="bulk_records_current_layout" value="">
                 <form class="js-create-post-bulk bordered-box display-fields">
-                    <h3 class="section-header">
-                        <?php echo esc_html( sprintf( __( 'New Bulk %s', 'disciple_tools' ), $post_settings["label_plural"] ) ) ?>
-                        <span style="display:inline-block;">
-                            <button class="button clear" id="choose_fields_to_show_in_records"
-                                    style="margin:10px 10px 10px 20px; padding:0;">
-                                <?php esc_html_e( 'Fields', 'disciple_tools' ); ?>
-                                <img class="dt-icon"
-                                     src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>"/>
-                            </button>
-                        </span>
-                    </h3>
 
-                    <div id="list_fields_picker" class="list_field_picker"
-                         style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
-                        <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display across new bulk records', 'disciple_tools' ); ?></p>
-                        <?php
 
-                        //order fields alphabetically by Name
-                        uasort( $post_settings["fields"], function ( $a, $b ) {
-                            return $a['name'] <=> $b['name'];
-                        } );
+                    <table>
+                        <tbody style="border: none;">
+                        <tr>
+                            <td>
+                                <h3 class="section-header">
+                                    <?php echo esc_html( sprintf( __( 'New Bulk %s', 'disciple_tools' ), $post_settings["label_plural"] ) ) ?>
+                                    <span style="display:inline-block;">
+                                        <button class="button clear" id="choose_fields_to_show_in_records"
+                                                style="margin:10px 10px 10px 20px; padding:0;">
+                                            <?php esc_html_e( 'Fields', 'disciple_tools' ); ?>
+                                            <img class="dt-icon"
+                                                 src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>"/>
+                                        </button>
+                                    </span>
+                                </h3>
 
-                        ?>
-                        <ul class="ul-no-bullets" style="">
-                            <?php foreach ( $post_settings["fields"] as $field_key => $field_values ):
-                                if ( ! empty( $field_values["hidden"] ) ) {
-                                    continue;
-                                }
-                                ?>
-                                <li style="" class="">
-                                    <label style="margin-right:15px; cursor:pointer">
-                                        <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
-                                               style="margin:0">
-                                        <?php echo esc_html( $field_values["name"] ); ?>
-                                    </label>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                        <button class="button" id="save_fields_choices"
-                                style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
-                        <a class="button clear" id="reset_fields_choices"
-                           style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
-                    </div>
+                                <div id="list_fields_picker" class="list_field_picker"
+                                     style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+                                    <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display across new bulk records', 'disciple_tools' ); ?></p>
+                                    <?php
 
-                    <hr>
+                                    //order fields alphabetically by Name
+                                    uasort( $post_settings["fields"], function ( $a, $b ) {
+                                        return $a['name'] <=> $b['name'];
+                                    } );
+
+                                    ?>
+                                    <ul class="ul-no-bullets" style="">
+                                        <?php foreach ( $post_settings["fields"] as $field_key => $field_values ):
+                                            if ( ! empty( $field_values["hidden"] ) ) {
+                                                continue;
+                                            }
+                                            ?>
+                                            <li style="" class="">
+                                                <label style="margin-right:15px; cursor:pointer">
+                                                    <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
+                                                           style="margin:0">
+                                                    <?php echo esc_html( $field_values["name"] ); ?>
+                                                </label>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                    <button class="button" id="save_fields_choices"
+                                            style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
+                                    <a class="button clear" id="reset_fields_choices"
+                                       style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
 
                     <!-- choose the record type -->
                     <?php if ( $type_choice_present ) { ?>
@@ -136,9 +144,10 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
 
 
                     <div class="form-fields">
+                        <input id="bulk_record_fields_html" type="hidden" value=""/>
                         <div id="form_fields_records">
                             <div class="form-fields-record">
-                                <input type="hidden" id="bulk_record_id" value="1">
+                                <input type="hidden" id="bulk_record_id" value="1"/>
                                 <div id="bulk_record_landscape_layout"></div>
                                 <?php
                                 render_new_bulk_record_fields( $dt_post_type );
@@ -148,8 +157,8 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
 
                         <div id="add_new_bulk_record_div"
                              style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">
-                            <a class="button clear" id="add_new_bulk_record" style="margin:0;padding:3px 0; width:100%">
-                                <?php esc_html_e( '+', 'disciple_tools' ); ?>
+                            <a class="button" id="add_new_bulk_record" style="margin:0;padding:3px 0; width:100%">
+                                <?php esc_html_e( 'Add New Record', 'disciple_tools' ); ?>
                             </a>
                         </div>
 

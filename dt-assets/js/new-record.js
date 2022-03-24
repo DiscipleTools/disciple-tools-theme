@@ -583,6 +583,27 @@ jQuery(function($) {
    */
 
   let is_normal_new_record = (!$('#form_fields_records').length) ? true : false;
+
+  $(document).ready(function () {
+    if (!is_normal_new_record) {
+
+      // Fetch new bulk record fields for local storage and to increase rendering response time.
+      API.get_new_bulk_record_fields(window.new_record_localized.post_type).promise().then(function (data) {
+
+        // Store fields html for future reference.
+        $('#bulk_record_fields_html').val(data);
+
+        // Display initial records to get started.
+        for (let i = 0; i < 4; i++) {
+          $('#add_new_bulk_record').trigger('click');
+        }
+
+      }).catch(function (error) {
+        console.error(error);
+      });
+    }
+  });
+
   if (is_normal_new_record) {
 
     date_picker_init();
@@ -613,9 +634,13 @@ jQuery(function($) {
    */
 
   $('#add_new_bulk_record').on('click', function () {
-    API.get_new_bulk_record_fields(window.new_record_localized.post_type).promise().then(function (data) {
+
+    let fields_html = $('#bulk_record_fields_html').val();
+
+    if (fields_html) {
+
       let new_records_count = $('#form_fields_records').find('.form-fields-record').length + 1;
-      let html = '<div class="form-fields-record"><input type="hidden" id="bulk_record_id" value="' + new_records_count + '"><div style="background-color:rgb(236, 245, 252); margin: 3px -15px 15px -15px;">&nbsp;</div><div id="bulk_record_landscape_layout"></div>' + data + '</div>';
+      let html = '<div class="form-fields-record"><input type="hidden" id="bulk_record_id" value="' + new_records_count + '"><div class="record-divider" style="background-color:rgb(236, 245, 252); margin: 3px -15px 15px -15px; text-align: center;"><span style="padding: 0px; margin: 0px;">' + generate_record_removal_button_html(new_records_count) + '</span></div><div id="bulk_record_landscape_layout"></div>' + fields_html + '</div>';
       let updated_records = $('#form_fields_records').append(html);
 
       // Adjust relevant class names for recently added record elements.
@@ -642,9 +667,9 @@ jQuery(function($) {
       // Apply latest field filters
       apply_field_filters();
 
-    }).catch(function (error) {
-      console.error(error);
-    });
+      // Apply field heading and spacing adjustments
+      adjust_record_headings_and_spacing();
+    }
   });
 
   function adjust_new_button_multi_select_class_names(bulk_id) {
@@ -688,6 +713,28 @@ jQuery(function($) {
       let new_field_class = `js-typeahead-${field_key}-${bulk_id}`;
       $(element).removeClass(old_field_class).addClass(new_field_class);
     }
+  }
+
+  function adjust_record_headings_and_spacing() {
+    $('#form_fields_records').find('.form-fields-record').each((key, record) => {
+
+      // Adjust table spacing across the board
+      $(record).find('table').css('margin-bottom', '0px');
+
+      // Ignore the first record
+      if ($(record).find('#bulk_record_id').val() !== '1') {
+
+        // Hide record dividers
+        is_landscape_layout() ? $(record).find('.record-divider').hide() : $(record).find('.record-divider').show();
+
+        // Hide field headings
+        is_landscape_layout() ? $(record).find('.section-subheader').hide() : $(record).find('.section-subheader').show();
+
+        // Hide help text
+        is_landscape_layout() ? $(record).find('.help-text').hide() : $(record).find('.help-text').show();
+
+      }
+    });
   }
 
   /*
@@ -1083,6 +1130,9 @@ jQuery(function($) {
       });
 
     }
+
+    // Apply field heading and spacing adjustments
+    adjust_record_headings_and_spacing();
   }
 
   function switch_to_landscape_layout(record) {
@@ -1095,11 +1145,26 @@ jQuery(function($) {
       let landscape_table = $('<table>');
       let landscape_table_row = $('<tr>');
 
+      // Insert record removal button column.
+      let landscape_table_row_data_removal = $('<td>');
+
+      // Only applied to subsequent records.
+      let record_id = $(record).find('#bulk_record_id').val();
+      if (record_id !== '1') {
+        landscape_table_row_data_removal.append(generate_record_removal_button_html(record_id));
+        landscape_table_row_data_removal.css('padding-bottom', '10px');
+
+      } else {
+        landscape_table_row_data_removal.css('min-width', '15px');
+      }
+
+      landscape_table_row.append(landscape_table_row_data_removal);
+
       // Start re-housing elements within new landscape tabular layout.
       $(record).find('.form-field').each((key, field_div) => {
 
         let landscape_table_row_data = $('<td>');
-        landscape_table_row_data.css('padding', '10px');
+        landscape_table_row_data.css('padding', '5px');
         landscape_table_row_data.css('vertical-align', 'top');
 
         // Determine visibility.
@@ -1187,7 +1252,7 @@ jQuery(function($) {
 
   function apply_field_value_copy_controls_button(record_id, field_div, field_class, field_id) {
     if ($(field_div).find('.field-value-copy-controls').length === 0) {
-      let button_html = '<button data-field-class="' + field_class + '" data-field-id="' + field_id + '" data-record-id="' + record_id + '" class="field-value-copy-controls-button" type="button"><img src="' + window.new_record_localized.bulk_copy_control_but_uri + '"></button>';
+      let button_html = '<button data-field-class="' + field_class + '" data-field-id="' + field_id + '" data-record-id="' + record_id + '" class="field-value-copy-controls-button" type="button"><img src="' + window.new_record_localized.bulk_copy_control_but_img_uri + '"></button>';
       $(field_div).find('.section-subheader').append('<span class="field-value-copy-controls" style="float: right; padding: 0; margin: 0;">' + button_html + '</span>');
     }
   }
@@ -1241,30 +1306,53 @@ jQuery(function($) {
               // Assuming we have a valid handle, proceed.
               if (typeahead) {
 
-                // Append copied items.
+                // Clear down existing typeahead arrays and containers
                 typeahead.items = [];
-                $.each(value.items, function (idx, item) {
-                  typeahead.items.push(item);
-                });
-
-                // Append copied compared item values.
                 typeahead.comparedItems = [];
-                $.each(value.items_compared, function (idx, compared) {
-                  typeahead.comparedItems.push(compared);
-                });
+                jQuery(typeahead.label.container).empty();
 
-                // Append visual labels.
-                $(typeahead.label.container).empty();
-                $(value.items_label_container).children().each((idx, label) => {
-
-                  // Ensure to clone, so as to avoid a forced element move from source field; following an append() gotcha!
-                  $(typeahead.label.container).append($(label).clone());
+                // Append copied items.
+                $.each(value.items, function (idx, item) {
+                  typeahead.addMultiselectItemLayout(item);
                 });
               }
             }
           });
         }
       });
+    }
+  }
+
+  /*
+   * Handle record removals.
+   */
+
+  $(document).on('click', '.record-removal-button', function (evt) {
+    delete_record_by_id($(evt.currentTarget).data('record-id'));
+  });
+
+  function generate_record_removal_button_html(record_id) {
+    let margin = is_landscape_layout() ? '0px' : '5px';
+    let button_html = '<button data-record-id="' + record_id + '" class="record-removal-button" type="button" style="margin: ' + margin + ';"><img src="' + window.new_record_localized.record_removal_but_img_uri + '"></button>';
+    return button_html;
+  }
+
+  function delete_record_by_id(record_id) {
+    if (record_id) {
+
+      let deleted_record = null;
+
+      // Locate corresponding record.
+      $('#form_fields_records').find('.form-fields-record').each((key, record) => {
+        if ($(record).find('#bulk_record_id').val() == record_id) {
+          deleted_record = record;
+        }
+      });
+
+      // If found, remove identified record from list.
+      if (deleted_record) {
+        $(deleted_record).remove();
+      }
     }
   }
 
