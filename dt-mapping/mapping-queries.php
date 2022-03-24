@@ -1106,17 +1106,24 @@ class Disciple_Tools_Mapping_Queries {
         }
 
         switch ( $grid_record['level_name'] ) {
-            case 'admin0':
-                $full_name = $grid_record['name'];
-                break;
             case 'admin1':
                 $full_name = $grid_record['name'] . ', ' . $grid_record['admin0_name'];
                 break;
             case 'admin2':
-            case 'admin3':
-            case 'admin4':
-            default:
                 $full_name = $grid_record['name'] . ', ' . $grid_record['admin1_name'] . ', ' . $grid_record['admin0_name'];
+                break;
+            case 'admin3':
+                $full_name = $grid_record['name'] . ', ' . $grid_record['admin2_name'] . ', ' . $grid_record['admin1_name'] . ', ' . $grid_record['admin0_name'];
+                break;
+            case 'admin4':
+                $full_name = $grid_record['name'] . ', ' . $grid_record['admin3_name'] . ', ' . $grid_record['admin2_name'] . ', ' . $grid_record['admin1_name'] . ', ' . $grid_record['admin0_name'];
+                break;
+            case 'admin5':
+                $full_name = $grid_record['name'] . ', ' . $grid_record['admin4_name'] . ', ' . $grid_record['admin3_name'] . ', ' . $grid_record['admin2_name'] . ', ' . $grid_record['admin1_name'] . ', ' . $grid_record['admin0_name'];
+                break;
+            case 'admin0':
+            default:
+                $full_name = $grid_record['name'];
                 break;
         }
 
