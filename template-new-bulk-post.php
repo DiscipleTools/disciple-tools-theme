@@ -144,14 +144,13 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
 
 
                     <div class="form-fields">
-                        <input id="bulk_record_fields_html" type="hidden" value=""/>
-                        <div id="form_fields_records">
+                        <div id="form_fields_records" class="container">
                             <div class="form-fields-record">
                                 <input type="hidden" id="bulk_record_id" value="1"/>
-                                <div id="bulk_record_landscape_layout"></div>
                                 <?php
                                 render_new_bulk_record_fields( $dt_post_type );
                                 ?>
+                                <span>&nbsp;</span>
                             </div>
                         </div>
 

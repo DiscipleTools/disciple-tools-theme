@@ -587,20 +587,10 @@ jQuery(function($) {
   $(document).ready(function () {
     if (!is_normal_new_record) {
 
-      // Fetch new bulk record fields for local storage and to increase rendering response time.
-      API.get_new_bulk_record_fields(window.new_record_localized.post_type).promise().then(function (data) {
-
-        // Store fields html for future reference.
-        $('#bulk_record_fields_html').val(data);
-
-        // Display initial records to get started.
-        for (let i = 0; i < 4; i++) {
-          $('#add_new_bulk_record').trigger('click');
-        }
-
-      }).catch(function (error) {
-        console.error(error);
-      });
+      // Display initial bulk records to get started.
+      for (let i = 0; i < 4; i++) {
+        $('#add_new_bulk_record').trigger('click');
+      }
     }
   });
 
@@ -635,12 +625,12 @@ jQuery(function($) {
 
   $('#add_new_bulk_record').on('click', function () {
 
-    let fields_html = $('#bulk_record_fields_html').val();
+    let fields_html = window.new_record_localized.bulk_record_fields;
 
     if (fields_html) {
 
       let new_records_count = $('#form_fields_records').find('.form-fields-record').length + 1;
-      let html = '<div class="form-fields-record"><input type="hidden" id="bulk_record_id" value="' + new_records_count + '"><div class="record-divider" style="background-color:rgb(236, 245, 252); margin: 3px -15px 15px -15px; text-align: center;"><span style="padding: 0px; margin: 0px;">' + generate_record_removal_button_html(new_records_count) + '</span></div><div id="bulk_record_landscape_layout"></div>' + fields_html + '</div>';
+      let html = '<div class="form-fields-record form-fields-record-subsequent"><input type="hidden" id="bulk_record_id" value="' + new_records_count + '"><div class="record-divider" style="background-color:rgb(236, 245, 252); margin: 3px -15px 15px -15px; text-align: center;"><span style="padding: 0px; margin: 0px;">' + generate_record_removal_button_html(new_records_count) + '</span></div>' + fields_html + '<span class="landscape-record-removal-button">' + generate_record_removal_button_html(new_records_count) + '</span></div>';
       let updated_records = $('#form_fields_records').append(html);
 
       // Adjust relevant class names for recently added record elements.
@@ -656,19 +646,13 @@ jQuery(function($) {
       typeahead_multi_select_init(true, new_records_count);
       typeahead_tags_init(true, new_records_count);
 
-      // Apply latest layout orientation
-      let new_record = $('#form_fields_records').find('.form-fields-record').last();
-      is_landscape_layout() ? switch_to_landscape_layout(new_record) : switch_to_portrait_layout(new_record);
-
       // Apply and initialise copy controls
+      let new_record = $('#form_fields_records').find('.form-fields-record').last();
       apply_field_value_copy_controls_by_record(new_record);
       field_value_copy_controls_button_init();
 
       // Apply latest field filters
       apply_field_filters();
-
-      // Apply field heading and spacing adjustments
-      adjust_record_headings_and_spacing();
     }
   });
 
@@ -713,28 +697,6 @@ jQuery(function($) {
       let new_field_class = `js-typeahead-${field_key}-${bulk_id}`;
       $(element).removeClass(old_field_class).addClass(new_field_class);
     }
-  }
-
-  function adjust_record_headings_and_spacing() {
-    $('#form_fields_records').find('.form-fields-record').each((key, record) => {
-
-      // Adjust table spacing across the board
-      $(record).find('table').css('margin-bottom', '0px');
-
-      // Ignore the first record
-      if ($(record).find('#bulk_record_id').val() !== '1') {
-
-        // Hide record dividers
-        is_landscape_layout() ? $(record).find('.record-divider').hide() : $(record).find('.record-divider').show();
-
-        // Hide field headings
-        is_landscape_layout() ? $(record).find('.section-subheader').hide() : $(record).find('.section-subheader').show();
-
-        // Hide help text
-        is_landscape_layout() ? $(record).find('.help-text').hide() : $(record).find('.help-text').show();
-
-      }
-    });
   }
 
   /*
@@ -967,99 +929,54 @@ jQuery(function($) {
         let target_parent = $(entry).parent();
         let is_displayed = window.lodash.includes(filter_fields, $(entry).attr('id'));
         $(target_parent).toggle(is_displayed);
-
-        // Also accommodate landscape tabular layouts
-        if (is_landscape_layout()) {
-          $(target_parent).parent().toggle(is_displayed);
-        }
       });
 
       $(record).find('.text-input').each((index, entry) => {
         let target_parent = $(entry).parent();
         let is_displayed = window.lodash.includes(filter_fields, $(entry).attr('id'));
         $(target_parent).toggle(is_displayed);
-
-        // Also accommodate landscape tabular layouts
-        if (is_landscape_layout()) {
-          $(target_parent).parent().toggle(is_displayed);
-        }
       });
 
       $(record).find('.dt_textarea').each((index, entry) => {
         let target_parent = $(entry).parent();
         let is_displayed = window.lodash.includes(filter_fields, $(entry).attr('id'));
         $(target_parent).toggle(is_displayed);
-
-        // Also accommodate landscape tabular layouts
-        if (is_landscape_layout()) {
-          $(target_parent).parent().toggle(is_displayed);
-        }
       });
 
       $(record).find('.dt-communication-channel').each((index, entry) => {
         let target_parent = $(entry).parent().parent().parent();
         let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
         $(target_parent).toggle(is_displayed);
-
-        // Also accommodate landscape tabular layouts
-        if (is_landscape_layout()) {
-          $(target_parent).parent().toggle(is_displayed);
-        }
       });
 
       $(record).find('.selected-select-button').each((index, entry) => {
         let target_parent = $(entry).parent();
         let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field-key'));
         $(target_parent).toggle(is_displayed);
-
-        // Also accommodate landscape tabular layouts
-        if (is_landscape_layout()) {
-          $(target_parent).parent().toggle(is_displayed);
-        }
       });
 
       $(record).find(`.dt_multi_select-${bulk_record_id}`).each((index, entry) => {
         let target_parent = $(entry).parent().parent();
         let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field-key'));
         $(target_parent).toggle(is_displayed);
-
-        // Also accommodate landscape tabular layouts
-        if (is_landscape_layout()) {
-          $(target_parent).parent().toggle(is_displayed);
-        }
       });
 
       $(record).find('.typeahead__query input').each((index, entry) => {
         let target_parent = $(entry).parent().parent().parent().parent().parent().parent();
         let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
         $(target_parent).toggle(is_displayed);
-
-        // Also accommodate landscape tabular layouts
-        if (is_landscape_layout()) {
-          $(target_parent).parent().toggle(is_displayed);
-        }
       });
 
       $(record).find('.multi_select .typeahead__query input').each((index, entry) => {
         let target_parent = $(entry).parent().parent().parent().parent().parent().parent();
         let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
         $(target_parent).toggle(is_displayed);
-
-        // Also accommodate landscape tabular layouts
-        if (is_landscape_layout()) {
-          $(target_parent).parent().toggle(is_displayed);
-        }
       });
 
       $(record).find('.tags .typeahead__query input').each((index, entry) => {
         let target_parent = $(entry).parent().parent().parent().parent().parent().parent();
         let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
         $(target_parent).toggle(is_displayed);
-
-        // Also accommodate landscape tabular layouts
-        if (is_landscape_layout()) {
-          $(target_parent).parent().toggle(is_displayed);
-        }
       });
     });
   }
@@ -1082,127 +999,6 @@ jQuery(function($) {
     refresh_displayed_fields(default_filter_fields);
     $('#list_fields_picker').toggle(false);
     adjust_selected_field_filters_by_currently_displayed_record_fields();
-  }
-
-  /*
-   * Handle dynamic layout views -> Landscape or Portrait.
-   */
-
-  if (!is_normal_new_record) {
-
-    // Determine current layout and adjust accordingly, so as to force an initial layout refresh!
-    $('#bulk_records_current_layout').val(is_landscape_layout() ? 'portrait' : 'landscape');
-    apply_dynamic_layout();
-
-    // Remain sensitive to window resizing and adjust layout accordingly
-    $(window).resize(function () {
-      apply_dynamic_layout();
-    });
-
-  }
-
-  function is_landscape_layout() {
-    return $(window).width() > 1000;
-  }
-
-  function apply_dynamic_layout() {
-
-    // Landscape
-    if (is_landscape_layout() && $('#bulk_records_current_layout').val() !== 'landscape') {
-
-      // Update current layout flag
-      $('#bulk_records_current_layout').val('landscape');
-
-      // Iterate over available records in order to start reformatting layout.
-      $('#form_fields_records').find('.form-fields-record').each((key, record) => {
-        switch_to_landscape_layout(record);
-      });
-
-      // Portrait
-    } else if (!is_landscape_layout() && $('#bulk_records_current_layout').val() !== 'portrait') {
-
-      // Update current layout flag
-      $('#bulk_records_current_layout').val('portrait');
-
-      // Iterate over available records in order to start reformatting layout.
-      $('#form_fields_records').find('.form-fields-record').each((key, record) => {
-        switch_to_portrait_layout(record);
-      });
-
-    }
-
-    // Apply field heading and spacing adjustments
-    adjust_record_headings_and_spacing();
-  }
-
-  function switch_to_landscape_layout(record) {
-    if (record) {
-
-      // Obtain handle onto landscape section parent.
-      let landscape_layout = $(record).find('#bulk_record_landscape_layout');
-
-      // Prepare layout table.
-      let landscape_table = $('<table>');
-      let landscape_table_row = $('<tr>');
-
-      // Insert record removal button column.
-      let landscape_table_row_data_removal = $('<td>');
-
-      // Only applied to subsequent records.
-      let record_id = $(record).find('#bulk_record_id').val();
-      if (record_id !== '1') {
-        landscape_table_row_data_removal.append(generate_record_removal_button_html(record_id));
-        landscape_table_row_data_removal.css('padding-bottom', '10px');
-
-      } else {
-        landscape_table_row_data_removal.css('min-width', '15px');
-      }
-
-      landscape_table_row.append(landscape_table_row_data_removal);
-
-      // Start re-housing elements within new landscape tabular layout.
-      $(record).find('.form-field').each((key, field_div) => {
-
-        let landscape_table_row_data = $('<td>');
-        landscape_table_row_data.css('padding', '5px');
-        landscape_table_row_data.css('vertical-align', 'top');
-
-        // Determine visibility.
-        let is_visible = $(field_div).is(':visible');
-
-        // All fields to be placed into respective column; however, only visible field columns to be shown.
-        landscape_table_row_data.append($(field_div));
-
-        // Hide column accordingly.
-        if (!is_visible) {
-          landscape_table_row_data.hide();
-        }
-
-        // Append to respective parents.
-        $(landscape_table_row).append($(landscape_table_row_data));
-        $(landscape_table).append($(landscape_table_row));
-        $(landscape_layout).append($(landscape_table));
-
-      });
-    }
-  }
-
-  function switch_to_portrait_layout(record) {
-    if (record) {
-
-      // Obtain handle onto landscape section parent.
-      let landscape_layout = $(record).find('#bulk_record_landscape_layout');
-
-      // Ensure we have stuff to work with.
-      if ($(landscape_layout).contents().length > 0) {
-
-        // Move all field elements back to record root.
-        $(record).append($(landscape_layout).find('.form-field'));
-
-        // Reset landscape layout section.
-        $(landscape_layout).empty();
-      }
-    }
   }
 
   /*
@@ -1332,8 +1128,7 @@ jQuery(function($) {
   });
 
   function generate_record_removal_button_html(record_id) {
-    let margin = is_landscape_layout() ? '0px' : '5px';
-    let button_html = '<button data-record-id="' + record_id + '" class="record-removal-button" type="button" style="margin: ' + margin + ';"><img src="' + window.new_record_localized.record_removal_but_img_uri + '"></button>';
+    let button_html = '<button data-record-id="' + record_id + '" class="record-removal-button" type="button" style="margin: 5px;"><img src="' + window.new_record_localized.bulk_record_removal_but_img_uri + '"></button>';
     return button_html;
   }
 
