@@ -78,19 +78,6 @@ class Disciple_Tools_Posts_Endpoints {
             ]
         ];
 
-        //get_new_bulk_record_fields
-        register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/new_bulk_record_fields', [
-                [
-                    "methods"             => "GET",
-                    "callback"            => [ $this, 'get_new_bulk_record_fields' ],
-                    "args"                => [
-                        "post_type" => $arg_schemas["post_type"]
-                    ],
-                    'permission_callback' => '__return_true',
-                ]
-            ]
-        );
         //create_post
         register_rest_route(
             $this->namespace, '/(?P<post_type>\w+)/', [
@@ -486,10 +473,6 @@ class Disciple_Tools_Posts_Endpoints {
     }
     public static function prefix_validate_args_static( $value, $request, $param ) {
         return self::instance()->prefix_validate_args( $value, $request, $param );
-    }
-
-    public function get_new_bulk_record_fields( WP_REST_Request $request ) {
-        return get_rendered_new_bulk_record_fields_html( $request->get_url_params()["post_type"] );
     }
 
     public function create_post( WP_REST_Request $request ){
