@@ -1048,7 +1048,7 @@ jQuery(function($) {
 
   function apply_field_value_copy_controls_button(record_id, field_div, field_class, field_id) {
     if ($(field_div).find('.field-value-copy-controls').length === 0) {
-      let button_html = '<button data-field-class="' + field_class + '" data-field-id="' + field_id + '" data-record-id="' + record_id + '" class="field-value-copy-controls-button" type="button"><img src="' + window.new_record_localized.bulk_copy_control_but_img_uri + '"></button>';
+      let button_html = '<button style="margin-left: 10px;" data-field-class="' + field_class + '" data-field-id="' + field_id + '" data-record-id="' + record_id + '" class="field-value-copy-controls-button" type="button"><img src="' + window.new_record_localized.bulk_copy_control_but_img_uri + '"></button>';
       $(field_div).find('.section-subheader').append('<span class="field-value-copy-controls" style="float: right; padding: 0; margin: 0;">' + button_html + '</span>');
     }
   }
