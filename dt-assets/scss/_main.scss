@@ -1885,54 +1885,59 @@ img.dt-red-icon {
 /**
  * Bulk Record Adding
  */
-
-.form-fields-record {
-    display: flex;
-    justify-content: space-around;
-}
-
-.record-divider {
-    display: none;
-}
-
-.landscape-record-removal-button {
-    display: block;
-}
-
-.form-fields-record-subsequent {
-    .section-subheader {
-        display: none !important;
-    }
-    .help-text {
-        display: none !important;
-    }
-    .field-value-copy-controls {
-        display: none !important;
-    }
-}
-
-@media only screen and (max-width: 782px) {
+#form_fields_records {
     .form-fields-record {
-        flex-direction: column;
+        display: flex;
+        justify-content: center;
     }
 
     .record-divider {
-        display: block;
+        display: none;
     }
 
     .landscape-record-removal-button {
-        display: none;
+        display: block;
+    }
+
+    .form-field {
+        margin-inline-end: 10px;
     }
 
     .form-fields-record-subsequent {
         .section-subheader {
-            display: block !important;
+            display: none !important;
         }
         .help-text {
-            display: block !important;
+            display: none !important;
         }
         .field-value-copy-controls {
             display: none !important;
+        }
+    }
+
+    @media only screen and (max-width: 782px) {
+        .form-fields-record {
+            flex-direction: column;
+        }
+
+        .record-divider {
+            display: block;
+        }
+
+        .landscape-record-removal-button {
+            display: none;
+        }
+
+        .form-fields-record-subsequent {
+            .section-subheader {
+                display: block !important;
+            }
+            .help-text {
+                display: block !important;
+            }
+            .field-value-copy-controls {
+                display: none !important;
+            }
         }
     }
 }
