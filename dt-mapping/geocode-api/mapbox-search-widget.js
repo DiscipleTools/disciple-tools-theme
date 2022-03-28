@@ -30,7 +30,7 @@ function write_results_box() {
       jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
         if ( v.grid_meta_id ){
           lgm_results.append(`<div class="input-group">
-            <input type="text" class="active-location input-group-field" id="location-${window.lodash.escape( v.grid_meta_id )}" value="${window.lodash.escape( v.label )}" readonly />
+            <input type="text" class="active-location input-group-field" id="location-${window.lodash.escape( v.grid_meta_id )}" dir="auto" value="${window.lodash.escape( v.label )}" readonly />
             <div class="input-group-button">
               <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${ window.lodash.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}" data-id="${window.lodash.escape( v.grid_meta_id )}"><i class="fi-map"></i></button>
               <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${ window.lodash.escape( dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.grid_meta_id )}">&times;</button>
@@ -38,7 +38,7 @@ function write_results_box() {
           </div>`)
         } else {
           lgm_results.append(`<div class="input-group">
-            <input type="text" class="dt-communication-channel input-group-field" id="${window.lodash.escape( v.key )}" value="${window.lodash.escape( v.label )}" data-field="contact_address" />
+            <input type="text" class="dt-communication-channel input-group-field" id="${window.lodash.escape( v.key )}" value="${window.lodash.escape( v.label )}" dir="auto" data-field="contact_address" />
             <div class="input-group-button">
               <button type="button" class="button success delete-button-style open-mapping-address-modal"
                   title="${ window.lodash.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}"
@@ -184,7 +184,7 @@ window.write_input_widget = function write_input_widget() {
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true" data-add-address="true">
-        <input id="mapbox-search" type="text" name="mapbox_search" class="input-group-field" autocomplete="off" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
+        <input id="mapbox-search" type="text" name="mapbox_search" class="input-group-field" autocomplete="off" dir="auto" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
         <div class="input-group-button">
             <button id="mapbox-spinner-button" class="button hollow" style="display:none;border-color:lightgrey;">
                 <span class="" style="border-radius: 50%;width: 24px;height: 24px;border: 0.25rem solid lightgrey;border-top-color: black;animation: spin 1s infinite linear;display: inline-block;"></span>
@@ -397,7 +397,7 @@ function mapbox_autocomplete(address){
 
     let add_address = jQuery('#mapbox-autocomplete').data('add-address')
     if ( typeof add_address === 'undefined' || add_address === true ) {
-      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: "${window.lodash.escape( address )}"</div>`)
+      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
     }
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -432,7 +432,7 @@ function google_autocomplete(address){
 
       let add_address = jQuery('#mapbox-autocomplete').data('add-address')
       if ( typeof add_address === 'undefined' || add_address === true ) {
-        list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: "${window.lodash.escape( address )}"</div>`)
+        list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
       }
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -444,7 +444,7 @@ function google_autocomplete(address){
     }
     else if ( status === 'ZERO_RESULTS' ) {
       list.append(`<div>No Results Found</div>`)
-      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: "${window.lodash.escape( address )}"</div>`)
+      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
         close_all_lists(e.target.attributes['data-value'].value);
@@ -499,6 +499,7 @@ function post_contact_address( update ) {
                        id="new_contact_address"
                        data-field="contact_address"
                        value="${update.value}"
+                       dir="auto"
                        class="dt-communication-channel input-group-field" />
                 <div class="input-group-button">
                   <button class="button alert input-height delete-button-style channel-delete-button delete-button new-contact_address" data-field="contact_address" data-key="contact_address">&times;</button>

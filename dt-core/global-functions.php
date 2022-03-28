@@ -760,7 +760,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php elseif ( $field_type === "location_meta" ) : ?>
                 <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
                     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
-                        <input id="mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off"/>
+                        <input id="mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto"/>
                         <div class="input-group-button">
                             <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
                             <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" style="display:none;" type="button">&times;</button>
@@ -897,11 +897,16 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     /**
      * Validate specified date format
      */
-    if ( ! function_exists( 'dt_validate_date' ) ) {
-        function dt_validate_date( string $date, string $format = 'Y-m-d H:i:s' ): bool {
-            $date_time = DateTime::createFromFormat( $format, $date );
-
-            return $date_time && $date_time->format( $format ) === $date;
+    if ( !function_exists( 'dt_validate_date' ) ){
+        function dt_validate_date( string $date ): bool{
+            $formats = [ 'Y-m-d', 'Y-m-d H:i:s', 'Y-m-d H:i:s.u', DateTimeInterface::ISO8601, DateTimeInterface::RFC3339 ];
+            foreach ( $formats as $format ){
+                $date_time = DateTime::createFromFormat( $format, $date );
+                if ( $date_time && $date_time->format( $format ) === $date ){
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

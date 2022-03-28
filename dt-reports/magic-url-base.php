@@ -20,6 +20,7 @@ abstract class DT_Magic_Url_Base {
     public $module = ""; // Lets a magic url be a module as well
     public $instance_id = ""; // Allows having multiple versions of the same magic link for a user. Creating different meta_keys.
     public $meta = []; // Allows for instance specific data.
+    public $translatable = [ 'query' ]; // Order of translatable flags to be checked. Translate on first hit..!
 
     public function __construct() {
 
@@ -62,7 +63,18 @@ abstract class DT_Magic_Url_Base {
         add_action( 'dt_blank_head', [ $this, '_header' ] );
         add_action( 'dt_blank_footer', [ $this, '_footer' ] );
 
+        // determine language locale to be adopted
+        $this->determine_language_locale( $this->parts );
+    }
 
+    /**
+     * Switch to default DT translation text domain
+     *
+     * @return void
+     */
+    public function hard_switch_to_default_dt_text_domain(): void {
+        unload_textdomain( "disciple_tools" );
+        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
     }
 
     /**
@@ -80,6 +92,91 @@ abstract class DT_Magic_Url_Base {
         }
 
         return '';
+    }
+
+    public function fetch_incoming_user_lang( $parts = [] ): string {
+        if ( ! empty( $parts['post_type'] ) && ! empty( $parts['post_id'] ) ) {
+            if ( $parts['post_type'] === 'user' ) {
+                return get_user_locale( $parts['post_id'] );
+            }
+        }
+
+        return '';
+    }
+
+    public function fetch_incoming_contact_lang( $parts = [] ): string {
+        if ( ! empty( $parts['post_type'] ) && ! empty( $parts['post_id'] ) ) {
+            if ( $parts['post_type'] === 'contacts' ) {
+                $languages = get_post_meta( $parts['post_id'], 'languages', false );
+                if ( ! empty( $languages ) && ! is_wp_error( $languages ) ) {
+                    foreach ( $languages as $lang ) {
+
+                        // First, ensure $lang is not already within required locale shape
+                        if ( strpos( $lang, "_" ) !== false ) {
+                            return $lang;
+                        }
+
+                        // Next, attempt to locate corresponding default locale within global languages list
+                        $global_lang_list = dt_get_global_languages_list();
+                        if ( ! empty( $global_lang_list ) && isset( $global_lang_list[ $lang ], $global_lang_list[ $lang ]['default_locale'] ) ) {
+                            return $global_lang_list[ $lang ]['default_locale'];
+                        }
+
+                        // If not found, then attempt to locate within available languages list
+                        foreach ( dt_get_available_languages() ?? [] as $avail_lang ) {
+                            if ( isset( $avail_lang['language'] ) && $avail_lang['language'] === $lang ) {
+                                return $avail_lang['language'];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * Determine language locale to be adopted; based on translatable flags
+     *
+     * @param array $parts
+     *
+     * @return void
+     */
+    public function determine_language_locale( array $parts = [] ): void {
+
+        $lang           = null;
+        $flag_satisfied = false;
+
+        // Determine language locale to be adopted
+        foreach ( $this->translatable ?? [] as $flag ) {
+            if ( ! $flag_satisfied ) {
+                switch ( $flag ) {
+                    case 'query':
+                        $lang = $this->fetch_incoming_link_param( 'lang' );
+                        break;
+                    case 'user':
+                        $lang = $this->fetch_incoming_user_lang( $parts );
+                        break;
+                    case 'contact':
+                        $lang = $this->fetch_incoming_contact_lang( $parts );
+                        break;
+                }
+                $flag_satisfied = ! empty( $lang );
+            }
+        }
+
+        // If determined, associate with relevant hook
+        if ( ! empty( $lang ) ) {
+            add_filter( 'determine_locale', function ( $locale ) use ( $lang ) {
+                $lang_code = sanitize_text_field( wp_unslash( $lang ) );
+                if ( ! empty( $lang_code ) ) {
+                    return apply_filters( 'ml_locale_change', $lang_code );
+                }
+
+                return $locale;
+            } );
+        }
     }
 
     /**
