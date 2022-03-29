@@ -90,10 +90,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
             if ( !empty( $_GET["field-select"] ) ){
                 $field = explode( "_", sanitize_text_field( wp_unslash( $_GET["field-select"] ) ), 2 );
-                $field_key = $field[1];
                 if ( empty( $post_type ) ){
                     $post_type = $field[0];
                 }
+                $field_key = str_replace( $post_type . '_', '', sanitize_text_field( wp_unslash( $_GET["field-select"] ) ) );
             }
             if ( isset( $_GET['field_select_nonce'] ) ){
                 if ( !wp_verify_nonce( sanitize_key( $_GET['field_select_nonce'] ), 'field_select' ) ) {
