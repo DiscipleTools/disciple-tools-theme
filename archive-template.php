@@ -79,6 +79,16 @@ dt_please_log_in();
                     </label>
                 </li>
 
+                <li style="" class="">
+                    <label style="margin-right:15px; cursor:pointer">
+                        <input type="checkbox" value="comms"
+                            <?php echo esc_html( in_array( 'comms', $fields_to_search ) ? "checked" : '' ); ?>
+
+                               style="margin:0">
+                        <b><?php esc_html_e( 'Communications', 'disciple_tools' ) ?></b>
+                    </label>
+                </li>
+
                 <?php foreach ( $all_searchable_fields as $field_key => $field_values ):
                     if ( !empty( $field_values["hidden"] ) || $field_values["type"] !== 'text' ){
                         continue;
@@ -153,6 +163,16 @@ dt_please_log_in();
 
                                 style="margin:0">
                                 <b><?php esc_html_e( 'Search All Fields', 'disciple_tools' ) ?></b>
+                    </label>
+                </li>
+
+                <li style="" class="">
+                    <label style="margin-right:15px; cursor:pointer">
+                        <input type="checkbox" value="comms"
+                            <?php echo esc_html( in_array( 'comms', $fields_to_search ) ? "checked" : '' ); ?>
+
+                               style="margin:0">
+                        <b><?php esc_html_e( 'Communications', 'disciple_tools' ) ?></b>
                     </label>
                 </li>
 
