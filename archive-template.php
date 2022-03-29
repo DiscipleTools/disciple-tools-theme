@@ -85,7 +85,7 @@ dt_please_log_in();
                             <?php echo esc_html( in_array( 'comms', $fields_to_search ) ? "checked" : '' ); ?>
 
                                style="margin:0">
-                        <b><?php esc_html_e( 'Communications', 'disciple_tools' ) ?></b>
+                        <?php esc_html_e( 'Communication Channels', 'disciple_tools' ) ?>
                     </label>
                 </li>
 
@@ -172,7 +172,7 @@ dt_please_log_in();
                             <?php echo esc_html( in_array( 'comms', $fields_to_search ) ? "checked" : '' ); ?>
 
                                style="margin:0">
-                        <b><?php esc_html_e( 'Communications', 'disciple_tools' ) ?></b>
+                        <?php esc_html_e( 'Communication Channels', 'disciple_tools' ) ?>
                     </label>
                 </li>
 
