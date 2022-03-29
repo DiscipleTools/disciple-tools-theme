@@ -70,7 +70,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         ];
         $expected_roles['dispatcher'] = [
             "label" => __( "Dispatcher", "disciple_tools" ),
-            "description" => "Monitor new D.T contacts and assign the to waiting Multipliers",
+            "description" => "Monitor new D.T contacts and assign them to waiting Multipliers",
             "permissions" => wp_parse_args( [
                 'dt_all_access_contacts' => true,
                 'view_project_metrics' => true,
