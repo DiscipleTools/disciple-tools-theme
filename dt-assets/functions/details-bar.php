@@ -91,7 +91,17 @@ function dt_print_details_bar(
                             <?php else : ?>
                                 <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                             <?php endif; ?>
-                            <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
+                            <span id="title"
+                            <?php
+                            if ( isset( $dt_post['post_type'] ) && isset( $dt_post['ID'] ) ) {
+                                $can_update = DT_Posts::can_update( $dt_post['post_type'], $dt_post['ID'] );
+                            } else {
+                                $can_update = true;
+                            }
+                            if ( $can_update || ( isset( $dt_post["assigned_to"]["id"] ) && $dt_post["assigned_to"]["id"] == get_current_user_id() ) ) {
+                                echo esc_attr( 'contenteditable=true' ); } ?>
+
+                            class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                             <br>
                             <?php do_action( 'dt_post_record_name_tagline' ); ?>
                             <span class="record-name-tagline">
@@ -249,7 +259,15 @@ function dt_print_details_bar(
                     <?php else : ?>
                         <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                     <?php endif; ?>
-                    <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
+                    <span id="title" <?php
+                    if ( isset( $dt_post['post_type'] ) && isset( $dt_post['ID'] ) ) {
+                                $can_update = DT_Posts::can_update( $dt_post['post_type'], $dt_post['ID'] );
+                    } else {
+                        $can_update = true;
+                    }
+                    if ( $can_update || ( isset( $dt_post["assigned_to"]["id"] ) && $dt_post["assigned_to"]["id"] == get_current_user_id() ) ) {
+                        echo esc_attr( 'contenteditable=true' ); } ?>
+                        class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                     <div id="record-tagline">
                         <?php do_action( 'dt_post_record_name_tagline' ); ?>
                         <span class="record-name-tagline">

@@ -584,6 +584,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @param string $field_id_prefix // add a prefix to avoid fields with duplicate ids.
      */
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
+        $disabled = 'disabled';
+        if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
+            $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
+        } else {
+            $can_update = true;
+        }
+        if ( $can_update || isset( $post["assigned_to"]["id"] ) && $post["assigned_to"]["id"] == get_current_user_id() ) {
+            $disabled = '';
+        }
         $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
         $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
         $is_private = isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true;
@@ -612,13 +621,13 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
                 <?php endif;
                 if ( $field_type === "communication_channel" ) : ?>
-                    <button data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button">
+                    <button data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button" <?php echo esc_html( $disabled ); ?>>
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 <?php endif ?>
                 <!-- location add -->
                 <?php if ( ( $field_type === "location" || "location_meta" === $field_type ) && DT_Mapbox_API::get_key() && ! empty( $post ) ) : ?>
-                    <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button">
+                    <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button" <?php echo esc_html( $disabled ); ?>>
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 <?php endif ?>
@@ -636,7 +645,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     }
                 }
                 ?>
-                <select class="select-field <?php echo esc_html( $color_select ? "color-select" : "" ); ?>" id="<?php echo esc_html( $display_field_id ); ?>" style="<?php echo esc_html( $color_select ? ( "background-color: " . $active_color ) : "" ); ?>" <?php echo esc_html( $required_tag ) ?>>
+                <select class="select-field <?php echo esc_html( $color_select ? "color-select" : "" ); ?>" id="<?php echo esc_html( $display_field_id ); ?>" style="<?php echo esc_html( $color_select ? ( "background-color: " . $active_color ) : "" ); ?>" <?php echo esc_html( $required_tag ) ?> <?php echo esc_html( $disabled ); ?>>
                     <?php if ( !isset( $fields[$field_key]["default"]["none"] ) && empty( $fields[$field_key]["select_cannot_be_empty"] ) ) : ?>
                         <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: "selected" ) ?>></option>
                     <?php endif; ?>
@@ -663,11 +672,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                            autocomplete="off"
                                            data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
-                                           data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>">
+                                           data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>" <?php echo esc_html( $disabled ); ?>>
                                 </span>
                                 <?php if ( $show_extra_controls ) : ?>
                                 <span class="typeahead__button">
-                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $field_key );?>">
+                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $field_key );?>" <?php echo esc_html( $disabled ); ?>>
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
                                     </button>
                                 </span>
@@ -689,7 +698,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                                data-field="<?php echo esc_html( $field_key );?>"
                                                name="<?php echo esc_html( $display_field_id ); ?>[query]"
                                                placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                               autocomplete="off">
+                                               autocomplete="off" <?php echo esc_html( $disabled ); ?>>
                                     </span>
                                 </div>
                             </div>
@@ -702,7 +711,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             $class = ( in_array( $option_key, $post[$field_key] ?? [] ) ) ?
                                 "selected-select-button" : "empty-select-button"; ?>
                             <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $field_key ); ?>"
-                                    class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
+                                    class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button" <?php echo esc_html( $disabled ); ?>>
                                 <?php if ( !empty( $option_value["icon"] ) ) { ?>
                                     <img class="dt-icon" src="<?php echo esc_html( $option_value["icon"] ) ?>" >
                                 <?php } ?>
@@ -714,24 +723,24 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php elseif ( $field_type === "text" ) :?>
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="text" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
-                       value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
+                       value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>" <?php echo esc_html( $disabled ); ?>/>
             <?php elseif ( $field_type === "textarea" ) :?>
                 <textarea id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $required_tag ) ?>
-                       class="textarea dt_textarea"><?php echo esc_html( $post[$field_key] ?? "" ) ?></textarea>
+                       class="textarea dt_textarea" <?php echo esc_html( $disabled ); ?>><?php echo esc_html( $post[$field_key] ?? "" ) ?></textarea>
             <?php elseif ( $field_type === "number" ) :?>
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="number" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
-                       value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
+                       value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>" <?php echo esc_html( $disabled ); ?>/>
             <?php elseif ( $field_type === "date" ) :?>
                 <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
                     <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
-                           value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' ) ?>" >
+                           value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?> >
                     <div class="input-group-button">
-                        <button id="<?php echo esc_html( $display_field_id ); ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $display_field_id ); ?>" title="Delete Date" type="button">x</button>
+                        <button id="<?php echo esc_html( $display_field_id ); ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $display_field_id ); ?>" title="Delete Date" type="button" <?php echo esc_html( $disabled ); ?>>x</button>
                     </div>
                 </div>
             <?php elseif ( $field_type === "connection" ) :?>
-                <div id="<?php echo esc_attr( $display_field_id . '_connection' ) ?>" class="dt_typeahead">
+                <div id="<?php echo esc_attr( $display_field_id . '_connection' ) ?>" class="dt_typeahead <?php echo esc_html( $disabled ) ?>">
                     <span id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></span>
                     <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-<?php echo esc_html( $display_field_id ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
@@ -743,11 +752,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            data-field_type="connection"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]"
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                           autocomplete="off">
+                                           autocomplete="off" <?php echo esc_html( $disabled ); ?>>
                                 </span>
                                 <?php if ( $show_extra_controls ) : ?>
                                 <span class="typeahead__button">
-                                    <button type="button" data-connection-key="<?php echo esc_html( $display_field_id ); ?>" class="create-new-record typeahead__image_button input-height">
+                                    <button type="button" data-connection-key="<?php echo esc_html( $display_field_id ); ?>" class="create-new-record typeahead__image_button input-height" <?php echo esc_html( $disabled ); ?>>
                                         <?php $icon = isset( $fields[$field_key]["create-icon"] ) ? $fields[$field_key]["create-icon"] : get_template_directory_uri() . '/dt-assets/images/add-contact.svg'; ?>
                                         <img src="<?php echo esc_html( $icon ) ?>"/>
                                     </button>
@@ -760,10 +769,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php elseif ( $field_type === "location_meta" ) : ?>
                 <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
                     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
-                        <input id="mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto"/>
+                        <input id="mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto" <?php echo esc_html( $disabled ); ?>/>
                         <div class="input-group-button">
-                            <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
-                            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" style="display:none;" type="button">&times;</button>
+                            <button id="mapbox-spinner-button" class="button hollow" style="display:none;" <?php echo esc_html( $disabled ); ?>><span class="loading-spinner active"></span></button>
+                            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" style="display:none;" type="button" <?php echo esc_html( $disabled ); ?>>&times;</button>
                         </div>
                         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
                     </div>
@@ -787,7 +796,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            data-field_type="location"
                                            name="<?php echo esc_html( $field_key ); ?>[query]"
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                           autocomplete="off" />
+                                           autocomplete="off" <?php echo esc_html( $disabled ); ?>/>
                                 </span>
                             </div>
                         </div>
@@ -801,9 +810,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                    type="text"
                                    data-field="<?php echo esc_html( $field_key ); ?>"
                                    value="<?php echo esc_html( $field_value["value"] ) ?>"
-                                   class="dt-communication-channel input-group-field" dir="auto"/>
+                                   class="dt-communication-channel input-group-field" dir="auto"<?php echo esc_html( $disabled ); ?>/>
                             <div class="input-group-button">
-                                <button class="button alert input-height delete-button-style channel-delete-button delete-button new-<?php echo esc_html( $field_key ); ?>" data-field="<?php echo esc_html( $field_key ); ?>" data-key="<?php echo esc_html( $field_value["key"] ); ?>">&times;</button>
+                                <button class="button alert input-height delete-button-style channel-delete-button delete-button new-<?php echo esc_html( $field_key ); ?>" data-field="<?php echo esc_html( $field_key ); ?>" data-key="<?php echo esc_html( $field_value["key"] ); ?>" <?php echo esc_html( $disabled ); ?>>&times;</button>
                             </div>
                         </div>
                     <?php endforeach;
@@ -812,7 +821,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <input type="text"
                                     <?php echo esc_html( $required_tag ) ?>
                                    data-field="<?php echo esc_html( $field_key ) ?>"
-                                   class="dt-communication-channel input-group-field" dir="auto" />
+                                   class="dt-communication-channel input-group-field" dir="auto" <?php echo esc_html( $disabled ); ?>/>
                         </div>
                     <?php endif ?>
                 </div>
@@ -827,10 +836,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
                                            data-field_type="user_select"
                                            data-field="<?php echo esc_html( $field_key ); ?>"
-                                           autocomplete="off">
+                                           autocomplete="off" <?php echo esc_html( $disabled ); ?>>
                                 </span>
                                 <span class="typeahead__button">
-                                    <button type="button" class="search_<?php echo esc_html( $field_key ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $field_key ); ?>">
+                                    <button type="button" class="search_<?php echo esc_html( $field_key ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $field_key ); ?>" <?php echo esc_html( $disabled ); ?>>
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                     </button>
                                 </span>
