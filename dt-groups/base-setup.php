@@ -1006,7 +1006,7 @@ class DT_Groups_Base extends DT_Module_Base {
             $filters["filters"][] = [
                 'ID' => 'all',
                 'tab' => 'all',
-                'name' => __( "All Groups", 'disciple_tools' ),
+                'name' => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), $post_label_plural ),
                 'query' => [
                     'sort' => 'group_type'
                 ],
