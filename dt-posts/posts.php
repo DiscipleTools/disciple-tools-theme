@@ -1066,7 +1066,13 @@ class Disciple_Tools_Posts
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
 
             if ( empty( $fields_to_search ) ) {
-                $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )";
+                $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
+                    OR p.ID IN ( SELECT post_id
+                                FROM $wpdb->postmeta
+                                WHERE meta_key LIKE 'contact_%'
+                                AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                    )
+                ";
             }
             if ( !empty( $fields_to_search ) ) {
                 if ( in_array( 'name', $fields_to_search ) ) {
