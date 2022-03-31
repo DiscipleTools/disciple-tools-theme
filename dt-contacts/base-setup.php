@@ -536,17 +536,7 @@ class DT_Contacts_Base {
                     'sort' => '-post_date',
                 ],
             ];
-            $filters["filters"][] = [
-                'ID' => 'recent',
-                'tab' => 'default',
-                'name' => __( "My Recently Viewed", 'disciple_tools' ),
-                'query' => [
-                    'dt_recent' => true
-                ],
-                'labels' => [
-                    [ "id" => 'recent', 'name' => __( "Last 30 viewed", 'disciple_tools' ) ]
-                ]
-            ];
+
             $filters["filters"][] = [
                 'ID' => 'favorite',
                 'tab' => 'default',
@@ -557,6 +547,17 @@ class DT_Contacts_Base {
                 ],
                 'labels' => [
                     [ "id" => "1", "name" => __( "Favorite", "disciple_tools" ) ]
+                ]
+            ];
+            $filters["filters"][] = [
+                'ID' => 'recent',
+                'tab' => 'default',
+                'name' => __( "My Recently Viewed", 'disciple_tools' ),
+                'query' => [
+                    'dt_recent' => true
+                ],
+                'labels' => [
+                    [ "id" => 'recent', 'name' => __( "Last 30 viewed", 'disciple_tools' ) ]
                 ]
             ];
             $filters["filters"][] = [
