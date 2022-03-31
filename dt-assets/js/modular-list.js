@@ -119,7 +119,7 @@
   }
 
   function remove_current_filter_label(label, field_details) {
-    if (current_filter && current_filter.labels /*&& current_filter.query.fields*/) {
+    if (current_filter && current_filter.labels) {
       if (field_details && field_details.id && field_details.name) {
 
         // Update current filter's labels
@@ -190,6 +190,29 @@
               delete current_filter.query[field_details.id];
             }
 
+          } else if (current_filter.query['text']) {
+
+            // Remove text property, to force a return to all filtered view
+            delete current_filter.query['text'];
+
+            // Determine id to be found
+            let id = '';
+
+            switch (list_settings.post_type) {
+              case 'contacts':
+                id = 'all_my_contacts';
+                break;
+              case 'groups':
+                id = 'all';
+                break;
+            }
+
+            // Locate and select corresponding contact/group all radio button
+            $('.list-views').find('.js-list-view').each(function (idx, input) {
+              if ($(input).data('id') === id) {
+                $(input).prop('checked', true);
+              }
+            });
           }
         }
       }
