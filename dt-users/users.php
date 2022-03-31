@@ -655,8 +655,8 @@ class Disciple_Tools_Users
             }
             $index_to_remove = null;
             foreach ( $filters[$post_type] as $index => $filter ){
-                if ( $filter["ID"] === (string) $id ){
-                    $index_to_remove =$index;
+                if ( (string) $filter["ID"] === (string) $id ){
+                    $index_to_remove = $index;
                 }
             }
             if ( $index_to_remove !== null ){

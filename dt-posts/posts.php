@@ -1076,16 +1076,24 @@ class Disciple_Tools_Posts
             }
             if ( !empty( $fields_to_search ) ) {
                 if ( in_array( 'name', $fields_to_search ) ) {
-                    $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
-                        OR p.ID IN ( SELECT post_id
+                    $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )";
+                } else {
+                    $post_query .= "AND ( ";
+                }
+
+                if ( in_array( 'comms', $fields_to_search ) ) {
+                    if ( substr( $post_query, -6 ) !== 'AND ( ' ) {
+                        $post_query .= "OR ";
+                    }
+
+                    $post_query .= "p.ID IN ( SELECT post_id
                                     FROM $wpdb->postmeta
                                     WHERE meta_key LIKE 'contact_%'
                                     AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
                         )
                     ";
-                } else {
-                    $post_query .= "AND ( ";
                 }
+
                 if ( in_array( 'all', $fields_to_search ) ) {
                     if ( substr( $post_query, -6 ) !== 'AND ( ' ) {
                         $post_query .= "OR ";

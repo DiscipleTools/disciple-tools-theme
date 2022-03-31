@@ -1,7 +1,21 @@
 <?php
 ( function () {
     ?>
+    <?php
+    $post_type = get_post_type();
+    $post_id = get_the_ID();
+    $post = DT_Posts::get_post( $post_type, $post_id );
 
+    $disabled = 'disabled';
+    if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
+        $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
+    } else {
+        $can_update = true;
+    }
+    if ( $can_update || isset( $post["assigned_to"]["id"] ) && $post["assigned_to"]["id"] == get_current_user_id() ) {
+        $disabled = '';
+    }
+    ?>
     <div class="grid-y bordered-box">
         <h3 class="section-header">
             <span>
@@ -21,7 +35,7 @@
         </h3>
         <div class="cell grid-x " id="add-comment-section">
             <div class="auto cell">
-                <textarea class="mention" dir="auto" id="comment-input"
+                <textarea class="mention" <?php echo esc_html( $disabled ) ?> dir="auto" id="comment-input"
                           placeholder="<?php echo esc_html_x( "Write your comment or note here", 'input field placeholder', 'disciple_tools' ) ?>"
                 ></textarea>
 
@@ -59,9 +73,8 @@
             <div class="cell auto">
                 <?php do_action( 'dt_comment_action_quick_action', get_post_type() ); ?>
             </div>
-
             <div class="shrink cell" id="add-comment-button-container">
-                <button id="add-comment-button" class="button loader">
+                <button id="add-comment-button" class="button loader <?php echo esc_html( $disabled ); ?>">
                     <?php esc_html_e( "Submit comment", 'disciple_tools' ) ?>
                 </button>
             </div>
