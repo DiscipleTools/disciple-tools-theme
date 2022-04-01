@@ -13,7 +13,7 @@ dt_please_log_in();
 
     $field_options = $post_settings["fields"];
 
-    $dt_magic_apps = DT_Magic_URL::list_bulk_send();
+    $dt_magic_apps = DT_Magic_URL::list_bulk_send( $post_type );
 
     get_header();
     ?>

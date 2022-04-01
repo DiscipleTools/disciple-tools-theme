@@ -155,7 +155,9 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * Extract type list from registered root
          * @return array
          */
-        public function list_types() : array {
+        public function list_types( $post_type = null ): array {
+            do_action( 'dt_magic_link_load_templates', $post_type );
+
             $all_types = $this->registered_types();
             if ( isset( $all_types[$this->root] ) ) {
                 return $all_types[$this->root];
@@ -546,7 +548,13 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * Filters and returns registered types that allow bulk send.
          * @return array
          */
-        public static function list_bulk_send() {
+        public static function list_bulk_send( $post_type = null ) {
+
+            /**
+             * Ensure to pre-load any available magic link templates prior to
+             * main list_bulk_send() execution.
+             */
+            do_action( 'dt_magic_link_load_templates', $post_type );
             $registered_list = self::registered_types_static();
             $bulk_send_list = [];
             foreach ( $registered_list as $root_key => $root_values ) {
