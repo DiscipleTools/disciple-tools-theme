@@ -354,7 +354,7 @@ class Disciple_Tools_Reports
         $results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM $wpdb->dt_reportmeta WHERE report_id = %s", $report_id ), ARRAY_A );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ){
-                $meta[$result['meta_key']] = $result[$result['meta_value']];
+                $meta[$result['meta_key']] = $result['meta_value'];
             }
         }
         return $meta;
