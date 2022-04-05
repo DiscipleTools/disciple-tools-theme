@@ -58,7 +58,8 @@ class Disciple_Tools_Core_Endpoints {
         if ( $user ){
             $available_translations = dt_get_available_languages();
             return [
-                "available_translations" => $available_translations
+                "available_translations" => $available_translations,
+                "post_types" => DT_Posts::get_post_types(),
             ];
         } else {
             return new WP_Error( "get_settings", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
