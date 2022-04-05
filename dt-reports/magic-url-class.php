@@ -201,7 +201,6 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             // get url, create parts array and sanitize
             $url_path = dt_get_url_path( true );
             $parts = explode( '/', $url_path );
-            $parts = array_map( 'sanitize_key', wp_unslash( $parts ) );
 
             // test :
             // correct root
