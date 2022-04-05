@@ -99,6 +99,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 if ( isset( $_SERVER["REQUEST_URI"] ) ) {
                     $url .= esc_url_raw( wp_unslash( $_SERVER["REQUEST_URI"] ) );
                 }
+                //remove the domain part. Ex: https://example.com/
                 $url = trim( str_replace( get_site_url(), "", $url ), '/' );
                 if ( $ignore_query_parameters ){
                     return strtok( $url, '?' ); //allow get parameters
