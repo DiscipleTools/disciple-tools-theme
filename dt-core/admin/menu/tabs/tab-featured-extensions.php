@@ -30,7 +30,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         $nonce = wp_create_nonce( 'portal-nonce' );
         ?>
         <script type="text/javascript">
-            function install(plug, is_multisite = false) {
+            function install(plug) {
                 jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'installing', 'disciple_tools' ); ?>...</p>");
 
                 jQuery.post("",
@@ -43,7 +43,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     });
             }
 
-            function uninstall(plug, is_multisite = false ) {
+            function uninstall(plug) {
                     jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'uninstalling', 'disciple_tools' ); ?>...</p>");
 
                 jQuery.post("",
