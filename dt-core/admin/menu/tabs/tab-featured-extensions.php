@@ -233,14 +233,20 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                                 <?php endif;
 
                             } elseif ( $this->partial_array_search( $active_plugins, $plugin->slug ) == -1 && isset( $_POST["activate"] ) == false ) {
-                                ?>    
+                                if ( current_user_can( "install_plugins" ) ) {
+                                    ?>    
                                     <li>
                                         <button class="button" onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
                                     </li>
                                     <li>
                                         <button class="button" onclick="uninstall('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Uninstall', 'disciple_tools' ) ?></button>
                                     </li>
-                                <?php
+                                    <?php
+                                } else { ?>
+                                    <li>
+                                        <span>To install this plugin ask your network administrator</span>
+                                    </li>
+                                <?php }
                             } else {
                                 ?>
                                     <li>
