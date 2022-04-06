@@ -415,6 +415,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'english_name' => 'Turkish',
                     'native_name' => 'Türkçe'
                 ],
+                'uk' => [
+                    'language' => 'uk',
+                    'english_name' => 'Ukrainian',
+                    'native_name' => 'український'
+                ],
                 'vi' => [
                     'language' => 'vi',
                     'english_name' => 'Vietnamese',
