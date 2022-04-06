@@ -55,15 +55,19 @@ class Disciple_Tools_Core_Endpoints {
      */
     public function get_settings() {
         $user = wp_get_current_user();
-        if ( $user ){
-            $available_translations = dt_get_available_languages();
-            return [
-                "available_translations" => $available_translations,
-                "post_types" => DT_Posts::get_post_types(),
-            ];
-        } else {
+        if ( !$user ){
             return new WP_Error( "get_settings", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
         }
+        $available_translations = dt_get_available_languages();
+        $post_types = DT_Posts::get_post_types();
+        $post_types_settings = [];
+        foreach ( $post_types as $post_type ){
+            $post_types_settings[$post_type] = DT_Posts::get_post_settings( $post_type );
+        }
+        return [
+            "available_translations" => $available_translations,
+            "post_types" => $post_types_settings
+        ];
     }
 
     /**
