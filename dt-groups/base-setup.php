@@ -998,7 +998,7 @@ class DT_Groups_Base extends DT_Module_Base {
             }
             $filters["tabs"][] = [
                 "key" => "all",
-                "label" => __( "All", 'disciple_tools' ),
+                "label" => __( "Default Filters", 'disciple_tools' ),
                 "count" => $total_all,
                 "order" => 10
             ];
@@ -1006,7 +1006,7 @@ class DT_Groups_Base extends DT_Module_Base {
             $filters["filters"][] = [
                 'ID' => 'all',
                 'tab' => 'all',
-                'name' => __( "All", 'disciple_tools' ),
+                'name' => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), $post_label_plural ),
                 'query' => [
                     'sort' => 'group_type'
                 ],

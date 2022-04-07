@@ -97,8 +97,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             if ( isset( $_SERVER["HTTP_HOST"] ) ) {
                 $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
                 if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-                    $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+                    $url .= esc_url_raw( wp_unslash( $_SERVER["REQUEST_URI"] ) );
                 }
+                //remove the domain part. Ex: https://example.com/
                 $url = trim( str_replace( get_site_url(), "", $url ), '/' );
                 if ( $ignore_query_parameters ){
                     return strtok( $url, '?' ); //allow get parameters
@@ -413,6 +414,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'language' => 'tr_TR',
                     'english_name' => 'Turkish',
                     'native_name' => 'Türkçe'
+                ],
+                'uk' => [
+                    'language' => 'uk',
+                    'english_name' => 'Ukrainian',
+                    'native_name' => 'український'
                 ],
                 'vi' => [
                     'language' => 'vi',

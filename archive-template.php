@@ -212,7 +212,7 @@ dt_please_log_in();
                     <div class="section-body">
                         <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
                         <div style="margin-bottom: 5px">
-                            <a data-open="filter-modal"><img class="dt-blue-icon dt-icon" style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                            <a data-open="filter-modal"><img class="dt-blue-icon dt-icon" style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/><?php esc_html_e( "Create custom filter", 'disciple_tools' ) ?></a>
                         </div>
                         <div class="custom-filters"></div>
                     </div>
