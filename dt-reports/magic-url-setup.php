@@ -76,6 +76,10 @@ class DT_Magic_URL_Setup {
      * @return void
      */
     private function add_app_row( $post_type, $app ){
+        if ( !isset( $app['meta_key'], $app['label'], $app['type'], $app['root'] ) ){
+            return;
+        }
+
         $record = DT_Posts::get_post( $post_type, get_the_ID() );
         $meta_key = $app['meta_key'];
         if ( isset( $record[$meta_key] ) ) {
@@ -109,7 +113,7 @@ class DT_Magic_URL_Setup {
 
                 $('.<?php echo esc_attr( $meta_key ); ?>.select-button.button.copy_to_clipboard').data('value', `${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}`)
                 $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .view').on('click', function(e){
-                    $('#modal-large-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html( $app['description'] ) ?></span><hr>`)
+                    $('#modal-large-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html( $app['description'] ?? '' ) ?></span><hr>`)
                     $('#modal-large-content').empty().html(`<iframe src="${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}" style="width:100%;height: ${window.innerHeight - 170}px;border:1px solid lightgrey;"></iframe>`)
                     $('#modal-large').foundation('open')
                 })
