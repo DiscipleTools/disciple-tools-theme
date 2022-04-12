@@ -597,6 +597,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <td><?php esc_html_e( 'Name', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Icon link (must be https)', 'disciple_tools' ) ?></td>
                     <td></td>
+                    <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></td>
                 </tr>
                 </thead>
@@ -623,6 +624,21 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             <td>
                                 <button class="button file-upload-display-uploader" data-form="quick_actions_box"
                                         data-icon-input="edit_field_icon[<?php echo esc_attr( $field_key ); ?>]"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
+                            </td>
+                            <td>
+                                <?php $langs = dt_get_available_languages(); ?>
+                                <button class="button small expand_translations">
+                                    <?php
+                                    $number_of_translations = 0;
+                                    foreach ( $langs as $lang => $val ) {
+                                        if ( !empty( $channel_option['translations'][$val['language']] ) ) {
+                                            $number_of_translations ++;
+                                        }
+                                    }
+                                    ?>
+                                    <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                                    (<?php echo esc_html( $number_of_translations ); ?>)
+                                </button>
                             </td>
                             <td>
                                 <?php
