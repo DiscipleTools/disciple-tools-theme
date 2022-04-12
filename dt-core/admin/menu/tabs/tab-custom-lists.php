@@ -605,7 +605,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     foreach ( $fields as $field_key => $field_settings ) :
                         if ( ! isset( $field_settings['section'] ) || substr( $field_settings['section'], 0, 13 ) !== 'quick_buttons' ) {
                             continue;
-                        }?>
+                        }
+                    ?>
                         <tr>
                             <td>
                                 <img style="width: 20px; vertical-align: middle;" src="<?php echo esc_attr( $field_settings['icon'] ); ?>" class="quick-action-menu">
@@ -630,7 +631,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     <?php
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ) {
-                                        if ( !empty( $channel_option['translations'][$val['language']] ) ) {
+                                        if ( !empty( $fields[$field_key]['translations'][$val['language']] ) ) {
                                             $number_of_translations ++;
                                         }
                                     }
@@ -643,7 +644,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     <?php foreach ( $langs as $lang => $val ) : ?>
                                         <tr>
                                             <td><label for="field_label[<?php echo esc_html( $field_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                            <td><input name="field_label[<?php echo esc_html( $field_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $field_option["translations"][$val['language']] ?? "" );?>"/></td>
+                                            <td><input name="field_label[<?php echo esc_html( $field_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $fields[$field_key]["translations"][$val['language']] ?? "" );?>"/></td>
                                         </tr>
                                     <?php endforeach; ?>
                                     </table>
