@@ -606,7 +606,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         if ( ! isset( $field_settings['section'] ) || substr( $field_settings['section'], 0, 13 ) !== 'quick_buttons' ) {
                             continue;
                         }
-                    ?>
+                        ?>
                         <tr>
                             <td>
                                 <img style="width: 20px; vertical-align: middle;" src="<?php echo esc_attr( $field_settings['icon'] ); ?>" class="quick-action-menu">
@@ -693,7 +693,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $langs = dt_get_available_languages();
             $custom_field_options = dt_get_option( 'dt_field_customizations' );
             $custom_contact_fields = $custom_field_options['contacts'];
-    
+
             $fields = $custom_field_options['contacts'];
             foreach ( $fields as $field_key => $field_settings ) {
                 foreach ( $langs as $lang => $val ) {
@@ -707,7 +707,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
             $custom_field_options['contacts'] = $custom_contact_fields;
-            update_option( 'dt_field_customizations', $custom_field_options);
+            update_option( 'dt_field_customizations', $custom_field_options );
         }
 
 
