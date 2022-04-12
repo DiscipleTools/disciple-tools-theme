@@ -300,7 +300,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         </button>
                         <div class="translation_container hide">
                             <table>
-
                             <?php foreach ( $langs as $lang => $val ) : ?>
                                 <tr>
                                     <td><label for="channel_label[<?php echo esc_html( $channel_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
@@ -639,6 +638,16 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
                                     (<?php echo esc_html( $number_of_translations ); ?>)
                                 </button>
+                                <div class="translation_container hide">
+                                    <table>
+                                    <?php foreach ( $langs as $lang => $val ) : ?>
+                                        <tr>
+                                            <td><label for="field_label[<?php echo esc_html( $field_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
+                                            <td><input name="field_label[<?php echo esc_html( $field_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $field_option["translations"][$val['language']] ?? "" );?>"/></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                    </table>
+                                </div>
                             </td>
                             <td>
                                 <?php
@@ -674,16 +683,32 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function process_quick_actions_box(){
-        // Look for nonce and verify it
         if ( isset( $_POST['quick_actions_box_nonce'] ) ) {
             if ( !wp_verify_nonce( sanitize_key( $_POST['quick_actions_box_nonce'] ), 'quick_actions_box' ) ){
                 self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
                 return;
             }
+
+            $langs = dt_get_available_languages();
+            $custom_field_options = dt_get_option( 'dt_field_customizations' );
+            $custom_contact_fields = $custom_field_options['contacts'];
+    
+            $fields = $custom_field_options['contacts'];
+            foreach ( $fields as $field_key => $field_settings ) {
+                foreach ( $langs as $lang => $val ) {
+                    $langcode = $val['language'];
+                    if ( isset( $_POST['field_label'][$field_key][$langcode] ) ) {
+                        $translated_label = sanitize_text_field( wp_unslash( $_POST['field_label'][$field_key][$langcode] ) );
+                        if ( ( empty( $translated_label ) && !empty( $custom_contact_fields[$field_key]['translations'][$langcode] ) ) || !empty( $translated_label ) ) {
+                            $custom_contact_fields[$field_key]['translations'][$langcode] = $translated_label;
+                        }
+                    }
+                }
+            }
+            $custom_field_options['contacts'] = $custom_contact_fields;
+            update_option( 'dt_field_customizations', $custom_field_options);
         }
 
-        // Load custom fields
-        $custom_field_options = dt_get_option( 'dt_field_customizations' );
 
         // Add a new custom field
         if ( ! empty( $_POST['add_custom_quick_action_label'] ) ) {
