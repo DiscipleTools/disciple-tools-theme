@@ -115,8 +115,11 @@ dt_please_log_in();
         <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
             <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
         </a>
-        <a class="button filter-posts-mobile" data-open="filter-modal">
+        <a class="button aside-filter-posts-mobile">
             <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
+        </a>
+        <a class="button filter-posts-mobile" data-open="filter-modal">
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter-add.svg?v=2' ) ?>"/>
         </a>
         <a class="button" id="open-search">
             <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
@@ -198,26 +201,26 @@ dt_please_log_in();
     </nav>
     <div id="content" class="archive-template">
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
-            <aside class="cell large-3" id="list-filters">
-                <div class="bordered-box">
-                    <div class="section-header">
-                        <?php echo esc_html( sprintf( _x( '%s Filters', 'Contacts Filters', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_plural"] ) ) ?>
-                        <button class="section-chevron chevron_down">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                        </button>
-                        <button class="section-chevron chevron_up">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-                        </button>
-                    </div>
-                    <div class="section-body">
-                        <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
-                        <div style="margin-bottom: 5px">
-                            <a data-open="filter-modal"><img class="dt-blue-icon dt-icon" style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/><?php esc_html_e( "Create custom filter", 'disciple_tools' ) ?></a>
+            <aside class="cell large-3 hide-for-small-only" id="list-filters">
+                    <div class="bordered-box">
+                        <div class="section-header">
+                            <?php echo esc_html( sprintf( _x( '%s Filters', 'Contacts Filters', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_plural"] ) ) ?>
+                            <button class="section-chevron chevron_down">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                            </button>
+                            <button class="section-chevron chevron_up">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                            </button>
                         </div>
-                        <div class="custom-filters"></div>
+                        <div class="section-body">
+                            <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
+                            <div style="margin-bottom: 5px">
+                                <a data-open="filter-modal"><img class="dt-blue-icon dt-icon" style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/><?php esc_html_e( "Create custom filter", 'disciple_tools' ) ?></a>
+                            </div>
+                            <div class="custom-filters"></div>
+                        </div>
                     </div>
-                </div>
-                <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
+                    <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
             </aside>
 
             <main id="main" class="large-9 cell padding-bottom" role="main">

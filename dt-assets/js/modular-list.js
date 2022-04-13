@@ -2197,4 +2197,14 @@
       })
   }
 
+  /* toggle on small screens list filter tile */
+  $('.aside-filter-posts-mobile').on('click', function(){
+    let list_filters = $('#list-filters')
+    if ( list_filters.hasClass('hide-for-small-only') ) {
+      list_filters.removeClass('hide-for-small-only')
+    } else {
+      list_filters.addClass('hide-for-small-only')
+    }
+  })
+
 })(window.jQuery, window.list_settings, window.Foundation);
