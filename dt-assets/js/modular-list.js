@@ -195,21 +195,9 @@
             // Remove text property, to force a return to all filtered view
             delete current_filter.query['text'];
 
-            // Determine id to be found
-            let id = '';
-
-            switch (list_settings.post_type) {
-              case 'contacts':
-                id = 'all_my_contacts';
-                break;
-              case 'groups':
-                id = 'all';
-                break;
-            }
-
-            // Locate and select corresponding contact/group all radio button
+            // Locate and select corresponding all radio button
             $('.list-views').find('.js-list-view').each(function (idx, input) {
-              if ($(input).data('id') === id) {
+              if ($.inArray($(input).data('id'), ['all_my_contacts', 'all']) !== -1) {
                 $(input).prop('checked', true);
               }
             });
