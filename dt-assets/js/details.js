@@ -992,7 +992,7 @@ jQuery(document).ready(function($) {
           values_html = window.lodash.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
         } else if ( field_options.type === 'key_select' ){
           values_html = window.lodash.escape( field_value.label )
-        } else if ( field_options.type === 'multi_select' ){
+        } else if ( field_options.type === 'multi_select' || field_options.type === 'tags' ){
           values_html = field_value.map(v=>{
             return `${window.lodash.escape( window.lodash.get( field_options, `default[${v}].label`, v ))}`;
           }).join(', ')
@@ -1039,6 +1039,9 @@ jQuery(document).ready(function($) {
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
         if (field_options.type !== 'communication_channel') {
           $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
+        }
+        if ( field_options.type === "text" && new RegExp(urlRegex).exec(values_html) ){
+          window.SHAREDFUNCTIONS.make_links_clickable(`#collapsed-detail-${field_key} .collapsed-items span`)
         }
       }
 
