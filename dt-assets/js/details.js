@@ -1035,6 +1035,8 @@ jQuery(document).ready(function($) {
           values_html = field_value.map(v=>{
             return window.lodash.escape(v.label);
           }).join(' / ')
+        } else {
+          values_html = window.lodash.escape( field_value )
         }
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
         if (field_options.type !== 'communication_channel') {
