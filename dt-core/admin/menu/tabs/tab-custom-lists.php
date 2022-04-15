@@ -594,6 +594,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td></td>
                     <td><?php esc_html_e( 'Name', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Key', 'disciple_tools' ); ?></td>
                     <td><?php esc_html_e( 'Icon link (must be https)', 'disciple_tools' ) ?></td>
                     <td></td>
                     <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
@@ -620,6 +621,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     echo '<input type="hidden" name="edit_field[' . esc_attr( $field_key ) . ']" value="'. esc_html( $field_settings['name'] ) . '">';
                                 } ?>
                             </td>
+                            <td><?php echo esc_html( $field_key ); ?></td>
                             <td class="quick-action-menu"><input type="text" name="edit_field_icon[<?php echo esc_attr( $field_key ); ?>]" value="<?php echo esc_html( $field_settings['icon'] ) ?>"></td>
                             <td>
                                 <button class="button file-upload-display-uploader" data-form="quick_actions_box"
