@@ -176,6 +176,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             require_once( 'dt-reports/magic-url-class.php' );
             require_once( 'dt-reports/magic-url-base.php' );
             require_once( 'dt-reports/magic-url-endpoints.php' );
+            require_once( 'dt-reports/magic-url-setup.php' );
             require_once( 'dt-reports/magic-url-bulk-send.php' );
 
 
