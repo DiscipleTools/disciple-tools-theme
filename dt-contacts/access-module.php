@@ -433,7 +433,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
             ?>
                 <div class="section-subheader">
-                    <img src="<?php echo esc_url( $contact_fields[$field_key]["icon"] ) ?>">
+                    <img class="dt-icon" src="<?php echo esc_url( $contact_fields[$field_key]["icon"] ) ?>">
                     <?php echo esc_html( $contact_fields[$field_key]["name"] ) ?>
                 </div>
                 <?php
@@ -577,7 +577,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $button_class =( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'list_users' ) ) ? "advanced_user_select" : "search_assigned_to"
             ?>
             <div class="section-subheader">
-                <img src="<?php echo esc_url( $contact_fields[$field_key]["icon"] ) ?>">
+                <img  class="dt-icon" src="<?php echo esc_url( $contact_fields[$field_key]["icon"] ) ?>">
                 <?php echo esc_html( $contact_fields[$field_key]["name"] ) ?>
             </div>
             <div id="<?php echo esc_html( $field_key ); ?>" class="<?php echo esc_html( $display_field_id ); ?> dt_user_select">
