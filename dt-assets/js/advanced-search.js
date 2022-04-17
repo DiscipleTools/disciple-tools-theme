@@ -216,9 +216,9 @@ jQuery(document).ready(function ($) {
 
     // Determine hit type icon to be displayed
     results_html += '<td class="advanced-search-modal-results-table-col-hits-type">';
-    results_html += (_is_post_hit || _is_default_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
-    results_html += (_is_comment_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
-    results_html += (_is_meta_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/socialmedia.svg" alt="Meta Hit"/>&nbsp;' : '';
+    results_html += (_is_post_hit || _is_default_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/contact-generation.svg" alt="Record Found"/>&nbsp;' : '';
+    results_html += (_is_comment_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/comment.svg" alt="Comment Found"/>&nbsp;' : '';
+    results_html += (_is_meta_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/socialmedia.svg" alt="Meta Found"/>&nbsp;' : '';
     results_html += '</td>';
 
     results_html += '</tr>';
