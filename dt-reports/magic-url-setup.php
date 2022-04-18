@@ -20,7 +20,7 @@ class DT_Magic_URL_Setup {
             $magic_link_apps = dt_get_registered_types();
             foreach ( $magic_link_apps as $app_root => $app_types ){
                 foreach ( $app_types as $app_type => $app_value ){
-                    if ( $app_value["post_type"] === $post_type && $app_value["show_app_tile"] === true ){
+                    if ( $app_value["post_type"] === $post_type && isset( $app_value["show_app_tile"] ) && $app_value["show_app_tile"] === true ){
                         $post_types_has_registered_apps = true;
                     }
                 }
@@ -47,7 +47,7 @@ class DT_Magic_URL_Setup {
             $magic_link_apps = dt_get_registered_types();
             foreach ( $magic_link_apps as $app_root => $app_types ){
                 foreach ( $app_types as $app_type => $app_value ){
-                    if ( $app_value["post_type"] === $post_type && $app_value["show_app_tile"] === true ){
+                    if ( $app_value["post_type"] === $post_type && isset( $app_value["show_app_tile"] ) && $app_value["show_app_tile"] === true ){
                         $this->add_app_row( $post_type, $app_value );
                     }
                 }
