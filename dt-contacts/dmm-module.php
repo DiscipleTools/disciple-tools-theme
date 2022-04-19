@@ -224,7 +224,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/no-answer.svg?v=2",
+                'icon'        => get_template_directory_uri() . "/dt-assets/icons/account-voice-off.svg?v=2",
                 "customizable" => false
             ];
             $fields['quick_button_contact_established'] = [
@@ -233,7 +233,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/successful-conversation.svg?v=2",
+                'icon'        => get_template_directory_uri() . "/dt-assets/icons/account-voice.svg?v=2",
                 "customizable" => false
             ];
             $fields['quick_button_meeting_scheduled'] = [
@@ -242,7 +242,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-scheduled.svg?v=2",
+                'icon'        => get_template_directory_uri() . "/dt-assets/icons/calendar-plus.svg?v=2",
                 "customizable" => false
             ];
             $fields['quick_button_meeting_complete'] = [
@@ -251,7 +251,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-complete.svg?v=2",
+                'icon'        => get_template_directory_uri() . "/dt-assets/icons/calendar-check.svg?v=2",
                 "customizable" => false
             ];
             $fields['quick_button_no_show'] = [
@@ -260,7 +260,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/no-show.svg?v=2",
+                'icon'        => get_template_directory_uri() . "/dt-assets/icons/calendar-remove.svg?v=2",
                 "customizable" => false
             ];
 
