@@ -63,53 +63,53 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     "milestone_has_bible"     => [
                         "label" => __( 'Has Bible', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/bible.svg?v=2",
+                        "icon" => get_template_directory_uri() . "/dt-assets/icons/book-cross.svg?v=2",
                     ],
                     "milestone_reading_bible" => [
                         "label" => __( 'Reading Bible', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/reading.svg?v=2",
+                        "icon" => get_template_directory_uri() . "/dt-assets/icons/book-open-page-variant.svg?v=2",
                     ],
                     "milestone_belief"        => [
                         "label" => __( 'States Belief', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/speak.svg?v=2",
+                        "icon" => get_template_directory_uri() . "/dt-assets/icons/shield-cross.svg?v=2",
                     ],
                     "milestone_can_share"     => [
                         "label" => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/can-share.svg?v=2",
+                        "icon" => get_template_directory_uri() . "/dt-assets/icons/hand-heart.svg?v=2",
                     ],
                     "milestone_sharing"       => [
                         "label" => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/connection-people.svg?v=2",
+                        "icon" => get_template_directory_uri() . "/dt-assets/icons/account-voice.svg?v=2",
                     ],
                     "milestone_baptized"      => [
                         "label" => __( 'Baptized', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/baptism.svg?v=2",
+                        "icon" => get_template_directory_uri() . "/dt-assets/icons/baptize.svg?v=2",
                     ],
                     "milestone_baptizing"     => [
                         "label" => __( 'Baptizing', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/child.svg?v=2",
+                        "icon" => get_template_directory_uri() . "/dt-assets/icons/waves.svg?v=2",
                     ],
                     "milestone_in_group"      => [
                         "label" => __( 'In Church/Group', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/group-type.svg?v=2",
+                        "icon" => get_template_directory_uri() . "/dt-assets/icons/church.svg?v=2",
                     ],
                     "milestone_planting"      => [
                     "label" => __( 'Starting Churches', 'disciple_tools' ),
                         "description" => '',
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/stream.svg?v=2",
+                        "icon" => get_template_directory_uri() . "/dt-assets/icons/arrow-decision.svg?v=2",
                     ],
                 ],
                 "customizable" => "add_only",
                 "tile" => "faith",
                 "show_in_table" => 20,
-                "icon" => get_template_directory_uri() . "/dt-assets/images/bible.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/map-marker-path.svg?v=2",
             ];
             $fields["faith_status"] =[
                 "name" => __( 'Faith Status', 'disciple_tools' ),
@@ -169,7 +169,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'name' => __( 'Baptism Date', 'disciple_tools' ),
                 'description' => '',
                 'type' => 'date',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/calendar.svg?v=2',
+                'icon' => get_template_directory_uri() . '/dt-assets/icons/calendar-heart.svg?v=2',
                 'tile' => 'details',
             ];
 
@@ -196,7 +196,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "from",
                 "p2p_key" => "baptizer_to_baptized",
                 'tile'     => 'faith',
-                "icon" => get_template_directory_uri() . '/dt-assets/images/baptism.svg?v=2',
+                "icon" => get_template_directory_uri() . '/dt-assets/icons/baptize.svg?v=2',
             ];
             $fields["baptized"] = [
                 "name" => __( "Baptized", 'disciple_tools' ),
@@ -206,7 +206,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "to",
                 "p2p_key" => "baptizer_to_baptized",
                 'tile'     => 'faith',
-                "icon" => get_template_directory_uri() . '/dt-assets/images/child.svg?v=2',
+                "icon" => get_template_directory_uri() . '/dt-assets/icons/waves.svg?v=2',
             ];
             $fields["people_groups"] = [
                 "name" => __( 'People Groups', 'disciple_tools' ),
