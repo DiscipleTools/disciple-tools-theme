@@ -103,11 +103,13 @@ class DT_Groups_Base extends DT_Module_Base {
             $fields["requires_update"] = [
                 'name'        => __( 'Requires Update', 'disciple_tools' ),
                 'description' => '',
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/clock-alert.svg?v=2",
                 'type'        => 'boolean',
                 'default'     => false,
             ];
             $fields["duplicate_data"] = [
                 "name" => 'Duplicates', //system string does not need translation
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/account-box-multiple.svg?v=2",
                 'type' => 'array',
                 'default' => [],
             ];
@@ -128,7 +130,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     ],
                 ],
                 'tile'     => 'status',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg?v=2',
+                'icon' => get_template_directory_uri() . '/dt-assets/icons/traffic-light.svg?v=2',
                 "default_color" => "#366184",
                 "show_in_table" => 10,
                 "select_cannot_be_empty" => true
@@ -139,7 +141,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type'        => 'user_select',
                 'default'     => '',
                 'tile' => 'status',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg?v=2',
+                'icon' => get_template_directory_uri() . '/dt-assets/icons/briefcase-account.svg?v=2',
                 "show_in_table" => 16,
             ];
             $fields["coaches"] = [
@@ -150,7 +152,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 "p2p_direction" => "from",
                 "p2p_key" => "groups_to_coaches",
                 'tile' => 'status',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg?v=2',
+                'icon' => get_template_directory_uri() . '/dt-assets/icons/human-male-board.svg?v=2',
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-contact.svg?v=2',
             ];
 
@@ -181,7 +183,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'groups',
                 'in_create_form' => true,
                 "show_in_table" => 15,
-                "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
+                "icon" => get_template_directory_uri() . '/dt-assets/icons/type.svg?v=2',
                 "select_cannot_be_empty" => true
             ];
 
@@ -246,6 +248,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 ],
                 "customizable" => "add_only",
                 'tile' => 'health-metrics',
+                'icon' => get_template_directory_uri() . '/dt-assets/icons/gauge.svg',
                 'custom_display' => true
             ];
 
