@@ -258,7 +258,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type'        => 'date',
                 'default'     => time(),
                 'tile' => 'details',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/date-start.svg?v=2',
+                'icon' => get_template_directory_uri() . '/dt-assets/icons/calendar-plus.svg?v=2',
             ];
             $fields['church_start_date'] =[
                 'name' => __( 'Church Start Date', 'disciple_tools' ),
@@ -266,7 +266,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type' => 'date',
                 'default'     => time(),
                 'tile' => 'details',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/date-success.svg?v=2',
+                'icon' => get_template_directory_uri() . '/dt-assets/icons/calendar-check.svg?v=2',
 
             ];
             $fields['end_date'] = [
@@ -275,7 +275,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type'        => 'date',
                 'default'     => '',
                 'tile' => 'details',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/date-end.svg?v=2',
+                'icon' => get_template_directory_uri() . '/dt-assets/icons/calendar-remove.svg?v=2',
             ];
 
 
@@ -287,7 +287,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'default' => '',
                 'tile' => 'relationships',
                 "show_in_table" => 25,
-                "icon" => get_template_directory_uri() . '/dt-assets/images/tally.svg?v=2',
+                "icon" => get_template_directory_uri() . '/dt-assets/icons/pound-box-outline.svg?v=2',
             ];
             $fields["members"] = [
                 "name" => __( 'Member List', 'disciple_tools' ),

@@ -155,6 +155,7 @@ class Disciple_Tools_Post_Type_Template {
             'name' => __( 'Last Modified', 'disciple_tools' ),
             'type' => 'date',
             'default' => 0,
+            'icon' => get_template_directory_uri() . "/dt-assets/icons/calendar-range.svg",
             'customizable' => false,
             "show_in_table" => 100
         ];
@@ -162,6 +163,7 @@ class Disciple_Tools_Post_Type_Template {
             'name' => __( 'Creation Date', 'disciple_tools' ),
             'type' => 'date',
             'default' => 0,
+            'icon' => get_template_directory_uri() . "/dt-assets/icons/calendar-plus.svg",
             'customizable' => false,
         ];
         $fields['favorite'] = [
@@ -195,6 +197,7 @@ class Disciple_Tools_Post_Type_Template {
         $fields['tasks'] = [
             'name' => __( 'Tasks', 'disciple_tools' ),
             'type' => 'task',
+            'icon' => get_template_directory_uri() . "/dt-assets/icons/calendar-clock.svg",
             'private' => true
         ];
         return $fields;
