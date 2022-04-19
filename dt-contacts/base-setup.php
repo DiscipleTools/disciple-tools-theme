@@ -212,7 +212,7 @@ class DT_Contacts_Base {
                     'Whatsapp' => [
                         'name' => __( "Whatsapp", 'disciple_tools' ),
                         "link" => "https://api.whatsapp.com/send?phone=PHONE_NUMBER_NO_PLUS",
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/signal.svg"
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/whatsapp.svg"
                     ],
                 ]
             ];
