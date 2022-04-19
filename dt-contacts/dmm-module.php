@@ -127,7 +127,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     ],
                 ],
                 'tile' => "status",
-                'icon' => get_template_directory_uri() . "/dt-assets/images/cross.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/cross-celtic.svg?v=2",
                 'in_create_form' => true
             ];
             $fields["subassigned"] = [
@@ -163,7 +163,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_contacts",
                 "tile" => "other",
-                "icon" => get_template_directory_uri() . '/dt-assets/images/coaching.svg?v=2',
+                "icon" => get_template_directory_uri() . '/dt-assets/icons/human-male-board.svg?v=2',
             ];
             $fields['baptism_date'] = [
                 'name' => __( 'Baptism Date', 'disciple_tools' ),
@@ -186,7 +186,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "from",
                 "p2p_key" => "contacts_to_contacts",
                 "tile" => "status",
-                "icon" => get_template_directory_uri() . '/dt-assets/images/coach.svg?v=2',
+                "icon" => get_template_directory_uri() . '/dt-assets/icons/human-male-board.svg?v=2',
             ];
             $fields["baptized_by"] = [
                 "name" => __( "Baptized by", 'disciple_tools' ),
