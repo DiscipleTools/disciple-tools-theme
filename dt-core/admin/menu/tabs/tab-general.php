@@ -776,7 +776,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 </thead>
                 <tbody>
                     <tr>
-                        <td><img width="10%" src="<?php echo esc_html( $logo_url ); ?>"></td>
+                        <td style="background-color:#3f729b"><img width="10%" src="<?php echo esc_html( $logo_url ); ?>"></td>
                         <td><input type="text" name="custom_logo_url" value="<?php echo esc_html( $logo_url ); ?>"></td>
                         <td><button class="button" name="default_logo_url">Default</button></td>
                         <td><button class="button file-upload-display-uploader" data-form="custom_logo_box" data-icon-input="custom_logo_url" style="margin-left:1%"><?php esc_html_e( 'Upload', 'disciple_tools' ); ?></button></td>
