@@ -44,7 +44,7 @@ if ( 'contacts' === dt_get_post_type() ) {
                              <?php
                                 foreach ( $dt_magic_apps as $root ) {
                                     foreach ( $root as $type ) {
-                                        if ( isset( $type['show_bulk_send'] ) && $type['show_bulk_send'] ) {
+                                        if ( isset( $type['show_bulk_send'], $type['post_type'] ) && $type['show_bulk_send'] && $type['post_type'] === $post_type ) {
                                             ?>
                                         <input type="radio" id="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>" data-root="<?php echo esc_attr( $type['root'] ) ?>" data-type="<?php echo esc_attr( $type['type'] ) ?>" name="r-group">
                                         <label class="button" for="<?php echo esc_attr( $type['root'] . '_' . $type['type'] ) ?>"><?php echo esc_html( $type['name'] ) ?></label>
