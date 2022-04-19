@@ -96,7 +96,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "color" => "#2196F3",
                 "description" => __( 'A contact to collaborate on', 'disciple_tools' ),
                 "visibility" => __( "Me and project leadership", 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/shape.svg?v=2",
                 "order" => 20,
                 "default" => true,
             ];
@@ -104,7 +104,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "label" => __( 'Connection', 'disciple_tools' ),
                 "color" => "#FF9800",
                 "description" => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/shape.svg?v=2",
                 "order" => 40,
                 "visibility" => __( "Collaborators", 'disciple_tools' ),
                 "in_create_form" => false,
@@ -116,7 +116,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'type'        => 'user_select',
                 'default'     => '',
                 'tile'        => 'status',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/assigned-to.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/briefcase-account.svg?v=2",
                 "show_in_table" => 25,
                 "only_for_types" => [ "access", "user" ],
                 "custom_display" => true
@@ -159,7 +159,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile' => 'followup',
                 "show_in_table" => 15,
                 "only_for_types" => [ "access" ],
-                "icon" => get_template_directory_uri() . '/dt-assets/images/sign-post.svg?v=2',
+                "icon" => get_template_directory_uri() . '/dt-assets/icons/sign-direction.svg?v=2',
             ];
 
             $fields['overall_status'] = [
@@ -198,7 +198,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile'     => 'status',
                 'customizable' => 'add_only',
                 'custom_display' => true,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/status.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/traffic-light.svg?v=2",
                 "show_in_table" => 10,
                 "only_for_types" => [ "access" ],
                 "select_cannot_be_empty" => true
@@ -326,7 +326,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile'     => 'details',
                 'customizable' => 'all',
                 'display' => "typeahead",
-                'icon' => get_template_directory_uri() . "/dt-assets/images/source.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/arrow-collapse-all.svg?v=2",
                 "only_for_types" => [ "access" ],
                 "in_create_form" => [ "access" ]
             ];
@@ -337,7 +337,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile' => 'details',
                 'type'        => 'tags',
                 'default'     => [],
-                'icon' => get_template_directory_uri() . "/dt-assets/images/megaphone.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/bullhorn.svg?v=2",
                 'only_for_types' => [ 'access' ],
             ];
 
