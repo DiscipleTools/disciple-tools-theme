@@ -755,10 +755,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function custom_logo() {
-        //todo
-        //1. make sure upload screen actually uploads the photo
-        //2. find variable where custom logo should be stored
-        //3. change the way we show the logo in the dt header
         $dt_nav_tabs = dt_default_menu_array();
         $logo_url = esc_url( $dt_nav_tabs['admin']['site']['icon'] );
         $custom_logo_url = get_option( 'custom_logo_url' );
@@ -766,12 +762,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( ! empty( $custom_logo_url ) ) {
             $logo_url = esc_url( $custom_logo_url );
         }
-        //$logo_url = sanitize_url( get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" );
-
         ?>
         <form method="post" name="custom_logo_box">
             <input type="hidden" name="custom_logo_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'custom_logo_box' ) ); ?>" />
-            <table class="widefat">
+            <table class="widefat striped">
                 <thead>
                     <tr>
                         <td><?php esc_html_e( 'Image', 'disciple_tools' ); ?></td>
