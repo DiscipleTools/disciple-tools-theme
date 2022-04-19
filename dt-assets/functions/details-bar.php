@@ -56,7 +56,7 @@ function dt_print_details_bar(
                                     <ul class="menu is-dropdown-submenu">
                                         <?php if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ) : ?>
                                             <li><a data-open="delete-record-modal">
-                                                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ) ?>"/>
+                                                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/icons/delete.svg' ) ?>"/>
                                                     <?php echo esc_html( sprintf( _x( "Delete %s", "Delete Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )["label_singular"] ) ) ?></a></li>
                                         <?php endif; ?>
                                         <?php do_action( 'dt_record_admin_actions', $dt_post_type, $post_id ); ?>

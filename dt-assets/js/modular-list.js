@@ -339,7 +339,7 @@
         return
       }
       let delete_filter = $(`<span style="float:right" data-filter="${window.lodash.escape( filter.ID )}">
-        <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/trash.svg">
+        <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/icons/delete.svg">
       </span>`)
       delete_filter.on("click", function () {
         $(`.delete-filter-name`).html(filter.name)
@@ -347,7 +347,7 @@
         filter_to_delete = filter.ID;
       })
       let edit_filter = $(`<span style="float:right" data-filter="${window.lodash.escape( filter.ID )}">
-          <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/edit.svg">
+          <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/icons/pencil.svg">
       </span>`)
       edit_filter.on("click", function () {
         edit_saved_filter( filter )

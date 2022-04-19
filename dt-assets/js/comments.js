@@ -154,11 +154,11 @@ jQuery(document).ready(function($) {
                 <% has_Comment_ID = true %>
                   <div class="edit-comment-controls">
                     <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
-                        <img class="dt-blue-icon" src="${commentsSettings.template_dir}/dt-assets/images/edit.svg">
+                        <img class="dt-blue-icon" src="${commentsSettings.template_dir}/dt-assets/icons/pencil.svg">
                         ${window.lodash.escape(commentsSettings.translations.edit)}
                     </a>
                     <a class="open-delete-comment" data-id="<%- a.comment_ID %>">
-                        <img class="dt-blue-icon" src="${commentsSettings.template_dir}/dt-assets/images/trash.svg">
+                        <img class="dt-blue-icon" src="${commentsSettings.template_dir}/dt-assets/icons/delete.svg">
                         ${window.lodash.escape(commentsSettings.translations.delete)}
                     </a>
                   </div>
