@@ -44,9 +44,19 @@ $dt_nav_tabs = dt_default_menu_array();
             <?php endif; ?>
 
             <!-- site logo -->
+            <?php
+
+            // Check for Custom Logo
+            $logo_url = get_template_directory_uri() . '/dt-assets/images/disciple-tools-logo-white.png';
+            $custom_logo_url = get_option( 'custom_logo_url' );
+            if ( !empty( $custom_logo_url ) ) {
+                $logo_url = $custom_logo_url;
+            }
+            dt_write_log( $logo_url );
+            ?>
             <?php if ( ! $dt_nav_tabs['admin']['site']['hidden'] ?? ! false ) : ?>
                 <div class="title-bar-title" style="margin-left: 5px">
-                    <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" class="logo-link" ><img src="<?php echo esc_url( $dt_nav_tabs['admin']['site']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" ); ?>" class="logo" alt="logo-image"></a>
+                    <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" class="logo-link" ><img src="<?php echo esc_url( $logo_url ); ?>" class="logo" alt="logo-image"></a>
                 </div>
             <?php endif; ?>
 
@@ -73,7 +83,7 @@ $dt_nav_tabs = dt_default_menu_array();
                                 <?php foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) : ?>
                                     <li>
                                         <a class="add-new-menu-item" href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
-                                            <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>" src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri()  . "/dt-assets/images/circle-add-green.svg" ) ?>">
+                                            <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>" src="<?php echo esc_url( $logo_url ) ?>">
                                             <?php echo esc_html( $dt_nav_submenu['label'] ); ?>
                                         </a>
                                     </li>
@@ -108,7 +118,7 @@ $dt_nav_tabs = dt_default_menu_array();
     <div class="top-bar" id="top-bar-menu"
          data-sticky style="width:100%;margin-top:0">
         <div>
-            <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" class="logo-link"><img src="<?php echo esc_url( $dt_nav_tabs['admin']['site']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" ); ?>" class="logo" alt="logo-image"></a>
+            <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" class="logo-link"><img src="<?php echo esc_url( $logo_url ); ?>" class="logo" alt="logo-image"></a>
         </div>
         <div class="top-bar-left">
             <ul class="dropdown menu" data-dropdown-menu>
