@@ -366,7 +366,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'mapbox'    => false,
                 "in_create_form" => true,
                 "tile" => "details",
-                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/map-marker.svg?v=2",
             ];
 
             $fields['location_grid_meta'] = [
@@ -375,12 +375,12 @@ class DT_Groups_Base extends DT_Module_Base {
                 "tile"      => "details",
                 'mapbox'    => false,
                 'hidden' => true,
-                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/map-marker-multiple.svg?v=2",
             ];
 
             $fields["contact_address"] = [
                 "name" => __( 'Address', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/directions.svg?v=2",
                 "type" => "communication_channel",
                 "tile" => "details",
                 'mapbox'    => false,

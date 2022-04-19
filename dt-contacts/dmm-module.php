@@ -139,7 +139,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_key" => "contacts_to_subassigned",
                 "tile" => "status",
                 "custom_display" => false,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/briefcase-account-outline.svg?v=2",
             ];
 
             $fields["subassigned_on"] = [
@@ -151,7 +151,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_key" => "contacts_to_subassigned",
                 "tile" => "no_tile",
                 "custom_display" => false,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/briefcase-account-outline.svg?v=2",
             ];
 
 

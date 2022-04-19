@@ -232,7 +232,7 @@ class DT_Contacts_Base {
                 'mapbox'    => false,
                 "in_create_form" => true,
                 "tile" => "details",
-                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/map-marker.svg?v=2",
             ];
             $fields['location_grid_meta'] = [
                 'name'        => __( 'Locations or Address', 'disciple_tools' ),
@@ -241,11 +241,11 @@ class DT_Contacts_Base {
                 'mapbox'    => false,
                 'hidden' => true,
                 "in_create_form" => true,
-                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/map-marker-multiple.svg?v=2",
             ];
             $fields["contact_address"] = [
                 "name" => __( 'Address', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/directions.svg?v=2",
                 "type" => "communication_channel",
                 "tile" => "details",
                 'mapbox'    => false,
@@ -386,7 +386,7 @@ class DT_Contacts_Base {
 
             <li>
                 <a data-open="contact-type-modal">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2' ) ?>"/>
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/icons/shape.svg?v=2' ) ?>"/>
                     <?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
             </li>
             <li><a data-open="merge-dupe-edit-modal">

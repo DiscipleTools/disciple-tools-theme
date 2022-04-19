@@ -148,7 +148,7 @@ class Disciple_Tools_Post_Type_Template {
             'tile' => 'details',
             'in_create_form' => true,
             'required' => true,
-            'icon' => get_template_directory_uri() . "/dt-assets/images/name.svg",
+            'icon' => get_template_directory_uri() . "/dt-assets/icons/sign-text.svg",
             "show_in_table" => 5
         ];
         $fields["last_modified"] =[
@@ -180,7 +180,7 @@ class Disciple_Tools_Post_Type_Template {
             'type'        => 'tags',
             'default'     => [],
             'tile'        => 'other',
-            'icon' => get_template_directory_uri() . "/dt-assets/images/tag.svg",
+            'icon' => get_template_directory_uri() . "/dt-assets/icons/tag-multiple.svg",
         ];
         $fields["follow"] = [
             'name'        => __( 'Follow', 'disciple_tools' ),
