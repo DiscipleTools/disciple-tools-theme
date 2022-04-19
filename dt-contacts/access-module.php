@@ -207,6 +207,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $fields["reason_unassignable"] = [
                 'name'        => __( 'Reason Not Ready', 'disciple_tools' ),
                 'description' => _x( 'The main reason the contact is not ready to be assigned to a user.', 'Optional Documentation', 'disciple_tools' ),
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/alert-octagon-outline.svg?v=2",
                 'type'        => 'key_select',
                 'default'     => [
                     'none'         => [
@@ -238,6 +239,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $fields['reason_paused'] = [
                 'name'        => __( 'Reason Paused', 'disciple_tools' ),
                 'description' => _x( 'A paused contact is one you are not currently interacting with but expect to in the future.', 'Optional Documentation', 'disciple_tools' ),
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/pause-octagon-outline.svg?v=2",
                 'type'        => 'key_select',
                 'default' => [
                     'none'                 => [ "label" => '' ],
@@ -257,6 +259,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $fields['reason_closed'] = [
                 'name'        => __( 'Reason Archived', 'disciple_tools' ),
                 'description' => _x( "A closed contact is one you can't or don't wish to interact with.", 'Optional Documentation', 'disciple_tools' ),
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/close-octagon-outline.svg?v=2",
                 'type'        => 'key_select',
                 'default'     => [
                     'none'                 => [ "label" => '' ],
