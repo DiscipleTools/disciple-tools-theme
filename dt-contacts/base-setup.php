@@ -170,12 +170,14 @@ class DT_Contacts_Base {
             ];
             $fields["duplicate_data"] = [
                 "name" => 'Duplicates', //system string does not need translation
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/account-box-multiple.svg?v=2",
                 'type' => 'array',
                 'default' => [],
                 "hidden" => true
             ];
             $fields["duplicate_of"] = [
                 "name" => "Duplicate of", //system string does not need translation
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/account-box-multiple.svg?v=2",
                 "type" => "text",
                 "hidden" => true
             ];
@@ -388,7 +390,7 @@ class DT_Contacts_Base {
                     <?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
             </li>
             <li><a data-open="merge-dupe-edit-modal">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg?v=2' ) ?>"/>
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/icons/account-box-multiple.svg?v=2' ) ?>"/>
 
                     <?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
             <li><a id="open_merge_with_contact">

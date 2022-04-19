@@ -594,7 +594,7 @@ class DT_Duplicate_Checker_And_Merging {
         }
         ?>
         <a class="button" href="<?php echo esc_url( site_url( '/view-duplicates' ) ); ?>">
-            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
+            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/icons/account-box-multiple.svg' ) ?>"/>
             <span><?php esc_html_e( "View Duplicates", 'disciple_tools' ) ?></span>
         </a>
         <?php
