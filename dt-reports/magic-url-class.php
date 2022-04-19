@@ -155,7 +155,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * Extract type list from registered root
          * @return array
          */
-        public function list_types(): array {
+        public function list_types() : array {
             $all_types = $this->registered_types();
             if ( isset( $all_types[$this->root] ) ) {
                 return $all_types[$this->root];

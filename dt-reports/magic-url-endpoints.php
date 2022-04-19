@@ -102,7 +102,7 @@ class Disciple_Tools_Magic_Endpoints
         }
 
         $magic = new DT_Magic_URL( $params['root'] );
-        $type = $magic->list_types( $params['post_type'] );
+        $type = $magic->list_types();
         if ( ! isset( $type[$params['type']] ) ) {
             return new WP_Error( __METHOD__, "Magic link type not found", [ 'status' => 400 ] );
         } else {
