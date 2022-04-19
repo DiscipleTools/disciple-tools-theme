@@ -49,7 +49,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "label" => __( 'Private Connection', 'disciple_tools' ),
                 "color" => "#FF9800",
                 "description" => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/lock.svg?v=2",
                 "order" => 40,
                 "visibility" => __( "Only me", 'disciple_tools' ),
                 "in_create_form" => false,

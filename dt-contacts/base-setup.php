@@ -330,6 +330,7 @@ class DT_Contacts_Base {
                 'name'        => __( 'Requires Update', 'disciple_tools' ),
                 'type'        => 'boolean',
                 'default'     => false,
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/clock-alert.svg?v=2",
             ];
 
             $fields["overall_status"] = [

@@ -185,12 +185,14 @@ class Disciple_Tools_Post_Type_Template {
         $fields["follow"] = [
             'name'        => __( 'Follow', 'disciple_tools' ),
             'type'        => 'multi_select',
+            'icon' => get_template_directory_uri() . "/dt-assets/icons/eye.svg",
             'default'     => [],
             'hidden'      => true
         ];
         $fields["unfollow"] = [
             'name'        => __( 'Un-Follow', 'disciple_tools' ),
             'type'        => 'multi_select',
+            'icon' => get_template_directory_uri() . "/dt-assets/icons/eye-off.svg",
             'default'     => [],
             'hidden'      => true
         ];
