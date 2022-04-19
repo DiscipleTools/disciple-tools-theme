@@ -379,7 +379,7 @@ class DT_Contacts_Base {
             if ( empty( $post["archive"] ) && ( $post["type"]["key"] === "personal" || $post["type"]["key"] === "placeholder" ) ) :?>
                 <li>
                     <a data-open="archive-record-modal">
-                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2' ) ?>"/>
+                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/icons/archive-arrow-down-outline.svg?v=2' ) ?>"/>
                         <?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
                 </li>
             <?php endif; ?>
@@ -394,7 +394,7 @@ class DT_Contacts_Base {
 
                     <?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
             <li><a id="open_merge_with_contact">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg?v=2' ) ?>"/>
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/icons/merge.svg?v=2' ) ?>"/>
                     <?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
             <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
             <?php
