@@ -296,7 +296,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_groups",
-                "icon" => get_template_directory_uri() . '/dt-assets/images/list.svg?v=2',
+                "icon" => get_template_directory_uri() . '/dt-assets/icons/format-list-bulleted.svg?v=2',
                 "connection_count_field" => [ "post_type" => "groups", "field_key" => "member_count", "connection_field" => "members" ]
             ];
             $fields["leaders"] = [
@@ -315,7 +315,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',
-                "icon" => get_template_directory_uri() . '/dt-assets/images/groups/leaders.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/icons/pound-box.svg',
             ];
 
             $fields["parent_groups"] = [
@@ -575,7 +575,7 @@ class DT_Groups_Base extends DT_Module_Base {
             ?>
             <div class="section-subheader members-header" style="padding-top: 10px;">
                 <div style="padding-bottom: 5px; margin-right:10px; display: inline-block">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/list.svg?v=2' ) ?>"/>
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/icons/format-list-bulleted.svg?v=2' ) ?>"/>
                     <?php esc_html_e( "Member List", 'disciple_tools' ) ?>
                 </div>
                 <button type="button" class="create-new-record" data-connection-key="members" style="height: 36px;">
