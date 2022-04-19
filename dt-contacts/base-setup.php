@@ -140,7 +140,7 @@ class DT_Contacts_Base {
                 'name' => __( "Nickname", 'disciple_tools' ),
                 'type' => 'text',
                 'tile' => 'details',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/nametag.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/tag-faces.svg?v=2",
             ];
             $contact_preferences = get_option( 'dt_contact_preferences', [] );
             $fields["type"] = [
@@ -159,13 +159,13 @@ class DT_Contacts_Base {
                         "color" => "#9b379b",
                         "description" => __( "A friend, family member or acquaintance", 'disciple_tools' ),
                         "visibility" => __( "Only me", 'disciple_tools' ),
-                        "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg?v=2",
+                        "icon" => get_template_directory_uri() . "/dt-assets/icons/lock.svg?v=2",
                         "order" => 50,
                         "hidden" => !empty( $contact_preferences["hide_personal_contact_type"] )
                     ],
                 ],
                 "description" => "See full documentation here: https://disciple.tools/user-docs/getting-started-info/contacts/contact-types",
-                "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
+                "icon" => get_template_directory_uri() . '/dt-assets/icons/type.svg?v=2',
                 'customizable' => false
             ];
             $fields["duplicate_data"] = [
@@ -186,14 +186,14 @@ class DT_Contacts_Base {
                 'name' => __( 'Languages', 'disciple_tools' ),
                 'type' => 'multi_select',
                 'default' => dt_get_option( "dt_working_languages" ) ?: [],
-                'icon' => get_template_directory_uri() . "/dt-assets/images/languages.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/translate.svg?v=2",
                 "tile" => "no_tile"
             ];
 
             //add communication channels
             $fields["contact_phone"] = [
                 "name" => __( 'Phone', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/phone.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/phone.svg?v=2",
                 "type" => "communication_channel",
                 "tile" => "details",
                 "customizable" => false,
@@ -218,7 +218,7 @@ class DT_Contacts_Base {
             ];
             $fields["contact_email"] = [
                 "name" => __( 'Email', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/email.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/email.svg?v=2",
                 "type" => "communication_channel",
                 "tile" => "details",
                 "customizable" => false
@@ -265,7 +265,7 @@ class DT_Contacts_Base {
             // add social media
             $fields["contact_facebook"] = [
                 "name" => __( 'Facebook', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/facebook.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/facebook.svg?v=2",
                 "hide_domain" => true,
                 "type" => "communication_channel",
                 "tile" => "details",
@@ -273,7 +273,7 @@ class DT_Contacts_Base {
             ];
             $fields["contact_twitter"] = [
                 "name" => __( 'Twitter', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/twitter.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/twitter.svg?v=2",
                 "hide_domain" => true,
                 "type" => "communication_channel",
                 "tile" => "details",
@@ -281,7 +281,7 @@ class DT_Contacts_Base {
             ];
             $fields["contact_other"] = [
                 "name" => __( 'Other Social Links', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/socialmedia.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/chat.svg?v=2",
                 "hide_domain" => false,
                 "type" => "communication_channel",
                 "tile" => "details",
@@ -297,7 +297,7 @@ class DT_Contacts_Base {
                 "p2p_key" => "contacts_to_relation",
                 "tile" => "other",
                 "in_create_form" => [ "placeholder" ],
-                'icon' => get_template_directory_uri() . "/dt-assets/images/connection-people.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/account-switch.svg?v=2",
             ];
 
             $fields['gender'] = [
@@ -308,7 +308,7 @@ class DT_Contacts_Base {
                     'female'  => [ "label" => __( 'Female', 'disciple_tools' ) ],
                 ],
                 'tile'     => 'details',
-                "icon" => get_template_directory_uri() . "/dt-assets/images/gender.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/icons/gender-male-female.svg?v=2",
             ];
 
             $fields['age'] = [
@@ -322,7 +322,7 @@ class DT_Contacts_Base {
                     '>41'     => [ "label" => __( 'Over 40 years old', 'disciple_tools' ) ],
                 ],
                 'tile'     => 'details',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/icons/account-clock.svg?v=2",
                 "select_cannot_be_empty" => true //backwards compatible since we already have an "none" value
             ];
 
