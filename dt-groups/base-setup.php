@@ -361,7 +361,7 @@ class DT_Groups_Base extends DT_Module_Base {
             // Group Locations
             $fields['location_grid'] = [
                 'name'        => __( 'Locations', 'disciple_tools' ),
-                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
+                'description' => _x( 'The general location where this group is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location',
                 'mapbox'    => false,
                 "in_create_form" => true,

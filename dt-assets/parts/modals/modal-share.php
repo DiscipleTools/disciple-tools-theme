@@ -12,6 +12,10 @@ global $post;
             esc_html_e( 'This group is shared with:', 'disciple_tools' );
         } else if ( is_singular( "contacts" ) ) {
             esc_html_e( 'This contact is shared with:', 'disciple_tools' );
+        } else if ( is_singular( "trainings" ) ) {
+            esc_html_e( 'This training is shared with:', 'disciple_tools' );
+        } else if ( is_singular( "streams" ) ) {
+            esc_html_e( 'This stream is shared with:', 'disciple_tools' );
         }
         ?>
     </h6>
