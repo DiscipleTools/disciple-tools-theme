@@ -41,7 +41,7 @@ dt_please_log_in();
                         </div>
                     </span>
                     <a class="advanced_search" id="advanced_search" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
-                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
+                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/icons/format-list-checks.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
                         <?php
                         $fields_to_search = [];
                         $all_searchable_fields = $post_settings["fields"];
@@ -131,7 +131,7 @@ dt_please_log_in();
                     </div>
                 </span>
                 <a class="advanced_search" id="advanced_search_mobile" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/icons/format-list-checks.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
                     <?php
                     $fields_to_search = [];
                     $all_searchable_fields = $post_settings["fields"];
@@ -256,13 +256,13 @@ dt_please_log_in();
                         <span style="display:inline-block">
                             <button class="button clear" id="choose_fields_to_show_in_table" style="margin:0; padding:0">
                                 <?php esc_html_e( 'Fields', 'disciple_tools' ); ?>
-                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>"/>
+                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/icons/format-list-checks.svg' ) ?>"/>
                             </button>
                         </span>
                         <span style="display:inline-block">
                             <button class="button clear" id="bulk_edit_controls" style="margin:0; padding:0">
                                 <?php esc_html_e( 'Bulk Edit', 'disciple_tools' ); ?>
-                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ) ?>"/>
+                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/icons/pencil-box-multiple.svg' ) ?>"/>
                             </button>
                         </span>
 
@@ -327,8 +327,8 @@ dt_please_log_in();
                         <div class="grid-x grid-margin-x">
                             <?php if ( isset( $field_options["assigned_to"] ) ) : ?>
                             <div class="cell small-12 medium-4">
-                            <div class="section-subheader">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
+                            <div class="section-subheader"> <!-- line 330 -->
+                                <img class="dt-icon" src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/icons/briefcase-account.svg?v=2' ?>">
                                 <?php echo esc_html( $field_options["assigned_to"]["name"] ); ?>
                                 <button class="help-button" data-section="assigned-to-help-text">
                                     <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
@@ -358,7 +358,7 @@ dt_please_log_in();
                                     </div>
                                     <div class="cell small-12 medium-4">
                                         <div class="section-subheader">
-                                            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
+                                            <img class="dt-icon" src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/icons/traffic-light.svg' ?>">
                                             <?php esc_html_e( "Status", 'disciple_tools' ) ?>
                                             <button class="help-button-field" data-section="overall_status-help-text">
                                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
@@ -375,7 +375,7 @@ dt_please_log_in();
                                     <div class="cell small-12 medium-4" style="display:none">
 
                                         <div class="section-subheader">
-                                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
+                                                <img class="dt-icon" src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/icons/traffic-light.svg' ?>">
                                                 <?php echo esc_html( $field_options["reason_paused"]["name"] ?? '' ) ?>
 <!--                                                </button>-->
                                             </div>
@@ -405,6 +405,7 @@ dt_please_log_in();
                                 <?php } ?>
                             <div class="cell small-12 medium-4">
                                 <div class="section-subheader">
+                                <img class="dt-icon" src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/share.svg' ?>">
                                   <?php esc_html_e( 'Share with:', 'disciple_tools' );?>
                                 </div>
                                 <div id="<?php echo esc_attr( 'bulk_share_connection' ) ?>" class="dt_typeahead">
@@ -438,6 +439,7 @@ dt_please_log_in();
 
                             <div class="cell small-12 medium-12 grid-y">
                                 <div class="section-subheader">
+                                    <img class="dt-icon" src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/icons/timeline-text.svg' ?>">
                                     <?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?>
                                 </div>
                                 <div class="cell" id="bulk_add-comment-section">
