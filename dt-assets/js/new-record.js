@@ -587,6 +587,9 @@ jQuery(function($) {
   $(document).ready(function () {
     if (!is_normal_new_record) {
 
+      // If enabled, alter mapbox search location input shape, within first record
+      alter_mapbox_search_location_input_shape($('#form_fields_records').find('.form-fields-record').last());
+
       // Display initial bulk records to get started.
       for (let i = 0; i < 4; i++) {
         $('#add_new_bulk_record').trigger('click');
@@ -639,7 +642,7 @@ jQuery(function($) {
       adjust_new_typeahead_multi_select_element_class_names(new_records_count);
       adjust_new_typeahead_tags_element_class_names(new_records_count);
 
-      // Initialise newly added element specifal functionality; e.g. typeaheads.
+      // Initialise newly added element specific functionality; e.g. typeaheads.
       date_picker_init();
       button_multi_select_init(true, new_records_count);
       typeahead_general_init(true, new_records_count);
@@ -653,6 +656,9 @@ jQuery(function($) {
 
       // Apply latest field filters
       apply_field_filters();
+
+      // If enabled, alter mapbox search location input shape
+      alter_mapbox_search_location_input_shape(new_record);
     }
   });
 
@@ -697,6 +703,91 @@ jQuery(function($) {
       let new_field_class = `js-typeahead-${field_key}-${bulk_id}`;
       $(element).removeClass(old_field_class).addClass(new_field_class);
     }
+  }
+
+  /*
+   * Alter the shape of mapbox-search location input fields.
+   */
+
+  function alter_mapbox_search_location_input_shape(record) {
+    let mapbox_autocomplete = $(record).find('#mapbox-autocomplete');
+    let mapbox_search = $(record).find('#mapbox-search');
+    let mapbox_autocomplete_list = $(record).find('#mapbox-autocomplete-list');
+    let mapbox_spinner_button = $(record).find('#mapbox-spinner-button');
+    let mapbox_clear_autocomplete = $(record).find('#mapbox-clear-autocomplete');
+    if (mapbox_autocomplete && mapbox_search && mapbox_autocomplete_list && mapbox_spinner_button && mapbox_clear_autocomplete) {
+
+      // Adjust attributes in order to force shape change.
+      $(mapbox_autocomplete).prop('id', 'mapbox-autocomplete-altered');
+      $(mapbox_autocomplete_list).prop('id', 'mapbox-autocomplete-list-altered');
+      $(mapbox_spinner_button).prop('id', 'mapbox-spinner-button-altered');
+      $(mapbox_clear_autocomplete).prop('id', 'mapbox-clear-autocomplete-altered');
+      $(mapbox_search).prop('id', 'mapbox-search-altered');
+      $(mapbox_search).prop('type', 'button');
+      $(mapbox_search).prop('value', window.new_record_localized.bulk_mapbox_placeholder_txt);
+      $(mapbox_search).addClass('button');
+      $(mapbox_search).addClass('mapbox-altered-input');
+
+      // Capture record id for processing further downstream.
+      $(mapbox_search).data('bulk_record_id', $(record).find('#bulk_record_id').val());
+    }
+  }
+
+  /*
+   * Respond to altered mapbox-search button clicks & modal events.
+   */
+
+  $(document).on('click', '.mapbox-altered-input', function (evt) {
+    evt.preventDefault();
+
+    // Reset mapbox values.
+    reset_altered_mapbox_search_field_values();
+
+    // Persist bulk record id and display modal.
+    $('#altered_mapbox_search_modal').data('bulk_record_id', $(evt.currentTarget).data('bulk_record_id'));
+    $('#altered_mapbox_search_modal').foundation('open');
+
+  });
+
+  $(document).on('open.zf.reveal', '[data-reveal]', function (evt) {
+    // Switch over to standard mapbox activation workflow, with autosubmit disabled!
+    write_input_widget();
+  });
+
+  $(document).on('closed.zf.reveal', '[data-reveal]', function (evt) {
+  });
+
+  $('#altered_mapbox_search_modal_but_cancel').on('click', function () {
+    reset_altered_mapbox_search_field_values();
+    $('#altered_mapbox_search_modal').foundation('close');
+  });
+
+  $('#altered_mapbox_search_modal_but_update').on('click', function () {
+    let bulk_record_id = $('#altered_mapbox_search_modal').data('bulk_record_id');
+    if (bulk_record_id && (window.selected_location_grid_meta !== undefined)) {
+
+      let selected_location = window.selected_location_grid_meta;
+
+      // Search for corresponding record.
+      $('#form_fields_records').find('.form-fields-record').each((key, record) => {
+        if ($(record).find('#bulk_record_id').val() === bulk_record_id) {
+
+          let mapbox_search = $(record).find('#mapbox-search-altered');
+
+          // Update button text to selected location.
+          mapbox_search.val(window.lodash.truncate(window.lodash.escape(selected_location['location_grid_meta']['values'][0]['label'])));
+
+          // Capture selected location within data attribute.
+          mapbox_search.data('selected_location', JSON.stringify(selected_location));
+        }
+      });
+    }
+    $('#altered_mapbox_search_modal').foundation('close');
+  });
+
+  function reset_altered_mapbox_search_field_values() {
+    $('#mapbox-search').val('');
+    window.selected_location_grid_meta = undefined;
   }
 
   /*
@@ -766,8 +857,10 @@ jQuery(function($) {
         });
       });
 
-      if (typeof window.selected_location_grid_meta !== 'undefined') {
-        new_post['location_grid_meta'] = window.selected_location_grid_meta.location_grid_meta
+      // Capture available mapbox related locations
+      let mapbox_search = $(record).find('#mapbox-search-altered');
+      if (mapbox_search && mapbox_search.data('selected_location')) {
+        new_post['location_grid_meta'] = JSON.parse(mapbox_search.data('selected_location'))['location_grid_meta'];
       }
 
       // Package any available typeahead values

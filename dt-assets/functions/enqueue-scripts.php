@@ -341,7 +341,8 @@ function dt_site_scripts() {
             'bulk_copy_control_but_img_uri'   => esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ),
             'bulk_record_removal_but_img_uri' => esc_html( get_template_directory_uri() . '/dt-assets/images/invalid.svg' ),
             'bulk_save_redirect_uri'          => esc_html( site_url( sprintf( '/%s/', $post_type ) ) ),
-            'bulk_record_fields'              => get_rendered_new_bulk_record_fields_html( $post_type )
+            'bulk_record_fields'              => get_rendered_new_bulk_record_fields_html( $post_type ),
+            'bulk_mapbox_placeholder_txt'     => esc_attr( __( 'Search Location', 'disciple_tools' ) )
         ) );
     }
 

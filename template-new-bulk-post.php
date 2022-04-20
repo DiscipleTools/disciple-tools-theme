@@ -142,6 +142,48 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                         </div>
                     <?php } ?>
 
+                    <?php
+                    if ( DT_Mapbox_API::get_key() ) {
+                        ?>
+                        <div class="reveal" id="altered_mapbox_search_modal" data-reveal style="min-height: 400px;">
+
+                            <h1><?php esc_attr_e( __( 'Search Location', 'disciple_tools' ) ); ?></h1>
+
+                            <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group"
+                                 data-autosubmit="false">
+                                <input id="mapbox-search" type="text" name="mapbox_search"
+                                       placeholder="<?php esc_attr_e( __( 'Search Location', 'disciple_tools' ) ); ?>"
+                                       autocomplete="off" dir="auto"/>
+                                <div class="input-group-button">
+                                    <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span
+                                            class="loading-spinner active"></span></button>
+                                    <button id="mapbox-clear-autocomplete"
+                                            class="button alert input-height delete-button-style mapbox-delete-button"
+                                            type="button"
+                                            title="<?php esc_attr_e( __( 'Delete Location', 'disciple_tools' ) ); ?>">
+                                        &times;
+                                    </button>
+                                </div>
+                                <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
+                            </div>
+
+                            <button class="close-button" data-close aria-label="Close modal" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                            <span style="float: right; margin-top: 250px;">
+                                <button id="altered_mapbox_search_modal_but_cancel" class="button" type="button">
+                                    <?php esc_attr_e( __( 'Cancel', 'disciple_tools' ) ); ?>
+                                </button>
+                                <button id="altered_mapbox_search_modal_but_update" class="button" type="button">
+                                    <?php esc_attr_e( __( 'Update', 'disciple_tools' ) ); ?>
+                                </button>
+                            </span>
+
+                        </div>
+                        <?php
+                    }
+                    ?>
 
                     <div class="form-fields">
                         <div id="form_fields_records" class="container">
