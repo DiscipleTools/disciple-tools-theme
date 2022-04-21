@@ -195,7 +195,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
                 JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                      AND d.meta_key = 'group_type'
-                     AND ( d.meta_value = 'group' OR d.meta_value = 'church' )
+                     AND ( d.meta_value != 'team' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               ) as out_of
@@ -210,7 +210,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
                 JOIN $wpdb->postmeta as e
                   ON a.ID=e.post_id
                      AND e.meta_key = 'group_type'
-                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
+                     AND ( e.meta_value != 'team' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               GROUP BY d.meta_value

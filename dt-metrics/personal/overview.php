@@ -388,7 +388,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
                 JOIN $wpdb->postmeta as e
                   ON a.ID=e.post_id
                      AND e.meta_key = 'group_type'
-                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
+                     AND ( e.meta_value != 'team' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               ) as out_of
@@ -404,7 +404,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
                 JOIN $wpdb->postmeta as e
                   ON a.ID=e.post_id
                      AND e.meta_key = 'group_type'
-                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
+                     AND ( e.meta_value != 'team' )
                 LEFT JOIN $wpdb->postmeta as d
                   ON ( a.ID=d.post_id
                   AND d.meta_key = 'health_metrics' )
