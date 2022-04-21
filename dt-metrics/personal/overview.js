@@ -206,6 +206,17 @@ jQuery(function() {
       valueAxis.renderer.labels.template.disabled = true;
       valueAxis.min = 0;
 
+      function fetchGroupType(id) {
+        let found_type = null;
+        jQuery.each(sourceData.group_types, function (idx, type) {
+          if (type['type'] == id) {
+            found_type = type;
+          }
+        });
+
+        return found_type;
+      }
+
       function createSeries(field, name) {
         let series = chart.series.push(new am4charts.ColumnSeries());
         series.name = name;
@@ -220,9 +231,22 @@ jQuery(function() {
         return series;
       }
 
-      createSeries("pre-group", translations.label_pre_group );
-      createSeries("group", translations.label_group );
-      createSeries("church", translations.label_church );
+      // Iterate over and capture returned group types into set
+      let group_type_set = {};
+      jQuery.each(chart.data, function (idx, generation) {
+        jQuery.each(generation, function (key, value) {
+          let group_type = fetchGroupType(key);
+          if (group_type && !group_type_set.hasOwnProperty(group_type['type'])) {
+            group_type_set[group_type['type']] = group_type;
+          }
+        });
+      });
+
+      // Iterate over group type set, creating series accordingly
+      jQuery.each(group_type_set, function (key, type) {
+        createSeries(type['type'], type['label']);
+      });
+
       chart.legend = new am4charts.Legend();
     }
 

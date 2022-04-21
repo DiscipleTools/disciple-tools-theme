@@ -75,10 +75,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
                 'label_groups' => strtolower( __( 'Groups', 'disciple_tools' ) ),
                 'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
                 'label_generation' => __( 'Generation', 'disciple_tools' ),
-                'label_group_types' => __( 'Group Types', 'disciple_tools' ),
-                'label_pre_group' => __( 'Pre-Group', 'disciple_tools' ),
-                'label_group' => __( 'Group', 'disciple_tools' ),
-                'label_church' => __( 'Church', 'disciple_tools' ),
+                'label_group_types' => __( 'Group Types', 'disciple_tools' )
             ],
             'preferences' => $this->preferences(),
             'hero_stats' => $this->chart_project_hero_stats(),

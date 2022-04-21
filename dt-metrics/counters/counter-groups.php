@@ -48,16 +48,20 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
             case 'church_generations':
                 $generations = self::get_group_generations( $start, $end );
                 $church_generations = [];
-                foreach ( $generations as $gen_key => $gen_val ){
-                    $church_generations[$gen_val["generation"]] = $gen_val["church"];
+                foreach ( $generations as $gen_key => $gen_val ) {
+                    if ( isset( $gen_val["church"] ) ) {
+                        $church_generations[ $gen_val["generation"] ] = $gen_val["church"];
+                    }
                 }
                 return $church_generations;
                 break;
             case 'churches_and_groups':
                 $generations = self::get_group_generations( $start, $end );
                 $total = 0;
-                foreach ( $generations as $gen ){
-                    $total += $gen["group"] + $gen["church"];
+                foreach ( $generations as $gen ) {
+                    if ( isset( $gen["group"], $gen["church"] ) ) {
+                        $total += $gen["group"] + $gen["church"];
+                    }
                 }
                 return $total;
                 break;
@@ -65,8 +69,10 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
             case 'active_churches':
                 $generations = self::get_group_generations( $start, $end );
                 $total = 0;
-                foreach ( $generations as $gen ){
-                    $total += $gen["church"];
+                foreach ( $generations as $gen ) {
+                    if ( isset( $gen["church"] ) ) {
+                        $total += $gen["church"];
+                    }
                 }
                 return $total;
                 break;
@@ -74,8 +80,10 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
             case 'active_groups':
                 $generations = self::get_group_generations( $start, $end );
                 $total = 0;
-                foreach ( $generations as $gen ){
-                    $total += $gen["group"];
+                foreach ( $generations as $gen ) {
+                    if ( isset( $gen["group"] ) ) {
+                        $total += $gen["group"];
+                    }
                 }
                 return $total;
                 break;
@@ -202,14 +210,11 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
               AND a.post_status = 'publish'
               AND (
                 type.meta_value = 'pre-group'
-                OR ( type.meta_value = 'group'
+                OR ( type.meta_value != 'team'
                   AND c.meta_value < %d
                   AND ( status.meta_value = 'active' OR d.meta_value > %d ) )
-                OR ( type.meta_value = 'church'
-                  AND e.meta_value < %d
-                  AND ( status.meta_value = 'active' OR d.meta_value > %d ) )
               )
-        ", isset( $args['assigned_to'] ) ? 'user-' . $args['assigned_to'] : '%%', $end_date, $start_date, $end_date, $start_date ) );
+        ", isset( $args['assigned_to'] ) ? 'user-' . $args['assigned_to'] : '%%', $end_date, $start_date ) );
 
         return $results;
     }
@@ -232,9 +237,6 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
         if ( !isset( $counts[$generation] ) ){
             $counts[$generation] = [
                 "generation" => (string) $generation,
-                "pre-group" => 0,
-                "group" => 0,
-                "church" => 0,
                 "total" => 0
             ];
         }
@@ -242,13 +244,14 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
 
             if ( $element['parent_id'] == $parent_id ) {
                 if ( in_array( $element['id'], $ids_to_include ) ) {
-                    if ( $element["group_type"] === "pre-group" ) {
-                        $counts[ $generation ]["pre-group"] ++;
-                    } elseif ( $element["group_type"] === "group" ) {
-                        $counts[ $generation ]["group"] ++;
-                    } elseif ( $element["group_type"] === "church" ) {
-                        $counts[ $generation ]["church"] ++;
+
+                    // Initialise group type
+                    if ( ! isset( $counts[ $generation ][ $element["group_type"] ] ) ) {
+                        $counts[ $generation ][ $element["group_type"] ] = 0;
                     }
+
+                    // Increment counts
+                    $counts[ $generation ][ $element["group_type"] ]++;
                     $counts[ $generation ]["total"] ++;
                 }
                 $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts, $ids_to_include );
