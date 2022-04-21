@@ -709,7 +709,11 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
             $custom_field_options['contacts'] = $custom_contact_fields;
-            update_option( 'dt_field_customizations', $custom_field_options );
+            if ( ! get_option( 'dt_site_custom_lists' ) ) {
+                add_option( 'dt_field_customizations', $custom_field_options );
+            } else {
+                update_option( 'dt_field_customizations', $custom_field_options );
+            }
         }
 
 
