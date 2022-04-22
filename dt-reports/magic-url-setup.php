@@ -117,11 +117,11 @@ class DT_Magic_URL_Setup {
 
                     <?php
                     if ( isset( $record['contact_email'][0] ) ) {
-                    $email = $record['contact_email'][0]['value'];
-                    ?>
+                        $email = $record['contact_email'][0]['value'];
+                        ?>
                     $('.button.<?php echo esc_attr( $meta_key ); ?>').prop('disabled', false);
                     $('.email.<?php echo esc_attr( $meta_key ); ?>').val('<?php echo esc_attr( $email ); ?>');
-                    <?php
+                        <?php
                     }
                     ?>
 
