@@ -39,7 +39,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2"><?php esc_html_e( 'Record Hits:', 'disciple_tools' ); ?> <span
+                <td colspan="2"><?php esc_html_e( 'Records Found:', 'disciple_tools' ); ?> <span
                         class="advanced-search-modal-results-total"></span></td>
             </tr>
             <tr>
