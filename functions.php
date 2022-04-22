@@ -143,7 +143,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.23.1';
+            $this->version = '1.24.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -176,6 +176,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             require_once( 'dt-reports/magic-url-class.php' );
             require_once( 'dt-reports/magic-url-base.php' );
             require_once( 'dt-reports/magic-url-endpoints.php' );
+            require_once( 'dt-reports/magic-url-setup.php' );
             require_once( 'dt-reports/magic-url-bulk-send.php' );
 
 
@@ -423,7 +424,6 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
                 require_once( 'dt-core/setup-functions.php' );
 
             }
-            require_once( 'dt-core/setup-custom-roles.php' );
             require_once( 'dt-core/admin/menu/tabs/admin-endpoints.php' );
 
             //create scheduler for job queue

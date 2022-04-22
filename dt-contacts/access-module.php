@@ -414,7 +414,15 @@ class DT_Contacts_Access extends DT_Module_Base {
 
     public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag, $display_field_id ){
         $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
-
+        if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
+            $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
+        } else {
+            $can_update = true;
+        }
+        $disabled = 'disabled';
+        if ( $can_update || isset( $post["assigned_to"]["id"] ) && $post["assigned_to"]["id"] == get_current_user_id() ) {
+            $disabled = '';
+        }
         if ( isset( $post["post_type"] ) && $post["post_type"] === "contacts" && $field_key === "overall_status"
             && isset( $contact_fields[$field_key] ) && !empty( $contact_fields[$field_key]["custom_display"] )
             && empty( $contact_fields[$field_key]["hidden"] )
@@ -435,7 +443,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                     $active_color = $contact_fields["overall_status"]["default"][ $current_key ]["color"];
                 }
                 ?>
-                <select id="overall_status" class="select-field color-select" style="margin-bottom:0; background-color: <?php echo esc_html( $active_color ) ?>">
+                <select id="overall_status" class="select-field color-select" style="margin-bottom:0; background-color: <?php echo esc_html( $active_color ) ?>" <?php echo esc_html( $disabled ); ?>>
                     <?php foreach ( $contact_fields["overall_status"]["default"] as $key => $option ){
                         $value = $option["label"] ?? "";
                         if ( $current_key === $key ) {
@@ -581,11 +589,11 @@ class DT_Contacts_Access extends DT_Module_Base {
                                 <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" dir="auto"
                                        name="<?php echo esc_html( $display_field_id ); ?>[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
                                        data-field_type="user_select"
-                                       data-field="<?php echo esc_html( $field_key ); ?>"
-                                       autocomplete="off">
+                                       data-field="<?php echo esc_html( $field_key ); ?> <?php echo esc_html( $disabled ); ?>"
+                                       autocomplete="off" <?php echo esc_html( $disabled ); ?>>
                             </span>
                             <span class="typeahead__button">
-                                <button type="button" class="<?php echo esc_html( $button_class ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $field_key ); ?>">
+                                <button type="button" class="<?php echo esc_html( $button_class ); ?> typeahead__image_button input-height" data-id="<?php echo esc_html( $field_key ); ?>" <?php echo esc_html( $disabled ); ?>>
                                     <i class="fi-magnifying-glass"></i>
                                 </button>
                             </span>
@@ -626,7 +634,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                                     <div class="grid-x grid-margin-x" style="margin-top:5px">
                                         <div class="medium-4 cell">
                                             <div class="input-group">
-                                                <input id="search-users-filtered" class="input-group-field" type="text" placeholder="Multipliers">
+                                                <input id="search-users-filtered" class="input-group-field" type="text" placeholder="Multipliers" <?php echo esc_html( $disabled ); ?>>
                                                 <div class="input-group-button">
                                                     <button type="button" class="button hollow"><i class="fi-magnifying-glass"></i></button>
                                                 </div>

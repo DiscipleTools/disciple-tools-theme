@@ -312,7 +312,12 @@ jQuery(document).ready(function($) {
         onHideLayout: function () {
           $(`.${field_key}-result-container`).html("");
         },
-        onReady: function () {
+        onReady: function (node) {
+          //if the input is disabled don't allow clicks on the cancel button.
+          if($(node).attr('disabled') == 'disabled') {
+           let cancelButton = $(`#${el.id} .typeahead__cancel-button`);
+           cancelButton.css('pointerEvents','none');
+         }
           if (window.lodash.get(post,  `${field_key}.display`)){
             $(`.js-typeahead-${field_key}`).val(post[field_key].display)
           }
@@ -336,7 +341,7 @@ jQuery(document).ready(function($) {
       minLength: 0,
       accent: true,
       maxItem: 30,
-      searchOnFocus: true,
+      searchOnFocus: $(el).hasClass('disabled') ? false : true,
       template: window.TYPEAHEADS.contactListRowTemplate,
       matcher: function (item) {
         return parseInt(item.ID) !== parseInt(post_id)
@@ -375,6 +380,13 @@ jQuery(document).ready(function($) {
         }
       },
       callback: {
+        onReady: function(node) {
+          //if the input is disabled don't allow clicks on the cancel button.
+           if($(node).attr('disabled') == 'disabled') {
+            let cancelButton = $(`#${el.id} .typeahead__cancel-button`);
+            cancelButton.css('pointerEvents','none');
+          }
+        },
         onClick: function(node, a, item, event){
           $(`#${field_id}-spinner`).addClass('active')
           API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).then(new_post=>{
@@ -980,7 +992,7 @@ jQuery(document).ready(function($) {
           values_html = window.lodash.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
         } else if ( field_options.type === 'key_select' ){
           values_html = window.lodash.escape( field_value.label )
-        } else if ( field_options.type === 'multi_select' ){
+        } else if ( field_options.type === 'multi_select' || field_options.type === 'tags' ){
           values_html = field_value.map(v=>{
             return `${window.lodash.escape( window.lodash.get( field_options, `default[${v}].label`, v ))}`;
           }).join(', ')
@@ -1023,10 +1035,15 @@ jQuery(document).ready(function($) {
           values_html = field_value.map(v=>{
             return window.lodash.escape(v.label);
           }).join(' / ')
+        } else {
+          values_html = window.lodash.escape( field_value )
         }
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
         if (field_options.type !== 'communication_channel') {
           $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
+        }
+        if ( field_options.type === "text" && new RegExp(urlRegex).exec(values_html) ){
+          window.SHAREDFUNCTIONS.make_links_clickable(`#collapsed-detail-${field_key} .collapsed-items span`)
         }
       }
 
