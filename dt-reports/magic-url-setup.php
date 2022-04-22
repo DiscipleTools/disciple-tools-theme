@@ -110,13 +110,31 @@ class DT_Magic_URL_Setup {
                     $('#modal-large').foundation('open')
                 })
                 $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .send').on('click', function(e){
-                    $('#modal-small-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html__( 'Send a link via email through the system.', 'disciple_tools' ) ?></span><hr>`)
-                    $('#modal-small-content').empty().html(`<div class="grid-x"><div class="cell"><input type="text" class="note <?php echo esc_attr( $meta_key ); ?>" placeholder="Add a note" /><br><button type="button" class="button <?php echo esc_attr( $meta_key ); ?>"><?php echo esc_html__( 'Send email with link', 'disciple_tools' ) ?> <span class="<?php echo esc_attr( $meta_key ); ?> loading-spinner"></span></button></div></div>`)
+                    $('#modal-small-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html__( 'Send a link via email through the system.', 'disciple_tools' ) ?></span><input type="text" class="email <?php echo esc_attr( $meta_key ); ?>" placeholder="<?php echo esc_attr__( 'Add email address', 'disciple_tools' )?>"/><hr>`)
+                    $('#modal-small-content').empty().html(`<div class="grid-x"><div class="cell"><input type="text" class="note <?php echo esc_attr( $meta_key ); ?>" placeholder="<?php echo esc_attr__( 'Add a note', 'disciple_tools' )?>" /><br><button type="button" class="button <?php echo esc_attr( $meta_key ); ?>"><?php echo esc_html__( 'Send email with link', 'disciple_tools' ) ?> <span class="<?php echo esc_attr( $meta_key ); ?> loading-spinner"></span></button></div></div>`)
+                    $('.button.<?php echo esc_attr( $meta_key ); ?>').prop('disabled', true);
                     $('#modal-small').foundation('open')
+
+                    <?php
+                    if ( isset( $record['contact_email'][0] ) ) {
+                    $email = $record['contact_email'][0]['value'];
+                    ?>
+                    $('.button.<?php echo esc_attr( $meta_key ); ?>').prop('disabled', false);
+                    $('.email.<?php echo esc_attr( $meta_key ); ?>').val('<?php echo esc_attr( $email ); ?>');
+                    <?php
+                    }
+                    ?>
+
+                    $('.email.<?php echo esc_attr( $meta_key ); ?>').on('keyup', function () {
+                        let email = $('.email.<?php echo esc_attr( $meta_key ); ?>').val();
+                        $('.button.<?php echo esc_attr( $meta_key ); ?>').prop('disabled', !email.trim());
+                    });
+
                     $('.button.<?php echo esc_attr( $meta_key ); ?>').on('click', function(e){
                         $('.<?php echo esc_attr( $meta_key ); ?>.loading-spinner').addClass('active')
-                        let note = $('.note.<?php echo esc_attr( $meta_key ); ?>').val()
-                        makeRequest('POST', window.detailsSettings.post_type + '/email_magic', { root: '<?php echo esc_attr( $app['root'] ); ?>', type: '<?php echo esc_attr( $app['type'] ); ?>', note: note, post_ids: [ window.detailsSettings.post_id ] } )
+                        let email = $('.email.<?php echo esc_attr( $meta_key ); ?>').val();
+                        let note = $('.note.<?php echo esc_attr( $meta_key ); ?>').val();
+                        makeRequest('POST', window.detailsSettings.post_type + '/email_magic', { root: '<?php echo esc_attr( $app['root'] ); ?>', type: '<?php echo esc_attr( $app['type'] ); ?>', email: email, note: note, post_ids: [ window.detailsSettings.post_id ] } )
                         .done( data => {
                             $('.<?php echo esc_attr( $meta_key ); ?>.loading-spinner').removeClass('active')
                             $('#modal-small').foundation('close')

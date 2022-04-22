@@ -121,8 +121,8 @@ class Disciple_Tools_Magic_Endpoints
             }
 
             // check if email exists to send to
-            if ( ! isset( $post_record['contact_email'][0] ) ) {
-                $errors[$post_id] = 'no email';
+            if ( ! isset( $post_record['contact_email'][0] ) && empty( $params['email'] ) ) {
+                $errors[ $post_id ] = 'no email';
                 continue;
             }
 
@@ -142,7 +142,7 @@ class Disciple_Tools_Magic_Endpoints
             }
 
             // build email
-            $email = $post_record['contact_email'][0]['value'];
+            $email   = $params['email'] ?? $post_record['contact_email'][0]['value'];
             $subject = $name;
             $message_plain_text = $note . '
 
