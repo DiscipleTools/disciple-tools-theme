@@ -329,7 +329,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile'     => 'details',
                 'customizable' => 'all',
                 'display' => "typeahead",
-                'icon' => get_template_directory_uri() . "/dt-assets/icons/arrow-collapse-all.svg?v=2",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/arrow-collapse-all.svg?v=2",
                 "only_for_types" => [ "access" ],
                 "in_create_form" => [ "access" ]
             ];
