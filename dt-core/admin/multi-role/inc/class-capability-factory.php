@@ -135,6 +135,22 @@ final class Disciple_Tools_Capability_Factory {
         ];
     }
 
+    private function restricted_capabilities() {
+        return [
+            'level_0',
+            'level_1',
+            'level_10',
+            'level_2',
+            'level_3',
+            'level_4',
+            'level_5',
+            'level_6',
+            'level_7',
+            'level_8',
+            'level_9',
+        ];
+    }
+
     /**
      * Adds a capability object.
      *
@@ -257,6 +273,10 @@ final class Disciple_Tools_Capability_Factory {
             ];
         }
 
+        //Filter our restricted capabilities
+        $capabilities = array_filter($capabilities, function($key) {
+            return !in_array($key, $this->restricted_capabilities());
+        }, ARRAY_FILTER_USE_KEY);
 
         $capabilities = apply_filters( 'dt_capabilities', $capabilities );
 
