@@ -54,3 +54,23 @@ function top_bar_menu_more_button () {
     $("#more-menu-button").show();
   }
 }
+
+/**
+ * Ensure correct side menu highlights are maintained
+ */
+jQuery(document).ready(function () {
+
+  // Determine selected menu item
+  let selected_menu_item = (window.wpApiShare.url_path === 'metrics') ? 'metrics/personal/overview' : window.wpApiShare.url_path;
+  let item = $('#metrics-side-section a[href*="' + selected_menu_item + '"]').last();
+
+  // Apply class highlight for initial
+  item.parent().addClass('side-menu-item-highlight');
+
+  // Also apply additional highlights, if required parent structure detected
+  let required_parent = item.parent().parent().parent();
+  if (required_parent.parent() && required_parent.parent().is('ul')) {
+    required_parent.find('a').first().addClass('side-menu-item-highlight');
+  }
+
+});

@@ -53,7 +53,8 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
     public function valid_dates_data_provider(): array {
         return [
             [ '' ],
-            [ '2022-01-13 12:00:00' ]
+            [ '2022-01-13 12:00:00' ],
+            [ '2019-12-25T15:54:55+0000' ],
         ];
     }
 
@@ -76,9 +77,9 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
     public function invalid_dates_data_provider(): array {
         return [
             [ 'null' ],
-            [ '0000-00-00 00:00:00' ],
             [ '7/6/2009 14:16' ],
-            [ 'Y-m-d H:i:s' ]
+            [ 'Y-m-d H:i:s' ],
+            [ '0000-00-00 00:00:00' ]
         ];
     }
 

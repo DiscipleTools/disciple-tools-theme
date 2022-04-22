@@ -79,6 +79,16 @@ dt_please_log_in();
                     </label>
                 </li>
 
+                <li style="" class="">
+                    <label style="margin-right:15px; cursor:pointer">
+                        <input type="checkbox" value="comms"
+                            <?php echo esc_html( in_array( 'comms', $fields_to_search ) ? "checked" : '' ); ?>
+
+                               style="margin:0">
+                        <?php esc_html_e( 'Communication Channels', 'disciple_tools' ) ?>
+                    </label>
+                </li>
+
                 <?php foreach ( $all_searchable_fields as $field_key => $field_values ):
                     if ( !empty( $field_values["hidden"] ) || $field_values["type"] !== 'text' ){
                         continue;
@@ -156,6 +166,16 @@ dt_please_log_in();
                     </label>
                 </li>
 
+                <li style="" class="">
+                    <label style="margin-right:15px; cursor:pointer">
+                        <input type="checkbox" value="comms"
+                            <?php echo esc_html( in_array( 'comms', $fields_to_search ) ? "checked" : '' ); ?>
+
+                               style="margin:0">
+                        <?php esc_html_e( 'Communication Channels', 'disciple_tools' ) ?>
+                    </label>
+                </li>
+
                 <?php foreach ( $all_searchable_fields as $field_key => $field_values ):
                     if ( !empty( $field_values["hidden"] ) || $field_values["type"] !== 'text' ){
                         continue;
@@ -192,7 +212,7 @@ dt_please_log_in();
                     <div class="section-body">
                         <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
                         <div style="margin-bottom: 5px">
-                            <a data-open="filter-modal"><img class="dt-blue-icon dt-icon" style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                            <a data-open="filter-modal"><img class="dt-blue-icon dt-icon" style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/><?php esc_html_e( "Create custom filter", 'disciple_tools' ) ?></a>
                         </div>
                         <div class="custom-filters"></div>
                     </div>

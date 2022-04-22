@@ -251,7 +251,17 @@ class Disciple_Tools_Users_Endpoints
             if ( isset( $params["return_contact"] ) ) {
                 $return_contact = true;
             }
-            return Disciple_Tools_Users::create_user( $user_login, $params["user-email"], $params["user-display"], $user_roles, $params["corresponds_to_contact"] ?? null, $locale ?? null, $return_contact ?? false, $password, $optional_fields, $params["archive_comments"] ?? false );
+            return Disciple_Tools_Users::create_user(
+                $user_login,
+                $params["user-email"],
+                $params["user-display"],
+                $user_roles,
+                $params["corresponds_to_contact"] ?? null,
+                $locale ?? null, $return_contact ?? false,
+                $password ?? null,
+                $optional_fields ?? [],
+                $params["archive_comments"] ?? false
+            );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }

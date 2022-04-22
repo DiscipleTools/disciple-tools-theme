@@ -31,6 +31,83 @@ function dt_svg_icon() {
 }
 
 /**
+ * Capture pre-existing path options; created outside of update flow
+ *
+ * @param $site_options
+ *
+ * @return array
+ */
+function dt_seeker_path_triggers_capture_pre_existing_options( $site_options ): array {
+    if ( ! empty( $site_options ) && isset( $site_options['update_required'] ) ) {
+        $options      = DT_Posts::get_post_field_settings( 'contacts', false, true )['seeker_path']['default'];
+        $deltas       = dt_seeker_path_trigger_deltas( $site_options['update_required']['options'], $options );
+        $site_options = dt_seeker_path_triggers_update_by_deltas( $site_options, $deltas );
+    }
+
+    return $site_options;
+}
+
+/**
+ * Add new options to existing seeker path triggers list
+ *
+ * @param $options
+ *
+ * @return void
+ */
+function dt_seeker_path_triggers_update( $options ): void {
+    $site_options = dt_get_option( 'dt_site_options' );
+    if ( ! empty( $options ) && isset( $site_options['update_required'] ) ) {
+
+        // Fetch any/all available deltas
+        $deltas = dt_seeker_path_trigger_deltas( $site_options['update_required']['options'], $options );
+
+        // Assign identified deltas and update option
+        dt_seeker_path_triggers_update_by_deltas( $site_options, $deltas );
+    }
+}
+
+function dt_seeker_path_trigger_deltas( $update_required_options, $options ): array {
+    $deltas = [];
+
+    foreach ( $options ?? [] as $opt_key => $opt_val ) {
+        $found = false;
+        foreach ( $update_required_options ?? [] as $required ) {
+
+            // Is there already a trigger specified?
+            if ( $required['seeker_path'] === $opt_key ) {
+                $found = true;
+            }
+        }
+
+        // If not, then assign as new delta
+        if ( ! $found ) {
+            $deltas[] = [
+                'status'      => 'active',
+                'seeker_path' => $opt_key,
+                'days'        => 30,
+                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tool' )
+            ];
+        }
+    }
+
+    return $deltas;
+}
+
+function dt_seeker_path_triggers_update_by_deltas( $site_options, $deltas ): array {
+    if ( ! empty( $deltas ) ) {
+        foreach ( $deltas as $delta ) {
+            $site_options['update_required']['options'][] = $delta;
+        }
+        update_option( 'dt_site_options', $site_options, true );
+
+        // Reload....
+        $site_options = dt_get_option( 'dt_site_options' );
+    }
+
+    return $site_options;
+}
+
+/**
  * Using the dt_get_option guarantees the existence of the option and upgrades to the current plugin version defaults,
  * while returning the options array.
  *
@@ -564,7 +641,7 @@ function dt_get_global_languages_list(){
         "sq_AL" => [ "label" => "Albanian (Albania)" ],
         "sq" => [ "label" => "Albanian" ],
         "am_ET" => [ "label" => "Amharic (Ethiopia)" ],
-        "am" => [ "label" => "Amharic" ],
+        "am" => [ "label" => "Amharic", "default_locale" => "am_ET" ],
         "ar_DZ" => [ "label" => "Arabic (Algeria)" ],
         "ar_BH" => [ "label" => "Arabic (Bahrain)" ],
         "ar_EG" => [ "label" => "Arabic (Egypt)" ],
@@ -582,7 +659,7 @@ function dt_get_global_languages_list(){
         "ar_TN" => [ "label" => "Arabic (Tunisia)" ],
         "ar_AE" => [ "label" => "Arabic (United Arab Emirates)" ],
         "ar_YE" => [ "label" => "Arabic (Yemen)" ],
-        "ar" => [ "label" => "Arabic" ],
+        "ar" => [ "label" => "Arabic", "default_locale" => "ar" ],
         "hy_AM" => [ "label" => "Armenian (Armenia)" ],
         "hy" => [ "label" => "Armenian" ],
         "as_IN" => [ "label" => "Assamese (India)" ],
@@ -606,13 +683,13 @@ function dt_get_global_languages_list(){
         "bez" => [ "label" => "Bena" ],
         "bn_BD" => [ "label" => "Bengali (Bangladesh)" ],
         "bn_IN" => [ "label" => "Bengali (India)" ],
-        "bn" => [ "label" => "Bengali" ],
+        "bn" => [ "label" => "Bengali", "default_locale" => "bn_BD" ],
         "bs_BA" => [ "label" => "Bosnian (Bosnia and Herzegovina)" ],
-        "bs" => [ "label" => "Bosnian" ],
+        "bs" => [ "label" => "Bosnian", "default_locale" => "bs_BA" ],
         "bg_BG" => [ "label" => "Bulgarian (Bulgaria)" ],
-        "bg" => [ "label" => "Bulgarian" ],
+        "bg" => [ "label" => "Bulgarian", "default_locale" => "bg_BG" ],
         "my_MM" => [ "label" => "Burmese (Myanmar [Burma])" ],
-        "my" => [ "label" => "Burmese" ],
+        "my" => [ "label" => "Burmese", "default_locale" => "my_MM" ],
         "yue_Hant_HK" => [ "label" => "Cantonese (Traditional, Hong Kong SAR China)" ],
         "ca_ES" => [ "label" => "Catalan (Spain)" ],
         "ca" => [ "label" => "Catalan" ],
@@ -632,18 +709,18 @@ function dt_get_global_languages_list(){
         "zh_Hant_HK" => [ "label" => "Chinese (Traditional Han, Hong Kong SAR China)" ],
         "zh_Hant_MO" => [ "label" => "Chinese (Traditional Han, Macau SAR China)" ],
         "zh_Hant_TW" => [ "label" => "Chinese (Traditional Han, Taiwan)" ],
-        "zh" => [ "label" => "Chinese" ],
+        "zh" => [ "label" => "Chinese", "default_locale" => "zh_CN" ],
         "kw_GB" => [ "label" => "Cornish (United Kingdom)" ],
         "kw" => [ "label" => "Cornish" ],
         "hr_HR" => [ "label" => "Croatian (Croatia)" ],
-        "hr" => [ "label" => "Croatian" ],
+        "hr" => [ "label" => "Croatian", "default_locale" => "hr" ],
         "cs_CZ" => [ "label" => "Czech (Czech Republic)" ],
-        "cs" => [ "label" => "Czech" ],
+        "cs" => [ "label" => "Czech", "default_locale" => "cs" ],
         "da_DK" => [ "label" => "Danish (Denmark)" ],
         "da" => [ "label" => "Danish" ],
         "nl_BE" => [ "label" => "Dutch (Belgium)" ],
         "nl_NL" => [ "label" => "Dutch (Netherlands)" ],
-        "nl" => [ "label" => "Dutch" ],
+        "nl" => [ "label" => "Dutch", "default_locale" => "nl_NL" ],
         "ebu_KE" => [ "label" => "Embu (Kenya)" ],
         "ebu" => [ "label" => "Embu" ],
         "en_AS" => [ "label" => "English (American Samoa)" ],
@@ -718,7 +795,7 @@ function dt_get_global_languages_list(){
         "fr_SN" => [ "label" => "French (Senegal)" ],
         "fr_CH" => [ "label" => "French (Switzerland)" ],
         "fr_TG" => [ "label" => "French (Togo)" ],
-        "fr" => [ "label" => "French" ],
+        "fr" => [ "label" => "French", "default_locale" => "fr_FR" ],
         "ff_SN" => [ "label" => "Fulah (Senegal)" ],
         "ff" => [ "label" => "Fulah" ],
         "gl_ES" => [ "label" => "Galician (Spain)" ],
@@ -733,7 +810,7 @@ function dt_get_global_languages_list(){
         "de_LI" => [ "label" => "German (Liechtenstein)" ],
         "de_LU" => [ "label" => "German (Luxembourg)" ],
         "de_CH" => [ "label" => "German (Switzerland)" ],
-        "de" => [ "label" => "German" ],
+        "de" => [ "label" => "German", "default_locale" => "de_DE" ],
         "el_CY" => [ "label" => "Greek (Cyprus)" ],
         "el_GR" => [ "label" => "Greek (Greece)" ],
         "el" => [ "label" => "Greek" ],
@@ -751,22 +828,22 @@ function dt_get_global_languages_list(){
         "he_IL" => [ "label" => "Hebrew (Israel)" ],
         "he" => [ "label" => "Hebrew" ],
         "hi_IN" => [ "label" => "Hindi (India)" ],
-        "hi" => [ "label" => "Hindi" ],
+        "hi" => [ "label" => "Hindi", "default_locale" => "hi_IN" ],
         "hu_HU" => [ "label" => "Hungarian (Hungary)" ],
-        "hu" => [ "label" => "Hungarian" ],
+        "hu" => [ "label" => "Hungarian", "default_locale" => "hu_HU" ],
         "is_IS" => [ "label" => "Icelandic (Iceland)" ],
         "is" => [ "label" => "Icelandic" ],
         "ig_NG" => [ "label" => "Igbo (Nigeria)" ],
         "ig" => [ "label" => "Igbo" ],
         "id_ID" => [ "label" => "Indonesian (Indonesia)" ],
-        "id" => [ "label" => "Indonesian" ],
+        "id" => [ "label" => "Indonesian", "default_locale" => "id_ID" ],
         "ga_IE" => [ "label" => "Irish (Ireland)" ],
         "ga" => [ "label" => "Irish" ],
         "it_IT" => [ "label" => "Italian (Italy)" ],
         "it_CH" => [ "label" => "Italian (Switzerland)" ],
-        "it" => [ "label" => "Italian" ],
+        "it" => [ "label" => "Italian", "default_locale" => "it_IT" ],
         "ja_JP" => [ "label" => "Japanese (Japan)" ],
-        "ja" => [ "label" => "Japanese" ],
+        "ja" => [ "label" => "Japanese", "default_locale" => "ja" ],
         "kea_CV" => [ "label" => "Kabuverdianu (Cape Verde)" ],
         "kea" => [ "label" => "Kabuverdianu" ],
         "kab_DZ" => [ "label" => "Kabyle (Algeria)" ],
@@ -791,7 +868,7 @@ function dt_get_global_languages_list(){
         "kok_IN" => [ "label" => "Konkani (India)" ],
         "kok" => [ "label" => "Konkani" ],
         "ko_KR" => [ "label" => "Korean (South Korea)" ],
-        "ko" => [ "label" => "Korean" ],
+        "ko" => [ "label" => "Korean", "default_locale" => "ko_KR" ],
         "khq_ML" => [ "label" => "Koyra Chiini (Mali)" ],
         "khq" => [ "label" => "Koyra Chiini" ],
         "ses_ML" => [ "label" => "Koyraboro Senni (Mali)" ],
@@ -807,7 +884,7 @@ function dt_get_global_languages_list(){
         "luy_KE" => [ "label" => "Luyia (Kenya)" ],
         "luy" => [ "label" => "Luyia" ],
         "mk_MK" => [ "label" => "Macedonian (Macedonia)" ],
-        "mk" => [ "label" => "Macedonian" ],
+        "mk" => [ "label" => "Macedonian", "default_locale" => "mk_MK" ],
         "jmc_TZ" => [ "label" => "Machame (Tanzania)" ],
         "jmc" => [ "label" => "Machame" ],
         "kde_TZ" => [ "label" => "Makonde (Tanzania)" ],
@@ -824,7 +901,7 @@ function dt_get_global_languages_list(){
         "gv_GB" => [ "label" => "Manx (United Kingdom)" ],
         "gv" => [ "label" => "Manx" ],
         "mr_IN" => [ "label" => "Marathi (India)" ],
-        "mr" => [ "label" => "Marathi" ],
+        "mr" => [ "label" => "Marathi", "default_locale" => "mr" ],
         "mas_KE" => [ "label" => "Masai (Kenya)" ],
         "mas_TZ" => [ "label" => "Masai (Tanzania)" ],
         "mas" => [ "label" => "Masai" ],
@@ -836,7 +913,7 @@ function dt_get_global_languages_list(){
         "naq" => [ "label" => "Nama" ],
         "ne_IN" => [ "label" => "Nepali (India)" ],
         "ne_NP" => [ "label" => "Nepali (Nepal)" ],
-        "ne" => [ "label" => "Nepali" ],
+        "ne" => [ "label" => "Nepali", "default_locale" => "ne_NP" ],
         "nd_ZW" => [ "label" => "North Ndebele (Zimbabwe)" ],
         "nd" => [ "label" => "North Ndebele" ],
         "nb_NO" => [ "label" => "Norwegian Bokmål (Norway)" ],
@@ -854,22 +931,22 @@ function dt_get_global_languages_list(){
         "ps" => [ "label" => "Pashto" ],
         "fa_AF" => [ "label" => "Persian (Afghanistan)" ],
         "fa_IR" => [ "label" => "Persian (Iran)" ],
-        "fa" => [ "label" => "Persian" ],
+        "fa" => [ "label" => "Persian", "default_locale" => "fa_IR" ],
         "pl_PL" => [ "label" => "Polish (Poland)" ],
         "pl" => [ "label" => "Polish" ],
         "pt_BR" => [ "label" => "Portuguese (Brazil)" ],
         "pt_GW" => [ "label" => "Portuguese (Guinea-Bissau)" ],
         "pt_MZ" => [ "label" => "Portuguese (Mozambique)" ],
         "pt_PT" => [ "label" => "Portuguese (Portugal)" ],
-        "pt" => [ "label" => "Portuguese" ],
+        "pt" => [ "label" => "Portuguese", "default_locale" => "pt_BR" ],
         "pa_Arab" => [ "label" => "Punjabi (Arabic)" ],
         "pa_Arab_PK" => [ "label" => "Punjabi (Arabic, Pakistan)" ],
         "pa_Guru" => [ "label" => "Punjabi (Gurmukhi)" ],
         "pa_Guru_IN" => [ "label" => "Punjabi (Gurmukhi, India)" ],
-        "pa" => [ "label" => "Punjabi" ],
+        "pa" => [ "label" => "Punjabi", "default_locale" => "pa_IN" ],
         "ro_MD" => [ "label" => "Romanian (Moldova)" ],
         "ro_RO" => [ "label" => "Romanian (Romania)" ],
-        "ro" => [ "label" => "Romanian" ],
+        "ro" => [ "label" => "Romanian", "default_locale" => "ro_RO" ],
         "rm_CH" => [ "label" => "Romansh (Switzerland)" ],
         "rm" => [ "label" => "Romansh" ],
         "rof_TZ" => [ "label" => "Rombo (Tanzania)" ],
@@ -877,7 +954,7 @@ function dt_get_global_languages_list(){
         "ru_MD" => [ "label" => "Russian (Moldova)" ],
         "ru_RU" => [ "label" => "Russian (Russia)" ],
         "ru_UA" => [ "label" => "Russian (Ukraine)" ],
-        "ru" => [ "label" => "Russian" ],
+        "ru" => [ "label" => "Russian", "default_locale" => "ru_RU" ],
         "rwk_TZ" => [ "label" => "Rwa (Tanzania)" ],
         "rwk" => [ "label" => "Rwa" ],
         "saq_KE" => [ "label" => "Samburu (Kenya)" ],
@@ -894,7 +971,7 @@ function dt_get_global_languages_list(){
         "sr_Latn_BA" => [ "label" => "Serbian (Latin, Bosnia and Herzegovina)" ],
         "sr_Latn_ME" => [ "label" => "Serbian (Latin, Montenegro)" ],
         "sr_Latn_RS" => [ "label" => "Serbian (Latin, Serbia)" ],
-        "sr" => [ "label" => "Serbian" ],
+        "sr" => [ "label" => "Serbian", "default_locale" => "sr_BA" ],
         "sn_ZW" => [ "label" => "Shona (Zimbabwe)" ],
         "sn" => [ "label" => "Shona" ],
         "ii_CN" => [ "label" => "Sichuan Yi (China)" ],
@@ -904,7 +981,7 @@ function dt_get_global_languages_list(){
         "sk_SK" => [ "label" => "Slovak (Slovakia)" ],
         "sk" => [ "label" => "Slovak" ],
         "sl_SI" => [ "label" => "Slovenian (Slovenia)" ],
-        "sl" => [ "label" => "Slovenian" ],
+        "sl" => [ "label" => "Slovenian", "default_locale" => "sl_SI" ],
         "xog_UG" => [ "label" => "Soga (Uganda)" ],
         "xog" => [ "label" => "Soga" ],
         "so_DJ" => [ "label" => "Somali (Djibouti)" ],
@@ -934,10 +1011,10 @@ function dt_get_global_languages_list(){
         "es_US" => [ "label" => "Spanish (United States)" ],
         "es_UY" => [ "label" => "Spanish (Uruguay)" ],
         "es_VE" => [ "label" => "Spanish (Venezuela)" ],
-        "es" => [ "label" => "Spanish" ],
+        "es" => [ "label" => "Spanish", "default_locale" => "es_ES" ],
         "sw_KE" => [ "label" => "Swahili (Kenya)" ],
         "sw_TZ" => [ "label" => "Swahili (Tanzania)" ],
-        "sw" => [ "label" => "Swahili" ],
+        "sw" => [ "label" => "Swahili", "default_locale" => "sw" ],
         "sv_FI" => [ "label" => "Swedish (Finland)" ],
         "sv_SE" => [ "label" => "Swedish (Sweden)" ],
         "sv" => [ "label" => "Swedish" ],
@@ -969,7 +1046,7 @@ function dt_get_global_languages_list(){
         "to_TO" => [ "label" => "Tonga (Tonga)" ],
         "to" => [ "label" => "Tonga" ],
         "tr_TR" => [ "label" => "Turkish (Turkey)" ],
-        "tr" => [ "label" => "Turkish" ],
+        "tr" => [ "label" => "Turkish", "default_locale" => "tr_TR" ],
         "uk_UA" => [ "label" => "Ukrainian (Ukraine)" ],
         "uk" => [ "label" => "Ukrainian" ],
         "ur_IN" => [ "label" => "Urdu (India)" ],
@@ -983,7 +1060,7 @@ function dt_get_global_languages_list(){
         "uz_Latn_UZ" => [ "label" => "Uzbek (Latin, Uzbekistan)" ],
         "uz" => [ "label" => "Uzbek" ],
         "vi_VN" => [ "label" => "Vietlabelse (Vietnam)" ],
-        "vi" => [ "label" => "Vietlabelse" ],
+        "vi" => [ "label" => "Vietlabelse", "default_locale" => "vi" ],
         "vun_TZ" => [ "label" => "Vunjo (Tanzania)" ],
         "vun" => [ "label" => "Vunjo" ],
         "cy_GB" => [ "label" => "Welsh (United Kingdom)" ],
