@@ -306,7 +306,7 @@ class DT_Contacts_Base {
                     'female'  => [ "label" => __( 'Female', 'disciple_tools' ) ],
                 ],
                 'tile'     => 'details',
-                "icon" => get_template_directory_uri() . "/dt-assets/images/gender.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/gender-male-female.svg",
             ];
 
             $fields['age'] = [
