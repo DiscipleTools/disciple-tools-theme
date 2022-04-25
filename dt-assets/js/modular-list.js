@@ -521,6 +521,30 @@
     window.location.reload()
   })
 
+  $('#archivedToggle').on('click', function() {
+    const showArchived = this.checked
+    const { status_field, archived_status_key } = list_settings.post_type_settings
+    const query = current_filter.query
+    const filterOutArchivedItemsKey = `-${archived_status_key}`
+    let status = query[status_field];
+
+    if (showArchived && status && status.includes(filterOutArchivedItemsKey)) {
+       const index = status.indexOf(filterOutArchivedItemsKey)
+       status.splice(index, 1)
+    }
+
+    if (!showArchived) {
+      if (!status) {
+        query[status_field] = []
+        status = query[status_field]
+      }
+      if (!status.includes(filterOutArchivedItemsKey)) {
+        status.push(filterOutArchivedItemsKey)
+      }
+    }
+
+    get_records()
+  })
 
   $('#records-table').dragableColumns({
     drag: true,
