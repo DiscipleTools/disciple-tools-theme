@@ -24,7 +24,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
 }
 ?>
 
-    <div id="content" class="template-new-post">
+    <div id="content" class="template-new-post" style="margin-left: 0; margin-right: 0; min-width: 100% !important;">
         <div id="inner-content" class="grid-x grid-margin-x">
             <div class="large-0 medium-12 small-12 cell" style="display: none;"></div>
 
@@ -192,14 +192,14 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                                 <?php
                                 render_new_bulk_record_fields( $dt_post_type );
                                 ?>
-                                <span>&nbsp;</span>
+                                <span style="min-width: 25px;">&nbsp;</span>
                             </div>
                         </div>
 
                         <div id="add_new_bulk_record_div"
                              style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">
                             <a class="button" id="add_new_bulk_record" style="margin:0;padding:3px 0; width:100%">
-                                <?php esc_html_e( 'Add New Record', 'disciple_tools' ); ?>
+                                <?php esc_html_e( 'Add New Row', 'disciple_tools' ); ?>
                             </a>
                         </div>
 
