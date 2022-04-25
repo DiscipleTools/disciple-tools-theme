@@ -281,7 +281,7 @@ class DT_Contacts_Base {
             ];
             $fields["contact_other"] = [
                 "name" => __( 'Other Social Links', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/icons/chat.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/links.svg?v=2",
                 "hide_domain" => false,
                 "type" => "communication_channel",
                 "tile" => "details",
