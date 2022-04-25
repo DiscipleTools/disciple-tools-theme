@@ -691,32 +691,34 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
                 return;
             }
+        }
 
-            $langs = dt_get_available_languages();
-            $custom_field_options = dt_get_option( 'dt_field_customizations' );
-            $custom_contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
+        $fields = DT_Posts::get_post_field_settings( 'contacts' );
+        $langs = dt_get_available_languages();
+        $custom_field_options = dt_get_option( 'dt_field_customizations' );
+        $custom_contact_fields = $custom_field_options['contacts'];
 
-            foreach ( $custom_contact_fields as $field_key => $field_settings ) {
-                foreach ( $langs as $lang => $val ) {
-                    $langcode = $val['language'];
-                    if ( isset( $_POST['field_label'][$field_key][$langcode] ) ) {
-                        $translated_label = sanitize_text_field( wp_unslash( $_POST['field_label'][$field_key][$langcode] ) );
-                        // Add new translation
-                        if ( !empty( $translated_label ) ) {
-                            $custom_contact_fields[$field_key]['translations'][$langcode] = $translated_label;
-                        }
+        foreach ( $custom_contact_fields as $field_key => $field_settings ) {
+            foreach ( $langs as $lang => $val ) {
+                $langcode = $val['language'];
+                if ( isset( $_POST['field_label'][$field_key][$langcode] ) ) {
+                    $translated_label = sanitize_text_field( wp_unslash( $_POST['field_label'][$field_key][$langcode] ) );
+                    // Add new translation
+                    if ( !empty( $translated_label ) ) {
+                        $custom_contact_fields[$field_key]['translations'][$langcode] = $translated_label;
+                    }
 
-                        // Remove translation
-                        if ( ( empty( $translated_label ) && !empty( $custom_contact_fields[$field_key]['translations'][$langcode] ) ) ) {
-                            $custom_contact_fields[$field_key]['translations'][$langcode] = $translated_label;
-                        }
+                    // Remove translation
+                    if ( ( empty( $translated_label ) && !empty( $custom_contact_fields[$field_key]['translations'][$langcode] ) ) ) {
+                        $custom_contact_fields[$field_key]['translations'][$langcode] = $translated_label;
                     }
                 }
             }
-            $custom_field_options['contacts'] = $custom_contact_fields;
-
-            update_option( 'dt_field_customizations', null );
         }
+
+        $custom_field_options['contacts'] = $custom_contact_fields;
+        update_option( 'dt_field_customizations', $custom_field_options );
+
 
         // Add a new custom field
         if ( ! empty( $_POST['add_custom_quick_action_label'] ) ) {
