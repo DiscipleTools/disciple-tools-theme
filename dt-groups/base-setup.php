@@ -371,7 +371,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 "tile"      => "details",
                 'mapbox'    => false,
                 'hidden' => true,
-                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/map-marker-multiple.svg?v=2",
             ];
 
             $fields["contact_address"] = [

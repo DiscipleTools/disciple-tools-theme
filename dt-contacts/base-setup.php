@@ -239,7 +239,7 @@ class DT_Contacts_Base {
                 'mapbox'    => false,
                 'hidden' => true,
                 "in_create_form" => true,
-                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/map-marker-multiple.svg?v=2",
             ];
             $fields["contact_address"] = [
                 "name" => __( 'Address', 'disciple_tools' ),
