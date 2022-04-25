@@ -275,7 +275,7 @@ dt_please_log_in();
                         ?>
 
                         <span style="display:inline-block" class="show-closed-switch">
-                            <?php esc_html_e("Closed items", "disciple_tools") ?>
+                            <?php esc_html_e( "Closed items",  "disciple_tools" ) ?>
                             <div class="switch tiny">
                                 <input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
                                 <label class="switch-paddle" for="archivedToggle">
