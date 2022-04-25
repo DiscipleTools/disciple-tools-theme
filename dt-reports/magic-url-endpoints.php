@@ -143,6 +143,13 @@ class Disciple_Tools_Magic_Endpoints
 
             // build email
             $email   = $params['email'] ?? $post_record['contact_email'][0]['value'];
+
+            // final email format sanity check
+            if ( ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
+                $errors[ $post_id ] = 'invalid email format';
+                continue;
+            }
+
             $subject = $name;
             $message_plain_text = $note . '
 
