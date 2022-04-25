@@ -110,19 +110,42 @@ class DT_Magic_URL_Setup {
                     $('#modal-large').foundation('open')
                 })
                 $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .send').on('click', function(e){
-                    $('#modal-small-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html__( 'Send a link via email through the system.', 'disciple_tools' ) ?></span><hr>`)
-                    $('#modal-small-content').empty().html(`<div class="grid-x"><div class="cell"><input type="text" class="note <?php echo esc_attr( $meta_key ); ?>" placeholder="Add a note" /><br><button type="button" class="button <?php echo esc_attr( $meta_key ); ?>"><?php echo esc_html__( 'Send email with link', 'disciple_tools' ) ?> <span class="<?php echo esc_attr( $meta_key ); ?> loading-spinner"></span></button></div></div>`)
+                    $('#modal-small-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html__( 'Send the link via email.', 'disciple_tools' ) ?></span><input type="text" class="email <?php echo esc_attr( $meta_key ); ?>" placeholder="<?php echo esc_attr__( 'Add email address', 'disciple_tools' )?>"/><hr>`)
+                    $('#modal-small-content').empty().html(`<div class="grid-x"><div class="cell"><input type="text" class="note <?php echo esc_attr( $meta_key ); ?>" placeholder="<?php echo esc_attr__( 'Add a note', 'disciple_tools' )?>" /><br><button type="button" class="button <?php echo esc_attr( $meta_key ); ?>"><?php echo esc_html__( 'Send email with link', 'disciple_tools' ) ?> <span class="<?php echo esc_attr( $meta_key ); ?> loading-spinner"></span></button></div></div>`)
+                    $('.button.<?php echo esc_attr( $meta_key ); ?>').prop('disabled', true);
                     $('#modal-small').foundation('open')
+
+                    <?php
+                    if ( isset( $record['contact_email'][0] ) ) {
+                        $email = $record['contact_email'][0]['value'];
+                        ?>
+                    $('.email.<?php echo esc_attr( $meta_key ); ?>').val('<?php echo esc_attr( $email ); ?>');
+                    $('.button.<?php echo esc_attr( $meta_key ); ?>').prop('disabled', !is_email_format_valid($('.email.<?php echo esc_attr( $meta_key ); ?>').val()));
+                        <?php
+                    }
+                    ?>
+
+                    $('.email.<?php echo esc_attr( $meta_key ); ?>').on('keyup', function () {
+                        let email = $('.email.<?php echo esc_attr( $meta_key ); ?>').val();
+                        $('.button.<?php echo esc_attr( $meta_key ); ?>').prop('disabled', !is_email_format_valid(email.trim()));
+                    });
+
                     $('.button.<?php echo esc_attr( $meta_key ); ?>').on('click', function(e){
                         $('.<?php echo esc_attr( $meta_key ); ?>.loading-spinner').addClass('active')
-                        let note = $('.note.<?php echo esc_attr( $meta_key ); ?>').val()
-                        makeRequest('POST', window.detailsSettings.post_type + '/email_magic', { root: '<?php echo esc_attr( $app['root'] ); ?>', type: '<?php echo esc_attr( $app['type'] ); ?>', note: note, post_ids: [ window.detailsSettings.post_id ] } )
+                        let email = $('.email.<?php echo esc_attr( $meta_key ); ?>').val();
+                        let note = $('.note.<?php echo esc_attr( $meta_key ); ?>').val();
+                        makeRequest('POST', window.detailsSettings.post_type + '/email_magic', { root: '<?php echo esc_attr( $app['root'] ); ?>', type: '<?php echo esc_attr( $app['type'] ); ?>', email: email, note: note, post_ids: [ window.detailsSettings.post_id ] } )
                         .done( data => {
                             $('.<?php echo esc_attr( $meta_key ); ?>.loading-spinner').removeClass('active')
                             $('#modal-small').foundation('close')
                         })
                     })
                 })
+
+                function is_email_format_valid(email) {
+                    return new RegExp('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$').test(window.lodash.escape(email));
+                }
+
                 $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .qr').on('click', function(e){
                     $('#modal-small-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html__( 'QR codes are useful for passing the coaching links to mobile devices.', 'disciple_tools' ) ?></span><hr>`)
                     $('#modal-small-content').empty().html(`<div class="grid-x"><div class="cell center"><img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}" style="width: 100%;max-width:400px;" /></div></div>`)
