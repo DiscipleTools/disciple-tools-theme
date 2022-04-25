@@ -2118,7 +2118,7 @@ msgstr "Tipo a buscar"
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:590
 #: dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:837
+#: dt-core/global-functions.php:842
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Buscar usuarios"
@@ -2138,10 +2138,10 @@ msgstr "Escribe tu comentario o nota aquí"
 #: archive-template.php:38
 #: archive-template.php:128
 #: archive-template.php:420
-#: dt-core/global-functions.php:673
-#: dt-core/global-functions.php:701
-#: dt-core/global-functions.php:755
-#: dt-core/global-functions.php:799
+#: dt-core/global-functions.php:678
+#: dt-core/global-functions.php:706
+#: dt-core/global-functions.php:760
+#: dt-core/global-functions.php:804
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:378
@@ -4233,11 +4233,11 @@ msgstr[1] "hace más de %s años"
 msgid "Hide fields"
 msgstr "Ocultar campos"
 
-#: dt-core/global-functions.php:675
+#: dt-core/global-functions.php:680
 msgid "Add new tag \"%s\""
 msgstr "Agregar nueva etiqueta \"%s\""
 
-#: dt-core/global-functions.php:676
+#: dt-core/global-functions.php:681
 msgid "Tag \"%s\" is already being used"
 msgstr "La etiqueta \"%s\" ya se está utilizando"
 
@@ -4402,7 +4402,7 @@ msgstr "Mi árbol de generación de coaching"
 msgid "My Group Generation Tree"
 msgstr "Mi árbol de generación de grupo"
 
-#: dt-reports/magic-url-base.php:440
+#: dt-reports/magic-url-setup.php:30
 #: template-settings.php:53
 msgid "Apps"
 msgstr "Aplicaciones"
@@ -4799,27 +4799,27 @@ msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "no enviado (probablemente falte una dirección de correo válida)"
 
-#: dt-reports/magic-url-base.php:441
+#: dt-reports/magic-url-setup.php:31
 msgid "Apps available on this record."
 msgstr "Apps disponibles en este registro."
 
-#: dt-reports/magic-url-base.php:492
+#: dt-reports/magic-url-setup.php:113
 msgid "Send a link via email through the system."
 msgstr "Enviar un enlace por email a través del sistema."
 
-#: dt-reports/magic-url-base.php:493
+#: dt-reports/magic-url-setup.php:114
 msgid "Send email with link"
 msgstr "Enviar email con enlace"
 
-#: dt-reports/magic-url-base.php:506
+#: dt-reports/magic-url-setup.php:127
 msgid "QR codes are useful for passing the coaching links to mobile devices."
 msgstr "Los códigos QR son útiles para transmitirle los enlaces de discipulado a dispositivos móviles."
 
-#: dt-reports/magic-url-base.php:511
+#: dt-reports/magic-url-setup.php:132
 msgid "Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
 msgstr "Resetear el código de país. Ningún dato es quitado. Sólo el acceso. El enlace previo va a ser desactivado y se creará uno nuevo."
 
-#: dt-reports/magic-url-base.php:512
+#: dt-reports/magic-url-setup.php:133
 msgid "Delete and replace the app link"
 msgstr "Eliminar y reemplazar el enlace a la app"
 
