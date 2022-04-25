@@ -35,6 +35,7 @@
   const query_param_custom_filter = create_custom_filter_from_query_params()
 
   let current_filter
+  let current_filter_resets_enabled = true;
   if (query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter)) {
     current_filter = query_param_custom_filter
   } else if (cached_filter && !window.lodash.isEmpty(cached_filter)) {
@@ -82,6 +83,10 @@
   // get records on load and when a filter is clicked
   get_records_for_current_filter()
   $(document).on('change', '.js-list-view', () => {
+
+    // Enable current filter default resets
+    current_filter_resets_enabled = true;
+
     get_records_for_current_filter()
   });
 
@@ -97,6 +102,10 @@
 
   // Remove filter labels
   $(document).on('click', '.current-filter-close', function () {
+
+    // Disable current filter default resets
+    current_filter_resets_enabled = false;
+
     let label = $(this).parent();
     remove_current_filter_label(label, get_current_filter_label_field_details(label));
   });
@@ -272,17 +281,26 @@
     let current_view = checked.val()
     let filter_id = checked.data("id") || current_view || ""
     let sort = current_filter.query.sort || null;
-    if ( current_view === "custom_filter" ){
-      let filterId = checked.data("id")
-      current_filter = window.lodash.find(custom_filters, {ID:filterId})
-      current_filter.type = current_view
-    } else {
-      current_filter = window.lodash.find(list_settings.filters.filters, {ID:filter_id}) || window.lodash.find(list_settings.filters.filters, {ID:filter_id.toString()}) || current_filter
-      current_filter.type = 'default'
-      current_filter.labels = current_filter.labels || [{ id:filter_id, name:current_filter.name}]
+
+    // Determine if default resets are required?
+    if (current_filter_resets_enabled) {
+
+      if (current_view === "custom_filter") {
+        let filterId = checked.data("id")
+        current_filter = window.lodash.find(custom_filters, {ID: filterId})
+        current_filter.type = current_view
+      } else {
+        current_filter = window.lodash.find(list_settings.filters.filters, {ID: filter_id}) || window.lodash.find(list_settings.filters.filters, {ID: filter_id.toString()}) || current_filter
+        current_filter.type = 'default'
+        current_filter.labels = current_filter.labels || [{id: filter_id, name: current_filter.name}]
+      }
+      sort = sort || current_filter.query.sort;
+      current_filter.query.sort = (typeof sort === "string") ? sort : "name"
+
+      // Conduct a deep copy (clone) of filter, so as to support future returns to default
+      current_filter = $.extend(true, {}, current_filter);
+
     }
-    sort = sort || current_filter.query.sort;
-    current_filter.query.sort = (typeof sort === "string") ? sort : "name"
 
     clear_search_query()
 
