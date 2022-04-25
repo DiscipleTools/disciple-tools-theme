@@ -47,12 +47,11 @@ $dt_nav_tabs = dt_default_menu_array();
             <?php
 
             // Check for Custom Logo
-            $logo_url = get_template_directory_uri() . '/dt-assets/images/disciple-tools-logo-white.png';
+            $logo_url = $dt_nav_tabs['admin']['site']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/disciple-tools-logo-white.png';
             $custom_logo_url = get_option( 'custom_logo_url' );
             if ( !empty( $custom_logo_url ) ) {
                 $logo_url = $custom_logo_url;
             }
-            dt_write_log( $logo_url );
             ?>
             <?php if ( ! $dt_nav_tabs['admin']['site']['hidden'] ?? ! false ) : ?>
                 <div class="title-bar-title" style="margin-left: 5px">
