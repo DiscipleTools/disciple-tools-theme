@@ -169,7 +169,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'name' => __( 'Baptism Date', 'disciple_tools' ),
                 'description' => '',
                 'type' => 'date',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/calendar.svg?v=2',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-heart.svg?v=2',
                 'tile' => 'details',
             ];
 
@@ -242,7 +242,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-scheduled.svg?v=2",
+                'icon'        => get_template_directory_uri() . "/dt-assets/images/calendar-plus.svg?v=2",
                 "customizable" => false
             ];
             $fields['quick_button_meeting_complete'] = [
@@ -251,7 +251,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-complete.svg?v=2",
+                'icon'        => get_template_directory_uri() . "/dt-assets/images/calendar-check.svg?v=2",
                 "customizable" => false
             ];
             $fields['quick_button_no_show'] = [
