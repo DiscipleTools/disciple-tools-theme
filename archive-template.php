@@ -274,6 +274,15 @@ dt_please_log_in();
                         do_action( 'dt_post_bulk_list_link', $post_type, $post_settings, $dt_magic_apps );
                         ?>
 
+                        <span style="display:inline-block">
+                            <div class="switch">
+                                <input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
+                                <label class="switch-paddle" for="archivedToggle">
+                                    <span class="show-for-sr">Show archived posts</span>
+                                 </label>
+                            </div>
+                        </span>
+
                     </div>
                     <?php
                     /**
