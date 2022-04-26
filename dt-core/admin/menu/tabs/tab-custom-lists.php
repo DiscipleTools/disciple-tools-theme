@@ -686,11 +686,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function process_quick_actions_box(){
-        if ( isset( $_POST['quick_actions_box_nonce'] ) ) {
-            if ( !wp_verify_nonce( sanitize_key( $_POST['quick_actions_box_nonce'] ), 'quick_actions_box' ) ){
-                self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
-                return;
-            }
+        if ( !isset( $_POST['quick_actions_box_nonce'] ) ){
+            return;
+        }
+        if ( !wp_verify_nonce( sanitize_key( $_POST['quick_actions_box_nonce'] ), 'quick_actions_box' ) ){
+            self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
+            return;
         }
 
         $fields = DT_Posts::get_post_field_settings( 'contacts' );
@@ -793,10 +794,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
 
             update_option( 'dt_field_customizations', $custom_field_options, true );
-                    wp_cache_delete( "contacts_field_settings" );
+            wp_cache_delete( "contacts_field_settings" );
 
-                    self::admin_notice( __( 'Quick Action edited successfully', 'disciple_tools' ), 'success' );
-                    return;
+            self::admin_notice( __( 'Quick Action edited successfully', 'disciple_tools' ), 'success' );
+            return;
         }
     }
 }
