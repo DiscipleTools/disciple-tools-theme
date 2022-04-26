@@ -714,7 +714,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <div class="small button-group" style="display: inline-block">
                         <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
                             <?php
-                            $class = ( in_array( $option_key, $post[$field_key] ?? [] ) ) ?
+                            $haystack = $post[ $field_key ] ?? [];
+                            if ( ! is_array( $haystack ) ) {
+                                $haystack = explode( ' ', $haystack );
+                            }
+                            $class = ( in_array( $option_key, $haystack ) ) ?
                                 "selected-select-button" : "empty-select-button"; ?>
                             <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $field_key ); ?>"
                                     class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button" <?php echo esc_html( $disabled ); ?>>

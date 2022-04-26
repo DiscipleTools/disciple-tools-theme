@@ -56,6 +56,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
         public $root;
         public $namespace = 'dt-magic-url/v1';
+        public $global_parts;
 
 //        private static $_instance = null;
 //        public static function instance( string $root ) {
@@ -65,8 +66,9 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 //            return self::$_instance;
 //        } // End instance()
 
-        public function __construct( string $root ) {
+        public function __construct( string $root, $global_parts = null ) {
             $this->root = $root;
+            $this->global_parts = $global_parts;
 
             add_filter( 'dt_custom_fields_settings', [ $this, '_register_custom_fields' ], 10, 2 );
         }
@@ -358,6 +360,10 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
         public function determine_meta_key( $current_key ) {
             if ( ! empty( $_REQUEST['parts']['instance_id'] ) && ! empty( $_REQUEST['parts']['meta_key'] ) ) {
                 return sanitize_text_field( wp_unslash( $_REQUEST['parts']['meta_key'] ) );
+
+            } elseif ( ! empty( $this->global_parts ) && ! empty( $this->global_parts['instance_id'] ) && ! empty( $this->global_parts['meta_key'] ) ) {
+                return sanitize_text_field( wp_unslash( $this->global_parts['meta_key'] ) );
+
             }
 
             return $current_key;
