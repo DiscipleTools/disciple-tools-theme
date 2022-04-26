@@ -64,7 +64,7 @@ class DT_Contacts_User {
     }
 
     public function dt_record_notifications_section( $post_type, $dt_post ){
-        if ( $post_type === "contacts" && $dt_post["type"]["key"] === "user" ): ?>
+        if ( $post_type === "contacts" && isset( $dt_post["type"]["key"] ) && $dt_post["type"]["key"] === "user" ): ?>
             <section class="cell small-12 user-contact-notification">
                 <div class="bordered-box detail-notification-box" style="background-color:#3F729B">
                     <?php if ( isset( $dt_post["corresponds_to_user"] ) && (int) $dt_post["corresponds_to_user"] === get_current_user_id() ):
