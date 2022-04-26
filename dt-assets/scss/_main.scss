@@ -1886,9 +1886,11 @@ img.dt-red-icon {
  * Bulk Record Adding
  */
 #form_fields_records {
+    overflow-x: auto !important;
+
     .form-fields-record {
         display: flex;
-        justify-content: center;
+        //justify-content: center;
     }
 
     .record-divider {

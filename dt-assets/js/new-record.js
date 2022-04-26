@@ -654,11 +654,12 @@ jQuery(function($) {
       apply_field_value_copy_controls_by_record(new_record);
       field_value_copy_controls_button_init();
 
-      // Apply latest field filters
-      apply_field_filters();
-
       // If enabled, alter mapbox search location input shape
       alter_mapbox_search_location_input_shape(new_record);
+
+      // Default to currently selected contact type.
+      let selected_contact_type = $('.type-option.selected').attr('id');
+      $('#'+ selected_contact_type +'.type-option').trigger('click');
     }
   });
 
@@ -1221,7 +1222,7 @@ jQuery(function($) {
   });
 
   function generate_record_removal_button_html(record_id) {
-    let button_html = '<button data-record-id="' + record_id + '" class="record-removal-button" type="button" style="margin: 5px;"><img src="' + window.new_record_localized.bulk_record_removal_but_img_uri + '"></button>';
+    let button_html = '<button data-record-id="' + record_id + '" class="record-removal-button" type="button" style="margin: 5px; min-width: 25px !important;"><img src="' + window.new_record_localized.bulk_record_removal_but_img_uri + '"></button>';
     return button_html;
   }
 

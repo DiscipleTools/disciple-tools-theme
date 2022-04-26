@@ -98,7 +98,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                                 <?php endif; ?>
                             </strong>
                         </div>
-                        <div class="type-options">
+                        <div class="type-options" style="margin-top: 25px !important; margin-bottom: 50px !important;">
                             <?php if ( isset( $post_settings["fields"]["type"]["default"] ) ) {
                                 uasort( $post_settings["fields"]["type"]["default"], function ( $a, $b ) {
                                     return ( $a['order'] ?? 100 ) <=> ( $b['order'] ?? 100 );
