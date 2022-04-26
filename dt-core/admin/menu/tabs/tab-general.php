@@ -105,12 +105,18 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             /* User Visibility */
 
 
-            /* Contact setup  */
+            /* Contact Setup  */
             $this->box( 'top', 'Contact Preferences' );
             $this->process_dt_contact_preferences();
             $this->show_dt_contact_preferences();
             $this->box( 'bottom' );
             /* Contact Setup */
+
+            /* Custom Logo */
+            $this->box( 'top', 'Custom Logo' );
+            $this->process_custom_logo();
+            $this->custom_logo();
+            $this->box( 'bottom' );
 
 
             if ( is_multisite() ) {
@@ -748,8 +754,73 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         <?php
     }
 
-}
+    public function custom_logo() {
+        $dt_nav_tabs = dt_default_menu_array();
+        $logo_url = esc_url( $dt_nav_tabs['admin']['site']['icon'] );
+        $custom_logo_url = get_option( 'custom_logo_url' );
 
+        if ( ! empty( $custom_logo_url ) ) {
+            $logo_url = esc_url( $custom_logo_url );
+        }
+        ?>
+        <form method="post" name="custom_logo_box">
+            <input type="hidden" name="custom_logo_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'custom_logo_box' ) ); ?>" />
+            <table class="widefat striped">
+                <thead>
+                    <tr>
+                        <td><?php esc_html_e( 'Image', 'disciple_tools' ); ?></td>
+                        <td><?php esc_html_e( 'Image link (must be https)', 'disciple_tools' ); ?></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="background-color:#3f729b"><img height="22px" style="vertical-align:-webkit-baseline-middle;" src="<?php echo esc_html( $logo_url ); ?>"></td>
+                        <td><input type="text" name="custom_logo_url" value="<?php echo esc_html( $logo_url ); ?>"></td>
+                        <td><button class="button" name="default_logo_url">Default</button></td>
+                        <td><button class="button file-upload-display-uploader" data-form="custom_logo_box" data-icon-input="custom_logo_url" style="margin-left:1%"><?php esc_html_e( 'Upload', 'disciple_tools' ); ?></button></td>
+                    </tr>    
+                </tbody>
+            </table>
+        </form>
+        <?php
+    }
+
+    public function process_custom_logo() {
+        if ( isset( $_POST['custom_logo_box_nonce'] ) ) {
+            if ( !wp_verify_nonce( sanitize_key( $_POST['custom_logo_box_nonce'] ), 'custom_logo_box' ) ) {
+                self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
+                return;
+            }
+
+            // Change Custom Logo URL
+            if ( isset( $_POST['custom_logo_url'] ) ) {
+
+                $custom_logo_url = esc_url( sanitize_text_field( wp_unslash( $_POST['custom_logo_url'] ) ) );
+                update_option( 'custom_logo_url', $custom_logo_url );
+            }
+
+            // Revert to Default Logo URL
+            if ( isset( $_POST['default_logo_url'] ) ) {
+                delete_option( 'custom_logo_url' );
+            }
+        }
+    }
+
+    /**
+     * Display admin notice
+     * @param $notice string
+     * @param $type string error|success|warning
+     */
+    public static function admin_notice( string $notice, string $type ) {
+        ?>
+        <div class="notice notice-<?php echo esc_attr( $type ) ?> is-dismissible">
+            <p><?php echo esc_html( $notice ) ?></p>
+        </div>
+        <?php
+    }
+}
 
 
 Disciple_Tools_General_Tab::instance();
