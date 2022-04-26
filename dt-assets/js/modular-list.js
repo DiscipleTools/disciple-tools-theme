@@ -19,6 +19,9 @@
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
+  const { status_field, archived_status_key } = list_settings.post_type_settings
+  const filterOutArchivedItemsKey = `-${archived_status_key}`
+  const archivedSwitch = $('#archivedToggle')
   window.post_type_fields = list_settings.post_type_settings.fields
   window.records_list = { posts:[], total:0 }
 
@@ -523,9 +526,7 @@
 
   $('#archivedToggle').on('click', function() {
     const showArchived = this.checked
-    const { status_field, archived_status_key } = list_settings.post_type_settings
     const query = current_filter.query
-    const filterOutArchivedItemsKey = `-${archived_status_key}`
     let status = query[status_field];
 
     if (showArchived && status && status.includes(filterOutArchivedItemsKey)) {
@@ -716,6 +717,8 @@
       query.offset = 0
     }
 
+    checkArchivedSwitchIsCorrectlySwitched(query)
+
     window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
     if ( get_records_promise && window.lodash.get(get_records_promise, "readyState") !== 4){
       get_records_promise.abort()
@@ -758,6 +761,14 @@
         console.error(err)
       }
     })
+  }
+
+  function checkArchivedSwitchIsCorrectlySwitched(query) {
+    if ((!query[status_field] || query[status_field].length === 0)) {
+      archivedSwitch.prop('checked', true)
+    } else {
+      archivedSwitch.prop('checked', false)
+    }
   }
 
   $('#load-more').on('click', function () {
