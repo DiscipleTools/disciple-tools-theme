@@ -526,8 +526,8 @@
 
   $('#archivedToggle').on('click', function() {
     const showArchived = this.checked
-    const query = current_filter.query
-    let status = query[status_field];
+
+    let status = getFilteredStatus();
 
     if (showArchived && status && status.includes(filterOutArchivedItemsKey)) {
        const index = status.indexOf(filterOutArchivedItemsKey)
@@ -535,11 +535,49 @@
     }
 
     if (!showArchived && (!status || status.length === 0)) {
-      query[status_field] = [ filterOutArchivedItemsKey ]
+      setFilteredStatus([filterOutArchivedItemsKey])
     }
 
     get_records()
   })
+
+  function isCustomFilter() {
+    return !!current_filter.query.fields
+  }
+
+  function getFilteredStatus() {
+    return isCustomFilter() ? getStatusFieldInCustomFilter() : current_filter.query[status_field];
+  }
+
+  function setFilteredStatus(newStatus) {
+    if (isCustomFilter()) {
+      setStatusFieldInCustomFilter(newStatus)
+    } else {
+      current_filter.query[status_field] = newStatus
+    }
+  }
+
+  function getStatusFieldInCustomFilter() {
+    const query = current_filter.query
+    const fields = query.fields
+
+    if (!fields) return {}
+
+    const filterItem = fields.find((item) => Object.prototype.hasOwnProperty.call(item, status_field))
+    return filterItem && filterItem[status_field]
+  }
+
+  function setStatusFieldInCustomFilter(newStatus) {
+    const fields = current_filter.query.fields;
+    if (!fields) return
+
+    const index = fields.findIndex((item) => Object.prototype.hasOwnProperty.call(item, status_field))
+    if (index === -1) {
+      fields.push({[status_field]: newStatus})
+    } else {
+      fields[index][status_field] = newStatus
+    }
+  }
 
   $('#records-table').dragableColumns({
     drag: true,
@@ -764,7 +802,8 @@
   }
 
   function checkArchivedSwitchIsCorrectlySwitched(query) {
-    if ((!query[status_field] || query[status_field].length === 0)) {
+    const status = getFilteredStatus()
+    if ((!status || status.length === 0)) {
       archivedSwitch.prop('checked', true)
     } else {
       archivedSwitch.prop('checked', false)

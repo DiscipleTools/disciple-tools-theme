@@ -699,6 +699,15 @@ dt_please_log_in();
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>
+                                        <!-- If this field is the post's status field then add a filter out archived items checkbox -->
+                                        <?php if ($post_settings['status_field'] == $field) : ?>
+                                            <div class="key_select_options">
+                                                <label style="cursor: pointer">
+                                                    <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
+                                                           value="<?php echo '-' . esc_html( $post_settings['archived_status_key'] ) ?>"> <?php echo __( 'Exclude archived' ) ?>
+                                                </label>
+                                            </div>
+                                        <?php endif; ?>
                                     <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "boolean" ) : ?>
                                         <div class="boolean_options">
                                             <label style="cursor: pointer">
