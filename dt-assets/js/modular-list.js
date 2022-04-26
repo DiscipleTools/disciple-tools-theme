@@ -533,14 +533,8 @@
        status.splice(index, 1)
     }
 
-    if (!showArchived) {
-      if (!status) {
-        query[status_field] = []
-        status = query[status_field]
-      }
-      if (!status.includes(filterOutArchivedItemsKey)) {
-        status.push(filterOutArchivedItemsKey)
-      }
+    if (!showArchived && (!status || status.length === 0)) {
+      query[status_field] = [ filterOutArchivedItemsKey ]
     }
 
     get_records()
