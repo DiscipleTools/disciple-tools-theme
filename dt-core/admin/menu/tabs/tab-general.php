@@ -776,7 +776,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="background-color:#3f729b"><img width="10%" src="<?php echo esc_html( $logo_url ); ?>"></td>
+                        <td style="background-color:#3f729b"><img height="22px" style="vertical-align:-webkit-baseline-middle;" src="<?php echo esc_html( $logo_url ); ?>"></td>
                         <td><input type="text" name="custom_logo_url" value="<?php echo esc_html( $logo_url ); ?>"></td>
                         <td><button class="button" name="default_logo_url">Default</button></td>
                         <td><button class="button file-upload-display-uploader" data-form="custom_logo_box" data-icon-input="custom_logo_url" style="margin-left:1%"><?php esc_html_e( 'Upload', 'disciple_tools' ); ?></button></td>
@@ -794,9 +794,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 return;
             }
 
-            // Chang Custom Logo URL
+            // Change Custom Logo URL
             if ( isset( $_POST['custom_logo_url'] ) ) {
-                $custom_logo_url = esc_url( sanitize_text_field( $_POST['custom_logo_url'] ) );
+
+                $custom_logo_url = esc_url( sanitize_text_field( wp_unslash( $_POST['custom_logo_url'] ) ) );
                 update_option( 'custom_logo_url', $custom_logo_url );
             }
 
