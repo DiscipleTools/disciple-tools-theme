@@ -698,7 +698,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         $custom_field_options = dt_get_option( 'dt_field_customizations' );
         $custom_contact_fields = $custom_field_options['contacts'];
 
-        foreach ( $custom_contact_fields as $field_key => $field_settings ) {
+        foreach ( $fields as $field_key => $field_settings ) {
             foreach ( $langs as $lang => $val ) {
                 $langcode = $val['language'];
                 if ( isset( $_POST['field_label'][$field_key][$langcode] ) ) {
