@@ -62,7 +62,16 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                                     ?>
                                     <ul class="ul-no-bullets" style="">
                                         <?php foreach ( $post_settings["fields"] as $field_key => $field_values ):
-                                            if ( ! empty( $field_values["hidden"] ) ) {
+                                            if ( ! empty( $field_values["hidden"] ) && empty( $field_values["custom_display"] ) ) {
+                                                continue;
+                                            }
+                                            if ( isset( $field_values["in_create_form"] ) && $field_values["in_create_form"] === false ) {
+                                                continue;
+                                            }
+                                            if ( ! isset( $field_values["tile"] ) ) {
+                                                continue;
+                                            }
+                                            if ( ! ( isset( $field_values["type"] ) && empty( $field_values["custom_display"] ) && empty( $field_values["hidden"] ) ) ) {
                                                 continue;
                                             }
                                             ?>
