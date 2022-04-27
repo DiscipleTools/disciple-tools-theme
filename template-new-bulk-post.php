@@ -197,8 +197,8 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                         </div>
 
                         <div id="add_new_bulk_record_div"
-                             style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">
-                            <a class="button" id="add_new_bulk_record" style="margin:0;padding:3px 0; width:100%">
+                             style="text-align: center; margin: 15px;">
+                            <a class="button dt-green" id="add_new_bulk_record">
                                 <?php esc_html_e( 'Add New Row', 'disciple_tools' ); ?>
                             </a>
                         </div>
@@ -208,7 +208,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                             <a href="<?php echo esc_html( get_site_url() . "/" . $dt_post_type ) ?>"
                                class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' ) ?></a>
                             <button class="button loader js-create-post-bulk-button dt-green" type="submit"
-                                    disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
+                                    disabled><?php esc_html_e( "Save", "disciple_tools" ); ?></button>
                         </div>
                     </div>
                 </form>
