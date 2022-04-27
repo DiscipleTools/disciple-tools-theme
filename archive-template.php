@@ -274,13 +274,21 @@ dt_please_log_in();
                         do_action( 'dt_post_bulk_list_link', $post_type, $post_settings, $dt_magic_apps );
                         ?>
 
+                        <?php 
+                            $status_key = $post_settings['status_field'];
+                            $archived_key = $post_settings['archived_status_key'];
+
+                            $archived_text = $status_key && $archived_key ? $post_settings['fields'][$status_key]['default'][$archived_key]['label'] : _e( 'Archived', 'disciple_tools' );
+                            $archived_label = sprintf( _x( "Show %s", "disciple_tools" ), $archived_text )
+                        ?>
+
                         <span style="display:inline-block" class="show-closed-switch">
-                            <?php esc_html_e( "Show archived", "disciple_tools" ) ?>
+                            <?php esc_html_e( $archived_label ) ?>
                             <div class="switch tiny">
                                 <input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
                                 <label class="switch-paddle" for="archivedToggle">
-                                    <span class="show-for-sr"><?php esc_html_e( "Show archived", "disciple_tools" ) ?></span>
-                                 </label>
+                                    <span class="show-for-sr"><?php esc_html_e( $archived_label ) ?></span>
+                                </label>
                             </div>
                         </span>
 
@@ -699,15 +707,6 @@ dt_please_log_in();
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>
-                                        <!-- If this field is the post's status field then add a filter out archived items checkbox -->
-                                        <?php if ($post_settings['status_field'] == $field) : ?>
-                                            <div class="key_select_options">
-                                                <label style="cursor: pointer">
-                                                    <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
-                                                           value="<?php echo '-' . esc_html( $post_settings['archived_status_key'] ) ?>"> <?php echo __( 'Exclude archived' ) ?>
-                                                </label>
-                                            </div>
-                                        <?php endif; ?>
                                     <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "boolean" ) : ?>
                                         <div class="boolean_options">
                                             <label style="cursor: pointer">
