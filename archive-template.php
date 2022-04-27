@@ -275,8 +275,8 @@ dt_please_log_in();
                         ?>
 
                         <?php 
-                            $status_key = $post_settings['status_field'];
-                            $archived_key = $post_settings['archived_status_key'];
+                            $status_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['status_key'] : null;
+                            $archived_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['archived_key'] : null;
 
                             $archived_text = $status_key && $archived_key ? $post_settings['fields'][$status_key]['default'][$archived_key]['label'] : _e( 'Archived', 'disciple_tools' );
                             $archived_label = sprintf( _x( "Show %s", "disciple_tools" ), $archived_text )

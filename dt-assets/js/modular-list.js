@@ -19,8 +19,9 @@
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
-  const { status_field, archived_status_key } = list_settings.post_type_settings
-  const filterOutArchivedItemsKey = `-${archived_status_key}`
+  const { status_field } = list_settings.post_type_settings
+  const { status_key, archived_key } = status_field ? status_field : {}
+  const filterOutArchivedItemsKey = `-${archived_key}`
   const archivedSwitch = $('#archivedToggle')
   window.post_type_fields = list_settings.post_type_settings.fields
   window.records_list = { posts:[], total:0 }
@@ -546,14 +547,14 @@
   }
 
   function getFilteredStatus() {
-    return isCustomFilter() ? getStatusFieldInCustomFilter() : current_filter.query[status_field];
+    return isCustomFilter() ? getStatusFieldInCustomFilter() : current_filter.query[status_key];
   }
 
   function setFilteredStatus(newStatus) {
     if (isCustomFilter()) {
       setStatusFieldInCustomFilter(newStatus)
     } else {
-      current_filter.query[status_field] = newStatus
+      current_filter.query[status_key] = newStatus
     }
   }
 
@@ -563,19 +564,19 @@
 
     if (!fields) return {}
 
-    const filterItem = fields.find((item) => Object.prototype.hasOwnProperty.call(item, status_field))
-    return filterItem && filterItem[status_field]
+    const filterItem = fields.find((item) => Object.prototype.hasOwnProperty.call(item, status_key))
+    return filterItem && filterItem[status_key]
   }
 
   function setStatusFieldInCustomFilter(newStatus) {
     const fields = current_filter.query.fields;
     if (!fields) return
 
-    const index = fields.findIndex((item) => Object.prototype.hasOwnProperty.call(item, status_field))
+    const index = fields.findIndex((item) => Object.prototype.hasOwnProperty.call(item, status_key))
     if (index === -1) {
-      fields.push({[status_field]: newStatus})
+      fields.push({[status_key]: newStatus})
     } else {
-      fields[index][status_field] = newStatus
+      fields[index][status_key] = newStatus
     }
   }
 
@@ -2266,3 +2267,4 @@
   }
 
 })(window.jQuery, window.list_settings, window.Foundation);
+ 
