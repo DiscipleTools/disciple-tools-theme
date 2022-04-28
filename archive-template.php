@@ -279,15 +279,15 @@ dt_please_log_in();
                             $archived_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['archived_key'] : null;
 
                             $archived_text = $status_key && $archived_key ? $post_settings['fields'][$status_key]['default'][$archived_key]['label'] : __( 'Archived', 'disciple_tools' );
-                            $archived_label = esc_html__( sprintf( _x( "Show %s", "disciple_tools" ), $archived_text ) );
+                            $archived_label = sprintf( _x( "Show %s", "disciple_tools" ), $archived_text );
                         ?>
 
                         <span style="display:inline-block" class="show-closed-switch">
-                            <?php echo $archived_label ?>
+                            <?php echo esc_html( $archived_label ) ?>
                             <div class="switch tiny">
                                 <input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
                                 <label class="switch-paddle" for="archivedToggle">
-                                    <span class="show-for-sr"><?php echo $archived_label ?></span>
+                                    <span class="show-for-sr"><?php echo esc_html( $archived_label ) ?></span>
                                 </label>
                             </div>
                         </span>
