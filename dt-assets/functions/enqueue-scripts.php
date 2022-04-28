@@ -374,3 +374,21 @@ function dt_template_scripts( $slug, $name, $templates, $args ) {
 }
 add_action( 'get_template_part', 'dt_template_scripts', 999, 4 );
 
+/**
+ * Render initial fields html to be displayed during bulk post type record creation.
+ *
+ * @param $dt_post_type
+ *
+ * @return false|string
+ */
+function get_rendered_new_bulk_record_fields_html( $dt_post_type ) {
+    ob_start();
+
+    render_new_bulk_record_fields( $dt_post_type );
+
+    $html = ob_get_contents();
+
+    ob_end_clean();
+
+    return $html;
+}

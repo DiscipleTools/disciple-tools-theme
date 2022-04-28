@@ -91,9 +91,6 @@ function makeRequestOnPosts(type, url, data) {
 }
 
 window.API = {
-  get_new_bulk_record_fields: (post_type) =>
-    makeRequestOnPosts("GET", `${post_type}/new_bulk_record_fields`),
-
   get_post: (post_type, postId) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}`),
 
