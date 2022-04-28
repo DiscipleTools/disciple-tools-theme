@@ -23,6 +23,7 @@
   const { status_key, archived_key } = status_field ? status_field : {}
   const filterOutArchivedItemsKey = `-${archived_key}`
   const archivedSwitch = $('#archivedToggle')
+  let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_cookie( 'list_archived_switch_status', [] ) || false
   window.post_type_fields = list_settings.post_type_settings.fields
   window.records_list = { posts:[], total:0 }
 
@@ -35,6 +36,8 @@
   } catch (e) {
     cached_filter = {}
   }
+
+  setupArchivedSwitchPosition(archivedSwitchStatus)
 
   const query_param_custom_filter = create_custom_filter_from_query_params()
 
@@ -525,9 +528,21 @@
     window.location.reload()
   })
 
-  $('#archivedToggle').on('click', function() {
+  archivedSwitch.on('click', function() {
     const showArchived = this.checked
 
+    archivedSwitchStatus = showArchived
+    window.SHAREDFUNCTIONS.save_json_cookie('list_archived_switch_status', showArchived, list_settings.post_type)
+
+    get_records()
+  })
+
+  function setupArchivedSwitchPosition(switchStatus) {
+    archivedSwitch.prop('checked', switchStatus)
+}
+
+  function applyArchivedToggleToCurrentFilter() {
+    const showArchived = archivedSwitchStatus
     let status = getFilteredStatus();
 
     if (showArchived && status && status.includes(filterOutArchivedItemsKey)) {
@@ -538,9 +553,7 @@
     if (!showArchived && (!status || status.length === 0)) {
       setFilteredStatus([filterOutArchivedItemsKey])
     }
-
-    get_records()
-  })
+  }
 
   function isCustomFilter() {
     return !!current_filter.query.fields
@@ -562,7 +575,7 @@
     const query = current_filter.query
     const fields = query.fields
 
-    if (!fields) return {}
+    if (!fields || !Array.isArray(fields)) return []
 
     const filterItem = fields.find((item) => Object.prototype.hasOwnProperty.call(item, status_key))
     return filterItem && filterItem[status_key]
@@ -570,7 +583,7 @@
 
   function setStatusFieldInCustomFilter(newStatus) {
     const fields = current_filter.query.fields;
-    if (!fields) return
+    if (!fields || !Array.isArray(fields)) return
 
     const index = fields.findIndex((item) => Object.prototype.hasOwnProperty.call(item, status_key))
     if (index === -1) {
@@ -756,7 +769,7 @@
       query.offset = 0
     }
 
-    checkArchivedSwitchIsCorrectlySwitched(query)
+    applyArchivedToggleToCurrentFilter()
 
     window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
     if ( get_records_promise && window.lodash.get(get_records_promise, "readyState") !== 4){
@@ -800,15 +813,6 @@
         console.error(err)
       }
     })
-  }
-
-  function checkArchivedSwitchIsCorrectlySwitched(query) {
-    const status = getFilteredStatus()
-    if ((!status || status.length === 0)) {
-      archivedSwitch.prop('checked', true)
-    } else {
-      archivedSwitch.prop('checked', false)
-    }
   }
 
   $('#load-more').on('click', function () {
@@ -2267,4 +2271,3 @@
   }
 
 })(window.jQuery, window.list_settings, window.Foundation);
- 
