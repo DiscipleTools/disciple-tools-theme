@@ -119,7 +119,7 @@
   }
 
   function remove_current_filter_label(label, field_details) {
-    if (current_filter && current_filter.labels /*&& current_filter.query.fields*/) {
+    if (current_filter && current_filter.labels) {
       if (field_details && field_details.id && field_details.name) {
 
         // Update current filter's labels
@@ -190,6 +190,17 @@
               delete current_filter.query[field_details.id];
             }
 
+          } else if (current_filter.query['text']) {
+
+            // Remove text property, to force a return to all filtered view
+            delete current_filter.query['text'];
+
+            // Locate and select corresponding all radio button
+            $('.list-views').find('.js-list-view').each(function (idx, input) {
+              if ($.inArray($(input).data('id'), ['all_my_contacts', 'all']) !== -1) {
+                $(input).prop('checked', true);
+              }
+            });
           }
         }
       }
@@ -199,7 +210,7 @@
     $(label).remove();
 
     // Refresh view records
-    get_records_for_current_filter();
+    get_records_for_current_filter(current_filter);
 
   }
 
@@ -256,22 +267,29 @@
     return filters.map((filter) =>JSON.parse(decodeURI(filter)))
   }
 
-  function get_records_for_current_filter(){
+  function get_records_for_current_filter(custom_filter = null){
     let checked = $(".js-list-view:checked")
     let current_view = checked.val()
     let filter_id = checked.data("id") || current_view || ""
     let sort = current_filter.query.sort || null;
-    if ( current_view === "custom_filter" ){
+
+    // Determine if default resets are required?
+    if ( custom_filter ) {
+      current_filter = custom_filter
+    } else if (current_view === "custom_filter") {
       let filterId = checked.data("id")
-      current_filter = window.lodash.find(custom_filters, {ID:filterId})
+      current_filter = window.lodash.find(custom_filters, {ID: filterId})
       current_filter.type = current_view
     } else {
-      current_filter = window.lodash.find(list_settings.filters.filters, {ID:filter_id}) || window.lodash.find(list_settings.filters.filters, {ID:filter_id.toString()}) || current_filter
+      current_filter = window.lodash.find(list_settings.filters.filters, {ID: filter_id}) || window.lodash.find(list_settings.filters.filters, {ID: filter_id.toString()}) || current_filter
       current_filter.type = 'default'
-      current_filter.labels = current_filter.labels || [{ id:filter_id, name:current_filter.name}]
+      current_filter.labels = current_filter.labels || [{id: filter_id, name: current_filter.name}]
     }
     sort = sort || current_filter.query.sort;
     current_filter.query.sort = (typeof sort === "string") ? sort : "name"
+
+    // Conduct a deep copy (clone) of filter, so as to support future returns to default
+    current_filter = $.extend(true, {}, current_filter);
 
     clear_search_query()
 
