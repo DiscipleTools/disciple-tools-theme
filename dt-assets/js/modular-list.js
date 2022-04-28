@@ -3,13 +3,13 @@
   let selected_filters = $("#selected-filters")
   let new_filter_labels = []
   let custom_filters = []
+  let items = []
   let filter_to_save = "";
   let filter_to_delete = "";
   let filterToEdit = "";
   let filter_accordions = $('#list-filter-tabs')
   let currentFilters = $("#current-filters")
   let cookie = window.SHAREDFUNCTIONS.getCookie("last_view");
-  let cached_filter
   let get_records_promise = null
   let loading_spinner = $("#list-loading-spinner")
   let old_filters = JSON.stringify(list_settings.filters)
@@ -17,91 +17,96 @@
   let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_show_in_table', [] );
   let fields_to_search = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_search', [] );
   let current_user_id = wpApiNotifications.current_user_id;
+  let current_filter
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
-  window.post_type_fields = list_settings.post_type_settings.fields
-
+  let getFilterCountsPromise = null
   const ALL_ID = '*'
   const ALL_WITHOUT_ID = '-*'
+  window.post_type_fields = list_settings.post_type_settings.fields
 
-  let items = []
-  try {
-    cached_filter = JSON.parse(cookie)
-  } catch (e) {
-    cached_filter = {}
+  main();
+
+  function main() {
+    const cached_filter = getCachedFilter(cookie);
+
+    const query_param_custom_filter = create_custom_filter_from_query_params();
+
+    current_filter = getCurrentFilter(query_param_custom_filter, cached_filter);
+
+    setup_filters();
+
+    setup_custom_cached_filter(query_param_custom_filter, cached_filter, current_filter);
+
+    determineListColumns(fields_to_show_in_table, list_settings);
+
+    get_records_for_current_filter();
+
+    get_filter_counts(old_filters, list_settings);
+
+    resetSortingInTableHeader(current_filter);
   }
 
-  const query_param_custom_filter = create_custom_filter_from_query_params()
-
-  let current_filter
-  if (query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter)) {
-    current_filter = query_param_custom_filter
-  } else if (cached_filter && !window.lodash.isEmpty(cached_filter)) {
-    current_filter = cached_filter
-  } else {
-    current_filter =  { query:{} }
-  }
-
-  //set up main filters
-  setup_filters()
-
-  let check_first_filter = function (){
+  function check_first_filter(){
     $('#list-filter-tabs .accordion-item a')[0].click()
     $($('.js-list-view')[0]).prop('checked', true)
   }
 
-  //set up custom cached filter
-  if ( query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter) && query_param_custom_filter.type === "custom_filter" ){
-    query_param_custom_filter.query.offset = 0;
-    add_custom_filter(query_param_custom_filter.name, "default", query_param_custom_filter.query, query_param_custom_filter.labels, false)
-  } else if ( cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ) {
-    cached_filter.query.offset = 0;
-    add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
-  } else {
-    //check select filter
-    if ( current_filter.ID ){
-      //open the filter tabs
-      $(`#list-filter-tabs [data-id='${window.lodash.escape( current_filter.tab )}'] a`).click()
-      let filter_element = $(`input[name=view][data-id="${window.lodash.escape( current_filter.ID )}"].js-list-view`)
-      if ( filter_element.length ){
-        filter_element.prop('checked', true);
-      } else {
-        check_first_filter()
-      }
+  function determineListColumns(fieldsToShowInTable, listSettings) {
+    if (window.lodash.isEmpty(fieldsToShowInTable)) {
+      window.lodash.forOwn(listSettings.post_type_settings.fields, (field_settings, field_key) => {
+        if (window.lodash.get(field_settings, 'show_in_table') === true || window.lodash.get(field_settings, 'show_in_table') > 0) {
+          fieldsToShowInTable.push(field_key);
+        }
+      });
+      fieldsToShowInTable.sort((a, b) => {
+        let a_order = listSettings.post_type_settings.fields[a].show_in_table ? (listSettings.post_type_settings.fields[a].show_in_table === true ? 50 : listSettings.post_type_settings.fields[a].show_in_table) : 200;
+        let b_order = listSettings.post_type_settings.fields[b].show_in_table ? (listSettings.post_type_settings.fields[b].show_in_table === true ? 50 : listSettings.post_type_settings.fields[b].show_in_table) : 200;
+        return a_order > b_order ? 1 : -1;
+      });
+    }
+  }
+
+  function setup_custom_cached_filter(urlCustomFilter, cachedFilter, currentFilter) {
+    if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter) && urlCustomFilter.type === "custom_filter") {
+      urlCustomFilter.query.offset = 0;
+      add_custom_filter(urlCustomFilter.name, "default", urlCustomFilter.query, urlCustomFilter.labels, false);
+    } else if (cachedFilter && !window.lodash.isEmpty(cachedFilter) && cachedFilter.type === "custom_filter") {
+      cachedFilter.query.offset = 0;
+      add_custom_filter(cachedFilter.name, "default", cachedFilter.query, cachedFilter.labels, false);
     } else {
-      check_first_filter()
-    }
-  }
-
-  //determine list columns
-  if ( window.lodash.isEmpty(fields_to_show_in_table)){
-    window.lodash.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
-      if (window.lodash.get(field_settings, 'show_in_table')===true || window.lodash.get(field_settings, 'show_in_table') > 0) {
-        fields_to_show_in_table.push(field_key)
+      //check select filter
+      if (currentFilter.ID) {
+        //open the filter tabs
+        $(`#list-filter-tabs [data-id='${window.lodash.escape(currentFilter.tab)}'] a`).click();
+        let filter_element = $(`input[name=view][data-id="${window.lodash.escape(currentFilter.ID)}"].js-list-view`);
+        if (filter_element.length) {
+          filter_element.prop('checked', true);
+        } else {
+          check_first_filter();
+        }
+      } else {
+        check_first_filter();
       }
-    })
-    fields_to_show_in_table.sort((a,b)=>{
-      let a_order = list_settings.post_type_settings.fields[a].show_in_table ? ( list_settings.post_type_settings.fields[a].show_in_table === true ? 50 : list_settings.post_type_settings.fields[a].show_in_table ) : 200
-      let b_order = list_settings.post_type_settings.fields[b].show_in_table ? ( list_settings.post_type_settings.fields[b].show_in_table === true ? 50 : list_settings.post_type_settings.fields[b].show_in_table ) : 200
-      return a_order > b_order ? 1 : -1
-    })
+    }
   }
 
-  // get records on load and when a filter is clicked
-  get_records_for_current_filter()
-  $(document).on('change', '.js-list-view', () => {
-    get_records_for_current_filter()
-  });
-
-  //load record for the first filter when a tile is clicked
-  $(document).on('click', '.accordion-title', function(){
-    let selected_filter = $(".js-list-view:checked").data('id')
-    let tab = $(this).data('id');
-    if ( selected_filter ){
-      $(`.accordion-item[data-id='${tab}'] .js-list-view`).first().prop('checked', true);
-      get_records_for_current_filter()
+  function getCurrentFilter(urlCustomFilter, cachedFilter) {
+    if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
+      return urlCustomFilter;
+    } else if (cachedFilter && !window.lodash.isEmpty(cachedFilter)) {
+      return cachedFilter;
     }
-  })
+    return { query: {} };
+  }
+
+  function getCachedFilter(inCookie) {
+    try {
+      return JSON.parse(inCookie);
+    } catch (e) {
+      return {};
+    }
+  }
 
   /**
    * Looks for all query params called 'filter' (allows for multiple filters to be applied)
@@ -284,20 +289,19 @@
     }
   }
 
-  let getFilterCountsPromise = null
-  let get_filter_counts = ()=>{
+  function get_filter_counts(oldFilters, listSettings) {
     if ( getFilterCountsPromise && window.lodash.get( getFilterCountsPromise, "readyState") !== 4 ){
       getFilterCountsPromise.abort()
     }
     getFilterCountsPromise = $.ajax({
-      url: `${window.wpApiShare.root}dt/v1/users/get_filters?post_type=${list_settings.post_type}&force_refresh=1`,
+      url: `${window.wpApiShare.root}dt/v1/users/get_filters?post_type=${listSettings.post_type}&force_refresh=1`,
       beforeSend: function (xhr) {
         xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
       }
     })
     getFilterCountsPromise.then(filters=>{
-      if ( old_filters !== JSON.stringify(filters) ){
-        list_settings.filters = filters
+      if ( oldFilters !== JSON.stringify(filters) ){
+        listSettings.filters = filters
         setup_filters()
       }
     }).catch(err => {
@@ -306,8 +310,6 @@
       }
     })
   }
-  get_filter_counts()
-
 
   function setup_current_filter_labels() {
     let html = ""
@@ -351,15 +353,30 @@
     currentFilters.html(html)
   }
 
+  function resetSortingInTableHeader(currentFilter) {
+    let sort_field = window.lodash.get(currentFilter, "query.sort", "name");
+    //reset sorting in table header
+    table_header_row.removeClass("sorting_asc");
+    table_header_row.removeClass("sorting_desc");
+    let header_cell = $(`.js-list thead .sortable th[data-id="${window.lodash.escape(sort_field.replace("-", ""))}"]`);
+    header_cell.addClass(`sorting_${sort_field.startsWith('-') ? 'desc' : 'asc'}`);
+    table_header_row.data("sort", '');
+    header_cell.data("sort", 'asc');
+  }
 
-  let sort_field = window.lodash.get( current_filter, "query.sort", "name" )
-  //reset sorting in table header
-  table_header_row.removeClass("sorting_asc")
-  table_header_row.removeClass("sorting_desc")
-  let header_cell = $(`.js-list thead .sortable th[data-id="${window.lodash.escape( sort_field.replace("-", "") )}"]`)
-  header_cell.addClass(`sorting_${ sort_field.startsWith('-') ? 'desc' : 'asc'}`)
-  table_header_row.data("sort", '')
-  header_cell.data("sort", 'asc')
+  $(document).on('change', '.js-list-view', () => {
+    get_records_for_current_filter()
+   });
+
+   //load record for the first filter when a tile is clicked
+   $(document).on('click', '.accordion-title', function(){
+     let selected_filter = $(".js-list-view:checked").data('id')
+     let tab = $(this).data('id');
+     if ( selected_filter ){
+       $(`.accordion-item[data-id='${tab}'] .js-list-view`).first().prop('checked', true);
+       get_records_for_current_filter()
+     }
+   })
 
   $('.js-sort-by').on("click", function () {
     table_header_row.removeClass("sorting_asc")
