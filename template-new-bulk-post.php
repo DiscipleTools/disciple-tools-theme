@@ -5,6 +5,50 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+// Launch after all required scripts have been loaded!
+add_action( 'wp_enqueue_scripts', 'new_bulk_record_scripts', 2022 );
+function new_bulk_record_scripts() {
+
+    global $wp_scripts;
+
+    // Obtain current data for given handle and reshape, if needed.
+    $localized_data = $wp_scripts->get_data( 'new-record', 'data' );
+    if ( ! is_array( $localized_data ) ) {
+        $localized_data = json_decode( str_replace( 'var new_record_localized = ', '', substr( $localized_data, 0, - 1 ) ), true );
+    }
+
+    // Append bulk related elements.
+    $post_type                                         = explode( "/", dt_get_url_path() )[0];
+    $localized_data['bulk_copy_control_but_img_uri']   = esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' );
+    $localized_data['bulk_record_removal_but_img_uri'] = esc_html( get_template_directory_uri() . '/dt-assets/images/invalid.svg' );
+    $localized_data['bulk_save_redirect_uri']          = esc_html( site_url( sprintf( '/%s/', $post_type ) ) );
+    $localized_data['bulk_record_fields']              = get_rendered_new_bulk_record_fields_html( $post_type );
+    $localized_data['bulk_mapbox_placeholder_txt']     = esc_attr( __( 'Search Location', 'disciple_tools' ) );
+
+    // Save updated localized data.
+    $wp_scripts->add_data( 'new-record', 'data', '' );
+    wp_localize_script( 'new-record', 'new_record_localized', $localized_data );
+}
+
+/**
+ * Render initial fields html to be displayed during bulk post type record creation.
+ *
+ * @param $post_type
+ *
+ * @return false|string
+ */
+function get_rendered_new_bulk_record_fields_html( $post_type ) {
+    ob_start();
+
+    render_new_bulk_record_fields( $post_type );
+
+    $html = ob_get_contents();
+
+    ob_end_clean();
+
+    return $html;
+}
+
 dt_please_log_in();
 
 $url          = dt_get_url_path();

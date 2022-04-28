@@ -334,15 +334,9 @@ function dt_site_scripts() {
             $dependencies[] = 'mapbox-gl';
         }
         dt_theme_enqueue_script( 'new-record', 'dt-assets/js/new-record.js', $dependencies, true );
-
         wp_localize_script( 'new-record', 'new_record_localized', array(
-            'post_type'                       => $post_type,
-            'post_type_settings'              => $post_settings,
-            'bulk_copy_control_but_img_uri'   => esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ),
-            'bulk_record_removal_but_img_uri' => esc_html( get_template_directory_uri() . '/dt-assets/images/invalid.svg' ),
-            'bulk_save_redirect_uri'          => esc_html( site_url( sprintf( '/%s/', $post_type ) ) ),
-            'bulk_record_fields'              => get_rendered_new_bulk_record_fields_html( $post_type ),
-            'bulk_mapbox_placeholder_txt'     => esc_attr( __( 'Search Location', 'disciple_tools' ) )
+            'post_type'          => $post_type,
+            'post_type_settings' => $post_settings,
         ) );
     }
 
@@ -373,22 +367,3 @@ function dt_template_scripts( $slug, $name, $templates, $args ) {
     }
 }
 add_action( 'get_template_part', 'dt_template_scripts', 999, 4 );
-
-/**
- * Render initial fields html to be displayed during bulk post type record creation.
- *
- * @param $dt_post_type
- *
- * @return false|string
- */
-function get_rendered_new_bulk_record_fields_html( $dt_post_type ) {
-    ob_start();
-
-    render_new_bulk_record_fields( $dt_post_type );
-
-    $html = ob_get_contents();
-
-    ob_end_clean();
-
-    return $html;
-}
