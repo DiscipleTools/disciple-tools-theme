@@ -75,10 +75,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
                 'label_groups' => strtolower( __( 'Groups', 'disciple_tools' ) ),
                 'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
                 'label_generation' => __( 'Generation', 'disciple_tools' ),
-                'label_group_types' => __( 'Group Types', 'disciple_tools' ),
-                'label_pre_group' => __( 'Pre-Group', 'disciple_tools' ),
-                'label_group' => __( 'Group', 'disciple_tools' ),
-                'label_church' => __( 'Church', 'disciple_tools' ),
+                'label_group_types' => __( 'Group Types', 'disciple_tools' )
             ],
             'preferences' => $this->preferences(),
             'hero_stats' => $this->chart_project_hero_stats(),
@@ -198,7 +195,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
                 JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                      AND d.meta_key = 'group_type'
-                     AND ( d.meta_value = 'group' OR d.meta_value = 'church' )
+                     AND ( d.meta_value != 'team' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               ) as out_of
@@ -213,7 +210,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
                 JOIN $wpdb->postmeta as e
                   ON a.ID=e.post_id
                      AND e.meta_key = 'group_type'
-                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
+                     AND ( e.meta_value != 'team' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               GROUP BY d.meta_value
