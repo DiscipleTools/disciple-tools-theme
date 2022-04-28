@@ -108,6 +108,11 @@ class DT_Contacts_Base {
 
         $user_management_permissions = Disciple_Tools_Roles::default_user_management_caps();
 
+        $role_caps = array_reduce(dt_multi_role_get_plugin_capabilities(), function( $caps, $slug ) {
+            $caps[$slug] = true;
+            return $caps;
+        }, []);
+
         // Multiplier
         $expected_roles["multiplier"]["permissions"] = array_merge( $expected_roles["multiplier"]["permissions"], $multiplier_permissions );
 
@@ -118,6 +123,7 @@ class DT_Contacts_Base {
         // D.T Admin
         $expected_roles["dt_admin"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
         $expected_roles["dt_admin"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );
+        $expected_roles['dt_admin']['permissions'] = array_merge( $expected_roles["dt_admin"]["permissions"], $role_caps );
         $expected_roles["dt_admin"]["permissions"]['manage_dt'] = true;
         $expected_roles["dt_admin"]["permissions"]['view_project_metrics'] = true;
 
@@ -127,6 +133,7 @@ class DT_Contacts_Base {
 
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["administrator"]["permissions"], $multiplier_permissions );
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["administrator"]["permissions"], $user_management_permissions );
+        $expected_roles['administrator']['permissions'] = array_merge( $expected_roles["administrator"]["permissions"], $role_caps );
         $expected_roles["administrator"]["permissions"]['manage_dt'] = true;
         $expected_roles["administrator"]["permissions"]['view_project_metrics'] = true;
         $expected_roles["administrator"]["permissions"]["dt_all_admin_contacts"] = true;

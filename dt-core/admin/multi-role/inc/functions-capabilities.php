@@ -27,6 +27,16 @@ function dt_multi_role_sanitize_cap( $cap ) {
 }
 
 /**
+ * Return all registered capabilities
+ *
+ * @access public
+ * @return Array
+ */
+function dt_capabilities() {
+    return Disciple_Tools_Capability_Factory::get_instance()->get_capabilities();
+}
+
+/**
  * Conditional tag for checking whether a capability exists.
  *
  * @since  0.1.0
@@ -141,6 +151,10 @@ function dt_multi_role_get_role_capabilities() {
     return array_unique( $capabilities );
 }
 
+function dt_multi_role_get_capability( $capability ) {
+    return Disciple_Tools_Capability_Factory::get_instance()->get_capability( $capability );
+}
+
 /**
  * Additional capabilities provided by the Members plugin that gives users permissions to handle
  * certain features of the plugin.
@@ -153,7 +167,7 @@ function dt_multi_role_get_plugin_capabilities() {
 
     return [
         'list_roles',       // View roles list.
-        'create_roles',       // Create new roles.
+        'create_roles',     // Create new roles.
         'delete_roles',       // Delete roles.
         'edit_roles',       // Edit a role's caps.
         'restrict_content' // Restrict content (content permissions component).

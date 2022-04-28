@@ -127,7 +127,36 @@ jQuery(document).ready(function ($) {
    * COLOR PICKER
    */
   $('.color-display-picker').wpColorPicker();
-  /**
-   * COLOR PICKER
+ 
+   /**
+   * Flyout menu
    */
+  const details = [...document.querySelectorAll('details.flyout')];
+  document.addEventListener('click', function(e) {
+    if (!details.some(f => f.contains(e.target))) {
+      details.forEach(f => f.removeAttribute('open'));
+    } else {
+      details.forEach(f => !f.contains(e.target) ? f.removeAttribute('open') : '');
+    }
+  })
+
+
+  /**
+   * Roles manager source filter
+   */
+  const filter = document.querySelector('#role-manager #source-filter')
+  if (filter) {
+    const capabilities = document.querySelectorAll('#role-manager .capability')
+    const showCapsForSource = () => {
+      capabilities.forEach((capability) => {
+        if (capability.dataset.source === filter.value) {
+          capability.classList.remove('hide')
+        } else {
+          capability.classList.add('hide')
+        }
+      })
+    }
+    filter.addEventListener('input', showCapsForSource)
+    showCapsForSource()
+  }
 })

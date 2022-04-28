@@ -19,6 +19,7 @@ add_filter( 'manage_users_columns', 'dt_multi_role_manage_users_columns' );
 add_filter( 'manage_users_custom_column', 'dt_multi_role_manage_users_custom_column', 10, 3 );
 
 
+
 /**
  * Registers custom plugin scripts.
  *

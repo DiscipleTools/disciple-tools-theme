@@ -1,0 +1,72 @@
+#role-manager table {
+    width: 100%;
+}
+
+#role-manager td,
+#role-manager th {
+    padding: 15px;
+}
+
+#role-manager tbody tr {
+    background-color: #F6F7F7;
+}
+
+#role-manager tbody tr.active {
+    background-color: #2170B1;
+}
+
+#role-manager tbody tr.active td {
+    color: white;
+}
+
+#role-manager tbody tr.active a {
+    color: #F6F7F7;
+}
+
+#role-manager details.flyout .dashicons-ellipsis {
+    transform: rotate(-90deg);
+    cursor: pointer;
+}
+
+#role-manager .role {
+    border: none;
+}
+
+#role-manager select,
+#role-manager input[type=text],
+#role-manager textarea {
+    width: 100%;
+}
+
+#role-manager .capabilities {
+    background-color: white;
+    border: 0.5px solid #50575E;
+    border-radius: 4px;
+    padding: 5px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr)
+}
+
+#role-manager .capability {
+    padding: 10px;
+}
+
+#role-manager #source-filter {
+    margin-top: 10px;
+}
+
+#role-manager .dashicons-editor-help {
+    font-size: 12px;
+    line-height: 18px;
+    color: gray;
+}
+
+#role-manager .dashicons-unlock {
+    color: #2170B1;
+}
+
+#role-manager .dashicons-lock {
+    color: #E14D42;
+}
+
