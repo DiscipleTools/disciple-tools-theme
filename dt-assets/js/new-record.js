@@ -115,8 +115,13 @@ jQuery(function($) {
 
   let field_settings = window.new_record_localized.post_type_settings.fields
 
-  function date_picker_init() {
-    $('.dt_date_picker').datepicker({
+  function date_picker_init(is_bulk = false, bulk_id = 0) {
+
+    // Determine field class name to be used.
+    let field_class = (!is_bulk) ? `.dt_date_picker` : `.dt_date_picker-${bulk_id}`;
+
+    // Assign on click listener.
+    $(field_class).datepicker({
       constrainInput: false,
       dateFormat: 'yy-mm-dd',
       onClose: function (date) {
@@ -128,6 +133,11 @@ jQuery(function($) {
         new_post[id] = date
         if (this.value) {
           this.value = window.SHAREDFUNCTIONS.formatDate(moment.utc(date).unix());
+        }
+
+        // If bulk related, capture epoch
+        if (is_bulk) {
+          $(this).data('selected-date-epoch', moment.utc(date).unix());
         }
       },
       changeMonth: true,
@@ -613,8 +623,9 @@ jQuery(function($) {
     adjust_new_typeahead_general_element_class_names(bulk_record_id);
     adjust_new_typeahead_multi_select_element_class_names(bulk_record_id);
     adjust_new_typeahead_tags_element_class_names(bulk_record_id);
+    adjust_new_date_picker_class_names(bulk_record_id);
 
-    date_picker_init();
+    date_picker_init(true, bulk_record_id);
     button_multi_select_init(true, bulk_record_id);
     typeahead_general_init(true, bulk_record_id);
     typeahead_multi_select_init(true, bulk_record_id);
@@ -641,9 +652,10 @@ jQuery(function($) {
       adjust_new_typeahead_general_element_class_names(new_records_count);
       adjust_new_typeahead_multi_select_element_class_names(new_records_count);
       adjust_new_typeahead_tags_element_class_names(new_records_count);
+      adjust_new_date_picker_class_names(new_records_count);
 
       // Initialise newly added element specific functionality; e.g. typeaheads.
-      date_picker_init();
+      date_picker_init(true, new_records_count);
       button_multi_select_init(true, new_records_count);
       typeahead_general_init(true, new_records_count);
       typeahead_multi_select_init(true, new_records_count);
@@ -706,6 +718,25 @@ jQuery(function($) {
     }
   }
 
+  function adjust_new_date_picker_class_names(bulk_id) {
+    $('#form_fields_records').find('.form-fields-record').last().find('.dt_date_picker').each((key, el) => {
+      adjust_new_date_picker_class_name(bulk_id, el);
+    });
+  }
+
+  function adjust_new_date_picker_class_name(bulk_id, element) {
+    let old_field_class = `dt_date_picker`;
+
+    if ($(element).hasClass(old_field_class)) {
+      let new_field_class = `dt_date_picker-${bulk_id}`;
+      let new_field_id = $(element).attr('id') + '-' + bulk_id;
+
+      $(element).data('orig-field-id', $(element).attr('id')); // Keep a record of original id
+      $(element).removeClass(old_field_class).addClass(new_field_class);
+      $(element).prop('id', new_field_id);
+    }
+  }
+
   /*
    * Alter the shape of mapbox-search location input fields.
    */
@@ -728,6 +759,7 @@ jQuery(function($) {
       $(mapbox_search).prop('value', window.new_record_localized.bulk_mapbox_placeholder_txt);
       $(mapbox_search).addClass('button');
       $(mapbox_search).addClass('mapbox-altered-input');
+      $(mapbox_search).data('field', 'location_grid_meta');
 
       // Capture record id for processing further downstream.
       $(mapbox_search).data('bulk_record_id', $(record).find('#bulk_record_id').val());
@@ -810,6 +842,8 @@ jQuery(function($) {
     let records_total = $('#form_fields_records').find('.form-fields-record').length;
     $('#form_fields_records').find('.form-fields-record').each((key, record) => {
 
+      let bulk_record_id = $(record).find('#bulk_record_id').val();
+
       // Start to build new post object
       let new_post = {}
       if (type) {
@@ -865,14 +899,13 @@ jQuery(function($) {
       }
 
       // Package any available typeahead values
-      let bulk_record_id = $(record).find('#bulk_record_id').val();
       $(record).find('.typeahead__query input').each((index, entry) => {
         let field_id = $(entry).data('field');
         let typeahead_selector = '.js-typeahead-' + field_id + '-' + bulk_record_id;
         let typeahead = window.Typeahead[typeahead_selector];
 
         // Ensure typeahead contains stuff...!
-        if (typeahead && typeahead.items.length > 0) {
+        if (typeahead && typeahead.items && typeahead.items.length > 0) {
 
           // Instantiate new values array if required.
           if (!new_post[field_id]) {
@@ -887,6 +920,16 @@ jQuery(function($) {
               });
             }
           });
+        }
+      });
+
+      // Package any available dates
+      $(record).find('.dt_date_picker-' + bulk_record_id).each((index, entry) => {
+        let field_id = $(entry).data('orig-field-id');
+        let date_epoch = $(entry).data('selected-date-epoch');
+
+        if (date_epoch) {
+          new_post[field_id] = date_epoch;
         }
       });
 
@@ -913,7 +956,6 @@ jQuery(function($) {
   let default_filter_fields = [];
 
   if (!is_normal_new_record) {
-    adjust_selected_field_filters_by_currently_displayed_record_fields();
 
     // Initial displayed fields, to be captured as defualts; ready for use further down stream!
     default_filter_fields = list_currently_displayed_fields();
@@ -921,6 +963,9 @@ jQuery(function($) {
 
   $('#choose_fields_to_show_in_records').on('click', function (evt) {
     evt.preventDefault();
+
+    adjust_selected_field_filters_by_currently_displayed_record_fields();
+
     $('#list_fields_picker').toggle();
   });
 
@@ -1011,6 +1056,18 @@ jQuery(function($) {
       }
     });
 
+    $(record).find('#mapbox-search-altered').each((index, entry) => {
+      if ($(entry).is(':visible')) {
+        fields.push($(entry).data('field'));
+      }
+    });
+
+    $(record).find(`.dt_date_picker-${bulk_id}`).each((index, entry) => {
+      if ($(entry).is(':visible')) {
+        fields.push($(entry).data('orig-field-id'));
+      }
+    });
+
     return window.lodash.uniq(fields);
   }
 
@@ -1072,6 +1129,18 @@ jQuery(function($) {
         let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
         $(target_parent).toggle(is_displayed);
       });
+
+      $(record).find('#mapbox-search-altered').each((index, entry) => {
+        let target_parent = $(entry).parent().parent();
+        let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
+        $(target_parent).toggle(is_displayed);
+      });
+
+      $(record).find(`.dt_date_picker-${bulk_record_id}`).each((index, entry) => {
+        let target_parent = $(entry).parent().parent();
+        let is_displayed = window.lodash.includes(filter_fields, $(entry).data('orig-field-id'));
+        $(target_parent).toggle(is_displayed);
+      });
     });
   }
 
@@ -1090,9 +1159,19 @@ jQuery(function($) {
   }
 
   function reset_field_filters() {
-    refresh_displayed_fields(default_filter_fields);
+
+    // Default to currently selected contact type or just revert back to plain-old-defaults!
+    let selected_contact_type = $('.type-option.selected').attr('id');
+    if (selected_contact_type) {
+      $('#' + selected_contact_type + '.type-option').trigger('click');
+
+    } else {
+      refresh_displayed_fields(default_filter_fields);
+    }
+
     $('#list_fields_picker').toggle(false);
     adjust_selected_field_filters_by_currently_displayed_record_fields();
+
   }
 
   /*
