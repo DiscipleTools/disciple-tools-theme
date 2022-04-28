@@ -207,6 +207,9 @@ jQuery(document).ready(function($) {
     }
   })
   $(document).on("click", ".make-leader", function () {
+    $(this).children('i').attr('class', 'small')
+    let spinner = `<img src="/wp-content/themes/disciple-tools-theme/dt-core/admin/img/spinner.svg" width="15px">`
+    $(this).append(spinner)
     let id = $(this).data('id')
     let remove = false
     let existingLeaderIcon = $(`.member-row[data-id="${id}"] .leader`)
