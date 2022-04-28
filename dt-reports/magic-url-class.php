@@ -56,7 +56,6 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
         public $root;
         public $namespace = 'dt-magic-url/v1';
-        public $global_parts;
 
 //        private static $_instance = null;
 //        public static function instance( string $root ) {
@@ -66,9 +65,8 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 //            return self::$_instance;
 //        } // End instance()
 
-        public function __construct( string $root, $global_parts = null ) {
+        public function __construct( string $root ) {
             $this->root = $root;
-            $this->global_parts = $global_parts;
 
             add_filter( 'dt_custom_fields_settings', [ $this, '_register_custom_fields' ], 10, 2 );
         }
@@ -281,7 +279,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return false;
         }
 
-        public function parse_wp_rest_url_parts( $public_key ){
+        public function parse_wp_rest_url_parts( $params ){
             // get required url elements
             $all_types = $this->registered_types();
             $root = $this->root;
@@ -321,6 +319,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         return false;
                     }
                 }
+                $public_key = $params["parts"]["public_key"];
                 if ( !empty( $public_key ) ){
                     $elements['public_key'] = $public_key;
 
@@ -328,7 +327,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     if ( ! isset( $types[$elements['type']]['meta_key'] ) ) {
                         return false;
                     }
-                    $elements['meta_key'] = self::determine_meta_key( $types[ $elements['type'] ]['meta_key'] );
+                    $elements['meta_key'] = $params["parts"]["meta_key"];
 
                     if ( 'user' === $types[$elements['type']]['post_type'] ) {
                         // if user
@@ -357,18 +356,6 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return false;
         }
 
-        public function determine_meta_key( $current_key ) {
-            if ( ! empty( $_REQUEST['parts']['instance_id'] ) && ! empty( $_REQUEST['parts']['meta_key'] ) ) {
-                return sanitize_text_field( wp_unslash( $_REQUEST['parts']['meta_key'] ) );
-
-            } elseif ( ! empty( $this->global_parts ) && ! empty( $this->global_parts['instance_id'] ) && ! empty( $this->global_parts['meta_key'] ) ) {
-                return sanitize_text_field( wp_unslash( $this->global_parts['meta_key'] ) );
-
-            }
-
-            return $current_key;
-        }
-
         /**
          * Verify that a rest endpoint has all the needed magic link values set
          * and that they match the expected values
@@ -381,7 +368,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             if ( !isset( $params["parts"]["meta_key"], $params["parts"]["public_key"], $params["parts"]["post_id"], $params["parts"]["type"], $params["parts"]["root"] ) ){
                 return false;
             }
-            $parts = $this->parse_wp_rest_url_parts( $params["parts"]["public_key"] );
+            $parts = $this->parse_wp_rest_url_parts( $params );
             if ( empty( $parts ) ){
                 return false;
             }
