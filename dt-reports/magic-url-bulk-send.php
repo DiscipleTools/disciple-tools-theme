@@ -17,14 +17,19 @@ if ( 'contacts' === dt_get_post_type() ) {
             <script>
                 let bulkSendAppButton = `
                     <li>
-                        <a href="#">
+                        <a href="javascript:void(0);" id="submenu-more-bulk-send-app">
                             <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ); ?>" class="dropdown-submenu-icon">
                             <?php esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
                         </a>
                     </li>
                 `;
                 jQuery('#dropdown-submenu-items-more').append(bulkSendAppButton);
+                
+                $('#submenu-more-bulk-send-app').on('click', function(){
+                    $('#bulk_send_app_picker').toggle();
+                });
             </script>
+            
         <?php endif;
     }
 

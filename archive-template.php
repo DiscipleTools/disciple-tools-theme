@@ -253,27 +253,19 @@ dt_please_log_in();
                                 </li>
                             </ul>
                         </div>
-                        <style>
-                            .dropdown-submenu-icon {
-                                width: 15px;
-                                height: 15px;
-                                margin-right: 6px;
-                                vertical-align: bottom;
-                            }
-                        </style>
                         <div class="js-sort-dropdown" style="display: inline-block">
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
                                     <a href="#">More</a>
                                     <ul class="menu is-dropdown-submenu" id="dropdown-submenu-items-more">
                                         <li>
-                                            <a href="#">
+                                            <a href="javascript:void(0);" id="submenu-more-options">
                                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ); ?>" class="dropdown-submenu-icon">
                                                 <?php esc_html_e( 'Fields', 'disciple_tools' ); ?>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="javascript:void(0);" id="submenu-more-bulk-edit">
                                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ); ?>" class="dropdown-submenu-icon">
                                                 <?php esc_html_e( 'Bulk Edit', 'disciple_tools' ); ?>
                                             </a>
@@ -282,7 +274,15 @@ dt_please_log_in();
                                 </li>
                             </ul>
                         </div>
+                        <script>
+                            $('#submenu-more-options').on('click', function(){
+                                $('#list_column_picker').toggle();
+                            });
 
+                            $('#submenu-more-bulk-edit').on('click', function(){
+                                $('#bulk_edit_picker').toggle();
+                            });
+                        </script>
                         <?php
                         /**
                          * Adds link to the end top list
