@@ -585,8 +585,11 @@ window.SHAREDFUNCTIONS = {
     return window.btoa(JSON.stringify(filter))
   },
   uriDecodeFilter(encodedFilter) {
-    /* TODO: run checks to make sure that this doesn't break */
-    return JSON.parse(window.atob(encodedFilter))
+    try {
+      return JSON.parse(window.atob(encodedFilter))
+    } catch (error) {
+      return null
+    }
   },
   get_langcode() {
     let langcode = document.querySelector("html").getAttribute("lang")
