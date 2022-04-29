@@ -228,15 +228,11 @@
   function create_custom_filter_from_query_params() {
     const url = new URL(window.location)
 
-    let filters = []
-    try {
-      filters = get_encoded_query_param_filters(url)
-    } catch (error) {
-      // the uri is corrupted
-    }
-    /* make sure filter fields are in the list of allowed fields */
-    filters = filters.filter(({ field }) => Object.keys(window.list_settings.post_type_settings.fields).includes(field))
-    if (filters.length == 0) return {}
+    let query
+
+    query = get_encoded_query_param_filters(url)
+
+    if (!query) return {}
 
     /* Creating object the same shape as cached_filter */
     let query_custom_filter = {
@@ -247,24 +243,30 @@
       query: {},
     }
 
-    const labels = [ ...filters ]
-    const query = { fields: [], offset: 0, sort: 'name'}
+    if (Object.prototype.hasOwnProperty.call(query, 'offset')) {
+      query.offset = 0
+    }
+    if (Object.prototype.hasOwnProperty.call(query, 'sort')) {
+      query.sort = 'name'
+    }
+
+    /* const labels = [ ...filters ]
     let labelsSortedByField = {}
     labels.forEach(({field, id}) => {
       if (!labelsSortedByField[field]) labelsSortedByField[field] = []
       labelsSortedByField[field].push(id)
-    })
-    query.fields = Object.entries(labelsSortedByField).map(([key, ids]) => ({[key]: ids}))
+    }) */
+/*     query.fields = Object.entries(labelsSortedByField).map(([key, ids]) => ({[key]: ids})) */
 
-    query_custom_filter.labels = labels
+    // query_custom_filter.labels = labels
     query_custom_filter.query = query
 
     return query_custom_filter
   }
 
   function get_encoded_query_param_filters(url) {
-    const filters = url.searchParams.getAll('fieldQuery')
-    return filters.map((filter) =>JSON.parse(decodeURI(filter)))
+    const filter = url.searchParams.get('customQuery')
+    return window.SHAREDFUNCTIONS.uriDecodeFilter(filter)
   }
 
   function get_records_for_current_filter(custom_filter = null){
@@ -716,7 +718,7 @@
       query.offset = 0
     }
 
-    console.log(query)
+    console.log(current_filter)
 
     window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
     if ( get_records_promise && window.lodash.get(get_records_promise, "readyState") !== 4){
