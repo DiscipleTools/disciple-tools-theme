@@ -572,9 +572,21 @@ window.SHAREDFUNCTIONS = {
     }
     document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
   },
-  uriEncodeFilter(field, id, name) {
-    const filterLabel = { field, id, name }
-    return encodeURIComponent(JSON.stringify(filterLabel))
+  createCustomFilter(field, value, field_name) {
+    return ({
+      fields: [
+        {
+          [field]: value,
+        }
+      ],
+    })
+  },
+  uriEncodeFilter(filter) {
+    return window.btoa(JSON.stringify(filter))
+  },
+  uriDecodeFilter(encodedFilter) {
+    /* TODO: run checks to make sure that this doesn't break */
+    return JSON.parse(window.atob(encodedFilter))
   },
   get_langcode() {
     let langcode = document.querySelector("html").getAttribute("lang")
