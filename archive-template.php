@@ -253,18 +253,35 @@ dt_please_log_in();
                                 </li>
                             </ul>
                         </div>
-                        <span style="display:inline-block">
-                            <button class="button clear" id="choose_fields_to_show_in_table" style="margin:0; padding:0">
-                                <?php esc_html_e( 'Fields', 'disciple_tools' ); ?>
-                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>"/>
-                            </button>
-                        </span>
-                        <span style="display:inline-block">
-                            <button class="button clear" id="bulk_edit_controls" style="margin:0; padding:0">
-                                <?php esc_html_e( 'Bulk Edit', 'disciple_tools' ); ?>
-                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ) ?>"/>
-                            </button>
-                        </span>
+                        <style>
+                            .dropdown-submenu-icon {
+                                width: 15px;
+                                height: 15px;
+                                margin-right: 6px;
+                                vertical-align: bottom;
+                            }
+                        </style>
+                        <div class="js-sort-dropdown" style="display: inline-block">
+                            <ul class="dropdown menu" data-dropdown-menu>
+                                <li>
+                                    <a href="#">More</a>
+                                    <ul class="menu is-dropdown-submenu" id="dropdown-submenu-items-more">
+                                        <li>
+                                            <a href="#">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ); ?>" class="dropdown-submenu-icon">
+                                                <?php esc_html_e( 'Fields', 'disciple_tools' ); ?>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ); ?>" class="dropdown-submenu-icon">
+                                                <?php esc_html_e( 'Bulk Edit', 'disciple_tools' ); ?>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
 
                         <?php
                         /**

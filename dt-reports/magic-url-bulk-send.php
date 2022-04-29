@@ -14,12 +14,17 @@ if ( 'contacts' === dt_get_post_type() ) {
     add_action( 'dt_post_bulk_list_link', 'dt_post_bulk_list_link_apps', 20, 3 );
     function dt_post_bulk_list_link_apps( $post_type, $post_settings, $dt_magic_apps ) {
         if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) : ?>
-            <span style="display:inline-block">
-                <button class="button clear" id="bulk_send_app_controls" style="margin:0; padding:0">
-                    <?php esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ) ?>"/>
-                </button>
-            </span>
+            <script>
+                let bulkSendAppButton = `
+                    <li>
+                        <a href="#">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ); ?>" class="dropdown-submenu-icon">
+                            <?php esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
+                        </a>
+                    </li>
+                `;
+                jQuery('#dropdown-submenu-items-more').append(bulkSendAppButton);
+            </script>
         <?php endif;
     }
 
