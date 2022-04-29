@@ -484,6 +484,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             return $s;
         }
     }
+    if ( !function_exists( "dt_render_icon" ) ){
+        function dt_render_icon( $field ){
+            if ( isset( $field["icon"] ) ){
+                ?>
+                <img class="dt-icon" src="<?php echo esc_url( $field["icon"] ) ?>">
+                <?php
+            } else if ( isset( $field['font-icon'] ) ){
+                ?>
+                <i class="<?php echo esc_html( $field['font-icon'] ); ?>"></i>
+                <?php
+            }
+        }
+    }
 
     if ( ! function_exists( 'dt_has_permissions' ) ) {
         function dt_has_permissions( array $permissions ) : bool {
@@ -618,9 +631,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
             ?>
             <div class="section-subheader">
-                <?php if ( isset( $fields[$field_key]["icon"] ) ) : ?>
-                    <img class="dt-icon" src="<?php echo esc_url( $fields[$field_key]["icon"] ) ?>">
-                <?php endif;
+                <?php dt_render_icon( $fields[$field_key] );
+
                 echo esc_html( $fields[$field_key]["name"] );
                 ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
                 <?php if ( $is_private ) : ?>

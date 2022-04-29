@@ -147,7 +147,8 @@ class DT_Contacts_Base {
                 'name' => __( "Nickname", 'disciple_tools' ),
                 'type' => 'text',
                 'tile' => 'details',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/nametag.svg?v=2",
+                'font-icon' => 'fi-dislike',
+//                'icon' => get_template_directory_uri() . "/dt-assets/images/nametag.svg?v=2",
             ];
             $contact_preferences = get_option( 'dt_contact_preferences', [] );
             $fields["type"] = [
