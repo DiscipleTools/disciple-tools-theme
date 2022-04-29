@@ -35,7 +35,13 @@
   const query_param_custom_filter = create_custom_filter_from_query_params()
 
   let current_filter
-  if (query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter)) {
+
+  const { filterID, filterTab } = get_url_query_params()
+
+  if (filterID && isInFilterList(filterID) ) {
+    current_filter = { ID: filterID, query: {} }
+    if (filterTab) current_filter.tab = filterTab
+  } else if (query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter)) {
     current_filter = query_param_custom_filter
   } else if (cached_filter && !window.lodash.isEmpty(cached_filter)) {
     current_filter = cached_filter
@@ -52,10 +58,11 @@
   }
 
   //set up custom cached filter
-  if ( query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter) && query_param_custom_filter.type === "custom_filter" ){
+  // a valid filter ID in the query params will skip to clicking the relevant filter.
+  if ( !isInFilterList(filterID) && query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter) && query_param_custom_filter.type === "custom_filter" ){
     query_param_custom_filter.query.offset = 0;
     add_custom_filter(query_param_custom_filter.name, "default", query_param_custom_filter.query, query_param_custom_filter.labels, false)
-  } else if ( cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ) {
+  } else if ( !isInFilterList(filterID) && cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ) {
     cached_filter.query.offset = 0;
     add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
   } else {
@@ -226,11 +233,7 @@
    * no filter.
    */
   function create_custom_filter_from_query_params() {
-    const url = new URL(window.location)
-
-    let query
-
-    query = get_encoded_query_param_filters(url)
+    const { query } = get_url_query_params()
 
     if (!query) return {}
 
@@ -264,9 +267,25 @@
     return query_custom_filter
   }
 
-  function get_encoded_query_param_filters(url) {
-    const filter = url.searchParams.get('query')
-    return window.SHAREDFUNCTIONS.uriDecodeFilter(filter)
+  function get_url_query_params() {
+    const url = new URL(window.location)
+    const encodedQuery = url.searchParams.get('query')
+    const filterID = url.searchParams.get('filter_id')
+    const filterTab = url.searchParams.get('filter_tab')
+    const query = window.SHAREDFUNCTIONS.uriDecodeFilter(encodedQuery)
+    return ({
+      query,
+      filterID,
+      filterTab
+    })
+  }
+
+  function isInFilterList(filterID) {
+    if (list_settings.filters.filters.some((filter) => filterID === filter.ID)) {
+      return true
+    }
+
+    return false
   }
 
   function update_url_query(currentFilter) {
@@ -275,6 +294,8 @@
     const url = new URL(window.location)
 
     url.searchParams.set('query', encodedQuery)
+    url.searchParams.set('filter_id', currentFilter.ID)
+    url.searchParams.set('filter_tab', currentFilter.tab || '')
 
     window.history.pushState(null, document.title, url.search)
   }
