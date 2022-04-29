@@ -265,8 +265,18 @@
   }
 
   function get_encoded_query_param_filters(url) {
-    const filter = url.searchParams.get('customQuery')
+    const filter = url.searchParams.get('query')
     return window.SHAREDFUNCTIONS.uriDecodeFilter(filter)
+  }
+
+  function update_url_query(currentFilter) {
+    const encodedQuery = window.SHAREDFUNCTIONS.uriEncodeFilter(currentFilter.query)
+
+    const url = new URL(window.location)
+
+    url.searchParams.set('query', encodedQuery)
+
+    window.history.pushState(null, document.title, url.search)
   }
 
   function get_records_for_current_filter(custom_filter = null){
@@ -718,7 +728,7 @@
       query.offset = 0
     }
 
-    console.log(current_filter)
+    update_url_query(current_filter)
 
     window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
     if ( get_records_promise && window.lodash.get(get_records_promise, "readyState") !== 4){
