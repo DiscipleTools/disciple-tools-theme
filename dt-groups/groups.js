@@ -129,6 +129,7 @@ jQuery(document).ready(function($) {
   }
   /* End Health Metrics*/
 
+  let { template_dir } = window.wpApiShare
 
   /* Member List*/
   let memberList = $('.member-list')
@@ -151,6 +152,8 @@ jQuery(document).ready(function($) {
         leaderStatus = 'leader';
         leaderStyle = 'color:black;';
       }
+      
+
       const contactStatusHTML = ( member.data && member.data.overall_status )
         ? `<i class="fi-torso small" style="color: ${window.lodash.escape( member.data.overall_status.color )}" title="${window.lodash.escape( member.data.overall_status.label )}"></i>`
         : '<i class="fi-torso small"></i>'
@@ -208,14 +211,13 @@ jQuery(document).ready(function($) {
   })
   $(document).on("click", ".make-leader", function () {
     $(this).children('i').attr('class', 'small')
-    let spinner = `<img src="/wp-content/themes/disciple-tools-theme/dt-core/admin/img/spinner.svg" width="15px">`
+    let spinner = `<img src="${template_dir}/dt-assets/images/ajax-loader.gif" width="15px">`
     $(this).append(spinner)
     let id = $(this).data('id')
     let remove = false
     let existingLeaderIcon = $(`.member-row[data-id="${id}"] .leader`)
     if( window.lodash.find( post.leaders || [], {ID: id}) || existingLeaderIcon.length !== 0){
       remove = true
-      existingLeaderIcon.remove()
     }
     API.update_post( post_type, post_id, {'leaders': {values:[{value:id, delete:remove}]}}).then(groupRes=>{
       post=groupRes
