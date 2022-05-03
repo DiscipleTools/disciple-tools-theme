@@ -573,25 +573,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         return false;
     }
 
-    /**
-     * Render initial fields html to be displayed during bulk post type record creation.
-     *
-     * @param $dt_post_type
-     *
-     * @return false|string
-     */
-    function get_rendered_new_bulk_record_fields_html( $dt_post_type ) {
-        ob_start();
-
-        render_new_bulk_record_fields( $dt_post_type );
-
-        $html = ob_get_contents();
-
-        ob_end_clean();
-
-        return $html;
-    }
-
     function render_new_bulk_record_fields( $dt_post_type ) {
         $post_settings = DT_Posts::get_post_settings( $dt_post_type );
         $selected_type = null;
