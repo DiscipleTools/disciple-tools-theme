@@ -1895,15 +1895,29 @@ img.dt-red-icon {
 
     .record-divider {
         display: none;
+        background-color:rgb(236, 245, 252);
+        margin: 3px -15px 15px -15px;
+        text-align: center;
+        span {
+            padding: 0;
+            margin: 0;
+        }
+    }
+    .record-removal-button {
+        margin: 5px;
+        min-width: 25px !important;
     }
 
     .landscape-record-removal-button {
         display: block;
+        .record-removal-button {
+            margin: 10px 0 0 0;
+        }
     }
 
     .form-field {
         margin-inline-end: 10px;
-        flex-basis: 250px;
+        flex-basis: 200px;
         flex-grow: 0;
         flex-shrink: 0;
     }
@@ -1918,6 +1932,11 @@ img.dt-red-icon {
         .field-value-copy-controls {
             display: none !important;
         }
+    }
+    .dt_location_grid .typeahead__container button{
+        width: 65px;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     @media only screen and (max-width: 782px) {
@@ -1947,6 +1966,9 @@ img.dt-red-icon {
             .field-value-copy-controls {
                 display: none !important;
             }
+        }
+        .dt_location_grid .typeahead__container button{
+            width: auto;
         }
     }
 }

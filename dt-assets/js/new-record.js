@@ -644,7 +644,12 @@ jQuery(function($) {
     if (fields_html) {
 
       let new_records_count = $('#form_fields_records').find('.form-fields-record').length + 1;
-      let html = '<div class="form-fields-record form-fields-record-subsequent"><input type="hidden" id="bulk_record_id" value="' + new_records_count + '"><div class="record-divider" style="background-color:rgb(236, 245, 252); margin: 3px -15px 15px -15px; text-align: center;"><span style="padding: 0px; margin: 0px;">' + generate_record_removal_button_html(new_records_count) + '</span></div>' + fields_html + '<span class="landscape-record-removal-button">' + generate_record_removal_button_html(new_records_count) + '</span></div>';
+      let html = `<div class="form-fields-record form-fields-record-subsequent">
+        <input type="hidden" id="bulk_record_id" value="${new_records_count}">
+        <div class="record-divider"><span>${generate_record_removal_button_html(new_records_count)}</span></div>
+        <span class="landscape-record-removal-button">${generate_record_removal_button_html(new_records_count)}</span>
+        ${fields_html}
+      </div>`;
       let updated_records = $('#form_fields_records').append(html);
 
       // Adjust relevant class names for recently added record elements.
@@ -1301,7 +1306,7 @@ jQuery(function($) {
   });
 
   function generate_record_removal_button_html(record_id) {
-    let button_html = '<button data-record-id="' + record_id + '" class="record-removal-button" type="button" style="margin: 5px; min-width: 25px !important;"><img src="' + window.new_record_localized.bulk_record_removal_but_img_uri + '"></button>';
+    let button_html = `<button data-record-id="${record_id}" class="record-removal-button" type="button" ><img src="${window.new_record_localized.bulk_record_removal_but_img_uri}"></button>`;
     return button_html;
   }
 

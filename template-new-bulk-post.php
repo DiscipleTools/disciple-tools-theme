@@ -242,10 +242,10 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                         <div id="form_fields_records" class="container">
                             <div class="form-fields-record">
                                 <input type="hidden" id="bulk_record_id" value="1"/>
+                                <span style="min-width: 25px;">&nbsp;</span>
                                 <?php
                                 render_new_bulk_record_fields( $dt_post_type );
                                 ?>
-                                <span style="min-width: 25px;">&nbsp;</span>
                             </div>
                         </div>
 
@@ -261,7 +261,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                             <a href="<?php echo esc_html( get_site_url() . "/" . $dt_post_type ) ?>"
                                class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' ) ?></a>
                             <button class="button loader js-create-post-bulk-button dt-green" type="submit"
-                                    disabled><?php esc_html_e( "Save", "disciple_tools" ); ?></button>
+                                    disabled><?php esc_html_e( "Add Records", "disciple_tools" ); ?></button>
                         </div>
                     </div>
                 </form>
