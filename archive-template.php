@@ -258,25 +258,31 @@ dt_please_log_in();
                             [
                                 'key' => esc_html( 'options' ),
                                 'label' => esc_html( 'Fields', 'disciple_tools' ),
+                                'post_type' => null,
                             ],
                             [
                                 'key' => esc_html( 'bulk-edit' ),
                                 'label' => esc_html( 'Bulk Edit', 'disciple_tools' ),
+                                'post_type' => null,
                             ],
                         ];
+
+                        $dropdown_items = apply_filters( 'dt_nav_dropdown_menu_items', $dropdown_items );
                         ?>
                         <div class="js-sort-dropdown" style="display: inline-block">
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
                                     <a href="#"><?php esc_html_e( "More", 'disciple_tools' ) ?></a>
                                     <ul class="menu is-dropdown-submenu" id="dropdown-submenu-items-more">
-                                    <?php foreach ( $dropdown_items as $dropdown_item ) : ?>    
+                                    <?php foreach ( $dropdown_items as $dropdown_item ) : ?>  
+                                        <?php if ( $dropdown_item['post_type'] === null || $dropdown_item['post_type'] === $post_type ) : ?>
                                         <li>
                                             <a href="javascript:void(0);" id="submenu-more-<?php echo esc_html( $dropdown_item['key'] ); ?>">
                                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/' . $dropdown_item['key'] . '.svg' ); ?>" class="dropdown-submenu-icon">
                                                 <?php echo esc_html( $dropdown_item['label'] ); ?>
                                             </a>
                                         </li>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                     </ul>
                                 </li>
