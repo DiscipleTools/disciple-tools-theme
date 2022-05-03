@@ -256,7 +256,7 @@ dt_please_log_in();
                         <div class="js-sort-dropdown" style="display: inline-block">
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
-                                    <a href="#">More</a>
+                                    <a href="#"><?php esc_html_e( "More", 'disciple_tools' ) ?></a>
                                     <ul class="menu is-dropdown-submenu" id="dropdown-submenu-items-more">
                                         <li>
                                             <a href="javascript:void(0);" id="submenu-more-options">
