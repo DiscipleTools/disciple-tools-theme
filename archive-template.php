@@ -253,35 +253,41 @@ dt_please_log_in();
                                 </li>
                             </ul>
                         </div>
+                        <?php
+                        $dropdown_items = [
+                            [
+                                'key' => esc_html( 'options' ),
+                                'label' => esc_html( 'Fields', 'disciple_tools' ),
+                            ],
+                            [
+                                'key' => esc_html( 'bulk-edit' ),
+                                'label' => esc_html( 'Bulk Edit', 'disciple_tools' ),
+                            ],
+                        ];
+                        ?>
                         <div class="js-sort-dropdown" style="display: inline-block">
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
                                     <a href="#"><?php esc_html_e( "More", 'disciple_tools' ) ?></a>
                                     <ul class="menu is-dropdown-submenu" id="dropdown-submenu-items-more">
+                                    <?php foreach ( $dropdown_items as $dropdown_item ) : ?>    
                                         <li>
-                                            <a href="javascript:void(0);" id="submenu-more-options">
-                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ); ?>" class="dropdown-submenu-icon">
-                                                <?php esc_html_e( 'Fields', 'disciple_tools' ); ?>
+                                            <a href="javascript:void(0);" id="submenu-more-<?php echo esc_html( $dropdown_item['key'] ); ?>">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/' . $dropdown_item['key'] . '.svg' ); ?>" class="dropdown-submenu-icon">
+                                                <?php echo esc_html( $dropdown_item['label'] ); ?>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="javascript:void(0);" id="submenu-more-bulk-edit">
-                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ); ?>" class="dropdown-submenu-icon">
-                                                <?php esc_html_e( 'Bulk Edit', 'disciple_tools' ); ?>
-                                            </a>
-                                        </li>
+                                    <?php endforeach; ?>
                                     </ul>
                                 </li>
                             </ul>
                         </div>
                         <script>
-                            $('#submenu-more-options').on('click', function(){
+                            <?php foreach ( $dropdown_items as $dropdown_item ): ?>
+                            $('#submenu-more-<?php echo esc_html( $dropdown_item['label'] ); ?>').on('click', function(){
                                 $('#list_column_picker').toggle();
                             });
-
-                            $('#submenu-more-bulk-edit').on('click', function(){
-                                $('#bulk_edit_picker').toggle();
-                            });
+                            <?php endforeach; ?>
                         </script>
                         <?php
                         /**
