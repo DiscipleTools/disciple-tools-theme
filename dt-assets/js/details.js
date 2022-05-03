@@ -914,8 +914,8 @@ jQuery(document).ready(function($) {
         href: function (item) {
           const postType = window.wpApiShare.post_type
           const query =  window.SHAREDFUNCTIONS.createCustomFilter('tags', [item.name], `Tags: ${item.name}`)
-          const encodedFilterLabel = window.SHAREDFUNCTIONS.uriEncodeFilter(query)
-          return window.wpApiShare.site_url + `/${postType}?query=${encodedFilterLabel}`
+          const encodedQuery = window.SHAREDFUNCTIONS.encodeJSON(query)
+          return window.wpApiShare.site_url + `/${postType}?query=${encodedQuery}`
         },
       },
       callback: {

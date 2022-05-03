@@ -260,16 +260,9 @@
       query.sort = 'name'
     }
 
-    /* const labels = [ ...filters ]
-    let labelsSortedByField = {}
-    labels.forEach(({field, id}) => {
-      if (!labelsSortedByField[field]) labelsSortedByField[field] = []
-      labelsSortedByField[field].push(id)
-    }) */
-/*     query.fields = Object.entries(labelsSortedByField).map(([key, ids]) => ({[key]: ids})) */
-
-    // query_custom_filter.labels = labels
-    query_custom_filter.query = query
+    if (query) {
+      query_custom_filter.query = query
+    }
 
     return query_custom_filter
   }
@@ -279,7 +272,7 @@
     const encodedQuery = url.searchParams.get('query')
     const filterID = url.searchParams.get('filter_id')
     const filterTab = url.searchParams.get('filter_tab')
-    const query = window.SHAREDFUNCTIONS.uriDecodeFilter(encodedQuery)
+    const query = encodedQuery && window.SHAREDFUNCTIONS.decodeJSON(encodedQuery)
     return ({
       query,
       filterID,
@@ -296,7 +289,7 @@
   }
 
   function update_url_query(currentFilter) {
-    const encodedQuery = window.SHAREDFUNCTIONS.uriEncodeFilter(currentFilter.query)
+    const encodedQuery = window.SHAREDFUNCTIONS.encodeJSON(currentFilter.query)
 
     const url = new URL(window.location)
 
@@ -819,6 +812,8 @@
       query.sort = sort
       query.offset = 0
     }
+
+    console.log(current_filter)
 
     update_url_query(current_filter)
     applyArchivedToggleToCurrentFilter()

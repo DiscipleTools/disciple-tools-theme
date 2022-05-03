@@ -578,15 +578,15 @@ window.SHAREDFUNCTIONS = {
         {
           [field]: value,
         }
-      ],
+      ]
     })
   },
-  uriEncodeFilter(filter) {
-    return window.btoa(JSON.stringify(filter))
+  encodeJSON(json) {
+    return window.btoa(JSON.stringify(json))
   },
-  uriDecodeFilter(encodedFilter) {
+  decodeJSON(encodedJSON) {
     try {
-      return JSON.parse(window.atob(encodedFilter))
+      return JSON.parse(window.atob(encodedJSON))
     } catch (error) {
       return null
     }
