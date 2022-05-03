@@ -19,6 +19,11 @@
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
+  const { status_field } = list_settings.post_type_settings
+  const { status_key, archived_key } = status_field ? status_field : {}
+  const filterOutArchivedItemsKey = `-${archived_key}`
+  const archivedSwitch = $('#archivedToggle')
+  let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_cookie( 'list_archived_switch_status', [] ) || false
   window.post_type_fields = list_settings.post_type_settings.fields
   window.records_list = { posts:[], total:0 }
 
@@ -31,6 +36,8 @@
   } catch (e) {
     cached_filter = {}
   }
+
+  setupArchivedSwitchPosition(archivedSwitchStatus)
 
   const query_param_custom_filter = create_custom_filter_from_query_params()
 
@@ -572,6 +579,70 @@
     window.location.reload()
   })
 
+  archivedSwitch.on('click', function() {
+    const showArchived = this.checked
+
+    archivedSwitchStatus = showArchived
+    window.SHAREDFUNCTIONS.save_json_cookie('list_archived_switch_status', showArchived, list_settings.post_type)
+
+    get_records()
+  })
+
+  function setupArchivedSwitchPosition(switchStatus) {
+    archivedSwitch.prop('checked', switchStatus)
+}
+
+  function applyArchivedToggleToCurrentFilter() {
+    const showArchived = archivedSwitchStatus
+    let status = getFilteredStatus();
+
+    if (showArchived && status && status.includes(filterOutArchivedItemsKey)) {
+       const index = status.indexOf(filterOutArchivedItemsKey)
+       status.splice(index, 1)
+    }
+
+    if (!showArchived && (!status || status.length === 0)) {
+      setFilteredStatus([filterOutArchivedItemsKey])
+    }
+  }
+
+  function isCustomFilter() {
+    return !!current_filter.query.fields
+  }
+
+  function getFilteredStatus() {
+    return isCustomFilter() ? getStatusFieldInCustomFilter() : current_filter.query[status_key];
+  }
+
+  function setFilteredStatus(newStatus) {
+    if (isCustomFilter()) {
+      setStatusFieldInCustomFilter(newStatus)
+    } else {
+      current_filter.query[status_key] = newStatus
+    }
+  }
+
+  function getStatusFieldInCustomFilter() {
+    const query = current_filter.query
+    const fields = query.fields
+
+    if (!fields || !Array.isArray(fields)) return []
+
+    const filterItem = fields.find((item) => Object.prototype.hasOwnProperty.call(item, status_key))
+    return filterItem && filterItem[status_key]
+  }
+
+  function setStatusFieldInCustomFilter(newStatus) {
+    const fields = current_filter.query.fields;
+    if (!fields || !Array.isArray(fields)) return
+
+    const index = fields.findIndex((item) => Object.prototype.hasOwnProperty.call(item, status_key))
+    if (index === -1) {
+      fields.push({[status_key]: newStatus})
+    } else {
+      fields[index][status_key] = newStatus
+    }
+  }
 
   $('#records-table').dragableColumns({
     drag: true,
@@ -750,6 +821,7 @@
     }
 
     update_url_query(current_filter)
+    applyArchivedToggleToCurrentFilter()
 
     window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
     if ( get_records_promise && window.lodash.get(get_records_promise, "readyState") !== 4){

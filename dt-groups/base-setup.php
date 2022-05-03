@@ -61,6 +61,10 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( $post_type === $this->post_type ){
             $settings['label_singular'] = __( 'Group', 'disciple_tools' );
             $settings['label_plural'] = __( 'Groups', 'disciple_tools' );
+            $settings['status_field'] = [
+                "status_key" => "group_status",
+                "archived_key" => "inactive",
+            ];
         }
         return $settings;
     }
