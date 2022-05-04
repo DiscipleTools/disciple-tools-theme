@@ -290,7 +290,7 @@ dt_please_log_in();
                         </div>
                         <script>
                             <?php foreach ( $dropdown_items as $dropdown_item ): ?>
-                            $('#submenu-more-<?php echo esc_html( $dropdown_item['label'] ); ?>').on('click', function(){
+                            $('#submenu-more-<?php echo esc_html( $dropdown_item['key'] ); ?>').on('click', function(){
                                 $('#list_column_picker').toggle();
                             });
                             <?php endforeach; ?>
