@@ -572,7 +572,7 @@ window.SHAREDFUNCTIONS = {
     }
     document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
   },
-  createCustomFilter(field, value, field_name) {
+  createCustomFilter(field, value) {
     return ({
       fields: [
         {
@@ -580,6 +580,11 @@ window.SHAREDFUNCTIONS = {
         }
       ]
     })
+  },
+  create_url_for_list_query(postType, query, labels) {
+    const encodedQuery = window.SHAREDFUNCTIONS.encodeJSON(query);
+    const encodedLabels = window.SHAREDFUNCTIONS.encodeJSON(labels);
+    return window.wpApiShare.site_url + `/${postType}?query=${encodedQuery}&labels=${encodedLabels}`;
   },
   encodeJSON(json) {
     return window.btoa(JSON.stringify(json))

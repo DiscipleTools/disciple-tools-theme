@@ -913,9 +913,9 @@ jQuery(document).ready(function($) {
         },
         href: function (item) {
           const postType = window.wpApiShare.post_type
-          const query =  window.SHAREDFUNCTIONS.createCustomFilter('tags', [item.name], `Tags: ${item.name}`)
-          const encodedQuery = window.SHAREDFUNCTIONS.encodeJSON(query)
-          return window.wpApiShare.site_url + `/${postType}?query=${encodedQuery}`
+          const query =  window.SHAREDFUNCTIONS.createCustomFilter('tags', [item.name])
+          const labels = [{ id: `tags_${item.name}`, name: `Tags: ${item.name}`}]
+          return window.SHAREDFUNCTIONS.create_url_for_list_query(postType, query, labels);
         },
       },
       callback: {
