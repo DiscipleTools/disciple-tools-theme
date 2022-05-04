@@ -241,7 +241,7 @@
    * no filter.
    */
   function create_custom_filter_from_query_params() {
-    const { query } = get_url_query_params()
+    const { query, labels } = get_url_query_params()
 
     if (!query) return {}
 
@@ -265,17 +265,24 @@
       query_custom_filter.query = query
     }
 
+    if (labels) {
+      query_custom_filter.labels = labels
+    }
+
     return query_custom_filter
   }
 
   function get_url_query_params() {
     const url = new URL(window.location)
     const encodedQuery = url.searchParams.get('query')
+    const encodedLabels = url.searchParams.get('labels')
     const filterID = url.searchParams.get('filter_id')
     const filterTab = url.searchParams.get('filter_tab')
     const query = encodedQuery && window.SHAREDFUNCTIONS.decodeJSON(encodedQuery)
+    const labels = encodedLabels && window.SHAREDFUNCTIONS.decodeJSON(encodedLabels)
     return ({
       query,
+      labels,
       filterID,
       filterTab
     })
@@ -291,10 +298,12 @@
 
   function update_url_query(currentFilter) {
     const encodedQuery = window.SHAREDFUNCTIONS.encodeJSON(currentFilter.query)
+    const encodedLabels = window.SHAREDFUNCTIONS.encodeJSON(currentFilter.labels)
 
     const url = new URL(window.location)
 
     url.searchParams.set('query', encodedQuery)
+    url.searchParams.set('labels', encodedLabels)
     url.searchParams.set('filter_id', currentFilter.ID)
     url.searchParams.set('filter_tab', currentFilter.tab || '')
 
