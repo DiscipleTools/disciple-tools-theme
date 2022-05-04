@@ -761,7 +761,7 @@ jQuery(function($) {
       $(mapbox_clear_autocomplete).prop('id', 'mapbox-clear-autocomplete-altered');
       $(mapbox_search).prop('id', 'mapbox-search-altered');
       $(mapbox_search).prop('type', 'button');
-      $(mapbox_search).prop('value', window.new_record_localized.bulk_mapbox_placeholder_txt);
+      $(mapbox_search).prop('value', window.lodash.escape(window.new_record_localized.bulk_mapbox_placeholder_txt));
       $(mapbox_search).addClass('button');
       $(mapbox_search).addClass('mapbox-altered-input');
       $(mapbox_search).data('field', 'location_grid_meta');
@@ -1226,7 +1226,7 @@ jQuery(function($) {
 
   function apply_field_value_copy_controls_button(record_id, field_div, field_class, field_id) {
     if ($(field_div).find('.field-value-copy-controls').length === 0) {
-      let button_html = '<button style="margin-left: 10px;" data-field-class="' + field_class + '" data-field-id="' + field_id + '" data-record-id="' + record_id + '" class="field-value-copy-controls-button" type="button"><img src="' + window.new_record_localized.bulk_copy_control_but_img_uri + '"></button>';
+      let button_html = '<button style="margin-left: 10px;" data-field-class="' + field_class + '" data-field-id="' + field_id + '" data-record-id="' + record_id + '" class="field-value-copy-controls-button" type="button"><img src="' + window.lodash.escape(window.new_record_localized.bulk_copy_control_but_img_uri) + '"></button>';
       $(field_div).find('.section-subheader').append('<span class="field-value-copy-controls" style="float: right; padding: 0; margin: 0;">' + button_html + '</span>');
     }
   }
@@ -1306,7 +1306,7 @@ jQuery(function($) {
   });
 
   function generate_record_removal_button_html(record_id) {
-    let button_html = `<button data-record-id="${record_id}" class="record-removal-button" type="button" ><img src="${window.new_record_localized.bulk_record_removal_but_img_uri}"></button>`;
+    let button_html = `<button data-record-id="${record_id}" class="record-removal-button" type="button" ><img src="${window.lodash.escape(window.new_record_localized.bulk_record_removal_but_img_uri)}"></button>`;
     return button_html;
   }
 
