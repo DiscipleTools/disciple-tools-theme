@@ -169,9 +169,9 @@ abstract class DT_Magic_Url_Base {
         $lang = apply_filters( 'ml_locale_change', $lang );
         if ( ! empty( $lang ) ) {
 
-            $current_user = wp_get_current_user();
-            if ( ! empty( $current_user ) && isset( $current_user->ID ) ) {
-                update_user_meta( $current_user->ID, 'locale', $lang );
+            // Adjust user's locale within current request context
+            if ( ! empty( wp_get_current_user() ) ) {
+                wp_get_current_user()->locale = $lang;
             }
 
             add_filter( 'determine_locale', function ( $locale ) use ( $lang ) {
