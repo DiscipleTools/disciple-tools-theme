@@ -788,7 +788,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php elseif ( $field_type === "number" ) :?>
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="number" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
-                       value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>" <?php echo esc_html( $disabled ); ?>/>
+                       value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>" <?php echo esc_html( $disabled ); ?>
+                       min="<?php echo esc_html( $fields[$field_key]["min_option"] ?? "" ) ?>"
+                       max="<?php echo esc_html( $fields[$field_key]["max_option"] ?? "" ) ?>"
+                />
             <?php elseif ( $field_type === "date" ) :?>
                 <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
                     <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
