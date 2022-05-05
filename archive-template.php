@@ -297,7 +297,7 @@ dt_please_log_in();
                             $('#submenu-more-<?php echo esc_html( $dropdown_item['key'] ); ?>').on('click', function(){
                                 $('#<?php echo esc_html( $dropdown_item['modal_id'] ); ?>' ).toggle();
                                 <?php if ( $dropdown_item['toggle_multiselect'] ) : ?>
-                                    $('.bulk_edit_checkbox').toggle();
+                                    $('#records-table').toggleClass('bulk_edit_on');
                                 <?php endif; ?>
                             });
                             <?php endforeach; ?>
