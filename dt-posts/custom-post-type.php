@@ -137,6 +137,7 @@ class Disciple_Tools_Post_Type_Template {
     public function add_template_for_url( $template_for_url ){
         $template_for_url[$this->post_type] = 'archive-template.php';
         $template_for_url[$this->post_type . '/new'] = 'template-new-post.php';
+        $template_for_url[$this->post_type . '/new-bulk'] = 'template-new-bulk-post.php';
         return $template_for_url;
     }
 
