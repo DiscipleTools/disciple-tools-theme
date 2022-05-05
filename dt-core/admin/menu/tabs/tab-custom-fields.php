@@ -451,6 +451,38 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         <br>
 
+        <?php if ( $field["type"] === "number" ) : ?>
+
+            <?php
+                $custom_fields = dt_get_option( "dt_field_customizations" );
+                $custom_field = $custom_fields[$post_type][$field_key] ?? [];
+            ?>
+
+            <h3><?php esc_html_e( "Field Options", 'disciple_tools' ) ?></h3>
+            <table id="number_options">
+                <tr>
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Min", 'disciple_tools' ) ?>
+                    </td>
+                    <td>
+                        <input type="number" name="min_option" value="<?php echo isset( $custom_field["min_option"] ) ? esc_html( $custom_field["min_option"] ) : "" ?>" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Max", 'disciple_tools' ) ?>
+                    </td>
+                    <td>
+                        <input type="number" name="max_option" value="<?php echo isset( $custom_field["max_option"] ) ? esc_html( $custom_field["max_option"] ) : "" ?>" />
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+            <button type="submit" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
+
+        <?php endif; ?>
+
         <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
             if ( in_array( $field_key, $core_fields ) ){
                 ?>
@@ -828,6 +860,16 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $custom_field["icon"]  = $restore_icon_defaults[ $field_key ]["icon"];
             }
 
+            // number field options
+            if ( $field["type"] === "number" ) {
+                if ( isset( $post_submission["min_option"] ) ) {
+                    $custom_field["min_option"] = $post_submission["min_option"];
+                }
+                if ( isset( $post_submission["max_option"] ) ) {
+                    $custom_field["max_option"] = $post_submission["max_option"];
+                }
+            }
+
             // key_select and multi_options
             if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" ) ){
                 $field_options = $field["default"];
@@ -999,6 +1041,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="tags"><?php esc_html_e( "Tags", 'disciple_tools' ) ?></option>
                             <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
                             <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
+                            <option value="number"><?php esc_html_e( "Number", 'disciple_tools' ) ?></option>
                             <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
                             <option value="connection"><?php esc_html_e( "Connection", 'disciple_tools' ) ?></option>
                         </select>
@@ -1211,6 +1254,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $new_field = [
                     'name'        => $post_submission["new_field_name"],
                     'type'        => 'textarea',
+                    'default'     => '',
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
+                    'private' => $field_private
+                ];
+            } elseif ( $field_type === "number" ){
+                $new_field = [
+                    'name'        => $post_submission["new_field_name"],
+                    'type'        => 'number',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',
