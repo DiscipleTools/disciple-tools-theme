@@ -401,7 +401,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         </div>
                     </td>
                 </tr>
-                <?php if ( isset( $field["icon"] ) && ! empty( $field["icon"] ) ): ?>
+                <?php if ( ( isset( $field["icon"] ) && ! empty( $field["icon"] ) ) || isset( $field["customizable"] ) ): ?>
                     <tr>
                         <th><?php esc_html_e( "Icon", 'disciple_tools' ) ?></th>
                         <td>
@@ -409,13 +409,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <tbody>
                                 <tr>
                                     <td>
+                                        <?php if ( isset( $field["icon"] ) ): ?>
                                         <img src="<?php echo esc_attr( $field["icon"] ); ?>"
                                              style="width: 20px; vertical-align: middle;">
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <input type="text" name="field_icon"
                                                placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
-                                               value="<?php echo esc_attr( $field["icon"] ); ?>">
+                                               value="<?php echo esc_attr( $field["icon"] ?? '' ); ?>">
                                     </td>
                                     <td>
                                         <button class="button file-upload-display-uploader" data-form="field_edit_form"
@@ -818,9 +820,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
 
             //field icon
-            if ( isset( $post_submission["field_icon"] ) ) {
-                $custom_field["icon"] = $post_submission["field_icon"];
-            }
+            $custom_field["icon"] = ! empty( $post_submission["field_icon"] ) ? $post_submission["field_icon"] : null;
 
             //restore field icon
             if ( isset( $post_submission["restore_field_icon"] ) ) {
