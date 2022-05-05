@@ -258,11 +258,15 @@ dt_please_log_in();
                             [
                                 'key' => esc_html( 'options' ),
                                 'label' => esc_html( 'Fields', 'disciple_tools' ),
+                                'modal_id' => esc_html( 'list_column_picker' ),
+                                'toggle_multiselect' => false,
                                 'post_type' => null,
                             ],
                             [
                                 'key' => esc_html( 'bulk-edit' ),
                                 'label' => esc_html( 'Bulk Edit', 'disciple_tools' ),
+                                'modal_id' => esc_html( 'bulk_edit_picker' ),
+                                'toggle_multiselect' => true,
                                 'post_type' => null,
                             ],
                         ];
@@ -291,7 +295,10 @@ dt_please_log_in();
                         <script>
                             <?php foreach ( $dropdown_items as $dropdown_item ): ?>
                             $('#submenu-more-<?php echo esc_html( $dropdown_item['key'] ); ?>').on('click', function(){
-                                $('#list_column_picker').toggle();
+                                $('#<?php echo esc_html( $dropdown_item['modal_id'] ); ?>' ).toggle();
+                                <?php if ( $dropdown_item['toggle_multiselect'] ) : ?>
+                                    $('.bulk_edit_checkbox').toggle();
+                                <?php endif; ?>
                             });
                             <?php endforeach; ?>
                         </script>
