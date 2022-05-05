@@ -823,8 +823,6 @@
       query.offset = 0
     }
 
-    console.log(current_filter)
-
     update_url_query(current_filter)
     applyArchivedToggleToCurrentFilter()
 
