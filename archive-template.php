@@ -258,6 +258,7 @@ dt_please_log_in();
                             [
                                 'key' => esc_html( 'options' ),
                                 'label' => esc_html( 'Fields', 'disciple_tools' ),
+                                'icon' => esc_html( 'options.svg' ),
                                 'modal_id' => esc_html( 'list_column_picker' ),
                                 'toggle_multiselect' => false,
                                 'post_type' => null,
@@ -265,9 +266,18 @@ dt_please_log_in();
                             [
                                 'key' => esc_html( 'bulk-edit' ),
                                 'label' => esc_html( 'Bulk Edit', 'disciple_tools' ),
+                                'icon' => esc_html( 'bulk-edit.svg' ),
                                 'modal_id' => esc_html( 'bulk_edit_picker' ),
                                 'toggle_multiselect' => true,
                                 'post_type' => null,
+                            ],
+                            [
+                                'key' => esc_html( 'bulk-send-app' ),
+                                'label' => esc_html( 'Bulk Send App', 'disciple_tools' ),
+                                'icon' => esc_html( 'connection.svg' ),
+                                'modal_id' => esc_html( 'bulk_send_app_picker' ),
+                                'toggle_multiselect' => true,
+                                'post_type' => 'contacts',
                             ],
                         ];
 
@@ -280,9 +290,10 @@ dt_please_log_in();
                                     <ul class="menu is-dropdown-submenu" id="dropdown-submenu-items-more">
                                     <?php foreach ( $dropdown_items as $dropdown_item ) : ?>  
                                         <?php if ( $dropdown_item['post_type'] === null || $dropdown_item['post_type'] === $post_type ) : ?>
+                                            <?php $multiselect = $dropdown_item['toggle_multiselect'] ? 'true' : 'false'; ?>
                                         <li>
-                                            <a href="javascript:void(0);" id="submenu-more-<?php echo esc_html( $dropdown_item['key'] ); ?>">
-                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/' . $dropdown_item['key'] . '.svg' ); ?>" class="dropdown-submenu-icon">
+                                            <a href="javascript:void(0);" data-modal="<?php echo esc_html( $dropdown_item['modal_id'] ); ?>" data-multiselect="<?php echo esc_html( $multiselect ); ?>" class="dropdown-submenu-item-link" id="submenu-more-<?php echo esc_html( $dropdown_item['key'] ); ?>">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/' . $dropdown_item['icon'] ); ?>" class="dropdown-submenu-icon">
                                                 <?php echo esc_html( $dropdown_item['label'] ); ?>
                                             </a>
                                         </li>
@@ -292,15 +303,26 @@ dt_please_log_in();
                                 </li>
                             </ul>
                         </div>
-                        <script>
-                            <?php foreach ( $dropdown_items as $dropdown_item ): ?>
-                            $('#submenu-more-<?php echo esc_html( $dropdown_item['key'] ); ?>').on('click', function(){
-                                $('#<?php echo esc_html( $dropdown_item['modal_id'] ); ?>' ).toggle();
-                                <?php if ( $dropdown_item['toggle_multiselect'] ) : ?>
-                                    $('#records-table').toggleClass('bulk_edit_on');
-                                <?php endif; ?>
+                        <script>                            
+                            $('.dropdown-submenu-item-link').on('click', function() {
+                                // Hide bulk select modals
+                                $('#records-table').removeClass('bulk_edit_on')
+
+                                // Close all open modals
+                                $('.dropdown-submenu-item-link').each(function(){
+                                    var open_modals = $(this).data('modal');
+                                    $( '#' + open_modals ).hide();
+                                });
+                                
+                                // Open modal for clicked menu item
+                                var display_modal = $(this).data('modal');
+                                $( '#' + display_modal ).show();
+                                
+                                // Show bulk select checkboxes if applicable
+                                if ( $(this).data('multiselect') === true ) {
+                                    $('#records-table').addClass('bulk_edit_on');
+                                }
                             });
-                            <?php endforeach; ?>
                         </script>
                         <?php
                         /**
