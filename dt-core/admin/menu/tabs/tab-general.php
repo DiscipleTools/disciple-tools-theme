@@ -511,18 +511,34 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
              wp_verify_nonce( sanitize_key( wp_unslash( $_POST['group_preferences_nonce'] ) ), 'group_preferences' . get_current_user_id() ) ) {
 
             $site_options = dt_get_option( "dt_site_options" );
+            $tile_options = dt_get_option( "dt_custom_tiles" );
+            $four_fields_tile = $tile_options["groups"]["four-fields"];
+            $church_metrics_tile = $tile_options["groups"]["health-metrics"];
+
             if ( isset( $_POST['church_metrics'] ) && ! empty( $_POST['church_metrics'] ) ) {
                 $site_options["group_preferences"]["church_metrics"] = true;
+                $church_metrics_tile["hidden"] = false;
             } else {
                 $site_options["group_preferences"]["church_metrics"] = false;
+                $church_metrics_tile["hidden"] = true;
             }
             if ( isset( $_POST['four_fields'] ) && ! empty( $_POST['four_fields'] ) ) {
                 $site_options["group_preferences"]["four_fields"] = true;
+                $four_fields_tile["hidden"] = false;
             } else {
                 $site_options["group_preferences"]["four_fields"] = false;
+                $four_fields_tile["hidden"] = true;
+            }
+
+            if ( !empty( $four_fields_tile ) ){
+                $tile_options["groups"]["four-fields"] = $four_fields_tile;
+            }
+            if ( !empty( $church_metrics_tile ) ){
+                $tile_options["groups"]["health-metrics"] = $church_metrics_tile;
             }
 
             update_option( 'dt_site_options', $site_options, true );
+            update_option( 'dt_custom_tiles', $tile_options, true );
         }
 
     }
