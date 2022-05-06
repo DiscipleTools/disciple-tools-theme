@@ -116,6 +116,19 @@
     remove_current_filter_label(label, get_current_filter_label_field_details(label));
   });
 
+  // Collapse filter tile for mobile view
+  function collapseFilters() {
+    if (Foundation.MediaQuery.only("small")) {
+      $('#list-filters .bordered-box').addClass('collapsed')
+    } else {
+      $('#list-filters .bordered-box').removeClass('collapsed')
+    }
+  }
+  $(window).resize(function(){
+    collapseFilters()
+  })
+  collapseFilters()
+
   function get_current_filter_label_field_details(label) {
     let field_id = null;
     let field_name = $(label).children().remove().end().text();
