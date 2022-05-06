@@ -401,40 +401,38 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         </div>
                     </td>
                 </tr>
-                <?php if ( ( isset( $field["icon"] ) && ! empty( $field["icon"] ) ) || isset( $field["customizable"] ) ): ?>
-                    <tr>
-                        <th><?php esc_html_e( "Icon", 'disciple_tools' ) ?></th>
-                        <td>
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <?php if ( isset( $field["icon"] ) ): ?>
-                                        <img src="<?php echo esc_attr( $field["icon"] ); ?>"
-                                             style="width: 20px; vertical-align: middle;">
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="field_icon"
-                                               placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
-                                               value="<?php echo esc_attr( $field["icon"] ?? '' ); ?>">
-                                    </td>
-                                    <td>
-                                        <button class="button file-upload-display-uploader" data-form="field_edit_form"
-                                                data-icon-input="field_icon"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
-                                    </td>
-                                    <td>
-                                        <?php if ( isset( $defaults[ $field_key ]["icon"] ) && $defaults[ $field_key ]["icon"] !== $field["icon"] ): ?>
-                                            <button type="submit" class="button" name="restore_field_icon"
-                                                    value="<?php echo esc_attr( $field_key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                <?php endif; ?>
+                <tr>
+                    <th><?php esc_html_e( "Icon", 'disciple_tools' ) ?></th>
+                    <td>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <?php if ( isset( $field["icon"] ) ): ?>
+                                    <img src="<?php echo esc_attr( $field["icon"] ); ?>"
+                                         style="width: 20px; vertical-align: middle;">
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <input type="text" name="field_icon"
+                                           placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
+                                           value="<?php echo esc_attr( $field["icon"] ?? '' ); ?>">
+                                </td>
+                                <td>
+                                    <button class="button file-upload-display-uploader" data-form="field_edit_form"
+                                            data-icon-input="field_icon"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
+                                </td>
+                                <td>
+                                    <?php if ( isset( $defaults[ $field_key ]["icon"] ) && $defaults[ $field_key ]["icon"] !== $field["icon"] ): ?>
+                                        <button type="submit" class="button" name="restore_field_icon"
+                                                value="<?php echo esc_attr( $field_key ); ?>"><?php esc_html_e( 'Restore to Default', 'disciple_tools' ); ?></button>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
                 <tr>
                     <th>
                         <button type="submit" name="save" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
