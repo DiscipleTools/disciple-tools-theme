@@ -26,6 +26,7 @@
   let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_cookie( 'list_archived_switch_status', [] ) || false
   window.post_type_fields = list_settings.post_type_settings.fields
   window.records_list = { posts:[], total:0 }
+  const esc = window.lodash.escape
 
   const ALL_ID = '*'
   const ALL_WITHOUT_ID = '-*'
@@ -42,7 +43,13 @@
   const query_param_custom_filter = create_custom_filter_from_query_params()
 
   let current_filter
-  if (query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter)) {
+
+  const { filterID, filterTab } = get_url_query_params()
+
+  if (filterID && isInFilterList(filterID) ) {
+    current_filter = { ID: filterID, query: {} }
+    if (filterTab) current_filter.tab = filterTab
+  } else if (query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter)) {
     current_filter = query_param_custom_filter
   } else if (cached_filter && !window.lodash.isEmpty(cached_filter)) {
     current_filter = cached_filter
@@ -59,10 +66,11 @@
   }
 
   //set up custom cached filter
-  if ( query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter) && query_param_custom_filter.type === "custom_filter" ){
+  // a valid filter ID in the query params will skip to clicking the relevant filter.
+  if ( !isInFilterList(filterID) && query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter) && query_param_custom_filter.type === "custom_filter" ){
     query_param_custom_filter.query.offset = 0;
     add_custom_filter(query_param_custom_filter.name, "default", query_param_custom_filter.query, query_param_custom_filter.labels, false)
-  } else if ( cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ) {
+  } else if ( !isInFilterList(filterID) && cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ) {
     cached_filter.query.offset = 0;
     add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
   } else {
@@ -233,17 +241,9 @@
    * no filter.
    */
   function create_custom_filter_from_query_params() {
-    const url = new URL(window.location)
+    const { query, labels } = get_url_query_params()
 
-    let filters = []
-    try {
-      filters = get_encoded_query_param_filters(url)
-    } catch (error) {
-      // the uri is corrupted
-    }
-    /* make sure filter fields are in the list of allowed fields */
-    filters = filters.filter(({ field }) => Object.keys(window.list_settings.post_type_settings.fields).includes(field))
-    if (filters.length == 0) return {}
+    if (!query) return {}
 
     /* Creating object the same shape as cached_filter */
     let query_custom_filter = {
@@ -254,24 +254,60 @@
       query: {},
     }
 
-    const labels = [ ...filters ]
-    const query = { fields: [], offset: 0, sort: 'name'}
-    let labelsSortedByField = {}
-    labels.forEach(({field, id}) => {
-      if (!labelsSortedByField[field]) labelsSortedByField[field] = []
-      labelsSortedByField[field].push(id)
-    })
-    query.fields = Object.entries(labelsSortedByField).map(([key, ids]) => ({[key]: ids}))
+    if (Object.prototype.hasOwnProperty.call(query, 'offset')) {
+      query.offset = 0
+    }
+    if (Object.prototype.hasOwnProperty.call(query, 'sort')) {
+      query.sort = 'name'
+    }
 
-    query_custom_filter.labels = labels
-    query_custom_filter.query = query
+    if (query) {
+      query_custom_filter.query = query
+    }
+
+    if (labels) {
+      query_custom_filter.labels = labels
+    }
 
     return query_custom_filter
   }
 
-  function get_encoded_query_param_filters(url) {
-    const filters = url.searchParams.getAll('fieldQuery')
-    return filters.map((filter) =>JSON.parse(decodeURI(filter)))
+  function get_url_query_params() {
+    const url = new URL(window.location)
+    const encodedQuery = url.searchParams.get('query')
+    const encodedLabels = url.searchParams.get('labels')
+    const filterID = url.searchParams.get('filter_id')
+    const filterTab = url.searchParams.get('filter_tab')
+    const query = encodedQuery && window.SHAREDFUNCTIONS.decodeJSON(encodedQuery)
+    const labels = encodedLabels && window.SHAREDFUNCTIONS.decodeJSON(encodedLabels)
+    return ({
+      query,
+      labels,
+      filterID,
+      filterTab
+    })
+  }
+
+  function isInFilterList(filterID) {
+    if (list_settings.filters.filters.some((filter) => filterID === filter.ID)) {
+      return true
+    }
+
+    return false
+  }
+
+  function update_url_query(currentFilter) {
+    const encodedQuery = window.SHAREDFUNCTIONS.encodeJSON(currentFilter.query)
+    const encodedLabels = window.SHAREDFUNCTIONS.encodeJSON(currentFilter.labels)
+
+    const url = new URL(window.location)
+
+    url.searchParams.set('query', encodedQuery)
+    url.searchParams.set('labels', encodedLabels)
+    url.searchParams.set('filter_id', currentFilter.ID)
+    url.searchParams.set('filter_tab', currentFilter.tab || '')
+
+    window.history.pushState(null, document.title, url.search)
   }
 
   function get_records_for_current_filter(custom_filter = null){
@@ -787,6 +823,7 @@
       query.offset = 0
     }
 
+    update_url_query(current_filter)
     applyArchivedToggleToCurrentFilter()
 
     window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
@@ -939,7 +976,8 @@
     without ? allConnectionsElement.prop('checked', false) : withoutConnectionsElement.prop('checked', false)
   }
 
-  function allConnectionsClickHandler({ without = false }) {
+  function allConnectionsClickHandler(options) {
+    const { without } = options || { without: false}
     const id = without ? ALL_WITHOUT_ID : ALL_ID
     const tabsPanel = $(this).closest('.tabs-panel')
     const field = tabsPanel.length === 1 ? tabsPanel[0].id : ''
@@ -949,18 +987,14 @@
 
     toggleAllConnectionOption(tabsPanel, without)
 
-    const esc = window.lodash.escape
-
     if ($(this).prop('checked') === true) {
       typeahead.prop('disabled', true)
       typeaheadQueryElement.addClass('disabled')
       // remove the current filters and leave anything in the typeahead as it is
       removeAllFilterLabels(field)
-      const fieldLabel = list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : ''
-      const allLabel = without ? esc(list_settings.translations.without) : esc( list_settings.translations.all )
-      const filterName = `${esc( fieldLabel )}: ${allLabel}`
+      const {newLabel, filterName } = createLabelAll(field, without, id, list_settings)
       selected_filters.append(`<span class="current-filter ${esc( field )}" data-id="${id}">${filterName}</span>`)
-      new_filter_labels.push({id: id, name: filterName, field: field})
+      new_filter_labels.push(newLabel)
     } else {
       typeahead.prop('disabled', false)
       typeaheadQueryElement.removeClass('disabled')
@@ -970,6 +1004,56 @@
       typeaheadCancelButtons.each(function () {
         $(this).trigger('click', { botClick: true })
       })
+    }
+  }
+
+
+  /* Label creation */
+
+  function createLabelAll(field, without, id, listSettings ) {
+    const fieldLabel = listSettings.post_type_settings.fields[field] ? listSettings.post_type_settings.fields[field].name : ''
+    const allLabel = without ? esc(listSettings.translations.without) : esc( listSettings.translations.all )
+    const filterName = `${esc( fieldLabel )}: ${allLabel}`
+
+    return ({
+      newLabel: {
+        id: id,
+        name: filterName,
+        field: field
+      },
+      filterName,
+    })
+  }
+
+  function createValueLabel(field, key, value) {
+    return ({ newLabel: { id: key, name: value, field}})
+  }
+
+  function createKeyValueLabel(field, id, value, listSettings) {
+    let name = window.lodash.get(listSettings, `post_type_settings.fields.${field}.name`, field)
+    const filterName = `${name}: ${value}`;
+    return ({
+      newLabel: { id, name: filterName, field },
+      name,
+    })
+  }
+
+  function createLocationLabel(field, id, value, listSettings) {
+    let name = window.lodash.get(listSettings, `post_type_settings.fields.location_grid.name`, 'location_grid')
+    return ({
+      newLabel: { id, name: `${name}: ${value}`, field, type: 'location_grid' },
+      name,
+    })
+  }
+
+  function createDateLabel(field, date, delimiter) {
+    let field_name = window.lodash.get( list_settings, `post_type_settings.fields.${field}.name` , field)
+    let delimiter_label = list_settings.translations[`range_${delimiter}`]
+
+    return {
+      newLabel: { id: `${field}_${delimiter}`, name: `${field_name} ${delimiter_label}: ${date}`, field, date: date },
+      field_name,
+      delimiter_label,
     }
   }
 
@@ -1050,9 +1134,9 @@
         },
         callback: {
           onClick: function(node, a, item){
-            let name = window.lodash.get(list_settings, `post_type_settings.fields.${field}.name`, field)
+            const { newLabel, name } = createKeyValueLabel(field, item.key, item.value, list_settings)
             selected_filters.append(`<span class="current-filter ${window.lodash.escape( field )}" data-id="${window.lodash.escape( item.key )}">${window.lodash.escape( name )}:${window.lodash.escape( item.value )}</span>`)
-            new_filter_labels.push({id:item.key, name:`${name}: ${item.value}`, field})
+            new_filter_labels.push(newLabel)
           },
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -1102,7 +1186,8 @@
               $(`#${field_key}-result-container`).html("");
             },
             onClick: function (node, a, item) {
-              new_filter_labels.push({id: item.ID, name: item.name, field: field_key})
+              const { newLabel } = createValueLabel(field_key, item.ID, item.name)
+              new_filter_labels.push(newLabel)
               selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( item.name )}</span>`)
             }
           }
@@ -1161,7 +1246,8 @@
               $(`#${field_key}-result-container`).html("");
             },
             onClick: function (node, a, item) {
-              new_filter_labels.push({id: item.ID, name: item.name, field: field_key})
+              const { newLabel } = createValueLabel(field_key, item.ID, item.name)
+              new_filter_labels.push(newLabel)
               selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( item.name )}</span>`)
             }
           }
@@ -1249,8 +1335,8 @@
             $('#location_grid-result-container').html("");
           },
           onClick: function (node, a, item) {
-            let name = window.lodash.get(list_settings, `post_type_settings.fields.location_grid.name`, 'location_grid')
-            new_filter_labels.push({id: item.ID, name: `${name}: ${item.name}`, field: key, type: 'location_grid'})
+            const { name, newLabel } = createLocationLabel(key, item.ID, item.name, list_settings)
+            new_filter_labels.push(newLabel)
             selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( name )}:${window.lodash.escape( item.name )}</span>`)
           }
         }
@@ -1390,8 +1476,8 @@
     if ($(this).is(":checked")){
       let field_options = window.lodash.get( list_settings, `post_type_settings.fields.${field_key}.default` )
       let option_name = field_options[option_id] ? field_options[option_id]["label"] : '';
-      let name = window.lodash.get(list_settings, `post_type_settings.fields.${field_key}.name`, field_key)
-      new_filter_labels.push({id:$(this).val(), name:`${name}: ${option_name}`, field:field_key})
+      const { name, newLabel } = createKeyValueLabel(field_key, $(this).val(), option_name, list_settings)
+      new_filter_labels.push(newLabel)
       selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( name )}:${window.lodash.escape( option_name )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
@@ -1404,9 +1490,9 @@
     let option_id = $(this).val()
     let label = $(this).data('label');
     if ($(this).is(":checked")){
-      let field = window.lodash.get( list_settings, `post_type_settings.fields.${field_key}` )
-      new_filter_labels.push({id:$(this).val(), name:`${field.name}: ${label}`, field:field_key})
-      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( field.name )}:${window.lodash.escape( label )}</span>`)
+      const { name, newLabel } = createKeyValueLabel(field_key, $(this).val(), label, list_settings)
+      new_filter_labels.push(newLabel)
+      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( name )}:${window.lodash.escape( label )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
       window.lodash.pullAllBy(new_filter_labels, [{id:option_id}], "id")
@@ -1419,13 +1505,12 @@
     onSelect: function (date) {
       let id = $(this).data('field')
       let delimiter = $(this).data('delimit')
-      let delimiter_label = list_settings.translations[`range_${delimiter}`]
-      let field_name = window.lodash.get( list_settings, `post_type_settings.fields.${id}.name` , id)
       //remove existing filters
       window.lodash.pullAllBy(new_filter_labels, [{id:`${id}_${delimiter}`}], "id")
       $(`.current-filter[data-id="${id}_${delimiter}"]`).remove()
+      const { newLabel, field_name, delimiter_label } = createDateLabel(id, date, delimiter)
       //add new filters
-      new_filter_labels.push({id:`${id}_${delimiter}`, name:`${field_name} ${delimiter_label}: ${date}`, field:id, date:date})
+      new_filter_labels.push(newLabel)
       selected_filters.append(`
         <span class="current-filter ${id}_${delimiter}"
               data-id="${id}_${delimiter}">
