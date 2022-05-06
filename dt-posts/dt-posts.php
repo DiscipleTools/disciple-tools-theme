@@ -413,7 +413,13 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $field_value = strtotime( $field_value );
                 }
 
-                if ( $field_type === 'number' && ( $field_value < $post_settings["fields"][$field_key]["min_option"] || $field_value > $post_settings["fields"][$field_key]["max_option"] ) ) {
+                if ( $field_type === 'number' && (
+                    isset( $post_settings["fields"][$field_key]["min_option"] ) &&
+                    $field_value < $post_settings["fields"][$field_key]["min_option"] ||
+                    isset( $post_settings["fields"][$field_key]["max_option"] ) &&
+                    $field_value > $post_settings["fields"][$field_key]["max_option"]
+                    )
+                ) {
                      return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
 
