@@ -111,15 +111,15 @@
   // Collapse filter tile for mobile view
   function collapseFilters() {
     if (Foundation.MediaQuery.only("small")) {
-      $('#list-filters .bordered-box').addClass('collapsed');
+      $('#list-filters .bordered-box').addClass('collapsed')
     } else {
-      $('#list-filters .bordered-box').removeClass('collapsed');
-    };
-  };
+      $('#list-filters .bordered-box').removeClass('collapsed')
+    }
+  }
   $(window).resize(function(){
-    collapseFilters();
-  });
-  collapseFilters();
+    collapseFilters()
+  })
+  collapseFilters()
 
   function get_current_filter_label_field_details(label) {
     let field_id = null;
