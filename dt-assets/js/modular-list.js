@@ -2229,10 +2229,6 @@
   /*****
    * Bulk Send App
    */
-  $('#submenu-more-bulk-send-app').on('click', function(){
-    $('#records-table').toggleClass('bulk_edit_on');
-  })
-
   let bulk_send_app_button = $('#bulk_send_app_submit');
   bulk_send_app_button.on('click', function(e) {
     bulk_send_app();

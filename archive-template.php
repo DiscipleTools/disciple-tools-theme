@@ -256,28 +256,20 @@ dt_please_log_in();
                         <?php
                         $dropdown_items = [
                             [
-                                'key' => esc_html( 'options' ),
-                                'label' => esc_html( 'Fields', 'disciple_tools' ),
-                                'icon' => esc_html( 'options.svg' ),
-                                'modal_id' => esc_html( 'list_column_picker' ),
+                                'key' => 'options',
+                                'label' => __( 'Fields', 'disciple_tools' ),
+                                'icon' => 'options.svg',
+                                'modal_id' => 'list_column_picker',
                                 'toggle_multiselect' => false,
                                 'post_type' => null,
                             ],
                             [
-                                'key' => esc_html( 'bulk-edit' ),
-                                'label' => esc_html( 'Bulk Edit', 'disciple_tools' ),
-                                'icon' => esc_html( 'bulk-edit.svg' ),
-                                'modal_id' => esc_html( 'bulk_edit_picker' ),
+                                'key' => 'bulk-edit',
+                                'label' => __( 'Bulk Edit', 'disciple_tools' ),
+                                'icon' => 'bulk-edit.svg',
+                                'modal_id' => 'bulk_edit_picker',
                                 'toggle_multiselect' => true,
                                 'post_type' => null,
-                            ],
-                            [
-                                'key' => esc_html( 'bulk-send-app' ),
-                                'label' => esc_html( 'Bulk Send App', 'disciple_tools' ),
-                                'icon' => esc_html( 'connection.svg' ),
-                                'modal_id' => esc_html( 'bulk_send_app_picker' ),
-                                'toggle_multiselect' => true,
-                                'post_type' => 'contacts',
                             ],
                         ];
 

@@ -9,28 +9,21 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 if ( 'contacts' === dt_get_post_type() ) {
 
     /**
-     * Adds link
+     * Adds submenu item to 'more' nav menu
      */
     add_action( 'dt_post_bulk_list_link', 'dt_post_bulk_list_link_apps', 20, 3 );
     function dt_post_bulk_list_link_apps( $post_type, $post_settings, $dt_magic_apps ) {
-        if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) : ?>
-            <script>
-                let bulkSendAppButton = `
-                    <li>
-                        <a href="javascript:void(0);" id="submenu-more-bulk-send-app">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ); ?>" class="dropdown-submenu-icon">
-                            <?php esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
-                        </a>
-                    </li>
-                `;
-                jQuery('#dropdown-submenu-items-more').append(bulkSendAppButton);
-                
-                $('#submenu-more-bulk-send-app').on('click', function(){
-                    $('#bulk_send_app_picker').toggle();
-                });
-            </script>
-            
-        <?php endif;
+        if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) {
+            $bulk_send_menu_item = [
+                'key' => 'bulk-send-app',
+                'label' => __( 'Bulk Send App', 'disciple_tools' ),
+                'icon' => 'connection.svg',
+                'modal_id' => 'bulk_send_app_picker',
+                'toggle_multiselect' => true,
+                'post_type' => 'contacts',
+            ];
+            add_filter( 'dt_nav_dropdown_menu_items', [ $this, $bulk_send_menu_item ] );
+        }
     }
 
     /**
@@ -38,7 +31,7 @@ if ( 'contacts' === dt_get_post_type() ) {
      */
     add_action( 'dt_post_bulk_list_section', 'dt_post_bulk_list_section_apps', 20, 3 );
     function dt_post_bulk_list_section_apps( $post_type, $post_settings, $dt_magic_apps ){
-        if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) :  ?>
+        if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) : ?>
             <div id="bulk_send_app_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                 <p style="font-weight:bold"><?php
                     echo sprintf( esc_html__( 'Select all the %1$s to whom you want to send app links.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
@@ -85,4 +78,3 @@ if ( 'contacts' === dt_get_post_type() ) {
           <?php endif;
     };
 }
-
