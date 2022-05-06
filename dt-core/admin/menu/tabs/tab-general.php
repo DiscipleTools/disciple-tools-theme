@@ -517,20 +517,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             if ( isset( $_POST['church_metrics'] ) && ! empty( $_POST['church_metrics'] ) ) {
                 $site_options["group_preferences"]["church_metrics"] = true;
-                $church_metrics_tile["enabled"] = true;
                 $church_metrics_tile["hidden"] = false;
             } else {
                 $site_options["group_preferences"]["church_metrics"] = false;
-                $church_metrics_tile["enabled"] = false;
                 $church_metrics_tile["hidden"] = true;
             }
             if ( isset( $_POST['four_fields'] ) && ! empty( $_POST['four_fields'] ) ) {
                 $site_options["group_preferences"]["four_fields"] = true;
-                $four_fields_tile["enabled"] = true;
                 $four_fields_tile["hidden"] = false;
             } else {
                 $site_options["group_preferences"]["four_fields"] = false;
-                $four_fields_tile["enabled"] = false;
                 $four_fields_tile["hidden"] = true;
             }
 

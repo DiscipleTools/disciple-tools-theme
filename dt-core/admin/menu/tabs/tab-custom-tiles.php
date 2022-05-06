@@ -385,6 +385,12 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
     private function tile_select( $post_type ){
         $tile_options = DT_Posts::get_post_tiles( $post_type, false );
+
+        if ( $post_type === "groups" ) {
+            $group_preferences = dt_get_option( "group_preferences" );
+            $four_fields_enabled = isset( $group_preferences["four_fields"] ) ? $group_preferences["four_fields"] : true;
+            $church_health_enabled = isset( $group_preferences["church_health"] ) ? $group_preferences["church_health"] : true;
+        }
         ?>
         <form method="post">
             <input type="hidden" name="tile_select_nonce" id="tile_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_select' ) ) ?>" />
@@ -397,11 +403,11 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <?php foreach ( $tile_options as $tile_key => $tile_value ) : ?>
-                            <?php if ( !isset( $tile_value["enabled"] ) || $tile_value["enabled"] === true ) : ?>
+                            <?php if ( $tile_key === "four-fields" && !$four_fields_enabled ) continue; ?>
+                            <?php if ( $tile_key === "health-metrics" && !$church_health_enabled ) continue; ?>
 
                                 <button type="submit" name="tile-select" class="button" value="<?php echo esc_html( $tile_key ); ?>"><?php echo esc_html( isset( $tile_value["label"] ) ? $tile_value["label"] : $tile_key ); ?></button>
 
-                            <?php endif; ?>
                         <?php endforeach; ?>
                     </td>
                 </tr>
