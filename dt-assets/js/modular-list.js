@@ -2323,15 +2323,34 @@
     $(this).data(`bulk_key_${field_key}`, val);
   })
 
+  $('.list-dropdown-submenu-item-link').on('click', function() {
+    // Hide bulk select modals
+    $('#records-table').removeClass('bulk_edit_on')
+
+    // Close all open modals
+    $('.list-dropdown-submenu-item-link').each(function(){
+      let open_modals = $(this).data('modal');
+      $( '#' + open_modals ).hide();
+    });
+
+    // Open modal for clicked menu item
+    let display_modal = $(this).data('modal');
+    $( '#' + display_modal ).show();
+
+    // Show bulk select checkboxes if applicable
+    if ( $(this).data('checkboxes') === true ) {
+      $('#records-table').addClass('bulk_edit_on');
+    }
+  });
+
+  $('.list-action-close-button').on('click', function (){
+    let section = $(this).data('close')
+    $(`#${section}`).hide();
+  })
 
   /*****
    * Bulk Send App
    */
-  $('#bulk_send_app_controls').on('click', function(){
-    $('#bulk_send_app_picker').toggle();
-    $('#records-table').toggleClass('bulk_edit_on');
-  })
-
   let bulk_send_app_button = $('#bulk_send_app_submit');
   bulk_send_app_button.on('click', function(e) {
     bulk_send_app();
