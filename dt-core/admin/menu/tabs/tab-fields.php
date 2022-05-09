@@ -84,8 +84,8 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
         $this->box( 'bottom' );
     }
 
-    public function box_message( $type ) {
-        $post_settings = DT_Posts::get_post_settings( $type );
+    public function box_message( $post_type ) {
+        $post_settings = DT_Posts::get_post_settings( $post_type );
         $this->box( 'top', $post_settings['label_plural'] . ' Fields on this Instance' );
 
         ?>
@@ -102,24 +102,36 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
 
             <table class="widefat striped">
                 <tr>
+                    <th style="width:5%"></th>
                     <th style="width:20%">Name</th>
                     <th style="width:20%">Key</th>
                     <th style="width:10%">Type</th>
                     <th style="width:5%; text-align: center;">Icon</th>
-                    <th style="width:45%">Details</th>
+                    <th style="width:40%">Details</th>
                 </tr>
             <?php
             foreach ( $fields as $field_key => $field_value ){
                 if ( $type === $field_value["type"] ){
                     ?>
                     <tr>
+                        <td>
+                            <form method="get">
+                                <input type="hidden" name="field_select_nonce" id="field_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_select' ) ) ?>" />
+                                <input type="hidden" name="page" value="dt_options" />
+                                <input type="hidden" name="tab" value="custom-fields" />
+                                <input type="hidden" name="post_type" value="<?php echo esc_attr( $post_type ); ?>" />
+                                <input type="hidden" name="field-select" value="<?php echo esc_html( $post_type . '_' . $field_key ) ?>" />
+
+                                <button type="submit" class="button" name="field_selected"><?php _e( 'Edit', 'disciple-tools' ) ?></button>
+                            </form>
+                        </td>
                         <td><?php echo esc_html( $field_value["name"] ) ?></td>
                         <td><?php echo esc_html( $field_key ) ?></td>
                         <td><?php echo esc_html( $field_value["type"] ) ?></td>
                         <td align="center">
                             <?php if ( isset( $field_value["icon"] ) ): ?>
 
-                                <img style="max-height: 15px; max-width: 15px;" src="<?php echo $field_value["icon"] ?>" alt="">
+                                <img style="max-height: 15px; max-width: 15px;" src="<?php echo esc_html( $field_value["icon"] ) ?>" alt="">
 
                             <?php endif; ?>
                         </td>
@@ -132,7 +144,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
                                     <li>
                                         <?php if ( isset( $option_value["icon"] ) ) : ?>
 
-                                            <img style="max-height: 15px; max-width: 15px;" src="<?php echo $option_value["icon"] ?>" alt="">
+                                            <img style="max-height: 15px; max-width: 15px;" src="<?php echo esc_html( $option_value["icon"] ) ?>" alt="">
 
                                         <?php endif; ?>
                                         <?php echo esc_html( $option_key ) ?> => <?php echo esc_html( $option_value["label"] ) ?></li>
