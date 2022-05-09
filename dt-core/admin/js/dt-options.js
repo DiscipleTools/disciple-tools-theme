@@ -87,4 +87,29 @@ jQuery(document).ready(function ($) {
     $('.same_post_type_other_field_name').toggle(!this.checked)
   })
 
+  /**
+   * Sorting code for field options
+   */
+
+  $('.sortable-field-options').sortable({
+    connectWith: '.sortable-field-options',
+    placeholder: 'ui-state-highlight',
+    update: function (evt, ui) {
+
+      let updated_field_options_ordering = [];
+
+      // Snapshot updated field options ordering by key.
+      $('.sortable-field-options').find('.sortable-field-options-key').each(function (idx, key_div) {
+        let key = $(key_div).text().trim();
+        if (key) {
+          updated_field_options_ordering.push(key);
+        }
+      });
+
+      // Persist updated field options ordering.
+      $('#sortable_field_options_ordering').val(JSON.stringify(updated_field_options_ordering));
+
+    }
+  }).disableSelection();
+
 })

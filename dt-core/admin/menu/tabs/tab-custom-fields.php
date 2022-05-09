@@ -477,6 +477,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <table class="widefat">
                 <thead>
                 <tr>
+                    <td></td>
                     <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Default Label", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Custom Label", 'disciple_tools' ) ?></td>
@@ -494,21 +495,23 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <td><?php esc_html_e( "Color", 'disciple_tools' ) ?></td>
                     <?php endif; ?>
                     <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
-                    <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Description", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Description Translation", 'disciple_tools' ) ?></td>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="sortable-field-options">
                 <?php foreach ( $field_options as $key => $option ) :
 
                     if ( !( isset( $option["deleted"] ) && $option["deleted"] == true ) ):
                         $label = $option["label"] ?? "";
                         $in_defaults = isset( $defaults[$field_key]["default"][$key] );
                         ?>
-                        <tr>
+                        <tr class="ui-state-default">
                             <td>
+                                <span class="ui-icon ui-icon-arrow-4"></span>
+                            </td>
+                            <td class="sortable-field-options-key">
                                 <?php echo esc_html( $key ) ?>
                             </td>
                             <td>
@@ -585,13 +588,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     </table>
                                 </div>
                             </td>
-
-                            <td>
-                                <?php if ( !$first ) : ?>
-                                    <button type="submit" name="move_up" value="<?php echo esc_html( $key ) ?>" class="button small" >↑</button>
-                                    <button type="submit" name="move_down" value="<?php echo esc_html( $key ) ?>" class="button small" >↓</button>
-                                <?php endif; ?>
-                            </td>
                             <td>
                                 <?php if ( !isset( $field["customizable"] ) || ( isset( $field["customizable"] ) && ( $field["customizable"] === "all" || ( $field["customizable"] === 'add_only' && !$in_defaults ) ) )
                                     || !isset( $field["default"][$key] ) ) : ?>
@@ -633,8 +629,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <?php foreach ( $field_options as $key => $option ) :
                     $label = $option["label"] ?? "";
                     if ( isset( $option["deleted"] ) && $option["deleted"] == true ): ?>
-                        <tr style="background-color: #eee">
-                            <td><?php echo esc_html( $key ) ?></td>
+                        <tr class="ui-state-default" style="background-color: #eee">
+                            <td></td>
+                            <td class="sortable-field-options-key"><?php echo esc_html( $key ) ?></td>
                             <td><?php echo esc_html( $label ) ?></td>
                             <td colspan="8"></td>
                             <td>
@@ -646,9 +643,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 </tbody>
             </table>
 
+            <input type="hidden" id="sortable_field_options_ordering" name="sortable_field_options_ordering"
+                   value="[]"/>
+
             <br>
             <button type="submit" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
-
 
         <?php } ?>
         </form>
@@ -702,12 +701,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             </form>
         <?php endif; ?>
     <?php }
-
-    private static function moveElement( &$array, $a, $b ) {
-        $out = array_splice( $array, $a, 1 );
-        array_splice( $array, $b, 0, $out );
-    }
-
 
     private function process_extra_field( $post_submission ){
         $post_type = $post_submission["post_type"];
@@ -919,21 +912,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $custom_field["default"][$post_submission["restore_option"]]["deleted"] = false;
                     $field_options[ $post_submission["restore_option"] ]["deleted"] = false;
                 }
-                //move option  up or down
-                if ( isset( $post_submission["move_up"] ) || isset( $post_submission["move_down"] ) ){
-                    $option_key = $post_submission["move_up"] ?? $post_submission["move_down"];
-                    $direction = isset( $post_submission["move_up"] ) ? -1 : 1;
-                    $active_field_options = [];
-                    foreach ( $field_options as $field_option_key => $field_option_val ){
-                        if ( !( isset( $field_option_val["deleted"] ) && $field_option_val["deleted"] == true ) ){
-                            $active_field_options[strval( $field_option_key )] = $field_option_val;
-                        }
-                    }
-                    $pos = (int) array_search( $option_key, array_keys( $active_field_options ) );
-                    $option_keys = array_keys( $active_field_options );
-                    self::moveElement( $option_keys, $pos, $pos + $direction );
-                    $custom_field["order"] = $option_keys;
+                // Capture field option updated ordering
+                if ( isset( $post_submission['sortable_field_options_ordering'] ) && ! empty( json_decode( $post_submission['sortable_field_options_ordering'], true ) ) ) {
+                    $custom_field["order"] = json_decode( $post_submission['sortable_field_options_ordering'], true );
                 }
+
                 /*
                  * add option
                  */
