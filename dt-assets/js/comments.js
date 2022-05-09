@@ -536,7 +536,7 @@ jQuery(document).ready(function($) {
       }
       typesCount[comment.comment_type]++;
     })
-    $('#comment-activity-tabs .tabs-title').addClass('hide')
+    $('#comment-activity-tabs .tabs-title[data-always-show!="true"]').addClass('hide')
     window.lodash.forOwn(typesCount, (val, key)=>{
       let tab = $(`[data-id="${key}"].tab-button-label`)
       let text = tab.text()
