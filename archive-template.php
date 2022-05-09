@@ -255,40 +255,38 @@ dt_please_log_in();
                         </div>
                         <?php
                         $dropdown_items = [
-                            [
-                                'key' => 'options',
-                                'label' => __( 'Fields', 'disciple_tools' ),
-                                'icon' => 'options.svg',
-                                'modal_id' => 'list_column_picker',
-                                'toggle_multiselect' => false,
-                                'post_type' => null,
-                            ],
-                            [
-                                'key' => 'bulk-edit',
-                                'label' => __( 'Bulk Edit', 'disciple_tools' ),
-                                'icon' => 'bulk-edit.svg',
-                                'modal_id' => 'bulk_edit_picker',
-                                'toggle_multiselect' => true,
-                                'post_type' => null,
-                            ],
+                            'options' =>
+                                [
+                                    'label' => __( 'Fields', 'disciple_tools' ),
+                                    'icon' => get_template_directory_uri() . '/dt-assets/images/options.svg',
+                                    'section_id' => 'list_column_picker',
+                                    'toggle_multiselect' => false,
+                                ],
+                            'bulk-edit' =>
+                                [
+                                    'label' => __( 'Bulk Edit', 'disciple_tools' ),
+                                    'icon' => get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg',
+                                    'section_id' => 'bulk_edit_picker',
+                                    'toggle_multiselect' => true,
+                                ],
                         ];
 
-                        $dropdown_items = apply_filters( 'dt_nav_dropdown_menu_items', $dropdown_items );
+                        $dropdown_items += apply_filters( 'dt_list_action_menu_items', $dropdown_items );
                         ?>
                         <div class="js-sort-dropdown" style="display: inline-block">
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
                                     <a href="#"><?php esc_html_e( "More", 'disciple_tools' ) ?></a>
                                     <ul class="menu is-dropdown-submenu" id="dropdown-submenu-items-more">
-                                    <?php foreach ( $dropdown_items as $dropdown_item ) : ?>  
-                                        <?php if ( $dropdown_item['post_type'] === null || $dropdown_item['post_type'] === $post_type ) : ?>
-                                            <?php $multiselect = $dropdown_item['toggle_multiselect'] ? 'true' : 'false'; ?>
-                                        <li>
-                                            <a href="javascript:void(0);" data-modal="<?php echo esc_html( $dropdown_item['modal_id'] ); ?>" data-multiselect="<?php echo esc_html( $multiselect ); ?>" class="dropdown-submenu-item-link" id="submenu-more-<?php echo esc_html( $dropdown_item['key'] ); ?>">
-                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/' . $dropdown_item['icon'] ); ?>" class="dropdown-submenu-icon">
-                                                <?php echo esc_html( $dropdown_item['label'] ); ?>
-                                            </a>
-                                        </li>
+                                    <?php foreach ( $dropdown_items as $key => $value ) : ?>
+                                        <?php if ( isset( $key ) ) : ?>
+                                            <?php $multiselect = $value['toggle_multiselect'] ? 'true' : 'false'; ?>
+                                            <li>
+                                                <a href="javascript:void(0);" data-modal="<?php echo esc_html( $value['section_id'] ); ?>" data-multiselect="<?php echo esc_html( $multiselect ); ?>" class="dropdown-submenu-item-link" id="submenu-more-<?php echo esc_html( $key ); ?>">
+                                                    <img src="<?php echo esc_html( $value['icon'] ); ?>" class="dropdown-submenu-icon">
+                                                    <?php echo esc_html( $value['label'] ); ?>
+                                                </a>
+                                            </li>
                                         <?php endif; ?>
                                     <?php endforeach; ?>
                                     </ul>
@@ -317,14 +315,6 @@ dt_please_log_in();
                             });
                         </script>
                         <?php
-                        /**
-                         * Adds link to the end top list
-                         * @see /dt-reports/bulk-extension for example of using this action
-                         */
-                        do_action( 'dt_post_bulk_list_link', $post_type, $post_settings, $dt_magic_apps );
-                        ?>
-
-                        <?php
                             $status_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['status_key'] : null;
                             $archived_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['archived_key'] : null;
 
@@ -348,7 +338,7 @@ dt_please_log_in();
                      * Adds link to the end top list
                      * @see /dt-reports/bulk-extension for example of using this action
                      */
-                    do_action( 'dt_post_bulk_list_section', $post_type, $post_settings, $dt_magic_apps );
+                    do_action( 'dt_post_bulk_list_section', $post_type, $post_settings );
                     ?>
 
                     <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
