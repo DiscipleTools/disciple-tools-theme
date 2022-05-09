@@ -270,22 +270,11 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <button type="button" class="button save-drag-changes">Save tile and field order</button>
             <div id="sort-tiles" style="display: inline-block; width: 100%">
 
-            <?php
-            if ( $post_type === "groups" ) {
-                $group_preferences = dt_get_option( "group_preferences" );
-                $four_fields_enabled = isset( $group_preferences["four_fields"] ) ? $group_preferences["four_fields"] : true;
-                $church_metrics_enabled = isset( $group_preferences["church_metrics"] ) ? $group_preferences["church_metrics"] : true;
-            }
-            ?>
-
                 <?php foreach ( $tile_options as $tile_key => $tile ) :
                     if ( $tile_key === "no_tile" || ( $tile["hidden"] ?? false ) ){
                         continue;
                     }
-                    if ( $tile_key === "health-metrics" && !$church_metrics_enabled ) {
-                        continue;
-                    }
-                    if ( $tile_key === "four-fields" && !$four_fields_enabled ) {
+                    if ( !$this->isTileEnabled( $post_type, $tile_key ) ) {
                         continue;
                     }
 
@@ -400,12 +389,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
     private function tile_select( $post_type ){
         $tile_options = DT_Posts::get_post_tiles( $post_type, false );
-
-        if ( $post_type === "groups" ) {
-            $group_preferences = dt_get_option( "group_preferences" );
-            $four_fields_enabled = isset( $group_preferences["four_fields"] ) ? $group_preferences["four_fields"] : true;
-            $church_metrics_enabled = isset( $group_preferences["church_metrics"] ) ? $group_preferences["church_metrics"] : true;
-        }
         ?>
         <form method="post">
             <input type="hidden" name="tile_select_nonce" id="tile_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_select' ) ) ?>" />
@@ -418,8 +401,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <?php foreach ( $tile_options as $tile_key => $tile_value ) : ?>
-                            <?php if ( $tile_key === "four-fields" && !$four_fields_enabled ) continue; ?>
-                            <?php if ( $tile_key === "health-metrics" && !$church_metrics_enabled ) continue; ?>
+                            <?php if ( !$this->isTileEnabled( $post_type, $tile_key ) ) continue; ?>
 
                             <button type="submit" name="tile-select" class="button" value="<?php echo esc_html( $tile_key ); ?>"><?php echo esc_html( isset( $tile_value["label"] ) ? $tile_value["label"] : $tile_key ); ?></button>
 
@@ -671,6 +653,35 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <p><?php echo esc_html( $notice ) ?></p>
         </div>
         <?php
+    }
+
+    /**
+     * Is the tile disabled by some higher preference
+     */
+    public function isTileEnabled( $post_type, $tile_key )
+    {
+        $preferences = [];
+
+        if ( $post_type === "groups" ) {
+            $preferences = dt_get_option( "group_preferences" );
+        }
+
+        if ( !isset( $preferences ) || empty( $preferences ) ) return true;
+
+        // get the correct key for the preferences
+        // If the same key as the tile is used in the preferences option then we have no need for the map.
+        $key_map = [
+            "four-fields" => "four_fields",
+            "health-metrics" => "church_metrics",
+        ];
+
+        $preference_key = $tile_key;
+
+        if ( array_key_exists( $tile_key, $key_map ) ) {
+            $preference_key = $key_map[$tile_key];
+        }
+
+        return isset( $preferences[$preference_key] ) ? $preferences[$preference_key] : true;
     }
 }
 Disciple_Tools_Tab_Custom_Tiles::instance();
