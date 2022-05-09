@@ -274,9 +274,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     if ( $tile_key === "no_tile" || ( $tile["hidden"] ?? false ) ){
                         continue;
                     }
-                    if ( !$this->isTileEnabled( $post_type, $tile_key ) ) {
-                        continue;
-                    }
 
                     //@todo display hidden tile greyed out
                     $disabled_ui = !in_array( $tile_key, [ "status", "details" ] ) ? "draggable-header" : "disabled-drag";
@@ -401,7 +398,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <?php foreach ( $tile_options as $tile_key => $tile_value ) : ?>
-                            <?php if ( !$this->isTileEnabled( $post_type, $tile_key ) ) continue; ?>
 
                             <button type="submit" name="tile-select" class="button" value="<?php echo esc_html( $tile_key ); ?>"><?php echo esc_html( isset( $tile_value["label"] ) ? $tile_value["label"] : $tile_key ); ?></button>
 
@@ -653,35 +649,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <p><?php echo esc_html( $notice ) ?></p>
         </div>
         <?php
-    }
-
-    /**
-     * Is the tile disabled by some higher preference
-     */
-    public function isTileEnabled( $post_type, $tile_key )
-    {
-        $preferences = [];
-
-        if ( $post_type === "groups" ) {
-            $preferences = dt_get_option( "group_preferences" );
-        }
-
-        if ( !isset( $preferences ) || empty( $preferences ) ) return true;
-
-        // get the correct key for the preferences
-        // If the same key as the tile is used in the preferences option then we have no need for the map.
-        $key_map = [
-            "four-fields" => "four_fields",
-            "health-metrics" => "church_metrics",
-        ];
-
-        $preference_key = $tile_key;
-
-        if ( array_key_exists( $tile_key, $key_map ) ) {
-            $preference_key = $key_map[$tile_key];
-        }
-
-        return isset( $preferences[$preference_key] ) ? $preferences[$preference_key] : true;
     }
 }
 Disciple_Tools_Tab_Custom_Tiles::instance();

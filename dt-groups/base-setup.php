@@ -25,6 +25,7 @@ class DT_Groups_Base extends DT_Module_Base {
         //setup tiles and fields
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
+        add_filter( 'dt_custom_tiles_after_combine', [ $this, 'dt_custom_tiles_after_combine' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
@@ -633,6 +634,49 @@ class DT_Groups_Base extends DT_Module_Base {
             $tiles["other"] = [ "label" => __( "Other", 'disciple_tools' ) ];
         }
         return $tiles;
+    }
+
+    public function dt_custom_tiles_after_combine( $tile_options, $post_type = "" ){
+
+        if ( $post_type === "groups" ) {
+            foreach ($tile_options as $tile_key => $_) {
+                if ( !$this->isTileEnabled( $post_type, $tile_key ) ) {
+                    unset( $tile_options[$tile_key] );
+                    continue;
+                }
+            }
+        }
+
+        return $tile_options;
+    }
+
+    /**
+     * Is the tile disabled by some higher preference
+     */
+    public function isTileEnabled( $post_type, $tile_key )
+    {
+        $preferences = [];
+
+        if ( $post_type === "groups" ) {
+            $preferences = dt_get_option( "group_preferences" );
+        }
+
+        if ( !isset( $preferences ) || empty( $preferences ) ) return true;
+
+        // get the correct key for the preferences
+        // If the same key as the tile is used in the preferences option then we have no need for the map.
+        $key_map = [
+            "four-fields" => "four_fields",
+            "health-metrics" => "church_metrics",
+        ];
+
+        $preference_key = $tile_key;
+
+        if ( array_key_exists( $tile_key, $key_map ) ) {
+            $preference_key = $key_map[$tile_key];
+        }
+
+        return isset( $preferences[$preference_key] ) ? $preferences[$preference_key] : true;
     }
 
 
