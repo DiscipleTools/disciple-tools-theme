@@ -20,7 +20,7 @@ if ( 'contacts' === dt_get_post_type() ) {
                     'label' => __( 'Bulk Send App', 'disciple_tools' ),
                     'icon' => get_template_directory_uri() . '/dt-assets/images/connection.svg',
                     'section_id' => 'bulk_send_app_picker',
-                    'toggle_multiselect' => true,
+                    'show_list_checkboxes' => true,
                 ],
             ];
             return $bulk_send_menu_item;
@@ -34,7 +34,10 @@ if ( 'contacts' === dt_get_post_type() ) {
     function dt_post_bulk_list_section_apps( $post_type, $post_settings ){
         $dt_magic_apps = DT_Magic_URL::list_bulk_send();
         if ( ! empty( $dt_magic_apps ) && $post_settings['post_type'] === 'contacts' ) : ?>
-            <div id="bulk_send_app_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+            <div id="bulk_send_app_picker" class="list_action_section">
+                <button class="close-button list-action-close-button" data-close="bulk_send_app_picker" aria-label="Close modal" type="button">
+                    <span aria-hidden="true">×</span>
+                </button>
                 <p style="font-weight:bold"><?php
                     echo sprintf( esc_html__( 'Select all the %1$s to whom you want to send app links.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                 <div class="grid-x grid-margin-x">
