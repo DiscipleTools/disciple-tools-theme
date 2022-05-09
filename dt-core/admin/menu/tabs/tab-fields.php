@@ -102,10 +102,11 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
 
             <table class="widefat striped">
                 <tr>
-                    <th style="width:30%">Name</th>
+                    <th style="width:20%">Name</th>
                     <th style="width:20%">Key</th>
                     <th style="width:10%">Type</th>
-                    <th style="width:40%">Details</th>
+                    <th style="width:5%; text-align: center;">Icon</th>
+                    <th style="width:45%">Details</th>
                 </tr>
             <?php
             foreach ( $fields as $field_key => $field_value ){
@@ -115,13 +116,26 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
                         <td><?php echo esc_html( $field_value["name"] ) ?></td>
                         <td><?php echo esc_html( $field_key ) ?></td>
                         <td><?php echo esc_html( $field_value["type"] ) ?></td>
+                        <td align="center">
+                            <?php if ( isset( $field_value["icon"] ) ): ?>
+
+                                <img style="max-height: 15px; max-width: 15px;" src="<?php echo $field_value["icon"] ?>" alt="">
+
+                            <?php endif; ?>
+                        </td>
                         <td>
                             <?php if ( ( $field_value['type'] === "key_select" || $field_value["type"] === "multi_select" ) && !empty( $field_value["default"] ) ) : ?>
                             Options:
                             <ul style="margin-top:0; list-style: circle; padding-inline-start: 40px;">
                                 <?php foreach ( $field_value["default"] as $option_key => $option_value ) :
                                     if ( isset( $option_value["label"] ) ) : ?>
-                                    <li><?php echo esc_html( $option_key ) ?> => <?php echo esc_html( $option_value["label"] ) ?></li>
+                                    <li>
+                                        <?php if ( isset( $option_value["icon"] ) ) : ?>
+
+                                            <img style="max-height: 15px; max-width: 15px;" src="<?php echo $option_value["icon"] ?>" alt="">
+
+                                        <?php endif; ?>
+                                        <?php echo esc_html( $option_key ) ?> => <?php echo esc_html( $option_value["label"] ) ?></li>
                                     <?php endif;
                                 endforeach; ?>
                             </ul>
