@@ -110,8 +110,8 @@
                             $always_show = isset( $section["always_show"] ) && $section["always_show"] === true;
                             ?>
                             <li
-                                class="tabs-title <?php echo esc_html( $always_show ?  '' : 'hide' ) ?>"
-                                data-always-show="<?php echo esc_html( $always_show ?  'true' : 'false' ) ?>"
+                                class="tabs-title <?php echo esc_html( $always_show ? '' : 'hide' ) ?>"
+                                data-always-show="<?php echo esc_html( $always_show ? 'true' : 'false' ) ?>"
                             >
                                 <label for="tab-button-<?php echo esc_html( $section["key"] ) ?>">
                                     <input type="checkbox"
