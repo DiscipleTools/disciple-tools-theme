@@ -271,6 +271,7 @@ dt_please_log_in();
                                 ],
                         ];
 
+                        // Add custom menu items
                         $dropdown_items += apply_filters( 'dt_list_action_menu_items', $dropdown_items );
                         ?>
                         <div class="js-sort-dropdown" style="display: inline-block">
@@ -334,11 +335,8 @@ dt_please_log_in();
 
                     </div>
                     <?php
-                    /**
-                     * Adds link to the end top list
-                     * @see /dt-reports/bulk-extension for example of using this action
-                     */
-                    do_action( 'dt_post_bulk_list_section', $post_type, $post_settings );
+                    // Add section UI for custom menus
+                    do_action( 'dt_list_action_section', $post_type, $post_settings );
                     ?>
 
                     <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">

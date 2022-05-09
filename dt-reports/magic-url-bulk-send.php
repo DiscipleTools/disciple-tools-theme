@@ -30,7 +30,7 @@ if ( 'contacts' === dt_get_post_type() ) {
     /**
      * Adds hidden toggle body
      */
-    add_action( 'dt_post_bulk_list_section', 'dt_post_bulk_list_section_apps', 20, 3 );
+    add_action( 'dt_list_action_section', 'dt_post_bulk_list_section_apps', 20, 3 );
     function dt_post_bulk_list_section_apps( $post_type, $post_settings ){
         $dt_magic_apps = DT_Magic_URL::list_bulk_send();
         if ( ! empty( $dt_magic_apps ) && $post_settings['post_type'] === 'contacts' ) : ?>
