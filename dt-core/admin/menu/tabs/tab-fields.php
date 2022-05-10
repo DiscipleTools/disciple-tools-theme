@@ -128,7 +128,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
                         <td><?php echo esc_html( $field_value["name"] ) ?></td>
                         <td><?php echo esc_html( $field_key ) ?></td>
                         <td><?php echo esc_html( $field_value["type"] ) ?></td>
-                        <td align="center">
+                        <td style="text-align: center;">
                             <?php if ( isset( $field_value["icon"] ) ): ?>
 
                                 <img style="max-height: 15px; max-width: 15px;" src="<?php echo esc_html( $field_value["icon"] ) ?>" alt="">
