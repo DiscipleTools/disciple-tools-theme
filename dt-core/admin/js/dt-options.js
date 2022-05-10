@@ -102,7 +102,7 @@ jQuery(document).ready(function ($) {
       $('.sortable-field-options').find('.sortable-field-options-key').each(function (idx, key_div) {
         let key = $(key_div).text().trim();
         if (key) {
-          updated_field_options_ordering.push(key);
+          updated_field_options_ordering.push(encode_field_key_special_characters(key));
         }
       });
 
@@ -111,5 +111,12 @@ jQuery(document).ready(function ($) {
 
     }
   }).disableSelection();
+
+  function encode_field_key_special_characters(key) {
+    key = window.lodash.replace(key, '<', '_less_than_');
+    key = window.lodash.replace(key, '>', '_more_than_');
+
+    return key;
+  }
 
 })

@@ -211,6 +211,24 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( ! function_exists( 'dt_encode_field_key_special_characters' ) ) {
+        function dt_encode_field_key_special_characters( string $key ): string {
+            $key = str_replace( '<', '_less_than_', $key );
+            $key = str_replace( '>', '_more_than_', $key );
+
+            return $key;
+        }
+    }
+
+    if ( ! function_exists( 'dt_decode_field_key_special_characters' ) ) {
+        function dt_decode_field_key_special_characters( string $key ): string {
+            $key = str_replace( '_less_than_', '<', $key );
+            $key = str_replace( '_more_than_', '>', $key );
+
+            return $key;
+        }
+    }
+
     /**
      * Deprecated function, use dt_get_available_languages()
      */
