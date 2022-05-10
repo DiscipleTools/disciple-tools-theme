@@ -349,7 +349,9 @@ abstract class DT_Magic_Url_Base {
                 }
             }
         }
-        unset( $wp_scripts->registered['mapbox-search-widget']->extra['group'] ); //lets the mapbox geocoder work
+        if ( isset( $wp_scripts->registered['mapbox-search-widget'] ) && is_object( $wp_scripts->registered['mapbox-search-widget'] ) ){
+            unset( $wp_scripts->registered['mapbox-search-widget']->extra['group'] ); //lets the mapbox geocoder work
+        }
     }
 
     /**
