@@ -121,7 +121,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
                             <ul style="margin-top:0; list-style: circle; padding-inline-start: 40px;">
                                 <?php foreach ( $field_value["default"] as $option_key => $option_value ) :
                                     if ( isset( $option_value["label"] ) ) : ?>
-                                    <li><?php echo esc_html( $option_key ) ?> => <?php echo esc_html( $option_value["label"] ) ?></li>
+                                    <li><?php echo _e($option_key) ?> => <?php echo esc_html( $option_value["label"] ) ?></li>
                                     <?php endif;
                                 endforeach; ?>
                             </ul>
