@@ -270,7 +270,7 @@ dt_please_log_in();
                         ];
 
                         // Add custom menu items
-                        $dropdown_items += apply_filters( 'dt_list_action_menu_items', $dropdown_items );
+                        $dropdown_items = apply_filters( 'dt_list_action_menu_items', $dropdown_items, $post_type );
                         ?>
                         <div class="js-sort-dropdown" style="display: inline-block">
                             <ul class="dropdown menu" data-dropdown-menu>

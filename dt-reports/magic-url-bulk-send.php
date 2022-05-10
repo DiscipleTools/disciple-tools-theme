@@ -6,34 +6,33 @@
  */
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-if ( 'contacts' === dt_get_post_type() ) {
-
-    /**
-     * Adds submenu item to 'more' nav menu
-     */
-    add_filter( 'dt_list_action_menu_items', 'dt_post_bulk_list_link_apps' );
-    function dt_post_bulk_list_link_apps() {
+/**
+ * Adds submenu item to 'more' nav menu
+ */
+add_filter( 'dt_list_action_menu_items', 'dt_post_bulk_list_link_apps', 10, 2 );
+function dt_post_bulk_list_link_apps( $bulk_send_menu_items, $post_type ) {
+    if ( $post_type === "contacts" ){
         $dt_magic_apps = DT_Magic_URL::list_bulk_send();
         if ( ! empty( $dt_magic_apps ) ) {
-            $bulk_send_menu_item = [
-                'bulk-send-app' => [
-                    'label' => __( 'Bulk Send App', 'disciple_tools' ),
-                    'icon' => get_template_directory_uri() . '/dt-assets/images/connection.svg',
-                    'section_id' => 'bulk_send_app_picker',
-                    'show_list_checkboxes' => true,
-                ],
+            $bulk_send_menu_items['bulk-send-app'] = [
+                'label' => __( 'Bulk Send App', 'disciple_tools' ),
+                'icon' => get_template_directory_uri() . '/dt-assets/images/connection.svg',
+                'section_id' => 'bulk_send_app_picker',
+                'show_list_checkboxes' => true,
             ];
-            return $bulk_send_menu_item;
         }
     }
+    return $bulk_send_menu_items;
+}
 
-    /**
-     * Adds hidden toggle body
-     */
-    add_action( 'dt_list_action_section', 'dt_post_bulk_list_section_apps', 20, 3 );
-    function dt_post_bulk_list_section_apps( $post_type, $post_settings ){
+/**
+ * Adds hidden toggle body
+ */
+add_action( 'dt_list_action_section', 'dt_post_bulk_list_section_apps', 20, 3 );
+function dt_post_bulk_list_section_apps( $post_type ){
+    if ( $post_type === 'contacts' ){
         $dt_magic_apps = DT_Magic_URL::list_bulk_send();
-        if ( ! empty( $dt_magic_apps ) && $post_settings['post_type'] === 'contacts' ) : ?>
+        if ( ! empty( $dt_magic_apps ) ) : ?>
             <div id="bulk_send_app_picker" class="list_action_section">
                 <button class="close-button list-action-close-button" data-close="bulk_send_app_picker" aria-label="Close modal" type="button">
                     <span aria-hidden="true">×</span>
@@ -80,6 +79,6 @@ if ( 'contacts' === dt_get_post_type() ) {
                 </div>
 
             </div>
-          <?php endif;
-    };
-}
+        <?php endif;
+    }
+};
