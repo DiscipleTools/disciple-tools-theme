@@ -1610,6 +1610,8 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        $tile_options[$post_type] = apply_filters( 'dt_custom_tiles_after_combine', $tile_options[$post_type], $post_type );
+
         wp_cache_set( $post_type . "_tile_options", $tile_options[$post_type] );
         return $tile_options[$post_type];
     }
