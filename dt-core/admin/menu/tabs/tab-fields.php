@@ -122,7 +122,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
                                 <input type="hidden" name="post_type" value="<?php echo esc_attr( $post_type ); ?>" />
                                 <input type="hidden" name="field-select" value="<?php echo esc_html( $post_type . '_' . $field_key ) ?>" />
 
-                                <button type="submit" class="button" name="field_selected"><?php _e( 'Edit', 'disciple-tools' ) ?></button>
+                                <button type="submit" class="button" name="field_selected"><?php esc_html_e( 'Edit', 'disciple-tools' ) ?></button>
                             </form>
                         </td>
                         <td><?php echo esc_html( $field_value["name"] ) ?></td>
