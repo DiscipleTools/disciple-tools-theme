@@ -592,6 +592,7 @@ jQuery(function($) {
    *  - Bulk
    */
 
+  let bulk_record_id_counter = 1;
   let is_normal_new_record = (!$('#form_fields_records').length) ? true : false;
 
   $(document).ready(function () {
@@ -621,7 +622,7 @@ jQuery(function($) {
 
   } else {
 
-    let bulk_record_id = 1;
+    let bulk_record_id = bulk_record_id_counter;
 
     adjust_new_button_multi_select_class_names(bulk_record_id);
     adjust_new_typeahead_general_element_class_names(bulk_record_id);
@@ -647,7 +648,7 @@ jQuery(function($) {
 
     if (fields_html) {
 
-      let new_records_count = $('#form_fields_records').find('.form-fields-record').length + 1;
+      let new_records_count = ++bulk_record_id_counter;
       let html = `<div class="form-fields-record form-fields-record-subsequent">
         <input type="hidden" id="bulk_record_id" value="${new_records_count}">
         <div class="record-divider"><span>${generate_record_removal_button_html(new_records_count)}</span></div>
