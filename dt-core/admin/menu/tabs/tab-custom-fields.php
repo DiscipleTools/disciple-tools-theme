@@ -913,8 +913,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $field_options[ $post_submission["restore_option"] ]["deleted"] = false;
                 }
                 // Capture field option updated ordering
-                if ( isset( $post_submission['sortable_field_options_ordering'] ) && ! empty( json_decode( $post_submission['sortable_field_options_ordering'], true ) ) ) {
-                    $custom_field["order"] = json_decode( $post_submission['sortable_field_options_ordering'], true );
+                if ( isset( $_POST['sortable_field_options_ordering'] ) ) {
+
+                    // phpcs:disable
+                    $ordering = json_decode( wp_unslash( $_POST['sortable_field_options_ordering'] ), true );
+                    // phpcs:enable
+
+                    if ( ! empty( $ordering ) ) {
+                        $custom_field["order"] = $ordering;
+                    }
                 }
 
                 /*
