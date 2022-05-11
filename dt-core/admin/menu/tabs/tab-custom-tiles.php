@@ -274,6 +274,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     if ( $tile_key === "no_tile" || ( $tile["hidden"] ?? false ) ){
                         continue;
                     }
+
                     //@todo display hidden tile greyed out
                     $disabled_ui = !in_array( $tile_key, [ "status", "details" ] ) ? "draggable-header" : "disabled-drag";
                     ?>
@@ -397,7 +398,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <?php foreach ( $tile_options as $tile_key => $tile_value ) : ?>
+
                             <button type="submit" name="tile-select" class="button" value="<?php echo esc_html( $tile_key ); ?>"><?php echo esc_html( isset( $tile_value["label"] ) ? $tile_value["label"] : $tile_key ); ?></button>
+
                         <?php endforeach; ?>
                     </td>
                 </tr>

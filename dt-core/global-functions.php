@@ -275,25 +275,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'native_name' => 'Español (Latinoamérica) ',
                     'english_name' => 'Spanish (Latin America)'
                 ],
-                'es_AR' => [
-                    'language' => 'es_AR',
-                    'english_name' => 'Spanish (Argentina)',
-                    'native_name' => 'Español de Argentina'
-                ],
-                'es_CO' => [
-                    'language' => 'es_CO',
-                    'english_name' => 'Spanish (Colombia)',
-                    'native_name' => 'Español de Colombia'
-                ],
                 'es_ES' => [
                     'language' => 'es_ES',
                     'english_name' => 'Spanish (Spain)',
                     'native_name' => 'Español'
-                ],
-                'es_MX' => [
-                    'language' => 'es_MX',
-                    'english_name' => 'Spanish (Mexico)',
-                    'native_name' => 'Español de México'
                 ],
                 'fa_IR' => [
                     'language' => 'fa_IR',

@@ -434,7 +434,7 @@ class Disciple_Tools_Users
                 $archive_contact = DT_Posts::create_post( "contacts", [
                     "type" => 'placeholder',
                     "overall_status" => "closed",
-                    "title" => $existing_contact["title"] . " - " . __( "archived", 'disciple_tools' ),
+                    "title" => $existing_contact["title"] . " - " . __( "Archived", 'disciple_tools' ),
                 ] );
                 if ( isset( $archive_contact["ID"] ) ){
                     $current_user_id = get_current_user_id();

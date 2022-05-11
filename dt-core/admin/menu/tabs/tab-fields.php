@@ -75,7 +75,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
             <?php wp_nonce_field( 'post_type_select', 'post_type_select_nonce', false, true ) ?>
             <select name="post_type">
             <?php foreach ( $post_types as $post_type ) : ?>
-                <option value="<?php echo esc_html( $post_type ); ?>" <?php echo $post_type === "contacts" ? "selected" : "" ?> ><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></option>
+                <option value="<?php echo esc_html( $post_type ); ?>" <?php echo $post_type === $type ? "selected" : "" ?> ><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></option>
             <?php endforeach; ?>
             </select>
             <button class="button" type="submit">Select</button>
@@ -85,13 +85,13 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
     }
 
     public function box_message( $type ) {
-        $this->box( 'top', 'Fields on this Instance' );
+        $post_settings = DT_Posts::get_post_settings( $type );
+        $this->box( 'top', $post_settings['label_plural'] . ' Fields on this Instance' );
 
         ?>
         <p>Note: Here are this fields available on this Instance. Some are default fields, some are installed by plugins or in the settings page.</p>
         <?php
 
-        $post_settings = DT_Posts::get_post_settings( $type );
         $fields = $post_settings["fields"];
 
 

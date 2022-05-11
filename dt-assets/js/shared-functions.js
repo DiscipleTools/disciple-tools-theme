@@ -572,9 +572,29 @@ window.SHAREDFUNCTIONS = {
     }
     document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
   },
-  uriEncodeFilter(field, id, name) {
-    const filterLabel = { field, id, name }
-    return encodeURIComponent(JSON.stringify(filterLabel))
+  createCustomFilter(field, value) {
+    return ({
+      fields: [
+        {
+          [field]: value,
+        }
+      ]
+    })
+  },
+  create_url_for_list_query(postType, query, labels) {
+    const encodedQuery = window.SHAREDFUNCTIONS.encodeJSON(query);
+    const encodedLabels = window.SHAREDFUNCTIONS.encodeJSON(labels);
+    return window.wpApiShare.site_url + `/${postType}?query=${encodedQuery}&labels=${encodedLabels}`;
+  },
+  encodeJSON(json) {
+    return window.btoa(JSON.stringify(json))
+  },
+  decodeJSON(encodedJSON) {
+    try {
+      return JSON.parse(window.atob(encodedJSON))
+    } catch (error) {
+      return null
+    }
   },
   get_langcode() {
     let langcode = document.querySelector("html").getAttribute("lang")
