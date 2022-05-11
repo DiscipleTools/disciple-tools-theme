@@ -1375,6 +1375,9 @@ label.dt-switch:active:after {
     border-radius: 2px;
 }
 
+/**
+DT Icons. See https://developers.disciple.tools/style-guide for more on colors
+ */
 img.dt-icon {
     height: 15px;
     width: 15px;
@@ -1387,7 +1390,7 @@ i.dt-icon {
 img.dt-blue-icon, i.dt-blue-icon {
     filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg) brightness(94%) contrast(100%);
 }
-img.dt-white-icon, i.dt-white-icon{
+img.dt-white-icon, i.dt-white-icon {
     filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
 }
 img.dt-green-icon, i.dt-green-icon {
@@ -1395,6 +1398,9 @@ img.dt-green-icon, i.dt-green-icon {
 }
 img.dt-red-icon, i.dt-red-icon {
     filter: invert(23%) sepia(34%) saturate(4972%) hue-rotate(343deg) brightness(121%) contrast(92%);
+}
+img.dt-black-icon, i.dt-black-icon {
+    filter: invert(0%) sepia(0%) saturate(17%) hue-rotate(193deg) brightness(99%) contrast(101%);
 }
 
 .template-new-post {

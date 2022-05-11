@@ -349,7 +349,8 @@ dt_please_log_in();
                                            <?php echo esc_html( in_array( $field_key, $fields_to_show_in_table ) ? "checked" : '' ); ?>
                                            <?php echo esc_html( ( empty( $fields_to_show_in_table ) && !empty( $field_values["show_in_table"] ) ) ? "checked" : '' ); ?>
                                            style="margin:0">
-                                    <?php echo esc_html( $field_values["name"] ); ?>
+                                    <?php dt_render_field_icon( $field_values );
+                                    echo esc_html( $field_values["name"] ); ?>
                                 </label>
                             </li>
                         <?php endforeach; ?>
