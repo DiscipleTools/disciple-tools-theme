@@ -138,6 +138,8 @@
         <p><?php echo esc_html_x( "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact.", 'Optional Documentation', 'disciple_tools' ) ?></p>
     </div>
 
+    <!-- App links help modal -->
+
     <?php
     /**
      * Add additional modal help text
@@ -170,6 +172,31 @@
     <h1 id="help-modal-field-title"><?php echo esc_html( "Tile Documentation" ); ?></h1>
     <p id="help-modal-field-description" class="make-links-clickable" style="white-space: pre-line"></p>
     <div id="help-modal-field-body"></div>
+
+    <div id="tile-help-section-apps" class="help-section help-modal-icon" style="display: none">
+        <ul>
+            <li>
+                <img alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" />
+                <strong><?php esc_html_e( 'Open the link', 'disciple-tools' ) ?></strong>
+            </li>
+            <li>
+                <img alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
+                <strong><?php esc_html_e( 'Copy the link to the clipboard', 'disciple-tools' ) ?></strong>
+            </li>
+            <li>
+                <img alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" />
+                <strong><?php esc_html_e( 'Send the link via email.', 'disciple-tools' ) ?></strong>
+            </li>
+            <li>
+                <img alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" />
+                <strong><?php esc_html_e( 'QR codes are useful for passing the coaching links to mobile devices.', 'disciple-tools' ) ?></strong>
+            </li>
+            <li>
+                <img alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" />
+                <strong><?php esc_html_e( 'Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created.', 'disciple-tools' ) ?></strong>
+            </li>
+        </ul>
+    </div>
 
     <!-- close -->
     <div class="grid-x grid-padding-x">

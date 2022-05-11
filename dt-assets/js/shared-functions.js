@@ -307,6 +307,8 @@ jQuery(document).on("click", ".help-button-tile", function () {
     });
     $("#help-modal-field-body").html(html);
   }
+  /* #apps for example was the tile id, so this is the new more unique id to show relevant help text */
+  jQuery(`#tile-help-section-${section}`).show();
   jQuery(`#${section}`).show();
 });
 jQuery(document).on("click", ".help-button-field", function () {
