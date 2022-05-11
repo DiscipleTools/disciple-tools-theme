@@ -868,7 +868,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @param string $post_type
      * @param int $post_id
      * @param string $comment_html
-     * @param string $type      normally 'comment', different comment types can have their own section in the comments activity
+     * @param string $type      normally 'comment', different comment types can have their own section in the comments activity, use "dt_comments_additional_sections" to add custom comment types
      * @param array $args       [user_id, comment_date, comment_author etc]
      * @param bool $check_permissions
      * @param bool $silent
@@ -1609,6 +1609,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $tile_value["order"] = array_values( $tile_value["order"] );
             }
         }
+
+        $tile_options[$post_type] = apply_filters( 'dt_custom_tiles_after_combine', $tile_options[$post_type], $post_type );
 
         wp_cache_set( $post_type . "_tile_options", $tile_options[$post_type] );
         return $tile_options[$post_type];

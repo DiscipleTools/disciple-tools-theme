@@ -61,6 +61,10 @@ class DT_Contacts_Base {
         if ( $post_type === $this->post_type ){
             $settings['label_singular'] = __( 'Contact', 'disciple_tools' );
             $settings['label_plural'] = __( 'Contacts', 'disciple_tools' );
+            $settings['status_field'] = [
+                "status_key" => "overall_status",
+                "archived_key" => "closed",
+            ];
         }
         return $settings;
     }
@@ -541,6 +545,9 @@ class DT_Contacts_Base {
                 ],
                 'query' => [
                     'sort' => '-post_date',
+                    'overall_status' => [
+                        '-closed'
+                    ]
                 ],
             ];
 

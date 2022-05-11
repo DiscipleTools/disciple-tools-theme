@@ -283,7 +283,8 @@ function dt_site_scripts() {
         );
     }
 
-    $is_new_post = strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types );
+    $is_new_post      = ( strpos( $url_path, "/new" ) !== false ) && in_array( str_replace( "/new", "", $url_path ), $post_types );
+    $is_new_bulk_post = ( strpos( $url_path, "/new-bulk" ) !== false ) && in_array( str_replace( "/new-bulk", "", $url_path ), $post_types );
 
     $path_without_params = untrailingslashit( dt_get_url_path( true ) );
     //list page
@@ -325,7 +326,7 @@ function dt_site_scripts() {
         }
     }
 
-    if ( $is_new_post ){
+    if ( $is_new_post || $is_new_bulk_post ){
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){
@@ -334,10 +335,9 @@ function dt_site_scripts() {
             $dependencies[] = 'mapbox-gl';
         }
         dt_theme_enqueue_script( 'new-record', 'dt-assets/js/new-record.js', $dependencies, true );
-
         wp_localize_script( 'new-record', 'new_record_localized', array(
-            'post_type' => $post_type,
-            'post_type_settings' => $post_settings
+            'post_type'          => $post_type,
+            'post_type_settings' => $post_settings,
         ) );
     }
 
@@ -368,4 +368,3 @@ function dt_template_scripts( $slug, $name, $templates, $args ) {
     }
 }
 add_action( 'get_template_part', 'dt_template_scripts', 999, 4 );
-

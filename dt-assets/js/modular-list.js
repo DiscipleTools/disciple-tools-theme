@@ -19,8 +19,14 @@
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
+  const { status_field } = list_settings.post_type_settings
+  const { status_key, archived_key } = status_field ? status_field : {}
+  const filterOutArchivedItemsKey = `-${archived_key}`
+  const archivedSwitch = $('#archivedToggle')
+  let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_cookie( 'list_archived_switch_status', [] ) || false
   window.post_type_fields = list_settings.post_type_settings.fields
   window.records_list = { posts:[], total:0 }
+  const esc = window.lodash.escape
 
   const ALL_ID = '*'
   const ALL_WITHOUT_ID = '-*'
@@ -32,10 +38,18 @@
     cached_filter = {}
   }
 
+  setupArchivedSwitchPosition(archivedSwitchStatus)
+
   const query_param_custom_filter = create_custom_filter_from_query_params()
 
   let current_filter
-  if (query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter)) {
+
+  const { filterID, filterTab } = get_url_query_params()
+
+  if (filterID && isInFilterList(filterID) ) {
+    current_filter = { ID: filterID, query: {} }
+    if (filterTab) current_filter.tab = filterTab
+  } else if (query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter)) {
     current_filter = query_param_custom_filter
   } else if (cached_filter && !window.lodash.isEmpty(cached_filter)) {
     current_filter = cached_filter
@@ -52,10 +66,11 @@
   }
 
   //set up custom cached filter
-  if ( query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter) && query_param_custom_filter.type === "custom_filter" ){
+  // a valid filter ID in the query params will skip to clicking the relevant filter.
+  if ( !isInFilterList(filterID) && query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter) && query_param_custom_filter.type === "custom_filter" ){
     query_param_custom_filter.query.offset = 0;
     add_custom_filter(query_param_custom_filter.name, "default", query_param_custom_filter.query, query_param_custom_filter.labels, false)
-  } else if ( cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ) {
+  } else if ( !isInFilterList(filterID) && cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ) {
     cached_filter.query.offset = 0;
     add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
   } else {
@@ -101,6 +116,19 @@
     remove_current_filter_label(label, get_current_filter_label_field_details(label));
   });
 
+  // Collapse filter tile for mobile view
+  function collapseFilters() {
+    if (Foundation.MediaQuery.only("small")) {
+      $('#list-filters .bordered-box').addClass('collapsed')
+    } else {
+      $('#list-filters .bordered-box').removeClass('collapsed')
+    }
+  }
+  $(window).resize(function(){
+    collapseFilters()
+  })
+  collapseFilters()
+
   function get_current_filter_label_field_details(label) {
     let field_id = null;
     let field_name = $(label).children().remove().end().text();
@@ -119,7 +147,7 @@
   }
 
   function remove_current_filter_label(label, field_details) {
-    if (current_filter && current_filter.labels /*&& current_filter.query.fields*/) {
+    if (current_filter && current_filter.labels) {
       if (field_details && field_details.id && field_details.name) {
 
         // Update current filter's labels
@@ -190,6 +218,17 @@
               delete current_filter.query[field_details.id];
             }
 
+          } else if (current_filter.query['text']) {
+
+            // Remove text property, to force a return to all filtered view
+            delete current_filter.query['text'];
+
+            // Locate and select corresponding all radio button
+            $('.list-views').find('.js-list-view').each(function (idx, input) {
+              if ($.inArray($(input).data('id'), ['all_my_contacts', 'all']) !== -1) {
+                $(input).prop('checked', true);
+              }
+            });
           }
         }
       }
@@ -199,7 +238,7 @@
     $(label).remove();
 
     // Refresh view records
-    get_records_for_current_filter();
+    get_records_for_current_filter(current_filter);
 
   }
 
@@ -215,17 +254,9 @@
    * no filter.
    */
   function create_custom_filter_from_query_params() {
-    const url = new URL(window.location)
+    const { query, labels } = get_url_query_params()
 
-    let filters = []
-    try {
-      filters = get_encoded_query_param_filters(url)
-    } catch (error) {
-      // the uri is corrupted
-    }
-    /* make sure filter fields are in the list of allowed fields */
-    filters = filters.filter(({ field }) => Object.keys(window.list_settings.post_type_settings.fields).includes(field))
-    if (filters.length == 0) return {}
+    if (!query) return {}
 
     /* Creating object the same shape as cached_filter */
     let query_custom_filter = {
@@ -236,42 +267,85 @@
       query: {},
     }
 
-    const labels = [ ...filters ]
-    const query = { fields: [], offset: 0, sort: 'name'}
-    let labelsSortedByField = {}
-    labels.forEach(({field, id}) => {
-      if (!labelsSortedByField[field]) labelsSortedByField[field] = []
-      labelsSortedByField[field].push(id)
-    })
-    query.fields = Object.entries(labelsSortedByField).map(([key, ids]) => ({[key]: ids}))
+    if (Object.prototype.hasOwnProperty.call(query, 'offset')) {
+      query.offset = 0
+    }
+    if (Object.prototype.hasOwnProperty.call(query, 'sort')) {
+      query.sort = 'name'
+    }
 
-    query_custom_filter.labels = labels
-    query_custom_filter.query = query
+    if (query) {
+      query_custom_filter.query = query
+    }
+
+    if (labels) {
+      query_custom_filter.labels = labels
+    }
 
     return query_custom_filter
   }
 
-  function get_encoded_query_param_filters(url) {
-    const filters = url.searchParams.getAll('fieldQuery')
-    return filters.map((filter) =>JSON.parse(decodeURI(filter)))
+  function get_url_query_params() {
+    const url = new URL(window.location)
+    const encodedQuery = url.searchParams.get('query')
+    const encodedLabels = url.searchParams.get('labels')
+    const filterID = url.searchParams.get('filter_id')
+    const filterTab = url.searchParams.get('filter_tab')
+    const query = encodedQuery && window.SHAREDFUNCTIONS.decodeJSON(encodedQuery)
+    const labels = encodedLabels && window.SHAREDFUNCTIONS.decodeJSON(encodedLabels)
+    return ({
+      query,
+      labels,
+      filterID,
+      filterTab
+    })
   }
 
-  function get_records_for_current_filter(){
+  function isInFilterList(filterID) {
+    if (list_settings.filters.filters.some((filter) => filterID === filter.ID)) {
+      return true
+    }
+
+    return false
+  }
+
+  function update_url_query(currentFilter) {
+    const encodedQuery = window.SHAREDFUNCTIONS.encodeJSON(currentFilter.query)
+    const encodedLabels = window.SHAREDFUNCTIONS.encodeJSON(currentFilter.labels)
+
+    const url = new URL(window.location)
+
+    url.searchParams.set('query', encodedQuery)
+    url.searchParams.set('labels', encodedLabels)
+    url.searchParams.set('filter_id', currentFilter.ID)
+    url.searchParams.set('filter_tab', currentFilter.tab || '')
+
+    window.history.pushState(null, document.title, url.search)
+  }
+
+  function get_records_for_current_filter(custom_filter = null){
     let checked = $(".js-list-view:checked")
     let current_view = checked.val()
     let filter_id = checked.data("id") || current_view || ""
     let sort = current_filter.query.sort || null;
-    if ( current_view === "custom_filter" ){
+
+    // Determine if default resets are required?
+    if ( custom_filter ) {
+      current_filter = custom_filter
+    } else if (current_view === "custom_filter") {
       let filterId = checked.data("id")
-      current_filter = window.lodash.find(custom_filters, {ID:filterId})
+      current_filter = window.lodash.find(custom_filters, {ID: filterId})
       current_filter.type = current_view
     } else {
-      current_filter = window.lodash.find(list_settings.filters.filters, {ID:filter_id}) || window.lodash.find(list_settings.filters.filters, {ID:filter_id.toString()}) || current_filter
+      current_filter = window.lodash.find(list_settings.filters.filters, {ID: filter_id}) || window.lodash.find(list_settings.filters.filters, {ID: filter_id.toString()}) || current_filter
       current_filter.type = 'default'
-      current_filter.labels = current_filter.labels || [{ id:filter_id, name:current_filter.name}]
+      current_filter.labels = current_filter.labels || [{id: filter_id, name: current_filter.name}]
     }
     sort = sort || current_filter.query.sort;
     current_filter.query.sort = (typeof sort === "string") ? sort : "name"
+
+    // Conduct a deep copy (clone) of filter, so as to support future returns to default
+    current_filter = $.extend(true, {}, current_filter);
 
     clear_search_query()
 
@@ -521,6 +595,70 @@
     window.location.reload()
   })
 
+  archivedSwitch.on('click', function() {
+    const showArchived = this.checked
+
+    archivedSwitchStatus = showArchived
+    window.SHAREDFUNCTIONS.save_json_cookie('list_archived_switch_status', showArchived, list_settings.post_type)
+
+    get_records()
+  })
+
+  function setupArchivedSwitchPosition(switchStatus) {
+    archivedSwitch.prop('checked', switchStatus)
+}
+
+  function applyArchivedToggleToCurrentFilter() {
+    const showArchived = archivedSwitchStatus
+    let status = getFilteredStatus();
+
+    if (showArchived && status && status.includes(filterOutArchivedItemsKey)) {
+       const index = status.indexOf(filterOutArchivedItemsKey)
+       status.splice(index, 1)
+    }
+
+    if (!showArchived && (!status || status.length === 0)) {
+      setFilteredStatus([filterOutArchivedItemsKey])
+    }
+  }
+
+  function isCustomFilter() {
+    return !!current_filter.query.fields
+  }
+
+  function getFilteredStatus() {
+    return isCustomFilter() ? getStatusFieldInCustomFilter() : current_filter.query[status_key];
+  }
+
+  function setFilteredStatus(newStatus) {
+    if (isCustomFilter()) {
+      setStatusFieldInCustomFilter(newStatus)
+    } else {
+      current_filter.query[status_key] = newStatus
+    }
+  }
+
+  function getStatusFieldInCustomFilter() {
+    const query = current_filter.query
+    const fields = query.fields
+
+    if (!fields || !Array.isArray(fields)) return []
+
+    const filterItem = fields.find((item) => Object.prototype.hasOwnProperty.call(item, status_key))
+    return filterItem && filterItem[status_key]
+  }
+
+  function setStatusFieldInCustomFilter(newStatus) {
+    const fields = current_filter.query.fields;
+    if (!fields || !Array.isArray(fields)) return
+
+    const index = fields.findIndex((item) => Object.prototype.hasOwnProperty.call(item, status_key))
+    if (index === -1) {
+      fields.push({[status_key]: newStatus})
+    } else {
+      fields[index][status_key] = newStatus
+    }
+  }
 
   $('#records-table').dragableColumns({
     drag: true,
@@ -698,6 +836,9 @@
       query.offset = 0
     }
 
+    update_url_query(current_filter)
+    applyArchivedToggleToCurrentFilter()
+
     window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
     if ( get_records_promise && window.lodash.get(get_records_promise, "readyState") !== 4){
       get_records_promise.abort()
@@ -848,7 +989,8 @@
     without ? allConnectionsElement.prop('checked', false) : withoutConnectionsElement.prop('checked', false)
   }
 
-  function allConnectionsClickHandler({ without = false }) {
+  function allConnectionsClickHandler(options) {
+    const { without } = options || { without: false}
     const id = without ? ALL_WITHOUT_ID : ALL_ID
     const tabsPanel = $(this).closest('.tabs-panel')
     const field = tabsPanel.length === 1 ? tabsPanel[0].id : ''
@@ -858,18 +1000,14 @@
 
     toggleAllConnectionOption(tabsPanel, without)
 
-    const esc = window.lodash.escape
-
     if ($(this).prop('checked') === true) {
       typeahead.prop('disabled', true)
       typeaheadQueryElement.addClass('disabled')
       // remove the current filters and leave anything in the typeahead as it is
       removeAllFilterLabels(field)
-      const fieldLabel = list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : ''
-      const allLabel = without ? esc(list_settings.translations.without) : esc( list_settings.translations.all )
-      const filterName = `${esc( fieldLabel )}: ${allLabel}`
+      const {newLabel, filterName } = createLabelAll(field, without, id, list_settings)
       selected_filters.append(`<span class="current-filter ${esc( field )}" data-id="${id}">${filterName}</span>`)
-      new_filter_labels.push({id: id, name: filterName, field: field})
+      new_filter_labels.push(newLabel)
     } else {
       typeahead.prop('disabled', false)
       typeaheadQueryElement.removeClass('disabled')
@@ -879,6 +1017,56 @@
       typeaheadCancelButtons.each(function () {
         $(this).trigger('click', { botClick: true })
       })
+    }
+  }
+
+
+  /* Label creation */
+
+  function createLabelAll(field, without, id, listSettings ) {
+    const fieldLabel = listSettings.post_type_settings.fields[field] ? listSettings.post_type_settings.fields[field].name : ''
+    const allLabel = without ? esc(listSettings.translations.without) : esc( listSettings.translations.all )
+    const filterName = `${esc( fieldLabel )}: ${allLabel}`
+
+    return ({
+      newLabel: {
+        id: id,
+        name: filterName,
+        field: field
+      },
+      filterName,
+    })
+  }
+
+  function createValueLabel(field, key, value) {
+    return ({ newLabel: { id: key, name: value, field}})
+  }
+
+  function createKeyValueLabel(field, id, value, listSettings) {
+    let name = window.lodash.get(listSettings, `post_type_settings.fields.${field}.name`, field)
+    const filterName = `${name}: ${value}`;
+    return ({
+      newLabel: { id, name: filterName, field },
+      name,
+    })
+  }
+
+  function createLocationLabel(field, id, value, listSettings) {
+    let name = window.lodash.get(listSettings, `post_type_settings.fields.location_grid.name`, 'location_grid')
+    return ({
+      newLabel: { id, name: `${name}: ${value}`, field, type: 'location_grid' },
+      name,
+    })
+  }
+
+  function createDateLabel(field, date, delimiter) {
+    let field_name = window.lodash.get( list_settings, `post_type_settings.fields.${field}.name` , field)
+    let delimiter_label = list_settings.translations[`range_${delimiter}`]
+
+    return {
+      newLabel: { id: `${field}_${delimiter}`, name: `${field_name} ${delimiter_label}: ${date}`, field, date: date },
+      field_name,
+      delimiter_label,
     }
   }
 
@@ -959,9 +1147,9 @@
         },
         callback: {
           onClick: function(node, a, item){
-            let name = window.lodash.get(list_settings, `post_type_settings.fields.${field}.name`, field)
+            const { newLabel, name } = createKeyValueLabel(field, item.key, item.value, list_settings)
             selected_filters.append(`<span class="current-filter ${window.lodash.escape( field )}" data-id="${window.lodash.escape( item.key )}">${window.lodash.escape( name )}:${window.lodash.escape( item.value )}</span>`)
-            new_filter_labels.push({id:item.key, name:`${name}: ${item.value}`, field})
+            new_filter_labels.push(newLabel)
           },
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -1011,7 +1199,8 @@
               $(`#${field_key}-result-container`).html("");
             },
             onClick: function (node, a, item) {
-              new_filter_labels.push({id: item.ID, name: item.name, field: field_key})
+              const { newLabel } = createValueLabel(field_key, item.ID, item.name)
+              new_filter_labels.push(newLabel)
               selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( item.name )}</span>`)
             }
           }
@@ -1070,7 +1259,8 @@
               $(`#${field_key}-result-container`).html("");
             },
             onClick: function (node, a, item) {
-              new_filter_labels.push({id: item.ID, name: item.name, field: field_key})
+              const { newLabel } = createValueLabel(field_key, item.ID, item.name)
+              new_filter_labels.push(newLabel)
               selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( item.name )}</span>`)
             }
           }
@@ -1158,8 +1348,8 @@
             $('#location_grid-result-container').html("");
           },
           onClick: function (node, a, item) {
-            let name = window.lodash.get(list_settings, `post_type_settings.fields.location_grid.name`, 'location_grid')
-            new_filter_labels.push({id: item.ID, name: `${name}: ${item.name}`, field: key, type: 'location_grid'})
+            const { name, newLabel } = createLocationLabel(key, item.ID, item.name, list_settings)
+            new_filter_labels.push(newLabel)
             selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( name )}:${window.lodash.escape( item.name )}</span>`)
           }
         }
@@ -1299,8 +1489,8 @@
     if ($(this).is(":checked")){
       let field_options = window.lodash.get( list_settings, `post_type_settings.fields.${field_key}.default` )
       let option_name = field_options[option_id] ? field_options[option_id]["label"] : '';
-      let name = window.lodash.get(list_settings, `post_type_settings.fields.${field_key}.name`, field_key)
-      new_filter_labels.push({id:$(this).val(), name:`${name}: ${option_name}`, field:field_key})
+      const { name, newLabel } = createKeyValueLabel(field_key, $(this).val(), option_name, list_settings)
+      new_filter_labels.push(newLabel)
       selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( name )}:${window.lodash.escape( option_name )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
@@ -1313,9 +1503,9 @@
     let option_id = $(this).val()
     let label = $(this).data('label');
     if ($(this).is(":checked")){
-      let field = window.lodash.get( list_settings, `post_type_settings.fields.${field_key}` )
-      new_filter_labels.push({id:$(this).val(), name:`${field.name}: ${label}`, field:field_key})
-      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( field.name )}:${window.lodash.escape( label )}</span>`)
+      const { name, newLabel } = createKeyValueLabel(field_key, $(this).val(), label, list_settings)
+      new_filter_labels.push(newLabel)
+      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( name )}:${window.lodash.escape( label )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
       window.lodash.pullAllBy(new_filter_labels, [{id:option_id}], "id")
@@ -1328,13 +1518,12 @@
     onSelect: function (date) {
       let id = $(this).data('field')
       let delimiter = $(this).data('delimit')
-      let delimiter_label = list_settings.translations[`range_${delimiter}`]
-      let field_name = window.lodash.get( list_settings, `post_type_settings.fields.${id}.name` , id)
       //remove existing filters
       window.lodash.pullAllBy(new_filter_labels, [{id:`${id}_${delimiter}`}], "id")
       $(`.current-filter[data-id="${id}_${delimiter}"]`).remove()
+      const { newLabel, field_name, delimiter_label } = createDateLabel(id, date, delimiter)
       //add new filters
-      new_filter_labels.push({id:`${id}_${delimiter}`, name:`${field_name} ${delimiter_label}: ${date}`, field:id, date:date})
+      new_filter_labels.push(newLabel)
       selected_filters.append(`
         <span class="current-filter ${id}_${delimiter}"
               data-id="${id}_${delimiter}">
@@ -2134,15 +2323,34 @@
     $(this).data(`bulk_key_${field_key}`, val);
   })
 
+  $('.list-dropdown-submenu-item-link').on('click', function() {
+    // Hide bulk select modals
+    $('#records-table').removeClass('bulk_edit_on')
+
+    // Close all open modals
+    $('.list-dropdown-submenu-item-link').each(function(){
+      let open_modals = $(this).data('modal');
+      $( '#' + open_modals ).hide();
+    });
+
+    // Open modal for clicked menu item
+    let display_modal = $(this).data('modal');
+    $( '#' + display_modal ).show();
+
+    // Show bulk select checkboxes if applicable
+    if ( $(this).data('checkboxes') === true ) {
+      $('#records-table').addClass('bulk_edit_on');
+    }
+  });
+
+  $('.list-action-close-button').on('click', function (){
+    let section = $(this).data('close')
+    $(`#${section}`).hide();
+  })
 
   /*****
    * Bulk Send App
    */
-  $('#bulk_send_app_controls').on('click', function(){
-    $('#bulk_send_app_picker').toggle();
-    $('#records-table').toggleClass('bulk_edit_on');
-  })
-
   let bulk_send_app_button = $('#bulk_send_app_submit');
   bulk_send_app_button.on('click', function(e) {
     bulk_send_app();

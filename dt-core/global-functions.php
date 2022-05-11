@@ -275,25 +275,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'native_name' => 'Español (Latinoamérica) ',
                     'english_name' => 'Spanish (Latin America)'
                 ],
-                'es_AR' => [
-                    'language' => 'es_AR',
-                    'english_name' => 'Spanish (Argentina)',
-                    'native_name' => 'Español de Argentina'
-                ],
-                'es_CO' => [
-                    'language' => 'es_CO',
-                    'english_name' => 'Spanish (Colombia)',
-                    'native_name' => 'Español de Colombia'
-                ],
                 'es_ES' => [
                     'language' => 'es_ES',
                     'english_name' => 'Spanish (Spain)',
                     'native_name' => 'Español'
-                ],
-                'es_MX' => [
-                    'language' => 'es_MX',
-                    'english_name' => 'Spanish (Mexico)',
-                    'native_name' => 'Español de México'
                 ],
                 'fa_IR' => [
                     'language' => 'fa_IR',
@@ -590,6 +575,54 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             return true;
         }
         return false;
+    }
+
+    function render_new_bulk_record_fields( $dt_post_type ) {
+        $post_settings = DT_Posts::get_post_settings( $dt_post_type );
+        $selected_type = null;
+
+        foreach ( $post_settings["fields"] as $field_key => $field_settings ) {
+            if ( ! empty( $field_settings["hidden"] ) && empty( $field_settings["custom_display"] ) ) {
+                continue;
+            }
+            if ( isset( $field_settings["in_create_form"] ) && $field_settings["in_create_form"] === false ) {
+                continue;
+            }
+            if ( ! isset( $field_settings["tile"] ) ) {
+                continue;
+            }
+            $classes    = "";
+            $show_field = false;
+            //add types the field should show up on as classes
+            if ( ! empty( $field_settings['in_create_form'] ) ) {
+                if ( is_array( $field_settings['in_create_form'] ) ) {
+                    foreach ( $field_settings['in_create_form'] as $type_key ) {
+                        $classes .= $type_key . " ";
+                        if ( $type_key === $selected_type ) {
+                            $show_field = true;
+                        }
+                    }
+                } elseif ( $field_settings['in_create_form'] === true ) {
+                    $classes    = "all";
+                    $show_field = true;
+                }
+            } else {
+                $classes = "other-fields";
+            }
+
+            ?>
+            <!-- hide the fields that were not selected to be displayed by default in the create form -->
+            <div <?php echo esc_html( ! $show_field ? "style=display:none" : "" ); ?>
+                class="form-field <?php echo esc_html( $classes ); ?>">
+                <?php
+                render_field_for_display( $field_key, $post_settings['fields'], [] );
+                if ( isset( $field_settings["required"] ) && $field_settings["required"] === true ) { ?>
+                    <p class="help-text"
+                       id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+                <?php } ?>
+            </div>
+            <?php
+        }
     }
 
     /**

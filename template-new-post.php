@@ -27,11 +27,28 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
         <div id="inner-content" class="grid-x grid-margin-x">
             <div class="large-2 medium-12 small-12 cell"></div>
 
-            <div class="large-8 medium-12 small-12 cell">
+            <span class="large-8 medium-12 small-12 cell">
                 <form class="js-create-post bordered-box display-fields">
-                    <h3 class="section-header">
-                        <?php echo esc_html( sprintf( __( 'New %s', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
-                    </h3>
+
+                    <table>
+                        <tbody style="border: none;">
+                            <tr>
+                                <td>
+                                    <h3 class="section-header">
+                                        <?php echo esc_html( sprintf( __( 'New %s', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
+                                    </h3>
+                                </td>
+                                <td>
+                                    <span style="float: right;">
+                                        <a href="<?php echo esc_html( get_site_url() . "/" . $dt_post_type . "/new-bulk" ) ?>"
+                                           class="button"
+                                           style="margin:0px 0px 0px 0px; padding:5px 5px 5px 5px;"><?php echo esc_html__( 'Add Bulk Records?', 'disciple_tools' ) ?>
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                     <!-- choose the record type -->
                     <?php if ( $type_choice_present ){ ?>
