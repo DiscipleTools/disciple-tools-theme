@@ -1,18 +1,53 @@
 jQuery(document).ready(function ($) {
-  $('.expand_translations').click(function() {
-    event.preventDefault()
-    $(this).siblings().toggleClass("hide");
+  $('.expand_translations').click(function () {
+    event.preventDefault();
+    display_translation_dialog($(this).siblings(), $(this).data('form_name'));
+  });
 
-    var buttonText = $(this).text();
+  /**
+   * Translation modal dialog
+   */
 
-    if (buttonText === '+') {
-      $(this).text('-')
+  function display_translation_dialog(container, form_name) {
+    let dialog = $('#dt_translation_dialog');
+    if (container && form_name && dialog) {
+
+      // Update dialog div
+      $(dialog).empty().append($(container).find('table').clone());
+
+      // Refresh dialog config
+      dialog.dialog({
+        modal: true,
+        autoOpen: false,
+        hide: 'fade',
+        show: 'fade',
+        height: 600,
+        width: 350,
+        resizable: false,
+        title: 'Translation Dialog',
+        buttons: {
+          Update: function () {
+
+            // Update source translation container
+            $(container).empty().append($(this).children());
+
+            // Close dialog
+            $(this).dialog('close');
+
+            // Finally, auto save changes
+            $('form[name="' + form_name + '"]').submit();
+
+          }
+        }
+      });
+
+      // Display updated dialog
+      dialog.dialog('open');
+
+    } else {
+      console.log('Unable to reference a valid: [container, form-name, dialog]');
     }
-    if (buttonText === '-') {
-      $(this).text('+')
-    }
-
-  })
+  }
 
   /**
    * Sorting code for tiles
