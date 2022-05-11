@@ -1379,8 +1379,6 @@ img.dt-icon {
     height: 15px;
     width: 15px;
     filter:invert(18%) sepia(0%) saturate(19%) hue-rotate(170deg) brightness(108%) contrast(98%);
-
-
 }
 img.dt-blue-icon {
     filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg) brightness(94%) contrast(100%);
@@ -1393,6 +1391,9 @@ img.dt-green-icon {
 }
 img.dt-red-icon {
     filter: invert(23%) sepia(34%) saturate(4972%) hue-rotate(343deg) brightness(121%) contrast(92%);
+}
+i.dt-font-icon {
+    font-size: 15px
 }
 
 .template-new-post {

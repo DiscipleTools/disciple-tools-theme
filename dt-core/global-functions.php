@@ -492,7 +492,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php
             } else if ( isset( $field['font-icon'] ) ){
                 ?>
-                <i class="<?php echo esc_html( $field['font-icon'] ); ?>"></i>
+                <i class="<?php echo esc_html( $field['font-icon'] ); ?> dt-font-icon"></i>
                 <?php
             }
         }
