@@ -83,14 +83,14 @@ class DT_Magic_URL_Setup {
         ?>
         <div class="section-subheader"><?php echo esc_html( $app['label'] ) ?></div>
         <div class="section-app-links <?php echo esc_attr( $meta_key ); ?>">
-            <a type="button" class="empty-select-button select-button small button view"><img class="dt-icon" alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" /></a>
-            <a type="button" class="empty-select-button select-button small button copy_to_clipboard"
+            <a data-tooltip title="<?php _e( 'View', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button view"><img class="dt-icon" alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php _e( 'Copy to clipboard', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button copy_to_clipboard"
                data-value="<?php echo esc_url( site_url() . '/' . $app['root'] . '/' . $app['type'] . '/' . $key ) ?>">
                 <img class="dt-icon" alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
             </a>
-            <a type="button" class="empty-select-button select-button small button send"><img class="dt-icon" alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" /></a>
-            <a type="button" class="empty-select-button select-button small button qr"><img class="dt-icon" alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" /></a>
-            <a type="button" class="empty-select-button select-button small button reset"><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php _e( 'Send', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button send"><img class="dt-icon" alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php _e( 'QR code', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button qr"><img class="dt-icon" alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php _e( 'Reset', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button reset"><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
         </div>
         <script>
             jQuery(document).ready(function($){
