@@ -64,10 +64,9 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertSame( $result["tags_test_private"][0], $update_values['tags_test_private']["values"][0]["value"] );
     }
 
-    public function test_custom_number_field_min_max_error()
-    {
+    public function test_custom_number_field_min_max_error() {
         // test that lower than the minimum creates an error
-        $result1 = DT_Posts::update_post( "contacts", self::$contact["ID"], [ "number_test" => 0 ] , true, false );
+        $result1 = DT_Posts::update_post( "contacts", self::$contact["ID"], [ "number_test" => 0 ], true, false );
         $this->assertWPError( $result1 );
 
         // test that higher than the maximum creates an error

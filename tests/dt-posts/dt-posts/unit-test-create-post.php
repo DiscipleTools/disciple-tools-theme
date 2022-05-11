@@ -143,8 +143,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
     }
 
-    public function test_custom_number_field_min_max_error()
-    {
+    public function test_custom_number_field_min_max_error() {
         // test that lower than the minimum creates an error
         $contact1 = DT_Posts::create_post( "contacts", [ "name" => "one", "number_test" => 0 ], true, false );
         $this->assertWPError( $contact1 );
