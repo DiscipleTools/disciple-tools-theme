@@ -470,16 +470,24 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
     if ( !function_exists( "dt_render_field_icon" ) ){
-        function dt_render_field_icon( $field ){
+        function dt_render_field_icon( $field, $class = 'dt-icon', $default_to_name = false ){
+            $icon_rendered = false;
             if ( isset( $field["icon"] ) && !empty( $field["icon"] ) ){
+                $icon_rendered = true;
                 ?>
-                <img class="dt-icon" src="<?php echo esc_url( $field["icon"] ) ?>">
+                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field["icon"] ) ?>" alt="<?php echo esc_html( $field["name"] ?? "" ) ?>">
                 <?php
             } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
+                $icon_rendered = true;
                 ?>
-                <i class="<?php echo esc_html( $field['font-icon'] ); ?> dt-font-icon"></i>
+                <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>"></i>
+                <?php
+            } else if ( $default_to_name && !empty( $field["name"] ) ){
+                ?>
+                <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
                 <?php
             }
+            return $icon_rendered;
         }
     }
 

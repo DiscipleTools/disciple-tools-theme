@@ -77,9 +77,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                                         <input type="radio" name="type" value="<?php echo esc_html( $option_key ); ?>" style="display: none">
                                         <div class="type-option-rows">
                                             <div>
-                                                <?php if ( isset( $type_option["icon"] ) ) : ?>
-                                                <img class="dt-icon" src="<?php echo esc_url( $type_option["icon"] ) ?>">
-                                                <?php endif; ?>
+                                                <?php dt_render_field_icon( $type_option ) ?>
                                                 <strong class="type-option-title"><?php echo esc_html( $type_option["label"] ); ?></strong>
                                             </div>
                                             <div>

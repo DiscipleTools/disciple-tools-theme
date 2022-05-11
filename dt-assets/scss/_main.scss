@@ -1380,20 +1380,21 @@ img.dt-icon {
     width: 15px;
     filter:invert(18%) sepia(0%) saturate(19%) hue-rotate(170deg) brightness(108%) contrast(98%);
 }
-img.dt-blue-icon {
+i.dt-icon {
+    font-size: 15px;
+    filter:invert(18%) sepia(0%) saturate(19%) hue-rotate(170deg) brightness(108%) contrast(98%);
+}
+img.dt-blue-icon, i.dt-blue-icon {
     filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg) brightness(94%) contrast(100%);
 }
-img.dt-white-icon {
+img.dt-white-icon, i.dt-white-icon{
     filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
 }
-img.dt-green-icon {
+img.dt-green-icon, i.dt-green-icon {
     filter: invert(52%) sepia(77%) saturate(383%) hue-rotate(73deg) brightness(98%) contrast(83%);
 }
-img.dt-red-icon {
+img.dt-red-icon, i.dt-red-icon {
     filter: invert(23%) sepia(34%) saturate(4972%) hue-rotate(343deg) brightness(121%) contrast(92%);
-}
-i.dt-font-icon {
-    font-size: 15px
 }
 
 .template-new-post {
