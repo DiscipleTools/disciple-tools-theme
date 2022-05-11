@@ -15,14 +15,16 @@ add_filter( 'dt_custom_fields_settings', function( $fields, $post_type ){
         'name'        => __( 'Number field', 'disciple_tools' ),
         'type'        => 'number',
         'default'     => 0,
-        'tile'      => 'a_beautiful_tile',
+        'tile'        => 'a_beautiful_tile',
+        'min_option'  => "5",
     ];
     $fields['number_test_private'] = [
         'name'        => __( 'Number field private', 'disciple_tools' ),
         'type'        => 'number',
         'default'     => 0,
         'tile'        => 'a_beautiful_tile',
-        'private'     => true
+        'private'     => true,
+        'max_option'  => "200",
     ];
     $fields['text_test'] = [
         'name'        => __( 'Text', 'disciple_tools' ),
