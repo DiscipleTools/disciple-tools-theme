@@ -19,6 +19,7 @@
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
+  let getFilterCountsPromise = null
   const { status_field } = list_settings.post_type_settings
   const { status_key, archived_key } = status_field ? status_field : {}
   const filterOutArchivedItemsKey = `-${archived_key}`
@@ -32,70 +33,96 @@
   const ALL_WITHOUT_ID = '-*'
 
   let items = []
-  try {
-    cached_filter = JSON.parse(cookie)
-  } catch (e) {
-    cached_filter = {}
-  }
-
-  setupArchivedSwitchPosition(archivedSwitchStatus)
-
-  const query_param_custom_filter = create_custom_filter_from_query_params()
-
   let current_filter
 
-  const { filterID, filterTab } = get_url_query_params()
+  onLoad()
 
-  if (filterID && isInFilterList(filterID) ) {
-    current_filter = { ID: filterID, query: {} }
-    if (filterTab) current_filter.tab = filterTab
-  } else if (query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter)) {
-    current_filter = query_param_custom_filter
-  } else if (cached_filter && !window.lodash.isEmpty(cached_filter)) {
-    current_filter = cached_filter
-  } else {
-    current_filter =  { query:{} }
+  function onLoad() {
+    let cached_filter = getCachedFilter(cookie)
+
+    const query_param_custom_filter = create_custom_filter_from_query_params()
+
+    setupArchivedSwitchPosition(archivedSwitchStatus)
+
+    current_filter = getCurrentFilter(query_param_custom_filter, cached_filter);
+
+    setup_filters()
+
+    setup_custom_cached_filter(query_param_custom_filter, cached_filter, current_filter);
+
+    determineListColumns(fields_to_show_in_table, list_settings);
+
+    get_records_for_current_filter()
+
+    collapseFilters()
+
+    get_filter_counts(old_filters, list_settings)
+
+    resetSortingInTableHeader(current_filter)
   }
 
-  //set up main filters
-  setup_filters()
+  function getCachedFilter(inCookie) {
+    try {
+      return JSON.parse(inCookie);
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function getCurrentFilter(urlCustomFilter, cachedFilter) {
+
+    const { filterID, filterTab } = get_url_query_params()
+
+    if (filterID && isInFilterList(filterID) ) {
+      const currentFilter = { ID: filterID, query: {} }
+      if (filterTab) currentFilter.tab = filterTab
+      return currentFilter
+    } else if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
+      return urlCustomFilter;
+    } else if (cachedFilter && !window.lodash.isEmpty(cachedFilter)) {
+      return cachedFilter;
+    }
+    return { query: {} };
+  }
+
+  function setup_custom_cached_filter(urlCustomFilter, cachedFilter, currentFilter) {
+    const { filterID } = get_url_query_params()
+
+    if (!isInFilterList(filterID) && urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter) && urlCustomFilter.type === "custom_filter") {
+      urlCustomFilter.query.offset = 0;
+      add_custom_filter(urlCustomFilter.name, "default", urlCustomFilter.query, urlCustomFilter.labels, false);
+    } else if (!isInFilterList(filterID) && cachedFilter && !window.lodash.isEmpty(cachedFilter) && cachedFilter.type === "custom_filter") {
+      cachedFilter.query.offset = 0;
+      add_custom_filter(cachedFilter.name, "default", cachedFilter.query, cachedFilter.labels, false);
+    } else {
+      //check select filter
+      if (currentFilter.ID) {
+        //open the filter tabs
+        $(`#list-filter-tabs [data-id='${window.lodash.escape(currentFilter.tab)}'] a`).click();
+        let filter_element = $(`input[name=view][data-id="${window.lodash.escape(currentFilter.ID)}"].js-list-view`);
+        if (filter_element.length) {
+          filter_element.prop('checked', true);
+        } else {
+          check_first_filter();
+        }
+      } else {
+        check_first_filter();
+      }
+    }
+  }
 
   let check_first_filter = function (){
     $('#list-filter-tabs .accordion-item a')[0].click()
     $($('.js-list-view')[0]).prop('checked', true)
   }
 
-  //set up custom cached filter
-  // a valid filter ID in the query params will skip to clicking the relevant filter.
-  if ( !isInFilterList(filterID) && query_param_custom_filter && !window.lodash.isEmpty(query_param_custom_filter) && query_param_custom_filter.type === "custom_filter" ){
-    query_param_custom_filter.query.offset = 0;
-    add_custom_filter(query_param_custom_filter.name, "default", query_param_custom_filter.query, query_param_custom_filter.labels, false)
-  } else if ( !isInFilterList(filterID) && cached_filter && !window.lodash.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ) {
-    cached_filter.query.offset = 0;
-    add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
-  } else {
-    //check select filter
-    if ( current_filter.ID ){
-      //open the filter tabs
-      $(`#list-filter-tabs [data-id='${window.lodash.escape( current_filter.tab )}'] a`).click()
-      let filter_element = $(`input[name=view][data-id="${window.lodash.escape( current_filter.ID )}"].js-list-view`)
-      if ( filter_element.length ){
-        filter_element.prop('checked', true);
-      } else {
-        check_first_filter()
-      }
-    } else {
-      check_first_filter()
+  function determineListColumns(fieldsToShowInTable, listSettings) {
+    if ( window.lodash.isEmpty(fieldsToShowInTable)){
+      fields_to_show_in_table = listSettings.fields_to_show_in_table
     }
   }
 
-  //determine list columns
-  if ( window.lodash.isEmpty(fields_to_show_in_table)){
-    fields_to_show_in_table = list_settings.fields_to_show_in_table
-  }
-
-  // get records on load and when a filter is clicked
-  get_records_for_current_filter()
+  // get records when a filter is clicked
   $(document).on('change', '.js-list-view', () => {
     get_records_for_current_filter()
   });
@@ -127,7 +154,6 @@
   $(window).resize(function(){
     collapseFilters()
   })
-  collapseFilters()
 
   function get_current_filter_label_field_details(label) {
     let field_id = null;
@@ -458,20 +484,19 @@
     }
   }
 
-  let getFilterCountsPromise = null
-  let get_filter_counts = ()=>{
+  function get_filter_counts(oldFilters, listSettings) {
     if ( getFilterCountsPromise && window.lodash.get( getFilterCountsPromise, "readyState") !== 4 ){
       getFilterCountsPromise.abort()
     }
     getFilterCountsPromise = $.ajax({
-      url: `${window.wpApiShare.root}dt/v1/users/get_filters?post_type=${list_settings.post_type}&force_refresh=1`,
+      url: `${window.wpApiShare.root}dt/v1/users/get_filters?post_type=${listSettings.post_type}&force_refresh=1`,
       beforeSend: function (xhr) {
         xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
       }
     })
     getFilterCountsPromise.then(filters=>{
-      if ( old_filters !== JSON.stringify(filters) ){
-        list_settings.filters = filters
+      if ( oldFilters !== JSON.stringify(filters) ){
+        listSettings.filters = filters
         setup_filters()
       }
     }).catch(err => {
@@ -480,8 +505,6 @@
       }
     })
   }
-  get_filter_counts()
-
 
   function setup_current_filter_labels() {
     let html = ""
@@ -534,15 +557,16 @@
     currentFilters.html(html)
   }
 
-
-  let sort_field = window.lodash.get( current_filter, "query.sort", "name" )
-  //reset sorting in table header
-  table_header_row.removeClass("sorting_asc")
-  table_header_row.removeClass("sorting_desc")
-  let header_cell = $(`.js-list thead .sortable th[data-id="${window.lodash.escape( sort_field.replace("-", "") )}"]`)
-  header_cell.addClass(`sorting_${ sort_field.startsWith('-') ? 'desc' : 'asc'}`)
-  table_header_row.data("sort", '')
-  header_cell.data("sort", 'asc')
+  function resetSortingInTableHeader(currentFilter) {
+    let sort_field = window.lodash.get(currentFilter, "query.sort", "name");
+    //reset sorting in table header
+    table_header_row.removeClass("sorting_asc");
+    table_header_row.removeClass("sorting_desc");
+    let header_cell = $(`.js-list thead .sortable th[data-id="${window.lodash.escape(sort_field.replace("-", ""))}"]`);
+    header_cell.addClass(`sorting_${sort_field.startsWith('-') ? 'desc' : 'asc'}`);
+    table_header_row.data("sort", '');
+    header_cell.data("sort", 'asc');
+  }
 
   $('.js-sort-by').on("click", function () {
     table_header_row.removeClass("sorting_asc")
