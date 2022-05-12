@@ -741,6 +741,20 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
+    public static function dt_encode_field_key_special_characters( string $key ): string {
+        $key = str_replace( '<', '_less_than_', $key );
+        $key = str_replace( '>', '_more_than_', $key );
+
+        return $key;
+    }
+
+    public static function dt_decode_field_key_special_characters( string $key ): string {
+        $key = str_replace( '_less_than_', '<', $key );
+        $key = str_replace( '_more_than_', '>', $key );
+
+        return $key;
+    }
+
     private function process_edit_field( $post_submission ){
         //save values
         $post_type = $post_submission["post_type"];
@@ -914,7 +928,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
                 // Capture field option updated ordering
                 if ( isset( $post_submission['sortable_field_options_ordering'] ) ) {
-                    $ordering = json_decode( dt_decode_field_key_special_characters( $post_submission['sortable_field_options_ordering'] ), true );
+                    $ordering = json_decode( self::dt_decode_field_key_special_characters( $post_submission['sortable_field_options_ordering'] ), true );
                     if ( ! empty( $ordering ) ) {
                         $custom_field["order"] = $ordering;
                     }
