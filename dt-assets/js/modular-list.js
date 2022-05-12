@@ -111,7 +111,7 @@
     }
   }
 
-  let check_first_filter = function (){
+  function check_first_filter (){
     $('#list-filter-tabs .accordion-item a')[0].click()
     $($('.js-list-view')[0]).prop('checked', true)
   }
@@ -1445,7 +1445,7 @@
     }, 100);
   })
 
-  let edit_saved_filter = function( filter ){
+  function edit_saved_filter( filter ){
     $('#filter-modal').foundation('open');
     typeaheads_loaded.then(()=>{
       let connectionTypeKeys = list_settings.post_type_settings.connection_types
