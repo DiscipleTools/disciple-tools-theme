@@ -156,11 +156,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 if ( isset( $field["tile"] ) && $field["tile"] === 'details' ){
                                     ?>
                                     <div class="detail-snippet" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
-                                        <?php if ( isset( $field["icon"] ) ) : ?>
-                                            <img class="dt-icon" src="<?php echo esc_html( $field["icon"] ); ?>">
-                                        <?php else : ?>
-                                            <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
-                                        <?php endif ?>
+                                        <?php dt_render_field_icon( $field, 'dt-icon', true ); ?>
                                         <span class="collapsed-items" dir="auto"></span>
                                     </div>
                                     <?php
@@ -193,12 +189,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 if ( isset( $field["tile"] ) && $field["tile"] === 'details' ){
                                     ?>
                                         <div class="detail-snippet" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
-                                            <?php if ( isset( $field["icon"] ) ) : ?>
-                                                <img class="dt-icon" src="<?php echo esc_html( $field["icon"] ); ?>">
-                                            <?php else : ?>
-                                                <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
-                                            <?php endif ?>
-                                                <span class="collapsed-items" dir="auto"></span>
+                                            <?php dt_render_field_icon( $field, 'dt-icon', true ); ?>
+                                            <span class="collapsed-items" dir="auto"></span>
                                         </div>
                                     <?php
                                 }

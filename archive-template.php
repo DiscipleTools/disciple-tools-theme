@@ -349,7 +349,8 @@ dt_please_log_in();
                                            <?php echo esc_html( in_array( $field_key, $fields_to_show_in_table ) ? "checked" : '' ); ?>
                                            <?php echo esc_html( ( empty( $fields_to_show_in_table ) && !empty( $field_values["show_in_table"] ) ) ? "checked" : '' ); ?>
                                            style="margin:0">
-                                    <?php echo esc_html( $field_values["name"] ); ?>
+                                    <?php dt_render_field_icon( $field_values );
+                                    echo esc_html( $field_values["name"] ); ?>
                                 </label>
                             </li>
                         <?php endforeach; ?>
@@ -642,18 +643,12 @@ dt_please_log_in();
                             if ( isset( $field_options[$field]["name"] ) ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
-
-                                        <?php if ( isset( $field_options[$field]["icon"] ) && ! empty( $field_options[$field]["icon"] ) ): ?>
-
-                                            <img class="tabs-title__icon" src="<?php echo esc_html( $field_options[$field]["icon"] ) ?>" alt="<?php echo esc_html( $field_options[$field]["name"] ) ?>">
-
-                                        <?php else : ?>
-
-                                            <div class="tabs-title__icon"></div>
-
-                                        <?php endif; ?>
-
-                                        <?php echo esc_html( $field_options[$field]["name"] ) ?>
+                                        <?php
+                                        $rendered = dt_render_field_icon( $field_options[$field], 'tabs-title__icon' );
+                                        if ( !$rendered ){
+                                            ?><div class="tabs-title__icon"></div><?php
+                                        }
+                                        echo esc_html( $field_options[$field]["name"] ) ?>
                                     </a>
                                 </li>
                             <?php endif; ?>
