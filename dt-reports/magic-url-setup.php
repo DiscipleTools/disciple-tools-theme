@@ -147,7 +147,7 @@ class DT_Magic_URL_Setup {
                 }
 
                 $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .qr').on('click', function(e){
-                    $('#modal-small-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html__( 'QR codes are useful for passing the coaching links to mobile devices.', 'disciple_tools' ) ?></span><hr>`)
+                    $('#modal-small-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html__( 'Scan the QR code to open the magic link on a mobile device.', 'disciple_tools' ) ?></span><hr>`)
                     $('#modal-small-content').empty().html(`<div class="grid-x"><div class="cell center"><img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}" style="width: 100%;max-width:400px;" /></div></div>`)
                     $('#modal-small').foundation('open')
                 })

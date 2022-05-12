@@ -189,7 +189,7 @@
             </li>
             <li>
                 <img alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" />
-                <strong><?php esc_html_e( 'QR codes are useful for passing the coaching links to mobile devices.', 'disciple-tools' ) ?></strong>
+                <strong><?php esc_html_e( 'Scan the QR code to open the magic link on a mobile device.', 'disciple-tools' ) ?></strong>
             </li>
             <li>
                 <img alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" />
