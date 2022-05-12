@@ -71,6 +71,7 @@ function dt_options_scripts() {
             'jquery',
             'jquery-ui-core',
             'jquery-ui-sortable',
+            'jquery-ui-dialog',
             'lodash'
         ], filemtime( disciple_tools()->admin_js_path . 'dt-options.js' ), true );
         wp_register_style( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css' );

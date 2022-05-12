@@ -85,6 +85,10 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
             $this->template( 'begin' );
+
+            /* Translation Dialog */
+            echo '<dialog id="dt_translation_dialog"></dialog>';
+
             $this->box( 'top', __( 'Edit Tiles', 'disciple_tools' ) );
             $this->post_type_select( $post_type );
             $this->box( 'bottom' );
@@ -432,8 +436,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
         $first = true;
 
+        $form_name = 'tile_edit_form';
         ?>
-        <form method="post" name="tile_edit_form" onkeydown="return event.key != 'Enter';">
+        <form method="post" name="<?php echo esc_html( $form_name ) ?>" onkeydown="return event.key != 'Enter';">
         <input type="hidden" name="tile_key" value="<?php echo esc_html( $tile_key )?>">
         <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
         <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
@@ -474,7 +479,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <?php $langs = dt_get_available_languages(); ?>
-                        <button class="button small expand_translations">
+                        <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
                             <?php
                             $number_of_translations = 0;
                             foreach ( $langs as $lang => $val ){
