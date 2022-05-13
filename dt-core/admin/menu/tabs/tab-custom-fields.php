@@ -483,7 +483,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         <?php endif; ?>
 
-        <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
+        <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" || $field["type"] === "link" ){
             if ( in_array( $field_key, $core_fields ) ){
                 ?>
                 <p>
@@ -514,7 +514,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td><?php esc_html_e( "Default Label", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Custom Label", 'disciple_tools' ) ?></td>
                     <?php
-                    if ( $field["type"] === "multi_select" ):
+                    if ( $field["type"] === "multi_select" || $field["type"] === "link" ):
                         ?>
                         <td><?php esc_html_e( "Icon", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Icon Link", 'disciple_tools' ) ?></td>
@@ -559,7 +559,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <button title="submit" class="button" name="delete_option_label" value="<?php echo esc_html( $key ) ?>">Remove Label</button>
                                 <?php endif; ?>
                             </td>
-                            <?php if ( $field["type"] === "multi_select" ): ?>
+                            <?php if ( $field["type"] === "multi_select" || $field["type"] === "link" ): ?>
                                 <td>
                                     <?php if ( isset( $option["icon"] ) && ! empty( $option["icon"] ) ): ?>
                                         <img src="<?php echo esc_attr( $option["icon"] ); ?>" style="width: 20px; vertical-align: middle;">
@@ -876,7 +876,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
 
             // key_select and multi_options
-            if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" ) ){
+            if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" || $field["type"] === "link" ) ){
                 $field_options = $field["default"];
                 foreach ( $post_submission as $key => $val ){
                     if ( strpos( $key, "field_option_" ) === 0 ) {
@@ -1040,6 +1040,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
                             <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
                             <option value="number"><?php esc_html_e( "Number", 'disciple_tools' ) ?></option>
+                            <option value="link"><?php esc_html_e( "Link", 'disciple-tools' ) ?></option>
                             <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
                             <option value="connection"><?php esc_html_e( "Connection", 'disciple_tools' ) ?></option>
                         </select>
@@ -1151,6 +1152,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( "Text: This is just a normal text field", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Text Area: This is just a multi-line text area", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Date: A field that uses a date picker to choose dates (like baptism date)", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Link: Create a collection of links", 'disciple-tools' ) ?></li>
             <li><?php esc_html_e( "Connection: An autocomplete picker to connect to another record.", 'disciple_tools' ) ?></li>
         </ul>
         <strong><?php esc_html_e( "Private Field:", 'disciple_tools' ) ?></strong>
@@ -1262,6 +1264,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'name'        => $post_submission["new_field_name"],
                     'type'        => 'number',
                     'default'     => '',
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
+                    'private' => $field_private
+                ];
+            } elseif ( $field_type === 'link' ) {
+                $new_field = [
+                    'name'        => $post_submission["new_field_name"],
+                    'type'        => 'link',
+                    'default'     => [],
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private

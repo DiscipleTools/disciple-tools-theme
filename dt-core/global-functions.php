@@ -661,7 +661,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $display_field_id = $field_id_prefix . $field_key;
         }
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -797,7 +797,26 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                        min="<?php echo esc_html( $fields[$field_key]["min_option"] ?? "" ) ?>"
                        max="<?php echo esc_html( $fields[$field_key]["max_option"] ?? "" ) ?>"
                 />
-            <?php elseif ( $field_type === "date" ) :?>
+            <?php elseif ( $field_type === "link" ) : ?>
+
+                <div class="link-group" style="">
+                    <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+
+                        <?php $field_id = $display_field_id . '_' . $option_key ?>
+
+                        <div style="display:flex; align-items: center;">
+                            <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
+                            <input id="<?php echo esc_html( $field_id ) ?>"
+                                type="text"
+                                class="text-input"
+                                value=""
+                            >
+                        </div>
+
+                    <?php endforeach; ?>
+                </div>
+
+                <?php elseif ( $field_type === "date" ) :?>
                 <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
                     <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
                            value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?> >
