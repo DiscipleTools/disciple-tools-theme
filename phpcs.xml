@@ -23,7 +23,6 @@
 
   <file>.</file>
 
-  <exclude-pattern>*\.(?!php$)</exclude-pattern> <!-- only check php files -->
   <exclude-pattern>dt-core/dependencies/*</exclude-pattern>
   <exclude-pattern>dt-core/libraries/*</exclude-pattern>
   <exclude-pattern>vendor/*</exclude-pattern>
