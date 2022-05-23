@@ -24,7 +24,9 @@ before_install:
   - nvm install 16
   - nvm use 16
   - npm install -g gulp-cli eslint@4 babel-eslint
-  - npm ci --omit=dev --ignore-scripts
+  - npm set-script preinstall ""
+  - npm set-script prepare ""
+  - npm install
 before_script:
   - composer install
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
