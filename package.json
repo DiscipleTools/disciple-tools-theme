@@ -38,7 +38,6 @@
     "> 2%"
   ],
   "scripts": {
-    "preinstall": "npx --yes husky-init",
     "postinstall": "npm run build",
     "build": "gulp",
     "scripts": "gulp scripts",
@@ -46,7 +45,8 @@
     "watch": "gulp watch",
     "browsersync": "gulp browsersync",
     "update-foundation": "npm install foundation-sites",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
     "*.php": [
