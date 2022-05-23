@@ -26,7 +26,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-touch-cmd": "0.0.1",
     "gulp-uglify": "^3.0.2",
-    "husky": "^8.0.1",
+    "husky": "^8.0.0",
     "jquery": "^3.6.0",
     "lint-staged": "^12.4.1",
     "motion-ui": "^2.0.3",
@@ -38,21 +38,18 @@
     "> 2%"
   ],
   "scripts": {
+    "preinstall": "npx --yes husky-init",
     "postinstall": "npm run build",
     "build": "gulp",
     "scripts": "gulp scripts",
     "styles": "gulp styles",
     "watch": "gulp watch",
     "browsersync": "gulp browsersync",
-    "update-foundation": "npm install foundation-sites"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "update-foundation": "npm install foundation-sites",
+    "prepare": "husky install"
   },
   "lint-staged": {
-    "**/*.php": [
+    "*.php": [
       "vendor/bin/phpcs"
     ]
   },
