@@ -15,7 +15,7 @@ class DT_User_Management
     public function __construct() {
         $url_path = dt_get_url_path();
         if ( self::has_permission() || self::non_admins_can_make_users() ) {
-            if ( ( strpos( $url_path, "user-management/user" ) !== false || strpos( $url_path, "user-management/add-user" ) !== false ) && ( current_user_can( "create_users" ) || self::non_admins_can_make_users() ) ) {
+            if ( ( strpos( $url_path, "user-management/user" ) !== false || strpos( $url_path, "user-management/add-user" ) !== false ) ) {
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
                 add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
             }
