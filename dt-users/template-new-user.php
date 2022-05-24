@@ -3,7 +3,7 @@
  * Name: User Management
 */
 
-$current_user_can_manage_users = current_user_can( 'list_users' ) || current_user_can( 'manage_dt' );
+$current_user_can_manage_users = current_user_can( 'create_users' ) || current_user_can( 'manage_dt' );
 if ( !$current_user_can_manage_users && !DT_User_Management::non_admins_can_make_users() ) {
     wp_safe_redirect( '/registered' );
     exit();
