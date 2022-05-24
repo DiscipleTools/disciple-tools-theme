@@ -861,3 +861,63 @@ select.color-select {
         visibility: hidden;
     }
 }
+
+/**
+ *  Merge Duplicate Post Types
+ */
+#content.template-merge-post-details {
+
+    table, tbody, tr, td {
+        border: none;
+    }
+
+    #main_header {
+        margin-bottom: 10px;
+
+        .bordered-box {
+            text-align: center;
+        }
+        #select_current_primary_record {
+            min-width: 60%;
+            max-width: 60%;
+        }
+    }
+
+    #main_archiving {
+        margin-bottom: 10px;
+
+        #main_archiving_fields_div {
+            min-height: 500px !important;
+            max-height: 800px !important;
+            overflow: auto;
+        }
+    }
+
+    #main_primary {
+        margin-bottom: 10px;
+
+        #main_primary_fields_div {
+            min-height: 500px !important;
+            max-height: 800px !important;
+            overflow: auto;
+        }
+    }
+
+    #main_updated {
+        margin-bottom: 10px;
+
+        #main_updated_fields_div {
+            min-height: 500px !important;
+            max-height: 800px !important;
+            overflow: auto;
+        }
+    }
+
+    #main_footer {
+        .bordered-box {
+            text-align: center;
+        }
+    }
+
+
+}
