@@ -361,7 +361,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <th><?php esc_html_e( "Tile", 'disciple_tools' ) ?></th>
                     <td>
                         <select name="tile_select">
-                            <option><?php esc_html_e( "No tile / hidden", 'disciple_tools' ) ?></option>
+                            <option value="no_tile"><?php esc_html_e( "No tile / hidden", 'disciple_tools' ) ?></option>
                             <?php foreach ( $tile_options as $tile_key => $tile_option ) :
                                 $select = isset( $field["tile"] ) && $field["tile"] === $tile_key;
                                 ?>
