@@ -802,25 +802,46 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <div class="link-group">
 
                     <div class="add-link-<?php echo esc_html( $display_field_id ) ?>" style="display:none">
-                        <div style="display: flex; align-items: center;">
+                        <form class="add-link-form" style="display: flex; align-items: center;">
                             <!-- drop down -->
-                            <select id="">
+                            <input type="hidden" name="field-key" value="<?php echo esc_html( $field_key ) ?>">
+                            <select name="link-type">
                                 <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
                                     <?php $field_id = $display_field_id . '_' . $option_key ?>
-                                <option style="display:flex; align-items: center;">
+                                <option style="display:flex; align-items: center;" value="<?php echo esc_html( $option_key ) ?>">
                                     <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
                                     <?php echo esc_html( $option_value['label'] ) ?>
                                 </option>
                                 <?php endforeach; ?>
                             </select>
-                            <button class="button">
+                            <button type="submit" id="add-link-button-<?php echo esc_html( $display_field_id ) ?>" class="button">
                                 <?php esc_html_e( 'Add', 'disciple-tools' ) ?>
                             </button>
-                            <button class="button hollow alert">
+                            <button id="cancel-link-button-<?php echo esc_html( $display_field_id ) ?>" class="button hollow alert">
                                 x
                             </button>
-                        </div>
+                        </form>
                     </div>
+
+                    <div class="link-list-<?php echo esc_html( $field_key ) ?>"></div>
+
+                    <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+
+                            <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
+                            <div class="section-subheader">
+                                <?php dt_render_field_icon( $option_value ) ?>
+                                <?php echo esc_html( $option_value["label"] ); ?>
+                            </div>
+                            <input
+                                type="text"
+                                class="link-input"
+                                value=""
+                                <?php echo esc_html( $required_tag ) ?>
+                                <?php echo esc_html( $disabled ) ?>
+                            >
+                        </div>
+
+                    <?php endforeach; ?>
 
                 <!-- Rather than looping over these fields for which inputs to show, we need to loop over what data is
                     available in the $posts[$field_key] object and then build the inputs based on the default field values -->

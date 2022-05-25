@@ -202,6 +202,8 @@ jQuery(document).ready(function($) {
     if (fieldType === 'link') {
       const addLinkForm = $(`.add-link-${field}`)
       addLinkForm.show()
+
+      $(`#cancel-link-button-${field}`).on('click', () => addLinkForm.hide())
     } else {
       $list.append(`<div class="input-group">
             <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
@@ -317,6 +319,24 @@ jQuery(document).ready(function($) {
   /**
    * Links
    */
+  $('.add-link-form').on('submit', addLink)
+  function addLink(e) {
+    e.preventDefault()
+
+    const formData = new FormData(this)
+
+    const linkType = formData.get('link-type')
+    const fieldKey = formData.get('field-key')
+
+    $(this.parentElement).hide()
+
+    const linkList = $(`.link-list-${fieldKey}`)
+
+    const template = $(`#link-template-${fieldKey}-${linkType}`)
+
+    linkList.append(template.clone().removeAttr('id').show())
+
+  }
 
   /**
    * user select typeahead
