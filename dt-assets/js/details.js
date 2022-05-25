@@ -51,6 +51,29 @@ jQuery(document).ready(function($) {
     }
   })
 
+/*   $('input.link-input').change(function(){
+    const fieldKey = $(this).data('field-key')
+    const metaKey = $(this).data('meta-key')
+    const id = $(this).attr('id')
+    const val = $(this).val()
+    if ( $(this).prop('required') && val === ''){
+      return;
+    }
+    const fieldValues = {
+      values: [
+        {
+          field_id: id,
+          value: val,
+          meta_id: metaKey,
+        }
+      ]
+    }
+    $(`#${fieldKey}-spinner`).addClass('active')
+    rest_api.update_post(post_type, post_id, { [fieldKey]: fieldValues }).then((newPost)=>{
+      $(`#${fieldKey}-spinner`).removeClass('active')
+    }).catch(handleAjaxError)
+  }) */
+
   $('.dt_textarea').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
@@ -173,13 +196,19 @@ jQuery(document).ready(function($) {
   // Clicking the plus sign next to the field label
   $('button.add-button').on('click', e => {
     const field = $(e.currentTarget).data('list-class')
+    const fieldType = $(e.currentTarget).data('field-type')
     const $list = $(`#edit-${field}`)
 
-    $list.append(`<div class="input-group">
+    if (fieldType === 'link') {
+      const addLinkForm = $(`.add-link-${field}`)
+      addLinkForm.show()
+    } else {
+      $list.append(`<div class="input-group">
             <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
             <div class="input-group-button">
             <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
             </div></div>`)
+    }
   })
   $(document).on('click', '.channel-delete-button', function(){
     let field = $(this).data('field')
@@ -284,6 +313,10 @@ jQuery(document).ready(function($) {
       }
     })
   })
+
+  /**
+   * Links
+   */
 
   /**
    * user select typeahead

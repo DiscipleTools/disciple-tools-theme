@@ -679,8 +679,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php if ( $is_private ) : ?>
                     <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
                 <?php endif;
-                if ( $field_type === "communication_channel" ) : ?>
-                    <button data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button" <?php echo esc_html( $disabled ); ?>>
+                if ( $field_type === "communication_channel" || $field_type === "link" ) : ?>
+                    <button data-field-type="<?php echo esc_html( $field_type ) ?>" data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button" <?php echo esc_html( $disabled ); ?>>
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 <?php endif ?>
@@ -799,21 +799,31 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 />
             <?php elseif ( $field_type === "link" ) : ?>
 
-                <div class="link-group" style="">
-                    <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+                <div class="link-group">
 
-                        <?php $field_id = $display_field_id . '_' . $option_key ?>
-
-                        <div style="display:flex; align-items: center;">
-                            <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
-                            <input id="<?php echo esc_html( $field_id ) ?>"
-                                type="text"
-                                class="text-input"
-                                value=""
-                            >
+                    <div class="add-link-<?php echo esc_html( $display_field_id ) ?>" style="display:none">
+                        <div style="display: flex; align-items: center;">
+                            <!-- drop down -->
+                            <select id="">
+                                <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+                                    <?php $field_id = $display_field_id . '_' . $option_key ?>
+                                <option style="display:flex; align-items: center;">
+                                    <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
+                                    <?php echo esc_html( $option_value['label'] ) ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button class="button">
+                                <?php esc_html_e( 'Add', 'disciple-tools' ) ?>
+                            </button>
+                            <button class="button hollow alert">
+                                x
+                            </button>
                         </div>
+                    </div>
 
-                    <?php endforeach; ?>
+                <!-- Rather than looping over these fields for which inputs to show, we need to loop over what data is
+                    available in the $posts[$field_key] object and then build the inputs based on the default field values -->
                 </div>
 
                 <?php elseif ( $field_type === "date" ) :?>
