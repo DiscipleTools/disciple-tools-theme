@@ -827,7 +827,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
                     <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
 
-                            <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
+                        <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
                             <div class="section-subheader">
                                 <?php dt_render_field_icon( $option_value ) ?>
                                 <?php echo esc_html( $option_value["label"] ); ?>
@@ -836,6 +836,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                 type="text"
                                 class="link-input"
                                 value=""
+                                data-prev-value=""
+                                data-field-key="<?php echo esc_html( $display_field_id ) ?>"
+                                data-meta-key="<?php echo esc_html( $display_field_id . '_' . $option_key ) ?>"
                                 <?php echo esc_html( $required_tag ) ?>
                                 <?php echo esc_html( $disabled ) ?>
                             >

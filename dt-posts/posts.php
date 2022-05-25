@@ -1912,6 +1912,40 @@ class Disciple_Tools_Posts
     }
 
     /**
+     *
+     */
+    public static function update_post_link_fields( array $field_settings, int $post_id, array $fields ) {
+
+        foreach ( $fields as $field_key => $field ) {
+            if ( !isset( $field_settings[ $field_key ] ) || ( $field_settings[ $field_key ]["type"] !== "link" ) ) {
+                continue;
+            }
+
+            if ( !isset( $field["values"] ) ){
+                return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
+            }
+
+            foreach ( $field["values"] as $value ) {
+                if ( isset( $value["value"] ) ) {
+                    if ( isset( $value["delete"] ) && $value["delete"] === true ) {
+                        delete_post_meta( $post_id, $value["meta_key"], $value["value"] );
+                    } else {
+                        if ( isset( $value["prev_value"] ) && $value["prev_value"] ) {
+                            update_post_meta( $post_id, $value["meta_key"], $value["value"], $value["prev_value"] );
+                        } else {
+                            add_post_meta( $post_id, $value["meta_key"], $value["value"] );
+                        }
+                    }
+                } else {
+                    return new WP_Error( __FUNCTION__, "Value missing on field: " . $field_key, [ 'status' => 500 ] );
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Helper function to create a unique metakey for contact channels.
      *
      * @param $channel_key

@@ -51,20 +51,23 @@ jQuery(document).ready(function($) {
     }
   })
 
-/*   $('input.link-input').change(function(){
+  $('input.link-input').change(function(){
     const fieldKey = $(this).data('field-key')
     const metaKey = $(this).data('meta-key')
-    const id = $(this).attr('id')
+    const prevValue = $(this).data('prev-value')
     const val = $(this).val()
+
     if ( $(this).prop('required') && val === ''){
       return;
     }
+
     const fieldValues = {
       values: [
         {
-          field_id: id,
+          field_id: fieldKey,
           value: val,
-          meta_id: metaKey,
+          meta_key: metaKey,
+          prev_value: prevValue
         }
       ]
     }
@@ -72,7 +75,7 @@ jQuery(document).ready(function($) {
     rest_api.update_post(post_type, post_id, { [fieldKey]: fieldValues }).then((newPost)=>{
       $(`#${fieldKey}-spinner`).removeClass('active')
     }).catch(handleAjaxError)
-  }) */
+  })
 
   $('.dt_textarea').change(function(){
     const id = $(this).attr('id')
@@ -334,7 +337,7 @@ jQuery(document).ready(function($) {
 
     const template = $(`#link-template-${fieldKey}-${linkType}`)
 
-    linkList.append(template.clone().removeAttr('id').show())
+    linkList.append(template.clone(true).removeAttr('id').show())
 
   }
 
