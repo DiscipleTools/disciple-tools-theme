@@ -301,7 +301,7 @@ dt_please_log_in();
                             $archived_label = sprintf( _x( "Show %s", "disciple_tools" ), $archived_text );
                         ?>
 
-                        <span style="display:inline-block" class="show-closed-switch">
+                        <span style="display:<?php echo esc_html( !$status_key || !$archived_key ? 'none' : 'inline-block' ) ?>" class="show-closed-switch">
                             <?php echo esc_html( $archived_label ) ?>
                             <div class="switch tiny">
                                 <input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
