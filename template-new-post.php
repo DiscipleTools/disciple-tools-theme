@@ -106,7 +106,7 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                             if ( isset( $field_settings["in_create_form"] ) && $field_settings["in_create_form"] === false ){
                                 continue;
                             }
-                            if ( !isset( $field_settings["tile"] ) ){
+                            if ( !isset( $field_settings["tile"] ) || empty( $field_settings["tile"] ) || $field_settings["tile"] === "no_tile" ){
                                 continue;
                             }
                             $classes = "";
