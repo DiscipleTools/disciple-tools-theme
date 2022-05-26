@@ -25,8 +25,7 @@ jQuery(function ($) {
   });
 
   $(document).on('click', '.submit-merge', function (evt) {
-    console.log('TODO....');
-    // TODO: handle_merge();
+    handle_merge();
   });
 
   /**
@@ -363,9 +362,9 @@ jQuery(function ($) {
 
             // If needed, keep a record of key for future api removal.
             if (key !== 'new') {
-              /*let deleted_keys = (field_meta.val()) ? JSON.parse(field_meta.val()) : [];
+              let deleted_keys = (field_meta.val()) ? JSON.parse(field_meta.val()) : [];
               deleted_keys.push(key);
-              field_meta.val(JSON.stringify(deleted_keys));*/
+              field_meta.val(JSON.stringify(deleted_keys));
             }
 
             // Final removal of input group
@@ -635,6 +634,11 @@ jQuery(function ($) {
           update_date_range_picker.setEndDate(updated_date);
           $('#' + update_field_id).val(updated_date_ts);
 
+          // Transfer metadata info
+          let source_date_field_meta = $('#' + field_id).parent().parent().find('#field_meta');
+          let update_date_field_meta = $('#' + update_field_id).parent().parent().find('#field_meta');
+          $(update_date_field_meta).val($(source_date_field_meta).val());
+
         }
         break;
 
@@ -842,22 +846,28 @@ jQuery(function ($) {
   }
 
   function handle_merge() {
-    $('#main_updated_fields_div').find('.td-field-input').each(function (idx, td) {
 
-      console.log(td);
+    // Disable submit button
+    $('.submit-merge').toggleClass('loading').attr("disabled", true);
+
+    // Start packaging updated fields
+    let values = {};
+    $('#main_updated_fields_div').find('.td-field-input').each(function (idx, td) {
 
       let field_id = $(td).find('#merge_field_id').val();
       let field_type = $(td).find('#merge_field_type').val();
       let post_field_id = $(td).find('#post_field_id').val();
       let field_meta = $(td).find('#field_meta');
 
-      let values = {};
       switch (field_type) {
 
-        case 'date':
         case 'text':
         case 'key_select':
           values[post_field_id] = $('#' + field_id).val();
+          break;
+
+        case 'date':
+          values[post_field_id] = $(field_meta).val();
           break;
 
         case 'multi_select':
@@ -865,12 +875,14 @@ jQuery(function ($) {
           $(td).find('button').each(function () {
             options.push({
               'value': $(this).attr('id'),
-              'delete': $(this).hasClass('empty-select-button')
+              'delete': !$(this).hasClass('selected-select-button')
             });
           });
 
           if (options) {
-            values[post_field_id] = options;
+            values[post_field_id] = {
+              'values': options
+            };
           }
           break;
 
@@ -879,10 +891,12 @@ jQuery(function ($) {
           let typeahead = window.Typeahead['.js-typeahead-' + field_id];
           if (typeahead) {
 
+            // Determine values to be processed
             let key = (field_type === 'tags') ? 'name' : 'ID';
             let items = typeahead.items;
             let deletions = field_meta.val() ? JSON.parse(field_meta.val()) : [];
 
+            // Package values and any deletions
             let entries = [];
             $.each(items, function (idx, item) {
               entries.push({
@@ -896,16 +910,22 @@ jQuery(function ($) {
               });
             });
 
+            // If present, capture entries
             if (entries) {
-              values[post_field_id]['values'] = entries;
+              values[post_field_id] = {
+                'values': entries
+              };
             }
           }
           break;
 
         case 'location_meta':
+
+          // Determine values to be processed
           let location_meta_entries = [];
           let location_meta_deletions = field_meta.val() ? JSON.parse(field_meta.val()) : [];
 
+          // Package values and any deletions
           $(td).find('input.input-group-field').each(function (idx, input) {
             if ($(input).val()) {
               location_meta_entries.push({
@@ -915,11 +935,9 @@ jQuery(function ($) {
           });
 
           if (window.selected_location_grid_meta !== undefined) {
-            console.log(selected_location_grid_meta);
-            // TODO....
-            /*location_meta_entries.push({
-              'value': $(input).val()
-            });*/
+            location_meta_entries.push({
+              'value': window.selected_location_grid_meta
+            });
           }
 
           $.each(location_meta_deletions, function (idx, id) {
@@ -928,14 +946,88 @@ jQuery(function ($) {
               'delete': true
             });
           });
+
+          // If present, capture entries
+          if (location_meta_entries) {
+            values[post_field_id] = {
+              'values': location_meta_entries
+            };
+          }
           break;
 
         case 'communication_channel':
-          // TODO...
+
+          // Determine values to be processed
+          let comm_entries = [];
+          let comm_deletions = field_meta.val() ? JSON.parse(field_meta.val()) : [];
+
+          // Package values and any deletions
+          $(td).find('.input-group').each(function () {
+            let comm_key = $(this).find('button').data('key');
+            let comm_val = $(this).find('input').val();
+
+            if (comm_val) {
+              let comm_entry = {
+                'value': comm_val
+              };
+
+              if (comm_key && comm_key !== 'new') {
+                comm_entry['key'] = comm_key;
+              }
+
+              comm_entries.push(comm_entry);
+            }
+          });
+
+          $.each(comm_deletions, function (idx, id) {
+            comm_entries.push({
+              'key': id,
+              'delete': true
+            });
+          });
+
+          // If present, capture entries
+          if (comm_entries) {
+            values[post_field_id] = comm_entries;
+          }
           break;
       }
 
     });
+
+    // Submit packaged fields to backend for further processing
+    if (values) {
+
+      // Determine current primary & archiving post records, + others
+      let post_type = window.merge_post_details['post_settings']['post_type'];
+      let primary_post = fetch_post_by_merge_type(true);
+      let archiving_post = fetch_post_by_merge_type(false);
+
+      // Build payload accordingly, based on updated values
+      let payload = {
+        'post_type': post_type,
+        'primary_post_id': primary_post['record']['ID'],
+        'archiving_post_id': archiving_post['record']['ID'],
+        'merge_comments': $('#merge_comments').is(':checked'),
+        'values': values
+      };
+
+      console.log(payload);
+
+      // Finally dispatch payload to corresponding post type merge endpoint
+      window.makeRequestOnPosts("POST", window.lodash.escape(post_type) + '/merge', payload).then(resp => {
+        window.location = primary_post['record']['ID'];
+
+      }).catch(err => {
+        console.error(err);
+        $('.submit-merge').toggleClass('loading').attr("disabled", false);
+        $('#merge_errors').html(window.lodash.escape(window.merge_post_details['translations']['error_msg']) + ' : ' + window.lodash.escape(window.lodash.get(err, 'responseJSON.message', err)));
+      });
+
+    } else {
+      $('.submit-merge').toggleClass('loading').attr("disabled", false);
+    }
+
   }
 
 });

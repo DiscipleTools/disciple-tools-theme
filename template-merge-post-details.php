@@ -82,7 +82,8 @@ add_action( 'wp_enqueue_scripts', function () use ( $dt_current_post, $dt_duplic
         ],
         'translations'             => [
             'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
-            'all_locations'    => __( 'All Locations', 'disciple_tools' )
+            'all_locations'    => __( 'All Locations', 'disciple_tools' ),
+            'error_msg'        => __( 'Sorry, something went wrong', 'disciple_tools' )
         ]
     ] );
 }, 10 );
@@ -128,9 +129,11 @@ get_header();
                         <input type="checkbox" id="merge_comments"
                                name="merge_comments" <?php checked( ! isset( $_GET["comments"] ) ) ?>>
                     </label>
-                    <span id="merge_errors"></span>
                     <button class='button loader submit-merge' type='button'
                             value='Merge'><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></button>
+
+                    <br>
+                    <span id="merge_errors"></span>
                 </div>
             </main>
             <br>

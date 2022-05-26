@@ -294,36 +294,40 @@ class DT_Duplicate_Checker_And_Merging {
      */
     public function merge_posts_endpoint( WP_REST_Request $request ){
         $body = $request->get_json_params() ?? $request->get_body_params();
-        $url_params = $request->get_url_params();
-        $post_type = $url_params['post_type'];
-        if ( isset( $body["contact1"], $body["contact2"] ) ) {
-            return self::merge_posts( $post_type, $body["contact1"], $body["contact2"], $body );
+        if ( isset( $body["post_type"], $body["primary_post_id"], $body["archiving_post_id"], $body["values"] ) ) {
+            return self::merge_posts( $body["post_type"], $body["primary_post_id"], $body["archiving_post_id"], $body["values"], $body["merge_comments"] );
         }
         return false;
     }
 
-    public static function merge_posts( $post_type, $contact1, $contact2, $args ){
-        $contact_fields = DT_Posts::get_post_field_settings( $post_type );
+    public static function merge_posts( $post_type, $primary_post_id, $archiving_post_id, $args, $merge_comments = false ){
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+
+        /*
         $phones = $args["phone"] ?? [];
         $emails = $args["email"] ?? [];
         $addresses = $args["address"] ?? [];
+        */
 
-        $master_id = $args["master-record"] ?? $contact1;
-        $non_master_id = ( $master_id === $contact1 ) ? $contact2 : $contact1;
-        $contact = DT_Posts::get_post( "contacts", $master_id );
-        $non_master = DT_Posts::get_post( "contacts", $non_master_id );
+        //$master_id = $args["master-record"] ?? $contact1;
+        //$non_master_id = ( $master_id === $contact1 ) ? $contact2 : $contact1;
+        $primary_post   = DT_Posts::get_post( $post_type, $primary_post_id );
+        $archiving_post = DT_Posts::get_post( $post_type, $archiving_post_id );
 
-        if ( is_wp_error( $contact ) ) { return $contact; }
-        if ( is_wp_error( $non_master ) ) { return $non_master; }
+        if ( is_wp_error( $primary_post ) ) {
+            return $primary_post;
+        }
+        if ( is_wp_error( $archiving_post ) ) {
+            return $archiving_post;
+        }
 
-
-        $current = [
+        /*$current = [
             'contact_phone' => [],
             'contact_email' => [],
             'contact_address' => [],
-        ];
+        ];*/
 
-        foreach ( $contact as $key => $fields ) {
+        /*foreach ( $contact as $key => $fields ) {
             if ( strpos( $key, "contact_" ) === 0 ) {
                 $split = explode( "_", $key );
                 if ( !isset( $split[1] ) ) {
@@ -334,17 +338,50 @@ class DT_Duplicate_Checker_And_Merging {
                     $current[ $new_key ][ $values['key'] ] = $values['value'];
                 }
             }
-        }
+        }*/
 
-        $update = [
+        // Capture incoming pre-formatted updated archiving values
+        $update = $args;
+        /*$update = [
             'contact_phone' => [ 'values' => [] ],
             'contact_email' => [ 'values' => [] ],
             'contact_address' => [ 'values' => [] ],
-        ];
+        ];*/
 
+        // Merge other hidden fields & types not previously captured during manual field selections
         $update_for_duplicate = [];
+        foreach ( $archiving_post as $key => $fields ) {
+            if ( ! isset( $update[ $key ] ) && ! empty( $fields ) && isset( $field_settings[ $key ] ) ) {
+                // TODO: Might be best to still capture all types, to ensure nothings falls thru the cracks!
+                if ( $field_settings[ $key ]["type"] === "textarea" && empty( $contact[ $key ] ) ) {
+                    $update[ $key ] = $fields;
+                }
+                if ( $field_settings[ $key ]["type"] === "number" && empty( $contact[ $key ] ) ) {
+                    $update[ $key ] = $fields;
+                }
+                if ( $field_settings[ $key ]["type"] === "array" && empty( $contact[ $key ] ) ) {
+                    if ( $key != "duplicate_data" ) {
+                        $update[ $key ] = $fields;
+                    }
+                }
+                if ( $field_settings[ $key ]["type"] === "boolean" && empty( $contact[ $key ] ) ) {
+                    $update[ $key ] = $fields;
+                }
+                if ( $field_settings[ $key ]["type"] === "connection" ) {
+                    $update[ $key ]["values"]               = [];
+                    $update_for_duplicate[ $key ]["values"] = [];
+                    foreach ( $fields as $field_value ) {
+                        $update[ $key ]["values"][]               = [ "value" => $field_value["ID"] ];
+                        $update_for_duplicate[ $key ]["values"][] = [
+                            "value"  => $field_value["ID"],
+                            "delete" => true
+                        ];
+                    }
+                }
+            }
+        }
 
-        $ignore_keys = [];
+        /*$ignore_keys = [];
 
         foreach ( $phones as $phone ) {
             $index = array_search( $phone, $current['contact_phone'] );
@@ -363,12 +400,12 @@ class DT_Duplicate_Checker_And_Merging {
             if ( $index !== false ) { $ignore_keys[] = $index;
                 continue; }
             $update['contact_address']['values'][] = [ 'value' => $address ];
-        }
+        }*/
 
         /*
             Merge social media + other contact data from the non master to master
         */
-        $fields_no_to_copy = [ 'overall_status', 'reason_closed' ];
+        /*$fields_no_to_copy = [ 'overall_status', 'reason_closed' ];
         foreach ( $non_master as $key => $fields ){
             if ( !empty( $fields ) && isset( $contact_fields[$key] ) && !in_array( $key, $fields_no_to_copy ) && ( !isset( $contact_fields[$key]['private'] ) || !$contact_fields[$key]['private'] ) ){
                 if ( $contact_fields[$key]["type"] === "multi_select" ){
@@ -453,26 +490,26 @@ class DT_Duplicate_Checker_And_Merging {
                     }
                 }
             }
-        }
+        }*/
 
-        $delete_fields = [];
+        /*$delete_fields = [];
         if ( $update['contact_phone']['values'] ) { $delete_fields[] = 'contact_phone'; }
         if ( $update['contact_email']['values'] ) { $delete_fields[] = 'contact_email'; }
         if ( $update['contact_address']['values'] ) { $delete_fields[] = 'contact_address'; }
 
         if ( !empty( $delete_fields ) ) {
             self::remove_fields( $master_id, $delete_fields, $ignore_keys );
-        }
+        }*/
 
-        if ( isset( $args["merge_comments"] ) ){
+        if ( $merge_comments ) {
             //copy over comments
-            $comments = DT_Posts::get_post_comments( "contacts", $non_master_id );
-            foreach ( $comments["comments"] as $comment ){
-                $comment["comment_post_ID"] = $master_id;
-                if ( $comment["comment_type"] === "comment" ){
+            $comments = DT_Posts::get_post_comments( $post_type, $archiving_post_id );
+            foreach ( $comments["comments"] as $comment ) {
+                $comment["comment_post_ID"] = $primary_post_id;
+                if ( $comment["comment_type"] === "comment" ) {
                     $comment["comment_content"] = sprintf( esc_html_x( '(From Duplicate): %s', 'duplicate comment', 'disciple_tools' ), $comment["comment_content"] );
                 }
-                if ( $comment["comment_type"] !== "duplicate" && !empty( $comment["comment_content"] ) ) {
+                if ( $comment["comment_type"] !== "duplicate" && ! empty( $comment["comment_content"] ) ) {
                     wp_insert_comment( $comment );
                 }
             }
@@ -493,7 +530,7 @@ class DT_Duplicate_Checker_And_Merging {
             AND meta_value = meta_value
             AND date = date
             AND category = category)
-        ", $master_id, $non_master_id, $master_id ) );
+        ", $primary_post_id, $archiving_post_id, $primary_post_id ) );
 
         // copy over users the contact is shared with.
         $wpdb->query( $wpdb->prepare( "
@@ -502,27 +539,34 @@ class DT_Duplicate_Checker_And_Merging {
             FROM $wpdb->dt_share
             WHERE post_id = %d
             AND user_id NOT IN ( SELECT user_id FROM $wpdb->dt_share WHERE post_id = %d )
-        ", $master_id, $non_master_id, $master_id ) );
+        ", $primary_post_id, $archiving_post_id, $primary_post_id ) );
 
         //Keep duplicate data override info.
-        $contact["duplicate_data"]["override"] = array_merge( $contact["duplicate_data"]["override"] ?? [], $non_master["duplicate_data"]["override"] ?? [] );
-        $update["duplicate_data"] = $contact["duplicate_data"];
+        $primary_post["duplicate_data"]["override"] = array_merge( $primary_post["duplicate_data"]["override"] ?? [], $archiving_post["duplicate_data"]["override"] ?? [] );
+        $update["duplicate_data"]                   = $primary_post["duplicate_data"];
 
         $current_user_id = get_current_user_id();
         wp_set_current_user( 0 ); // to keep the merge activity from a specific user.
-        $current_user = wp_get_current_user();
+        $current_user               = wp_get_current_user();
         $current_user->display_name = __( "Duplicate Checker", 'disciple_tools' );
-        $update_return = DT_Posts::update_post( "contacts", $master_id, $update, true, false );
-        if ( is_wp_error( $update_return ) ) { return $update_return; }
-        $non_master_update_return = DT_Posts::update_post( "contacts", $non_master_id, $update_for_duplicate, true, false );
-        if ( is_wp_error( $non_master_update_return ) ) { return $non_master_update_return; }
+
+        $update_return = DT_Posts::update_post( $post_type, $primary_post_id, $update, true, false );
+        if ( is_wp_error( $update_return ) ) {
+            return $update_return;
+        }
+
+        $non_master_update_return = DT_Posts::update_post( $post_type, $archiving_post_id, $update_for_duplicate, true, false );
+        if ( is_wp_error( $non_master_update_return ) ) {
+            return $non_master_update_return;
+        }
         wp_set_current_user( $current_user_id );
 
-        self::dismiss_duplicate( $post_type, $master_id, $non_master_id );
-        self::dismiss_duplicate( $post_type, $non_master_id, $master_id );
-        self::close_duplicate_post( $post_type, $non_master_id, $master_id );
+        self::dismiss_duplicate( $post_type, $primary_post_id, $archiving_post_id );
+        self::dismiss_duplicate( $post_type, $archiving_post_id, $primary_post_id );
+        self::close_duplicate_post( $post_type, $archiving_post_id, $primary_post_id );
 
-        do_action( "dt_contact_merged", $master_id, $non_master_id );
+        do_action( "dt_contact_merged", $primary_post_id, $archiving_post_id );
+
         return true;
     }
 
