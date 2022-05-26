@@ -634,7 +634,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
-     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags, user_select
+     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags, user_select, link
      *
      * @param $field_key
      * @param $fields
@@ -823,31 +823,31 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </form>
                     </div>
 
-                    <div class="link-list-<?php echo esc_html( $field_key ) ?>"></div>
+                    <div class="link-list-<?php echo esc_html( $field_key ) ?>">
+
+                        <?php
+                            foreach ( $post[$field_key] as $link_item ) {
+                                $option_type = $link_item["type"];
+                                $option_value = $fields[$field_key]["default"][$option_type];
+                                $meta_id = $link_item["meta_id"];
+                                $meta_value = $link_item["value"];
+
+                                render_link_field( $field_key, $option_key, $option_value, $meta_value, $display_field_id, $meta_id, $required_tag, $disabled );
+                            }
+                        ?>
+
+                    </div>
 
                     <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
 
-                        <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
-                            <div class="section-subheader">
-                                <?php dt_render_field_icon( $option_value ) ?>
-                                <?php echo esc_html( $option_value["label"] ); ?>
-                            </div>
-                            <input
-                                type="text"
-                                class="link-input"
-                                value=""
-                                data-prev-value=""
-                                data-field-key="<?php echo esc_html( $display_field_id ) ?>"
-                                data-meta-key="<?php echo esc_html( $display_field_id . '_' . $option_key ) ?>"
-                                <?php echo esc_html( $required_tag ) ?>
-                                <?php echo esc_html( $disabled ) ?>
-                            >
-                        </div>
+                    <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
+
+                        <?php render_link_field( $field_key, $option_key, $option_value, "", $display_field_id, "", $required_tag, $disabled ) ?>
+
+                    </div>
 
                     <?php endforeach; ?>
 
-                <!-- Rather than looping over these fields for which inputs to show, we need to loop over what data is
-                    available in the $posts[$field_key] object and then build the inputs based on the default field values -->
                 </div>
 
                 <?php elseif ( $field_type === "date" ) :?>
@@ -969,6 +969,27 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php endif;
         }
         do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id );
+    }
+
+    function render_link_field( $field_key, $option_key, $option_value, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
+        ?>
+
+        <div class="section-subheader">
+            <?php dt_render_field_icon( $option_value ) ?>
+            <?php echo esc_html( $option_value["label"] ); ?>
+        </div>
+        <input
+            type="text"
+            class="link-input"
+            value="<?php echo esc_html( $value ) ?>"
+            data-meta-id="<?php echo esc_html( $meta_id ) ?>"
+            data-field-key="<?php echo esc_html( $display_field_id ) ?>"
+            data-meta-key="<?php echo esc_html( $display_field_id . '_' . $option_key ) ?>"
+            <?php echo esc_html( $required_tag ) ?>
+            <?php echo esc_html( $disabled ) ?>
+        >
+
+        <?php
     }
 
     function dt_increment( &$var, $val ){

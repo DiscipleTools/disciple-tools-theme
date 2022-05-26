@@ -1928,12 +1928,12 @@ class Disciple_Tools_Posts
             foreach ( $field["values"] as $value ) {
                 if ( isset( $value["value"] ) ) {
                     if ( isset( $value["delete"] ) && $value["delete"] === true ) {
-                        delete_post_meta( $post_id, $value["meta_key"], $value["value"] );
+                        delete_metadata_by_mid( "post", $value["meta_id"] );
                     } else {
-                        if ( isset( $value["prev_value"] ) && $value["prev_value"] ) {
-                            update_post_meta( $post_id, $value["meta_key"], $value["value"], $value["prev_value"] );
+                        if ( isset( $value["meta_id"] ) && $value["meta_id"] ) {
+                            update_metadata_by_mid( "post", $value["meta_id"], $value["value"] );
                         } else {
-                            add_post_meta( $post_id, $value["meta_key"], $value["value"] );
+                            add_post_meta( $post_id, "link_field_" . $value["meta_key"], $value["value"] );
                         }
                     }
                 } else {
@@ -2325,6 +2325,26 @@ class Disciple_Tools_Posts
                             $fields[$key][] = $location_grid_meta;
                         }
                     }
+                } else if ( self::is_link_key( $key, $field_settings ) ) {
+
+                    $link_info = self::get_link_info( $key, $field_settings );
+                    $field_key = $link_info["field_key"];
+
+                    if ( isset( $field_settings[$field_key] ) && $field_settings[$field_key]['type'] === 'link' ) {
+                        if ( !isset( $fields[$field_key] ) ) {
+                            $fields[$field_key] = [];
+                        }
+
+                        foreach ( $value as $meta ) {
+                            $meta = [
+                                'type' => $link_info["type"],
+                                'value' => $meta,
+                                'meta_id' => '',
+                            ];
+
+                            $fields[$field_key][] = $meta;
+                        }
+                    }
                 } else {
                     $fields[$key] = maybe_unserialize( $value[0] );
                 }
@@ -2428,6 +2448,47 @@ class Disciple_Tools_Posts
         $fields = apply_filters( "dt_adjust_post_custom_fields", $fields, $post_type );
     }
 
+    public static function is_link_key( $key, $fields ) {
+        $link_keys = [];
+
+        foreach ( $fields as $field_key => $field_value ) {
+            if ( $field_value['type'] !== "link" ) {
+                continue;
+            }
+            $link_keys[] = 'link_field_' . $field_key;
+        }
+
+        foreach ( $link_keys as $link_key ) {
+            if ( strpos( $key, $link_key ) === 0 ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static function get_link_info( $key, $fields ) {
+        $link_keys = [];
+
+        foreach ( $fields as $field_key => $field_value ) {
+            if ( $field_value['type'] !== "link" ) {
+                continue;
+            }
+            $link_keys[] = [
+                'stub' => 'link_field_' . $field_key . '_',
+                'field_key' => $field_key
+            ];
+        }
+
+        foreach ( $link_keys as $link_info ) {
+            if ( strpos( $key, $link_info["stub"] ) === 0 ) {
+                $link_info["type"] = substr( $key, strlen( utf8_decode( $link_info["stub"] ) ) );
+                return $link_info;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Get all connection fields on a list of records
