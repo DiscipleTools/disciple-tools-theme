@@ -53,20 +53,20 @@ jQuery(document).ready(function($) {
 
   $('input.link-input').change(function(){
     const fieldKey = $(this).data('field-key')
-    const metaKey = $(this).data('meta-key')
-    const metaId = $(this).data('meta-id')
-    const val = $(this).val()
+    const type = $(this).data('type')
+    const meta_id = $(this).data('meta-id')
+    const value = $(this).val()
 
-    if ( $(this).prop('required') && val === ''){
+    if ( $(this).prop('required') && value === ''){
       return;
     }
 
     const fieldValues = {
       values: [
         {
-          value: val,
-          meta_key: metaKey,
-          meta_id: metaId,
+          value,
+          type,
+          meta_id,
         }
       ]
     }

@@ -993,7 +993,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     value="<?php echo esc_html( $value ) ?>"
                     data-meta-id="<?php echo esc_html( $meta_id ) ?>"
                     data-field-key="<?php echo esc_html( $display_field_id ) ?>"
-                    data-meta-key="<?php echo esc_html( $display_field_id . '_' . $option_key ) ?>"
+                    data-type="<?php echo esc_html( $option_key ) ?>"
                     <?php echo esc_html( $required_tag ) ?>
                     <?php echo esc_html( $disabled ) ?>
                 >

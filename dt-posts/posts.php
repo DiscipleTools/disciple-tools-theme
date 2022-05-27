@@ -1933,7 +1933,8 @@ class Disciple_Tools_Posts
                         if ( isset( $value["meta_id"] ) && $value["meta_id"] ) {
                             update_metadata_by_mid( "post", $value["meta_id"], $value["value"] );
                         } else {
-                            add_post_meta( $post_id, "link_field_" . $value["meta_key"], $value["value"] );
+                            $meta_key = self::create_link_metakey( $field_key, $value["type"] );
+                            add_post_meta( $post_id, $meta_key, $value["value"] );
                         }
                     } else {
                         return new WP_Error( __FUNCTION__, "Value missing on field: " . $field_key, [ 'status' => 500 ] );
@@ -1943,6 +1944,18 @@ class Disciple_Tools_Posts
         }
 
         return true;
+    }
+
+    /**
+     * Helper function to create the meta key for a link field
+     *
+     * @param string $field_key
+     * @param string $link_type
+     *
+     * @return string
+     */
+    public function create_link_metakey( string $field_key, string $link_type ) {
+        return "link_field_" . $field_key . '_' . $link_type;
     }
 
     /**
