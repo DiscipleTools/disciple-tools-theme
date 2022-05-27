@@ -826,14 +826,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <div class="link-list-<?php echo esc_html( $field_key ) ?>">
 
                         <?php
-                            foreach ( $post[$field_key] as $link_item ) {
-                                $option_type = $link_item["type"];
-                                $option_value = $fields[$field_key]["default"][$option_type];
-                                $meta_id = $link_item["meta_id"];
-                                $meta_value = $link_item["value"];
+                        foreach ( $post[$field_key] as $link_item ) {
+                            $option_type = $link_item["type"];
+                            $option_value = $fields[$field_key]["default"][$option_type];
+                            $meta_id = $link_item["meta_id"];
+                            $meta_value = $link_item["value"];
 
-                                render_link_field( $field_key, $option_key, $option_value, $meta_value, $display_field_id, $meta_id, $required_tag, $disabled );
-                            }
+                            render_link_field( $field_key, $option_key, $option_value, $meta_value, $display_field_id, $meta_id, $required_tag, $disabled );
+                        }
                         ?>
 
                     </div>

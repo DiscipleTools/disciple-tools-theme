@@ -2210,9 +2210,16 @@ class Disciple_Tools_Posts
         }
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
         if ( $meta_fields === null ){
+            $meta_fields_with_id = DT_Posts::get_post_meta_with_ids( $post_id );
+            /* is this necessary? further down, $meta_fields is passed into another function, therefore
+            assuming that it's structure is as before. We could map the array to make it look like it did before
+            oooor, we could just get it as it was before */
             $meta_fields = get_post_custom( $post_id );
         }
-        foreach ( $meta_fields as $key => $value ) {
+        $map_values = function ( $item ) {
+            return $item['value'];
+        };
+        foreach ( $meta_fields_with_id as $key => $value ) {
             if ( empty( $fields_to_return ) || in_array( $key, $fields_to_return ) || strpos( $key, "contact_" ) === 0 ) {
                 //if is contact details and is in a channel
                 $key_without_ramdomizers = null;
@@ -2229,7 +2236,7 @@ class Disciple_Tools_Posts
                     if ( strpos( $key, "details" ) === false ) {
                         $type = str_replace( "contact_", "", $key_without_ramdomizers );
                         if ( empty( $fields_to_return ) || in_array( 'contact_' . $type, $fields_to_return ) ) {
-                            $fields["contact_" . $type][] = self::format_post_contact_details( $field_settings, $meta_fields, $type, $key, $value[0] );
+                            $fields["contact_" . $type][] = self::format_post_contact_details( $field_settings, $meta_fields, $type, $key, $value[0]['value'] );
                         }
                     }
                 } elseif ( strpos( $key, "address" ) === 0 ) {
@@ -2239,7 +2246,7 @@ class Disciple_Tools_Posts
                         if ( isset( $meta_fields[$key . '_details'][0] ) ) {
                             $details = maybe_unserialize( $meta_fields[$key . '_details'][0] );
                         }
-                        $details["value"] = $value[0];
+                        $details["value"] = $value[0]['value'];
                         $details["key"] = $key;
                         if ( isset( $details["type"], $field_settings['contact_'.$details["type"]]["name"] ) ) {
                             $details["type_label"] = $field_settings['contact_' . $details["type"]]["name"];
@@ -2247,26 +2254,26 @@ class Disciple_Tools_Posts
                         $fields["address"][] = $details;
                     }
                 } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
-                    if ( empty( $value[0] ) ) {
+                    if ( empty( $value[0]['value'] ) ) {
                         unset( $fields[$key] );
                         continue;
                     }
-                    $value_options = $field_settings[$key]["default"][$value[0]] ?? $value[0];
+                    $value_options = $field_settings[$key]["default"][$value[0]['value']] ?? $value[0]['value'];
                     if ( isset( $value_options["label"] ) ) {
                         $label = $value_options["label"];
                     } elseif ( is_string( $value_options ) ) {
                         $label = $value_options;
                     } else {
-                        $label = $value[0];
+                        $label = $value[0]['value'];
                     }
 
                     $fields[$key] = [
-                        "key" => $value[0],
+                        "key" => $value[0]['value'],
                         "label" => $label
                     ];
                 } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'user_select' ) {
                     if ( $value ) {
-                        $meta_array = explode( '-', $value[0] ); // Separate the type and id
+                        $meta_array = explode( '-', $value[0]['value'] ); // Separate the type and id
                         $type = $meta_array[0]; // Build variables
                         if ( isset( $meta_array[1] ) ) {
                             $id = $meta_array[1];
@@ -2276,40 +2283,46 @@ class Disciple_Tools_Posts
                                     "id" => $id,
                                     "type" => $type,
                                     "display" => wp_specialchars_decode( $user ? $user->display_name : "Nobody" ),
-                                    "assigned-to" => $value[0]
+                                    "assigned-to" => $value[0]['value']
                                 ];
                             }
                         }
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'tags' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
-                    $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
+                    $fields[$key] = array_values(
+                        array_filter(
+                            array_map( 'trim', array_map(
+                                $map_values, $value
+                            )
+                        ), 'strlen' )
+                    ); //remove empty values
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
                     if ( $key === "tags" ){
                         $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
                     } else {
                         $multi_select_values = [];
                         foreach ( $value as $value_key ){
-                            if ( !empty( $value_key ) && isset( $field_settings[$key]["default"][$value_key] ) ){
-                                $multi_select_values[] = $value_key;
+                            if ( !empty( $value_key["value"] ) && isset( $field_settings[$key]["default"][$value_key["value"]] ) ){
+                                $multi_select_values[] = $value_key['value'];
                             }
                         }
                         $fields[$key] = $multi_select_values;
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'boolean' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ){
-                    $fields[$key] = $value[0] === "1";
+                    $fields[$key] = $value[0]['value'] === "1";
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
-                    $fields[$key] = maybe_unserialize( $value[0] );
+                    $fields[$key] = maybe_unserialize( $value[0]['value'] );
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'number' ) {
-                    $fields[$key] = maybe_unserialize( empty( $value[0] ) ? 0 : $value[0] ) + 0;
+                    $fields[$key] = maybe_unserialize( empty( $value[0]['value'] ) ? 0 : $value[0]['value'] ) + 0;
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
-                    if ( isset( $value[0] ) && !empty( $value[0] ) ){
+                    if ( isset( $value[0]['value'] ) && !empty( $value[0]['value'] ) ){
                         $fields[$key] = [
-                            "timestamp" => is_numeric( $value[0] ) ? (int) $value[0] : dt_format_date( $value[0], "U" ),
-                            "formatted" => dt_format_date( $value[0] ),
+                            "timestamp" => is_numeric( $value[0]['value'] ) ? (int) $value[0]['value'] : dt_format_date( $value[0]['value'], "U" ),
+                            "formatted" => dt_format_date( $value[0]['value'] ),
                         ];
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location' ) {
-                    $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $value );
+                    $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( array_map( $map_values, $value ) );
                     $fields[$key] = [];
                     foreach ( $names as $id => $name ) {
                         $fields[$key][] = [
@@ -2320,7 +2333,7 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location_meta' ) {
                     $fields[$key] = [];
                     foreach ( $value as $meta ) {
-                        $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta );
+                        $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta["value"] );
                         if ( $location_grid_meta ) {
                             $fields[$key][] = $location_grid_meta;
                         }
@@ -2338,15 +2351,15 @@ class Disciple_Tools_Posts
                         foreach ( $value as $meta ) {
                             $meta = [
                                 'type' => $link_info["type"],
-                                'value' => $meta,
-                                'meta_id' => '',
+                                'value' => $meta["value"],
+                                'meta_id' => $meta["meta_id"],
                             ];
 
                             $fields[$field_key][] = $meta;
                         }
                     }
                 } else {
-                    $fields[$key] = maybe_unserialize( $value[0] );
+                    $fields[$key] = maybe_unserialize( $value[0]['value'] );
                 }
             }
         }

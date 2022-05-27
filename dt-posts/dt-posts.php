@@ -1461,6 +1461,34 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     }
 
+    public static function get_post_meta_with_ids( $post_id ) {
+        global $wpdb;
+
+        $meta = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+                SELECT * FROM $wpdb->postmeta
+                WHERE post_id = %d
+                ", $post_id
+            ), ARRAY_A
+        );
+
+        /* sort the meta by meta_key and include the value and id in the subarrays */
+
+        $sorted_meta = [];
+        foreach ( $meta as $row ) {
+            if ( !isset($sorted_meta[$row["meta_key"]]) ) {
+                $sorted_meta[$row["meta_key"]] = [];
+            }
+            $sorted_meta[$row["meta_key"]][] = [
+                "value" => $row["meta_value"],
+                "meta_id" => $row["meta_id"],
+            ];
+        }
+
+        return $sorted_meta;
+    }
+
     public static function get_post_field_settings( $post_type, $load_from_cache = true, $with_deleted_options = false ){
         $cached = wp_cache_get( $post_type . "_field_settings" );
         if ( $load_from_cache && $cached ){
