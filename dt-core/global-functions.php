@@ -474,8 +474,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $icon_rendered = false;
             if ( isset( $field["icon"] ) && !empty( $field["icon"] ) ){
                 $icon_rendered = true;
+                if ( isset( $field["name"] ) ) {
+                    $alt_tag = $field["name"];
+                } else if ( isset( $field["label"] ) ) {
+                    $alt_tag = $field["label"];
+                } else {
+                    $alt_tag = "";
+                }
                 ?>
-                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field["icon"] ) ?>" alt="<?php echo esc_html( $field["name"] ?? "" ) ?>">
+                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field["icon"] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>">
                 <?php
             } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
                 $icon_rendered = true;
