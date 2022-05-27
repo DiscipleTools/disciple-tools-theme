@@ -3,9 +3,5 @@
         "dealerdirect/phpcodesniffer-composer-installer": "*",
         "wp-coding-standards/wpcs": "*",
         "squizlabs/php_codesniffer": "*"
-    },
-    "require": {
-        "phpunit/phpunit": "7.5.*",
-        "yoast/phpunit-polyfills": "^1.0"
     }
 }
