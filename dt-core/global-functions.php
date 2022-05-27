@@ -974,20 +974,33 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     function render_link_field( $field_key, $option_key, $option_value, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
         ?>
 
-        <div class="section-subheader">
-            <?php dt_render_field_icon( $option_value ) ?>
-            <?php echo esc_html( $option_value["label"] ); ?>
+        <div class="link-section">
+            <div class="section-subheader">
+                <?php dt_render_field_icon( $option_value ) ?>
+                <?php echo esc_html( $option_value["label"] ); ?>
+            </div>
+            <div class="input-group">
+                <input
+                    type="text"
+                    class="link-input input-group-field"
+                    value="<?php echo esc_html( $value ) ?>"
+                    data-meta-id="<?php echo esc_html( $meta_id ) ?>"
+                    data-field-key="<?php echo esc_html( $display_field_id ) ?>"
+                    data-meta-key="<?php echo esc_html( $display_field_id . '_' . $option_key ) ?>"
+                    <?php echo esc_html( $required_tag ) ?>
+                    <?php echo esc_html( $disabled ) ?>
+                >
+                <div class="input-group-button">
+                    <button
+                        class="button alert delete-button-style input-height link-delete-button delete-button"
+                        data-meta-id="<?php echo esc_html( $meta_id ) ?>"
+                        data-field-key="<?php echo esc_html( $field_key ) ?>"
+                    >
+                        &times;
+                    </button>
+                </div>
+            </div>
         </div>
-        <input
-            type="text"
-            class="link-input"
-            value="<?php echo esc_html( $value ) ?>"
-            data-meta-id="<?php echo esc_html( $meta_id ) ?>"
-            data-field-key="<?php echo esc_html( $display_field_id ) ?>"
-            data-meta-key="<?php echo esc_html( $display_field_id . '_' . $option_key ) ?>"
-            <?php echo esc_html( $required_tag ) ?>
-            <?php echo esc_html( $disabled ) ?>
-        >
 
         <?php
     }

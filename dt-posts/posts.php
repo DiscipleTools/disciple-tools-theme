@@ -1926,18 +1926,18 @@ class Disciple_Tools_Posts
             }
 
             foreach ( $field["values"] as $value ) {
-                if ( isset( $value["value"] ) ) {
-                    if ( isset( $value["delete"] ) && $value["delete"] === true ) {
-                        delete_metadata_by_mid( "post", $value["meta_id"] );
-                    } else {
+                if ( isset( $value["delete"] ) && $value["delete"] === true ) {
+                    delete_metadata_by_mid( "post", $value["meta_id"] );
+                } else {
+                    if ( isset( $value["value"] ) ) {
                         if ( isset( $value["meta_id"] ) && $value["meta_id"] ) {
                             update_metadata_by_mid( "post", $value["meta_id"], $value["value"] );
                         } else {
                             add_post_meta( $post_id, "link_field_" . $value["meta_key"], $value["value"] );
                         }
+                    } else {
+                        return new WP_Error( __FUNCTION__, "Value missing on field: " . $field_key, [ 'status' => 500 ] );
                     }
-                } else {
-                    return new WP_Error( __FUNCTION__, "Value missing on field: " . $field_key, [ 'status' => 500 ] );
                 }
             }
         }

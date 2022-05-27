@@ -64,7 +64,6 @@ jQuery(document).ready(function($) {
     const fieldValues = {
       values: [
         {
-          field_id: fieldKey,
           value: val,
           meta_key: metaKey,
           meta_id: metaId,
@@ -74,6 +73,7 @@ jQuery(document).ready(function($) {
     $(`#${fieldKey}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, { [fieldKey]: fieldValues }).then((newPost)=>{
       $(`#${fieldKey}-spinner`).removeClass('active')
+      post = newPost
     }).catch(handleAjaxError)
   })
 
@@ -239,6 +239,34 @@ jQuery(document).ready(function($) {
     }
   })
 
+  $(document).on('click', '.link-delete-button', function(){
+    let metaId = $(this).data('meta-id')
+    let fieldKey = $(this).data('field-key')
+
+    $(this).closest('.link-section').remove()
+
+    if (!metaId || metaId === "") {
+      return
+    }
+
+    $(`#${fieldKey}-spinner`).addClass('active')
+
+    const update = {
+      values: [
+        {
+          delete: true,
+          meta_id: metaId,
+        }
+      ]
+    }
+
+    API.update_post(post_type, post_id, { [fieldKey]: update }).then((updatedContact)=>{
+      $(`#${fieldKey}-spinner`).removeClass('active')
+      post = updatedContact
+      resetDetailsFields()
+    }).catch(handleAjaxError)
+  })
+
   $(document).on('blur', 'input.dt-communication-channel', function(){
     let field_key = $(this).data('field')
     let value = $(this).val()
@@ -338,7 +366,6 @@ jQuery(document).ready(function($) {
     const template = $(`#link-template-${fieldKey}-${linkType}`)
 
     linkList.append(template.clone(true).removeAttr('id').show())
-
   }
 
   /**
