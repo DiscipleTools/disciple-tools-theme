@@ -814,8 +814,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <input type="hidden" name="field-key" value="<?php echo esc_html( $field_key ) ?>">
                             <select name="link-type">
                                 <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
-                                    <?php $field_id = $display_field_id . '_' . $option_key ?>
-                                <option style="display:flex; align-items: center;" value="<?php echo esc_html( $option_key ) ?>">
+
+                                    <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) continue; ?>
+
+                                    <option style="display:flex; align-items: center;" value="<?php echo esc_html( $option_key ) ?>">
                                     <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
                                     <?php echo esc_html( $option_value['label'] ) ?>
                                 </option>
@@ -846,6 +848,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
 
                     <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+
+                        <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) continue; ?>
 
                     <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
 

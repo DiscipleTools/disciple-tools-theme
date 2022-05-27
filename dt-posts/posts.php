@@ -2355,9 +2355,15 @@ class Disciple_Tools_Posts
                             $fields[$field_key] = [];
                         }
 
+                        $type = $link_info["type"];
+
+                        if ( isset( $field_settings[$field_key]["default"][$type]["deleted"] ) && $field_settings[$field_key]["default"][$type]["deleted"] === true ) {
+                            continue;
+                        }
+
                         foreach ( $value as $meta ) {
                             $meta = [
-                                'type' => $link_info["type"],
+                                'type' => $type,
                                 'value' => $meta["value"],
                                 'meta_id' => $meta["meta_id"],
                             ];
