@@ -2289,13 +2289,7 @@ class Disciple_Tools_Posts
                         }
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'tags' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
-                    $fields[$key] = array_values(
-                        array_filter(
-                            array_map( 'trim', array_map(
-                                $map_values, $value
-                            )
-                        ), 'strlen' )
-                    ); //remove empty values
+                    $fields[$key] = array_values( array_filter( array_map( 'trim', array_map( $map_values, $value ) ), 'strlen' ) ); //remove empty values
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
                     if ( $key === "tags" ){
                         $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values

@@ -1477,7 +1477,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $sorted_meta = [];
         foreach ( $meta as $row ) {
-            if ( !isset($sorted_meta[$row["meta_key"]]) ) {
+            if ( !isset( $sorted_meta[$row["meta_key"]] ) ) {
                 $sorted_meta[$row["meta_key"]] = [];
             }
             $sorted_meta[$row["meta_key"]][] = [
