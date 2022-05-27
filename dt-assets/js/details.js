@@ -54,7 +54,7 @@ jQuery(document).ready(function($) {
   $('input.link-input').change(function(){
     const fieldKey = $(this).data('field-key')
     const metaKey = $(this).data('meta-key')
-    const prevValue = $(this).data('prev-value')
+    const metaId = $(this).data('meta-id')
     const val = $(this).val()
 
     if ( $(this).prop('required') && val === ''){
@@ -67,7 +67,7 @@ jQuery(document).ready(function($) {
           field_id: fieldKey,
           value: val,
           meta_key: metaKey,
-          prev_value: prevValue
+          meta_id: metaId,
         }
       ]
     }
