@@ -46,7 +46,7 @@
     "browsersync": "gulp browsersync",
     "update-foundation": "npm install foundation-sites",
     "prepare": "husky install",
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "*.php": [
