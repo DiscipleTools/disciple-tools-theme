@@ -74,7 +74,7 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
             if ( empty( self::get_key() ) ) {
                 return [];
             }
-            $string = self::url_get_contents( self::make_url( 'check' ) );
+            $string = self::geocode_ip_address( self::get_real_ip_address() );
             $response = json_decode( $string, true );
 
             if ( isset( $response['success'] ) && empty( $response['success'] ) ) {
