@@ -21,10 +21,16 @@ if ( ! isset( $_GET['currentid'], $_GET['dupeid'] ) ) {
     return wp_redirect( '/' . $post_type );
 }
 
-// Grab handles to various objects and test validity
+// Extract post ids
 $dt_current_id = sanitize_text_field( wp_unslash( $_GET['currentid'] ) );
 $dt_dupe_id    = sanitize_text_field( wp_unslash( $_GET['dupeid'] ) );
 
+// Ensure this is not a self-merge
+if ( $dt_current_id === $dt_dupe_id ) {
+    wp_die( esc_html( 'Self-merges not allowed!' ), "Self-merge denied", 403 );
+}
+
+// Grab handles to various objects and test validity
 $dt_current_post   = DT_Posts::get_post( $post_type, $dt_current_id );
 $dt_duplicate_post = DT_Posts::get_post( $post_type, $dt_dupe_id );
 if ( is_wp_error( $dt_current_post ) || is_wp_error( $dt_duplicate_post ) ) {
@@ -101,29 +107,8 @@ get_header();
                 <div class="bordered-box">
                     <h2 class="center"><?php esc_html_e( sprintf( "Merge Duplicate %s", $post_settings['label_plural'] ), 'disciple_tools' ) ?></h2>
                     <p class="center"
-                       style="max-width: 75%; margin-left:auto; margin-right:auto;"><?php esc_html_e( "When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be selected below:", 'disciple_tools' ) ?></p>
-                    <table style="max-width: 50%; margin-left:auto; margin-right:auto;">
-                        <tbody>
-                        <tr>
-                            <td>
-                                <label>
-                                    <span><?php echo esc_html( sprintf( '#%d - %s', $dt_current_post['ID'], $dt_current_post['title'] ?? '' ) ) ?></span>
-                                    <input type="radio" id="dt_current_post" class="select-current-primary-record"
-                                           name="select_current_primary_record"
-                                           data-post_id="<?php echo esc_html( $dt_current_post['ID'] ) ?>"/>
-                                </label>
-                            </td>
-                            <td>
-                                <label>
-                                    <span><?php echo esc_html( sprintf( '#%d - %s', $dt_duplicate_post['ID'], $dt_duplicate_post['title'] ?? '' ) ) ?></span>
-                                    <input type="radio" id="dt_duplicate_post" class="select-current-primary-record"
-                                           name="select_current_primary_record"
-                                           data-post_id="<?php echo esc_html( $dt_duplicate_post['ID'] ) ?>"/>
-                                </label>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                       style="max-width: 75%; margin-left:auto; margin-right:auto;"><?php esc_html_e( "When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below.", 'disciple_tools' ) ?></p>
+
                     <label>
                         <strong><?php esc_html_e( 'Copy comments to updated primary record', 'disciple_tools' ); ?></strong>
                         <input type="checkbox" id="merge_comments"
@@ -142,8 +127,18 @@ get_header();
             <main id="main_archiving" class="large-4 medium-4 cell" role="main">
                 <div class="bordered-box">
                     <h2 class="center"><?php esc_html_e( "Archiving", 'disciple_tools' ) ?> - #<span
-                            id="main_archiving_post_id_title"></span></h2>
+                            id="main_archiving_post_id_title"></span>
+                    </h2>
 
+                    <div class="main-archiving-primary-switch-but-div">
+                        <button id="main_archiving_primary_switch_but"
+                                style="text-align: center;"
+                                class="button center"><?php esc_html_e( "Switch To Primary", 'disciple_tools' ) ?>
+                        </button>
+                    </div>
+
+                    <input type="hidden" id="main_archiving_current_post_id"
+                           value="<?php echo esc_html( $dt_current_post['ID'] ) ?>"/>
                     <div id="main_archiving_fields_div"></div>
                 </div>
             </main>
@@ -154,7 +149,9 @@ get_header();
                     <h2 class="center"><?php esc_html_e( "Primary", 'disciple_tools' ) ?> - #<span
                             id="main_primary_post_id_title"></span></h2>
 
-                    <div id="main_primary_fields_div"></div>
+                    <input type="hidden" id="main_primary_current_post_id"
+                           value="<?php echo esc_html( $dt_duplicate_post['ID'] ) ?>"/>
+                    <div id="main_primary_fields_div" style="margin-top: 60px;"></div>
                 </div>
             </main>
 
@@ -164,7 +161,7 @@ get_header();
                     <h2 class="center"><?php esc_html_e( "Updated", 'disciple_tools' ) ?> - #<span
                             id="main_updated_post_id_title"></span></h2>
 
-                    <div id="main_updated_fields_div"></div>
+                    <div id="main_updated_fields_div" style="margin-top: 60px;"></div>
                 </div>
             </main>
 

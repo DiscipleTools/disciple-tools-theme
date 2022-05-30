@@ -1175,6 +1175,50 @@ jQuery(document).ready(function($) {
     percentPosition: true
   });
   //leave at the end of this file
+
+  /**
+   * Merging
+   */
+
+  $('.open-merge-with-post').on("click", function (evt) {
+    let merge_post_type = $(evt.currentTarget).data('post_type');
+    if (!window.Typeahead['.js-typeahead-merge_with']) {
+      $.typeahead({
+        input: '.js-typeahead-merge_with',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        source: TYPEAHEADS.typeaheadPostsSource(merge_post_type, {'include-users': false}),
+        templateValue: "{{name}}",
+        template: window.TYPEAHEADS.contactListRowTemplate,
+        dynamic: true,
+        hint: true,
+        emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+        callback: {
+          onClick: function (node, a, item) {
+            $('.confirm-merge-with-post').show()
+            $('#confirm-merge-with-post-id').val(item.ID)
+            $('#name-of-post-to-merge').html(item.name)
+          },
+          onResult: function (node, query, result, resultCount) {
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#merge_with-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('.merge_with-result-container').html("");
+          },
+        },
+      });
+    }
+    let user_select_input = $(`.js-typeahead-merge_with`)
+    $('.search_merge_with').on('click', function () {
+      user_select_input.val("")
+      user_select_input.trigger('input.typeahead')
+      user_select_input.focus()
+    })
+    $('#merge-with-post-modal').foundation('open');
+  });
+
 })
 
 

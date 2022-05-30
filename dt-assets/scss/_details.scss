@@ -877,6 +877,7 @@ select.color-select {
         .bordered-box {
             text-align: center;
         }
+
         #select_current_primary_record {
             min-width: 60%;
             max-width: 60%;
@@ -885,6 +886,10 @@ select.color-select {
 
     #main_archiving {
         margin-bottom: 10px;
+
+        .main-archiving-primary-switch-but-div {
+            text-align: center;
+        }
 
         #main_archiving_fields_div {
             min-height: 500px !important;
