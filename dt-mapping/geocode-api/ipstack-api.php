@@ -383,7 +383,7 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
         }
 
         public static function get_location_grid_meta_from_current_visitor() {
-            return self::convert_ip_result_to_location_grid_meta( self::geocode_ip_address( self::get_real_ip_address() )  );
+            return self::convert_ip_result_to_location_grid_meta( self::geocode_ip_address( self::get_real_ip_address() ) );
         }
     }
 }
