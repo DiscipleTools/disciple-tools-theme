@@ -90,8 +90,25 @@ jQuery(function ($) {
 
           // Adjust & trigger field selections to default states; which should set updating fields accordingly
           main_primary_fields_div.find('.field-select').each(function (idx, input) {
-            $(input).prop('checked', true);
-            $(input).trigger('change');
+            if (can_select_field($(input).parent().parent())) {
+              $(input).prop('checked', true);
+              $(input).trigger('change');
+
+            } else {
+
+              // Otherwise, attempt to default to valid corresponding archiving field
+              if ($(input).attr('type') === 'radio') {
+
+                // Attempt to identify corresponding archive radio input
+                let post_field_id = $(input).data('merge_update_field_id');
+                let archive_input = main_archiving_fields_div.find('input[data-merge_field_id="' + archiving_post['record']['ID'] + '_' + post_field_id + '"]');
+                if (archive_input && can_select_field($(archive_input).parent().parent())) {
+                  $(archive_input).prop('checked', true);
+                  $(archive_input).trigger('change');
+
+                }
+              }
+            }
           });
 
           // Select any archiving fields suitable for auto merging
@@ -99,7 +116,7 @@ jQuery(function ($) {
             if ($(input).attr('type') === 'checkbox') {
               let post_field_id = $(input).data('merge_update_field_id');
               if (archiving_post['record'][post_field_id]) {
-                $(input).prop('checked', true);
+                $(input).prop('checked', can_select_field($(input).parent().parent()));
                 $(input).trigger('change');
               }
             }
@@ -113,6 +130,45 @@ jQuery(function ($) {
         });
       });
     });
+  }
+
+  function can_select_field(td_field_input) {
+
+    // Ensure field has a value in order to be selected
+    let field_id = $(td_field_input).find('#merge_field_id').val();
+    let field_type = $(td_field_input).find('#merge_field_type').val();
+    let post_field_id = $(td_field_input).find('#post_field_id').val();
+
+    switch (field_type) {
+      case 'textarea':
+      case 'number':
+      case 'boolean':
+      case 'text':
+      case 'date':
+        return !window.lodash.isEmpty($('#' + field_id).val());
+
+      case 'key_select':
+        return !window.lodash.isEmpty($('#' + field_id).val()) || !window.lodash.isEmpty($('#' + post_field_id).val());
+
+      case 'multi_select':
+        return !window.lodash.isEmpty($(td_field_input).find('button.selected-select-button'));
+
+      case 'tags':
+      case 'location':
+        let typeahead = window.Typeahead['.js-typeahead-' + field_id];
+        return typeahead && !window.lodash.isEmpty(typeahead.items);
+
+      case 'communication_channel':
+      case 'location_meta':
+        return !window.lodash.isEmpty($(td_field_input).find('input.input-group-field').not('[value=""]'));
+
+      case 'user_select':
+        let user_select_typeahead = window.Typeahead['.js-typeahead-' + field_id];
+        return user_select_typeahead && !window.lodash.isEmpty(user_select_typeahead.item);
+    }
+
+    return false;
+
   }
 
   function init_fields(post, fields_div, read_only) {
@@ -129,15 +185,36 @@ jQuery(function ($) {
       let field_meta = $(td).find('#field_meta');
 
       // Remove field prefix, ahead of further downstream processing
-      let post_field_id = post ? window.lodash.replace(field_id, post['ID'] + '_', '') : field_id;
+      let post_field_id = post ? window.lodash.replace(field_id, post['ID'] + '_', '') : $(td).find('#post_field_id').val();
 
       // Activate field accordingly, based on type and read-only flag
       switch (field_type) {
+        case 'textarea':
+        case 'number':
+        case 'boolean':
         case 'text':
-        case 'key_select':
 
           // Disable field accordingly, based on read-only flag
           $(td).find('#' + field_id).prop('disabled', read_only);
+          break;
+
+        case 'key_select':
+
+          // Disable field accordingly, based on read-only flag and select type
+          let key_select = null;
+
+          // Determine select type
+          if ($(td).find('#' + field_id).length > 0) {
+            key_select = $(td).find('#' + field_id);
+          } else if (($(td).find('#' + post_field_id).length > 0) && !window.lodash.isEmpty($(td).find('#' + post_field_id).css('background-color'))) {
+            key_select = $(td).find('#' + post_field_id);
+          }
+
+          // Assuming we have a handle on a valid select, disable accoridngly
+          if (key_select) {
+            key_select.prop('disabled', read_only);
+          }
+
           break;
 
         case 'date':
@@ -332,8 +409,16 @@ jQuery(function ($) {
 
         case 'communication_channel':
 
-          // Disable field accordingly, based on read-only flag
+          // Disable/Display field accordingly, based on read-only flag
           $(td).find('input.dt-communication-channel').prop('disabled', read_only);
+
+          if (!read_only) {
+            $(td).find('input.dt-communication-channel').each(function (idx, input) {
+              if (window.lodash.isEmpty($(input).val())) {
+                $(input).parent().hide();
+              }
+            });
+          }
 
           /**
            * Add
@@ -591,6 +676,70 @@ jQuery(function ($) {
           }
 
           break;
+
+        case 'user_select':
+
+          let user_select_typeahead_field_input = '.js-typeahead-' + field_id;
+
+          // Disable field accordingly, based on read-only flag
+          $(td).find(user_select_typeahead_field_input).prop('disabled', read_only);
+
+          /**
+           * Load Typeahead
+           */
+
+          if (!window.Typeahead[user_select_typeahead_field_input]) {
+            $(td).find(user_select_typeahead_field_input).typeahead({
+              input: user_select_typeahead_field_input,
+              minLength: 0,
+              maxItem: 0,
+              accent: true,
+              searchOnFocus: true,
+              source: TYPEAHEADS.typeaheadUserSource(),
+              templateValue: "{{name}}",
+              template: function (query, item) {
+                return `<div class="assigned-to-row" dir="auto">
+                  <span>
+                      <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+                      ${window.lodash.escape(item.name)}
+                  </span>
+                  ${item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : ''}
+                  ${item.update_needed && item.update_needed > 0 ? `<span>
+                    <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+                    <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+                  </span>` : ''}
+                </div>`;
+              },
+              dynamic: true,
+              hint: true,
+              emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+              callback: {
+                onClick: function (node, a, item) {
+                },
+                onResult: function (node, query, result, resultCount) {
+                  let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+                  $(`#${field_id}-result-container`).html(text);
+                },
+                onHideLayout: function () {
+                  $(`.${field_id}-result-container`).html("");
+                }
+              }
+            });
+          }
+
+          // If available, load previous post record user selection
+          let user_select_typeahead = window.Typeahead[user_select_typeahead_field_input];
+          let post_user_select = post ? post[post_field_id] : undefined;
+
+          if ((post_user_select !== undefined) && user_select_typeahead) {
+            $(user_select_typeahead_field_input).val(post_user_select['display']);
+            user_select_typeahead.item = {
+              ID: post_user_select['id'],
+              name: post_user_select['display']
+            };
+          }
+
+          break;
       }
 
     });
@@ -612,10 +761,31 @@ jQuery(function ($) {
   function update_fields(selector, is_selected, update_field_id, field_id, field_type) {
 
     switch (field_type) {
+      case 'textarea':
+      case 'number':
+      case 'boolean':
       case 'text':
-      case 'key_select':
         if (is_selected) {
           $('#' + update_field_id).val($('#' + field_id).val());
+        }
+        break;
+
+      case 'key_select':
+        if (is_selected) {
+
+          // Determine select type
+          let key_select = null;
+          let tr = $(selector).parent().parent();
+          if ($(tr).find('#' + field_id).length > 0) {
+            key_select = $(tr).find('#' + field_id);
+          } else if (($(tr).find('#' + update_field_id).length > 0) && !window.lodash.isEmpty($(tr).find('#' + update_field_id).css('background-color'))) {
+            key_select = $(tr).find('#' + update_field_id);
+          }
+
+          // Assuming we have a handle on a valid select, update accoridngly
+          if (key_select) {
+            $('#main_updated_fields_div').find('#' + update_field_id).val($(key_select).val());
+          }
         }
         break;
 
@@ -841,6 +1011,24 @@ jQuery(function ($) {
         }
 
         break;
+
+      case 'user_select':
+
+        // Determine values to be updated
+        let source_user_select_typeahead_field_input = '.js-typeahead-' + field_id;
+        let update_user_select_typeahead_field_input = '.js-typeahead-' + update_field_id;
+        let source_typeahead_user_select = window.Typeahead[source_user_select_typeahead_field_input];
+        let update_typeahead_user_select = window.Typeahead[update_user_select_typeahead_field_input];
+
+        // Update values accordingly
+        if (source_typeahead_user_select && update_typeahead_user_select) {
+          if (is_selected) {
+            $(update_user_select_typeahead_field_input).val($(source_user_select_typeahead_field_input).val());
+            update_typeahead_user_select.item = source_typeahead_user_select.item;
+          }
+        }
+
+        break;
     }
 
   }
@@ -861,9 +1049,12 @@ jQuery(function ($) {
 
       switch (field_type) {
 
+        case 'textarea':
+        case 'number':
+        case 'boolean':
         case 'text':
         case 'key_select':
-          values[post_field_id] = $('#' + field_id).val();
+          values[post_field_id] = $(td).find('#' + field_id).val();
           break;
 
         case 'date':
@@ -989,6 +1180,13 @@ jQuery(function ($) {
           // If present, capture entries
           if (comm_entries) {
             values[post_field_id] = comm_entries;
+          }
+          break;
+
+        case 'user_select':
+          let user_select_typeahead = window.Typeahead['.js-typeahead-' + field_id];
+          if (user_select_typeahead && user_select_typeahead.item) {
+            values[post_field_id] = 'user-' + user_select_typeahead.item['ID'];
           }
           break;
       }

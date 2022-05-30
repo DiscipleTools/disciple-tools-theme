@@ -67,7 +67,7 @@ add_action( 'wp_enqueue_scripts', function () use ( $dt_current_post, $dt_duplic
             ]
         ],
         'post_settings'            => $post_settings,
-        'post_fields_default_html' => render_post_fields_html( null, $fields_to_display, $post_settings['fields'], '', false ),
+        'post_fields_default_html' => render_post_fields_html( $dt_current_post, $fields_to_display, $post_settings['fields'], '', false ),
         'url_root'                 => esc_url_raw( rest_url() ),
         'nonce'                    => wp_create_nonce( 'wp_rest' ),
         'mapbox'                   => [
