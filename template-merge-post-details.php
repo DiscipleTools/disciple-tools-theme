@@ -6,7 +6,9 @@
 dt_please_log_in();
 
 // Redirect if unable to determine post type
+// phpcs:disable
 $post_type = dt_get_post_type();
+// phpcs:enable
 if ( empty( $post_type ) ) {
     return wp_redirect( '/' );
 }
@@ -105,7 +107,7 @@ get_header();
             <!-- Merge Header-->
             <main id="main_header" class="large-12 medium-12 cell" role="main">
                 <div class="bordered-box">
-                    <h2 class="center"><?php esc_html_e( sprintf( "Merge Duplicate %s", $post_settings['label_plural'] ), 'disciple_tools' ) ?></h2>
+                    <h2 class="center"><?php echo esc_html( sprintf( "Merge Duplicate %s", $post_settings['label_plural'] ), 'disciple_tools' ) ?></h2>
                     <p class="center"
                        style="max-width: 75%; margin-left:auto; margin-right:auto;"><?php esc_html_e( "When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below.", 'disciple_tools' ) ?></p>
 
