@@ -837,7 +837,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <div class="link-list-<?php echo esc_html( $field_key ) ?>">
 
                         <?php
-                        foreach ( $post[$field_key] as $link_item ) {
+                        foreach ( $post[$field_key] ?? [] as $link_item ) {
                             $option_type = $link_item["type"];
                             $option_value = $fields[$field_key]["default"][$option_type];
                             $meta_id = $link_item["meta_id"];
@@ -855,11 +855,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             continue;
                         } ?>
 
-                    <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
-
-                        <?php render_link_field( $field_key, $option_key, $option_value, "", $display_field_id, "", $required_tag, $disabled ) ?>
-
-                    </div>
+                        <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
+                            <?php render_link_field( $field_key, $option_key, $option_value, "", $display_field_id, "", $required_tag, $disabled ) ?>
+                        </div>
 
                     <?php endforeach; ?>
 
