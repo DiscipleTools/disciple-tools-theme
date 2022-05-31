@@ -157,17 +157,19 @@ jQuery(function ($) {
         return !window.lodash.isEmpty($(td_field_input).find('button.selected-select-button'));
 
       case 'tags':
-      case 'location':
+      case 'location': {
         let typeahead = window.Typeahead['.js-typeahead-' + field_id];
         return typeahead && !window.lodash.isEmpty(typeahead.items);
+      }
 
       case 'communication_channel':
       case 'location_meta':
         return !window.lodash.isEmpty($(td_field_input).find('input.input-group-field').not('[value=""]'));
 
-      case 'user_select':
+      case 'user_select': {
         let user_select_typeahead = window.Typeahead['.js-typeahead-' + field_id];
         return user_select_typeahead && !window.lodash.isEmpty(user_select_typeahead.item);
+      }
     }
 
     return false;
@@ -201,7 +203,7 @@ jQuery(function ($) {
           $(td).find('#' + field_id).prop('disabled', read_only);
           break;
 
-        case 'key_select':
+        case 'key_select': {
 
           // Disable field accordingly, based on read-only flag and select type
           let key_select = null;
@@ -219,8 +221,9 @@ jQuery(function ($) {
           }
 
           break;
+        }
 
-        case 'date':
+        case 'date': {
 
           /**
            * Load Date Range Picker
@@ -266,6 +269,7 @@ jQuery(function ($) {
           });
 
           break;
+        }
 
         case 'multi_select':
 
@@ -288,7 +292,7 @@ jQuery(function ($) {
 
           break;
 
-        case 'tags':
+        case 'tags': {
 
           /**
            * Activate
@@ -407,6 +411,7 @@ jQuery(function ($) {
           }
 
           break;
+        }
 
         case 'communication_channel':
 
@@ -459,7 +464,7 @@ jQuery(function ($) {
 
           break;
 
-        case 'location_meta':
+        case 'location_meta': {
 
           let mapbox = window.merge_post_details['mapbox'];
 
@@ -580,8 +585,9 @@ jQuery(function ($) {
           $(td).find('#mapbox-search').prop('disabled', read_only);
 
           break;
+        }
 
-        case 'location':
+        case 'location': {
 
           let translations = window.merge_post_details['translations'];
 
@@ -675,8 +681,9 @@ jQuery(function ($) {
           }
 
           break;
+        }
 
-        case 'user_select':
+        case 'user_select': {
 
           let user_select_typeahead_field_input = '.js-typeahead-' + field_id;
 
@@ -737,6 +744,7 @@ jQuery(function ($) {
           }
 
           break;
+        }
       }
 
     });
@@ -809,7 +817,7 @@ jQuery(function ($) {
         }
         break;
 
-      case 'multi_select':
+      case 'multi_select': {
 
         // Determine values to be updated
         let updated_selections = $(selector.parent().parent()).find('button[data-field-key="' + update_field_id + '"].selected-select-button');
@@ -823,8 +831,9 @@ jQuery(function ($) {
         });
 
         break;
+      }
 
-      case 'tags':
+      case 'tags': {
 
         // Determine values to be updated
         let source_typeahead_tags = window.Typeahead['.js-typeahead-' + field_id];
@@ -868,8 +877,9 @@ jQuery(function ($) {
         }
 
         break;
+      }
 
-      case 'communication_channel':
+      case 'communication_channel': {
 
         // Determine values to be updated
         let comm_values = [];
@@ -925,8 +935,9 @@ jQuery(function ($) {
         }
 
         break;
+      }
 
-      case 'location_meta':
+      case 'location_meta': {
 
         // Determine values to be updated
         let location_elements = $(selector.parent().parent()).find('input.input-group-field');
@@ -969,8 +980,9 @@ jQuery(function ($) {
         }
 
         break;
+      }
 
-      case 'location':
+      case 'location': {
 
         // Determine values to be updated
         let source_typeahead_location = window.Typeahead['.js-typeahead-' + field_id];
@@ -1013,8 +1025,9 @@ jQuery(function ($) {
         }
 
         break;
+      }
 
-      case 'user_select':
+      case 'user_select': {
 
         // Determine values to be updated
         let source_user_select_typeahead_field_input = '.js-typeahead-' + field_id;
@@ -1031,6 +1044,7 @@ jQuery(function ($) {
         }
 
         break;
+      }
     }
 
   }
@@ -1063,7 +1077,7 @@ jQuery(function ($) {
           values[post_field_id] = $(field_meta).val();
           break;
 
-        case 'multi_select':
+        case 'multi_select': {
           let options = [];
           $(td).find('button').each(function () {
             options.push({
@@ -1078,9 +1092,10 @@ jQuery(function ($) {
             };
           }
           break;
+        }
 
         case 'tags':
-        case 'location':
+        case 'location': {
           let typeahead = window.Typeahead['.js-typeahead-' + field_id];
           if (typeahead) {
 
@@ -1111,8 +1126,9 @@ jQuery(function ($) {
             }
           }
           break;
+        }
 
-        case 'location_meta':
+        case 'location_meta': {
 
           // Determine values to be processed
           let location_meta_entries = [];
@@ -1147,8 +1163,9 @@ jQuery(function ($) {
             };
           }
           break;
+        }
 
-        case 'communication_channel':
+        case 'communication_channel': {
 
           // Determine values to be processed
           let comm_entries = [];
@@ -1184,13 +1201,15 @@ jQuery(function ($) {
             values[post_field_id] = comm_entries;
           }
           break;
+        }
 
-        case 'user_select':
+        case 'user_select': {
           let user_select_typeahead = window.Typeahead['.js-typeahead-' + field_id];
           if (user_select_typeahead && user_select_typeahead.item) {
             values[post_field_id] = 'user-' + user_select_typeahead.item['ID'];
           }
           break;
+        }
       }
 
     });
