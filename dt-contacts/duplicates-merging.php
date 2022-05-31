@@ -504,11 +504,21 @@ class DT_Duplicate_Checker_And_Merging {
         $duplicate = DT_Posts::get_post( $post_type, $duplicate_id );
         $contact = DT_Posts::get_post( $post_type, $contact_id );
 
-        DT_Posts::update_post( $post_type, $duplicate_id, [
-            "overall_status" => "closed",
-            "reason_closed" => "duplicate",
-            "duplicate_of" => $contact_id
-        ] );
+        $updates       = [];
+        $post_settings = DT_Posts::get_post_settings( $post_type, false );
+        if ( isset( $post_settings['status_field'] ) ) {
+            $updates[ $post_settings['status_field']['status_key'] ] = $post_settings['status_field']['archived_key'];
+
+        } elseif ( $post_type === 'contacts' ) {
+            $updates['overall_status'] = 'closed';
+        }
+
+        if ( $post_type === 'contacts' ) {
+            $updates['reason_closed'] = 'duplicate';
+            $updates['duplicate_of']  = $contact_id;
+        }
+
+        DT_Posts::update_post( $post_type, $duplicate_id, $updates );
 
         $link = "[" . $contact['title'] .  "](" .  $contact_id . ")";
         $comment = sprintf( esc_html_x( 'This record is a duplicate and was merged into %2$s', 'This record duplicated and was merged into Contact2', 'disciple_tools' ), $duplicate['title'], $link );

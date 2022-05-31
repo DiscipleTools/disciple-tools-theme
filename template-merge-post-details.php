@@ -76,6 +76,7 @@ add_action( 'wp_enqueue_scripts', function () use ( $dt_current_post, $dt_duplic
         ],
         'post_settings'            => $post_settings,
         'post_fields_default_html' => render_post_fields_html( $dt_current_post, $fields_to_display, $post_settings['fields'], '', false ),
+        'site_url'                 => esc_url( site_url( '/' ) ),
         'url_root'                 => esc_url_raw( rest_url() ),
         'nonce'                    => wp_create_nonce( 'wp_rest' ),
         'mapbox'                   => [
@@ -128,8 +129,9 @@ get_header();
             <!-- Archiving Post Record -->
             <main id="main_archiving" class="large-4 medium-4 cell" role="main">
                 <div class="bordered-box">
-                    <h2 class="center"><?php esc_html_e( "Archiving", 'disciple_tools' ) ?> - #<span
-                            id="main_archiving_post_id_title"></span>
+                    <h2 class="center"><?php esc_html_e( "Archiving", 'disciple_tools' ) ?> - #<a
+                            id="main_archiving_post_id_title_link" target="_blank"><span
+                                id="main_archiving_post_id_title"></span></a>
                     </h2>
 
                     <div class="main-archiving-primary-switch-but-div">
@@ -148,8 +150,10 @@ get_header();
             <!-- Primary Post Record -->
             <main id="main_primary" class="large-4 medium-4 cell" role="main">
                 <div class="bordered-box">
-                    <h2 class="center"><?php esc_html_e( "Primary", 'disciple_tools' ) ?> - #<span
-                            id="main_primary_post_id_title"></span></h2>
+                    <h2 class="center"><?php esc_html_e( "Primary", 'disciple_tools' ) ?> - #<a
+                            id="main_primary_post_id_title_link" target="_blank"><span
+                                id="main_primary_post_id_title"></span></a>
+                    </h2>
 
                     <input type="hidden" id="main_primary_current_post_id"
                            value="<?php echo esc_html( $dt_duplicate_post['ID'] ) ?>"/>

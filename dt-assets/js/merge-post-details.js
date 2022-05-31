@@ -44,10 +44,15 @@ jQuery(function ($) {
     // Assuming valid posts have been located, proceed with refreshing layout view
     if (primary_post && archiving_post) {
 
-      // Update merge column titles
+      // Update merge column titles & post url links
       $('#main_archiving_post_id_title').text(archiving_post['record']['ID']);
       $('#main_primary_post_id_title').text(primary_post['record']['ID']);
       $('#main_updated_post_id_title').text(primary_post['record']['ID']);
+
+      let archiving_id_link = window.merge_post_details['site_url'] + window.merge_post_details['post_settings']['post_type'] + '/' + archiving_post['record']['ID'];
+      let primary_id_link = window.merge_post_details['site_url'] + window.merge_post_details['post_settings']['post_type'] + '/' + primary_post['record']['ID'];
+      $('#main_archiving_post_id_title_link').attr('href', archiving_id_link);
+      $('#main_primary_post_id_title_link').attr('href', primary_id_link);
 
       // Refresh post fields
       refresh_fields(primary_post, archiving_post);
@@ -126,9 +131,20 @@ jQuery(function ($) {
           });
 
           // Display refreshed post fields
-          main_archiving_fields_div.fadeIn('fast');
-          main_primary_fields_div.fadeIn('fast');
-          main_updated_fields_div.fadeIn('fast');
+          main_archiving_fields_div.fadeIn('fast', function () {
+            main_primary_fields_div.fadeIn('fast', function () {
+              main_updated_fields_div.fadeIn('fast', function () {
+
+                // Housekeeping - Ensure all typeahead input fields are displayed nicely ;-)
+                $.each(window.Typeahead, function (key, typeahead) {
+                  if ((typeof typeahead.adjustInputSize === 'function') && !$.isEmptyObject(typeahead.label)) {
+                    typeahead.adjustInputSize();
+                  }
+                });
+
+              });
+            });
+          });
 
         });
       });
@@ -966,7 +982,9 @@ jQuery(function ($) {
             if (is_selected && !has_value) {
 
               // Add, if not already present
-              td.append($(element).clone());
+              let clone = $(element).clone();
+              $(clone).css('margin-bottom', '10px');
+              td.append(clone);
 
             } else if (!is_selected && has_value && value_ele) {
 
