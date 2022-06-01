@@ -3,6 +3,27 @@
  * Name: User Management
 */
 
+// Ensure Add New Users' admin setting has been enabled
+if ( current_user_can( 'manage_dt' ) && ! current_user_can( 'create_users' ) && ! DT_User_Management::non_admins_can_make_users() ) {
+    get_header();
+    ?>
+    <div class="large-6 medium-6 small-6"
+         style="max-width: 50% !important; margin-left: auto !important; margin-right: auto !important; margin-top: 50px; margin-bottom: 50px;">
+
+        <div class="bordered-box">
+            <h3><?php esc_html_e( 'Adding New User Capability Required', 'disciple_tools' ); ?></h3>
+            <p>
+                <?php echo esc_html( 'Adding new users needs to be enabled in ' ); ?>
+                <a href="<?php echo esc_html( site_url( '/wp-admin/network/settings.php' ) ); ?>"
+                   target="_blank"><?php esc_html_e( 'Admin Settings', 'disciple_tools' ); ?></a>
+            </p>
+        </div>
+    </div>
+    <?php
+    get_footer();
+    exit();
+}
+
 $current_user_can_manage_users = current_user_can( 'create_users' ) || current_user_can( 'manage_dt' );
 if ( !$current_user_can_manage_users && !DT_User_Management::non_admins_can_make_users() ) {
     wp_safe_redirect( '/registered' );
