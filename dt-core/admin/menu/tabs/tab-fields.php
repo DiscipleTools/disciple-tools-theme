@@ -84,8 +84,8 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
         $this->box( 'bottom' );
     }
 
-    public function box_message( $type ) {
-        $post_settings = DT_Posts::get_post_settings( $type );
+    public function box_message( $post_type ) {
+        $post_settings = DT_Posts::get_post_settings( $post_type );
         $this->box( 'top', $post_settings['label_plural'] . ' Fields on this Instance' );
 
         ?>
@@ -102,9 +102,11 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
 
             <table class="widefat striped">
                 <tr>
-                    <th style="width:30%">Name</th>
+                    <th style="width:5%"></th>
+                    <th style="width:20%">Name</th>
                     <th style="width:20%">Key</th>
                     <th style="width:10%">Type</th>
+                    <th style="width:5%; text-align: center;">Icon</th>
                     <th style="width:40%">Details</th>
                 </tr>
             <?php
@@ -112,16 +114,40 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
                 if ( $type === $field_value["type"] ){
                     ?>
                     <tr>
+                        <td>
+                            <form method="get">
+                                <input type="hidden" name="field_select_nonce" id="field_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_select' ) ) ?>" />
+                                <input type="hidden" name="page" value="dt_options" />
+                                <input type="hidden" name="tab" value="custom-fields" />
+                                <input type="hidden" name="post_type" value="<?php echo esc_attr( $post_type ); ?>" />
+                                <input type="hidden" name="field-select" value="<?php echo esc_html( $post_type . '_' . $field_key ) ?>" />
+
+                                <button type="submit" class="button" name="field_selected"><?php esc_html_e( 'Edit', 'disciple-tools' ) ?></button>
+                            </form>
+                        </td>
                         <td><?php echo esc_html( $field_value["name"] ) ?></td>
                         <td><?php echo esc_html( $field_key ) ?></td>
                         <td><?php echo esc_html( $field_value["type"] ) ?></td>
+                        <td style="text-align: center;">
+                            <?php if ( isset( $field_value["icon"] ) ): ?>
+
+                                <img style="max-height: 15px; max-width: 15px;" src="<?php echo esc_html( $field_value["icon"] ) ?>" alt="">
+
+                            <?php endif; ?>
+                        </td>
                         <td>
                             <?php if ( ( $field_value['type'] === "key_select" || $field_value["type"] === "multi_select" ) && !empty( $field_value["default"] ) ) : ?>
                             Options:
                             <ul style="margin-top:0; list-style: circle; padding-inline-start: 40px;">
                                 <?php foreach ( $field_value["default"] as $option_key => $option_value ) :
                                     if ( isset( $option_value["label"] ) ) : ?>
-                                    <li><?php echo esc_html( $option_key ) ?> => <?php echo esc_html( $option_value["label"] ) ?></li>
+                                    <li>
+                                        <?php if ( isset( $option_value["icon"] ) ) : ?>
+
+                                            <img style="max-height: 15px; max-width: 15px;" src="<?php echo esc_html( $option_value["icon"] ) ?>" alt="">
+
+                                        <?php endif; ?>
+                                        <?php echo esc_html( $option_key ) ?> => <?php echo esc_html( $option_value["label"] ) ?></li>
                                     <?php endif;
                                 endforeach; ?>
                             </ul>

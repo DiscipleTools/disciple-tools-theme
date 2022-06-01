@@ -69,6 +69,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
             $this->template( 'begin' );
 
+            /* Translation Dialog */
+            echo '<dialog id="dt_translation_dialog"></dialog>';
+
             /* Worker Profile */
             $this->box( 'top', 'User (Worker) Contact Profile' );
             $this->process_user_profile_box();
@@ -238,8 +241,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
     public function channels_box(){
         $fields = DT_Posts::get_post_field_settings( "contacts", false );
+        $form_name = 'channels_box';
         ?>
-        <form method="post" name="channels_box">
+        <form method="post" name="<?php echo esc_html( $form_name ) ?>">
             <input type="hidden" name="channels_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'channels_box' ) ) ?>" />
             <table class="widefat">
                 <thead>
@@ -286,7 +290,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         </td>
                         <td>
                         <?php $langs = dt_get_available_languages(); ?>
-                        <button class="button small expand_translations">
+                        <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
                             <?php
                             $number_of_translations = 0;
                             foreach ( $langs as $lang => $val ){
@@ -425,8 +429,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         uasort($dt_global_languages_list, function( $a, $b ) {
             return strcmp( $a['label'], $b['label'] );
         });
+        $form_name = 'languages_box';
         ?>
-        <form method="post" name="languages_box" id="languages">
+        <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="languages">
             <input type="hidden" name="languages_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'languages_box' ) ) ?>" />
             <table class="widefat">
                 <thead>
@@ -456,7 +461,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
                         <td>
                             <?php $langs = dt_get_available_languages(); ?>
-                            <button class="button small expand_translations">
+                            <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
                                 <?php
                                 $number_of_translations = 0;
                                 foreach ( $langs as $lang => $val ){
@@ -586,8 +591,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     private function quick_actions_box(){
         $fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], "contacts" );
+        $form_name = 'quick_actions_box';
         ?>
-        <form method="post" name="quick_actions_box" id="quick-actions">
+        <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="quick-actions">
             <input type="hidden" name="quick_actions_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'quick_actions_box' ) ) ?>" />
             <table class="widefat">
                 <thead>
@@ -629,7 +635,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             </td>
                             <td>
                                 <?php $langs = dt_get_available_languages(); ?>
-                                <button class="button small expand_translations">
+                                <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
                                     <?php
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ) {

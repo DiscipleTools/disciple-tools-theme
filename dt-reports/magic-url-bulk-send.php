@@ -6,30 +6,37 @@
  */
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-if ( 'contacts' === dt_get_post_type() ) {
-
-    /**
-     * Adds link
-     */
-    add_action( 'dt_post_bulk_list_link', 'dt_post_bulk_list_link_apps', 20, 3 );
-    function dt_post_bulk_list_link_apps( $post_type, $post_settings, $dt_magic_apps ) {
-        if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) : ?>
-            <span style="display:inline-block">
-                <button class="button clear" id="bulk_send_app_controls" style="margin:0; padding:0">
-                    <?php esc_html_e( 'Bulk Send App', 'disciple_tools' ); ?>
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/connection.svg' ) ?>"/>
-                </button>
-            </span>
-        <?php endif;
+/**
+ * Adds submenu item to 'more' nav menu
+ */
+add_filter( 'dt_list_action_menu_items', 'dt_post_bulk_list_link_apps', 10, 2 );
+function dt_post_bulk_list_link_apps( $bulk_send_menu_items, $post_type ) {
+    if ( $post_type === "contacts" ){
+        $dt_magic_apps = DT_Magic_URL::list_bulk_send();
+        if ( ! empty( $dt_magic_apps ) ) {
+            $bulk_send_menu_items['bulk-send-app'] = [
+                'label' => __( 'Bulk Send App', 'disciple_tools' ),
+                'icon' => get_template_directory_uri() . '/dt-assets/images/connection.svg',
+                'section_id' => 'bulk_send_app_picker',
+                'show_list_checkboxes' => true,
+            ];
+        }
     }
+    return $bulk_send_menu_items;
+}
 
-    /**
-     * Adds hidden toggle body
-     */
-    add_action( 'dt_post_bulk_list_section', 'dt_post_bulk_list_section_apps', 20, 3 );
-    function dt_post_bulk_list_section_apps( $post_type, $post_settings, $dt_magic_apps ){
-        if ( ! empty( $dt_magic_apps ) && 'contacts' === $post_settings['post_type'] ) :  ?>
-            <div id="bulk_send_app_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+/**
+ * Adds hidden toggle body
+ */
+add_action( 'dt_list_action_section', 'dt_post_bulk_list_section_apps', 20, 3 );
+function dt_post_bulk_list_section_apps( $post_type ){
+    if ( $post_type === 'contacts' ){
+        $dt_magic_apps = DT_Magic_URL::list_bulk_send();
+        if ( ! empty( $dt_magic_apps ) ) : ?>
+            <div id="bulk_send_app_picker" class="list_action_section">
+                <button class="close-button list-action-close-button" data-close="bulk_send_app_picker" aria-label="Close modal" type="button">
+                    <span aria-hidden="true">×</span>
+                </button>
                 <p style="font-weight:bold"><?php
                     echo sprintf( esc_html__( 'Select all the %1$s to whom you want to send app links.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                 <div class="grid-x grid-margin-x">
@@ -72,7 +79,6 @@ if ( 'contacts' === dt_get_post_type() ) {
                 </div>
 
             </div>
-          <?php endif;
-    };
-}
-
+        <?php endif;
+    }
+};

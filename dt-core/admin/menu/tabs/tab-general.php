@@ -511,18 +511,34 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
              wp_verify_nonce( sanitize_key( wp_unslash( $_POST['group_preferences_nonce'] ) ), 'group_preferences' . get_current_user_id() ) ) {
 
             $site_options = dt_get_option( "dt_site_options" );
+            $tile_options = dt_get_option( "dt_custom_tiles" );
+            $four_fields_tile = $tile_options["groups"]["four-fields"] ?? [];
+            $church_metrics_tile = $tile_options["groups"]["health-metrics"] ?? [];
+
             if ( isset( $_POST['church_metrics'] ) && ! empty( $_POST['church_metrics'] ) ) {
                 $site_options["group_preferences"]["church_metrics"] = true;
+                $church_metrics_tile["hidden"] = false;
             } else {
                 $site_options["group_preferences"]["church_metrics"] = false;
+                $church_metrics_tile["hidden"] = true;
             }
             if ( isset( $_POST['four_fields'] ) && ! empty( $_POST['four_fields'] ) ) {
                 $site_options["group_preferences"]["four_fields"] = true;
+                $four_fields_tile["hidden"] = false;
             } else {
                 $site_options["group_preferences"]["four_fields"] = false;
+                $four_fields_tile["hidden"] = true;
+            }
+
+            if ( !empty( $four_fields_tile ) ){
+                $tile_options["groups"]["four-fields"] = $four_fields_tile;
+            }
+            if ( !empty( $church_metrics_tile ) ){
+                $tile_options["groups"]["health-metrics"] = $church_metrics_tile;
             }
 
             update_option( 'dt_site_options', $site_options, true );
+            update_option( 'dt_custom_tiles', $tile_options, true );
         }
 
     }
@@ -780,7 +796,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <td><input type="text" name="custom_logo_url" value="<?php echo esc_html( $logo_url ); ?>"></td>
                         <td><button class="button" name="default_logo_url">Default</button></td>
                         <td><button class="button file-upload-display-uploader" data-form="custom_logo_box" data-icon-input="custom_logo_url" style="margin-left:1%"><?php esc_html_e( 'Upload', 'disciple_tools' ); ?></button></td>
-                    </tr>    
+                    </tr>
                 </tbody>
             </table>
         </form>

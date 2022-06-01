@@ -148,9 +148,8 @@ class Disciple_Tools_Contacts_Transfer {
                                 <?php
                                 foreach ( $milestones_settings['default'] ?? [] as $key => $milestone ) {
                                     if ( in_array( $key, $milestones ) ) {
-                                        ?>
-                                        <img class="dt-icon" src="<?php echo esc_html( $milestone['icon'] ); ?>">
-                                        <?php echo esc_html( $milestone['label'] ); ?>
+                                        dt_render_field_icon( $milestone );
+                                        echo esc_html( $milestone['label'] ); ?>
                                         <?php
                                     }
                                 }

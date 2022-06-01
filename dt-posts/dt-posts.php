@@ -196,6 +196,15 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $post_user_meta[$field_key] = $field_value;
                 unset( $fields[ $field_key ] );
             }
+            if ( $field_type === 'number' && (
+                isset( $post_settings["fields"][$field_key]["min_option"] ) &&
+                $field_value < $post_settings["fields"][$field_key]["min_option"] ||
+                isset( $post_settings["fields"][$field_key]["max_option"] ) &&
+                $field_value > $post_settings["fields"][$field_key]["max_option"]
+                )
+            ) {
+                return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
+            }
             if ( $field_type === 'number' && $is_private ) {
                 $post_user_meta[$field_key] = $field_value;
                 unset( $fields[ $field_key ] );
@@ -412,6 +421,17 @@ class DT_Posts extends Disciple_Tools_Posts {
                     }
                     $field_value = strtotime( $field_value );
                 }
+
+                if ( $field_type === 'number' && (
+                    isset( $post_settings["fields"][$field_key]["min_option"] ) &&
+                    $field_value < $post_settings["fields"][$field_key]["min_option"] ||
+                    isset( $post_settings["fields"][$field_key]["max_option"] ) &&
+                    $field_value > $post_settings["fields"][$field_key]["max_option"]
+                    )
+                ) {
+                     return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
+                }
+
                 if ( $field_type === 'key_select' && !is_string( $field_value ) ){
                     return new WP_Error( __FUNCTION__, "key_select value must in string format: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
@@ -868,7 +888,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @param string $post_type
      * @param int $post_id
      * @param string $comment_html
-     * @param string $type      normally 'comment', different comment types can have their own section in the comments activity
+     * @param string $type      normally 'comment', different comment types can have their own section in the comments activity, use "dt_comments_additional_sections" to add custom comment types
      * @param array $args       [user_id, comment_date, comment_author etc]
      * @param bool $check_permissions
      * @param bool $silent
@@ -1609,6 +1629,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $tile_value["order"] = array_values( $tile_value["order"] );
             }
         }
+
+        $tile_options[$post_type] = apply_filters( 'dt_custom_tiles_after_combine', $tile_options[$post_type], $post_type );
 
         wp_cache_set( $post_type . "_tile_options", $tile_options[$post_type] );
         return $tile_options[$post_type];

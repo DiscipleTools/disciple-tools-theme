@@ -592,6 +592,7 @@ jQuery(function($) {
    *  - Bulk
    */
 
+  let bulk_record_id_counter = 1;
   let is_normal_new_record = (!$('#form_fields_records').length) ? true : false;
 
   $(document).ready(function () {
@@ -599,6 +600,10 @@ jQuery(function($) {
 
       // If enabled, alter mapbox search location input shape, within first record
       alter_mapbox_search_location_input_shape($('#form_fields_records').find('.form-fields-record').last());
+
+      // Default to currently selected contact type.
+      let selected_contact_type = $('.type-option.selected').attr('id');
+      $('#' + selected_contact_type + '.type-option').trigger('click');
 
       // Display initial bulk records to get started.
       for (let i = 0; i < 4; i++) {
@@ -617,7 +622,7 @@ jQuery(function($) {
 
   } else {
 
-    let bulk_record_id = 1;
+    let bulk_record_id = bulk_record_id_counter;
 
     adjust_new_button_multi_select_class_names(bulk_record_id);
     adjust_new_typeahead_general_element_class_names(bulk_record_id);
@@ -643,7 +648,7 @@ jQuery(function($) {
 
     if (fields_html) {
 
-      let new_records_count = $('#form_fields_records').find('.form-fields-record').length + 1;
+      let new_records_count = ++bulk_record_id_counter;
       let html = `<div class="form-fields-record form-fields-record-subsequent">
         <input type="hidden" id="bulk_record_id" value="${new_records_count}">
         <div class="record-divider"><span>${generate_record_removal_button_html(new_records_count)}</span></div>
@@ -674,9 +679,8 @@ jQuery(function($) {
       // If enabled, alter mapbox search location input shape
       alter_mapbox_search_location_input_shape(new_record);
 
-      // Default to currently selected contact type.
-      let selected_contact_type = $('.type-option.selected').attr('id');
-      $('#'+ selected_contact_type +'.type-option').trigger('click');
+      // Ensure new record fields adhere to existing displayed fields shape
+      refresh_displayed_fields_by_record(list_currently_displayed_fields(), new_record);
     }
   });
 
@@ -1078,74 +1082,77 @@ jQuery(function($) {
 
   function refresh_displayed_fields(filter_fields) {
     $('#form_fields_records').find('.form-fields-record').each((key, record) => {
+      refresh_displayed_fields_by_record(filter_fields, record);
+    });
+  }
 
-      let bulk_record_id = $(record).find('#bulk_record_id').val();
+  function refresh_displayed_fields_by_record(filter_fields, record) {
+    let bulk_record_id = $(record).find('#bulk_record_id').val();
 
-      $(record).find('.select-field').each((index, entry) => {
-        let target_parent = $(entry).parent();
-        let is_displayed = window.lodash.includes(filter_fields, $(entry).attr('id'));
-        $(target_parent).toggle(is_displayed);
-      });
+    $(record).find('.select-field').each((index, entry) => {
+      let target_parent = $(entry).parent();
+      let is_displayed = window.lodash.includes(filter_fields, $(entry).attr('id'));
+      $(target_parent).toggle(is_displayed);
+    });
 
-      $(record).find('.text-input').each((index, entry) => {
-        let target_parent = $(entry).parent();
-        let is_displayed = window.lodash.includes(filter_fields, $(entry).attr('id'));
-        $(target_parent).toggle(is_displayed);
-      });
+    $(record).find('.text-input').each((index, entry) => {
+      let target_parent = $(entry).parent();
+      let is_displayed = window.lodash.includes(filter_fields, $(entry).attr('id'));
+      $(target_parent).toggle(is_displayed);
+    });
 
-      $(record).find('.dt_textarea').each((index, entry) => {
-        let target_parent = $(entry).parent();
-        let is_displayed = window.lodash.includes(filter_fields, $(entry).attr('id'));
-        $(target_parent).toggle(is_displayed);
-      });
+    $(record).find('.dt_textarea').each((index, entry) => {
+      let target_parent = $(entry).parent();
+      let is_displayed = window.lodash.includes(filter_fields, $(entry).attr('id'));
+      $(target_parent).toggle(is_displayed);
+    });
 
-      $(record).find('.dt-communication-channel').each((index, entry) => {
-        let target_parent = $(entry).parent().parent().parent();
-        let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
-        $(target_parent).toggle(is_displayed);
-      });
+    $(record).find('.dt-communication-channel').each((index, entry) => {
+      let target_parent = $(entry).parent().parent().parent();
+      let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
+      $(target_parent).toggle(is_displayed);
+    });
 
-      $(record).find('.selected-select-button').each((index, entry) => {
-        let target_parent = $(entry).parent();
-        let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field-key'));
-        $(target_parent).toggle(is_displayed);
-      });
+    $(record).find('.selected-select-button').each((index, entry) => {
+      let target_parent = $(entry).parent();
+      let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field-key'));
+      $(target_parent).toggle(is_displayed);
+    });
 
-      $(record).find(`.dt_multi_select-${bulk_record_id}`).each((index, entry) => {
-        let target_parent = $(entry).parent().parent();
-        let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field-key'));
-        $(target_parent).toggle(is_displayed);
-      });
+    $(record).find(`.dt_multi_select-${bulk_record_id}`).each((index, entry) => {
+      let target_parent = $(entry).parent().parent();
+      let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field-key'));
+      $(target_parent).toggle(is_displayed);
+    });
 
-      $(record).find('.typeahead__query input').each((index, entry) => {
-        let target_parent = $(entry).parent().parent().parent().parent().parent().parent();
-        let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
-        $(target_parent).toggle(is_displayed);
-      });
+    $(record).find('.typeahead__query input').each((index, entry) => {
+      let target_parent = $(entry).parent().parent().parent().parent().parent().parent();
+      let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
+      $(target_parent).toggle(is_displayed);
+    });
 
-      $(record).find('.multi_select .typeahead__query input').each((index, entry) => {
-        let target_parent = $(entry).parent().parent().parent().parent().parent().parent();
-        let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
-        $(target_parent).toggle(is_displayed);
-      });
+    $(record).find('.multi_select .typeahead__query input').each((index, entry) => {
+      let target_parent = $(entry).parent().parent().parent().parent().parent().parent();
+      let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
+      $(target_parent).toggle(is_displayed);
+    });
 
-      $(record).find('.tags .typeahead__query input').each((index, entry) => {
-        let target_parent = $(entry).parent().parent().parent().parent().parent().parent();
-        let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
-        $(target_parent).toggle(is_displayed);
-      });
+    $(record).find('.tags .typeahead__query input').each((index, entry) => {
+      let target_parent = $(entry).parent().parent().parent().parent().parent().parent();
+      let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
+      $(target_parent).toggle(is_displayed);
+    });
 
-      $(record).find('#mapbox-search-altered').each((index, entry) => {
-        let target_parent = $(entry).parent().parent();
-        let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
-        $(target_parent).toggle(is_displayed);
-      });
+    $(record).find('#mapbox-search-altered').each((index, entry) => {
+      let target_parent = $(entry).parent().parent();
+      let is_displayed = window.lodash.includes(filter_fields, $(entry).data('field'));
+      $(target_parent).toggle(is_displayed);
+    });
 
-      $(record).find(`.dt_date_picker-${bulk_record_id}`).each((index, entry) => {
-        let target_parent = $(entry).parent().parent();
-        let is_displayed = window.lodash.includes(filter_fields, $(entry).data('orig-field-id'));
-        $(target_parent).toggle(is_displayed);
-      });
+    $(record).find(`.dt_date_picker-${bulk_record_id}`).each((index, entry) => {
+      let target_parent = $(entry).parent().parent();
+      let is_displayed = window.lodash.includes(filter_fields, $(entry).data('orig-field-id'));
+      $(target_parent).toggle(is_displayed);
     });
   }
 

@@ -13,8 +13,6 @@ dt_please_log_in();
 
     $field_options = $post_settings["fields"];
 
-    $dt_magic_apps = DT_Magic_URL::list_bulk_send();
-
     get_header();
     ?>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
@@ -253,26 +251,47 @@ dt_please_log_in();
                                 </li>
                             </ul>
                         </div>
-                        <span style="display:inline-block">
-                            <button class="button clear" id="choose_fields_to_show_in_table" style="margin:0; padding:0">
-                                <?php esc_html_e( 'Fields', 'disciple_tools' ); ?>
-                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>"/>
-                            </button>
-                        </span>
-                        <span style="display:inline-block">
-                            <button class="button clear" id="bulk_edit_controls" style="margin:0; padding:0">
-                                <?php esc_html_e( 'Bulk Edit', 'disciple_tools' ); ?>
-                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ) ?>"/>
-                            </button>
-                        </span>
-
                         <?php
-                        /**
-                         * Adds link to the end top list
-                         * @see /dt-reports/bulk-extension for example of using this action
-                         */
-                        do_action( 'dt_post_bulk_list_link', $post_type, $post_settings, $dt_magic_apps );
+                        $dropdown_items = [
+                            'options' =>
+                                [
+                                    'label' => __( 'Fields', 'disciple_tools' ),
+                                    'icon' => get_template_directory_uri() . '/dt-assets/images/options.svg',
+                                    'section_id' => 'list_column_picker',
+                                    'show_list_checkboxes' => false,
+                                ],
+                            'bulk-edit' =>
+                                [
+                                    'label' => __( 'Bulk Edit', 'disciple_tools' ),
+                                    'icon' => get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg',
+                                    'section_id' => 'bulk_edit_picker',
+                                    'show_list_checkboxes' => true,
+                                ],
+                        ];
+
+                        // Add custom menu items
+                        $dropdown_items = apply_filters( 'dt_list_action_menu_items', $dropdown_items, $post_type );
                         ?>
+                        <div class="js-sort-dropdown" style="display: inline-block">
+                            <ul class="dropdown menu" data-dropdown-menu>
+                                <li>
+                                    <a href="#"><?php esc_html_e( "More", 'disciple_tools' ) ?></a>
+                                    <ul class="menu is-dropdown-submenu" id="dropdown-submenu-items-more">
+                                    <?php foreach ( $dropdown_items as $key => $value ) : ?>
+                                        <?php if ( isset( $key ) ) : ?>
+                                            <?php $show_list_checkboxes = !empty( $value['show_list_checkboxes'] ) ? 'true' : 'false'; ?>
+                                            <li>
+                                                <a href="javascript:void(0);" data-modal="<?php echo esc_html( $value['section_id'] ); ?>" data-checkboxes="<?php echo esc_html( $show_list_checkboxes ); ?>" class="list-dropdown-submenu-item-link" id="submenu-more-<?php echo esc_html( $key ); ?>">
+                                                    <img src="<?php echo esc_html( $value['icon'] ); ?>" class="list-dropdown-submenu-icon">
+                                                    <?php echo esc_html( $value['label'] ); ?>
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
 
                         <?php
                             $status_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['status_key'] : null;
@@ -282,7 +301,7 @@ dt_please_log_in();
                             $archived_label = sprintf( _x( "Show %s", "disciple_tools" ), $archived_text );
                         ?>
 
-                        <span style="display:inline-block" class="show-closed-switch">
+                        <span style="display:<?php echo esc_html( !$status_key || !$archived_key ? 'none' : 'inline-block' ) ?>" class="show-closed-switch">
                             <?php echo esc_html( $archived_label ) ?>
                             <div class="switch tiny">
                                 <input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
@@ -294,14 +313,14 @@ dt_please_log_in();
 
                     </div>
                     <?php
-                    /**
-                     * Adds link to the end top list
-                     * @see /dt-reports/bulk-extension for example of using this action
-                     */
-                    do_action( 'dt_post_bulk_list_section', $post_type, $post_settings, $dt_magic_apps );
+                    // Add section UI for custom menus
+                    do_action( 'dt_list_action_section', $post_type, $post_settings );
                     ?>
 
-                    <div id="list_column_picker" class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+                    <div id="list_column_picker" class="list_field_picker list_action_section">
+                        <button class="close-button list-action-close-button" data-close="list_column_picker" aria-label="Close modal" type="button">
+                            <span aria-hidden="true">×</span>
+                        </button>
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
                         <?php
                         $fields_to_show_in_table = [];
@@ -330,7 +349,8 @@ dt_please_log_in();
                                            <?php echo esc_html( in_array( $field_key, $fields_to_show_in_table ) ? "checked" : '' ); ?>
                                            <?php echo esc_html( ( empty( $fields_to_show_in_table ) && !empty( $field_values["show_in_table"] ) ) ? "checked" : '' ); ?>
                                            style="margin:0">
-                                    <?php echo esc_html( $field_values["name"] ); ?>
+                                    <?php dt_render_field_icon( $field_values );
+                                    echo esc_html( $field_values["name"] ); ?>
                                 </label>
                             </li>
                         <?php endforeach; ?>
@@ -339,7 +359,10 @@ dt_please_log_in();
                         <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
                     </div>
 
-                    <div id="bulk_edit_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+                    <div id="bulk_edit_picker" class="list_action_section">
+                        <button class="close-button list-action-close-button" data-close="bulk_edit_picker" aria-label="Close modal" type="button">
+                            <span aria-hidden="true">×</span>
+                        </button>
                         <p style="font-weight:bold"><?php
                         echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                         <div class="grid-x grid-margin-x">
@@ -620,18 +643,12 @@ dt_please_log_in();
                             if ( isset( $field_options[$field]["name"] ) ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
-
-                                        <?php if ( isset( $field_options[$field]["icon"] ) && ! empty( $field_options[$field]["icon"] ) ): ?>
-
-                                            <img class="tabs-title__icon" src="<?php echo esc_html( $field_options[$field]["icon"] ) ?>" alt="<?php echo esc_html( $field_options[$field]["name"] ) ?>">
-
-                                        <?php else : ?>
-
-                                            <div class="tabs-title__icon"></div>
-
-                                        <?php endif; ?>
-
-                                        <?php echo esc_html( $field_options[$field]["name"] ) ?>
+                                        <?php
+                                        $rendered = dt_render_field_icon( $field_options[$field], 'tabs-title__icon' );
+                                        if ( !$rendered ){
+                                            ?><div class="tabs-title__icon"></div><?php
+                                        }
+                                        echo esc_html( $field_options[$field]["name"] ) ?>
                                     </a>
                                 </li>
                             <?php endif; ?>

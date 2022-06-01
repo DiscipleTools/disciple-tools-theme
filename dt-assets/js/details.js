@@ -27,12 +27,30 @@ jQuery(document).ready(function($) {
     if ( $(this).prop('required') && val === ''){
       return;
     }
+    if (this.min && val < this.min) {
+      return
+    }
+    if (this.max && val > this.max) {
+      return
+    }
     $(`#${id}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
       $(`#${id}-spinner`).removeClass('active')
       $( document ).trigger( "text-input-updated", [ newPost, id, val ] );
     }).catch(handleAjaxError)
   })
+  $('input.text-input').blur(function(){
+    const val = $(this).val()
+    if (this.min && val < this.min) {
+      $(this).val(this.min)
+      return
+    }
+    if (this.max && val > this.max) {
+      $(this).val(this.max)
+      return
+    }
+  })
+
   $('.dt_textarea').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()

@@ -1,18 +1,53 @@
 jQuery(document).ready(function ($) {
-  $('.expand_translations').click(function() {
-    event.preventDefault()
-    $(this).siblings().toggleClass("hide");
+  $('.expand_translations').click(function () {
+    event.preventDefault();
+    display_translation_dialog($(this).siblings(), $(this).data('form_name'));
+  });
 
-    var buttonText = $(this).text();
+  /**
+   * Translation modal dialog
+   */
 
-    if (buttonText === '+') {
-      $(this).text('-')
+  function display_translation_dialog(container, form_name) {
+    let dialog = $('#dt_translation_dialog');
+    if (container && form_name && dialog) {
+
+      // Update dialog div
+      $(dialog).empty().append($(container).find('table').clone());
+
+      // Refresh dialog config
+      dialog.dialog({
+        modal: true,
+        autoOpen: false,
+        hide: 'fade',
+        show: 'fade',
+        height: 600,
+        width: 350,
+        resizable: false,
+        title: 'Translation Dialog',
+        buttons: {
+          Update: function () {
+
+            // Update source translation container
+            $(container).empty().append($(this).children());
+
+            // Close dialog
+            $(this).dialog('close');
+
+            // Finally, auto save changes
+            $('form[name="' + form_name + '"]').submit();
+
+          }
+        }
+      });
+
+      // Display updated dialog
+      dialog.dialog('open');
+
+    } else {
+      console.log('Unable to reference a valid: [container, form-name, dialog]');
     }
-    if (buttonText === '-') {
-      $(this).text('+')
-    }
-
-  })
+  }
 
   /**
    * Sorting code for tiles
@@ -86,5 +121,37 @@ jQuery(document).ready(function ($) {
   $('#multidirectional_checkbox').on("change", function (){
     $('.same_post_type_other_field_name').toggle(!this.checked)
   })
+
+  /**
+   * Sorting code for field options
+   */
+
+  $('.sortable-field-options').sortable({
+    connectWith: '.sortable-field-options',
+    placeholder: 'ui-state-highlight',
+    update: function (evt, ui) {
+
+      let updated_field_options_ordering = [];
+
+      // Snapshot updated field options ordering by key.
+      $('.sortable-field-options').find('.sortable-field-options-key').each(function (idx, key_div) {
+        let key = $(key_div).text().trim();
+        if (key) {
+          updated_field_options_ordering.push(encode_field_key_special_characters(key));
+        }
+      });
+
+      // Persist updated field options ordering.
+      $('#sortable_field_options_ordering').val(JSON.stringify(updated_field_options_ordering));
+
+    }
+  }).disableSelection();
+
+  function encode_field_key_special_characters(key) {
+    key = window.lodash.replace(key, '<', '_less_than_');
+    key = window.lodash.replace(key, '>', '_more_than_');
+
+    return key;
+  }
 
 })

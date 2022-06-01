@@ -91,12 +91,14 @@
                         [
                             "key" => "comment",
                             "label" => __( "Comments", 'disciple_tools' ),
-                            "selected_by_default" => true
+                            "selected_by_default" => true,
+                            "always_show" => true,
                         ],
                         [
                             "key" => "activity",
                             "label" => __( "Activity", 'disciple_tools' ),
-                            "selected_by_default" => true
+                            "selected_by_default" => true,
+                            "always_show" => true,
                         ]
                     ];
                     $post_type = get_post_type();
@@ -105,8 +107,12 @@
                     foreach ( $sections as $section ) :
                         if ( isset( $section["key"] ) && isset( $section["label"] ) && !in_array( $section["key"], $section_keys ) ) :
                             $section_keys[] = $section["key"];
+                            $always_show = isset( $section["always_show"] ) && $section["always_show"] === true;
                             ?>
-                            <li class="tabs-title hide">
+                            <li
+                                class="tabs-title <?php echo esc_html( $always_show ? '' : 'hide' ) ?>"
+                                data-always-show="<?php echo esc_html( $always_show ? 'true' : 'false' ) ?>"
+                            >
                                 <label for="tab-button-<?php echo esc_html( $section["key"] ) ?>">
                                     <input type="checkbox"
                                            name="<?php echo esc_html( $section["key"] ) ?>"

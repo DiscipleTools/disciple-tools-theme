@@ -155,6 +155,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $this->field_select( $post_type );
             $this->box( 'bottom' );
 
+            /* Translation Dialog */
+            echo '<dialog id="dt_translation_dialog"></dialog>';
+
             if ( empty( $field_key ) && $show_add_field ){
                 $this->box( 'top', __( "Create new field", 'disciple_tools' ) );
                 $this->add_field( $post_type );
@@ -282,8 +285,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $tile_options = DT_Posts::get_post_tiles( $post_type );
 
         $langs = dt_get_available_languages();
+        $form_name = 'field_edit_form';
         ?>
-        <form method="post" name="field_edit_form">
+        <form method="post" name="<?php echo esc_html( $form_name ) ?>">
         <input type="hidden" name="field_key" value="<?php echo esc_html( $field_key )?>">
         <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
         <input type="hidden" name="field-select" value="<?php echo esc_html( $post_type . "_" . $field_key )?>">
@@ -328,7 +332,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <th><?php esc_html_e( "Translation", 'disciple_tools' ) ?></th>
                     <td>
-                        <button class="button small expand_translations">
+                        <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
                             <?php
                             $number_of_translations = 0;
                             foreach ( $langs as $lang => $val ){
@@ -357,7 +361,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <th><?php esc_html_e( "Tile", 'disciple_tools' ) ?></th>
                     <td>
                         <select name="tile_select">
-                            <option><?php esc_html_e( "No tile / hidden", 'disciple_tools' ) ?></option>
+                            <option value="no_tile"><?php esc_html_e( "No tile / hidden", 'disciple_tools' ) ?></option>
                             <?php foreach ( $tile_options as $tile_key => $tile_option ) :
                                 $select = isset( $field["tile"] ) && $field["tile"] === $tile_key;
                                 ?>
@@ -377,7 +381,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <th><?php esc_html_e( "Description Translation", 'disciple_tools' ) ?></th>
                     <td>
-                        <button class="button small expand_translations">
+                        <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
                             <?php
                             $number_of_translations = 0;
                             foreach ( $langs as $lang => $val ){
@@ -419,7 +423,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                            value="<?php echo esc_attr( $field["icon"] ?? '' ); ?>">
                                 </td>
                                 <td>
-                                    <button class="button file-upload-display-uploader" data-form="field_edit_form"
+                                    <button class="button file-upload-display-uploader" data-form="<?php echo esc_html( $form_name ) ?>"
                                             data-icon-input="field_icon"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
                                 </td>
                                 <td>
@@ -451,6 +455,38 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         <br>
 
+        <?php if ( $field["type"] === "number" ) : ?>
+
+            <?php
+                $custom_fields = dt_get_option( "dt_field_customizations" );
+                $custom_field = $custom_fields[$post_type][$field_key] ?? [];
+            ?>
+
+            <h3><?php esc_html_e( "Field Options", 'disciple_tools' ) ?></h3>
+            <table id="number_options">
+                <tr>
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Min", 'disciple_tools' ) ?>
+                    </td>
+                    <td>
+                        <input type="number" name="min_option" value="<?php echo isset( $custom_field["min_option"] ) ? esc_html( $custom_field["min_option"] ) : "" ?>" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Max", 'disciple_tools' ) ?>
+                    </td>
+                    <td>
+                        <input type="number" name="max_option" value="<?php echo isset( $custom_field["max_option"] ) ? esc_html( $custom_field["max_option"] ) : "" ?>" />
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+            <button type="submit" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
+
+        <?php endif; ?>
+
         <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
             if ( in_array( $field_key, $core_fields ) ){
                 ?>
@@ -477,6 +513,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <table class="widefat">
                 <thead>
                 <tr>
+                    <td></td>
                     <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Default Label", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Custom Label", 'disciple_tools' ) ?></td>
@@ -494,21 +531,23 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <td><?php esc_html_e( "Color", 'disciple_tools' ) ?></td>
                     <?php endif; ?>
                     <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
-                    <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Description", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Description Translation", 'disciple_tools' ) ?></td>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="sortable-field-options">
                 <?php foreach ( $field_options as $key => $option ) :
 
                     if ( !( isset( $option["deleted"] ) && $option["deleted"] == true ) ):
                         $label = $option["label"] ?? "";
                         $in_defaults = isset( $defaults[$field_key]["default"][$key] );
                         ?>
-                        <tr>
+                        <tr class="ui-state-default">
                             <td>
+                                <span class="ui-icon ui-icon-arrow-4"></span>
+                            </td>
+                            <td class="sortable-field-options-key">
                                 <?php echo esc_html( $key ) ?>
                             </td>
                             <td>
@@ -537,7 +576,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                            value="<?php echo esc_attr( isset( $option["icon"] ) ? $option["icon"] : '' ); ?>">
                                 </td>
                                 <td>
-                                    <button class="button file-upload-display-uploader" data-form="field_edit_form"
+                                    <button class="button file-upload-display-uploader" data-form="<?php echo esc_html( $form_name ) ?>"
                                             data-icon-input="field_option_icon_<?php echo esc_html( $key ) ?>"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
                                 </td>
                                 <td>
@@ -562,7 +601,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 </td>
                             <?php endif; ?>
                             <td>
-                                <button class="button small expand_translations">
+                                <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
                                     <?php
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ){
@@ -585,13 +624,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     </table>
                                 </div>
                             </td>
-
-                            <td>
-                                <?php if ( !$first ) : ?>
-                                    <button type="submit" name="move_up" value="<?php echo esc_html( $key ) ?>" class="button small" >↑</button>
-                                    <button type="submit" name="move_down" value="<?php echo esc_html( $key ) ?>" class="button small" >↓</button>
-                                <?php endif; ?>
-                            </td>
                             <td>
                                 <?php if ( !isset( $field["customizable"] ) || ( isset( $field["customizable"] ) && ( $field["customizable"] === "all" || ( $field["customizable"] === 'add_only' && !$in_defaults ) ) )
                                     || !isset( $field["default"][$key] ) ) : ?>
@@ -603,7 +635,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <input name="option_description_<?php echo esc_html( $key )?>" type="text" value="<?php echo esc_html( $description ) ?>">
                             </td>
                             <td>
-                                <button class="button small expand_translations">
+                                <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
                                     <?php
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ){
@@ -633,8 +665,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <?php foreach ( $field_options as $key => $option ) :
                     $label = $option["label"] ?? "";
                     if ( isset( $option["deleted"] ) && $option["deleted"] == true ): ?>
-                        <tr style="background-color: #eee">
-                            <td><?php echo esc_html( $key ) ?></td>
+                        <tr class="ui-state-default" style="background-color: #eee">
+                            <td></td>
+                            <td class="sortable-field-options-key"><?php echo esc_html( $key ) ?></td>
                             <td><?php echo esc_html( $label ) ?></td>
                             <td colspan="8"></td>
                             <td>
@@ -646,9 +679,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 </tbody>
             </table>
 
+            <input type="hidden" id="sortable_field_options_ordering" name="sortable_field_options_ordering"
+                   value="[]"/>
+
             <br>
             <button type="submit" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
-
 
         <?php } ?>
         </form>
@@ -703,12 +738,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         <?php endif; ?>
     <?php }
 
-    private static function moveElement( &$array, $a, $b ) {
-        $out = array_splice( $array, $a, 1 );
-        array_splice( $array, $b, 0, $out );
-    }
-
-
     private function process_extra_field( $post_submission ){
         $post_type = $post_submission["post_type"];
         $post_fields = $this->get_post_fields( $post_type );
@@ -746,6 +775,20 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             update_option( "dt_field_customizations", $field_customizations );
             wp_cache_delete( $post_type . "_field_settings" );
         }
+    }
+
+    public static function dt_encode_field_key_special_characters( string $key ): string {
+        $key = str_replace( '<', '_less_than_', $key );
+        $key = str_replace( '>', '_more_than_', $key );
+
+        return $key;
+    }
+
+    public static function dt_decode_field_key_special_characters( string $key ): string {
+        $key = str_replace( '_less_than_', '<', $key );
+        $key = str_replace( '_more_than_', '>', $key );
+
+        return $key;
     }
 
     private function process_edit_field( $post_submission ){
@@ -824,6 +867,16 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             if ( isset( $post_submission["restore_field_icon"] ) ) {
                 $restore_icon_defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
                 $custom_field["icon"]  = $restore_icon_defaults[ $field_key ]["icon"];
+            }
+
+            // number field options
+            if ( $field["type"] === "number" ) {
+                if ( isset( $post_submission["min_option"] ) ) {
+                    $custom_field["min_option"] = $post_submission["min_option"];
+                }
+                if ( isset( $post_submission["max_option"] ) ) {
+                    $custom_field["max_option"] = $post_submission["max_option"];
+                }
             }
 
             // key_select and multi_options
@@ -919,21 +972,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $custom_field["default"][$post_submission["restore_option"]]["deleted"] = false;
                     $field_options[ $post_submission["restore_option"] ]["deleted"] = false;
                 }
-                //move option  up or down
-                if ( isset( $post_submission["move_up"] ) || isset( $post_submission["move_down"] ) ){
-                    $option_key = $post_submission["move_up"] ?? $post_submission["move_down"];
-                    $direction = isset( $post_submission["move_up"] ) ? -1 : 1;
-                    $active_field_options = [];
-                    foreach ( $field_options as $field_option_key => $field_option_val ){
-                        if ( !( isset( $field_option_val["deleted"] ) && $field_option_val["deleted"] == true ) ){
-                            $active_field_options[strval( $field_option_key )] = $field_option_val;
-                        }
+                // Capture field option updated ordering
+                if ( isset( $post_submission['sortable_field_options_ordering'] ) ) {
+                    $ordering = json_decode( self::dt_decode_field_key_special_characters( $post_submission['sortable_field_options_ordering'] ), true );
+                    if ( ! empty( $ordering ) ) {
+                        $custom_field["order"] = $ordering;
                     }
-                    $pos = (int) array_search( $option_key, array_keys( $active_field_options ) );
-                    $option_keys = array_keys( $active_field_options );
-                    self::moveElement( $option_keys, $pos, $pos + $direction );
-                    $custom_field["order"] = $option_keys;
                 }
+
                 /*
                  * add option
                  */
@@ -997,6 +1043,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="tags"><?php esc_html_e( "Tags", 'disciple_tools' ) ?></option>
                             <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
                             <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
+                            <option value="number"><?php esc_html_e( "Number", 'disciple_tools' ) ?></option>
                             <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
                             <option value="connection"><?php esc_html_e( "Connection", 'disciple_tools' ) ?></option>
                         </select>
@@ -1107,6 +1154,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( "Tags: A field allowing entry of any custom tags or values", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Text: This is just a normal text field", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Text Area: This is just a multi-line text area", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Number: This is a number text field", 'disciple-tools' ) ?></li>
             <li><?php esc_html_e( "Date: A field that uses a date picker to choose dates (like baptism date)", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Connection: An autocomplete picker to connect to another record.", 'disciple_tools' ) ?></li>
         </ul>
@@ -1209,6 +1257,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $new_field = [
                     'name'        => $post_submission["new_field_name"],
                     'type'        => 'textarea',
+                    'default'     => '',
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
+                    'private' => $field_private
+                ];
+            } elseif ( $field_type === "number" ){
+                $new_field = [
+                    'name'        => $post_submission["new_field_name"],
+                    'type'        => 'number',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',

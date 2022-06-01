@@ -233,207 +233,230 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 'en_US' => [
                     'language' => 'en_US',
                     'english_name' => 'English (United States)',
-                    'native_name' => 'English (United States)'
+                    'native_name' => 'English (United States)',
+                    'flag' => '🇺🇸'
                 ],
                 'am_ET' => [
                     'language' => 'am_ET',
                     'native_name' => 'Amharic (Ethiopia)',
-                    'english_name' => 'Amharic (Ethiopia)'
+                    'english_name' => 'Amharic (Ethiopia)',
+                    'flag' => '🇪🇹'
                 ],
                 'ar' => [
                     'language' => 'ar',
                     'english_name' => 'Arabic',
-                    'native_name' => 'العربية'
+                    'native_name' => 'العربية',
+                    'flag' => '🇹🇳'
                 ],
                 'ar_MA' => [
                     'language' => 'ar_MA',
                     'native_name' => 'العربية (المغرب)',
-                    'english_name' => 'Arabic (Morocco)'
+                    'english_name' => 'Arabic (Morocco)',
+                    'flag' => '🇲🇦'
                 ],
                 'bg_BG' => [
                     'language' => 'bg_BG',
                     'english_name' => 'Bulgarian',
-                    'native_name' => 'Български'
+                    'native_name' => 'Български',
+                    'flag' => '🇧🇬'
                 ],
                 'bn_BD' => [
                     'language' => 'bn_BD',
                     'english_name' => 'Bengali (Bangladesh)',
-                    'native_name' => 'বাংলা'
+                    'native_name' => 'বাংলা',
+                    'flag' => '🇧🇩'
                 ],
                 'bs_BA' => [
                     'language' => 'bs_BA',
                     'english_name' => 'Bosnian',
-                    'native_name' => 'Bosanski'
+                    'native_name' => 'Bosanski',
+                    'flag' => '🇧🇦'
                 ],
                 'de_DE' => [
                     'language' => 'de_DE',
                     'english_name' => 'German',
-                    'native_name' => 'Deutsch'
+                    'native_name' => 'Deutsch',
+                    'flag' => '🇩🇪'
                 ],
                 'es_419' => [
                     'language' => 'es_419',
                     'native_name' => 'Español (Latinoamérica) ',
-                    'english_name' => 'Spanish (Latin America)'
-                ],
-                'es_AR' => [
-                    'language' => 'es_AR',
-                    'english_name' => 'Spanish (Argentina)',
-                    'native_name' => 'Español de Argentina'
-                ],
-                'es_CO' => [
-                    'language' => 'es_CO',
-                    'english_name' => 'Spanish (Colombia)',
-                    'native_name' => 'Español de Colombia'
+                    'english_name' => 'Spanish (Latin America)',
+                    'flag' => '🇦🇷'
                 ],
                 'es_ES' => [
                     'language' => 'es_ES',
                     'english_name' => 'Spanish (Spain)',
-                    'native_name' => 'Español'
-                ],
-                'es_MX' => [
-                    'language' => 'es_MX',
-                    'english_name' => 'Spanish (Mexico)',
-                    'native_name' => 'Español de México'
+                    'native_name' => 'Español',
+                    'flag' => '🇪🇸'
                 ],
                 'fa_IR' => [
                     'language' => 'fa_IR',
                     'english_name' => 'Persian',
-                    'native_name' => 'فارسی'
+                    'native_name' => 'فارسی',
+                    'flag' => '🇮🇷'
                 ],
                 'fr_FR' => [
                     'language' => 'fr_FR',
                     'english_name' => 'French (France)',
-                    'native_name' => 'Français'
+                    'native_name' => 'Français',
+                    'flag' => '🇫🇷'
                 ],
                 'hi_IN' => [
                     'language' => 'hi_IN',
                     'english_name' => 'Hindi',
-                    'native_name' => 'हिन्दी'
+                    'native_name' => 'हिन्दी',
+                    'flag' => '🇮🇳'
                 ],
                 'hr' => [
                     'language' => 'hr',
                     'english_name' => 'Croatian',
-                    'native_name' => 'Hrvatski'
+                    'native_name' => 'Hrvatski',
+                    'flag' => '🇭🇷'
                 ],
                 'hu_HU' => [
                     'language' => 'hu_HU',
                     'english_name' => 'Hungarian',
-                    'native_name' => 'Magyar'
+                    'native_name' => 'Magyar',
+                    'flag' => '🇭🇺'
                 ],
                 'id_ID' => [
                     'language' => 'id_ID',
                     'english_name' => 'Indonesian',
-                    'native_name' => 'Bahasa Indonesia'
+                    'native_name' => 'Bahasa Indonesia',
+                    'flag' => '🇮🇩'
                 ],
                 'it_IT' => [
                     'language' => 'it_IT',
                     'english_name' => 'Italian',
-                    'native_name' => 'Italiano'
+                    'native_name' => 'Italiano',
+                    'flag' => '🇮🇹'
                 ],
                 'ja' => [
                     'language' => 'ja',
                     'english_name' => 'Japanese',
-                    'native_name' => '日本語'
+                    'native_name' => '日本語',
+                    'flag' => '🇯🇵'
                 ],
                 'ko_KR' => [
                     'language' => 'ko_KR',
                     'english_name' => 'Korean',
-                    'native_name' => '한국어'
+                    'native_name' => '한국어',
+                    'flag' => '🇰🇷'
                 ],
                 'mk_MK' => [
                     'language' => 'mk_MK',
                     'english_name' => 'Macedonian',
-                    'native_name' => 'Македонски јазик'
+                    'native_name' => 'Македонски јазик',
+                    'flag' => '🇲🇰'
                 ],
                 'mr' => [
                     'language' => 'mr',
                     'english_name' => 'Marathi',
-                    'native_name' => 'मराठी'
+                    'native_name' => 'मराठी',
+                    'flag' => '🇮🇳'
                 ],
                 'my_MM' => [
                     'language' => 'my_MM',
                     'english_name' => 'Myanmar (Burmese)',
-                    'native_name' => 'ဗမာစာ'
+                    'native_name' => 'ဗမာစာ',
+                    'flag' => '🇲🇲'
                 ],
                 'ne_NP' => [
                     'language' => 'ne_NP',
                     'english_name' => 'Nepali',
-                    'native_name' => 'नेपाली'
+                    'native_name' => 'नेपाली',
+                    'flag' => '🇳🇵'
                 ],
                 'nl_NL' => [
                     'language' => 'nl_NL',
                     'english_name' => 'Dutch',
-                    'native_name' => 'Nederlands'
+                    'native_name' => 'Nederlands',
+                    'flag' => '🇳🇱'
                 ],
                 'pa_IN' => [
                     'language' => 'pa_IN',
                     'english_name' => 'Punjabi',
-                    'native_name' => 'ਪੰਜਾਬੀ'
+                    'native_name' => 'ਪੰਜਾਬੀ',
+                    'flag' => '🇮🇳'
                 ],
                 'pt_BR' => [
                     'language' => 'pt_BR',
                     'english_name' => 'Portuguese (Brazil)',
-                    'native_name' => 'Português do Brasil'
+                    'native_name' => 'Português do Brasil',
+                    'flag' => '🇧🇷'
                 ],
                 'ro_RO' => [
                     'language' => 'ro_RO',
                     'english_name' => 'Romanian',
-                    'native_name' => 'Română'
+                    'native_name' => 'Română',
+                    'flag' => '🇷🇴'
                 ],
                 'ru_RU' => [
                     'language' => 'ru_RU',
                     'english_name' => 'Russian',
-                    'native_name' => 'Русский'
+                    'native_name' => 'Русский',
+                    'flag' => '🇷🇺'
                 ],
                 'sl_SI' => [
                     'language' => 'sl_SI',
                     'english_name' => 'Slovenian',
-                    'native_name' => 'Slovenščina'
+                    'native_name' => 'Slovenščina',
+                    'flag' => '🇸🇮'
                 ],
                 'sr_BA' => [
                     'language' => 'sr_BA',
                     'native_name' => 'српски',
-                    'english_name' => 'Serbian'
+                    'english_name' => 'Serbian',
+                    'flag' => '🇷🇸'
                 ],
                 'sw' => [
                     'language' => 'sw',
                     'native_name' => 'Kiswahili',
-                    'english_name' => 'Swahili'
+                    'english_name' => 'Swahili',
+                    'flag' => '🇹🇿'
                 ],
                 'th' => [
                     'language' => 'th',
                     'english_name' => 'Thai',
-                    'native_name' => 'ไทย'
+                    'native_name' => 'ไทย',
+                    'flag' => '🇹🇭'
                 ],
                 'tl' => [
                     'language' => 'tl',
                     'english_name' => 'Tagalog',
-                    'native_name' => 'Tagalog'
+                    'native_name' => 'Tagalog',
+                    'flag' => '🇵🇭'
                 ],
                 'tr_TR' => [
                     'language' => 'tr_TR',
                     'english_name' => 'Turkish',
-                    'native_name' => 'Türkçe'
+                    'native_name' => 'Türkçe',
+                    'flag' => '🇹🇷'
                 ],
                 'uk' => [
                     'language' => 'uk',
                     'english_name' => 'Ukrainian',
-                    'native_name' => 'український'
+                    'native_name' => 'український',
+                    'flag' => '🇺🇦'
                 ],
                 'vi' => [
                     'language' => 'vi',
                     'english_name' => 'Vietnamese',
-                    'native_name' => 'Tiếng Việt'
+                    'native_name' => 'Tiếng Việt',
+                    'flag' => '🇻🇳'
                 ],
                 'zh_CN' => [
                     'language' => 'zh_CN',
                     'english_name' => 'Chinese (China)',
-                    'native_name' => '简体中文'
+                    'native_name' => '简体中文',
+                    'flag' => '🇨🇳'
                 ],
                 'zh_TW' => [
                     'language' => 'zh_TW',
                     'english_name' => 'Chinese (Taiwan)',
-                    'native_name' => '繁體中文'
+                    'native_name' => '繁體中文',
+                    'flag' => '🇹🇼'
                 ],
             ];
 
@@ -461,8 +484,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             ?>
             <select name="locale">
                 <?php foreach ( $languages as $language ){ ?>
-                    <option value="<?php echo esc_html( $language["language"] ); ?>" <?php selected( $dt_user_locale === $language["language"] ) ?>>
-                        <?php echo esc_html( $language["native_name"] ); ?> - <?php echo esc_html( $language["english_name"] ); ?>
+                    <option
+                        value="<?php echo esc_html( $language["language"] ); ?>" <?php selected( $dt_user_locale === $language["language"] ) ?>>
+                        <?php echo esc_html( ! empty( $language["flag"] ) ? $language["flag"] . ' ' : '' ); ?> <?php echo esc_html( $language["native_name"] ); ?>
+                        - <?php echo esc_html( $language["english_name"] ); ?>
                     </option>
                 <?php } ?>
             </select>
@@ -482,6 +507,27 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 $s .= 'key_' . substr( md5( rand( 10000, 100000 ) ), 0, 3 );
             }
             return $s;
+        }
+    }
+    if ( !function_exists( "dt_render_field_icon" ) ){
+        function dt_render_field_icon( $field, $class = 'dt-icon', $default_to_name = false ){
+            $icon_rendered = false;
+            if ( isset( $field["icon"] ) && !empty( $field["icon"] ) ){
+                $icon_rendered = true;
+                ?>
+                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field["icon"] ) ?>" alt="<?php echo esc_html( $field["name"] ?? "" ) ?>">
+                <?php
+            } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
+                $icon_rendered = true;
+                ?>
+                <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>"></i>
+                <?php
+            } else if ( $default_to_name && !empty( $field["name"] ) ){
+                ?>
+                <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
+                <?php
+            }
+            return $icon_rendered;
         }
     }
 
@@ -666,9 +712,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
             ?>
             <div class="section-subheader">
-                <?php if ( isset( $fields[$field_key]["icon"] ) ) : ?>
-                    <img class="dt-icon" src="<?php echo esc_url( $fields[$field_key]["icon"] ) ?>">
-                <?php endif;
+                <?php dt_render_field_icon( $fields[$field_key] );
+
                 echo esc_html( $fields[$field_key]["name"] );
                 ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
                 <?php if ( $is_private ) : ?>
@@ -770,10 +815,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                 "selected-select-button" : "empty-select-button"; ?>
                             <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $field_key ); ?>"
                                     class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button" <?php echo esc_html( $disabled ); ?>>
-                                <?php if ( !empty( $option_value["icon"] ) ) { ?>
-                                    <img class="dt-icon" src="<?php echo esc_html( $option_value["icon"] ) ?>" >
-                                <?php } ?>
-                                <?php echo esc_html( $option_value["label"] ) ?>
+                                <?php
+                                dt_render_field_icon( $option_value );
+                                echo esc_html( $option_value["label"] );
+                                ?>
                             </button>
                         <?php endforeach; ?>
                     </div>
@@ -788,7 +833,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php elseif ( $field_type === "number" ) :?>
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="number" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
-                       value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>" <?php echo esc_html( $disabled ); ?>/>
+                       value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>" <?php echo esc_html( $disabled ); ?>
+                       min="<?php echo esc_html( $fields[$field_key]["min_option"] ?? "" ) ?>"
+                       max="<?php echo esc_html( $fields[$field_key]["max_option"] ?? "" ) ?>"
+                />
             <?php elseif ( $field_type === "date" ) :?>
                 <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
                     <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
