@@ -1749,7 +1749,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             $offset = esc_sql( sanitize_text_field( $query["offset"] ) );
             unset( $query["offset"] );
         }
-        $limit = 20;
+        $limit = 50;
 
         $permissions = [
             "shared_with" => [ "me" ]
@@ -1768,19 +1768,39 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         // Prepare sql and execute search query
         $esc_like_search_sql = "'%" . esc_sql( $search ) . "%'";
+        $extra_fields = '';
+        $extra_joins  = '';
+        $extra_where = '';
+        if ( $filters['post'] ){
+            $extra_where .= "p.post_title LIKE " . $esc_like_search_sql;
+        }
+        if ( $filters['comment'] ){
+            $extra_fields .= "if( post_type_comments.comment_content LIKE " . $esc_like_search_sql . ", 'Y', 'N' ) comment_hit,";
+            $extra_fields .= "if(post_type_comments.comment_content LIKE " . $esc_like_search_sql . ", post_type_comments.comment_content, '') comment_hit_content,";
+            $extra_joins .= "LEFT JOIN $wpdb->comments as post_type_comments ON ( post_type_comments.comment_post_ID = p.ID AND comment_content LIKE " . $esc_like_search_sql . " )";
+            $extra_where .= ( empty( $extra_where ) ? '' : " OR " ) . "post_type_comments.comment_id IS NOT NULL";
+        }
+        if ( $filters['meta'] ){
+            $extra_fields .= "if(adv_search_post_meta.meta_value LIKE " . $esc_like_search_sql . ", 'Y', 'N') meta_hit,";
+            $extra_fields .= "if(adv_search_post_meta.meta_value LIKE " . $esc_like_search_sql . ", adv_search_post_meta.meta_value, '') meta_hit_value,";
+            $extra_joins .= "LEFT JOIN $wpdb->postmeta as adv_search_post_meta ON ( adv_search_post_meta.post_id = p.ID AND ((adv_search_post_meta.meta_key LIKE 'contact_%') OR (adv_search_post_meta.meta_key LIKE 'nickname')) AND (adv_search_post_meta.meta_key NOT LIKE 'contact_%_details') ) ";
+            $extra_where .= ( empty( $extra_where ) ? '' : " OR " ) . "adv_search_post_meta.meta_value LIKE " . $esc_like_search_sql;
+        }
+        if ( empty( $extra_where ) ){
+            $extra_where = '1=1';
+        }
+
         $permissions_joins_sql = $fields_sql["joins_sql"];
         $permissions_where_sql = empty( $fields_sql["where_sql"] ) ? "" : ( $fields_sql["where_sql"] . " AND " );
-        $sql = "SELECT p.ID, p.post_title, p.post_type, p.post_date, if(p.post_title LIKE " . $esc_like_search_sql . ", 'Y', 'N') post_hit, if(post_type_comments.comment_content LIKE " . $esc_like_search_sql . ", 'Y', 'N') comment_hit, if(adv_search_post_meta.meta_value LIKE " . $esc_like_search_sql . ", 'Y', 'N') meta_hit, if(post_type_comments.comment_content LIKE " . $esc_like_search_sql . ", post_type_comments.comment_content, '') comment_hit_content, if(adv_search_post_meta.meta_value LIKE " . $esc_like_search_sql . ", adv_search_post_meta.meta_value, '') meta_hit_value
+        $sql = "SELECT p.ID, p.post_title, p.post_type, " . $extra_fields . " p.post_date, if ( p.post_title LIKE " . $esc_like_search_sql . ", 'Y', 'N') post_hit
             FROM $wpdb->posts p
-                LEFT JOIN $wpdb->comments as post_type_comments ON ( post_type_comments.comment_post_ID = p.ID AND comment_content LIKE " . $esc_like_search_sql . " )
-                LEFT JOIN $wpdb->postmeta as adv_search_post_meta ON ( adv_search_post_meta.post_id = p.ID AND ((adv_search_post_meta.meta_key LIKE 'contact_%') OR (adv_search_post_meta.meta_key LIKE 'nickname')) AND (adv_search_post_meta.meta_key NOT LIKE 'contact_%_details') ) " .
-                $permissions_joins_sql .
-                " WHERE " . $permissions_where_sql . " (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' AND ( ( p.post_title LIKE " . $esc_like_search_sql . " )
-                OR post_type_comments.comment_id IS NOT NULL
-                OR p.ID IN ( SELECT post_id FROM " . $wpdb->postmeta . " WHERE meta_value LIKE " . $esc_like_search_sql . " ) )
-                GROUP BY p.ID, p.post_title, p.post_date, post_hit, comment_hit, meta_hit, comment_hit_content, meta_hit_value
-                ORDER BY p.post_title asc LIMIT " . $offset . ", " . $limit;
-
+            " . $extra_joins . "
+            " . $permissions_joins_sql . "
+            WHERE " . $permissions_where_sql . " (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "'
+            AND ( " . $extra_where . " )
+            GROUP BY p.ID, p.post_title, p.post_date
+            ORDER BY ( p.post_title LIKE '" . esc_sql( $search ) . "%' ) desc, p.post_title asc
+            LIMIT " . $offset . ", " . $limit;
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $posts = $wpdb->get_results( $sql, OBJECT );
@@ -1809,22 +1829,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
             } else {
                 $add_post = true;
-            }
-
-            // Apply search filters
-            if ( $add_post ) {
-                if ( isset( $post->post_hit ) && ( $post->post_hit === 'Y' ) &&
-                     isset( $filters['post'] ) && ! ( $filters['post'] ) ) {
-                    $add_post = false;
-                }
-                if ( isset( $post->comment_hit ) && ( $post->comment_hit === 'Y' ) &&
-                     isset( $filters['comment'] ) && ! ( $filters['comment'] ) ) {
-                    $add_post = false;
-                }
-                if ( isset( $post->meta_hit ) && ( $post->meta_hit === 'Y' ) &&
-                     isset( $filters['meta'] ) && ! ( $filters['meta'] ) ) {
-                    $add_post = false;
-                }
             }
 
             // Add post accordingly, based on flag!
