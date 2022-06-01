@@ -137,7 +137,7 @@ get_header();
                     <div class="main-archiving-primary-switch-but-div">
                         <button id="main_archiving_primary_switch_but"
                                 style="text-align: center;"
-                                class="button center"><?php esc_html_e( "Switch To Primary", 'disciple_tools' ) ?>
+                                class="button center"><?php esc_html_e( "Use as Primary", 'disciple_tools' ) ?>
                         </button>
                     </div>
 
