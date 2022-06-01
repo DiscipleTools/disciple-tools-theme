@@ -282,7 +282,8 @@ function list_merge_capable_field_types(): array {
         'multi_select',
         'location_meta',
         'location',
-        'tags'
+        'tags',
+        'connection'
     ];
 }
 
