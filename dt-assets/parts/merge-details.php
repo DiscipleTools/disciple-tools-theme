@@ -1,6 +1,8 @@
 <?php
 
 ( function () {
+    $post_type = dt_get_post_type();
+    $post_settings = DT_Posts::get_post_settings( $post_type );
 
     ?>
     <div class="reveal" id="merge-dupe-edit-modal" style="border-radius:10px; padding:0px; padding-bottom:20px; border: 1px solid #3f729b;;" data-reveal>
@@ -36,19 +38,19 @@
     </div>
 
     <div class="reveal" id="merge-with-post-modal" data-reveal style="min-height:500px">
-        <h3><?php esc_html_e( "Merge Record", 'disciple_tools' )?></h3>
-        <p><?php esc_html_e( "Merge this record with another selected record.", 'disciple_tools' )?></p>
+        <h3><?php echo esc_html( sprintf( _x( "Merge %s", "Merge Contacts", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) )?></h3>
+        <p><?php echo esc_html( sprintf( _x( 'Merge this %1$s with another %2$s', "Merge this contact with another contact", 'disciple_tools' ), $post_settings["label_singular"] ?? $post_type, $post_settings["label_singular"] ?? $post_type ) )?></p>
 
         <div class="merge_with details">
             <var id="merge_with-result-container" class="result-container merge_with-result-container"></var>
             <div id="merge_with_t" name="form-merge_with">
                 <div class="typeahead__container">
                     <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-merge_with input-height"
-                                       name="merge_with[query]" placeholder="<?php echo esc_html_x( "Search records", 'input field placeholder', 'disciple_tools' ) ?>"
-                                       autocomplete="off">
-                            </span>
+                        <span class="typeahead__query">
+                            <input class="js-typeahead-merge_with input-height"
+                                   name="merge_with[query]" placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>"
+                                   autocomplete="off">
+                        </span>
                         <span class="typeahead__button">
                             <button type="button" class="search_merge_with typeahead__image_button input-height" data-id="user-select_t">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
