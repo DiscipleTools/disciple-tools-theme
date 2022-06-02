@@ -186,6 +186,11 @@ jQuery(function ($) {
         let user_select_typeahead = window.Typeahead['.js-typeahead-' + field_id];
         return user_select_typeahead && !window.lodash.isEmpty(user_select_typeahead.item);
       }
+
+      case 'connection': {
+        let connection_typeahead = window.Typeahead['.js-typeahead-' + field_id];
+        return connection_typeahead && !window.lodash.isEmpty(connection_typeahead.items);
+      }
     }
 
     return false;
@@ -761,6 +766,83 @@ jQuery(function ($) {
 
           break;
         }
+
+        case 'connection': {
+
+          let connection_typeahead_field_input = '.js-typeahead-' + field_id;
+
+          // Disable field accordingly, based on read-only flag
+          $(td).find(connection_typeahead_field_input).prop('disabled', read_only);
+
+          // Hide typeahead search button
+          $(td).find('.typeahead__button').hide();
+
+          /**
+           * Load Typeahead
+           */
+
+          $(td).find(connection_typeahead_field_input).typeahead({
+            input: connection_typeahead_field_input,
+            minLength: 0,
+            accent: true,
+            searchOnFocus: true,
+            maxItem: 20,
+            template: window.TYPEAHEADS.contactListRowTemplate,
+            source: TYPEAHEADS.typeaheadPostsSource(post_type, field_id),
+            display: ["name", "label"],
+            templateValue: function () {
+              if (this.items[this.items.length - 1].label) {
+                return "{{label}}"
+              } else {
+                return "{{name}}"
+              }
+            },
+            dynamic: true,
+            multiselect: {
+              matchOn: ["ID"],
+              data: [],
+              callback: {
+                onCancel: function (node, item) {
+                  // Keep a record of deleted options
+                  let deleted_items = (field_meta.val()) ? JSON.parse(field_meta.val()) : [];
+                  deleted_items.push(item);
+                  field_meta.val(JSON.stringify(deleted_items));
+                }
+              }
+            },
+            callback: {
+              onResult: function (node, query, result, resultCount) {
+                let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result);
+                $(`#${field_id}-result-container`).html(text);
+              },
+              onHideLayout: function () {
+                $(`#${field_id}-result-container`).html("");
+              },
+              onClick: function (node, a, item, event) {
+                // Stop list from opening again
+                this.addMultiselectItemLayout(item)
+                event.preventDefault()
+                this.hideLayout();
+                this.resetInput();
+              }
+            }
+          });
+
+          // If available, load previous post record locations
+          let connection_typeahead = window.Typeahead[connection_typeahead_field_input];
+          let post_connections = post ? post[post_field_id] : undefined;
+
+          if ((post_connections !== undefined) && connection_typeahead) {
+            $.each(post_connections, function (idx, connection) {
+              connection_typeahead.addMultiselectItemLayout({
+                ID: connection['ID'],
+                name: window.lodash.escape(connection['post_title'])
+              });
+            });
+          }
+
+          break;
+        }
       }
 
     });
@@ -1000,37 +1082,38 @@ jQuery(function ($) {
         break;
       }
 
+      case 'connection':
       case 'location': {
 
         // Determine values to be updated
-        let source_typeahead_location = window.Typeahead['.js-typeahead-' + field_id];
-        let update_typeahead_location = window.Typeahead['.js-typeahead-' + update_field_id];
+        let source_typeahead = window.Typeahead['.js-typeahead-' + field_id];
+        let update_typeahead = window.Typeahead['.js-typeahead-' + update_field_id];
 
         // Update values accordingly
-        if (source_typeahead_location && update_typeahead_location) {
-          $.each(source_typeahead_location.items, function (idx, source_location) {
+        if (source_typeahead && update_typeahead) {
+          $.each(source_typeahead.items, function (idx, source) {
 
             if (is_selected) { // Add, if not already present
 
-              if (!window.lodash.includes(update_typeahead_location.items, source_location['ID'])) {
-                update_typeahead_location.addMultiselectItemLayout(source_location);
+              if (!window.lodash.includes(update_typeahead.items, source['ID'])) {
+                update_typeahead.addMultiselectItemLayout(source);
               }
 
             } else { // Remove, if present
 
               // Remove item object
-              window.lodash.remove(update_typeahead_location.items, function (location) {
-                return location['name'] === source_location['name'];
+              window.lodash.remove(update_typeahead.items, function (value) {
+                return value['name'] === source['name'];
               });
 
               // Remove compared item string
-              window.lodash.remove(update_typeahead_location.comparedItems, function (location) {
-                return new String(location).valueOf() == new String(source_location['ID'].valueOf());
+              window.lodash.remove(update_typeahead.comparedItems, function (value) {
+                return new String(value).valueOf() == new String(source['ID'].valueOf());
               });
 
               // Remove matching label container
-              $(update_typeahead_location.label.container).find('.typeahead__label').each(function (idx, label) {
-                if ($(label).find('span').not('span.typeahead__cancel-button').text() === source_location['name']) {
+              $(update_typeahead.label.container).find('.typeahead__label').each(function (idx, label) {
+                if ($(label).find('span').not('span.typeahead__cancel-button').text() === source['name']) {
                   $(label).remove();
                 }
               });
@@ -1038,7 +1121,7 @@ jQuery(function ($) {
             }
           });
 
-          update_typeahead_location.adjustInputSize();
+          update_typeahead.adjustInputSize();
 
         }
 
@@ -1113,7 +1196,8 @@ jQuery(function ($) {
         }
 
         case 'tags':
-        case 'location': {
+        case 'location':
+        case 'connection': {
           let typeahead = window.Typeahead['.js-typeahead-' + field_id];
           if (typeahead) {
 
