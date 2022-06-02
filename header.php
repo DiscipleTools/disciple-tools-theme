@@ -44,7 +44,7 @@
         } else if ( is_archive() ){
             echo post_type_archive_title();
         } else {
-            $title_string = str_replace( '/', ' - ', dt_get_url_path() );
+            $title_string = str_replace( '/', ' - ', untrailingslashit( dt_get_url_path( true ) ) );
             $post_type_settings = apply_filters( 'dt_get_post_type_settings', [], $title_string );
             $label = isset( $post_type_settings["label_plural"] ) ? $post_type_settings["label_plural"] : ucwords( $title_string );
             echo esc_html( $label . ' - ' . $instance_name );
