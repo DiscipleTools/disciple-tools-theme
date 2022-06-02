@@ -828,7 +828,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <button type="submit" id="add-link-button-<?php echo esc_html( $display_field_id ) ?>" class="button">
                                 <?php esc_html_e( 'Add', 'disciple-tools' ) ?>
                             </button>
-                            <button id="cancel-link-button-<?php echo esc_html( $display_field_id ) ?>" class="button hollow alert">
+                            <button type="button" id="cancel-link-button-<?php echo esc_html( $display_field_id ) ?>" class="button hollow alert">
                                 x
                             </button>
                         </form>
