@@ -470,7 +470,24 @@ class Disciple_Tools_Posts
                     }
                 }
             } else {
-                if ( strpos( $activity->meta_key, "_details" ) !== false ) {
+                if ( self::is_link_key( $activity->meta_key, $fields ) ) {
+                    $value = $activity->meta_value;
+                    $link_info = self::get_link_info( $activity->meta_key, $fields );
+                    if ( isset( $link_info["field_key"] ) && isset( $link_info["type"] ) ) {
+                        $field_key = $link_info["field_key"];
+                        $link_type = $link_info["type"];
+                        $label = $fields[$field_key]["default"][$link_type]["label"];
+                        if ( isset( $fields[$field_key] ) && $fields[$field_key]["type"] === "link" ) {
+                            if ( $activity->meta_value === "value_deleted" ) {
+                                $value = $activity->old_value;
+                                $message = sprintf( _x( '%1$s removed from %2$s links', 'link1 removed from Social Links', 'disciple-tools' ), $value, $label ?? $fields[$field_key]["name"] );
+                            } else {
+                                $value = $activity->meta_value;
+                                $message = sprintf( _x( '%1$s added to %2$s links', 'link1 added to Social Links', 'disciple-tools' ), $value, $label ?? $fields[$field_key]["name"] );
+                            }
+                        }
+                    }
+                } else if ( strpos( $activity->meta_key, "_details" ) !== false ) {
                     $meta_value = maybe_unserialize( $activity->meta_value );
                     $original_key = str_replace( "_details", "", $activity->meta_key );
                     $original = get_post_meta( $activity->object_id, $original_key, true );
