@@ -482,16 +482,22 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     $alt_tag = "";
                 }
                 ?>
+
                 <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field["icon"] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>">
+
                 <?php
             } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
                 $icon_rendered = true;
                 ?>
+
                 <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>"></i>
+
                 <?php
             } else if ( $default_to_name && !empty( $field["name"] ) ){
                 ?>
+
                 <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
+
                 <?php
             }
             return $icon_rendered;
@@ -838,6 +844,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
                         <?php
                         foreach ( $post[$field_key] ?? [] as $link_item ) {
+                            if ( !isset( $link_item["type"] ) ) {
+                                continue;
+                            }
                             $option_type = $link_item["type"];
                             $option_value = $fields[$field_key]["default"][$option_type];
                             $meta_id = $link_item["meta_id"];

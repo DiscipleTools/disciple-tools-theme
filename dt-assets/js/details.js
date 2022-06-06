@@ -1102,7 +1102,7 @@ jQuery(document).ready(function($) {
           values_html = field_value.map(v=>{
             return window.lodash.escape(v.matched_search || v.label);
           }).join(' / ')
-        } else if ( field_options.type === 'communication_channel' ){
+        } else if ( field_options.type === 'communication_channel' || field_options.type === 'link' ){
           field_value.forEach((v, index)=>{
             if ( index > 0 ){
               values_html += ', '
@@ -1141,7 +1141,7 @@ jQuery(document).ready(function($) {
           values_html = window.lodash.escape( field_value )
         }
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
-        if (field_options.type !== 'communication_channel') {
+        if (field_options.type !== 'communication_channel' && field_options.type !== 'link') {
           $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
         }
         if ( field_options.type === "text" && new RegExp(urlRegex).exec(values_html) ){
