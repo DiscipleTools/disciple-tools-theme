@@ -391,10 +391,15 @@ class DT_Duplicate_Checker_And_Merging {
                     $update[ $key ] = [
                         'values' => []
                     ];
-                    foreach ( $non_master[ $key ] ?? [] as $values ) {
+                    foreach ( $fields as $values ) {
                         $update[ $key ]['values'][] = [ 'value' => $values['value'] ];
                     }
                 }
+            }
+
+            // Remove private fields; which are handled directly, along with tasks
+            if ( isset( $update[ $key ], $field_settings[ $key ]['private'] ) && $field_settings[ $key ]['private'] ) {
+                unset( $update[ $key ] );
             }
         }
 
@@ -439,8 +444,10 @@ class DT_Duplicate_Checker_And_Merging {
         ", $primary_post_id, $archiving_post_id, $primary_post_id ) );
 
         //Keep duplicate data override info.
-        $primary_post["duplicate_data"]["override"] = array_merge( $primary_post["duplicate_data"]["override"] ?? [], $archiving_post["duplicate_data"]["override"] ?? [] );
-        $update["duplicate_data"]                   = $primary_post["duplicate_data"];
+        if ( isset( $field_settings['duplicate_data'] ) ) {
+            $primary_post["duplicate_data"]["override"] = array_merge( $primary_post["duplicate_data"]["override"] ?? [], $archiving_post["duplicate_data"]["override"] ?? [] );
+            $update["duplicate_data"]                   = $primary_post["duplicate_data"];
+        }
 
         $current_user_id = get_current_user_id();
         wp_set_current_user( 0 ); // to keep the merge activity from a specific user.
