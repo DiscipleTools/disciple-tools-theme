@@ -4,7 +4,7 @@
 */
 
 // Ensure Add New Users' admin setting has been enabled
-if ( current_user_can( 'manage_dt' ) && ! current_user_can( 'create_users' ) && ! DT_User_Management::non_admins_can_make_users() ) {
+if ( current_user_can( 'manage_dt' ) && ! current_user_can( 'create_users' ) ) {
     get_header();
     ?>
     <div class="large-6 medium-6 small-6"
