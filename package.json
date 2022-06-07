@@ -26,7 +26,9 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-touch-cmd": "0.0.1",
     "gulp-uglify": "^3.0.2",
+    "husky": "^8.0.0",
     "jquery": "^3.6.0",
+    "lint-staged": "^12.4.1",
     "motion-ui": "^2.0.3",
     "sass": "^1.39.0",
     "what-input": "^5.2.10"
@@ -42,7 +44,14 @@
     "styles": "gulp styles",
     "watch": "gulp watch",
     "browsersync": "gulp browsersync",
-    "update-foundation": "npm install foundation-sites"
+    "update-foundation": "npm install foundation-sites",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.php": [
+      "./phpcbf.sh"
+    ]
   },
   "jshintConfig": {
     "globals": {
