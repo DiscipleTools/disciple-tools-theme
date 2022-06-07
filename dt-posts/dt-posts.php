@@ -1594,12 +1594,26 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $columns;
     }
 
+    private static function adjust_post_tile_labels( $tiles ): array {
+        $adjusted_titles = [];
+        foreach ( $tiles as $tile_key => $tile ) {
 
+            // Support custom label translations; or simply default to initial label entry
+            $label = ( ! empty( $tile['translations'] ) && isset( $tile['translations'][ determine_locale() ] ) ) ? $tile['translations'][ determine_locale() ] : $tile['label'];
+
+            // Update tile's label accordingly
+            $tile['label'] = $label;
+
+            $adjusted_titles[ $tile_key ] = $tile;
+        }
+
+        return $adjusted_titles;
+    }
 
     public static function get_post_tiles( $post_type, $return_cache = true ){
         $cached = wp_cache_get( $post_type . "_tile_options" );
-        if ( $return_cache && $cached ){
-            return $cached;
+        if ( $return_cache && $cached ) {
+            return self::adjust_post_tile_labels( $cached );
         }
         $tile_options = dt_get_option( "dt_custom_tiles" );
         $default = [
@@ -1633,7 +1647,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         $tile_options[$post_type] = apply_filters( 'dt_custom_tiles_after_combine', $tile_options[$post_type], $post_type );
 
         wp_cache_set( $post_type . "_tile_options", $tile_options[$post_type] );
-        return $tile_options[$post_type];
+
+        return self::adjust_post_tile_labels( $tile_options[ $post_type ] );
     }
 
     /**
