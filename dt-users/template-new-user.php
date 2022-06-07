@@ -3,8 +3,8 @@
  * Name: User Management
 */
 
-// Ensure Add New Users' admin setting has been enabled
-if ( current_user_can( 'manage_dt' ) && ! current_user_can( 'create_users' ) ) {
+// Ensure Add New Users' admin setting has been enabled on multi-sites
+if ( is_multisite() && ! get_site_option( 'add_new_users' ) ) {
     get_header();
     ?>
     <div class="large-6 medium-6 small-6"
@@ -13,7 +13,7 @@ if ( current_user_can( 'manage_dt' ) && ! current_user_can( 'create_users' ) ) {
         <div class="bordered-box">
             <h3><?php esc_html_e( 'Adding New User Capability Required', 'disciple_tools' ); ?></h3>
             <p>
-                <?php echo esc_html( 'Adding new users needs to be enabled in ' ); ?>
+                <?php esc_html_e( 'Add new users permission needs to be enabled in ', 'disciple_tools' ); ?>
                 <a href="<?php echo esc_html( site_url( '/wp-admin/network/settings.php' ) ); ?>"
                    target="_blank"><?php esc_html_e( 'Admin Settings', 'disciple_tools' ); ?></a>
             </p>
