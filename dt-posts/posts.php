@@ -1869,7 +1869,7 @@ class Disciple_Tools_Posts
                 }
             }
 
-            $private_field_types = [ "text", "textarea", "date", "key_select", "boolean", "number" ];
+            $private_field_types = [ "text", "textarea", "date", "key_select", "boolean", "number", "link" ];
             if ( isset( $field_settings[ $field_key ]["type"] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && in_array( $field_settings[ $field_key ]["type"], $private_field_types, true ) ) {
                 if ( $field_settings[ $field_key ]["type"] === "boolean" ){
                     if ( $fields[$field_key] === "1" || $fields[$field_key] === "yes" || $fields[$field_key] === "true" ){
@@ -1932,6 +1932,8 @@ class Disciple_Tools_Posts
      *
      */
     public static function update_post_link_fields( array $field_settings, int $post_id, array $fields ) {
+        global $wpdb;
+        $current_user_id = get_current_user_id();
 
         foreach ( $fields as $field_key => $field ) {
             if ( !isset( $field_settings[ $field_key ] ) || ( $field_settings[ $field_key ]["type"] !== "link" ) ) {
@@ -1944,14 +1946,60 @@ class Disciple_Tools_Posts
 
             foreach ( $field["values"] as $value ) {
                 if ( isset( $value["delete"] ) && $value["delete"] === true ) {
-                    delete_metadata_by_mid( "post", $value["meta_id"] );
+                    if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
+                        if ( !$current_user_id ){
+                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
+                        }
+
+                        //delete user meta
+                        $delete = $wpdb->query( $wpdb->prepare( "
+                        DELETE FROM $wpdb->dt_post_user_meta
+                        WHERE user_id = %s
+                            AND post_id = %s
+                            AND meta_id = %s", $current_user_id, $post_id, $value['meta_id'] ) );
+                        if ( !$delete ){
+                            return new WP_Error( __FUNCTION__, "Something wrong deleting post user meta on field: " . $field_key, [ 'status' => 500 ] );
+                        }
+                    } else {
+                        delete_metadata_by_mid( "post", $value["meta_id"] );
+                    }
                 } else {
                     if ( isset( $value["value"] ) ) {
                         if ( isset( $value["meta_id"] ) && $value["meta_id"] ) {
-                            update_metadata_by_mid( "post", $value["meta_id"], $value["value"] );
+                            //save private link fields to the dt_post_user_meta table
+                            if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
+                                if ( !$current_user_id ){
+                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
+                                }
+                                $update = [];
+                                $update = $wpdb->update( $wpdb->dt_post_user_meta, [ "meta_value" => $value['value'] ], [ 'meta_id' => $value['meta_id'] ] );
+                                if ( !$update ) {
+                                    return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
+                                }
+                            } else {
+                                update_metadata_by_mid( "post", $value["meta_id"], $value["value"] );
+                            }
                         } else {
                             $meta_key = self::create_link_metakey( $field_key, $value["type"] );
-                            add_post_meta( $post_id, $meta_key, $value["value"] );
+                            //save private multiselect fields to the dt_post_user_meta table
+                            if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
+                                if ( !$current_user_id ){
+                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
+                                }
+                                $insert = [];
+                                $insert = $wpdb->insert(        $wpdb->dt_post_user_meta, [
+                                    "user_id"  => $current_user_id,
+                                    "post_id"  => $post_id,
+                                    "meta_key" => $meta_key,
+                                    "meta_value" => $value['value']
+                                    ]
+                                );
+                                if ( !$insert ) {
+                                    return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
+                                }
+                            } else {
+                                add_post_meta( $post_id, $meta_key, $value["value"] );
+                            }
                         }
                     } else {
                         return new WP_Error( __FUNCTION__, "Value missing on field: " . $field_key, [ 'status' => 500 ] );
@@ -2432,63 +2480,104 @@ class Disciple_Tools_Posts
                 ), ARRAY_A );
             }
             foreach ( $post_user_meta as $m ){
-                if ( !isset( $field_settings[$m['meta_key']]['type'] ) ){
+
+                /* Here we want to perform a check to see if the meta_key is actually a field key or something else */
+                $field_key = self::get_field_key_from_meta( $m["meta_key"], $field_settings );
+
+                if ( !$field_key ) {
                     continue;
                 }
-                if ( !isset( $fields[ $m["meta_key"] ] ) ) {
-                    $fields[$m["meta_key"]] = [];
+
+                if ( !isset( $fields[ $field_key ] ) ) {
+                    $fields[$field_key] = [];
                 }
-                if ( $field_settings[$m['meta_key']]['type'] === 'task' ) {
-                    $fields[$m["meta_key"]][] = [
+                if ( $field_settings[$field_key]['type'] === 'task' ) {
+                    $fields[$field_key][] = [
                         "id" => $m["id"],
                         "value" => maybe_unserialize( $m["meta_value"] ),
                         "date" => $m["date"],
                         "category" => $m["category"]
                     ];
-                } else if ( isset( $field_settings[$m['meta_key']]['private'] ) && $field_settings[$m['meta_key']]['private'] ) {
-                    if ( $field_settings[$m['meta_key']]['type'] === 'multi_select' ) {
-                        if ( !is_array( $fields[$m["meta_key"]] ) ) { $fields[$m["meta_key"]] = []; }
+                } else if ( isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
+                    if ( $field_settings[$field_key]['type'] === 'multi_select' ) {
+                        if ( !is_array( $fields[$field_key] ) ) { $fields[$field_key] = []; }
 
-                        array_push( $fields[$m["meta_key"]], $m["meta_value"] );
+                        array_push( $fields[$field_key], $m["meta_value"] );
 
-                    } else if ( $field_settings[$m['meta_key']]['type'] === 'tags' ) {
-                        if ( !is_array( $fields[$m["meta_key"]] ) ) { $fields[$m["meta_key"]] = []; }
+                    } else if ( $field_settings[$field_key]['type'] === 'tags' ) {
+                        if ( !is_array( $fields[$field_key] ) ) { $fields[$field_key] = []; }
 
-                        array_push( $fields[$m["meta_key"]], $m["meta_value"] );
+                        array_push( $fields[$field_key], $m["meta_value"] );
 
-                    } else if ( $field_settings[$m['meta_key']]['type'] === 'key_select' ){
-                        if ( !is_array( $fields[$m["meta_key"]] ) ) {
-                            $fields[$m["meta_key"]] = [];
+                    } else if ( $field_settings[$field_key]['type'] === 'key_select' ){
+                        if ( !is_array( $fields[$field_key] ) ) {
+                            $fields[$field_key] = [];
                         }
                         $key = $m['meta_value'];
-                        $label = isset( $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'] ) ? $field_settings[$m['meta_key']]['default'][$m['meta_value']]['label'] : $key;
-                        $fields[$m["meta_key"]] = array( 'key' => $key, 'label' => $label  );
+                        $label = isset( $field_settings[$field_key]['default'][$m['meta_value']]['label'] ) ? $field_settings[$field_key]['default'][$m['meta_value']]['label'] : $key;
+                        $fields[$field_key] = array( 'key' => $key, 'label' => $label  );
+                    } else if ( self::is_link_key( $m["meta_key"], $field_settings ) ) {
+                        $link_info = self::get_link_info( $m["meta_key"], $field_settings );
+                        $field_key = $link_info["field_key"];
 
-                    } else if ( $field_settings[$m['meta_key']]['type'] === 'date' ){
+                        if ( isset( $field_settings[$field_key] ) && $field_settings[$field_key]['type'] === 'link' ) {
+                            if ( !isset( $fields[$field_key] ) ) {
+                                $fields[$field_key] = [];
+                            }
+
+                            $type = $link_info["type"];
+
+                            if ( isset( $field_settings[$field_key]["default"][$type]["deleted"] ) && $field_settings[$field_key]["default"][$type]["deleted"] === true ) {
+                                continue;
+                            }
+
+                            $meta = [
+                                'type' => $type,
+                                'value' => $m["meta_value"],
+                                'meta_id' => $m["id"],
+                            ];
+
+                            $fields[$field_key][] = $meta;
+                        }
+                    } else if ( $field_settings[$field_key]['type'] === 'date' ){
                         $timestamp = $m['meta_value'];
                         $formatted_date = dt_format_date( $timestamp );
 
-                        $fields[$m["meta_key"]]['timestamp'] = (int) $timestamp;
-                        $fields[$m["meta_key"]]['formatted'] = $formatted_date;
+                        $fields[$field_key]['timestamp'] = (int) $timestamp;
+                        $fields[$field_key]['formatted'] = $formatted_date;
 
-                    } else if ( $field_settings[$m['meta_key']]['type'] === 'number' ){
-                        $fields[$m["meta_key"]] = $m['meta_value'] + 0;
+                    } else if ( $field_settings[$field_key]['type'] === 'number' ){
+                        $fields[$field_key] = $m['meta_value'] + 0;
 
-                    } else if ( $field_settings[$m['meta_key']]['type'] === 'boolean' ){
+                    } else if ( $field_settings[$field_key]['type'] === 'boolean' ){
                         if ( $m["meta_value"] === "1" || $m["meta_value"] === "yes" || $m["meta_value"] === "true" ){
                             $m["meta_value"] = true;
                         } elseif ( $m["meta_value"] === "0" || $m["meta_value"] === "no" || $m["meta_value"] === "false" || $m["meta_value"] === false ){
                             $m["meta_value"] = false;
                         }
-                        $fields[$m["meta_key"]] = $m["meta_value"];
+                        $fields[$field_key] = $m["meta_value"];
                     } else {
-                        $fields[$m["meta_key"]] = maybe_unserialize( $m["meta_value"] );
+                        $fields[$field_key] = maybe_unserialize( $m["meta_value"] );
                     }
                 }
             }
         }
 
         $fields = apply_filters( "dt_adjust_post_custom_fields", $fields, $post_type );
+    }
+
+    public static function get_field_key_from_meta( $meta_key, $field_settings ) {
+        if ( isset( $field_settings[$meta_key] ) ) {
+            return $meta_key;
+        }
+
+        if ( self::is_link_key( $meta_key, $field_settings ) ) {
+            $link_info = self::get_link_info( $meta_key, $field_settings );
+
+            return $link_info["field_key"];
+        }
+
+        return;
     }
 
     public static function is_link_key( $key, $fields ) {
