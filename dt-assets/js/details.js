@@ -23,14 +23,18 @@ jQuery(document).ready(function($) {
 
   $('input.text-input').change(function(){
     const id = $(this).attr('id')
-    const val = $(this).val()
-    if ( $(this).prop('required') && val === ''){
+    if ( $(this).prop('required') && $(this).val() === ''){
       return;
     }
-    if (this.min && val < this.min) {
+    const val = parseInt($(this).val())
+
+    const min = parseInt(this.min)
+    const max = parseInt(this.max)
+
+    if (min && val < min) {
       return
     }
-    if (this.max && val > this.max) {
+    if (max && val > max) {
       return
     }
     $(`#${id}-spinner`).addClass('active')
@@ -40,12 +44,14 @@ jQuery(document).ready(function($) {
     }).catch(handleAjaxError)
   })
   $('input.text-input').blur(function(){
-    const val = $(this).val()
-    if (this.min && val < this.min) {
+    const val = parseInt($(this).val())
+    const min = parseInt(this.min)
+    const max = parseInt(this.max)
+    if (min && val < min) {
       $(this).val(this.min)
       return
     }
-    if (this.max && val > this.max) {
+    if (max && val > max) {
       $(this).val(this.max)
       return
     }
