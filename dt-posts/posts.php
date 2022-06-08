@@ -1869,7 +1869,8 @@ class Disciple_Tools_Posts
                 }
             }
 
-            $private_field_types = [ "text", "textarea", "date", "key_select", "boolean", "number", "link" ];
+            /* The Link field type is handled seperately so has not been added to this array */
+            $private_field_types = [ "text", "textarea", "date", "key_select", "boolean", "number" ];
             if ( isset( $field_settings[ $field_key ]["type"] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && in_array( $field_settings[ $field_key ]["type"], $private_field_types, true ) ) {
                 if ( $field_settings[ $field_key ]["type"] === "boolean" ){
                     if ( $fields[$field_key] === "1" || $fields[$field_key] === "yes" || $fields[$field_key] === "true" ){
@@ -1954,9 +1955,7 @@ class Disciple_Tools_Posts
                         //delete user meta
                         $delete = $wpdb->query( $wpdb->prepare( "
                         DELETE FROM $wpdb->dt_post_user_meta
-                        WHERE user_id = %s
-                            AND post_id = %s
-                            AND meta_id = %s", $current_user_id, $post_id, $value['meta_id'] ) );
+                        WHERE id = %s", $value['meta_id'] ) );
                         if ( !$delete ){
                             return new WP_Error( __FUNCTION__, "Something wrong deleting post user meta on field: " . $field_key, [ 'status' => 500 ] );
                         }
@@ -1972,7 +1971,7 @@ class Disciple_Tools_Posts
                                     return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
                                 }
                                 $update = [];
-                                $update = $wpdb->update( $wpdb->dt_post_user_meta, [ "meta_value" => $value['value'] ], [ 'meta_id' => $value['meta_id'] ] );
+                                $update = $wpdb->update( $wpdb->dt_post_user_meta, [ "meta_value" => $value['value'] ], [ 'id' => $value['meta_id'] ] );
                                 if ( !$update ) {
                                     return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
                                 }
