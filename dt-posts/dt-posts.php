@@ -592,10 +592,24 @@ class DT_Posts extends Disciple_Tools_Posts {
             $ids[] = $record["ID"];
         }
         $ids_sql = dt_array_to_sql( $ids );
+
         $field_keys = [];
         if ( !in_array( 'all_fields', $fields_to_return ) ){
             $field_keys = empty( $fields_to_return ) ? array_keys( $post_settings["fields"] ) : $fields_to_return;
         }
+        /* Insert link field combo keys into the $field_keys array */
+        foreach ( $field_keys as $key ) {
+            if ( isset( $post_settings["fields"][$key] ) && $post_settings["fields"][$key]["type"] === "link" ) {
+                unset( $field_keys[$key] );
+
+                foreach ( $post_settings["fields"][$key]["default"] as $type => $_ ) {
+                    $meta_key = Disciple_Tools_Posts::create_link_metakey( $key, $type );
+
+                    $field_keys[] = $meta_key;
+                }
+            }
+        }
+
         $field_keys_sql = dt_array_to_sql( $field_keys );
 
         global $wpdb;

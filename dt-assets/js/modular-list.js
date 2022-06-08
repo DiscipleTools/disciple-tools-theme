@@ -734,6 +734,10 @@
               values = field_value.map(v => {
                 return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
               })
+            } else if (field_settings.type === 'link') {
+              values = field_value.map((link) => {
+                return window.lodash.escape(link.value)
+              })
             } else if (field_settings.type === 'tags') {
               values = field_value.map(v => {
                 return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
