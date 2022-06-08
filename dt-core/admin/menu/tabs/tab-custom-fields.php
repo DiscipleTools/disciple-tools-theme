@@ -361,7 +361,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <th><?php esc_html_e( "Tile", 'disciple_tools' ) ?></th>
                     <td>
                         <select name="tile_select">
-                            <option><?php esc_html_e( "No tile / hidden", 'disciple_tools' ) ?></option>
+                            <option value="no_tile"><?php esc_html_e( "No tile / hidden", 'disciple_tools' ) ?></option>
                             <?php foreach ( $tile_options as $tile_key => $tile_option ) :
                                 $select = isset( $field["tile"] ) && $field["tile"] === $tile_key;
                                 ?>
@@ -1155,6 +1155,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( "Tags: A field allowing entry of any custom tags or values", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Text: This is just a normal text field", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Text Area: This is just a multi-line text area", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Number: This is a number text field", 'disciple-tools' ) ?></li>
             <li><?php esc_html_e( "Date: A field that uses a date picker to choose dates (like baptism date)", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Link: Create a collection of links", 'disciple-tools' ) ?></li>
             <li><?php esc_html_e( "Connection: An autocomplete picker to connect to another record.", 'disciple_tools' ) ?></li>

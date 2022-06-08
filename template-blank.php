@@ -48,7 +48,7 @@ if ( ! apply_filters( 'dt_blank_access', false ) ){
     <?php do_action( 'dt_blank_head' ) ?>
 
 </head>
-<body>
+<body id="blank-template-body">
 
 <!-- Page Body -->
 <?php do_action( 'dt_blank_body' ); ?>
