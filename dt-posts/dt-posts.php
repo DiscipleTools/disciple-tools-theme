@@ -1594,7 +1594,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $columns;
     }
 
-    private static function adjust_post_tile_labels( $tiles ): array {
+    private static function translation_post_tile_labels( $tiles ): array {
         $adjusted_titles = [];
         foreach ( $tiles as $tile_key => $tile ) {
 
@@ -1613,7 +1613,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     public static function get_post_tiles( $post_type, $return_cache = true ){
         $cached = wp_cache_get( $post_type . "_tile_options" );
         if ( $return_cache && $cached ) {
-            return self::adjust_post_tile_labels( $cached );
+            return $cached;
         }
         $tile_options = dt_get_option( "dt_custom_tiles" );
         $default = [
@@ -1644,11 +1644,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        $tile_options[$post_type] = apply_filters( 'dt_custom_tiles_after_combine', $tile_options[$post_type], $post_type );
+        $tile_options[ $post_type ] = self::translation_post_tile_labels( apply_filters( 'dt_custom_tiles_after_combine', $tile_options[ $post_type ], $post_type ) );
 
         wp_cache_set( $post_type . "_tile_options", $tile_options[$post_type] );
 
-        return self::adjust_post_tile_labels( $tile_options[ $post_type ] );
+        return $tile_options[ $post_type ];
     }
 
     /**
