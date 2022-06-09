@@ -66,8 +66,8 @@ class DT_Posts_Hooks {
             $user_locale = get_user_locale();
             foreach ( $custom_tiles as $post_type => $tile_keys ) {
                 foreach ( $tile_keys as $key => $value ) {
-                    if ( !empty( $custom_tiles[$post_type][$key][$user_locale] ) ) {
-                        $custom_tiles[$post_type][$key]['label'] = $custom_tiles[$post_type][$key][$user_locale];
+                    if ( isset( $custom_tiles[$post_type][$key]["translations"][$user_locale] ) && !empty( $custom_tiles[$post_type][$key]["translations"][$user_locale] ) ) {
+                        $custom_tiles[$post_type][$key]['label'] = $custom_tiles[$post_type][$key]["translations"][$user_locale];
                     }
                 }
             }
