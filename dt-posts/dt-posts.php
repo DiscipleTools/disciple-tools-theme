@@ -238,9 +238,6 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $post_id;
         }
 
-        // Geo-locate addresses ahead of field updates
-        $contact_methods_and_connections = dt_address_metabox()->geolocate_addresses( $post_id, $post_type, $post_settings, $contact_methods_and_connections );
-
         $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $contact_methods_and_connections );
         if ( is_wp_error( $potential_error ) ){
             return $potential_error;
@@ -383,9 +380,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields["name"] );
             }
         }
-
-        // Geo-locate addresses ahead of field updates
-        $fields = dt_address_metabox()->geolocate_addresses( $post_id, $post_type, $post_settings, $fields );
 
         $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error ) ){
