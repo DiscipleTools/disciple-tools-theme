@@ -98,7 +98,9 @@ jQuery(function ($) {
 
           // Adjust & trigger field selections to default states; which should set updating fields accordingly
           main_primary_fields_div.find('.field-select').each(function (idx, input) {
-            if (can_select_field($(input).parent().parent())) {
+            let post_field_id = $(input).data('merge_update_field_id');
+
+            if (primary_post['record'][post_field_id] && can_select_field($(input).parent().parent())) {
               $(input).prop('checked', true);
               $(input).trigger('change');
 
@@ -108,9 +110,8 @@ jQuery(function ($) {
               if ($(input).attr('type') === 'radio') {
 
                 // Attempt to identify corresponding archive radio input
-                let post_field_id = $(input).data('merge_update_field_id');
                 let archive_input = main_archiving_fields_div.find('input[data-merge_field_id="' + archiving_post['record']['ID'] + '_' + post_field_id + '"]');
-                if (archive_input && can_select_field($(archive_input).parent().parent())) {
+                if (archiving_post['record'][post_field_id] && archive_input && can_select_field($(archive_input).parent().parent())) {
                   $(archive_input).prop('checked', true);
                   $(archive_input).trigger('change');
 
@@ -250,17 +251,20 @@ jQuery(function ($) {
            * Load Date Range Picker
            */
 
+          let date_format = 'MMMM D, YYYY';
           let date_config = {
+            autoUpdateInput: false,
             singleDatePicker: true,
             timePicker: true,
             locale: {
-              format: 'MMMM D, YYYY'
+              format: date_format
             }
           };
 
           // Adjust start date based on post's date timestamp; if present
           let post_timestamp = $(td).find('#' + field_id).val();
-          if (post_timestamp) {
+          let hasStartDate = (post_timestamp && post && post[post_field_id] !== undefined);
+          if (hasStartDate) {
             date_config['startDate'] = moment.unix(post_timestamp);
             field_meta.val(post_timestamp);
           }
@@ -270,6 +274,17 @@ jQuery(function ($) {
             if (start) {
               field_meta.val(start.unix());
             }
+          });
+
+          // Render start date display accoridngly, post initialisation
+          if (hasStartDate) {
+            let start_date = $(td).find('#' + field_id).data('daterangepicker').startDate.format(date_format);
+            $(td).find('#' + field_id).val(start_date);
+          }
+
+          // Respond to apply date events
+          $(td).find('#' + field_id).on('apply.daterangepicker', function (evt, picker) {
+            $(td).find('#' + field_id).val(picker.startDate.format(date_format));
           });
 
           // Disable field accordingly, based on read-only flag
