@@ -1743,7 +1743,7 @@ class Disciple_Tools_Posts
                         if ( is_wp_error( $potential_error ) ){
                             return $potential_error;
                         }
-                        if ( isset( $field["geolocate"] ) && !empty( $field["geolocate"] ) ){
+                        if ( $details_key === "contact_address" && isset( $field["geolocate"] ) && !empty( $field["geolocate"] ) ){
                             $potential_error = self::geolocate_addresses( $post_id, $post_settings['post_type'], $details_key, $field["value"] );
                         }
                     }
