@@ -1737,8 +1737,15 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field["value"] ) ) {
                     $field["key"] = "new-".$details_key;
                     //create field
-                    if ( !empty( $field["value"] ) ){
+                    if ( ! empty( $field["value"] ) ) {
+                        // Geocode any identified addresses ahead of field creation
                         $potential_error = self::add_post_contact_method( $post_settings, $post_id, $field["key"], $field["value"], $field );
+                        if ( is_wp_error( $potential_error ) ){
+                            return $potential_error;
+                        }
+                        if ( $details_key === "contact_address" && isset( $field["geolocate"] ) && !empty( $field["geolocate"] ) ){
+                            $potential_error = self::geolocate_addresses( $post_id, $post_settings['post_type'], $details_key, $field["value"] );
+                        }
                     }
                 } else {
                     return new WP_Error( __FUNCTION__, "Is not an array or missing value on: " . $details_key, [ 'status' => 400 ] );
@@ -2547,6 +2554,123 @@ class Disciple_Tools_Posts
         $details["value"] = $value;
         $details["key"] = $key;
         return $details;
+    }
+
+    private static function validate_lat_long( $address ): string {
+        $split_address = explode( ",", $address );
+
+        return ( count( $split_address ) === 2 ) && ( preg_match( '/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?),[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/', $split_address[0] . ',' . $split_address[1] ) === 1 ) ? 'coordinates' : 'address';
+    }
+    /**
+     * Helper functions to transpose geocoded addresses.
+     *
+     * @param  $post_id
+     * @param  $post_type
+     * @param  $field_key
+     * @param  $address_value
+     * @return bool
+     */
+    public static function geolocate_addresses( $post_id, $post_type, $field_key, $address_value ): bool {
+        // Check if geocoder apis exist.
+        if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() || class_exists( "Disciple_Tools_Google_Geocode_API" ) && Disciple_Tools_Google_Geocode_API::get_key() ){
+
+            $address_transpose_success = false;
+
+            // Determine geocoder api to be used.
+            $api_class        = 'Disciple_Tools_Google_Geocode_API';
+            $using_google_api = true;
+
+            if ( empty( Disciple_Tools_Google_Geocode_API::get_key() ) ) {
+                $api_class        = 'DT_Mapbox_API';
+                $using_google_api = false;
+            }
+
+            // Check if address or coordinates and if coordinates splitting into latitude and longitude
+            $lookup  = self::validate_lat_long( $address_value );
+            $address = $lookup === 'coordinates'
+                ? explode( ",", preg_replace( '/\s/', '', $address_value ) )
+                : $address_value;
+
+            // Getting results
+            $result = $lookup === 'coordinates'
+                ? (
+                $using_google_api
+                    ? $api_class::query_google_api_reverse( $address_value )
+                    : $api_class::reverse_lookup( $address[1], $address[0] )
+                ) : (
+                $using_google_api
+                    ? $api_class::query_google_api( $address, 'core' )
+                    : $api_class::lookup( $address )
+                );
+
+            // Getting longitude
+            $lng = $lookup === 'coordinates'
+                ? $address[1]
+                : (
+                $using_google_api
+                    ? $result['lng']
+                    : $api_class::parse_raw_result( $result, 'lng', true )
+                );
+
+            // Getting latitude
+            $lat = $lookup === 'coordinates'
+                ? $address[0]
+                : (
+                $using_google_api
+                    ? $result['lat']
+                    : $api_class::parse_raw_result( $result, 'lat', true )
+                );
+
+            // Reformatting $address
+            $address = $lookup === 'coordinates'
+                ? (
+                $using_google_api
+                    ? (
+                $result
+                    ? $api_class::parse_raw_result( $result, 'formatted_address' )
+                    : $address_value
+                )
+                    : $api_class::parse_raw_result( $result, 'full_location_name', true )
+                )
+                : $address_value;
+
+            if ( $result !== false ) {
+
+                // Determine lookup relevance
+                $relevance = $using_google_api
+                    ? 0.6 // to change if there's any data equals to Mapbox's relevance
+                    : $result['features'][0]['relevance'];
+
+                // Transpose if relevance is high!
+                if ( $relevance >= 0.5 ) {
+
+                    // Inserting to location grid meta
+                    $geocoder           = new Location_Grid_Geocoder();
+                    $grid_row           = $geocoder->get_grid_id_by_lnglat( $lng, $lat );
+                    $location_meta_grid = [
+                        'post_id'   => $post_id,
+                        'post_type' => $post_type,
+                        'grid_id'   => $grid_row['grid_id'],
+                        'lng'       => $lng,
+                        'lat'       => $lat,
+                        'level'     => '',
+                        'label'     => $address
+                    ];
+
+                    // Validating and adding to location grid meta
+                    Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                    $grid_id = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+
+                    // Indicate final location grid meta insert result
+                    $address_transpose_success = ! empty( $grid_id ) && ! is_wp_error( $grid_id );
+                }
+            }
+
+            // Keep original values which have not been geo-transposed.
+            return $address_transpose_success;
+        }
+
+        return false;
     }
 
 }
