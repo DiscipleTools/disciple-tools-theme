@@ -408,24 +408,24 @@ class Disciple_Tools_Users_Endpoints
     }
 
 
-    public function get_my_info( WP_REST_Request $request ){
+    public function get_my_info( WP_REST_Request $request ) {
         $user = wp_get_current_user();
-        if ( $user ){
+        if ( $user ) {
+            $info = [
+                "ID"           => $user->ID,
+                "user_email"   => $user->user_email,
+                "display_name" => $user->display_name,
+                "locale"       => get_user_locale( $user->ID ),
+                "locations"    => self::get_current_locations(),
+            ];
 
-            // Determine if info to be returned shall be full or partial settings data
-            $params = $request->get_params();
-            if ( isset( $params['all'] ) && strtolower( trim( $params['all'] ) ) === 'true' ) {
-                return Disciple_Tools_Users::get_user_settings( $user );
+            // Append additional setting sections
+            foreach ( Disciple_Tools_Users::get_user_settings( $user ) ?? [] as $key => $section ) {
+                $info[ $key ] = $section;
             }
 
-            // Otherwise, default to standard response
-            return [
-                "ID" => $user->ID,
-                "user_email" => $user->user_email,
-                "display_name" => $user->display_name,
-                "locale" => get_user_locale( $user->ID ),
-                "locations" => self::get_current_locations(),
-            ];
+            return $info;
+
         } else {
             return new WP_Error( "get_my_info", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
         }
