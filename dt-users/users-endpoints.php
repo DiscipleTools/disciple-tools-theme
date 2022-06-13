@@ -411,6 +411,14 @@ class Disciple_Tools_Users_Endpoints
     public function get_my_info( WP_REST_Request $request ){
         $user = wp_get_current_user();
         if ( $user ){
+
+            // Determine if info to be returned shall be full or partial settings data
+            $params = $request->get_params();
+            if ( isset( $params['all'] ) && strtolower( trim( $params['all'] ) ) === 'true' ) {
+                return Disciple_Tools_Users::get_user_settings( $user );
+            }
+
+            // Otherwise, default to standard response
             return [
                 "ID" => $user->ID,
                 "user_email" => $user->user_email,
