@@ -1455,7 +1455,7 @@ class Disciple_Tools_Posts
                         if ( isset( $value["delete"] ) && $value["delete"] == true ){
                             if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
                                 if ( !$current_user_id ){
-                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
+                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", [ 'status' => 400 ] );
                                 }
 
                                 //delete user meta
@@ -1476,7 +1476,7 @@ class Disciple_Tools_Posts
                             $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
                             if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
                                 if ( !$current_user_id ){
-                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
+                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", [ 'status' => 400 ] );
                                 }
                                 $insert = [];
                                 $insert = $wpdb->insert(        $wpdb->dt_post_user_meta, [
@@ -1773,7 +1773,7 @@ class Disciple_Tools_Posts
                     if ( isset( $value["value"] ) || ( !empty( $value["delete"] && !empty( $value['id'] ) ) ) ){
                         $current_user_id = get_current_user_id();
                         if ( !$current_user_id ){
-                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
+                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", [ 'status' => 400 ] );
                         }
                         if ( !empty( $value["id"] ) ) {
                             //see if we find the value with the correct id on this contact for this user.
@@ -1869,7 +1869,7 @@ class Disciple_Tools_Posts
 
                 $current_user_id = get_current_user_id();
                 if ( !$current_user_id ){
-                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
+                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", [ 'status' => 400 ] );
                 }
 
                 //Find the id if a row exists that has the same user_id same post_id and same meta_key

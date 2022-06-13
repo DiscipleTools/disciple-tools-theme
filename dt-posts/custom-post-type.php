@@ -138,6 +138,7 @@ class Disciple_Tools_Post_Type_Template {
         $template_for_url[$this->post_type] = 'archive-template.php';
         $template_for_url[$this->post_type . '/new'] = 'template-new-post.php';
         $template_for_url[$this->post_type . '/new-bulk'] = 'template-new-bulk-post.php';
+        $template_for_url[$this->post_type . '/mergedetails'] = 'template-merge-post-details.php';
         return $template_for_url;
     }
 

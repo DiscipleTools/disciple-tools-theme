@@ -807,57 +807,66 @@ select.color-select {
 }
 
 /**
- *   Merge Duplicate Contacts Section
+ *  Merge Duplicate Post Types
  */
-#content.template-merge-details {
-    .blueBackground {
-        background-color: #30c2ff;
-        border-radius: 7px;
+#content.template-merge-post-details {
+
+    table, tbody, tr, td {
+        border: none;
     }
-    .merge-column {
-        width: 33%;
-        float: left;
-        min-height: 45px;
+
+    #main_header {
+        margin-bottom: 10px;
+
+        .bordered-box {
+            text-align: center;
+        }
+
+        #select_current_primary_record {
+            min-width: 60%;
+            max-width: 60%;
+        }
     }
-    .bold {
-        font-weight: bold;
+
+    #main_archiving {
+        margin-bottom: 10px;
+
+        .main-archiving-primary-switch-but-div {
+            text-align: center;
+        }
+
+        #main_archiving_fields_div {
+            min-height: 500px !important;
+            max-height: 800px !important;
+            overflow: auto;
+        }
     }
-    .line-wrap {
-        overflow: hidden;
-        border-bottom: 1px solid grey;
-        clear: both;
+
+    #main_primary {
+        margin-bottom: 10px;
+
+        #main_primary_fields_div {
+            min-height: 500px !important;
+            max-height: 800px !important;
+            overflow: auto;
+        }
     }
-    .line-wrap:last-of-type {
-        margin-bottom: 20px;
+
+    #main_updated {
+        margin-bottom: 10px;
+
+        #main_updated_fields_div {
+            min-height: 500px !important;
+            max-height: 800px !important;
+            overflow: auto;
+        }
     }
-    .merge-column input {
-        margin-top: 15px;
+
+    #main_footer {
+        .bordered-box {
+            text-align: center;
+        }
     }
-    .merge-column .bold {
-        position: relative;
-        top: 10px;
-    }
-    #merge-form {
-        display: inline-block;
-        width: 100%;
-    }
-    #merge-form button {
-        margin-top: 20px;
-        display: inline-block;
-    }
-    #merge_errors {
-        margin-top: 30px;
-        color: red;
-        text-align: right;
-    }
-    .shortText {
-        max-width: 250px;
-    }
-    .row-edit a {
-        margin-left: 10px;
-    }
-    .empty {
-        display: inline-block;
-        visibility: hidden;
-    }
+
+
 }

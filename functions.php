@@ -205,8 +205,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
                     'metrics'               => 'template-metrics.php',
                     'settings'              => 'template-settings.php',
                     'notifications'         => 'template-notifications.php',
-                    'contacts/mergedetails' => 'template-merge-details.php',
-                    'view-duplicates'       => 'template-view-duplicates.php',
+                    'view-duplicates'       => 'template-view-duplicates.php'
                 ];
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
