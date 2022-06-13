@@ -129,7 +129,7 @@ get_header();
             <!-- Archiving Post Record -->
             <main id="main_archiving" class="large-4 medium-4 cell" role="main">
                 <div class="bordered-box">
-                    <h2 class="center"><?php esc_html_e( "Archiving", 'disciple_tools' ) ?> - #<a
+                    <h2 class="center"><?php esc_html_e( "Archiving", 'disciple_tools' ) ?> - <a
                             id="main_archiving_post_id_title_link" target="_blank"><span
                                 id="main_archiving_post_id_title"></span></a>
                     </h2>
@@ -150,7 +150,7 @@ get_header();
             <!-- Primary Post Record -->
             <main id="main_primary" class="large-4 medium-4 cell" role="main">
                 <div class="bordered-box">
-                    <h2 class="center"><?php esc_html_e( "Primary", 'disciple_tools' ) ?> - #<a
+                    <h2 class="center"><?php esc_html_e( "Primary", 'disciple_tools' ) ?> - <a
                             id="main_primary_post_id_title_link" target="_blank"><span
                                 id="main_primary_post_id_title"></span></a>
                     </h2>

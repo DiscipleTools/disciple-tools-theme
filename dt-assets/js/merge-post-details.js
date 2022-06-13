@@ -45,8 +45,8 @@ jQuery(function ($) {
     if (primary_post && archiving_post) {
 
       // Update merge column titles & post url links
-      $('#main_archiving_post_id_title').text(archiving_post['record']['ID']);
-      $('#main_primary_post_id_title').text(primary_post['record']['ID']);
+      $('#main_archiving_post_id_title').text(archiving_post['record']['title'] + ' #' + archiving_post['record']['ID']);
+      $('#main_primary_post_id_title').text(primary_post['record']['title'] + ' #' +  primary_post['record']['ID']);
       $('#main_updated_post_id_title').text(primary_post['record']['ID']);
 
       let archiving_id_link = window.merge_post_details['site_url'] + window.merge_post_details['post_settings']['post_type'] + '/' + archiving_post['record']['ID'];
