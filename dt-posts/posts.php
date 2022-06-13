@@ -2287,12 +2287,10 @@ class Disciple_Tools_Posts
         }
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
         if ( $meta_fields === null ){
-            $meta_fields_with_id = DT_Posts::get_post_meta_with_ids( $post_id );
-            /* is this necessary? further down, $meta_fields is passed into another function, therefore
-            assuming that it's structure is as before. We could map the array to make it look like it did before
-            oooor, we could just get it as it was before */
             $meta_fields = get_post_custom( $post_id );
         }
+        $meta_fields_with_id = DT_Posts::get_post_meta_with_ids( $post_id );
+
         $map_values = function ( $item ) {
             return $item['value'];
         };
