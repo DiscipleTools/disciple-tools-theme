@@ -1168,12 +1168,15 @@ class Disciple_Tools_Users
             'ID'           => $user->ID,
             'name'         => trim( $user->first_name . ' ' . $user->last_name ),
             'username'     => $user->user_login,
+            'user_email'   => $user->user_email,
             'nickname'     => $user->nickname,
             'display_name' => $user->display_name,
             'roles'        => dt_get_user_role_names( $user->ID ),
             'email'        => self::get_user_settings_profile_field( $user, 'email', [
-                'value' => $user->user_email,
-                'label' => $user->user_email
+                [
+                    'value' => $user->user_email,
+                    'label' => __( 'System Email', 'disciple_tools' )
+                ]
             ] ),
             'phone'        => self::get_user_settings_profile_field( $user, 'phone' ),
             'address'      => self::get_user_settings_profile_field( $user, 'address' ),
@@ -1181,7 +1184,6 @@ class Disciple_Tools_Users
             'other'        => self::get_user_settings_profile_field( $user, 'other' ),
             'locale'       => get_user_locale( $user->ID ),
             'language'     => self::get_user_settings_profile_language( $user ),
-            'locations'    => self::get_user_location( $user->ID ),
             'bio'          => $user->user_description,
             'gender'       => self::get_user_settings_profile_gender( $user )
         ];
@@ -1233,7 +1235,8 @@ class Disciple_Tools_Users
 
     private static function get_user_settings_preferences( $user ): array {
         return [
-            'languages' => self::get_user_settings_preferences_languages( $user )
+            'languages' => self::get_user_settings_preferences_languages( $user ),
+            'locations'    => self::get_user_location( $user->ID ),
         ];
     }
 
