@@ -246,7 +246,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     'language' => 'ar',
                     'english_name' => 'Arabic',
                     'native_name' => 'العربية',
-                    'flag' => '🇹🇳'
+                    'flag' => '🇦🇪'
                 ],
                 'ar_MA' => [
                     'language' => 'ar_MA',
