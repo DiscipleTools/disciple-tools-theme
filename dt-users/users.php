@@ -1235,13 +1235,15 @@ class Disciple_Tools_Users
 
     private static function get_user_settings_preferences( $user ): array {
         return [
-            'languages' => self::get_user_settings_preferences_languages( $user ),
-            'locations'    => self::get_user_location( $user->ID ),
+            'languages'     => self::get_user_settings_preferences_languages( $user ),
+            'locations'     => self::get_user_location( $user->ID ),
+            'people_groups' => self::get_user_settings_preferences_people_groups( $user ),
+            'workload'      => self::get_user_settings_preferences_workload( $user )
         ];
     }
 
     private static function get_user_settings_preferences_languages( $user ): array {
-        $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
+        $contact_fields = DT_Posts::get_post_settings( "contacts", false )["fields"];
 
         $languages      = [];
         $user_languages = get_user_option( 'user_languages', $user->ID );
@@ -1255,6 +1257,23 @@ class Disciple_Tools_Users
         }
 
         return $languages;
+    }
+
+    private static function get_user_settings_preferences_people_groups( $user ): array {
+        return DT_Posts::get_post_names_from_ids( get_user_option( 'user_people_groups', $user->ID ) ?? [] );
+    }
+
+    private static function get_user_settings_preferences_workload( $user ): array {
+        $workload = get_user_option( 'workload_status', $user->ID );
+        $options  = dt_get_site_custom_lists()["user_workload_status"] ?? [];
+
+        $workload_response = [];
+        if ( isset( $options[ $workload ] ) ) {
+            $workload_response       = $options[ $workload ];
+            $workload_response['id'] = $workload;
+        }
+
+        return $workload_response;
     }
 
     private static function get_user_settings_unavailability( $user ): array {
