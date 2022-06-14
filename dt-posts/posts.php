@@ -1898,7 +1898,7 @@ class Disciple_Tools_Posts
                             "meta_key" => $field_key,
                         ]
                     );
-                    if ( !$update ) {
+                    if ( $update === false ) {
                         return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
                     }
                 } else {
