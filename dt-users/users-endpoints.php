@@ -408,16 +408,24 @@ class Disciple_Tools_Users_Endpoints
     }
 
 
-    public function get_my_info( WP_REST_Request $request ){
+    public function get_my_info( WP_REST_Request $request ) {
         $user = wp_get_current_user();
-        if ( $user ){
-            return [
-                "ID" => $user->ID,
-                "user_email" => $user->user_email,
+        if ( $user ) {
+            $info = [
+                "ID"           => $user->ID,
+                "user_email"   => $user->user_email,
                 "display_name" => $user->display_name,
-                "locale" => get_user_locale( $user->ID ),
-                "locations" => self::get_current_locations(),
+                "locale"       => get_user_locale( $user->ID ),
+                "locations"    => self::get_current_locations(),
             ];
+
+            // Append additional setting sections
+            foreach ( Disciple_Tools_Users::get_user_settings( $user ) ?? [] as $key => $section ) {
+                $info[ $key ] = $section;
+            }
+
+            return $info;
+
         } else {
             return new WP_Error( "get_my_info", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
         }
