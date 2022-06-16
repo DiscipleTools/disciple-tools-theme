@@ -1787,6 +1787,17 @@ class DT_Posts extends Disciple_Tools_Posts {
             $extra_joins .= "LEFT JOIN $wpdb->postmeta as adv_search_post_meta ON ( adv_search_post_meta.post_id = p.ID AND ((adv_search_post_meta.meta_key LIKE 'contact_%') OR (adv_search_post_meta.meta_key LIKE 'nickname')) AND (adv_search_post_meta.meta_key NOT LIKE 'contact_%_details') ) ";
             $extra_where .= ( empty( $extra_where ) ? '' : " OR " ) . "adv_search_post_meta.meta_value LIKE " . $esc_like_search_sql;
         }
+
+        // Works in conjunction with other filters
+        $post_settings = self::get_post_settings( $post_type, false );
+        if ( ! empty( $extra_where ) && ! empty( $filters['status'] ) ) {
+            $status_where_condition = ( $filters['status'] === 'all' ) ? "IN " . self::advanced_search_post_status_keys_sql_array( self::advanced_search_post_status_keys( $post_settings ) ) : "= '" . $filters['status'] . "'";
+            $extra_fields           .= "if(adv_search_post_status.meta_value " . $status_where_condition . ", 'Y', 'N') status_hit,";
+            $extra_fields           .= "if(adv_search_post_status.meta_value " . $status_where_condition . ", adv_search_post_status.meta_value, '') status_hit_value,";
+            $extra_joins            .= "LEFT JOIN $wpdb->postmeta as adv_search_post_status ON ( ( adv_search_post_status.post_id = p.ID ) AND ( adv_search_post_status.meta_key " . ( isset( $post_settings['status_field'] ) ? sprintf( "= '%s'", $post_settings['status_field']['status_key'] ) : "LIKE '%status%'" ) . " ) )";
+            $extra_where            = "(" . $extra_where . ") AND adv_search_post_status.meta_value " . $status_where_condition;
+        }
+
         if ( empty( $extra_where ) ){
             $extra_where = '1=1';
         }
@@ -1824,7 +1835,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         //remove duplicated non-hits
         foreach ( $posts as $post ) {
             $add_post = false;
-            if ( isset( $post->post_hit ) && isset( $post->comment_hit ) && isset( $post->meta_hit ) ) {
+            if ( isset( $post->post_hit, $post->comment_hit, $post->meta_hit ) ) {
                 if ( ! ( ( $post->post_hit === 'N' ) && ( $post->comment_hit === 'N' ) && ( $post->meta_hit === 'N' ) ) ) {
                     $add_post = true;
                 }
@@ -1838,9 +1849,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        //decode special characters in post titles
+        //decode special characters in post titles & determine status
         foreach ( $post_hits as $hit ) {
             $hit->post_title = wp_specialchars_decode( $hit->post_title );
+            $hit->status     = self::advanced_search_post_status( $post_settings, $hit->status_hit_value ?? '' );
         }
 
         //capture hits count and adjust future offsets
@@ -1851,6 +1863,34 @@ class DT_Posts extends Disciple_Tools_Posts {
             "total"     => $post_hits_count,
             "offset"    => intval( $offset ) + intval( $post_hits_count ) + 1
         ];
+    }
+
+    private static function advanced_search_post_status_keys_sql_array( $statuses ): string {
+        return ( ! empty( $statuses ) ) ? "('" . implode( "','", $statuses ) . "')" : "('')";
+    }
+
+    private static function advanced_search_post_status_keys( $post_settings ): array {
+        $statuses = [];
+
+        if ( isset( $post_settings['status_field'], $post_settings['fields'] ) ) {
+            $status_field = $post_settings['fields'][ $post_settings['status_field']['status_key'] ];
+
+            foreach ( $status_field['default'] ?? [] as $default_key => $default_value ) {
+                $statuses[] = $default_key;
+            }
+        }
+
+        return $statuses;
+    }
+
+    private static function advanced_search_post_status( $post_settings, $status_key ): array {
+        if ( isset( $post_settings['status_field'], $post_settings['fields'] ) ) {
+            $status_field = $post_settings['fields'][ $post_settings['status_field']['status_key'] ];
+
+            return $status_field['default'][ $status_key ] ?? [];
+        }
+
+        return [];
     }
 }
 

@@ -203,6 +203,7 @@ window.API = {
     post: filters['post'],
     comment: filters['comment'],
     meta: filters['meta'],
+    status: filters['status']
   }, 'dt-posts/v2/posts/search/')
 };
 
