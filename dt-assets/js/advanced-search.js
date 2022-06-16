@@ -56,15 +56,29 @@ jQuery(document).ready(function ($) {
 
   $(document).on("click", '.advanced-search-modal-filters', function (e) {
     execute_search_query();
+
+    // Link status filter accordingly with other main filters
+    let filters = fetch_filters();
+    $('#advanced-search-modal-filters-status-' + determine_orientation()).prop('disabled', !(filters['post'] || filters['comment'] || filters['meta']));
+
   })
+
+  $(document).on("change", '.advanced-search-modal-filters-selects', function (e) {
+    execute_search_query();
+  })
+
+  function determine_orientation() {
+    return $('.advanced-search-modal-results-post-types-view-at-top-collapsible-button').is(':visible') ? 'top' : 'side';
+  }
 
   function fetch_filters() {
     // Source filters based on current visibility orientation
-    let location = $('.advanced-search-modal-results-post-types-view-at-top-collapsible-button').is(':visible') ? 'top' : 'side';
+    let location = determine_orientation();
     return {
       post: $('#advanced-search-modal-filters-posts-' + location).prop('checked'),
       comment: $('#advanced-search-modal-filters-comments-' + location).prop('checked'),
-      meta: $('#advanced-search-modal-filters-meta-' + location).prop('checked')
+      meta: $('#advanced-search-modal-filters-meta-' + location).prop('checked'),
+      status: $('#advanced-search-modal-filters-status-' + location).val()
     };
   }
 
@@ -83,7 +97,12 @@ jQuery(document).ready(function ($) {
       if (api_data && (parseInt(api_data['total_hits']) > 0)) {
 
         // Reverse sort order so as to ensure names appear up top!
-        let results = sort_hits(remove_duplicate_hits(api_data['hits']), {meta_hit: [], comment_hit: [], post_hit: []});
+        let results = sort_hits(remove_duplicate_hits(api_data['hits']), {
+          meta_hit: [],
+          comment_hit: [],
+          post_hit: [],
+          status_hit: []
+        });
         let total_hits = calculate_total_hits(results);
 
         // Update global hits count
@@ -194,6 +213,7 @@ jQuery(document).ready(function ($) {
     let _is_post_hit = is_post_hit(post['post_hit']);
     let _is_comment_hit = is_comment_hit(post['comment_hit']);
     let _is_meta_hit = is_meta_hit(post['meta_hit']);
+    let _is_status_hit = is_meta_hit(post['status_hit']);
     let _is_default_hit = (!_is_post_hit && !_is_comment_hit && !_is_meta_hit);
 
     let results_html = '<tr class="advanced-search-modal-results-table-row-clickable">';
@@ -214,11 +234,12 @@ jQuery(document).ready(function ($) {
 
     results_html += '</td>';
 
-    // Determine hit type icon to be displayed
+    // Determine hit type icon to be displayed and status color
+    let status_color_css = (_is_status_hit && post['status'] && post['status']['color']) ? 'color-filter-' + post['status']['color'].toUpperCase().replace('#', '') : '';
     results_html += '<td class="advanced-search-modal-results-table-col-hits-type">';
-    results_html += (_is_post_hit || _is_default_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
-    results_html += (_is_comment_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
-    results_html += (_is_meta_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/socialmedia.svg" alt="Meta Hit"/>&nbsp;' : '';
+    results_html += (_is_post_hit || _is_default_hit) ? '<img class="dt-icon ' + status_color_css + '" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
+    results_html += (_is_comment_hit) ? '<img class="dt-icon ' + status_color_css + '" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
+    results_html += (_is_meta_hit) ? '<img class="dt-icon ' + status_color_css + '" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/socialmedia.svg" alt="Meta Hit"/>&nbsp;' : '';
     results_html += '</td>';
 
     results_html += '</tr>';
@@ -236,6 +257,10 @@ jQuery(document).ready(function ($) {
 
   function is_meta_hit(meta_hit) {
     return (meta_hit && (meta_hit === 'Y'));
+  }
+
+  function is_status_hit(status_hit) {
+    return (status_hit && (status_hit === 'Y'));
   }
 
   function display_record(post_type, post_id) {
@@ -279,7 +304,7 @@ jQuery(document).ready(function ($) {
     return total;
   }
 
-  function sort_hits(hits, order = {post_hit: [], comment_hit: [], meta_hit: []}) {
+  function sort_hits(hits, order = {post_hit: [], comment_hit: [], meta_hit: [], status_hit: []}) {
     if (hits) {
       hits.forEach(function (hit) {
 
@@ -288,6 +313,7 @@ jQuery(document).ready(function ($) {
         order.post_hit = [];
         order.comment_hit = [];
         order.meta_hit = [];
+        order.status_hit = [];
 
         // Sort posts accordingly by hit type.
         hit['posts'].forEach(function (post) {
@@ -299,6 +325,9 @@ jQuery(document).ready(function ($) {
 
           } else if (is_meta_hit(post['meta_hit'])) {
             order.meta_hit.push(post);
+
+          } else if (is_status_hit(post['status_hit'])) {
+            order.status_hit.push(post);
 
           } else {
             order.post_hit.push(post); // Default hit type!
