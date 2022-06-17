@@ -1788,14 +1788,14 @@ class DT_Posts extends Disciple_Tools_Posts {
             $extra_where .= ( empty( $extra_where ) ? '' : " OR " ) . "adv_search_post_meta.meta_value LIKE " . $esc_like_search_sql;
         }
 
-        // Works in conjunction with other filters
+        // Ensure status filter is captured accordingly
         $post_settings = self::get_post_settings( $post_type, false );
-        if ( ! empty( $extra_where ) && ! empty( $filters['status'] ) ) {
+        if ( ! empty( $filters['status'] ) ) {
             $status_where_condition = ( $filters['status'] === 'all' ) ? "IN " . self::advanced_search_post_status_keys_sql_array( self::advanced_search_post_status_keys( $post_settings ) ) : "= '" . $filters['status'] . "'";
             $extra_fields           .= "if(adv_search_post_status.meta_value " . $status_where_condition . ", 'Y', 'N') status_hit,";
             $extra_fields           .= "if(adv_search_post_status.meta_value " . $status_where_condition . ", adv_search_post_status.meta_value, '') status_hit_value,";
             $extra_joins            .= "LEFT JOIN $wpdb->postmeta as adv_search_post_status ON ( ( adv_search_post_status.post_id = p.ID ) AND ( adv_search_post_status.meta_key " . ( isset( $post_settings['status_field'] ) ? sprintf( "= '%s'", $post_settings['status_field']['status_key'] ) : "LIKE '%status%'" ) . " ) )";
-            $extra_where            = "(" . $extra_where . ") AND adv_search_post_status.meta_value " . $status_where_condition;
+            $extra_where            = ( empty( $extra_where ) ? '' : "(" . $extra_where . ") AND " ) . "adv_search_post_status.meta_value " . $status_where_condition;
         }
 
         if ( empty( $extra_where ) ){

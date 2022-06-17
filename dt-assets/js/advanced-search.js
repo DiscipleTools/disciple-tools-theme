@@ -56,15 +56,6 @@ jQuery(document).ready(function ($) {
 
   $(document).on("click", '.advanced-search-modal-filters', function (e) {
     execute_search_query();
-
-    // Link status filter accordingly with other main filters
-    let filters = fetch_filters();
-    $('#advanced-search-modal-filters-status-' + determine_orientation()).prop('disabled', !(filters['post'] || filters['comment'] || filters['meta']));
-
-  })
-
-  $(document).on("change", '.advanced-search-modal-filters-selects', function (e) {
-    execute_search_query();
   })
 
   function determine_orientation() {
@@ -78,7 +69,7 @@ jQuery(document).ready(function ($) {
       post: $('#advanced-search-modal-filters-posts-' + location).prop('checked'),
       comment: $('#advanced-search-modal-filters-comments-' + location).prop('checked'),
       meta: $('#advanced-search-modal-filters-meta-' + location).prop('checked'),
-      status: $('#advanced-search-modal-filters-status-' + location).val()
+      status: 'all'
     };
   }
 
@@ -219,8 +210,9 @@ jQuery(document).ready(function ($) {
     let results_html = '<tr class="advanced-search-modal-results-table-row-clickable">';
 
     // Convert post title to link, so as to provide support for browser link options, such as open in new tab!
+    let status_label = (_is_status_hit && post['status'] && post['status']['label']) ? ' [<i>' + window.lodash.escape(post['status']['label']).toLowerCase() + '</i>]' : '';
     let post_link = window.wpApiShare.site_url + '/' + window.lodash.escape(hidden_post_type) + "/" + window.lodash.escape(hidden_post_id);
-    results_html += '<td class="advanced-search-modal-results-table-col-hits"><a href="' + post_link + '"><b>' + window.lodash.escape(post['post_title']) + '</b> (#' + window.lodash.escape(hidden_post_id) + ')</a><br><span>';
+    results_html += '<td class="advanced-search-modal-results-table-col-hits"><a href="' + post_link + '"><b>' + window.lodash.escape(post['post_title']) + '</b> (#' + window.lodash.escape(hidden_post_id) + ')' + status_label + '</a><br><span>';
 
     if (_is_comment_hit) {
       results_html += window.lodash.escape((String(post['comment_hit_content']).length > 100) ? String(post['comment_hit_content']).substring(0, 100) + "..." : post['comment_hit_content']);

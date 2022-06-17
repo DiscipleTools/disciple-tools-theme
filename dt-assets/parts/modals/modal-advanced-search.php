@@ -101,43 +101,6 @@ function build_filters_option_list_html( $location ) {
     <label
         for="advanced-search-modal-filters-meta-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Communication', 'disciple_tools' ); ?></label>
     <br>
-
-    <br>
-    <select id="advanced-search-modal-filters-status-<?php echo esc_attr( $location ); ?>"
-            class="advanced-search-modal-filters-selects">
-        <option value=""><?php echo esc_html__( 'Ignore Status', 'disciple_tools' ); ?></option>
-        <option value="all"><?php echo esc_html__( 'All Status', 'disciple_tools' ); ?></option>
-        <option disabled>--- <?php echo esc_html__( 'statuses', 'disciple_tools' ); ?> ---</option>
-        <?php
-        foreach ( list_available_statuses() as $status_key => $status ) {
-            echo '<option value="' . esc_html( $status_key ) . '">' . esc_html( $status['label'] ) . '</option>';
-        }
-        ?>
-    </select>
     <?php
 }
-
-function list_available_statuses(): array {
-    $statuses = [];
-
-    foreach ( DT_Posts::get_post_types() as $post_type ) {
-        $post_settings = DT_Posts::get_post_settings( $post_type, false );
-
-        // Determine corresponding status field
-        if ( isset( $post_settings['status_field'], $post_settings['fields'] ) ) {
-            $status_field = $post_settings['fields'][ $post_settings['status_field']['status_key'] ];
-
-            // Uniquely capture statuses
-            foreach ( $status_field['default'] ?? [] as $default_key => $default_value ) {
-                if ( ! isset( $statuses[ $default_key ] ) ) {
-                    $statuses[ $default_key ] = $default_value;
-                }
-            }
-        }
-    }
-
-    return $statuses;
-}
-
-
 ?>
