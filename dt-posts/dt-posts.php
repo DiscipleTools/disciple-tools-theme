@@ -1790,7 +1790,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         // Ensure status filter is captured accordingly
         $post_settings = self::get_post_settings( $post_type, false );
-        if ( ! empty( $filters['status'] ) ) {
+        if ( !empty( $filters['status'] ) && !empty( $post_settings["status_field"] ) ){
             $status_where_condition = ( $filters['status'] === 'all' ) ? "IN " . self::advanced_search_post_status_keys_sql_array( self::advanced_search_post_status_keys( $post_settings ) ) : "= '" . $filters['status'] . "'";
             $extra_fields           .= "if(adv_search_post_status.meta_value " . $status_where_condition . ", 'Y', 'N') status_hit,";
             $extra_fields           .= "if(adv_search_post_status.meta_value " . $status_where_condition . ", adv_search_post_status.meta_value, '') status_hit_value,";
