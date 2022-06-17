@@ -542,9 +542,6 @@ class DT_Contacts_Base {
                 ],
                 'query' => [
                     'sort' => '-post_date',
-                    'overall_status' => [
-                        '-closed'
-                    ]
                 ],
             ];
 
