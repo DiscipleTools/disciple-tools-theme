@@ -164,7 +164,7 @@ jQuery(document).ready(function ($) {
     $('.advanced-search-modal-results-total').html(window.lodash.escape(total_hits));
 
     // Iterate through results, displaying accordingly
-    results_html += '<table class="advanced-search-modal-results-table"><tbody>';
+    results_html += '<table class="advanced-search-modal-results-table" style="border-spacing: 0px 5px !important; border-collapse: separate;"><tbody>';
     results.forEach(function (result) {
 
       results_html += '<tr>';
@@ -211,8 +211,9 @@ jQuery(document).ready(function ($) {
 
     // Convert post title to link, so as to provide support for browser link options, such as open in new tab!
     let status_label = (_is_status_hit && post['status'] && post['status']['label']) ? ' [<i>' + window.lodash.escape(post['status']['label']).toLowerCase() + '</i>]' : '';
+    let status_color_css = (_is_status_hit && post['status'] && post['status']['color']) ? 'style="border-left-color: ' + post['status']['color'] + ' !important; border-left: 5px solid;"' : '';
     let post_link = window.wpApiShare.site_url + '/' + window.lodash.escape(hidden_post_type) + "/" + window.lodash.escape(hidden_post_id);
-    results_html += '<td class="advanced-search-modal-results-table-col-hits"><a href="' + post_link + '"><b>' + window.lodash.escape(post['post_title']) + '</b> (#' + window.lodash.escape(hidden_post_id) + ')' + status_label + '</a><br><span>';
+    results_html += '<td class="advanced-search-modal-results-table-col-hits" ' + status_color_css + '><a href="' + post_link + '"><b>' + window.lodash.escape(post['post_title']) + '</b> (#' + window.lodash.escape(hidden_post_id) + ')' + status_label + '</a><br><span>';
 
     if (_is_comment_hit) {
       results_html += window.lodash.escape((String(post['comment_hit_content']).length > 100) ? String(post['comment_hit_content']).substring(0, 100) + "..." : post['comment_hit_content']);
@@ -226,12 +227,11 @@ jQuery(document).ready(function ($) {
 
     results_html += '</td>';
 
-    // Determine hit type icon to be displayed and status color
-    let status_color_css = (_is_status_hit && post['status'] && post['status']['color']) ? 'color-filter-' + post['status']['color'].toUpperCase().replace('#', '') : '';
+    // Determine hit type icon to be displayed
     results_html += '<td class="advanced-search-modal-results-table-col-hits-type">';
-    results_html += (_is_post_hit || _is_default_hit) ? '<img class="dt-icon ' + status_color_css + '" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
-    results_html += (_is_comment_hit) ? '<img class="dt-icon ' + status_color_css + '" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
-    results_html += (_is_meta_hit) ? '<img class="dt-icon ' + status_color_css + '" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/socialmedia.svg" alt="Meta Hit"/>&nbsp;' : '';
+    results_html += (_is_post_hit || _is_default_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
+    results_html += (_is_comment_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
+    results_html += (_is_meta_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/socialmedia.svg" alt="Meta Hit"/>&nbsp;' : '';
     results_html += '</td>';
 
     results_html += '</tr>';
