@@ -1866,7 +1866,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     }
 
     private static function advanced_search_post_status_keys_sql_array( $statuses ): string {
-        return ( ! empty( $statuses ) ) ? "('" . implode( "','", $statuses ) . "')" : "('')";
+        return ( ! empty( $statuses ) ) ? "(" . dt_array_to_sql( $statuses ) . ")" : "('')";
     }
 
     private static function advanced_search_post_status_keys( $post_settings ): array {
