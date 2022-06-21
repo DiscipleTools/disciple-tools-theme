@@ -2471,6 +2471,19 @@ class Disciple_Tools_Posts
         }
 
         /**
+         * Get meta values for connection post record
+         */
+        //phpcs:disable
+        //WordPress.WP.PreparedSQL.NotPrepare
+        $connected_post_meta = $wpdb->get_results( "
+            SELECT *
+            FROM $wpdb->postmeta
+            WHERE post_id in ( $connected_post_ids_sql )
+        ", ARRAY_A );
+        //phpcs:enable
+
+
+        /**
          * Get meta values for connections
          */
         $p2p_ids_sql = dt_array_to_sql( $p2p_ids );
@@ -2506,6 +2519,11 @@ class Disciple_Tools_Posts
                                     $connection_meta[$meta["meta_key"]] = $meta["meta_value"];
                                 }
                             }
+                            foreach ( $connected_post_meta as $post_meta ) {
+                                if ( $post_meta["post_id"] == $connection_id ){
+                                    $connection_meta[$post_meta["meta_key"]] = $post_meta["meta_value"];
+                                }
+                            }
                             $record[$field_key][] = self::filter_wp_post_object_fields( $connection_post, $connection_meta );
                         }
                     }
@@ -2522,12 +2540,12 @@ class Disciple_Tools_Posts
      */
     public static function filter_wp_post_object_fields( $post, $meta = null ){
         $filtered_post = [
-            "ID" => $post["ID"],
-            "post_type" => $post["post_type"],
+            "ID"            => $post["ID"],
+            "post_type"     => $post["post_type"],
             "post_date_gmt" => $post["post_date_gmt"],
-            "post_date" => $post["post_date"],
-            "post_title" => wp_specialchars_decode( $post["post_title"] ),
-            "permalink" => get_permalink( $post["ID"] )
+            "post_date"     => $post["post_date"],
+            "post_title"    => wp_specialchars_decode( $post["post_title"] ),
+            "permalink"     => get_permalink( $post["ID"] )
         ];
         if ( $meta ){
             $filtered_post["meta"] = $meta;

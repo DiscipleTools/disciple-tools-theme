@@ -452,6 +452,7 @@ window.TYPEAHEADS = {
     return text;
   },
   contactListRowTemplate: function (query, item) {
+    let status_label = item.status ? '[<span style="color: ' + window.lodash.escape(item.status.color) + ';"><i>' + window.lodash.escape(item.status.label).toLowerCase() + '</i></span>]' : '';
     let img = item.user
       ? `<img class="dt-blue-icon" src="${wpApiShare.template_dir}/dt-assets/images/profile.svg?v=2">`
       : "";
@@ -460,6 +461,7 @@ window.TYPEAHEADS = {
         <span class="typeahead-user-row" style="width:20px">${img}</span>
         ${window.lodash.escape((item.label ? item.label : item.name))}
         <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
+        ${status_label}
     </span>`;
   },
   share(post_type, id) {

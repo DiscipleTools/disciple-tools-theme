@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
   let post_id = window.detailsSettings.post_id
   let post_type = window.detailsSettings.post_type
   let post = window.detailsSettings.post_fields
+  let post_settings = window.detailsSettings.post_settings
   let field_settings = window.detailsSettings.post_settings.fields
   window.post_type_fields = field_settings
   let rest_api = window.API
@@ -383,15 +384,33 @@ jQuery(document).ready(function($) {
           if (this.items[this.items.length - 1].label) {
             return "{{label}}"
           } else {
-            return "{{name}}"
+            return "{{name}} {{status.label}}"
           }
       },
       dynamic: true,
       multiselect: {
         matchOn: ["ID"],
         data: function () {
-          return (post[field_id] || [] ).map(g=>{
-            return {ID:g.ID, name:g.post_title, label: g.label}
+          let status_key = post_settings['status_field']['status_key'] ?? null;
+          return (post[field_id] || []).map(g => {
+
+            // If available, extract post meta status info
+            let status = {};
+            if (g['meta'][status_key]) {
+              let post_status_id = g['meta'][status_key];
+              let status_settings = post_settings['fields'][status_key]['default'][post_status_id];
+
+              status['key'] = post_status_id;
+              status['label'] = status_settings['label'] ? '[' + window.lodash.escape(status_settings['label']).toLowerCase() + ']' : '';
+              status['color'] = status_settings['color'] ?? '#000000';
+            }
+
+            return {
+              ID: g.ID,
+              name: g.post_title,
+              label: g.label,
+              status: status
+            }
           })
         },
         callback: {
@@ -424,6 +443,12 @@ jQuery(document).ready(function($) {
             $(`#${field_id}-spinner`).removeClass('active')
             $( document ).trigger( "dt-post-connection-added", [ new_post, field_id ] );
           }).catch(err => { console.error(err) })
+
+          // If present, adjust status label, so as to remain uniform
+          if (item['status']) {
+            item['status']['label'] = item['status']['label'] ? '[' + window.lodash.escape(item['status']['label']).toLowerCase() + ']' : '';
+          }
+
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();

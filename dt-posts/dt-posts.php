@@ -553,7 +553,6 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $fields;
     }
 
-
     /**
      * Get a list of posts
      * For query format see https://github.com/DiscipleTools/disciple-tools-theme/wiki/Filter-and-Search-Lists
@@ -874,11 +873,55 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        $return = [
+        // Apply filters accordingly...
+        $filtered_posts = apply_filters( 'dt_get_viewable_compact', [
             "total" => sizeof( $compact ),
             "posts" => array_slice( $compact, 0, 50 )
-        ];
-        return apply_filters( 'dt_get_viewable_compact', $return, $post_type, $search_string, $args );
+        ], $post_type, $search_string, $args );
+
+        // Capture corresponding post record statuses and return
+        $filtered_posts['posts'] = self::capture_viewable_compact_post_record_status( $post_type, $filtered_posts['posts'] );
+
+        return $filtered_posts;
+    }
+
+    /**
+     * Capture and update viewable compact post record status
+     *
+     * @param string $post_type
+     * @param array $posts
+     *
+     * @return array
+     */
+    public static function capture_viewable_compact_post_record_status( string $post_type, array $posts ): array {
+
+        // Determine corresponding status key for given post type
+        $post_settings = self::get_post_settings( $post_type, false );
+        if ( empty( $post_settings["status_field"] ) ) {
+            return $posts;
+        }
+
+        $status_key       = $post_settings['status_field']['status_key'];
+        $default_statuses = $post_settings['fields'][ $post_settings['status_field']['status_key'] ]['default'] ?? [];
+
+        // Iterate over compact post records
+        $updated_records = [];
+        foreach ( $posts ?? [] as $compact ) {
+
+            // Fetch actual corresponding post record
+            $post = self::get_post( $post_type, $compact['ID'] );
+
+            // Ensure post record is valid, in order to extract status info
+            if ( ! empty( $post ) && ! is_wp_error( $post ) && isset( $post[ $status_key ] ) ) {
+                $compact['status']          = $post[ $status_key ];
+                $compact['status']['color'] = $default_statuses[ $compact['status']['key'] ]['color'] ?? '#000000';
+            }
+
+            // Capture updated compact record
+            $updated_records[] = $compact;
+        }
+
+        return $updated_records;
     }
 
     /**
