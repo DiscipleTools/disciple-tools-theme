@@ -384,32 +384,19 @@ jQuery(document).ready(function($) {
           if (this.items[this.items.length - 1].label) {
             return "{{label}}"
           } else {
-            return "{{name}} {{status.label}}"
+            return "{{name}}"
           }
       },
       dynamic: true,
       multiselect: {
         matchOn: ["ID"],
         data: function () {
-          let status_key = post_settings['status_field']['status_key'] ?? null;
           return (post[field_id] || []).map(g => {
-
-            // If available, extract post meta status info
-            let status = {};
-            if (g['meta'][status_key]) {
-              let post_status_id = g['meta'][status_key];
-              let status_settings = post_settings['fields'][status_key]['default'][post_status_id];
-
-              status['key'] = post_status_id;
-              status['label'] = status_settings['label'] ? '[' + window.lodash.escape(status_settings['label']).toLowerCase() + ']' : '';
-              status['color'] = status_settings['color'] ?? '#000000';
-            }
-
             return {
               ID: g.ID,
               name: g.post_title,
               label: g.label,
-              status: status
+              status: g['status'] ?? null
             }
           })
         },
@@ -436,6 +423,18 @@ jQuery(document).ready(function($) {
             let cancelButton = $(`#${el.id} .typeahead__cancel-button`);
             cancelButton.css('pointerEvents','none');
           }
+
+          // If available, display item status colours within labels
+          let field_typeahead = this;
+          $.each(field_typeahead.items, function (idx, item) {
+            if (item['ID'] && item['status'] && item['status']['color']) {
+              $(field_typeahead.label.container[0]).find("a[href$=\\/" + item['ID']).each(function () {
+
+                // Once we have a handle, adjust styling accordingly
+                $(this).parent().css('border-left', '3px solid ' + item['status']['color']);
+              });
+            }
+          });
         },
         onClick: function(node, a, item, event){
           $(`#${field_id}-spinner`).addClass('active')

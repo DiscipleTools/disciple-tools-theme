@@ -873,16 +873,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        // Apply filters accordingly...
-        $filtered_posts = apply_filters( 'dt_get_viewable_compact', [
+        // Capture corresponding post record statuses, apply filters and return
+        return apply_filters( 'dt_get_viewable_compact', [
             "total" => sizeof( $compact ),
-            "posts" => array_slice( $compact, 0, 50 )
+            "posts" => self::capture_viewable_compact_post_record_status( $post_type, array_slice( $compact, 0, 50 ) )
         ], $post_type, $search_string, $args );
-
-        // Capture corresponding post record statuses and return
-        $filtered_posts['posts'] = self::capture_viewable_compact_post_record_status( $post_type, $filtered_posts['posts'] );
-
-        return $filtered_posts;
     }
 
     /**
@@ -895,26 +890,25 @@ class DT_Posts extends Disciple_Tools_Posts {
      */
     public static function capture_viewable_compact_post_record_status( string $post_type, array $posts ): array {
 
-        // Determine corresponding status key for given post type
-        $post_settings = self::get_post_settings( $post_type, false );
-        if ( empty( $post_settings["status_field"] ) ) {
+        // Ensure there are valid posts to process
+        if ( empty( $posts ) ) {
             return $posts;
         }
 
-        $status_key       = $post_settings['status_field']['status_key'];
-        $default_statuses = $post_settings['fields'][ $post_settings['status_field']['status_key'] ]['default'] ?? [];
+        // Collate all compact ids
+        $compact_ids = [];
+        foreach ( $posts as $compact ) {
+            $compact_ids[] = $compact['ID'];
+        }
 
-        // Iterate over compact post records
+        // Determine current status meta values for identified ids
+        $compact_statuses = self::get_post_status( $compact_ids, $post_type );
+
+        // Iterate over compact post records and update status reference, accordingly
         $updated_records = [];
-        foreach ( $posts ?? [] as $compact ) {
-
-            // Fetch actual corresponding post record
-            $post = self::get_post( $post_type, $compact['ID'] );
-
-            // Ensure post record is valid, in order to extract status info
-            if ( ! empty( $post ) && ! is_wp_error( $post ) && isset( $post[ $status_key ] ) ) {
-                $compact['status']          = $post[ $status_key ];
-                $compact['status']['color'] = $default_statuses[ $compact['status']['key'] ]['color'] ?? '#000000';
+        foreach ( $posts as $compact ) {
+            if ( isset( $compact_statuses[ $compact['ID'] ] ) ) {
+                $compact['status'] = $compact_statuses[ $compact['ID'] ];
             }
 
             // Capture updated compact record

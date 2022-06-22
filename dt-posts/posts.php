@@ -2471,19 +2471,6 @@ class Disciple_Tools_Posts
         }
 
         /**
-         * Get meta values for connection post record
-         */
-        //phpcs:disable
-        //WordPress.WP.PreparedSQL.NotPrepare
-        $connected_post_meta = $wpdb->get_results( "
-            SELECT *
-            FROM $wpdb->postmeta
-            WHERE post_id in ( $connected_post_ids_sql )
-        ", ARRAY_A );
-        //phpcs:enable
-
-
-        /**
          * Get meta values for connections
          */
         $p2p_ids_sql = dt_array_to_sql( $p2p_ids );
@@ -2519,17 +2506,56 @@ class Disciple_Tools_Posts
                                     $connection_meta[$meta["meta_key"]] = $meta["meta_value"];
                                 }
                             }
-                            foreach ( $connected_post_meta as $post_meta ) {
-                                if ( $post_meta["post_id"] == $connection_id ){
-                                    $connection_meta[$post_meta["meta_key"]] = $post_meta["meta_value"];
-                                }
-                            }
                             $record[$field_key][] = self::filter_wp_post_object_fields( $connection_post, $connection_meta );
                         }
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Determine status information for given id array
+     *
+     * @param array $ids
+     * @param string $post_type
+     *
+     * @return array
+     */
+    public static function get_post_status( array $ids, string $post_type ): array {
+        global $wpdb;
+
+        // Determine corresponding status key for given post type
+        $post_settings = apply_filters( 'dt_get_post_type_settings', [], $post_type );
+        if ( empty( $post_settings['status_field']['status_key'] ) ) {
+            return [];
+        }
+        $status_key = $post_settings['status_field']['status_key'];
+
+        // Attempt to extract status keys for given ids
+        $ids_sql           = dt_array_to_sql( array_unique( $ids ) );
+        $post_meta_results = $wpdb->get_results( "
+            SELECT *
+            FROM $wpdb->postmeta
+            WHERE post_id IN ( $ids_sql )
+            AND meta_key = '$status_key'
+        ", ARRAY_A );
+
+        // Extract full status details
+        $status_settings = $post_settings['fields'];
+        $statuses        = [];
+        foreach ( $post_meta_results as $meta ) {
+            if ( isset( $status_settings[ $status_key ]['default'][ $meta['meta_value'] ] ) ) {
+                $default                      = $status_settings[ $status_key ]['default'][ $meta['meta_value'] ];
+                $statuses[ $meta['post_id'] ] = [
+                    'key'   => $meta['meta_value'],
+                    'label' => $default['label'],
+                    'color' => $default['color']
+                ];
+            }
+        }
+
+        return $statuses;
     }
 
     /**
@@ -2556,6 +2582,9 @@ class Disciple_Tools_Posts
             $label = ( $translation ? $translation : $post["post_title"] );
             $filtered_post["label"] = $label;
         }
+
+        // Capture status info
+        $filtered_post['status'] = self::get_post_status( [ $post['ID'] ], $post['post_type'] )[ $post['ID'] ] ?? null;
 
         return $filtered_post;
     }
