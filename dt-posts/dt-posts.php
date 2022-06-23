@@ -1827,8 +1827,8 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         // Ensure status filter is captured accordingly
         $post_settings = self::get_post_settings( $post_type, false );
-        if ( !empty( $filters['status'] ) && !empty( $post_settings["status_field"] ) ){
-            $status_where_condition = ( $filters['status'] === 'all' ) ? "IN " . self::advanced_search_post_status_keys_sql_array( self::advanced_search_post_status_keys( $post_settings ) ) : "= '" . $filters['status'] . "'";
+        if ( ! empty( $filters['status'] ) && ! empty( $post_settings["status_field"] ) ) {
+            $status_where_condition = ( $filters['status'] === 'all' ) ? "IN (" . dt_array_to_sql( self::get_post_field_options_keys( $post_settings['fields'], $post_settings['status_field']['status_key'] ) ) . ")" : "= '" . $filters['status'] . "'";
             $extra_fields           .= "if(adv_search_post_status.meta_value " . $status_where_condition . ", 'Y', 'N') status_hit,";
             $extra_fields           .= "if(adv_search_post_status.meta_value " . $status_where_condition . ", adv_search_post_status.meta_value, '') status_hit_value,";
             $extra_joins            .= "LEFT JOIN $wpdb->postmeta as adv_search_post_status ON ( ( adv_search_post_status.post_id = p.ID ) AND ( adv_search_post_status.meta_key " . ( isset( $post_settings['status_field'] ) ? sprintf( "= '%s'", $post_settings['status_field']['status_key'] ) : "LIKE '%status%'" ) . " ) )";
@@ -1889,7 +1889,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         //decode special characters in post titles & determine status
         foreach ( $post_hits as $hit ) {
             $hit->post_title = wp_specialchars_decode( $hit->post_title );
-            $hit->status     = self::advanced_search_post_status( $post_settings, $hit->status_hit_value ?? '' );
+            $hit->status     = self::get_post_field_option( $post_settings['fields'], $post_settings['status_field']['status_key'] ?? '', $hit->status_hit_value ?? '' );
         }
 
         //capture hits count and adjust future offsets
@@ -1900,34 +1900,6 @@ class DT_Posts extends Disciple_Tools_Posts {
             "total"     => $post_hits_count,
             "offset"    => intval( $offset ) + intval( $post_hits_count ) + 1
         ];
-    }
-
-    private static function advanced_search_post_status_keys_sql_array( $statuses ): string {
-        return ( ! empty( $statuses ) ) ? "(" . dt_array_to_sql( $statuses ) . ")" : "('')";
-    }
-
-    private static function advanced_search_post_status_keys( $post_settings ): array {
-        $statuses = [];
-
-        if ( isset( $post_settings['status_field'], $post_settings['fields'] ) ) {
-            $status_field = $post_settings['fields'][ $post_settings['status_field']['status_key'] ];
-
-            foreach ( $status_field['default'] ?? [] as $default_key => $default_value ) {
-                $statuses[] = $default_key;
-            }
-        }
-
-        return $statuses;
-    }
-
-    private static function advanced_search_post_status( $post_settings, $status_key ): array {
-        if ( isset( $post_settings['status_field'], $post_settings['fields'] ) ) {
-            $status_field = $post_settings['fields'][ $post_settings['status_field']['status_key'] ];
-
-            return $status_field['default'][ $status_key ] ?? [];
-        }
-
-        return [];
     }
 }
 

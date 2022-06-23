@@ -2561,6 +2561,18 @@ class Disciple_Tools_Posts
         return $statuses;
     }
 
+    public static function get_post_field_option( $field_settings, $field_key, $option_key ): array {
+        return $field_settings[ $field_key ]['default'][ $option_key ] ?? [];
+    }
+
+    public static function get_post_field_options_keys( $field_settings, $field_key ): array {
+        return array_keys( $field_settings[ $field_key ]['default'] ) ?? [];
+    }
+
+    public static function get_post_field_option_attribute( $field_settings, $field_key, $option_key, $option_attrib ) {
+        return $field_settings[ $field_key ]['default'][ $option_key ][ $option_attrib ] ?? null;
+    }
+
     /**
      * Reduced the number of fields on a post to what is useful in D.T
      *
