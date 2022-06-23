@@ -2534,12 +2534,15 @@ class Disciple_Tools_Posts
 
         // Attempt to extract status keys for given ids
         $ids_sql           = dt_array_to_sql( array_unique( $ids ) );
+        //phpcs:disable
+        //WordPress.WP.PreparedSQL.NotPrepare
         $post_meta_results = $wpdb->get_results( "
             SELECT *
             FROM $wpdb->postmeta
             WHERE post_id IN ( $ids_sql )
             AND meta_key = '$status_key'
         ", ARRAY_A );
+        //phpcs:enable
 
         // Extract full status details
         $status_settings = $post_settings['fields'];
