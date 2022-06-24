@@ -13,6 +13,7 @@
     "babel-preset-env": "^1.7.0",
     "browser-sync": "^2.27.5",
     "cssnano": "^5.0.8",
+    "eslint": "^8.18.0",
     "foundation-sites": "^6.7.2",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
@@ -51,6 +52,9 @@
   "lint-staged": {
     "*.php": [
       "./phpcbf.sh"
+    ],
+    "*.js": [
+      "eslint"
     ]
   },
   "jshintConfig": {
