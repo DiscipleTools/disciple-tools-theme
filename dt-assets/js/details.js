@@ -425,16 +425,7 @@ jQuery(document).ready(function($) {
           }
 
           // If available, display item status colours within labels
-          let field_typeahead = this;
-          $.each(field_typeahead.items, function (idx, item) {
-            if (item['ID'] && item['status'] && item['status']['color']) {
-              $(field_typeahead.label.container[0]).find("a[href$=\\/" + item['ID']).each(function () {
-
-                // Once we have a handle, adjust styling accordingly
-                $(this).parent().css('border-left', '3px solid ' + item['status']['color']);
-              });
-            }
-          });
+          set_item_label_status_color(this);
         },
         onClick: function(node, a, item, event){
           $(`#${field_id}-spinner`).addClass('active')
@@ -459,6 +450,7 @@ jQuery(document).ready(function($) {
           $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function (event, query) {
+          set_item_label_status_color(this);
           if ( !query ){
             $(`#${field_id}-result-container`).empty()
           }
@@ -470,6 +462,22 @@ jQuery(document).ready(function($) {
       }
     })
   })
+
+  function set_item_label_status_color(field_typeahead) {
+    if (field_typeahead) {
+      $.each(field_typeahead.items, function (idx, item) {
+        if (item['ID'] && item['status'] && item['status']['color']) {
+          $(field_typeahead.label.container[0]).find("a[href$=\\/" + item['ID']).each(function () {
+
+            // Once we have a handle, adjust styling accordingly
+            $(this).parent().css('border-left', '3px solid ' + item['status']['color']);
+          });
+        }
+      });
+
+      field_typeahead.adjustInputSize();
+    }
+  }
 
   //multi_select typeaheads
   for (let input of $(".multi_select .typeahead__query input")) {
