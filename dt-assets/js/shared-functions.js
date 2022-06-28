@@ -452,15 +452,17 @@ window.TYPEAHEADS = {
     return text;
   },
   contactListRowTemplate: function (query, item) {
-    let status_label = item.status ? '[<span style="color: ' + window.lodash.escape(item.status.color) + ';"><i>' + window.lodash.escape(item.status.label).toLowerCase() + '</i></span>]' : '';
+    let status_color = item.status ? '<span class="vertical-line" style="border-left: 3px solid ' + window.lodash.escape(item.status.color) + ';"></span>' : '';
+    let status_label = item.status ? '[ <span><i>' + window.lodash.escape(item.status.label).toLowerCase() + '</i></span> ]' : '';
     let img = item.user
-      ? `<img class="dt-blue-icon" src="${wpApiShare.template_dir}/dt-assets/images/profile.svg?v=2">`
+      ? `<img style="margin: 0 5px;" class="dt-blue-icon" src="${wpApiShare.template_dir}/dt-assets/images/profile.svg?v=2">`
       : "";
     let statusStyle = item.status === "closed" ? 'style="color:gray"' : "";
-      return `<span dir="auto" ${statusStyle}>
+      return `<span style="display: inline-block; vertical-align: middle;" dir="auto" ${statusStyle}>
+        ${status_color}
         <span class="typeahead-user-row" style="width:20px">${img}</span>
         ${window.lodash.escape((item.label ? item.label : item.name))}
-        <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
+        <span style="margin: 0 5px;" dir="auto">(#${window.lodash.escape(item.ID)})</span>
         ${status_label}
     </span>`;
   },

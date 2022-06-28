@@ -425,7 +425,7 @@ jQuery(document).ready(function($) {
           }
 
           // If available, display item status colours within labels
-          set_item_label_status_color(this);
+          set_item_label_status(this);
         },
         onClick: function(node, a, item, event){
           $(`#${field_id}-spinner`).addClass('active')
@@ -450,7 +450,7 @@ jQuery(document).ready(function($) {
           $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function (event, query) {
-          set_item_label_status_color(this);
+          set_item_label_status(this);
           if ( !query ){
             $(`#${field_id}-result-container`).empty()
           }
@@ -463,14 +463,26 @@ jQuery(document).ready(function($) {
     })
   })
 
-  function set_item_label_status_color(field_typeahead) {
+  function set_item_label_status(field_typeahead) {
     if (field_typeahead) {
       $.each(field_typeahead.items, function (idx, item) {
         if (item['ID'] && item['status'] && item['status']['color']) {
           $(field_typeahead.label.container[0]).find("a[href$=\\/" + item['ID']).each(function () {
 
-            // Once we have a handle, adjust styling accordingly
-            $(this).parent().css('border-left', '3px solid ' + item['status']['color']);
+            // Obtain label handle
+            let label = $(this).parent();
+
+            // Once we have a handle, adjust colour styling accordingly
+            label.css('border-left', '3px solid ' + item['status']['color']);
+
+            // Assign corresponding tooltip, using title as trigger
+            if (item['status']['label']) {
+              label.attr('title', '');
+              label.tooltip({
+                content: item['status']['label'],
+                show: {effect: 'fade', duration: 100}
+              });
+            }
           });
         }
       });
