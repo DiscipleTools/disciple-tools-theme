@@ -85,6 +85,8 @@ function dt_options_scripts() {
         wp_register_style( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css' );
         wp_enqueue_style( 'jquery-ui' );
 
+        dt_theme_enqueue_style( 'material-font-icons', 'dt-core/dependencies/mdi/css/materialdesignicons.min.css', array() );
+
         if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'people-groups' ) {
             wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups.js', [
                 'jquery',

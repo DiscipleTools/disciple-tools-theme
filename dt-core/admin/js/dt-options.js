@@ -4,6 +4,14 @@ jQuery(document).ready(function ($) {
     display_translation_dialog($(this).siblings(), $(this).data('form_name'));
   });
 
+  $('.change-icon-button').click(function () {
+    event.preventDefault();
+    display_icon_selector_dialog();
+  });
+
+  // Load available icon class names, ahead of further downstream processing
+  let icons = build_icon_class_name_list();
+
   /**
    * Translation modal dialog
    */
@@ -47,6 +55,76 @@ jQuery(document).ready(function ($) {
     } else {
       console.log('Unable to reference a valid: [container, form-name, dialog]');
     }
+  }
+
+  /**
+   * Icon selector modal dialog
+   */
+
+  function display_icon_selector_dialog() {
+    let dialog = $('#dt_icon_selector_dialog');
+    if (dialog) {
+
+      // Refresh dialog config
+      dialog.dialog({
+        modal: true,
+        autoOpen: false,
+        hide: 'fade',
+        show: 'fade',
+        height: 600,
+        width: 700,
+        resizable: false,
+        title: 'Icon Selector Dialog',
+        buttons: [
+          {
+            text: 'Save',
+            icon: 'ui-icon-copy',
+            click: function () {
+              console.log('Saving icon.....');
+            }
+          },
+          {
+            text: 'Upload',
+            icon: 'ui-icon-circle-zoomout',
+            click: function () {
+              console.log('Uploading icon.....');
+            }
+          }
+        ]
+      });
+
+      // Display updated dialog
+      dialog.dialog('open');
+
+      //--SCRATCH
+      console.log(icons.length);
+      console.log(icons);
+      //--SCRATCH
+
+    } else {
+      console.log('Unable to reference a valid: [dialog]');
+    }
+  }
+
+  /**
+   * Icon selector modal dialog - Build Icon Class Name List
+   */
+
+  function build_icon_class_name_list() {
+    let icon_class_names = [];
+    $.each(document.styleSheets, function (idx, style_sheet) {
+      if (window.lodash.includes(style_sheet.href, 'materialdesignicons.min.css')) {
+        $.each(style_sheet.cssRules, function (key, rule) {
+          if (rule.constructor.name === 'CSSStyleRule') {
+            icon_class_names.push({
+              class: rule.selectorText.substring(1, rule.selectorText.indexOf(':'))
+            });
+          }
+        });
+      }
+    });
+
+    return icon_class_names;
   }
 
   /**

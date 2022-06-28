@@ -158,6 +158,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             /* Translation Dialog */
             dt_display_translation_dialog();
 
+            /* Icon Selector Dialog */
+            echo '<dialog id="dt_icon_selector_dialog"><i class="mdi mdi-format-align-left"
+               aria-hidden="true"></i></dialog>';
+
             if ( empty( $field_key ) && $show_add_field ){
                 $this->box( 'top', __( "Create new field", 'disciple_tools' ) );
                 $this->add_field( $post_type );
@@ -423,6 +427,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                            value="<?php echo esc_attr( $field["icon"] ?? '' ); ?>">
                                 </td>
                                 <td>
+                                    <button
+                                        class="button change-icon-button"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
+
                                     <button class="button file-upload-display-uploader" data-form="<?php echo esc_html( $form_name ) ?>"
                                             data-icon-input="field_icon"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
                                 </td>
