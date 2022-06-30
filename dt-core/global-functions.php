@@ -255,6 +255,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             foreach ( $available_language_codes as $code ){
                 if ( isset( $translations[$code] ) ){
                     $translations[$code]['site_default'] = $site_default_locale === $code;
+                    $translations[$code]['english_name'] = $translations[$code]["label"];
                     if ( !$code_as_key ){
                         $available_translations[] = $translations[$code];
                     } else {
