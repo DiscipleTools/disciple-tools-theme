@@ -1143,7 +1143,7 @@ class DT_Contacts_Access extends DT_Module_Base {
 
         $can_view_all = false;
         if ( current_user_can( 'access_specific_sources' ) ) {
-            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
             if ( empty( $sources ) || in_array( 'all', $sources ) ) {
                 $can_view_all = true;
             }
@@ -1161,7 +1161,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 GROUP BY status.meta_value, pm.meta_value
             ", ARRAY_A);
         } else if ( current_user_can( 'access_specific_sources' ) ) {
-            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
             $sources_sql = dt_array_to_sql( $sources );
             // phpcs:disable
             $results = $wpdb->get_results( $wpdb->prepare( "
@@ -1213,8 +1213,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                 $permissions[] = [ "type" => [ "access", "user", "access_placeholder" ] ];
             } else if ( current_user_can( 'access_specific_sources' ) ){
                 //give user permission to all 'access' that also have a source the user can view.
-                $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-                if ( in_array( 'all', $allowed_sources, true ) || empty( $allowed_sources ) ){
+                $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
+                if ( empty( $allowed_sources ) || in_array( 'all', $allowed_sources, true ) ){
                     $permissions["type"] = [ "access", "access_placeholder" ];
                 } elseif ( !in_array( "restrict_all_sources", $allowed_sources ) ){
                     $permissions[] = [ "type" => [ "access" ], "sources" => $allowed_sources];
@@ -1237,7 +1237,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( current_user_can( 'access_specific_sources' ) ){
                 $contact_type = get_post_meta( $post_id, "type", true );
                 if ( $contact_type === "access" || $contact_type === "access_placeholder" ){
-                    $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+                    $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
                     if ( empty( $sources ) || in_array( 'all', $sources ) ) {
                         return true;
                     }
@@ -1263,7 +1263,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         if ( current_user_can( 'access_specific_sources' ) ){
             $contact_type = get_post_meta( $post_id, "type", true );
             if ( $contact_type === "access" || $contact_type === "access_placeholder" ){
-                $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+                $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
                 if ( empty( $sources ) || in_array( 'all', $sources ) ){
                     return true;
                 }
