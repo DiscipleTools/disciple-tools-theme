@@ -65,59 +65,62 @@ jQuery(document).ready(function ($) {
     let parent_form = $("form[name='" + $(e.currentTarget).data('form') + "']");
     let icon_input = $("input[name='" + $(e.currentTarget).data('icon-input') + "']");
 
-    // Build media uploader modal
-    let mediaFrame = wp.media({
+    // Only proceed if we have valid handles
+    if (parent_form && icon_input) {
 
-      // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
-      // Determines what kind of library should be rendered.
-      frame: 'select',
+      // Build media uploader modal
+      let mediaFrame = wp.media({
 
-      // Modal title.
-      title: window.lodash.escape(window.dt_admin_scripts.upload.title),
+        // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
+        // Determines what kind of library should be rendered.
+        frame: 'select',
 
-      // Enable/disable multiple select
-      multiple: false,
+        // Modal title.
+        title: window.lodash.escape(window.dt_admin_scripts.upload.title),
 
-      // Library wordpress query arguments.
-      library: {
-        order: 'DESC',
+        // Enable/disable multiple select
+        multiple: false,
 
-        // [ 'name', 'author', 'date', 'title', 'modified', 'uploadedTo', 'id', 'post__in', 'menuOrder' ]
-        orderby: 'date',
+        // Library wordpress query arguments.
+        library: {
+          order: 'DESC',
 
-        // mime type. e.g. 'image', 'image/jpeg'
-        type: ['image'],
+          // [ 'name', 'author', 'date', 'title', 'modified', 'uploadedTo', 'id', 'post__in', 'menuOrder' ]
+          orderby: 'date',
 
-        // Searches the attachment title.
-        search: null,
+          // mime type. e.g. 'image', 'image/jpeg'
+          type: ['image'],
 
-        // Includes media only uploaded to the specified post (ID)
-        uploadedTo: null // wp.media.view.settings.post.id (for current post ID)
-      },
+          // Searches the attachment title.
+          search: null,
 
-      button: {
-        text: window.lodash.escape(window.dt_admin_scripts.upload.button_txt)
-      }
+          // Includes media only uploaded to the specified post (ID)
+          uploadedTo: null // wp.media.view.settings.post.id (for current post ID)
+        },
 
-    });
+        button: {
+          text: window.lodash.escape(window.dt_admin_scripts.upload.button_txt)
+        }
 
-    // Handle selected files
-    mediaFrame.on('select', function () {
+      });
 
-      // Fetch and convert selected into json object
-      let selected = mediaFrame.state().get('selection').first().toJSON();
+      // Handle selected files
+      mediaFrame.on('select', function () {
 
-      // Update form icon link
-      icon_input.val(selected.url);
+        // Fetch and convert selected into json object
+        let selected = mediaFrame.state().get('selection').first().toJSON();
 
-      // Auto-submit so as to refresh changes
-      parent_form.submit();
+        // Update form icon link
+        icon_input.val(selected.url);
 
-    });
+        // Auto-submit so as to refresh changes
+        parent_form.submit();
 
-    // Open the media uploader.
-    mediaFrame.open();
+      });
 
+      // Open the media uploader.
+      mediaFrame.open();
+    }
   });
   /**
    * FILE UPLOADS
@@ -127,7 +130,7 @@ jQuery(document).ready(function ($) {
    * COLOR PICKER
    */
   $('.color-display-picker').wpColorPicker();
- 
+
    /**
    * Flyout menu
    */
