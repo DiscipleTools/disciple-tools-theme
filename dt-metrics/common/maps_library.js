@@ -9,7 +9,7 @@ let mapbox_library_api = {
   spinner: null,
   setup_container: function (){
     if ( this.container_set_up ){ return; }
-    if ( typeof window.dt_mapbox_metrics.settings === undefined ) { return; }
+    if ( typeof window.dt_mapbox_metrics.settings === 'undefined' ) { return; }
 
     let chart = jQuery('#chart')
 

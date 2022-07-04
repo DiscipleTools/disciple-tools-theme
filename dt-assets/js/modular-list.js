@@ -879,7 +879,7 @@
       window.records_list.total = response.total
 
       // save
-      if (response.hasOwnProperty('posts') && response.posts.length > 0) {
+      if (Object.prototype.hasOwnProperty.call(response, 'posts') && response.posts.length > 0) {
         let records_list_ids_and_type = [];
 
         $.each(items, function(id, post_object ) {
