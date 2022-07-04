@@ -23,7 +23,7 @@ before_install:
   - mysql -e "GRANT ALL ON testdb.* TO 'travis'@'localhost'"
   - nvm install 16
   - nvm use 16
-  - npm install -g gulp-cli eslint babel-eslint @babel/eslint-parser
+  - npm install -g gulp-cli eslint @babel/eslint-parser
   - npm install
 before_script:
   - composer install
