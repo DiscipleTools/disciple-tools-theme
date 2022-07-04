@@ -10,6 +10,7 @@
   "license": "GPL-2.0-or-later",
   "homepage": "https://disciple.tools",
   "devDependencies": {
+    "@babel/eslint-parser": "^7.18.2",
     "babel-preset-env": "^1.7.0",
     "browser-sync": "^2.27.5",
     "cssnano": "^5.0.8",
@@ -59,7 +60,6 @@
     }
   },
   "dependencies": {
-    "@babel/eslint-parser": "^7.18.2",
     "babel-eslint": "^10.1.0",
     "browserslist": "^4.17.0",
     "caniuse-lite": "^1.0.30001255",
