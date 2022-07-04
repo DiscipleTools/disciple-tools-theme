@@ -60,6 +60,7 @@
     }
   },
   "dependencies": {
+    "@babel/eslint-parser": "^7.18.2",
     "babel-eslint": "^10.1.0",
     "browserslist": "^4.17.0",
     "caniuse-lite": "^1.0.30001255",
