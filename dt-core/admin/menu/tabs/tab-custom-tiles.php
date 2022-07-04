@@ -87,7 +87,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             $this->template( 'begin' );
 
             /* Translation Dialog */
-            echo '<dialog id="dt_translation_dialog"></dialog>';
+            dt_display_translation_dialog();
 
             $this->box( 'top', __( 'Edit Tiles', 'disciple_tools' ) );
             $this->post_type_select( $post_type );
