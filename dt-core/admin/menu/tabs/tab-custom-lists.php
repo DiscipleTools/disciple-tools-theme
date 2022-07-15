@@ -70,7 +70,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->template( 'begin' );
 
             /* Translation Dialog */
-            echo '<dialog id="dt_translation_dialog"></dialog>';
+            dt_display_translation_dialog();
 
             /* Worker Profile */
             $this->box( 'top', 'User (Worker) Contact Profile' );
