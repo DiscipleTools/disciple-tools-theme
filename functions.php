@@ -392,6 +392,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
 
                 // Administration
                 require_once( 'dt-core/admin/admin-enqueue-scripts.php' ); // Load admin scripts
+                require_once( 'dt-core/admin/admin-functions.php' ); // Load admin functions
                 require_once( 'dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
                 require_once( 'dt-core/admin/config-dashboard.php' );
                 $this->config_dashboard = Disciple_Tools_Dashboard::instance();
