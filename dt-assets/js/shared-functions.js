@@ -281,7 +281,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
           let list_html = ``;
           let first_field_option = true;
           window.lodash.forOwn(field.default, (field_options, field_key) => {
-            if( field_options.hasOwnProperty('icon') ) {
+            if (Object.prototype.hasOwnProperty.call(field_options, 'icon')) {
               if ( first_field_option ) {
                 list_html += `<ul class="help-modal-icon">`;
                 first_field_option = false;
