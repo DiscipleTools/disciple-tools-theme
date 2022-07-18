@@ -1260,7 +1260,8 @@ class Disciple_Tools_Users
     }
 
     private static function get_user_settings_preferences_people_groups( $user ): array {
-        return DT_Posts::get_post_names_from_ids( get_user_option( 'user_people_groups', $user->ID ) ?? [] );
+        $user_people_groups = get_user_option( 'user_people_groups', $user->ID );
+        return DT_Posts::get_post_names_from_ids( $user_people_groups ? $user_people_groups : [] );
     }
 
     private static function get_user_settings_preferences_workload( $user ): array {
