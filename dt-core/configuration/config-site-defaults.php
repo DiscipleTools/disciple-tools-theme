@@ -642,7 +642,7 @@ function dt_get_global_languages_list() {
         "ak_GH" => [ "label" => "Akan (Ghana)", "native_name" => "Akan (Ghana)", "flag" => "🇬🇭", "rtl" => false ],
         "am" => [ "label" => "Amharic", "native_name" => "አማርኛ (AmarəÑña)", "flag" => "🇪🇹", "rtl" => false ],
         "am_ET" => [ "label" => "Amharic (Ethiopia)", "native_name" => "አማርኛ (AmarəÑña)", "flag" => "🇪🇹", "rtl" => false ],
-        "ar" => [ "label" => "Arabic", "native_name" => "العربية", "flag" => "🇶🇦", "rtl" => true ],
+        "ar" => [ "label" => "Arabic", "native_name" => "العربية", "flag" => "🇦🇪", "rtl" => true ],
         "ar_AE" => [ "label" => "Arabic (United Arab Emirates)", "native_name" => "العربية‎ / Al-ʻArabiyyah, ʻArabī الإمارات العربية المتحدة", "flag" => "🇦🇪", "rtl" => true ],
         "ar_BH" => [ "label" => "Arabic (Bahrain)", "native_name" => "العربية البحرانية", "flag" => "🇧🇭", "rtl" => true ],
         "ar_DZ" => [ "label" => "Arabic (Algeria)", "native_name" => "دزيريةالجزائر", "flag" => "🇩🇿", "rtl" => true ],
