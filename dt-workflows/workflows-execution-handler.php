@@ -473,10 +473,12 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'text':
             case 'number':
             case 'boolean':
-            case 'date': // $value to be of epoch timestamp int type
             case 'key_select':
             case 'user_select':
                 $updated[ $field_id ] = $value;
+                break;
+            case 'date': // $value to be of epoch timestamp int type
+                $updated[ $field_id ] = $value === 'current' ? time() : $value;
                 break;
         }
 
