@@ -478,7 +478,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 $updated[ $field_id ] = $value;
                 break;
             case 'date': // $value to be of epoch timestamp int type
-                $updated[ $field_id ] = $value === 'current' ? strtotime(date("Y-m-d", time())) : $value;
+                $updated[ $field_id ] = $value === 'current' ? strtotime( gmdate( "Y-m-d", time() ) ) : $value;
                 break;
         }
 
