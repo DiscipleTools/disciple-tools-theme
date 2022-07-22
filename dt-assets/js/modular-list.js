@@ -721,6 +721,7 @@
           let field_settings = list_settings.post_type_settings.fields[field_key]
           let field_value = window.lodash.get( record, field_key, false )
 
+
           if ( field_value ) {
             if (['text', 'textarea', 'number'].includes(field_settings.type)) {
               values = [window.lodash.escape(field_value)]
@@ -1850,7 +1851,6 @@
     const multiSelectKeys = Object.keys(multiSelectUpdatePayload);
 
     multiSelectKeys.forEach((key, index) => {
-      console.log(`${key}: ${multiSelectUpdatePayload[key]}`);
       updatePayload[key] = multiSelectUpdatePayload[key];
     });
 
@@ -2423,7 +2423,6 @@
         $('#bulk_edit_master_checkbox').prop("checked", false);
         $('.bulk_edit_checkbox input').prop("checked", false);
         bulk_edit_count()
-        console.log(data)
         // window.location.reload();
       })
       .fail( e => {

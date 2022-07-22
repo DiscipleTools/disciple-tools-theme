@@ -2018,7 +2018,7 @@ class Disciple_Tools_Posts
      *
      * @return string
      */
-    public function create_link_metakey( string $field_key, string $link_type ) {
+    public static function create_link_metakey( string $field_key, string $link_type ) {
         return "link_field_" . $field_key . '_' . $link_type;
     }
 
@@ -2295,7 +2295,7 @@ class Disciple_Tools_Posts
             return $item['value'];
         };
         foreach ( $meta_fields_with_id as $key => $value ) {
-            if ( empty( $fields_to_return ) || in_array( $key, $fields_to_return ) || strpos( $key, "contact_" ) === 0 ) {
+            if ( empty( $fields_to_return ) || self::is_link_key( $key, $field_settings ) || in_array( $key, $fields_to_return ) || strpos( $key, "contact_" ) === 0 ) {
                 //if is contact details and is in a channel
                 $key_without_ramdomizers = null;
                 if ( strpos( $key, "contact_" ) === 0 ){
@@ -2577,10 +2577,10 @@ class Disciple_Tools_Posts
         return;
     }
 
-    public static function is_link_key( $key, $fields ) {
+    public static function is_link_key( $key, $field_settings ) {
         $link_keys = [];
 
-        foreach ( $fields as $field_key => $field_value ) {
+        foreach ( $field_settings as $field_key => $field_value ) {
             if ( $field_value['type'] !== "link" ) {
                 continue;
             }
@@ -2596,10 +2596,10 @@ class Disciple_Tools_Posts
         return false;
     }
 
-    public static function get_link_info( $key, $fields ) {
+    public static function get_link_info( $key, $field_settings ) {
         $link_keys = [];
 
-        foreach ( $fields as $field_key => $field_value ) {
+        foreach ( $field_settings as $field_key => $field_value ) {
             if ( $field_value['type'] !== "link" ) {
                 continue;
             }
