@@ -60,10 +60,10 @@ msgstr "Exibir duplicidades"
 msgid "Search"
 msgstr "Procurar"
 
-#: dt-contacts/base-setup.php:601
-#: dt-contacts/base-setup.php:609
-#: dt-contacts/base-setup.php:627
-#: dt-contacts/base-setup.php:628
+#: dt-contacts/base-setup.php:598
+#: dt-contacts/base-setup.php:606
+#: dt-contacts/base-setup.php:624
+#: dt-contacts/base-setup.php:625
 msgid "Shared with me"
 msgstr "Compartilhado comigo"
 
@@ -528,7 +528,7 @@ msgstr "Excluir filtro"
 msgid "Group Status"
 msgstr "Status do grupo"
 
-#: dt-core/global-functions.php:669
+#: dt-core/global-functions.php:462
 #: single-template.php:340
 #: template-new-bulk-post.php:285
 #: template-new-post.php:138
@@ -1133,7 +1133,7 @@ msgid "Baptizers"
 msgstr "Batizadores"
 
 #: dt-contacts/access-module.php:291
-#: dt-contacts/base-setup.php:577
+#: dt-contacts/base-setup.php:574
 #: dt-metrics/metrics.php:86
 #: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
@@ -1552,6 +1552,7 @@ msgstr "editar imagem em gravatar.com"
 msgid "Username cannot be changed"
 msgstr "O nome de usuário não pode ser alterado"
 
+#: dt-users/users.php:1178
 #: template-settings.php:156
 #: template-settings.php:589
 msgid "System Email"
@@ -2117,7 +2118,7 @@ msgstr "Digite para procurar"
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:590
 #: dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:942
+#: dt-core/global-functions.php:735
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Procurar Usuários"
@@ -2137,10 +2138,10 @@ msgstr "Escreva o seu comentário ou nota aqui"
 #: archive-template.php:126
 #: archive-template.php:461
 #: dt-assets/parts/merge-details.php:51
-#: dt-core/global-functions.php:771
-#: dt-core/global-functions.php:799
-#: dt-core/global-functions.php:860
-#: dt-core/global-functions.php:904
+#: dt-core/global-functions.php:564
+#: dt-core/global-functions.php:592
+#: dt-core/global-functions.php:653
+#: dt-core/global-functions.php:697
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:378
@@ -3929,13 +3930,13 @@ msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Todos os%s que posso ver"
 
-#: dt-contacts/base-setup.php:566
+#: dt-contacts/base-setup.php:563
 #: dt-groups/base-setup.php:1079
 #: dt-posts/custom-post-type.php:336
 msgid "My Recently Viewed"
 msgstr "Meus vistos recentemente"
 
-#: dt-contacts/base-setup.php:571
+#: dt-contacts/base-setup.php:568
 #: dt-groups/base-setup.php:1084
 #: dt-posts/custom-post-type.php:341
 msgid "Last 30 viewed"
@@ -4135,11 +4136,11 @@ msgstr "Tem certeza que deseja arquivar %s?"
 msgid "Archive"
 msgstr "Arquivo"
 
-#: dt-contacts/base-setup.php:680
+#: dt-contacts/base-setup.php:677
 msgid "This %s is archived"
 msgstr "Este % está arquivado"
 
-#: dt-contacts/base-setup.php:682
+#: dt-contacts/base-setup.php:679
 msgid "Restore"
 msgstr "Restaurar"
 
@@ -4247,11 +4248,11 @@ msgstr[1] "acima de %s anos atrás"
 msgid "Hide fields"
 msgstr "Ocultar campos"
 
-#: dt-core/global-functions.php:773
+#: dt-core/global-functions.php:566
 msgid "Add new tag \"%s\""
 msgstr "Adicionar nova tag \"%s\""
 
-#: dt-core/global-functions.php:774
+#: dt-core/global-functions.php:567
 msgid "Tag \"%s\" is already being used"
 msgstr "Tag \"%s\" já está em uso"
 
@@ -4458,14 +4459,14 @@ msgstr "Todos os %1$s com %2$s"
 msgid "None Set"
 msgstr "Nenhum definido"
 
-#: dt-contacts/base-setup.php:554
+#: dt-contacts/base-setup.php:551
 #: dt-groups/base-setup.php:1067
 #: dt-posts/custom-post-type.php:321
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "%s favoritos"
 
-#: dt-contacts/base-setup.php:560
+#: dt-contacts/base-setup.php:557
 #: dt-groups/base-setup.php:1073
 #: dt-posts/custom-post-type.php:172
 #: dt-posts/custom-post-type.php:327
@@ -5011,12 +5012,12 @@ msgstr "Adicionar anotação"
 #. What context is it in?
 #: template-new-bulk-post.php:85
 msgid "New Bulk %s"
-msgstr ""
+msgstr "Novo volume %s"
 
 #. What context is it in?
 #: template-new-bulk-post.php:98
 msgid "Choose which fields to display across new bulk records"
-msgstr ""
+msgstr "Escolha quais campos visualizar no novo volume de registros"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
@@ -5029,7 +5030,7 @@ msgstr "Adicionar registros"
 #. Context?
 #: template-new-post.php:45
 msgid "Add Bulk Records?"
-msgstr ""
+msgstr "Adicionar Volume de Registros?"
 
 #: dt-reports/magic-url-setup.php:150
 msgid "Scan the QR code to open the magic link on a mobile device."
@@ -5038,51 +5039,52 @@ msgstr "Scanear o QR Code para abrir o link mágico num celular"
 #: dt-assets/functions/details-bar.php:66
 msgctxt "Merge with another record"
 msgid "Merge with another %s"
-msgstr ""
+msgstr "Mesclar com outro %s"
 
 #: dt-assets/parts/merge-details.php:41
 msgctxt "Merge Contacts"
 msgid "Merge %s"
-msgstr ""
+msgstr "Mesclar %s"
 
 #: dt-assets/parts/merge-details.php:42
 msgctxt "Merge this contact with another contact"
 msgid "Merge this %1$s with another %2$s"
-msgstr ""
+msgstr "Mesclar este %1$s com outro %2$s"
 
 #: dt-users/template-new-user.php:16
 msgid "Administrator must enable \"Add New Users\" option in multisite settings:"
-msgstr ""
+msgstr "Administrador deve habilitar opção \"Adicionar Novos Usuários\" nas configurações multisite"
 
+#. What is the context?
 #: template-merge-post-details.php:89
 msgid "Open Modal"
-msgstr ""
+msgstr "Abrir modo"
 
 #: template-merge-post-details.php:111
 msgid "Merge Duplicate %s"
-msgstr ""
+msgstr "Mesclar Duplicidade %s"
 
 #: template-merge-post-details.php:113
 msgid "When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
-msgstr ""
+msgstr "Quando você mescla, o registro primário é atualizado com os valores que você escolher, e as relações com outros itens são movidos para o registro primário; o que pode ser alterado abaixo."
 
 #: template-merge-post-details.php:116
 msgid "Copy comments to updated primary record"
-msgstr ""
+msgstr "Copiar cometários para o registro primário atualizado"
 
 #: template-merge-post-details.php:132
 msgid "Archiving"
-msgstr ""
+msgstr "Arquivando"
 
 #: template-merge-post-details.php:140
 msgid "Use as Primary"
-msgstr ""
+msgstr "Usar como Primário"
 
 #: template-merge-post-details.php:153
 msgid "Primary"
-msgstr ""
+msgstr "Primário"
 
 #: template-merge-post-details.php:167
 msgid "Updated"
-msgstr ""
+msgstr "Atualizado"
 
