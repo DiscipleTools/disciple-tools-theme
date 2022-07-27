@@ -1152,6 +1152,14 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
             } else if ( isset( $a->user_caps ) && $a->user_caps === "magic_link" ){
                 $a->name = __( "Magic Link Submission", 'disciple_tools' );
+
+            } else if ( isset( $a->user_id ) && ( $a->user_id == 0 ) ) {
+
+                // Workflow related activity
+                if ( isset( $a->user_caps ) && strpos( $a->user_caps, 'dt_workflow:' ) === 0 ) {
+                    $workflow_id = substr( $a->user_caps, strlen( 'dt_workflow:' ) );
+                    $a->name     = apply_filters( 'dt_workflow_name', __( "D.T Workflow", 'disciple_tools' ), $post_type, $workflow_id );
+                }
             }
             if ( !empty( $a->object_note ) ){
                 $activity_simple[] = [

@@ -376,10 +376,21 @@ class Disciple_Tools_Workflows_Execution_Handler {
         // Ensure to check action updates have not already been executed, as part of infinite post update loops!
         if ( ! empty( $workflow ) && isset( $workflow->actions ) && ! self::already_executed_actions( $workflow->actions, $post, $post_type_settings ) ) {
 
+            // Ensure updates occur under corresponding workflow alias
+            $previous_user_id = get_current_user_id();
+
+            wp_set_current_user( 0 );
+            $current_user = wp_get_current_user();
+            $current_user->add_cap( 'dt_workflow:' . $workflow->id );
+            $current_user->add_cap( 'access_' . $post['post_type'] );
+
             // Iterate through each condition, ensuring it evaluates as true!
             foreach ( $workflow->actions as $action ) {
                 self::process_action( $action->field_id, $action->id, $action->value, $post, $post_type_settings );
             }
+
+            // Switch back to previous user
+            wp_set_current_user( $previous_user_id );
         }
     }
 
