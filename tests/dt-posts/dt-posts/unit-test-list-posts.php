@@ -81,7 +81,7 @@ class DT_Posts_DT_Posts_List_Posts extends WP_UnitTestCase {
                 'contacts',
                 [
                     'baptism_generation' => [
-                        'equality' => '>=',
+                        'operator' => '>=',
                         'number'   => '3'
                     ]
                 ],
@@ -96,7 +96,7 @@ class DT_Posts_DT_Posts_List_Posts extends WP_UnitTestCase {
                 'contacts',
                 [
                     'baptism_generation' => [
-                        'equality' => '>',
+                        'operator' => '>',
                         'number'   => '4'
                     ]
                 ],

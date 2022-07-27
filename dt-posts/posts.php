@@ -949,11 +949,8 @@ class Disciple_Tools_Posts
                              */
                             $equality = '=';
                             $value = is_numeric( $query_value ) ? esc_sql( $query_value ) : [];
-
-                            foreach ( [ 'operator', 'equality' ] as $term ) {
-                                if ( isset( $query_value[ $term ] ) ) {
-                                    $equality = esc_sql( $query_value[ $term ] );
-                                }
+                            if ( isset( $query_value['operator'] ) ) {
+                                $equality = esc_sql( $query_value['operator'] );
                             }
                             if ( isset( $query_value['number'] ) ){
                                 $value = esc_sql( $query_value['number'] );
