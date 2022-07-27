@@ -1152,25 +1152,19 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
             } else if ( isset( $a->user_caps ) && $a->user_caps === "magic_link" ){
                 $a->name = __( "Magic Link Submission", 'disciple_tools' );
-
-            } else if ( isset( $a->user_id ) && ( $a->user_id == 0 ) ) {
-
-                // Workflow related activity
-                if ( isset( $a->user_caps ) && strpos( $a->user_caps, 'dt_workflow:' ) === 0 ) {
-                    $workflow_id = substr( $a->user_caps, strlen( 'dt_workflow:' ) );
-                    $a->name     = apply_filters( 'dt_workflow_name', __( "D.T Workflow", 'disciple_tools' ), $post_type, $workflow_id );
-                }
             }
-            if ( !empty( $a->object_note ) ){
-                $activity_simple[] = [
-                    "meta_key" => $a->meta_key,
-                    "gravatar" => isset( $a->gravatar ) ? $a->gravatar : "",
-                    "name" => isset( $a->name ) ? wp_specialchars_decode( $a->name ) : __( "D.T System", 'disciple_tools' ),
+            if ( ! empty( $a->object_note ) ) {
+                $activity_obj = [
+                    "meta_key"    => $a->meta_key,
+                    "gravatar"    => isset( $a->gravatar ) ? $a->gravatar : "",
+                    "name"        => isset( $a->name ) ? wp_specialchars_decode( $a->name ) : __( "D.T System", 'disciple_tools' ),
                     "object_note" => $a->object_note,
-                    "hist_time" => $a->hist_time,
-                    "meta_id" => $a->meta_id,
-                    "histid" => $a->histid,
+                    "hist_time"   => $a->hist_time,
+                    "meta_id"     => $a->meta_id,
+                    "histid"      => $a->histid,
                 ];
+
+                $activity_simple[] = apply_filters( 'dt_format_post_activity', $activity_obj, $a );
             }
         }
 
