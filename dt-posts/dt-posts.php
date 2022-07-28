@@ -1832,7 +1832,6 @@ class DT_Posts extends Disciple_Tools_Posts {
             $extra_fields           .= "if(adv_search_post_status.meta_value " . $status_where_condition . ", 'Y', 'N') status_hit,";
             $extra_fields           .= "if(adv_search_post_status.meta_value " . $status_where_condition . ", adv_search_post_status.meta_value, '') status_hit_value,";
             $extra_joins            .= "LEFT JOIN $wpdb->postmeta as adv_search_post_status ON ( ( adv_search_post_status.post_id = p.ID ) AND ( adv_search_post_status.meta_key " . ( isset( $post_settings['status_field'] ) ? sprintf( "= '%s'", $post_settings['status_field']['status_key'] ) : "LIKE '%status%'" ) . " ) )";
-            $extra_where            = ( empty( $extra_where ) ? '' : "(" . $extra_where . ") AND " ) . "adv_search_post_status.meta_value " . $status_where_condition;
         }
 
         if ( empty( $extra_where ) ){
