@@ -101,7 +101,7 @@ jQuery(document).ready(function ($) {
         hide: 'fade',
         show: 'fade',
         height: 600,
-        width: 700,
+        width: 750,
         resizable: false,
         title: 'Icon Selector Dialog',
         buttons: [
@@ -120,17 +120,19 @@ jQuery(document).ready(function ($) {
             }
           },
           {
-            text: 'Upload',
+            text: 'Upload Custom Icon',
             icon: 'ui-icon-circle-zoomout',
             click: function () {
               handle_icon_upload(this, parent_form, icon_input);
             }
           }
-        ]
-      });
+        ],
+        open: function (event, ui) {
 
-      // Display some initial icons
-      execute_icon_selection_filter_query();
+          // Display some initial icons
+          execute_icon_selection_filter_query();
+        }
+      });
 
       // Insert selection area div, within dialog button footer
       $('.ui-dialog-buttonset').prepend($('<span>')
@@ -198,45 +200,56 @@ jQuery(document).ready(function ($) {
 
     // Proceed with icon display refresh
     $('#dialog_icon_selector_icons_div').fadeOut('fast', function () {
+      $('#dialog_icon_selector_icons_search_msg').text('').fadeOut('fast');
+      $('#dialog_icon_selector_icons_search_spinner').addClass('active').fadeIn('fast', function () {
 
-      // Clear currently displayed icons
-      $('#dialog_icon_selector_icons_table > tbody > tr').remove();
+        // Clear currently displayed icons
+        $('#dialog_icon_selector_icons_table > tbody > tr').remove();
 
-      // Obtain filtered icon list
-      let filtered_icons = window.lodash.filter(icons, function (icon) {
-        return icon['class'] && window.lodash.includes(icon['class'], query);
-      });
+        // Obtain filtered icon list
+        let filtered_icons = window.lodash.filter(icons, function (icon) {
+          return icon['class'] && window.lodash.includes(icon['class'], query);
+        });
 
-      // Populate icons table
-      let loop_counter = 0;
-      let icon_counter = 0;
-      let tds = '';
+        // Populate icons table
+        let loop_counter = 0;
+        let icon_counter = 0;
+        let tds = '';
 
-      $.each(filtered_icons, function (idx, filtered_icon) {
-        loop_counter++;
+        $.each(filtered_icons, function (idx, filtered_icon) {
+          loop_counter++;
 
-        let icon_class_name = filtered_icon['class'];
-        if (icon_class_name && is_icon_valid(icon_class_name)) {
-          tds += '<td><i title="' + icon_class_name + '" class="dialog-icon-selector-icon mdi ' + icon_class_name + '" data-icon_class="' + icon_class_name + '"></i></td>'
+          let icon_class_name = filtered_icon['class'];
+          if (icon_class_name && is_icon_valid(icon_class_name)) {
+            tds += '<td><i title="' + icon_class_name + '" class="dialog-icon-selector-icon mdi ' + icon_class_name + '" data-icon_class="' + icon_class_name + '"></i></td>'
 
-          if ((++icon_counter > 5) || (loop_counter >= filtered_icons.length)) {
-            $('#dialog_icon_selector_icons_table > tbody').append('<tr>' + tds + '</tr>');
-            icon_counter = 0;
-            tds = '';
+            if ((++icon_counter > 5) || (loop_counter >= filtered_icons.length)) {
+              $('#dialog_icon_selector_icons_table > tbody').append('<tr>' + tds + '</tr>');
+              icon_counter = 0;
+              tds = '';
+            }
           }
-        }
-      });
+        });
 
-      // Activate icon tooltips
-      $('#dialog_icon_selector_icons_table > tbody').find('.mdi').each(function (idx, icon) {
-        $(icon).tooltip({
-          show: {effect: 'fade', duration: 100}
+        // Activate icon tooltips
+        $('#dialog_icon_selector_icons_table > tbody').find('.mdi').each(function (idx, icon) {
+          $(icon).tooltip({
+            show: {effect: 'fade', duration: 100}
+          });
+        });
+
+        $('#dialog_icon_selector_icons_search_spinner').removeClass('active').fadeOut('fast', function () {
+
+          // Display results or no icons found message
+          if (filtered_icons.length > 0) {
+            $('#dialog_icon_selector_icons_div').fadeIn('fast');
+
+          } else {
+            $('#dialog_icon_selector_icons_search_msg').text('No Icons Found').fadeIn('fast');
+          }
+
         });
       });
-
-      // Display updated icons table
-      $('#dialog_icon_selector_icons_div').fadeIn('fast');
-
     });
   }
 

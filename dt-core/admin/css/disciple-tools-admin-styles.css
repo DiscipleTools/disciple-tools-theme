@@ -237,15 +237,15 @@ body .alert p {
  */
 
 #dialog_icon_selector_filter_input {
-    min-width: 660px;
+    min-width: 715px;
     display: inline-block;
     margin-right: 0;
 }
 
 #dialog_icon_selector_icons_div {
-    width: 660px;
+    width: 715px;
     height: 430px;
-    overflow-x: scroll;
+    overflow-x: hidden;
     overflow-y: scroll;
     text-align: center;
     padding-left: 0px;
