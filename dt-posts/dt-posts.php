@@ -503,6 +503,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             ] );
         }
         $field_settings = self::get_post_field_settings( $post_type );
+        if ( empty( $field_settings ) ){
+            return new WP_Error( __FUNCTION__, "post type not yet set up. Please load in a hook.", [ 'status' => 400 ] );
+        }
         if ( !$wp_post ){
             return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 400 ] );
         }
