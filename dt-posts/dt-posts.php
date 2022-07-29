@@ -494,6 +494,13 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $wp_post = get_post( $post_id );
+        $field_settings = self::get_post_field_settings( $post_type );
+        if ( empty( $field_settings ) ){
+            return new WP_Error( __FUNCTION__, "post type not yet set up. Please load in a hook.", [ 'status' => 400 ] );
+        }
+        if ( !$wp_post ){
+            return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 400 ] );
+        }
         if ( $use_cache === true && $current_user_id && !$silent ){
             dt_activity_insert( [
                 'action' => 'viewed',
@@ -501,13 +508,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'object_id' => $post_id,
                 'object_name' => $wp_post->post_title
             ] );
-        }
-        $field_settings = self::get_post_field_settings( $post_type );
-        if ( empty( $field_settings ) ){
-            return new WP_Error( __FUNCTION__, "post type not yet set up. Please load in a hook.", [ 'status' => 400 ] );
-        }
-        if ( !$wp_post ){
-            return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 400 ] );
         }
 
         /**
