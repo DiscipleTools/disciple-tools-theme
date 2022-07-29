@@ -483,6 +483,10 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read $post_type with ID $post_id", [ 'status' => 403 ] );
         }
+        $post_types = self::get_post_types();
+        if ( !in_array( $post_type, $post_types ) ){
+            return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
+        }
         $current_user_id = get_current_user_id();
         $cached = wp_cache_get( "post_" . $current_user_id . '_' . $post_id );
         if ( $cached && $use_cache ){
