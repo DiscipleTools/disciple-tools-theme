@@ -644,10 +644,12 @@ class DT_Posts extends Disciple_Tools_Posts {
             self::adjust_post_custom_fields( $post_type, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
             $record["name"] = wp_specialchars_decode( $record["post_title"] );
-            $record["post_date"] = [
-                "timestamp" => is_numeric( $record["post_date"] ) ? $record["post_date"] : dt_format_date( $record["post_date"], "U" ),
-                "formatted" => dt_format_date( $record["post_date"] )
-            ];
+            if ( !isset( $record["post_date"]["timestamp"], $record["post_date"]["formatted"] ) ){
+                $record["post_date"] = [
+                    "timestamp" => is_numeric( $record["post_date"] ) ? $record["post_date"] : dt_format_date( $record["post_date"], "U" ),
+                    "formatted" => dt_format_date( $record["post_date"] )
+                ];
+            }
         }
         $data["posts"] = $records;
 
