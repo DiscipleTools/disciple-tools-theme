@@ -8,16 +8,16 @@ add_action( 'dt_post_created', 'dt_post_created_workflows_trigger', 100, 3 );
 function dt_post_created_workflows_trigger( $post_type, $post_id, $initial_fields ) {
     // Process incoming post id, based on created trigger
     $post = DT_Posts::get_post( $post_type, $post_id, true, false, true );
-    process_trigger( 'created', ! is_wp_error( $post ) ? $post : null );
+    process_trigger( 'created', ! is_wp_error( $post ) ? $post : null, $initial_fields );
 }
 
 add_action( 'dt_post_updated', 'dt_post_updated_workflows_trigger', 100, 5 );
 function dt_post_updated_workflows_trigger( $post_type, $post_id, $initial_fields, $existing_post, $post ) {
     // Process incoming post, based on updated trigger
-    process_trigger( 'updated', ! is_wp_error( $post ) ? $post : null );
+    process_trigger( 'updated', ! is_wp_error( $post ) ? $post : null, $initial_fields );
 }
 
-function process_trigger( $trigger_id, $post ) {
+function process_trigger( $trigger_id, $post, $initial_fields ) {
 
     if ( ! empty( $post ) ) {
 
@@ -30,7 +30,7 @@ function process_trigger( $trigger_id, $post ) {
 
             // Iterate over returned workflows; evaluating and executing accordingly
             foreach ( $workflows as $workflow ) {
-                if ( ! empty( $workflow ) && isset( $workflow->trigger ) && $workflow->trigger === $trigger_id ) {
+                if ( ! empty( $workflow ) && isset( $workflow->trigger ) && ( $workflow->trigger === $trigger_id ) && Disciple_Tools_Workflows_Execution_Handler::triggered_by_condition_field( $workflow, $initial_fields ) ) {
 
                     // If all conditions evaluate to true...
                     if ( Disciple_Tools_Workflows_Execution_Handler::eval_conditions( $workflow, $post, $post_type_settings ) ) {
