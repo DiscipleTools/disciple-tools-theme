@@ -43,3 +43,25 @@ function process_trigger( $trigger_id, $post, $initial_fields ) {
         }
     }
 }
+
+add_filter( 'dt_format_post_activity', 'dt_format_post_activity', 10, 2 );
+function dt_format_post_activity( $activity_obj, $activity ): array {
+    if ( isset( $activity->user_caps ) && strpos( $activity->user_caps, 'dt_workflow:' ) === 0 ) {
+        $workflow_id   = substr( $activity->user_caps, strlen( 'dt_workflow:' ) );
+        $workflow_name = null;
+
+        // Fetch all enabled workflows for given post_type and attempt to locate corresponding workflow
+        $workflows = Disciple_Tools_Workflows_Execution_Handler::get_workflows( $activity->object_type, true, true );
+        if ( ! empty( $workflows ) ) {
+            foreach ( $workflows as $workflow ) {
+                if ( ! empty( $workflow ) && isset( $workflow->id, $workflow->name ) && ( $workflow->id === $workflow_id ) ) {
+                    $workflow_name = $workflow->name;
+                }
+            }
+        }
+
+        $activity_obj['name'] = isset( $workflow_name ) ? wp_specialchars_decode( $workflow_name ) : __( 'D.T Workflow', 'disciple_tools' );
+    }
+
+    return $activity_obj;
+}
