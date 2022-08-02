@@ -1,4 +1,4 @@
-<div class="reveal" id="advanced-search-modal" data-reveal data-reset-on-close>
+<div class="large reveal" id="advanced-search-modal" data-reveal data-reset-on-close>
     <h3><?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?></h3>
 
     <form class="advanced-search-modal-form">
@@ -103,5 +103,4 @@ function build_filters_option_list_html( $location ) {
     <br>
     <?php
 }
-
 ?>
