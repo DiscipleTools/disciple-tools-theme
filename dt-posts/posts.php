@@ -1018,6 +1018,9 @@ class Disciple_Tools_Posts
         global $wpdb;
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
+        if ( !isset( $post_settings["fields"] ) || empty( $post_settings["fields"] ) ){
+            return new WP_Error( __FUNCTION__, "$post_type settings not yet loaded", [ 'status' => 400 ] );
+        }
         $post_fields = $post_settings["fields"];
 
         $search = "";
