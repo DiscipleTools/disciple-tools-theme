@@ -13,9 +13,11 @@ jQuery(document).ready(function ($) {
   })
 
   // Process search queries
-  $(document).on("keydown", '.advanced-search-modal-form-input', function (e) {
+  $(document).on("keyup", '.advanced-search-modal-form-input', function (e) {
     clearTimeout(timer);
-    timer = setTimeout(execute_search_query, 500);
+    if ( $(this).val().length >= 3 ){
+      timer = setTimeout(execute_search_query, 500);
+    }
   })
   $(document).on("keypress", '.advanced-search-modal-form-input', function (e) {
     if (e.which === 13) {
