@@ -511,7 +511,12 @@
     let filter = current_filter
     if (filter && filter.labels){
       filter.labels.forEach(label=>{
-        html += `<span class="current-filter ${window.lodash.escape(label.field)}">${window.lodash.escape(label.name)}`;
+
+        // Determine exclusion status
+        let excluded_class = is_search_query_filter_label_excluded(filter, label) ? 'current-filter-excluded' : '';
+
+        // Proceed with displaying of filter label
+        html += `<span class="current-filter ${excluded_class} ${window.lodash.escape(label.field)}">${window.lodash.escape(label.name)}`;
 
         if (label.id && label.field && label.name) {
           html += `<span class="current-filter-close">x</span>`;
@@ -953,17 +958,17 @@
           } else if (withoutConnections.prop('checked') === true) {
             search_query.push( { [field] : [ALL_WITHOUT_ID] } )
           } else {
-            search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
+            search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID"))});
           }
         }
       if ( type === "user_select" ){
-          search_query.push( { [field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
+        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID"))});
       } else if ( type === "multi_select" ){
-        search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
+        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key"))});
       } else if ( type === "tags" ){
-        search_query.push( {[field] : window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
+        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key"))});
       } else if ( type === "location" || type === "location_meta" ){
-        search_query.push({ 'location_grid' : window.lodash.map( window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
+        search_query.push({'location_grid': adjust_search_query_filter_states('location_grid', type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID'))});
       } else if ( type === "date" ) {
         let date = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
@@ -981,7 +986,7 @@
           options.push( $(this).val() )
         })
         if ( options.length ){
-          search_query.push({ [field]: options })
+          search_query.push({[field]: adjust_search_query_filter_states(field, type, options)});
         }
       }
     })
@@ -1005,6 +1010,67 @@
     let filterName = window.lodash.escape( $('#new-filter-name').val() )
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
+
+  $(document).on('mouseenter', '.current-filter', function () {
+    if (is_custom_filter_modal_visible()) {
+      $(this).css('cursor', 'pointer');
+    }
+  })
+
+  $(document).on('mouseleave', '.current-filter', function () {
+    if (is_custom_filter_modal_visible()) {
+      $(this).css('cursor', 'default');
+    }
+  })
+
+  $(document).on('click', '.current-filter', function () {
+    if (is_custom_filter_modal_visible()) {
+      $(this).toggleClass('current-filter-excluded');
+    }
+  })
+
+  function is_custom_filter_modal_visible() {
+    return $('#filter-modal').is(':visible');
+  }
+
+  function adjust_search_query_filter_states(field_id, field_type, filters) {
+
+    // Adjust accordingly, by field type
+    if (window.lodash.includes(['connection', 'user_select', 'multi_select', 'tags', 'location', 'location_meta'], field_type) ||
+      !window.lodash.includes(['date', 'boolean', 'communication_channel', 'text', 'textarea', 'array', 'number', 'task'], field_type)) {
+
+      // Start adjustment of sarch query filters
+      let adjusted_filters = window.lodash.map(filters, function (value) {
+
+        // Determine it's current exclusion state
+        let excluded = $('.current-filter.current-filter-excluded.' + field_id).filter(function () {
+          return $(this).data('id') == value;
+        });
+
+        // Prefix exclusion flag, accordingly
+        return ((excluded.length > 0) ? '-' : '') + value;
+      });
+
+      return adjusted_filters;
+
+    }
+
+    // By default, return filters untouched!
+    return filters;
+  }
+
+  function is_search_query_filter_label_excluded(filter, label) {
+    let excluded = false;
+    if (window.lodash.has(filter, 'query.fields')) {
+      filter.query.fields.forEach(field => {
+        if (field[label.field]) {
+          excluded = window.lodash.includes(field[label.field], '-' + label.id);
+        }
+      });
+    }
+
+    return excluded;
+  }
 
   function toggle_all_connection_option(tabsPanel, without) {
     const allConnectionsElement = tabsPanel.find('.all-connections')
@@ -1451,7 +1517,12 @@
       let connectionTypeKeys = list_settings.post_type_settings.connection_types
       connectionTypeKeys.push("location_grid")
       filter.labels.forEach(label=>{
-        selected_filters.append(`<span class="current-filter ${window.lodash.escape( label.field )}" data-id="${window.lodash.escape( label.id )}">${window.lodash.escape( label.name )}</span>`)
+
+        // Determine exclusion status
+        let excluded_class = is_search_query_filter_label_excluded(filter, label) ? 'current-filter-excluded' : '';
+
+        // Proceed with displaying of filter modal
+        selected_filters.append(`<span class="current-filter ${excluded_class} ${window.lodash.escape( label.field )}" data-id="${window.lodash.escape( label.id )}">${window.lodash.escape( label.name )}</span>`)
         let type = window.lodash.get(list_settings, `post_type_settings.fields.${label.field}.type`)
         if ( type === "key_select" || type === "boolean" ){
           $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)

@@ -124,7 +124,6 @@ table.js-list{
     width: 100%
 }
 
-
 .current-filter {
     font-size: 0.875rem;
     position: relative;
@@ -148,6 +147,17 @@ table.js-list{
 .current-filter-close:hover {
     background: #d5e9f9;
     color: #d0021b;
+}
+
+.current-filter-excluded {
+    font-size: 0.875rem;
+    position: relative;
+    background: #fcecec;
+    border: 1px solid #ffc2c2;
+    padding: 4px 0px 4px 4px;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-bottom: 0.375rem;
 }
 
 #content table thead .sortable th {
