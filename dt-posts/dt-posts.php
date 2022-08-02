@@ -483,6 +483,10 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read $post_type with ID $post_id", [ 'status' => 403 ] );
         }
+        $post_types = self::get_post_types();
+        if ( !in_array( $post_type, $post_types ) ){
+            return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
+        }
         $current_user_id = get_current_user_id();
         $cached = wp_cache_get( "post_" . $current_user_id . '_' . $post_id );
         if ( $cached && $use_cache ){
@@ -490,6 +494,13 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $wp_post = get_post( $post_id );
+        $field_settings = self::get_post_field_settings( $post_type );
+        if ( empty( $field_settings ) ){
+            return new WP_Error( __FUNCTION__, "post type not yet set up. Please load in a hook.", [ 'status' => 400 ] );
+        }
+        if ( !$wp_post ){
+            return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 400 ] );
+        }
         if ( $use_cache === true && $current_user_id && !$silent ){
             dt_activity_insert( [
                 'action' => 'viewed',
@@ -497,10 +508,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'object_id' => $post_id,
                 'object_name' => $wp_post->post_title
             ] );
-        }
-        $field_settings = self::get_post_field_settings( $post_type );
-        if ( !$wp_post ){
-            return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 400 ] );
         }
 
         /**
@@ -643,10 +650,12 @@ class DT_Posts extends Disciple_Tools_Posts {
             self::adjust_post_custom_fields( $post_type, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
             $record["name"] = wp_specialchars_decode( $record["post_title"] );
-            $record["post_date"] = [
-                "timestamp" => is_numeric( $record["post_date"] ) ? $record["post_date"] : dt_format_date( $record["post_date"], "U" ),
-                "formatted" => dt_format_date( $record["post_date"] )
-            ];
+            if ( !isset( $record["post_date"]["timestamp"], $record["post_date"]["formatted"] ) ){
+                $record["post_date"] = [
+                    "timestamp" => is_numeric( $record["post_date"] ) ? $record["post_date"] : dt_format_date( $record["post_date"], "U" ),
+                    "formatted" => dt_format_date( $record["post_date"] )
+                ];
+            }
         }
         $data["posts"] = $records;
 
@@ -1190,16 +1199,18 @@ class DT_Posts extends Disciple_Tools_Posts {
             } else if ( isset( $a->user_caps ) && $a->user_caps === "magic_link" ){
                 $a->name = __( "Magic Link Submission", 'disciple_tools' );
             }
-            if ( !empty( $a->object_note ) ){
-                $activity_simple[] = [
-                    "meta_key" => $a->meta_key,
-                    "gravatar" => isset( $a->gravatar ) ? $a->gravatar : "",
-                    "name" => isset( $a->name ) ? wp_specialchars_decode( $a->name ) : __( "D.T System", 'disciple_tools' ),
+            if ( ! empty( $a->object_note ) ) {
+                $activity_obj = [
+                    "meta_key"    => $a->meta_key,
+                    "gravatar"    => isset( $a->gravatar ) ? $a->gravatar : "",
+                    "name"        => isset( $a->name ) ? wp_specialchars_decode( $a->name ) : __( "D.T System", 'disciple_tools' ),
                     "object_note" => $a->object_note,
-                    "hist_time" => $a->hist_time,
-                    "meta_id" => $a->meta_id,
-                    "histid" => $a->histid,
+                    "hist_time"   => $a->hist_time,
+                    "meta_id"     => $a->meta_id,
+                    "histid"      => $a->histid,
                 ];
+
+                $activity_simple[] = apply_filters( 'dt_format_post_activity', $activity_obj, $a );
             }
         }
 
