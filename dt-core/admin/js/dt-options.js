@@ -19,17 +19,8 @@ jQuery(document).ready(function ($) {
    * Icon selector modal dialog - Process icon selection filter queries & selections
    */
 
-  let icon_timer = null;
-  $(document).on('keydown', '#dialog_icon_selector_filter_input', function (e) {
-    if (e.which !== 13) {
-      clearTimeout(icon_timer);
-      timer = setTimeout(execute_icon_selection_filter_query, 500);
-    }
-  });
-
   $(document).on('keypress', '#dialog_icon_selector_filter_input', function (e) {
-    if (e.which === 13) {
-      e.preventDefault();
+    if (e.which === 13 || e.which === 45 || (e.which >= 48 && e.which <= 57) || (e.which >= 65 && e.which <= 90) || (e.which >= 97 && e.which <= 122)) {
       execute_icon_selection_filter_query();
     }
   });
@@ -158,7 +149,7 @@ jQuery(document).ready(function ($) {
   function build_icon_class_name_list() {
     let icon_class_names = [];
     $.each(document.styleSheets, function (idx, style_sheet) {
-      if (window.lodash.includes(style_sheet.href, 'materialdesignicons.min.css')) {
+      if (window.lodash.includes(style_sheet.href, 'dt-core/dependencies/mdi/css/materialdesignicons.min.css')) {
         $.each(style_sheet.cssRules, function (key, rule) {
           if (rule.constructor.name === 'CSSStyleRule') {
             icon_class_names.push({
@@ -211,7 +202,8 @@ jQuery(document).ready(function ($) {
           return icon['class'] && window.lodash.includes(icon['class'], query);
         });
 
-        filtered_icons = filtered_icons.slice(0, 200)
+        // Truncate filtered list for performance purposes
+        filtered_icons = filtered_icons.slice(0, 200);
 
         // Populate icons table
         let loop_counter = 0;
