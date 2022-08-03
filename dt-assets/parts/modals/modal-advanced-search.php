@@ -91,7 +91,7 @@ function build_filters_option_list_html( $location ) {
     <br>
 
     <input type="checkbox" id="advanced-search-modal-filters-comments-<?php echo esc_attr( $location ); ?>"
-           class="advanced-search-modal-filters" checked>
+           class="advanced-search-modal-filters">
     <label
         for="advanced-search-modal-filters-comments-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Comments', 'disciple_tools' ); ?></label>
     <br>
