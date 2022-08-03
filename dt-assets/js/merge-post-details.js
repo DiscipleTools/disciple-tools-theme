@@ -796,52 +796,54 @@ jQuery(function ($) {
            * Load Typeahead
            */
 
-          $(td).find(connection_typeahead_field_input).typeahead({
-            input: connection_typeahead_field_input,
-            minLength: 0,
-            accent: true,
-            searchOnFocus: true,
-            maxItem: 20,
-            template: window.TYPEAHEADS.contactListRowTemplate,
-            source: TYPEAHEADS.typeaheadPostsSource(post_type, field_id),
-            display: ["name", "label"],
-            templateValue: function () {
-              if (this.items[this.items.length - 1].label) {
-                return "{{label}}"
-              } else {
-                return "{{name}}"
-              }
-            },
-            dynamic: true,
-            multiselect: {
-              matchOn: ["ID"],
-              data: [],
+          if ( $(td).find(connection_typeahead_field_input).length ){
+            $(td).find(connection_typeahead_field_input).typeahead({
+              input: connection_typeahead_field_input,
+              minLength: 0,
+              accent: true,
+              searchOnFocus: true,
+              maxItem: 20,
+              template: window.TYPEAHEADS.contactListRowTemplate,
+              source: TYPEAHEADS.typeaheadPostsSource(post_type, field_id),
+              display: ["name", "label"],
+              templateValue: function () {
+                if (this.items[this.items.length - 1].label) {
+                  return "{{label}}"
+                } else {
+                  return "{{name}}"
+                }
+              },
+              dynamic: true,
+              multiselect: {
+                matchOn: ["ID"],
+                data: [],
+                callback: {
+                  onCancel: function (node, item) {
+                    // Keep a record of deleted options
+                    let deleted_items = (field_meta.val()) ? JSON.parse(field_meta.val()) : [];
+                    deleted_items.push(item);
+                    field_meta.val(JSON.stringify(deleted_items));
+                  }
+                }
+              },
               callback: {
-                onCancel: function (node, item) {
-                  // Keep a record of deleted options
-                  let deleted_items = (field_meta.val()) ? JSON.parse(field_meta.val()) : [];
-                  deleted_items.push(item);
-                  field_meta.val(JSON.stringify(deleted_items));
+                onResult: function (node, query, result, resultCount) {
+                  let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result);
+                  $(`#${field_id}-result-container`).html(text);
+                },
+                onHideLayout: function () {
+                  $(`#${field_id}-result-container`).html("");
+                },
+                onClick: function (node, a, item, event) {
+                  // Stop list from opening again
+                  this.addMultiselectItemLayout(item)
+                  event.preventDefault()
+                  this.hideLayout();
+                  this.resetInput();
                 }
               }
-            },
-            callback: {
-              onResult: function (node, query, result, resultCount) {
-                let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result);
-                $(`#${field_id}-result-container`).html(text);
-              },
-              onHideLayout: function () {
-                $(`#${field_id}-result-container`).html("");
-              },
-              onClick: function (node, a, item, event) {
-                // Stop list from opening again
-                this.addMultiselectItemLayout(item)
-                event.preventDefault()
-                this.hideLayout();
-                this.resetInput();
-              }
-            }
-          });
+            });
+          }
 
           // If available, load previous post record locations
           let connection_typeahead = window.Typeahead[connection_typeahead_field_input];
