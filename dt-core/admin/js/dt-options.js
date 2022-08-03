@@ -19,10 +19,8 @@ jQuery(document).ready(function ($) {
    * Icon selector modal dialog - Process icon selection filter queries & selections
    */
 
-  $(document).on('keypress', '#dialog_icon_selector_filter_input', function (e) {
-    if (e.which === 13 || e.which === 45 || (e.which >= 48 && e.which <= 57) || (e.which >= 65 && e.which <= 90) || (e.which >= 97 && e.which <= 122)) {
-      execute_icon_selection_filter_query();
-    }
+  $(document).on('keyup', '#dialog_icon_selector_filter_input', function (e) {
+    execute_icon_selection_filter_query();
   });
 
   $(document).on('click', '.dialog-icon-selector-icon', function (e) {
