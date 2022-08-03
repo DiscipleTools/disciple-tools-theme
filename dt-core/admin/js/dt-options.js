@@ -211,6 +211,8 @@ jQuery(document).ready(function ($) {
           return icon['class'] && window.lodash.includes(icon['class'], query);
         });
 
+        filtered_icons = filtered_icons.slice(0, 200)
+
         // Populate icons table
         let loop_counter = 0;
         let icon_counter = 0;
