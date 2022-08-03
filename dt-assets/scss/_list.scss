@@ -160,6 +160,18 @@ table.js-list{
     margin-bottom: 0.375rem;
 }
 
+.current-filter-label-button {
+    cursor: default;
+    margin: 0px 4px 0px 4px;
+    color: #000000;
+}
+
+.current-filter-label-button:hover {
+    cursor: pointer;
+    margin: 0px 4px 0px 4px;
+    color: #cecece;
+}
+
 #content table thead .sortable th {
     background-repeat: no-repeat;
     background-position: center right;

@@ -1011,23 +1011,31 @@
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
 
-  $(document).on('mouseenter', '.current-filter', function () {
+  $(document).on('click', '.current-filter-label-button', function () {
     if (is_custom_filter_modal_visible()) {
-      $(this).css('cursor', 'pointer');
+      $(this).parent().toggleClass('current-filter-excluded');
     }
   })
 
-  $(document).on('mouseleave', '.current-filter', function () {
-    if (is_custom_filter_modal_visible()) {
-      $(this).css('cursor', 'default');
-    }
-  })
+  // Detect selected custom filter additions and alter shape accordingly
+  new MutationObserver(function (mutation_list, observer) {
+    if (is_custom_filter_modal_visible() && mutation_list[0] && $(mutation_list[0].target).attr('id') == 'selected-filters') {
 
-  $(document).on('click', '.current-filter', function () {
-    if (is_custom_filter_modal_visible()) {
-      $(this).toggleClass('current-filter-excluded');
+      // Iterate over latest selected filters list
+      $(mutation_list[0].target).find('.current-filter').each(function () {
+        let filter_label = $(this);
+
+        // Only add exclusion button, if required
+        if ($(filter_label).find('.current-filter-label-button').length == 0) {
+          $(filter_label).append(`<span class="current-filter-label-button mdi mdi-minus"></span>`);
+        }
+      });
     }
-  })
+  }).observe($('#selected-filters').get(0), {
+    attributes: true,
+    childList: true,
+    subtree: true
+  });
 
   function is_custom_filter_modal_visible() {
     return $('#filter-modal').is(':visible');
