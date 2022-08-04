@@ -1026,7 +1026,7 @@
         let filter_label = $(this);
 
         // Only add exclusion button, if required
-        if ($(filter_label).find('.current-filter-label-button').length == 0) {
+        if (($(filter_label).find('.current-filter-label-button').length == 0) && is_custom_filter_field_type_supported_for_exclusion(filter_label)) {
           $(filter_label).append(`<span title="${window.lodash.escape(list_settings.translations.exclude_item)}" class="current-filter-label-button mdi mdi-minus-circle-multiple-outline"></span>`);
         }
       });
@@ -1041,10 +1041,26 @@
     return $('#filter-modal').is(':visible');
   }
 
+  function is_custom_filter_field_type_supported_for_exclusion(filter_label) {
+
+    let is_supported = false;
+
+    // Attempt to locate corresponding field settings
+    $.each(list_settings.post_type_settings.fields, function (id, field) {
+      if (window.lodash.includes($(filter_label).attr('class'), id)) {
+
+        // Determine if identified setting has supported field type
+        is_supported = window.lodash.includes(['connection', 'user_select', 'multi_select', 'tags', 'location', 'location_meta', 'key_select'], field.type);
+      }
+    });
+
+    return is_supported;
+  }
+
   function adjust_search_query_filter_states(field_id, field_type, filters) {
 
     // Adjust accordingly, by field type
-    if (window.lodash.includes(['connection', 'user_select', 'multi_select', 'tags', 'location', 'location_meta'], field_type) ||
+    if (window.lodash.includes(['connection', 'user_select', 'multi_select', 'tags', 'location', 'location_meta', 'key_select'], field_type) ||
       !window.lodash.includes(['date', 'boolean', 'communication_channel', 'text', 'textarea', 'array', 'number', 'task'], field_type)) {
 
       // Start adjustment of sarch query filters
