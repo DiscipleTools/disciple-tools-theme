@@ -1027,7 +1027,7 @@
 
         // Only add exclusion button, if required
         if ($(filter_label).find('.current-filter-label-button').length == 0) {
-          $(filter_label).append(`<span class="current-filter-label-button mdi mdi-minus"></span>`);
+          $(filter_label).append(`<span title="${window.lodash.escape(list_settings.translations.exclude_item)}" class="current-filter-label-button mdi mdi-minus-circle-multiple-outline"></span>`);
         }
       });
     }
