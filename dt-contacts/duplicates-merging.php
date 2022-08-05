@@ -312,6 +312,16 @@ class DT_Duplicate_Checker_And_Merging {
             return $archiving_post;
         }
 
+        // Ignore specified fields
+        $ignored_fields = [
+            'post_date'
+        ];
+        foreach ( $ignored_fields as $field_id ) {
+            if ( isset( $args[ $field_id ] ) ) {
+                unset( $args[ $field_id ] );
+            }
+        }
+
         // Capture incoming pre-formatted updated archiving values
         $update = $args;
 
