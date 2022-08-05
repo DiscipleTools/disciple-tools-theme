@@ -3,7 +3,6 @@
  * These are cosmetic clean up functions for the wp environment
  */
 
-// Removes the admin bar
 add_filter( 'show_admin_bar', '__return_false' );
 
 /**
@@ -113,15 +112,17 @@ function dt_remove_sticky_class( $classes ) {
  */
 function dt_get_the_author_posts_link() {
     global $authordata;
-    if ( is_object( $authordata ) ) {
-        $link = sprintf(
-            '<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
-            get_author_posts_url( $authordata->ID, $authordata->user_nicename ),
-            esc_attr( sprintf( 'Posts by %s', get_the_author() ) ), // No further l10n needed, core will take care of this one
-            get_the_author()
-        );
-        return $link;
+    if ( !is_object( $authordata ) ) {
+        return false;
     }
+    $link = sprintf(
+        '<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
+        get_author_posts_url( $authordata->ID, $authordata->user_nicename ),
+        esc_attr( sprintf( 'Posts by %s', get_the_author() ) ), // No further l10n needed, core will take care of this one
+        get_the_author()
+    );
+
+    return $link;
 }
 
 /**
@@ -224,11 +225,11 @@ function dt_disable_wp_emoji() {
 }
 
 function dt_disable_emojis_tinymce( $plugins ) {
-    $plugins_array = [];
     if ( is_array( $plugins ) ) {
         $plugins_array = array_diff( $plugins, array( 'wpemoji' ) );
+        return $plugins_array;
     }
-    return $plugins_array;
+    return [];
 }
 function dt_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
     if ( 'dns-prefetch' == $relation_type ) {
