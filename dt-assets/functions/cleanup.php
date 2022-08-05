@@ -113,17 +113,15 @@ function dt_remove_sticky_class( $classes ) {
  */
 function dt_get_the_author_posts_link() {
     global $authordata;
-    if ( !is_object( $authordata ) ) {
-        return false;
+    if ( is_object( $authordata ) ) {
+        $link = sprintf(
+            '<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
+            get_author_posts_url( $authordata->ID, $authordata->user_nicename ),
+            esc_attr( sprintf( 'Posts by %s', get_the_author() ) ), // No further l10n needed, core will take care of this one
+            get_the_author()
+        );
+        return $link;
     }
-    $link = sprintf(
-        '<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
-        get_author_posts_url( $authordata->ID, $authordata->user_nicename ),
-        esc_attr( sprintf( 'Posts by %s', get_the_author() ) ), // No further l10n needed, core will take care of this one
-        get_the_author()
-    );
-
-    return $link;
 }
 
 /**
@@ -170,7 +168,7 @@ function dt_change_admin_color( $result ) {
 /**
  * Removes Post WP Admin menu item
  *
- * @note Removing the posts menu is to clean the admin menu and because it is unnecissary to the Disciple.Tools system.
+ * @note Removing the posts menu is to clean the admin menu and because it is unnecessary to the Disciple.Tools system.
  */
 function dt_remove_post_admin_menus() {
 
@@ -203,10 +201,8 @@ function dt_remove_post_admin_menus() {
     foreach ( $elements as $page ) {
         if ( empty( $page['allowed_for'] ) ) {
             remove_menu_page( $page['menu_slug'] );
-        } else {
-            if ( ! current_user_can( 'manage_dt' ) ) {          // Add menu items to hide from all but admin
-                remove_menu_page( $page['menu_slug'] );                // Tools
-            }
+        } elseif ( ! current_user_can( 'manage_dt' ) ) {          // Add menu items to hide from all but admin
+            remove_menu_page( $page['menu_slug'] );                // Tools
         }
     }
 }
@@ -216,7 +212,6 @@ function dt_remove_post_admin_menus() {
  * Disable default emoji features of Wordpress
  */
 function dt_disable_wp_emoji() {
-
     remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
     remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
     remove_action( 'wp_print_styles', 'print_emoji_styles' );
@@ -229,19 +224,16 @@ function dt_disable_wp_emoji() {
 }
 
 function dt_disable_emojis_tinymce( $plugins ) {
+    $plugins_array = [];
     if ( is_array( $plugins ) ) {
-        return array_diff( $plugins, array( 'wpemoji' ) );
-    } else {
-        return array();
+        $plugins_array = array_diff( $plugins, array( 'wpemoji' ) );
     }
+    return $plugins_array;
 }
 function dt_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
     if ( 'dns-prefetch' == $relation_type ) {
-        /** This filter is documented in wp-includes/formatting.php */
         $emoji_svg_url = apply_filters( 'emoji_svg_url', 'https://s.w.org/images/core/emoji/2/svg/' );
-
         $urls = array_diff( $urls, array( $emoji_svg_url ) );
     }
-
     return $urls;
 }
