@@ -137,6 +137,64 @@
     }
   })
 
+  // Support field name filtering
+  let searchable_filter_field_objects = build_searchable_filter_field_objects();
+  $(document).on('keyup', '#field-filter-name', function () {
+
+    // Determine query string to search against
+    let query = $(this).val();
+
+    // Search across field objects...
+    let hits = window.lodash.filter(searchable_filter_field_objects, function (field) {
+      return window.lodash.includes(field.name.trim().toLowerCase(), query.trim().toLowerCase());
+    });
+
+    // Refresh filter fields list
+    refresh_searchable_filter_field_objects(hits);
+
+  });
+
+  function build_searchable_filter_field_objects() {
+    let searchable_objs = [];
+
+    $('#filter-tabs').children().each(function (idx, li) {
+      searchable_objs.push({
+        id: $(li).find('a').attr('id'),
+        name: $(li).find('a').text().trim()
+      });
+    });
+
+    return searchable_objs;
+  }
+
+  function refresh_searchable_filter_field_objects(fields) {
+    $('#filter-tabs').fadeOut('fast', function () {
+
+      // Iterate over filter tab element's children
+      $('#filter-tabs').children().each(function (idx, li) {
+
+        let id = $(li).find('a').attr('id');
+        let name = $(li).find('a').text().trim();
+
+        // Determine visibility state to adopt
+        if (window.lodash.find(fields, {'id': id, 'name': name})) {
+          $(li).show();
+
+        } else {
+          $(li).hide();
+        }
+
+      });
+
+      // Default to selecting first field within refreshed list
+      let selected_li = $('#filter-tabs li').not('[style*="display"]').first();
+      $(selected_li).find('a').trigger('click');
+
+      // Display refreshed fields
+      $('#filter-tabs').fadeIn('fast');
+    });
+  }
+
   // Remove filter labels
   $(document).on('click', '.current-filter-close', function () {
     let label = $(this).parent();

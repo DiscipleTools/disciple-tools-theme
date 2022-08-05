@@ -615,8 +615,8 @@ dt_please_log_in();
         <div class="grid-container">
             <div class="grid-x">
                 <div class="cell small-4" style="padding: 0 5px 5px 5px">
-                    <input type="text" id="new-filter-name"
-                           placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"
+                    <input type="text" id="field-filter-name"
+                           placeholder="<?php esc_html_e( 'Field Name', 'disciple_tools' )?>"
                            style="margin-bottom: 0"/>
                 </div>
                 <div class="cell small-7">
@@ -778,12 +778,26 @@ dt_please_log_in();
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">
-                <button style="display: inline-block" class="button loader confirm-filter-records" type="button" id="confirm-filter-records" data-close >
-                    <?php esc_html_e( 'Filter Records', 'disciple_tools' )?>
-                </button>
-                <button class="button loader confirm-filter-records" type="button" id="save-filter-edits" data-close style="display: none">
-                    <?php esc_html_e( 'Save', 'disciple_tools' )?>
-                </button>
+                <table class="confirm-buttons-table">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" id="new-filter-name"
+                                   placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' ) ?>"/>
+                        </td>
+                        <td>
+                            <button style="display: inline-block" class="button loader confirm-filter-records"
+                                    type="button" id="confirm-filter-records" data-close>
+                                <?php esc_html_e( 'Filter Records', 'disciple_tools' ) ?>
+                            </button>
+                            <button class="button loader confirm-filter-records" type="button" id="save-filter-edits"
+                                    data-close style="display: none">
+                                <?php esc_html_e( 'Save', 'disciple_tools' ) ?>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <button class="close-button" data-close aria-label="Close modal" type="button">
