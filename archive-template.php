@@ -619,7 +619,7 @@ dt_please_log_in();
                            placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"
                            style="margin-bottom: 0"/>
                 </div>
-                <div class="cell small-8">
+                <div class="cell small-7">
                     <div id="selected-filters"></div>
                 </div>
             </div>
