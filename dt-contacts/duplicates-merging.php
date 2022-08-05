@@ -314,11 +314,9 @@ class DT_Duplicate_Checker_And_Merging {
 
         // Ignore specified fields
         $ignored_fields = [
-            'contacts' => [
-                'post_date'
-            ]
+            'post_date'
         ];
-        foreach ( $ignored_fields[ $post_type ] ?? [] as $field_id ) {
+        foreach ( $ignored_fields as $field_id ) {
             if ( isset( $args[ $field_id ] ) ) {
                 unset( $args[ $field_id ] );
             }
