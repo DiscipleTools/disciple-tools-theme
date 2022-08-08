@@ -226,11 +226,11 @@ function dt_disable_wp_emoji() {
 
 function dt_disable_emojis_tinymce( $plugins ) {
     if ( is_array( $plugins ) ) {
-        $plugins_array = array_diff( $plugins, array( 'wpemoji' ) );
-        return $plugins_array;
+        return array_diff( $plugins, array( 'wpemoji' ) );
     }
     return [];
 }
+
 function dt_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
     if ( 'dns-prefetch' == $relation_type ) {
         $emoji_svg_url = apply_filters( 'emoji_svg_url', 'https://s.w.org/images/core/emoji/2/svg/' );
