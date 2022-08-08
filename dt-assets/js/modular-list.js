@@ -1042,7 +1042,6 @@
   }
 
   function is_custom_filter_field_type_supported_for_exclusion(filter_label) {
-
     let is_supported = false;
 
     // Attempt to locate corresponding field settings
@@ -1053,6 +1052,11 @@
         is_supported = window.lodash.includes(['connection', 'user_select', 'multi_select', 'tags', 'location', 'location_meta', 'key_select'], field.type);
       }
     });
+
+    // Ensure wildcard (All) based filters are enforced, with exclusion option disabled
+    if (window.lodash.includes(['*', '-*'], $(filter_label).data('id'))) {
+      is_supported = false;
+    }
 
     return is_supported;
   }
