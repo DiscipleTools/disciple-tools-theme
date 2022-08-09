@@ -137,6 +137,68 @@
     }
   })
 
+  // Support field name filtering
+  let searchable_filter_field_objects = build_searchable_filter_field_objects();
+  function build_searchable_filter_field_objects() {
+    let searchable_objs = [];
+
+    $('#filter-tabs').children().each(function (idx, li) {
+      searchable_objs.push({
+        id: $(li).find('a').attr('id'),
+        name: $(li).find('a').text().trim()
+      });
+    });
+
+    return searchable_objs;
+  }
+
+  $(document).on('search', '#field-filter-name', function () {
+    execute_searchable_filter_field_query($(this).val());
+  });
+
+  $(document).on('keyup', '#field-filter-name', function () {
+    execute_searchable_filter_field_query($(this).val());
+  });
+
+  function execute_searchable_filter_field_query(query) {
+
+    // Search across field objects...
+    let hits = window.lodash.filter(searchable_filter_field_objects, function (field) {
+      return window.lodash.includes(field.name.trim().toLowerCase(), query.trim().toLowerCase());
+    });
+
+    // Refresh filter fields list
+    refresh_searchable_filter_field_objects(hits);
+  }
+
+  function refresh_searchable_filter_field_objects(fields) {
+    $('#filter-tabs').fadeOut('fast', function () {
+
+      // Iterate over filter tab element's children
+      $('#filter-tabs').children().each(function (idx, li) {
+
+        let id = $(li).find('a').attr('id');
+        let name = $(li).find('a').text().trim();
+
+        // Determine visibility state to adopt
+        if (window.lodash.find(fields, {'id': id, 'name': name})) {
+          $(li).show();
+
+        } else {
+          $(li).hide();
+        }
+
+      });
+
+      // Default to selecting first field within refreshed list
+      let selected_li = $('#filter-tabs li').not('[style*="display"]').first();
+      $(selected_li).find('a').trigger('click');
+
+      // Display refreshed fields
+      $('#filter-tabs').fadeIn('fast');
+    });
+  }
+
   // Remove filter labels
   $(document).on('click', '.current-filter-close', function () {
     let label = $(this).parent();
@@ -151,6 +213,7 @@
       $('#list-filters .bordered-box').removeClass('collapsed')
     }
   }
+
   $(window).resize(function(){
     collapse_filters()
   })
@@ -381,7 +444,7 @@
   function clear_search_query() {
     // clear query if the current_filter is not a search query with the same text as the search-query
     const searchLabel = current_filter.labels.find((label) => label.id === 'search')
-    if ( searchLabel && ( searchLabel.name === $("#search-query").val() ||       searchLabel.name === $("#search-query-mobile").val() ) ) {
+    if ( searchLabel && ( searchLabel.name === $("#search-query").val() || searchLabel.name === $("#search-query-mobile").val() ) ) {
       return
     }
     if ($("#search-query").val() !== ""){
@@ -393,7 +456,7 @@
   }
 
   function setup_filters(){
-    if ( !list_settings.filters.tabs){
+    if ( !list_settings.filters.tabs) {
       return;
     }
     let selected_tab = $('.accordion-item.is-active').data('id');
@@ -410,16 +473,16 @@
         </a>
         <div class="accordion-content" data-tab-content>
           <div class="list-views">
-            ${  list_settings.filters.filters.map( filter =>{
-              if (filter.tab===tab.key && filter.tab !== 'custom') {
+            ${ list_settings.filters.filters.map( filter =>{
+              if (filter.tab === tab.key && filter.tab !== 'custom') {
                 let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
                 return `
-                  <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
-                    <input type="radio" name="view" value="${window.lodash.escape(filter.ID)}" data-id="${window.lodash.escape(filter.ID)}" class="js-list-view" autocomplete="off">
-                    <span id="total_filter_label">${window.lodash.escape(filter.name)}</span>
-                    <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(filter.ID)}">${window.lodash.escape(filter.count )}</span>
-                  </label>
-                  `
+                        <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
+                          <input type="radio" name="view" value="${window.lodash.escape(filter.ID)}" data-id="${window.lodash.escape(filter.ID)}" class="js-list-view" autocomplete="off">
+                          <span id="total_filter_label">${window.lodash.escape(filter.name)}</span>
+                          <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(filter.ID)}">${window.lodash.escape(filter.count )}</span>
+                        </label>
+                        `
               }
             }).join('')}
           </div>
@@ -431,11 +494,11 @@
 
     let saved_filters_list = $(`#list-filter-tabs [data-id='custom'] .list-views`)
     saved_filters_list.empty()
-    if ( list_settings.filters.filters.filter(t=>t.tab==='custom').length === 0 ) {
+    if ( list_settings.filters.filters.filter(t=>t.tab === 'custom').length === 0 ) {
       saved_filters_list.html(`<span>${window.lodash.escape(list_settings.translations.empty_custom_filters)}</span>`)
     }
-    list_settings.filters.filters.filter(t=>t.tab==='custom').forEach(filter=>{
-      if ( filter && filter.visible === ''){
+    list_settings.filters.filters.filter(t=>t.tab === 'custom').forEach(filter=>{
+      if ( filter && filter.visible === '') {
         return
       }
       let delete_filter = $(`<span style="float:right" data-filter="${window.lodash.escape( filter.ID )}">
@@ -453,8 +516,8 @@
         edit_saved_filter( filter )
         filterToEdit = filter.ID;
       })
-      let filterName =  `<span class="filter-list-name" data-filter="${window.lodash.escape( filter.ID )}">${window.lodash.escape( filter.name )}</span>`
-      const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${window.lodash.escape( filter.ID )}" >`)
+      let filterName = `<span class="filter-list-name" data-filter="${window.lodash.escape(filter.ID)}">${window.lodash.escape(filter.name)}</span>`
+      const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${window.lodash.escape(filter.ID)}" >`)
       .attr("type", "radio")
       .val("saved-filters")
       .on("change", function() {
@@ -485,7 +548,7 @@
   }
 
   function get_filter_counts(oldFilters) {
-    if ( getFilterCountsPromise && window.lodash.get( getFilterCountsPromise, "readyState") !== 4 ){
+    if ( getFilterCountsPromise && window.lodash.get( getFilterCountsPromise, "readyState") !== 4 ) {
       getFilterCountsPromise.abort()
     }
     getFilterCountsPromise = $.ajax({
@@ -495,7 +558,7 @@
       }
     })
     getFilterCountsPromise.then(filters=>{
-      if ( oldFilters !== JSON.stringify(filters) ){
+      if (oldFilters !== JSON.stringify(filters)){
         list_settings.filters = filters
         setup_filters()
       }
@@ -546,9 +609,9 @@
       let sortLabel = filter.query.sort
       if ( sortLabel.includes('last_modified') ){
         sortLabel = list_settings.translations.date_modified
-      } else if (  sortLabel.includes('post_date') ) {
+      } else if ( sortLabel.includes('post_date') ) {
         sortLabel = list_settings.translations.creation_date
-      } else  {
+      } else {
 
         // remove leading dash from sort filter key when reverse sorting
         const leadingDashSearch = new RegExp('^-')
@@ -635,15 +698,15 @@
 
   function setup_archived_switch_position(switchStatus) {
     archivedSwitch.prop('checked', switchStatus)
-}
+  }
 
   function apply_archived_toggle_to_current_filter() {
     const showArchived = archivedSwitchStatus
     let status = get_filtered_status();
 
     if (showArchived && status && status.includes(filterOutArchivedItemsKey)) {
-       const index = status.indexOf(filterOutArchivedItemsKey)
-       status.splice(index, 1)
+      const index = status.indexOf(filterOutArchivedItemsKey)
+      status.splice(index, 1)
     }
 
     if (!showArchived && (!status || status.length === 0)) {
@@ -719,10 +782,12 @@
       fields_to_show_in_table.forEach(field_key=>{
         let values_html = '';
         let values = [];
-        if ( field_key === "name" ){
-          if ( mobile ){ return }
-          values_html = `<a href="${ window.lodash.escape( record.permalink ) }" title="${ window.lodash.escape( record.post_title ) }">${ window.lodash.escape( record.post_title ) }</a>`
-        } else if ( list_settings.post_type_settings.fields[field_key] ) {
+        if (field_key === "name"){
+          if (mobile) {
+            return
+          }
+          values_html = `<a href="${window.lodash.escape(record.permalink)}" title="${window.lodash.escape(record.post_title)}">${window.lodash.escape(record.post_title)}</a>`
+        } else if (list_settings.post_type_settings.fields[field_key]) {
           let field_settings = list_settings.post_type_settings.fields[field_key]
           let field_value = window.lodash.get( record, field_key, false )
 
@@ -761,7 +826,7 @@
                     }
                   })
                 }
-                return `${window.lodash.escape( v.post_title )}${meta.length? ` (${meta.join(',')})` : ''}`;
+                return `${window.lodash.escape( v.post_title )}${meta.length ? ` (${meta.join(',')})` : ''}`;
               })
             } else if ( field_settings.type === "boolean" ){
               if (field_key === "favorite") {
@@ -842,7 +907,7 @@
         `
       }
     })
-    if ( records.length === 0 ){
+    if ( records.length === 0 ) {
       table_rows = `<tr><td colspan="10">${window.lodash.escape(list_settings.translations.empty_list)}</td></tr>`
     }
 
@@ -877,7 +942,7 @@
     get_records_promise.then(response=>{
       if (offset){
         items = window.lodash.unionBy(items, response.posts || [], "ID")
-      } else  {
+      } else {
         items = response.posts || []
       }
       window.records_list.posts = items // adds global access to current list for plugins
@@ -926,7 +991,13 @@
   function add_custom_filter(name, type, query, labels, load_records = true) {
     query = query || current_filter.query
     let ID = new Date().getTime() / 1000;
-    current_filter = {ID, type, name: window.lodash.escape( name ), query:JSON.parse(JSON.stringify(query)), labels:labels}
+    current_filter = {
+      ID,
+      type,
+      name: window.lodash.escape(name),
+      query: JSON.parse(JSON.stringify(query)),
+      labels: labels
+    }
     custom_filters.push(JSON.parse(JSON.stringify(current_filter)))
 
     let save_filter = $(`<a style="float:right" data-filter="${window.lodash.escape( ID.toString() )}">
@@ -945,6 +1016,7 @@
       get_records_for_current_filter()
     }
   }
+
   let get_custom_filter_search_query = ()=>{
     let search_query = []
     let fields_filtered = window.lodash.uniq(new_filter_labels.map(f=>f.field))
@@ -993,11 +1065,13 @@
     search_query = {
       fields: search_query
     }
-    if ( list_settings.post_type === "contacts" ){
-      if ( $("#combine_subassigned").is(":checked") ){
-        let assigned_to = search_query.fields.filter(a=>a.assigned_to)
-        let subassigned = search_query.fields.filter(a=>a.subassigned)
-        search_query.fields = search_query.fields.filter(a=>{return !a.assigned_to && !a.subassigned})
+    if (list_settings.post_type === "contacts") {
+      if ($("#combine_subassigned").is(":checked")) {
+        let assigned_to = search_query.fields.filter(a => a.assigned_to)
+        let subassigned = search_query.fields.filter(a => a.subassigned)
+        search_query.fields = search_query.fields.filter(a => {
+          return !a.assigned_to && !a.subassigned
+        })
         search_query.fields.push([assigned_to[0], subassigned[0]])
         search_query.combine = [ "subassigned" ] // to select checkbox in filter modal
       }
@@ -1189,9 +1263,11 @@
   }
 
   $('.all-connections').on("click", all_connections_click_handler)
+
   function without_connections_handler() {
     all_connections_click_handler.call(this, { without: true })
   }
+
   $('.all-without-connections').on("click", without_connections_handler)
 
 
@@ -1204,14 +1280,14 @@
         return
       }
 
-      let source_data =  { data: [] }
+      let source_data = { data: [] }
       let field_options = window.lodash.get(list_settings, `post_type_settings.fields.${field}.default`, {})
       if ( Object.keys(field_options).length > 0 ){
         window.lodash.forOwn(field_options, (val, key)=>{
           if ( !val.deleted ){
             source_data.data.push({
               key: key,
-              name:key,
+              name: key,
               value: val.label || key
             })
           }
@@ -1264,7 +1340,7 @@
           }
         },
         callback: {
-          onClick: function(node, a, item){
+          onClick: function(node, a, item) {
             const { newLabel, name } = create_name_value_label(field, item.key, item.value, list_settings)
             selected_filters.append(`<span class="current-filter ${window.lodash.escape( field )}" data-id="${window.lodash.escape( item.key )}">${window.lodash.escape( name )}:${window.lodash.escape( item.value )}</span>`)
             new_filter_labels.push(newLabel)
@@ -1390,9 +1466,9 @@
   /**
    * Location
    */
-   $('#mapbox-clear-autocomplete').click("input", function(){
-       delete window.location_data;
-    });
+  $('#mapbox-clear-autocomplete').click("input", function(){
+    delete window.location_data;
+  });
 
   let load_location_typeahead = ()=> {
     let key = 'location_grid'
@@ -1455,8 +1531,12 @@
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#location_grid-result-container').html(text);
           },
-          onReady(){
-            this.filters.dropdown = {key: "group", value: "used", template: window.lodash.escape(window.wpApiShare.translations.used_locations)}
+          onReady() {
+            this.filters.dropdown = {
+              key: "group",
+              value: "used",
+              template: window.lodash.escape(window.wpApiShare.translations.used_locations)
+            }
             this.container
             .removeClass("filter")
             .find("." + this.options.selector.filterButton)
@@ -1484,7 +1564,9 @@
     load_location_typeahead()
     load_post_type_typeaheads()
     load_user_select_typeaheads()
-    typeaheads_loaded = load_multi_select_typeaheads().catch(err => { console.error(err) })
+    typeaheads_loaded = load_multi_select_typeaheads().catch(err => {
+      console.error(err)
+    })
     $('#new-filter-name').val('')
     $("#filter-modal input.dt_date_picker").each(function () {
       $(this).val('')
@@ -1600,7 +1682,7 @@
     let field = $(b).data("field")
     $(`.tabs-panel`).removeClass('is-active')
     $(`#${field}.tabs-panel`).addClass('is-active')
-    if (field &&  Typeahead[`.js-typeahead-${field}`]){
+    if (field && Typeahead[`.js-typeahead-${field}`]) {
       Typeahead[`.js-typeahead-${field}`].adjustInputSize()
     }
   })
@@ -1674,7 +1756,7 @@
     filter.tab = 'custom'
     if (filter.query){
       list_settings.filters.filters.push(filter)
-      API.save_filters(list_settings.post_type,filter).then(()=>{
+      API.save_filters(list_settings.post_type, filter).then(()=>{
         $(`.custom-filters [class*="list-view ${filter_to_save}`).remove()
         setup_filters()
         let active_tab = $('.accordion-item.is-active ').data('id');
@@ -1684,7 +1766,9 @@
         $(`input[name="view"][value="saved-filters"][data-id='${filter_to_save}']`).prop('checked', true);
         get_records_for_current_filter()
         $('#filter-name').val("")
-      }).catch(err => { console.error(err) })
+      }).catch(err => {
+        console.error(err)
+      })
     }
   })
 
@@ -1698,14 +1782,18 @@
         window.lodash.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         $(`#list-filter-tabs [data-id='custom'] a`).click()
-      }).catch(err => { console.error(err) })
+      }).catch(err => {
+        console.error(err)
+      })
     } else {
       API.delete_filter(list_settings.post_type, filter_to_delete).then(()=>{
         window.lodash.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         check_first_filter()
         get_records_for_current_filter()
-      }).catch(err => { console.error(err) })
+      }).catch(err => {
+        console.error(err)
+      })
     }
   })
 
@@ -1713,17 +1801,17 @@
     $('#advanced_search_picker').toggle();
   });
 
-  $('#advanced_search_mobile').on('click', function() {
+  $('#advanced_search_mobile').on('click', function(){
     $('#advanced_search_picker_mobile').toggle();
   });
 
-  $('#advanced_search_reset').on('click', function(){
+  $('#advanced_search_reset').on('click', function () {
     let fields_to_search = []
     window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type )
 
     //clear all checkboxes
-    $('#advanced_search_picker ul li input:checked').each(function( index ) {
-        $( this ).prop('checked', false);
+    $('#advanced_search_picker ul li input:checked').each(function ( index ) {
+      $( this ).prop('checked', false);
     });
     $('#search').click();
 
@@ -1735,7 +1823,7 @@
 
     //clear all checkboxes
     $('#advanced_search_picker_mobile ul li input:checked').each(function( index ) {
-        $( this ).prop('checked', false);
+      $( this ).prop('checked', false);
     });
     $('#search-mobile').click();
 
@@ -1745,7 +1833,7 @@
     let fields_to_search = [];
     $('#advanced_search_picker ul li input:checked').each(function( index ) {
       fields_to_search.push($( this ).val());
-   });
+    });
     window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type );
     if ($("#search-query").val() !== "") {
       $('#search').click();
@@ -1758,7 +1846,7 @@
     let fields_to_search = [];
     $('#advanced_search_picker_mobile ul li input:checked').each(function( index ) {
       fields_to_search.push($( this ).val());
-   });
+    });
     window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type );
     if ($("#search-query-mobile").val() !== "") {
       $('#search-mobile').click();
@@ -1771,14 +1859,14 @@
     let fieldsToSearch = [];
     $('#advanced_search_picker ul li input:checked').each(function( index ) {
       fieldsToSearch.push($( this ).val());
-   });
-   window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fieldsToSearch, list_settings.post_type );
+    });
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fieldsToSearch, list_settings.post_type );
 
-   if (fieldsToSearch.length > 0 ) {
-    $('.advancedSearch-count').text(fieldsToSearch.length).css('display', 'inline-block')
-   } else {
-    $('.advancedSearch-count').text('fields_to_search.length').hide();
-   }
+    if (fieldsToSearch.length > 0 ) {
+      $('.advancedSearch-count').text(fieldsToSearch.length).css('display', 'inline-block')
+    } else {
+      $('.advancedSearch-count').text('fields_to_search.length').hide();
+    }
 
     let query = {text:searchText}
 
@@ -1786,7 +1874,7 @@
       query.fields_to_search = fieldsToSearch;
     }
 
-    let labels = [{ id:"search", name:searchText, field: "search"}]
+    let labels = [{ id:"search", name:searchText, field:"search"}]
     add_custom_filter(searchText, "search", query, labels);
 
     $('#advanced_search_picker').hide();
@@ -1802,9 +1890,9 @@
 
     if (fieldsToSearch.length > 0 ) {
       $('.advancedSearch-count').text(fieldsToSearch.length).css('display', 'inline-block')
-     } else {
+    } else {
       $('.advancedSearch-count').text('fields_to_search.length').hide();
-     }
+    }
 
     let query = {text:searchText}
 
@@ -1812,7 +1900,7 @@
       query.fields_to_search = fieldsToSearch;
     }
 
-    let labels = [{ id:"search", name:searchText, field: "search"}]
+    let labels = [{ id:"search", name:searchText, field:"search"}]
     add_custom_filter(searchText, "search", query, labels);
 
     $('#advanced_search_picker_mobile').hide();
@@ -1847,21 +1935,21 @@
   /***
    * Favorite from List
    */
-   function favorite_edit_event() {
-      $("svg.icon-star").on('click', function(e) {
-        e.stopImmediatePropagation();
-        let post_id = this.dataset.id
-        let favoritedValue;
-        if ( $(this).hasClass('selected') ) {
-          favoritedValue = false;
-        } else {
-          favoritedValue = true;
-        }
-        API.update_post(list_settings.post_type, post_id, {'favorite': favoritedValue}).then((new_post)=>{
-          $(this).toggleClass('selected');
-        })
+  function favorite_edit_event() {
+    $("svg.icon-star").on('click', function (e) {
+      e.stopImmediatePropagation();
+      let post_id = this.dataset.id
+      let favoritedValue;
+      if ($(this).hasClass('selected')) {
+        favoritedValue = false;
+      } else {
+        favoritedValue = true;
+      }
+      API.update_post(list_settings.post_type, post_id, {'favorite': favoritedValue}).then((new_post) => {
+        $(this).toggleClass('selected');
       })
-   }
+    })
+  }
 
   /***
    * Bulk Edit
@@ -1887,9 +1975,9 @@
   $('#bulk_edit_master').on('click', function(e){
     e.stopImmediatePropagation();
     let checked = $(this).children('input').is(':checked');
-        $('.bulk_edit_checkbox input').each(function() {
-        $(this).prop('checked', checked);
-        bulk_edit_count();
+        $('.bulk_edit_checkbox input').each(function () {
+          $(this).prop('checked', checked);
+          bulk_edit_count();
     })
   })
   /**
@@ -1914,15 +2002,15 @@
     let sharePayload;
 
     allInputs.each(function () {
-        let inputData = $(this).data();
-        $.each(inputData, function (key, value) {
-          if (key.includes('bulk_key_') && value) {
-            let field_key = key.replace('bulk_key_', '');
-            if(field_key) {
-              updatePayload[field_key] = value;
-            }
+      let inputData = $(this).data();
+      $.each(inputData, function (key, value) {
+        if (key.includes('bulk_key_') && value) {
+          let field_key = key.replace('bulk_key_', '');
+          if (field_key) {
+            updatePayload[field_key] = value;
           }
-        })
+        }
+      })
     })
     if (window.location_data) {
       updatePayload['location_grid_meta'] = window.location_data.location_grid_meta;
@@ -2025,9 +2113,9 @@
         // call callback, passing item and
         // a "done" callback
         fn(items[i], function() {
-            // when done, decrement counter and
-            // if counter is 0, process next batch
-            --count || process(q, num, fn, done, update, share, comment);
+          // when done, decrement counter and
+          // if counter is 0, process next batch
+          --count || process(q, num, fn, done, update, share, comment);
         }, update, share, comment);
 
     }
@@ -2038,17 +2126,23 @@
     let promises = [];
 
     if (Object.keys(update).length) {
-      promises.push( API.update_post(list_settings.post_type, item, update).catch(err => { console.error(err);}));
+      promises.push(API.update_post(list_settings.post_type, item, update).catch(err => {
+        console.error(err);
+      }));
     }
 
     if (share) {
-      share.forEach(function(value) {
-        promises.push( API.add_shared(list_settings.post_type, item, value).catch(err => { console.error(err) }));
+      share.forEach(function (value) {
+        promises.push(API.add_shared(list_settings.post_type, item, value).catch(err => {
+          console.error(err)
+        }));
       })
     }
 
     if (comment.commentText) {
-      promises.push( API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => { console.error(err);}));
+      promises.push(API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => {
+        console.error(err);
+      }));
     }
 
     Promise.all(promises).then( function() {
@@ -2202,7 +2296,7 @@
             $(`#${element_id}-result-container`).html(text);
           },
           onHideLayout: function (event, query) {
-            if ( !query ){
+            if (!query) {
               $(`#${element_id}-result-container`).empty()
             }
           },
@@ -2271,7 +2365,11 @@
           node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
         },
         onReady() {
-          this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
+          this.filters.dropdown = {
+            key: "group",
+            value: "focus",
+            template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)
+          }
           this.container
           .removeClass("filter")
           .find("." + this.options.selector.filterButton)

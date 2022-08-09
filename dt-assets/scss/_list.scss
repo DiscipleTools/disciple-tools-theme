@@ -235,12 +235,21 @@ table.js-list{
     .button-cancel {
         background-color: #F2F2F2;
         color: black;
+        margin: 5px 0 5px 0;
     }
     .confirm-buttons {
         text-align: end;
     }
     .grid-container {
         padding: 0
+    }
+
+    #new-filter-name {
+        margin: 5px 0 5px 0;
+    }
+
+    .confirm-filter-records {
+        margin: 5px 0 5px 0;
     }
 }
 
