@@ -773,7 +773,7 @@ dt_please_log_in();
 
         <div class="grid-x grid-padding-x">
             <div class="cell small-4 filter-modal-left">
-                <button class="button button-cancel" data-close aria-label="Close reveal" type="button" style="margin: 5px 0 5px 0;">
+                <button class="button button-cancel" data-close aria-label="Close reveal" type="button">
                     <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
                 </button>
             </div>
@@ -782,15 +782,15 @@ dt_please_log_in();
                 <div class="grid-x grid-padding-x">
                     <div class="cell small-7 filter-modal-right">
                         <input type="search" id="new-filter-name"
-                               placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' ) ?>" style="margin: 5px 0 5px 0;"/>
+                               placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' ) ?>" />
                     </div>
                     <div class="cell small-5 filter-modal-right">
-                        <button style="display: inline-block; margin: 5px 0 5px 0;" class="button loader confirm-filter-records"
+                        <button style="display: inline-block;" class="button loader confirm-filter-records"
                                 type="button" id="confirm-filter-records" data-close>
                             <?php esc_html_e( 'Filter Records', 'disciple_tools' ) ?>
                         </button>
                         <button class="button loader confirm-filter-records" type="button" id="save-filter-edits"
-                                data-close style="display: none; margin: 5px 0 5px 0;">
+                                data-close style="display: none;">
                             <?php esc_html_e( 'Save', 'disciple_tools' ) ?>
                         </button>
                     </div>
