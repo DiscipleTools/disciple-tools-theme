@@ -1,5 +1,5 @@
 "use strict";
-(function ($, list_settings, Foundation) {
+(function($, list_settings, Foundation) {
   let selected_filters = $("#selected-filters")
   let new_filter_labels = []
   let custom_filters = []
@@ -14,19 +14,19 @@
   let loading_spinner = $("#list-loading-spinner")
   let old_filters = JSON.stringify(list_settings.filters)
   let table_header_row = $('.js-list thead .sortable th')
-  let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie('fields_to_show_in_table', []);
-  let fields_to_search = window.SHAREDFUNCTIONS.get_json_cookie('fields_to_search', []);
+  let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_show_in_table', [] );
+  let fields_to_search = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_search', [] );
   let current_user_id = wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
   let getFilterCountsPromise = null
-  const {status_field} = list_settings.post_type_settings
-  const {status_key, archived_key} = status_field ? status_field : {}
+  const { status_field } = list_settings.post_type_settings
+  const { status_key, archived_key } = status_field ? status_field : {}
   const filterOutArchivedItemsKey = `-${archived_key}`
   const archivedSwitch = $('#archivedToggle')
-  let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_cookie('list_archived_switch_status', []) || false
+  let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_cookie( 'list_archived_switch_status', [] ) || false
   window.post_type_fields = list_settings.post_type_settings.fields
-  window.records_list = {posts: [], total: 0}
+  window.records_list = { posts:[], total:0 }
   const esc = window.lodash.escape
 
   const ALL_ID = '*'
@@ -71,10 +71,10 @@
 
   function get_current_filter(urlCustomFilter, cachedFilter) {
 
-    const {filterID, filterTab} = get_url_query_params()
+    const { filterID, filterTab } = get_url_query_params()
 
-    if (filterID && is_in_filter_list(filterID)) {
-      const currentFilter = {ID: filterID, query: {}}
+    if (filterID && is_in_filter_list(filterID) ) {
+      const currentFilter = { ID: filterID, query: {} }
       if (filterTab) currentFilter.tab = filterTab
       return currentFilter
     } else if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
@@ -82,11 +82,11 @@
     } else if (cachedFilter && !window.lodash.isEmpty(cachedFilter)) {
       return cachedFilter;
     }
-    return {query: {}};
+    return { query: {} };
   }
 
   function setup_custom_cached_filter(urlCustomFilter, cachedFilter, currentFilter) {
-    const {filterID} = get_url_query_params()
+    const { filterID } = get_url_query_params()
 
     if (!is_in_filter_list(filterID) && urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter) && urlCustomFilter.type === "custom_filter") {
       urlCustomFilter.query.offset = 0;
@@ -111,13 +111,13 @@
     }
   }
 
-  function check_first_filter() {
+  function check_first_filter (){
     $('#list-filter-tabs .accordion-item a')[0].click()
     $($('.js-list-view')[0]).prop('checked', true)
   }
 
   function determine_list_columns(fieldsToShowInTable) {
-    if (window.lodash.isEmpty(fieldsToShowInTable)) {
+    if ( window.lodash.isEmpty(fieldsToShowInTable)){
       fields_to_show_in_table = list_settings.fields_to_show_in_table
     }
   }
@@ -128,10 +128,10 @@
   });
 
   //load record for the first filter when a tile is clicked
-  $(document).on('click', '.accordion-title', function () {
+  $(document).on('click', '.accordion-title', function(){
     let selected_filter = $(".js-list-view:checked").data('id')
     let tab = $(this).data('id');
-    if (selected_filter) {
+    if ( selected_filter ){
       $(`.accordion-item[data-id='${tab}'] .js-list-view`).first().prop('checked', true);
       get_records_for_current_filter()
     }
@@ -214,7 +214,7 @@
     }
   }
 
-  $(window).resize(function () {
+  $(window).resize(function(){
     collapse_filters()
   })
 
@@ -343,7 +343,7 @@
    * no filter.
    */
   function create_custom_filter_from_query_params() {
-    const {query, labels} = get_url_query_params()
+    const { query, labels } = get_url_query_params()
 
     if (!query) return {}
 
@@ -412,14 +412,14 @@
     window.history.pushState(null, document.title, url.search)
   }
 
-  function get_records_for_current_filter(custom_filter = null) {
+  function get_records_for_current_filter(custom_filter = null){
     let checked = $(".js-list-view:checked")
     let current_view = checked.val()
     let filter_id = checked.data("id") || current_view || ""
     let sort = current_filter.query.sort || null;
 
     // Determine if default resets are required?
-    if (custom_filter) {
+    if ( custom_filter ) {
       current_filter = custom_filter
     } else if (current_view === "custom_filter") {
       let filterId = checked.data("id")
@@ -444,10 +444,10 @@
   function clear_search_query() {
     // clear query if the current_filter is not a search query with the same text as the search-query
     const searchLabel = current_filter.labels.find((label) => label.id === 'search')
-    if (searchLabel && (searchLabel.name === $("#search-query").val() || searchLabel.name === $("#search-query-mobile").val())) {
+    if ( searchLabel && ( searchLabel.name === $("#search-query").val() || searchLabel.name === $("#search-query-mobile").val() ) ) {
       return
     }
-    if ($("#search-query").val() !== "") {
+    if ($("#search-query").val() !== ""){
       $("#search-query").val("")
     }
     if ($("#search-query-mobile").val() !== "") {
@@ -455,53 +455,53 @@
     }
   }
 
-  function setup_filters() {
-    if (!list_settings.filters.tabs) {
+  function setup_filters(){
+    if ( !list_settings.filters.tabs) {
       return;
     }
     let selected_tab = $('.accordion-item.is-active').data('id');
     let selected_filter = $(".js-list-view:checked").data('id')
     let html = ``;
-    list_settings.filters.tabs.forEach(tab => {
+    list_settings.filters.tabs.forEach( tab =>{
       html += `
       <li class="accordion-item" data-accordion-item data-id="${window.lodash.escape(tab.key)}">
         <a href="#" class="accordion-title" data-id="${window.lodash.escape(tab.key)}">
           ${window.lodash.escape(tab.label)}
           <span class="tab-count-span" data-tab="${window.lodash.escape(tab.key)}">
-              ${tab.count || tab.count >= 0 ? `(${window.lodash.escape(tab.count)})` : ``}
+              ${tab.count || tab.count >= 0 ? `(${window.lodash.escape(tab.count)})`: ``}
           </span>
         </a>
         <div class="accordion-content" data-tab-content>
           <div class="list-views">
-            ${list_settings.filters.filters.map(filter => {
-        if (filter.tab === tab.key && filter.tab !== 'custom') {
-          let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
-          return `
-                  <label class="list-view" style="${filter.subfilter ? `margin-left:${indent}px` : ''}">
-                    <input type="radio" name="view" value="${window.lodash.escape(filter.ID)}" data-id="${window.lodash.escape(filter.ID)}" class="js-list-view" autocomplete="off">
-                    <span id="total_filter_label">${window.lodash.escape(filter.name)}</span>
-                    <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(filter.ID)}">${window.lodash.escape(filter.count)}</span>
-                  </label>
-                  `
-        }
-      }).join('')}
+            ${ list_settings.filters.filters.map( filter =>{
+              if (filter.tab === tab.key && filter.tab !== 'custom') {
+                let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
+                return `
+                        <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
+                          <input type="radio" name="view" value="${window.lodash.escape(filter.ID)}" data-id="${window.lodash.escape(filter.ID)}" class="js-list-view" autocomplete="off">
+                          <span id="total_filter_label">${window.lodash.escape(filter.name)}</span>
+                          <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(filter.ID)}">${window.lodash.escape(filter.count )}</span>
+                        </label>
+                        `
+              }
+            }).join('')}
           </div>
         </div>
       </li>
       `
-    })
+    } )
     filter_accordions.html(html)
 
     let saved_filters_list = $(`#list-filter-tabs [data-id='custom'] .list-views`)
     saved_filters_list.empty()
-    if (list_settings.filters.filters.filter(t => t.tab === 'custom').length === 0) {
+    if ( list_settings.filters.filters.filter(t=>t.tab === 'custom').length === 0 ) {
       saved_filters_list.html(`<span>${window.lodash.escape(list_settings.translations.empty_custom_filters)}</span>`)
     }
-    list_settings.filters.filters.filter(t => t.tab === 'custom').forEach(filter => {
-      if (filter && filter.visible === '') {
+    list_settings.filters.filters.filter(t=>t.tab === 'custom').forEach(filter=>{
+      if ( filter && filter.visible === '') {
         return
       }
-      let delete_filter = $(`<span style="float:right" data-filter="${window.lodash.escape(filter.ID)}">
+      let delete_filter = $(`<span style="float:right" data-filter="${window.lodash.escape( filter.ID )}">
         <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/trash.svg">
       </span>`)
       delete_filter.on("click", function () {
@@ -509,29 +509,29 @@
         $('#delete-filter-modal').foundation('open');
         filter_to_delete = filter.ID;
       })
-      let edit_filter = $(`<span style="float:right" data-filter="${window.lodash.escape(filter.ID)}">
+      let edit_filter = $(`<span style="float:right" data-filter="${window.lodash.escape( filter.ID )}">
           <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/edit.svg">
       </span>`)
       edit_filter.on("click", function () {
-        edit_saved_filter(filter)
+        edit_saved_filter( filter )
         filterToEdit = filter.ID;
       })
       let filterName = `<span class="filter-list-name" data-filter="${window.lodash.escape(filter.ID)}">${window.lodash.escape(filter.name)}</span>`
       const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${window.lodash.escape(filter.ID)}" >`)
-        .attr("type", "radio")
-        .val("saved-filters")
-        .on("change", function () {
-        });
+      .attr("type", "radio")
+      .val("saved-filters")
+      .on("change", function() {
+      });
       saved_filters_list.append(
         $("<div>").append(
           $("<label>")
-            .css("cursor", "pointer")
-            .addClass("js-filter-checkbox-label")
-            .data("filter-value", status)
-            .append(radio)
-            .append(filterName)
-            .append(delete_filter)
-            .append(edit_filter)
+          .css("cursor", "pointer")
+          .addClass("js-filter-checkbox-label")
+          .data("filter-value", status)
+          .append(radio)
+          .append(filterName)
+          .append(delete_filter)
+          .append(edit_filter)
         )
       )
     })
@@ -539,16 +539,16 @@
       slideSpeed: 100,
       allowAllClosed: true
     });
-    if (selected_tab) {
-      $(`#list-filter-tabs [data-id='${window.lodash.escape(selected_tab)}'] a`).click()
+    if ( selected_tab ){
+      $(`#list-filter-tabs [data-id='${window.lodash.escape( selected_tab )}'] a`).click()
     }
-    if (selected_filter) {
-      $(`[data-id="${window.lodash.escape(selected_filter)}"].js-list-view`).prop('checked', true);
+    if ( selected_filter ){
+      $(`[data-id="${window.lodash.escape( selected_filter )}"].js-list-view`).prop('checked', true);
     }
   }
 
   function get_filter_counts(oldFilters) {
-    if (getFilterCountsPromise && window.lodash.get(getFilterCountsPromise, "readyState") !== 4) {
+    if ( getFilterCountsPromise && window.lodash.get( getFilterCountsPromise, "readyState") !== 4 ) {
       getFilterCountsPromise.abort()
     }
     getFilterCountsPromise = $.ajax({
@@ -557,13 +557,13 @@
         xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
       }
     })
-    getFilterCountsPromise.then(filters => {
-      if (oldFilters !== JSON.stringify(filters)) {
+    getFilterCountsPromise.then(filters=>{
+      if (oldFilters !== JSON.stringify(filters)){
         list_settings.filters = filters
         setup_filters()
       }
     }).catch(err => {
-      if (window.lodash.get(err, "statusText") !== "abort") {
+      if ( window.lodash.get( err, "statusText" ) !== "abort" ){
         console.error(err)
       }
     })
@@ -592,34 +592,34 @@
       });
     } else {
       let query = filter.query
-      window.lodash.forOwn(query, query_key => {
+      window.lodash.forOwn( query, query_key=> {
         if (Array.isArray(query[query_key])) {
 
           query[query_key].forEach(q => {
 
-            html += `<span class="current-filter ${window.lodash.escape(query_key)}">${window.lodash.escape(q)}&nbsp;</span>`
+            html += `<span class="current-filter ${window.lodash.escape( query_key )}">${window.lodash.escape( q )}&nbsp;</span>`
           })
         } else {
-          html += `<span class="current-filter search">${window.lodash.escape(query[query_key])}&nbsp;</span>`
+          html += `<span class="current-filter search">${window.lodash.escape( query[query_key] )}&nbsp;</span>`
         }
       })
     }
 
-    if (filter.query.sort) {
+    if ( filter.query.sort ){
       let sortLabel = filter.query.sort
-      if (sortLabel.includes('last_modified')) {
+      if ( sortLabel.includes('last_modified') ){
         sortLabel = list_settings.translations.date_modified
-      } else if (sortLabel.includes('post_date')) {
+      } else if ( sortLabel.includes('post_date') ) {
         sortLabel = list_settings.translations.creation_date
       } else {
 
         // remove leading dash from sort filter key when reverse sorting
         const leadingDashSearch = new RegExp('^-')
         const querySortKey = (sortLabel.search(leadingDashSearch) > -1) ? sortLabel.replace(leadingDashSearch, '') : sortLabel
-        sortLabel = window.lodash.get(list_settings, `post_type_settings.fields[${querySortKey}].name`, sortLabel)
+        sortLabel = window.lodash.get( list_settings, `post_type_settings.fields[${querySortKey}].name`, sortLabel)
       }
       html += `<span class="current-filter" data-id="sort">
-          ${window.lodash.escape(list_settings.translations.sorting_by)}: ${window.lodash.escape(sortLabel)}
+          ${window.lodash.escape( list_settings.translations.sorting_by )}: ${window.lodash.escape( sortLabel )}
       &nbsp;</span>`
     }
     currentFilters.html(html)
@@ -641,13 +641,13 @@
     table_header_row.removeClass("sorting_desc")
     let dir = $(this).data('order')
     let field = $(this).data('field')
-    get_records(0, (dir === "asc" ? "" : '-') + field)
+    get_records( 0, (dir === "asc" ? "" : '-') + field )
   })
 
   //sort the table by clicking the header
   $('.js-list th').on("click", function () {
     //check is this is the bulk_edit_master checkbox
-    if (this.id == "bulk_edit_master") {
+    if ( this.id == "bulk_edit_master") {
       return;
     }
     let id = $(this).data('id');
@@ -655,7 +655,7 @@
     table_header_row.removeClass("sorting_asc")
     table_header_row.removeClass("sorting_desc")
     table_header_row.data("sort", '')
-    if (!sort || sort === 'desc') {
+    if ( !sort || sort === 'desc' ){
       $(this).data('sort', 'asc')
       $(this).addClass("sorting_asc")
       $(this).removeClass("sorting_desc")
@@ -668,26 +668,26 @@
     get_records(0, id)
   })
 
-  $('#choose_fields_to_show_in_table').on('click', function () {
+  $('#choose_fields_to_show_in_table').on('click', function(){
     $('#list_column_picker').toggle()
   })
-  $('#save_column_choices').on('click', function () {
+  $('#save_column_choices').on('click', function(){
     let new_selected = [];
-    $('#list_column_picker input:checked').each((index, elem) => {
+    $('#list_column_picker input:checked').each((index, elem)=>{
       new_selected.push($(elem).val())
     })
-    fields_to_show_in_table = window.lodash.intersection(fields_to_show_in_table, new_selected) // remove unchecked
-    fields_to_show_in_table = window.lodash.uniq(window.lodash.union(fields_to_show_in_table, new_selected))
-    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type)
+    fields_to_show_in_table = window.lodash.intersection( fields_to_show_in_table, new_selected ) // remove unchecked
+    fields_to_show_in_table = window.lodash.uniq(window.lodash.union( fields_to_show_in_table, new_selected ))
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
     window.location.reload()
   })
-  $('#reset_column_choices').on('click', function () {
+  $('#reset_column_choices').on('click', function(){
     fields_to_show_in_table = []
-    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type)
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
     window.location.reload()
   })
 
-  archivedSwitch.on('click', function () {
+  archivedSwitch.on('click', function() {
     const showArchived = this.checked
 
     archivedSwitchStatus = showArchived
@@ -757,41 +757,41 @@
     dragClass: 'drag',
     overClass: 'over',
     movedContainerSelector: '.dnd-moved',
-    onDragEnd: () => {
+    onDragEnd: ()=>{
       fields_to_show_in_table = []
-      $('.table-headers th').each((i, e) => {
+      $('.table-headers th').each((i, e)=>{
         let field = $(e).data('id')
-        if (field) {
+        if ( field ){
           fields_to_show_in_table.push(field)
         }
       })
-      window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type)
+      window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
     }
-  }).on('click', 'tbody tr', function (event) {
+  }).on('click', 'tbody tr', function(event){
     //open the record if the row is clicked. Give priority to normal browser behavior with links.
-    if (!event.target.href) {
+    if(!event.target.href) {
       window.location = $(this).data('link')
     }
   })
 
-  let build_table = (records) => {
+  let build_table = (records)=>{
     let table_rows = ``
     let mobile = $(window).width() < mobile_breakpoint
-    records.forEach((record, index) => {
+    records.forEach( ( record, index )=>{
       let row_fields_html = ''
-      fields_to_show_in_table.forEach(field_key => {
+      fields_to_show_in_table.forEach(field_key=>{
         let values_html = '';
         let values = [];
-        if (field_key === "name") {
+        if (field_key === "name"){
           if (mobile) {
             return
           }
           values_html = `<a href="${window.lodash.escape(record.permalink)}" title="${window.lodash.escape(record.post_title)}">${window.lodash.escape(record.post_title)}</a>`
         } else if (list_settings.post_type_settings.fields[field_key]) {
           let field_settings = list_settings.post_type_settings.fields[field_key]
-          let field_value = window.lodash.get(record, field_key, false)
+          let field_value = window.lodash.get( record, field_key, false )
 
-          if (field_value) {
+          if ( field_value ) {
             if (['text', 'textarea', 'number'].includes(field_settings.type)) {
               values = [window.lodash.escape(field_value)]
             } else if (field_settings.type === 'date') {
@@ -808,43 +808,43 @@
               values = field_value.map(v => {
                 return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
               })
-            } else if (field_settings.type === "location" || field_settings.type === "location_meta") {
+            } else if ( field_settings.type === "location" || field_settings.type === "location_meta" ){
               values = field_value.map(v => {
-                return `${window.lodash.escape(v.label)}`;
+                return `${window.lodash.escape( v.label )}`;
               })
-            } else if (field_settings.type === "communication_channel") {
+            } else if ( field_settings.type === "communication_channel" ){
               values = field_value.map(v => {
-                return `${window.lodash.escape(v.value)}`;
+                return `${window.lodash.escape( v.value )}`;
               })
-            } else if (field_settings.type === "connection") {
+            } else if ( field_settings.type === "connection" ){
               values = field_value.map(v => {
                 let meta = []
-                if (field_settings.meta_fields) {
-                  Object.keys(field_settings.meta_fields).forEach(key => {
-                    if (v.meta && v.meta[key]) {
+                if ( field_settings.meta_fields ){
+                  Object.keys(field_settings.meta_fields).forEach(key=>{
+                    if ( v.meta && v.meta[key] ){
                       meta.push(v.meta[key])
                     }
                   })
                 }
-                return `${window.lodash.escape(v.post_title)}${meta.length ? ` (${meta.join(',')})` : ''}`;
+                return `${window.lodash.escape( v.post_title )}${meta.length ? ` (${meta.join(',')})` : ''}`;
               })
-            } else if (field_settings.type === "boolean") {
+            } else if ( field_settings.type === "boolean" ){
               if (field_key === "favorite") {
                 values = [`<svg class='icon-star${field_value === true ? ' selected' : ''}' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
-              } else if (field_value === true) {
+              } else if ( field_value === true ) {
                 values = ['&check;']
               }
             }
-          } else if (!field_value && field_settings.type === "boolean" && field_key === "favorite") {
+          } else if ( !field_value && field_settings.type === "boolean" && field_key === "favorite") {
             values = [`<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
           }
         } else {
           return;
         }
-        values_html += values.map((v, index) => {
+        values_html += values.map( (v, index)=>{
           return `<li>${v}</li>`
         }).join('')
-        if ($(window).width() < mobile_breakpoint) {
+        if ( $(window).width() < mobile_breakpoint ){
           row_fields_html += `
             <td>
               <div class="mobile-list-field-name">
@@ -862,7 +862,7 @@
           `
         } else {
           //this looks for the star SVG from the favorited fields and changes the value to a checkmark like other boolean fields to be used in the title element on desktop lists.
-          if (values[0] === `<svg class='icon-star selected' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`) {
+          if (values[0] === `<svg class='icon-star selected' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>` ) {
             values[0] = '&#9734;'
           }
           if (values[0] === `<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`) {
@@ -884,30 +884,30 @@
         }
       })
 
-      if (mobile) {
+      if ( mobile ){
         table_rows += `<tr data-link="${window.lodash.escape(record.permalink)}">
           <td class="bulk_edit_checkbox">
               <input class="bulk_edit_checkbox" type="checkbox" name="bulk_edit_id" value="${record.ID}">
           </td>
           <td>
               <div class="mobile-list-field-name">
-                ${index + 1}.
+                ${index+1}.
               </div>
               <div class="mobile-list-field-value">
-                  <a href="${window.lodash.escape(record.permalink)}">${window.lodash.escape(record.post_title)}</a>
+                  <a href="${ window.lodash.escape( record.permalink ) }">${ window.lodash.escape( record.post_title ) }</a>
               </div>
           </td>
-          ${row_fields_html}
+          ${ row_fields_html }
         `
       } else {
         table_rows += `<tr class="dnd-moved" data-link="${window.lodash.escape(record.permalink)}">
           <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
-          <td style="white-space: nowrap" >${index + 1}.</td>
-          ${row_fields_html}
+          <td style="white-space: nowrap" >${index+1}.</td>
+          ${ row_fields_html }
         `
       }
     })
-    if (records.length === 0) {
+    if ( records.length === 0 ) {
       table_rows = `<tr><td colspan="10">${window.lodash.escape(list_settings.translations.empty_list)}</td></tr>`
     }
 
@@ -919,13 +919,13 @@
     favorite_edit_event();
   }
 
-  function get_records(offset = 0, sort = null) {
+  function get_records( offset = 0, sort = null ){
     loading_spinner.addClass("active");
     let query = current_filter.query
-    if (offset) {
+    if ( offset ){
       query["offset"] = offset
     }
-    if (sort) {
+    if ( sort ){
       query.sort = sort
       query.offset = 0
     }
@@ -933,14 +933,14 @@
     update_url_query(current_filter)
     apply_archived_toggle_to_current_filter()
 
-    window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type)
-    if (get_records_promise && window.lodash.get(get_records_promise, "readyState") !== 4) {
+    window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
+    if ( get_records_promise && window.lodash.get(get_records_promise, "readyState") !== 4){
       get_records_promise.abort()
     }
     query.fields_to_return = fields_to_show_in_table
-    get_records_promise = window.makeRequestOnPosts('GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
-    get_records_promise.then(response => {
-      if (offset) {
+    get_records_promise = window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
+    get_records_promise.then(response=>{
+      if (offset){
         items = window.lodash.unionBy(items, response.posts || [], "ID")
       } else {
         items = response.posts || []
@@ -952,8 +952,8 @@
       if (Object.prototype.hasOwnProperty.call(response, 'posts') && response.posts.length > 0) {
         let records_list_ids_and_type = [];
 
-        $.each(items, function (id, post_object) {
-          records_list_ids_and_type.push({ID: post_object.ID});
+        $.each(items, function(id, post_object ) {
+          records_list_ids_and_type.push({ ID: post_object.ID });
         });
 
         window.SHAREDFUNCTIONS.save_json_cookie(`records_list`, records_list_ids_and_type, list_settings.post_type);
@@ -963,7 +963,7 @@
 
       $('#bulk_edit_master_checkbox').prop("checked", false); //unchecks the bulk edit master checkbox when the list reloads.
 
-      $('#load-more').toggle(items.length !== parseInt(response.total))
+      $('#load-more').toggle(items.length !== parseInt( response.total ))
       let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total)
       $('.filter-result-text').html(result_text)
       build_table(items)
@@ -971,14 +971,14 @@
       loading_spinner.removeClass("active")
     }).catch(err => {
       loading_spinner.removeClass("active")
-      if (window.lodash.get(err, "statusText") !== "abort") {
+      if ( window.lodash.get( err, "statusText" ) !== "abort" ) {
         console.error(err)
       }
     })
   }
 
   $('#load-more').on('click', function () {
-    get_records(items.length)
+    get_records( items.length )
   })
 
 
@@ -1000,24 +1000,24 @@
     }
     custom_filters.push(JSON.parse(JSON.stringify(current_filter)))
 
-    let save_filter = $(`<a style="float:right" data-filter="${window.lodash.escape(ID.toString())}">
-        ${window.lodash.escape(list_settings.translations.save)}
+    let save_filter = $(`<a style="float:right" data-filter="${window.lodash.escape( ID.toString() )}">
+        ${window.lodash.escape( list_settings.translations.save )}
     </a>`).on("click", function () {
       $("#filter-name").val(name)
       $('#save-filter-modal').foundation('open');
       filter_to_save = ID;
     })
-    let filterRow = $(`<label class='list-view ${window.lodash.escape(ID.toString())}'>`).append(`
-      <input type="radio" name="view" value="custom_filter" data-id="${window.lodash.escape(ID.toString())}" class="js-list-view" checked autocomplete="off">
-        ${window.lodash.escape(name)}
+    let filterRow = $(`<label class='list-view ${window.lodash.escape( ID.toString() )}'>`).append(`
+      <input type="radio" name="view" value="custom_filter" data-id="${window.lodash.escape( ID.toString() )}" class="js-list-view" checked autocomplete="off">
+        ${window.lodash.escape( name )}
     `).append(save_filter)
     $(".custom-filters").append(filterRow)
-    if (load_records) {
+    if ( load_records ){
       get_records_for_current_filter()
     }
   }
 
-  let get_custom_filter_search_query = () => {
+  let get_custom_filter_search_query = ()=>{
     let search_query = []
     let fields_filtered = window.lodash.uniq(new_filter_labels.map(f=>f.field))
     fields_filtered.forEach(field=>{
@@ -1044,18 +1044,18 @@
       } else if ( type === "date" ) {
         let date = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
-        if (start) {
+        if ( start ){
           date.start = start
         }
         let end = $(`.dt_date_picker[data-field="${field}"][data-delimit="end"]`).val()
-        if (end) {
+        if ( end ){
           date.end = end
         }
         search_query.push({[field]: date})
       } else {
         let options = []
-        $(`#${field}-options input:checked`).each(function () {
-          options.push($(this).val())
+        $(`#${field}-options input:checked`).each(function(){
+          options.push( $(this).val() )
         })
         if ( options.length ){
           search_query.push({[field]: adjust_search_query_filter_states(field, type, options)});
@@ -1073,7 +1073,7 @@
           return !a.assigned_to && !a.subassigned
         })
         search_query.fields.push([assigned_to[0], subassigned[0]])
-        search_query.combine = ["subassigned"] // to select checkbox in filter modal
+        search_query.combine = [ "subassigned" ] // to select checkbox in filter modal
       }
     }
 
@@ -1081,8 +1081,8 @@
   }
   $("#confirm-filter-records").on("click", function () {
     let search_query = get_custom_filter_search_query()
-    let filterName = window.lodash.escape($('#new-filter-name').val())
-    add_custom_filter(filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
+    let filterName = window.lodash.escape( $('#new-filter-name').val() )
+    add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
 
   $(document).on('click', '.current-filter-label-button', function () {
@@ -1182,7 +1182,7 @@
   }
 
   function all_connections_click_handler(options) {
-    const {without} = options || {without: false}
+    const { without } = options || { without: false}
     const id = without ? ALL_WITHOUT_ID : ALL_ID
     const tabsPanel = $(this).closest('.tabs-panel')
     const field = tabsPanel.length === 1 ? tabsPanel[0].id : ''
@@ -1197,8 +1197,8 @@
       typeaheadQueryElement.addClass('disabled')
       // remove the current filters and leave anything in the typeahead as it is
       remove_all_filter_labels(field)
-      const {newLabel, filterName} = create_label_all(field, without, id, list_settings)
-      selected_filters.append(`<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`)
+      const {newLabel, filterName } = create_label_all(field, without, id, list_settings)
+      selected_filters.append(`<span class="current-filter ${esc( field )}" data-id="${id}">${filterName}</span>`)
       new_filter_labels.push(newLabel)
     } else {
       typeahead.prop('disabled', false)
@@ -1207,7 +1207,7 @@
       // clear the typeahead by manually clicking each selected item.
       // This is done at this point as it triggers the typeahead to open which we don't want just after we have disabled it.
       typeaheadCancelButtons.each(function () {
-        $(this).trigger('click', {botClick: true})
+        $(this).trigger('click', { botClick: true })
       })
     }
   }
@@ -1215,10 +1215,10 @@
 
   /* Label creation */
 
-  function create_label_all(field, without, id, listSettings) {
+  function create_label_all(field, without, id, listSettings ) {
     const fieldLabel = listSettings.post_type_settings.fields[field] ? listSettings.post_type_settings.fields[field].name : ''
-    const allLabel = without ? esc(listSettings.translations.without) : esc(listSettings.translations.all)
-    const filterName = `${esc(fieldLabel)}: ${allLabel}`
+    const allLabel = without ? esc(listSettings.translations.without) : esc( listSettings.translations.all )
+    const filterName = `${esc( fieldLabel )}: ${allLabel}`
 
     return ({
       newLabel: {
@@ -1231,14 +1231,14 @@
   }
 
   function create_value_label(field, key, value) {
-    return ({newLabel: {id: key, name: value, field}})
+    return ({ newLabel: { id: key, name: value, field}})
   }
 
   function create_name_value_label(field, id, value, listSettings) {
     let name = window.lodash.get(listSettings, `post_type_settings.fields.${field}.name`, field)
     const filterName = `${name}: ${value}`;
     return ({
-      newLabel: {id, name: filterName, field},
+      newLabel: { id, name: filterName, field },
       name,
     })
   }
@@ -1246,17 +1246,17 @@
   function create_location_label(field, id, value, listSettings) {
     let name = window.lodash.get(listSettings, `post_type_settings.fields.location_grid.name`, 'location_grid')
     return ({
-      newLabel: {id, name: `${name}: ${value}`, field, type: 'location_grid'},
+      newLabel: { id, name: `${name}: ${value}`, field, type: 'location_grid' },
       name,
     })
   }
 
   function create_date_label(field, date, delimiter) {
-    let field_name = window.lodash.get(list_settings, `post_type_settings.fields.${field}.name`, field)
+    let field_name = window.lodash.get( list_settings, `post_type_settings.fields.${field}.name` , field)
     let delimiter_label = list_settings.translations[`range_${delimiter}`]
 
     return {
-      newLabel: {id: `${field}_${delimiter}`, name: `${field_name} ${delimiter_label}: ${date}`, field, date: date},
+      newLabel: { id: `${field}_${delimiter}`, name: `${field_name} ${delimiter_label}: ${date}`, field, date: date },
       field_name,
       delimiter_label,
     }
@@ -1265,7 +1265,7 @@
   $('.all-connections').on("click", all_connections_click_handler)
 
   function without_connections_handler() {
-    all_connections_click_handler.call(this, {without: true})
+    all_connections_click_handler.call(this, { without: true })
   }
 
   $('.all-without-connections').on("click", without_connections_handler)
@@ -1280,11 +1280,11 @@
         return
       }
 
-      let source_data = {data: []}
+      let source_data = { data: [] }
       let field_options = window.lodash.get(list_settings, `post_type_settings.fields.${field}.default`, {})
-      if (Object.keys(field_options).length > 0) {
-        window.lodash.forOwn(field_options, (val, key) => {
-          if (!val.deleted) {
+      if ( Object.keys(field_options).length > 0 ){
+        window.lodash.forOwn(field_options, (val, key)=>{
+          if ( !val.deleted ){
             source_data.data.push({
               key: key,
               name: key,
@@ -1335,14 +1335,14 @@
           callback: {
             onCancel: function (node, item) {
               $(`.current-filter[data-id="${item.key}"].${field}`).remove()
-              window.lodash.pullAllBy(new_filter_labels, [{id: item.key}], "id")
+              window.lodash.pullAllBy(new_filter_labels, [{id:item.key}], "id")
             }
           }
         },
         callback: {
-          onClick: function (node, a, item) {
-            const {newLabel, name} = create_name_value_label(field, item.key, item.value, list_settings)
-            selected_filters.append(`<span class="current-filter ${window.lodash.escape(field)}" data-id="${window.lodash.escape(item.key)}">${window.lodash.escape(name)}:${window.lodash.escape(item.value)}</span>`)
+          onClick: function(node, a, item) {
+            const { newLabel, name } = create_name_value_label(field, item.key, item.value, list_settings)
+            selected_filters.append(`<span class="current-filter ${window.lodash.escape( field )}" data-id="${window.lodash.escape( item.key )}">${window.lodash.escape( name )}:${window.lodash.escape( item.value )}</span>`)
             new_filter_labels.push(newLabel)
           },
           onResult: function (node, query, result, resultCount) {
@@ -1357,10 +1357,10 @@
     }
   }
 
-  let load_post_type_typeaheads = () => {
-    $(".typeahead__query [data-type='connection']").each((key, el) => {
+  let load_post_type_typeaheads = ()=>{
+    $(".typeahead__query [data-type='connection']").each((key, el)=>{
       let field_key = $(el).data('field')
-      let post_type = window.lodash.get(list_settings, `post_type_settings.fields.${field_key}.post_type`, field_key)
+      let post_type = window.lodash.get( list_settings, `post_type_settings.fields.${field_key}.post_type`, field_key)
       if (!window.Typeahead[`.js-typeahead-${field_key}`]) {
         $.typeahead({
           input: `.js-typeahead-${field_key}`,
@@ -1369,7 +1369,7 @@
           searchOnFocus: true,
           maxItem: 20,
           template: function (query, item) {
-            return `<span dir="auto">${window.lodash.escape(item.name)} (#${window.lodash.escape(item.ID)})</span>`
+            return `<span dir="auto">${window.lodash.escape(item.name)} (#${window.lodash.escape( item.ID )})</span>`
           },
           source: TYPEAHEADS.typeaheadPostsSource(post_type),
           display: "name",
@@ -1393,9 +1393,9 @@
               $(`#${field_key}-result-container`).html("");
             },
             onClick: function (node, a, item) {
-              const {newLabel} = create_value_label(field_key, item.ID, item.name)
+              const { newLabel } = create_value_label(field_key, item.ID, item.name)
               new_filter_labels.push(newLabel)
-              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape(item.ID)}">${window.lodash.escape(item.name)}</span>`)
+              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( item.name )}</span>`)
             }
           }
         });
@@ -1417,8 +1417,8 @@
     ids.forEach((id) => remove_filter_labels(id, field_key))
   }
 
-  let load_user_select_typeaheads = () => {
-    $(".typeahead__query [data-type='user_select']").each((key, el) => {
+  let load_user_select_typeaheads = ()=>{
+    $(".typeahead__query [data-type='user_select']").each((key, el)=>{
       let field_key = $(el).data('field')
       if (!window.Typeahead[`.js-typeahead-${field_key}`]) {
         $.typeahead({
@@ -1428,7 +1428,7 @@
           searchOnFocus: true,
           maxItem: 20,
           template: function (query, item) {
-            return `<span dir="auto">${window.lodash.escape(item.name)} (#${window.lodash.escape(item.ID)})</span>`
+            return `<span dir="auto">${window.lodash.escape(item.name)} (#${window.lodash.escape( item.ID )})</span>`
           },
           source: TYPEAHEADS.typeaheadUserSource(),
           display: "name",
@@ -1453,9 +1453,9 @@
               $(`#${field_key}-result-container`).html("");
             },
             onClick: function (node, a, item) {
-              const {newLabel} = create_value_label(field_key, item.ID, item.name)
+              const { newLabel } = create_value_label(field_key, item.ID, item.name)
               new_filter_labels.push(newLabel)
-              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape(item.ID)}">${window.lodash.escape(item.name)}</span>`)
+              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( item.name )}</span>`)
             }
           }
         });
@@ -1466,16 +1466,16 @@
   /**
    * Location
    */
-  $('#mapbox-clear-autocomplete').click("input", function () {
+  $('#mapbox-clear-autocomplete').click("input", function(){
     delete window.location_data;
   });
 
-  let load_location_typeahead = () => {
+  let load_location_typeahead = ()=> {
     let key = 'location_grid'
-    if ($('.js-typeahead-location_grid_meta').length) {
+    if ( $('.js-typeahead-location_grid_meta').length){
       key = 'location_grid_meta';
     }
-    if (!window.Typeahead[`.js-typeahead-${key}`]) {
+    if ( !window.Typeahead[`.js-typeahead-${key}`]) {
       $.typeahead({
         input: `.js-typeahead-${window.lodash.escape(key)}`,
         minLength: 0,
@@ -1538,17 +1538,17 @@
               template: window.lodash.escape(window.wpApiShare.translations.used_locations)
             }
             this.container
-              .removeClass("filter")
-              .find("." + this.options.selector.filterButton)
-              .html(window.lodash.escape(window.wpApiShare.translations.used_locations));
+            .removeClass("filter")
+            .find("." + this.options.selector.filterButton)
+            .html(window.lodash.escape(window.wpApiShare.translations.used_locations));
           },
           onHideLayout: function () {
             $('#location_grid-result-container').html("");
           },
           onClick: function (node, a, item) {
-            const {name, newLabel} = create_location_label(key, item.ID, item.name, list_settings)
+            const { name, newLabel } = create_location_label(key, item.ID, item.name, list_settings)
             new_filter_labels.push(newLabel)
-            selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape(item.ID)}">${window.lodash.escape(name)}:${window.lodash.escape(item.name)}</span>`)
+            selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( name )}:${window.lodash.escape( item.name )}</span>`)
           }
         }
       });
@@ -1560,7 +1560,7 @@
    */
   let typeaheads_loaded = null
   $('#filter-modal').on("open.zf.reveal", function () {
-    new_filter_labels = []
+    new_filter_labels=[]
     load_location_typeahead()
     load_post_type_typeaheads()
     load_user_select_typeaheads()
@@ -1582,9 +1582,9 @@
     })
     selected_filters.empty();
     $(".typeahead__query input").each(function () {
-      let typeahead = Typeahead['.' + $(this).attr("class").split(/\s+/)[0]]
-      if (typeahead && typeahead.items) {
-        for (let i = 0; i < typeahead.items.length; i) {
+      let typeahead = Typeahead['.'+$(this).attr("class").split(/\s+/)[0]]
+      if ( typeahead && typeahead.items ){
+        for (let i = 0; i < typeahead.items.length; i ){
           typeahead.cancelMultiselectItem(0)
         }
         typeahead.node.trigger('propertychange.typeahead')
@@ -1605,7 +1605,7 @@
     clicked = null;
   });
   $("#filter-modal input.dt_date_picker").on('blur', function (e) {
-    if (clicked && clicked.closest('.ui-datepicker').length === 1) {
+    if (clicked && clicked.closest( '.ui-datepicker' ).length === 1 ) {
       // we have clicked in the datepicker, so don't run the blur
       return
     }
@@ -1621,9 +1621,9 @@
     }, 100);
   })
 
-  function edit_saved_filter(filter) {
+  function edit_saved_filter( filter ){
     $('#filter-modal').foundation('open');
-    typeaheads_loaded.then(() => {
+    typeaheads_loaded.then(()=>{
       let connectionTypeKeys = list_settings.post_type_settings.connection_types
       connectionTypeKeys.push("location_grid")
       filter.labels.forEach(label=>{
@@ -1634,30 +1634,30 @@
         // Proceed with displaying of filter modal
         selected_filters.append(`<span class="current-filter ${excluded_class} ${window.lodash.escape( label.field )}" data-id="${window.lodash.escape( label.id )}">${window.lodash.escape( label.name )}</span>`)
         let type = window.lodash.get(list_settings, `post_type_settings.fields.${label.field}.type`)
-        if (type === "key_select" || type === "boolean") {
+        if ( type === "key_select" || type === "boolean" ){
           $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
-        } else if (type === "date") {
+        } else if ( type === "date" ){
           $(`#filter-modal #${label.field}-options #${label.id}`).datepicker('setDate', label.date)
-        } else if (connectionTypeKeys.includes(label.field)) {
+        } else if ( connectionTypeKeys.includes( label.field ) ){
           if (label.id === '*') {
             const fieldAllConnectionsElement = document.querySelector(`#filter-modal #${label.field} .all-connections`)
             const boundAllConnectionsClickHandler = all_connections_click_handler.bind(fieldAllConnectionsElement)
             $(fieldAllConnectionsElement).prop('checked', true)
             boundAllConnectionsClickHandler()
           } else {
-            Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID: label.id, name: label.name})
+            Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
           }
-        } else if (type === "multi_select") {
-          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key: label.id, value: label.name})
-        } else if (type === "tags") {
-          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key: label.id, value: label.id})
-        } else if (type === "user_select") {
-          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name: label.name, ID: label.id})
+        } else if ( type === "multi_select" ){
+          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
+        } else if ( type === "tags" ){
+          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.id})
+        } else if ( type === "user_select" ){
+          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
         }
       })
       // moved this below the forEach as the global new_filter_labels was messing with the loop.
       new_filter_labels = filter.labels
-      ;(filter.query.combine || []).forEach(c => {
+      ;(filter.query.combine || []).forEach(c=>{
         $(`#combine_${c}`).prop('checked', true)
       })
       $('#new-filter-name').val(filter.name)
@@ -1669,12 +1669,12 @@
   $('#save-filter-edits').on('click', function () {
     let search_query = get_custom_filter_search_query()
     let filter_id = $('#save-filter-edits').data("filter-id")
-    let filter = window.lodash.find(list_settings.filters.filters, {ID: filter_id})
+    let filter = window.lodash.find(list_settings.filters.filters, {ID:filter_id})
     filter.name = $('#new-filter-name').val()
     $(`.filter-list-name[data-filter="${filter_id}"]`).text(filter.name)
     filter.query = search_query
     filter.labels = new_filter_labels
-    API.save_filters(list_settings.post_type, filter)
+    API.save_filters( list_settings.post_type, filter )
     get_records_for_current_filter()
   })
 
@@ -1688,32 +1688,32 @@
   })
 
   //watch all other checkboxes
-  $('#filter-modal .key_select_options input').on("change", function () {
+  $('#filter-modal .key_select_options input').on("change", function() {
     let field_key = $(this).data('field');
     let option_id = $(this).val()
-    if ($(this).is(":checked")) {
-      let field_options = window.lodash.get(list_settings, `post_type_settings.fields.${field_key}.default`)
+    if ($(this).is(":checked")){
+      let field_options = window.lodash.get( list_settings, `post_type_settings.fields.${field_key}.default` )
       let option_name = field_options[option_id] ? field_options[option_id]["label"] : '';
-      const {name, newLabel} = create_name_value_label(field_key, $(this).val(), option_name, list_settings)
+      const { name, newLabel } = create_name_value_label(field_key, $(this).val(), option_name, list_settings)
       new_filter_labels.push(newLabel)
-      selected_filters.append(`<span class="current-filter ${window.lodash.escape(field_key)}" data-id="${window.lodash.escape(option_id)}">${window.lodash.escape(name)}:${window.lodash.escape(option_name)}</span>`)
+      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( name )}:${window.lodash.escape( option_name )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
-      window.lodash.pullAllBy(new_filter_labels, [{id: option_id}], "id")
+      window.lodash.pullAllBy(new_filter_labels, [{id:option_id}], "id")
     }
   })
   //watch bool checkboxes
-  $('#filter-modal .boolean_options input').on("change", function () {
+  $('#filter-modal .boolean_options input').on("change", function() {
     let field_key = $(this).data('field');
     let option_id = $(this).val()
     let label = $(this).data('label');
-    if ($(this).is(":checked")) {
-      const {name, newLabel} = create_name_value_label(field_key, $(this).val(), label, list_settings)
+    if ($(this).is(":checked")){
+      const { name, newLabel } = create_name_value_label(field_key, $(this).val(), label, list_settings)
       new_filter_labels.push(newLabel)
-      selected_filters.append(`<span class="current-filter ${window.lodash.escape(field_key)}" data-id="${window.lodash.escape(option_id)}">${window.lodash.escape(name)}:${window.lodash.escape(label)}</span>`)
+      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( name )}:${window.lodash.escape( label )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
-      window.lodash.pullAllBy(new_filter_labels, [{id: option_id}], "id")
+      window.lodash.pullAllBy(new_filter_labels, [{id:option_id}], "id")
     }
   })
 
@@ -1724,9 +1724,9 @@
       let id = $(this).data('field')
       let delimiter = $(this).data('delimit')
       //remove existing filters
-      window.lodash.pullAllBy(new_filter_labels, [{id: `${id}_${delimiter}`}], "id")
+      window.lodash.pullAllBy(new_filter_labels, [{id:`${id}_${delimiter}`}], "id")
       $(`.current-filter[data-id="${id}_${delimiter}"]`).remove()
-      const {newLabel, field_name, delimiter_label} = create_date_label(id, date, delimiter)
+      const { newLabel, field_name, delimiter_label } = create_date_label(id, date, delimiter)
       //add new filters
       new_filter_labels.push(newLabel)
       selected_filters.append(`
@@ -1744,23 +1744,23 @@
   $('#filter-modal .clear-date-picker').on('click', function () {
     let id = $(this).data('for')
     $(`#filter-modal #${id}`).datepicker('setDate', null)
-    window.lodash.pullAllBy(new_filter_labels, [{id: `${id}`}], "id")
+    window.lodash.pullAllBy(new_filter_labels, [{id:`${id}`}], "id")
     $(`.current-filter[data-id="${id}"]`).remove()
   })
 
   //save the filter in the user meta
   $(`#confirm-filter-save`).on('click', function () {
     let filterName = $('#filter-name').val()
-    let filter = window.lodash.find(custom_filters, {ID: filter_to_save})
-    filter.name = window.lodash.escape(filterName)
+    let filter = window.lodash.find(custom_filters, {ID:filter_to_save})
+    filter.name = window.lodash.escape( filterName )
     filter.tab = 'custom'
-    if (filter.query) {
+    if (filter.query){
       list_settings.filters.filters.push(filter)
-      API.save_filters(list_settings.post_type, filter).then(() => {
+      API.save_filters(list_settings.post_type, filter).then(()=>{
         $(`.custom-filters [class*="list-view ${filter_to_save}`).remove()
         setup_filters()
         let active_tab = $('.accordion-item.is-active ').data('id');
-        if (active_tab !== 'custom') {
+        if ( active_tab !== 'custom' ){
           $(`#list-filter-tabs [data-id='custom'] a`).click()
         }
         $(`input[name="view"][value="saved-filters"][data-id='${filter_to_save}']`).prop('checked', true);
@@ -1775,19 +1775,19 @@
   //delete a filter
   $(`#confirm-filter-delete`).on('click', function () {
 
-    let filter = window.lodash.find(list_settings.filters.filters, {ID: filter_to_delete})
-    if (filter && (filter.visible === true || filter.visible === '1')) {
+    let filter = window.lodash.find(list_settings.filters.filters, {ID:filter_to_delete})
+    if ( filter && ( filter.visible === true || filter.visible === '1' ) ){
       filter.visible = false;
-      API.save_filters(list_settings.post_type, filter).then(() => {
-        window.lodash.pullAllBy(list_settings.filters.filters, [{ID: filter_to_delete}], "ID")
+      API.save_filters(list_settings.post_type,filter).then(()=>{
+        window.lodash.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         $(`#list-filter-tabs [data-id='custom'] a`).click()
       }).catch(err => {
         console.error(err)
       })
     } else {
-      API.delete_filter(list_settings.post_type, filter_to_delete).then(() => {
-        window.lodash.pullAllBy(list_settings.filters.filters, [{ID: filter_to_delete}], "ID")
+      API.delete_filter(list_settings.post_type, filter_to_delete).then(()=>{
+        window.lodash.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         check_first_filter()
         get_records_for_current_filter()
@@ -1797,44 +1797,44 @@
     }
   })
 
-  $('#advanced_search').on('click', function () {
+  $('#advanced_search').on('click', function() {
     $('#advanced_search_picker').toggle();
   });
 
-  $('#advanced_search_mobile').on('click', function () {
+  $('#advanced_search_mobile').on('click', function(){
     $('#advanced_search_picker_mobile').toggle();
   });
 
   $('#advanced_search_reset').on('click', function () {
     let fields_to_search = []
-    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type)
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type )
 
     //clear all checkboxes
-    $('#advanced_search_picker ul li input:checked').each(function (index) {
-      $(this).prop('checked', false);
+    $('#advanced_search_picker ul li input:checked').each(function ( index ) {
+      $( this ).prop('checked', false);
     });
     $('#search').click();
 
   });
 
-  $('#advanced_search_reset_mobile').on('click', function () {
+  $('#advanced_search_reset_mobile').on('click', function(){
     let fields_to_search = []
-    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type)
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type )
 
     //clear all checkboxes
-    $('#advanced_search_picker_mobile ul li input:checked').each(function (index) {
-      $(this).prop('checked', false);
+    $('#advanced_search_picker_mobile ul li input:checked').each(function( index ) {
+      $( this ).prop('checked', false);
     });
     $('#search-mobile').click();
 
   });
 
-  $('#save_advanced_search_choices').on("click", function () {
+  $('#save_advanced_search_choices').on("click", function() {
     let fields_to_search = [];
-    $('#advanced_search_picker ul li input:checked').each(function (index) {
-      fields_to_search.push($(this).val());
+    $('#advanced_search_picker ul li input:checked').each(function( index ) {
+      fields_to_search.push($( this ).val());
     });
-    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type);
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type );
     if ($("#search-query").val() !== "") {
       $('#search').click();
     } else {
@@ -1842,12 +1842,12 @@
     }
   })
 
-  $('#save_advanced_search_choices_mobile').on("click", function () {
+  $('#save_advanced_search_choices_mobile').on("click", function() {
     let fields_to_search = [];
-    $('#advanced_search_picker_mobile ul li input:checked').each(function (index) {
-      fields_to_search.push($(this).val());
+    $('#advanced_search_picker_mobile ul li input:checked').each(function( index ) {
+      fields_to_search.push($( this ).val());
     });
-    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type);
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fields_to_search, list_settings.post_type );
     if ($("#search-query-mobile").val() !== "") {
       $('#search-mobile').click();
     } else {
@@ -1857,50 +1857,50 @@
   $("#search").on("click", function () {
     let searchText = $("#search-query").val()
     let fieldsToSearch = [];
-    $('#advanced_search_picker ul li input:checked').each(function (index) {
-      fieldsToSearch.push($(this).val());
+    $('#advanced_search_picker ul li input:checked').each(function( index ) {
+      fieldsToSearch.push($( this ).val());
     });
-    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fieldsToSearch, list_settings.post_type);
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fieldsToSearch, list_settings.post_type );
 
-    if (fieldsToSearch.length > 0) {
+    if (fieldsToSearch.length > 0 ) {
       $('.advancedSearch-count').text(fieldsToSearch.length).css('display', 'inline-block')
     } else {
       $('.advancedSearch-count').text('fields_to_search.length').hide();
     }
 
-    let query = {text: searchText}
+    let query = {text:searchText}
 
     if (fieldsToSearch.length !== 0) {
       query.fields_to_search = fieldsToSearch;
     }
 
-    let labels = [{id: "search", name: searchText, field: "search"}]
+    let labels = [{ id:"search", name:searchText, field:"search"}]
     add_custom_filter(searchText, "search", query, labels);
 
     $('#advanced_search_picker').hide();
   })
 
   $("#search-mobile").on("click", function () {
-    let searchText = window.lodash.escape($("#search-query-mobile").val())
+    let searchText = window.lodash.escape( $("#search-query-mobile").val() )
     let fieldsToSearch = [];
-    $('#advanced_search_picker_mobile ul li input:checked').each(function (index) {
-      fieldsToSearch.push($(this).val());
+    $('#advanced_search_picker_mobile ul li input:checked').each(function( index ) {
+      fieldsToSearch.push($( this ).val());
     });
-    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fieldsToSearch, list_settings.post_type);
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_search', fieldsToSearch, list_settings.post_type );
 
-    if (fieldsToSearch.length > 0) {
+    if (fieldsToSearch.length > 0 ) {
       $('.advancedSearch-count').text(fieldsToSearch.length).css('display', 'inline-block')
     } else {
       $('.advancedSearch-count').text('fields_to_search.length').hide();
     }
 
-    let query = {text: searchText}
+    let query = {text:searchText}
 
     if (fieldsToSearch.length !== 0) {
       query.fields_to_search = fieldsToSearch;
     }
 
-    let labels = [{id: "search", name: searchText, field: "search"}]
+    let labels = [{ id:"search", name:searchText, field:"search"}]
     add_custom_filter(searchText, "search", query, labels);
 
     $('#advanced_search_picker_mobile').hide();
@@ -1909,14 +1909,14 @@
 
   $('.search-input--desktop').on('keyup', function (e) {
     clearSearchButton.css({'display': this.value.length ? 'flex' : 'none'})
-    if (e.keyCode === 13) {
+    if ( e.keyCode === 13 ){
       $("#search").trigger("click")
     }
   })
 
   $('.search-input--mobile').on('keyup', function (e) {
     clearSearchButton.css({'display': this.value.length ? 'flex' : 'none'})
-    if (e.keyCode === 13) {
+    if ( e.keyCode === 13 ){
       $("#search-mobile").trigger("click")
     }
   })
@@ -1955,29 +1955,29 @@
    * Bulk Edit
    */
 
-  $('#bulk_edit_controls').on('click', function () {
+  $('#bulk_edit_controls').on('click', function(){
     $('#bulk_edit_picker').toggle();
     $('#records-table').toggleClass('bulk_edit_on');
   })
 
-  $('#bulk_edit_seeMore').on('click', function () {
+  $('#bulk_edit_seeMore').on('click', function(){
     $('#bulk_more').toggle();
     $('#bulk_edit_seeMore').children().toggle()
   })
 
   function bulk_edit_checkbox_event() {
-    $("tbody tr td.bulk_edit_checkbox").on('click', function (e) {
+    $("tbody tr td.bulk_edit_checkbox").on('click', function(e) {
       e.stopImmediatePropagation();
       bulk_edit_count();
     });
   }
 
-  $('#bulk_edit_master').on('click', function (e) {
+  $('#bulk_edit_master').on('click', function(e){
     e.stopImmediatePropagation();
     let checked = $(this).children('input').is(':checked');
-    $('.bulk_edit_checkbox input').each(function () {
-      $(this).prop('checked', checked);
-      bulk_edit_count();
+        $('.bulk_edit_checkbox input').each(function () {
+          $(this).prop('checked', checked);
+          bulk_edit_count();
     })
   })
   /**
@@ -1985,7 +1985,7 @@
    */
   let bulk_edit_submit_button = $('#bulk_edit_submit');
 
-  bulk_edit_submit_button.on('click', function (e) {
+  bulk_edit_submit_button.on('click', function(e) {
     bulk_edit_submit();
   });
 
@@ -2041,12 +2041,12 @@
       sharePayload = $(this).data('bulk_key_share');
     })
 
-    let queue = [];
+    let queue =  [];
     let count = 0;
     $('.bulk_edit_checkbox input').each(function () {
       if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
         let postId = parseInt($(this).val());
-        queue.push(postId);
+        queue.push( postId );
       }
     });
     process(queue, 10, do_each, do_done, updatePayload, sharePayload, commentPayload);
@@ -2059,70 +2059,70 @@
     if (bulk_edit_total_checked == 0) {
       bulk_edit_submit_button_text.text(`${list_settings.translations.make_selections_below}`)
     } else {
-      bulk_edit_submit_button_text.each(function (index) {
-        let pretext = $(this).data('pretext')
-        let posttext = $(this).data('posttext')
-        $(this).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`)
+      bulk_edit_submit_button_text.each(function( index ) {
+        let pretext = $( this ).data('pretext')
+        let posttext = $( this ).data('posttext')
+        $( this ).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`)
       })
     }
   }
 
   let bulk_edit_picker_checkboxes = $('#bulk_edit_picker .update-needed');
-  bulk_edit_picker_checkboxes.on('click', function (e) {
+  bulk_edit_picker_checkboxes.on('click', function(e) {
     if ($(this).is(':checked')) {
       $(this).data('bulk_key_requires_update', true);
     }
   })
 
   let bulk_edit_picker_select_field = $('#bulk_edit_picker select');
-  bulk_edit_picker_select_field.on('change', function (e) {
-    let field_key = this.id.replace('bulk_', '');
-    $(this).data(`bulk_key_${field_key}`, this.value);
+  bulk_edit_picker_select_field.on('change', function(e) {
+      let field_key = this.id.replace('bulk_', '');
+      $(this).data(`bulk_key_${field_key}`, this.value);
   })
 
-  let bulk_edit_picker_button_groups = $('#bulk_edit_picker .select-button');
-  bulk_edit_picker_button_groups.on('click', function (e) {
-    let field_key = $(this).data('field-key').replace('bulk_', '');
-    let optionKey = $(this).attr('id')
+  let bulk_edit_picker_button_groups= $('#bulk_edit_picker .select-button');
+  bulk_edit_picker_button_groups.on('click', function(e) {
+      let field_key = $(this).data('field-key').replace('bulk_', '');
+      let optionKey = $(this).attr('id')
 
-    let fieldValue = {};
+      let fieldValue = {};
 
-    fieldValue.values = {value: optionKey};
+      fieldValue.values = {value:optionKey};
 
 
-    $(this).addClass('selected-select-button');
-    $(this).data(`bulk_key_${field_key}`, fieldValue);
+      $(this).addClass('selected-select-button');
+      $(this).data(`bulk_key_${field_key}`, fieldValue);
   })
 
   //Bulk Update Queue
-  function process(q, num, fn, done, update, share, comment) {
+  function process( q, num, fn, done, update, share, comment ) {
     // remove a batch of items from the queue
     let items = q.splice(0, num),
-      count = items.length;
+        count = items.length;
 
     // no more items?
-    if (!count) {
-      // exec done callback if specified
-      done && done();
-      // quit
-      return;
+    if ( !count ) {
+        // exec done callback if specified
+        done && done();
+        // quit
+        return;
     }
 
     // loop over each item
-    for (let i = 0; i < count; i++) {
-      // call callback, passing item and
-      // a "done" callback
-      fn(items[i], function () {
-        // when done, decrement counter and
-        // if counter is 0, process next batch
-        --count || process(q, num, fn, done, update, share, comment);
-      }, update, share, comment);
+    for ( let i = 0; i < count; i++ ) {
+        // call callback, passing item and
+        // a "done" callback
+        fn(items[i], function() {
+          // when done, decrement counter and
+          // if counter is 0, process next batch
+          --count || process(q, num, fn, done, update, share, comment);
+        }, update, share, comment);
 
     }
   }
 
   // a per-item action
-  function do_each(item, done, update, share, comment) {
+  function do_each( item, done, update, share, comment ) {
     let promises = [];
 
     if (Object.keys(update).length) {
@@ -2145,8 +2145,8 @@
       }));
     }
 
-    Promise.all(promises).then(function () {
-      done();
+    Promise.all(promises).then( function() {
+        done();
     });
   }
 
@@ -2156,7 +2156,7 @@
   }
 
   let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`)
-  if (bulk_assigned_to_input.length) {
+  if( bulk_assigned_to_input.length ) {
     $.typeahead({
       input: '.js-typeahead-bulk_assigned_to',
       minLength: 0,
@@ -2171,11 +2171,11 @@
             <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
             ${window.lodash.escape(item.name)}
         </span>
-        ${item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : ''}
+        ${item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>`:''}
         ${item.update_needed && item.update_needed > 0 ? `<span>
           <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
           <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
-        </span>` : ''}
+        </span>`:''}
       </div>`
       },
       dynamic: true,
@@ -2200,7 +2200,7 @@
 
   /**
    * Bulk share
-   */
+  */
   $.typeahead({
     input: '#bulk_share',
     minLength: 0,
@@ -2214,7 +2214,7 @@
       matchOn: ["ID"],
       callback: {
         onCancel: function (node, item) {
-          $(node).removeData(`bulk_key_bulk_share`);
+          $(node).removeData( `bulk_key_bulk_share` );
           $('#share-result-container').html("");
 
         }
@@ -2244,12 +2244,12 @@
   });
 
   /**
-   * Bulk Typeahead
-   */
+ * Bulk Typeahead
+ */
   let field_settings = window.list_settings.post_type_settings.fields;
 
-  $('#bulk_edit_picker .dt_typeahead').each((key, el) => {
-    let element_id = $(el).attr('id').replace(/_connection$/, '');
+  $('#bulk_edit_picker .dt_typeahead').each((key, el)=>{
+    let element_id =  $(el).attr('id').replace(/_connection$/, '');
     let div_id = $(el).attr('id')
     let field_id = $(`#${div_id} input`).data('field')
     if (element_id !== "bulk_share") {
@@ -2261,7 +2261,7 @@
         maxItem: 30,
         searchOnFocus: true,
         template: window.TYPEAHEADS.contactListRowTemplate,
-        source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key: field_id}),
+        source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
         display: "name",
         templateValue: "{{name}}",
         dynamic: true,
@@ -2270,20 +2270,20 @@
           data: '',
           callback: {
             onCancel: function (node, item) {
-              $(node).removeData(`bulk_key_${field_id}`);
+              $(node).removeData( `bulk_key_${field_id}` );
             }
           },
           href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
         },
         callback: {
-          onClick: function (node, a, item, event) {
+          onClick: function(node, a, item, event){
             let multiUserArray;
-            if (node.data(`bulk_key_${field_id}`)) {
+            if ( node.data(`bulk_key_${field_id}`) ) {
               multiUserArray = node.data(`bulk_key_${field_id}`).values;
             } else {
               multiUserArray = [];
             }
-            multiUserArray.push({"value": item.ID});
+            multiUserArray.push({"value":item.ID});
 
             node.data(`bulk_key_${field_id}`, {values: multiUserArray});
             this.addMultiselectItemLayout(item)
@@ -2300,14 +2300,14 @@
               $(`#${element_id}-result-container`).empty()
             }
           },
-          onShowLayout() {
+          onShowLayout (){
           }
         }
       })
     }
   })
 
-  $('#bulk_edit_picker .dt_location_grid').each(() => {
+  $('#bulk_edit_picker .dt_location_grid').each(()=> {
     let field_id = 'location_grid';
     let typeaheadTotals = {};
     $.typeahead({
@@ -2338,7 +2338,7 @@
             },
             callback: {
               done: function (data) {
-                if (typeof typeaheadTotals !== "undefined") {
+                if (typeof typeaheadTotals!=="undefined") {
                   typeaheadTotals.field = data.total
                 }
                 return data.location_grid
@@ -2355,14 +2355,14 @@
         data: '',
         callback: {
           onCancel: function (node, item) {
-            $(node).removeData(`bulk_key_${field_id}`);
+            $(node).removeData( `bulk_key_${field_id}` );
           }
         }
       },
       callback: {
         onClick: function (node, a, item, event) {
           // $(`#${element_id}-spinner`).addClass('active');
-          node.data(`bulk_key_${field_id}`, {values: [{"value": item.ID}]});
+          node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
         },
         onReady() {
           this.filters.dropdown = {
@@ -2371,9 +2371,9 @@
             template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)
           }
           this.container
-            .removeClass("filter")
-            .find("." + this.options.selector.filterButton)
-            .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
+          .removeClass("filter")
+          .find("." + this.options.selector.filterButton)
+          .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals.location_grid
@@ -2387,7 +2387,7 @@
     });
   })
 
-  $('#bulk_edit_picker .tags input, #bulk_edit_picker .multi_select input').each((key, input) => {
+  $('#bulk_edit_picker .tags input, #bulk_edit_picker .multi_select input').each((key, input)=>{
     let field = $(input).data('field') || 'tags'
     let field_options = window.lodash.get(list_settings, `post_type_settings.fields.${field}.default`, {})
     $.typeahead({
@@ -2424,20 +2424,20 @@
       multiselect: {
         matchOn: ["key"],
         callback: {
-          onCancel: function (node, item) {
-            $(node).removeData(`bulk_key_${field}`);
-          }
-        },
+            onCancel: function (node, item) {
+              $(node).removeData( `bulk_key_${field}` );
+            }
+          },
       },
       callback: {
         onClick: function (node, a, item, event) {
           let multiUserArray;
-          if (node.data(`bulk_key_${field}`)) {
+          if ( node.data(`bulk_key_${field}`) ) {
             multiUserArray = node.data(`bulk_key_${field}`).values;
           } else {
             multiUserArray = [];
           }
-          multiUserArray.push({"value": item.key});
+          multiUserArray.push({"value":item.key});
 
           node.data(`bulk_key_${field}`, {values: multiUserArray});
           this.addMultiselectItemLayout(item)
@@ -2458,24 +2458,24 @@
 
   $('button.follow').on("click", function () {
     let following = !($(this).data('value') === "following")
-    $(this).data("value", following ? "following" : "")
-    $(this).html(following ? "Unfollow" : "Follow")
-    $(this).toggleClass("hollow")
-    let follow = {values: [{value: current_user_id, delete: !following}]}
+    $(this).data("value", following ? "following" : "" )
+    $(this).html( following ? "Unfollow" : "Follow")
+    $(this).toggleClass( "hollow" )
+    let follow = { values:[{value:current_user_id, delete:!following}] }
 
-    let unfollow = {values: [{value: current_user_id, delete: following}]}
+    let unfollow = {values:[{value:current_user_id, delete:following}]}
 
     $(this).data('bulk_key_follow', follow);
     $(this).data('bulk_key_unfollow', unfollow);
   })
 
-  $('#bulk_edit_picker input.text-input').change(function () {
+  $('#bulk_edit_picker input.text-input').change(function(){
     const val = $(this).val()
     let field_key = this.id.replace('bulk_', '')
     $(this).data(`bulk_key_${field_key}`, val);
   });
 
-  $('#bulk_edit_picker .dt_textarea').change(function () {
+  $('#bulk_edit_picker .dt_textarea').change(function(){
     const val = $(this).val()
     let field_key = this.id.replace('bulk_', '')
     $(this).data(`bulk_key_${field_key}`, val);
@@ -2499,7 +2499,7 @@
     changeMonth: true,
     changeYear: true,
     yearRange: "1900:2050",
-  }).each(function () {
+  }).each(function() {
     if (this.value && moment.unix(this.value).isValid()) {
       this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
     }
@@ -2507,7 +2507,7 @@
 
 
   let mcleardate = $("#bulk_edit_picker .clear-date-button");
-  mcleardate.click(function () {
+  mcleardate.click(function() {
     let input_id = this.dataset.inputid;
     let date = null;
     // $(`#${input_id}-spinner`).addClass('active')
@@ -2528,7 +2528,7 @@
 
   })
 
-  $('#bulk_edit_picker input.number-input').on("blur", function () {
+  $('#bulk_edit_picker input.number-input').on("blur", function(){
     const id = $(this).attr('id')
     const val = $(this).val()
 
@@ -2536,7 +2536,7 @@
     $(this).data(`bulk_key_${field_key}`, val);
   })
 
-  $('#bulk_edit_picker .dt_contenteditable').on('blur', function () {
+  $('#bulk_edit_picker .dt_contenteditable').on('blur', function(){
     const id = $(this).attr('id')
     let val = $(this).html()
 
@@ -2544,27 +2544,27 @@
     $(this).data(`bulk_key_${field_key}`, val);
   })
 
-  $('.list-dropdown-submenu-item-link').on('click', function () {
+  $('.list-dropdown-submenu-item-link').on('click', function() {
     // Hide bulk select modals
     $('#records-table').removeClass('bulk_edit_on')
 
     // Close all open modals
-    $('.list-dropdown-submenu-item-link').each(function () {
+    $('.list-dropdown-submenu-item-link').each(function(){
       let open_modals = $(this).data('modal');
-      $('#' + open_modals).hide();
+      $( '#' + open_modals ).hide();
     });
 
     // Open modal for clicked menu item
     let display_modal = $(this).data('modal');
-    $('#' + display_modal).show();
+    $( '#' + display_modal ).show();
 
     // Show bulk select checkboxes if applicable
-    if ($(this).data('checkboxes') === true) {
+    if ( $(this).data('checkboxes') === true ) {
       $('#records-table').addClass('bulk_edit_on');
     }
   });
 
-  $('.list-action-close-button').on('click', function () {
+  $('.list-action-close-button').on('click', function (){
     let section = $(this).data('close')
     $(`#${section}`).hide();
   })
@@ -2573,7 +2573,7 @@
    * Bulk Send App
    */
   let bulk_send_app_button = $('#bulk_send_app_submit');
-  bulk_send_app_button.on('click', function (e) {
+  bulk_send_app_button.on('click', function(e) {
     bulk_send_app();
   });
 
@@ -2582,7 +2582,7 @@
     let note = $('#bulk_send_app_note').val()
 
     let selected_input = jQuery('.bulk_send_app.dt-radio.button-group input:checked')
-    if (selected_input.length < 1) {
+    if ( selected_input.length < 1 ) {
       $("#bulk_send_app_required_selection").show()
       return
     } else {
@@ -2592,15 +2592,15 @@
     let root = selected_input.data('root')
     let type = selected_input.data('type')
 
-    let queue = [];
+    let queue =  [];
     $('.bulk_edit_checkbox input').each(function () {
       if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
         let postId = parseInt($(this).val());
-        queue.push(postId);
+        queue.push( postId );
       }
     });
 
-    if (queue.length < 1) {
+    if ( queue.length < 1 ) {
       $('#bulk_send_app_required_elements').show()
       return;
     } else {
@@ -2609,8 +2609,8 @@
 
     $('#bulk_send_app_submit-spinner').addClass('active')
 
-    makeRequest('POST', list_settings.post_type + '/email_magic', {root: root, type: type, note: note, post_ids: queue})
-      .done(data => {
+    makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, note: note, post_ids: queue } )
+      .done( data => {
         $('#bulk_send_app_submit-spinner').removeClass('active')
         $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)
         $('#bulk_edit_master_checkbox').prop("checked", false);
@@ -2619,10 +2619,10 @@
         console.log(data)
         // window.location.reload();
       })
-      .fail(e => {
+      .fail( e => {
         $('#bulk_send_app_submit-spinner').removeClass('active')
         $('#bulk_send_app_submit-message').html('Oops. Something went wrong! Check log.')
-        console.log(e)
+        console.log( e )
       })
   }
 
