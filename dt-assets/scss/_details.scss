@@ -867,6 +867,61 @@ select.color-select {
             text-align: center;
         }
     }
+}
 
-
+.merge-modal {
+    border-radius:10px;
+    padding:0px;
+    border: 1px solid #3f729b;
+}
+.merge-modal-header {
+    background-color:#3f729b;
+    color:white;
+    text-align:center;
+}
+.merge-modal-heading {
+    font-size:1.5rem;
+    padding:10px 0px;
+}
+.merge-modal-subheading {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding:10px 0px 10px 0px;
+    margin-bottom: 0px;
+    display: inline-block;
+    width: 100%;
+}
+.merge-modal-spinner{
+    display: inline-block;
+}
+.merge-modal-no-dups-message {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+.merge-modal-close {
+    float: right;
+    margin-top: 15px;
+}
+.merge-modal-contact-row {
+    background-color: #f2f2f2;
+    padding:2%;
+    overflow: hidden;
+}
+.merge-modal-contact-name {
+    color: #3f729b;
+    font-weight: bold;
+}
+.merge-modal-contact-info {
+    font-size:16px;
+    font-weight: normal;
+}
+.merge-modal-button {
+    float: right;
+    padding-left: 10%;
+}
+.duplicates-detected-button {
+    margin-bottom: 0;
+    padding: .5em .5em;
 }
