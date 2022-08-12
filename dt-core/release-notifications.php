@@ -132,7 +132,6 @@ function dt_get_plugins_news_links() {
         ];
     }
     return $plugin_news_items;
-
 }
 function dt_load_github_release_markdown( $tag, $repo = "DiscipleTools/disciple-tools-theme" ){
 
