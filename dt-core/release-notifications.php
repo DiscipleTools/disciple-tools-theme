@@ -124,7 +124,6 @@ function dt_get_plugins_news_links() {
     $feed->set_cache_duration( 86400 );
     $limit = $feed->get_item_quantity( 10 );
     $feed_items = $feed->get_items( 0, $limit );
-    dt_write_log( $feed_items );
     $plugin_news_items = [];
     foreach ( $feed_items as $feed_item ) {
         $plugin_news_items[] = [
