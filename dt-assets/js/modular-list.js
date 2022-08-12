@@ -200,7 +200,7 @@
   }
 
   // Remove filter labels
-  $(document).on('click', '.current-filter-close', function () {
+  $(document).on('click', '.current-filter-list-close', function () {
     let label = $(this).parent();
     remove_current_filter_label(label, get_current_filter_label_field_details(label));
   });
@@ -576,13 +576,13 @@
       filter.labels.forEach(label=>{
 
         // Determine exclusion status
-        let excluded_class = is_search_query_filter_label_excluded(filter, label) ? 'current-filter-excluded' : '';
+        let excluded_class = is_search_query_filter_label_excluded(filter, label) ? 'current-filter-list-excluded' : '';
 
         // Proceed with displaying of filter label
-        html += `<span class="current-filter ${excluded_class} ${window.lodash.escape(label.field)}">${window.lodash.escape(label.name)}`;
+        html += `<span class="current-filter-list ${excluded_class} ${window.lodash.escape(label.field)}">${window.lodash.escape(label.name)}`;
 
         if (label.id && label.field && label.name) {
-          html += `<span class="current-filter-close">x</span>`;
+          html += `<span class="current-filter-list-close">x</span>`;
 
         } else {
           html += `&nbsp;`;
@@ -597,10 +597,10 @@
 
           query[query_key].forEach(q => {
 
-            html += `<span class="current-filter ${window.lodash.escape( query_key )}">${window.lodash.escape( q )}&nbsp;</span>`
+            html += `<span class="current-filter-list ${window.lodash.escape( query_key )}">${window.lodash.escape( q )}&nbsp;</span>`
           })
         } else {
-          html += `<span class="current-filter search">${window.lodash.escape( query[query_key] )}&nbsp;</span>`
+          html += `<span class="current-filter-list search">${window.lodash.escape( query[query_key] )}&nbsp;</span>`
         }
       })
     }
@@ -618,7 +618,7 @@
         const querySortKey = (sortLabel.search(leadingDashSearch) > -1) ? sortLabel.replace(leadingDashSearch, '') : sortLabel
         sortLabel = window.lodash.get( list_settings, `post_type_settings.fields[${querySortKey}].name`, sortLabel)
       }
-      html += `<span class="current-filter" data-id="sort">
+      html += `<span class="current-filter-list" data-id="sort">
           ${window.lodash.escape( list_settings.translations.sorting_by )}: ${window.lodash.escape( sortLabel )}
       &nbsp;</span>`
     }
