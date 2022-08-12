@@ -941,7 +941,7 @@ jQuery(function ($) {
         $.each(updated_selections, function (idx, source_button) {
           let update_button = $('#main_updated_fields_div').find('#' + $(source_button).attr('id'));
           if (update_button) {
-            $(update_button).toggleClass('selected-select-button', is_selected);
+            $(update_button).toggleClass('selected-select-button', is_field_value_still_selected(update_field_id, field_type, source_button));
           }
         });
 
@@ -956,16 +956,32 @@ jQuery(function ($) {
 
         // Update values accordingly
         if (source_typeahead_tags && update_typeahead_tags) {
+
+          // Obtain handle onto update field meta - deletion array
+          let update_tags_field_meta = $('#main_updated_fields_div').find('#' + update_field_id).parent().find('#field_meta');
+          let deleted_items = (update_tags_field_meta && ($(update_tags_field_meta).length > 0) && $(update_tags_field_meta).val()) ? JSON.parse($(update_tags_field_meta).val()) : [];
+
+          // Iterate source tags, updating accordingly
           $.each(source_typeahead_tags.items, function (idx, source_tag) {
             if (is_selected) { // Add, if not already present
 
               if (!window.lodash.includes(update_typeahead_tags.items, source_tag)) {
                 update_typeahead_tags.addMultiselectItemLayout(source_tag);
+
+                // Keep deleted items in sync
+                let found_tag = window.lodash.find(deleted_items, function (item) {
+                  return new String(item['name']).valueOf() == new String(source_tag['name'].valueOf());
+                });
+
+                if (found_tag) {
+                  window.lodash.remove(deleted_items, found_tag);
+                  $(update_tags_field_meta).val(JSON.stringify(deleted_items));
+                }
               }
 
-            } else { // Remove, if present
+            } else { // Remove, if present and not still selected anywhere else!
 
-              if (window.lodash.includes(update_typeahead_tags.items, source_tag)) {
+              if (!is_field_value_still_selected(update_field_id, field_type, source_tag)) {
 
                 // Remove item object
                 window.lodash.remove(update_typeahead_tags.items, function (tag) {
@@ -983,6 +999,16 @@ jQuery(function ($) {
                     $(label).remove();
                   }
                 });
+
+                // Keep deleted items in sync
+                let found_tag = window.lodash.find(deleted_items, function (item) {
+                  return new String(item['name']).valueOf() == new String(source_tag['name'].valueOf());
+                });
+
+                if (!found_tag) {
+                  deleted_items.push(source_tag);
+                  $(update_tags_field_meta).val(JSON.stringify(deleted_items));
+                }
               }
             }
           });
@@ -1010,6 +1036,10 @@ jQuery(function ($) {
 
           // Obtain handle to existing list
           let list = $('#main_updated_fields_div').find(`#edit-${update_field_id}`);
+
+          // Obtain handle onto update field meta - deletion array
+          let update_field_meta = $('#main_updated_fields_div').find('#merge_field_id[value="' + update_field_id + '"]').parent().find('#field_meta');
+          let deleted_items = (update_field_meta && ($(update_field_meta).length > 0) && $(update_field_meta).val()) ? JSON.parse($(update_field_meta).val()) : [];
 
           // Iterate over values; processing accordingly
           $.each(comm_values, function (idx, value) {
@@ -1040,8 +1070,17 @@ jQuery(function ($) {
 
             } else if (!is_selected && has_value && value_ele) {
 
-              // Remove, if present
-              $(value_ele).parent().remove();
+              // Remove, if present and not still selected anywhere else!
+              if (!is_field_value_still_selected(update_field_id, field_type, value)) {
+                $(value_ele).parent().remove();
+
+                // Keep deleted items in sync
+                if ($(value_ele).attr('id') && $(value_ele).attr('id').length > 0) {
+                  deleted_items.push($(value_ele).attr('id'));
+                  $(update_field_meta).val(JSON.stringify(deleted_items));
+                }
+
+              }
 
             }
 
@@ -1062,6 +1101,10 @@ jQuery(function ($) {
 
           // Obtain handle to existing list
           let td = $('#main_updated_fields_div').find('#mapbox-autocomplete').parent();
+
+          // Obtain handle onto update field meta - deletion array
+          let update_field_meta = $('#main_updated_fields_div').find('#merge_field_id[value="' + update_field_id + '"]').parent().find('#field_meta');
+          let deleted_items = (update_field_meta && ($(update_field_meta).length > 0) && $(update_field_meta).val()) ? JSON.parse($(update_field_meta).val()) : [];
 
           // Iterate over values; processing accordingly
           $.each(location_elements, function (idx, element) {
@@ -1085,11 +1128,33 @@ jQuery(function ($) {
               $(clone).css('margin-bottom', '10px');
               td.append(clone);
 
+              // Keep deleted items in sync
+              if ($(clone).attr('id') && ($(clone).attr('id').length > 0) && ($(clone).attr('id').indexOf('-') >= 0)) {
+                let id = $(clone).attr('id').substring($(clone).attr('id').indexOf('-') + 1);
+                if (window.lodash.includes(deleted_items, id)) {
+                  window.lodash.remove(deleted_items, function (item) {
+                    return new String(item).valueOf() == new String(id);
+                  });
+
+                  $(update_field_meta).val(JSON.stringify(deleted_items));
+                }
+              }
+
             } else if (!is_selected && has_value && value_ele) {
 
-              // Remove, if present
-              $(value_ele).remove();
+              // Remove, if present and not still selected anywhere else!
+              if (!is_field_value_still_selected(update_field_id, field_type, $(value_ele).val())) {
+                $(value_ele).remove();
 
+                // Keep deleted items in sync
+                if ($(value_ele).attr('id') && ($(value_ele).attr('id').length > 0) && ($(value_ele).attr('id').indexOf('-') >= 0)) {
+                  let id = $(value_ele).attr('id').substring($(value_ele).attr('id').indexOf('-') + 1);
+                  if (!window.lodash.includes(deleted_items, id)) {
+                    deleted_items.push(id);
+                    $(update_field_meta).val(JSON.stringify(deleted_items));
+                  }
+                }
+              }
             }
 
           });
@@ -1108,33 +1173,62 @@ jQuery(function ($) {
 
         // Update values accordingly
         if (source_typeahead && update_typeahead) {
+
+          // Obtain handle onto update field meta - deletion array
+          let update_field_meta = $('#main_updated_fields_div').find('#merge_field_id[value="' + update_field_id + '"]').parent().find('#field_meta');
+          let deleted_items = (update_field_meta && ($(update_field_meta).length > 0) && $(update_field_meta).val()) ? JSON.parse($(update_field_meta).val()) : [];
+
+          // Iterate source tags, updating accordingly
           $.each(source_typeahead.items, function (idx, source) {
 
             if (is_selected) { // Add, if not already present
 
               if (!window.lodash.includes(update_typeahead.items, source['ID'])) {
                 update_typeahead.addMultiselectItemLayout(source);
+
+                // Keep deleted items in sync
+                let found = window.lodash.find(deleted_items, function (item) {
+                  return new String(item['ID']).valueOf() == new String(source['ID'].valueOf());
+                });
+
+                if (found) {
+                  window.lodash.remove(deleted_items, found);
+                  $(update_field_meta).val(JSON.stringify(deleted_items));
+                }
               }
 
-            } else { // Remove, if present
+            } else { // Remove, if present and not still selected anywhere else!
 
-              // Remove item object
-              window.lodash.remove(update_typeahead.items, function (value) {
-                return value['name'] === source['name'];
-              });
+              if (!is_field_value_still_selected(update_field_id, field_type, source)) {
 
-              // Remove compared item string
-              window.lodash.remove(update_typeahead.comparedItems, function (value) {
-                return new String(value).valueOf() == new String(source['ID'].valueOf());
-              });
+                // Remove item object
+                window.lodash.remove(update_typeahead.items, function (value) {
+                  return value['name'] === source['name'];
+                });
 
-              // Remove matching label container
-              $(update_typeahead.label.container).find('.typeahead__label').each(function (idx, label) {
-                if ($(label).find('span').not('span.typeahead__cancel-button').text() === source['name']) {
-                  $(label).remove();
+                // Remove compared item string
+                window.lodash.remove(update_typeahead.comparedItems, function (value) {
+                  return new String(value).valueOf() == new String(source['ID'].valueOf());
+                });
+
+                // Remove matching label container
+                $(update_typeahead.label.container).find('.typeahead__label').each(function (idx, label) {
+                  if ($(label).find('span').not('span.typeahead__cancel-button').text() === source['name']) {
+                    $(label).remove();
+                  }
+                });
+
+                // Keep deleted items in sync
+                let found = window.lodash.find(deleted_items, function (item) {
+                  return new String(item['ID']).valueOf() == new String(source['ID'].valueOf());
+                });
+
+                if (!found) {
+                  deleted_items.push(source);
+                  $(update_field_meta).val(JSON.stringify(deleted_items));
                 }
-              });
 
+              }
             }
           });
 
@@ -1165,6 +1259,108 @@ jQuery(function ($) {
       }
     }
 
+  }
+
+  function is_field_value_still_selected(field_id, field_type, field_value) {
+
+    let still_selected = false;
+
+    // Determine current merge state post ids + supporting meta info
+    let merging_objs = [
+      {
+        'post_id': $('#main_archiving_current_post_id').val(),
+        'fields_div': 'main_archiving_fields_div'
+      },
+      {
+        'post_id': $('#main_primary_current_post_id').val(),
+        'fields_div': 'main_primary_fields_div'
+      }];
+
+    // Iterate over both ids, in search of matching field values
+    $.each(merging_objs, function (idx, merge_obj) {
+
+      // Obtain handle on td field select input widget
+      let td_field_select_input = $('#' + merge_obj['fields_div']).find('.td-field-select input[data-merge_field_id="' + merge_obj['post_id'] + "_" + field_id + '"]');
+
+      // Only proceed if input is selected
+      if (td_field_select_input && $(td_field_select_input).is(':checked')) {
+
+        // Compare values (by field type) to determine if there is still a match
+        switch (field_type) {
+          case 'textarea':
+          case 'number':
+          case 'boolean':
+          case 'text':
+          case 'date': {
+            break;
+          }
+
+
+          case 'key_select': {
+            break;
+          }
+
+          case 'multi_select': {
+            $(td_field_select_input).parent().parent().find('button.selected-select-button')
+              .each(function (idx, button) {
+                if (button && ($(button).length > 0) && field_value && $(button).attr('id').valueOf() == $(field_value).attr('id').valueOf()) {
+                  still_selected = true;
+                }
+              });
+
+            break;
+          }
+
+          case 'tags':
+          case 'location': {
+            let typeahead = window.Typeahead['.js-typeahead-' + merge_obj['post_id'] + "_" + field_id];
+            if (typeahead) {
+              let matched_value = window.lodash.find(typeahead.items, function (item) {
+                return new String(item['name']).valueOf() == new String(field_value['name'].valueOf());
+              });
+
+              if (matched_value && $(matched_value).length > 0) {
+                still_selected = true;
+              }
+            }
+
+            break;
+          }
+
+          case 'communication_channel':
+          case 'location_meta': {
+            let matched_value = $(td_field_select_input).parent().parent().find('input.input-group-field[value="' + field_value + '"]');
+            if (matched_value && $(matched_value).length > 0) {
+              still_selected = true;
+            }
+
+            break;
+          }
+
+          case 'user_select': {
+            break;
+          }
+
+          case 'connection': {
+            let connection_typeahead = window.Typeahead['.js-typeahead-' + merge_obj['post_id'] + "_" + field_id];
+            if (connection_typeahead) {
+              let matched_value = window.lodash.find(connection_typeahead.items, function (item) {
+                return new String(item['ID']).valueOf() == new String(field_value['ID'].valueOf());
+              });
+
+              if (matched_value && $(matched_value).length > 0) {
+                still_selected = true;
+              }
+            }
+
+            break;
+          }
+        }
+      }
+
+    });
+
+    return still_selected;
   }
 
   function handle_merge() {
