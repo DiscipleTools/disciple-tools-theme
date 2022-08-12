@@ -66,7 +66,7 @@
             <form
                 action="<?php echo esc_url( site_url() ); ?>/<?php echo esc_html( dt_get_post_type() ); ?>/mergedetails"
                 method="get">
-                <input type="hidden" name="currentid" value="<?php echo esc_html( get_the_id() ); ?>"/>
+                <input type="hidden" name="currentid" value="<?php echo esc_html( get_the_ID() ); ?>"/>
                 <input id="confirm-merge-with-post-id" type="hidden" name="dupeid" value=""/>
                 <button type="submit" class="button confirm-merge-with-post" style="display: none;">
                     <?php esc_html_e( 'Merge', 'disciple_tools' ); ?>
