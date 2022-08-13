@@ -68,6 +68,9 @@ function dt_release_modal() {
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </p>
+                        <p>
+                            <a href="https://disciple.tools/news-categories/dt-plugin-releases/" target="_blank"><?php echo esc_html( 'Go to plugin news page', 'disciple_tools' ); ?></a>
+                        </p>
                     </div>
                     <div class="dt-tab-content dt-hide-content" id="translations-content">
                         <h3 class="dt-tab-content-heading">Translations</h3>
