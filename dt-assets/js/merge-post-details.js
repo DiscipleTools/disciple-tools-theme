@@ -1363,6 +1363,34 @@ jQuery(function ($) {
     return still_selected;
   }
 
+  function is_field_value_already_in_primary(field_id, field_type, field_value) {
+    let is_already_in_primary = false;
+
+    // First, obtain handle onto current primary post
+    let primary_post = fetch_post_by_merge_type(true)['record'];
+
+    // Ensure primary post contains field in question
+    if (primary_post && primary_post[field_id]) {
+
+      // Parse value accordingly, based on field type
+      switch (field_type) {
+        case 'communication_channel': {
+
+          $.each(primary_post[field_id], function (idx, value) {
+            if (window.lodash.includes(value, field_value)) {
+              is_already_in_primary = true;
+            }
+          });
+
+          break;
+        }
+      }
+
+    }
+
+    return is_already_in_primary;
+  }
+
   function handle_merge() {
 
     // Disable submit button
@@ -1491,7 +1519,7 @@ jQuery(function ($) {
             let comm_key = $(this).find('button').data('key');
             let comm_val = $(this).find('input').val();
 
-            if (comm_val) {
+            if (comm_val && !is_field_value_already_in_primary(post_field_id, field_type, comm_val)) {
               let comm_entry = {
                 'value': comm_val
               };
