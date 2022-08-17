@@ -46,6 +46,6 @@ class Disciple_Tools_Activity_Hooks {
 
         new Disciple_Tools_Hook_User();
         new Disciple_Tools_Hook_Posts();
-        new Disciple_Tools_Hook_Comments();
+//        new Disciple_Tools_Hook_Comments();
     }
 }
