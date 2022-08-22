@@ -18,7 +18,7 @@ if ( ! apply_filters( 'dt_blank_access', false ) ){
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no">
     <meta class="foundation-mq">
 
     <?php
@@ -38,7 +38,6 @@ if ( ! apply_filters( 'dt_blank_access', false ) ){
     <meta name="msapplication-TileImage" content="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/mstile-144x144.png">
     <meta name="msapplication-config" content="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/browserconfig.xml">
     <meta name="theme-color" content="#3f729b">
-    <meta name="robots" content="noindex,nofollow" />
     <?php endif; ?>
 
 

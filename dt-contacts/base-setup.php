@@ -290,7 +290,7 @@ class DT_Contacts_Base {
             ];
             $fields["contact_other"] = [
                 "name" => __( 'Other Social Links', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/socialmedia.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/chat.svg?v=2",
                 "hide_domain" => false,
                 "type" => "communication_channel",
                 "tile" => "details",
@@ -399,13 +399,10 @@ class DT_Contacts_Base {
                     <?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
             </li>
             <li><a data-open="merge-dupe-edit-modal">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg?v=2' ) ?>"/>
+                    <img class="dt-icon"
+                         src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg?v=2' ) ?>"/>
 
                     <?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
-            <li><a id="open_merge_with_contact">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg?v=2' ) ?>"/>
-                    <?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
-            <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
             <?php
         }
     }
@@ -545,9 +542,6 @@ class DT_Contacts_Base {
                 ],
                 'query' => [
                     'sort' => '-post_date',
-                    'overall_status' => [
-                        '-closed'
-                    ]
                 ],
             ];
 

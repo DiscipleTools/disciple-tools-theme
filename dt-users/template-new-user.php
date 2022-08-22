@@ -3,6 +3,27 @@
  * Name: User Management
 */
 
+// Ensure Add New Users' admin setting has been enabled on multi-sites
+if ( current_user_can( 'manage_dt' ) && !current_user_can( 'create_users' ) && is_multisite() && empty( get_site_option( 'add_new_users' ) ) ){
+    get_header();
+    ?>
+    <div class="large-6 medium-6 small-6"
+         style="max-width: 50% !important; margin-left: auto !important; margin-right: auto !important; margin-top: 50px; margin-bottom: 50px;">
+
+        <div class="bordered-box">
+            <h3><?php esc_html_e( 'Permission denied', 'disciple_tools' ); ?></h3>
+            <p>
+                <?php esc_html_e( 'Administrator must enable "Add New Users" option in multisite settings:', 'disciple_tools' ); ?>
+                <a href="<?php echo esc_html( site_url( '/wp-admin/network/settings.php' ) ); ?>"
+                   target="_blank">Network Admin Settings</a>
+            </p>
+        </div>
+    </div>
+    <?php
+    get_footer();
+    exit();
+}
+
 $current_user_can_manage_users = current_user_can( 'create_users' ) || current_user_can( 'manage_dt' );
 if ( !$current_user_can_manage_users && !DT_User_Management::non_admins_can_make_users() ) {
     wp_safe_redirect( '/registered' );

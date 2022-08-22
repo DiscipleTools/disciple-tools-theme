@@ -21,35 +21,48 @@ jQuery(document).ready(function($) {
     element.innerHTML = window.lodash.escape( window.detailsSettings.translations.created_on.replace('%s', formattedDate) )
   })
 
-  $('input.text-input').change(function(){
-    const id = $(this).attr('id')
-    const val = $(this).val()
-    if ( $(this).prop('required') && val === ''){
-      return;
+  const updateTextMetaOnChange = updateTextMeta()
+  $('input.text-input').change(updateTextMetaOnChange)
+  $('input.text-input').blur(updateTextMetaOnChange)
+
+  function updateTextMeta() {
+    let isUpdating = false
+
+    return function() {
+      if (isUpdating) return
+      isUpdating = true
+
+      const id = $(this).attr('id');
+      if ($(this).prop('required') && $(this).val() === '') {
+        return;
+      }
+      let val = $(this).val();
+      const intVal = parseInt(val);
+
+      const min = parseInt(this.min);
+      const max = parseInt(this.max);
+
+      if (min && intVal < min) {
+        $(this).val(this.min)
+        val = parseInt(this.min)
+      }
+      if (max && intVal > max) {
+        $(this).val(this.max)
+        val = parseInt(this.max)
+      }
+
+      $(`#${id}-spinner`).addClass('active');
+      rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost) => {
+        $(`#${id}-spinner`).removeClass('active');
+        $(document).trigger("text-input-updated", [newPost, id, val]);
+        isUpdating = false
+      }).catch((error) => {
+        handleAjaxError(error)
+        isUpdating = false
+      })
     }
-    if (this.min && val < this.min) {
-      return
-    }
-    if (this.max && val > this.max) {
-      return
-    }
-    $(`#${id}-spinner`).addClass('active')
-    rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
-      $(`#${id}-spinner`).removeClass('active')
-      $( document ).trigger( "text-input-updated", [ newPost, id, val ] );
-    }).catch(handleAjaxError)
-  })
-  $('input.text-input').blur(function(){
-    const val = $(this).val()
-    if (this.min && val < this.min) {
-      $(this).val(this.min)
-      return
-    }
-    if (this.max && val > this.max) {
-      $(this).val(this.max)
-      return
-    }
-  })
+  }
+
 
   /* breadcrumb: new-field-type Update record */
   $('input.link-input').change(function(){
@@ -1243,6 +1256,50 @@ jQuery(document).ready(function($) {
     percentPosition: true
   });
   //leave at the end of this file
+
+  /**
+   * Merging
+   */
+
+  $('.open-merge-with-post').on("click", function (evt) {
+    let merge_post_type = $(evt.currentTarget).data('post_type');
+    if (!window.Typeahead['.js-typeahead-merge_with']) {
+      $.typeahead({
+        input: '.js-typeahead-merge_with',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        source: TYPEAHEADS.typeaheadPostsSource(merge_post_type, {'include-users': false}),
+        templateValue: "{{name}}",
+        template: window.TYPEAHEADS.contactListRowTemplate,
+        dynamic: true,
+        hint: true,
+        emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+        callback: {
+          onClick: function (node, a, item) {
+            $('.confirm-merge-with-post').show()
+            $('#confirm-merge-with-post-id').val(item.ID)
+            $('#name-of-post-to-merge').html(item.name)
+          },
+          onResult: function (node, query, result, resultCount) {
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#merge_with-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('.merge_with-result-container').html("");
+          },
+        },
+      });
+    }
+    let user_select_input = $(`.js-typeahead-merge_with`)
+    $('.search_merge_with').on('click', function () {
+      user_select_input.val("")
+      user_select_input.trigger('input.typeahead')
+      user_select_input.focus()
+    })
+    $('#merge-with-post-modal').foundation('open');
+  });
+
 })
 
 

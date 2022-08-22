@@ -160,7 +160,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
 
             /* Translation Dialog */
-            echo '<dialog id="dt_translation_dialog"></dialog>';
+            dt_display_translation_dialog();
 
             if ( empty( $field_key ) && $show_add_field ){
                 $this->box( 'top', __( "Create new field", 'disciple_tools' ) );

@@ -1153,5 +1153,194 @@ class Disciple_Tools_Users
         return Location_Grid_Meta::delete_user_location_grid_meta( $user_id, 'grid_meta_id', $grid_meta_id );
     }
 
+    public static function get_user_settings( $user ): array {
+        return [
+            'profile'        => self::get_user_settings_profile( $user ),
+            'apps'           => self::get_user_settings_apps(),
+            'preferences'    => self::get_user_settings_preferences( $user ),
+            'unavailability' => self::get_user_settings_unavailability( $user ),
+            'notifications'  => self::get_user_settings_notifications( $user )
+        ];
+    }
+
+    private static function get_user_settings_profile( $user ): array {
+        return [
+            'ID'           => $user->ID,
+            'name'         => trim( $user->first_name . ' ' . $user->last_name ),
+            'username'     => $user->user_login,
+            'user_email'   => $user->user_email,
+            'nickname'     => $user->nickname,
+            'display_name' => $user->display_name,
+            'roles'        => dt_get_user_role_names( $user->ID ),
+            'email'        => self::get_user_settings_profile_field( $user, 'email', [
+                [
+                    'value' => $user->user_email,
+                    'label' => __( 'System Email', 'disciple_tools' )
+                ]
+            ] ),
+            'phone'        => self::get_user_settings_profile_field( $user, 'phone' ),
+            'address'      => self::get_user_settings_profile_field( $user, 'address' ),
+            'social'       => self::get_user_settings_profile_field( $user, 'social' ),
+            'other'        => self::get_user_settings_profile_field( $user, 'other' ),
+            'locale'       => get_user_locale( $user->ID ),
+            'language'     => self::get_user_settings_profile_language( $user ),
+            'bio'          => $user->user_description,
+            'gender'       => self::get_user_settings_profile_gender( $user )
+        ];
+    }
+
+    private static function get_user_settings_profile_field( $user, $field_key, $entries = [] ): array {
+        foreach ( dt_build_user_fields_display( get_user_meta( $user->ID ) ) ?? [] as $field ) {
+            if ( $field['type'] == $field_key && ! empty( $field['value'] ) ) {
+                $entries[] = [
+                    'value' => $field['value'],
+                    'label' => $field['label']
+                ];
+            }
+        }
+
+        return $entries;
+    }
+
+    private static function get_user_settings_profile_language( $user ): string {
+        $translations   = dt_get_available_languages( true );
+        $dt_user_locale = get_user_locale( $user->ID );
+
+        return isset( $translations[ $dt_user_locale ] ) ? $translations[ $dt_user_locale ]['native_name'] : 'English';
+    }
+
+    private static function get_user_settings_profile_gender( $user ): string {
+        $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
+
+        $field_key  = 'gender';
+        $user_field = get_user_option( 'user_gender', $user->ID );
+
+        return $contact_fields[ $field_key ]["default"][ $user_field ]["label"] ?? $user_field;
+    }
+
+    private static function get_user_settings_apps(): array {
+        $apps = [];
+        foreach ( apply_filters( 'dt_settings_apps_list', [] ) ?? [] as $app_key => $app_value ) {
+            if ( $app_value['settings_display'] ?? true ) {
+                $apps[] = [
+                    'label'       => $app_value['label'],
+                    'description' => $app_value['description'],
+                    'link'        => get_user_option( $app_key ) ? trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] ) . get_user_option( $app_key ) : ''
+                ];
+            }
+        }
+
+        return $apps;
+    }
+
+    private static function get_user_settings_preferences( $user ): array {
+        return [
+            'languages'     => self::get_user_settings_preferences_languages( $user ),
+            'locations'     => self::get_user_location( $user->ID ),
+            'people_groups' => self::get_user_settings_preferences_people_groups( $user ),
+            'workload'      => self::get_user_settings_preferences_workload( $user )
+        ];
+    }
+
+    private static function get_user_settings_preferences_languages( $user ): array {
+        $contact_fields = DT_Posts::get_post_settings( "contacts", false )["fields"];
+
+        $languages      = [];
+        $user_languages = get_user_option( 'user_languages', $user->ID );
+        foreach ( $contact_fields["languages"]["default"] as $option_key => $option_value ) {
+            if ( in_array( $option_key, $user_languages ?: [] ) ) {
+                $languages[] = [
+                    'key'   => $option_key,
+                    'label' => $option_value['label']
+                ];
+            }
+        }
+
+        return $languages;
+    }
+
+    private static function get_user_settings_preferences_people_groups( $user ): array {
+        $user_people_groups = get_user_option( 'user_people_groups', $user->ID );
+        return DT_Posts::get_post_names_from_ids( $user_people_groups ? $user_people_groups : [] );
+    }
+
+    private static function get_user_settings_preferences_workload( $user ): array {
+        $workload = get_user_option( 'workload_status', $user->ID );
+        $options  = dt_get_site_custom_lists()["user_workload_status"] ?? [];
+
+        $workload_response = [];
+        if ( isset( $options[ $workload ] ) ) {
+            $workload_response       = $options[ $workload ];
+            $workload_response['id'] = $workload;
+        }
+
+        return $workload_response;
+    }
+
+    private static function get_user_settings_unavailability( $user ): array {
+        $dates_unavailable = get_user_option( 'user_dates_unavailable', $user->ID );
+        if ( ! $dates_unavailable ) {
+            $dates_unavailable = [];
+        }
+        foreach ( $dates_unavailable ?? [] as &$range ) {
+            $range['start_date'] = dt_format_date( $range['start_date'] );
+            $range['end_date']   = dt_format_date( $range['end_date'] );
+        }
+
+        return $dates_unavailable;
+    }
+
+    private static function get_user_settings_notifications( $user ): array {
+        return [
+            'email_preference' => self::get_user_settings_notifications_email_preference( $user ),
+            'notify_types'     => self::get_user_settings_notifications_type( $user ),
+            'follow_all'       => self::get_user_settings_notifications_follow_all( $user )
+        ];
+    }
+
+    private static function get_user_settings_notifications_email_preference( $user ): array {
+        $dt_user_meta = get_user_meta( $user->ID );
+
+        $email_preference = isset( $dt_user_meta['email_preference'] ) ? $dt_user_meta['email_preference'][0] : null;
+
+        return [
+            'realtime' => ( ! $email_preference || $email_preference === 'real-time' ),
+            'hourly'   => ( $email_preference === 'hourly' ),
+            'daily'    => ( $email_preference === 'daily' )
+        ];
+    }
+
+    private static function get_user_settings_notifications_type( $user ): array {
+        $dt_user_meta                  = get_user_meta( $user->ID );
+        $dt_site_notification_defaults = dt_get_site_notification_defaults();
+
+        $types = [];
+        foreach ( $dt_site_notification_defaults['types'] as $dt_notification_key => $dt_notification_default ) {
+            $type             = [];
+            $type['key']      = $dt_notification_key;
+            $type['label']    = $dt_notification_default['label'];
+            $type['channels'] = [];
+
+            foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ) {
+                $channel_notification_key = $dt_notification_key . '_' . $channel_key;
+
+                $type['channels'][] = [
+                    'key'     => $channel_key,
+                    'label'   => $channel_value['label'],
+                    'enabled' => ( $dt_notification_default[ $channel_key ] ) || ( isset( $dt_user_meta[ $channel_notification_key ] ) && $dt_user_meta[ $channel_notification_key ][0] == true )
+                ];
+            }
+
+            $types[] = $type;
+        }
+
+        return $types;
+    }
+
+    private static function get_user_settings_notifications_follow_all( $user ): bool {
+        $dt_user_meta = get_user_meta( $user->ID );
+
+        return user_can( $user, 'dt_all_access_contacts' ) && ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true );
+    }
 
 }

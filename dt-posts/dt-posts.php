@@ -239,6 +239,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( is_wp_error( $post_id ) ){
             return $post_id;
         }
+
         $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $contact_methods_and_connections );
         if ( is_wp_error( $potential_error ) ){
             return $potential_error;
