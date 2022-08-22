@@ -858,10 +858,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <div class="link-group">
 
                     <div class="add-link-<?php echo esc_html( $display_field_id ) ?>" style="display:none">
-                        <form class="add-link-form" style="display: flex; align-items: center;">
-                            <!-- drop down -->
-                            <input type="hidden" name="field-key" value="<?php echo esc_html( $field_key ) ?>">
-                            <select name="link-type">
+                        <div class="add-link-form" style="display: flex; align-items: center;">
+                            <select class="link-type">
                                 <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
 
                                     <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) {
@@ -874,13 +872,17 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                 </option>
                                 <?php endforeach; ?>
                             </select>
-                            <button type="submit" id="add-link-button-<?php echo esc_html( $display_field_id ) ?>" class="button">
+                            <button
+                                type="button"
+                                class="button add-link-button"
+                                data-field-key="<?php echo esc_attr( $field_key ) ?>"
+                            >
                                 <?php esc_html_e( 'Add', 'disciple-tools' ) ?>
                             </button>
                             <button type="button" id="cancel-link-button-<?php echo esc_html( $display_field_id ) ?>" class="button hollow alert">
                                 x
                             </button>
-                        </form>
+                        </div>
                     </div>
 
                     <div class="link-list-<?php echo esc_html( $field_key ) ?>">

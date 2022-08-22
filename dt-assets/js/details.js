@@ -351,23 +351,7 @@ jQuery(document).ready(function($) {
   /**
    * Links
    */
-  $('.add-link-form').on('submit', addLink)
-  function addLink(e) {
-    e.preventDefault()
-
-    const formData = new FormData(this)
-
-    const linkType = formData.get('link-type')
-    const fieldKey = formData.get('field-key')
-
-    $(this.parentElement).hide()
-
-    const linkList = $(`.link-list-${fieldKey}`)
-
-    const template = $(`#link-template-${fieldKey}-${linkType}`)
-
-    linkList.append(template.clone(true).removeAttr('id').show())
-  }
+  $('.add-link-button').on('click', SHAREDFUNCTIONS.addLink)
 
   /**
    * user select typeahead

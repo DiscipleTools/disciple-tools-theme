@@ -52,6 +52,8 @@ class DT_Posts extends Disciple_Tools_Posts {
      * Create a post
      * For fields format See https://github.com/DiscipleTools/disciple-tools-theme/wiki/Contact-Fields-Format
      *
+     * breadcrumb: new-field-type
+     *
      * @param string $post_type
      * @param array $fields
      * @param bool $silent
@@ -263,6 +265,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $potential_error = self::update_post_user_select( $post_type, $post_id, $user_select_fields );
+        if ( is_wp_error( $potential_error ) ){
+            return $potential_error;
+        }
+
+        $potential_error = self::update_post_link_fields( $post_settings["fields"], $post_id, $fields );
         if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
