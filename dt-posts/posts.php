@@ -375,6 +375,14 @@ class Disciple_Tools_Posts
         }
     }
 
+    /**
+     * Formats the activity message for the record activity list
+     *
+     * breadcrumb: new-field-type
+     *
+     * @param object $activity
+     * @param array $post_type_settings
+     */
     public static function format_activity_message( $activity, $post_type_settings ) {
         $fields = $post_type_settings["fields"];
         $message = "";
@@ -1671,6 +1679,7 @@ class Disciple_Tools_Posts
     }
 
 
+    /* breadcrumb: new-field-type Add processing for field if needed */
     public static function update_post_user_select( string $post_type, int $post_id, array $post_fields ){
         $post_settings = DT_Posts::get_post_field_settings( $post_type );
         foreach ( $post_fields as $field_key => $field_value ){
@@ -2269,8 +2278,12 @@ class Disciple_Tools_Posts
 
     /**
      * Used in in the method get_custom, this method mutates $fields to add
-     * data about a particular contact in the required format. You might want
+     * data about a particular record in the required format. You might want
      * to use this instead of get_custom for performance reasons.
+     *
+     * Adjusts the meta data on the record
+     *
+     * breadcrumb: new-field-type
      *
      * @param string $post_type
      * @param int $post_id The ID number of the contact
@@ -2463,6 +2476,7 @@ class Disciple_Tools_Posts
             }
         }
 
+        /* breadcrumb: new-field-type Also adjust the meta data that is private to the user */
         //add user fields
         global $wpdb;
         $user_id = get_current_user_id();

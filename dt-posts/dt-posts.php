@@ -380,6 +380,12 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        /*
+        breadcrumb: new-field-type
+        If necessary deal with field types differently from the default way
+        Functions are found in posts.php
+        */
+
         $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error ) ){
             return $potential_error;

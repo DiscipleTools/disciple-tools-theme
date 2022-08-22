@@ -51,6 +51,7 @@ jQuery(document).ready(function($) {
     }
   })
 
+  /* breadcrumb: new-field-type Update record */
   $('input.link-input').change(function(){
     const fieldKey = $(this).data('field-key')
     const type = $(this).data('type')

@@ -689,6 +689,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     /**
      * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags, user_select, link
      *
+     * breadcrumb: new-field-type
+     *
      * @param $field_key
      * @param $fields
      * @param $post
@@ -714,6 +716,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $display_field_id = $field_id_prefix . $field_key;
         }
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
+            /* breadrcrumb: new-field-type Add allowed field types */
             $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;

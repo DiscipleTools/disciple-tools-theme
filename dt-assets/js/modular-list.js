@@ -722,6 +722,7 @@
           let field_value = window.lodash.get( record, field_key, false )
 
 
+          /* breadcrumb: new-field-type Display field in table */
           if ( field_value ) {
             if (['text', 'textarea', 'number'].includes(field_settings.type)) {
               values = [window.lodash.escape(field_value)]
