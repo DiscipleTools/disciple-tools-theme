@@ -152,6 +152,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $location_meta = [];
         $post_user_meta = [];
         $user_select_fields = [];
+        $link_meta = [];
         foreach ( $fields as $field_key => $field_value ){
             if ( self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
                 $contact_methods_and_connections[$field_key] = $field_value;
@@ -161,6 +162,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             $is_private = $post_settings["fields"][$field_key]["private"] ?? '';
             if ( $field_type === "multi_select" ){
                 $multi_select_fields[$field_key] = $field_value;
+                unset( $fields[$field_key] );
+            }
+            if ( $field_type === "link" && !$is_private ) {
+                $link_meta[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
             if ( $field_type === "tags" ){
@@ -219,6 +224,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $post_user_meta[$field_key] = $field_value;
                 unset( $fields[ $field_key ] );
             }
+            if ( $field_type === 'link' && $is_private ) {
+                $post_user_meta[$field_key] = $field_value;
+                unset( $fields[ $field_key ] );
+            }
             if ( $is_private ) {
                 unset( $fields[ $field_key ] );
             }
@@ -270,7 +279,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
-        $potential_error = self::update_post_link_fields( $post_settings["fields"], $post_id, $fields );
+        $potential_error = self::update_post_link_fields( $post_settings["fields"], $post_id, $link_meta );
         if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
