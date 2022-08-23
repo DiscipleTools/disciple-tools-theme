@@ -106,7 +106,7 @@ jQuery(function ($) {
 
       } else if (action_value_element.hasClass('dt-datepicker')) { // Date Range Picker
         action_value_id = $('#workflows_design_section_step3_action_value_object_id').val();
-        action_value_name = action_value_element.val();
+        action_value_name = action_value_id === 'current' ? 'Current' : action_value_element.val();
 
       } else { // Regular Textfield
         action_value_id = action_value_name = action_value_element.val();
@@ -1179,6 +1179,7 @@ jQuery(function ($) {
     function handle_event_value_field_datepickers(field, event_value_object_id) {
 
       let dynamic_field = $('#' + field['id']);
+      let checkbox_field = $('#' + field['id'] + '_current');
 
       // Instantiate date range picker dynamic field.
       dynamic_field.daterangepicker({
@@ -1202,11 +1203,19 @@ jQuery(function ($) {
       // Bind to apply and cancel events and reset
       dynamic_field.on('apply.daterangepicker', function (ev, picker) {
         event_value_object_id.val(picker.startDate.unix());
+        checkbox_field.prop('checked', false);
       });
 
       dynamic_field.on('cancel.daterangepicker', function (ev, picker) {
         dynamic_field.val('');
       });
+
+      checkbox_field.on('change', function () {
+        if ($(this).is(':checked')) {
+          dynamic_field.val(''); // clear datepicker value
+        }
+        event_value_object_id.val('current');
+      })
     }
 
     function fetch_event_value_field(base_url, field) {
@@ -1254,6 +1263,7 @@ jQuery(function ($) {
       let response = {};
       response['id'] = Date.now();
       response['html'] = `<input type="text" class="dt-datepicker" placeholder="Enter a date..." style="min-width: 100%;" id="${window.lodash.escape(response['id'])}">`;
+      response['html'] += `<label><input type="checkbox" id="${window.lodash.escape(response['id'])}_current" > Use current date`;
       response['datepicker'] = {};
 
       return response;

@@ -599,8 +599,8 @@ class Disciple_Tools_Notifications
                     $notifications_queue->schedule_email( $db_notification, $email_preference );
                 }
             } elseif ( !in_array( 'email', $already_sent ) ) {
-                    $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
-                    dt_send_email_about_post( $user->user_email, $notification["post_id"], $message_plain_text );
+                $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
+                dt_send_email_about_post( $user->user_email, $notification["post_id"], $message_plain_text );
             }
         }
     }

@@ -231,3 +231,48 @@ body .alert p {
 .alert-error {
     border-left-color: #d63638;
 }
+
+/*
+ * Icon Selector Dialog
+ */
+
+#dialog_icon_selector_filter_input {
+    min-width: 715px;
+    display: inline-block;
+    margin-right: 0;
+}
+
+#dialog_icon_selector_icons_div {
+    width: 715px;
+    height: 430px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    text-align: center;
+    padding-left: 0px;
+
+}
+
+#dialog_icon_selector_icons_table {
+    border-collapse: separate;
+    border-spacing: 40px 40px;
+    padding-left: 0px;
+}
+
+.dialog-icon-selector-icon {
+    font-size: 50px;
+    margin: 10px 10px 10px 10px;
+    opacity: 1;
+    cursor: default;
+}
+
+.dialog-icon-selector-icon:hover {
+    opacity: 0.25;
+    cursor: pointer;
+}
+
+.dialog-icon-selector-icon-selected {
+    font-size: 30px;
+    margin: 10px 10px 10px 10px;
+    opacity: 0.60;
+    cursor: default;
+}

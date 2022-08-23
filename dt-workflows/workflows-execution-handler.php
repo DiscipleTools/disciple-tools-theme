@@ -84,6 +84,22 @@ class Disciple_Tools_Workflows_Execution_Handler {
         return true;
     }
 
+    public static function triggered_by_condition_field( $workflow, $initial_fields ): bool {
+
+        // Extract initial field keys to be checked
+        $initial_field_keys = ! empty( $initial_fields ) ? array_keys( $initial_fields ) : [];
+
+        // Determine if trigger owner also doubles up as condition field
+        $triggered_by_condition = false;
+        foreach ( $workflow->conditions as $condition ) {
+            if ( in_array( $condition->field_id, $initial_field_keys ) ) {
+                $triggered_by_condition = true;
+            }
+        }
+
+        return $triggered_by_condition;
+    }
+
     private static function process_condition( $field_id, $condition, $value, $post, $post_type_settings ): bool {
 
         if ( ! empty( $field_id ) && ! empty( $condition ) && isset( $post_type_settings['fields'][ $field_id ]['type'] ) ) {
@@ -376,10 +392,21 @@ class Disciple_Tools_Workflows_Execution_Handler {
         // Ensure to check action updates have not already been executed, as part of infinite post update loops!
         if ( ! empty( $workflow ) && isset( $workflow->actions ) && ! self::already_executed_actions( $workflow->actions, $post, $post_type_settings ) ) {
 
+            // Ensure updates occur under corresponding workflow alias
+            $previous_user_id = get_current_user_id();
+
+            wp_set_current_user( 0 );
+            $current_user = wp_get_current_user();
+            $current_user->add_cap( 'dt_workflow:' . $workflow->id );
+            $current_user->add_cap( 'access_' . $post['post_type'] );
+
             // Iterate through each condition, ensuring it evaluates as true!
             foreach ( $workflow->actions as $action ) {
                 self::process_action( $action->field_id, $action->id, $action->value, $post, $post_type_settings );
             }
+
+            // Switch back to previous user
+            wp_set_current_user( $previous_user_id );
         }
     }
 
@@ -473,10 +500,12 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'text':
             case 'number':
             case 'boolean':
-            case 'date': // $value to be of epoch timestamp int type
             case 'key_select':
             case 'user_select':
                 $updated[ $field_id ] = $value;
+                break;
+            case 'date': // $value to be of epoch timestamp int type
+                $updated[ $field_id ] = $value === 'current' ? time() : $value;
                 break;
         }
 

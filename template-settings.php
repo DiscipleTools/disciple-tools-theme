@@ -18,6 +18,9 @@ if ( isset( $_POST['user_update_nonce'] ) ) {
 $dt_user = wp_get_current_user(); // Returns WP_User object
 $dt_user_meta = get_user_meta( $dt_user->ID ); // Full array of user meta data
 $dt_user_contact_id = Disciple_Tools_Users::get_contact_for_user( $dt_user->ID );
+if ( is_wp_error( $dt_user_contact_id ) ){
+    $dt_user_contact_id = null;
+}
 
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings

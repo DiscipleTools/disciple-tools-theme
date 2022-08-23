@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
   let post_id = window.detailsSettings.post_id
   let post_type = window.detailsSettings.post_type
   let post = window.detailsSettings.post_fields
+  let post_settings = window.detailsSettings.post_settings
   let field_settings = window.detailsSettings.post_settings.fields
   window.post_type_fields = field_settings
   let rest_api = window.API
@@ -458,8 +459,13 @@ jQuery(document).ready(function($) {
       multiselect: {
         matchOn: ["ID"],
         data: function () {
-          return (post[field_id] || [] ).map(g=>{
-            return {ID:g.ID, name:g.post_title, label: g.label}
+          return (post[field_id] || []).map(g => {
+            return {
+              ID: g.ID,
+              name: g.post_title,
+              label: g.label,
+              status: g['status'] ?? null
+            }
           })
         },
         callback: {
@@ -485,6 +491,9 @@ jQuery(document).ready(function($) {
             let cancelButton = $(`#${el.id} .typeahead__cancel-button`);
             cancelButton.css('pointerEvents','none');
           }
+
+          // If available, display item status colours within labels
+          set_item_label_status(this);
         },
         onClick: function(node, a, item, event){
           $(`#${field_id}-spinner`).addClass('active')
@@ -492,6 +501,12 @@ jQuery(document).ready(function($) {
             $(`#${field_id}-spinner`).removeClass('active')
             $( document ).trigger( "dt-post-connection-added", [ new_post, field_id ] );
           }).catch(err => { console.error(err) })
+
+          // If present, adjust status label, so as to remain uniform
+          if (item['status']) {
+            item['status']['label'] = item['status']['label'] ? '[' + window.lodash.escape(item['status']['label']).toLowerCase() + ']' : '';
+          }
+
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -503,6 +518,7 @@ jQuery(document).ready(function($) {
           $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function (event, query) {
+          set_item_label_status(this);
           if ( !query ){
             $(`#${field_id}-result-container`).empty()
           }
@@ -514,6 +530,34 @@ jQuery(document).ready(function($) {
       }
     })
   })
+
+  function set_item_label_status(field_typeahead) {
+    if (field_typeahead) {
+      $.each(field_typeahead.items, function (idx, item) {
+        if (item['ID'] && item['status'] && item['status']['color']) {
+          $(field_typeahead.label.container[0]).find("a[href$=\\/" + item['ID']).each(function () {
+
+            // Obtain label handle
+            let label = $(this).parent();
+
+            // Once we have a handle, adjust colour styling accordingly
+            label.css('border-left', '3px solid ' + item['status']['color']);
+
+            // Assign corresponding tooltip, using title as trigger
+            if (item['status']['label']) {
+              label.attr('title', '');
+              label.tooltip({
+                content: item['status']['label'],
+                show: {effect: 'fade', duration: 100}
+              });
+            }
+          });
+        }
+      });
+
+      field_typeahead.adjustInputSize();
+    }
+  }
 
   //multi_select typeaheads
   for (let input of $(".multi_select .typeahead__query input")) {

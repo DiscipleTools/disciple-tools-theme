@@ -62,8 +62,8 @@ class Disciple_Tools_Notifications_Scheduler {
      * Setup daily batch notification schedule
      */
     private function setup_daily_schedule() {
-        $next_day = self::DEBUG ? time() : $this->get_next_daily_time( self::DAILY_RUN_TIME );
         if ( ! wp_next_scheduled( 'dt_daily_notification_schedule' ) ) {
+            $next_day = self::DEBUG ? time() : $this->get_next_daily_time( self::DAILY_RUN_TIME )->getTimestamp();
             wp_schedule_event( $next_day, 'daily', 'dt_daily_notification_schedule' );
         }
     }

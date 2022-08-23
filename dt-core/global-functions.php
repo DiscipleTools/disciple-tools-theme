@@ -987,12 +987,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 'dt'
             ];
             /* split title string into array of words */
-            $words = explode( ' ', mb_strtolower( $string ) );
+            $words = explode( ' ', strtolower( $string ) );
             /* iterate over words */
             foreach ( $words as $position => $word ) {
                 /* re-capitalize acronyms */
                 if ( in_array( $word, $acronyms_and_such ) ) {
-                    $words[ $position ] = mb_strtoupper( $word );
+                    $words[ $position ] = strtoupper( $word );
                     /* capitalize first letter of all other words, if... */
                 } elseif (
                     /* ...first word of the title string... */

@@ -13,9 +13,11 @@ jQuery(document).ready(function ($) {
   })
 
   // Process search queries
-  $(document).on("keydown", '.advanced-search-modal-form-input', function (e) {
+  $(document).on("keyup", '.advanced-search-modal-form-input', function (e) {
     clearTimeout(timer);
-    timer = setTimeout(execute_search_query, 500);
+    if ( $(this).val().length >= 3 ){
+      timer = setTimeout(execute_search_query, 500);
+    }
   })
   $(document).on("keypress", '.advanced-search-modal-form-input', function (e) {
     if (e.which === 13) {
@@ -58,13 +60,18 @@ jQuery(document).ready(function ($) {
     execute_search_query();
   })
 
+  function determine_orientation() {
+    return $('.advanced-search-modal-results-post-types-view-at-top-collapsible-button').is(':visible') ? 'top' : 'side';
+  }
+
   function fetch_filters() {
     // Source filters based on current visibility orientation
-    let location = $('.advanced-search-modal-results-post-types-view-at-top-collapsible-button').is(':visible') ? 'top' : 'side';
+    let location = determine_orientation();
     return {
       post: $('#advanced-search-modal-filters-posts-' + location).prop('checked'),
       comment: $('#advanced-search-modal-filters-comments-' + location).prop('checked'),
-      meta: $('#advanced-search-modal-filters-meta-' + location).prop('checked')
+      meta: $('#advanced-search-modal-filters-meta-' + location).prop('checked'),
+      status: 'all'
     };
   }
 
@@ -83,7 +90,12 @@ jQuery(document).ready(function ($) {
       if (api_data && (parseInt(api_data['total_hits']) > 0)) {
 
         // Reverse sort order so as to ensure names appear up top!
-        let results = sort_hits(remove_duplicate_hits(api_data['hits']), {meta_hit: [], comment_hit: [], post_hit: []});
+        let results = sort_hits(remove_duplicate_hits(api_data['hits']), {
+          meta_hit: [],
+          comment_hit: [],
+          post_hit: [],
+          status_hit: []
+        });
         let total_hits = calculate_total_hits(results);
 
         // Update global hits count
@@ -154,7 +166,7 @@ jQuery(document).ready(function ($) {
     $('.advanced-search-modal-results-total').html(window.lodash.escape(total_hits));
 
     // Iterate through results, displaying accordingly
-    results_html += '<table class="advanced-search-modal-results-table"><tbody>';
+    results_html += '<table class="advanced-search-modal-results-table" style="border-spacing: 0px 5px !important; border-collapse: separate;"><tbody>';
     results.forEach(function (result) {
 
       results_html += '<tr>';
@@ -194,13 +206,16 @@ jQuery(document).ready(function ($) {
     let _is_post_hit = is_post_hit(post['post_hit']);
     let _is_comment_hit = is_comment_hit(post['comment_hit']);
     let _is_meta_hit = is_meta_hit(post['meta_hit']);
+    let _is_status_hit = is_meta_hit(post['status_hit']);
     let _is_default_hit = (!_is_post_hit && !_is_comment_hit && !_is_meta_hit);
 
     let results_html = '<tr class="advanced-search-modal-results-table-row-clickable">';
 
     // Convert post title to link, so as to provide support for browser link options, such as open in new tab!
+    let status_label = (_is_status_hit && post['status'] && post['status']['label']) ? ' [<i>' + window.lodash.escape(post['status']['label']).toLowerCase() + '</i>]' : '';
+    let status_color_css = (_is_status_hit && post['status'] && post['status']['color']) ? 'style="border-left-color: ' + post['status']['color'] + ' !important; border-left: 5px solid;"' : '';
     let post_link = window.wpApiShare.site_url + '/' + window.lodash.escape(hidden_post_type) + "/" + window.lodash.escape(hidden_post_id);
-    results_html += '<td class="advanced-search-modal-results-table-col-hits"><a href="' + post_link + '"><b>' + window.lodash.escape(post['post_title']) + '</b> (#' + window.lodash.escape(hidden_post_id) + ')</a><br><span>';
+    results_html += '<td class="advanced-search-modal-results-table-col-hits" ' + status_color_css + '><a href="' + post_link + '"><b>' + window.lodash.escape(post['post_title']) + '</b> (#' + window.lodash.escape(hidden_post_id) + ')' + status_label + '</a><br><span>';
 
     if (_is_comment_hit) {
       results_html += window.lodash.escape((String(post['comment_hit_content']).length > 100) ? String(post['comment_hit_content']).substring(0, 100) + "..." : post['comment_hit_content']);
@@ -236,6 +251,10 @@ jQuery(document).ready(function ($) {
 
   function is_meta_hit(meta_hit) {
     return (meta_hit && (meta_hit === 'Y'));
+  }
+
+  function is_status_hit(status_hit) {
+    return (status_hit && (status_hit === 'Y'));
   }
 
   function display_record(post_type, post_id) {
@@ -279,7 +298,7 @@ jQuery(document).ready(function ($) {
     return total;
   }
 
-  function sort_hits(hits, order = {post_hit: [], comment_hit: [], meta_hit: []}) {
+  function sort_hits(hits, order = {post_hit: [], comment_hit: [], meta_hit: [], status_hit: []}) {
     if (hits) {
       hits.forEach(function (hit) {
 
@@ -288,6 +307,7 @@ jQuery(document).ready(function ($) {
         order.post_hit = [];
         order.comment_hit = [];
         order.meta_hit = [];
+        order.status_hit = [];
 
         // Sort posts accordingly by hit type.
         hit['posts'].forEach(function (post) {
@@ -299,6 +319,9 @@ jQuery(document).ready(function ($) {
 
           } else if (is_meta_hit(post['meta_hit'])) {
             order.meta_hit.push(post);
+
+          } else if (is_status_hit(post['status_hit'])) {
+            order.status_hit.push(post);
 
           } else {
             order.post_hit.push(post); // Default hit type!
