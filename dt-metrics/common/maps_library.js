@@ -466,7 +466,7 @@ let area_map = {
 
           done.push(parent_id);
           // get geojson collection
-          jQuery.get( mapbox_library_api.obj.settings.map_mirror + 'collection/' + parent_id + '.geojson', null, null, 'json')
+          jQuery.get( mapbox_library_api.obj.settings.map_mirror + 'collection-left-hand/' + parent_id + '.geojson', null, null, 'json')
           .done(function (geojson) {
             // add data to geojson properties
             let highest_value = 1
