@@ -741,8 +741,6 @@ window.SHAREDFUNCTIONS = {
 
     linkType = $(this).siblings(".link-type").val()
 
-    $(this.parentElement.parentElement).hide()
-
     const linkList = $(`.link-list-${fieldKey}`)
 
     const template = $(`#link-template-${fieldKey}-${linkType}`)
