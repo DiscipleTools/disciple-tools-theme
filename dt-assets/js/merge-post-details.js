@@ -1068,6 +1068,15 @@ jQuery(function ($) {
                     </div>
                 </div>`);
 
+              // If present, remove from deleted list
+              let purged_items = window.lodash.remove(deleted_items, function (deleted) {
+                return window.lodash.includes(value, deleted['value']);
+              });
+
+              if (purged_items && purged_items.length > 0) {
+                $(update_field_meta).val(JSON.stringify(deleted_items));
+              }
+
             } else if (!is_selected && has_value && value_ele) {
 
               // Remove, if present and not still selected anywhere else!
@@ -1076,7 +1085,10 @@ jQuery(function ($) {
 
                 // Keep deleted items in sync
                 if ($(value_ele).attr('id') && $(value_ele).attr('id').length > 0) {
-                  deleted_items.push($(value_ele).attr('id'));
+                  deleted_items.push({
+                    'key': $(value_ele).attr('id'),
+                    'value': value
+                  });
                   $(update_field_meta).val(JSON.stringify(deleted_items));
                 }
 
@@ -1532,9 +1544,9 @@ jQuery(function ($) {
             }
           });
 
-          $.each(comm_deletions, function (idx, id) {
+          $.each(comm_deletions, function (idx, deleted) {
             comm_entries.push({
-              'key': id,
+              'key': deleted['key'],
               'delete': true
             });
           });
