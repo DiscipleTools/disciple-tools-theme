@@ -9,7 +9,7 @@ class Disciple_Tools_Usage {
      *
      * @var int
      */
-    public $version = 4;
+    public $version = 5;
 
     public function send_usage() {
         $disabled = apply_filters( 'dt_disable_usage_report', false );
@@ -33,6 +33,7 @@ class Disciple_Tools_Usage {
         global $wp_version, $wp_db_version;
 
         $system_usage = $this->system_usage();
+        $countries = $this->countries_usage();
         $activity = $this->activity();
         $regions = $this->regions();
         $users = new WP_User_Query( [ 'count_total' => true ] );
@@ -71,10 +72,13 @@ class Disciple_Tools_Usage {
                 // SYSTEM USAGE
                 'active_contacts' => (string) $system_usage['active_contacts'] ?: '0',
                 'total_contacts' => (string) $system_usage['total_contacts'] ?: '0',
+                'contacts_countries' => (array) $countries['contacts'] ?? [],
                 'active_groups' => (string) $system_usage['active_groups'] ?: '0',
                 'total_groups' => (string) $system_usage['total_groups'] ?: '0',
+                'group_countries' => (array) $countries['groups'] ?? [],
                 'active_churches' => (string) $system_usage['active_churches'] ?: '0',
                 'total_churches' => (string) $system_usage['total_churches'] ?: '0',
+                'church_countries' => (array) $countries['churches'] ?? [],
                 'active_users' => (string) $activity['active_users'] ?: '0',
                 'total_users' => (string) $users->get_total() ?: '0',
                 'has_demo_data' => !empty( $system_usage['has_demo_data'] ),
@@ -189,6 +193,47 @@ class Disciple_Tools_Usage {
         }
 
         return $data;
+    }
+
+    public function countries_usage() : array {
+        global $wpdb;
+        $usage = [
+            'contacts' => [],
+            'groups' => [],
+            'churches' => []
+        ];
+        $results = $wpdb->get_results("
+            SELECT DISTINCT lg.admin0_grid_id, 'groups' as type_name
+                FROM $wpdb->posts as p
+                JOIN $wpdb->postmeta pm ON p.ID=pm.post_id AND pm.meta_key = 'location_grid'
+                LEFT JOIN $wpdb->dt_location_grid lg ON pm.meta_value=lg.grid_id
+                WHERE post_type = 'groups'
+                AND post_status = 'publish'
+            UNION ALL
+            SELECT DISTINCT lg.admin0_grid_id, 'contacts' as type_name
+                FROM $wpdb->posts as p
+                JOIN $wpdb->postmeta pm ON p.ID=pm.post_id AND pm.meta_key = 'location_grid'
+                LEFT JOIN $wpdb->dt_location_grid lg ON pm.meta_value=lg.grid_id
+                WHERE p.post_type = 'contacts'
+                AND p.post_status = 'publish'
+            UNION ALL
+            SELECT DISTINCT lg.admin0_grid_id, 'churches' as type_name
+                FROM $wpdb->posts as p
+                JOIN $wpdb->postmeta pmt ON p.ID=pmt.post_id AND pmt.meta_key = 'group_type' AND pmt.meta_value = 'church'
+                JOIN $wpdb->postmeta pm ON p.ID=pm.post_id AND pm.meta_key = 'location_grid'
+                LEFT JOIN $wpdb->dt_location_grid lg ON pm.meta_value=lg.grid_id
+                WHERE p.post_type = 'groups'
+                AND p.post_status = 'publish';
+
+            ", ARRAY_A );
+
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $item ) {
+                $usage[$item['type_name']][] = $item['admin0_grid_id'];
+            }
+        }
+
+        return $usage;
     }
 
 }
