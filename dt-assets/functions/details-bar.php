@@ -92,8 +92,8 @@ function dt_print_details_bar(
                             <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
                             $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
 
-                            $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
-                            $type_icon = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["icon"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["icon"] : false;
+                            $type_color = isset( $dt_post['type']["key"], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
+                            $type_icon = isset( $dt_post['type']["key"], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["icon"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["icon"] : false;
                             if ( !empty( $picture ) ) : ?>
                                 <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                             <?php else : ?>

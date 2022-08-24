@@ -67,6 +67,7 @@ class DT_User_Metrics {
         $allowed_field_types = [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ];
         array_push( $allowed_field_types, '' );
         $allowed_field_types_sql = dt_array_to_sql( $allowed_field_types );
+        $allowed_post_statuses_sql = dt_array_to_sql( [ 'publish' ] );
 
         //phpcs:disable
         $user_activity = $wpdb->get_results( $wpdb->prepare( "
@@ -77,6 +78,7 @@ class DT_User_Metrics {
             WHERE user_id = %s
             AND action IN ( $allowed_actions_sql )
             AND p.post_type IN ( $allowed_post_types_sql )
+            AND p.post_status IN ( $allowed_post_statuses_sql )
             AND a.field_type IN ( $allowed_field_types_sql )
             ORDER BY `hist_time` DESC
             LIMIT 100

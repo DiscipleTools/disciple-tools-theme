@@ -2556,7 +2556,7 @@ class Disciple_Tools_Posts
                 $statuses[ $meta['post_id'] ] = [
                     'key'   => $meta['meta_value'],
                     'label' => $default['label'],
-                    'color' => $default['color']
+                    'color' => $default['color'] ?? ''
                 ];
             }
         }
