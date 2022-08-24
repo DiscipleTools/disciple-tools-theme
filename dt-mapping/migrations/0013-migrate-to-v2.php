@@ -11,23 +11,21 @@ class DT_Mapping_Module_Migration_0013 extends DT_Mapping_Module_Migration {
      */
     public function up() {
         $current = get_option( 'dt_location_grid_mirror' );
-        if ( isset( $current['key'] ) && ! 'other' === $current['key'] ) {
-            if ( 'google' === $current['key'] ) {
-                $array = [
-                    'key'   => 'google',
-                    'label' => 'Google',
-                    'url'   => 'https://storage.googleapis.com/location-grid-mirror-v2/',
-                ];
-            }
-            else if ( 'amazon' === $current['key'] ) {
-                $array = [
-                    'key'   => 'amazon',
-                    'label' => 'Amazon',
-                    'url'   => 'https://location-grid-mirror-v2.s3.amazonaws.com/',
-                ];
-            }
-            update_option( 'dt_location_grid_mirror', $array, true );
+        if ( isset( $current['key'] ) && 'amazon' === $current['key'] ) {
+            $array = [
+                'key'   => 'amazon',
+                'label' => 'Amazon',
+                'url'   => 'https://location-grid-mirror-v2.s3.amazonaws.com/',
+            ];
         }
+        else {
+            $array = [
+                'key'   => 'google',
+                'label' => 'Google',
+                'url'   => 'https://storage.googleapis.com/location-grid-mirror-v2/',
+            ];
+        }
+        update_option( 'dt_location_grid_mirror', $array, true );
     }
 
     /**
