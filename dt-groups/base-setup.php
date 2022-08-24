@@ -411,9 +411,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "tile" => "details"
             ];
 
-            $group_preferences = dt_get_option( 'group_preferences' );
-            $field_fields_enabled = !empty( $group_preferences['four_fields'] );
-            /* 4 fields */
+            $field_fields_enabled = self::four_fields_is_enabled();
+
             $fields["four_fields_unbelievers"] = [
                 'name' => __( 'Unbelievers', 'disciple_tools' ),
                 'description' => _x( 'Number of unbelievers in this group.', 'Optional Documentation', 'disciple_tools' ),
@@ -500,13 +499,15 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     public function dt_details_additional_section( $section, $post_type ) {
-        // Display 'Health Metrics' Tile
+        self::display_health_metrics_tile( $section, $post_type );
+        self::display_four_fields_tile( $section, $post_type );
+        self::display_group_relationships_tile( $section, $post_type );
+    }
+
+    private function display_health_metrics_tile( $section, $post_type ) {
         if ( $post_type === "groups" && $section === "health-metrics" ) {
-            $group_preferences = dt_get_option( 'group_preferences' );
             $fields = DT_Posts::get_post_field_settings( $post_type );
-            //<!-- Health Metrics-->
-            if ( ! empty( $group_preferences['church_metrics'] ) ) :
-                ?>
+            if ( self::church_metrics_is_enabled() ) : ?>
                 <div class="grid-x">
                     <div style="margin-right:auto; margin-left:auto;min-height:302px">
                         <div class="health-circle" id="health-items-container">
@@ -547,29 +548,36 @@ class DT_Groups_Base extends DT_Module_Base {
                 </div>
         <?php endif;
         }
-            // Display 'Four Fields' tile
+    }
+
+    private function display_four_fields_tile( $section, $post_type ) {
         if ( $post_type === "groups" && $section === "four-fields" ) {
-            $group_preferences = dt_get_option( 'group_preferences' );
-            $fields = DT_Posts::get_post_field_settings( $post_type );
-            //<!-- Health Metrics-->
-            if ( ! empty( $group_preferences['four_fields'] ) ) : ?>
-                <!-- Four Fields -->
+            if ( self::four_fields_is_enabled() ) : ?>
                 <section id="four-fields" class="xlarge-6 large-12 medium-6 cell">
-
                         <div class="section-body">
-                            <!-- start collapse -->
                             <div style="background:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg?v=2' ); ?>');background-size: 100% 100%;height: 379px;display: grid;grid-template-columns: 1fr 1fr 1fr;grid-template-rows: auto;justify-items: center;align-items: center;" id="four-fields-inputs">
-
                             </div>
-                            <!-- end collapse -->
                         </div>
                 </section>
-            <?php endif; ?>
+            <?php endif;
+        }
+    }
 
+    public static function church_metrics_is_enabled() {
+        $group_preferences = dt_get_option( 'group_preferences' );
+        if ( $group_preferences['church_metrics'] == 1 ) {
+            return true;
+        }
+    }
 
+    public static function four_fields_is_enabled() {
+        $group_preferences = dt_get_option( 'group_preferences' );
+        if ( $group_preferences['four_fields'] == 1 ) {
+            return true;
+        }
+    }
 
-        <?php }
-
+    private function display_group_relationships_tile( $section, $post_type ) {
         if ( $post_type === "groups" && $section === "relationships" ) {
             $fields = DT_Posts::get_post_field_settings( $post_type );
             $post = DT_Posts::get_post( "groups", get_the_ID() );
@@ -623,8 +631,7 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( $post_type === "groups" ){
             $tiles["relationships"] = [ "label" => __( "Member List", 'disciple_tools' ) ];
             $tiles["health-metrics"] = [ "label" => __( "Church Health", 'disciple_tools' ) ];
-            $group_preferences = dt_get_option( 'group_preferences' );
-            if ( !empty( $group_preferences["four_fields"] ) ){
+            if ( self::four_fields_is_enabled() ){
                 $tiles["four-fields"] = [
                     "label" => __( "Four Fields", 'disciple_tools' ),
                     "description" => " Zúme article on 4 Fields: https://zume.training/four-fields-tool \r\n\r\n" . _x( "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:", 'Optional Documentation', 'disciple_tools' ),
