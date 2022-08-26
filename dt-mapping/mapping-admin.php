@@ -535,7 +535,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             ?>
             <div class="wrap">
                 <div id="poststuff">
-                    <div id="post-body" class="metabox-holder columns-2">
+                    <div id="post-body" class="metabox-holder columns-1">
                         <div id="post-body-content">
                             <!-- Main Column -->
 
@@ -543,13 +543,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
-                        <div id="postbox-container-1" class="postbox-container">
-                            <!-- Right Column -->
-
-<!--                            --><?php //$this->box_levels_instructions(); ?>
-
-                            <!-- End Right Column -->
-                        </div><!-- postbox-container 1 -->
                         <div id="postbox-container-2" class="postbox-container">
                         </div><!-- postbox-container 2 -->
                     </div><!-- post-body meta box container -->
@@ -1582,24 +1575,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
             }
             return implode( ',', $values );
-        }
-
-        public function box_levels_instructions() {
-            ?>
-                <table class="widefat striped">
-                    <thead>
-                    <th>Install Additional Administrative Levels</th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-
-                        </td>
-                    </tr>
-
-                    </tbody>
-                </table>
-            <?php
         }
 
         public function box_population_division() {
