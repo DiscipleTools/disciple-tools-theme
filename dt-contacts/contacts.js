@@ -83,7 +83,7 @@ jQuery(document).ready(function($) {
   window.makeRequestOnPosts( "GET", `${post_type}/${post_id}/duplicates` ).then(response => {
     if ( response.ids && response.ids.length > 0 ){
       $('.details-title-section').html(`
-        <button class="button hollow center-items" id="duplicates-detected-notice" style="margin-bottom: 0; padding: .5em .5em; ">
+        <button class="button hollow center-items duplicates-detected-button" id="duplicates-detected-notice">
           <img style="height:20px" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
           <strong>${window.lodash.escape(window.detailsSettings.translations.duplicates_detected)}</strong>
         </button>
@@ -100,11 +100,11 @@ jQuery(document).ready(function($) {
   merge_dupe_edit_modal.on("open.zf.reveal", function () {
     if ( !openedOnce ){
 
-      let original_contact_html = `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
-        <h5 style='font-weight: bold; color: #3f729b;'>
-        <a href="${window.wpApiShare.site_url}/${post_type}/${window.lodash.escape(post_id)}" target=_blank>
+      let original_contact_html = `<div class="merge-modal-contact-row">
+        <h5>
+        <a href="${window.wpApiShare.site_url}/${post_type}/${window.lodash.escape(post_id)}" class="merge-modal-contact-name" target=_blank>
         ${ window.lodash.escape(post.name) }
-        <span style="font-weight: normal; font-size:16px"> #${post_id} (${window.lodash.get(post, "overall_status.label") ||""}) </span>
+        <span class="merge-modal-contact-info"> #${post_id} (${window.lodash.get(post, "overall_status.label") ||""}) </span>
         </a>
         </h5>`
       window.lodash.forOwn(window.detailsSettings.post_settings.fields, (field_settings, field_key)=>{
@@ -154,7 +154,7 @@ jQuery(document).ready(function($) {
         }
       })
       if (dismissed_html) {
-        dismissed_html = `<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:20px 0 0; margin-bottom: 0;'>${window.lodash.escape(window.detailsSettings.translations.dismissed_duplicates)}</h4>`
+        dismissed_html = `<h4 class="merge-modal-subheading">${window.lodash.escape(window.detailsSettings.translations.dismissed_duplicates)}</h4>`
           + dismissed_html
         $duplicates.append(dismissed_html);
       }
@@ -166,11 +166,11 @@ jQuery(document).ready(function($) {
       return window.lodash.get(window.detailsSettings.post_settings, `fields[${field.field}].name`)
     }))
     let matched_values = dupe.fields.map(f=>f.value)
-    html += `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
-      <h5 style='font-weight: bold; color: #3f729b;'>
-      <a href="${window.wpApiShare.site_url}/${post_type}/${window.lodash.escape(dupe.ID)}" target=_blank>
+    html += `<div class="merge-modal-contact-row">
+      <h5>
+      <a href="${window.wpApiShare.site_url}/${post_type}/${window.lodash.escape(dupe.ID)}" class="merge-modal-contact-name" target=_blank>
       ${ window.lodash.escape(dupe.post.name) }
-      <span style="font-weight: normal; font-size:16px"> #${dupe.ID} (${window.lodash.get(dupe.post, "overall_status.label") ||""}) </span>
+      <span class="merge-modal-contact-info"> #${dupe.ID} (${window.lodash.get(dupe.post, "overall_status.label") ||""}) </span>
       </a>
     </h5>`
     html += `${window.lodash.escape(window.detailsSettings.translations.duplicates_on).replace('%s', '<strong>' + window.lodash.escape(dups_on_fields.join( ', ')) + '</strong>' )}<br />`
@@ -190,10 +190,10 @@ jQuery(document).ready(function($) {
       html += `<br>`
     }
     if ( !dismissed_row ){
-      html += `<button class='mergelinks dismiss-duplicate' data-id='${window.lodash.escape(dupe.ID)}' style='float: right; padding-left: 10%;'><a>${window.lodash.escape(window.detailsSettings.translations.dismiss)}</a></button>`
+      html += `<button class='mergelinks dismiss-duplicate merge-modal-button' data-id='${window.lodash.escape(dupe.ID)}'><a>${window.lodash.escape(window.detailsSettings.translations.dismiss)}</a></button>`
     }
     html += `
-       <button type='submit' class="merge-post" data-dup-id="${window.lodash.escape(dupe.ID)}" style='float:right; padding-left: 10%;'>
+       <button type='submit' class="merge-post merge-modal-button" data-dup-id="${window.lodash.escape(dupe.ID)}">
           <a>${window.lodash.escape(window.detailsSettings.translations.merge)}</a>
       </button>
     `
