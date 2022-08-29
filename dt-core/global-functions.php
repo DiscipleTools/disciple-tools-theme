@@ -307,17 +307,30 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $icon_rendered = false;
             if ( isset( $field["icon"] ) && !empty( $field["icon"] ) ){
                 $icon_rendered = true;
+                if ( isset( $field["name"] ) ) {
+                    $alt_tag = $field["name"];
+                } else if ( isset( $field["label"] ) ) {
+                    $alt_tag = $field["label"];
+                } else {
+                    $alt_tag = "";
+                }
                 ?>
-                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field["icon"] ) ?>" alt="<?php echo esc_html( $field["name"] ?? "" ) ?>">
+
+                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field["icon"] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>">
+
                 <?php
             } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
                 $icon_rendered = true;
                 ?>
+
                 <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>"></i>
+
                 <?php
             } else if ( $default_to_name && !empty( $field["name"] ) ){
                 ?>
+
                 <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
+
                 <?php
             }
             return $icon_rendered;
@@ -467,7 +480,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
-     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags, user_select
+     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags, user_select, link
+     *
+     * breadcrumb: new-field-type
      *
      * @param $field_key
      * @param $fields
@@ -494,7 +509,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $display_field_id = $field_id_prefix . $field_key;
         }
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
+            /* breadrcrumb: new-field-type Add allowed field types */
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -512,8 +528,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php if ( $is_private ) : ?>
                     <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
                 <?php endif;
-                if ( $field_type === "communication_channel" ) : ?>
-                    <button data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button" <?php echo esc_html( $disabled ); ?>>
+                if ( $field_type === "communication_channel" || $field_type === "link" ) : ?>
+                    <button data-field-type="<?php echo esc_html( $field_type ) ?>" data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button" <?php echo esc_html( $disabled ); ?>>
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 <?php endif ?>
@@ -630,7 +646,71 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                        min="<?php echo esc_html( $fields[$field_key]["min_option"] ?? "" ) ?>"
                        max="<?php echo esc_html( $fields[$field_key]["max_option"] ?? "" ) ?>"
                 />
-            <?php elseif ( $field_type === "date" ) :?>
+            <?php elseif ( $field_type === "link" ) : ?>
+
+                <div class="link-group">
+
+                    <div class="add-link-<?php echo esc_html( $display_field_id ) ?>" style="display:none">
+                        <div class="add-link-form" style="display: flex; align-items: center;">
+                            <select class="link-type">
+                                <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+
+                                    <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) {
+                                        continue;
+                                    } ?>
+
+                                    <option style="display:flex; align-items: center;" value="<?php echo esc_html( $option_key ) ?>">
+                                    <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
+                                    <?php echo esc_html( $option_value['label'] ) ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button
+                                type="button"
+                                class="button add-link-button"
+                                data-field-key="<?php echo esc_attr( $field_key ) ?>"
+                            >
+                                <?php esc_html_e( 'Add', 'disciple-tools' ) ?>
+                            </button>
+                            <button type="button" id="cancel-link-button-<?php echo esc_html( $display_field_id ) ?>" class="button hollow alert">
+                                x
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="link-list-<?php echo esc_html( $field_key ) ?>">
+
+                        <?php
+                        foreach ( $post[$field_key] ?? [] as $link_item ) {
+                            if ( !isset( $link_item["type"] ) ) {
+                                continue;
+                            }
+                            $option_type = $link_item["type"];
+                            $option_value = $fields[$field_key]["default"][$option_type];
+                            $meta_id = $link_item["meta_id"];
+                            $meta_value = $link_item["value"];
+
+                            render_link_field( $field_key, $option_type, $option_value, $meta_value, $display_field_id, $meta_id, $required_tag, $disabled );
+                        }
+                        ?>
+
+                    </div>
+
+                    <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+
+                        <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) {
+                            continue;
+                        } ?>
+
+                        <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
+                            <?php render_link_field( $field_key, $option_key, $option_value, "", $display_field_id, "", $required_tag, $disabled ) ?>
+                        </div>
+
+                    <?php endforeach; ?>
+
+                </div>
+
+                <?php elseif ( $field_type === "date" ) :?>
                 <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
                     <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
                            value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?> >
@@ -749,6 +829,40 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php endif;
         }
         do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id );
+    }
+
+    function render_link_field( $field_key, $option_key, $option_value, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
+        ?>
+
+        <div class="link-section">
+            <div class="section-subheader">
+                <?php dt_render_field_icon( $option_value ) ?>
+                <?php echo esc_html( $option_value["label"] ); ?>
+            </div>
+            <div class="input-group">
+                <input
+                    type="text"
+                    class="link-input input-group-field"
+                    value="<?php echo esc_html( $value ) ?>"
+                    data-meta-id="<?php echo esc_html( $meta_id ) ?>"
+                    data-field-key="<?php echo esc_html( $display_field_id ) ?>"
+                    data-type="<?php echo esc_html( $option_key ) ?>"
+                    <?php echo esc_html( $required_tag ) ?>
+                    <?php echo esc_html( $disabled ) ?>
+                >
+                <div class="input-group-button">
+                    <button
+                        class="button alert delete-button-style input-height link-delete-button delete-button"
+                        data-meta-id="<?php echo esc_html( $meta_id ) ?>"
+                        data-field-key="<?php echo esc_html( $field_key ) ?>"
+                    >
+                        &times;
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <?php
     }
 
     function dt_increment( &$var, $val ){

@@ -41,19 +41,37 @@ jQuery(function($) {
   $('button.add-button').on('click', e => {
     const listClass = $(e.currentTarget).data('list-class')
     const $list = $(`#edit-${listClass}`)
+    const field = $(e.currentTarget).data('list-class')
+    const fieldType = $(e.currentTarget).data('field-type')
 
-    $list.append(`<li style="display: flex">
-              <input type="text" class="dt-communication-channel" data-field="${window.lodash.escape( listClass )}"/>
-              <button class="button clear delete-button new-${window.lodash.escape( listClass )}" type="button">
-                  <img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
-              </button>
-            </li>`)
+    if (fieldType === 'link') {
+      const addLinkForm = $(`.add-link-${field}`)
+      addLinkForm.show()
+
+      $(`#cancel-link-button-${field}`).on('click', () => addLinkForm.hide())
+    } else {
+      $list.append(`<li style="display: flex">
+                <input type="text" class="dt-communication-channel" data-field="${window.lodash.escape( listClass )}"/>
+                <button class="button clear delete-button new-${window.lodash.escape( listClass )}" type="button">
+                    <img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
+                </button>
+              </li>`)
+    }
+  })
+
+  /* breadcrumb: new-field-type Add anything that the field type needs for creating a new record */
+
+  $('.add-link-button').on('click', window.SHAREDFUNCTIONS.addLink)
+
+  $(document).on('click', '.link-delete-button', function(){
+    $(this).closest('.link-section').remove()
   })
 
   $('.js-create-post').on('click', '.delete-button', function () {
     $(this).parent().remove()
   })
 
+  /* breadcrumb: new-field-type Add the new link type data to the new_post array */
   $(".js-create-post").on("submit", function() {
     $(".js-create-post-button")
     .attr("disabled", true)
@@ -67,6 +85,19 @@ jQuery(function($) {
     $('.text-input').each((index, entry)=>{
       if ( $(entry).val() ){
         new_post[$(entry).attr('id')] = $(entry).val()
+      }
+    })
+    $('.link-input').each((index, entry) => {
+      fieldKey = $(entry).data('field-key')
+      type = $(entry).data('type')
+      if ( $(entry).val() ){
+        if ( !Object.prototype.hasOwnProperty.call( new_post, fieldKey ) ) {
+          new_post[fieldKey] = { values: [] }
+        }
+        new_post[fieldKey].values.push( {
+          value: $(entry).val(),
+          type: type,
+        } )
       }
     })
     $('.dt_textarea').each((index, entry)=>{

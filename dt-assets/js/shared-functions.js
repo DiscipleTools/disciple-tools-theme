@@ -741,6 +741,17 @@ window.SHAREDFUNCTIONS = {
     })
     $(selector).html(elem_text)
   },
+  addLink(e) {
+    fieldKey = e.target.dataset['fieldKey']
+
+    linkType = $(this).siblings(".link-type").val()
+
+    const linkList = $(`.link-list-${fieldKey}`)
+
+    const template = $(`#link-template-${fieldKey}-${linkType}`)
+
+    linkList.append(template.clone(true).removeAttr('id').show())
+  }
 };
 
 let date_ranges = {
