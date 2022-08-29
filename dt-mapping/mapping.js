@@ -255,7 +255,7 @@ function location_grid_map( div, grid_id = 'world' ) {
   function build_map( response ) {
     title.html(response.self.name)
 
-    jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'collection-left-hand/' + grid_id+'.geojson', function( data ) { // get geojson data
+    jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'collection/' + grid_id+'.geojson', function( data ) { // get geojson data
 
       // load geojson with additional parameters
       let mapData = data
@@ -404,7 +404,7 @@ function mini_map( div, marker_data ) {
   }
 
   if ( window.am4geodata_worldLow === undefined ) {
-    let mapUrl = MAPPINGDATA.settings.mapping_source_url + 'collection-left-hand/world.geojson'
+    let mapUrl = MAPPINGDATA.settings.mapping_source_url + 'collection/world.geojson'
     jQuery.getJSON( mapUrl, function( data ) {
       window.am4geodata_worldLow = data
       build_minimap()
