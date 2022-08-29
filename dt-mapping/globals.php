@@ -41,7 +41,7 @@ if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
             $array = [
                 'key'   => 'google',
                 'label' => 'Google',
-                'url'   => 'https://storage.googleapis.com/location-grid-mirror-v2/',
+                'url'   => 'https://storage.googleapis.com/location-grid-mirror/',
             ];
             update_option( 'dt_location_grid_mirror', $array, true );
             $mirror = $array;

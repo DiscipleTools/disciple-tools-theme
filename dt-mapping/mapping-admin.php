@@ -1061,12 +1061,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 'google' => [
                     'key'   => 'google',
                     'label' => 'Google',
-                    'url'   => 'https://storage.googleapis.com/location-grid-mirror-v2/',
+                    'url'   => 'https://storage.googleapis.com/location-grid-mirror/',
                 ],
                 'amazon' => [
                     'key'   => 'amazon',
                     'label' => 'Amazon',
-                    'url'   => 'https://location-grid-mirror-v2.s3.amazonaws.com/',
+                    'url'   => 'https://location-grid-mirror.s3.amazonaws.com/',
                 ],
                 'other'  => [
                     'key'   => 'other',
