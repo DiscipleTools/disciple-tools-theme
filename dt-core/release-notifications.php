@@ -11,9 +11,9 @@ function dt_release_modal() {
     if ( !is_user_logged_in() ){
         return;
     }
-    $url = dt_get_url_path();
+    $url = dt_get_url_path( true );
     //bail if not an a D.T front end page.
-    if ( !is_archive() && !is_single() && !isset( apply_filters( "desktop_navbar_menu_options", [] )[str_replace( '/', '', $url )] ) ){
+    if ( !is_archive() && !is_single() && !isset( apply_filters( "desktop_navbar_menu_options", [] )[untrailingslashit( $url )] ) ){
         return;
     }
     $show_notification_for_theme_version = '1.30.0'; // increment this number with each new release modal
@@ -25,9 +25,9 @@ function dt_release_modal() {
         $last_release_notification = '1.0.0';
     }
 
-    // if ( version_compare( $last_release_notification, $show_notification_for_theme_version, '>=' ) ){
-    //     return;
-    // }
+    if ( version_compare( $last_release_notification, $show_notification_for_theme_version, '>=' ) ){
+        return;
+    }
     require_once( get_template_directory().'/dt-core/libraries/parsedown/Parsedown.php' );
 
     update_user_meta( get_current_user_id(), 'dt_release_notification', $show_notification_for_theme_version );
