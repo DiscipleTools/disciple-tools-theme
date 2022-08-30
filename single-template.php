@@ -370,6 +370,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
         </div>
     </div>
 
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'record-history' ); ?>
+
     <?php do_action( "dt_record_footer", $post_type, $post_id ) ?>
 
     <?php get_footer();

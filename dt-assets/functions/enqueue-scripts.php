@@ -348,6 +348,24 @@ function dt_site_scripts() {
         'template_dir_uri' => esc_html( get_template_directory_uri() ),
         'fetch_more_text' => __( 'Load More', 'disciple_tools' ) // Support translations
     ) );
+
+    wp_register_script( 'litepicker', 'https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js', false );
+    wp_enqueue_style( 'litepicker-css', 'https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css', array() );
+    dt_theme_enqueue_script( 'dt-record-history', 'dt-assets/js/record-history.js', [
+        'jquery',
+        'litepicker',
+        'lodash',
+        'moment'
+    ], true );
+    wp_localize_script( 'dt-record-history', 'record_history_settings', [
+        'post'          => is_singular( $post_types ) ? DT_Posts::get_post( get_post_type(), get_the_ID() ) : [],
+        'post_settings' => is_singular( $post_types ) ? DT_Posts::get_post_settings( get_post_type() ) : [],
+        'site_url'      => get_site_url( null, '/' ),
+        'translations'  => [
+            'revert_but_tooltip'  => __( 'Revert Record Back To This Point', 'disciple_tools' ),
+            'revert_confirm_text' => __( 'Are you sure you want to revert record state back to %s?', 'disciple_tools' )
+        ]
+    ] );
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );
 
