@@ -1365,6 +1365,18 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $local_unzipped_path = $uploads_dir . 'location_grid_download/'.$file_name.'.tsv';
             $local_download_dir_path = $uploads_dir . 'location_grid_download';
 
+            if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
+                $scan = array_diff(scandir($uploads_dir . 'location_grid_download'), array('.','..'));
+                foreach( $scan as $f ) {
+                    if ( ! unlink( $uploads_dir . "location_grid_download/" . $f ) ) {
+                        rmdir( $uploads_dir . "location_grid_download/" . $f );
+                    }
+                }
+            }
+            if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
+                rmdir( $uploads_dir . 'location_grid_download' );
+            }
+
             if ( ! file_exists( $uploads_dir . 'location_grid_download' ) ) {
                 mkdir( $uploads_dir . 'location_grid_download' );
             }
@@ -1514,10 +1526,19 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
         public function process_step_17() {
             dt_write_log( __METHOD__ );
-            /**
-             * @todo Update post records with new grid information
-             * This should only apply to lowest level, mapbox geolocations that were place or city, and can now be geocoded to a lower level.
-             */
+            $dir = wp_upload_dir();
+            $uploads_dir = trailingslashit( $dir['basedir'] );
+            if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
+                $scan = array_diff(scandir($uploads_dir . 'location_grid_download'), array('.','..'));
+                foreach( $scan as $f ) {
+                    if ( ! unlink( $uploads_dir . "location_grid_download/" . $f ) ) {
+                        rmdir( $uploads_dir . "location_grid_download/" . $f );
+                    }
+                }
+            }
+            if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
+                rmdir( $uploads_dir . 'location_grid_download' );
+            }
             return true;
         }
 
