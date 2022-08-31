@@ -1366,8 +1366,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $local_download_dir_path = $uploads_dir . 'location_grid_download';
 
             if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
-                $scan = array_diff(scandir($uploads_dir . 'location_grid_download'), array('.','..'));
-                foreach( $scan as $f ) {
+                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.','..' ) );
+                foreach ( $scan as $f ) {
                     if ( is_dir( $uploads_dir . "location_grid_download/" . $f ) ) {
                         rmdir( $uploads_dir . "location_grid_download/" . $f );
                     } else {
@@ -1531,8 +1531,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $dir = wp_upload_dir();
             $uploads_dir = trailingslashit( $dir['basedir'] );
             if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
-                $scan = array_diff(scandir($uploads_dir . 'location_grid_download'), array('.','..'));
-                foreach( $scan as $f ) {
+                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.','..' ) );
+                foreach ( $scan as $f ) {
                     if ( is_dir( $uploads_dir . "location_grid_download/" . $f ) ) {
                         rmdir( $uploads_dir . "location_grid_download/" . $f );
                     } else {

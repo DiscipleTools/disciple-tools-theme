@@ -12,21 +12,19 @@ class DT_Mapping_Module_Migration_0015 extends DT_Mapping_Module_Migration
     /**
      * @throws \Exception  Got error when creating table $name.
      */
-    public function up()
-    {
+    public function up() {
         global $wpdb;
-        $has_upgrade_table = $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}dt_location_grid_upgrade';" );
+        $has_upgrade_table = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}dt_location_grid_upgrade';" );
         if ( ! empty( $has_upgrade_table ) ) {
-            $wpdb->query("INSERT INTO `wp_dt_location_grid` SELECT * FROM `{$wpdb->prefix}dt_location_grid_upgrade` WHERE grid_id > 1000000000;" );
-            $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->prefix}dt_location_grid_upgrade`;" );
+            $wpdb->query( "INSERT INTO `wp_dt_location_grid` SELECT * FROM `{$wpdb->prefix}dt_location_grid_upgrade` WHERE grid_id > 1000000000;" );
+            $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_location_grid_upgrade`;" );
         }
     }
 
     /**
      * @throws \Exception  Got error when dropping table $name.
      */
-    public function down()
-    {
+    public function down() {
 
     }
 
@@ -41,8 +39,7 @@ class DT_Mapping_Module_Migration_0015 extends DT_Mapping_Module_Migration
     /**
      * Test function
      */
-    public function test()
-    {
+    public function test() {
     }
 
 }
