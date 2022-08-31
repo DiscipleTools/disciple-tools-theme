@@ -1,6 +1,10 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * @version_added 0.22.1
+ */
+
 class DT_Mapping_Module_Migration_0006 extends DT_Mapping_Module_Migration {
     /**
      * Install the data

@@ -466,13 +466,13 @@ let area_map = {
 
           done.push(parent_id);
           // get geojson collection
-          jQuery.get( mapbox_library_api.obj.settings.map_mirror + 'collection-left-hand/' + parent_id + '.geojson', null, null, 'json')
+          jQuery.get( mapbox_library_api.obj.settings.map_mirror + 'collection/' + parent_id + '.geojson', null, null, 'json')
           .done(function (geojson) {
             // add data to geojson properties
             let highest_value = 1
             jQuery.each(geojson.features, function (i, v) {
-              if (area_map.grid_data[geojson.features[i].properties.id]) {
-                geojson.features[i].properties.value = parseInt(area_map.grid_data[geojson.features[i].properties.id].count)
+              if (area_map.grid_data[geojson.features[i].properties.grid_id]) {
+                geojson.features[i].properties.value = parseInt(area_map.grid_data[geojson.features[i].properties.grid_id].count)
               } else {
                 geojson.features[i].properties.value = 0
               }

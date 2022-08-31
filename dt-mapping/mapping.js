@@ -220,6 +220,7 @@ function location_grid_map( div, grid_id = 'world' ) {
   chart = am4core.create( div, am4maps.MapChart);
   setCommonMapSettings( chart );
   chart.projection = new am4maps.projections.Miller(); // Set projection
+  chart.reverseGeodata = true
   openChart = chart
   let title = jQuery('#section_title')
   let rest = MAPPINGDATA.settings.endpoints.get_map_by_grid_id_endpoint
@@ -255,7 +256,7 @@ function location_grid_map( div, grid_id = 'world' ) {
   function build_map( response ) {
     title.html(response.self.name)
 
-    jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'collection-left-hand/' + grid_id+'.geojson', function( data ) { // get geojson data
+    jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'collection/' + grid_id+'.geojson', function( data ) { // get geojson data
 
       // load geojson with additional parameters
       let mapData = data
@@ -304,9 +305,9 @@ function location_grid_map( div, grid_id = 'world' ) {
         chart.geodata = data
 
         chart.projection = new am4maps.projections.Miller();
+        chart.reverseGeodata = true
         let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
         polygonSeries.useGeodata = true;
-
 
         let imageSeries = chart.series.push(new am4maps.MapImageSeries());
 
@@ -404,7 +405,7 @@ function mini_map( div, marker_data ) {
   }
 
   if ( window.am4geodata_worldLow === undefined ) {
-    let mapUrl = MAPPINGDATA.settings.mapping_source_url + 'collection-left-hand/world.geojson'
+    let mapUrl = MAPPINGDATA.settings.mapping_source_url + 'collection/world.geojson'
     jQuery.getJSON( mapUrl, function( data ) {
       window.am4geodata_worldLow = data
       build_minimap()
@@ -424,6 +425,7 @@ function mini_map( div, marker_data ) {
     let chart = minimapChart
 
     chart.projection = new am4maps.projections.Orthographic(); // Set projection
+    chart.reverseGeodata = true
 
     chart.seriesContainer.draggable = false;
     chart.seriesContainer.resizable = false;

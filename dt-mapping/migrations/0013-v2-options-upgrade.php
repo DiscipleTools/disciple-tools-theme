@@ -3,6 +3,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Class DT_Mapping_Module_Migration_0013
+ *
+ * @version_added 1.30.2
  */
 class DT_Mapping_Module_Migration_0013 extends DT_Mapping_Module_Migration {
 

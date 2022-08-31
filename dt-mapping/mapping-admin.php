@@ -1355,7 +1355,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             return true;
         }
-        public function retrieve_grid_file( $file_name ) : string|bool {
+        public function retrieve_grid_file( $file_name ) {
             $dir = wp_upload_dir();
             $mirror_source = dt_get_theme_data_url();
             $uploads_dir = trailingslashit( $dir['basedir'] );
