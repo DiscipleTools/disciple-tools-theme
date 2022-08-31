@@ -1368,8 +1368,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
                 $scan = array_diff(scandir($uploads_dir . 'location_grid_download'), array('.','..'));
                 foreach( $scan as $f ) {
-                    if ( ! unlink( $uploads_dir . "location_grid_download/" . $f ) ) {
+                    if ( is_dir( $uploads_dir . "location_grid_download/" . $f ) ) {
                         rmdir( $uploads_dir . "location_grid_download/" . $f );
+                    } else {
+                        unlink( $uploads_dir . "location_grid_download/" . $f );
                     }
                 }
             }
@@ -1531,8 +1533,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
                 $scan = array_diff(scandir($uploads_dir . 'location_grid_download'), array('.','..'));
                 foreach( $scan as $f ) {
-                    if ( ! unlink( $uploads_dir . "location_grid_download/" . $f ) ) {
+                    if ( is_dir( $uploads_dir . "location_grid_download/" . $f ) ) {
                         rmdir( $uploads_dir . "location_grid_download/" . $f );
+                    } else {
+                        unlink( $uploads_dir . "location_grid_download/" . $f );
                     }
                 }
             }
