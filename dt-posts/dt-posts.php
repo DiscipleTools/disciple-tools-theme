@@ -52,6 +52,8 @@ class DT_Posts extends Disciple_Tools_Posts {
      * Create a post
      * For fields format See https://github.com/DiscipleTools/disciple-tools-theme/wiki/Contact-Fields-Format
      *
+     * breadcrumb: new-field-type
+     *
      * @param string $post_type
      * @param array $fields
      * @param bool $silent
@@ -150,6 +152,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $location_meta = [];
         $post_user_meta = [];
         $user_select_fields = [];
+        $link_meta = [];
         foreach ( $fields as $field_key => $field_value ){
             if ( self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
                 $contact_methods_and_connections[$field_key] = $field_value;
@@ -159,6 +162,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             $is_private = $post_settings["fields"][$field_key]["private"] ?? '';
             if ( $field_type === "multi_select" ){
                 $multi_select_fields[$field_key] = $field_value;
+                unset( $fields[$field_key] );
+            }
+            if ( $field_type === "link" && !$is_private ) {
+                $link_meta[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
             if ( $field_type === "tags" ){
@@ -217,6 +224,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $post_user_meta[$field_key] = $field_value;
                 unset( $fields[ $field_key ] );
             }
+            if ( $field_type === 'link' && $is_private ) {
+                $post_user_meta[$field_key] = $field_value;
+                unset( $fields[ $field_key ] );
+            }
             if ( $is_private ) {
                 unset( $fields[ $field_key ] );
             }
@@ -264,6 +275,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $potential_error = self::update_post_user_select( $post_type, $post_id, $user_select_fields );
+        if ( is_wp_error( $potential_error ) ){
+            return $potential_error;
+        }
+
+        $potential_error = self::update_post_link_fields( $post_settings["fields"], $post_id, $link_meta );
         if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
@@ -381,6 +397,12 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        /*
+        breadcrumb: new-field-type
+        If necessary deal with field types differently from the default way
+        Functions are found in posts.php
+        */
+
         $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error ) ){
             return $potential_error;
@@ -411,6 +433,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
+        $potential_error = self::update_post_link_fields( $post_settings["fields"], $post_id, $fields );
+        if ( is_wp_error( $potential_error ) ){
+            return $potential_error;
+        }
+
         $fields["last_modified"] = time(); //make sure the last modified field is updated.
         foreach ( $fields as $field_key => $field_value ){
             if ( !self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
@@ -430,7 +457,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $field_value > $post_settings["fields"][$field_key]["max_option"]
                     )
                 ) {
-                     return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
+                    return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
 
                 if ( $field_type === 'key_select' && !is_string( $field_value ) ){
@@ -443,7 +470,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                  * field type included, so that it can be skipped here and handled later through the
                  * dt_post_updated action.
                  */
-                $already_handled = apply_filters( 'dt_post_updated_custom_handled_meta', [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel", "tags", "user_select" ], $post_type );
+                $already_handled = apply_filters( 'dt_post_updated_custom_handled_meta', [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel", "tags", "user_select", "link" ], $post_type );
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
                     if ( !( isset( $post_settings["fields"][$field_key]['private'] ) && $post_settings["fields"][$field_key]['private'] ) ){
                         update_post_meta( $post_id, $field_key, $field_value );
@@ -595,10 +622,24 @@ class DT_Posts extends Disciple_Tools_Posts {
             $ids[] = $record["ID"];
         }
         $ids_sql = dt_array_to_sql( $ids );
+
         $field_keys = [];
         if ( !in_array( 'all_fields', $fields_to_return ) ){
             $field_keys = empty( $fields_to_return ) ? array_keys( $post_settings["fields"] ) : $fields_to_return;
         }
+        /* Insert link field combo keys into the $field_keys array */
+        foreach ( $field_keys as $key ) {
+            if ( isset( $post_settings["fields"][$key] ) && $post_settings["fields"][$key]["type"] === "link" ) {
+                unset( $field_keys[$key] );
+
+                foreach ( $post_settings["fields"][$key]["default"] as $type => $_ ) {
+                    $meta_key = Disciple_Tools_Posts::create_link_metakey( $key, $type );
+
+                    $field_keys[] = $meta_key;
+                }
+            }
+        }
+
         $field_keys_sql = dt_array_to_sql( $field_keys );
 
         global $wpdb;
@@ -1504,6 +1545,34 @@ class DT_Posts extends Disciple_Tools_Posts {
         ", ARRAY_A );
         //phpcs:enable
 
+    }
+
+    public static function get_post_meta_with_ids( $post_id ) {
+        global $wpdb;
+
+        $meta = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+                SELECT * FROM $wpdb->postmeta
+                WHERE post_id = %d
+                ", $post_id
+            ), ARRAY_A
+        );
+
+        /* sort the meta by meta_key and include the value and id in the subarrays */
+
+        $sorted_meta = [];
+        foreach ( $meta as $row ) {
+            if ( !isset( $sorted_meta[$row["meta_key"]] ) ) {
+                $sorted_meta[$row["meta_key"]] = [];
+            }
+            $sorted_meta[$row["meta_key"]][] = [
+                "value" => $row["meta_value"],
+                "meta_id" => $row["meta_id"],
+            ];
+        }
+
+        return $sorted_meta;
     }
 
     public static function get_post_field_settings( $post_type, $load_from_cache = true, $with_deleted_options = false ){
