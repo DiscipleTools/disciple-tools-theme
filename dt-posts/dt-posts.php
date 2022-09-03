@@ -322,7 +322,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             $shared_with = self::get_shared_with( $post_type, $post_id, false );
             if ( empty( $shared_with ) ){
                 $base_id = dt_get_base_user( true );
-                self::add_shared( $post_type, $post_id, $base_id, null, true, false, false );
+                self::add_shared( $post_type, $post_id, $base_id, null, !$silent, false, false );
             }
         }
 
