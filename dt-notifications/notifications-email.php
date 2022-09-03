@@ -87,7 +87,7 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
      * if a server cron is set up, then use the email scheduler
      * otherwise send the email normally
      */
-    if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ){
+    if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON && !( defined( "WP_DEBUG" ) && WP_DEBUG ) ){
         wp_queue()->push( new DT_Send_Email_Job( $user->ID, $email, $subject, $message_plain_text ) );
     } else {
         $is_sent = wp_mail( $email, $subject, $message_plain_text );
