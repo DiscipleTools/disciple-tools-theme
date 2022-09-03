@@ -317,6 +317,13 @@ class DT_Posts extends Disciple_Tools_Posts {
         // share the record with the user that created it.
         if ( !empty( get_current_user_id() ) ){
             self::add_shared( $post_type, $post_id, get_current_user_id(), null, false, false, false );
+        } else {
+            //a post should at least be shared with one person.
+            $shared_with = self::get_shared_with( $post_type, $post_id, false );
+            if ( empty( $shared_with ) ){
+                $base_id = dt_get_base_user( true );
+                self::add_shared( $post_type, $post_id, $base_id, null, true, false, false );
+            }
         }
 
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ){
