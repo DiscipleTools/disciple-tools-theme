@@ -75,12 +75,14 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
      */
     if ( ! empty( dt_get_option( "dt_email_base_address" ) ) ) {
         add_filter( 'wp_mail_from', function ( $email ) {
-            return dt_get_option( "dt_email_base_address" );
+            $base_email = dt_get_option( "dt_email_base_address" );
+            return !empty( $base_email ) ? $base_email : $email;
         } );
     }
     if ( ! empty( dt_get_option( "dt_email_base_name" ) ) ) {
         add_filter( 'wp_mail_from_name', function ( $name ) {
-            return dt_get_option( "dt_email_base_name" );
+            $base_email_name = dt_get_option( "dt_email_base_name" );
+            return !empty( $base_email_name ) ? $base_email_name : $name;
         } );
     }
     /**
