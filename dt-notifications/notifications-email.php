@@ -69,22 +69,7 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
         return false;
     }
     $is_sent = true;
-    /**
-     * Determine email address and name to be sent from. Use defaults, if
-     * none available.
-     */
-    if ( ! empty( dt_get_option( "dt_email_base_address" ) ) ) {
-        add_filter( 'wp_mail_from', function ( $email ) {
-            $base_email = dt_get_option( "dt_email_base_address" );
-            return !empty( $base_email ) ? $base_email : $email;
-        } );
-    }
-    if ( ! empty( dt_get_option( "dt_email_base_name" ) ) ) {
-        add_filter( 'wp_mail_from_name', function ( $name ) {
-            $base_email_name = dt_get_option( "dt_email_base_name" );
-            return !empty( $base_email_name ) ? $base_email_name : $name;
-        } );
-    }
+
     /**
      * if a server cron is set up, then use the email scheduler
      * otherwise send the email normally
@@ -149,6 +134,25 @@ function dt_make_post_email_subject( $post_id ) {
 function dt_make_email_footer() {
     return "\r\n" . __( 'Do not reply directly to this email.', 'disciple_tools' );
 }
+
+/**
+ * Determine email address and name to be sent from. Use defaults, if
+ * none available.
+ */
+add_filter( 'wp_mail_from', function ( $email ) {
+    $base_email = dt_get_option( 'dt_email_base_address' );
+    if ( !empty( $base_email ) ){
+        $email = $base_email;
+    }
+    return $email;
+} );
+add_filter( 'wp_mail_from_name', function ( $name ) {
+    $base_email_name = dt_get_option( 'dt_email_base_name' );
+    if ( !empty( $base_email_name ) ) {
+        $name = $base_email_name;
+    }
+    return $name;
+} );
 
 
 /**
