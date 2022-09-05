@@ -121,14 +121,14 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( isset( $fields["additional_meta"]["created_from"], $fields["additional_meta"]["add_connection"] ) ){
                 $created_from_post_type = get_post_type( $fields["additional_meta"]["created_from"] );
                 $created_from_field_settings = self::get_post_field_settings( $created_from_post_type );
-                if ( isset( $created_from_field_settings[ $fields["additional_meta"]["add_connection"] ]["p2p_key"] ) ) {
+                if ( isset( $created_from_field_settings[$fields["additional_meta"]["add_connection"]]["p2p_key"] ) ){
                     $connection_field = $fields["additional_meta"]["add_connection"];
-                    foreach ( $post_settings["fields"] as $field_key => $field_options ) {
-                        if ( $created_from_field_settings[ $fields["additional_meta"]["add_connection"] ]["p2p_key"] === ( $field_options["p2p_key"] ?? "" ) && $field_key !== $fields["additional_meta"]["add_connection"] ) {
+                    foreach ( $post_settings["fields"] as $field_key => $field_options ){
+                        if ( $created_from_field_settings[$fields["additional_meta"]["add_connection"]]["p2p_key"] === ( $field_options["p2p_key"] ?? "" ) && $field_key !== $fields["additional_meta"]["add_connection"] ){
                             $connection_field = $field_key;
                         }
                     }
-                    $fields[ $connection_field ] = [ "values" => [ [ "value" => $fields["additional_meta"]["created_from"] ] ] ];
+                    $fields[$connection_field] = [ "values" => [ [ "value" => $fields["additional_meta"]["created_from"] ] ] ];
                 }
             }
             unset( $fields["additional_meta"] );
@@ -204,10 +204,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields[ $field_key ] );
             }
             if ( $field_type === 'number' && (
-                    isset( $post_settings["fields"][ $field_key ]["min_option"] ) &&
-                    $field_value < $post_settings["fields"][ $field_key ]["min_option"] ||
-                    isset( $post_settings["fields"][ $field_key ]["max_option"] ) &&
-                    $field_value > $post_settings["fields"][ $field_key ]["max_option"]
+                isset( $post_settings["fields"][ $field_key ]["min_option"] ) &&
+                $field_value < $post_settings["fields"][ $field_key ]["min_option"] ||
+                isset( $post_settings["fields"][ $field_key ]["max_option"] ) &&
+                $field_value > $post_settings["fields"][ $field_key ]["max_option"]
                 )
             ) {
                 return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
@@ -389,14 +389,14 @@ class DT_Posts extends Disciple_Tools_Posts {
                     'post_title' => $title
                 ] );
                 dt_activity_insert( [
-                    'action'         => 'field_update',
-                    'object_type'    => $post_type,
-                    'object_subtype' => 'name',
-                    'object_id'      => $post_id,
-                    'object_name'    => $title,
-                    'meta_key'       => 'name',
-                    'meta_value'     => $title,
-                    'old_value'      => $existing_post['name'],
+                    'action'            => 'field_update',
+                    'object_type'       => $post_type,
+                    'object_subtype'    => 'name',
+                    'object_id'         => $post_id,
+                    'object_name'       => $title,
+                    'meta_key'          => 'name',
+                    'meta_value'        => $title,
+                    'old_value'         => $existing_post['name'],
                 ] );
             }
             if ( isset( $fields["name"] ) ){
@@ -458,13 +458,13 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
 
                 if ( $field_type === 'number' && (
-                        isset( $post_settings["fields"][ $field_key ]["min_option"] ) &&
-                        $field_value < $post_settings["fields"][ $field_key ]["min_option"] ||
-                        isset( $post_settings["fields"][ $field_key ]["max_option"] ) &&
-                        $field_value > $post_settings["fields"][ $field_key ]["max_option"]
+                    isset( $post_settings["fields"][ $field_key ]["min_option"] ) &&
+                    $field_value < $post_settings["fields"][ $field_key ]["min_option"] ||
+                    isset( $post_settings["fields"][ $field_key ]["max_option"] ) &&
+                    $field_value > $post_settings["fields"][ $field_key ]["max_option"]
                     )
                 ) {
-                    return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
+                     return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
 
                 if ( $field_type === 'key_select' && !is_string( $field_value ) ){
@@ -567,9 +567,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             FROM $wpdb->dt_post_user_meta um
             WHERE um.post_id = %s
             AND user_id = %s
-        ", $post_id, $current_user_id ), ARRAY_A );
+        ", $post_id, $current_user_id ), ARRAY_A);
 
-        $all_post_user_meta = [];
+        $all_post_user_meta =[];
 
         foreach ( $all_user_meta as $index => $meta_row ){
             if ( !isset( $field_settings[$meta_row['meta_key']]['type'] ) ){
@@ -672,7 +672,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             WHERE um.post_id IN ( $ids_sql )
             AND user_id = %s
             AND um.meta_key IN ( $field_keys_sql )
-        ", $user_id ), ARRAY_A );
+        ", $user_id ), ARRAY_A);
         // phpcs:enable
 
         foreach ( $all_post_meta as $index => $meta_row ) {
@@ -694,7 +694,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         self::get_all_connected_fields_on_list( $post_settings["fields"], $records, $fields_to_return );
         $site_url = site_url();
-        foreach ( $records as &$record ) {
+        foreach ( $records as  &$record ){
 
             self::adjust_post_custom_fields( $post_type, $record["ID"], $record, $fields_to_return, $all_posts[ $record["ID"] ] ?? [], $all_post_user_meta[ $record["ID"] ] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type . '/' . $record["ID"];
@@ -796,9 +796,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 ", $current_user->ID, $action, $post_type, $field_settings[$args["field_key"]]["p2p_key"], $field_type, $post_type ), OBJECT );
 
                 $post_ids = array_map(
-                    function ( $post ) {
-                        return (int) $post->ID;
-                    }, $posts
+                    function ( $post ) { return (int) $post->ID; }, $posts
                 );
                 foreach ( $posts_2 as $p ){
                     if ( !in_array( (int) $p->ID, $post_ids, true ) ){
@@ -828,7 +826,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $post_ids = array_map(
-            function ( $post ) {
+            function( $post ) {
                 return (int) $post->ID;
             },
             $posts
@@ -930,7 +928,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                             "ID"    => $post->ID,
                             "name"  => $post->post_title,
                             "label" => $label
-                        ];
+                            ];
                     }
                 }
             }
@@ -989,8 +987,8 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @param string $post_type
      * @param int $post_id
      * @param string $comment_html
-     * @param string $type normally 'comment', different comment types can have their own section in the comments activity, use "dt_comments_additional_sections" to add custom comment types
-     * @param array $args [user_id, comment_date, comment_author etc]
+     * @param string $type      normally 'comment', different comment types can have their own section in the comments activity, use "dt_comments_additional_sections" to add custom comment types
+     * @param array $args       [user_id, comment_date, comment_author etc]
      * @param bool $check_permissions
      * @param bool $silent
      *
@@ -1043,7 +1041,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true, string $comment_type = "comment" ){
         $comment = get_comment( $comment_id );
-        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || ! self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
+        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
@@ -1058,7 +1056,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $update === 1 ){
             return $comment_id;
         } else if ( is_wp_error( $update ) ) {
-            return $update;
+             return $update;
         } else {
             return new WP_Error( __FUNCTION__, "Error updating comment with id: " . $comment_id, [ 'status' => 500 ] );
         }
@@ -1066,7 +1064,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     public static function delete_post_comment( int $comment_id, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
-        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || ! self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
+        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to delete this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
@@ -1167,14 +1165,14 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "comment_ID"           => $comment->comment_ID,
                 "comment_author"       => ! empty( $display_name ) ? $display_name : wp_specialchars_decode( $comment->comment_author ),
                 "comment_author_email" => $comment->comment_author_email,
-                "comment_date"         => $comment->comment_date,
-                "comment_date_gmt"     => $comment->comment_date_gmt,
-                "gravatar"             => preg_replace( "/^http:/i", "https:", $url ),
-                "comment_content"      => $comment->comment_content,
-                "user_id"              => $comment->user_id,
-                "comment_type"         => $comment->comment_type,
-                "comment_post_ID"      => $comment->comment_post_ID,
-                "comment_reactions"    => array_key_exists( $comment->comment_ID, $comments_meta_dict ) ? $comments_meta_dict[ $comment->comment_ID ] : [],
+                "comment_date"  => $comment->comment_date,
+                "comment_date_gmt" => $comment->comment_date_gmt,
+                "gravatar" => preg_replace( "/^http:/i", "https:", $url ),
+                "comment_content" => $comment->comment_content,
+                "user_id" => $comment->user_id,
+                "comment_type" => $comment->comment_type,
+                "comment_post_ID" => $comment->comment_post_ID,
+                "comment_reactions" => array_key_exists( $comment->comment_ID, $comments_meta_dict ) ? $comments_meta_dict[$comment->comment_ID] : [],
             ];
             $response_body[] = $c;
         }
@@ -1569,8 +1567,8 @@ class DT_Posts extends Disciple_Tools_Posts {
      * Removes share record
      *
      * @param string $post_type
-     * @param int $post_id
-     * @param int $user_id
+     * @param int    $post_id
+     * @param int    $user_id
      *
      * @return false|int|WP_Error
      */
@@ -1855,8 +1853,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                             }
                         }
                         foreach ( $langs as $lang => $val ) {
-                            if ( ! empty( $field["translations"][ $val['language'] ] ) ) {
-                                $fields[ $key ]["translations"][ $val['language'] ] = $field["translations"][ $val['language'] ];
+                            if ( !empty( $field["translations"][$val['language']] ) ) {
+                                $fields[ $key ]["translations"][$val['language']] = $field["translations"][$val['language']];
                             }
                         }
                     }
@@ -1917,7 +1915,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     public static function get_default_list_column_order( $post_type ){
         $fields = self::get_post_field_settings( $post_type );
         $columns = [];
-        uasort( $fields, function ( $a, $b ) {
+        uasort( $fields, function ( $a, $b ){
             $a_order = 0;
             if ( isset( $a["show_in_table"] ) ){
                 $a_order = is_numeric( $a["show_in_table"] ) ? $a["show_in_table"] : 90;
@@ -2045,8 +2043,8 @@ class DT_Posts extends Disciple_Tools_Posts {
             try {
                 if ( $post_type !== 'peoplegroups' ) {
                     $type_results = self::advanced_search_by_post( $post_type, [
-                        'text'   => $query,
-                        'offset' => $offset
+                            'text'              => $query,
+                            'offset'            => $offset
                         ],
                         $filters
                     );
