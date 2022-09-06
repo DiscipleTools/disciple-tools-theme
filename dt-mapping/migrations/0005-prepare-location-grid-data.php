@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * @note    This migration gets, unzips, and prepares the location_grid source data for installation in the next two
  *          migrations.
  *
+ * @version_added 0.22.1
+ *
  */
 class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
 
