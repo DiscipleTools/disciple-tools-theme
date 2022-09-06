@@ -25,9 +25,9 @@ function dt_release_modal() {
         $last_release_notification = '1.0.0';
     }
 
-    // if ( version_compare( $last_release_notification, $show_notification_for_theme_version, '>=' ) ){
-    //     return;
-    // }
+    if ( version_compare( $last_release_notification, $show_notification_for_theme_version, '>=' ) ){
+        return;
+    }
     require_once( get_template_directory().'/dt-core/libraries/parsedown/Parsedown.php' );
 
     update_user_meta( get_current_user_id(), 'dt_release_notification', $show_notification_for_theme_version );
@@ -129,6 +129,10 @@ function dt_get_plugins_news_links() {
     if ( !function_exists( 'fetch_feed' ) ) {
         return;
     }
+    $plugin_news_items = get_transient( 'dt_plugin_news_items' );
+    if ( !empty( $plugin_news_items ) ) {
+        return $plugin_news_items;
+    }
     $feed = fetch_feed( $plugin_news_url );
     if ( is_wp_error( $feed ) ) {
         return;
@@ -145,6 +149,7 @@ function dt_get_plugins_news_links() {
             'title' => $feed_item->get_title(),
         ];
     }
+    set_transient( 'dt_plugin_news_items', $plugin_news_items, DAY_IN_SECONDS );
     return $plugin_news_items;
 }
 function dt_load_github_release_markdown( $tag, $repo = "DiscipleTools/disciple-tools-theme" ){
