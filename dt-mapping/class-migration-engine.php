@@ -87,7 +87,8 @@ class DT_Mapping_Module_Migration_Engine
             if ( $target_migration_number === $current_migration_number ) {
                 break;
             } elseif ( $target_migration_number < $current_migration_number ) {
-                throw new Exception( "Trying to migrate backwards, aborting" );
+//                throw new Exception( "Trying to migrate backwards, aborting" );
+                break;
             }
 
             $activating_migration_number = $current_migration_number + 1;
