@@ -142,11 +142,44 @@ jQuery(document).ready(function ($) {
 
         // Extract/Format values of interest
         let activity_heading = activity['object_note'];
-        let field_label = post_settings['fields'][activity['meta_key']]['name'];
+        let field_label = '---';
         let revert_but_tooltip = window.record_history_settings.translations.revert_but_tooltip;
         let activity_date = moment.unix(parseInt(activity['hist_time'])).format(date_format_long);
         let owner_name = (activity['name']) ? activity['name'] : '';
         let owner_gravatar = (activity['gravatar']) ? `<img src="${activity['gravatar']}"/>` : `<span class="mdi mdi-robot-confused-outline" style="font-size: 20px;"></span>`
+
+        // Field label to be sourced accordingly, based on incoming field type.
+        if (window.lodash.includes(['connection to', 'connection from'], activity['field_type'])) {
+          activity_heading = activity['action'] + ': ' + activity['meta_key'];
+          field_label = 'connection';
+
+        } else if (window.lodash.isEmpty(activity['field_type']) && window.lodash.startsWith(activity['meta_key'], 'contact_')) {
+          if (window.lodash.startsWith(activity['meta_key'], 'contact_phone_')) {
+            field_label = 'contact_phone';
+
+          } else if (window.lodash.startsWith(activity['meta_key'], 'contact_email_')) {
+            field_label = 'contact_email';
+
+          } else if (window.lodash.startsWith(activity['meta_key'], 'contact_address_')) {
+            field_label = 'contact_address';
+
+          } else if (window.lodash.startsWith(activity['meta_key'], 'contact_facebook_')) {
+            field_label = 'contact_facebook';
+
+          } else if (window.lodash.startsWith(activity['meta_key'], 'contact_twitter_')) {
+            field_label = 'contact_twitter';
+
+          } else if (window.lodash.startsWith(activity['meta_key'], 'contact_other_')) {
+            field_label = 'contact_other';
+
+          } else {
+            field_label = 'communication_channel';
+
+          }
+
+        } else if (!window.lodash.isEmpty(post_settings['fields'][activity['meta_key']])) {
+          field_label = post_settings['fields'][activity['meta_key']]['name'];
+        }
 
         // Build activity block html
         let html = `

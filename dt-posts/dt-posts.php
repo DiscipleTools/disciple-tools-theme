@@ -1288,7 +1288,9 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         // Determine key query parameters
         $supported_actions         = ( ! empty( $args['actions'] ) ) ? $args['actions'] : [
-            'field_update'
+            'field_update',
+            'connected to',
+            'disconnected from'
         ];
         $supported_actions_sql     = dt_array_to_sql( $supported_actions );
         $supported_field_types     = ( ! empty( $args['field_types'] ) ) ? $args['field_types'] : [
@@ -1304,7 +1306,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             'communication_channel',
             'text',
             'textarea',
-            'number'
+            'number',
+            'connection to',
+            'connection from',
+            ''
         ];
         $supported_field_types_sql = dt_array_to_sql( $supported_field_types );
         $ts_start                  = ( ! empty( $args['ts_start'] ) ) ? $args['ts_start'] : strtotime( '-12 month', time() );
@@ -1355,6 +1360,8 @@ class DT_Posts extends Disciple_Tools_Posts {
             return new WP_Error( __FUNCTION__, "No permissions to read: " . $post_type, [ 'status' => 403 ] );
         }
 
+        $post_type_fields = self::get_post_field_settings( $post_type, false );
+
         // Ensure result_order is correct, as reverting from present to past
         $args['result_order'] = 'DESC';
 
@@ -1371,7 +1378,48 @@ class DT_Posts extends Disciple_Tools_Posts {
             $field_old_value = $activity->old_value;
             $is_deleted      = strtolower( trim( $field_value ) ) == 'value_deleted';
 
-            if ( ! isset( $reverted_updates[ $field_key ] ) ) {
+            // Ensure to accommodate special case field types.
+            if ( in_array( $field_type, [ 'connection to', 'connection from' ] ) ) {
+
+                // Determine actual field key to be used.
+                $field_setting = self::get_post_field_settings_by_p2p( $post_type_fields, $field_key, ( $field_type == 'connection from' ) ? 'from' : 'to' );
+                if ( ! empty( $field_setting ) ) {
+                    $field_key = $field_setting['key'];
+
+                } else {
+                    $field_key  = null;
+                    $field_type = null;
+                }
+            } elseif ( empty( $field_type ) && substr( $field_key, 0, strlen( 'contact_' ) ) == 'contact_' ) {
+                $field_type = 'communication_channel';
+
+                // Now, determine actual field key.
+                if ( substr( $field_key, 0, strlen( 'contact_phone_' ) ) == 'contact_phone_' ) {
+                    $field_key = 'contact_phone';
+
+                } elseif ( substr( $field_key, 0, strlen( 'contact_email_' ) ) == 'contact_email_' ) {
+                    $field_key = 'contact_email';
+
+                } elseif ( substr( $field_key, 0, strlen( 'contact_address_' ) ) == 'contact_address_' ) {
+                    $field_key = 'contact_address';
+
+                } elseif ( substr( $field_key, 0, strlen( 'contact_facebook_' ) ) == 'contact_facebook_' ) {
+                    $field_key = 'contact_facebook';
+
+                } elseif ( substr( $field_key, 0, strlen( 'contact_twitter_' ) ) == 'contact_twitter_' ) {
+                    $field_key = 'contact_twitter';
+
+                } elseif ( substr( $field_key, 0, strlen( 'contact_other_' ) ) == 'contact_other_' ) {
+                    $field_key = 'contact_other';
+
+                } else {
+                    $field_key  = null;
+                    $field_type = null;
+                }
+            }
+
+            // If needed, prepare reverted updates array element.
+            if ( ! empty( $field_key ) && ! empty( $field_type ) && ! isset( $reverted_updates[ $field_key ] ) ) {
                 $reverted_updates[ $field_key ] = [
                     'field_type' => $field_type,
                     'values'     => []
@@ -1379,25 +1427,28 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
 
             switch ( $field_type ) {
-                case 'connection':
-                    // TODO: Different Use Case!
-                    // - field_type = connection to
+                case 'connection to':
+                case 'connection from':
+                    $is_deleted = strtolower( trim( $field_value ) ) == 'disconnected from';
+                    if ( $is_deleted && in_array( $field_value, $reverted_updates[ $field_key ]['values'] ) ) {
+                        unset( $reverted_updates[ $field_key ]['values'][ $field_value ] );
+
+                    } elseif ( ! $is_deleted && ! in_array( $field_value, $reverted_updates[ $field_key ]['values'] ) ) {
+                        $reverted_updates[ $field_key ]['values'][] = $field_value;
+                    }
                     break;
                 case 'tags':
                 case 'date':
                 case 'location':
                 case 'multi_select':
                 case 'location_meta':
+                case 'communication_channel':
                     if ( $is_deleted && in_array( $field_old_value, $reverted_updates[ $field_key ]['values'] ) ) {
                         unset( $reverted_updates[ $field_key ]['values'][ $field_old_value ] );
 
                     } elseif ( ! $is_deleted && ! in_array( $field_value, $reverted_updates[ $field_key ]['values'] ) ) {
                         $reverted_updates[ $field_key ]['values'][] = $field_value;
                     }
-                    break;
-                case 'communication_channel':
-                    // TODO: Different Use Case!
-                    // - No field_type set!
                     break;
                 case 'text':
                 case 'number':
@@ -1415,14 +1466,44 @@ class DT_Posts extends Disciple_Tools_Posts {
         $post         = self::get_post( $post_type, $post_id, false );
         foreach ( $reverted_updates as $field_key => $reverted ) {
             switch ( $reverted['field_type'] ) {
-                case 'connection':
-                    // TODO: Different Use Case!
-                    // - field_type = connection to
+                case 'connection to':
+                case 'connection from':
+                    if ( ! empty( $reverted['values'] ) ) {
+
+                        // Collate values to be added
+                        $values = [];
+                        foreach ( $reverted['values'] as $value ) {
+                            $values[] = [
+                                'value' => $value
+                            ];
+                        }
+
+                        // Determine existing post values to be removed
+                        if ( isset( $post[ $field_key ] ) && is_array( $post[ $field_key ] ) ) {
+                            foreach ( $post[ $field_key ] as $option ) {
+                                $id = $option['ID'];
+
+                                // If id needle hit, then flag for deletion
+                                if ( ! in_array( $id, $reverted['values'] ) ) {
+                                    $values[] = [
+                                        'value'  => $id,
+                                        'delete' => true
+                                    ];
+                                }
+                            }
+                        }
+
+                        // Package values to be updated
+                        $post_updates[ $field_key ] = [
+                            'values' => $values
+                        ];
+                    }
                     break;
                 case 'tags':
                 case 'location':
                 case 'multi_select':
                 case 'location_meta':
+                case 'communication_channel':
                     if ( ! empty( $reverted['values'] ) ) {
 
                         // Collate values to be added
@@ -1444,15 +1525,27 @@ class DT_Posts extends Disciple_Tools_Posts {
                                 } elseif ( $reverted['field_type'] == 'location_meta' ) {
                                     $id = $option['grid_meta_id'];
 
+                                } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                    $id = $option['key'];
+
                                 } else {
                                     $id = $option;
                                 }
 
                                 // If id needle hit, then flag for deletion
                                 if ( ! in_array( $id, $reverted['values'] ) ) {
+
+                                    $key = 'value';
+                                    if ( $reverted['field_type'] == 'location_meta' ) {
+                                        $key = 'grid_meta_id';
+
+                                    } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                        $key = 'key';
+                                    }
+
                                     $values[] = [
-                                        $reverted['field_type'] == 'location_meta' ? 'grid_meta_id' : 'value' => $id,
-                                        'delete'                                                              => true
+                                        $key     => $id,
+                                        'delete' => true
                                     ];
                                 }
                             }
@@ -1463,10 +1556,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                             'values' => $values
                         ];
                     }
-                    break;
-                case 'communication_channel':
-                    // TODO: Different Use Case!
-                    // - No field_type set!
                     break;
                 case 'text':
                 case 'date':
@@ -1484,7 +1573,20 @@ class DT_Posts extends Disciple_Tools_Posts {
         return self::update_post( $post_type, $post_id, $post_updates );
     }
 
-    public static function get_post_single_activity( string $post_type, int $post_id, int $activity_id ){
+    public static function get_post_field_settings_by_p2p( $fields, $p2p_key, $p2p_direction ): array {
+        foreach ( $fields as $key => $field ) {
+            if ( isset( $field['p2p_key'], $field['p2p_direction'] ) && $field['p2p_key'] == $p2p_key && $field['p2p_direction'] == $p2p_direction ) {
+                return [
+                    'key'      => $key,
+                    'settings' => $field
+                ];
+            }
+        }
+
+        return [];
+    }
+
+    public static function get_post_single_activity( string $post_type, int $post_id, int $activity_id ) {
         global $wpdb;
         if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read group", [ 'status' => 403 ] );
