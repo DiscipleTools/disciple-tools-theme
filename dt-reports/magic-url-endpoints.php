@@ -121,10 +121,30 @@ class Disciple_Tools_Magic_Endpoints
             }
 
             // check if email exists to send to
-            if ( ! isset( $post_record['contact_email'][0] ) && empty( $params['email'] ) ) {
+            $emails = [];
+            if ( isset( $params['email'] ) && ! empty( $params['email'] ) ){
+                $emails[]   = $params['email'];
+            }
+            else if ( isset( $post_record['contact_email'][0] ) ) {
+                $emails[]  = $post_record['contact_email'][0]['value'];
+            }
+            else if ( isset( $post_record['reporter'] ) && ! empty( $post_record['reporter'] ) ) {
+                dt_write_log('here');
+
+                foreach( $post_record['reporter'] as $reporter ) {
+                    $contact_post = DT_Posts::get_post( 'contacts', $reporter['ID'], true, false );
+                    if ( isset( $contact_post['contact_email'] ) && ! empty( $contact_post['contact_email'] ) ) {
+                        foreach( $contact_post['contact_email'] as $contact_email ) {
+                            $emails[]  = $contact_email['value'];
+                        }
+                    }
+                }
+            }
+            else {
                 $errors[ $post_id ] = 'no email';
                 continue;
             }
+
 
             // check if magic key exists, or needs created
             if ( ! isset( $post_record[$meta_key] ) ) {
@@ -141,36 +161,30 @@ class Disciple_Tools_Magic_Endpoints
                 $note = $params['note'];
             }
 
-            // build email
-            $email   = $params['email'] ?? $post_record['contact_email'][0]['value'];
-
-            // final email format sanity check
-            if ( ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
-                $errors[ $post_id ] = 'invalid email format';
-                continue;
-            }
-
             $subject = $name;
             $message_plain_text = $note . '
 
 '           . $name . ': ' . $link;
 
             // send email
-            $sent = dt_send_email( $email, $subject, $message_plain_text );
-            if ( is_wp_error( $sent ) || ! $sent ) {
-                $errors[$post_id] = $sent;
+            foreach( $emails as $email ) {
+                $sent = dt_send_email( $email, $subject, $message_plain_text ); dt_write_log($sent);
+                if ( is_wp_error( $sent ) || ! $sent ) {
+                    $errors[$post_id] = $sent;
+                }
+                else {
+                    $success[$post_id] = $sent;
+                    dt_activity_insert( [
+                        'action'            => 'sent_app_link',
+                        'object_type'       => $params['post_type'],
+                        'object_subtype'    => 'email',
+                        'object_id'         => $post_id,
+                        'object_name'       => $post_record['title'],
+                        'object_note'       => $name . ' (app) sent to ' . $email,
+                    ] );
+                }
             }
-            else {
-                $success[$post_id] = $sent;
-                dt_activity_insert( [
-                    'action'            => 'sent_app_link',
-                    'object_type'       => $params['post_type'],
-                    'object_subtype'    => 'email',
-                    'object_id'         => $post_id,
-                    'object_name'       => $post_record['title'],
-                    'object_note'       => $name . ' (app) sent to ' . $email,
-                ] );
-            }
+
         }
 
         return [
