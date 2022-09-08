@@ -125,7 +125,7 @@ function dt_release_modal() {
 add_action( 'wp_head', 'dt_release_modal' );
 
 function dt_get_plugins_news_links() {
-    $plugin_news_url = 'https://disciple.tools/news-categories/dt-plugin-releases/feed/';
+    $plugin_news_url = 'https://disciple.tools/news-categories/other/feed/';
     if ( !function_exists( 'fetch_feed' ) ) {
         return;
     }
