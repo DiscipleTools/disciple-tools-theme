@@ -27,7 +27,7 @@ if ( ! function_exists( 'dt_get_theme_data_url' ) ) {
          * The filter can be used to override the default GitHub location and move this to a custom mirror or fork.
          * @return string
          */
-        return apply_filters( 'disciple_tools_theme_data_url', 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme-data/master/' );
+        return apply_filters( 'disciple_tools_theme_data_url', 'https://storage.googleapis.com/location-grid-source-data-v2/' );
     }
 }
 if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
@@ -41,7 +41,7 @@ if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
             $array = [
                 'key'   => 'google',
                 'label' => 'Google',
-                'url'   => 'https://storage.googleapis.com/location-grid-mirror/',
+                'url'   => 'https://storage.googleapis.com/location-grid-mirror-v2/',
             ];
             update_option( 'dt_location_grid_mirror', $array, true );
             $mirror = $array;

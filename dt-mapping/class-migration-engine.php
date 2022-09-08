@@ -15,7 +15,7 @@ class DT_Mapping_Module_Migration_Engine
      * Current Migration number for the mapping system
      * @var int
      */
-    public static $migration_number = 12;
+    public static $migration_number = 15;
     /** End Current Migration Number */
 
     protected static $migrations = null;
@@ -87,7 +87,8 @@ class DT_Mapping_Module_Migration_Engine
             if ( $target_migration_number === $current_migration_number ) {
                 break;
             } elseif ( $target_migration_number < $current_migration_number ) {
-                throw new Exception( "Trying to migrate backwards, aborting" );
+//                throw new Exception( "Trying to migrate backwards, aborting" );
+                break;
             }
 
             $activating_migration_number = $current_migration_number + 1;

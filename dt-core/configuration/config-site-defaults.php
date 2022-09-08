@@ -239,20 +239,9 @@ function dt_get_option( string $name ) {
             break;
 
         case 'dt_email_base_address':
-            $address_base = get_option( "dt_email_base_address", "" );
-            if ( empty( $address_base ) ){
-                update_option( "dt_email_base_address", "" );
-            }
-            return $address_base;
-            break;
-
+            return get_option( "dt_email_base_address", "" );
         case 'dt_email_base_name':
-            $name_base = get_option( "dt_email_base_name", "" );
-            if ( empty( $name_base ) ){
-                update_option( "dt_email_base_name", "" );
-            }
-            return $name_base;
-            break;
+            return get_option( "dt_email_base_name", "" );
 
         case 'group_type':
             $site_options = dt_get_option( "dt_site_custom_lists" );

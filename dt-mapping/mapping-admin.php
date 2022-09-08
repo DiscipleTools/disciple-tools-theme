@@ -535,7 +535,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             ?>
             <div class="wrap">
                 <div id="poststuff">
-                    <div id="post-body" class="metabox-holder columns-2">
+                    <div id="post-body" class="metabox-holder columns-1">
                         <div id="post-body-content">
                             <!-- Main Column -->
 
@@ -543,13 +543,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
-                        <div id="postbox-container-1" class="postbox-container">
-                            <!-- Right Column -->
-
-                            <?php $this->box_levels_instructions(); ?>
-
-                            <!-- End Right Column -->
-                        </div><!-- postbox-container 1 -->
                         <div id="postbox-container-2" class="postbox-container">
                         </div><!-- postbox-container 2 -->
                     </div><!-- post-body meta box container -->
@@ -1061,12 +1054,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 'google' => [
                     'key'   => 'google',
                     'label' => 'Google',
-                    'url'   => 'https://storage.googleapis.com/location-grid-mirror/',
+                    'url'   => 'https://storage.googleapis.com/location-grid-mirror-v2/',
                 ],
                 'amazon' => [
                     'key'   => 'amazon',
                     'label' => 'Amazon',
-                    'url'   => 'https://location-grid-mirror.s3.amazonaws.com/',
+                    'url'   => 'https://location-grid-mirror-v2.s3.amazonaws.com/',
                 ],
                 'other'  => [
                     'key'   => 'other',
@@ -1185,127 +1178,428 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_levels() {
-            if ( isset( $_POST['install_level_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['install_level_nonce'] ) ), 'install_level' . get_current_user_id() ) ) {
-
-                if ( isset( $_POST['country_select'] ) && ! empty( $_POST['country_select'] ) ) {
-                    $admin0_code = sanitize_text_field( wp_unslash( $_POST['country_select'] ) );
-                    $this->install_additional_levels( $admin0_code );
-                }
-
-                if ( isset( $_POST['remove'] ) && ! empty( $_POST['remove'] ) ) {
-                    $concat = explode( '-', sanitize_text_field( wp_unslash( $_POST['remove'] ) ) );
-                    $admin0_code = $concat[0];
-                    $level = $concat[1];
-                    if ( ! empty( $admin0_code ) && ! empty( $level ) ) {
-                        $this->remove_additional_levels( $admin0_code, $level );
-                    }
-                }
-            }
-
-            $theme_data = dt_get_theme_data_url();
-            $json = json_decode( file_get_contents( $theme_data . 'location_grid/countries_with_extended_levels.json' ), true );
-            if ( empty( $json ) ) {
-                ?>
-                <div class="notice notice-error notice-dt-locations-migration is-dismissible" data-notice="dt-locations-migration">
-                    <p>Source of extended levels not found. Check <?php echo esc_html( $theme_data ) ?></p>
-                </div>
-                <?php
-                return;
-            }
-            asort( $json );
-
-            // get installed levels
-            global $wpdb;
-            $installed_levels = $wpdb->get_results("
-                SELECT l.admin0_code,
-                (SELECT lg.name FROM $wpdb->dt_location_grid as lg WHERE lg.admin0_code = l.admin0_code AND lg.level = 0 LIMIT 1) as name,
-                l.level,
-                count(l.level) as records
-                FROM $wpdb->dt_location_grid as l
-                WHERE l.level > 2 AND l.level < 10 GROUP BY l.admin0_code, l.level;", ARRAY_A );
-
-            // trim list
-            $list = [];
-            foreach ( $installed_levels as $installed_level ) {
-                $list[$installed_level['admin0_code']] = $installed_level['admin0_code'];
-            }
-
             ?>
-            <form method="post">
-                <?php wp_nonce_field( 'install_level' . get_current_user_id(), 'install_level_nonce' ); ?>
-                <table class="widefat striped">
-                    <thead>
-                        <th>Install Additional Administrative Records</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <select name="country_select">
-                                    <option></option>
-                                    <?php
-                                    foreach ( $json as $index => $name ) {
-                                        echo '<option value="'.esc_attr( $index ).'">';
-                                        echo esc_html( $name );
-                                        echo '</option>';
-                                    }
-                                    ?>
-                                </select>
-                                <button type="submit" class="button">Install Additional Records</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <table class="widefat striped">
-                    <tbody>
-                    <?php
-                    if ( ! empty( $installed_levels ) ) :
-                        foreach ( $installed_levels as $level ) :
-
-                            ?>
-                        <tr>
-                            <td>
-                                <?php echo '<span style="font-size:1.2em;">' . esc_html( $level['name'] ) . '</span> ' ?>
-                            </td>
-                            <td>
-                                <a onclick="jQuery('#<?php echo esc_attr( $level['admin0_code'] ).'-'. esc_attr( $level['level'] ) ?>').show();">Remove Level <?php echo esc_attr( $level['level'] ) . ' (' . esc_html( $level['records'] ) . ' records) ' ?></a>
-                                <?php echo '<br><button type="submit" id="'.esc_attr( $level['admin0_code'] ).'-'.esc_attr( $level['level'] ).'" style="display:none;" name="remove" value="'.esc_attr( $level['admin0_code'] ).'-'.esc_attr( $level['level'] ).'"> Confirm delete ' . esc_html( $level['records'] ) . ' records?</button>' ?>
-                            </td>
-                        </tr>
-
-                            <?php
-                        endforeach;
-                        endif;
+            <!-- Box -->
+            <table class="widefat striped">
+                <thead>
+                <tr>
+                    <th><p style="max-width:450px"></p>
+                        <h3>Full Location Grid Database Install</h3>
+                        <p>
+                            By default, administrative levels 0-2 are installed in the Disciple.Tools system, if available for the country. This means that level 0 (country),
+                            level 1 (state), and level 2 (county or province or delegation) is already installed. But some countries have lower level administrative divisions
+                            (levels 3, 4, 5). Installing administrative levels will increase the database from 50k records to 380k records
+                        </p>
+                        <hr>
+                        <p><a class="button" id="upgrade_button" href="<?php echo esc_url( trailingslashit( admin_url() ) ) ?>admin.php?page=<?php echo esc_attr( $this->token ) ?>&tab=levels&loop=true" disabled="true">Upgrade Away!</a></p>
+                        <p id="show_message">LEAVE THIS PAGE OPEN UNTIL YOU SEE "FINISHED"</p>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                /* disable button */
+                if ( ! isset( $_GET['loop'] ) ) {
                     ?>
-                    </tbody>
-                </table>
-            </form>
+                    <script>
+                        jQuery(document).ready(function(){
+                            jQuery('#upgrade_button').removeAttr('disabled')
+                            jQuery('#show_message').hide()
+                        })
+                    </script>
+                    <?php
+                }
+                /* Start loop & add spinner */
+                if ( isset( $_GET['loop'] ) && ! isset( $_GET['step'] ) ) {
+                    ?>
+                    <tr>
+                        <td><img src="<?php echo esc_url( get_theme_file_uri() ) ?>/spinner.svg" width="30px" alt="spinner" /></td>
+                    </tr>
+                    <script type="text/javascript">
+                        function nextpage() {
+                            location.href = "<?php echo esc_url( admin_url() ) ?>admin.php?page=<?php echo esc_attr( $this->token )  ?>&tab=levels&loop=true&step=1&nonce=<?php echo esc_attr( wp_create_nonce( 'loop'.get_current_user_id() ) ) ?>";
+                        }
+                        setTimeout( "nextpage()", 1500 );
+                    </script>
+                    <?php
+                }
+
+                /* Loop */
+                if ( isset( $_GET['loop'], $_GET['step'], $_GET['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ) ), 'loop'.get_current_user_id() ) ) {
+                    $step = sanitize_text_field( wp_unslash( $_GET['step'] ) );
+                    $this->run_loop( $step );
+                }
+
+                ?>
+                </tbody>
+            </table>
+
+
             <?php
         }
 
-        public function box_levels_instructions() {
-            ?>
-                <table class="widefat striped">
-                    <thead>
-                    <th>Install Additional Administrative Levels</th>
-                    </thead>
-                    <tbody>
+        public function run_loop( $step ){
+            $func = 'process_step_' . $step;
+            $result = false;
+            if ( method_exists( $this, $func ) ){
+                $result = $this->$func();
+            }
+            if ( $result ) {
+                ?>
+                <?php foreach ( $this->steps as $index => $label ) :
+                    if ( $index <= $step ) : ?>
+                        <tr>
+                            <td><?php echo esc_html( $label ) ?></td>
+                        </tr>
+                    <?php endif;
+                endforeach; ?>
+                <?php if ( $step < count( $this->steps ) - 1 ) : ?>
                     <tr>
-                        <td>
-                            <p>By default, administrative levels 0-2 are installed in the Disciple.Tools system, if available for the country. This means that the country record (level 0), the state record (level 1),
-                                the county or variously named second level administrative level (level 2) is installed. But some countries have administrative divisions 3 - 5. The drop down list below contains
-                                those countries with extra administrative levels.
-                            </p>
-                            <p>
-                                Warning: Installing sub-levels for a country or two should have no noticeable speed impact on most servers, but a full install of all countries administrative levels will increase the database
-                                from 50k records to 380k records. Running all records for the entire world should be evaluated based on your use-case and weighed in regards to the strength of your hosted server.
-                            </p>
-                        </td>
+                        <td><img src="<?php echo esc_url( get_theme_file_uri() ) ?>/spinner.svg" width="30px" alt="spinner" /></td>
                     </tr>
+                    <script type="text/javascript">
+                        function nextpage() {
+                            location.href = "<?php echo esc_url( admin_url() ) ?>admin.php?page=<?php echo esc_attr( $this->token )  ?>&tab=levels&loop=true&step=<?php echo esc_attr( $step + 1 ) ?>&nonce=<?php echo esc_attr( wp_create_nonce( 'loop'.get_current_user_id() ) ) ?>";
+                        }
+                        setTimeout( "nextpage()", 1500 );
+                    </script>
+                <?php endif; ?>
+                <?php
+            } else {
+                ?>
+                Ooops. Error found. Step <?php echo esc_html( $step ); ?><br>
+                <?php
+                print_r( $result );
+            }
+        }
+        public $steps = [
+            '', // 0
+            'Create staging tables', // 1
+            'Upload batch 1 of 12 records',
+            'Upload batch 2 of 12 records',
+            'Upload batch 3 of 12 records',
+            'Upload batch 4 of 12 records',
+            'Upload batch 5 of 12 records',
+            'Upload batch 6 of 12 records',
+            'Upload batch 7 of 12 records',
+            'Upload batch 8 of 12 records',
+            'Upload batch 9 of 12 records',
+            'Upload batch 10 of 12 records',
+            'Upload batch 11 of 12 records',
+            'Upload batch 12 of 12 records',
+            'Migrate custom records',
+            'Swap live with new database',
+            'Update post records',
+            'Finished!'
+        ];
 
-                    </tbody>
-                </table>
-            <?php
+        public function process_step_1() {
+            global $wpdb;
+            dt_write_log( __METHOD__ );
+            $wpdb->query("
+                DROP TABLE IF EXISTS `{$wpdb->prefix}dt_location_grid_upgrade`
+            ");
+            $result = $wpdb->query("
+            CREATE TABLE `{$wpdb->prefix}dt_location_grid_upgrade` (
+                  `grid_id` bigint(20) NOT NULL AUTO_INCREMENT,
+                  `name` varchar(200) NOT NULL DEFAULT '',
+                  `level` float DEFAULT NULL,
+                  `level_name` varchar(7) DEFAULT NULL,
+                  `country_code` varchar(10) DEFAULT NULL,
+                  `admin0_code` varchar(10) DEFAULT NULL,
+                  `parent_id` bigint(20) DEFAULT NULL,
+                  `admin0_grid_id` bigint(20) DEFAULT NULL,
+                  `admin1_grid_id` bigint(20) DEFAULT NULL,
+                  `admin2_grid_id` bigint(20) DEFAULT NULL,
+                  `admin3_grid_id` bigint(20) DEFAULT NULL,
+                  `admin4_grid_id` bigint(20) DEFAULT NULL,
+                  `admin5_grid_id` bigint(20) DEFAULT NULL,
+                  `longitude` float DEFAULT NULL,
+                  `latitude` float DEFAULT NULL,
+                  `north_latitude` float DEFAULT NULL,
+                  `south_latitude` float DEFAULT NULL,
+                  `east_longitude` float DEFAULT NULL,
+                  `west_longitude` float DEFAULT NULL,
+                  `population` bigint(20) NOT NULL DEFAULT '0',
+                  `modification_date` date DEFAULT NULL,
+                  `alt_name` varchar(200) DEFAULT NULL,
+                  `alt_population` bigint(20) DEFAULT '0',
+                  `is_custom_location` tinyint(1) NOT NULL DEFAULT '0',
+                  `alt_name_changed` tinyint(1) NOT NULL DEFAULT '0',
+                  PRIMARY KEY (`grid_id`),
+                  KEY `level` (`level`),
+                  KEY `latitude` (`latitude`),
+                  KEY `longitude` (`longitude`),
+                  KEY `admin0_code` (`admin0_code`),
+                  KEY `parent_id` (`parent_id`),
+                  KEY `country_code` (`country_code`),
+                  KEY `north_latitude` (`north_latitude`),
+                  KEY `south_latitude` (`south_latitude`),
+                  KEY `west_longitude` (`east_longitude`),
+                  KEY `east_longitude` (`west_longitude`),
+                  KEY `admin0_grid_id` (`admin0_grid_id`),
+                  KEY `admin1_grid_id` (`admin1_grid_id`),
+                  KEY `admin2_grid_id` (`admin2_grid_id`),
+                  KEY `admin3_grid_id` (`admin3_grid_id`),
+                  KEY `admin4_grid_id` (`admin4_grid_id`),
+                  KEY `admin5_grid_id` (`admin5_grid_id`),
+                  KEY `level_name` (`level_name`),
+                  KEY `population` (`population`),
+                  FULLTEXT KEY `name` (`name`),
+                  FULLTEXT KEY `alt_name` (`alt_name`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=1003867580 DEFAULT CHARSET=utf8;
+            ");
+            if ( $result === false ) {
+                return new WP_Error( __METHOD__, 'Did not create table', [ 'error', $result ] );
+            }
+
+            return true;
+        }
+        public function retrieve_grid_file( $file_name ) {
+            $dir = wp_upload_dir();
+            $mirror_source = dt_get_theme_data_url();
+            $uploads_dir = trailingslashit( $dir['basedir'] );
+            $full_zip_mirror_url = $mirror_source . 'location_grid/'.$file_name.'.tsv.zip';
+            $full_unzipped_mirror_url = $mirror_source . 'location_grid/'.$file_name.'.tsv';
+            $local_zip_path = $uploads_dir . 'location_grid_download/'.$file_name.'.tsv.zip';
+            $local_unzipped_path = $uploads_dir . 'location_grid_download/'.$file_name.'.tsv';
+            $local_download_dir_path = $uploads_dir . 'location_grid_download';
+
+            if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
+                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.','..' ) );
+                foreach ( $scan as $f ) {
+                    if ( is_dir( $uploads_dir . "location_grid_download/" . $f ) ) {
+                        rmdir( $uploads_dir . "location_grid_download/" . $f );
+                    } else {
+                        unlink( $uploads_dir . "location_grid_download/" . $f );
+                    }
+                }
+            }
+            if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
+                rmdir( $uploads_dir . 'location_grid_download' );
+            }
+
+            if ( ! file_exists( $uploads_dir . 'location_grid_download' ) ) {
+                mkdir( $uploads_dir . 'location_grid_download' );
+            }
+            if ( file_exists( $local_zip_path ) ) {
+                unlink( $local_zip_path );
+            }
+            if ( file_exists( $local_unzipped_path ) ) {
+                unlink( $local_unzipped_path );
+            }
+
+            // pass 1
+            if ( class_exists( 'ZipArchive' ) ) { // if ZipArchive enabled on server
+
+                $zip_resource = fopen( $local_zip_path, "w" );
+
+                $ch_start = curl_init();
+                curl_setopt( $ch_start, CURLOPT_URL, $full_zip_mirror_url );
+                curl_setopt( $ch_start, CURLOPT_FAILONERROR, true );
+                curl_setopt( $ch_start, CURLOPT_HEADER, 0 );
+                curl_setopt( $ch_start, CURLOPT_FOLLOWLOCATION, true );
+                curl_setopt( $ch_start, CURLOPT_AUTOREFERER, true );
+                curl_setopt( $ch_start, CURLOPT_BINARYTRANSFER, true );
+                curl_setopt( $ch_start, CURLOPT_TIMEOUT, 30 );
+                curl_setopt( $ch_start, CURLOPT_SSL_VERIFYHOST, 0 );
+                curl_setopt( $ch_start, CURLOPT_SSL_VERIFYPEER, 0 );
+                curl_setopt( $ch_start, CURLOPT_FILE, $zip_resource );
+                $page = curl_exec( $ch_start );
+                if ( !$page )
+                {
+                    error_log( "Error :- ".curl_error( $ch_start ) );
+                }
+                curl_close( $ch_start );
+
+                $zip = new ZipArchive();
+                if ( $zip->open( $local_zip_path ) != "true" )
+                {
+                    error_log( "Error :- Unable to open the Zip File" );
+                }
+
+                $zip->extractTo( $local_download_dir_path );
+                $zip->close();
+            }
+
+            // pass 2
+            if ( ! file_exists( $local_unzipped_path ) ) {
+                $zip_resource = fopen( $local_unzipped_path, "w" );
+
+                $ch_start = curl_init();
+                curl_setopt( $ch_start, CURLOPT_URL, $full_unzipped_mirror_url );
+                curl_setopt( $ch_start, CURLOPT_FAILONERROR, true );
+                curl_setopt( $ch_start, CURLOPT_HEADER, 0 );
+                curl_setopt( $ch_start, CURLOPT_FOLLOWLOCATION, true );
+                curl_setopt( $ch_start, CURLOPT_AUTOREFERER, true );
+                curl_setopt( $ch_start, CURLOPT_BINARYTRANSFER, true );
+                curl_setopt( $ch_start, CURLOPT_TIMEOUT, 30 );
+                curl_setopt( $ch_start, CURLOPT_SSL_VERIFYHOST, 0 );
+                curl_setopt( $ch_start, CURLOPT_SSL_VERIFYPEER, 0 );
+                curl_setopt( $ch_start, CURLOPT_FILE, $zip_resource );
+                $page = curl_exec( $ch_start );
+                if ( !$page )
+                {
+                    error_log( "Error :- ".curl_error( $ch_start ) );
+                }
+                curl_close( $ch_start );
+            }
+
+            if ( $local_unzipped_path ) {
+                return $local_unzipped_path;
+            } else {
+                echo 'Error in step 2';
+                die();
+            }
+
+        }
+        public function process_step_2() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_0' ) );
+        }
+        public function process_step_3() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_1' ) );
+        }
+        public function process_step_4() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_2' ) );
+        }
+        public function process_step_5() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_3' ) );
+        }
+        public function process_step_6() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_4' ) );
+        }
+        public function process_step_7() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_5' ) );
+        }
+        public function process_step_8() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_6' ) );
+        }
+        public function process_step_9() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_7' ) );
+        }
+        public function process_step_10() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_8' ) );
+        }
+        public function process_step_11() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_9' ) );
+        }
+        public function process_step_12() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_10' ) );
+        }
+        public function process_step_13() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_11' ) );
+        }
+        public function process_step_14() {
+            dt_write_log( __METHOD__ );
+            return $this->install_upgrade_db_file( $this->retrieve_grid_file( 'dt_full_location_grid_12' ) );
+        }
+        public function process_step_15() {
+            dt_write_log( __METHOD__ );
+            global $wpdb;
+            $wpdb->query("
+                INSERT INTO {$wpdb->prefix}dt_location_grid_upgrade
+                SELECT * FROM {$wpdb->prefix}dt_location_grid WHERE grid_id >= 1000000000
+            ");
+
+            return true;
+        }
+        public function process_step_16() {
+            dt_write_log( __METHOD__ );
+            global $wpdb;
+            $wpdb->query("
+                DROP TABLE IF EXISTS `{$wpdb->prefix}dt_location_grid`
+            ");
+            $wpdb->query("
+                RENAME TABLE `{$wpdb->prefix}dt_location_grid_upgrade` TO `{$wpdb->prefix}dt_location_grid`;
+            ");
+            return true;
+        }
+        public function process_step_17() {
+            dt_write_log( __METHOD__ );
+            $dir = wp_upload_dir();
+            $uploads_dir = trailingslashit( $dir['basedir'] );
+            if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
+                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.','..' ) );
+                foreach ( $scan as $f ) {
+                    if ( is_dir( $uploads_dir . "location_grid_download/" . $f ) ) {
+                        rmdir( $uploads_dir . "location_grid_download/" . $f );
+                    } else {
+                        unlink( $uploads_dir . "location_grid_download/" . $f );
+                    }
+                }
+            }
+            if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
+                rmdir( $uploads_dir . 'location_grid_download' );
+            }
+            return true;
+        }
+
+        public function install_upgrade_db_file( $file ) {
+            global $wpdb;
+            $fp = fopen( $file, 'r' );
+
+            $query = "INSERT IGNORE INTO `{$wpdb->prefix}dt_location_grid_upgrade` VALUES ";
+
+            $count = 0;
+            while ( ! feof( $fp ) ) {
+                $line = fgets( $fp, 2048 );
+                $count++;
+
+                $data = str_getcsv( $line, "\t" );
+
+                $data_sql = $this->dt_array_to_sql( $data );
+
+                if ( isset( $data[24] ) ) {
+                    $query .= " ( $data_sql ), ";
+                }
+                if ( $count === 500 ) {
+                    $query .= ';';
+                    $query = str_replace( ", ;", ";", $query ); //remove last comma
+                    $result = $wpdb->query( $query );  //phpcs:ignore
+                    if ( $result === false ) {
+                        return new WP_Error( __METHOD__ . ': Inside 500 Count', 'Failed query', [ 'error', $result ] );
+                    }
+                    $query = "INSERT IGNORE INTO `{$wpdb->prefix}dt_location_grid_upgrade` VALUES ";
+                    $count = 0;
+                }
+            }
+            if ( strpos( $query, '(' ) !== false ) {
+                //add the last queries
+                $query .= ';';
+                $query = str_replace( ", ;", ";", $query ); //remove last comma
+                $result = $wpdb->query( $query );  //phpcs:ignore
+                if ( $result === false ) {
+                    return new WP_Error( __METHOD__, 'Failed query 2', [ 'error', $result ] );
+                }
+            }
+
+            return true;
+        }
+
+        public function dt_array_to_sql( $values ) {
+            if ( empty( $values ) ) {
+                return 'NULL';
+            }
+            foreach ( $values as &$val ) {
+                if ( '\N' === $val ) {
+                    $val = 'NULL';
+                } else {
+                    $val = "'" . esc_sql( trim( $val ) ) . "'";
+                }
+            }
+            return implode( ',', $values );
         }
 
         public function box_population_division() {
@@ -1723,7 +2017,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         ?>
                         <script type="text/javascript">
                             function nextpage() {
-                                location.href = "<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_mapping_module&tab=geocoding&upgrade_database=<?php echo esc_attr( wp_create_nonce( 'upgrade_database'. get_current_user_id() ) ) ?>&loop=<?php echo esc_attr( $greater_than_limit ) ?>";
+                                location.href = "<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_mapping_module&tab=geocoding&upgrade_database=<?php echo esc_attr( wp_create_nonce( 'upgrade_database'. get_current_user_id() ) ) ?>&tab=levels&loop=<?php echo esc_attr( $greater_than_limit ) ?>";
                             }
                             setTimeout( "nextpage()", 1500 );
                         </script>
