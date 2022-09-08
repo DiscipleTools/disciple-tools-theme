@@ -109,7 +109,7 @@ function dt_release_modal() {
             var currentVisibleTabName = $('.dt-tab-active').data('content');
             $('#' + currentVisibleTabName ).addClass('dt-hide-content');
             $('.dt-tab-active').removeClass('dt-tab-active');
-            
+
             var desiredVisibleTabName = $(this).data('content');
             $(this).addClass('dt-tab-active');
             $( '#' + desiredVisibleTabName ).removeClass('dt-hide-content');
