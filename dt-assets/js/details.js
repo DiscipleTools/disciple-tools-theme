@@ -1177,13 +1177,18 @@ jQuery(document).ready(function($) {
 
         } else if ( ['connection'].includes(field_options.type) ){
           values_html = field_value.map(v=>{
-            return window.lodash.escape(v.label);
+            if ( v.label ){
+              return window.lodash.escape(v.label || v.post_title);
+            } else {
+              return `<a href="${window.lodash.escape(v.permalink)}" target="_blank" >${window.lodash.escape(v.post_title)}</a>`
+            }
           }).join(' / ')
+          $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span>${values_html}</span>`)
         } else {
           values_html = window.lodash.escape( field_value )
         }
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
-        if (field_options.type !== 'communication_channel' && field_options.type !== 'link') {
+        if (field_options.type !== 'communication_channel' && field_options.type !== 'link' && field_options.type !== 'connection') {
           $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
         }
         if ( field_options.type === "text" && new RegExp(urlRegex).exec(values_html) ){
