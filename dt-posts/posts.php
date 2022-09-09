@@ -2254,10 +2254,57 @@ class Disciple_Tools_Posts
             do_action( "post_connection_added", $post_type, $post_id, $field_key, $value );
             $connection = get_post( $value );
             $connection->permalink = get_permalink( $value );
+
+            // Determine if update action to be fired for corresponding connection.
+            if ( $connection->post_type != $post_type ) {
+                $reversed_field = self::get_reverse_connection_field( $connection->post_type, $field_setting['p2p_key'], ( $field_setting['p2p_direction'] == 'to' ) ? 'from' : 'to' );
+                if ( ! empty( $reversed_field ) ) {
+
+                    // Convert connection object into array.
+                    $existing_connection = json_decode( json_encode( $connection ), true );
+
+                    // Capture updates within cloned version, as needed.
+                    $updated_connection = $existing_connection;
+                    if ( ! isset( $updated_connection[ $reversed_field['key'] ] ) ) {
+                        $updated_connection[ $reversed_field['key'] ] = [
+                            [
+                                'ID' => $post_id
+                            ]
+                        ];
+                    }
+
+                    // Dispatch post update action signal!
+                    do_action( 'dt_post_updated', $connection->post_type, $connection->ID, [
+                        $reversed_field['key'] => [
+                            'values' => [
+                                'value' => $post_id
+                            ]
+                        ]
+                    ], $existing_connection, $updated_connection );
+                }
+            }
+
             return $connection;
         } else {
             return new WP_Error( __FUNCTION__, "Error adding connection on field: " . $field_key, [ "status" => 400 ] );
         }
+    }
+
+    private static function get_reverse_connection_field( $post_type, $p2p_key, $p2p_direction ) {
+        $reversed_field = [];
+        $settings       = DT_Posts::get_post_settings( $post_type );
+        foreach ( $settings['fields'] ?? [] as $field_key => $field ) {
+            if ( ( $field['type'] == 'connection' ) && isset( $field['p2p_key'], $field['p2p_direction'] ) ) {
+                if ( ( $field['p2p_key'] == $p2p_key ) && ( $field['p2p_direction'] == $p2p_direction ) ) {
+                    $reversed_field = [
+                        'key'   => $field_key,
+                        'field' => $field
+                    ];
+                }
+            }
+        }
+
+        return $reversed_field;
     }
 
     private static function remove_connection_from_post( string $post_type, int $post_id, string $field_key, int $value ){

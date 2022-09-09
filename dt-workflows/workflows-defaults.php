@@ -33,10 +33,6 @@ class Disciple_Tools_Workflows_Defaults {
         'id'    => 'groups_00003_custom_action_people_group_connections',
         'label' => 'Auto-Add People Groups'
     ];
-    private static $custom_action_update_contact_group_milestone = [
-        'id'    => 'groups_00004_custom_action_update_contact_group_milestone',
-        'label' => 'Update Contact In Group Milestone'
-    ];
 
     public function __construct() {
         add_filter( 'dt_workflows', [ $this, 'fetch_default_workflows_filter' ], 10, 2 );
@@ -46,11 +42,6 @@ class Disciple_Tools_Workflows_Defaults {
                 'name'      => self::$custom_action_people_group_connections['label'],
                 'displayed' => true // Within admin workflow builder view?
             ];
-            $actions[] = (object) [
-                'id'        => self::$custom_action_update_contact_group_milestone['id'],
-                'name'      => self::$custom_action_update_contact_group_milestone['label'],
-                'displayed' => true // Within admin workflow builder view?
-            ];
 
             return $actions;
         }, 10, 1 );
@@ -58,10 +49,6 @@ class Disciple_Tools_Workflows_Defaults {
         add_action( self::$custom_action_people_group_connections['id'], [
             $this,
             'custom_action_people_group_connections'
-        ], 10, 3 );
-        add_action( self::$custom_action_update_contact_group_milestone['id'], [
-            $this,
-            'custom_action_update_contact_group_milestone'
         ], 10, 3 );
     }
 
@@ -227,34 +214,6 @@ class Disciple_Tools_Workflows_Defaults {
                 )
             ]
         ];
-        $workflows[] = (object) [
-            'id'         => 'groups_00004',
-            'name'       => 'Update Contact In Group Milestone',
-            'enabled'    => false, // Can be enabled via admin view
-            'trigger'    => self::$trigger_updated['id'],
-            'conditions' => [
-                self::new_condition( self::$condition_is_set,
-                    [
-                        'id'    => 'members',
-                        'label' => $dt_fields['members']['name']
-                    ], [
-                        'id'    => '',
-                        'label' => ''
-                    ]
-                )
-            ],
-            'actions'    => [
-                self::new_action( self::$action_custom,
-                    [
-                        'id'    => 'members', // Field to be updated or an arbitrary selection!
-                        'label' => $dt_fields['members']['name']
-                    ], [
-                        'id'    => self::$custom_action_update_contact_group_milestone['id'], // Action Hook
-                        'label' => self::$custom_action_update_contact_group_milestone['label']
-                    ]
-                )
-            ]
-        ];
     }
 
     /**
@@ -316,51 +275,5 @@ class Disciple_Tools_Workflows_Defaults {
         }
 
         return false;
-    }
-
-    /**
-     * Workflow custom action self-contained function to handle following
-     * use case:
-     *
-     * When adding a contact member to a group, ensure In Church/Group Faith
-     * Milestone within contact's record is also selected.
-     *
-     * @param post
-     * @param field
-     * @param value
-     *
-     * @access public
-     * @since  1.11.0
-     */
-    public function custom_action_update_contact_group_milestone( $post, $field, $value ) {
-        if ( ! empty( $post ) && ( $post['post_type'] === 'groups' ) ) {
-            foreach ( $post['members'] ?? [] as $member ) {
-                if ( ! empty( $member ) && $member['post_type'] === 'contacts' ) {
-
-                    // Fetch member contacts record
-                    $member_post = DT_Posts::get_post( $member['post_type'], $member['ID'], false, false, false );
-
-                    // Update contact record's in church/group milestone accordingly
-                    if ( ! empty( $member_post ) && ! is_wp_error( $member_post ) && ! $this->already_assigned_in_church_group( $member_post ) ) {
-                        $updates['milestones']['values']   = [];
-                        $updates['milestones']['values'][] = [ 'value' => 'milestone_in_group' ];
-                        DT_Posts::update_post( $member_post['post_type'], $member_post['ID'], $updates, false, false );
-                    }
-                }
-            }
-        }
-    }
-
-    private function already_assigned_in_church_group( $member_post ): bool {
-        $already_assigned = false;
-        if ( isset( $member_post['milestones'] ) ) {
-            foreach ( $member_post['milestones'] ?? [] as $milestone ) {
-                if ( isset( $milestone ) && $milestone === 'milestone_in_group' ) {
-                    $already_assigned = true;
-                }
-            }
-        }
-
-        return $already_assigned;
     }
 }
