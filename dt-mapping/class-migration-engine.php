@@ -96,12 +96,12 @@ class DT_Mapping_Module_Migration_Engine
 
             self::sanity_check_expected_tables( $migration->get_expected_tables() );
 
-            if ( (int) get_option( 'dt_mapping_module_migration_lock', 0 ) ) {
+            if ( !empty( get_transient( 'dt_mapping_module_migration_lock' ) ) ) {
                 throw new DT_Mapping_Module_Migration_Lock_Exception();
             }
-            update_option( 'dt_mapping_module_migration_lock', '1' );
+            set_transient( 'dt_mapping_module_migration_lock', '1', DAY_IN_SECONDS );
 
-            error_log( gmdate( " Y-m-d H:i:s T" ) . " Starting mapping migrating to number $activating_migration_number" );
+            error_log( gmdate( "Y-m-d H:i:s T" ) . " Starting mapping migrating to number $activating_migration_number" );
             try {
                 $migration->up();
             } catch ( Throwable $e ) {
@@ -114,9 +114,9 @@ class DT_Mapping_Module_Migration_Engine
                 throw $e;
             }
             update_option( 'dt_mapping_module_migration_number', (string) $activating_migration_number );
-            error_log( gmdate( " Y-m-d H:i:s T" ) . " Done mapping migrating to number $activating_migration_number" );
+            error_log( gmdate( "Y-m-d H:i:s T" ) . " Done mapping migrating to number $activating_migration_number" );
 
-            update_option( 'dt_mapping_module_migration_lock', '0' );
+            delete_transient( 'dt_mapping_module_migration_lock' );
 
             $migration->test();
         }
