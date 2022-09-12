@@ -22,7 +22,7 @@ jobs:
     strategy:
       #fail-fast: true
       matrix:
-        php: ["7.2", "8.0"]
+        php: ["7.2"]
 
     steps:
     - uses: actions/checkout@v2
@@ -35,20 +35,20 @@ jobs:
       run: |
         composer install -o
         export PATH="$HOME/.composer/vendor/bin:$PATH"
-        npm install -g gulp-cli eslint @babel/eslint-parser
-        npm install
+#        npm install -g gulp-cli eslint @babel/eslint-parser
+#        npm install
 
-    - name: Test Syntax
-      run: ./tests/test_for_syntax_errors.sh
-
-    - name: Test Installation
-      run: ./tests/test_installation.sh
-
-    - name: Test phpcs
-      run: ./tests/test_phpcs.sh
-
-    - name: Test eslint
-      run: ./tests/test_eslint.sh
+#    - name: Test Syntax
+#      run: ./tests/test_for_syntax_errors.sh
+#
+#    - name: Test Installation
+#      run: ./tests/test_installation.sh
+#
+#    - name: Test phpcs
+#      run: ./tests/test_phpcs.sh
+#
+#    - name: Test eslint
+#      run: ./tests/test_eslint.sh
 
     - name: Test minification
       run : |
@@ -66,3 +66,5 @@ jobs:
         composer require "yoast/phpunit-polyfills"
         vendor/phpunit/phpunit/phpunit --version
         WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
+      with:
+        php-version: ${{ matrix.php }}
