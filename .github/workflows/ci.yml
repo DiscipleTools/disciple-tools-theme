@@ -2,7 +2,6 @@ name: Deployment
 
 on:
   push:
-    branches: [ production ]
 
 jobs:
   deploy:
