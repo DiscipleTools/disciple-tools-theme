@@ -12,8 +12,8 @@
 set -x
 set -e
 
-if [ "$TRAVIS_COMMIT" = "" ] ; then
-    echo "TRAVIS_COMMIT env variable not set" >&2
+if [ "$GITHUB_REPOSITORY" = "" ] ; then
+    echo "GITHUB_REPOSITORY env variable not set" >&2
     exit 1
 fi
 
@@ -31,4 +31,4 @@ chmod +x wp-cli.phar
 ./wp-cli.phar core install --url=localhost --title=test --admin_user=admin --admin_email=example@example.com
 
 # Install theme
-./wp-cli.phar theme install --activate "https://github.com/$TRAVIS_REPO_SLUG/archive/$TRAVIS_COMMIT.zip"
+./wp-cli.phar theme install --activate "https://github.com/$GITHUB_REPOSITORY/archive/$GITHUB_SHA.zip"
