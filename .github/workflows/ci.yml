@@ -79,3 +79,4 @@ jobs:
         composer require "yoast/phpunit-polyfills"
         vendor/phpunit/phpunit/phpunit --version
         WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
+
