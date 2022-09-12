@@ -15,7 +15,7 @@ class Cleanup extends WP_UnitTestCase {
         $this->assertTrue( true );
     }
 
-    public static function tearDownAfterClass(){
+    public static function tearDownAfterClass(): void {
         global $wpdb;
         $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_activity_log" );
         $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_location_grid" );

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/DiscipleTools/disciple-tools-theme.svg?branch=master)](https://travis-ci.com/DiscipleTools/disciple-tools-theme)
+![Build Status](https://github.com/DiscipleTools/disciple-tools-theme/actions/workflows/ci.yml/badge.svg?branch=master)
 
 # Disciple.Tools
 Disciple.Tools software boosts collaboration, clarity, and accountability for disciple and church multiplication movements.
