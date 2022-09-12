@@ -3,6 +3,15 @@ name: Deployment
 on:
   push:
 
+services:
+  mysql:
+      image: mysql:8.0
+      env:
+        MYSQL_DATABASE: testdb
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+        MYSQL_ROOT_PASSWORD: rootpassword
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,12 +29,20 @@ jobs:
         export PATH="$HOME/.composer/vendor/bin:$PATH"
         npm install -g gulp-cli eslint @babel/eslint-parser
         npm install
-    - name: Build
-      run: |
-        ./tests/test_for_syntax_errors.sh
-        ./tests/test_installation.sh
-        ./tests/test_phpcs.sh
-        ./tests/test_eslint.sh
+    - name: Test Syntax
+      run: ./tests/test_for_syntax_errors.sh
+
+    - name: Test Installation
+      run: ./tests/test_installation.sh
+
+    - name: Test phpcs
+      run: ./tests/test_phpcs.sh
+
+    - name: Test eslint
+      run: ./tests/test_eslint.sh
+
+    - name: Test minification
+      run : |
         find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
         gulp
         git diff --exit-code -- . ':(exclude)package-lock.json'
