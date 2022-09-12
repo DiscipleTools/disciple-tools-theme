@@ -1,0 +1,32 @@
+name: Deployment
+
+on:
+  push:
+    branches: [ production ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+
+    - name: Install dependencies
+      run: |
+        composer install -o
+        export PATH="$HOME/.composer/vendor/bin:$PATH"
+        npm install -g gulp-cli eslint @babel/eslint-parser
+        npm install
+    - name: Build
+      run: |
+        ./tests/test_for_syntax_errors.sh
+        ./tests/test_installation.sh
+        ./tests/test_phpcs.sh
+        ./tests/test_eslint.sh
+        find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
+        gulp
+        git diff --exit-code -- . ':(exclude)package-lock.json'
