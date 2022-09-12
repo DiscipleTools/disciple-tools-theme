@@ -27,7 +27,7 @@ chmod +x wp-cli.phar
 
 # Set up basic Wordpress installation:
 ./wp-cli.phar core download
-./wp-cli.phar config create --force --dbname=testdb --dbuser=user
+./wp-cli.phar config create --force --dbname=testdb --dbuser=user --dbhost=127.0.0.0 --dbpass=password
 ./wp-cli.phar core install --url=localhost --title=test --admin_user=admin --admin_email=example@example.com
 
 # Install theme

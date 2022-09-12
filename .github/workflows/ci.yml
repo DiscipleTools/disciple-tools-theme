@@ -29,6 +29,7 @@ jobs:
         export PATH="$HOME/.composer/vendor/bin:$PATH"
         npm install -g gulp-cli eslint @babel/eslint-parser
         npm install
+
     - name: Test Syntax
       run: ./tests/test_for_syntax_errors.sh
 
