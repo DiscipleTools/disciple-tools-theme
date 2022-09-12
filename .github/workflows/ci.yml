@@ -1,4 +1,4 @@
-name: Deployment
+name: Tests
 
 on:
   push:
@@ -40,6 +40,7 @@ jobs:
       uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php }}
+
     - name: Report PHP version
       run: php -v
 
