@@ -15,6 +15,9 @@ jobs:
           MYSQL_USER: user
           MYSQL_PASSWORD: password
           MYSQL_ROOT_PASSWORD: rootpassword
+        ports:
+          - 3306
+
 
     steps:
     - uses: actions/checkout@v2
