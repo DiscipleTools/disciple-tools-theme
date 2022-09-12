@@ -24,12 +24,20 @@ jobs:
       matrix:
         php: ["7.2"]
 
+    name: PHP ${{ matrix.php }}
     steps:
     - uses: actions/checkout@v2
 
     - uses: actions/setup-node@v2
       with:
         node-version: 16.x
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ matrix.php }}
+    - name: Report PHP version
+      run: php -v
 
     - name: Install dependencies
       run: |
@@ -66,5 +74,3 @@ jobs:
         composer require "yoast/phpunit-polyfills"
         vendor/phpunit/phpunit/phpunit --version
         WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
-      with:
-        php-version: ${{ matrix.php }}
