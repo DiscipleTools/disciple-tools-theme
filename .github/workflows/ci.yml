@@ -71,5 +71,6 @@ jobs:
     - name: PHPunit
       run: |
         composer require "phpunit/phpunit=8.*"
+        composer require "yoast/phpunit-polyfills"
         vendor/phpunit/phpunit/phpunit --version
         WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
