@@ -1162,7 +1162,7 @@
 
   function is_search_query_filter_label_excluded(filter, label) {
     let excluded = false;
-    if (window.lodash.has(filter, 'query.fields')) {
+    if (window.lodash.has(filter, 'query.fields') && Array.isArray( filter.query.fields ) ) {
       filter.query.fields.forEach(field => {
         if (field[label.field]) {
           excluded = window.lodash.includes(field[label.field], '-' + label.id);
