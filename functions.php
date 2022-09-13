@@ -143,7 +143,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.29.0';
+            $this->version = '1.30.1';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -392,6 +392,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
 
                 // Administration
                 require_once( 'dt-core/admin/admin-enqueue-scripts.php' ); // Load admin scripts
+                require_once( 'dt-core/admin/admin-functions.php' ); // Load admin functions
                 require_once( 'dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
                 require_once( 'dt-core/admin/config-dashboard.php' );
                 $this->config_dashboard = Disciple_Tools_Dashboard::instance();

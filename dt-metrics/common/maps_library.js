@@ -9,7 +9,7 @@ let mapbox_library_api = {
   spinner: null,
   setup_container: function (){
     if ( this.container_set_up ){ return; }
-    if ( typeof window.dt_mapbox_metrics.settings === undefined ) { return; }
+    if ( typeof window.dt_mapbox_metrics.settings === 'undefined' ) { return; }
 
     let chart = jQuery('#chart')
 
@@ -471,8 +471,8 @@ let area_map = {
             // add data to geojson properties
             let highest_value = 1
             jQuery.each(geojson.features, function (i, v) {
-              if (area_map.grid_data[geojson.features[i].properties.id]) {
-                geojson.features[i].properties.value = parseInt(area_map.grid_data[geojson.features[i].properties.id].count)
+              if (area_map.grid_data[geojson.features[i].properties.grid_id]) {
+                geojson.features[i].properties.value = parseInt(area_map.grid_data[geojson.features[i].properties.grid_id].count)
               } else {
                 geojson.features[i].properties.value = 0
               }

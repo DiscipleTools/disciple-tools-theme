@@ -3,12 +3,16 @@
 /**
  * Disciple.Tools
  *
+ * breadcrumb: new-field-type manage field types in Admin
+ *
  * @class      Disciple_Tools_Tab_Custom_Fields
  * @version    0.1.0
  * @since      0.1.0
  * @package    Disciple.Tools
  * @author     Disciple.Tools
  */
+
+/**/
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
@@ -156,7 +160,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
 
             /* Translation Dialog */
-            echo '<dialog id="dt_translation_dialog"></dialog>';
+            dt_display_translation_dialog();
+
+            /* Icon Selector Dialog */
+            include 'dialog-icon-selector.php';
 
             if ( empty( $field_key ) && $show_add_field ){
                 $this->box( 'top', __( "Create new field", 'disciple_tools' ) );
@@ -412,19 +419,23 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <tbody>
                             <tr>
                                 <td>
-                                    <?php if ( isset( $field["icon"] ) ): ?>
-                                    <img src="<?php echo esc_attr( $field["icon"] ); ?>"
-                                         style="width: 20px; vertical-align: middle;">
-                                    <?php endif; ?>
+                                    <?php if ( isset( $field["icon"] ) ) { ?>
+                                        <img src="<?php echo esc_attr( $field["icon"] ); ?>"
+                                             style="width: 20px; vertical-align: middle;">
+                                    <?php } elseif ( isset( $field["font-icon"] ) ) { ?>
+                                        <i class="<?php echo esc_attr( $field["font-icon"] ); ?>"
+                                           style="font-size: 40px; vertical-align: middle;"></i>
+                                    <?php } ?>
                                 </td>
                                 <td>
                                     <input type="text" name="field_icon"
                                            placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
-                                           value="<?php echo esc_attr( $field["icon"] ?? '' ); ?>">
+                                           value="<?php echo esc_attr( $field["icon"] ?? ( $field["font-icon"] ?? '' ) ); ?>">
                                 </td>
                                 <td>
-                                    <button class="button file-upload-display-uploader" data-form="<?php echo esc_html( $form_name ) ?>"
-                                            data-icon-input="field_icon"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
+                                    <button class="button change-icon-button"
+                                            data-form="<?php echo esc_html( $form_name ) ?>"
+                                            data-icon-input="field_icon"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
                                 </td>
                                 <td>
                                     <?php if ( isset( $defaults[ $field_key ]["icon"] ) && $defaults[ $field_key ]["icon"] !== $field["icon"] ): ?>
@@ -487,7 +498,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         <?php endif; ?>
 
-        <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
+        <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" || $field["type"] === "link" ){
             if ( in_array( $field_key, $core_fields ) ){
                 ?>
                 <p>
@@ -518,7 +529,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td><?php esc_html_e( "Default Label", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Custom Label", 'disciple_tools' ) ?></td>
                     <?php
-                    if ( $field["type"] === "multi_select" ):
+                    if ( $field["type"] === "multi_select" || $field["type"] === "link" ):
                         ?>
                         <td><?php esc_html_e( "Icon", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Icon Link", 'disciple_tools' ) ?></td>
@@ -563,21 +574,26 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <button title="submit" class="button" name="delete_option_label" value="<?php echo esc_html( $key ) ?>">Remove Label</button>
                                 <?php endif; ?>
                             </td>
-                            <?php if ( $field["type"] === "multi_select" ): ?>
+                            <?php if ( $field["type"] === "multi_select" || $field["type"] === "link" ): ?>
                                 <td>
                                     <?php if ( isset( $option["icon"] ) && ! empty( $option["icon"] ) ): ?>
-                                        <img src="<?php echo esc_attr( $option["icon"] ); ?>" style="width: 20px; vertical-align: middle;">
+                                        <img src="<?php echo esc_attr( $option["icon"] ); ?>"
+                                             style="width: 20px; vertical-align: middle;">
+                                    <?php elseif ( isset( $option["font-icon"] ) && ! empty( $option["font-icon"] ) ): ?>
+                                        <i class="<?php echo esc_attr( $option["font-icon"] ); ?>"
+                                           style="font-size: 20px; vertical-align: middle;"></i>
                                     <?php else : ?>
                                         <div style="width: 20px; display: inline-block">&nbsp;</div>
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <input type="text" name="field_option_icon_<?php echo esc_html( $key ) ?>" placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
-                                           value="<?php echo esc_attr( isset( $option["icon"] ) ? $option["icon"] : '' ); ?>">
+                                    <input type="text" name="field_option_icon_<?php echo esc_html( $key ) ?>"
+                                           placeholder="<?php esc_html_e( 'Icon url', 'disciple_tools' ); ?>"
+                                           value="<?php echo esc_attr( $option["icon"] ?? ( $option["font-icon"] ?? '' ) ); ?>">
                                 </td>
                                 <td>
-                                    <button class="button file-upload-display-uploader" data-form="<?php echo esc_html( $form_name ) ?>"
-                                            data-icon-input="field_option_icon_<?php echo esc_html( $key ) ?>"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
+                                    <button class="button change-icon-button" data-form="<?php echo esc_html( $form_name ) ?>"
+                                            data-icon-input="field_option_icon_<?php echo esc_html( $key ) ?>"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
                                 </td>
                                 <td>
                                     <?php if ( isset( $defaults[ $field_key ]["default"][ $key ]["icon"] ) && $defaults[ $field_key ]["default"][ $key ]["icon"] !== $option["icon"] ): ?>
@@ -861,7 +877,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
 
             //field icon
-            $custom_field["icon"] = ! empty( $post_submission["field_icon"] ) ? $post_submission["field_icon"] : null;
+            $field_icon                           = $post_submission["field_icon"];
+            $field_icon_key                       = ( ! empty( $field_icon ) && strpos( $field_icon, 'mdi mdi-' ) === 0 ) ? 'font-icon' : 'icon';
+            $field_null_icon_key                  = ( $field_icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
+            $custom_field[ $field_icon_key ]      = $field_icon;
+            $custom_field[ $field_null_icon_key ] = null;
 
             //restore field icon
             if ( isset( $post_submission["restore_field_icon"] ) ) {
@@ -880,7 +900,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
 
             // key_select and multi_options
-            if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" ) ){
+            if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" || $field["type"] === "link" ) ){
                 $field_options = $field["default"];
                 foreach ( $post_submission as $key => $val ){
                     if ( strpos( $key, "field_option_" ) === 0 ) {
@@ -898,11 +918,18 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         } elseif ( strpos( $key, 'icon' ) !== false ) {
                             $option_key = substr( $key, 18 );
 
-                            if ( !empty( $val ) ){
-                                if ( ! isset( $field_options[ $option_key ]["icon"] ) || $field_options[ $option_key ]["icon"] != $val ) {
-                                    $custom_field["default"][$option_key]["icon"] = $val;
+                            if ( ! empty( $val ) ) {
+
+                                // Determine icon keys
+                                $icon_key      = ( strpos( $val, 'mdi mdi-' ) === 0 ) ? 'font-icon' : 'icon';
+                                $null_icon_key = ( $icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
+
+                                // Update icon accordingly and nullify alternative
+                                if ( ! isset( $field_options[ $option_key ][ $icon_key ] ) || $field_options[ $option_key ][ $icon_key ] != $val ) {
+                                    $custom_field["default"][ $option_key ][ $icon_key ]      = $val;
+                                    $custom_field["default"][ $option_key ][ $null_icon_key ] = null;
                                 }
-                                $field_options[$option_key]['icon'] = $val;
+                                $field_options[ $option_key ][ $icon_key ] = $val;
                             }
                         } else {
                             $option_key = substr( $key, 13 );
@@ -1044,6 +1071,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
                             <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
                             <option value="number"><?php esc_html_e( "Number", 'disciple_tools' ) ?></option>
+                            <option value="link"><?php esc_html_e( "Link", 'disciple-tools' ) ?></option>
                             <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
                             <option value="connection"><?php esc_html_e( "Connection", 'disciple_tools' ) ?></option>
                         </select>
@@ -1156,6 +1184,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( "Text Area: This is just a multi-line text area", 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( "Number: This is a number text field", 'disciple-tools' ) ?></li>
             <li><?php esc_html_e( "Date: A field that uses a date picker to choose dates (like baptism date)", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Link: Create a collection of links", 'disciple-tools' ) ?></li>
             <li><?php esc_html_e( "Connection: An autocomplete picker to connect to another record.", 'disciple_tools' ) ?></li>
         </ul>
         <strong><?php esc_html_e( "Private Field:", 'disciple_tools' ) ?></strong>
@@ -1267,6 +1296,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'name'        => $post_submission["new_field_name"],
                     'type'        => 'number',
                     'default'     => '',
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
+                    'private' => $field_private
+                ];
+            } elseif ( $field_type === 'link' ) {
+                $new_field = [
+                    'name'        => $post_submission["new_field_name"],
+                    'type'        => 'link',
+                    'default'     => [],
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private

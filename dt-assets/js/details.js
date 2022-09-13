@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
   let post_id = window.detailsSettings.post_id
   let post_type = window.detailsSettings.post_type
   let post = window.detailsSettings.post_fields
+  let post_settings = window.detailsSettings.post_settings
   let field_settings = window.detailsSettings.post_settings.fields
   window.post_type_fields = field_settings
   let rest_api = window.API
@@ -63,6 +64,33 @@ jQuery(document).ready(function($) {
     }
   }
 
+
+  /* breadcrumb: new-field-type Update record */
+  $('input.link-input').change(function(){
+    const fieldKey = $(this).data('field-key')
+    const type = $(this).data('type')
+    const meta_id = $(this).data('meta-id')
+    const value = $(this).val()
+
+    if ( $(this).prop('required') && value === ''){
+      return;
+    }
+
+    const fieldValues = {
+      values: [
+        {
+          value,
+          type,
+          meta_id,
+        }
+      ]
+    }
+    $(`#${fieldKey}-spinner`).addClass('active')
+    rest_api.update_post(post_type, post_id, { [fieldKey]: fieldValues }).then((newPost)=>{
+      $(`#${fieldKey}-spinner`).removeClass('active')
+      post = newPost
+    }).catch(handleAjaxError)
+  })
 
   $('.dt_textarea').change(function(){
     const id = $(this).attr('id')
@@ -186,13 +214,21 @@ jQuery(document).ready(function($) {
   // Clicking the plus sign next to the field label
   $('button.add-button').on('click', e => {
     const field = $(e.currentTarget).data('list-class')
+    const fieldType = $(e.currentTarget).data('field-type')
     const $list = $(`#edit-${field}`)
 
-    $list.append(`<div class="input-group">
+    if (fieldType === 'link') {
+      const addLinkForm = $(`.add-link-${field}`)
+      addLinkForm.show()
+
+      $(`#cancel-link-button-${field}`).on('click', () => addLinkForm.hide())
+    } else {
+      $list.append(`<div class="input-group">
             <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
             <div class="input-group-button">
             <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
             </div></div>`)
+    }
   })
   $(document).on('click', '.channel-delete-button', function(){
     let field = $(this).data('field')
@@ -216,6 +252,34 @@ jQuery(document).ready(function($) {
         resetDetailsFields()
       }).catch(handleAjaxError)
     }
+  })
+
+  $(document).on('click', '.link-delete-button', function(){
+    let metaId = $(this).data('meta-id')
+    let fieldKey = $(this).data('field-key')
+
+    $(this).closest('.link-section').remove()
+
+    if (!metaId || metaId === "") {
+      return
+    }
+
+    $(`#${fieldKey}-spinner`).addClass('active')
+
+    const update = {
+      values: [
+        {
+          delete: true,
+          meta_id: metaId,
+        }
+      ]
+    }
+
+    API.update_post(post_type, post_id, { [fieldKey]: update }).then((updatedContact)=>{
+      $(`#${fieldKey}-spinner`).removeClass('active')
+      post = updatedContact
+      resetDetailsFields()
+    }).catch(handleAjaxError)
   })
 
   $(document).on('blur', 'input.dt-communication-channel', function(){
@@ -297,6 +361,11 @@ jQuery(document).ready(function($) {
       }
     })
   })
+
+  /**
+   * Links
+   */
+  $('.add-link-button').on('click', SHAREDFUNCTIONS.addLink)
 
   /**
    * user select typeahead
@@ -390,8 +459,13 @@ jQuery(document).ready(function($) {
       multiselect: {
         matchOn: ["ID"],
         data: function () {
-          return (post[field_id] || [] ).map(g=>{
-            return {ID:g.ID, name:g.post_title, label: g.label}
+          return (post[field_id] || []).map(g => {
+            return {
+              ID: g.ID,
+              name: g.post_title,
+              label: g.label,
+              status: g['status'] ?? null
+            }
           })
         },
         callback: {
@@ -417,6 +491,9 @@ jQuery(document).ready(function($) {
             let cancelButton = $(`#${el.id} .typeahead__cancel-button`);
             cancelButton.css('pointerEvents','none');
           }
+
+          // If available, display item status colours within labels
+          set_item_label_status(this);
         },
         onClick: function(node, a, item, event){
           $(`#${field_id}-spinner`).addClass('active')
@@ -424,6 +501,12 @@ jQuery(document).ready(function($) {
             $(`#${field_id}-spinner`).removeClass('active')
             $( document ).trigger( "dt-post-connection-added", [ new_post, field_id ] );
           }).catch(err => { console.error(err) })
+
+          // If present, adjust status label, so as to remain uniform
+          if (item['status']) {
+            item['status']['label'] = item['status']['label'] ? '[' + window.lodash.escape(item['status']['label']).toLowerCase() + ']' : '';
+          }
+
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -435,6 +518,7 @@ jQuery(document).ready(function($) {
           $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function (event, query) {
+          set_item_label_status(this);
           if ( !query ){
             $(`#${field_id}-result-container`).empty()
           }
@@ -446,6 +530,34 @@ jQuery(document).ready(function($) {
       }
     })
   })
+
+  function set_item_label_status(field_typeahead) {
+    if (field_typeahead) {
+      $.each(field_typeahead.items, function (idx, item) {
+        if (item['ID'] && item['status'] && item['status']['color']) {
+          $(field_typeahead.label.container[0]).find("a[href$=\\/" + item['ID']).each(function () {
+
+            // Obtain label handle
+            let label = $(this).parent();
+
+            // Once we have a handle, adjust colour styling accordingly
+            label.css('border-left', '3px solid ' + item['status']['color']);
+
+            // Assign corresponding tooltip, using title as trigger
+            if (item['status']['label']) {
+              label.attr('title', '');
+              label.tooltip({
+                content: item['status']['label'],
+                show: {effect: 'fade', duration: 100}
+              });
+            }
+          });
+        }
+      });
+
+      field_typeahead.adjustInputSize();
+    }
+  }
 
   //multi_select typeaheads
   for (let input of $(".multi_select .typeahead__query input")) {
@@ -1032,7 +1144,7 @@ jQuery(document).ready(function($) {
           values_html = field_value.map(v=>{
             return window.lodash.escape(v.matched_search || v.label);
           }).join(' / ')
-        } else if ( field_options.type === 'communication_channel' ){
+        } else if ( field_options.type === 'communication_channel' || field_options.type === 'link' ){
           field_value.forEach((v, index)=>{
             if ( index > 0 ){
               values_html += ', '
@@ -1065,13 +1177,18 @@ jQuery(document).ready(function($) {
 
         } else if ( ['connection'].includes(field_options.type) ){
           values_html = field_value.map(v=>{
-            return window.lodash.escape(v.label);
+            if ( v.label ){
+              return window.lodash.escape(v.label || v.post_title);
+            } else {
+              return `<a href="${window.lodash.escape(v.permalink)}" target="_blank" >${window.lodash.escape(v.post_title)}</a>`
+            }
           }).join(' / ')
+          $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span>${values_html}</span>`)
         } else {
           values_html = window.lodash.escape( field_value )
         }
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
-        if (field_options.type !== 'communication_channel') {
+        if (field_options.type !== 'communication_channel' && field_options.type !== 'link' && field_options.type !== 'connection') {
           $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
         }
         if ( field_options.type === "text" && new RegExp(urlRegex).exec(values_html) ){

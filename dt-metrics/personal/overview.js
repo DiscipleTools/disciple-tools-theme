@@ -236,7 +236,7 @@ jQuery(function() {
       jQuery.each(chart.data, function (idx, generation) {
         jQuery.each(generation, function (key, value) {
           let group_type = fetchGroupType(key);
-          if (group_type && !group_type_set.hasOwnProperty(group_type['type'])) {
+          if (group_type && !Object.prototype.hasOwnProperty.call(group_type_set, group_type['type'])) {
             group_type_set[group_type['type']] = group_type;
           }
         });

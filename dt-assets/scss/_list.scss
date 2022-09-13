@@ -124,8 +124,7 @@ table.js-list{
     width: 100%
 }
 
-
-.current-filter {
+.current-filter-list {
     font-size: 0.875rem;
     position: relative;
     background: #ecf5fc;
@@ -136,7 +135,7 @@ table.js-list{
     margin-bottom: 0.375rem;
 }
 
-.current-filter-close {
+.current-filter-list-close {
     cursor: pointer;
     font-weight: 300;
     font-family: Arial, sans-serif;
@@ -145,9 +144,63 @@ table.js-list{
     padding: 7px 5px;
 }
 
-.current-filter-close:hover {
-    background: #d5e9f9;
-    color: #d0021b;
+.current-filter-list-close:hover {
+    background: #c2e0ff;
+    color: #ffffff;
+}
+
+.current-filter-list-excluded {
+    font-size: 0.875rem;
+    position: relative;
+    background: #fcecec;
+    border: 1px solid #ffc2c2;
+    padding: 4px 0px 4px 4px;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-bottom: 0.375rem;
+
+    .current-filter-list-close {
+        border-left: 1px solid #ffc2c2;
+    }
+
+    .current-filter-list-close:hover {
+        background: #ffc2c2;
+        color: #ffffff;
+    }
+}
+
+.current-filter {
+    font-size: 0.875rem;
+    position: relative;
+    background: #ecf5fc;
+    border: 1px solid #c2e0ff;
+    padding: 4px 4px 4px 4px;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-bottom: 0.375rem;
+}
+
+.current-filter-label-button {
+    cursor: default;
+    margin: 0px 0px 0px 4px;
+    color: #000000;
+}
+
+.current-filter-label-button:hover {
+    cursor: pointer;
+    margin: 0px 0px 0px 4px;
+    color: #cecece;
+}
+
+.current-filter-excluded {
+    font-size: 0.875rem;
+    position: relative;
+    background: #fcecec;
+    border: 1px solid #ffc2c2;
+    padding: 4px 4px 4px 4px;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-bottom: 0.375rem;
 }
 
 #content table thead .sortable th {
@@ -213,12 +266,21 @@ table.js-list{
     .button-cancel {
         background-color: #F2F2F2;
         color: black;
+        margin: 5px 0 5px 0;
     }
     .confirm-buttons {
         text-align: end;
     }
     .grid-container {
         padding: 0
+    }
+
+    #new-filter-name {
+        margin: 5px 0 5px 0;
+    }
+
+    .confirm-filter-records {
+        margin: 5px 0 5px 0;
     }
 }
 

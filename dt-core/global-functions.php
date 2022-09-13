@@ -223,246 +223,40 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     if ( ! function_exists( 'dt_get_available_languages' ) ) {
-        function dt_get_available_languages( $code_as_key = false ) {
-            $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+        /**
+         * Return the list of available languages. Defaults to all translations in the theme.
+         *
+         * If an array of available language codes is given, then the function will return the language info for
+         * these language codes. Useful if you want to get the language info for your plugin's translated languages
+         *
+         * If $all is set to true, then the function will return the unfiltered complete language information array.
+         *
+         * @param bool $code_as_key Do we want to return an assosciative array with the codes as the keys
+         * @param bool $all Returns all possible languages in the world ( or at least those we have in our system :)
+         * @param array $available_language_codes The list of language codes that have been translated ( if you want to filter the list by languages in your plugin for example)
+         *
+         * @return array
+         */
+        function dt_get_available_languages( $code_as_key = false, $all = false, $available_language_codes = [] ) {
+            $translations = dt_get_global_languages_list();
+
+            if ( true === $all ) {
+                return $translations;
+            }
+
+            if ( empty( $available_language_codes ) ) {
+                $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+            }
+
             array_unshift( $available_language_codes, 'en_US' );
             $available_translations = [];
             $site_default_locale = get_option( 'WPLANG' );
 
-            $translations = [
-                'en_US' => [
-                    'language' => 'en_US',
-                    'english_name' => 'English (United States)',
-                    'native_name' => 'English (United States)',
-                    'flag' => '🇺🇸'
-                ],
-                'am_ET' => [
-                    'language' => 'am_ET',
-                    'native_name' => 'Amharic (Ethiopia)',
-                    'english_name' => 'Amharic (Ethiopia)',
-                    'flag' => '🇪🇹'
-                ],
-                'ar' => [
-                    'language' => 'ar',
-                    'english_name' => 'Arabic',
-                    'native_name' => 'العربية',
-                    'flag' => '🇦🇪'
-                ],
-                'ar_MA' => [
-                    'language' => 'ar_MA',
-                    'native_name' => 'العربية (المغرب)',
-                    'english_name' => 'Arabic (Morocco)',
-                    'flag' => '🇲🇦'
-                ],
-                'bg_BG' => [
-                    'language' => 'bg_BG',
-                    'english_name' => 'Bulgarian',
-                    'native_name' => 'Български',
-                    'flag' => '🇧🇬'
-                ],
-                'bn_BD' => [
-                    'language' => 'bn_BD',
-                    'english_name' => 'Bengali (Bangladesh)',
-                    'native_name' => 'বাংলা',
-                    'flag' => '🇧🇩'
-                ],
-                'bs_BA' => [
-                    'language' => 'bs_BA',
-                    'english_name' => 'Bosnian',
-                    'native_name' => 'Bosanski',
-                    'flag' => '🇧🇦'
-                ],
-                'de_DE' => [
-                    'language' => 'de_DE',
-                    'english_name' => 'German',
-                    'native_name' => 'Deutsch',
-                    'flag' => '🇩🇪'
-                ],
-                'es_419' => [
-                    'language' => 'es_419',
-                    'native_name' => 'Español (Latinoamérica) ',
-                    'english_name' => 'Spanish (Latin America)',
-                    'flag' => '🇦🇷'
-                ],
-                'es_ES' => [
-                    'language' => 'es_ES',
-                    'english_name' => 'Spanish (Spain)',
-                    'native_name' => 'Español',
-                    'flag' => '🇪🇸'
-                ],
-                'fa_IR' => [
-                    'language' => 'fa_IR',
-                    'english_name' => 'Persian',
-                    'native_name' => 'فارسی',
-                    'flag' => '🇮🇷'
-                ],
-                'fr_FR' => [
-                    'language' => 'fr_FR',
-                    'english_name' => 'French (France)',
-                    'native_name' => 'Français',
-                    'flag' => '🇫🇷'
-                ],
-                'hi_IN' => [
-                    'language' => 'hi_IN',
-                    'english_name' => 'Hindi',
-                    'native_name' => 'हिन्दी',
-                    'flag' => '🇮🇳'
-                ],
-                'hr' => [
-                    'language' => 'hr',
-                    'english_name' => 'Croatian',
-                    'native_name' => 'Hrvatski',
-                    'flag' => '🇭🇷'
-                ],
-                'hu_HU' => [
-                    'language' => 'hu_HU',
-                    'english_name' => 'Hungarian',
-                    'native_name' => 'Magyar',
-                    'flag' => '🇭🇺'
-                ],
-                'id_ID' => [
-                    'language' => 'id_ID',
-                    'english_name' => 'Indonesian',
-                    'native_name' => 'Bahasa Indonesia',
-                    'flag' => '🇮🇩'
-                ],
-                'it_IT' => [
-                    'language' => 'it_IT',
-                    'english_name' => 'Italian',
-                    'native_name' => 'Italiano',
-                    'flag' => '🇮🇹'
-                ],
-                'ja' => [
-                    'language' => 'ja',
-                    'english_name' => 'Japanese',
-                    'native_name' => '日本語',
-                    'flag' => '🇯🇵'
-                ],
-                'ko_KR' => [
-                    'language' => 'ko_KR',
-                    'english_name' => 'Korean',
-                    'native_name' => '한국어',
-                    'flag' => '🇰🇷'
-                ],
-                'mk_MK' => [
-                    'language' => 'mk_MK',
-                    'english_name' => 'Macedonian',
-                    'native_name' => 'Македонски јазик',
-                    'flag' => '🇲🇰'
-                ],
-                'mr' => [
-                    'language' => 'mr',
-                    'english_name' => 'Marathi',
-                    'native_name' => 'मराठी',
-                    'flag' => '🇮🇳'
-                ],
-                'my_MM' => [
-                    'language' => 'my_MM',
-                    'english_name' => 'Myanmar (Burmese)',
-                    'native_name' => 'ဗမာစာ',
-                    'flag' => '🇲🇲'
-                ],
-                'ne_NP' => [
-                    'language' => 'ne_NP',
-                    'english_name' => 'Nepali',
-                    'native_name' => 'नेपाली',
-                    'flag' => '🇳🇵'
-                ],
-                'nl_NL' => [
-                    'language' => 'nl_NL',
-                    'english_name' => 'Dutch',
-                    'native_name' => 'Nederlands',
-                    'flag' => '🇳🇱'
-                ],
-                'pa_IN' => [
-                    'language' => 'pa_IN',
-                    'english_name' => 'Punjabi',
-                    'native_name' => 'ਪੰਜਾਬੀ',
-                    'flag' => '🇮🇳'
-                ],
-                'pt_BR' => [
-                    'language' => 'pt_BR',
-                    'english_name' => 'Portuguese (Brazil)',
-                    'native_name' => 'Português do Brasil',
-                    'flag' => '🇧🇷'
-                ],
-                'ro_RO' => [
-                    'language' => 'ro_RO',
-                    'english_name' => 'Romanian',
-                    'native_name' => 'Română',
-                    'flag' => '🇷🇴'
-                ],
-                'ru_RU' => [
-                    'language' => 'ru_RU',
-                    'english_name' => 'Russian',
-                    'native_name' => 'Русский',
-                    'flag' => '🇷🇺'
-                ],
-                'sl_SI' => [
-                    'language' => 'sl_SI',
-                    'english_name' => 'Slovenian',
-                    'native_name' => 'Slovenščina',
-                    'flag' => '🇸🇮'
-                ],
-                'sr_BA' => [
-                    'language' => 'sr_BA',
-                    'native_name' => 'српски',
-                    'english_name' => 'Serbian',
-                    'flag' => '🇷🇸'
-                ],
-                'sw' => [
-                    'language' => 'sw',
-                    'native_name' => 'Kiswahili',
-                    'english_name' => 'Swahili',
-                    'flag' => '🇹🇿'
-                ],
-                'th' => [
-                    'language' => 'th',
-                    'english_name' => 'Thai',
-                    'native_name' => 'ไทย',
-                    'flag' => '🇹🇭'
-                ],
-                'tl' => [
-                    'language' => 'tl',
-                    'english_name' => 'Tagalog',
-                    'native_name' => 'Tagalog',
-                    'flag' => '🇵🇭'
-                ],
-                'tr_TR' => [
-                    'language' => 'tr_TR',
-                    'english_name' => 'Turkish',
-                    'native_name' => 'Türkçe',
-                    'flag' => '🇹🇷'
-                ],
-                'uk' => [
-                    'language' => 'uk',
-                    'english_name' => 'Ukrainian',
-                    'native_name' => 'український',
-                    'flag' => '🇺🇦'
-                ],
-                'vi' => [
-                    'language' => 'vi',
-                    'english_name' => 'Vietnamese',
-                    'native_name' => 'Tiếng Việt',
-                    'flag' => '🇻🇳'
-                ],
-                'zh_CN' => [
-                    'language' => 'zh_CN',
-                    'english_name' => 'Chinese (China)',
-                    'native_name' => '简体中文',
-                    'flag' => '🇨🇳'
-                ],
-                'zh_TW' => [
-                    'language' => 'zh_TW',
-                    'english_name' => 'Chinese (Taiwan)',
-                    'native_name' => '繁體中文',
-                    'flag' => '🇹🇼'
-                ],
-            ];
-
             foreach ( $available_language_codes as $code ){
                 if ( isset( $translations[$code] ) ){
-                    $translations[$code]['site_default'] = $site_default_locale === $translations[$code]["language"];
+                    $translations[$code]['site_default'] = $site_default_locale === $code;
+                    $translations[$code]['english_name'] = $translations[$code]["label"];
+                    $translations[$code]['language'] = $code;
                     if ( !$code_as_key ){
                         $available_translations[] = $translations[$code];
                     } else {
@@ -487,7 +281,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <option
                         value="<?php echo esc_html( $language["language"] ); ?>" <?php selected( $dt_user_locale === $language["language"] ) ?>>
                         <?php echo esc_html( ! empty( $language["flag"] ) ? $language["flag"] . ' ' : '' ); ?> <?php echo esc_html( $language["native_name"] ); ?>
-                        - <?php echo esc_html( $language["english_name"] ); ?>
                     </option>
                 <?php } ?>
             </select>
@@ -514,17 +307,30 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $icon_rendered = false;
             if ( isset( $field["icon"] ) && !empty( $field["icon"] ) ){
                 $icon_rendered = true;
+                if ( isset( $field["name"] ) ) {
+                    $alt_tag = $field["name"];
+                } else if ( isset( $field["label"] ) ) {
+                    $alt_tag = $field["label"];
+                } else {
+                    $alt_tag = "";
+                }
                 ?>
-                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field["icon"] ) ?>" alt="<?php echo esc_html( $field["name"] ?? "" ) ?>">
+
+                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field["icon"] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>">
+
                 <?php
             } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
                 $icon_rendered = true;
                 ?>
+
                 <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>"></i>
+
                 <?php
             } else if ( $default_to_name && !empty( $field["name"] ) ){
                 ?>
+
                 <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
+
                 <?php
             }
             return $icon_rendered;
@@ -674,7 +480,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
-     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags, user_select
+     * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags, user_select, link
+     *
+     * breadcrumb: new-field-type
      *
      * @param $field_key
      * @param $fields
@@ -701,7 +509,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $display_field_id = $field_id_prefix . $field_key;
         }
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
+            /* breadrcrumb: new-field-type Add allowed field types */
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -719,8 +528,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php if ( $is_private ) : ?>
                     <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
                 <?php endif;
-                if ( $field_type === "communication_channel" ) : ?>
-                    <button data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button" <?php echo esc_html( $disabled ); ?>>
+                if ( $field_type === "communication_channel" || $field_type === "link" ) : ?>
+                    <button data-field-type="<?php echo esc_html( $field_type ) ?>" data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button" <?php echo esc_html( $disabled ); ?>>
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 <?php endif ?>
@@ -837,7 +646,71 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                        min="<?php echo esc_html( $fields[$field_key]["min_option"] ?? "" ) ?>"
                        max="<?php echo esc_html( $fields[$field_key]["max_option"] ?? "" ) ?>"
                 />
-            <?php elseif ( $field_type === "date" ) :?>
+            <?php elseif ( $field_type === "link" ) : ?>
+
+                <div class="link-group">
+
+                    <div class="add-link-<?php echo esc_html( $display_field_id ) ?>" style="display:none">
+                        <div class="add-link-form" style="display: flex; align-items: center;">
+                            <select class="link-type">
+                                <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+
+                                    <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) {
+                                        continue;
+                                    } ?>
+
+                                    <option style="display:flex; align-items: center;" value="<?php echo esc_html( $option_key ) ?>">
+                                    <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
+                                    <?php echo esc_html( $option_value['label'] ) ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button
+                                type="button"
+                                class="button add-link-button"
+                                data-field-key="<?php echo esc_attr( $field_key ) ?>"
+                            >
+                                <?php esc_html_e( 'Add', 'disciple-tools' ) ?>
+                            </button>
+                            <button type="button" id="cancel-link-button-<?php echo esc_html( $display_field_id ) ?>" class="button hollow alert">
+                                x
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="link-list-<?php echo esc_html( $field_key ) ?>">
+
+                        <?php
+                        foreach ( $post[$field_key] ?? [] as $link_item ) {
+                            if ( !isset( $link_item["type"] ) ) {
+                                continue;
+                            }
+                            $option_type = $link_item["type"];
+                            $option_value = $fields[$field_key]["default"][$option_type];
+                            $meta_id = $link_item["meta_id"];
+                            $meta_value = $link_item["value"];
+
+                            render_link_field( $field_key, $option_type, $option_value, $meta_value, $display_field_id, $meta_id, $required_tag, $disabled );
+                        }
+                        ?>
+
+                    </div>
+
+                    <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+
+                        <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) {
+                            continue;
+                        } ?>
+
+                        <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
+                            <?php render_link_field( $field_key, $option_key, $option_value, "", $display_field_id, "", $required_tag, $disabled ) ?>
+                        </div>
+
+                    <?php endforeach; ?>
+
+                </div>
+
+                <?php elseif ( $field_type === "date" ) :?>
                 <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
                     <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
                            value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?> >
@@ -956,6 +829,40 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php endif;
         }
         do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id );
+    }
+
+    function render_link_field( $field_key, $option_key, $option_value, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
+        ?>
+
+        <div class="link-section">
+            <div class="section-subheader">
+                <?php dt_render_field_icon( $option_value ) ?>
+                <?php echo esc_html( $option_value["label"] ); ?>
+            </div>
+            <div class="input-group">
+                <input
+                    type="text"
+                    class="link-input input-group-field"
+                    value="<?php echo esc_html( $value ) ?>"
+                    data-meta-id="<?php echo esc_html( $meta_id ) ?>"
+                    data-field-key="<?php echo esc_html( $display_field_id ) ?>"
+                    data-type="<?php echo esc_html( $option_key ) ?>"
+                    <?php echo esc_html( $required_tag ) ?>
+                    <?php echo esc_html( $disabled ) ?>
+                >
+                <div class="input-group-button">
+                    <button
+                        class="button alert delete-button-style input-height link-delete-button delete-button"
+                        data-meta-id="<?php echo esc_html( $meta_id ) ?>"
+                        data-field-key="<?php echo esc_html( $field_key ) ?>"
+                    >
+                        &times;
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <?php
     }
 
     function dt_increment( &$var, $val ){
@@ -1080,12 +987,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 'dt'
             ];
             /* split title string into array of words */
-            $words = explode( ' ', mb_strtolower( $string ) );
+            $words = explode( ' ', strtolower( $string ) );
             /* iterate over words */
             foreach ( $words as $position => $word ) {
                 /* re-capitalize acronyms */
                 if ( in_array( $word, $acronyms_and_such ) ) {
-                    $words[ $position ] = mb_strtoupper( $word );
+                    $words[ $position ] = strtoupper( $word );
                     /* capitalize first letter of all other words, if... */
                 } elseif (
                     /* ...first word of the title string... */

@@ -1,0 +1,82 @@
+name: Tests
+
+on:
+  push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: testdb
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: rootpassword
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: ["7.2", "8.0"]
+
+    name: PHP ${{ matrix.php }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ matrix.php }}
+
+    - name: Report PHP version
+      run: php -v
+
+    - name: Install dependencies
+      run: |
+        composer install -o
+        export PATH="$HOME/.composer/vendor/bin:$PATH"
+        npm install -g gulp-cli eslint @babel/eslint-parser
+        npm install
+
+    - name: Test Syntax
+      run: ./tests/test_for_syntax_errors.sh
+
+    - name: Test Installation
+      run: ./tests/test_installation.sh
+
+    - name: Test phpcs
+      run: ./tests/test_phpcs.sh
+
+    - name: Test eslint
+      run: ./tests/test_eslint.sh
+
+    - name: Test minification
+      run : |
+        find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
+        gulp
+        git diff --exit-code -- . ':(exclude)package-lock.json'
+
+    - name: PHPunitSetup
+      run: ./tests/install-wp-tests.sh wordpress_test root rootpassword 127.0.0.0 latest
+      shell: bash
+
+    - name: PHPunit
+      run: |
+        composer require "phpunit/phpunit=8.*"
+        composer require "yoast/phpunit-polyfills"
+        vendor/phpunit/phpunit/phpunit --version
+        WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
+

@@ -163,7 +163,7 @@ class SiteLinkTest extends WP_UnitTestCase {
 
     }
 
-    public static function setUpBeforeClass(){
+    public static function setUpBeforeClass(): void {
         self::create_site_link();
     }
 }

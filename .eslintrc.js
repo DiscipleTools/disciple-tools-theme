@@ -5,6 +5,7 @@ module.exports = {
   },
   "parserOptions": {
     "ecmaVersion": 2017, // enables parsing async functions correctly
+    "requireConfigFile": false
   },
   "extends": "eslint:recommended",
   "globals": {
@@ -25,4 +26,5 @@ module.exports = {
       }
     ]
   },
+  "parser": "@babel/eslint-parser"
 };

@@ -26,7 +26,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         "member_count" => 5
     ];
 
-    public static function setupBeforeClass() {
+    public static function setupBeforeClass(): void  {
         $user_id = wp_create_user( "dispatcher1", "test", "test2@example.com" );
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();

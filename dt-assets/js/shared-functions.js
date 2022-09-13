@@ -203,6 +203,7 @@ window.API = {
     post: filters['post'],
     comment: filters['comment'],
     meta: filters['meta'],
+    status: filters['status']
   }, 'dt-posts/v2/posts/search/')
 };
 
@@ -220,8 +221,8 @@ function handleAjaxError(err) {
 jQuery(document)
   .ajaxComplete((event, xhr, settings) => {
     if ( xhr && xhr.responseJSON && settings.type === "POST" ) {
-      // Event that a contact record has been updated
-      if ( xhr.responseJSON.ID && xhr.responseJSON.post_type ) {
+      // Event that a contact record has been updated, check to make sure the post type that is being updated is the same as the current page post type.
+      if ( xhr.responseJSON.ID && xhr.responseJSON.post_type &&  xhr.responseJSON.post_type === window.detailsSettings.post_type ) {
         let request = settings.data ? JSON.parse(settings.data) : {};
         $(document).trigger("dt_record_updated", [xhr.responseJSON, request]);
       }
@@ -281,7 +282,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
           let list_html = ``;
           let first_field_option = true;
           window.lodash.forOwn(field.default, (field_options, field_key) => {
-            if( field_options.hasOwnProperty('icon') ) {
+            if (Object.prototype.hasOwnProperty.call(field_options, 'icon')) {
               if ( first_field_option ) {
                 list_html += `<ul class="help-modal-icon">`;
                 first_field_option = false;
@@ -451,14 +452,18 @@ window.TYPEAHEADS = {
     return text;
   },
   contactListRowTemplate: function (query, item) {
+    let status_color = `<span class="vertical-line" ${ item.status ? `style="border-left: 3px solid ${window.lodash.escape(item.status.color)}"` : '' }></span>`
+    let status_label = item.status ? `[ <span><i>${ window.lodash.escape(item.status.label).toLowerCase() } </i></span> ]` : '';
     let img = item.user
-      ? `<img class="dt-blue-icon" src="${wpApiShare.template_dir}/dt-assets/images/profile.svg?v=2">`
+      ? `<img style="margin: 0 5px;" class="dt-blue-icon" src="${wpApiShare.template_dir}/dt-assets/images/profile.svg?v=2">`
       : "";
     let statusStyle = item.status === "closed" ? 'style="color:gray"' : "";
-      return `<span dir="auto" ${statusStyle}>
-        <span class="typeahead-user-row" style="width:20px">${img}</span>
+      return `<span style="display: inline-block; vertical-align: middle;" dir="auto" ${statusStyle}>
+        ${status_color}
         ${window.lodash.escape((item.label ? item.label : item.name))}
         <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
+        ${status_label}
+        <span class="typeahead-user-row" style="width:20px">${img}</span>
     </span>`;
   },
   share(post_type, id) {
@@ -736,6 +741,17 @@ window.SHAREDFUNCTIONS = {
     })
     $(selector).html(elem_text)
   },
+  addLink(e) {
+    fieldKey = e.target.dataset['fieldKey']
+
+    linkType = $(this).siblings(".link-type").val()
+
+    const linkList = $(`.link-list-${fieldKey}`)
+
+    const template = $(`#link-template-${fieldKey}-${linkType}`)
+
+    linkList.append(template.clone(true).removeAttr('id').show())
+  }
 };
 
 let date_ranges = {

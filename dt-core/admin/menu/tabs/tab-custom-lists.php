@@ -70,7 +70,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->template( 'begin' );
 
             /* Translation Dialog */
-            echo '<dialog id="dt_translation_dialog"></dialog>';
+            dt_display_translation_dialog();
+
+            /* Icon Selector Dialog */
+            include 'dialog-icon-selector.php';
 
             /* Worker Profile */
             $this->box( 'top', 'User (Worker) Contact Profile' );
@@ -252,7 +255,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Enabled", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Hide domain if a url", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Icon link (must be https)", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Icon link (must be https or mdi webfont)", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                     </tr>
                 </thead>
@@ -280,12 +283,14 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                    type="checkbox" <?php echo esc_html( $hide_domain ? "checked" : "" ) ?> />
                         </td>
                         <td>
-                            <input type="text" name="channel_icon[<?php echo esc_html( $channel_key ) ?>]" value="<?php echo esc_html( $channel_option["icon"] ?? "" ) ?>">
-                            <?php if ( !empty( $channel_option["icon"] ) ) : ?>
-                                <button class="button file-upload-display-uploader" data-form="channels_box"
-                                        data-icon-input="channel_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
+                            <input type="text" name="channel_icon[<?php echo esc_html( $channel_key ) ?>]"
+                                   value="<?php echo esc_html( $channel_option["icon"] ?? ( $channel_option["font-icon"] ?? '' ) ) ?>">
+                            <?php if ( ! empty( $channel_option["icon"] ) || ! empty( $channel_option["font-icon"] ) ) : ?>
+                                <button class="button change-icon-button" data-form="channels_box"
+                                        data-icon-input="channel_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
 
-                                <button type="submit" class="button" name="channel_reset_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( "Reset link", 'disciple_tools' ) ?></button>
+                                <button type="submit" class="button"
+                                        name="channel_reset_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( "Reset link", 'disciple_tools' ) ?></button>
                             <?php endif; ?>
                         </td>
                         <td>
@@ -363,10 +368,17 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         }
                     }
                 }
-                if ( isset( $_POST["channel_icon"][$field_key] ) ){
-                    $icon = sanitize_text_field( wp_unslash( $_POST["channel_icon"][$field_key] ) );
-                    if ( !isset( $channel_options["icon"] ) || $channel_options["icon"] != $icon ){
-                        $custom_contact_fields[$field_key]["icon"] = $icon;
+                if ( isset( $_POST["channel_icon"][ $field_key ] ) ) {
+
+                    // Determine icon keys
+                    $icon          = sanitize_text_field( wp_unslash( $_POST["channel_icon"][ $field_key ] ) );
+                    $icon_key      = ( ! empty( $icon ) && strpos( $icon, 'mdi mdi-' ) === 0 ) ? 'font-icon' : 'icon';
+                    $null_icon_key = ( $icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
+
+                    // Update icon accordingly and nullify alternative
+                    if ( ! isset( $channel_options[ $icon_key ] ) || $channel_options[ $icon_key ] != $icon ) {
+                        $custom_contact_fields[ $field_key ][ $icon_key ]      = $icon;
+                        $custom_contact_fields[ $field_key ][ $null_icon_key ] = null;
                     }
                 }
                 if ( isset( $_POST["channel_enabled"][$field_key] ) ){
@@ -601,7 +613,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <td></td>
                     <td><?php esc_html_e( 'Name', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Key', 'disciple_tools' ); ?></td>
-                    <td><?php esc_html_e( 'Icon link (must be https)', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Icon link (must be https or mdi webfont)', 'disciple_tools' ) ?></td>
                     <td></td>
                     <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></td>
@@ -616,7 +628,15 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         ?>
                         <tr>
                             <td>
-                                <img style="width: 20px; vertical-align: middle;" src="<?php echo esc_attr( $field_settings['icon'] ); ?>" class="quick-action-menu">
+                                <?php if ( isset( $field_settings['icon'] ) && ! empty( $field_settings['icon'] ) ): ?>
+                                    <img style="width: 20px; vertical-align: middle;"
+                                         src="<?php echo esc_attr( $field_settings['icon'] ); ?>"
+                                         class="quick-action-menu">
+
+                                <?php elseif ( isset( $field_settings['font-icon'] ) && ! empty( $field_settings['font-icon'] ) ): ?>
+                                    <i class="<?php echo esc_attr( $field_settings['font-icon'] ); ?>"
+                                       style="font-size: 20px; vertical-align: middle;"></i>
+                                <?php endif; ?>
                             </td>
                             <td>
                                 <?php
@@ -628,10 +648,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                 } ?>
                             </td>
                             <td><?php echo esc_html( $field_key ); ?></td>
-                            <td class="quick-action-menu"><input type="text" name="edit_field_icon[<?php echo esc_attr( $field_key ); ?>]" value="<?php echo esc_html( $field_settings['icon'] ) ?>"></td>
+                            <td class="quick-action-menu"><input type="text"
+                                                                 name="edit_field_icon[<?php echo esc_attr( $field_key ); ?>]"
+                                                                 value="<?php echo esc_html( $field_settings['icon'] ?? ( $field_settings['font-icon'] ?? '' ) ) ?>">
+                            </td>
                             <td>
-                                <button class="button file-upload-display-uploader" data-form="quick_actions_box"
-                                        data-icon-input="edit_field_icon[<?php echo esc_attr( $field_key ); ?>]"><?php esc_html_e( 'Upload Icon', 'disciple_tools' ); ?></button>
+                                <button class="button change-icon-button" data-form="quick_actions_box"
+                                        data-icon-input="edit_field_icon[<?php echo esc_attr( $field_key ); ?>]"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
                             </td>
                             <td>
                                 <?php $langs = dt_get_available_languages(); ?>
@@ -796,7 +819,14 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
 
             foreach ( $edit_field_icon as $key => $value ) {
-                $custom_field_options['contacts'][ $key ]['icon'] = $value;
+
+                // Determine icon keys
+                $icon_key      = ( ! empty( $value ) && strpos( $value, 'mdi mdi-' ) === 0 ) ? 'font-icon' : 'icon';
+                $null_icon_key = ( $icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
+
+                // Update icon accordingly and nullify alternative
+                $custom_field_options['contacts'][ $key ][ $icon_key ]      = $value;
+                $custom_field_options['contacts'][ $key ][ $null_icon_key ] = null;
             }
 
             update_option( 'dt_field_customizations', $custom_field_options, true );

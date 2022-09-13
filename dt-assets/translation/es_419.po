@@ -11,15 +11,15 @@ msgstr ""
 #: 403.php:22
 #: dt-users/template-new-user.php:14
 msgid "Permission denied"
-msgstr "Acceso denegado"
+msgstr "Permiso denegado"
 
 #: 403.php:35
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "Lo siento, no tienes permiso para ver el %1$s con id %2$s"
+msgstr "Lo siento, no tienes permiso para ver el %1$s con id %2$s."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
-msgstr "Solicita permiso de tu administrador"
+msgstr "Solicítele permiso a su administrador."
 
 #: 403.php:39
 #: dt-users/template-new-user.php:273
@@ -32,7 +32,7 @@ msgstr "404 - Página no encontrada"
 
 #: 404.php:29
 msgid "The page you were looking for was not found or was deleted"
-msgstr "La página que buscas no existe o ha sido eliminada"
+msgstr "La página que buscas no se encontró o ha sido eliminada"
 
 #: dt-contacts/base-setup.php:350
 #: dt-groups/base-setup.php:125
@@ -52,17 +52,17 @@ msgstr "Esperando ser aceptado"
 
 #: dt-contacts/duplicates-merging.php:556
 msgid "View Duplicates"
-msgstr "Ver duplicados"
+msgstr "Ver Duplicados"
 
 #: archive-template.php:63
 #: archive-template.php:150
 msgid "Search"
 msgstr "Buscar"
 
-#: dt-contacts/base-setup.php:601
-#: dt-contacts/base-setup.php:609
-#: dt-contacts/base-setup.php:627
-#: dt-contacts/base-setup.php:628
+#: dt-contacts/base-setup.php:598
+#: dt-contacts/base-setup.php:606
+#: dt-contacts/base-setup.php:624
+#: dt-contacts/base-setup.php:625
 msgid "Shared with me"
 msgstr "Compartidos conmigo"
 
@@ -523,7 +523,7 @@ msgstr "Eliminar filtro"
 msgid "Group Status"
 msgstr "Estado de grupo"
 
-#: dt-core/global-functions.php:669
+#: dt-core/global-functions.php:462
 #: single-template.php:340
 #: template-new-bulk-post.php:285
 #: template-new-post.php:138
@@ -1128,7 +1128,7 @@ msgid "Baptizers"
 msgstr "Bautizadores"
 
 #: dt-contacts/access-module.php:291
-#: dt-contacts/base-setup.php:577
+#: dt-contacts/base-setup.php:574
 #: dt-metrics/metrics.php:86
 #: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
@@ -1547,6 +1547,7 @@ msgstr "editar imagen en gravatar.com"
 msgid "Username cannot be changed"
 msgstr "No se puede modificar el nombre de usuario"
 
+#: dt-users/users.php:1178
 #: template-settings.php:156
 #: template-settings.php:589
 msgid "System Email"
@@ -2112,7 +2113,7 @@ msgstr "Tipo a buscar"
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:590
 #: dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:942
+#: dt-core/global-functions.php:735
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Buscar usuarios"
@@ -2132,10 +2133,10 @@ msgstr "Escribe tu comentario o nota aquí"
 #: archive-template.php:126
 #: archive-template.php:461
 #: dt-assets/parts/merge-details.php:51
-#: dt-core/global-functions.php:771
-#: dt-core/global-functions.php:799
-#: dt-core/global-functions.php:860
-#: dt-core/global-functions.php:904
+#: dt-core/global-functions.php:564
+#: dt-core/global-functions.php:592
+#: dt-core/global-functions.php:653
+#: dt-core/global-functions.php:697
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:378
@@ -3923,13 +3924,13 @@ msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Todos los%s que puedo ver"
 
-#: dt-contacts/base-setup.php:566
+#: dt-contacts/base-setup.php:563
 #: dt-groups/base-setup.php:1079
 #: dt-posts/custom-post-type.php:336
 msgid "My Recently Viewed"
 msgstr "Mis vistos recientemente"
 
-#: dt-contacts/base-setup.php:571
+#: dt-contacts/base-setup.php:568
 #: dt-groups/base-setup.php:1084
 #: dt-posts/custom-post-type.php:341
 msgid "Last 30 viewed"
@@ -4129,11 +4130,11 @@ msgstr "¿Está seguro de que desea archivar%s?"
 msgid "Archive"
 msgstr "Archivo"
 
-#: dt-contacts/base-setup.php:680
+#: dt-contacts/base-setup.php:677
 msgid "This %s is archived"
 msgstr "Este%s está archivado"
 
-#: dt-contacts/base-setup.php:682
+#: dt-contacts/base-setup.php:679
 msgid "Restore"
 msgstr "Restaurar"
 
@@ -4241,11 +4242,11 @@ msgstr[1] "hace más de %s años"
 msgid "Hide fields"
 msgstr "Ocultar campos"
 
-#: dt-core/global-functions.php:773
+#: dt-core/global-functions.php:566
 msgid "Add new tag \"%s\""
 msgstr "Agregar nueva etiqueta \"%s\""
 
-#: dt-core/global-functions.php:774
+#: dt-core/global-functions.php:567
 msgid "Tag \"%s\" is already being used"
 msgstr "La etiqueta \"%s\" ya se está utilizando"
 
@@ -4452,14 +4453,14 @@ msgstr "Todos %1$s con %2$s"
 msgid "None Set"
 msgstr "Ninguno establecido"
 
-#: dt-contacts/base-setup.php:554
+#: dt-contacts/base-setup.php:551
 #: dt-groups/base-setup.php:1067
 #: dt-posts/custom-post-type.php:321
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Favorito%s"
 
-#: dt-contacts/base-setup.php:560
+#: dt-contacts/base-setup.php:557
 #: dt-groups/base-setup.php:1073
 #: dt-posts/custom-post-type.php:172
 #: dt-posts/custom-post-type.php:327
@@ -5032,51 +5033,51 @@ msgstr "Escanee el código QR para abrir el enlace mágico en un dispositivo mó
 #: dt-assets/functions/details-bar.php:66
 msgctxt "Merge with another record"
 msgid "Merge with another %s"
-msgstr ""
+msgstr "Combinar con otro %s"
 
 #: dt-assets/parts/merge-details.php:41
 msgctxt "Merge Contacts"
 msgid "Merge %s"
-msgstr ""
+msgstr "Combinar %s"
 
 #: dt-assets/parts/merge-details.php:42
 msgctxt "Merge this contact with another contact"
 msgid "Merge this %1$s with another %2$s"
-msgstr ""
+msgstr "Combinar este %1$s con otro %2$s"
 
 #: dt-users/template-new-user.php:16
 msgid "Administrator must enable \"Add New Users\" option in multisite settings:"
-msgstr ""
+msgstr "Un administrador tiene que habilitar la opción \"Agregar Nuevos Usuarios\" en la configuración del multisitio:"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"
-msgstr ""
+msgstr "Abrir Modal"
 
 #: template-merge-post-details.php:111
 msgid "Merge Duplicate %s"
-msgstr ""
+msgstr "Cominar %s Duplicados"
 
 #: template-merge-post-details.php:113
 msgid "When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
-msgstr ""
+msgstr "Cuando combinas, el registro primario se actualiza con los valores que eliges, y las relaciones a otros ítems son movidas al registro primario; que puede ser cambiado debajo."
 
 #: template-merge-post-details.php:116
 msgid "Copy comments to updated primary record"
-msgstr ""
+msgstr "Copiar comentarios al registro primario actualizado"
 
 #: template-merge-post-details.php:132
 msgid "Archiving"
-msgstr ""
+msgstr "Archivando"
 
 #: template-merge-post-details.php:140
 msgid "Use as Primary"
-msgstr ""
+msgstr "Usar como Primario"
 
 #: template-merge-post-details.php:153
 msgid "Primary"
-msgstr ""
+msgstr "Primario"
 
 #: template-merge-post-details.php:167
 msgid "Updated"
-msgstr ""
+msgstr "Actualizado"
 

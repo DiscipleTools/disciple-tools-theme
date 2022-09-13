@@ -66,7 +66,15 @@ function dt_people_groups_post_type_scripts() {
  * Loads scripts and styles for the assets page.
  */
 function dt_options_scripts() {
-    if ( isset( $_GET["page"] ) && ( $_GET["page"] === 'dt_options' || $_GET["page"] === 'dt_utilities' || $_GET["page"] === 'dt_extensions' ) ) {
+    $allowed_pages = [
+        'dt_options',
+        'dt_utilities',
+        'dt_extensions',
+    ];
+
+    $allowed_pages = apply_filters( 'dt_options_script_pages', $allowed_pages );
+
+    if ( isset( $_GET["page"] ) && ( in_array( $_GET["page"], $allowed_pages, true ) ) ) {
         wp_enqueue_script( 'dt_options_script', disciple_tools()->admin_js_url . 'dt-options.js', [
             'jquery',
             'jquery-ui-core',
@@ -76,6 +84,9 @@ function dt_options_scripts() {
         ], filemtime( disciple_tools()->admin_js_path . 'dt-options.js' ), true );
         wp_register_style( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css' );
         wp_enqueue_style( 'jquery-ui' );
+
+        dt_theme_enqueue_style( 'material-font-icons-local', 'dt-core/dependencies/mdi/css/materialdesignicons.min.css', array() );
+        wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.6.96/css/materialdesignicons.min.css' );
 
         if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'people-groups' ) {
             wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups.js', [
