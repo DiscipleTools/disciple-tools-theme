@@ -1439,7 +1439,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 case 'connection from':
                     $is_deleted = strtolower( trim( $field_action ) ) == 'disconnected from';
                     if ( $is_deleted && in_array( $field_value, $reverted_updates[ $field_key ]['values'] ) ) {
-                        if ( ( $field_value_key = array_search( $field_value, $reverted_updates[ $field_key ]['values'] ) ) !== false ) {
+                        $field_value_key = array_search( $field_value, $reverted_updates[ $field_key ]['values'] );
+                        if ( $field_value_key !== false ) {
                             unset( $reverted_updates[ $field_key ]['values'][ $field_value_key ] );
                         }
                     } elseif ( ! $is_deleted && ! in_array( $field_value, $reverted_updates[ $field_key ]['values'] ) ) {
@@ -1453,7 +1454,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 case 'location_meta':
                 case 'communication_channel':
                     if ( $is_deleted && in_array( $field_old_value, $reverted_updates[ $field_key ]['values'] ) ) {
-                        if ( ( $field_old_value_key = array_search( $field_old_value, $reverted_updates[ $field_key ]['values'] ) ) !== false ) {
+                        $field_old_value_key = array_search( $field_old_value, $reverted_updates[ $field_key ]['values'] );
+                        if ( $field_old_value_key !== false ) {
                             unset( $reverted_updates[ $field_key ]['values'][ $field_old_value_key ] );
                         }
                     } elseif ( ! $is_deleted && ! in_array( $field_value, $reverted_updates[ $field_key ]['values'] ) ) {
