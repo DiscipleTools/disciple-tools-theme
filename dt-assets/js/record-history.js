@@ -1,10 +1,12 @@
 jQuery(document).ready(function ($) {
 
+  // Global Variables
   const date_format_short = 'YYYY-MM-DD';
   const date_format_long = 'MMMM Do, YYYY, hh:mm:ss A';
   const post = window.record_history_settings.post;
   const post_settings = window.record_history_settings.post_settings;
 
+  // Event Listeners
   $(document).on('open.zf.reveal', '#record_history_modal[data-reveal]', function () {
     init_record_history_modal();
   });
@@ -13,6 +15,11 @@ jQuery(document).ready(function ($) {
     handle_revert_request($(this).find('#record_history_activity_block_timestamp').val());
   });
 
+  $(document).on('click', '#record_history_all_activities_switch', function () {
+    handle_show_all_activities();
+  });
+
+  // Helper Funcstions
   function init_record_history_modal() {
 
     // Remove any previously instantiated litepicker instances
@@ -36,6 +43,7 @@ jQuery(document).ready(function ($) {
         setup: (picker) => {
           picker.on('selected', (date_start, date_end) => {
             handle_selected_activity_date(date_start, handle_activities_display);
+            reset_show_all_activities_switch();
           });
           picker.on('change:month', (date, calendar_idx) => {
             handle_changed_month(date, picker);
@@ -43,12 +51,34 @@ jQuery(document).ready(function ($) {
         }
       });
 
-      // Default to most recent updates, assuming valid dates of interest
-      if (dates_of_interest.length > 0) {
+      // If checked, show all activities; otherwise default to most recent updates, assuming valid dates of interest
+      if (is_show_all_activities_switch_checked()) {
+        handle_show_all_activities();
+
+      } else if (dates_of_interest.length > 0) {
         lite_picker.gotoDate(dates_of_interest[0]);
         lite_picker.setDate(dates_of_interest[0]);
       }
     });
+  }
+
+  function is_show_all_activities_switch_checked() {
+    return $('#record_history_all_activities_switch').is(':checked');
+  }
+
+  function reset_show_all_activities_switch() {
+    $('#record_history_all_activities_switch').prop('checked', false);
+  }
+
+  function handle_show_all_activities() {
+    if (is_show_all_activities_switch_checked()) {
+      handle_activity_history_refresh({
+        ts_start: 0,
+        result_order: 'DESC',
+        extra_meta: true
+
+      }, handle_activities_display);
+    }
   }
 
   function handle_activity_history_refresh(request_args, callback) {
@@ -117,14 +147,18 @@ jQuery(document).ready(function ($) {
 
   function handle_selected_activity_date(date, callback) {
 
-    // Adjust selected date's time to start-of-day
+    // Adjust selected date's time to span a single day
     date.setHours(0, 0, 0, 0);
     let start = date.getTime() / 1000;
+
+    date.setHours(23, 59, 59, 0);
+    let end = date.getTime() / 1000;
 
     // Retrieve activities from current point to selected date, as point of starting interest
     handle_activity_history_refresh({
       ts_start: start,
-      result_order: 'ASC',
+      ts_end: end,
+      result_order: 'DESC',
       extra_meta: true
 
     }, callback);
@@ -150,7 +184,6 @@ jQuery(document).ready(function ($) {
 
         // Field label to be sourced accordingly, based on incoming field type.
         if (window.lodash.includes(['connection to', 'connection from'], activity['field_type'])) {
-          activity_heading = activity['action'] + ': ' + activity['meta_key'];
           field_label = 'connection';
 
         } else if (window.lodash.isEmpty(activity['field_type']) && window.lodash.startsWith(activity['meta_key'], 'contact_')) {

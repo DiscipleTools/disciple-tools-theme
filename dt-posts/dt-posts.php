@@ -1250,6 +1250,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
             } else if ( isset( $a->user_caps ) && $a->user_caps === "magic_link" ){
                 $a->name = __( "Magic Link Submission", 'disciple_tools' );
+            } else if ( isset( $a->user_caps ) && $a->user_caps === "activity_revert" ){
+                $a->name = __( "Revert Bot", 'disciple_tools' );
             }
             if ( ! empty( $a->object_note ) ) {
                 $activity_obj = [
@@ -1339,13 +1341,19 @@ class DT_Posts extends Disciple_Tools_Posts {
         ) );
         //@phpcs:enable
 
+        // Format activity message
+        $post_settings = self::get_post_settings( $post_type );
+        foreach ( $activities as &$activity ) {
+            $activity->object_note = sanitize_text_field( self::format_activity_message( $activity, $post_settings ) );
+        }
+
         // Determine if extra metadata has been requested
         if ( $extra_meta ) {
             foreach ( $activities as &$activity ) {
                 if ( isset( $activity->user_id ) && $activity->user_id > 0 ) {
                     $user = get_user_by( "id", $activity->user_id );
                     if ( $user ) {
-                        $activity->name     = $user->display_name;
+                        $activity->name     = sanitize_text_field( $user->display_name );
                         $activity->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
                     }
                 }
@@ -1370,8 +1378,8 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         // Commence with the long march back in time...
         $reverted_updates = [];
-        foreach ( $activities ?? [] as $activity ) {
-
+        foreach ( $activities as &$activity ) {
+            $field_action    = $activity->action;
             $field_type      = $activity->field_type;
             $field_key       = $activity->meta_key;
             $field_value     = $activity->meta_value;
@@ -1429,10 +1437,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             switch ( $field_type ) {
                 case 'connection to':
                 case 'connection from':
-                    $is_deleted = strtolower( trim( $field_value ) ) == 'disconnected from';
+                    $is_deleted = strtolower( trim( $field_action ) ) == 'disconnected from';
                     if ( $is_deleted && in_array( $field_value, $reverted_updates[ $field_key ]['values'] ) ) {
-                        unset( $reverted_updates[ $field_key ]['values'][ $field_value ] );
-
+                        if ( ( $field_value_key = array_search( $field_value, $reverted_updates[ $field_key ]['values'] ) ) !== false ) {
+                            unset( $reverted_updates[ $field_key ]['values'][ $field_value_key ] );
+                        }
                     } elseif ( ! $is_deleted && ! in_array( $field_value, $reverted_updates[ $field_key ]['values'] ) ) {
                         $reverted_updates[ $field_key ]['values'][] = $field_value;
                     }
@@ -1444,8 +1453,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                 case 'location_meta':
                 case 'communication_channel':
                     if ( $is_deleted && in_array( $field_old_value, $reverted_updates[ $field_key ]['values'] ) ) {
-                        unset( $reverted_updates[ $field_key ]['values'][ $field_old_value ] );
-
+                        if ( ( $field_old_value_key = array_search( $field_old_value, $reverted_updates[ $field_key ]['values'] ) ) !== false ) {
+                            unset( $reverted_updates[ $field_key ]['values'][ $field_old_value_key ] );
+                        }
                     } elseif ( ! $is_deleted && ! in_array( $field_value, $reverted_updates[ $field_key ]['values'] ) ) {
                         $reverted_updates[ $field_key ]['values'][] = $field_value;
                     }
@@ -1468,94 +1478,88 @@ class DT_Posts extends Disciple_Tools_Posts {
             switch ( $reverted['field_type'] ) {
                 case 'connection to':
                 case 'connection from':
-                    if ( ! empty( $reverted['values'] ) ) {
-
-                        // Collate values to be added
-                        $values = [];
-                        foreach ( $reverted['values'] as $value ) {
-                            $values[] = [
-                                'value' => $value
-                            ];
-                        }
-
-                        // Determine existing post values to be removed
-                        if ( isset( $post[ $field_key ] ) && is_array( $post[ $field_key ] ) ) {
-                            foreach ( $post[ $field_key ] as $option ) {
-                                $id = $option['ID'];
-
-                                // If id needle hit, then flag for deletion
-                                if ( ! in_array( $id, $reverted['values'] ) ) {
-                                    $values[] = [
-                                        'value'  => $id,
-                                        'delete' => true
-                                    ];
-                                }
-                            }
-                        }
-
-                        // Package values to be updated
-                        $post_updates[ $field_key ] = [
-                            'values' => $values
+                    // Collate values to be added
+                    $values = [];
+                    foreach ( $reverted['values'] as $value ) {
+                        $values[] = [
+                            'value' => $value
                         ];
                     }
+
+                    // Determine existing post values to be removed
+                    if ( isset( $post[ $field_key ] ) && is_array( $post[ $field_key ] ) ) {
+                        foreach ( $post[ $field_key ] as $option ) {
+                            $id = $option['ID'];
+
+                            // If id needle hit, then flag for deletion
+                            if ( ! in_array( $id, $reverted['values'] ) ) {
+                                $values[] = [
+                                    'value'  => $id,
+                                    'delete' => true
+                                ];
+                            }
+                        }
+                    }
+
+                    // Package values to be updated
+                    $post_updates[ $field_key ] = [
+                        'values' => $values
+                    ];
                     break;
                 case 'tags':
                 case 'location':
                 case 'multi_select':
                 case 'location_meta':
                 case 'communication_channel':
-                    if ( ! empty( $reverted['values'] ) ) {
-
-                        // Collate values to be added
-                        $values = [];
-                        foreach ( $reverted['values'] as $value ) {
-                            $values[] = [
-                                'value' => $value
-                            ];
-                        }
-
-                        // Determine existing post values to be removed
-                        if ( isset( $post[ $field_key ] ) && is_array( $post[ $field_key ] ) ) {
-                            foreach ( $post[ $field_key ] as $option ) {
-
-                                // Determine id to be used, based on field type
-                                if ( $reverted['field_type'] == 'location' ) {
-                                    $id = $option['id'];
-
-                                } elseif ( $reverted['field_type'] == 'location_meta' ) {
-                                    $id = $option['grid_meta_id'];
-
-                                } elseif ( $reverted['field_type'] == 'communication_channel' ) {
-                                    $id = $option['key'];
-
-                                } else {
-                                    $id = $option;
-                                }
-
-                                // If id needle hit, then flag for deletion
-                                if ( ! in_array( $id, $reverted['values'] ) ) {
-
-                                    $key = 'value';
-                                    if ( $reverted['field_type'] == 'location_meta' ) {
-                                        $key = 'grid_meta_id';
-
-                                    } elseif ( $reverted['field_type'] == 'communication_channel' ) {
-                                        $key = 'key';
-                                    }
-
-                                    $values[] = [
-                                        $key     => $id,
-                                        'delete' => true
-                                    ];
-                                }
-                            }
-                        }
-
-                        // Package values to be updated
-                        $post_updates[ $field_key ] = [
-                            'values' => $values
+                    // Collate values to be added
+                    $values = [];
+                    foreach ( $reverted['values'] as $value ) {
+                        $values[] = [
+                            'value' => $value
                         ];
                     }
+
+                    // Determine existing post values to be removed
+                    if ( isset( $post[ $field_key ] ) && is_array( $post[ $field_key ] ) ) {
+                        foreach ( $post[ $field_key ] as $option ) {
+
+                            // Determine id to be used, based on field type
+                            if ( $reverted['field_type'] == 'location' ) {
+                                $id = $option['id'];
+
+                            } elseif ( $reverted['field_type'] == 'location_meta' ) {
+                                $id = $option['grid_meta_id'];
+
+                            } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                $id = $option['key'];
+
+                            } else {
+                                $id = $option;
+                            }
+
+                            // If id needle hit, then flag for deletion
+                            if ( ! in_array( $id, $reverted['values'] ) ) {
+
+                                $key = 'value';
+                                if ( $reverted['field_type'] == 'location_meta' ) {
+                                    $key = 'grid_meta_id';
+
+                                } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                    $key = 'key';
+                                }
+
+                                $values[] = [
+                                    $key     => $id,
+                                    'delete' => true
+                                ];
+                            }
+                        }
+                    }
+
+                    // Package values to be updated
+                    $post_updates[ $field_key ] = [
+                        'values' => $values
+                    ];
                     break;
                 case 'text':
                 case 'date':
@@ -1569,8 +1573,21 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        // Update post and return latest shape!
-        return self::update_post( $post_type, $post_id, $post_updates );
+        // Ensure revert activity carried out by Revert Bot.
+        $current_user_id = get_current_user_id();
+        wp_set_current_user( 0 );
+        $current_user = wp_get_current_user();
+        $current_user->add_cap( "activity_revert" );
+        $current_user->add_cap( "dt_all_access_contacts" );
+        $current_user->display_name = __( 'Revert Bot', 'disciple_tools' );
+
+        // Update post based on reverted values.
+        $updated_post = self::update_post( $post_type, $post_id, $post_updates );
+
+        // Revert back to previous user and return.
+        wp_set_current_user( $current_user_id );
+        return $updated_post;
+
     }
 
     public static function get_post_field_settings_by_p2p( $fields, $p2p_key, $p2p_direction ): array {
