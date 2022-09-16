@@ -214,22 +214,14 @@ jQuery(document).ready(function($) {
   // Clicking the plus sign next to the field label
   $('button.add-button').on('click', e => {
     const field = $(e.currentTarget).data('list-class')
-    const fieldType = $(e.currentTarget).data('field-type')
     const $list = $(`#edit-${field}`)
 
-    if (fieldType === 'link') {
-      const addLinkForm = $(`.add-link-${field}`)
-      addLinkForm.show()
-
-      $(`#cancel-link-button-${field}`).on('click', () => addLinkForm.hide())
-    } else {
-      $list.append(`<div class="input-group">
-            <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
-            <div class="input-group-button">
-            <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
-            </div></div>`)
-    }
-  })
+    $list.append(`<div class="input-group">
+          <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
+          <div class="input-group-button">
+          <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
+          </div></div>`)
+   })
   $(document).on('click', '.channel-delete-button', function(){
     let field = $(this).data('field')
     let key = $(this).data('key')
@@ -365,7 +357,7 @@ jQuery(document).ready(function($) {
   /**
    * Links
    */
-  $('.add-link-button').on('click', SHAREDFUNCTIONS.addLink)
+  $('.add-link__option').on('click', SHAREDFUNCTIONS.addLink)
 
   /**
    * user select typeahead

@@ -553,7 +553,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                     continue;
                                 } ?>
 
-                                <div class="add-link__option" data-link-type="<?php echo esc_attr( $option_key ) ?>" data-field-key="<?php echo esc_attr( $field_key ) ?>" >
+                                <div
+                                    class="add-link__option"
+                                    data-link-type="<?php echo esc_attr( $option_key ) ?>"
+                                    data-field-key="<?php echo esc_attr( $field_key ) ?>"
+                                >
                                     <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
                                     <?php echo esc_html( $option_value['label'] ) ?>
                                 </div>

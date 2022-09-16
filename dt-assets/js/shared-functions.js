@@ -743,8 +743,7 @@ window.SHAREDFUNCTIONS = {
   },
   addLink(e) {
     fieldKey = e.target.dataset['fieldKey']
-
-    linkType = $(this).siblings(".link-type").val()
+    linkType = e.target.dataset['linkType']
 
     const linkList = $(`.link-list-${fieldKey}`)
 
