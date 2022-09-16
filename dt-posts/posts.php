@@ -2238,7 +2238,7 @@ class Disciple_Tools_Posts
         }
         $current_connected_post = null;
         if ( $field_setting['post_type'] !== $post_type ){
-            $current_connected_post = DT_Posts::get_post( $field_setting['post_type'], $value );
+            $current_connected_post = DT_Posts::get_post( $field_setting['post_type'], $value, true, false );
         }
 
         if ( $field_setting["p2p_direction"] === "to" || $field_setting["p2p_direction"] === "any" ) {
@@ -2265,7 +2265,7 @@ class Disciple_Tools_Posts
                 $reversed_field = self::get_reverse_connection_field( $field_key, $field_setting );
                 if ( ! empty( $reversed_field ) ) {
 
-                    $updated_connected_post = DT_Posts::get_post( $field_setting['post_type'], $value, false );
+                    $updated_connected_post = DT_Posts::get_post( $field_setting['post_type'], $value, false, false );
 
                     // Dispatch post updated action hook
                     do_action( 'dt_post_updated', $connection->post_type, $connection->ID, [
