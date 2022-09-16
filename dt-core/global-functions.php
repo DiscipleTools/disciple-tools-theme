@@ -535,8 +535,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php endif ?>
                 <?php if ( $field_type === "link" ) : ?>
 
+                    <?php $only_one_option = count( $fields[$field_key]["default"] ) === 1 ? esc_attr( array_keys( $fields[$field_key]["default"] )[0] ) : '' ?>
+
                     <div class="add-link-dropdown"
-                        data-link-type="<?php echo count( $fields[$field_key]["default"] ) === 1 ? esc_attr( array_keys( $fields[$field_key]["default"] )[0] ) : '' ?>"
+                        data-link-type="<?php echo $only_one_option ?>"
                         data-field-key="<?php echo esc_attr( $field_key ) ?>">
                         <button
                             class="add-button add-link-dropdown__button"
@@ -702,10 +704,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             $links_sorted_by_type[$link_type][] = $link_item;
                         }
 
+                        $only_one_option = count( $fields[$field_key]["default"] ) === 1;
                         foreach ( $fields[$field_key]["default"] as $link_type => $link_value ) : ?>
 
                             <div class="link-section">
-                                <div class="section-subheader">
+                                <div class="section-subheader" style="<?php echo $only_one_option ? 'display: none' : '' ?>">
                                     <?php dt_render_field_icon( $link_value ) ?>
                                     <?php echo esc_html( $link_value["label"] ); ?>
                                 </div>
