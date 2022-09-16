@@ -687,18 +687,37 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <div class="link-list-<?php echo esc_attr( $field_key ) ?>">
 
                         <?php
+                        $links_sorted_by_type = [];
                         foreach ( $post[$field_key] ?? [] as $link_item ) {
                             if ( !isset( $link_item["type"] ) ) {
                                 continue;
                             }
-                            $option_type = $link_item["type"];
-                            $option_value = $fields[$field_key]["default"][$option_type];
-                            $meta_id = $link_item["meta_id"];
-                            $meta_value = $link_item["value"];
-
-                            render_link_field( $field_key, $option_type, $option_value, $meta_value, $display_field_id, $meta_id, $required_tag, $disabled );
+                            $link_type = $link_item["type"];
+                            if ( !isset( $links_sorted_by_type[$link_type] ) ) {
+                                $links_sorted_by_type[$link_type] = [];
+                            }
+                            $links_sorted_by_type[$link_type][] = $link_item;
                         }
-                        ?>
+
+                        foreach ( $fields[$field_key]["default"] as $link_type => $link_value ) : ?>
+
+                            <div class="link-section">
+                                <div class="section-subheader">
+                                    <?php dt_render_field_icon( $link_value ) ?>
+                                    <?php echo esc_html( $link_value["label"] ); ?>
+                                </div>
+
+                                    <?php if ( isset( $links_sorted_by_type[$link_type] ) ) : ?>
+                                        <?php foreach ( $links_sorted_by_type[$link_type] as $link_item ) : ?>
+
+                                            <?php render_link_field( $field_key, $link_type, $option_value, $link_item["value"], $display_field_id, $link_item["meta_id"], $required_tag, $disabled ); ?>
+
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+
+                            </div>
+
+                        <?php endforeach; ?>
 
                     </div>
 
@@ -840,31 +859,25 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     function render_link_field( $field_key, $option_key, $option_value, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
         ?>
 
-        <div class="link-section">
-            <div class="section-subheader">
-                <?php dt_render_field_icon( $option_value ) ?>
-                <?php echo esc_html( $option_value["label"] ); ?>
-            </div>
-            <div class="input-group">
-                <input
-                    type="text"
-                    class="link-input input-group-field"
-                    value="<?php echo esc_html( $value ) ?>"
+        <div class="input-group">
+            <input
+                type="text"
+                class="link-input input-group-field"
+                value="<?php echo esc_html( $value ) ?>"
+                data-meta-id="<?php echo esc_html( $meta_id ) ?>"
+                data-field-key="<?php echo esc_html( $display_field_id ) ?>"
+                data-type="<?php echo esc_html( $option_key ) ?>"
+                <?php echo esc_html( $required_tag ) ?>
+                <?php echo esc_html( $disabled ) ?>
+            >
+            <div class="input-group-button">
+                <button
+                    class="button alert delete-button-style input-height link-delete-button delete-button"
                     data-meta-id="<?php echo esc_html( $meta_id ) ?>"
-                    data-field-key="<?php echo esc_html( $display_field_id ) ?>"
-                    data-type="<?php echo esc_html( $option_key ) ?>"
-                    <?php echo esc_html( $required_tag ) ?>
-                    <?php echo esc_html( $disabled ) ?>
+                    data-field-key="<?php echo esc_html( $field_key ) ?>"
                 >
-                <div class="input-group-button">
-                    <button
-                        class="button alert delete-button-style input-height link-delete-button delete-button"
-                        data-meta-id="<?php echo esc_html( $meta_id ) ?>"
-                        data-field-key="<?php echo esc_html( $field_key ) ?>"
-                    >
-                        &times;
-                    </button>
-                </div>
+                    &times;
+                </button>
             </div>
         </div>
 
