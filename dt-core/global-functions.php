@@ -535,7 +535,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php endif ?>
                 <?php if ( $field_type === "link" ) : ?>
 
-                    <div class="add-link-dropdown">
+                    <div class="add-link-dropdown"
+                        data-link-type="<?php echo count( $fields[$field_key]["default"] ) === 1 ? esc_attr( array_keys( $fields[$field_key]["default"] )[0] ) : '' ?>"
+                        data-field-key="<?php echo esc_attr( $field_key ) ?>">
                         <button
                             class="add-button add-link-dropdown__button"
                             type="button"
@@ -546,7 +548,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                         </button>
 
-                        <div class="add-link-dropdown__content add-link-<?php echo esc_attr( $display_field_id ) ?>">
+                        <div class="add-link-dropdown__content add-link-<?php echo esc_attr( $display_field_id ) ?>"
+                            style="<?php echo count( $fields[$field_key]["default"] ) < 2 ? "display: none" : "" ?>">
                             <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
 
                                 <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) {

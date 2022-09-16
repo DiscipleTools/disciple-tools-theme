@@ -222,6 +222,9 @@ jQuery(document).ready(function($) {
           <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
           </div></div>`)
    })
+
+  $('.add-link-dropdown').on('click', window.SHAREDFUNCTIONS.addLink)
+
   $(document).on('click', '.channel-delete-button', function(){
     let field = $(this).data('field')
     let key = $(this).data('key')
