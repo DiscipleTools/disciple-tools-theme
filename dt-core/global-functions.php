@@ -528,11 +528,41 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php if ( $is_private ) : ?>
                     <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
                 <?php endif;
-                if ( $field_type === "communication_channel" || $field_type === "link" ) : ?>
+                if ( $field_type === "communication_channel" ) : ?>
                     <button data-field-type="<?php echo esc_html( $field_type ) ?>" data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button" <?php echo esc_html( $disabled ); ?>>
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 <?php endif ?>
+                <?php if ( $field_type === "link" ) : ?>
+
+                    <div class="add-link-dropdown">
+                        <button
+                            class="add-button add-link-dropdown__button"
+                            type="button"
+                            data-field-type="<?php echo esc_html( $field_type ) ?>"
+                            data-list-class="<?php echo esc_html( $display_field_id ); ?>"
+                            <?php echo esc_html( $disabled ); ?>
+                        >
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                        </button>
+
+                        <div class="add-link-dropdown__content add-link-<?php echo esc_attr( $display_field_id ) ?>">
+                            <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+
+                                <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) {
+                                    continue;
+                                } ?>
+
+                                <div class="add-link__option" data-link-type="<?php echo esc_attr( $option_key ) ?>" data-field-key="<?php echo esc_attr( $field_key ) ?>" >
+                                    <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
+                                    <?php echo esc_html( $option_value['label'] ) ?>
+                                </div>
+
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                <?php endif; ?>
                 <!-- location add -->
                 <?php if ( ( $field_type === "location" || "location_meta" === $field_type ) && DT_Mapbox_API::get_key() && ! empty( $post ) ) : ?>
                     <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button" <?php echo esc_html( $disabled ); ?>>
@@ -650,35 +680,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
                 <div class="link-group">
 
-                    <div class="add-link-<?php echo esc_html( $display_field_id ) ?>" style="display:none">
-                        <div class="add-link-form" style="display: flex; align-items: center;">
-                            <select class="link-type">
-                                <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
-
-                                    <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) {
-                                        continue;
-                                    } ?>
-
-                                    <option style="display:flex; align-items: center;" value="<?php echo esc_html( $option_key ) ?>">
-                                    <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
-                                    <?php echo esc_html( $option_value['label'] ) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <button
-                                type="button"
-                                class="button add-link-button"
-                                data-field-key="<?php echo esc_attr( $field_key ) ?>"
-                            >
-                                <?php esc_html_e( 'Add', 'disciple-tools' ) ?>
-                            </button>
-                            <button type="button" id="cancel-link-button-<?php echo esc_html( $display_field_id ) ?>" class="button hollow alert">
-                                x
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="link-list-<?php echo esc_html( $field_key ) ?>">
+                    <div class="link-list-<?php echo esc_attr( $field_key ) ?>">
 
                         <?php
                         foreach ( $post[$field_key] ?? [] as $link_item ) {
