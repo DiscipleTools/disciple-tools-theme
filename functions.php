@@ -291,13 +291,16 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             /**
              * dt-people-groups
              */
-            require_once( 'dt-people-groups/people-groups-post-type.php' );
-            $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
-            require_once( 'dt-people-groups/people-groups.php' );
-            if ( strpos( $url_path, 'people-groups' ) !== false ){
-                require_once( 'dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
-                $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
-            }
+            //@todo reenable the admin functions
+//            require_once( 'dt-people-groups/people-groups-post-type.php' );
+//            $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
+//            require_once( 'dt-people-groups/people-groups.php' );
+//            if ( strpos( $url_path, 'people-groups' ) !== false ){
+//                require_once( 'dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
+//                $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
+//            }
+            require_once( 'dt-people-groups/people-groups-base.php' );
+            new Disciple_Tools_People_Groups_Base();
             /**
              * dt-metrics
              */
