@@ -491,11 +491,9 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * @return string
          */
         public static function get_link_url_for_post( $post_type, $post_id, $magic_url_root, $magic_url_type, $action = null ): string{
-            $record = DT_Posts::get_post( $post_type, $post_id );
             $key_name = self::get_public_key_meta_key( $magic_url_root, $magic_url_type );
-            if ( isset( $record[$key_name] ) ){
-                $key = $record[$key_name];
-            } else {
+            $key = get_post_meta( $post_id, $key_name, true );
+            if ( empty( $key ) ){
                 $key = dt_create_unique_key();
                 update_post_meta( $post_id, $key_name, $key );
             }

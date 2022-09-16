@@ -71,21 +71,20 @@ class DT_Magic_URL_Setup {
         if ( !isset( $app['meta_key'], $app['label'], $app['type'], $app['root'] ) ){
             return;
         }
-
-        $record = DT_Posts::get_post( $post_type, get_the_ID() );
         $meta_key = $app['meta_key'];
-        if ( isset( $record[$meta_key] ) ) {
-            $key = $record[$meta_key];
-        } else {
+
+        $key = get_post_meta( get_the_ID(), $meta_key, true );
+        if ( empty( $key ) ){
             $key = dt_create_unique_key();
             update_post_meta( get_the_ID(), $meta_key, $key );
         }
+        $link = DT_Magic_URL::get_link_url( $app['root'], $app['type'], $key );
         ?>
         <div class="section-subheader"><?php echo esc_html( $app['label'] ) ?></div>
         <div class="section-app-links <?php echo esc_attr( $meta_key ); ?>">
             <a data-tooltip title="<?php esc_html_e( 'View', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button view"><img class="dt-icon" alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" /></a>
             <a data-tooltip title="<?php esc_html_e( 'Copy to clipboard', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button copy_to_clipboard"
-               data-value="<?php echo esc_url( site_url() . '/' . $app['root'] . '/' . $app['type'] . '/' . $key ) ?>">
+               data-value="<?php echo esc_url( $link ) ?>">
                 <img class="dt-icon" alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
             </a>
             <a data-tooltip title="<?php esc_html_e( 'Send', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button send"><img class="dt-icon" alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" /></a>
@@ -101,7 +100,7 @@ class DT_Magic_URL_Setup {
                     window.app_url = []
                 }
                 window.app_key['<?php echo esc_attr( $meta_key ) ?>'] = '<?php echo esc_attr( $key ) ?>'
-                window.app_url['<?php echo esc_attr( $meta_key ) ?>'] = '<?php echo esc_url( site_url() . '/' . $app['root'] . '/' .$app['type'] . '/' ) ?>'
+                window.app_url['<?php echo esc_attr( $meta_key ) ?>'] = '<?php echo esc_url( $link ) ?>'
 
                 $('.<?php echo esc_attr( $meta_key ); ?>.select-button.button.copy_to_clipboard').data('value', `${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}`)
                 $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .view').on('click', function(e){
