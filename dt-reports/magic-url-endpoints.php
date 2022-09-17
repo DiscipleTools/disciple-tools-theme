@@ -112,6 +112,14 @@ class Disciple_Tools_Magic_Endpoints
 
         $errors = [];
         $success = [];
+        /**
+         * This filter allows for targeting a specific contact connection field to loop through and send emails.
+         * The default field name is 'reporter', but this can be overwritten and pointed towards assigned_to, subassigned_to,
+         * coaching, or another custom contact connection field.
+         *
+         * @param (string)
+         */
+        $target_field = apply_filters( 'dt_bulk_email_connection_field', 'reporter' );
 
         foreach ( $params['post_ids'] as $post_id ) {
             $post_record = DT_Posts::get_post( $params['post_type'], $post_id, true, true );
@@ -128,8 +136,8 @@ class Disciple_Tools_Magic_Endpoints
             else if ( isset( $post_record['contact_email'][0] ) ) {
                 $emails[]  = $post_record['contact_email'][0]['value'];
             }
-            else if ( isset( $post_record['reporter'] ) && ! empty( $post_record['reporter'] ) ) {
-                foreach ( $post_record['reporter'] as $reporter ) {
+            else if ( isset( $post_record[$target_field] ) && ! empty( $post_record[$target_field] ) ) {
+                foreach ( $post_record[$target_field] as $reporter ) {
                     $contact_post = DT_Posts::get_post( 'contacts', $reporter['ID'], true, false );
                     if ( isset( $contact_post['contact_email'] ) && ! empty( $contact_post['contact_email'] ) ) {
                         foreach ( $contact_post['contact_email'] as $contact_email ) {
