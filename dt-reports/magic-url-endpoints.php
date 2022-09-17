@@ -129,12 +129,10 @@ class Disciple_Tools_Magic_Endpoints
                 $emails[]  = $post_record['contact_email'][0]['value'];
             }
             else if ( isset( $post_record['reporter'] ) && ! empty( $post_record['reporter'] ) ) {
-                dt_write_log('here');
-
-                foreach( $post_record['reporter'] as $reporter ) {
+                foreach ( $post_record['reporter'] as $reporter ) {
                     $contact_post = DT_Posts::get_post( 'contacts', $reporter['ID'], true, false );
                     if ( isset( $contact_post['contact_email'] ) && ! empty( $contact_post['contact_email'] ) ) {
-                        foreach( $contact_post['contact_email'] as $contact_email ) {
+                        foreach ( $contact_post['contact_email'] as $contact_email ) {
                             $emails[]  = $contact_email['value'];
                         }
                     }
@@ -144,7 +142,6 @@ class Disciple_Tools_Magic_Endpoints
                 $errors[ $post_id ] = 'no email';
                 continue;
             }
-
 
             // check if magic key exists, or needs created
             if ( ! isset( $post_record[$meta_key] ) ) {
@@ -167,8 +164,8 @@ class Disciple_Tools_Magic_Endpoints
 '           . $name . ': ' . $link;
 
             // send email
-            foreach( $emails as $email ) {
-                $sent = dt_send_email( $email, $subject, $message_plain_text ); dt_write_log($sent);
+            foreach ( $emails as $email ) {
+                $sent = dt_send_email( $email, $subject, $message_plain_text );
                 if ( is_wp_error( $sent ) || ! $sent ) {
                     $errors[$post_id] = $sent;
                 }
@@ -184,7 +181,6 @@ class Disciple_Tools_Magic_Endpoints
                     ] );
                 }
             }
-
         }
 
         return [
