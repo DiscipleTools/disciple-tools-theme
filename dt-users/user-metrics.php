@@ -22,7 +22,7 @@ class DT_User_Metrics {
             if ( isset( $params["user_id"] ) && !empty( $params["user_id"] ) ){
                 $user_id = (int) $params["user_id"];
             }
-            return Disciple_Tools_Users::can_view( $user_id );
+            return current_user_can( "access_disciple_tools" ) && Disciple_Tools_Users::can_view( $user_id );
         };
 
         $namespace = 'dt-users/v1';

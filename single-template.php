@@ -171,7 +171,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             $order = $tiles['details']["order"] ?? [];
                             foreach ( $post_settings["fields"] as $key => $option ){
                                 if ( isset( $option["tile"] ) && $option["tile"] === 'details' && $option['type'] !== "communication_channel" ){
-                                    if ( !in_array( $key, $order ) && !in_array( $key, [ 'name' ] ) ) {
+                                    if ( !in_array( $key, $order ) ) {
                                         $order[] = $key;
                                     }
                                 }

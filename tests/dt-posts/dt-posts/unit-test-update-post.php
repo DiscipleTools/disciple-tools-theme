@@ -21,7 +21,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     ];
     public static $contact = null;
 
-    public static function setupBeforeClass() {
+    public static function setupBeforeClass(): void  {
         //setup custom fields for each field type and custom tile.
         $user_id = wp_create_user( "dispatcher1", "test", "test2@example.com" );
         wp_set_current_user( $user_id );

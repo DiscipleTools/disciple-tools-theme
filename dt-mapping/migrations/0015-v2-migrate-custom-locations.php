@@ -16,7 +16,7 @@ class DT_Mapping_Module_Migration_0015 extends DT_Mapping_Module_Migration
         global $wpdb;
         $has_upgrade_table = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}dt_location_grid_upgrade';" );
         if ( ! empty( $has_upgrade_table ) ) {
-            $wpdb->query( "INSERT INTO `wp_dt_location_grid` SELECT * FROM `{$wpdb->prefix}dt_location_grid_upgrade` WHERE grid_id > 1000000000;" );
+            $wpdb->query( "INSERT INTO `{$wpdb->prefix}dt_location_grid` SELECT * FROM `{$wpdb->prefix}dt_location_grid_upgrade` WHERE grid_id > 1000000000;" );
             $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_location_grid_upgrade`;" );
         }
     }

@@ -91,6 +91,9 @@ class DT_Contacts_Access extends DT_Module_Base {
     public function dt_custom_fields_settings( $fields, $post_type ){
         $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
+            if ( isset( $fields["type"]["default"]["personal"] ) ){
+                $fields["type"]["default"]["personal"]['default'] = false;
+            }
             $fields["type"]["default"]["access"] = [
                 "label" => __( 'Standard Contact', 'disciple_tools' ),
                 "color" => "#2196F3",

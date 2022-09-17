@@ -172,7 +172,8 @@ class DT_Contacts_Base {
                         "visibility" => __( "Only me", 'disciple_tools' ),
                         "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg?v=2",
                         "order" => 50,
-                        "hidden" => !empty( $contact_preferences["hide_personal_contact_type"] )
+                        "hidden" => !empty( $contact_preferences["hide_personal_contact_type"] ),
+                        "default" => true
                     ],
                 ],
                 "description" => "See full documentation here: https://disciple.tools/user-docs/getting-started-info/contacts/contact-types",

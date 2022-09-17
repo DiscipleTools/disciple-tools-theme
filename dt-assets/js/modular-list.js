@@ -71,10 +71,11 @@
 
   function get_current_filter(urlCustomFilter, cachedFilter) {
 
-    const { filterID, filterTab } = get_url_query_params()
+    console.log('getting current filter')
+    const { filterID, filterTab, query } = get_url_query_params()
 
     if (filterID && is_in_filter_list(filterID) ) {
-      const currentFilter = { ID: filterID, query: {} }
+      const currentFilter = { ID: filterID, query: query ?? {} }
       if (filterTab) currentFilter.tab = filterTab
       return currentFilter
     } else if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
@@ -332,15 +333,7 @@
   }
 
   /**
-   * Looks for all query params called 'filter' (allows for multiple filters to be applied)
-   * from url like base_url?filter=foo&filter=bar
-   *
-   * filter values are exected to be created by encodeURI(JSON.stringify({ id, name, field }))
-   * where the id, name and field are the relevant field and id to search for. (filters with
-   * incorrect fields will be removed)
-   *
-   * If any part of the filter doesn't decode or JSON.parse properly the function returns
-   * no filter.
+   * Creates a custom filter from the query and labels in the encoded url
    */
   function create_custom_filter_from_query_params() {
     const { query, labels } = get_url_query_params()
@@ -1169,7 +1162,7 @@
 
   function is_search_query_filter_label_excluded(filter, label) {
     let excluded = false;
-    if (window.lodash.has(filter, 'query.fields')) {
+    if (window.lodash.has(filter, 'query.fields') && Array.isArray( filter.query.fields ) ) {
       filter.query.fields.forEach(field => {
         if (field[label.field]) {
           excluded = window.lodash.includes(field[label.field], '-' + label.id);
