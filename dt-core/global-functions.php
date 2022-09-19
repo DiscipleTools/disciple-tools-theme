@@ -539,7 +539,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
                     <div class="add-link-dropdown"
                         <?php echo !empty( $only_one_option ) ? 'data-only-one-option' : '' ?>
-                        data-link-type="<?php echo $only_one_option ?>"
+                        data-link-type="<?php echo esc_attr( $only_one_option ) ?>"
                         data-field-key="<?php echo esc_attr( $field_key ) ?>">
                         <button
                             class="add-button add-link-dropdown__button"
