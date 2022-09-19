@@ -255,7 +255,7 @@ jQuery(document).ready(function($) {
     let metaId = $(this).data('meta-id')
     let fieldKey = $(this).data('field-key')
 
-    $(this).closest('.link-section').remove()
+    $(this).closest('.input-group').remove()
 
     if (!metaId || metaId === "") {
       return
