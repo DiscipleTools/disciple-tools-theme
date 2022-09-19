@@ -538,6 +538,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <?php $only_one_option = count( $fields[$field_key]["default"] ) === 1 ? esc_attr( array_keys( $fields[$field_key]["default"] )[0] ) : '' ?>
 
                     <div class="add-link-dropdown"
+                        <?php echo !empty( $only_one_option ) ? 'data-only-one-option' : '' ?>
                         data-link-type="<?php echo $only_one_option ?>"
                         data-field-key="<?php echo esc_attr( $field_key ) ?>">
                         <button
@@ -707,7 +708,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         $only_one_option = count( $fields[$field_key]["default"] ) === 1;
                         foreach ( $fields[$field_key]["default"] as $link_type => $link_value ) : ?>
 
-                            <div class="link-section">
+                            <div class="link-section link-section--<?php echo esc_attr( $link_type ) ?>">
                                 <div class="section-subheader" style="<?php echo $only_one_option ? 'display: none' : '' ?>">
                                     <?php dt_render_field_icon( $link_value ) ?>
                                     <?php echo esc_html( $link_value["label"] ); ?>

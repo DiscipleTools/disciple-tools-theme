@@ -745,7 +745,7 @@ window.SHAREDFUNCTIONS = {
     fieldKey = e.target.dataset['fieldKey']
     linkType = e.target.dataset['linkType']
 
-    const linkList = $(`.link-list-${fieldKey}`)
+    const linkList = $(`.link-list-${fieldKey} .link-section--${linkType}`)
 
     const template = $(`#link-template-${fieldKey}-${linkType}`)
 

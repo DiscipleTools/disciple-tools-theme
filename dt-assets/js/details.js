@@ -223,7 +223,9 @@ jQuery(document).ready(function($) {
           </div></div>`)
    })
 
-  $('.add-link-dropdown').on('click', window.SHAREDFUNCTIONS.addLink)
+  $('.add-link-dropdown[data-only-one-option]').on('click', window.SHAREDFUNCTIONS.addLink)
+
+  $('.add-link__option').on('click', SHAREDFUNCTIONS.addLink)
 
   $(document).on('click', '.channel-delete-button', function(){
     let field = $(this).data('field')
@@ -360,7 +362,6 @@ jQuery(document).ready(function($) {
   /**
    * Links
    */
-  $('.add-link__option').on('click', SHAREDFUNCTIONS.addLink)
 
   /**
    * user select typeahead
