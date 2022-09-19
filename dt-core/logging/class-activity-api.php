@@ -72,7 +72,7 @@ class Disciple_Tools_Activity_Log_API {
             $user = wp_get_current_user();
         }
         if ( $user ) {
-            $args['user_caps'] = strtolower( key( $user->caps ) );
+            $args['user_caps'] = strtolower( key( $user->caps ) ?? 'system' );
             if ( empty( $args['user_id'] ) ) {
                 $args['user_id'] = $user->ID;
             }
