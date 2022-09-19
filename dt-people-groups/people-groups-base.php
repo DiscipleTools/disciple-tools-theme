@@ -541,9 +541,6 @@ class Disciple_Tools_People_Groups_Base {
 
     // filter at the start of post creation
     public function dt_post_create_fields( $fields, $post_type ) {
-        if ( $post_type === $this->post_type ) {
-        }
-
         return $fields;
     }
 
