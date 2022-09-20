@@ -742,14 +742,16 @@ window.SHAREDFUNCTIONS = {
     $(selector).html(elem_text)
   },
   addLink(e) {
-    fieldKey = e.target.dataset['fieldKey']
-    linkType = e.target.dataset['linkType']
+    let fieldKey = e.target.dataset['fieldKey']
+    let linkType = e.target.dataset['linkType']
 
     const linkList = $(`.link-list-${fieldKey} .link-section--${linkType}`)
 
     const template = $(`#link-template-${fieldKey}-${linkType}`)
 
     linkList.append(template.clone(true).removeAttr('id').show())
+
+    $(".grid").masonry("layout"); //resize or reorder tile
   }
 };
 
