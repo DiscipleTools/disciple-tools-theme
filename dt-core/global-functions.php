@@ -561,6 +561,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
                                 <div
                                     class="add-link__option"
+                                    <?php echo !empty( $only_one_option ) ? 'data-only-one-option' : '' ?>
                                     data-link-type="<?php echo esc_attr( $option_key ) ?>"
                                     data-field-key="<?php echo esc_attr( $field_key ) ?>"
                                 >

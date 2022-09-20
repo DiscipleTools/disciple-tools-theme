@@ -744,12 +744,17 @@ window.SHAREDFUNCTIONS = {
   addLink(e) {
     let fieldKey = e.target.dataset['fieldKey']
     let linkType = e.target.dataset['linkType']
+    let onlyOneOption = e.target.dataset['onlyOneOption']
 
     const linkList = document.querySelector(`.link-list-${fieldKey} .link-section--${linkType}`)
 
     const template = document.querySelector(`#link-template-${fieldKey}-${linkType}`)
 
     linkList.appendChild(template.content.cloneNode(true).querySelector('.input-group'))
+
+    if ( onlyOneOption !== '' ) {
+      linkList.querySelector('.section-subheader').style.display = 'block'
+    }
 
     $(".grid").masonry("layout"); //resize or reorder tile
   }
