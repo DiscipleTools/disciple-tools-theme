@@ -745,11 +745,11 @@ window.SHAREDFUNCTIONS = {
     let fieldKey = e.target.dataset['fieldKey']
     let linkType = e.target.dataset['linkType']
 
-    const linkList = $(`.link-list-${fieldKey} .link-section--${linkType}`)
+    const linkList = document.querySelector(`.link-list-${fieldKey} .link-section--${linkType}`)
 
-    const template = $(`#link-template-${fieldKey}-${linkType}`)
+    const template = document.querySelector(`#link-template-${fieldKey}-${linkType}`)
 
-    linkList.append(template.clone(true).removeAttr('id').show())
+    linkList.appendChild(template.content.cloneNode(true).querySelector('.input-group'))
 
     $(".grid").masonry("layout"); //resize or reorder tile
   }

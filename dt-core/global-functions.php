@@ -709,7 +709,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         foreach ( $fields[$field_key]["default"] as $link_type => $link_value ) : ?>
 
                             <div class="link-section link-section--<?php echo esc_attr( $link_type ) ?>">
-                                <div class="section-subheader" style="<?php echo $only_one_option ? 'display: none' : '' ?>">
+                                <div class="section-subheader" <?php echo $only_one_option ? 'style="display: none"' : '' ?> >
                                     <?php dt_render_field_icon( $link_value ) ?>
                                     <?php echo esc_html( $link_value["label"] ); ?>
                                 </div>
@@ -734,9 +734,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             continue;
                         } ?>
 
-                        <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
+                        <template style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
                             <?php render_link_field( $field_key, $option_key, $option_value, "", $display_field_id, "", $required_tag, $disabled ) ?>
-                        </div>
+                        </template>
 
                     <?php endforeach; ?>
 
