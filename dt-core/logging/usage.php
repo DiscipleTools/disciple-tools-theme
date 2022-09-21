@@ -23,7 +23,6 @@ class Disciple_Tools_Usage {
                 'body' => $this->telemetry(),
             ];
 
-
             wp_remote_post( $url, $args );
         }
     }
@@ -36,6 +35,7 @@ class Disciple_Tools_Usage {
         $countries = $this->countries_usage();
         $activity = $this->activity();
         $regions = $this->regions();
+        $languages = $this->languages();
         $users = new WP_User_Query( [ 'count_total' => true ] );
 
         $site_url = get_site_url( null, '', 'https' );
@@ -81,6 +81,7 @@ class Disciple_Tools_Usage {
                 'church_countries' => (array) $countries['churches'] ?? [],
                 'active_users' => (string) $activity['active_users'] ?: '0',
                 'total_users' => (string) $users->get_total() ?: '0',
+                'user_languages' => $languages,
                 'has_demo_data' => !empty( $system_usage['has_demo_data'] ),
 
                 'regions' => $regions ?: '0',
@@ -234,6 +235,27 @@ class Disciple_Tools_Usage {
         }
 
         return $usage;
+    }
+
+    private function languages() : array {
+        global $wpdb;
+        $data = [];
+
+        $raw = $wpdb->get_results($wpdb->prepare( "
+            SELECT um.meta_value as code, count(*) as total
+            FROM $wpdb->usermeta um
+            JOIN $wpdb->usermeta umc ON um.user_id=umc.user_id AND umc.meta_key = %s
+            WHERE um.meta_key = 'locale'
+            GROUP BY um.meta_value
+            ", $wpdb->prefix . 'capabilities' ), ARRAY_A );
+
+        if( ! empty( $raw ) ) {
+            foreach( $raw as $item ) {
+                $data[$item['code']] = $item['total'];
+            }
+        }
+
+        return $data;
     }
 
 }
