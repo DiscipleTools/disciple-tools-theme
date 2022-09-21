@@ -46,7 +46,7 @@ jQuery(function ($) {
 
       // Update merge column titles & post url links
       $('#main_archiving_post_id_title').text(archiving_post['record']['title'] + ' #' + archiving_post['record']['ID']);
-      $('#main_primary_post_id_title').text(primary_post['record']['title'] + ' #' +  primary_post['record']['ID']);
+      $('#main_primary_post_id_title').text(primary_post['record']['title'] + ' #' + primary_post['record']['ID']);
       $('#main_updated_post_id_title').text(primary_post['record']['ID']);
 
       let archiving_id_link = window.merge_post_details['site_url'] + window.merge_post_details['post_settings']['post_type'] + '/' + archiving_post['record']['ID'];
@@ -131,6 +131,12 @@ jQuery(function ($) {
             }
           });
 
+          // Hide empty fields across all merging columns
+          hide_empty_fields();
+
+          // Determine how archiving and primary field values are to be shown
+          handle_showing_of_field_values();
+
           // Display refreshed post fields
           main_archiving_fields_div.fadeIn('fast', function () {
             main_primary_fields_div.fadeIn('fast', function () {
@@ -196,6 +202,175 @@ jQuery(function ($) {
 
     return false;
 
+  }
+
+  function hide_empty_fields() {
+    $.each(window.merge_post_details['post_settings']['fields'], function (key, field) {
+
+      // Identify corresponding field div element
+      let archiving_field_input = $('#main_archiving_fields_div .td-field-input').find('#post_field_id[value="' + key + '"]');
+      let primary_field_input = $('#main_primary_fields_div .td-field-input').find('#post_field_id[value="' + key + '"]');
+      let updated_field_input = $('#main_updated_fields_div .td-field-input').find('#post_field_id[value="' + key + '"]');
+
+      // Assuming valid elements, determine current value states
+      if (archiving_field_input.length > 0 || primary_field_input.length > 0) {
+
+        let archiving_field_tr = $(archiving_field_input).parent().parent();
+        let primary_field_tr = $(primary_field_input).parent().parent();
+        let updated_field_tr = $(updated_field_input).parent().parent();
+
+        // Remove all field entries if no archiving/primary values detected
+        if (!can_select_field(archiving_field_tr) && !can_select_field(primary_field_tr)) {
+          $(archiving_field_tr).remove();
+          $(primary_field_tr).remove();
+          $(updated_field_tr).remove();
+        }
+      }
+    });
+  }
+
+  function handle_showing_of_field_values() {
+    if (window.merge_post_details['only_show_field_values']) {
+
+      // Build merging columns of interest
+      let merging_columns = [
+        {
+          'post': fetch_post_by_merge_type(false)['record'],
+          'fields_div': 'main_archiving_fields_div'
+        },
+        {
+          'post': fetch_post_by_merge_type(true)['record'],
+          'fields_div': 'main_primary_fields_div'
+        }
+      ];
+
+      // Iterate over merging column fields, only displaying values
+      $.each(merging_columns, function (idx, column) {
+        $('#' + column['fields_div']).find('table tbody tr .td-field-input').each(function (idx, td) {
+
+          // Determine field id and type + meta
+          let post_field_id = $(td).find('#post_field_id').val();
+          let merge_field_id = $(td).find('#merge_field_id').val();
+          let merge_field_type = $(td).find('#merge_field_type').val();
+
+          // Switch out elements for value only display
+          switch (merge_field_type) {
+            case 'textarea':
+            case 'number':
+            case 'boolean':
+            case 'text': {
+              $(td).find('#' + merge_field_id).fadeOut('fast');
+              $(td).append('<span>' + column['post'][post_field_id] + '</span>');
+              break;
+            }
+
+            case 'key_select': {
+              let key_select = null;
+
+              // Determine select type
+              if ($(td).find('#' + merge_field_id).length > 0) {
+                key_select = $(td).find('#' + merge_field_id);
+              } else if (($(td).find('#' + post_field_id).length > 0) && !window.lodash.isEmpty($(td).find('#' + post_field_id).css('background-color'))) {
+                key_select = $(td).find('#' + post_field_id);
+              }
+
+              // Assuming we have a valid select handle
+              if (key_select) {
+                $(key_select).fadeOut('fast');
+              }
+
+              // Display value only
+              $(td).append('<span>' + column['post'][post_field_id]['label'] + '</span>');
+              break;
+            }
+
+            case 'date': {
+              $(td).find('.' + merge_field_id).fadeOut('fast');
+              $(td).append('<span>' + column['post'][post_field_id]['formatted'] + '</span>');
+              break;
+            }
+
+            case 'multi_select': {
+              $(td).find('.button-group').fadeOut('fast');
+
+              // Build list html with select options
+              let select_html = '<ul>';
+              $.each(column['post'][post_field_id], function (option_idx, option) {
+                let option_label = window.merge_post_details['post_settings']['fields'][post_field_id]['default'][option]['label'];
+                select_html += '<li>' + option_label + '</li>'
+              });
+              select_html += '</ul>';
+
+              $(td).append(select_html);
+              break;
+            }
+
+            case 'tags': {
+              $(td).find('#' + merge_field_id).fadeOut('fast');
+
+              // Build list html with identified tags
+              let tags_html = '<ul>';
+              $.each(column['post'][post_field_id], function (tag_idx, tag) {
+                tags_html += '<li>' + tag + '</li>'
+              });
+              tags_html += '</ul>';
+
+              $(td).append(tags_html);
+              break;
+            }
+
+            case 'communication_channel': {
+              $(td).find('#edit-' + post_field_id).fadeOut('fast');
+
+              // Build list html with identified communication channels
+              let comms_html = '<ul>';
+              $.each(column['post'][post_field_id], function (comms_idx, comms) {
+                comms_html += '<li>' + comms['value'] + '</li>'
+              });
+              comms_html += '</ul>';
+
+              $(td).append(comms_html);
+              break;
+            }
+
+            case 'location_meta': {
+              $(td).find('#mapbox-wrapper').fadeOut('fast');
+
+              // Build list html with identified locations
+              let locate_meta_html = '<ul>';
+              $.each(column['post'][post_field_id], function (locate_meta_idx, locate_meta) {
+                locate_meta_html += '<li>' + locate_meta['label'] + '</li>'
+              });
+              locate_meta_html += '</ul>';
+
+              $(td).append(locate_meta_html);
+              break;
+            }
+
+            case 'user_select': {
+              $(td).find('#' + post_field_id).fadeOut('fast');
+              $(td).append('<span>' + column['post'][post_field_id]['display'] + '</span>');
+              break;
+            }
+
+            case 'connection': {
+              $(td).find('.dt_typeahead').fadeOut('fast');
+
+              // Build list html with identified connections
+              let connection_html = '<ul>';
+              $.each(column['post'][post_field_id], function (connection_idx, connection) {
+                connection_html += '<li>' + connection['post_title'] + '</li>'
+              });
+              connection_html += '</ul>';
+
+              $(td).append(connection_html);
+              break;
+            }
+          }
+        });
+      });
+
+    }
   }
 
   function init_fields(post, fields_div, read_only) {
@@ -796,7 +971,7 @@ jQuery(function ($) {
            * Load Typeahead
            */
 
-          if ( $(td).find(connection_typeahead_field_input).length ){
+          if ($(td).find(connection_typeahead_field_input).length) {
             $(td).find(connection_typeahead_field_input).typeahead({
               input: connection_typeahead_field_input,
               minLength: 0,

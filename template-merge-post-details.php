@@ -93,7 +93,9 @@ add_action( 'wp_enqueue_scripts', function () use ( $dt_current_post, $dt_duplic
             'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
             'all_locations'    => __( 'All Locations', 'disciple_tools' ),
             'error_msg'        => __( 'Sorry, something went wrong', 'disciple_tools' )
-        ]
+        ],
+        'extra_fields_to_hide'     => extra_post_type_fields_to_hide(),
+        'only_show_field_values'   => true
     ] );
 }, 10 );
 
@@ -108,7 +110,7 @@ get_header();
             <!-- Merge Header-->
             <main id="main_header" class="large-12 medium-12 cell" role="main">
                 <div class="bordered-box">
-                    <h2 class="center"><?php echo esc_html( sprintf( __( "Merge Duplicate %s", 'disciple_tools' ), $post_settings['label_plural'] ) )?></h2>
+                    <h2 class="center"><?php echo esc_html( sprintf( __( "Merge Duplicate %s", 'disciple_tools' ), $post_settings['label_plural'] ) ) ?></h2>
                     <p class="center"
                        style="max-width: 75%; margin-left:auto; margin-right:auto;"><?php esc_html_e( "When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below.", 'disciple_tools' ) ?></p>
 
@@ -213,60 +215,63 @@ function render_post_fields( $post, $fields, $settings_fields, $field_id_prefix,
     <table>
         <tbody>
         <?php
+        $extra_fields_to_hide = extra_post_type_fields_to_hide();
         foreach ( $fields as $field ) {
+            if ( ! in_array( $field, $extra_fields_to_hide[ $post['post_type'] ] ?? [] ) ) {
 
-            // Capture rendered field html
-            ob_start();
-            render_field_for_display( $field, $settings_fields, $post, true, false, $field_id_prefix );
-            $rendered_field_html = ob_get_contents();
-            ob_end_clean();
+                // Capture rendered field html
+                ob_start();
+                render_field_for_display( $field, $settings_fields, $post, true, false, $field_id_prefix );
+                $rendered_field_html = ob_get_contents();
+                ob_end_clean();
 
-            $merge_field_id   = $field_id_prefix . $field;
-            $merge_field_type = $settings_fields[ $field ]['type'];
+                $merge_field_id   = $field_id_prefix . $field;
+                $merge_field_type = $settings_fields[ $field ]['type'];
 
-            // Only display if valid html content has been generated
-            if ( ! empty( $rendered_field_html ) ) {
-                ?>
-                <tr>
-                    <?php
-                    if ( $show_field_select ) {
-                        if ( in_array( $settings_fields[ $field ]['type'], $merge_capable_field_types ) ) {
-                            ?>
-                            <td class="td-field-select">
-                                <input type="checkbox" class="field-select"
-                                       data-merge_update_field_id="<?php echo esc_html( $field ) ?>"
-                                       data-merge_field_id="<?php echo esc_html( $merge_field_id ) ?>"
-                                       data-merge_field_type="<?php echo esc_html( $merge_field_type ) ?>">
-                            </td>
-                            <?php
-                        } else {
-                            ?>
-                            <td class="td-field-select">
-                                <input type="radio" class="field-select" name="<?php echo esc_html( $field ) ?>"
-                                       data-merge_update_field_id="<?php echo esc_html( $field ) ?>"
-                                       data-merge_field_id="<?php echo esc_html( $merge_field_id ) ?>"
-                                       data-merge_field_type="<?php echo esc_html( $merge_field_type ) ?>">
-                            </td>
-                            <?php
-                        }
-                    }
+                // Only display if valid html content has been generated
+                if ( ! empty( $rendered_field_html ) ) {
                     ?>
-                    <td class="td-field-input">
-                        <input type="hidden" id="post_field_id"
-                               value="<?php echo esc_html( $field ) ?>"/>
-                        <input type="hidden" id="merge_field_id"
-                               value="<?php echo esc_html( $merge_field_id ) ?>"/>
-                        <input type="hidden" id="merge_field_type"
-                               value="<?php echo esc_html( $merge_field_type ) ?>"/>
-                        <input type="hidden" id="field_meta" value=""/>
+                    <tr>
                         <?php
-                        // phpcs:disable
-                        echo $rendered_field_html;
-                        // phpcs:enable
+                        if ( $show_field_select ) {
+                            if ( in_array( $settings_fields[ $field ]['type'], $merge_capable_field_types ) ) {
+                                ?>
+                                <td class="td-field-select">
+                                    <input type="checkbox" class="field-select"
+                                           data-merge_update_field_id="<?php echo esc_html( $field ) ?>"
+                                           data-merge_field_id="<?php echo esc_html( $merge_field_id ) ?>"
+                                           data-merge_field_type="<?php echo esc_html( $merge_field_type ) ?>">
+                                </td>
+                                <?php
+                            } else {
+                                ?>
+                                <td class="td-field-select">
+                                    <input type="radio" class="field-select" name="<?php echo esc_html( $field ) ?>"
+                                           data-merge_update_field_id="<?php echo esc_html( $field ) ?>"
+                                           data-merge_field_id="<?php echo esc_html( $merge_field_id ) ?>"
+                                           data-merge_field_type="<?php echo esc_html( $merge_field_type ) ?>">
+                                </td>
+                                <?php
+                            }
+                        }
                         ?>
-                    </td>
-                </tr>
-                <?php
+                        <td class="td-field-input">
+                            <input type="hidden" id="post_field_id"
+                                   value="<?php echo esc_html( $field ) ?>"/>
+                            <input type="hidden" id="merge_field_id"
+                                   value="<?php echo esc_html( $merge_field_id ) ?>"/>
+                            <input type="hidden" id="merge_field_type"
+                                   value="<?php echo esc_html( $merge_field_type ) ?>"/>
+                            <input type="hidden" id="field_meta" value=""/>
+                            <?php
+                            // phpcs:disable
+                            echo $rendered_field_html;
+                            // phpcs:enable
+                            ?>
+                        </td>
+                    </tr>
+                    <?php
+                }
             }
         }
         ?>
@@ -284,6 +289,15 @@ function list_merge_capable_field_types(): array {
         'location',
         'tags',
         'connection'
+    ];
+}
+
+function extra_post_type_fields_to_hide(): array {
+    return [
+        'contacts' => [
+            'last_modified',
+            'post_date'
+        ]
     ];
 }
 
