@@ -17,6 +17,8 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_People_Groups
 {
+    public static $option_key_settings_display_tab = 'dt_people_groups_display_tab';
+
     /**
      * Get JP csv file contents and return as array.
      * @return array
@@ -269,29 +271,65 @@ class Disciple_Tools_People_Groups
     public static function admin_tab_table() {
         $names = self::get_country_dropdown();
         ?>
-        <select id="group-search">
-            <?php foreach ( $names as $name ) :
-                echo '<option value="'.esc_attr( $name ).'">'.esc_attr( $name ).'</option>';
-            endforeach; ?>
-        </select>
-        <button class="button" id="search_button" onclick="group_search()">Get List</button>
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <th colspan="1"><?php echo __( 'Display Settings', 'disciple_tools' ); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <?php
+                    echo __( 'Display People Group Tab', 'disciple_tools' );
+                    $display_in_tab_html = get_option( self::$option_key_settings_display_tab ) ? 'checked' : '';
+                    ?>
+                    &nbsp;<input type="checkbox" id="display_people_group_tab"
+                                 onclick="update_setting_options();" <?php echo $display_in_tab_html; ?>>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
         <br><br>
-        <a id="add_all_groups" href="javascript:void(0)" style="display:none;">add all groups</a>
-        <script>
-            function add_all(){
-                jQuery.each(jQuery('#results button'), function(i,v){
-                    console.log(v.id)
-                    task(v.id);
-                })
-                function task(i) {
-                    setTimeout(function() {
-                        console.log(i);
-                        jQuery('#'+i).click()
-                    }, 4000 * i);
-                }
-            }
-        </script>
-        <div id="results"></div>
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <th colspan="1"><?php echo __( 'Import People Group', 'disciple_tools' ); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <select id="group-search">
+                        <?php foreach ( $names as $name ) :
+                            echo '<option value="'.esc_attr( $name ).'">'.esc_attr( $name ).'</option>';
+                        endforeach; ?>
+                    </select>
+                    <button class="button" id="search_button" onclick="group_search()">Get List</button>
+                    <br><br>
+                    <a id="add_all_groups" href="javascript:void(0)" style="display:none;">add all groups</a>
+                    <script>
+                        function add_all(){
+                            jQuery.each(jQuery('#results button'), function(i,v){
+                                console.log(v.id)
+                                task(v.id);
+                            })
+                            function task(i) {
+                                setTimeout(function() {
+                                    console.log(i);
+                                    jQuery('#'+i).click()
+                                }, 4000 * i);
+                            }
+                        }
+                    </script>
+                    <div id="results"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
         <?php
     }
 
@@ -370,5 +408,11 @@ class Disciple_Tools_People_Groups
         ];
     }
 
+    public static function update_setting_options( $settings ): array {
+        if ( isset( $settings['display_tab'] ) ) {
+            update_option( self::$option_key_settings_display_tab, ! empty( $settings['display_tab'] ) );
+        }
 
+        return [];
+    }
 }

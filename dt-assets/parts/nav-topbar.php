@@ -19,6 +19,13 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
  */
 $dt_nav_tabs = dt_default_menu_array();
 
+/**
+ * Ensure people groups post type is displayed accordingly based on option setting.
+ */
+
+if ( isset( $dt_nav_tabs['main']['peoplegroups'] ) && ! get_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab ) ) {
+    unset( $dt_nav_tabs['main']['peoplegroups'] );
+}
 
 ?>
 
