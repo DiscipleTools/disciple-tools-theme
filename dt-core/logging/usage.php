@@ -12,7 +12,7 @@ class Disciple_Tools_Usage {
     public $version = 5;
 
     public function send_usage() {
-        $disable_usage = get_option('dt_disable_usage_data');
+        $disable_usage = get_option( 'dt_disable_usage_data' );
         $disabled = apply_filters( 'dt_disable_usage_report', $disable_usage );
         if ( ! $disabled ) {
             $url = 'https://disciple.tools/wp-json/dt-usage/v1/telemetry';
@@ -250,8 +250,8 @@ class Disciple_Tools_Usage {
             GROUP BY um.meta_value
             ", $wpdb->prefix . 'capabilities' ), ARRAY_A );
 
-        if( ! empty( $raw ) ) {
-            foreach( $raw as $item ) {
+        if ( ! empty( $raw ) ) {
+            foreach ( $raw as $item ) {
                 $data[$item['code']] = $item['total'];
             }
         }

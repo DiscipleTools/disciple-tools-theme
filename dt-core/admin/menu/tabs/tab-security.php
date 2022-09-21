@@ -111,7 +111,6 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function save_settings(){
-        dt_write_log($_POST);
         if ( !empty( $_POST ) ){
             if ( isset( $_POST['security_headers_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['security_headers_nonce'] ), 'security_headers' ) ) {
                 update_option( "dt_disable_header_xss", isset( $_POST["xss"] ) ? "0" : "1" );
@@ -121,7 +120,7 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
 
             if ( isset( $_POST['usage_data_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['usage_data_nonce'] ), 'usage_data' ) ) {
-                update_option('dt_disable_usage_data', isset( $_POST["usage"] ) ? "1" : "0" );
+                update_option( 'dt_disable_usage_data', isset( $_POST["usage"] ) ? "1" : "0" );
             }
         }
     }
@@ -133,7 +132,7 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
         $telemetry = $usage_class->telemetry();
         $telemetry_string = print_r( $telemetry, true );
 
-        $disable_usage = get_option('dt_disable_usage_data');
+        $disable_usage = get_option( 'dt_disable_usage_data' );
         ?>
         <p>
             Disciple.Tools is a free, open source software created by a community of Jesus followers who want to see the Great Commission fulfilled.
@@ -158,7 +157,7 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
             <a href="javascript:void(0);" onclick="jQuery('#telemetry_report').toggle();">Show current telemetry usage report</a><br>
             <div id="telemetry_report" style="display:none;">
                 <div>Notice the absence of personally identifiable information. Even the site url is no more specific than is available in a SSL TCP/IP transfer packet.</div>
-                <?php echo '<pre>' . $telemetry_string . '</pre>'; ?>
+                <?php echo '<pre>' . esc_html( $telemetry_string ) . '</pre>'; ?>
             </div>
         </p>
 
