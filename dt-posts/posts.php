@@ -2236,6 +2236,11 @@ class Disciple_Tools_Posts
         if ( !isset( $field_setting["p2p_key"], $field_setting["p2p_direction"] ) ) {
             return new WP_Error( __FUNCTION__, "Could not add connection. Field settings missing", [ 'status' => 400 ] );
         }
+        $current_connected_post = null;
+        if ( $field_setting['post_type'] !== $post_type ){
+            $current_connected_post = DT_Posts::get_post( $field_setting['post_type'], $value, true, false );
+        }
+
         if ( $field_setting["p2p_direction"] === "to" || $field_setting["p2p_direction"] === "any" ) {
             $connect = p2p_type( $field_setting["p2p_key"] )->connect(
                 $value, $post_id,
@@ -2254,10 +2259,54 @@ class Disciple_Tools_Posts
             do_action( "post_connection_added", $post_type, $post_id, $field_key, $value );
             $connection = get_post( $value );
             $connection->permalink = get_permalink( $value );
+
+            // Determine if update action to be fired for corresponding connection.
+            if ( $connection->post_type != $post_type ) {
+                $reversed_field = self::get_reverse_connection_field( $field_key, $field_setting );
+                if ( ! empty( $reversed_field ) ) {
+
+                    $updated_connected_post = DT_Posts::get_post( $field_setting['post_type'], $value, false, false );
+
+                    // Dispatch post updated action hook
+                    do_action( 'dt_post_updated', $connection->post_type, $connection->ID, [
+                        $reversed_field['key'] => [
+                            'values' => [
+                                'value' => $post_id
+                            ]
+                        ]
+                    ], $current_connected_post, $updated_connected_post );
+                }
+            }
+
             return $connection;
         } else {
             return new WP_Error( __FUNCTION__, "Error adding connection on field: " . $field_key, [ "status" => 400 ] );
         }
+    }
+
+    /**
+     * Given a connection field, find the field details for the other side for the connection
+     * Ex: From the group "members" field get the contact's "groups" field
+     *
+     *
+     * @return array
+     */
+    private static function get_reverse_connection_field( $connection_field_key, $connection_field_details ) {
+        $reversed_field = [];
+        $settings       = DT_Posts::get_post_settings( $connection_field_details['post_type'] ?? '' );
+        foreach ( $settings['fields'] ?? [] as $field_key => $field ) {
+            if ( ( $field['type'] === 'connection' ) && isset( $field['p2p_key'], $field['p2p_direction'] ) ) {
+                if ( $field['p2p_key'] === $connection_field_details['p2p_key'] && $connection_field_key !== $field_key ) {
+                    $reversed_field = [
+                        'post_type' => $connection_field_details['post_type'],
+                        'key'   => $field_key,
+                        'field' => $field
+                    ];
+                }
+            }
+        }
+
+        return $reversed_field;
     }
 
     private static function remove_connection_from_post( string $post_type, int $post_id, string $field_key, int $value ){
