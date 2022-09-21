@@ -12,7 +12,8 @@ class Disciple_Tools_Usage {
     public $version = 5;
 
     public function send_usage() {
-        $disabled = apply_filters( 'dt_disable_usage_report', false );
+        $disable_usage = get_option('dt_disable_usage_data');
+        $disabled = apply_filters( 'dt_disable_usage_report', $disable_usage );
         if ( ! $disabled ) {
             $url = 'https://disciple.tools/wp-json/dt-usage/v1/telemetry';
             $args = [
@@ -185,11 +186,11 @@ class Disciple_Tools_Usage {
             if ( ! empty( $map_level['children'] ) ) {
                 $data .= implode( ',', $map_level['children'] );
                 if ( $map_level['parent'] !== 'world' ){
-                    $data .= $map_level['parent'];
+                    $data .= ' ' . $map_level['parent'];
                 }
             }
             else {
-                $data .= $map_level['parent'];
+                $data .= ' ' . $map_level['parent'];
             }
         }
 
