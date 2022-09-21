@@ -450,6 +450,13 @@ class Disciple_Tools_Users
                     wp_set_current_user( $current_user_id );
                 }
             }
+
+            // Transfer any existing sub-assignments
+            foreach ( p2p_get_connections( 'contacts_to_subassigned', [ 'from' => $corresponds_to_contact ] ) as $p2p ) {
+                if ( isset( $p2p->p2p_to ) ) {
+                    DT_Posts::add_shared( 'contacts', $p2p->p2p_to, $user_id );
+                }
+            }
         }
 
         do_action( 'dt_user_created', $user_id );

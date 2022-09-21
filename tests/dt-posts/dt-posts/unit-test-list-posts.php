@@ -36,7 +36,7 @@ class DT_Posts_DT_Posts_List_Posts extends WP_UnitTestCase {
     public static $contact = null;
     public static $group = null;
 
-    public static function setupBeforeClass() {
+    public static function setupBeforeClass(): void  {
         self::$contact = DT_Posts::create_post( "contacts", self::$sample_contact, true, false );
         self::$group   = DT_Posts::create_post( "groups", self::$sample_group, true, false );
     }

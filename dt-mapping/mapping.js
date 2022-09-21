@@ -220,6 +220,7 @@ function location_grid_map( div, grid_id = 'world' ) {
   chart = am4core.create( div, am4maps.MapChart);
   setCommonMapSettings( chart );
   chart.projection = new am4maps.projections.Miller(); // Set projection
+  chart.reverseGeodata = true
   openChart = chart
   let title = jQuery('#section_title')
   let rest = MAPPINGDATA.settings.endpoints.get_map_by_grid_id_endpoint
@@ -304,9 +305,9 @@ function location_grid_map( div, grid_id = 'world' ) {
         chart.geodata = data
 
         chart.projection = new am4maps.projections.Miller();
+        chart.reverseGeodata = true
         let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
         polygonSeries.useGeodata = true;
-
 
         let imageSeries = chart.series.push(new am4maps.MapImageSeries());
 
@@ -424,6 +425,7 @@ function mini_map( div, marker_data ) {
     let chart = minimapChart
 
     chart.projection = new am4maps.projections.Orthographic(); // Set projection
+    chart.reverseGeodata = true
 
     chart.seriesContainer.draggable = false;
     chart.seriesContainer.resizable = false;

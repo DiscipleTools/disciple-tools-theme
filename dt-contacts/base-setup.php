@@ -172,7 +172,8 @@ class DT_Contacts_Base {
                         "visibility" => __( "Only me", 'disciple_tools' ),
                         "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg?v=2",
                         "order" => 50,
-                        "hidden" => !empty( $contact_preferences["hide_personal_contact_type"] )
+                        "hidden" => !empty( $contact_preferences["hide_personal_contact_type"] ),
+                        "default" => true
                     ],
                 ],
                 "description" => "See full documentation here: https://disciple.tools/user-docs/getting-started-info/contacts/contact-types",
@@ -385,7 +386,7 @@ class DT_Contacts_Base {
     public static function dt_record_admin_actions( $post_type, $post_id ){
         if ( $post_type === "contacts" ){
             $post = DT_Posts::get_post( $post_type, $post_id );
-            if ( empty( $post["archive"] ) && ( $post["type"]["key"] === "personal" || $post["type"]["key"] === "placeholder" ) ) :?>
+            if ( empty( $post["archive"] ) && isset( $post["type"] ) && ( $post["type"]["key"] === "personal" || $post["type"]["key"] === "placeholder" ) ) :?>
                 <li>
                     <a data-open="archive-record-modal">
                         <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2' ) ?>"/>
