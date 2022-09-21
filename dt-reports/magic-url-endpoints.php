@@ -112,7 +112,10 @@ class Disciple_Tools_Magic_Endpoints
 
         $errors = [];
         $success = [];
+
         /**
+         * Bulk Field Filter
+         *
          * This filter allows for targeting a specific contact connection field to loop through and send emails.
          * The default field name is 'reporter', but this can be overwritten and pointed towards assigned_to, subassigned_to,
          * coaching, or another custom contact connection field.
