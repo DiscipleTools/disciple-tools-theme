@@ -67,6 +67,11 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* End Email Settings */
 
+            /* People Groups Settings */
+            Disciple_Tools_People_Groups::admin_display_settings_tab_table();
+            echo '<br>';
+            /* End People Groups Settings */
+
             /* Modules */
             $this->box( 'top', 'Modules' );
             $this->process_contact_modules();

@@ -19,14 +19,6 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
  */
 $dt_nav_tabs = dt_default_menu_array();
 
-/**
- * Ensure people groups post type is displayed accordingly based on option setting.
- */
-
-if ( isset( $dt_nav_tabs['main']['peoplegroups'] ) && ! get_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab ) ) {
-    unset( $dt_nav_tabs['main']['peoplegroups'] );
-}
-
 ?>
 
 <script>
@@ -129,6 +121,7 @@ if ( isset( $dt_nav_tabs['main']['peoplegroups'] ) && ! get_option( Disciple_Too
         <div class="top-bar-left">
             <ul class="dropdown menu" data-dropdown-menu>
                 <?php foreach ( $dt_nav_tabs['main'] as $dt_main_tabs ) : ?>
+                    <?php if ( isset( $dt_main_tabs['hidden'] ) && ! $dt_main_tabs['hidden'] ) { ?>
                         <li><a href="<?php echo esc_url( $dt_main_tabs['link'] ) ?>"><?php echo esc_html( $dt_main_tabs['label'] ) ?>&nbsp;</a>
                             <?php
                             if ( isset( $dt_main_tabs['submenu'] ) && ! empty( $dt_main_tabs['submenu'] ) ) {
@@ -146,6 +139,7 @@ if ( isset( $dt_nav_tabs['main']['peoplegroups'] ) && ! get_option( Disciple_Too
                                 <?php
                             }
                             ?></li>
+                    <?php } ?>
                 <?php endforeach; ?>
                     <li id="more-menu-button"><a href="#"><?php esc_html_e( 'More', 'disciple_tools' ) ?>&nbsp;</a>
                         <ul class="menu vertical nested is-dropdown-submenu">

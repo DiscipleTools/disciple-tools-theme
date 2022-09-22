@@ -267,35 +267,40 @@ class Disciple_Tools_People_Groups
         }
     }
 
-
-    public static function admin_tab_table() {
-        $names = self::get_country_dropdown();
+    public static function admin_display_settings_tab_table() {
         ?>
         <table class="widefat striped">
             <thead>
             <tr>
-                <th colspan="1"><?php echo __( 'Display Settings', 'disciple_tools' ); ?></th>
+                <th colspan="1"><?php echo esc_html( __( 'People Group Display Settings', 'disciple_tools' ) ); ?></th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td>
                     <?php
-                    echo __( 'Display People Group Tab', 'disciple_tools' );
+                    echo esc_html( __( 'Display In People Group Navigation Tab', 'disciple_tools' ) );
                     $display_in_tab_html = get_option( self::$option_key_settings_display_tab ) ? 'checked' : '';
                     ?>
                     &nbsp;<input type="checkbox" id="display_people_group_tab"
-                                 onclick="update_setting_options();" <?php echo $display_in_tab_html; ?>>
+                                 onclick="update_setting_options();" <?php echo esc_html( $display_in_tab_html ); ?>>
                 </td>
             </tr>
             </tbody>
         </table>
+        <?php
+    }
 
+    public static function admin_tab_table() {
+        $names = self::get_country_dropdown();
+
+        self::admin_display_settings_tab_table();
+        ?>
         <br><br>
         <table class="widefat striped">
             <thead>
             <tr>
-                <th colspan="1"><?php echo __( 'Import People Group', 'disciple_tools' ); ?></th>
+                <th colspan="1"><?php echo esc_html( __( 'Import People Group', 'disciple_tools' ) ); ?></th>
             </tr>
             </thead>
             <tbody>
@@ -328,8 +333,6 @@ class Disciple_Tools_People_Groups
             </tr>
             </tbody>
         </table>
-
-
         <?php
     }
 

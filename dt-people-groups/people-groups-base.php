@@ -23,6 +23,16 @@ class Disciple_Tools_People_Groups_Base {
         add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
         add_filter( 'dt_filter_access_permissions', [ $this, 'dt_filter_access_permissions' ], 20, 2 );
 
+        //Hooks
+        add_filter( 'dt_nav', [ $this, 'dt_nav_filter' ], 10, 1 );
+    }
+
+    public function dt_nav_filter( $navigation_array ) {
+        if ( isset( $navigation_array['main'], $navigation_array['main'][ $this->post_type ] ) ) {
+            $navigation_array['main'][ $this->post_type ]['hidden'] = ! get_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab );
+        }
+
+        return $navigation_array;
     }
 
     public function after_setup_theme() {
@@ -59,7 +69,9 @@ class Disciple_Tools_People_Groups_Base {
         // if the user can access contact they also can access this post type
         foreach ( $expected_roles as $role => $role_value ) {
             if ( isset( $role_value['permissions']['access_contacts'] ) && $role_value['permissions']['access_contacts'] ) {
-                $expected_roles[ $role ]['permissions'][ 'access_' . $this->post_type ] = true;
+                $expected_roles[ $role ]['permissions'][ 'access_' . $this->post_type ]   = true;
+                $expected_roles[ $role ]['permissions'][ 'list_all_' . $this->post_type ] = true;
+                $expected_roles[ $role ]['permissions'][ 'view_any_' . $this->post_type ] = true;
             }
         }
 
