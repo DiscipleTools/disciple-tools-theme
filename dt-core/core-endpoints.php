@@ -53,7 +53,7 @@ class Disciple_Tools_Core_Endpoints {
     /**
      * These are settings available to any logged in user.
      */
-    public function get_settings() {
+    public static function get_settings() {
         $user = wp_get_current_user();
         if ( !$user ){
             return new WP_Error( "get_settings", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
@@ -66,7 +66,8 @@ class Disciple_Tools_Core_Endpoints {
         }
         return [
             "available_translations" => $available_translations,
-            "post_types" => $post_types_settings
+            "post_types" => $post_types_settings,
+            'plugins' => apply_filters( 'dt_plugins', [] ),
         ];
     }
 
