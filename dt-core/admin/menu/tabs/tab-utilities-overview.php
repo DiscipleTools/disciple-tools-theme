@@ -64,7 +64,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         if ( isset( $_POST["_wpnonce"] ) && wp_verify_nonce( sanitize_key( $_POST["_wpnonce"] ), 'utilities_overview' ) ){
             if ( isset( $_POST["reset_lock"] ) ){
                 $lock_name = sanitize_key( $_POST["reset_lock"] );
-                update_option( $lock_name, 0 );
+                delete_transient( $lock_name );
             }
         }
     }
@@ -101,7 +101,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         <tr>
             <td>
                 <?php echo esc_html( sprintf( __( 'D.T Migration version: %1$s of %2$s' ), Disciple_Tools_Migration_Engine::get_current_db_migration(), Disciple_Tools_Migration_Engine::$migration_number ) ); ?>.
-                Lock: <?php echo esc_html( get_option( 'dt_migration_lock', 0 ) ) ?>
+                Lock: <?php echo esc_html( get_transient( 'dt_migration_lock' ) ?? 0 ) ?>
             </td>
             <td>
                 <button name="reset_lock" value="dt_migration_lock">Reset Lock</button>
@@ -110,7 +110,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         <tr>
             <td>
                 <?php echo esc_html( sprintf( __( 'Mapping migration version: %1$s of %2$s' ), DT_Mapping_Module_Migration_Engine::get_current_db_migration(), DT_Mapping_Module_Migration_Engine::$migration_number ) ); ?>.
-                Lock: <?php echo esc_html( get_option( 'dt_mapping_module_migration_lock', 0 ) ) ?>
+                Lock: <?php echo esc_html( get_transient( 'dt_mapping_module_migration_lock' ) ?? 0 ) ?>
             </td>
             <td>
                 <button name="reset_lock" value="dt_mapping_module_migration_lock">Reset Lock</button>
