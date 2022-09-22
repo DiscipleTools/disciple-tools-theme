@@ -30,6 +30,7 @@ class DT_Mapping_Module_Migration_0014 extends DT_Mapping_Module_Migration {
             delete_option( 'dt_mapping_module_migration_lock' );
             delete_option( 'dt_mapping_module_migrate_last_error' );
             delete_option( 'dt_mapping_module_migration_number' );
+            delete_transient( 'dt_mapping_module_migration_lock' );
 
             // delete folder and downloads
             $dir = wp_upload_dir();
