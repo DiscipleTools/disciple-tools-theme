@@ -7,6 +7,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Migration_0022 extends Disciple_Tools_Migration
 {
     public function up() {
+        //skip is this is a new install
+        if ( get_option( 'dt_at_install', [] )['migration_number'] ?? 0 > 22 ){
+            return;
+        }
+
         global $wpdb;
         $field_settings = DT_Posts::get_post_field_settings( "contacts" );
         $seeker_path_options = $field_settings["seeker_path"]["default"];

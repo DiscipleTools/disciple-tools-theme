@@ -3,6 +3,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0033 extends Disciple_Tools_Migration {
     public function up() {
+        //skip is this is a new install
+        if ( get_option( 'dt_at_install', [] )['migration_number'] ?? 0 > 33 ){
+            return;
+        }
+
         /**
          * Remove contact channels that are now saved with the fields settings
          */

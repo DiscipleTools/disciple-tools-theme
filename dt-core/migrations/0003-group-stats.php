@@ -3,6 +3,12 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0003 extends Disciple_Tools_Migration {
     public function up() {
+        //skip is this is a new install
+        if ( get_option( 'dt_at_install', [] )['migration_number'] ?? 0 > 3 ){
+            return;
+        }
+
+
 
         $groups = DT_Posts::search_viewable_post( "groups", [] );
         if ( !is_wp_error( $groups ) && count( $groups["groups"] ) > 0 ) {

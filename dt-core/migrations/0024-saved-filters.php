@@ -8,7 +8,10 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Migration_0024 extends Disciple_Tools_Migration
 {
     public function up() {
-        global $wpdb;
+        //skip is this is a new install
+        if ( get_option( 'dt_at_install', [] )['migration_number'] ?? 0 > 24 ){
+            return;
+        }
 
         //get users with saved filters
         //save those filters to options instead

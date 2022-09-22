@@ -4,6 +4,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0013 extends Disciple_Tools_Migration {
     public function up() {
+        //skip is this is a new install
+        if ( get_option( 'dt_at_install', [] )['migration_number'] ?? 0 > 13 ){
+            return;
+        }
+
         $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
         $group_fields = DT_Posts::get_post_field_settings( "groups" );
         $custom_lists = dt_get_option( "dt_site_custom_lists" );
