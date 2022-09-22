@@ -40,13 +40,13 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
      */
     $disabled = apply_filters( 'dt_block_development_emails', false );
     if ( $disabled ) {
-        $email = [];
-        $email['email'] = $email;
-        $email['subject'] = $subject;
-        $email['message'] = $message_plain_text;
+        $print_email = [];
+        $print_email['email'] = $email;
+        $print_email['subject'] = $subject;
+        $print_email['message'] = $message_plain_text;
 
         dt_write_log( __METHOD__ );
-        dt_write_log( $email );
+        dt_write_log( $print_email );
 
         return true;
     }
