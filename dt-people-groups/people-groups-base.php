@@ -99,11 +99,6 @@ class Disciple_Tools_People_Groups_Base {
              * Basic Framework Fields
              *
              */
-            $fields["duplicate_data"]     = [
-                "name"    => 'Duplicates', //system string does not need translation
-                'type'    => 'array',
-                'default' => [],
-            ];
             $fields["requires_update"]    = [
                 'name'        => __( 'Requires Update', 'disciple_tools' ),
                 'description' => '',
