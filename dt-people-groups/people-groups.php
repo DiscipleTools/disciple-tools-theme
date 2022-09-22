@@ -279,7 +279,7 @@ class Disciple_Tools_People_Groups
             <tr>
                 <td>
                     <?php
-                    echo esc_html( __( 'Display In People Group Navigation Tab', 'disciple_tools' ) );
+                    echo esc_html( __( 'Display People Groups Tab in Navigation Bar', 'disciple_tools' ) );
                     $display_in_tab_html = get_option( self::$option_key_settings_display_tab ) ? 'checked' : '';
                     ?>
                     &nbsp;<input type="checkbox" id="display_people_group_tab"
