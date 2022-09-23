@@ -146,7 +146,7 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
             and has no personally identifiable data included.
         </p>
         <p>
-            The telemetry data collected is as follows: (SYSTEM INFO) time as sha256 hash, site_id as sha256 hash, usage version, PHP version, WordPress version,
+            The telemetry data collected is as follows: (SYSTEM INFO) time as sha256 hash, site_id as sha256 hash, usage version, PHP version, WordPress version, if debug is being used,
             WordPress database version, site url, theme version, active plugins list, usage of Mapbox, usage of Google Geocoding, timestamp of usage report, (USAGE INFO) active contact count (int),
             total contacts count (int), contacts countries list (array of ids for countries that have contacts),
             active groups count (int), total groups count (int), group countries list (array of ids for countries that have groups), active churches count (int),
