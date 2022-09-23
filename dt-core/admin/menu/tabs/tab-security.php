@@ -47,14 +47,19 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
 
     public function content( $tab ) {
         if ( 'security' == $tab ) {
-
-
-            self::template( 'begin' );
+            // security
+            self::template( 'begin', 1 );
 
             $this->save_settings();
             $this->security_enable_box();
 
-            self::template( 'right_column' );
+
+            self::template( 'end' );
+
+            // usage
+            self::template( 'begin', 1 );
+
+            $this->security_usage_opt_in();
 
 
             self::template( 'end' );
@@ -112,9 +117,65 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
                 update_option( "dt_disable_header_referer", isset( $_POST["referer"] ) ? "0" : "1" );
                 update_option( "dt_disable_header_content_type", isset( $_POST["content_type"] ) ? "0" : "1" );
                 update_option( "dt_disable_header_strict_transport", isset( $_POST["strict_transport"] ) ? "0" : "1" );
+            }
 
+            if ( isset( $_POST['usage_data_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['usage_data_nonce'] ), 'usage_data' ) ) {
+                update_option( 'dt_disable_usage_data', isset( $_POST["usage"] ) ? "1" : "0" );
             }
         }
+    }
+
+    public function security_usage_opt_in() {
+        $this->box( 'top', 'Usage Data' );
+
+        $usage_class = new Disciple_Tools_Usage();
+        $telemetry = $usage_class->telemetry();
+        $telemetry_string = print_r( $telemetry, true );
+
+        $disable_usage = get_option( 'dt_disable_usage_data' );
+        ?>
+        <p>
+            Disciple.Tools is a free, open source software created by a community of Jesus followers who want to see the Great Commission fulfilled.
+            We aspire to create a secure and redistributable system that can serve disciple making movements in even difficult and dangerous locations.
+            Among the many deep security protections we have engineered into Disciple.Tools, we have also included the "opt-out" below, which is the ability
+            to disconnect all telemetry data from the core Disciple.Tools development team.
+        </p>
+        <p>
+            Telemetry assists the core development team to make decisions on directions for the software into the future. We collect a fraction of the data a
+            normal software collects, but these few details help us understand the application and impact of the tool. All the data we collect is high level totals
+            and has no personally identifiable data included.
+        </p>
+        <p>
+            The telemetry data collected is as follows: (SYSTEM INFO) time as sha256 hash, site_id as sha256 hash, usage version, PHP version, WordPress version, if debug is being used,
+            WordPress database version, site url, theme version, active plugins list, usage of Mapbox, usage of Google Geocoding, timestamp of usage report, (USAGE INFO) active contact count (int),
+            total contacts count (int), contacts countries list (array of ids for countries that have contacts),
+            active groups count (int), total groups count (int), group countries list (array of ids for countries that have groups), active churches count (int),
+            total churches (int), church countries list (array of ids for countries that have churches), active users count (int), total users count (int),
+            user languages list (array of language codes and totals), presence of demo data, and region of targeted focus.
+        </p>
+        <p>
+            <a href="javascript:void(0);" onclick="jQuery('#telemetry_report').toggle();">Show current telemetry usage report</a><br>
+            <div id="telemetry_report" style="display:none;">
+                <div>Notice the absence of personally identifiable information. Even the site url is no more specific than is available in a SSL TCP/IP transfer packet.</div>
+                <?php echo '<pre>' . esc_html( $telemetry_string ) . '</pre>'; ?>
+            </div>
+        </p>
+
+        <form method="POST" action="">
+            <?php wp_nonce_field( 'usage_data', 'usage_data_nonce' ); ?>
+            <table class="form-table">
+                <tr>
+                    <th>Usage Data</th>
+                    <td style="width:5%;"><input name="usage" type="checkbox" value="1" <?php echo ( $disable_usage ) ? 'checked' : '' ?>></td>
+                    <td>Disable usage data. (i.e. Thank you for the free software, but I must withhold technical system statistics.)</td>
+                </tr>
+            </table>
+
+            <button type="submit" class="button button-primary">Save Changes</button>
+        </form>
+
+        <?php
+        $this->box( 'bottom' );
     }
 
 
