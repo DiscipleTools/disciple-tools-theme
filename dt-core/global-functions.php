@@ -735,9 +735,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             continue;
                         } ?>
 
-                        <template style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
+                        <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
                             <?php render_link_field( $field_key, $option_key, $option_value, "", $display_field_id, "", $required_tag, $disabled ) ?>
-                        </template>
+                        </div>
 
                     <?php endforeach; ?>
 

@@ -748,11 +748,11 @@ window.SHAREDFUNCTIONS = {
 
     const linkList = document.querySelector(`.link-list-${fieldKey} .link-section--${linkType}`)
 
-    const template = document.querySelector(`#link-template-${fieldKey}-${linkType}`)
+    const template = document.querySelector(`#link-template-${fieldKey}-${linkType}`).querySelector('.input-group')
 
-    const newInputGroup = template.content.cloneNode(true).querySelector('.input-group');
-    const newInput = newInputGroup.querySelector('input')
-    linkList.appendChild(newInputGroup)
+    const newInputGroup = $(template).clone(true);
+    const newInput = newInputGroup[0].querySelector('input')
+    $(linkList).append(newInputGroup)
     newInput.focus()
 
     if ( onlyOneOption !== '' ) {
