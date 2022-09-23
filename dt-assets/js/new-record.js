@@ -63,7 +63,13 @@ jQuery(function($) {
 
   $('.add-link-dropdown[data-only-one-option]').on('click', window.SHAREDFUNCTIONS.addLink)
 
-  $('.add-link__option').on('click', SHAREDFUNCTIONS.addLink)
+  $('.add-link__option').on('click', (event) => {
+    SHAREDFUNCTIONS.addLink(event)
+    $(event.target).parent().hide()
+    setTimeout(() => {
+      event.target.parentElement.removeAttribute('style')
+    }, 100)
+  })
 
   $(document).on('click', '.link-delete-button', function(){
     $(this).closest('.link-section').remove()

@@ -225,7 +225,13 @@ jQuery(document).ready(function($) {
 
   $('.add-link-dropdown[data-only-one-option]').on('click', window.SHAREDFUNCTIONS.addLink)
 
-  $('.add-link__option').on('click', SHAREDFUNCTIONS.addLink)
+  $('.add-link__option').on('click', (event) => {
+    SHAREDFUNCTIONS.addLink(event)
+    $(event.target).parent().hide()
+    setTimeout(() => {
+      event.target.parentElement.removeAttribute('style')
+    }, 100)
+  })
 
   $(document).on('click', '.channel-delete-button', function(){
     let field = $(this).data('field')
