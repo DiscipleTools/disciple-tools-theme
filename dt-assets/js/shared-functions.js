@@ -750,7 +750,10 @@ window.SHAREDFUNCTIONS = {
 
     const template = document.querySelector(`#link-template-${fieldKey}-${linkType}`)
 
-    linkList.appendChild(template.content.cloneNode(true).querySelector('.input-group'))
+    const newInputGroup = template.content.cloneNode(true).querySelector('.input-group');
+    const newInput = newInputGroup.querySelector('input')
+    linkList.appendChild(newInputGroup)
+    newInput.focus()
 
     if ( onlyOneOption !== '' ) {
       linkList.querySelector('.section-subheader').style.display = 'block'
