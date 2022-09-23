@@ -765,6 +765,10 @@ select.color-select {
     display: none;
 }
 
+.link-section .section-subheader:has(+ div) {
+    display: block;
+}
+
 .link-section .input-group {
     margin-bottom: 5px;
 }
