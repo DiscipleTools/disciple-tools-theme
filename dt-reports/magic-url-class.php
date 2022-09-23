@@ -539,12 +539,12 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * Filters and returns registered types that allow bulk send.
          * @return array
          */
-        public static function list_bulk_send() {
+        public static function list_bulk_send( $post_type = null ) {
             $registered_list = self::registered_types_static();
             $bulk_send_list = [];
             foreach ( $registered_list as $root_key => $root_values ) {
                 foreach ( $root_values as $type_key => $type_values ) {
-                    if ( isset( $type_values['show_bulk_send'] ) && $type_values['show_bulk_send'] ) {
+                    if ( isset( $type_values['show_bulk_send'] ) && $type_values['show_bulk_send'] && ( !$post_type || $type_values['post_type'] === $post_type ) ){
                         if ( ! isset( $bulk_send_list[$root_key] ) ) {
                             $bulk_send_list[$root_key] = [];
                         }

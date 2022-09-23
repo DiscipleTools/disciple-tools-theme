@@ -122,7 +122,7 @@ class Disciple_Tools_Magic_Endpoints
          *
          * @param (string)
          */
-        $target_field = apply_filters( 'dt_bulk_email_connection_field', 'reporter', $params );
+        $target_field = apply_filters( 'dt_bulk_email_connection_field', null, $params['post_type'], $params );
 
         foreach ( $params['post_ids'] as $post_id ) {
             $post_record = DT_Posts::get_post( $params['post_type'], $post_id, true, true );
@@ -139,7 +139,7 @@ class Disciple_Tools_Magic_Endpoints
             else if ( isset( $post_record['contact_email'][0] ) ) {
                 $emails[]  = $post_record['contact_email'][0]['value'];
             }
-            else if ( isset( $post_record[$target_field] ) && ! empty( $post_record[$target_field] ) ) {
+            else if ( $target_field && isset( $post_record[$target_field] ) && ! empty( $post_record[$target_field] ) ) {
                 foreach ( $post_record[$target_field] as $reporter ) {
                     $contact_post = DT_Posts::get_post( 'contacts', $reporter['ID'], true, false );
                     if ( isset( $contact_post['contact_email'] ) && ! empty( $contact_post['contact_email'] ) ) {
