@@ -122,7 +122,7 @@ class Disciple_Tools_Magic_Endpoints
          *
          * @param (string)
          */
-        $target_field = apply_filters( 'dt_bulk_email_connection_field', 'reporter' );
+        $target_field = apply_filters( 'dt_bulk_email_connection_field', 'reporter', $params );
 
         foreach ( $params['post_ids'] as $post_id ) {
             $post_record = DT_Posts::get_post( $params['post_type'], $post_id, true, true );
