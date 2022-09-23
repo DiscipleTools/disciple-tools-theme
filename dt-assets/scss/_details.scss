@@ -726,9 +726,9 @@ select.color-select {
 .add-link-dropdown::before {
     content: "";
     position: absolute;
-    width: 25px;
+    width: 50px;
     height: 25px;
-    transform: translate(-25%, -25%);
+    transform: translate(-18px, -3px);
     cursor: pointer;
 }
 
