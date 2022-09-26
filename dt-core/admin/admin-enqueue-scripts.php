@@ -49,7 +49,7 @@ function dt_people_groups_post_type_scripts() {
             'jquery-ui-core',
         ], filemtime( get_template_directory() . '/dt-people-groups/people-groups.js' ), true );
         wp_localize_script(
-            "dt_peoplegroups_scripts", "dtPeopleGroupsAPI", array(
+            'dt_peoplegroups_scripts', 'dtPeopleGroupsAPI', array(
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
@@ -74,7 +74,7 @@ function dt_options_scripts() {
 
     $allowed_pages = apply_filters( 'dt_options_script_pages', $allowed_pages );
 
-    if ( isset( $_GET["page"] ) && ( in_array( $_GET["page"], $allowed_pages, true ) ) ) {
+    if ( isset( $_GET['page'] ) && ( in_array( $_GET['page'], $allowed_pages, true ) ) ) {
         wp_enqueue_script( 'dt_options_script', disciple_tools()->admin_js_url . 'dt-options.js', [
             'jquery',
             'jquery-ui-core',
@@ -88,7 +88,7 @@ function dt_options_scripts() {
         dt_theme_enqueue_style( 'material-font-icons-local', 'dt-core/dependencies/mdi/css/materialdesignicons.min.css', array() );
         wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.6.96/css/materialdesignicons.min.css' );
 
-        if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'people-groups' ) {
+        if ( isset( $_GET['tab'] ) && $_GET['tab'] === 'people-groups' ) {
             wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups.js', [
                 'jquery',
                 'jquery-ui-core',
@@ -96,7 +96,7 @@ function dt_options_scripts() {
         }
 
         wp_localize_script(
-            "dt_options_script", "dtOptionAPI", array(
+            'dt_options_script', 'dtOptionAPI', array(
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,

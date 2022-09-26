@@ -97,7 +97,7 @@ function dt_excerpt_more( $more ) {
  */
 function dt_remove_sticky_class( $classes ) {
     if ( in_array( 'sticky', $classes ) ) {
-        $classes = array_diff( $classes, array( "sticky" ) );
+        $classes = array_diff( $classes, array( 'sticky' ) );
         $classes[] = 'wp-sticky';
     }
 

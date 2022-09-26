@@ -293,7 +293,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             // test :
             // correct root
             // approved type
-            if ( isset( $parts[0] ) && "wp-json" === $parts[0] && isset( $parts[1] ) && $root === $parts[1] && isset( $parts[3] ) && isset( $types[$parts[3]] ) ){
+            if ( isset( $parts[0] ) && 'wp-json' === $parts[0] && isset( $parts[1] ) && $root === $parts[1] && isset( $parts[3] ) && isset( $types[$parts[3]] ) ){
                 $elements = [
                     'root' => '',
                     'type' => '',
@@ -319,7 +319,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         return false;
                     }
                 }
-                $public_key = $params["parts"]["public_key"];
+                $public_key = $params['parts']['public_key'];
                 if ( !empty( $public_key ) ){
                     $elements['public_key'] = $public_key;
 
@@ -327,7 +327,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     if ( ! isset( $types[$elements['type']]['meta_key'] ) ) {
                         return false;
                     }
-                    $elements['meta_key'] = $params["parts"]["meta_key"];
+                    $elements['meta_key'] = $params['parts']['meta_key'];
 
                     if ( 'user' === $types[$elements['type']]['post_type'] ) {
                         // if user
@@ -365,20 +365,20 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          */
         public function verify_rest_endpoint_permissions_on_post( WP_REST_Request $request ){
             $params = $request->get_params();
-            if ( !isset( $params["parts"]["meta_key"], $params["parts"]["public_key"], $params["parts"]["post_id"], $params["parts"]["type"], $params["parts"]["root"] ) ){
+            if ( !isset( $params['parts']['meta_key'], $params['parts']['public_key'], $params['parts']['post_id'], $params['parts']['type'], $params['parts']['root'] ) ){
                 return false;
             }
             $parts = $this->parse_wp_rest_url_parts( $params );
             if ( empty( $parts ) ){
                 return false;
             }
-            if ( $parts["root"] !== $params["parts"]["root"] || $parts["type"] !== $params["parts"]["type"] ){
+            if ( $parts['root'] !== $params['parts']['root'] || $parts['type'] !== $params['parts']['type'] ){
                 return false;
             }
-            if ( $parts["meta_key"] !== $params["parts"]["meta_key"] || $parts["public_key"] !== $params["parts"]["public_key"] ){
+            if ( $parts['meta_key'] !== $params['parts']['meta_key'] || $parts['public_key'] !== $params['parts']['public_key'] ){
                 return false;
             }
-            if ( (int) $parts["post_id"] !== (int) $params["parts"]["post_id"] ){
+            if ( (int) $parts['post_id'] !== (int) $params['parts']['post_id'] ){
                 return false;
             }
             return true;

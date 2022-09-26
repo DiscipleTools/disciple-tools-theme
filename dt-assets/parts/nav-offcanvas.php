@@ -13,8 +13,8 @@
         <!-- profile name -->
         <?php if ( isset( $dt_nav_tabs['admin']['profile']['hidden'] ) && empty( $dt_nav_tabs['admin']['profile']['hidden'] ) ) : ?>
             <li class="image-menu-nav">
-                <a href="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['link'] ?? get_template_directory_uri() . "/dt-assets/images/profile.svg" ); ?>">
-                    <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/profile.svg?v=2" ) ?>" style="vertical-align: middle;">
+                <a href="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['link'] ?? get_template_directory_uri() . '/dt-assets/images/profile.svg' ); ?>">
+                    <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/profile.svg?v=2' ) ?>" style="vertical-align: middle;">
                     <span dir="auto"><?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?></span>
                 </a>
             </li>
@@ -45,7 +45,7 @@
         <?php if ( isset( $dt_nav_tabs['admin']['notifications']['hidden'] ) && empty( $dt_nav_tabs['admin']['notifications']['hidden'] ) ) : ?>
             <li class="image-menu-nav">
                 <a href="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['link'] ?? site_url( '/notifications/' ) ); ?>">
-                    <?php echo esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( "Notifications", 'disciple_tools' ) ); ?> <span class="badge alert notification-count notification-count-offcanvas" style="display:none; font-size: .8rem;"></span>
+                    <?php echo esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( 'Notifications', 'disciple_tools' ) ); ?> <span class="badge alert notification-count notification-count-offcanvas" style="display:none; font-size: .8rem;"></span>
                 </a>
 
             </li>

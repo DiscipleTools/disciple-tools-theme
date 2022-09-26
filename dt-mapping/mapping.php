@@ -37,8 +37,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
              * Endpoints can be modified when included into other metrics locations. Just add a filter for
              * dt_mapping_module_endpoints and modify the route
              */
-            $this->namespace = "dt/v1";
-            $this->public_namespace = "dt-public/v1";
+            $this->namespace = 'dt/v1';
+            $this->public_namespace = 'dt-public/v1';
             $this->endpoints = apply_filters( 'dt_mapping_module_endpoints', $this->default_endpoints() );
             add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
             /** End LOAD REST ENDPOINTS */
@@ -107,16 +107,16 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
              */
             $url_base = apply_filters( 'dt_mapping_module_url_base', 'mapping' );
             $url_base_length = (int) strlen( $url_base );
-            if ( isset( $_SERVER["SERVER_NAME"] ) ) {
-                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) )
-                    ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) )
-                    : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) );
-                if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-                    $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+            if ( isset( $_SERVER['SERVER_NAME'] ) ) {
+                $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] != 'on' ) )
+                    ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) )
+                    : 'https://'. sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) );
+                if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+                    $url .= sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
                 }
             }
 
-            $url_path = trim( str_replace( get_site_url(), "", $url ), '/' );
+            $url_path = trim( str_replace( get_site_url(), '', $url ), '/' );
 
             if ( 'mapping' === $url_base && ! DT_Mapbox_API::get_key() ) {
                 if ( 'mapping' === substr( $url_path, '0', $url_base_length ) ) {
@@ -165,7 +165,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $this->drilldown_script();
 
             // mapping css
-            wp_register_style( 'mapping-css', $dt_mapping["mapping_css_url"], [], $dt_mapping["mapping_css_version"] );
+            wp_register_style( 'mapping-css', $dt_mapping['mapping_css_url'], [], $dt_mapping['mapping_css_version'] );
             wp_enqueue_style( 'mapping-css' );
 
             // Mapping Script
@@ -205,8 +205,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     'drilldown' => [
                         $settings['current_map'] => $this->drill_down_array( $settings['current_map'] )
                     ],
-                    "settings" => $this->drillown_settings(),
-                    "current_map" => $settings["current_map"]
+                    'settings' => $this->drillown_settings(),
+                    'current_map' => $settings['current_map']
                 ]
             );
         }
@@ -290,7 +290,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $settings['spinner'] = ' <img src="'. $dt_mapping['spinner'] . '" width="12px" />';
             $settings['spinner_large'] = ' <img src="'. $dt_mapping['spinner'] . '" width="24px" />';
             $settings['heatmap_focus'] = 0;
-            $settings['current_map'] = ( isset( $settings['default_map_settings']["children"] ) && count( $settings['default_map_settings']["children"] ) === 1 ) ? $settings['default_map_settings']["children"][0] : $settings['default_map_settings']["parent"];
+            $settings['current_map'] = ( isset( $settings['default_map_settings']['children'] ) && count( $settings['default_map_settings']['children'] ) === 1 ) ? $settings['default_map_settings']['children'][0] : $settings['default_map_settings']['parent'];
             $settings['cached'] = 0; // this controls the endpoint transient caching
 
             return $settings;
@@ -299,10 +299,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public function translations() {
             $translations = [];
 
-            $translations['title'] = __( "Mapping", "disciple_tools" );
-            $translations['refresh_data'] = __( "Refresh Cached Data", "disciple_tools" );
-            $translations['population'] = __( "Population", "disciple_tools" );
-            $translations['name'] = __( "Name", "disciple_tools" );
+            $translations['title'] = __( 'Mapping', 'disciple_tools' );
+            $translations['refresh_data'] = __( 'Refresh Cached Data', 'disciple_tools' );
+            $translations['population'] = __( 'Population', 'disciple_tools' );
+            $translations['name'] = __( 'Name', 'disciple_tools' );
 
             return $translations;
         }
@@ -474,40 +474,40 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
         public function search_location_grid_by_name( WP_REST_Request $request ){
             if ( ! current_user_can( 'read_location' ) && ! $this->permissions ) {
-                return new WP_Error( __FUNCTION__, "No permissions to read locations", [ 'status' => 403 ] );
+                return new WP_Error( __FUNCTION__, 'No permissions to read locations', [ 'status' => 403 ] );
             }
             $params = $request->get_params();
-            $search = "";
+            $search = '';
             if ( isset( $params['s'] ) ) {
                 $search = $params['s'];
             }
-            $filter = "all";
+            $filter = 'all';
             if ( isset( $params['filter'] ) ){
                 $filter = $params['filter'];
             }
             //search for only the locations that are currently in use
-            if ( $filter === "used" ){
+            if ( $filter === 'used' ){
                 $locations = Disciple_Tools_Mapping_Queries::search_used_location_grid_by_name( [
-                    "search_query" => $search,
+                    'search_query' => $search,
                 ] );
             } else {
                 $locations = Disciple_Tools_Mapping_Queries::search_location_grid_by_name( [
-                    "search_query" => $search,
-                    "filter" => $filter
+                    'search_query' => $search,
+                    'filter' => $filter
                 ] );
             }
 
             $prepared = [];
-            foreach ( $locations["location_grid"] as $location ){
+            foreach ( $locations['location_grid'] as $location ){
                 $prepared[] = [
-                    "name" => $location["label"],
-                    "ID" => $location["grid_id"]
+                    'name' => $location['label'],
+                    'ID' => $location['grid_id']
                 ];
             }
 
             return [
                 'location_grid' => $prepared,
-                'total' => $locations["total"]
+                'total' => $locations['total']
             ];
         }
 
@@ -627,10 +627,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
 
         private function drill_down_add_custom_locations( $know_parent, $reference, $list = [] ){
-            if ( (int) $reference["parent_id"] === (int) $know_parent ){
+            if ( (int) $reference['parent_id'] === (int) $know_parent ){
                 return array_reverse( $list );
             }
-            $next = Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference["parent_id"] );
+            $next = Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['parent_id'] );
             $list[] = $next;
             return $this->drill_down_add_custom_locations( $know_parent, $next, $list );
         }
@@ -652,11 +652,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'active' => false,
             ];
             foreach ( $reference as $r_key => $r_value ){
-                if ( strpos( $r_key, "_grid_id" ) !== false && $r_key !== "admin0_grid_id" ) {
-                    $admin_level    = str_replace( "_grid_id", "", str_replace( "admin", "", $r_key ) );
+                if ( strpos( $r_key, '_grid_id' ) !== false && $r_key !== 'admin0_grid_id' ) {
+                    $admin_level    = str_replace( '_grid_id', '', str_replace( 'admin', '', $r_key ) );
                     if ( !empty( $r_value ) ) {
                         $preset_array[] = [
-                            'parent'        => (int) $reference[ "admin" . ( (int) $admin_level - 1 ) . "_grid_id" ] ?? 0,
+                            'parent'        => (int) $reference[ 'admin' . ( (int) $admin_level - 1 ) . '_grid_id' ] ?? 0,
                             'selected'      => (int) $reference[ $r_key ] ?? 0,
                             'selected_name' => $reference[ 'admin' . $admin_level . '_name' ],
                             'link'          => true,
@@ -666,24 +666,24 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 }
             }
 
-            if ( (int) $reference["grid_id"] != (int) $preset_array[ sizeof( $preset_array ) - 1 ]['selected'] ){
+            if ( (int) $reference['grid_id'] != (int) $preset_array[ sizeof( $preset_array ) - 1 ]['selected'] ){
                 $other_levels = $this->drill_down_add_custom_locations( $preset_array[ sizeof( $preset_array ) - 1 ]['selected'], $reference, [ $reference ] );
                 foreach ( $other_levels as $level ) {
                     $preset_array[] = [
-                        'parent'        => (int) $level["parent_id"] ?? 0,
-                        'selected'      => (int) $level["grid_id"] ?? 0,
-                        'selected_name' => $level["name"],
+                        'parent'        => (int) $level['parent_id'] ?? 0,
+                        'selected'      => (int) $level['grid_id'] ?? 0,
+                        'selected_name' => $level['name'],
                         'link'          => true,
                         'active'        => false
                     ];
                 }
             }
             $preset_array[ sizeof( $preset_array ) - 1 ]['active'] = true;
-            $preset_array[ sizeof( $preset_array ) - 1 ]["self"] = $reference;
-            $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference["grid_id"] ) );
+            $preset_array[ sizeof( $preset_array ) - 1 ]['self'] = $reference;
+            $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
             $deeper_levels = $this->get_deeper_levels( $child_list );
             $preset_array[] = [
-                'parent' => $preset_array[ sizeof( $preset_array ) - 1 ]["selected"],
+                'parent' => $preset_array[ sizeof( $preset_array ) - 1 ]['selected'],
                 'selected'      => 0,
                 'selected_name' => null,
                 'link'          => false,
@@ -732,9 +732,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         $selected_name = $list[ array_keys( $list )[0] ];
                         $selected_grid_id = array_keys( $list )[0];
                     } else {
-                        $parent = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $child_list[0]["parent_id"] ) );
-                        $selected_grid_id = $child_list[0]["parent_id"];
-                        $selected_name = $parent["name"] ?? $selected_name;
+                        $parent = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $child_list[0]['parent_id'] ) );
+                        $selected_grid_id = $child_list[0]['parent_id'];
+                        $selected_name = $parent['name'] ?? $selected_name;
                     }
                 }
 
@@ -765,7 +765,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                 $reference = Disciple_Tools_Mapping_Queries::get_drilldown_by_grid_id( $grid_id );
                 if ( empty( $reference ) ) {
-                    dt_write_log( __METHOD__ . ": Error with grid_id (" . $grid_id . " Disciple_Tools_Mapping_Queries::get_drilldown_by_grid_id Failure" );
+                    dt_write_log( __METHOD__ . ': Error with grid_id (' . $grid_id . ' Disciple_Tools_Mapping_Queries::get_drilldown_by_grid_id Failure' );
                     return new WP_Error( 'no_location_grid', 'Location Grid not found.' );
                 }
                 return $this->drill_down_for_location( $reference, $default_select_first_level );

@@ -15,7 +15,7 @@ add_filter( 'duplicate_comment_id', '__return_false' );
 add_filter( 'comment_flood_filter', '__return_false' );
 add_filter( 'pre_comment_approved', 'dt_filter_handler', '99', 2 );
 remove_action( 'plugins_loaded', 'wp_maybe_load_widgets', 0 );  //don't load widgets as we don't use them
-remove_action( "init", "wp_widgets_init", 1 ); // keep widgets from loading
+remove_action( 'init', 'wp_widgets_init', 1 ); // keep widgets from loading
 add_filter( 'wpmu_signup_blog_notification_email', 'dt_wpmu_signup_blog_notification_email', 10, 8 );
 add_filter( 'cron_schedules', 'dt_cron_schedules' );
 /**
@@ -75,8 +75,8 @@ function dt_custom_dir_attr( $lang ){
     $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
 
     //default direction to ltr
-    if ( $dir !== "rtl" ){
-        $dir = "ltr";
+    if ( $dir !== 'rtl' ){
+        $dir = 'ltr';
     }
 
     $dir_attr = 'dir="' . $dir . '"';
@@ -85,7 +85,7 @@ function dt_custom_dir_attr( $lang ){
 }
 
 function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $title, $user, $user_email, $key, $meta ){
-    return str_replace( "blog", "site", $message );
+    return str_replace( 'blog', 'site', $message );
 }
 
 
@@ -95,11 +95,11 @@ function dt_cron_schedules( $schedules ) {
         'interval' => 60 * 60 * 24 * 7, # 604,800, seconds in a week
         'display'  => 'Weekly'
     );
-    $schedules["15min"] = array(
+    $schedules['15min'] = array(
         'interval' => 15 * 60,
         'display'  => __( 'Once every 15 minutes' )
     );
-    $schedules["5min"] = array(
+    $schedules['5min'] = array(
         'interval' => 5 * 60,
         'display'  => __( 'Once every 5 minutes' )
     );

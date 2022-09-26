@@ -246,7 +246,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             // add prepared permissions to the current_user object
             $connection_type = get_post_meta( self::get_post_id_by_site_key( $decrypted_key ), 'type', true );
-            $site_link_label = isset( $keys[$decrypted_key]["label"] ) ? $keys[$decrypted_key]["label"] : __( "Site Link", 'disciple_tools' );
+            $site_link_label = isset( $keys[$decrypted_key]['label'] ) ? $keys[$decrypted_key]['label'] : __( 'Site Link', 'disciple_tools' );
             if ( ! empty( $connection_type ) ) {
                 self::add_capabilities_required_by_type( $connection_type, $site_link_label, $decrypted_key );
             }
@@ -268,7 +268,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          * @param string $site_link_label
          * @param string $site_key
          */
-        public static function add_capabilities_required_by_type( $connection_type, $site_link_label = "Site Link", $site_key = '' ) {
+        public static function add_capabilities_required_by_type( $connection_type, $site_link_label = 'Site Link', $site_key = '' ) {
             /**
              * Use the $connection_type to filter for the correct type
              * Update and return the $capabilities array
@@ -415,16 +415,16 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 ], /* you can specify its url slug */
                 'has_archive'         => false, /* you can rename the slug here */
                 'capabilities'     => [
-                    "read_post" => "manage_dt",
-                    "edit_post" => "manage_dt",
-                    "delete_post" => "manage_dt",
-                    "edit_posts" => "manage_dt",
-                    "edit_others_posts" => "manage_dt",
-                    "publish_posts" => "manage_dt",
-                    "read_private_posts" => "manage_dt",
-                    "delete_others_posts" => "manage_dt",
-                    "delete_posts" => "manage_dt",
-                    "delete_published_posts" => "manage_dt",
+                    'read_post' => 'manage_dt',
+                    'edit_post' => 'manage_dt',
+                    'delete_post' => 'manage_dt',
+                    'edit_posts' => 'manage_dt',
+                    'edit_others_posts' => 'manage_dt',
+                    'publish_posts' => 'manage_dt',
+                    'read_private_posts' => 'manage_dt',
+                    'delete_others_posts' => 'manage_dt',
+                    'delete_posts' => 'manage_dt',
+                    'delete_published_posts' => 'manage_dt',
                 ],
                 'hierarchical'        => false,
                 /* the next one is important, it tells what's enabled in the post editor */
@@ -791,7 +791,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'name'        => __( 'Connection Type' ),
                 'description' => __( 'This adds permissions needed for the labeled task. If you have trouble with a connection succeeding, and a task failing. This permission setting may be the reason.' ),
                 'type'        => 'key_select',
-                'default'     => apply_filters( 'site_link_type', $permission = [ "" => "" ] ),
+                'default'     => apply_filters( 'site_link_type', $permission = [ '' => '' ] ),
                 'section'     => 'site',
             ];
 
@@ -941,7 +941,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             if ( $this->post_type === $pt ) {
 
                 $url = self::get_current_site_base_url();
-                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? "http://$url" : "https://$url";
+                $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] != 'on' ) ) ? "http://$url" : "https://$url";
 
                 echo "<script type='text/javascript'>
 
@@ -1001,7 +1001,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 }
                 </script>";
 
-                echo "<style>
+                echo '<style>
                     .success-green { color: limegreen;}
                     .fail-red { color: red;}
                     .info-color { color: steelblue; }
@@ -1015,7 +1015,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         /*border is optional*/
                         cursor: pointer;
                         }
-                        </style>";
+                        </style>';
 
             }
             $uri = $this->get_url_path();
@@ -1033,12 +1033,12 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         public function get_url_path() {
-            if ( isset( $_SERVER["HTTP_HOST"] ) ) {
-                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
-                if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-                    $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+            if ( isset( $_SERVER['HTTP_HOST'] ) ) {
+                $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
+                if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+                    $url .= sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
                 }
-                return trim( str_replace( get_site_url(), "", $url ), '/' );
+                return trim( str_replace( get_site_url(), '', $url ), '/' );
             }
             return '';
         }
@@ -1255,7 +1255,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     return false;
                 }
             } else {
-                return new WP_Error( "site_check_error", "Malformed request", [ 'status' => 400 ] );
+                return new WP_Error( 'site_check_error', 'Malformed request', [ 'status' => 400 ] );
             }
         }
 
@@ -1298,9 +1298,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         // Second request failed too. Return appropriate error
                         $error_message = $result->get_error_message() ?? '';
                         if ( strpos( $error_message, 'not resolve' ) > -1 || strpos( $error_message, 'timed out' ) > -1 ) {
-                            return new WP_Error( "site_check_error", $not_found, [ 'status' => 400 ] );
+                            return new WP_Error( 'site_check_error', $not_found, [ 'status' => 400 ] );
                         } else if ( strpos( $error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1 || strpos( $error_message, 'certificate verification failed' ) > -1 ) {
-                            return new WP_Error( "site_check_error", $no_ssl, [ 'status' => 400 ] );
+                            return new WP_Error( 'site_check_error', $no_ssl, [ 'status' => 400 ] );
                         }
                         return $result;
                     }
@@ -1309,18 +1309,18 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 $result_body = json_decode( $result['body'] );
                 if ( !empty( $result_body ) && $result_body === true ) {
                     return [
-                        "success" => true,
-                        "message" => $linked,
+                        'success' => true,
+                        'message' => $linked,
                     ];
                 } else if ( $https_failed ) {
                     // If verification failed on HTTP and HTTPS, throw SSL error message
-                    return new WP_Error( "site_check_error", $no_ssl, [ 'status' => 400 ] );
+                    return new WP_Error( 'site_check_error', $no_ssl, [ 'status' => 400 ] );
                 } else {
-                    return new WP_Error( "site_check_error", $not_linked, [ 'status' => 400 ] );
+                    return new WP_Error( 'site_check_error', $not_linked, [ 'status' => 400 ] );
                 }
                 return $result_body;
             } else {
-                return new WP_Error( "site_check_error", "Malformed request", [ 'status' => 400 ] );
+                return new WP_Error( 'site_check_error', 'Malformed request', [ 'status' => 400 ] );
             }
         }
 

@@ -79,9 +79,9 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         wp_localize_script(
             'dt_mapbox_caller', 'dt_metrics_mapbox_caller_js', [
                 'translations' => [
-                    'contacts' => __( "Active Contacts", "disciple_tools" ),
-                    'groups' => __( "Active Groups", "disciple_tools" ),
-                    'active_users' => __( "Active Users", 'disciple_tools' )
+                    'contacts' => __( 'Active Contacts', 'disciple_tools' ),
+                    'groups' => __( 'Active Groups', 'disciple_tools' ),
+                    'active_users' => __( 'Active Users', 'disciple_tools' )
                 ],
             ]
         );
@@ -124,7 +124,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         register_rest_route(
             $this->namespace, '/user_grid_totals', [
                 [
-                    'methods'  => "POST",
+                    'methods'  => 'POST',
                     'callback' => [ $this, 'grid_totals' ],
                     'permission_callback' => '__return_true',
                 ],
@@ -133,7 +133,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         register_rest_route(
             $this->namespace, '/get_user_list', [
                 [
-                    'methods'  => "POST",
+                    'methods'  => 'POST',
                     'callback' => [ $this, 'get_user_list' ],
                     'permission_callback' => '__return_true',
                 ],
@@ -143,12 +143,12 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
 
     public function cluster_geojson( WP_REST_Request $request ) {
         if ( ! $this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
 
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
 
@@ -159,11 +159,11 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
 
     public function get_grid_totals( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
 
@@ -181,12 +181,12 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
     public function get_list_by_grid_id( WP_REST_Request $request ) {
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['grid_id'] ) || empty( $params['grid_id'] ) ) {
-            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );
         }
         $grid_id = sanitize_text_field( wp_unslash( $params['grid_id'] ) );
 
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
 
@@ -199,23 +199,23 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
      */
     public function points_geojson( WP_REST_Request $request ) {
         if ( ! $this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
 
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
         $query = [];
-        $modules = dt_get_option( "dt_post_type_modules" );
-        if ( $post_type === "contacts" ){
-            if ( !empty( $modules["access_module"]["enabled"] ) ){
-                $query = [ "type" => [ "access" ],  "overall_status" => [ '-closed' ] ];
+        $modules = dt_get_option( 'dt_post_type_modules' );
+        if ( $post_type === 'contacts' ){
+            if ( !empty( $modules['access_module']['enabled'] ) ){
+                $query = [ 'type' => [ 'access' ],  'overall_status' => [ '-closed' ] ];
             }
         }
-        if ( $post_type === "groups" ){
-            $query = [ "group_status" => [ "-inactive" ] ];
+        if ( $post_type === 'groups' ){
+            $query = [ 'group_status' => [ '-inactive' ] ];
         }
 
         return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query );
@@ -223,15 +223,15 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
 
     public function grid_totals( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
         $params = $request->get_json_params() ?? $request->get_body_params();
-        $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
+        $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $status = null;
         if ( isset( $query['status'] ) && $query['status'] !== 'all' ) {
             $status = sanitize_text_field( wp_unslash( $query['status'] ) );
         }
-        $status = "active";
+        $status = 'active';
 
         $results = Disciple_Tools_Mapping_Queries::query_user_location_grid_totals( $status );
 
@@ -241,7 +241,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
 
     public function get_user_list( WP_REST_Request $request ){
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
 
         global $wpdb;

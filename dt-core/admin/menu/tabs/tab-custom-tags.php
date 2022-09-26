@@ -185,8 +185,8 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
             SELECT DISTINCT meta_value, meta_key
             FROM $wpdb->postmeta
             WHERE meta_key in (" .
-            implode( ', ', array_fill( 0, count( $tag_fields ), '%s' ) ) . ")
-            ORDER BY meta_value ASC;", $tag_fields ), 'ARRAY_A' );
+            implode( ', ', array_fill( 0, count( $tag_fields ), '%s' ) ) . ')
+            ORDER BY meta_value ASC;', $tag_fields ), 'ARRAY_A' );
         return $results;
     }
 
@@ -227,9 +227,9 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                         <option>Bulk actions</option>
                         <option>Delete</option>
                     </select></td>
-                <td><?php esc_html_e( "Type", 'disciple_tools' ) ?></td>
-                <td><?php esc_html_e( "Tag name", 'disciple_tools' ) ?></td>
-                <td><?php esc_html_e( "New name", 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( 'Type', 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( 'Tag name', 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( 'New name', 'disciple_tools' ) ?></td>
             </td>
             </tr>
             </thead>
@@ -256,7 +256,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                 </tr>
             <?php endfor; ?>
                 <tr>
-                    <td colspan="3" align="right"><button type="submit" class="button"><?php esc_html_e( "Apply changes", 'disciple_tools' ) ?></button></td>
+                    <td colspan="3" align="right"><button type="submit" class="button"><?php esc_html_e( 'Apply changes', 'disciple_tools' ) ?></button></td>
                 </tr>
             </table>
             <br>

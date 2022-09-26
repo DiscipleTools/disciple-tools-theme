@@ -12,13 +12,13 @@ abstract class DT_Magic_Url_Base {
     public $page_title = '';
     public $page_description = '';
     public $type_actions = [
-        '' => "Manage",
+        '' => 'Manage',
     ];
     public $show_bulk_send = false; // enables bulk send of magic links from list page
     public $show_app_tile = false; // enables addition to "app" tile sharing features
 
-    public $module = ""; // Lets a magic url be a module as well
-    public $instance_id = ""; // Allows having multiple versions of the same magic link for a user. Creating different meta_keys.
+    public $module = ''; // Lets a magic url be a module as well
+    public $instance_id = ''; // Allows having multiple versions of the same magic link for a user. Creating different meta_keys.
     public $meta = []; // Allows for instance specific data.
     public $translatable = [ 'query' ]; // Order of translatable flags to be checked. Translate on first hit..!
 
@@ -54,7 +54,7 @@ abstract class DT_Magic_Url_Base {
         add_filter( 'dt_allow_non_login_access', function (){ // allows non-logged in visit
             return true;
         }, 100, 1 );
-        add_filter( "dt_blank_title", [ $this, "page_tab_title" ] ); // adds basic title to browser tab
+        add_filter( 'dt_blank_title', [ $this, 'page_tab_title' ] ); // adds basic title to browser tab
         add_action( 'wp_print_scripts', [ $this, 'print_scripts' ], 5 ); // authorizes scripts
         add_action( 'wp_print_footer_scripts', [ $this, 'print_scripts' ], 5 ); // authorizes scripts
         add_action( 'wp_print_styles', [ $this, 'print_styles' ], 1500 ); // authorizes styles
@@ -72,7 +72,7 @@ abstract class DT_Magic_Url_Base {
      * @return void
      */
     public function hard_switch_to_default_dt_text_domain(): void {
-        unload_textdomain( "disciple_tools" );
+        unload_textdomain( 'disciple_tools' );
         load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
     }
 
@@ -111,7 +111,7 @@ abstract class DT_Magic_Url_Base {
                     foreach ( $languages as $lang ) {
 
                         // First, ensure $lang is not already within required locale shape
-                        if ( strpos( $lang, "_" ) !== false ) {
+                        if ( strpos( $lang, '_' ) !== false ) {
                             return $lang;
                         }
 
@@ -191,14 +191,14 @@ abstract class DT_Magic_Url_Base {
      */
     public function check_parts_match( $test_post_id = true ){
         if ( $test_post_id ) {
-            if ( isset( $this->parts["post_id"], $this->parts["root"], $this->parts["type"] ) ){
-                if ( $this->type === $this->parts["type"] && $this->root === $this->parts["root"] && !empty( $this->parts["post_id"] ) ){
+            if ( isset( $this->parts['post_id'], $this->parts['root'], $this->parts['type'] ) ){
+                if ( $this->type === $this->parts['type'] && $this->root === $this->parts['root'] && !empty( $this->parts['post_id'] ) ){
                     return true;
                 }
             }
         } else {
-            if ( isset( $this->parts["root"], $this->parts["type"] ) ){
-                if ( $this->type === $this->parts["type"] && $this->root === $this->parts["root"] ){
+            if ( isset( $this->parts['root'], $this->parts['type'] ) ){
+                if ( $this->type === $this->parts['type'] && $this->root === $this->parts['root'] ){
                     return true;
                 }
             }
@@ -418,9 +418,9 @@ abstract class DT_Magic_Url_Base {
 
     protected function check_module_enabled_and_prerequisites(){
         $modules = dt_get_option( 'dt_post_type_modules' );
-        $module_enabled = isset( $modules[$this->module]["enabled"] ) ? $modules[$this->module]["enabled"] : false;
-        foreach ( $modules[$this->module]["prerequisites"] as $prereq ){
-            $prereq_enabled = isset( $modules[$prereq]["enabled"] ) ? $modules[$prereq]["enabled"] : false;
+        $module_enabled = isset( $modules[$this->module]['enabled'] ) ? $modules[$this->module]['enabled'] : false;
+        foreach ( $modules[$this->module]['prerequisites'] as $prereq ){
+            $prereq_enabled = isset( $modules[$prereq]['enabled'] ) ? $modules[$prereq]['enabled'] : false;
             if ( !$prereq_enabled ){
                 return false;
             }
