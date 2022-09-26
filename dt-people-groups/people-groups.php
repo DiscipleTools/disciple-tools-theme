@@ -267,12 +267,12 @@ class Disciple_Tools_People_Groups
         }
     }
 
-    public static function admin_display_settings_tab_table() {
+    public static function admin_display_settings_tab_table( $enabled_on_click = true ) {
         ?>
         <table class="widefat striped">
             <thead>
             <tr>
-                <th colspan="1"><?php echo esc_html( __( 'People Group Display Settings', 'disciple_tools' ) ); ?></th>
+                <th colspan="1"><?php echo esc_html( __( 'Display Options', 'disciple_tools' ) ); ?></th>
             </tr>
             </thead>
             <tbody>
@@ -281,9 +281,10 @@ class Disciple_Tools_People_Groups
                     <?php
                     echo esc_html( __( 'Display People Groups Tab in Navigation Bar', 'disciple_tools' ) );
                     $display_in_tab_html = get_option( self::$option_key_settings_display_tab ) ? 'checked' : '';
+                    $on_click_html       = $enabled_on_click ? 'onclick=update_setting_options();' : '';
                     ?>
-                    &nbsp;<input type="checkbox" id="display_people_group_tab"
-                                 onclick="update_setting_options();" <?php echo esc_html( $display_in_tab_html ); ?>>
+                    &nbsp;<input type="checkbox" name="display_people_group_tab"
+                                 id="display_people_group_tab" <?php echo esc_html( $on_click_html . ' ' . $display_in_tab_html ); ?>>
                 </td>
             </tr>
             </tbody>

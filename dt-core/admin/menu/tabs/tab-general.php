@@ -68,8 +68,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             /* End Email Settings */
 
             /* People Groups Settings */
-            Disciple_Tools_People_Groups::admin_display_settings_tab_table();
-            echo '<br>';
+            $this->box( 'top', 'People Group Settings' );
+            $this->process_people_group_settings();
+            $this->people_group_settings();
+            $this->box( 'bottom' );
             /* End People Groups Settings */
 
             /* Modules */
@@ -253,6 +255,26 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
+    public function people_group_settings() {
+        ?>
+        <form method="POST">
+            <input type="hidden" name="people_group_settings_nonce" id="people_group_settings_nonce"
+                   value="<?php echo esc_attr( wp_create_nonce( 'people_group_settings' ) ) ?>"/>
+
+            <?php
+            Disciple_Tools_People_Groups::admin_display_settings_tab_table( false );
+            ?>
+
+            <br>
+            <span style="float:right;">
+                <button type="submit"
+                        class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button>
+            </span>
+
+        </form>
+        <?php
+    }
+
     public function email_settings(){
         ?>
         <form method="POST">
@@ -350,7 +372,14 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-
+    /**
+     * Process changes to the people group settings
+     */
+    public function process_people_group_settings() {
+        if ( isset( $_POST['people_group_settings_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['people_group_settings_nonce'] ) ), 'people_group_settings' ) ) {
+            update_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab, isset( $_POST['display_people_group_tab'] ) );
+        }
+    }
 
 
     public function process_update_required(){

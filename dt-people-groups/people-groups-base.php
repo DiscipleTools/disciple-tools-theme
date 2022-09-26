@@ -7,13 +7,17 @@ class Disciple_Tools_People_Groups_Base {
     public $post_type = 'peoplegroups';
     public $single_name = 'People Group';
     public $plural_name = 'People Groups';
+    public $tile_key = 'jp';
 
-    public function __construct() {
+    public function __construct( $is_admin = true ) {
 
         //setup post type
-        add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 ); //after contacts
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 2 );
+
+        if ( ! $is_admin ) {
+            add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
+        }
 
         //setup tiles and fields
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
@@ -25,6 +29,26 @@ class Disciple_Tools_People_Groups_Base {
 
         //Hooks
         add_filter( 'dt_nav', [ $this, 'dt_nav_filter' ], 10, 1 );
+        add_action( 'dt_details_additional_section_footer', [ $this, 'dt_details_additional_section_footer' ], 10, 3 );
+    }
+
+    public function dt_details_additional_section_footer( $section, $post_type, $post_id ) {
+        if ( $section == $this->tile_key ) {
+            $post = DT_Posts::get_post( $post_type, $post_id, false );
+
+            if ( ! empty( $post ) && ! is_wp_error( $post ) && ! empty( $post['jp_PeopleID3'] ) ) {
+                ?>
+                <div
+                    style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px -15px -15px; border-radius: 0 0 10px 10px;">
+                    <a class="button clear " style="margin:0;padding:3px 0; width:100%"
+                       href="https://joshuaproject.net/people_groups/<?php esc_html_e( $post['jp_PeopleID3'] ); ?>"
+                       target="_blank">
+                        <?php esc_html_e( 'View Joshua Project Record', 'disciple_tools' ); ?>
+                    </a>
+                </div>
+                <?php
+            }
+        }
     }
 
     public function dt_nav_filter( $navigation_array ) {
@@ -213,6 +237,46 @@ class Disciple_Tools_People_Groups_Base {
                 'icon'          => get_template_directory_uri() . '/dt-assets/images/group-child.svg',
                 'create-icon'   => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
             ];
+
+            /**
+             * Joshua Project Fields
+             */
+            $fields['jp_Population']          = [
+                'name'          => __( "Population", 'disciple_tools' ),
+                'type'          => 'number',
+                'default'       => '0',
+                'show_in_table' => true,
+                'tile'          => $this->tile_key
+            ];
+            $fields['jp_ROP3']                = [
+                'name'          => __( "People Group Code", 'disciple_tools' ),
+                'type'          => 'number',
+                'default'       => '0',
+                'show_in_table' => true,
+                'tile'          => $this->tile_key
+            ];
+            $fields['jp_PeopleID3']           = [
+                'name'          => __( "People ID", 'disciple_tools' ),
+                'type'          => 'number',
+                'default'       => '0',
+                'show_in_table' => true,
+                'tile'          => $this->tile_key
+            ];
+            $fields['jp_PrimaryLanguageName'] = [
+                'name'          => __( "Primary Language", 'disciple_tools' ),
+                'type'          => 'text',
+                'default'       => '',
+                'show_in_table' => true,
+                'tile'          => $this->tile_key
+            ];
+            $fields['jp_Ctry']                = [
+                'name'          => __( "Country", 'disciple_tools' ),
+                'type'          => 'text',
+                'default'       => '',
+                'show_in_table' => true,
+                'tile'          => $this->tile_key
+            ];
+
         }
 
         return $fields;
@@ -220,8 +284,9 @@ class Disciple_Tools_People_Groups_Base {
 
     public function dt_details_additional_tiles( $tiles, $post_type = "" ) {
         if ( $post_type === $this->post_type ) {
-            $tiles["connections"] = [ "label" => __( "Connections", 'disciple_tools' ) ];
-            $tiles["other"]       = [ "label" => __( "Other", 'disciple_tools' ) ];
+            $tiles["connections"]     = [ "label" => __( "Connections", 'disciple_tools' ) ];
+            $tiles["other"]           = [ "label" => __( "Other", 'disciple_tools' ) ];
+            $tiles[ $this->tile_key ] = [ "label" => __( "Joshua Project", 'disciple_tools' ) ];
         }
 
         return $tiles;
