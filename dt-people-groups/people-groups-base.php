@@ -41,7 +41,7 @@ class Disciple_Tools_People_Groups_Base {
                 <div
                     style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px -15px -15px; border-radius: 0 0 10px 10px;">
                     <a class="button clear " style="margin:0;padding:3px 0; width:100%"
-                       href="https://joshuaproject.net/people_groups/<?php esc_html_e( sprintf( '%s', $post['jp_PeopleID3'] ) ); ?>"
+                       href="https://joshuaproject.net/people_groups/<?php echo esc_html( $post['jp_PeopleID3'] ); ?>"
                        target="_blank">
                         <?php esc_html_e( 'View Joshua Project Record', 'disciple_tools' ); ?>
                     </a>
