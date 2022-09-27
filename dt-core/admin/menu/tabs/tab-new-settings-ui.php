@@ -179,10 +179,14 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                color: #000;
             }
             .dt-icon {
                 height: 15px;
                 width: 15px;
+            }
+            .lightgray {
+                filter: invert(18%) sepia(0) saturate(19%) hue-rotate(170deg) brightness(108%) contrast(98%);
             }
             .button-group {
                 position: relative;
@@ -203,6 +207,40 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                 border-radius: 5px;
                 padding: 0.85em 1em;
             }
+            .typeahead-container {
+                margin-bottom: 10px;
+                width: 100%;
+                min-height: 2.5rem;
+                line-height: 1.5rem;
+                display: inline-flex;
+                position: relative;
+            }
+            .typeahead-input {
+                width: 100%;
+                padding: 0.5rem 0.75rem;
+                border: 1px solid #ccc;
+                border-radius: 2px 0 0 2px;
+                appearance: none;
+                box-sizing: border-box;
+                overflow: visible;
+                padding-right: 32px;
+            }
+            .typeahead-button {
+                color: #555;
+                border: 1px solid #ccc;
+                border-radius: 0 2px 2px 0;
+                background-color: #fff;
+                margin-left: -2px;
+                z-index: 1;
+                padding: 0.5rem 0.75rem;
+                vertical-align: middle;
+            }
+            .typeahead-button>img{
+                width: 20px;
+                height: 20px;
+                min-height: 15px;
+                min-width: 15px;
+            }
         </style>
         <div class="dt-tile-preview">
             <div class="section-header">
@@ -212,10 +250,12 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
             <?php foreach( $tile as $t ) : ?>
             <div class="section-body">
                 <div class="section-subheader">
-                    <img src="<?php echo esc_attr( $t['icon'] );?>" alt="Faith Milestones" class="dt-icon">
+                    <img src="<?php echo esc_attr( $t['icon'] );?>" alt="Faith Milestones" class="dt-icon lightgray">
                     <?php echo esc_html( $t['name'] ); ?>
                 </div>
-                <?php if ( $t['type'] === 'multi_select' ) : ?>
+                <?php
+                /*** MULTISELECT - START ***/
+                if ( $t['type'] === 'multi_select' ) : ?>
                 <div class="button-group" style="display: inline-flex;">
                     <?php foreach ( $t['default'] as $key => $value ) : ?>
                     <button>
@@ -224,7 +264,20 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                     </button>
                     <?php endforeach; ?>
                 </div>
-                <?php endif; ?>
+                <?php endif;
+                /*** MULTISELECT - START ***/
+                
+                /*** CONNECTION - START ***/
+                if ( $t['type'] === 'connection' ) : ?>
+                <div class="typeahead-container">
+                    <input class="typeahead-input" placeholder="Search <?php echo esc_attr( $t['name'] ); ?>">
+                    <button class="typeahead-button">
+                        <img src="<?php echo esc_attr( get_template_directory_uri() ); ?>/dt-assets/images/add-contact.svg">
+                    </button>
+                </div>
+                <?php endif;
+                /*** CONNECTION - END ***/
+                ?>
             </div>
             <?php endforeach; ?>
         </div>
