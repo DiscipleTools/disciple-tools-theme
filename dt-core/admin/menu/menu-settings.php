@@ -22,6 +22,7 @@ require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-security.
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-translation.php' );
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-tags.php' );
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-roles.php' );
+require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-new-settings-ui.php' );
 
 /**
  * Class Disciple_Tools_Settings_Menu
