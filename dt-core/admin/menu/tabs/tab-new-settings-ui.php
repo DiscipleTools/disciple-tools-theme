@@ -106,7 +106,13 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
             <tbody>
                 <tr>
                     <td style="border-right: 1px solid #ccc;"><?php $this->show_tile_settings( $clean_tile ); ?></td>
-                    <td style="background-color: #f1f1f1;"><?php $this->tile_preview_box( $clean_tile ); ?></td>
+                    <td style="background-color: #f1f1f1;">
+                        <div id="new-custom-field-box" class="new-custom-field hidden">
+                            <h2><?php esc_html_e( 'Create new field', 'disciple_tools' ); ?></h2>
+                            <input type="text" style="width: 100%">
+                        </div>
+                        <?php $this->tile_preview_box( $clean_tile ); ?>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -146,7 +152,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                     <?php foreach ( $setting as $key => $value ) : ?>
                         <br><span style="margin-left: 18px;">╰ <?php echo esc_html( $key ); ?></span>
                     <?php endforeach; ?>
-                    <br><span style="margin-left: 18px;">╰ <a href="#"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a></span>
+                    <br><span style="margin-left: 18px;">╰ <a href="javascript:void(0);" class="add-new-link"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a></span>
                 <br>
                 <br>
         <?php endforeach;
@@ -164,7 +170,23 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
 
         // var_dump( $tile );
         ?>
+        <script>
+            jQuery('.add-new-link').on( 'click', function() {
+                jQuery('#new-custom-field-box').slideToggle(333, 'swing');
+            });
+        </script>
         <style>
+            .new-custom-field {
+                width: auto;
+                height: 250px;
+                display: none;
+                border: 1px solid #ccc;
+                background-color: #fff;
+                margin: 3%;
+                padding: 1rem;
+                overflow: hidden;
+                scroll-behavior: smooth;
+            }
             .dt-tile-preview {
                 width: auto;
                 background-color: #fefefe;
