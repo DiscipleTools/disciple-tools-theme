@@ -47,13 +47,16 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
             self::template( 'begin', 1 );
             $this->save_settings();
             $this->post_types_box();
-
+            $this->template( 'end' );
+            
+            // $this->template('right_column');
             if ( isset( $_GET['post_type'] ) ) {
                 $this->tile_rundown_box();
             }
+            
             if ( isset( $_GET['tile'] ) ) {
                 $this->tile_settings_box();
-            }
+            }            
             self::template( 'end' );
         }
     }
@@ -95,10 +98,19 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         $tile_label = $post_settings['tiles'][$tile_key]['label'];
         $clean_tile = self::filter_tile_settings();
         
-        $this->box( 'top', "$tile_label Tile Contains" );
-        $this->show_tile_settings( $clean_tile );
-        $this->box( 'bottom' );
-        $this->tile_preview_box( $clean_tile ); //foobar
+        ?>
+        <table class="widefat">
+            <thead>
+                <th colspan="2"><?php echo esc_html( $tile_label ); ?> Tile Contains</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border-right: 1px solid #ccc;"><?php $this->show_tile_settings( $clean_tile ); ?></td>
+                    <td style="background-color: #f1f1f1;"><?php $this->tile_preview_box( $clean_tile ); ?></td>
+                </tr>
+            </tbody>
+        </table>
+        <?php
     }
 
     private function get_post_type() {
@@ -130,7 +142,12 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
 
     private function show_tile_settings( $tile ) {
         foreach ( $tile as $setting ) : ?>
-            <li><?php echo esc_html( $setting['name'] ); ?></li>
+                <b><?php echo esc_html( $setting['name'] ); ?></b>
+                    <?php foreach ( $setting as $key => $value ) : ?>
+                        <br><span style="margin-left: 18px;">└ <?php echo esc_html( $key ); ?></span>
+                    <?php endforeach; ?>
+                <br>
+                <br>
         <?php endforeach;
     }
 
@@ -148,12 +165,13 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         ?>
         <style>
             .dt-tile-preview {
-                width: auto%;
+                width: auto;
                 background-color: #fefefe;
                 border: 1px solid #e6e6e6;
                 border-radius: 10px;
                 box-shadow: 0 2px 4px rgb(0 0 0 / 25%);
                 padding: 1rem;
+                margin: 3%;
             }
             .section-header {
                 display: flex;
@@ -250,6 +268,20 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                 right: 3rem;
                 padding: 4px 6px !important;
                 color: #555;
+            }
+            .typeahead-delete-button {
+                height: 100%;
+                position: absolute;
+                right: 0;
+                padding: 0.5rem 1.2rem;
+                color: #cc4b37;
+                background-color: #eee;
+                border: 1px solid #ccc;
+                border-radius: 0 2px 2px 0;
+            }
+            .typeahead-delete-button:hover {
+                background-color: #cc4b37;
+                color: #fff;
             }
             .dt-tile-preview .select-field {
                 width: 100%;
@@ -356,11 +388,22 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
 
 
 
+                /*** DATE - START ***/
+                if ( $t['type'] === 'date' ) : ?>
+                    <div class="typeahead-container">
+                        <input class="typeahead-input">
+                        <button class="typeahead-delete-button">x</button>
+                    </div>
+                    <?php endif;
+                    /*** DATE - END ***/
+
+
+
                 /*** TEXT - START ***/
                 if ( in_array( $t['type'], ['text', 'communication_channel', 'location', 'location_meta' ] ) ) : ?>
                     <input type="text" class="text-input">
                     <?php endif;
-                    /*** TEXT - END ***/
+                /*** TEXT - END ***/
 
 
 
