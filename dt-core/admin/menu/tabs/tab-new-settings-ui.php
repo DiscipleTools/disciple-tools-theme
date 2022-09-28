@@ -144,7 +144,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $tile_label = $post_settings['tiles'][$tile_key]['label'];
 
-        // var_dump( $tile );die();
+        // var_dump( $tile );
         ?>
         <style>
             .dt-tile-preview {
@@ -166,6 +166,9 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                 line-height: 1.4;
                 margin-bottom: 0.5rem;
                 margin-top: 0;
+            }
+            .section-body {
+                width: 100%;
             }
             .dt-tile-preview .chevron {
                 height:1.3rem;
@@ -241,19 +244,63 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                 min-height: 15px;
                 min-width: 15px;
             }
+            .typeahead-cancel-button {
+                height: 100%;
+                position: absolute;
+                right: 3rem;
+                padding: 4px 6px !important;
+                color: #555;
+            }
+            .dt-tile-preview .select-field {
+                width: 100%;
+            }
+            .select-field.color-select {
+                background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: white'></polygon></svg>");
+                background-size: 9px 6px;
+                font-weight: 700;
+                border: none;
+                border-radius: 10px;
+                color: #fff;
+                background-color: #4caf50;
+                text-shadow: rgb(0 0 0 / 45%) 0 0 6px;
+            }
+            .select-field.color-select:hover{
+                color: #fff;
+            }
+            .select-field:hover{
+                text-decoration: none;
+                cursor: default;
+            }
+            select {
+                background-repeat: no-repeat;
+                margin-bottom: 1rem;
+            }
+            .dt-tile-preview .text-input{
+                border: 1px solid #cacaca;
+                border-radius: 0;
+                display: block;
+                line-height: 1.5;
+                margin: 0 0 1rem;
+                padding: 0.5rem;
+                width:100%;
+                box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
+            }
         </style>
         <div class="dt-tile-preview">
             <div class="section-header">
                 <h3 class="section-header"><?php echo esc_html( $tile_label ); ?></h3>
                 <img src="<?php echo esc_attr( get_template_directory_uri() ); ?>/dt-assets/images/chevron_up.svg" class="chevron">
             </div>
-            <?php foreach( $tile as $t ) : ?>
             <div class="section-body">
+            <?php foreach( $tile as $t ) : ?>
                 <div class="section-subheader">
-                    <img src="<?php echo esc_attr( $t['icon'] );?>" alt="Faith Milestones" class="dt-icon lightgray">
+                    <img src="<?php echo esc_attr( $t['icon'] );?>" alt="<?php echo esc_attr( $t['name'] ); ?>" class="dt-icon lightgray">
                     <?php echo esc_html( $t['name'] ); ?>
                 </div>
                 <?php
+
+
+
                 /*** MULTISELECT - START ***/
                 if ( $t['type'] === 'multi_select' ) : ?>
                 <div class="button-group" style="display: inline-flex;">
@@ -265,8 +312,12 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                     <?php endforeach; ?>
                 </div>
                 <?php endif;
+
+
                 /*** MULTISELECT - START ***/
                 
+
+
                 /*** CONNECTION - START ***/
                 if ( $t['type'] === 'connection' ) : ?>
                 <div class="typeahead-container">
@@ -277,9 +328,45 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                 </div>
                 <?php endif;
                 /*** CONNECTION - END ***/
+
+
+                /*** USER_SELECT - START ***/
+                if ( $t['type'] === 'user_select' ) : ?>
+                    <div class="typeahead-container">
+                        <span class="typeahead-cancel-button">×</span>
+                        <input class="typeahead-input" placeholder="<?php esc_attr_e( 'Search Users', 'disciple_tools' ); ?>">
+                        <button class="typeahead-button">
+                            <img src="<?php echo esc_attr( get_template_directory_uri() ); ?>/dt-assets/images/search.svg">
+                        </button>
+                    </div>
+                    <?php endif;
+                /*** USER_SELECT - END ***/
+
+
+
+                /*** KEY_SELECT - START ***/
+                if ( $t['type'] === 'key_select' ) : ?>
+                <select class="select-field <?php $t['custom_display'] ? esc_attr_e( 'color-select' ) : ''; ?>" style="max-width: 100%">
+                    <?php foreach( $t['default'] as $key => $value ) : ?>
+                        <option><?php echo esc_html( $value['label'] ); ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <?php endif;
+                /*** KEY_SELECT - END ***/
+
+
+
+                /*** TEXT - START ***/
+                if ( in_array( $t['type'], ['text', 'communication_channel', 'location', 'location_meta' ] ) ) : ?>
+                    <input type="text" class="text-input">
+                    <?php endif;
+                    /*** TEXT - END ***/
+
+
+
                 ?>
-            </div>
             <?php endforeach; ?>
+            </div>
         </div>
         <?php
     }
