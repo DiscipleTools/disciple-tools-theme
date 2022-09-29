@@ -138,19 +138,19 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
 
         $tiles = DT_Posts::get_post_settings( $post_type, false );
         $tile_fields = [];
-        foreach( $tiles['fields'] as $fields ) {
-            if ( isset( $fields['tile'] ) && $fields['tile'] == $tile_key ) {
-                $tile_fields[] = $fields;
+        foreach( $tiles['fields'] as $key => $values ) {
+            if ( isset( $values['tile'] ) && $values['tile'] == $tile_key ) {
+                $tile_fields[$key] = $values;
             }
         }
         return $tile_fields;
     }
 
     private function show_tile_settings( $tile ) {
-        foreach ( $tile as $setting ) : ?>
-                <b><?php echo esc_html( $setting['name'] ); ?></b>
-                    <?php foreach ( $setting as $key => $value ) : ?>
-                        <br><span style="margin-left: 18px;">╰ <?php echo esc_html( $key ); ?></span>
+        foreach ( $tile as $key => $value ) : ?>
+                <b id="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value['name'] ); ?></b>
+                    <?php foreach ( $value as $k => $v ) : ?>
+                        <br><span style="margin-left: 18px;">╰ <?php echo esc_html( $k ); ?></span>
                     <?php endforeach; ?>
                     <br><span style="margin-left: 18px;">╰ <a href="javascript:void(0);" class="add-new-link"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a></span>
                 <br>
