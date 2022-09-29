@@ -94,8 +94,11 @@ window.API = {
   get_post: (post_type, postId) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}`),
 
-  create_post: (post_type, fields) =>
-    makeRequestOnPosts("POST", `${post_type}`, fields),
+  create_post: (post_type, fields, args = {}) =>
+    makeRequestOnPosts("POST", `${post_type}`, {
+      'fields': fields,
+      'args': args
+    }),
 
   update_post: (post_type, postId, postData) =>
     makeRequestOnPosts("POST", `${post_type}/${postId}`, postData),

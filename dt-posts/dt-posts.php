@@ -61,7 +61,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return array|WP_Error
      */
-    public static function create_post( string $post_type, array $fields, bool $silent = false, bool $check_permissions = true ){
+    public static function create_post( string $post_type, array $fields, bool $silent = false, bool $check_permissions = true, $args = [] ){
         if ( $check_permissions && !self::can_create( $post_type ) ){
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
@@ -73,6 +73,39 @@ class DT_Posts extends Disciple_Tools_Posts {
         $continue = apply_filters( "dt_create_post_check_proceed", true, $fields );
         if ( !$continue ){
             return new WP_Error( __FUNCTION__, "Could not create this post. Maybe it already exists", [ 'status' => 409 ] );
+        }
+
+        //if specified, check for actual duplicates.
+        if ( isset( $args['check_for_duplicates'] ) && is_array( $args['check_for_duplicates'] ) && ! empty( $args['check_for_duplicates'] ) ) {
+            $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
+            if ( ! empty( $duplicate_post_ids ) && count( $duplicate_post_ids ) > 0 ) {
+
+                //handle potential bad fields; to avoid downstream post update blocks.
+                $bad_fields = self::check_for_invalid_post_fields( $post_settings, $fields, [] );
+                add_filter( 'dt_post_update_allow_fields', function ( $allow_fields, $allow_post_type ) use ( $post_type, $bad_fields ) {
+                    if ( $allow_post_type == $post_type ) {
+                        foreach ( $bad_fields ?? [] as $bad_field ) {
+                            $allow_fields[] = $bad_field;
+                        }
+                    }
+
+                    return $allow_fields;
+                }, 10, 2 );
+
+                //update most recently created matched post.
+                $updated_post = self::update_post( $post_type, $duplicate_post_ids[0], $fields, $silent, $check_permissions );
+
+                //if update successful, comment and return.
+                if ( ! is_wp_error( $updated_post ) ) {
+                    if ( isset( $updated_post, $updated_post['assigned_to'], $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
+                        $default_comment = __( 'Updated existing post instead of creating a new record.', 'disciple_tools' );
+                        $mention_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $default_comment;
+                        self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $mention_comment, 'comment', [], false );
+                    }
+
+                    return $updated_post;
+                }
+            }
         }
 
         //get extra fields and defaults
