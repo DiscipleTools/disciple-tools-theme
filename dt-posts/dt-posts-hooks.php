@@ -161,10 +161,8 @@ class DT_Posts_Hooks {
                         case 'date':
                         case 'user_select':
                         case 'number':
-                        {
                             $search_values[ $search_field ] = $fields[ $search_field ];
                             break;
-                        }
                         case 'multi_select':
                         case 'links':
                         case 'tags':
@@ -172,7 +170,6 @@ class DT_Posts_Hooks {
                         case 'location_meta':
                         case 'connection':
                         case 'communication_channel':
-                        {
                             $values       = [];
                             $fields_array = ( $field_type == 'communication_channel' ) ? $fields[ $search_field ] : $fields[ $search_field ]['values'];
                             foreach ( $fields_array ?? [] as $value ) {
@@ -184,7 +181,6 @@ class DT_Posts_Hooks {
                                 $search_values[ $search_field ] = $values;
                             }
                             break;
-                        }
                     }
                 }
             }
