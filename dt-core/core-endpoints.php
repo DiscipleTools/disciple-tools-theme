@@ -47,8 +47,35 @@ class Disciple_Tools_Core_Endpoints {
                 'permission_callback' => '__return_true',
             ]
         );
+
+        register_rest_route(
+            $this->public_namespace, '/get-post-fields', [
+                'methods' => 'GET',
+                'callback' => [ $this, 'get_post_fields' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
     }
 
+    public static function get_post_fields() {
+        $output = [];
+        $post_types = DT_Posts::get_post_types();
+        
+        foreach( $post_types as $post_type ) {
+            $post_label = DT_Posts::get_label_for_post_type( $post_type );
+            $output[] = $post_label;
+            $post_tiles = DT_Posts::get_post_tiles( $post_type );
+            
+            foreach( $post_tiles as $tile_key => $tile_value ) {
+                $output[] = $post_label . ' > ' . $tile_value['label'];
+                $post_settings = DT_Posts::get_post_settings( $post_type, false );
+                foreach( $post_settings['fields'] as $setting_field ) {
+                    $output[] = $post_label . ' > ' . $tile_value['label'] . ' > ' . $setting_field['name'];
+                }
+            }
+        }
+        return $output;
+    }
 
     /**
      * These are settings available to any logged in user.
