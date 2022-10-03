@@ -513,10 +513,38 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         <label><strong>Tile Description</strong>
             <input style="width: 100%" type="text" name="tile_description" value="<?php echo esc_html( $tile["description"] ?? "" )?>">
         </label>
-        <button class="button" type="submit">Save Description</button>
 
         <br>
         <br>
+
+        <label>
+            <strong>Tile Displayed When</strong>
+            <br>
+            <select style="min-width: 100%;" name="tile_displayed">
+                <option value="always" <?php echo esc_html( isset( $tile['displayed'] ) && $tile['displayed'] == 'always' ? 'selected' : '' ); ?>>--- Always  ---</option>
+                <option value="never" <?php echo esc_html( isset( $tile['displayed'] ) && $tile['displayed'] == 'never' ? 'selected' : '' ); ?>>--- Never  ---</option>
+                <?php
+                foreach ( $fields as $field_id => $field )
+                    {
+                    if ( in_array( $field['type'], [ 'key_select', 'multi_select', 'tags' ] ) && isset( $field['default'] ) ) {
+                        echo '<optgroup label="'.$field['name'].'">';
+                        $options = ( $field['type'] == 'tags' ) ? DT_Posts::get_multi_select_options( $post_type, $field_id ) : $field['default'];
+                        foreach ( $options ?? [] as $option_id => $option ) {
+                            $html_val = $field_id.'___'. ( ( $field['type'] == 'tags' ) ? $option : $option_id );
+                            $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'];
+                            $html_selected = isset( $tile['displayed'] ) && $tile['displayed'] == $html_val ? 'selected' : '';
+                            ?>
+                                <option value="<?php echo esc_html( $html_val )?>" <?php echo esc_html( $html_selected )?>><?php echo esc_html( $html_label )?></option>
+                            <?php
+                        }
+                        echo '</optgroup>';
+                    }
+                }
+                ?>
+            </select>
+        </label>
+        <br><br><br>
+        <button class="button" type="submit">Save Settings</button>
 
     <?php }
 
@@ -546,6 +574,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         }
         if ( isset( $post_submission["tile_description"] ) && $post_submission["tile_description"] != ( $custom_tile["description"] ?? "" ) ){
             $custom_tile["description"] = $post_submission["tile_description"];
+        }
+        if ( isset( $post_submission["tile_displayed"] ) && $post_submission["tile_displayed"] != ( $custom_tile["tile_displayed"] ?? "" ) ){
+            $custom_tile["displayed"] = $post_submission["tile_displayed"];
         }
         //update other Translations
         $langs = dt_get_available_languages();

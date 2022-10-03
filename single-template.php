@@ -9,6 +9,39 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     exit();
 }
 
+function display_tile( $tile, $post ): bool {
+
+    // If nothing, display by default!
+    if ( empty( $tile['displayed'] ) || ( $tile['displayed'] == 'always' ) ) {
+        return true;
+    }
+
+    if ( $tile['displayed'] == 'never' ) {
+        return false;
+    }
+
+    // Extract tile display options.
+    $display_options = explode( '___', $tile['displayed'] );
+    $field_id        = $display_options[0];
+    $option_id       = $display_options[1];
+
+    // Determine if post contains field and corresponding option.
+    $field_settings = DT_Posts::get_post_field_settings( get_post_type() );
+    if ( isset( $post[ $field_id ], $field_settings[ $field_id ] ) ) {
+
+        switch ( $field_settings[ $field_id ]['type'] ) {
+            case 'key_select':
+                return $post[ $field_id ]['key'] == $option_id;
+
+            case 'tags':
+            case 'multi_select':
+                return in_array( $option_id, $post[ $field_id ] );
+        }
+    }
+
+    return false;
+}
+
 ( function () {
     $post_type = get_post_type();
     $post_id = get_the_ID();
@@ -247,6 +280,9 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         <div class="grid-x grid-margin-x grid-margin-y grid">
                             <?php
                             foreach ( $tiles as $tile_key => $tile_options ){
+                                if ( ! display_tile( $tile_options, $dt_post ) ) {
+                                    continue;
+                                }
                                 if ( ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ) || in_array( $tile_key, [ 'details', 'status' ] ) ) {
                                     continue;
                                 }
