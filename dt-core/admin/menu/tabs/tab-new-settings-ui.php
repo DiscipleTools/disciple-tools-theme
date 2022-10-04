@@ -24,7 +24,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
-
+        add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
 
         parent::__construct();
     } // End __construct()
@@ -32,6 +32,11 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
 
     public function add_submenu() {
         add_submenu_page( 'dt_options', __( 'New Settings UI', 'disciple_tools' ), __( 'New Settings UI', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=new-settings-ui', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+    }
+
+    public function admin_enqueue_scripts() {
+        dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+        wp_enqueue_script( 'jquery' );
     }
 
     public function add_tab( $tab ) {
@@ -46,26 +51,88 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         if ( 'new-settings-ui' == $tab ) {
             self::template( 'begin', 1 );
             $this->save_settings();
+            $this->fields_typeahead_box();
             $this->post_types_box();
             $this->template( 'end' );
-            
+
             // $this->template('right_column');
             if ( isset( $_GET['post_type'] ) ) {
                 $this->tile_rundown_box();
             }
-            
+
             if ( isset( $_GET['tile'] ) ) {
                 $this->tile_settings_box();
-            }            
+            }
             self::template( 'end' );
         }
+    }
+
+    public function fields_typeahead_box() {
+        $this->box( 'top', 'Search' );
+        ?>
+        <div>
+            <form id="form-field_settings_search" name="form-field_settings_search">
+                <div class="typeahead__container">
+                    <div class="typeahead__field">
+                        <div class="typeahead__query">
+                            <span class="typeahead__query">
+                                <input id="search-typeahead" autocomplete="off" placeholder="<?php esc_attr_e( 'Search', 'disciple_tools' ); ?>">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <style>
+            .typeahead__result {
+                background-color: #fff;
+                border: 1px solid #555;
+            }
+            .typeahead__item>a{
+                color: #000;
+                font-size: medium;
+                font-weight: normal;
+                margin: 12px;
+            }
+            .typeahead__display {
+                line-height: 2.25em;
+            }
+            </style>
+        <script>
+            jQuery(document).ready(function($) {
+                var input_text = $('#search-typeahead')[0].value;
+                $.typeahead({
+                    input: '#search-typeahead',
+                    order: "desc",
+                    cancelButton: false,
+                    source: {
+                    field_settings: {
+                        ajax: {
+                            type: "POST",
+                            url: window.wpApiSettings.root + "dt-public/dt-core/v1/get-post-fields",
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader('X-WP-Nonce', window.wpApiSettings.nonce);
+                            },
+                        }
+                    }
+                    },
+                    callback: {
+                        onInit: function () {
+                            console.log('Typeahead Initiated.');
+                        }
+                    }
+                });
+            });
+        </script>
+        <?php
+        $this->box( 'bottom' );
     }
 
     public function post_types_box() {
         $this->box( 'top', 'Post Types' );
         wp_nonce_field( 'security_headers', 'security_headers_nonce' );
         $post_types = DT_Posts::get_post_types(); ?>
-        <?php foreach( $post_types as $post_type ):
+        <?php foreach ( $post_types as $post_type ):
             $post_label = DT_Posts::get_label_for_post_type( $post_type ); ?>
             <li><a href="admin.php?page=dt_options&tab=new-settings-ui&post_type=<?php echo esc_attr( $post_type ); ?>" class="dt-post-type"><?php echo esc_html( $post_label ); ?></a></li>
         <?php endforeach; ?>
@@ -74,6 +141,9 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
     }
 
     private function tile_rundown_box() {
+        if ( !isset( $_GET['post_type'] ) || empty( $_GET['post_type'] ) ) {
+            return;
+        }
         $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
         $available_post_types = DT_Posts::get_post_types();
         if ( !in_array( $post_type, $available_post_types ) ) {
@@ -95,9 +165,11 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         }
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
-        $tile_label = $post_settings['tiles'][$tile_key]['label'];
+        $tile_label = '';
+        if ( isset( $post_settings['tiles'][$tile_key]['label'] ) ) {
+            $tile_label = $post_settings['tiles'][$tile_key]['label'];
+        };
         $clean_tile = self::filter_tile_settings();
-        
         ?>
         <table class="widefat">
             <thead>
@@ -120,13 +192,13 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
     }
 
     private function get_post_type() {
-        if( !isset( $_GET['post_type'] ) || empty( $_GET['post_type'] ) ) {
+        if ( !isset( $_GET['post_type'] ) || empty( $_GET['post_type'] ) ) {
             return;
         }
         return sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
     }
     private function get_tile_key() {
-        if( !isset( $_GET['tile'] ) || empty( $_GET['tile'] ) ) {
+        if ( !isset( $_GET['tile'] ) || empty( $_GET['tile'] ) ) {
             return;
         }
         return sanitize_text_field( wp_unslash( $_GET['tile'] ) );
@@ -138,7 +210,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
 
         $tiles = DT_Posts::get_post_settings( $post_type, false );
         $tile_fields = [];
-        foreach( $tiles['fields'] as $key => $values ) {
+        foreach ( $tiles['fields'] as $key => $values ) {
             if ( isset( $values['tile'] ) && $values['tile'] == $tile_key ) {
                 $tile_fields[$key] = $values;
             }
@@ -166,9 +238,10 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         $post_type = self::get_post_type();
         $tile_key = self::get_tile_key();
         $post_settings = DT_Posts::get_post_settings( $post_type );
-        $tile_label = $post_settings['tiles'][$tile_key]['label'];
-
-        // var_dump( $tile );
+        $tile_label = '';
+        if ( isset( $post_settings['tiles'][$tile_key]['label'] ) ) {
+            $tile_label = $post_settings['tiles'][$tile_key]['label'];
+        }
         ?>
         <script>
             jQuery('.add-new-link').on( 'click', function() {
@@ -347,7 +420,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                 <img src="<?php echo esc_attr( get_template_directory_uri() ); ?>/dt-assets/images/chevron_up.svg" class="chevron">
             </div>
             <div class="section-body">
-            <?php foreach( $tile as $t ) : ?>
+            <?php foreach ( $tile as $t ) : ?>
                 <div class="section-subheader">
                     <img src="<?php echo esc_attr( $t['icon'] );?>" alt="<?php echo esc_attr( $t['name'] ); ?>" class="dt-icon lightgray">
                     <?php echo esc_html( $t['name'] ); ?>
@@ -361,7 +434,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                 <div class="button-group" style="display: inline-flex;">
                     <?php foreach ( $t['default'] as $key => $value ) : ?>
                     <button>
-                        <img src="<?php echo esc_attr( $value['icon'] );?>" class="dt-icon">
+                        <img src="<?php isset( $value['icon'] ) ? esc_attr( $value['icon'] ) : ''; ?>" class="dt-icon">
                         <?php echo esc_html( $value['label'] ); ?>
                     </button>
                     <?php endforeach; ?>
@@ -370,7 +443,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
 
 
                 /*** MULTISELECT - START ***/
-                
+
 
 
                 /*** CONNECTION - START ***/
@@ -401,8 +474,8 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
 
                 /*** KEY_SELECT - START ***/
                 if ( $t['type'] === 'key_select' ) : ?>
-                <select class="select-field <?php $t['custom_display'] ? esc_attr_e( 'color-select' ) : ''; ?>" style="max-width: 100%">
-                    <?php foreach( $t['default'] as $key => $value ) : ?>
+                <select class="select-field <?php isset( $t['custom_display'] ) ? esc_attr_e( 'color-select' ) : ''; ?>" style="max-width: 100%">
+                    <?php foreach ( $t['default'] as $key => $value ) : ?>
                         <option><?php echo esc_html( $value['label'] ); ?></option>
                     <?php endforeach; ?>
                 </select>
@@ -418,12 +491,12 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                         <button class="typeahead-delete-button">x</button>
                     </div>
                     <?php endif;
-                    /*** DATE - END ***/
+                /*** DATE - END ***/
 
 
 
                 /*** TEXT - START ***/
-                if ( in_array( $t['type'], ['text', 'communication_channel', 'location', 'location_meta' ] ) ) : ?>
+                if ( in_array( $t['type'], [ 'text', 'communication_channel', 'location', 'location_meta' ] ) ) : ?>
                     <input type="text" class="text-input">
                     <?php endif;
                 /*** TEXT - END ***/
@@ -438,7 +511,6 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
     }
 
     private function show_post_type_settings( $post_type ) {
-        $post_settings_fields = DT_Posts::get_post_field_settings( $post_type, false );
         $post_tiles = DT_Posts::get_post_tiles( $post_type );
         foreach ( $post_tiles as $key => $value ) : ?>
         <li><a href="admin.php?page=dt_options&tab=new-settings-ui&post_type=<?php echo esc_attr( $post_type ); ?>&tile=<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $post_tiles[$key]['label'] ); ?></a></li>
