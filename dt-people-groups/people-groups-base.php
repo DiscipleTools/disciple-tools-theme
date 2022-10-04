@@ -204,39 +204,42 @@ class Disciple_Tools_People_Groups_Base {
             /**
              * Generation and peer connection fields
              */
-            $fields["parents"]  = [
-                "name"          => __( 'Parents', 'disciple_tools' ),
-                'description'   => '',
-                "type"          => "connection",
-                "post_type"     => $this->post_type,
-                "p2p_direction" => "from",
-                "p2p_key"       => $this->post_type . "_to_" . $this->post_type,
-                'tile'          => 'connections',
-                'icon'          => get_template_directory_uri() . '/dt-assets/images/group-parent.svg',
-                'create-icon'   => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
-            ];
-            $fields["peers"]    = [
-                "name"          => __( 'Peers', 'disciple_tools' ),
-                'description'   => '',
-                "type"          => "connection",
-                "post_type"     => $this->post_type,
-                "p2p_direction" => "any",
-                "p2p_key"       => $this->post_type . "_to_peers",
-                'tile'          => 'connections',
-                'icon'          => get_template_directory_uri() . '/dt-assets/images/group-peer.svg',
-                'create-icon'   => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
-            ];
-            $fields["children"] = [
-                "name"          => __( 'Children', 'disciple_tools' ),
-                'description'   => '',
-                "type"          => "connection",
-                "post_type"     => $this->post_type,
-                "p2p_direction" => "to",
-                "p2p_key"       => $this->post_type . "_to_" . $this->post_type,
-                'tile'          => 'connections',
-                'icon'          => get_template_directory_uri() . '/dt-assets/images/group-child.svg',
-                'create-icon'   => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
-            ];
+//            $fields["parents"]  = [
+//                "name"          => __( 'Parents', 'disciple_tools' ),
+//                'description'   => '',
+//                "type"          => "connection",
+//                "post_type"     => $this->post_type,
+//                "p2p_direction" => "from",
+//                "p2p_key"       => $this->post_type . "_to_" . $this->post_type,
+//                'tile'          => 'connections',
+//                'icon'          => get_template_directory_uri() . '/dt-assets/images/group-parent.svg',
+//                'create-icon'   => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
+//            ];
+//            $fields["peers"]    = [
+//                "name"          => __( 'Peers', 'disciple_tools' ),
+//                'description'   => '',
+//                "type"          => "connection",
+//                "post_type"     => $this->post_type,
+//                "p2p_direction" => "any",
+//                "p2p_key"       => $this->post_type . "_to_peers",
+//                'tile'          => 'connections',
+//                'icon'          => get_template_directory_uri() . '/dt-assets/images/group-peer.svg',
+//                'create-icon'   => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
+//            ];
+//            $fields["children"] = [
+//                "name"          => __( 'Children', 'disciple_tools' ),
+//                'description'   => '',
+//                "type"          => "connection",
+//                "post_type"     => $this->post_type,
+//                "p2p_direction" => "to",
+//                "p2p_key"       => $this->post_type . "_to_" . $this->post_type,
+//                'tile'          => 'connections',
+//                'icon'          => get_template_directory_uri() . '/dt-assets/images/group-child.svg',
+//                'create-icon'   => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
+//            ];
+
+
+            $fields['tags']['tile'] = 'details';
 
             /**
              * Joshua Project Fields
@@ -285,8 +288,9 @@ class Disciple_Tools_People_Groups_Base {
     public function dt_details_additional_tiles( $tiles, $post_type = "" ) {
         if ( $post_type === $this->post_type ) {
             $tiles["connections"]     = [ "label" => __( "Connections", 'disciple_tools' ) ];
-            $tiles["other"]           = [ "label" => __( "Other", 'disciple_tools' ) ];
+//            $tiles["other"]           = [ "label" => __( "Other", 'disciple_tools' ) ];
             $tiles[ $this->tile_key ] = [ "label" => __( "Joshua Project", 'disciple_tools' ) ];
+            unset( $tiles['status'] );
         }
 
         return $tiles;
