@@ -303,8 +303,6 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                             }, 20, 2 );
                                             do_action( "dt_details_additional_section", $tile_key, $post_type );
 
-                                            // Capture people groups section footer
-                                            do_action( "dt_details_additional_section_footer", $tile_key, $post_type, $post_id );
                                             ?>
                                         </div>
                                     </div>

@@ -29,23 +29,23 @@ class Disciple_Tools_People_Groups_Base {
 
         //Hooks
         add_filter( 'dt_nav', [ $this, 'dt_nav_filter' ], 10, 1 );
-        add_action( 'dt_details_additional_section_footer', [ $this, 'dt_details_additional_section_footer' ], 10, 3 );
+        add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 40, 2 );
     }
 
-    public function dt_details_additional_section_footer( $section, $post_type, $post_id ) {
+    public function dt_details_additional_section( $section, $post_type ) {
         if ( $section == $this->tile_key ) {
+            $post_id = get_the_ID();
             $post = DT_Posts::get_post( $post_type, $post_id, false );
 
             if ( ! empty( $post ) && ! is_wp_error( $post ) && ! empty( $post['jp_PeopleID3'] ) ) {
                 ?>
-                <div
-                    style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px -15px -15px; border-radius: 0 0 10px 10px;">
-                    <a class="button clear " style="margin:0;padding:3px 0; width:100%"
-                       href="https://joshuaproject.net/people_groups/<?php echo esc_html( $post['jp_PeopleID3'] ); ?>"
-                       target="_blank">
-                        <?php esc_html_e( 'View Joshua Project Record', 'disciple_tools' ); ?>
-                    </a>
+                <div class="section-subheader">
+                    Joshua Project Link <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/>
                 </div>
+                <a href="https://joshuaproject.net/people_groups/<?php echo esc_html( $post['jp_PeopleID3'] ); ?>"
+                   target="_blank">
+                   https://joshuaproject.net/people_groups/<?php echo esc_html( $post['jp_PeopleID3'] ); ?>
+                </a>
                 <?php
             }
         }
