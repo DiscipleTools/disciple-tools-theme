@@ -217,6 +217,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_key" => "contacts_to_peoplegroups",
                 'tile'     => 'details',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/people-group.svg?v=2",
+                "connection_count_field" => [ "post_type" => "peoplegroups", "field_key" => "contact_count", "connection_field" => "contacts" ]
             ];
             $fields['quick_button_no_answer'] = [
                 'name'        => __( 'No Answer', 'disciple_tools' ),

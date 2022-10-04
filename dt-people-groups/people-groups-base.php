@@ -129,39 +129,43 @@ class Disciple_Tools_People_Groups_Base {
                 'type'        => 'boolean',
                 'default'     => false,
             ];
-            $fields['contact_count']      = [
-                'name'          => __( "Contacts Total", 'disciple_tools' ),
-                'type'          => 'number',
-                'default'       => '0',
-                'show_in_table' => true
-            ];
             $fields['contacts']           = [
                 'name'           => __( "Contacts", 'disciple_tools' ),
                 'type'           => 'connection',
                 "post_type"      => 'contacts',
                 'tile'           => 'connections',
-                "p2p_direction"  => "from",
-                "p2p_key"        => $this->post_type . "_to_contacts",
+                "p2p_direction"  => "to",
+                "p2p_key"        => 'contacts_to_peoplegroups',
                 'icon'           => get_template_directory_uri() . "/dt-assets/images/contact-generation.svg",
                 'create-icon'    => get_template_directory_uri() . '/dt-assets/images/add-contact.svg',
                 "in_create_form" => true,
+                "connection_count_field" => [ "post_type" => "peoplegroups", "field_key" => "contact_count", "connection_field" => "contacts" ]
             ];
-            $fields['group_total']        = [
-                'name'          => __( "Groups Total", 'disciple_tools' ),
+            $fields['contact_count']      = [
+                'name'          => __( "Contacts Total", 'disciple_tools' ),
                 'type'          => 'number',
                 'default'       => '0',
+                'tile'          => 'connections',
                 'show_in_table' => true
             ];
             $fields['groups']             = [
                 'name'           => __( "Groups", 'disciple_tools' ),
                 'type'           => 'connection',
                 "post_type"      => 'groups',
-                "p2p_direction"  => "from",
-                "p2p_key"        => $this->post_type . "_to_groups",
+                "p2p_direction"  => "to",
+                "p2p_key"        => 'groups_to_peoplegroups',
                 "tile"           => "connections",
                 'icon'           => get_template_directory_uri() . "/dt-assets/images/groups.svg",
                 'create-icon'    => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
                 "in_create_form" => true,
+                "connection_count_field" => [ "post_type" => "peoplegroups", "field_key" => "group_total", "connection_field" => "groups" ]
+            ];
+            $fields['group_total']        = [
+                'name'          => __( "Groups Total", 'disciple_tools' ),
+                'type'          => 'number',
+                'default'       => '0',
+                'tile'          => 'connections',
+                'show_in_table' => true
             ];
             $fields['location_grid']      = [
                 'name'           => __( 'Locations', 'disciple_tools' ),

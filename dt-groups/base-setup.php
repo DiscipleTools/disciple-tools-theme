@@ -408,7 +408,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "post_type" => "peoplegroups",
                 "p2p_direction" => "from",
                 "p2p_key" => "groups_to_peoplegroups",
-                "tile" => "details"
+                "tile" => "details",
+                "connection_count_field" => [ "post_type" => "peoplegroups", "field_key" => "group_total", "connection_field" => "groups" ]
             ];
 
             $field_fields_enabled = self::four_fields_is_enabled();
