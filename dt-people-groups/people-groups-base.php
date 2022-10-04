@@ -194,6 +194,14 @@ class Disciple_Tools_People_Groups_Base {
                 'mapbox'       => false,
                 "customizable" => false
             ];
+            $fields['last_modified'] = [
+                'name'          => __( 'Last Modified', 'disciple_tools' ),
+                'type'          => 'date',
+                'default'       => 0,
+                'icon'          => get_template_directory_uri() . "/dt-assets/images/calendar-range.svg",
+                'customizable'  => false,
+                'show_in_table' => false
+            ];
 
             if ( DT_Mapbox_API::get_key() ) {
                 $fields["contact_address"]["custom_display"] = true;
@@ -259,14 +267,14 @@ class Disciple_Tools_People_Groups_Base {
                 'name'          => __( "People Group Code", 'disciple_tools' ),
                 'type'          => 'number',
                 'default'       => '0',
-                'show_in_table' => true,
+                'show_in_table' => false,
                 'tile'          => $this->tile_key
             ];
             $fields['jp_PeopleID3']           = [
                 'name'          => __( "People ID", 'disciple_tools' ),
                 'type'          => 'number',
                 'default'       => '0',
-                'show_in_table' => true,
+                'show_in_table' => false,
                 'tile'          => $this->tile_key
             ];
             $fields['jp_PrimaryLanguageName'] = [
@@ -303,10 +311,15 @@ class Disciple_Tools_People_Groups_Base {
     //build list page filters
     public function dt_user_list_filters( $filters, $post_type ) {
         if ( $post_type === $this->post_type ) {
+            $listed_posts = DT_Posts::list_posts( $post_type, [] );
+            $all_count    = 0;
+            if ( ! is_wp_error( $listed_posts ) ) {
+                $all_count = $listed_posts['total'] ?? count( $listed_posts['posts'] );
+            }
             $filters["tabs"][] = [
                 "key"   => "all",
                 "label" => _x( "All", 'List Filters', 'disciple_tools' ),
-                "count" => 0,
+                "count" => $all_count,
                 "order" => 10
             ];
 
@@ -318,7 +331,7 @@ class Disciple_Tools_People_Groups_Base {
                 'query' => [
                     'sort' => '-post_date'
                 ],
-                "count" => 0
+                "count" => $all_count
             ];
         }
 
