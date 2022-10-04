@@ -80,18 +80,6 @@ class DT_Posts extends Disciple_Tools_Posts {
             $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
             if ( ! empty( $duplicate_post_ids ) && count( $duplicate_post_ids ) > 0 ) {
 
-                //handle potential bad fields; to avoid downstream post update blocks.
-                $bad_fields = self::check_for_invalid_post_fields( $post_settings, $fields, [] );
-                add_filter( 'dt_post_update_allow_fields', function ( $allow_fields, $allow_post_type ) use ( $post_type, $bad_fields ) {
-                    if ( $allow_post_type == $post_type ) {
-                        foreach ( $bad_fields ?? [] as $bad_field ) {
-                            $allow_fields[] = $bad_field;
-                        }
-                    }
-
-                    return $allow_fields;
-                }, 10, 2 );
-
                 //update most recently created matched post.
                 $updated_post = self::update_post( $post_type, $duplicate_post_ids[0], $fields, $silent, $check_permissions );
 
@@ -401,6 +389,14 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $fields;
         }
 
+        $notes = null;
+        if ( isset( $fields['notes'] ) ) {
+            if ( is_array( $fields['notes'] ) ) {
+                $notes = $fields['notes'];
+                unset( $fields['notes'] );
+            }
+        }
+
         $allowed_fields = apply_filters( "dt_post_update_allow_fields", [], $post_type );
         $bad_fields = self::check_for_invalid_post_fields( $post_settings, $fields, $allowed_fields );
         if ( !empty( $bad_fields ) ) {
@@ -516,6 +512,22 @@ class DT_Posts extends Disciple_Tools_Posts {
                         update_post_meta( $post_id, $field_key, $field_value );
                     }
                 }
+            }
+        }
+
+        if ( ! empty( $notes ) ) {
+            if ( ! is_array( $notes ) ) {
+                return new WP_Error( 'notes_not_array', 'Notes must be an array' );
+            }
+            $error = new WP_Error();
+            foreach ( $notes as $note ) {
+                $potential_error = self::add_post_comment( $post_type, $post_id, $note, "comment", [], false, true );
+                if ( is_wp_error( $potential_error ) ) {
+                    $error->add( 'comment_fail', $potential_error->get_error_message() );
+                }
+            }
+            if ( count( $error->get_error_messages() ) > 0 ) {
+                return $error;
             }
         }
 
