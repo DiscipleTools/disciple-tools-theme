@@ -189,7 +189,7 @@ class DT_Posts_Hooks {
             if ( ! empty( $search_values ) ) {
                 $search_result = DT_Posts::search_viewable_post( $post_type, [
                     'sort'             => '-post_date',
-                    'fields'           => $search_values,
+                    'fields'           => [ $search_values ],
                     'fields_to_search' => array_keys( $search_values )
                 ], $check_permissions );
 
