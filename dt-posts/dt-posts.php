@@ -82,17 +82,17 @@ class DT_Posts extends Disciple_Tools_Posts {
 
                 //update most recently created matched post.
                 $updated_post = self::update_post( $post_type, $duplicate_post_ids[0], $fields, $silent, $check_permissions );
-
-                //if update successful, comment and return.
-                if ( ! is_wp_error( $updated_post ) ) {
-                    if ( isset( $updated_post, $updated_post['assigned_to'], $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
-                        $default_comment = __( 'Updated existing post instead of creating a new record.', 'disciple_tools' );
-                        $mention_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $default_comment;
-                        self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $mention_comment, 'comment', [], false );
-                    }
-
+                if ( is_wp_error( $updated_post ) ){
                     return $updated_post;
                 }
+                //if update successful, comment and return.
+                $update_comment = __( 'Updated existing record instead of creating a new record.', 'disciple_tools' );
+                if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
+                    $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
+                }
+                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false );
+
+                return $updated_post;
             }
         }
 
