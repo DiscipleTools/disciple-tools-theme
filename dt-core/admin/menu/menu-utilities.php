@@ -27,7 +27,7 @@ class Disciple_Tools_Utilities_Menu
     }
 
     public function __construct() {
-        add_action( "admin_menu", [ $this, "add_dt_options_menu" ] );
+        add_action( 'admin_menu', [ $this, 'add_dt_options_menu' ] );
     }
 
     public function add_dt_options_menu() {
@@ -40,7 +40,7 @@ class Disciple_Tools_Utilities_Menu
             wp_die( 'You do not have sufficient permissions to access this page.' );
         }
 
-        $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'overview';
+        $tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'overview';
 
         ?>
         <div class="wrap">

@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
  */
 add_filter( 'dt_list_action_menu_items', 'dt_post_bulk_list_link_apps', 10, 2 );
 function dt_post_bulk_list_link_apps( $bulk_send_menu_items, $post_type ) {
-    if ( $post_type === "contacts" ){
+    if ( $post_type === 'contacts' ){
         $dt_magic_apps = DT_Magic_URL::list_bulk_send();
         if ( ! empty( $dt_magic_apps ) ) {
             $bulk_send_menu_items['bulk-send-app'] = [
@@ -68,7 +68,7 @@ function dt_post_bulk_list_section_apps( $post_type ){
                         <div>
                         <button class="button dt-green" id="bulk_send_app_submit">
                             <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Send', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html__( 'Links', 'disciple_tools' ); ?>" style="text-transform:capitalize;">
-                                <?php echo esc_html( __( "Make Selections Below", "disciple_tools" ) ); ?>
+                                <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
                             </span>
                             <span id="bulk_send_app_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
                         </button>

@@ -5,7 +5,7 @@ abstract class DT_Metrics_Chart_Base
 {
 
     public $base_slug = 'example'; //lowercase
-    public $base_title = "Example Metrics";
+    public $base_title = 'Example Metrics';
 
     //child
     public $title = '';
@@ -98,7 +98,7 @@ abstract class DT_Metrics_Chart_Base
     }
 
     public function my_list() {
-        $list = Disciple_Tools_Posts::search_viewable_post( 'contacts', [ "assigned_to" => [ "shared", "me" ] ] );
+        $list = Disciple_Tools_Posts::search_viewable_post( 'contacts', [ 'assigned_to' => [ 'shared', 'me' ] ] );
         if ( is_wp_error( $list ) ) {
             return [];
         }
@@ -110,7 +110,7 @@ abstract class DT_Metrics_Chart_Base
     }
 
     public function my_groups_list() {
-        $list = Disciple_Tools_Posts::search_viewable_post( 'groups', [ "assigned_to" => [ "shared", "me" ] ] );
+        $list = Disciple_Tools_Posts::search_viewable_post( 'groups', [ 'assigned_to' => [ 'shared', 'me' ] ] );
         if ( is_wp_error( $list ) ) {
             return [];
         }
@@ -135,8 +135,8 @@ abstract class DT_Metrics_Chart_Base
         $link = false;
         $data = $wp_error->get_error_data();
 
-        if ( isset( $data["record"] ) ){
-            $link = "<a target='_blank' href=" . get_permalink( $data["record"] ) . ">Open record</a>";
+        if ( isset( $data['record'] ) ){
+            $link = "<a target='_blank' href=" . get_permalink( $data['record'] ) . '>Open record</a>';
         }
         return '<p>' . esc_html( $wp_error->get_error_message() ) . ' ' . $link . '</p>';
     }

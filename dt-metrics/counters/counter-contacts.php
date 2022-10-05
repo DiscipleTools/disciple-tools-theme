@@ -39,7 +39,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
         global $wpdb;
         $status = strtolower( $status );
         if ( !$end || $end === PHP_INT_MAX ) {
-            $end = strtotime( "2100-01-01" );
+            $end = strtotime( '2100-01-01' );
         }
 
         switch ( $status ) {
@@ -242,19 +242,19 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             GROUP BY log.meta_value
         ", $start, $end ), ARRAY_A );
 
-        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
-        $seeker_path_options = $field_settings["seeker_path"]["default"];
+        $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
+        $seeker_path_options = $field_settings['seeker_path']['default'];
         $seeker_path_data = [];
         foreach ( $seeker_path_options as $option_key => $option_value ){
             $value = 0;
             foreach ( $res as $r ){
-                if ( $r["seeker_path"] === $option_key ){
-                    $value = $r["value"];
+                if ( $r['seeker_path'] === $option_key ){
+                    $value = $r['value'];
                 }
             }
             $seeker_path_data[$option_key] = [
-                "label" => $option_value["label"],
-                "value" => $value
+                'label' => $option_value['label'],
+                'value' => $value
             ];
         }
 
@@ -307,19 +307,19 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             ", $end, $end
             ), ARRAY_A
         );
-        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
-        $seeker_path_options = $field_settings["seeker_path"]["default"];
+        $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
+        $seeker_path_options = $field_settings['seeker_path']['default'];
         $seeker_path_data = [];
         foreach ( $seeker_path_options as $option_key => $option_value ){
             $value = 0;
             foreach ( $res as $r ){
-                if ( $r["seeker_path"] === $option_key ){
-                    $value = $r["value"];
+                if ( $r['seeker_path'] === $option_key ){
+                    $value = $r['value'];
                 }
             }
             $seeker_path_data[$option_key] = [
-                "label" => $option_value["label"],
-                "value" => $value
+                'label' => $option_value['label'],
+                'value' => $value
             ];
         }
 
@@ -363,19 +363,19 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             ", $end
             ), ARRAY_A
         );
-        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
-        $overall_status_options = $field_settings["overall_status"]["default"];
+        $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
+        $overall_status_options = $field_settings['overall_status']['default'];
         $overall_status_data = [];
         foreach ( $overall_status_options as $option_key => $option_value ){
             $value = 0;
             foreach ( $res as $r ){
-                if ( $r["overall_status"] === $option_key ){
-                    $value = $r["value"];
+                if ( $r['overall_status'] === $option_key ){
+                    $value = $r['value'];
                 }
             }
             $overall_status_data[$option_key] = [
-                "label" => $option_value["label"],
-                "value" => $value
+                'label' => $option_value['label'],
+                'value' => $value
             ];
         }
 
@@ -384,7 +384,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
 
     public static function get_contact_statuses( $user_id = null ){
         global $wpdb;
-        $post_settings = DT_Posts::get_post_settings( "contacts" );
+        $post_settings = DT_Posts::get_post_settings( 'contacts' );
         if ( $user_id ){
             $contact_statuses = $wpdb->get_results( $wpdb->prepare( "
                 SELECT COUNT(pm1.meta_value) as count, pm1.meta_value as status FROM $wpdb->posts p
@@ -420,11 +420,11 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             ", ARRAY_A );
         }
         foreach ( $reason_closed as &$reason ){
-            if ( isset( $post_settings["fields"]["reason_closed"]['default'][ $reason['reason'] ]['label'] ) ) {
-                $reason['reason'] = $post_settings["fields"]["reason_closed"]['default'][$reason['reason']]['label'];
+            if ( isset( $post_settings['fields']['reason_closed']['default'][ $reason['reason'] ]['label'] ) ) {
+                $reason['reason'] = $post_settings['fields']['reason_closed']['default'][$reason['reason']]['label'];
             }
             if ( $reason['reason'] === '' ){
-                $reason['reason'] = "No reason set";
+                $reason['reason'] = 'No reason set';
             }
         }
         if ( $user_id ){
@@ -444,11 +444,11 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             ", ARRAY_A );
         }
         foreach ( $reason_paused as &$reason ){
-            if ( isset( $post_settings["fields"]["reason_paused"]['default'][ $reason['reason'] ]['label'] ) ) {
-                $reason['reason'] = $post_settings["fields"]["reason_paused"]['default'][$reason['reason']]['label'];
+            if ( isset( $post_settings['fields']['reason_paused']['default'][ $reason['reason'] ]['label'] ) ) {
+                $reason['reason'] = $post_settings['fields']['reason_paused']['default'][$reason['reason']]['label'];
             }
             if ( $reason['reason'] === '' ){
-                $reason['reason'] = "No reason set";
+                $reason['reason'] = 'No reason set';
             }
         }
         if ( $user_id ){
@@ -468,11 +468,11 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             ", ARRAY_A );
         }
         foreach ( $reason_unassignable  as &$reason ){
-            if ( isset( $post_settings["fields"]["reason_unassignable "]['default'][ $reason['reason'] ]['label'] ) ) {
-                $reason['reason'] = $post_settings["fields"]["reason_unassignable "]['default'][$reason['reason']]['label'];
+            if ( isset( $post_settings['fields']['reason_unassignable ']['default'][ $reason['reason'] ]['label'] ) ) {
+                $reason['reason'] = $post_settings['fields']['reason_unassignable ']['default'][$reason['reason']]['label'];
             }
             if ( $reason['reason'] === '' ){
-                $reason['reason'] = "No reason set";
+                $reason['reason'] = 'No reason set';
             }
         }
 
@@ -486,8 +486,8 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             } else {
                 $status['reasons'] = [];
             }
-            if ( isset( $post_settings["fields"]["overall_status"]['default'][ $status['status'] ]['label'] ) ) {
-                $status['status'] = $post_settings["fields"]["overall_status"]['default'][$status['status']]['label'];
+            if ( isset( $post_settings['fields']['overall_status']['default'][ $status['status'] ]['label'] ) ) {
+                $status['status'] = $post_settings['fields']['overall_status']['default'][$status['status']]['label'];
             }
         }
         return $contact_statuses;

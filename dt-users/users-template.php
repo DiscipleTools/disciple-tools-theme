@@ -19,19 +19,19 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 function dt_get_site_notification_defaults(){
     $site_options = dt_get_option( 'dt_site_options' );
-    $default_notifications = dt_get_site_options_defaults()["notifications"];
+    $default_notifications = dt_get_site_options_defaults()['notifications'];
     //get translated value
-    foreach ( $site_options["notifications"]['types'] as $notification_key => &$value ){
-        if ( isset( $default_notifications['types'][$notification_key]["label"] ) ){
-            $value["label"] = $default_notifications["types"][$notification_key]["label"];
+    foreach ( $site_options['notifications']['types'] as $notification_key => &$value ){
+        if ( isset( $default_notifications['types'][$notification_key]['label'] ) ){
+            $value['label'] = $default_notifications['types'][$notification_key]['label'];
         }
     }
-    foreach ( $site_options["notifications"]["channels"] as $channel_key => &$channel ){
-        if ( isset( $default_notifications['channels'][$channel_key]["label"] ) ){
-            $channel["label"] = $default_notifications["channels"][$channel_key]["label"];
+    foreach ( $site_options['notifications']['channels'] as $channel_key => &$channel ){
+        if ( isset( $default_notifications['channels'][$channel_key]['label'] ) ){
+            $channel['label'] = $default_notifications['channels'][$channel_key]['label'];
         }
     }
-    $notifications = apply_filters( "dt_get_site_notification_options", $site_options["notifications"] );
+    $notifications = apply_filters( 'dt_get_site_notification_options', $site_options['notifications'] );
 
     return $notifications;
 }
@@ -66,7 +66,7 @@ function dt_get_user_mention_syntax( $user_id ){
     if ( ! $user ) {
         return ''; // return blank if user id does not exist
     }
-    return "@[" . $user->display_name . "](" . $user_id . ")";
+    return '@[' . $user->display_name . '](' . $user_id . ')';
 }
 
 function dt_get_user_id_from_assigned_to( $user_meta ){
@@ -120,7 +120,7 @@ function dt_build_user_fields_display( array $usermeta ): array
 {
     $fields = [];
 
-    $default_user_fields = dt_get_site_custom_lists()["user_fields"];
+    $default_user_fields = dt_get_site_custom_lists()['user_fields'];
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
     if ( ! $site_custom_lists ) {
         return [];
@@ -130,8 +130,8 @@ function dt_build_user_fields_display( array $usermeta ): array
     foreach ( $site_user_fields as $key => $value ) {
         if ( $value['enabled'] ) { // if the site field is enabled
             $i = 0;
-            if ( isset( $default_user_fields[$key]["label"] ) ){
-                $value["label"] = $default_user_fields[$key]["label"];
+            if ( isset( $default_user_fields[$key]['label'] ) ){
+                $value['label'] = $default_user_fields[$key]['label'];
             }
 
             foreach ( $usermeta as $k => $v ) {
@@ -170,7 +170,7 @@ function dt_user_notification_is_enabled( string $notification_name, string $cha
     // Check status of site defined defaults
     $notification_settings = dt_get_site_notification_defaults();
     // This checks to see if the site has required this notification to be true. If true, then personal preference is not checked.
-    if ( isset( $notification_settings["types"][ $notification_name ][ $channel ] ) && $notification_settings["types"][ $notification_name ][ $channel ] ) {
+    if ( isset( $notification_settings['types'][ $notification_name ][ $channel ] ) && $notification_settings['types'][ $notification_name ][ $channel ] ) {
         return true;
     }
 

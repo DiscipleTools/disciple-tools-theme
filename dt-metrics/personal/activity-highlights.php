@@ -51,21 +51,21 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 ],
                 'translations' => [
                     'title' => __( 'Activity Highlights', 'disciple_tools' ),
-                    'all_time' => __( "All Time", 'disciple_tools' ),
-                    'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
-                    'all' => __( "All", 'disciple_tools' ),
-                    'contact' => __( "Contact", 'disciple_tools' ),
-                    'group' => __( "Group", 'disciple_tools' ),
-                    'none' => __( "None", 'disciple_tools' ),
-                    'field_I_changed' => __( "%1\$s I Changed", 'disciple_tools' ),
-                    'field_I_made' => __( "%1\$s I Made", 'disciple_tools' ),
-                    'baptism_by_me' => __( "Contacts I Baptized", 'disciple_tools' ),
-                    'field_others_changed' => __( "%1\$s changed by others on my %2\$s", 'disciple_tools' ),
-                    'baptism_by_others' => __( "Baptisms by others on my contacts", 'disciple_tools' ),
-                    'comments_I_liked' => __( "Comments I Reacted To", 'disciple_tools' ),
-                    'comments_I_posted' => __( "Comments I Posted", 'disciple_tools' ),
-                    'date' => __( "Date", 'disciple_tools' ),
-                    'baptized_by' => __( "Baptized by", 'disciple_tools' ),
+                    'all_time' => __( 'All Time', 'disciple_tools' ),
+                    'filter_to_date_range' => __( 'Filter to date range', 'disciple_tools' ),
+                    'all' => __( 'All', 'disciple_tools' ),
+                    'contact' => __( 'Contact', 'disciple_tools' ),
+                    'group' => __( 'Group', 'disciple_tools' ),
+                    'none' => __( 'None', 'disciple_tools' ),
+                    'field_I_changed' => __( '%1$s I Changed', 'disciple_tools' ),
+                    'field_I_made' => __( '%1$s I Made', 'disciple_tools' ),
+                    'baptism_by_me' => __( 'Contacts I Baptized', 'disciple_tools' ),
+                    'field_others_changed' => __( '%1$s changed by others on my %2$s', 'disciple_tools' ),
+                    'baptism_by_others' => __( 'Baptisms by others on my contacts', 'disciple_tools' ),
+                    'comments_I_liked' => __( 'Comments I Reacted To', 'disciple_tools' ),
+                    'comments_I_posted' => __( 'Comments I Posted', 'disciple_tools' ),
+                    'date' => __( 'Date', 'disciple_tools' ),
+                    'baptized_by' => __( 'Baptized by', 'disciple_tools' ),
                 ],
             ]
         );
@@ -97,13 +97,13 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             }
         } catch ( Exception $e ) {
             error_log( $e );
-            return new WP_Error( __FUNCTION__, "got error ", [ 'status' => 500 ] );
+            return new WP_Error( __FUNCTION__, 'got error ', [ 'status' => 500 ] );
         }
     }
 
     private static function check_date_string( string $str ) {
         if ( ! preg_match( '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $str, $matches ) ) {
-            return new WP_Error( "Could not parse date, expected YYYY-MM-DD format" );
+            return new WP_Error( 'Could not parse date, expected YYYY-MM-DD format' );
         }
     }
 
@@ -158,11 +158,11 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 AND
                     user_id = %d
                 AND 1=1 "
-                               . ( $from ? " AND hist_time >= %s " : "" )
-                               . ( $to ? " AND hist_time <= %s " : "" )
-                               . "
+                               . ( $from ? ' AND hist_time >= %s ' : '' )
+                               . ( $to ? ' AND hist_time <= %s ' : '' )
+                               . '
             GROUP BY
-                action;",
+                action;',
             ...$prepare_args
         );
         $rows = $wpdb->get_results( $sql, ARRAY_A );
@@ -246,11 +246,11 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             AND
                 user_id = %d
             AND 1=1 "
-                            . ( $from ? " AND hist_time >= %s " : "" )
-                            . ( $to ? " AND hist_time <= %s " : "" )
-                            . "
+                            . ( $from ? ' AND hist_time >= %s ' : '' )
+                            . ( $to ? ' AND hist_time <= %s ' : '' )
+                            . '
             GROUP BY
-                a1.meta_value;",
+                a1.meta_value;',
             ...$prepare_args
         ), ARRAY_A );
         // phpcs:enable
@@ -258,7 +258,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $rows = self::insert_labels( $rows, $subtype, $field_settings );
 
         return [
-            'field_label' => $field_settings[$subtype]["name"],
+            'field_label' => $field_settings[$subtype]['name'],
             'rows' => $rows,
         ];
     }
@@ -293,11 +293,11 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             AND
                 user_id != %d
             AND 1=1 "
-                            . ( $from ? " AND hist_time >= %s " : "" )
-                            . ( $to ? " AND hist_time <= %s " : "" )
-                            . "
+                            . ( $from ? ' AND hist_time >= %s ' : '' )
+                            . ( $to ? ' AND hist_time <= %s ' : '' )
+                            . '
             GROUP BY
-                a1.meta_value;",
+                a1.meta_value;',
             ...$prepare_args
         ), ARRAY_A );
         // phpcs:enable
@@ -356,10 +356,10 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             AND
                 a2.object_id = %d
             AND 1=1 "
-                            . ( $from ? " AND a1.meta_value >= %s " : "" )
-                            . ( $to ? " AND a1.meta_value <= %s " : "" )
-                            . "
-            ",
+                            . ( $from ? ' AND a1.meta_value >= %s ' : '' )
+                            . ( $to ? ' AND a1.meta_value <= %s ' : '' )
+                            . '
+            ',
             ...$prepare_args
         );
 
@@ -422,10 +422,10 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             AND
                 a2.object_id != %d
             AND 1=1 "
-                            . ( $from ? " AND a1.meta_value >= %s " : "" )
-                            . ( $to ? " AND a1.meta_value <= %s " : "" )
-                            . "
-            ",
+                            . ( $from ? ' AND a1.meta_value >= %s ' : '' )
+                            . ( $to ? ' AND a1.meta_value <= %s ' : '' )
+                            . '
+            ',
             ...$prepare_args
         );
 
@@ -456,12 +456,12 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             WHERE
                 user_id = %d
             AND 1=1 "
-                            . ( $from ? " AND comment_date >= %s " : "" )
-                            . ( $to ? " AND comment_date <= %s " : "" )
-                            . "
+                            . ( $from ? ' AND comment_date >= %s ' : '' )
+                            . ( $to ? ' AND comment_date <= %s ' : '' )
+                            . '
             ORDER BY c.comment_date desc
             LIMIT 1000
-            ", $prepare_args);
+            ', $prepare_args);
 
         $rows = $wpdb->get_results( $sql, ARRAY_A );
         // phpcs:enable
@@ -496,12 +496,12 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             AND
                 cm.meta_key REGEXP '^reaction_'
             AND 1=1 "
-                            . ( $from ? " AND comment_date >= %s " : "" )
-                            . ( $to ? " AND comment_date <= %s " : "" )
-                            . "
+                            . ( $from ? ' AND comment_date >= %s ' : '' )
+                            . ( $to ? ' AND comment_date <= %s ' : '' )
+                            . '
             ORDER BY c.comment_date desc
             LIMIT 1000
-            ", $prepare_args);
+            ', $prepare_args);
 
         $rows = $wpdb->get_results( $sql, ARRAY_A );
         // phpcs:enable
@@ -589,8 +589,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 WHERE
                     p.p2p_type = 'contacts_to_subassigned'
                 AND
-                    p.p2p_from = %d " : '' ) . "
-            ", $prepare_args );
+                    p.p2p_from = %d " : '' ) . '
+            ', $prepare_args );
             //phpcs:enable
 
         return $records_connected_to_sql;

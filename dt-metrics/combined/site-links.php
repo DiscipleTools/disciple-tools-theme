@@ -55,12 +55,12 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
             filemtime( get_theme_file_path() . $this->js_file_name )
         );
 
-        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
+        $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
         // Localize script with array data
         wp_localize_script(
             'dt_' . $this->slug . '_script', $this->js_object_name, [
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
-                "data"                => [
+                'data'                => [
                     'sites' => Site_Link_System::get_list_of_sites_by_type( [
                         'contact_sharing',
                         'contact_sending'
@@ -68,22 +68,22 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
                 ],
                 'translations'        => [
                     'headings' => [
-                        'header'                     => __( "Transferred Contacts", 'disciple_tools' ),
-                        'sub_header'                 => __( "Filter by date range and available site links", 'disciple_tools' ),
-                        'date_range_header'          => __( "Date Ranges", 'disciple_tools' ),
-                        'date_range_none_header'     => __( "None Set", 'disciple_tools' ),
-                        'site_links_header'          => __( "Site Links", 'disciple_tools' ),
-                        'site_links_none_header'     => __( "None Set", 'disciple_tools' ),
+                        'header'                     => __( 'Transferred Contacts', 'disciple_tools' ),
+                        'sub_header'                 => __( 'Filter by date range and available site links', 'disciple_tools' ),
+                        'date_range_header'          => __( 'Date Ranges', 'disciple_tools' ),
+                        'date_range_none_header'     => __( 'None Set', 'disciple_tools' ),
+                        'site_links_header'          => __( 'Site Links', 'disciple_tools' ),
+                        'site_links_none_header'     => __( 'None Set', 'disciple_tools' ),
                         'totals_header'              => _x( 'Contacts transferred during date range', 'Contacts transferred during date range', 'disciple_tools' ),
-                        'status_created_header'      => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings["overall_status"]["name"] ),
-                        'seeker_path_created_header' => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings["seeker_path"]["name"] ),
-                        'milestones_created_header'  => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings["milestones"]["name"] ),
-                        'status_changes_header'      => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings["overall_status"]["name"] ),
-                        'seeker_path_changes_header' => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings["seeker_path"]["name"] ),
-                        'milestones_changes_header'  => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings["milestones"]["name"] ),
+                        'status_created_header'      => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings['overall_status']['name'] ),
+                        'seeker_path_created_header' => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings['seeker_path']['name'] ),
+                        'milestones_created_header'  => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings['milestones']['name'] ),
+                        'status_changes_header'      => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['overall_status']['name'] ),
+                        'seeker_path_changes_header' => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['seeker_path']['name'] ),
+                        'milestones_changes_header'  => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['milestones']['name'] ),
                     ],
                     'general'  => [
-                        'no_data_msg' => __( "No Data Available", 'disciple_tools' )
+                        'no_data_msg' => __( 'No Data Available', 'disciple_tools' )
                     ]
                 ]
             ]
@@ -105,18 +105,18 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
 
     public function site_links_endpoint( WP_REST_Request $request ) {
         if ( ! $this->has_permission() ) {
-            return new WP_Error( "site-links", "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( 'site-links', 'Missing Permissions', [ 'status' => 400 ] );
         }
         $params = $request->get_params();
-        if ( isset( $params["site_id"], $params["start"], $params["end"] ) ) {
-            $result = $this->site_link_metrics( $params["site_id"], $params["start"], $params["end"] );
+        if ( isset( $params['site_id'], $params['start'], $params['end'] ) ) {
+            $result = $this->site_link_metrics( $params['site_id'], $params['start'], $params['end'] );
             if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( "site-links", "Missing required parameters", [ 'status' => 400 ] );
+            return new WP_Error( 'site-links', 'Missing required parameters', [ 'status' => 400 ] );
         }
     }
 

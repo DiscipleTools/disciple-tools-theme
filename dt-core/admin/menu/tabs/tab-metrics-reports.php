@@ -155,13 +155,13 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
         ", ARRAY_A );
         $reports = [];
         foreach ( $results as $result ){
-            if ( !isset( $reports[ $result["id"] ] ) ) {
-                $reports[ $result["id"] ] = [
-                    "report_date" => gmdate( 'F Y', $result["time_end"] ),
-                    "report_values" => []
+            if ( !isset( $reports[ $result['id'] ] ) ) {
+                $reports[ $result['id'] ] = [
+                    'report_date' => gmdate( 'F Y', $result['time_end'] ),
+                    'report_values' => []
                 ];
             }
-            $reports[ $result["id"] ]["values"][ $result["meta_key"] ] = $result["meta_value"];
+            $reports[ $result['id'] ]['values'][ $result['meta_key'] ] = $result['meta_value'];
         }
 
         ?>
@@ -173,7 +173,7 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 <tr>
                     <th style="width:20%;">Date</th>
                     <?php foreach ( $sources as $source ): ?>
-                    <th><?php echo esc_html( $source["label"] ) ?></th>
+                    <th><?php echo esc_html( $source['label'] ) ?></th>
                     <?php endforeach;?>
                     <th></th>
                 </tr>
@@ -182,10 +182,10 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <?php foreach ( $reports as $report_id => $report ) : ?>
                 <tr>
                     <td>
-                        <?php echo esc_html( $report["report_date"] ) ?>
+                        <?php echo esc_html( $report['report_date'] ) ?>
                     </td>
                     <?php foreach ( $sources as $source ): ?>
-                    <td><?php echo esc_html( isset( $report["values"][ $source["key"] ] ) ? $report["values"][ $source["key"] ] : '' ) ?></td>
+                    <td><?php echo esc_html( isset( $report['values'][ $source['key'] ] ) ? $report['values'][ $source['key'] ] : '' ) ?></td>
                     <?php endforeach;?>
                     <td><a class="button button-secondary" href="?page=dt_metrics&tab=edit&report_id=<?php echo esc_html( $report_id ) ?>">Edit</a> </td>
                 </tr>

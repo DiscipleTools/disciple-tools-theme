@@ -161,11 +161,11 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
         // redact counts according to baptisms this year
         foreach ( $list as $baptism ) {
             foreach ( $all_baptisms as $generation ) {
-                if ( in_array( $baptism, $generation["ids"] ) ) {
-                    if ( ! isset( $count[ $generation["generation"] ] ) ) {
-                        $count[ $generation["generation"] ] = 0;
+                if ( in_array( $baptism, $generation['ids'] ) ) {
+                    if ( ! isset( $count[ $generation['generation'] ] ) ) {
+                        $count[ $generation['generation'] ] = 0;
                     }
-                    $count[ $generation["generation"] ]++;
+                    $count[ $generation['generation'] ]++;
                 }
             }
         }
@@ -216,9 +216,9 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
         $generation++;
         if ( !isset( $counts[$generation] ) ){
             $counts[$generation] = [
-                "generation" => (string) $generation,
-                "total" => 0,
-                "ids" => []
+                'generation' => (string) $generation,
+                'total' => 0,
+                'ids' => []
             ];
         }
         foreach ( $elements as $element_i => $element ) {
@@ -228,19 +228,19 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
                 $already_counted_in_deeper_path = false;
                 foreach ( $counts as $count_i => $count ){
                     if ( $count_i > $generation ){
-                        if ( in_array( $element['id'], $count["ids"] ) ){
-                            $counts[ $count_i ]["total"]--;
-                            unset( $counts[ $count_i ]["ids"][array_search( $element['id'], $count["ids"] )] );
+                        if ( in_array( $element['id'], $count['ids'] ) ){
+                            $counts[ $count_i ]['total']--;
+                            unset( $counts[ $count_i ]['ids'][array_search( $element['id'], $count['ids'] )] );
                         }
                     } else {
-                        if ( in_array( $element['id'], $count["ids"] ) ){
+                        if ( in_array( $element['id'], $count['ids'] ) ){
                             $already_counted_in_deeper_path = true;
                         }
                     }
                 }
                 if ( !$already_counted_in_deeper_path ){
-                    $counts[ $generation ]["total"]++;
-                    $counts[ $generation ]["ids"][] = $element['id'];
+                    $counts[ $generation ]['total']++;
+                    $counts[ $generation ]['ids'][] = $element['id'];
                 }
                 $counts = self::build_baptism_generation_counts( $elements, $element['id'], $generation, $counts );
             }
@@ -259,8 +259,8 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
         }
         $all_baptisms = self::build_baptism_generation_counts( $raw_baptism_generation_list );
         foreach ( $all_baptisms as $baptism_generation ){
-            $generation = $baptism_generation["generation"];
-            $baptisms = $baptism_generation["ids"];
+            $generation = $baptism_generation['generation'];
+            $baptisms = $baptism_generation['ids'];
             foreach ( $baptisms as $contact ){
                 update_post_meta( $contact, 'baptism_generation', $generation );
             }
@@ -285,19 +285,19 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
 
         $highest_parent_gen = 0;
         foreach ( $parents as $parent ){
-            if ( empty( $parent["baptism_generation"] ) && $parent["baptism_generation"] != "0" ){
-                return self::reset_baptism_generations_on_contact_tree( $parent["contact_id"] );
-            } else if ( $parent["baptism_generation"] > $highest_parent_gen ){
-                $highest_parent_gen = $parent["baptism_generation"];
+            if ( empty( $parent['baptism_generation'] ) && $parent['baptism_generation'] != '0' ){
+                return self::reset_baptism_generations_on_contact_tree( $parent['contact_id'] );
+            } else if ( $parent['baptism_generation'] > $highest_parent_gen ){
+                $highest_parent_gen = $parent['baptism_generation'];
             }
-            $parent_ids[] = $parent["contact_id"];
+            $parent_ids[] = $parent['contact_id'];
         }
         $parent_ids[] = $contact_id;
 
         $current_saved_gen = get_post_meta( $contact_id, 'baptism_generation', true );
         if ( (int) $current_saved_gen != ( (int) $highest_parent_gen ) + 1 ){
             if ( sizeof( $parents ) == 0 ){
-                update_post_meta( $contact_id, 'baptism_generation', "0" );
+                update_post_meta( $contact_id, 'baptism_generation', '0' );
             } else {
                 update_post_meta( $contact_id, 'baptism_generation', $highest_parent_gen + 1 );
             }
@@ -310,8 +310,8 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
                 AND b.p2p_to = %s
             ", $contact_id), ARRAY_A);
             foreach ( $children as $child ){
-                if ( !in_array( $child["contact_id"], $parent_ids ) ){
-                    self::reset_baptism_generations_on_contact_tree( $child["contact_id"], $parent_ids );
+                if ( !in_array( $child['contact_id'], $parent_ids ) ){
+                    self::reset_baptism_generations_on_contact_tree( $child['contact_id'], $parent_ids );
                 }
             }
         }

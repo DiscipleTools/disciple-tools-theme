@@ -55,14 +55,14 @@ class DT_Metrics_Seeker_Path_Chart extends DT_Metrics_Chart_Base
         wp_localize_script(
             'dt_'.$this->slug.'_script', $this->js_object_name, [
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
-                "data" => [
+                'data' => [
                     'seeker_path' => $this->seeker_path()
                 ],
                 'translations' => [
-                    'seeker_path' => __( "Seeker Path", 'disciple_tools' ),
-                    'filter_contacts_to_date_range' => __( "Filter contacts to date range:", 'disciple_tools' ),
-                    'all_time' => __( "All Time", 'disciple_tools' ),
-                    'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
+                    'seeker_path' => __( 'Seeker Path', 'disciple_tools' ),
+                    'filter_contacts_to_date_range' => __( 'Filter contacts to date range:', 'disciple_tools' ),
+                    'all_time' => __( 'All Time', 'disciple_tools' ),
+                    'filter_to_date_range' => __( 'Filter to date range', 'disciple_tools' ),
                 ]
             ]
         );
@@ -83,12 +83,12 @@ class DT_Metrics_Seeker_Path_Chart extends DT_Metrics_Chart_Base
 
     public function seeker_path_endpoint( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {
-            return new WP_Error( "seeker_path_endpoint", "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( 'seeker_path_endpoint', 'Missing Permissions', [ 'status' => 400 ] );
         }
         $params = $request->get_params();
-        if ( isset( $params["start"], $params["end"] ) ){
-            $start = strtotime( $params["start"] );
-            $end = strtotime( $params["end"] );
+        if ( isset( $params['start'], $params['end'] ) ){
+            $start = strtotime( $params['start'] );
+            $end = strtotime( $params['end'] );
             $result = $this->seeker_path( $start, $end );
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -96,7 +96,7 @@ class DT_Metrics_Seeker_Path_Chart extends DT_Metrics_Chart_Base
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( "seeker_path_endpoint", "Missing a valid values", [ 'status' => 400 ] );
+            return new WP_Error( 'seeker_path_endpoint', 'Missing a valid values', [ 'status' => 400 ] );
         }
     }
 
@@ -111,10 +111,10 @@ class DT_Metrics_Seeker_Path_Chart extends DT_Metrics_Chart_Base
         $seeker_path_activity = Disciple_Tools_Counter_Contacts::seeker_path_activity( $start, $end );
         $return = [];
         foreach ( $seeker_path_activity as $key => $value ){
-            if ( $key != "none" ){
+            if ( $key != 'none' ){
                 $return[] = [
-                    "seeker_path" => $value["label"],
-                    "value" => (int) $value["value"]
+                    'seeker_path' => $value['label'],
+                    'value' => (int) $value['value']
                 ];
             }
         }

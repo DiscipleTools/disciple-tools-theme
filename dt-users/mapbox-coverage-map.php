@@ -73,9 +73,9 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
         wp_localize_script(
             'dt_user_map', 'dt_mapbox_metrics', [
                 'translations'       => [
-                    "user_status" => __( "User Status", 'disciple_tools' ),
-                    "all" => __( "All", 'disciple_tools' ),
-                    "add_user_to" => _x( "Add user to: %s", 'Add user to: France', 'disciple_tools' )
+                    'user_status' => __( 'User Status', 'disciple_tools' ),
+                    'all' => __( 'All', 'disciple_tools' ),
+                    'add_user_to' => _x( 'Add user to: %s', 'Add user to: France', 'disciple_tools' )
                 ],
                 'settings' => [
                     'title' => __( 'Responsibility Coverage', 'disciple_tools' ),
@@ -88,7 +88,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
                     'rest_base_url' => $this->namespace,
                     'geocoder_url' => trailingslashit( get_stylesheet_directory_uri() ),
                     'geocoder_nonce' => wp_create_nonce( 'wp_rest' ),
-                    'user_status_options' => DT_User_Management::user_management_options()["user_status_options"]
+                    'user_status_options' => DT_User_Management::user_management_options()['user_status_options']
                 ]
             ]
         );
@@ -112,7 +112,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
         register_rest_route(
             $this->namespace, '/user_grid_totals', [
                 [
-                    'methods'  => "POST",
+                    'methods'  => 'POST',
                     'callback' => [ $this, 'grid_totals' ],
                     'permission_callback' => '__return_true',
                 ],
@@ -121,7 +121,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
         register_rest_route(
             $this->namespace, '/get_user_list', [
                 [
-                    'methods'  => "POST",
+                    'methods'  => 'POST',
                     'callback' => [ $this, 'get_user_list' ],
                     'permission_callback' => '__return_true',
                 ],
@@ -131,10 +131,10 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
 
     public function grid_totals( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
         $params = $request->get_json_params() ?? $request->get_body_params();
-        $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
+        $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $status = null;
         if ( isset( $query['status'] ) && $query['status'] !== 'all' ) {
             $status = sanitize_text_field( wp_unslash( $query['status'] ) );
@@ -148,7 +148,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
 
     public function get_user_list( WP_REST_Request $request ){
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
 
         global $wpdb;
