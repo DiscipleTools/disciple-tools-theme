@@ -124,9 +124,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     //main page
     public function box_message( $tab ) {
         //check for actions
-        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
+        if ( isset( $_POST['activate'] ) && is_admin() && isset( $_POST['_ajax_nonce'] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST['_ajax_nonce'] ) ) && current_user_can( 'manage_dt' ) ) {
             //activate the plugin
-            activate_plugin( sanitize_text_field( wp_unslash( $_POST["activate"] ) ) );
+            activate_plugin( sanitize_text_field( wp_unslash( $_POST['activate'] ) ) );
             exit;
         }
         elseif ( isset( $_POST['install'] ) && is_admin() && isset( $_POST['_ajax_nonce'] )
@@ -147,9 +147,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             exit;
         }
 
-        elseif ( isset( $_POST["deactivate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
+        elseif ( isset( $_POST['deactivate'] ) && is_admin() && isset( $_POST['_ajax_nonce'] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST['_ajax_nonce'] ) ) && current_user_can( 'manage_dt' ) ) {
             //deactivate the plugin
-            deactivate_plugins( sanitize_text_field( wp_unslash( $_POST["deactivate"] ) ), true );
+            deactivate_plugins( sanitize_text_field( wp_unslash( $_POST['deactivate'] ) ), true );
             exit;
         }
 
@@ -200,12 +200,12 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             foreach ( $plugins as $plugin ) {
                 $plugin->slug = explode( '/', $plugin->homepage )[4];
                 $plugin->blog_url = 'https://disciple.tools/plugins/' . $plugin->slug;
-                $plugin->folder_name = get_home_path() . "wp-content/plugins/" . $plugin->slug;
+                $plugin->folder_name = get_home_path() . 'wp-content/plugins/' . $plugin->slug;
                 $plugin->author_github_username = explode( '/', $plugin->homepage )[3];
                 $plugin->description = count_chars( $plugin->description ) > 128 ? trim( substr( $plugin->description, 0, 128 ) ) . '...' : $plugin->description; // Shorten descriptions to 88 chars
                 $plugin->icon = ! isset( $plugin->icon ) ? 'https://s.w.org/plugins/geopattern-icon/' . $plugin->slug . '.svg' : $plugin->icon;
-                $plugin->name = str_replace( "Disciple Tools - ", "", $plugin->name );
-                $plugin->name = str_replace( "Disciple.Tools - ", "", $plugin->name );
+                $plugin->name = str_replace( 'Disciple Tools - ', '', $plugin->name );
+                $plugin->name = str_replace( 'Disciple.Tools - ', '', $plugin->name );
                 ?>
             <div class="plugin-card plugin-card-classic-editor">
                             <div class="plugin-card-top">
@@ -222,7 +222,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                             <?php
                             $result_name = $this->partial_array_search( $all_plugins, $plugin->slug );
                             if ( $result_name == -1 ) {
-                                if ( isset( $plugin->download_url ) && current_user_can( "install_plugins" ) ) : ?>
+                                if ( isset( $plugin->download_url ) && current_user_can( 'install_plugins' ) ) : ?>
                                     <li>
                                         <button class="button" onclick="install('<?php echo esc_attr( $plugin->download_url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
                                     </li>                               
@@ -232,13 +232,13 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                                     </li>
                                 <?php endif;
 
-                            } elseif ( $this->partial_array_search( $active_plugins, $plugin->slug ) == -1 && isset( $_POST["activate"] ) == false ) {
+                            } elseif ( $this->partial_array_search( $active_plugins, $plugin->slug ) == -1 && isset( $_POST['activate'] ) == false ) {
                                 ?>
                                 <li>
                                     <button class="button" onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
                                 </li>
                                 <?php
-                                if ( current_user_can( "install_plugins" ) ) {
+                                if ( current_user_can( 'install_plugins' ) ) {
                                     ?>    
                                     <li>
                                         <button class="button" onclick="uninstall('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Uninstall', 'disciple_tools' ) ?></button>
@@ -308,7 +308,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         }
         //with array keys
         foreach ( array_keys( $array ) as $key ) {
-            $key = " " . $key; //for rare bug
+            $key = ' ' . $key; //for rare bug
             if ( strpos( $key, $find ) !== false ) {
                 return $key;
             }
@@ -316,10 +316,10 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         //with array values
         foreach ( $array as $key ) {
             if ( gettype( $key ) != 'array' ) {
-                $key = " " . $key;
-                if ( strpos( $key, $find . "/" ) !== false ) {
+                $key = ' ' . $key;
+                if ( strpos( $key, $find . '/' ) !== false ) {
                     return $key;
-                } elseif ( strpos( $key, $find . ".php" ) !== false ){
+                } elseif ( strpos( $key, $find . '.php' ) !== false ){
                     return $key;
                 }
             }
@@ -331,16 +331,16 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     //this function will install a plugin with a name
     public function install_plugin( $download_url ) {
         set_time_limit( 0 );
-        $folder_name = explode( "/", $download_url );
-        $folder_name = get_home_path() . "wp-content/plugins/" . $folder_name[4] . '.zip';
-        if ( $folder_name != "" ) {
+        $folder_name = explode( '/', $download_url );
+        $folder_name = get_home_path() . 'wp-content/plugins/' . $folder_name[4] . '.zip';
+        if ( $folder_name != '' ) {
             //download the zip file to plugins
             file_put_contents( $folder_name, file_get_contents( $download_url ) );
             // get the absolute path to $file
             $folder_name = realpath( $folder_name );
             //unzip
             WP_Filesystem();
-            $unzip = unzip_file( $folder_name, realpath( get_home_path() . "wp-content/plugins/" ) );
+            $unzip = unzip_file( $folder_name, realpath( get_home_path() . 'wp-content/plugins/' ) );
             //remove the file
             unlink( $folder_name );
         }
@@ -363,10 +363,10 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     //this function gets the plugin list data
     public function get_plugins( $category = 'featured' ) {
-        $plugins = get_transient( "dt_plugins_feed" );
+        $plugins = get_transient( 'dt_plugins_feed' );
         if ( empty( $plugins ) ){
             $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
-            set_transient( "dt_plugins_feed", $plugins, HOUR_IN_SECONDS );
+            set_transient( 'dt_plugins_feed', $plugins, HOUR_IN_SECONDS );
         }
         if ( $category === 'all_plugins' ) {
             return $plugins;

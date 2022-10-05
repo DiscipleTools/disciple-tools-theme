@@ -4,15 +4,15 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 function dt_mm_add_churches_column( $data ) {
 
 
-    if ( isset( $_SERVER["SERVER_NAME"] ) ) {
-        $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) )
-            ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) )
-            : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) );
-        if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-            $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+    if ( isset( $_SERVER['SERVER_NAME'] ) ) {
+        $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] != 'on' ) )
+            ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) )
+            : 'https://'. sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) );
+        if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+            $url .= sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
         }
     }
-    $url_path = trim( str_replace( get_site_url(), "", $url ), '/' );
+    $url_path = trim( str_replace( get_site_url(), '', $url ), '/' );
     if ( strpos( $url_path, 'metrics/mapping' ) !== false ) {
 
         /**

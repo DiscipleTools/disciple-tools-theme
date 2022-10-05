@@ -58,21 +58,21 @@ class Disciple_Tools_Magic_Endpoints
         $namespace = 'dt/v' . $version;
 
         $arg_schemas = [
-            "post_type" => [
-                "description" => "The post type",
-                "type" => 'string',
-                "required" => true,
-                "validate_callback" => [ 'Disciple_Tools_Posts_Endpoints', "prefix_validate_args_static" ]
+            'post_type' => [
+                'description' => 'The post type',
+                'type' => 'string',
+                'required' => true,
+                'validate_callback' => [ 'Disciple_Tools_Posts_Endpoints', 'prefix_validate_args_static' ]
             ],
         ];
 
         register_rest_route(
             $namespace, '/(?P<post_type>\w+)/email_magic', [
                 [
-                    "methods"  => "POST",
-                    "callback" => [ $this, 'email_magic' ],
-                    "args" => [
-                        "post_type" => $arg_schemas["post_type"],
+                    'methods'  => 'POST',
+                    'callback' => [ $this, 'email_magic' ],
+                    'args' => [
+                        'post_type' => $arg_schemas['post_type'],
                     ],
                     'permission_callback' => '__return_true',
                 ]
@@ -94,17 +94,17 @@ class Disciple_Tools_Magic_Endpoints
         $params = $request->get_params();
 
         if ( ! isset( $params['root'], $params['type'], $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, "Missing essential params", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing essential params', [ 'status' => 400 ] );
         }
 
         if ( ! isset( $params['post_ids'] ) || empty( $params['post_ids'] ) ) {
-            return new WP_Error( __METHOD__, "Missing list of post ids", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing list of post ids', [ 'status' => 400 ] );
         }
 
         $magic = new DT_Magic_URL( $params['root'] );
         $type = $magic->list_types();
         if ( ! isset( $type[$params['type']] ) ) {
-            return new WP_Error( __METHOD__, "Magic link type not found", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Magic link type not found', [ 'status' => 400 ] );
         } else {
             $name = $type[$params['type']]['name'] ?? '';
             $meta_key = $type[$params['type']]['meta_key'];

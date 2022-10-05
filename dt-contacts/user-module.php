@@ -12,8 +12,8 @@ class DT_Contacts_User {
 
     public function __construct() {
 
-        add_filter( "dt_can_view_permission", [ $this, 'can_update_permission_filter' ], 10, 3 );
-        add_filter( "dt_can_update_permission", [ $this, 'can_update_permission_filter' ], 10, 3 );
+        add_filter( 'dt_can_view_permission', [ $this, 'can_update_permission_filter' ], 10, 3 );
+        add_filter( 'dt_can_update_permission', [ $this, 'can_update_permission_filter' ], 10, 3 );
 
         //setup fields
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 20, 2 );
@@ -21,16 +21,16 @@ class DT_Contacts_User {
         //display tiles and fields
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
-        add_action( 'dt_record_notifications_section', [ $this, "dt_record_notifications_section" ], 10, 2 );
+        add_action( 'dt_record_notifications_section', [ $this, 'dt_record_notifications_section' ], 10, 2 );
 
         //list
-        add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 20, 2 );
+        add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 20, 2 );
 
         //api
-        add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 20, 4 );
-        add_action( "post_connection_added", [ $this, "post_connection_added" ], 20, 4 );
+        add_action( 'post_connection_removed', [ $this, 'post_connection_removed' ], 20, 4 );
+        add_action( 'post_connection_added', [ $this, 'post_connection_added' ], 20, 4 );
 
-        add_action( 'dt_record_admin_actions', [ $this, "dt_record_admin_actions" ], 10, 2 );
+        add_action( 'dt_record_admin_actions', [ $this, 'dt_record_admin_actions' ], 10, 2 );
     }
 
 
@@ -59,23 +59,23 @@ class DT_Contacts_User {
     }
 
 
-    public function dt_details_additional_tiles( $sections, $post_type = "" ) {
+    public function dt_details_additional_tiles( $sections, $post_type = '' ) {
         return $sections;
     }
 
     public function dt_record_notifications_section( $post_type, $dt_post ){
-        if ( $post_type === "contacts" && isset( $dt_post["type"]["key"] ) && $dt_post["type"]["key"] === "user" ): ?>
+        if ( $post_type === 'contacts' && isset( $dt_post['type']['key'] ) && $dt_post['type']['key'] === 'user' ): ?>
             <section class="cell small-12 user-contact-notification">
                 <div class="bordered-box detail-notification-box" style="background-color:#3F729B">
-                    <?php if ( isset( $dt_post["corresponds_to_user"] ) && (int) $dt_post["corresponds_to_user"] === get_current_user_id() ):
+                    <?php if ( isset( $dt_post['corresponds_to_user'] ) && (int) $dt_post['corresponds_to_user'] === get_current_user_id() ):
                         ?>
                         <h4><?php esc_html_e( 'This contact represents you as a user.', 'disciple_tools' )?></h4>
-                        <p><?php esc_html_e( 'Please update contact details on your profile page instead of here.', 'disciple_tools' ); ?> <a style="color:white; font-weight: bold" href="<?php echo esc_html( site_url( '/settings' ) ); ?>"><?php echo esc_html( "Profile Settings" ); ?> <img class="dt-icon dt-white-icon" style="margin:0" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a></p>
+                        <p><?php esc_html_e( 'Please update contact details on your profile page instead of here.', 'disciple_tools' ); ?> <a style="color:white; font-weight: bold" href="<?php echo esc_html( site_url( '/settings' ) ); ?>"><?php echo esc_html( 'Profile Settings' ); ?> <img class="dt-icon dt-white-icon" style="margin:0" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a></p>
                     <?php else : ?>
                         <h4>
                         <?php esc_html_e( 'This contact represents a user.', 'disciple_tools' );
-                        if ( isset( $dt_post["corresponds_to_user"] ) && !empty( $dt_post["corresponds_to_user"] && DT_User_Management::has_permission() ) ): ?>
-                            <a style="color:white; " href="<?php echo esc_html( site_url( '/user-management/user/'. $dt_post["corresponds_to_user"] ) ); ?>"><?php echo esc_html( "View" ); ?> <img class="dt-icon dt-white-icon" style="margin:0" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a>
+                        if ( isset( $dt_post['corresponds_to_user'] ) && !empty( $dt_post['corresponds_to_user'] && DT_User_Management::has_permission() ) ): ?>
+                            <a style="color:white; " href="<?php echo esc_html( site_url( '/user-management/user/'. $dt_post['corresponds_to_user'] ) ); ?>"><?php echo esc_html( 'View' ); ?> <img class="dt-icon dt-white-icon" style="margin:0" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a>
                         <?php endif; ?>
                         </h4>
                     <?php endif; ?>
@@ -98,9 +98,9 @@ class DT_Contacts_User {
     }
 
     public static function dt_record_admin_actions( $post_type, $post_id ){
-        if ( $post_type === "contacts" ){
+        if ( $post_type === 'contacts' ){
             $contact = DT_Posts::get_post( $post_type, $post_id );
-            if ( current_user_can( "create_users" ) || DT_User_Management::non_admins_can_make_users() ){
+            if ( current_user_can( 'create_users' ) || DT_User_Management::non_admins_can_make_users() ){
                 ?>
                 <li>
                     <a target="_blank" href="<?php echo esc_html( home_url( '/' ) ); ?>user-management/add-user?contact_id=<?php echo esc_html( $post_id ); ?>">
@@ -108,24 +108,24 @@ class DT_Contacts_User {
                         <?php esc_html_e( 'Make a user from this contact', 'disciple_tools' ) ?>
                     </a>
                 </li>
-                <?php if ( current_user_can( "create_users" ) ): ?>
+                <?php if ( current_user_can( 'create_users' ) ): ?>
 
                     <li><a data-open="link-to-user-modal">
                             <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/link.svg' ) ?>"/>
-                            <?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
+                            <?php esc_html_e( 'Link to an existing user', 'disciple_tools' ) ?></a></li>
 
                 <?php endif; ?>
 
                 <div class="reveal" id="link-to-user-modal" data-reveal data-reset-on-close style="min-height:500px">
 
-                     <h3><?php esc_html_e( "Link this contact to an existing user", 'disciple_tools' )?></h3>
+                     <h3><?php esc_html_e( 'Link this contact to an existing user', 'disciple_tools' )?></h3>
 
                      <?php if ( isset( $contact['corresponds_to_user'] ) ) : ?>
-                         <p><?php esc_html_e( "This contact already represents a user.", 'disciple_tools' ) ?></p>
+                         <p><?php esc_html_e( 'This contact already represents a user.', 'disciple_tools' ) ?></p>
                      <?php else : ?>
 
 
-                         <p><?php echo esc_html_x( "To link to an existing user, first, find the user using the field below.", 'Step 1 of link user', 'disciple_tools' ) ?></p>
+                         <p><?php echo esc_html_x( 'To link to an existing user, first, find the user using the field below.', 'Step 1 of link user', 'disciple_tools' ) ?></p>
 
                          <div class="user-select details">
                              <var id="user-select-result-container" class="result-container user-select-result-container"></var>
@@ -134,7 +134,7 @@ class DT_Contacts_User {
                                      <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-user-select input-height"
-                                                   name="user-select[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                   name="user-select[query]" placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
                                                    autocomplete="off">
                                         </span>
                                              <span class="typeahead__button">
@@ -149,7 +149,7 @@ class DT_Contacts_User {
 
                          <br>
                          <div class="confirm-merge-with-user" style="display: none">
-                             <p><?php echo esc_html_x( "To finish the linking, merge this contact with the existing user details.", 'Step 2 of link user', 'disciple_tools' ) ?></p>
+                             <p><?php echo esc_html_x( 'To finish the linking, merge this contact with the existing user details.', 'Step 2 of link user', 'disciple_tools' ) ?></p>
                          </div>
 
                      <?php endif; ?>
@@ -176,10 +176,10 @@ class DT_Contacts_User {
 
     // filter for access to a specific record
     public function can_update_permission_filter( $has_permission, $post_id, $post_type ){
-        if ( $post_type === "contacts" ){
+        if ( $post_type === 'contacts' ){
             if ( current_user_can( 'promote_users' ) ){
-                $contact_type = get_post_meta( $post_id, "type", true );
-                if ( $contact_type === "user" ){
+                $contact_type = get_post_meta( $post_id, 'type', true );
+                if ( $contact_type === 'user' ){
                     return true;
                 }
             }

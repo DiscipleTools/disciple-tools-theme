@@ -12,9 +12,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         add_action( 'wp_insert_post', [ &$this, 'hooks_new_post' ], 10, 3 );
         add_action( 'delete_post', [ &$this, 'hooks_delete_post' ] );
 
-        add_action( "added_post_meta", [ &$this, 'hooks_added_post_meta' ], 10, 4 );
-        add_action( "updated_post_meta", [ &$this, 'hooks_updated_post_meta' ], 10, 4 );
-        add_action( "delete_post_meta", [ &$this, 'post_meta_deleted' ], 10, 4 );
+        add_action( 'added_post_meta', [ &$this, 'hooks_added_post_meta' ], 10, 4 );
+        add_action( 'updated_post_meta', [ &$this, 'hooks_updated_post_meta' ], 10, 4 );
+        add_action( 'delete_post_meta', [ &$this, 'post_meta_deleted' ], 10, 4 );
 
         add_action( 'p2p_created_connection', [ &$this, 'hooks_p2p_created' ], 10, 1 );
         add_action( 'p2p_delete_connections', [ &$this, 'hooks_p2p_deleted' ], 10, 1 );
@@ -61,9 +61,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             if ( ! get_current_user_id() ) {
                 $user = wp_get_current_user();
                 if ( $user->display_name ) {
-                    $activity['object_note'] = "Created with site link: " . $user->display_name;
+                    $activity['object_note'] = 'Created with site link: ' . $user->display_name;
                     if ( isset( $user->site_key ) ) {
-                        $activity["user_caps"] = $user->site_key;
+                        $activity['user_caps'] = $user->site_key;
                     }
                 }
             }
@@ -119,12 +119,12 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
-        $ignore_fields = [ '_edit_lock', '_edit_last', "last_modified", "follow", "unfollow" ];
+        $ignore_fields = [ '_edit_lock', '_edit_last', 'last_modified', 'follow', 'unfollow' ];
 
         if ( in_array( $meta_key, $ignore_fields ) ) {
             return;
         }
-        if ( $parent_post["post_status"] === "auto-draft" ) {
+        if ( $parent_post['post_status'] === 'auto-draft' ) {
             return;
         }
 
@@ -163,45 +163,45 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 $prev_value = $prev[0]->meta_value;
             }
         }
-        $field_type  = "";
+        $field_type  = '';
         $object_note = '';
         $fields      = DT_Posts::get_post_field_settings( $parent_post['post_type'] );
 
         //build message for verifying and invalidating contact information fields.
-        if ( strpos( $meta_key, "_details" ) !== false && is_array( $meta_value ) ) {
-            $original_key = str_replace( "_details", "", $meta_key );
+        if ( strpos( $meta_key, '_details' ) !== false && is_array( $meta_value ) ) {
+            $original_key = str_replace( '_details', '', $meta_key );
             $original     = get_post_meta( $object_id, $original_key, true );
             $object_note  = $this->_key_name( $original_key, $fields ) . ' "' . $original . '" ';
-            $field_type   = "details";
+            $field_type   = 'details';
             foreach ( $meta_value as $k => $v ) {
                 if ( is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v ) {
                     continue;
                 }
-                if ( $k === "verified" ) {
-                    $object_note .= $v ? "verified" : "not verified";
+                if ( $k === 'verified' ) {
+                    $object_note .= $v ? 'verified' : 'not verified';
                 }
-                if ( $k === "invalid" ) {
-                    $object_note .= $v ? "invalidated" : "not invalidated";
+                if ( $k === 'invalid' ) {
+                    $object_note .= $v ? 'invalidated' : 'not invalidated';
                 }
                 $object_note .= ', ';
             }
             $object_note = chop( $object_note, ', ' );
         }
 
-        if ( $meta_key == "title" ) {
-            $object_note = "Name changed to: " . $meta_value;
+        if ( $meta_key == 'title' ) {
+            $object_note = 'Name changed to: ' . $meta_value;
         }
-        if ( strpos( $meta_key, "assigned_to" ) !== false ) {
+        if ( strpos( $meta_key, 'assigned_to' ) !== false ) {
             $meta_array = explode( '-', $meta_value ); // Separate the type and id
             if ( isset( $meta_array[1] ) ) {
-                $user        = get_user_by( "ID", $meta_array[1] );
-                $object_note = "Assigned to: " . ( $user ? $user->display_name : "Nobody" );
+                $user        = get_user_by( 'ID', $meta_array[1] );
+                $object_note = 'Assigned to: ' . ( $user ? $user->display_name : 'Nobody' );
             }
         }
 
 
-        if ( ! empty( $fields ) && isset( $fields[ $meta_key ]["type"] ) ) {
-            $field_type = $fields[ $meta_key ]["type"];
+        if ( ! empty( $fields ) && isset( $fields[ $meta_key ]['type'] ) ) {
+            $field_type = $fields[ $meta_key ]['type'];
         }
 
         if ( ! empty( $fields ) && ! $object_note ) { // Build object note if contact, group, location, else ignore object note
@@ -227,7 +227,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         if ( $deleted ) {
             $prev_value = empty( $prev_value ) ? ( is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value ) : $prev_value;
-            $meta_value = "value_deleted";
+            $meta_value = 'value_deleted';
         }
 
         dt_activity_insert( // insert activity record
@@ -239,7 +239,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'object_name'    => ( empty( $parent_post['post_title'] ) ) ? 'unknown' : $parent_post['post_title'],
                 'meta_id'        => $meta_id,
                 'meta_key'       => $meta_key,
-                'meta_value'     => ( is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value ) ?? "",
+                'meta_value'     => ( is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value ) ?? '',
                 'meta_parent'    => ( empty( $parent_post['post_parent'] ) ) ? 'unknown' : $parent_post['post_parent'],
                 'object_note'    => $object_note,
                 'old_value'      => is_array( $prev_value ) ? serialize( $prev_value ) : $prev_value,
@@ -285,7 +285,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 return $meta_value;
             } else {
                 if ( is_array( $fields[ $meta_key ]['default'][ $meta_value ] ) ) {
-                    return $fields[ $meta_key ]['default'][ $meta_value ]["label"] ?? "";
+                    return $fields[ $meta_key ]['default'][ $meta_value ]['label'] ?? '';
                 } else {
                     return $fields[ $meta_key ]['default'][ $meta_value ];
                 }
@@ -315,7 +315,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_value'     => $p2p_to['ID'], // i.e. the opposite record of the object in the p2p
                 'meta_parent'    => '',
                 'object_note'    => '',
-                'field_type'     => "connection from"
+                'field_type'     => 'connection from'
             ]
         );
 
@@ -331,7 +331,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_value'     => $p2p_from['ID'], // i.e. the opposite record of the object in the p2p
                 'meta_parent'    => '',
                 'object_note'    => '',
-                'field_type'     => "connection to",
+                'field_type'     => 'connection to',
             ]
         );
 
@@ -343,7 +343,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     }
 
     public function post_meta_deleted( $meta_id, $object_id, $meta_key, $meta_value = '', $new = false ) {
-        if ( strpos( $meta_key, "_details" ) === false ) {
+        if ( strpos( $meta_key, '_details' ) === false ) {
             $this->hooks_updated_post_meta( $meta_id[0], $object_id, $meta_key, $meta_value, $new, true );
         }
     }

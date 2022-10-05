@@ -65,7 +65,7 @@ function dt_post_bulk_list_section_apps( $post_type ){
                     <div>
                     <button class="button dt-green" id="bulk_send_app_submit">
                         <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Send', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html__( 'Links', 'disciple_tools' ); ?>" style="text-transform:capitalize;">
-                            <?php echo esc_html( __( "Make Selections Below", "disciple_tools" ) ); ?>
+                            <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
                         </span>
                         <span id="bulk_send_app_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
                     </button>

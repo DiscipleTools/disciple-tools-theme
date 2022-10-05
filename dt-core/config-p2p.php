@@ -38,5 +38,5 @@ add_filter( 'p2p_new_post_args', 'dt_p2p_published_by_default', 10, 1 );
 function dt_p2p_title_escape( $title, $object = null, $type = null ){
     return esc_html( $title );
 }
-add_filter( "p2p_connected_title", "dt_p2p_title_escape" );
+add_filter( 'p2p_connected_title', 'dt_p2p_title_escape' );
 
