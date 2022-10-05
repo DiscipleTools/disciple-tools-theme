@@ -63,23 +63,63 @@ class Disciple_Tools_Core_Endpoints {
 
         foreach ( $post_types as $post_type ) {
             $post_label = DT_Posts::get_label_for_post_type( $post_type );
-            $output[] = $post_label;
-            $post_tiles = DT_Posts::get_post_tiles( $post_type );
+            $output[] = [
+                'label' => $post_label,
+                'post_type' => $post_type,
+                'post_tile' => null,
+                'post_setting' => null,
+            ];
 
+            $post_tiles = DT_Posts::get_post_tiles( $post_type );
             foreach ( $post_tiles as $tile_key => $tile_value ) {
-                $output[] = $post_label . ' > ' . $tile_value['label'];
+                $output[] = [
+                    'label' => $post_label . ' > ' . $tile_value['label'],
+                    'post_type' => $post_type,
+                    'post_tile' => $tile_key,
+                    'post_setting' => null,
+                ];
                 $post_settings = DT_Posts::get_post_settings( $post_type, false );
-                foreach ( $post_settings['fields'] as $setting_field ) {
-                    $output[] = $post_label . ' > ' . $tile_value['label'] . ' > ' . $setting_field['name'];
+                foreach ( $post_settings['fields'] as $setting_key => $setting_value ) {
+                    $output[] = [
+                        'label' => $post_label . ' > ' . $tile_value['label'] . ' > ' . $setting_value['name'],
+                        'post_type' => $post_type,
+                        'post_tile' => $tile_key,
+                        'post_setting' => $setting_key,
+                    ];
                 }
             }
         }
-        return $output;
+        header( 'Content-Type" => application/json' );
+        echo json_encode( $output );
     }
 
     /**
      * These are settings available to any logged in user.
      */
+
+    public static function get_post_fields_v3() {
+        $output = [ 'data' => null ];
+        $post_types = DT_Posts::get_post_types();
+
+        foreach ( $post_types as $post_type ) {
+            $post_label = DT_Posts::get_label_for_post_type( $post_type );
+            $output['data'][$post_type][] = [ 'label' => $post_label ];
+
+            $post_tiles = DT_Posts::get_post_tiles( $post_type );
+
+            foreach ( $post_tiles as $tile_key => $tile_value ) {
+                $output['data'][$post_type][] = [ 'label' => $post_label . ' > ' . $tile_value['label'] ];
+
+                $post_settings = DT_Posts::get_post_settings( $post_type, false );
+                foreach ( $post_settings['fields'] as $setting_field ) {
+                    $output['data'][$post_type][] = [ 'label' => $post_label . ' > ' . $tile_value['label'] . ' > ' . $setting_field['name'] ];
+                }
+            }
+        }
+        header( 'Content-Type: application/json' );
+        echo json_encode( $output );
+    }
+
     public static function get_settings() {
         $user = wp_get_current_user();
         if ( !$user ){

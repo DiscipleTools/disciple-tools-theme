@@ -12,7 +12,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
             self::$_instance = new self();
         }
         return self::$_instance;
-    } // End instance()
+    }
 
     /**
      * Constructor function.
@@ -25,10 +25,8 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
         add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
-
         parent::__construct();
-    } // End __construct()
-
+    }
 
     public function add_submenu() {
         add_submenu_page( 'dt_options', __( 'New Settings UI', 'disciple_tools' ), __( 'New Settings UI', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=new-settings-ui', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
@@ -51,11 +49,15 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         if ( 'new-settings-ui' == $tab ) {
             self::template( 'begin', 1 );
             $this->save_settings();
+
+            $this->box( 'top', 'Search' );
             $this->fields_typeahead_box();
+            $this->box( 'bottom' );
+
+            $this->box( 'top', 'Post Types' );
             $this->post_types_box();
             $this->template( 'end' );
 
-            // $this->template('right_column');
             if ( isset( $_GET['post_type'] ) ) {
                 $this->tile_rundown_box();
             }
@@ -68,7 +70,6 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
     }
 
     public function fields_typeahead_box() {
-        $this->box( 'top', 'Search' );
         ?>
         <div>
             <form id="form-field_settings_search" name="form-field_settings_search">
@@ -76,7 +77,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                     <div class="typeahead__field">
                         <div class="typeahead__query">
                             <span class="typeahead__query">
-                                <input id="search-typeahead" autocomplete="off" placeholder="<?php esc_attr_e( 'Search', 'disciple_tools' ); ?>">
+                                <input id="settings[query]" name="settings[query]" class="js-typeahead-settings" autocomplete="off" placeholder="<?php esc_attr_e( 'Search', 'disciple_tools' ); ?>">
                             </span>
                         </div>
                     </div>
@@ -97,47 +98,61 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
             .typeahead__display {
                 line-height: 2.25em;
             }
+            .js-typeahead-settings {
+                width: 100%;
+                height: 3em;
+                padding-left: 12px;
+            }
             </style>
         <script>
             jQuery(document).ready(function($) {
-                var input_text = $('#search-typeahead')[0].value;
+                var input_text = $('.js-typeahead-settings')[0].value;
                 $.typeahead({
-                    input: '#search-typeahead',
+                    input: '.js-typeahead-settings',
                     order: "desc",
                     cancelButton: false,
+                    dynamic: false,
+                    emptyTemplate: '<em style="padding-left:12px;">No results for "{{query}}"</em>',
+                    template: '<a href="' + window.location.origin + window.location.pathname + '?page=dt_options&tab=new-settings-ui&post_type={{post_type}}&tile={{post_tile}}#{{post_setting}}">{{label}}</a>',
+                    correlativeTemplate: true,
                     source: {
-                    field_settings: {
                         ajax: {
                             type: "POST",
-                            url: window.wpApiSettings.root + "dt-public/dt-core/v1/get-post-fields",
-                            beforeSend: function (xhr) {
-                                xhr.setRequestHeader('X-WP-Nonce', window.wpApiSettings.nonce);
+                            url: window.wpApiSettings.root+ 'dt-public/dt-core/v1/get-post-fields',
+                            beforeSend: function(xhr) {
+                            xhr.setRequestHeader('X-WP-Nonce', window.wpApiSettings.nonce);
                             },
                         }
-                    }
                     },
                     callback: {
-                        onInit: function () {
-                            console.log('Typeahead Initiated.');
+                        onResult: function() {
+                            $(`.typeahead__result`).show();
+                        },
+                        onHideLayout: function () {
+                            $(`.typeahead__result`).hide();
                         }
                     }
                 });
             });
         </script>
         <?php
-        $this->box( 'bottom' );
     }
 
     public function post_types_box() {
-        $this->box( 'top', 'Post Types' );
         wp_nonce_field( 'security_headers', 'security_headers_nonce' );
         $post_types = DT_Posts::get_post_types(); ?>
         <?php foreach ( $post_types as $post_type ):
             $post_label = DT_Posts::get_label_for_post_type( $post_type ); ?>
-            <li><a href="admin.php?page=dt_options&tab=new-settings-ui&post_type=<?php echo esc_attr( $post_type ); ?>" class="dt-post-type"><?php echo esc_html( $post_label ); ?></a></li>
+            <a href="admin.php?page=dt_options&tab=new-settings-ui&post_type=<?php echo esc_attr( $post_type ); ?>" class="button <?php self::show_primary_button( $post_type ); ?>"><?php echo esc_html( $post_label ); ?></a>
         <?php endforeach; ?>
         <?php
         $this->box( 'bottom' );
+    }
+
+    private function show_primary_button( $post_type ) {
+        if ( isset( $_GET['post_type'] ) && $post_type === $_GET['post_type'] ) {
+            echo 'button-primary';
+        }
     }
 
     private function tile_rundown_box() {
