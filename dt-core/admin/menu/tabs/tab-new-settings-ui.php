@@ -234,15 +234,32 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
     }
 
     private function show_tile_settings( $tile ) {
-        foreach ( $tile as $key => $value ) : ?>
-                <b id="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value['name'] ); ?></b>
-                    <?php foreach ( $value as $k => $v ) : ?>
-                        <br><span style="margin-left: 18px;">╰ <?php echo esc_html( $k ); ?></span>
-                    <?php endforeach; ?>
-                    <br><span style="margin-left: 18px;">╰ <a href="javascript:void(0);" class="add-new-link"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a></span>
+        foreach ( $tile as $setting ) {
+            foreach ( $setting as $key => $value ) {
+                if ( $key === 'default' && !empty( $setting['default'] ) ) {
+                    dt_write_log( $setting );
+                    ?>
+                <b id="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $setting['name'] ); ?></b>
+                    <?php
+                    foreach ( $value as $v ) {
+                        if ( isset( $v['label'] ) ) {
+                            $label = $v['label'];
+                            if ( is_null( $label ) || empty( $label ) ) {
+                                $label = 'NULL';
+                            }
+                            ?>
+                            <br><span style="margin-left: 18px;">╰ <?php echo esc_html( $label ); ?></span>
+                            <?php
+                        }
+                    }
+                    ?>
+                <br><span style="margin-left: 18px;">╰ <a href="javascript:void(0);" class="add-new-link"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a></span>
                 <br>
                 <br>
-        <?php endforeach;
+                    <?php
+                }
+            }
+        }
     }
 
     private function tile_preview_box( $tile ) {
@@ -455,8 +472,6 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                     <?php endforeach; ?>
                 </div>
                 <?php endif;
-
-
                 /*** MULTISELECT - START ***/
 
 
