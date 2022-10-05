@@ -42,7 +42,7 @@ function dt_print_details_bar(
                             <?php if ( $show_update_needed ){ ?>
                                 <div style="margin-inline-start:10px;margin-inline-end:5px">
                                     <span><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
-                                    <input type="checkbox" id="update-needed-large" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
+                                    <input type="checkbox" id="update-needed-large" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : '' ) ?>/>
                                     <label class="dt-switch" for="update-needed-large" style="vertical-align: top;"></label>
                                 </div>
                             <?php } ?>
@@ -52,18 +52,18 @@ function dt_print_details_bar(
                                 <li style="border-radius: 5px">
                                     <a class="button menu-white-dropdown-arrow"
                                        style="background-color: #00897B; color: white;">
-                                        <?php esc_html_e( "Admin Actions", 'disciple_tools' ) ?></a>
+                                        <?php esc_html_e( 'Admin Actions', 'disciple_tools' ) ?></a>
                                     <ul class="menu is-dropdown-submenu">
                                         <?php if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ) : ?>
                                             <li><a data-open="delete-record-modal">
                                                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ) ?>"/>
-                                                    <?php echo esc_html( sprintf( _x( "Delete %s", "Delete Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )["label_singular"] ) ) ?></a></li>
+                                                    <?php echo esc_html( sprintf( _x( 'Delete %s', 'Delete Contact', 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )['label_singular'] ) ) ?></a></li>
                                         <?php endif; ?>
                                         <li><a class="open-merge-with-post"
                                                data-post_type="<?php echo esc_html( $dt_post_type ) ?>">
                                                 <img class="dt-icon"
                                                      src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg?v=2' ) ?>"/>
-                                                <?php echo esc_html( sprintf( _x( "Merge with another %s", "Merge with another record", 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )["label_singular"] ) ) ?>
+                                                <?php echo esc_html( sprintf( _x( 'Merge with another %s', 'Merge with another record', 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )['label_singular'] ) ) ?>
                                             </a>
                                         </li>
                                         <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
@@ -82,9 +82,9 @@ function dt_print_details_bar(
                                     <img style="max-width: 1rem; height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
                                     $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
                                     if ( $dir == 'rtl' ) {
-                                        echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" );
+                                        echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
                                     } else {
-                                        echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" );
+                                        echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
                                     }?>">
                                 </a>
                             </div>
@@ -92,8 +92,8 @@ function dt_print_details_bar(
                             <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
                             $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
 
-                            $type_color = isset( $dt_post['type']["key"], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
-                            $type_icon = isset( $dt_post['type']["key"], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["icon"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["icon"] : false;
+                            $type_color = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
+                            $type_icon = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['icon'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['icon'] : false;
                             if ( !empty( $picture ) ) : ?>
                                 <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                             <?php else : ?>
@@ -106,23 +106,23 @@ function dt_print_details_bar(
                             } else {
                                 $can_update = true;
                             }
-                            if ( $can_update || ( isset( $dt_post["assigned_to"]["id"] ) && $dt_post["assigned_to"]["id"] == get_current_user_id() ) ) {
+                            if ( $can_update || ( isset( $dt_post['assigned_to']['id'] ) && $dt_post['assigned_to']['id'] == get_current_user_id() ) ) {
                                 echo esc_attr( 'contenteditable=true' ); } ?>
 
                             class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                             <br>
                             <?php do_action( 'dt_post_record_name_tagline' ); ?>
                             <span class="record-name-tagline">
-                            <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
+                            <?php if ( isset( $dt_post['type']['label'] ) ) : ?>
                                 <a data-open="contact-type-modal">
                                 <?php if ( $type_icon ) : ?>
                                     <img class="dt-record-type-icon" src="<?php echo esc_html( $type_icon ) ?>"/>
                                 <?php endif; ?>
-                                <?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                                <?php echo esc_html( $dt_post['type']['label'] ?? '' )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
                             <?php endif; ?>
                                 <span class="details-bar-created-on"></span>
-                                <?php if ( $dt_post["post_author_display_name"] ):
-                                    echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
+                                <?php if ( $dt_post['post_author_display_name'] ):
+                                    echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post['post_author_display_name'] ) );
                                 endif; ?>
                             </span>
                         </div>
@@ -131,9 +131,9 @@ function dt_print_details_bar(
                                 <img style="max-width: 1rem; height: 20px" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
                                 $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
                                 if ( $dir == 'rtl' ) {
-                                    echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" );
+                                    echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
                                 } else {
-                                    echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" );
+                                    echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
                                 }?>">
                             </a>
                         </div>
@@ -142,7 +142,7 @@ function dt_print_details_bar(
                         <div class="cell shrink center-items">
                             <button class="button favorite" data-favorite="false">
                                 <svg class='icon-star' viewBox="0 0 32 32">
-                                    <use xlink:href="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/star.svg#star" ) ?>"></use>
+                                    <use xlink:href="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/star.svg#star' ) ?>"></use>
                                 </svg>
                             </button>
                         </div>
@@ -156,16 +156,16 @@ function dt_print_details_bar(
                         <?php endif; ?>
                         <div class="cell shrink center-items">
                         <?php if ( $disable_following_toggle_function ) : ?>
-                            <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?>
+                            <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( 'Following', 'disciple_tools' ) ) ?>
                                 <i class="fi-eye"></i>
                             </button>
                         <?php else :
                             if ( $following ) : ?>
-                                <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?>
+                                <button class="button follow hollow" data-value="following"><?php echo esc_html( __( 'Following', 'disciple_tools' ) ) ?>
                                     <i class="fi-eye"></i>
                                 </button>
                             <?php else : ?>
-                                <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?>
+                                <button class="button follow" data-value=""><?php echo esc_html( __( 'Follow', 'disciple_tools' ) ) ?>
                                     <i class="fi-eye"></i>
                                 </button>
                             <?php endif; ?>
@@ -174,8 +174,8 @@ function dt_print_details_bar(
                         <?php if ( $share_button ): ?>
                         <div class="cell shrink center-items ">
                             <button class="center-items open-share">
-                                <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ); ?>">
-                                <span data-tooltip title="<?php echo esc_html( sprintf( '%s', ltrim( $shared_with_text, ',' ) ) ); ?>" style="margin:0 10px 2px 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?> (<?php echo esc_html( count( $shared_with ) ); ?>)</span>
+                                <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/share.svg' ); ?>">
+                                <span data-tooltip title="<?php echo esc_html( sprintf( '%s', ltrim( $shared_with_text, ',' ) ) ); ?>" style="margin:0 10px 2px 10px"><?php esc_html_e( 'Share', 'disciple_tools' ); ?> (<?php echo esc_html( count( $shared_with ) ); ?>)</span>
                             </button>
                         </div>
                         <?php endif; ?>
@@ -196,13 +196,13 @@ function dt_print_details_bar(
                 <div class="cell shrink">
                     <button  id="nav-view-comments" class="center-items">
                         <a href="#comment-activity-section" class="center-items" style="color:black">
-                            <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/view-comments.svg" ); ?>">
+                            <img src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/view-comments.svg' ); ?>">
                         </a>
                     </button>
                 </div>
                 <button class="button favorite" data-favorite="false">
                 <svg class='icon-star' viewBox="0 0 32 32">
-                    <use xlink:href="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/star.svg#star" ) ?>"></use>
+                    <use xlink:href="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/star.svg#star' ) ?>"></use>
                 </svg>
                 </object>
                 </button>
@@ -210,7 +210,7 @@ function dt_print_details_bar(
                 <?php if ( $share_button ): ?>
                     <div class="cell shrink">
                         <button class="center-items open-share">
-                            <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
+                            <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/share.svg' ) ?>">
                         </button>
                     </div>
                 <?php endif; ?>
@@ -241,7 +241,7 @@ function dt_print_details_bar(
                 <div class="cell shrink center-item">
                     <?php if ( $show_update_needed ){ ?>
                         <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
-                        <input type="checkbox" id="update-needed-small" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
+                        <input type="checkbox" id="update-needed-small" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : '' ) ?>/>
                         <label class="dt-switch" for="update-needed-small" style="vertical-align: top;"></label>
                     <?php } ?>
                 </div>
@@ -253,15 +253,15 @@ function dt_print_details_bar(
                         <img style="height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
                         $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
                         if ( $dir == 'rtl' ) {
-                            echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" );
+                            echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
                         } else {
-                            echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" );
+                            echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
                         }?>">
                     </a>
                 </div>
                 <div class="cell small-10 center">
                     <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
-                        $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
+                        $type_color = isset( $dt_post['type'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
                     if ( !empty( $picture ) ) : ?>
                         <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                     <?php else : ?>
@@ -273,18 +273,18 @@ function dt_print_details_bar(
                     } else {
                         $can_update = true;
                     }
-                    if ( $can_update || ( isset( $dt_post["assigned_to"]["id"] ) && $dt_post["assigned_to"]["id"] == get_current_user_id() ) ) {
+                    if ( $can_update || ( isset( $dt_post['assigned_to']['id'] ) && $dt_post['assigned_to']['id'] == get_current_user_id() ) ) {
                         echo esc_attr( 'contenteditable=true' ); } ?>
                         class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                     <div id="record-tagline">
                         <?php do_action( 'dt_post_record_name_tagline' ); ?>
                         <span class="record-name-tagline">
-                        <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
-                            <a data-open="contact-type-modal"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                        <?php if ( isset( $dt_post['type']['label'] ) ) : ?>
+                            <a data-open="contact-type-modal"><?php echo esc_html( $dt_post['type']['label'] ?? '' )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
                         <?php endif; ?>
                         <span class="details-bar-created-on"></span>
-                            <?php if ( $dt_post["post_author_display_name"] ):
-                                echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
+                            <?php if ( $dt_post['post_author_display_name'] ):
+                                echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post['post_author_display_name'] ) );
                             endif; ?>
                         </span>
                     </div>
@@ -294,9 +294,9 @@ function dt_print_details_bar(
                         <img style="height: 20px" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
                         $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
                         if ( $dir == 'rtl' ) {
-                            echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" );
+                            echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
                         } else {
-                            echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" );
+                            echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
                         }?>">
                     </a>
                 </div>

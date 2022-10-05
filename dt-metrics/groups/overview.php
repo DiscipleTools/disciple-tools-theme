@@ -101,12 +101,12 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
     public function chart_group_types() {
         $chart = [];
 
-        $group_fields = DT_Posts::get_post_field_settings( "groups" );
-        $types = $group_fields["group_type"]["default"];
+        $group_fields = DT_Posts::get_post_field_settings( 'groups' );
+        $types = $group_fields['group_type']['default'];
 
         $results = $this->query_project_group_types();
         foreach ( $results as $result ) {
-            $result["label"] = $types[$result['type']]["label"] ?? $result['type'];
+            $result['label'] = $types[$result['type']]['label'] ?? $result['type'];
             $chart[] = $result;
         }
 
@@ -116,11 +116,11 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
     public function chart_group_health() {
 
         // Make key list
-        $group_fields = DT_Posts::get_post_field_settings( "groups" );
+        $group_fields = DT_Posts::get_post_field_settings( 'groups' );
         $labels = [];
 
-        foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) {
-            $labels[$key] = $option["label"];
+        foreach ( $group_fields['health_metrics']['default'] as $key => $option ) {
+            $labels[$key] = $option['label'];
         }
 
         $chart = [];
@@ -134,14 +134,14 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
             }
             foreach ( $labels as $label_key => $label_value ) {
                 $row = [
-                    "label"      => $label_value,
-                    "practicing" => 0,
-                    "remaining"  => (int) $out_of
+                    'label'      => $label_value,
+                    'practicing' => 0,
+                    'remaining'  => (int) $out_of
                 ];
                 foreach ( $results as $result ) {
                     if ( $result['health_key'] === $label_key ) {
-                        $row["practicing"] = (int) $result["count"];
-                        $row["remaining"]  = intval( $result['out_of'] ) - intval( $result['count'] );
+                        $row['practicing'] = (int) $result['count'];
+                        $row['remaining']  = intval( $result['out_of'] ) - intval( $result['count'] );
                     }
                 }
                 $chart[] = $row;
@@ -166,7 +166,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
         }
 
         $results = [
-            'total_contacts' => $stats["total_contacts"], // @todo remove
+            'total_contacts' => $stats['total_contacts'], // @todo remove
             'active_contacts' => $stats['active_contacts'], // @todo remove
             'needs_accepted' => $stats['needs_accept'], // @todo remove
             'updates_needed' => $stats['needs_update'], // @todo remove
@@ -248,7 +248,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
         global $wpdb;
 
         $numbers = [];
-        $numbers["total_contacts"] = Disciple_Tools_Counter::critical_path( 'new_contacts' );
+        $numbers['total_contacts'] = Disciple_Tools_Counter::critical_path( 'new_contacts' );
 
         $results = $wpdb->get_results( "
             SELECT (

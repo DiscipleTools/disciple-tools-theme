@@ -346,13 +346,13 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
             // prioritize the smallest unit
             if ( !empty( $ip_result['city'] ) ) {
                 $label = $ip_result['city'] . ', ' . $ip_result['region_name'] . ', ' . $ip_result['country_name'];
-                $level = "district";
+                $level = 'district';
             } elseif ( !empty( $ip_result['region_name'] ) ) {
                 $label = $ip_result['region_name'] . ', ' . $ip_result['country_name'];
-                $level = "region";
+                $level = 'region';
             } elseif ( !empty( $ip_result['country_name'] ) ) {
                 $label = $ip_result['country_name'];
-                $level = "country";
+                $level = 'country';
             } elseif ( !empty( $ip_result['continent_name'] ) ) {
                 $label = $ip_result['continent_name'];
                 $level = 'world';

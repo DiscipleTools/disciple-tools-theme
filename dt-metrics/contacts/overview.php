@@ -55,7 +55,7 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
     }
 
     public function data() {
-        $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
+        $contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
         return [
             'translations' => [
                 'title_contact_overview' => __( 'Contacts Overview', 'disciple_tools' ),
@@ -64,7 +64,7 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
                 'title_waiting_on_accept' => __( 'Waiting on Accept', 'disciple_tools' ),
                 'title_waiting_on_update' => __( 'Waiting on Update', 'disciple_tools' ),
                 'title_total_groups' => __( 'Total Groups', 'disciple_tools' ),
-                'title_status_chart' => $contact_fields["overall_status"]["name"],
+                'title_status_chart' => $contact_fields['overall_status']['name'],
                 'label_follow_up_progress' => __( 'Follow-up of all active contacts', 'disciple_tools' ),
             ],
             'hero_stats' => $this->chart_project_hero_stats(),
@@ -115,13 +115,13 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
 
         $query_results = [];
 
-        $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
-        $seeker_path_options = $contact_fields["seeker_path"]["default"];
+        $contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
+        $seeker_path_options = $contact_fields['seeker_path']['default'];
 
         foreach ( $seeker_path_options as $seeker_path_key => $seeker_path_option ){
             $added = false;
             foreach ( $results as $result ) {
-                if ( $result["seeker_path"] == $seeker_path_key ){
+                if ( $result['seeker_path'] == $seeker_path_key ){
                     $query_results[] = [
                         'key' => $seeker_path_key,
                         'label' => $seeker_path_option['label'],
@@ -158,7 +158,7 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
         }
 
         $results = [
-            'total_contacts' => $stats["total_contacts"], // @todo remove
+            'total_contacts' => $stats['total_contacts'], // @todo remove
             'active_contacts' => $stats['active_contacts'], // @todo remove
             'needs_accepted' => $stats['needs_accept'], // @todo remove
             'updates_needed' => $stats['needs_update'], // @todo remove
@@ -176,7 +176,7 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
         global $wpdb;
 
         $numbers = [];
-        $numbers["total_contacts"] = Disciple_Tools_Counter::critical_path( 'new_contacts' );
+        $numbers['total_contacts'] = Disciple_Tools_Counter::critical_path( 'new_contacts' );
 
         $results = $wpdb->get_results( "
             SELECT (

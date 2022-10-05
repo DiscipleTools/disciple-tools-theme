@@ -253,7 +253,7 @@ class Disciple_Tools_Workflows_Defaults {
                             if ( ! $this->already_assigned_people_group( $post['people_groups'] ?? [], $connection['ID'] ) ) {
 
                                 // Prepare new people group for parent group addition
-                                $new_people_groups['people_groups']['values'][] = [ "value" => $connection['ID'] ];
+                                $new_people_groups['people_groups']['values'][] = [ 'value' => $connection['ID'] ];
                             }
                         }
                     }

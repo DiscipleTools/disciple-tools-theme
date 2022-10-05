@@ -92,7 +92,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         register_rest_route(
             $this->namespace, '/data', [
                 [
-                    'methods'  => "GET",
+                    'methods'  => 'GET',
                     'callback' => [ $this, 'milestones_map_endpoint' ],
                     'permission_callback' => '__return_true',
                 ],
@@ -102,26 +102,26 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
 
     public function milestones_map_endpoint( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {
-            return new WP_Error( "milestones_map", "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( 'milestones_map', 'Missing Permissions', [ 'status' => 400 ] );
         }
         $params = $request->get_params();
 
-        return $this->data( isset( $params["refresh"] ) && $params["refresh"] === "true" );
+        return $this->data( isset( $params['refresh'] ) && $params['refresh'] === 'true' );
     }
 
 
     public function add_milestones_data( $data, $force_refresh = false ) {
 
 
-        if ( isset( $_SERVER["SERVER_NAME"] ) ) {
-            $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) )
-                ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) )
-                : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) );
-            if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-                $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+        if ( isset( $_SERVER['SERVER_NAME'] ) ) {
+            $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] != 'on' ) )
+                ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) )
+                : 'https://'. sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) );
+            if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+                $url .= sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
             }
         }
-        $url_path = trim( str_replace( get_site_url(), "", $url ), '/' );
+        $url_path = trim( str_replace( get_site_url(), '', $url ), '/' );
 
         /**
          * Step 1
@@ -164,12 +164,12 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         //     'key'   => 'churches',
         //     'label' => __( 'Churches', 'disciple_tools' )
         // ];
-        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
-        $milestones_options = $field_settings["milestones"]["default"];
+        $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
+        $milestones_options = $field_settings['milestones']['default'];
         foreach ( $milestones_options as $option_key => $option_value ){
             $column_labels[] = [
                 'key'   => $option_key,
-                'label' => $option_value["label"]
+                'label' => $option_value['label']
             ];
         }
         $next_column_number = count( $column_labels );
@@ -199,11 +199,11 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
          * @note    Don't add 0 values, or you might create unnecessary array and
          *          transfer weight to the mapping javascript file.
          */
-        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals_on_field( "contacts", "milestones", $force_refresh );
+        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals_on_field( 'contacts', 'milestones', $force_refresh );
         $keys = array_column( $column_labels, 'key' );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if ( $result['type'] && $result['count'] > 0 && in_array( $result["type"], $keys ) ) { // filter for only contact and positive counts
+                if ( $result['type'] && $result['count'] > 0 && in_array( $result['type'], $keys ) ) { // filter for only contact and positive counts
                     $grid_id = $result['grid_id'];
 
                     // test if grid_id exists, else prepare it with 0 values
@@ -217,7 +217,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
                     }
 
                     // add new record to column
-                    $column_data[$grid_id][array_search( $result["type"], $keys )] = (int) $result['count'] ?? 0; // must be string
+                    $column_data[$grid_id][array_search( $result['type'], $keys )] = (int) $result['count'] ?? 0; // must be string
                 }
             }
         }

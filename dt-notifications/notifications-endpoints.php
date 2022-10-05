@@ -123,13 +123,13 @@ class Disciple_Tools_Notifications_Endpoints
         $params = $request->get_params();
         if ( isset( $params['notification_id'] ) ) {
             $result = Disciple_Tools_Notifications::mark_viewed( $params['notification_id'] );
-            if ( $result["status"] ) {
+            if ( $result['status'] ) {
                 return $result['rows_affected'];
             } else {
-                return new WP_Error( "mark_viewed_processing_error", $result["message"], [ 'status' => 400 ] );
+                return new WP_Error( 'mark_viewed_processing_error', $result['message'], [ 'status' => 400 ] );
             }
         } else {
-            return new WP_Error( "notification_param_error", "Please provide a valid array", [ 'status' => 400 ] );
+            return new WP_Error( 'notification_param_error', 'Please provide a valid array', [ 'status' => 400 ] );
         }
     }
 
@@ -146,13 +146,13 @@ class Disciple_Tools_Notifications_Endpoints
         $params = $request->get_params();
         if ( isset( $params['user_id'] ) && $params['user_id'] == get_current_user_id() ) {
             $result = Disciple_Tools_Notifications::mark_all_viewed( $params['user_id'] );
-            if ( $result["status"] ) {
+            if ( $result['status'] ) {
                 return $result['rows_affected'];
             } else {
-                return new WP_Error( "mark_viewed_processing_error", $result["message"], [ 'status' => 400 ] );
+                return new WP_Error( 'mark_viewed_processing_error', $result['message'], [ 'status' => 400 ] );
             }
         } else {
-            return new WP_Error( "notification_param_error", "Please provide a valid array", [ 'status' => 400 ] );
+            return new WP_Error( 'notification_param_error', 'Please provide a valid array', [ 'status' => 400 ] );
         }
     }
 
@@ -173,10 +173,10 @@ class Disciple_Tools_Notifications_Endpoints
             if ( !is_wp_error( $result ) ) {
                 return $result;
             } else {
-                return new WP_Error( "get_user_notification_results", 'Something went wrong', [ 'status' => 400 ] );
+                return new WP_Error( 'get_user_notification_results', 'Something went wrong', [ 'status' => 400 ] );
             }
         } else {
-            return new WP_Error( "notification_param_error", "Please set the page and limit query parameters", [ 'status' => 400 ] );
+            return new WP_Error( 'notification_param_error', 'Please set the page and limit query parameters', [ 'status' => 400 ] );
         }
     }
 
@@ -192,7 +192,7 @@ class Disciple_Tools_Notifications_Endpoints
         if ( !is_wp_error( $result ) ){
             return $result;
         } else {
-            return new WP_Error( "get_user_notification_results", "Something went wrong", [ 'status' => 400 ] );
+            return new WP_Error( 'get_user_notification_results', 'Something went wrong', [ 'status' => 400 ] );
         }
     }
 
@@ -209,13 +209,13 @@ class Disciple_Tools_Notifications_Endpoints
         $params = $request->get_params();
         if ( isset( $params['notification_id'] ) ) {
             $result = Disciple_Tools_Notifications::mark_unread( $params['notification_id'] );
-            if ( $result["status"] ) {
+            if ( $result['status'] ) {
                 return $result['rows_affected'];
             } else {
-                return new WP_Error( "mark_viewed_processing_error", $result["message"], [ 'status' => 400 ] );
+                return new WP_Error( 'mark_viewed_processing_error', $result['message'], [ 'status' => 400 ] );
             }
         } else {
-            return new WP_Error( "notification_param_error", "Please provide a valid array", [ 'status' => 400 ] );
+            return new WP_Error( 'notification_param_error', 'Please provide a valid array', [ 'status' => 400 ] );
         }
     }
 

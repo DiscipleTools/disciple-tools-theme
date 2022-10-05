@@ -24,7 +24,7 @@ if ( ! class_exists( 'DT_Extensions_Menu' ) ) {
         } // End instance()
 
         public function __construct() {
-            add_action( "admin_menu", array( $this, "menu" ) );
+            add_action( 'admin_menu', array( $this, 'menu' ) );
         }
 
         public function menu() {
@@ -40,7 +40,7 @@ if ( ! class_exists( 'DT_Extensions_Menu' ) ) {
                 wp_die( 'You do not have sufficient permissions to access this page.' );
             }
 
-            $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'featured-extensions';
+            $tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'featured-extensions';
 
             ?>
             <div class="wrap">
