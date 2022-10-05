@@ -247,13 +247,16 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                                 $label = 'NULL';
                             }
                             ?>
-                            <div class="field-option-element" style="margin-left: 18px;">└ <?php echo esc_html( $label ); ?></div>
+                            <div class="field-option-element" style="margin-left: 18px;">
+                                └ <?php echo esc_html( $label ); ?>
+                                <a href="javascript:void(0);" class="edit-option"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
+                            </div>
                             <?php
                         }
                     }
                     ?>
                     
-                    <div class="field-option-element add-new-option">
+                    <div class="add-new-option">
                     └ <a href="javascript:void(0);"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a>
                     </div>
                     
@@ -278,18 +281,31 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         ?>
         <script>
             jQuery(document).ready(function($) {
-                $('.add-new-option').on( 'click', function() {
+                $('.edit-option').on('click', function() {
+                    alert('modal goes here');
+                });
+                $('.add-new-option').on('click', function() {
                     $('#new-custom-field-box').slideToggle(333, 'swing');
+                });
+                $('.field-option-element').on('mouseenter', function() {
+                    $(this).children('.edit-option').toggle();
+                });
+                $('.field-option-element').on('mouseleave', function() {
+                    $(this).children('.edit-option').toggle();
                 });
             });
         </script>
         <style>
+            .edit-option {
+                margin-left: 18px;
+                display: none;
+            }
             .field-option-element{
                 width: 100%;
                 margin-left: 18px;
             }
             .add-new-option {
-                margin-bottom: 18px;
+                margin: 0 0 18px 18px;
             }
             .new-custom-field {
                 width: auto;
