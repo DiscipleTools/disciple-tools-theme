@@ -237,7 +237,6 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         foreach ( $tile as $setting ) {
             foreach ( $setting as $key => $value ) {
                 if ( $key === 'default' && !empty( $setting['default'] ) ) {
-                    dt_write_log( $setting );
                     ?>
                 <b id="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $setting['name'] ); ?></b>
                     <?php
@@ -248,14 +247,16 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                                 $label = 'NULL';
                             }
                             ?>
-                            <br><span style="margin-left: 18px;">╰ <?php echo esc_html( $label ); ?></span>
+                            <br><span style="margin-left: 18px;">└ <?php echo esc_html( $label ); ?></span>
                             <?php
                         }
                     }
                     ?>
-                <br><span style="margin-left: 18px;">╰ <a href="javascript:void(0);" class="add-new-link"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a></span>
-                <br>
-                <br>
+                    
+                    <div class="field_setting_element">
+                    └ <a href="javascript:void(0);" class="add-new-link"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a>
+                    </div>
+                    
                     <?php
                 }
             }
@@ -444,6 +445,9 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                 padding: 0.5rem;
                 width:100%;
                 box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
+            }
+            .field_setting_element {
+                margin: 0 0 18px 18px;
             }
         </style>
         <div class="dt-tile-preview">
