@@ -80,7 +80,7 @@ final class Disciple_Tools_Admin_User_Edit {
 
         $can_not_promote_to_roles = [];
         if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
-            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ "administrator" ] );
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ 'administrator' ] );
         }
         if ( !current_user_can( 'manage_dt' ) ){
             $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
@@ -112,16 +112,16 @@ final class Disciple_Tools_Admin_User_Edit {
                                        <?php echo esc_html( in_array( $role, $can_not_promote_to_roles ) ? 'disabled' : '' ) ?>/>
                                 <strong>
                                 <?php
-                                if ( isset( $expected_roles[$role]["label"] ) && !empty( $expected_roles[$role]["label"] ) ){
-                                    echo esc_html( $expected_roles[$role]["label"] );
+                                if ( isset( $expected_roles[$role]['label'] ) && !empty( $expected_roles[$role]['label'] ) ){
+                                    echo esc_html( $expected_roles[$role]['label'] );
                                 } else {
                                     echo esc_html( $name );
                                 }
                                 ?>
                                 </strong>
                                 <?php
-                                if ( isset( $expected_roles[$role]["description"] ) ){
-                                    echo ' - ' . esc_html( $expected_roles[$role]["description"] );
+                                if ( isset( $expected_roles[$role]['description'] ) ){
+                                    echo ' - ' . esc_html( $expected_roles[$role]['description'] );
                                 }
                                 ?>
                             </label>
@@ -161,7 +161,7 @@ final class Disciple_Tools_Admin_User_Edit {
 
         $can_not_promote_to_roles = [];
         if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
-            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ "administrator" ] );
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ 'administrator' ] );
         }
         if ( !current_user_can( 'manage_dt' ) ){
             $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );

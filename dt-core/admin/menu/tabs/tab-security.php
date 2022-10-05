@@ -69,10 +69,10 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function security_enable_box() {
         $this->box( 'top', 'Enable and Configure Security Headers' );
 
-        $xss_disabled = get_option( "dt_disable_header_xss" );
-        $referer_disabled = get_option( "dt_disable_header_referer" );
-        $content_type_disabled = get_option( "dt_disable_header_content_type" );
-        $strict_transport_disabled = get_option( "dt_disable_header_strict_transport" );
+        $xss_disabled = get_option( 'dt_disable_header_xss' );
+        $referer_disabled = get_option( 'dt_disable_header_referer' );
+        $content_type_disabled = get_option( 'dt_disable_header_content_type' );
+        $strict_transport_disabled = get_option( 'dt_disable_header_strict_transport' );
         ?>
         <p>Here we set some security headers for the Theme. These are enabled by default. We recommend leaving them enabled unless you run into any issues.</p>
 
@@ -113,14 +113,14 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function save_settings(){
         if ( !empty( $_POST ) ){
             if ( isset( $_POST['security_headers_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['security_headers_nonce'] ), 'security_headers' ) ) {
-                update_option( "dt_disable_header_xss", isset( $_POST["xss"] ) ? "0" : "1" );
-                update_option( "dt_disable_header_referer", isset( $_POST["referer"] ) ? "0" : "1" );
-                update_option( "dt_disable_header_content_type", isset( $_POST["content_type"] ) ? "0" : "1" );
-                update_option( "dt_disable_header_strict_transport", isset( $_POST["strict_transport"] ) ? "0" : "1" );
+                update_option( 'dt_disable_header_xss', isset( $_POST['xss'] ) ? '0' : '1' );
+                update_option( 'dt_disable_header_referer', isset( $_POST['referer'] ) ? '0' : '1' );
+                update_option( 'dt_disable_header_content_type', isset( $_POST['content_type'] ) ? '0' : '1' );
+                update_option( 'dt_disable_header_strict_transport', isset( $_POST['strict_transport'] ) ? '0' : '1' );
             }
 
             if ( isset( $_POST['usage_data_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['usage_data_nonce'] ), 'usage_data' ) ) {
-                update_option( 'dt_disable_usage_data', isset( $_POST["usage"] ) ? "1" : "0" );
+                update_option( 'dt_disable_usage_data', isset( $_POST['usage'] ) ? '1' : '0' );
             }
         }
     }
