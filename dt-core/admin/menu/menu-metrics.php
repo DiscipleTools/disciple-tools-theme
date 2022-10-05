@@ -1,8 +1,8 @@
 <?php
 /**
- * Disciple_Tools_Tools_Menu class for the admin page
+ * Disciple_Tools_Metrics_Menu class for the admin page
  *
- * @class      Disciple_Tools_Tools_Menu
+ * @class      Disciple_Tools_Metrics_Menu
  * @version    0.1.0
  * @since      0.1.0
  * @package    Disciple.Tools
