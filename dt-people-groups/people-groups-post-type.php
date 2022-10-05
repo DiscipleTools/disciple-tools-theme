@@ -40,17 +40,6 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public $plural;
 
-    public $search_items;
-
-    /**
-     * The post type args.
-     *
-     * @access public
-     * @since  0.1.0
-     * @var    array
-     */
-    public $args;
-
     /**
      * The taxonomies for this post type.
      *
@@ -93,9 +82,6 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public function __construct() {
         $this->post_type = 'peoplegroups';
-        $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNMTIsMEM5LjU0MiwwLDcsMS44MDIsNyw0LjgxN2MwLDIuNzE2LDMuODY5LDYuNDg2LDQuMzEsNi45MDdMMTIsMTIuMzgybDAuNjktMC42NTkgQzEzLjEzMSwxMS4zMDMsMTcsNy41MzMsMTcsNC44MTdDMTcsMS44MDIsMTQuNDU4LDAsMTIsMHogTTEyLDdjLTEuMTA1LDAtMi0wLjg5Ni0yLTJjMC0xLjEwNSwwLjg5NS0yLDItMnMyLDAuODk1LDIsMiBDMTQsNi4xMDQsMTMuMTA1LDcsMTIsN3oiPjwvcGF0aD4gPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTkuODg0LDE5LjQ5OUM5LjAyMywxOC44MTUsNy41NjMsMTgsNS41LDE4cy0zLjUyMywwLjgxNS00LjM4MywxLjQ5OEMwLjQwNywyMC4wNjEsMCwyMC45MTMsMCwyMS44MzZWMjRoMTEgdi0yLjE2NEMxMSwyMC45MTMsMTAuNTkzLDIwLjA2MSw5Ljg4NCwxOS40OTl6Ij48L3BhdGg+IDxjaXJjbGUgZmlsbD0iI2ZmZmZmZiIgY3g9IjUuNSIgY3k9IjEzLjUiIHI9IjMuNSI+PC9jaXJjbGU+IDxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Ik0yMi44ODQsMTkuNDk5QzIyLjAyMywxOC44MTUsMjAuNTYzLDE4LDE4LjUsMThzLTMuNTIzLDAuODE1LTQuMzgzLDEuNDk4IEMxMy40MDcsMjAuMDYxLDEzLDIwLjkxMywxMywyMS44MzZWMjRoMTF2LTIuMTY0QzI0LDIwLjkxMywyMy41OTMsMjAuMDYxLDIyLjg4NCwxOS40OTl6Ij48L3BhdGg+IDxjaXJjbGUgZmlsbD0iI2ZmZmZmZiIgY3g9IjE4LjUiIGN5PSIxMy41IiByPSIzLjUiPjwvY2lyY2xlPjwvZz48L3N2Zz4=' ];
-
-        add_action( 'init', [ $this, 'register_post_type' ] );
 
         if ( is_admin() ) {
             global $pagenow;
@@ -116,66 +102,6 @@ class Disciple_Tools_People_Groups_Post_Type
 //            add_action( 'admin_init', [ $this, 'remove_add_new_submenu' ] );
         }
     }
-
-    /**
-     * Register the post type.
-     *
-     * @access public
-     * @return void
-     */
-    public function register_post_type() {
-        $this->singular = __( 'People Group', 'disciple_tools' );
-        $this->plural = __( 'People Groups', 'disciple_tools' );
-        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
-
-        $labels = [
-            'name'                  => $this->plural,
-            'singular_name'         => $this->singular,
-            'menu_name'             => $this->plural,
-            'search_items'          => $this->search_items,
-        ];
-
-        $rewrite = [
-            'slug'       => 'peoplegroups',
-            'with_front' => true,
-            'pages'      => true,
-            'feeds'      => false,
-        ];
-        $capabilities = [
-            "read_post" => "manage_dt",
-            "edit_post" => "manage_dt",
-            "delete_post" => "manage_dt",
-            "edit_posts" => "manage_dt",
-            "edit_others_posts" => "manage_dt",
-            "publish_posts" => "manage_dt",
-            "read_private_posts" => "manage_dt",
-            "delete_others_posts" => "manage_dt",
-            "delete_posts" => "manage_dt",
-            "delete_published_posts" => "manage_dt",
-        ];
-        $defaults = [
-            'labels'                => $labels,
-            'public'                => true,
-            'publicly_queryable'    => true,
-            'show_ui'               => true,
-            'show_in_menu'          => true,
-            'query_var'             => true,
-            'rewrite'               => $rewrite,
-            'capabilities'          => $capabilities,
-            'has_archive'           => true,
-            'hierarchical'          => false,
-            'supports'              => [ 'title' ],
-            'menu_position'         => 6,
-            'menu_icon'             => 'dashicons-smiley',
-            'show_in_rest'          => true,
-            'rest_base'             => 'peoplegroups',
-            'rest_controller_class' => 'WP_REST_Posts_Controller',
-        ];
-
-        $args = wp_parse_args( $this->args, $defaults );
-
-        register_post_type( $this->post_type, $args );
-    } // End register_post_type()
 
     /**
      * Add custom columns for the "manage" screen of this post type.

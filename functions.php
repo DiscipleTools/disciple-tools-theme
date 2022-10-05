@@ -293,7 +293,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              */
             require_once( 'dt-people-groups/people-groups.php' );
             require_once( 'dt-people-groups/people-groups-base.php' );
-            new Disciple_Tools_People_Groups_Base( is_admin() );
+            new Disciple_Tools_People_Groups_Base();
 
             require_once( 'dt-people-groups/people-groups-post-type.php' );
             $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
