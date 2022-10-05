@@ -247,14 +247,14 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                                 $label = 'NULL';
                             }
                             ?>
-                            <br><span style="margin-left: 18px;">└ <?php echo esc_html( $label ); ?></span>
+                            <div class="field-option-element" style="margin-left: 18px;">└ <?php echo esc_html( $label ); ?></div>
                             <?php
                         }
                     }
                     ?>
                     
-                    <div class="field_setting_element">
-                    └ <a href="javascript:void(0);" class="add-new-link"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a>
+                    <div class="field-option-element add-new-option">
+                    └ <a href="javascript:void(0);"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a>
                     </div>
                     
                     <?php
@@ -277,11 +277,20 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         }
         ?>
         <script>
-            jQuery('.add-new-link').on( 'click', function() {
-                jQuery('#new-custom-field-box').slideToggle(333, 'swing');
+            jQuery(document).ready(function($) {
+                $('.add-new-option').on( 'click', function() {
+                    $('#new-custom-field-box').slideToggle(333, 'swing');
+                });
             });
         </script>
         <style>
+            .field-option-element{
+                width: 100%;
+                margin-left: 18px;
+            }
+            .add-new-option {
+                margin-bottom: 18px;
+            }
             .new-custom-field {
                 width: auto;
                 height: 250px;
@@ -445,9 +454,6 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                 padding: 0.5rem;
                 width:100%;
                 box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
-            }
-            .field_setting_element {
-                margin: 0 0 18px 18px;
             }
         </style>
         <div class="dt-tile-preview">
