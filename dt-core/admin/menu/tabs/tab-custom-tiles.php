@@ -521,8 +521,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <strong>Tile Displayed When</strong>
             <br>
             <select style="min-width: 90%;" name="tile_displayed" id="tile_displayed">
-                <option value="always" <?php /*echo esc_html( isset( $tile['displayed'] ) && $tile['displayed'] == 'always' ? 'selected' : '' );*/ ?>>--- Always  ---</option>
-                <option value="never" <?php /*echo esc_html( isset( $tile['displayed'] ) && $tile['displayed'] == 'never' ? 'selected' : '' );*/ ?>>--- Never  ---</option>
+                <option value="always">--- Always  ---</option>
+                <option value="never">--- Never  ---</option>
                 <?php
                 foreach ( $fields as $field_id => $field )
                     {
@@ -532,9 +532,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         foreach ( $options ?? [] as $option_id => $option ) {
                             $html_val = $field_id.'___'. ( ( $field['type'] == 'tags' ) ? $option : $option_id );
                             $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'];
-                            $html_selected = '';//isset( $tile['displayed'] ) && $tile['displayed'] == $html_val ? 'selected' : '';
                             ?>
-                                <option value="<?php echo esc_html( $html_val )?>" <?php echo esc_html( $html_selected )?>><?php echo esc_html( $html_label )?></option>
+                                <option value="<?php echo esc_html( $html_val )?>"><?php echo esc_html( $html_label )?></option>
                             <?php
                         }
                         echo '</optgroup>';
@@ -566,7 +565,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                             // Ensure to give special when conditions preferential treatment.
                         if ( in_array( $display_config, [ 'always', 'never' ] ) ) {
                             ?>
-                                    <td colspan="2"><?php esc_html_e( $display_config ) ?></td>
+                                    <td colspan="2"><?php echo esc_html( $display_config ) ?></td>
                                 <?php
                         }else {
 
@@ -576,14 +575,14 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                             $option_id       = $display_options[1];
 
                             ?>
-                                    <td><?php esc_html_e( $field_id ) ?></td>
-                                    <td><?php esc_html_e( $option_id ) ?></td>
+                                    <td><?php echo esc_html( $field_id ) ?></td>
+                                    <td><?php echo esc_html( $option_id ) ?></td>
                                 <?php
                         }
                         ?>
                                 <td>
                                     <span style="float: right;">
-                                        <button class="button" type="submit" id="tile_displayed_remove_but" name="tile_displayed_remove_but" value="<?php esc_html_e( $display_config ) ?>">Remove</button>
+                                        <button class="button" type="submit" id="tile_displayed_remove_but" name="tile_displayed_remove_but" value="<?php echo esc_html( $display_config ) ?>">Remove</button>
                                     </span>
                                 </td>
                             </tr>
