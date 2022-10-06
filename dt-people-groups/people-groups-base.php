@@ -34,7 +34,7 @@ class Disciple_Tools_People_Groups_Base {
     public function register_post_type() {
         $this->single_name  = __( 'People Group', 'disciple_tools' );
         $this->plural_name  = __( 'People Groups', 'disciple_tools' );
-        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural_name );
+        $this->search_items = sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $this->plural_name );
 
         $labels = [
             'name'          => $this->plural_name,
@@ -50,16 +50,16 @@ class Disciple_Tools_People_Groups_Base {
             'feeds'      => false,
         ];
         $capabilities = [
-            "read_post"              => "manage_dt",
-            "edit_post"              => "manage_dt",
-            "delete_post"            => "manage_dt",
-            "edit_posts"             => "manage_dt",
-            "edit_others_posts"      => "manage_dt",
-            "publish_posts"          => "manage_dt",
-            "read_private_posts"     => "manage_dt",
-            "delete_others_posts"    => "manage_dt",
-            "delete_posts"           => "manage_dt",
-            "delete_published_posts" => "manage_dt",
+            'read_post'              => 'manage_dt',
+            'edit_post'              => 'manage_dt',
+            'delete_post'            => 'manage_dt',
+            'edit_posts'             => 'manage_dt',
+            'edit_others_posts'      => 'manage_dt',
+            'publish_posts'          => 'manage_dt',
+            'read_private_posts'     => 'manage_dt',
+            'delete_others_posts'    => 'manage_dt',
+            'delete_posts'           => 'manage_dt',
+            'delete_published_posts' => 'manage_dt',
         ];
         $defaults     = [
             'labels'                => $labels,
@@ -174,45 +174,45 @@ class Disciple_Tools_People_Groups_Base {
              * Basic Framework Fields
              *
              */
-            $fields["requires_update"]    = [
+            $fields['requires_update']    = [
                 'name'        => __( 'Requires Update', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'boolean',
                 'default'     => false,
             ];
             $fields['contacts']           = [
-                'name'           => __( "Contacts", 'disciple_tools' ),
+                'name'           => __( 'Contacts', 'disciple_tools' ),
                 'type'           => 'connection',
-                "post_type"      => 'contacts',
+                'post_type'      => 'contacts',
                 'tile'           => 'connections',
-                "p2p_direction"  => "to",
-                "p2p_key"        => 'contacts_to_peoplegroups',
-                'icon'           => get_template_directory_uri() . "/dt-assets/images/contact-generation.svg",
+                'p2p_direction'  => 'to',
+                'p2p_key'        => 'contacts_to_peoplegroups',
+                'icon'           => get_template_directory_uri() . '/dt-assets/images/contact-generation.svg',
                 'create-icon'    => get_template_directory_uri() . '/dt-assets/images/add-contact.svg',
-                "in_create_form" => true,
-                "connection_count_field" => [ "post_type" => "peoplegroups", "field_key" => "contact_count", "connection_field" => "contacts" ]
+                'in_create_form' => true,
+                'connection_count_field' => [ 'post_type' => 'peoplegroups', 'field_key' => 'contact_count', 'connection_field' => 'contacts' ]
             ];
             $fields['contact_count']      = [
-                'name'          => __( "Contacts Total", 'disciple_tools' ),
+                'name'          => __( 'Contacts Total', 'disciple_tools' ),
                 'type'          => 'number',
                 'default'       => '0',
                 'tile'          => 'connections',
                 'show_in_table' => true
             ];
             $fields['groups']             = [
-                'name'           => __( "Groups", 'disciple_tools' ),
+                'name'           => __( 'Groups', 'disciple_tools' ),
                 'type'           => 'connection',
-                "post_type"      => 'groups',
-                "p2p_direction"  => "to",
-                "p2p_key"        => 'groups_to_peoplegroups',
-                "tile"           => "connections",
-                'icon'           => get_template_directory_uri() . "/dt-assets/images/groups.svg",
+                'post_type'      => 'groups',
+                'p2p_direction'  => 'to',
+                'p2p_key'        => 'groups_to_peoplegroups',
+                'tile'           => 'connections',
+                'icon'           => get_template_directory_uri() . '/dt-assets/images/groups.svg',
                 'create-icon'    => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
-                "in_create_form" => true,
-                "connection_count_field" => [ "post_type" => "peoplegroups", "field_key" => "group_total", "connection_field" => "groups" ]
+                'in_create_form' => true,
+                'connection_count_field' => [ 'post_type' => 'peoplegroups', 'field_key' => 'group_total', 'connection_field' => 'groups' ]
             ];
             $fields['group_total']        = [
-                'name'          => __( "Groups Total", 'disciple_tools' ),
+                'name'          => __( 'Groups Total', 'disciple_tools' ),
                 'type'          => 'number',
                 'default'       => '0',
                 'tile'          => 'connections',
@@ -223,45 +223,45 @@ class Disciple_Tools_People_Groups_Base {
                 'description'    => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'           => 'location',
                 'mapbox'         => false,
-                "in_create_form" => true,
-                "tile"           => "details",
-                "icon"           => get_template_directory_uri() . "/dt-assets/images/location.svg",
+                'in_create_form' => true,
+                'tile'           => 'details',
+                'icon'           => get_template_directory_uri() . '/dt-assets/images/location.svg',
             ];
             $fields['location_grid_meta'] = [
                 'name'        => __( 'Locations', 'disciple_tools' ),
                 //system string does not need translation
                 'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location_meta',
-                "tile"        => "details",
+                'tile'        => 'details',
                 'mapbox'      => false,
                 'hidden'      => true,
-                "icon"        => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
+                'icon'        => get_template_directory_uri() . '/dt-assets/images/location.svg?v=2',
             ];
-            $fields["contact_address"]    = [
-                "name"         => __( 'Address', 'disciple_tools' ),
-                "icon"         => get_template_directory_uri() . "/dt-assets/images/house.svg",
-                "type"         => "communication_channel",
-                "tile"         => "details",
+            $fields['contact_address']    = [
+                'name'         => __( 'Address', 'disciple_tools' ),
+                'icon'         => get_template_directory_uri() . '/dt-assets/images/house.svg',
+                'type'         => 'communication_channel',
+                'tile'         => 'details',
                 'mapbox'       => false,
-                "customizable" => false
+                'customizable' => false
             ];
             $fields['last_modified'] = [
                 'name'          => __( 'Last Modified', 'disciple_tools' ),
                 'type'          => 'date',
                 'default'       => 0,
-                'icon'          => get_template_directory_uri() . "/dt-assets/images/calendar-range.svg",
+                'icon'          => get_template_directory_uri() . '/dt-assets/images/calendar-range.svg',
                 'customizable'  => false,
                 'show_in_table' => false
             ];
 
             if ( DT_Mapbox_API::get_key() ) {
-                $fields["contact_address"]["custom_display"] = true;
-                $fields["contact_address"]["mapbox"]         = true;
-                unset( $fields["contact_address"]["tile"] );
-                $fields["location_grid"]["mapbox"]      = true;
-                $fields["location_grid_meta"]["mapbox"] = true;
-                $fields["location_grid"]["hidden"]      = true;
-                $fields["location_grid_meta"]["hidden"] = false;
+                $fields['contact_address']['custom_display'] = true;
+                $fields['contact_address']['mapbox']         = true;
+                unset( $fields['contact_address']['tile'] );
+                $fields['location_grid']['mapbox']      = true;
+                $fields['location_grid_meta']['mapbox'] = true;
+                $fields['location_grid']['hidden']      = true;
+                $fields['location_grid_meta']['hidden'] = false;
             }
 
             /**
@@ -308,35 +308,35 @@ class Disciple_Tools_People_Groups_Base {
              * Joshua Project Fields
              */
             $fields['jp_Population']          = [
-                'name'          => __( "Population", 'disciple_tools' ),
+                'name'          => __( 'Population', 'disciple_tools' ),
                 'type'          => 'number',
                 'default'       => '0',
                 'show_in_table' => true,
                 'tile'          => $this->tile_key
             ];
             $fields['jp_ROP3']                = [
-                'name'          => __( "People Group Code", 'disciple_tools' ),
+                'name'          => __( 'People Group Code', 'disciple_tools' ),
                 'type'          => 'number',
                 'default'       => '0',
                 'show_in_table' => false,
                 'tile'          => $this->tile_key
             ];
             $fields['jp_PeopleID3']           = [
-                'name'          => __( "People ID", 'disciple_tools' ),
+                'name'          => __( 'People ID', 'disciple_tools' ),
                 'type'          => 'number',
                 'default'       => '0',
                 'show_in_table' => false,
                 'tile'          => $this->tile_key
             ];
             $fields['jp_PrimaryLanguageName'] = [
-                'name'          => __( "Primary Language", 'disciple_tools' ),
+                'name'          => __( 'Primary Language', 'disciple_tools' ),
                 'type'          => 'text',
                 'default'       => '',
                 'show_in_table' => true,
                 'tile'          => $this->tile_key
             ];
             $fields['jp_Ctry']                = [
-                'name'          => __( "Country", 'disciple_tools' ),
+                'name'          => __( 'Country', 'disciple_tools' ),
                 'type'          => 'text',
                 'default'       => '',
                 'show_in_table' => true,
@@ -348,11 +348,11 @@ class Disciple_Tools_People_Groups_Base {
         return $fields;
     }
 
-    public function dt_details_additional_tiles( $tiles, $post_type = "" ) {
+    public function dt_details_additional_tiles( $tiles, $post_type = '' ) {
         if ( $post_type === $this->post_type ) {
-            $tiles["connections"]     = [ "label" => __( "Connections", 'disciple_tools' ) ];
+            $tiles['connections']     = [ 'label' => __( 'Connections', 'disciple_tools' ) ];
 //            $tiles["other"]           = [ "label" => __( "Other", 'disciple_tools' ) ];
-            $tiles[ $this->tile_key ] = [ "label" => __( "Joshua Project", 'disciple_tools' ) ];
+            $tiles[ $this->tile_key ] = [ 'label' => __( 'Joshua Project', 'disciple_tools' ) ];
             unset( $tiles['status'] );
         }
 
@@ -367,22 +367,22 @@ class Disciple_Tools_People_Groups_Base {
             if ( ! is_wp_error( $listed_posts ) ) {
                 $all_count = $listed_posts['total'] ?? count( $listed_posts['posts'] );
             }
-            $filters["tabs"][] = [
-                "key"   => "all",
-                "label" => _x( "All", 'List Filters', 'disciple_tools' ),
-                "count" => $all_count,
-                "order" => 10
+            $filters['tabs'][] = [
+                'key'   => 'all',
+                'label' => _x( 'All', 'List Filters', 'disciple_tools' ),
+                'count' => $all_count,
+                'order' => 10
             ];
 
             // add assigned to me filters
-            $filters["filters"][] = [
+            $filters['filters'][] = [
                 'ID'    => 'all',
                 'tab'   => 'all',
-                'name'  => _x( "All", 'List Filters', 'disciple_tools' ),
+                'name'  => _x( 'All', 'List Filters', 'disciple_tools' ),
                 'query' => [
                     'sort' => '-post_date'
                 ],
-                "count" => $all_count
+                'count' => $all_count
             ];
         }
 
