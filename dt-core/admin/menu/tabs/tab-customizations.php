@@ -4,7 +4,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Base
+class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Base
 {
     private static $_instance = null;
     public static function instance() {
@@ -22,14 +22,17 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
      */
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'dt_customizations_tab_content', [ $this, 'content' ], 99, 1 );
         add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
         parent::__construct();
     }
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'New Settings UI', 'disciple_tools' ), __( 'New Settings UI', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=new-settings-ui', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        $post_types = DT_Posts::get_post_types();
+        foreach( $post_types as $post_type ) {
+            $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
+            add_submenu_page( 'dt_customizations', __( $post_type_label, 'disciple_tools' ), __( $post_type_label, 'disciple_tools' ), 'manage_dt', "dt_customizations&post_type=$post_type", [ 'Disciple_Tools_Customizations_Menu', 'content' ] );
+        }
     }
 
     public function admin_enqueue_scripts() {
@@ -37,36 +40,81 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         wp_enqueue_script( 'jquery' );
     }
 
-    public function add_tab( $tab ) {
-        echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_options&tab=new-settings-ui" class="nav-tab ';
-        if ( $tab == 'new-settings-ui' ) {
-            echo 'nav-tab-active';
-        }
-        echo '">'. esc_attr__( 'New Settings UI', 'disciple_tools' ) .'</a>';
+    public function content() {
+        self::template( 'begin', 2 );
+        
+        $this->box( 'top', __( 'Select a Post Type', 'disciple_tools' ) );
+        $this->show_post_type_pills();
+        $this->box( 'bottom' );
+        $this->template( 'right_column' );
+        $this->box( 'top', __( 'Search', 'disciple_tools' ) );
+        $this->fields_typeahead_box();
+        $this->box( 'bottom' );
+        self::template( 'end' );
+        
+        self::template( 'begin', 1 );
+        $this->show_tabs();
+        $this->show_tab_content();
+
+        // $this->save_settings();
+        $this->tile_settings_box();
+        self::template( 'end' );
     }
 
-    public function content( $tab ) {
-        if ( 'new-settings-ui' == $tab ) {
-            self::template( 'begin', 1 );
-            $this->save_settings();
+    public function show_post_type_pills() {
+        $post_types = DT_Posts::get_post_types();
+        foreach( $post_types as $post_type ) :
+            $post_type_label = DT_Posts::get_label_for_post_type( $post_type ); ?>
+            <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type" ); ?>" class="button <?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] === $post_type ) ? 'button-primary' : null; ?>"><?php echo esc_html( $post_type_label ); ?></a>
+        <?php endforeach;
+    }
 
-            $this->box( 'top', 'Search' );
-            $this->fields_typeahead_box();
-            $this->box( 'bottom' );
-
-            $this->box( 'top', 'Post Types' );
-            $this->post_types_box();
-            $this->template( 'end' );
-
-            if ( isset( $_GET['post_type'] ) ) {
-                $this->tile_rundown_box();
-            }
-
-            if ( isset( $_GET['tile'] ) ) {
-                $this->tile_settings_box();
-            }
-            self::template( 'end' );
+    public function show_tabs() {
+        $post_type = self::get_parameter( 'post_type' );
+        if ( !$post_type ) {
+            return;
         }
+        
+        $tab = self::get_parameter( 'tab' );
+        $active_tab = null;
+        if ( $tab == $active_tab || !$tab ) {
+            $active_tab = 'nav-tab-active';
+        }
+        ?>
+        <h2 class="nav-tab-wrapper" style="padding: 0;">
+            <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=general" ); ?>" class="nav-tab <?php echo ( !isset( $_GET['tab'] ) || $_GET['tab'] === 'general' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'General', 'disciple_tools' ); ?></a>
+            <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=tiles" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'tiles' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Tiles', 'disciple_tools' ); ?></a>
+            <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=fields" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'fields' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Fields', 'disciple_tools' ); ?></a>
+        </h2>
+        <?php
+    }
+
+    public function show_tab_content() {
+        $post_type = self::get_parameter( 'post_type' );
+        $tab = self::get_parameter( 'tab' );
+        if ( !$tab ) {
+            $tab = 'general';
+        }
+
+        if ( $post_type ) {
+            if( $tab === 'tiles' ) {
+                self::tile_rundown_box();
+                return;
+            }
+            ?>
+            <div class="tab-content">
+                <b>post_type:</b> <?php echo esc_html( $post_type ); ?><br>
+                <b>tab:</b> <?php echo esc_html( $tab ); ?><br>
+            </div>
+            <?php
+        }
+    }
+
+    public static function get_parameter( $param ) {
+        if ( !isset( $_GET[$param] ) || empty( $_GET[$param] ) ) {
+            return null;
+        }
+        return sanitize_text_field( wp_unslash( $_GET[$param] ) );
     }
 
     public function fields_typeahead_box() {
@@ -85,6 +133,9 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
             </form>
         </div>
         <style>
+            .tab-content {
+                padding: 12px;
+            }
             .typeahead__result {
                 background-color: #fff;
                 border: 1px solid #555;
@@ -113,7 +164,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                     cancelButton: false,
                     dynamic: false,
                     emptyTemplate: '<em style="padding-left:12px;">No results for "{{query}}"</em>',
-                    template: '<a href="' + window.location.origin + window.location.pathname + '?page=dt_options&tab=new-settings-ui&post_type={{post_type}}&tile={{post_tile}}#{{post_setting}}">{{label}}</a>',
+                    template: '<a href="' + window.location.origin + window.location.pathname + '?page=dt_customizations&post_type={{post_type}}&tab=tiles&post_tile_key={{post_tile}}#{{post_setting}}">{{label}}</a>',
                     correlativeTemplate: true,
                     source: {
                         ajax: {
@@ -156,26 +207,24 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
     }
 
     private function tile_rundown_box() {
-        if ( !isset( $_GET['post_type'] ) || empty( $_GET['post_type'] ) ) {
-            return;
-        }
-        $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
+        $post_type = self::get_parameter( 'post_type' );
         $available_post_types = DT_Posts::get_post_types();
         if ( !in_array( $post_type, $available_post_types ) ) {
+            esc_html_e( 'Error: unknown post_type.', 'disciple_tools' );
             return;
         }
 
+        echo '<br>';
         $this->box( 'top', 'Select a Tile' );
         $this->show_post_type_settings( $post_type );
         $this->box( 'bottom' );
     }
 
     private function tile_settings_box() {
-        $post_type = self::get_post_type();
-        $tile_key = self::get_tile_key();
+        $post_type = self::get_parameter( 'post_type' );
+        $tile_key = self::get_parameter( 'post_tile_key' );
 
         if ( is_null( $post_type ) || is_null( $tile_key ) ) {
-            esc_html_e( 'Error: missing parameters.', 'disciple_tools' );
             return;
         }
 
@@ -198,7 +247,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
                             <h2><?php esc_html_e( 'Create new field', 'disciple_tools' ); ?></h2>
                             <input type="text" style="width: 100%">
                         </div>
-                        <?php $this->tile_preview_box( $clean_tile ); ?>
+                        <?php $this->tile_preview_box(); ?>
                     </td>
                 </tr>
             </tbody>
@@ -206,22 +255,9 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         <?php
     }
 
-    private function get_post_type() {
-        if ( !isset( $_GET['post_type'] ) || empty( $_GET['post_type'] ) ) {
-            return;
-        }
-        return sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
-    }
-    private function get_tile_key() {
-        if ( !isset( $_GET['tile'] ) || empty( $_GET['tile'] ) ) {
-            return;
-        }
-        return sanitize_text_field( wp_unslash( $_GET['tile'] ) );
-    }
-
     public function filter_tile_settings() {
-        $post_type = self::get_post_type();
-        $tile_key = self::get_tile_key();
+        $post_type = self::get_parameter( 'post_type' );
+        $tile_key = self::get_parameter( 'post_tile_key' );
 
         $tiles = DT_Posts::get_post_settings( $post_type, false );
         $tile_fields = [];
@@ -234,11 +270,11 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
     }
 
     private function show_tile_settings( $tile ) {
-        foreach ( $tile as $setting ) {
-            foreach ( $setting as $key => $value ) {
-                if ( $key === 'default' && !empty( $setting['default'] ) ) {
+        foreach ( $tile as $setting_key => $setting_value ) {
+            foreach ( $setting_value as $key => $value ) {
+                if ( $key === 'default' && !empty( $setting_value['default'] ) ) {
                     ?>
-                <b id="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $setting['name'] ); ?></b>
+                <b id="<?php echo esc_attr( $setting_key ); ?>"><?php echo esc_html( $setting_value['name'] ); ?></b>
                     <?php
                     foreach ( $value as $v ) {
                         if ( isset( $v['label'] ) ) {
@@ -266,13 +302,14 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
         }
     }
 
-    private function tile_preview_box( $tile ) {
-        if ( !isset( $_GET['post_type'] ) || !isset( $_GET['tile'] ) ) {
+    private function tile_preview_box() {
+        $tile = self::filter_tile_settings();
+        if ( !isset( $_GET['post_type'] ) || !isset( $_GET['post_tile_key'] ) ) {
             esc_html_e( 'Error: missing parameters.', 'disciple_tools' );
             return;
         }
-        $post_type = self::get_post_type();
-        $tile_key = self::get_tile_key();
+        $post_type = self::get_parameter( 'post_type' );
+        $tile_key = self::get_parameter( 'post_tile_key' );
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $tile_label = '';
         if ( isset( $post_settings['tiles'][$tile_key]['label'] ) ) {
@@ -569,7 +606,7 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
     private function show_post_type_settings( $post_type ) {
         $post_tiles = DT_Posts::get_post_tiles( $post_type );
         foreach ( $post_tiles as $key => $value ) : ?>
-        <li><a href="admin.php?page=dt_options&tab=new-settings-ui&post_type=<?php echo esc_attr( $post_type ); ?>&tile=<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $post_tiles[$key]['label'] ); ?></a></li>
+        <li><a href="admin.php?page=dt_customizations&post_type=<?php echo esc_attr( $post_type ); ?>&tab=tiles&post_tile_key=<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $post_tiles[$key]['label'] ); ?></a></li>
         <?php endforeach;
     }
 
@@ -589,4 +626,4 @@ class Disciple_Tools_New_Settings_Ui_Tab extends Disciple_Tools_Abstract_Menu_Ba
     }
 
 }
-Disciple_Tools_New_Settings_Ui_Tab::instance();
+Disciple_Tools_Customizations_Tab::instance();

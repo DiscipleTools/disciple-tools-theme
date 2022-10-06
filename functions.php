@@ -419,6 +419,9 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
                 require_once( 'dt-core/admin/menu/tabs/tab-metrics-reports.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-metrics-sources.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-metrics-edit.php' );
+
+                require_once( 'dt-core/admin/menu/menu-customizations.php');
+                require_once( 'dt-core/admin/menu/tabs/tab-customizations.php');
                 /* End menu tab section */
 
                 require_once( 'dt-core/setup-functions.php' );
