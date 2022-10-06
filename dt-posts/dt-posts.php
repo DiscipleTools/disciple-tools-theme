@@ -80,8 +80,20 @@ class DT_Posts extends Disciple_Tools_Posts {
             $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
             if ( ! empty( $duplicate_post_ids ) && count( $duplicate_post_ids ) > 0 ) {
 
+                //No need to update title or name.
+                unset( $fields['title'], $fields['name'] );
+
+                //Avoid further duplication of pre-existing values.
+                $filtered_fields = [];
+                $duplicate_post   = self::get_post( $post_type, $duplicate_post_ids[0], false, $check_permissions );
+                foreach ( $fields as $field_id => $value ) {
+                    if ( ! self::post_contains_field_value( $post_settings['fields'], $duplicate_post, $field_id, $value ) ) {
+                        $filtered_fields[ $field_id ] = $value;
+                    }
+                }
+
                 //update most recently created matched post.
-                $updated_post = self::update_post( $post_type, $duplicate_post_ids[0], $fields, $silent, $check_permissions );
+                $updated_post = self::update_post( $post_type, $duplicate_post['ID'], $filtered_fields, $silent, $check_permissions );
                 if ( is_wp_error( $updated_post ) ){
                     return $updated_post;
                 }
@@ -2032,6 +2044,51 @@ class DT_Posts extends Disciple_Tools_Posts {
             'total'     => $post_hits_count,
             'offset'    => intval( $offset ) + intval( $post_hits_count ) + 1
         ];
+    }
+
+    public static function post_contains_field_value( $field_settings, $post, $field_id, $value ): bool {
+        if ( empty( $post ) || is_wp_error( $post ) ) {
+            return false;
+        }
+
+        // Determine if post contains specified field and value.
+        if ( isset( $field_settings[ $field_id ], $post[ $field_id ] ) ) {
+            $field_type = $field_settings[ $field_id ]['type'];
+            switch ( $field_type ) {
+                case 'text':
+                case 'textarea':
+                case 'boolean':
+                case 'key_select':
+                case 'date':
+                case 'user_select':
+                case 'number':
+                    return $post[ $field_id ] == $value;
+                case 'multi_select':
+                case 'links':
+                case 'tags':
+                case 'location':
+                case 'location_meta':
+                case 'connection':
+                case 'communication_channel':
+                    $value_array = ( $field_type == 'communication_channel' ) ? $post[ $field_id ] : $post[ $field_id ]['values'];
+                    foreach ( $value_array ?? [] as $entry ) {
+                        if ( isset( $entry['value'] ) ) {
+
+                            // Attempt to find match within incoming value array.
+                            if ( ! empty( $value ) && is_array( $value ) ) {
+                                foreach ( $value as $val ) {
+                                    if ( $entry['value'] == $val['value'] ) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
+        return false;
     }
 }
 

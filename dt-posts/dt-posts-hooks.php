@@ -188,7 +188,7 @@ class DT_Posts_Hooks {
             // Query system for duplicates, based on identified search values.
             if ( ! empty( $search_values ) ) {
                 $search_result = DT_Posts::search_viewable_post( $post_type, [
-                    'sort'             => '-post_date',
+                    'sort'             => 'post_date',
                     'fields'           => [ $search_values ],
                     'fields_to_search' => array_keys( $search_values )
                 ], $check_permissions );
