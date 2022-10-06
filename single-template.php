@@ -12,31 +12,52 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 function display_tile( $tile, $post ): bool {
 
     // If nothing, display by default!
-    if ( empty( $tile['displayed'] ) || ( $tile['displayed'] == 'always' ) ) {
+    if ( empty( $tile['displayed'] ) || ( is_array( $tile['displayed'] ) && in_array( 'always', $tile['displayed'] ) ) ) {
         return true;
     }
 
-    if ( $tile['displayed'] == 'never' ) {
+    if ( ! is_array( $tile['displayed'] ) ) {
+        return true;
+    }
+
+    if ( in_array( 'never', $tile['displayed'] ) ) {
         return false;
     }
 
-    // Extract tile display options.
-    $display_options = explode( '___', $tile['displayed'] );
-    $field_id        = $display_options[0];
-    $option_id       = $display_options[1];
+    // Determine if all specified fields must be present & iterate.
+    $field_presence      = [];
+    $all_fields_required = isset( $tile['displayed_all_fields'] ) && $tile['displayed_all_fields'];
+    $field_settings      = DT_Posts::get_post_field_settings( get_post_type() );
+    foreach ( $tile['displayed'] as $displayed_entry ) {
 
-    // Determine if post contains field and corresponding option.
-    $field_settings = DT_Posts::get_post_field_settings( get_post_type() );
-    if ( isset( $post[ $field_id ], $field_settings[ $field_id ] ) ) {
+        // Extract tile display options.
+        $display_options = explode( '___', $displayed_entry );
+        $field_id        = $display_options[0];
+        $option_id       = $display_options[1];
 
-        switch ( $field_settings[ $field_id ]['type'] ) {
-            case 'key_select':
-                return $post[ $field_id ]['key'] == $option_id;
+        // Determine if post contains field and corresponding option.
+        if ( isset( $post[ $field_id ], $field_settings[ $field_id ] ) ) {
 
-            case 'tags':
-            case 'multi_select':
-                return in_array( $option_id, $post[ $field_id ] );
+            $field_present = false;
+            switch ( $field_settings[ $field_id ]['type'] ) {
+                case 'key_select':
+                    $field_presence[] = $post[ $field_id ]['key'] == $option_id;
+                    break;
+
+                case 'tags':
+                case 'multi_select':
+                    $field_presence[] = in_array( $option_id, $post[ $field_id ] );
+                    break;
+            }
         }
+    }
+
+    // Determine if fields required conditions were met.
+    if ( $all_fields_required && ! in_array( false, $field_presence ) ) {
+        return true;
+
+    } elseif ( ! $all_fields_required && in_array( true, $field_presence ) ) {
+        return true;
     }
 
     return false;

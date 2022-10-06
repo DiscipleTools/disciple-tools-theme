@@ -520,9 +520,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         <label>
             <strong>Tile Displayed When</strong>
             <br>
-            <select style="min-width: 100%;" name="tile_displayed">
-                <option value="always" <?php echo esc_html( isset( $tile['displayed'] ) && $tile['displayed'] == 'always' ? 'selected' : '' ); ?>>--- Always  ---</option>
-                <option value="never" <?php echo esc_html( isset( $tile['displayed'] ) && $tile['displayed'] == 'never' ? 'selected' : '' ); ?>>--- Never  ---</option>
+            <select style="min-width: 90%;" name="tile_displayed" id="tile_displayed">
+                <option value="always" <?php /*echo esc_html( isset( $tile['displayed'] ) && $tile['displayed'] == 'always' ? 'selected' : '' );*/ ?>>--- Always  ---</option>
+                <option value="never" <?php /*echo esc_html( isset( $tile['displayed'] ) && $tile['displayed'] == 'never' ? 'selected' : '' );*/ ?>>--- Never  ---</option>
                 <?php
                 foreach ( $fields as $field_id => $field )
                     {
@@ -532,7 +532,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         foreach ( $options ?? [] as $option_id => $option ) {
                             $html_val = $field_id.'___'. ( ( $field['type'] == 'tags' ) ? $option : $option_id );
                             $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'];
-                            $html_selected = isset( $tile['displayed'] ) && $tile['displayed'] == $html_val ? 'selected' : '';
+                            $html_selected = '';//isset( $tile['displayed'] ) && $tile['displayed'] == $html_val ? 'selected' : '';
                             ?>
                                 <option value="<?php echo esc_html( $html_val )?>" <?php echo esc_html( $html_selected )?>><?php echo esc_html( $html_label )?></option>
                             <?php
@@ -542,6 +542,63 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 }
                 ?>
             </select>
+            <span style="float: right;">
+                <button class="button" type="submit" id="tile_displayed_select_but" name="tile_displayed_select_but">Select</button>
+            </span>
+            <br><br>
+            <table class="widefat striped">
+                <thead>
+                <tr>
+                    <td><?php esc_html_e( 'Field', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Option', 'disciple_tools' ) ?></td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ( !is_array( $tile['displayed'] ) ) {
+                        $tile['displayed'] = [];
+                    }
+                    foreach ( $tile['displayed'] ?? [] as $display_config ) {
+                        ?>
+                            <tr>
+                        <?php
+                            // Ensure to give special when conditions preferential treatment.
+                        if ( in_array( $display_config, [ 'always', 'never' ] ) ) {
+                            ?>
+                                    <td colspan="2"><?php esc_html_e( $display_config ) ?></td>
+                                <?php
+                        }else {
+
+                            // Extract tile display options.
+                            $display_options = explode( '___', $display_config );
+                            $field_id        = $display_options[0];
+                            $option_id       = $display_options[1];
+
+                            ?>
+                                    <td><?php esc_html_e( $field_id ) ?></td>
+                                    <td><?php esc_html_e( $option_id ) ?></td>
+                                <?php
+                        }
+                        ?>
+                                <td>
+                                    <span style="float: right;">
+                                        <button class="button" type="submit" id="tile_displayed_remove_but" name="tile_displayed_remove_but" value="<?php esc_html_e( $display_config ) ?>">Remove</button>
+                                    </span>
+                                </td>
+                            </tr>
+                            <?php
+                    }
+                    ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td><label for="tile_displayed_all_fields"><?php esc_html_e( 'Displayed if all specified fields are present:' ) ?></label></td>
+                        <td><input name="tile_displayed_all_fields" id="tile_displayed_all_fields" type="checkbox" <?php echo ( isset( $tile['displayed_all_fields'] ) && $tile['displayed_all_fields'] ) ? 'checked' : '' ?>></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
         </label>
         <br><br><br>
         <button class="button" type="submit">Save Settings</button>
@@ -575,9 +632,29 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $post_submission['tile_description'] ) && $post_submission['tile_description'] != ( $custom_tile['description'] ?? '' ) ){
             $custom_tile['description'] = $post_submission['tile_description'];
         }
-        if ( isset( $post_submission['tile_displayed'] ) && $post_submission['tile_displayed'] != ( $custom_tile['tile_displayed'] ?? '' ) ){
-            $custom_tile['displayed'] = $post_submission['tile_displayed'];
+
+        // Handle tile displayed when conditions.
+        if ( isset( $post_submission['tile_displayed_select_but'] ) ){
+            if ( isset( $post_submission['tile_displayed'] ) && $post_submission['tile_displayed'] != '' ) {
+
+                // If needed, initialise displayed array.
+                if ( empty( $custom_tile['displayed'] ) || !is_array( $custom_tile['displayed'] ) ) {
+                    $custom_tile['displayed'] = [];
+                }
+
+                // Append latest entry, ensuring uniqueness.
+                if ( !in_array( $post_submission['tile_displayed'], $custom_tile['displayed'] ) ) {
+                    $custom_tile['displayed'][] = $post_submission['tile_displayed'];
+                }
+            }
         }
+        if ( isset( $post_submission['tile_displayed_remove_but'] ) ){
+            if ( in_array( $post_submission['tile_displayed_remove_but'], $custom_tile['displayed'] ) ){
+                unset( $custom_tile['displayed'][array_search( $post_submission['tile_displayed_remove_but'], $custom_tile['displayed'] )] );
+            }
+        }
+        $custom_tile['displayed_all_fields'] = isset( $post_submission['tile_displayed_all_fields'] );
+
         //update other Translations
         $langs = dt_get_available_languages();
 
