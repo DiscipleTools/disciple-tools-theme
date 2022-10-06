@@ -41,32 +41,46 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public function content() {
-        self::template( 'begin', 2 );
-        
-        $this->box( 'top', __( 'Select a Post Type', 'disciple_tools' ) );
-        $this->show_post_type_pills();
-        $this->box( 'bottom' );
-        $this->template( 'right_column' );
-        $this->box( 'top', __( 'Search', 'disciple_tools' ) );
-        $this->fields_typeahead_box();
-        $this->box( 'bottom' );
+        self::template( 'begin', 1 );
+            $this->space_between_div_open();
+            $this->show_post_type_pills();
+            $this->fields_typeahead_box();
+            $this->space_between_div_close();
         self::template( 'end' );
         
         self::template( 'begin', 1 );
-        $this->show_tabs();
-        $this->show_tab_content();
-
-        // $this->save_settings();
-        $this->tile_settings_box();
+            $this->show_tabs();
+            $this->show_tab_content();
+            // $this->save_settings();
+            $this->tile_settings_box();
         self::template( 'end' );
     }
 
+    private function space_between_div_open() {
+        ?>
+        <div class="top-nav-row">
+        <?php
+    }
+    
+    private function space_between_div_close() {
+        ?>
+        </div>
+        <?php
+    }
+
     public function show_post_type_pills() {
+        ?>
+        <div>
+            <div style="padding-bottom: 8px;"><b><?php esc_html_e( 'Select a post type:', 'disciple_tools' ); ?></b></div>
+        <?php
         $post_types = DT_Posts::get_post_types();
         foreach( $post_types as $post_type ) :
             $post_type_label = DT_Posts::get_label_for_post_type( $post_type ); ?>
             <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type" ); ?>" class="button <?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] === $post_type ) ? 'button-primary' : null; ?>"><?php echo esc_html( $post_type_label ); ?></a>
         <?php endforeach;
+        ?>
+        </div>
+        <?php
     }
 
     public function show_tabs() {
@@ -119,7 +133,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public function fields_typeahead_box() {
         ?>
-        <div>
+        <div class="typeahead-div">
             <form id="form-field_settings_search" name="form-field_settings_search">
                 <div class="typeahead__container">
                     <div class="typeahead__field">
@@ -133,8 +147,20 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             </form>
         </div>
         <style>
+            .top-nav-row {
+                display: flex;
+                justify-content: space-between;
+            }
+            .typeahead-div {
+                min-width: 40%;
+                padding: 18px 18px 0 0;
+            }
             .tab-content {
                 padding: 12px;
+            }
+            .typeahead__container {
+                position: absolute;
+                min-width: 40%;
             }
             .typeahead__result {
                 background-color: #fff;
