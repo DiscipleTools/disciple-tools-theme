@@ -280,7 +280,7 @@ class Disciple_Tools_People_Groups_Post_Type
 
 
             if ( isset( $record['imb_ROP3'] ) ) {
-                echo "<br>";
+                echo '<br>';
                 echo '<table class="widefat striped">';
                 echo '<tr><td><h3>IMB - (' . esc_attr( $record['imb_People Name'] ) . ')</h3></td><td></td></tr>';
                 foreach ( $record as $key => $value ) {
@@ -303,8 +303,8 @@ class Disciple_Tools_People_Groups_Post_Type
         echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( 'update_peoplegroup_info' ) ) . '" />';
         ?>
         <?php foreach ( $dt_available_languages as $language ) {
-            echo '<label for="dt_translation_' . esc_attr( $language["language"] ) . '">' . esc_attr( $language["native_name"] ) . '</label><br/>';
-            echo '<input type="text" name="dt_translation_' . esc_attr( $language["language"] ) . '" id="dt_translation_' . esc_attr( $language["language"] ) . '" class="text-input" value="' . esc_attr( get_post_meta( $post->ID, $language["language"], true ) ). '" /><br/>';
+            echo '<label for="dt_translation_' . esc_attr( $language['language'] ) . '">' . esc_attr( $language['native_name'] ) . '</label><br/>';
+            echo '<input type="text" name="dt_translation_' . esc_attr( $language['language'] ) . '" id="dt_translation_' . esc_attr( $language['language'] ) . '" class="text-input" value="' . esc_attr( get_post_meta( $post->ID, $language['language'], true ) ). '" /><br/>';
         }
     }
     /**
@@ -456,10 +456,10 @@ class Disciple_Tools_People_Groups_Post_Type
         $fields = array_keys( $field_data );
 
         if ( ( isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && ( isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
-            $k = explode( "_", sanitize_text_field( wp_unslash( $_POST['new-key-address'] ) ) );
+            $k = explode( '_', sanitize_text_field( wp_unslash( $_POST['new-key-address'] ) ) );
             $type = $k[1];
-            $number_key = dt_address_metabox()->create_channel_metakey( "address" );
-            $details_key = $number_key . "_details";
+            $number_key = dt_address_metabox()->create_channel_metakey( 'address' );
+            $details_key = $number_key . '_details';
             $details = [
             'type' => $type,
             'verified' => false
@@ -486,11 +486,11 @@ class Disciple_Tools_People_Groups_Post_Type
 
         $dt_available_languages = Disciple_Tools_Core_Endpoints::get_settings();
 
-        foreach ( $dt_available_languages["available_translations"] as $language ) {
-            if ( isset( $_POST['dt_translation_' . $language["language"]] ) )
+        foreach ( $dt_available_languages['available_translations'] as $language ) {
+            if ( isset( $_POST['dt_translation_' . $language['language']] ) )
             {
-                $translated_text_value = sanitize_text_field( wp_unslash( $_POST['dt_translation_' . $language["language"]] ) );
-                update_post_meta( $post_id, $language["language"], $translated_text_value );
+                $translated_text_value = sanitize_text_field( wp_unslash( $_POST['dt_translation_' . $language['language']] ) );
+                update_post_meta( $post_id, $language['language'], $translated_text_value );
             }
         }
 
@@ -535,7 +535,7 @@ class Disciple_Tools_People_Groups_Post_Type
         //            'section' => 'status'
         //        ];
 
-        return DT_Posts::get_post_field_settings( "people_groups" );
+        return DT_Posts::get_post_field_settings( 'people_groups' );
     }
 
     /**

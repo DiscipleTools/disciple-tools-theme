@@ -61,10 +61,10 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
     }
 
     private function reset_lock(){
-        if ( isset( $_POST["_wpnonce"] ) && wp_verify_nonce( sanitize_key( $_POST["_wpnonce"] ), 'utilities_overview' ) ){
-            if ( isset( $_POST["reset_lock"] ) ){
-                $lock_name = sanitize_key( $_POST["reset_lock"] );
-                update_option( $lock_name, 0 );
+        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), 'utilities_overview' ) ){
+            if ( isset( $_POST['reset_lock'] ) ){
+                $lock_name = sanitize_key( $_POST['reset_lock'] );
+                delete_transient( $lock_name );
             }
         }
     }
@@ -74,14 +74,14 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         <form method="post">
         <?php
         wp_nonce_field( 'utilities_overview' );
-        $this->box( 'top', 'System Details', [ "col_span" => 2 ] );
+        $this->box( 'top', 'System Details', [ 'col_span' => 2 ] );
         ?>
         <tr>
             <td><?php echo esc_html( sprintf( __( 'WordPress version: %1$s | PHP version: %2$s' ), get_bloginfo( 'version' ), phpversion() ) ); ?></td>
             <td></td>
         </tr>
         <tr>
-            <td>Server: <?php echo esc_html( isset( $_SERVER["SERVER_SOFTWARE"] ) ? sanitize_text_field( wp_unslash( $_SERVER["SERVER_SOFTWARE"] ) ) : "" ); ?></td>
+            <td>Server: <?php echo esc_html( isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '' ); ?></td>
         </tr>
         <tr>
             <td>
@@ -93,7 +93,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
             <td>Instance Url: <?php echo esc_html( get_site_url() ); ?></td>
         </tr>
         <tr>
-            <td>Is multisite: <?php echo esc_html( is_multisite() ? "True" : "False" ); ?></td>
+            <td>Is multisite: <?php echo esc_html( is_multisite() ? 'True' : 'False' ); ?></td>
         </tr>
         <tr>
             <td><strong>Migrations</strong></td><td></td>
@@ -101,7 +101,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         <tr>
             <td>
                 <?php echo esc_html( sprintf( __( 'D.T Migration version: %1$s of %2$s' ), Disciple_Tools_Migration_Engine::get_current_db_migration(), Disciple_Tools_Migration_Engine::$migration_number ) ); ?>.
-                Lock: <?php echo esc_html( get_option( 'dt_migration_lock', 0 ) ) ?>
+                Lock: <?php echo esc_html( get_transient( 'dt_migration_lock' ) ?? 0 ) ?>
             </td>
             <td>
                 <button name="reset_lock" value="dt_migration_lock">Reset Lock</button>
@@ -110,7 +110,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         <tr>
             <td>
                 <?php echo esc_html( sprintf( __( 'Mapping migration version: %1$s of %2$s' ), DT_Mapping_Module_Migration_Engine::get_current_db_migration(), DT_Mapping_Module_Migration_Engine::$migration_number ) ); ?>.
-                Lock: <?php echo esc_html( get_option( 'dt_mapping_module_migration_lock', 0 ) ) ?>
+                Lock: <?php echo esc_html( get_transient( 'dt_mapping_module_migration_lock' ) ?? 0 ) ?>
             </td>
             <td>
                 <button name="reset_lock" value="dt_mapping_module_migration_lock">Reset Lock</button>
@@ -119,7 +119,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
 
 
         <?php
-        do_action( "dt_utilities_system_details" );
+        do_action( 'dt_utilities_system_details' );
         ?>
         <tr>
             <td><strong>Plugins</strong></td><td></td>
@@ -132,12 +132,12 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
             $active_plugins[] = $plugin;
         }
         foreach ( $plugins as $i => $v ){
-            if ( !isset( $v["Name"], $v["Version"] ) ){
+            if ( !isset( $v['Name'], $v['Version'] ) ){
                 continue;
             }
             ?>
             <tr>
-            <td><?php echo esc_html( $v["Name"] ); ?> version: <?php echo esc_html( $v["Version"] ); ?></td>
+            <td><?php echo esc_html( $v['Name'] ); ?> version: <?php echo esc_html( $v['Version'] ); ?></td>
             <td>
             <?php if ( in_array( $i, $active_plugins ) ): ?>
                 Plugin Active

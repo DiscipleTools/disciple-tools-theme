@@ -14,9 +14,9 @@ class Disciple_Tools_Migration_0024 extends Disciple_Tools_Migration
         //save those filters to options instead
         $users = get_users( [ 'meta_key' => 'saved_filters' ] );
         foreach ( $users as $user ) {
-            $filters = get_user_meta( $user->ID, "saved_filters", true );
-            update_user_option( $user->ID, "saved_filters", $filters );
-            delete_user_meta( $user->ID, "saved_filters" );
+            $filters = get_user_meta( $user->ID, 'saved_filters', true );
+            update_user_option( $user->ID, 'saved_filters', $filters );
+            delete_user_meta( $user->ID, 'saved_filters' );
         }
     }
 

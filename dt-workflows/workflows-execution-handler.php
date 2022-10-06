@@ -520,7 +520,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'communication_channel':
             case 'location': // $value to be location id
                 $updated[ $field_id ]['values']   = [];
-                $updated[ $field_id ]['values'][] = [ "value" => $value ];
+                $updated[ $field_id ]['values'][] = [ 'value' => $value ];
                 break;
         }
 
@@ -532,7 +532,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
         switch ( $field_type ) {
             case 'connection': // $value to be connection ID
                 $updated[ $field_id ]['values']   = [];
-                $updated[ $field_id ]['values'][] = [ "value" => $value ];
+                $updated[ $field_id ]['values'][] = [ 'value' => $value ];
                 break;
         }
 
@@ -546,8 +546,8 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'connection':
                 $updated[ $field_id ]['values']   = [];
                 $updated[ $field_id ]['values'][] = [
-                    "value"  => $value,
-                    "delete" => true
+                    'value'  => $value,
+                    'delete' => true
                 ];
                 break;
         }

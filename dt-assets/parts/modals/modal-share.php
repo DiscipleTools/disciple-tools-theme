@@ -8,9 +8,9 @@ global $post;
     
     <h6>
         <?php
-        if ( is_singular( "groups" ) ){
+        if ( is_singular( 'groups' ) ){
             esc_html_e( 'This group is shared with:', 'disciple_tools' );
-        } else if ( is_singular( "contacts" ) ) {
+        } else if ( is_singular( 'contacts' ) ) {
             esc_html_e( 'This contact is shared with:', 'disciple_tools' );
         }
         ?>
@@ -24,7 +24,7 @@ global $post;
                     <span class="typeahead__query">
                         <input class="js-typeahead-share input-height"
                                name="share[query]"
-                               placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                               placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
                                autocomplete="off">
                     </span>
                 </div>

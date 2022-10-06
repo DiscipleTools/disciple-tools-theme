@@ -30,7 +30,7 @@ get_header(); ?>
 
             <div class="bordered-box">
 
-                <h3 class="section-header"><?php esc_html_e( "Notifications", "disciple_tools" ); ?><button class="help-button float-right" data-section="notifications-template-help-text">
+                <h3 class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' ); ?><button class="help-button float-right" data-section="notifications-template-help-text">
                     <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                 </button></h3>
 

@@ -912,15 +912,15 @@ class Disciple_Tools_Mapping_Queries {
     public static function search_location_grid_by_name( $args ) {
         global $wpdb;
 
-        $search_query = $wpdb->esc_like( $args['search_query'] ?? "" );
-        $focus_search_sql = "";
-        if ( isset( $args['filter'] ) && $args["filter"] == "focus" ){
+        $search_query = $wpdb->esc_like( $args['search_query'] ?? '' );
+        $focus_search_sql = '';
+        if ( isset( $args['filter'] ) && $args['filter'] == 'focus' ){
             $default_map_settings = DT_Mapping_Module::instance()->default_map_settings();
-            if ( $default_map_settings["type"] === "country" && sizeof( $default_map_settings["children"] ) > 0 ){
-                $joined_location_grid_ids = dt_array_to_sql( $default_map_settings["children"] );
+            if ( $default_map_settings['type'] === 'country' && sizeof( $default_map_settings['children'] ) > 0 ){
+                $joined_location_grid_ids = dt_array_to_sql( $default_map_settings['children'] );
                 $focus_search_sql = "AND g.admin0_grid_id IN ( $joined_location_grid_ids ) ";
-            } elseif ( $default_map_settings["type"] === "state" && sizeof( $default_map_settings["children"] ) > 0 ){
-                $joined_location_grid_ids = dt_array_to_sql( $default_map_settings["children"] );
+            } elseif ( $default_map_settings['type'] === 'state' && sizeof( $default_map_settings['children'] ) > 0 ){
+                $joined_location_grid_ids = dt_array_to_sql( $default_map_settings['children'] );
                 $focus_search_sql = "AND g.admin1_grid_id IN ( $joined_location_grid_ids ) ";
             }
         }
@@ -982,7 +982,7 @@ class Disciple_Tools_Mapping_Queries {
         );
         // phpcs:enable
 
-        $total_rows = $wpdb->get_var( "SELECT found_rows();" );
+        $total_rows = $wpdb->get_var( 'SELECT found_rows();' );
         return [
             'location_grid' => $location_grid,
             'total' => $total_rows
@@ -992,7 +992,7 @@ class Disciple_Tools_Mapping_Queries {
     public static function search_used_location_grid_by_name( $args ) {
         global $wpdb;
 
-        $search_query = $wpdb->esc_like( $args['search_query'] ?? "" );
+        $search_query = $wpdb->esc_like( $args['search_query'] ?? '' );
 
         $location_grid = $wpdb->get_results( $wpdb->prepare( "
             SELECT SQL_CALC_FOUND_ROWS
@@ -1024,7 +1024,7 @@ class Disciple_Tools_Mapping_Queries {
             ", '%' . $search_query . '%' ),
             ARRAY_A
         );
-        $total_rows = $wpdb->get_var( "SELECT found_rows();" );
+        $total_rows = $wpdb->get_var( 'SELECT found_rows();' );
         return [
             'location_grid' => $location_grid,
             'total' => $total_rows
@@ -1045,7 +1045,7 @@ class Disciple_Tools_Mapping_Queries {
         // phpcs:enable
         $prepared = [];
         foreach ( $results as $row ){
-            $prepared[$row["grid_id"]] = $row["alt_name"];
+            $prepared[$row['grid_id']] = $row['alt_name'];
         }
         return $prepared;
     }
@@ -1083,13 +1083,13 @@ class Disciple_Tools_Mapping_Queries {
         // phpcs:enable
         $mapped_location_grid_id_to_name = [];
         foreach ( $location_grid_id_names as $location_grid ){
-            $mapped_location_grid_id_to_name[$location_grid["grid_id"]] = $location_grid["alt_name"];
+            $mapped_location_grid_id_to_name[$location_grid['grid_id']] = $location_grid['alt_name'];
         }
         foreach ( $location_grids as $location_grid ){
-            if ( isset( $mapped_location_grid_id_to_name[$location_grid["meta_value"]] ) ){
-                $prepared[$location_grid["post_id"]][] = [
-                    "location_grid_id" => $location_grid["meta_value"],
-                    "name" => $mapped_location_grid_id_to_name[$location_grid["meta_value"]]
+            if ( isset( $mapped_location_grid_id_to_name[$location_grid['meta_value']] ) ){
+                $prepared[$location_grid['post_id']][] = [
+                    'location_grid_id' => $location_grid['meta_value'],
+                    'name' => $mapped_location_grid_id_to_name[$location_grid['meta_value']]
                 ];
             }
         }
@@ -1273,10 +1273,10 @@ class Disciple_Tools_Mapping_Queries {
             $features[] = array(
                 'type' => 'Feature',
                 'properties' => array(
-                    "address" => $result['address'],
-                    "post_id" => $result['post_id'],
-                    "name" => $result['name'],
-                    "post_type" => $post_type
+                    'address' => $result['address'],
+                    'post_id' => $result['post_id'],
+                    'name' => $result['name'],
+                    'post_type' => $post_type
                 ),
                 'geometry' => array(
                     'type' => 'Point',
@@ -1300,8 +1300,8 @@ class Disciple_Tools_Mapping_Queries {
     public static function cluster_geojson( $post_type, $query = [] ){
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
-        if ( empty( $sql["where_sql"] ) ){
-            $sql["where_sql"] = "1=1";
+        if ( empty( $sql['where_sql'] ) ){
+            $sql['where_sql'] = '1=1';
         }
         //phpcs:disable
         $results = $wpdb->get_results( $wpdb->prepare( "
@@ -1322,8 +1322,8 @@ class Disciple_Tools_Mapping_Queries {
     public static function points_geojson( $post_type, $query = [] ){
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
-        if ( empty( $sql["where_sql"] ) ){
-            $sql["where_sql"] = "1=1";
+        if ( empty( $sql['where_sql'] ) ){
+            $sql['where_sql'] = '1=1';
         }
         //phpcs:disable
         $results = $wpdb->get_results( $wpdb->prepare( "
@@ -1354,8 +1354,8 @@ class Disciple_Tools_Mapping_Queries {
     public static function query_location_grid_meta_totals( $post_type, $query ) {
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
-        if ( empty( $sql["where_sql"] ) ){
-            $sql["where_sql"] = "1=1";
+        if ( empty( $sql['where_sql'] ) ){
+            $sql['where_sql'] = '1=1';
         }
 
         //phpcs:disable
@@ -1448,8 +1448,8 @@ class Disciple_Tools_Mapping_Queries {
     public static function query_under_location_grid_meta_id( $post_type, $grid_id, $query ) {
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
-        if ( empty( $sql["where_sql"] ) ){
-            $sql["where_sql"] = "1=1";
+        if ( empty( $sql['where_sql'] ) ){
+            $sql['where_sql'] = '1=1';
         }
 
         //phpcs:disable

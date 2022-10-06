@@ -18,7 +18,7 @@ class Disciple_Tools_People_Groups_Endpoints
 {
 
     private $version = 1;
-    private $context = "dt";
+    private $context = 'dt';
     private $namespace;
 
     /**
@@ -53,7 +53,7 @@ class Disciple_Tools_People_Groups_Endpoints
      * @since   0.1.0
      */
     public function __construct() {
-        $this->namespace = $this->context . "/v" . intval( $this->version );
+        $this->namespace = $this->context . '/v' . intval( $this->version );
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     } // End __construct()
 
@@ -110,7 +110,7 @@ class Disciple_Tools_People_Groups_Endpoints
     public function get_people_groups_compact( WP_REST_Request $request ) {
 
         $params = $request->get_params();
-        $search = "";
+        $search = '';
         if ( isset( $params['s'] ) ) {
             $search = $params['s'];
         }

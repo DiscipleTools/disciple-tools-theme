@@ -95,7 +95,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
     public static function get_date_field_by_year( string $post_type, string $field ) {
         global $wpdb;
 
-        $current_year = gmdate( "Y" );
+        $current_year = gmdate( 'Y' );
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
@@ -162,7 +162,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         // Build dynamic sql for counting meta_values
         $count_dynamic_values = array_map( function ( $value ) {
-            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . "`";
+            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . '`';
         }, $multi_values);
         $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
         if ( strlen( $count_dynamic_values_query ) !== 0 ) {
@@ -213,7 +213,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
     public static function get_multi_field_by_year( $post_type, $field ) {
         global $wpdb;
 
-        $current_year = gmdate( "Y" );
+        $current_year = gmdate( 'Y' );
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
@@ -232,7 +232,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         }
 
         $count_dynamic_values = array_map( function ( $value ) {
-            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . "`";
+            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . '`';
         }, $multi_values);
         $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
         if ( strlen( $count_dynamic_values_query ) !== 0 ) {
@@ -311,7 +311,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
     public static function get_connection_field_by_year( $connection_type ) {
         global $wpdb;
 
-        $current_year = gmdate( "Y" );
+        $current_year = gmdate( 'Y' );
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
@@ -362,7 +362,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ) AS subQuery
             " );
 
-        $current_year = gmdate( "Y" );
+        $current_year = gmdate( 'Y' );
         $year = $result ? intval( $result ) : intval( $current_year );
 
         return $year;
@@ -429,7 +429,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         global $wpdb;
 
         $count_dynamic_values = array_map( function ( $value ) {
-            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . "`";
+            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . '`';
         }, $multi_values);
         $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
 

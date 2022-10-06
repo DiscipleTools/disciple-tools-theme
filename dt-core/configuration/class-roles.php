@@ -159,7 +159,7 @@ class Disciple_Tools_Roles
         remove_role( 'project_supporter' );
 
         update_option( 'dt_roles_number', self::$target_roles_version_number );
-        return "complete";
+        return 'complete';
     }
 
     /*
