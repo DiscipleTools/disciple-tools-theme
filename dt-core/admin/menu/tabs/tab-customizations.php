@@ -29,9 +29,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public function add_submenu() {
         $post_types = DT_Posts::get_post_types();
-        foreach( $post_types as $post_type ) {
+        foreach ( $post_types as $post_type ) {
             $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
-            add_submenu_page( 'dt_customizations', __( $post_type_label, 'disciple_tools' ), __( $post_type_label, 'disciple_tools' ), 'manage_dt', "dt_customizations&post_type=$post_type", [ 'Disciple_Tools_Customizations_Menu', 'content' ] );
+            add_submenu_page( 'dt_customizations', esc_html( $post_type_label, 'disciple_tools' ), esc_html( $post_type_label, 'disciple_tools' ), 'manage_dt', "dt_customizations&post_type=$post_type", [ 'Disciple_Tools_Customizations_Menu', 'content' ] );
         }
     }
 
@@ -41,13 +41,14 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public function content() {
+        $this->load_modal_overlay();
         self::template( 'begin', 1 );
             $this->space_between_div_open();
             $this->show_post_type_pills();
             $this->fields_typeahead_box();
             $this->space_between_div_close();
         self::template( 'end' );
-        
+
         self::template( 'begin', 1 );
             $this->show_tabs();
             $this->show_tab_content();
@@ -56,12 +57,51 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         self::template( 'end' );
     }
 
+    public static function load_modal_overlay() {
+        ?>
+        <div class="dt-admin-modal-overlay hidden">
+            <div class="dt-admin-modal-box hidden">
+                <div class="dt-admin-modal-close-button">×</div>
+            </div>
+        </div>
+        <style>
+            .dt-admin-modal-overlay {
+                width: 100%;
+                height: 100%;
+                background: #0000008C;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 100000;
+            }
+            .dt-admin-modal-box {
+                width: 50%;
+                height: 50%;
+                background: #fefefe;
+                border: 1px solid #cacaca;
+                position: fixed;
+                top: 25%;
+                left: 25%;
+                z-index: 100001;
+            }
+            .dt-admin-modal-close-button {
+                text-align: right;
+                color: #cacaca;
+                font-weight: 200;
+                font-size: 1.75rem;
+                padding: 0.5rem;
+                cursor: pointer;
+            }
+        </style>
+        <?php
+    }
+
     private function space_between_div_open() {
         ?>
         <div class="top-nav-row">
         <?php
     }
-    
+
     private function space_between_div_close() {
         ?>
         </div>
@@ -74,7 +114,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <div style="padding-bottom: 8px;"><b><?php esc_html_e( 'Select a post type:', 'disciple_tools' ); ?></b></div>
         <?php
         $post_types = DT_Posts::get_post_types();
-        foreach( $post_types as $post_type ) :
+        foreach ( $post_types as $post_type ) :
             $post_type_label = DT_Posts::get_label_for_post_type( $post_type ); ?>
             <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type" ); ?>" class="button <?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] === $post_type ) ? 'button-primary' : null; ?>"><?php echo esc_html( $post_type_label ); ?></a>
         <?php endforeach;
@@ -88,7 +128,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         if ( !$post_type ) {
             return;
         }
-        
+
         $tab = self::get_parameter( 'tab' );
         $active_tab = null;
         if ( $tab == $active_tab || !$tab ) {
@@ -111,7 +151,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         }
 
         if ( $post_type ) {
-            if( $tab === 'tiles' ) {
+            if ( $tab === 'tiles' ) {
                 self::tile_rundown_box();
                 return;
             }
@@ -300,7 +340,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             foreach ( $setting_value as $key => $value ) {
                 if ( $key === 'default' && !empty( $setting_value['default'] ) ) {
                     ?>
-                <b id="<?php echo esc_attr( $setting_key ); ?>"><?php echo esc_html( $setting_value['name'] ); ?></b>
+                <div class="field-option">
+                    <b id="<?php echo esc_attr( $setting_key ); ?>"><?php echo esc_html( $setting_value['name'] ); ?></b>
+                    <a href="javascript:void(0);" class="edit-option"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
+                </div>
                     <?php
                     foreach ( $value as $v ) {
                         if ( isset( $v['label'] ) ) {
@@ -309,19 +352,17 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                 $label = 'NULL';
                             }
                             ?>
-                            <div class="field-option-element" style="margin-left: 18px;">
+                            <div class="field-option field-element" style="margin-left: 18px;">
                                 └ <?php echo esc_html( $label ); ?>
                                 <a href="javascript:void(0);" class="edit-option"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
                             </div>
                             <?php
                         }
                     }
-                    ?>
-                    
+                    ?>  
                     <div class="add-new-option">
                     └ <a href="javascript:void(0);"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a>
                     </div>
-                    
                     <?php
                 }
             }
@@ -344,18 +385,37 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         ?>
         <script>
             jQuery(document).ready(function($) {
+                function toggleOverlayVisibility() {
+                    $('.dt-admin-modal-overlay').fadeToggle(150, 'swing');
+                    $('.dt-admin-modal-box').slideToggle(150, 'swing');
+                }
+
                 $('.edit-option').on('click', function() {
-                    alert('modal goes here');
+                    toggleOverlayVisibility();
                 });
+                
+                $('.dt-admin-modal-close-button').on('click', function() {
+                    toggleOverlayVisibility();
+                });
+
+                $('.dt-admin-modal-overlay').on('click', function(e) {
+                    if (e.target == this) {
+                        toggleOverlayVisibility();
+                    }
+                });
+
                 $('.add-new-option').on('click', function() {
                     $('#new-custom-field-box').slideToggle(333, 'swing');
                 });
-                $('.field-option-element').on('mouseenter', function() {
-                    $(this).children('.edit-option').toggle();
-                });
-                $('.field-option-element').on('mouseleave', function() {
-                    $(this).children('.edit-option').toggle();
-                });
+
+                $('.field-option').hover(
+                    function() {
+                        $(this).children('.edit-option').show()
+                    },
+                    function(){
+                        $(this).children('.edit-option').hide()
+                    }
+                ); 
             });
         </script>
         <style>
@@ -364,8 +424,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 display: none;
                 position: absolute;
             }
-            .field-option-element{
+            .field-option {
                 width: 100%;
+            }
+            .field-element {
                 margin-left: 18px;
             }
             .add-new-option {
@@ -556,7 +618,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 <div class="button-group" style="display: inline-flex;">
                     <?php foreach ( $t['default'] as $multi_select ) : ?>
                     <button>
-                        <?php if( isset( $multi_select['icon'] ) && !empty( $multi_select['icon'] ) ) : ?>
+                        <?php if ( isset( $multi_select['icon'] ) && !empty( $multi_select['icon'] ) ) : ?>
                             <img src="<?php echo esc_attr( $multi_select['icon'] ); ?>" class="dt-icon">
                         <?php endif; ?>
                         <?php echo esc_html( $multi_select['label'] ); ?>
