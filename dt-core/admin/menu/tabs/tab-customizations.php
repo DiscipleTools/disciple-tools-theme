@@ -362,6 +362,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             .edit-option {
                 margin-left: 18px;
                 display: none;
+                position: absolute;
             }
             .field-option-element{
                 width: 100%;
