@@ -2046,6 +2046,17 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
     }
 
+    /**
+     * Determine if post record contains specified field value.
+     *
+     * @param array $field_settings
+     * @param array $post
+     * @param string $field_id
+     * @param mixed $value
+     *
+     * @return bool
+     */
+
     public static function post_contains_field_value( $field_settings, $post, $field_id, $value ): bool {
         if ( empty( $post ) || is_wp_error( $post ) ) {
             return false;
@@ -2070,7 +2081,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 case 'location_meta':
                 case 'connection':
                 case 'communication_channel':
-                    $value_array = ( $field_type == 'communication_channel' ) ? $post[ $field_id ] : $post[ $field_id ]['values'];
+                    $value_array = ( $field_type == 'communication_channel' ) ? $post[ $field_id ] : ( $post[ $field_id ]['values'] ?? [] );
                     foreach ( $value_array ?? [] as $entry ) {
                         if ( isset( $entry['value'] ) ) {
 

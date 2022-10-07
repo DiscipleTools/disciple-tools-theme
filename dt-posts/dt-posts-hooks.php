@@ -149,7 +149,8 @@ class DT_Posts_Hooks {
 
             // Extract search field values.
             $search_values       = [];
-            $post_field_settings = DT_Posts::get_post_field_settings( $post_type );
+            $post_settings       = DT_Posts::get_post_settings( $post_type );
+            $post_field_settings = $post_settings['fields'];
             foreach ( $search_fields as $search_field ) {
                 if ( isset( $post_field_settings[ $search_field ], $fields[ $search_field ] ) ) {
                     $field_type = $post_field_settings[ $search_field ]['type'];
@@ -185,10 +186,10 @@ class DT_Posts_Hooks {
                 }
             }
 
-            // Query system for duplicates, based on identified search values.
-            if ( ! empty( $search_values ) ) {
+            // Query system for duplicates, based on identified search values and status key.
+            if ( ! empty( $search_values ) && ! empty( $post_settings['status_field']['status_key'] ) ) {
                 $search_result = DT_Posts::search_viewable_post( $post_type, [
-                    'sort'             => 'post_date',
+                    'sort'             => $post_settings['status_field']['status_key'],
                     'fields'           => [ $search_values ],
                     'fields_to_search' => array_keys( $search_values )
                 ], $check_permissions );
