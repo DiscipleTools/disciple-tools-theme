@@ -554,10 +554,12 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 /*** MULTISELECT - START ***/
                 if ( $t['type'] === 'multi_select' ) : ?>
                 <div class="button-group" style="display: inline-flex;">
-                    <?php foreach ( $t['default'] as $key => $value ) : ?>
+                    <?php foreach ( $t['default'] as $multi_select ) : ?>
                     <button>
-                        <img src="<?php isset( $value['icon'] ) ? esc_attr( $value['icon'] ) : ''; ?>" class="dt-icon">
-                        <?php echo esc_html( $value['label'] ); ?>
+                        <?php if( isset( $multi_select['icon'] ) && !empty( $multi_select['icon'] ) ) : ?>
+                            <img src="<?php echo esc_attr( $multi_select['icon'] ); ?>" class="dt-icon">
+                        <?php endif; ?>
+                        <?php echo esc_html( $multi_select['label'] ); ?>
                     </button>
                     <?php endforeach; ?>
                 </div>
