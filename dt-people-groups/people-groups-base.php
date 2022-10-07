@@ -16,7 +16,7 @@ class Disciple_Tools_People_Groups_Base {
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 ); //after contacts
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 2 );
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
-        add_filter( 'dt_register_post_type_defaults', [ $this, 'dt_register_post_type_defaults' ], 20, 1 );
+        add_filter( 'dt_register_post_type_defaults', [ $this, 'dt_register_post_type_defaults' ], 20, 2 );
 
         //setup tiles and fields
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
@@ -31,22 +31,25 @@ class Disciple_Tools_People_Groups_Base {
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 40, 2 );
     }
 
-    public function dt_register_post_type_defaults( $defaults ) {
-        $capabilities = [
-            'read_post'              => 'manage_dt',
-            'edit_post'              => 'manage_dt',
-            'delete_post'            => 'manage_dt',
-            'edit_posts'             => 'manage_dt',
-            'edit_others_posts'      => 'manage_dt',
-            'publish_posts'          => 'manage_dt',
-            'read_private_posts'     => 'manage_dt',
-            'delete_others_posts'    => 'manage_dt',
-            'delete_posts'           => 'manage_dt',
-            'delete_published_posts' => 'manage_dt',
-        ];
+    public function dt_register_post_type_defaults( $defaults, $post_type ) {
+        if ( $post_type == $this->post_type ) {
+            $capabilities = [
+                'read_post'              => 'manage_dt',
+                'edit_post'              => 'manage_dt',
+                'delete_post'            => 'manage_dt',
+                'edit_posts'             => 'manage_dt',
+                'edit_others_posts'      => 'manage_dt',
+                'publish_posts'          => 'manage_dt',
+                'read_private_posts'     => 'manage_dt',
+                'delete_others_posts'    => 'manage_dt',
+                'delete_posts'           => 'manage_dt',
+                'delete_published_posts' => 'manage_dt',
+            ];
 
-        $defaults['capabilities'] = $capabilities;
-        $defaults['show_in_menu'] = true;
+            $defaults['capabilities'] = $capabilities;
+            $defaults['show_in_menu'] = true;
+            $defaults['menu_icon']    = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNMTIsMEM5LjU0MiwwLDcsMS44MDIsNyw0LjgxN2MwLDIuNzE2LDMuODY5LDYuNDg2LDQuMzEsNi45MDdMMTIsMTIuMzgybDAuNjktMC42NTkgQzEzLjEzMSwxMS4zMDMsMTcsNy41MzMsMTcsNC44MTdDMTcsMS44MDIsMTQuNDU4LDAsMTIsMHogTTEyLDdjLTEuMTA1LDAtMi0wLjg5Ni0yLTJjMC0xLjEwNSwwLjg5NS0yLDItMnMyLDAuODk1LDIsMiBDMTQsNi4xMDQsMTMuMTA1LDcsMTIsN3oiPjwvcGF0aD4gPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTkuODg0LDE5LjQ5OUM5LjAyMywxOC44MTUsNy41NjMsMTgsNS41LDE4cy0zLjUyMywwLjgxNS00LjM4MywxLjQ5OEMwLjQwNywyMC4wNjEsMCwyMC45MTMsMCwyMS44MzZWMjRoMTEgdi0yLjE2NEMxMSwyMC45MTMsMTAuNTkzLDIwLjA2MSw5Ljg4NCwxOS40OTl6Ij48L3BhdGg+IDxjaXJjbGUgZmlsbD0iI2ZmZmZmZiIgY3g9IjUuNSIgY3k9IjEzLjUiIHI9IjMuNSI+PC9jaXJjbGU+IDxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Ik0yMi44ODQsMTkuNDk5QzIyLjAyMywxOC44MTUsMjAuNTYzLDE4LDE4LjUsMThzLTMuNTIzLDAuODE1LTQuMzgzLDEuNDk4IEMxMy40MDcsMjAuMDYxLDEzLDIwLjkxMywxMywyMS44MzZWMjRoMTF2LTIuMTY0QzI0LDIwLjkxMywyMy41OTMsMjAuMDYxLDIyLjg4NCwxOS40OTl6Ij48L3BhdGg+IDxjaXJjbGUgZmlsbD0iI2ZmZmZmZiIgY3g9IjE4LjUiIGN5PSIxMy41IiByPSIzLjUiPjwvY2lyY2xlPjwvZz48L3N2Zz4=';
+        }
 
         return $defaults;
     }

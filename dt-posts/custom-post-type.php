@@ -77,7 +77,7 @@ class Disciple_Tools_Post_Type_Template {
         ];
 
         // Adjust defaults accordingly, prior to registration.
-        $defaults = apply_filters( 'dt_register_post_type_defaults', $defaults );
+        $defaults = apply_filters( 'dt_register_post_type_defaults', $defaults, $this->post_type );
         register_post_type( $this->post_type, $defaults );
     }
 
