@@ -76,8 +76,9 @@ class Disciple_Tools_Post_Type_Template {
             'show_in_rest'          => false
         ];
 
+        // Adjust defaults accordingly, prior to registration.
+        $defaults = apply_filters( 'dt_register_post_type_defaults', $defaults );
         register_post_type( $this->post_type, $defaults );
-
     }
 
     public function rewrite_init(){
