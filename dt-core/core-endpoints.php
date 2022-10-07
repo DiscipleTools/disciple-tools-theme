@@ -78,14 +78,17 @@ class Disciple_Tools_Core_Endpoints {
                     'post_tile' => $tile_key,
                     'post_setting' => null,
                 ];
+
                 $post_settings = DT_Posts::get_post_settings( $post_type, false );
                 foreach ( $post_settings['fields'] as $setting_key => $setting_value ) {
-                    $output[] = [
-                        'label' => $post_label . ' > ' . $tile_value['label'] . ' > ' . $setting_value['name'],
-                        'post_type' => $post_type,
-                        'post_tile' => $tile_key,
-                        'post_setting' => $setting_key,
-                    ];
+                    if ( $setting_value['tile'] === $tile_key ) {
+                        $output[] = [
+                            'label' => $post_label . ' > ' . $tile_value['label'] . ' > ' . $setting_value['name'],
+                            'post_type' => $post_type,
+                            'post_tile' => $tile_key,
+                            'post_setting' => $setting_key,
+                        ];
+                    }
                 }
             }
         }
