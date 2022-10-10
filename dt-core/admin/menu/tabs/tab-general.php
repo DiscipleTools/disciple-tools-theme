@@ -67,13 +67,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* End Email Settings */
 
-            /* People Groups Settings */
-            $this->box( 'top', 'People Group Settings' );
-            $this->process_people_group_settings();
-            $this->people_group_settings();
-            $this->box( 'bottom' );
-            /* End People Groups Settings */
-
             /* Modules */
             $this->box( 'top', 'Modules' );
             $this->process_contact_modules();
@@ -96,6 +89,13 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 $this->box( 'bottom' );
             }
             /* Update Required */
+
+            /* People Groups Settings */
+            $this->box( 'top', 'People Group Settings' );
+            $this->process_people_group_settings();
+            $this->people_group_settings();
+            $this->box( 'bottom' );
+            /* End People Groups Settings */
 
             /* Update Required */
             $this->box( 'top', 'Group Tile Preferences' );

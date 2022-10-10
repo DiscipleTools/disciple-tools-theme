@@ -8,7 +8,6 @@ class Disciple_Tools_People_Groups_Base {
     public $single_name = 'People Group';
     public $plural_name = 'People Groups';
     public $tile_key = 'jp';
-    public $search_items;
 
     public function __construct() {
 
