@@ -401,7 +401,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     toggleOverlayVisibility();
                 });
                 
-                $('.dt-admin-modal-close-button').on('click', function() {
+                $('.dt-admin-modal-box-close-button').on('click', function() {
                     toggleOverlayVisibility();
                 });
 
