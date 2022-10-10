@@ -718,7 +718,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                     <?php if ( isset( $links_sorted_by_type[$link_type] ) ) : ?>
                                         <?php foreach ( $links_sorted_by_type[$link_type] as $link_item ) : ?>
 
-                                            <?php render_link_field( $field_key, $link_type, $option_value, $link_item['value'], $display_field_id, $link_item['meta_id'], $required_tag, $disabled ); ?>
+                                            <?php render_link_field( $field_key, $link_type, $link_item['value'], $display_field_id, $link_item['meta_id'], $required_tag, $disabled ); ?>
 
                                         <?php endforeach; ?>
                                     <?php endif; ?>
@@ -736,7 +736,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         } ?>
 
                         <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
-                            <?php render_link_field( $field_key, $option_key, $option_value, '', $display_field_id, '', $required_tag, $disabled ) ?>
+                            <?php render_link_field( $field_key, $option_key, '', $display_field_id, '', $required_tag, $disabled ) ?>
                         </div>
 
                     <?php endforeach; ?>
@@ -864,7 +864,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id );
     }
 
-    function render_link_field( $field_key, $option_key, $option_value, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
+    function render_link_field( $field_key, $option_key, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
         ?>
 
         <div class="input-group">
