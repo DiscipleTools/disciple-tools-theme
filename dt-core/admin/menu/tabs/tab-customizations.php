@@ -37,12 +37,47 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public function admin_enqueue_scripts() {
         dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+        dt_theme_enqueue_script( 'dt-settings', 'dt-core/admin/js/dt-settings.js', [], true );
+        
+        $post_type = self::get_parameter( 'post_type' );
+        $post_settings = DT_Posts::get_post_settings( $post_type );
+        
+        $translations = [
+            'save' => __( 'Save', 'disciple_tools' ),
+            'edit' => __( 'Edit', 'disciple_tools' ),
+            'delete' => __( 'Delete', 'disciple_tools' ),
+            'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
+            'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
+            'creation_date' => __( 'Creation Date', 'disciple_tools' ),
+            'date_modified' => __( 'Date Modified', 'disciple_tools' ),
+            'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
+            'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
+            'filter_all' => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), $post_settings["label_plural"] ),
+            'range_start' => __( 'start', 'disciple_tools' ),
+            'range_end' => __( 'end', 'disciple_tools' ),
+            'all' => __( 'All', 'disciple_tools' ),
+            'without' => __( 'Without', 'disciple_tools' ),
+            'make_selections_below' => __( 'Make Selections Below', 'disciple_tools' ),
+            'sent' => _x( 'sent', 'Number of emails sent. i.e. 20 sent!', 'disciple_tools' ),
+            'not_sent' => _x( 'not sent (likely missing valid email)', 'Preceded with number of emails not sent. i.e. 20 not sent!', 'disciple_tools' ),
+            'exclude_item' => __( 'Exclude Item', 'disciple_tools' )
+        ];
 
+        wp_localize_script(
+            'dt-settings', 'field_settings', array(
+            'post_type' => $post_type,
+            'post_type_settings' => $post_settings,
+            'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
+            'translations' => apply_filters( 'dt_list_js_translations', $translations ),
+            'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
+            )
+        );
         wp_enqueue_script( 'jquery' );
     }
 
     public function content() {       
-        $this->load_modal_overlay();
+        $this->load_add_new_field_modal();
+        $this->load_edit_field_option_modal();
         self::template( 'begin', 1 );
             $this->space_between_div_open();
             $this->show_post_type_pills();
@@ -58,50 +93,183 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         self::template( 'end' );
     }
 
-    public static function load_modal_overlay() {
+    public static function load_add_new_field_modal() {
+        $post_type = self::get_parameter( 'post_type' );
+        $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
+        $tile_options = DT_Posts::get_post_tiles( $post_type );
         ?>
-        <div class="dt-admin-modal-overlay hidden">
-            <div class="dt-admin-modal-box hidden">
+        <div class="dt-admin-modal-overlay hidden" id="add-new-field-modal-overview">
+            <div class="dt-admin-modal-box hidden" id="add-new-field-modal-box">
                 <div class="dt-admin-modal-box-close-button">×</div>
                 <div class="dt-admin-modal-box-content">
+                    <!-- ADD NEW FIELD FORM : START -->
+                    <table class="add-new-field-table">
+                        <tr>
+                            <th colspan="2">
+                                <h3 class="modal-box-title"><?php esc_html_e( 'Add New Field', 'disciple_tools' ); ?></h3>
+                            </th>
+                        </tr>
+                    </table>
+                    <!-- ADD NEW FIELD FORM : END -->
                 </div>
             </div>
         </div>
-        <style>
-            .dt-admin-modal-box-content {
-                padding: 8px;
-            }
-            .dt-admin-modal-overlay {
-                width: 100%;
-                height: 100%;
-                background: #0000008C;
-                position: fixed;
-                top: 0;
-                left: 0;
-                z-index: 100000;
-            }
-            .dt-admin-modal-box {
-                width: 50%;
-                height: 50%;
-                background: #fefefe;
-                border: 1px solid #cacaca;
-                position: fixed;
-                top: 25%;
-                left: 25%;
-                z-index: 100001;
-            }
-            .dt-admin-modal-box-close-button {
-                text-align: right;
-                color: #cacaca;
-                font-weight: 200;
-                font-size: 1.75rem;
-                padding: 0.5rem;
-                cursor: pointer;
-            }
-        </style>
         <?php
     }
 
+    public static function load_edit_field_option_modal() {
+        $post_type = self::get_parameter( 'post_type' );
+        $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
+        $tile_options = DT_Posts::get_post_tiles( $post_type );
+        ?>
+        <div class="dt-admin-modal-overlay hidden" id="edit-field-option-modal-overview">
+            <div class="dt-admin-modal-box hidden" id="edit-field-option-modal-box">
+                <div class="dt-admin-modal-box-close-button">×</div>
+                <div class="dt-admin-modal-box-content">
+                    <!-- EDIT FIELD OPTION FORM : START -->
+                    <table class="add-new-field-table">
+                        <tr>    
+                            <th colspan="2">
+                                <h3 class="modal-box-title"><?php esc_html_e( 'Edit Field Option', 'disciple_tools' ); ?></h3>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; min-width:250px">
+                                <label><b><?php esc_html_e( "Post type", 'disciple_tools' ) ?></b></label>
+                            </td>
+                            <td>
+                                <?php echo esc_html( $post_type_label ); ?>
+                                <input type="hidden" name="post_type" id="current_post_type" value="<?php echo esc_html( $post_type ); ?>">
+                            </td>
+                        <tr>
+                            <td style="vertical-align: middle">
+                                <label for="new_field_name"><b><?php esc_html_e( "New Field Name", 'disciple_tools' ) ?></b></label>
+                            </td>
+                            <td>
+                                <input name="new_field_name" id="new_field_name" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle">
+                                <label><b><?php esc_html_e( "Field type", 'disciple_tools' ) ?></b></label>
+                            </td>
+                            <td>
+                                <select id="new_field_type_select" name="new_field_type" required>
+                                    <option></option>
+                                    <option value="key_select"><?php esc_html_e( "Dropdown", 'disciple_tools' ) ?></option>
+                                    <option value="multi_select"><?php esc_html_e( "Multi Select", 'disciple_tools' ) ?></option>
+                                    <option value="tags"><?php esc_html_e( "Tags", 'disciple_tools' ) ?></option>
+                                    <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
+                                    <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
+                                    <option value="number"><?php esc_html_e( "Number", 'disciple_tools' ) ?></option>
+                                    <option value="link"><?php esc_html_e( "Link", 'disciple-tools' ) ?></option>
+                                    <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
+                                    <option value="connection"><?php esc_html_e( "Connection", 'disciple_tools' ) ?></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="connection_field_target_row" style="display: none">
+                            <td style="vertical-align: middle">
+                                <label><b><?php esc_html_e( "Connected to", 'disciple_tools' ) ?></b></label>
+                            </td>
+                            <td>
+                            <select name="connection_target" id="connection_field_target">
+                                <option></option>
+                                <?php foreach ( $post_types as $post_type_key ) : ?>
+                                    <option value="<?php echo esc_html( $post_type_key ); ?>">
+                                        <?php echo esc_html( $wp_post_types[$post_type_key]->label ); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            </td>
+                        </tr>
+
+
+                        <tr class="same_post_type_row" style="display: none">
+                            <td>
+                                Bi-directional
+                            </td>
+                            <td>
+                                <input type="checkbox" id="multidirectional_checkbox" name="multidirectional" checked>
+                            </td>
+                        </tr>
+                        <tr class="same_post_type_other_field_name" style="display: none">
+                            <td style="vertical-align: middle">
+                                Reverse connection field name
+                                <br>
+                                See connection instructions bellow.
+                            </td>
+                            <td>
+                                <input name="reverse_connection_name" id="connection_field_reverse_name">
+                            </td>
+                        </tr>
+                        <tr class="same_post_type_other_field_name" style="display: none">
+                            <td>
+                                Hide reverse connection field on <span class="connected_post_type"></span>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="disable_reverse_connection">
+                            </td>
+                        </tr>
+
+
+                        <tr class="connection_field_reverse_row" style="display: none">
+                            <td style="vertical-align: middle">
+                                Field name when shown on: <span class="connected_post_type"></span>
+                                <br>
+                                See connection instructions bellow.
+                            </td>
+                            <td>
+                                <input name="other_field_name" id="other_field_name">
+                            </td>
+                        </tr>
+                        <tr class="connection_field_reverse_row" style="display: none">
+                            <td>
+                                Hide field on <span class="connected_post_type"></span>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="disable_other_post_type_field">
+                            </td>
+                        </tr>
+
+                        <tr id="private_field_row">
+                            <td style="vertical-align: middle">
+                                <label><b><?php esc_html_e( "Private Field", 'disciple_tools' ) ?></b></label>
+                            </td>
+                            <td>
+                                <input name="new_field_private" id="new_field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle">
+                                <label><b><?php esc_html_e( "Tile", 'disciple_tools' ) ?></b></label>
+                            </td>
+                            <td>
+                                <select name="new_field_tile">
+                                    <option><?php esc_html_e( "No tile", 'disciple_tools' ) ?></option>
+                                        <option disabled>---<?php echo esc_html( $post_type_label ); ?> tiles---</option>
+                                        <?php foreach ( $tile_options as $option_key => $option_value ) : ?>
+                                            <option value="<?php echo esc_html( $option_key ) ?>">
+                                                <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle">
+                            </td>
+                            <td>
+                                <button type="submit" class="button" style="margin-bottom: 18px;"><?php esc_html_e( "Create Field", 'disciple_tools' ) ?></button>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- EDIT FIELD OPTION FORM : START -->
+                </div>
+            </div>
+        </div>
+        <?php
+    }
     private function space_between_div_open() {
         ?>
         <div class="top-nav-row">
@@ -123,8 +291,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         foreach ( $post_types as $post_type ) :
             $post_type_label = DT_Posts::get_label_for_post_type( $post_type ); ?>
             <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type" ); ?>" class="button <?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] === $post_type ) ? 'button-primary' : null; ?>"><?php echo esc_html( $post_type_label ); ?></a>
-        <?php endforeach;
-        ?>
+        <?php endforeach; ?>
         </div>
         <?php
     }
@@ -193,72 +360,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 </div>
             </form>
         </div>
-        <style>
-            .top-nav-row {
-                display: flex;
-                justify-content: space-between;
-            }
-            .typeahead-div {
-                min-width: 40%;
-                padding: 18px 18px 0 0;
-            }
-            .tab-content {
-                padding: 12px;
-            }
-            .typeahead__container {
-                position: absolute;
-                min-width: 40%;
-            }
-            .typeahead__result {
-                background-color: #fff;
-                border: 1px solid #555;
-            }
-            .typeahead__item>a{
-                color: #000;
-                font-size: medium;
-                font-weight: normal;
-                margin: 12px;
-            }
-            .typeahead__display {
-                line-height: 2.25em;
-            }
-            .js-typeahead-settings {
-                width: 100%;
-                height: 3em;
-                padding-left: 12px;
-            }
-            </style>
-        <script>
-            jQuery(document).ready(function($) {
-                var input_text = $('.js-typeahead-settings')[0].value;
-                $.typeahead({
-                    input: '.js-typeahead-settings',
-                    order: "desc",
-                    cancelButton: false,
-                    dynamic: false,
-                    emptyTemplate: '<em style="padding-left:12px;">No results for "{{query}}"</em>',
-                    template: '<a href="' + window.location.origin + window.location.pathname + '?page=dt_customizations&post_type={{post_type}}&tab=tiles&post_tile_key={{post_tile}}#{{post_setting}}">{{label}}</a>',
-                    correlativeTemplate: true,
-                    source: {
-                        ajax: {
-                            type: "POST",
-                            url: window.wpApiSettings.root+ 'dt-public/dt-core/v1/get-post-fields',
-                            beforeSend: function(xhr) {
-                            xhr.setRequestHeader('X-WP-Nonce', window.wpApiSettings.nonce);
-                            },
-                        }
-                    },
-                    callback: {
-                        onResult: function() {
-                            $(`.typeahead__result`).show();
-                        },
-                        onHideLayout: function () {
-                            $(`.typeahead__result`).hide();
-                        }
-                    }
-                });
-            });
-        </script>
         <?php
     }
 
@@ -389,49 +490,54 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $tile_label = $post_settings['tiles'][$tile_key]['label'];
         }
         ?>
-        <script>
-            jQuery(document).ready(function($) {
-                // let window.post_type_fields = window.new_record_localized.post_type_settings.fields;
-
-                function toggleOverlayVisibility() {
-                    $('.dt-admin-modal-overlay').fadeToggle(150, 'swing');
-                    $('.dt-admin-modal-box').slideToggle(150, 'swing');
-                }
-
-                $('.edit-option').on('click', function() {
-                    toggleOverlayVisibility();
-                });
-                
-                $('.dt-admin-modal-box-close-button').on('click', function() {
-                    toggleOverlayVisibility();
-                });
-
-                $('.dt-admin-modal-overlay').on('click', function(e) {
-                    if (e.target == this) {
-                        toggleOverlayVisibility();
-                    }
-                });
-
-                $('.add-new-field').on('click', function(){
-                    toggleOverlayVisibility();
-                });
-
-                $('.field-name').hover(
-                    function() {
-                        $(this).children('.edit-option').show()
-                    },
-                    function(){
-                        $(this).children('.edit-option').hide()
-                    }
-                );
-
-                $('.field-name').on('click', function() {
-                    $(this).find('.field-name-icon-arrow').toggleClass('arrow-expanded');
-                    $(this).find('.field-elements-list').slideToggle(333, 'swing');
-                });
-            });
-        </script>
         <style>
+            .modal-box-title {
+                text-align: left;
+                margin-bottom: 28px;
+            }
+            .add-new-field-table {
+                padding: 18px;
+            }
+            .add-new-field-table input:not([type='checkbox']) {
+                width: 100%;
+                height: 30px;
+            }
+            .add-new-field-table select {
+                width: 100%;
+                height: 18px;
+            }
+            .dt-admin-modal-overlay {
+                width: 100%;
+                height: 100%;
+                background: #0000008C;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 100000;
+            }
+            .dt-admin-modal-box {
+                width: auto;
+                height: auto;
+                background: #fefefe;
+                border: 1px solid #cacaca;
+                position: fixed;
+                top: 25%;
+                left: 33%;
+                z-index: 100001;
+            }
+            .dt-admin-modal-box-content {
+                padding: 8px;
+            }
+            .dt-admin-modal-box-close-button {
+                text-align: right;
+                color: #cacaca;
+                font-weight: 200;
+                font-size: 1.75rem;
+                position: absolute;
+                right: 0;
+                padding: 0.5rem;
+                cursor: pointer;
+            }
             .field-elements-list {
                 margin-bottom: 18px;
             }
@@ -639,6 +745,39 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 padding: 0.5rem;
                 width:100%;
                 box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
+            }
+            .top-nav-row {
+                display: flex;
+                justify-content: space-between;
+            }
+            .typeahead-div {
+                min-width: 40%;
+                padding: 18px 18px 0 0;
+            }
+            .tab-content {
+                padding: 12px;
+            }
+            .typeahead__container {
+                position: absolute;
+                min-width: 40%;
+            }
+            .typeahead__result {
+                background-color: #fff;
+                border: 1px solid #555;
+            }
+            .typeahead__item>a{
+                color: #000;
+                font-size: medium;
+                font-weight: normal;
+                margin: 12px;
+            }
+            .typeahead__display {
+                line-height: 2.25em;
+            }
+            .js-typeahead-settings {
+                width: 100%;
+                height: 3em;
+                padding-left: 12px;
             }
         </style>
         <div class="dt-tile-preview">
