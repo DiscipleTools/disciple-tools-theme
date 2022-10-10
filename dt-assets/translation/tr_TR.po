@@ -9,6 +9,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 #: 403.php:22
+#: dt-users/template-new-user.php:14
 msgid "Permission denied"
 msgstr "İzin reddedildi"
 
@@ -21,7 +22,7 @@ msgid "Request permission from your administrator."
 msgstr "Yöneticinizden izin isteyin."
 
 #: 403.php:39
-#: dt-users/template-new-user.php:252
+#: dt-users/template-new-user.php:273
 msgid "Back"
 msgstr "Geri"
 
@@ -33,23 +34,23 @@ msgstr "Epic 404 - Bulunamadı"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "Aradığınız sayfa bulunamadı veya silindi"
 
-#: dt-contacts/base-setup.php:350
+#: dt-contacts/base-setup.php:351
 #: dt-groups/base-setup.php:125
 #: dt-users/template-user-management.php:94
 #: dt-users/user-management.php:118
 msgid "Active"
 msgstr "Etkin"
 
-#: dt-assets/parts/nav-topbar.php:276
+#: dt-assets/parts/nav-topbar.php:277
 #: template-notifications.php:43
 msgid "New"
 msgstr "Yeni"
 
-#: dt-contacts/access-module.php:186
+#: dt-contacts/access-module.php:189
 msgid "Waiting to be accepted"
-msgstr "Kabul edilmeyi bekleyen"
+msgstr "Kabul edilmeyi bekliyor"
 
-#: dt-contacts/duplicates-merging.php:598
+#: dt-contacts/duplicates-merging.php:566
 msgid "View Duplicates"
 msgstr "Kopyaları görüntüle"
 
@@ -58,18 +59,14 @@ msgstr "Kopyaları görüntüle"
 msgid "Search"
 msgstr "Ara"
 
-#: dt-contacts/base-setup.php:604
-#: dt-contacts/base-setup.php:612
-#: dt-contacts/base-setup.php:630
-#: dt-contacts/base-setup.php:631
+#: dt-contacts/base-setup.php:599
+#: dt-contacts/base-setup.php:607
+#: dt-contacts/base-setup.php:625
+#: dt-contacts/base-setup.php:626
 msgid "Shared with me"
 msgstr "Benimle paylaşılan"
 
-#: archive-template.php:195
-msgid "Add new filter"
-msgstr "Yeni filtre ekle"
-
-#: dt-contacts/access-module.php:114
+#: dt-contacts/access-module.php:117
 #: dt-groups/base-setup.php:142
 #: dt-metrics/groups/tree.php:86
 #: dt-metrics/personal/group-tree.php:87
@@ -78,7 +75,7 @@ msgstr "Atanılan Kullanıcı"
 
 #: archive-template.php:703
 #: dt-assets/functions/enqueue-scripts.php:301
-#: dt-posts/custom-post-type.php:164
+#: dt-posts/custom-post-type.php:166
 msgid "Creation Date"
 msgstr "Oluşturma Tarihi"
 
@@ -89,18 +86,18 @@ msgstr "İkincil atanılan VEYA Atanılan Kullanıcı için filtrele"
 #: archive-template.php:731
 #: archive-template.php:732
 #: dt-metrics/combined/time-charts.php:118
-#: dt-posts/posts.php:433
-#: template-settings.php:292
-#: template-settings.php:535
+#: dt-posts/posts.php:441
+#: template-settings.php:295
+#: template-settings.php:538
 msgid "No"
 msgstr "Hayır"
 
 #: archive-template.php:738
 #: archive-template.php:739
 #: dt-metrics/combined/time-charts.php:117
-#: dt-posts/posts.php:431
-#: template-settings.php:291
-#: template-settings.php:534
+#: dt-posts/posts.php:439
+#: template-settings.php:294
+#: template-settings.php:537
 msgid "Yes"
 msgstr "Evet"
 
@@ -110,20 +107,16 @@ msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Sil"
 
-#: archive-template.php:785
+#: archive-template.php:794
 #: dt-assets/functions/enqueue-scripts.php:261
 #: dt-assets/functions/enqueue-scripts.php:296
-#: template-merge-details.php:102
-#: template-merge-details.php:127
-#: template-merge-details.php:145
-#: template-merge-details.php:194
-#: template-settings.php:678
+#: template-settings.php:681
 msgid "Save"
 msgstr "Kaydet"
 
 #: dt-assets/functions/details-bar.php:44
-#: dt-assets/functions/details-bar.php:235
-#: dt-core/configuration/config-site-defaults.php:372
+#: dt-assets/functions/details-bar.php:243
+#: dt-core/configuration/config-site-defaults.php:361
 #: dt-users/template-user-management.php:93
 #: dt-workflows/update-required.php:70
 #: dt-workflows/update-required.php:109
@@ -138,22 +131,18 @@ msgstr "Bu kişiyi bir kullanıcı yap"
 msgid "Link to an existing user"
 msgstr "Varolan kullanıcıya bağla"
 
-#: dt-contacts/base-setup.php:407
-msgid "Merge with another contact"
-msgstr "Başka bir kişiyle birleştir"
-
-#: dt-assets/functions/details-bar.php:151
-#: dt-assets/functions/details-bar.php:156
+#: dt-assets/functions/details-bar.php:159
+#: dt-assets/functions/details-bar.php:164
 msgid "Following"
 msgstr "Takipte"
 
 #: archive-template.php:477
-#: dt-assets/functions/details-bar.php:160
-#: dt-posts/custom-post-type.php:187
+#: dt-assets/functions/details-bar.php:168
+#: dt-posts/custom-post-type.php:189
 msgid "Follow"
 msgstr "Takip et"
 
-#: dt-assets/functions/details-bar.php:170
+#: dt-assets/functions/details-bar.php:178
 msgid "Share"
 msgstr "Paylaş"
 
@@ -180,12 +169,8 @@ msgstr "Aktarım başarısız oldu. Siteler arası yapılandırmayı denetle."
 #: dt-assets/functions/enqueue-scripts.php:120
 #: dt-assets/functions/enqueue-scripts.php:175
 #: dt-assets/functions/enqueue-scripts.php:297
-#: template-merge-details.php:102
-#: template-merge-details.php:122
-#: template-merge-details.php:140
-#: template-merge-details.php:189
-#: template-settings.php:116
-#: template-settings.php:563
+#: template-settings.php:119
+#: template-settings.php:566
 msgid "Edit"
 msgstr "Düzenle"
 
@@ -213,7 +198,7 @@ msgstr "Son Değiştirilme Tarihi"
 
 #: dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:63
-#: dt-contacts/base-setup.php:301
+#: dt-contacts/base-setup.php:302
 #: dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:128
@@ -230,6 +215,7 @@ msgstr "Son Değiştirilme Tarihi"
 #: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
+#: dt-people-groups/people-groups-base.php:154
 #: dt-users/template-user-management.php:602
 msgid "Contacts"
 msgstr "Kişiler"
@@ -237,7 +223,7 @@ msgstr "Kişiler"
 #: dt-groups/base-setup.php:51
 #: dt-groups/base-setup.php:64
 #: dt-groups/base-setup.php:467
-#: dt-groups/base-setup.php:633
+#: dt-groups/base-setup.php:641
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
@@ -250,6 +236,7 @@ msgstr "Kişiler"
 #: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
+#: dt-people-groups/people-groups-base.php:173
 msgid "Groups"
 msgstr "Gruplar"
 
@@ -262,11 +249,11 @@ msgstr "Ölçümler"
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
 #: dt-assets/parts/nav-offcanvas.php:48
-#: dt-assets/parts/nav-topbar.php:99
-#: dt-assets/parts/nav-topbar.php:220
+#: dt-assets/parts/nav-topbar.php:98
+#: dt-assets/parts/nav-topbar.php:221
 #: template-notifications.php:33
-#: template-settings.php:57
-#: template-settings.php:464
+#: template-settings.php:60
+#: template-settings.php:467
 msgid "Notifications"
 msgstr "Bildirimler"
 
@@ -274,8 +261,8 @@ msgstr "Bildirimler"
 #: dt-assets/functions/menu.php:76
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:131
-#: dt-assets/parts/nav-topbar.php:107
-#: dt-assets/parts/nav-topbar.php:308
+#: dt-assets/parts/nav-topbar.php:106
+#: dt-assets/parts/nav-topbar.php:309
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "Ayarlar"
@@ -289,22 +276,22 @@ msgstr "Yönetici"
 msgid "Please provide an update by posting a comment."
 msgstr "Lütfen güncellemeyi almak için bir yorum yaz."
 
-#: dt-contacts/access-module.php:673
+#: dt-contacts/access-module.php:676
 msgid "This contact has been assigned to you."
 msgstr "Bu kişi sana atanmış."
 
-#: dt-contacts/access-module.php:674
+#: dt-contacts/access-module.php:677
 msgid "Accept"
 msgstr "Kabul et"
 
-#: dt-contacts/access-module.php:675
+#: dt-contacts/access-module.php:678
 msgid "Decline"
 msgstr "Reddet"
 
 #: archive-template.php:403
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1606
+#: dt-posts/dt-posts.php:1732
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520
 #: single-template.php:78
@@ -315,37 +302,37 @@ msgstr "Durum"
 msgid "Sub-assigned to"
 msgstr "İkincil atanılan"
 
-#: dt-core/configuration/config-site-defaults.php:451
-msgid "Social Media"
-msgstr "Sosyal Medya"
-
-#: dt-contacts/base-setup.php:256
+#: dt-contacts/base-setup.php:257
 #: dt-groups/base-setup.php:383
-#: template-settings.php:177
+#: dt-people-groups/people-groups-base.php:211
+#: template-settings.php:180
 msgid "Address"
 msgstr "Adres"
 
 #: dt-assets/parts/modals/modal-help.php:103
-#: dt-contacts/base-setup.php:238
+#: dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364
+#: dt-people-groups/people-groups-base.php:192
+#: dt-people-groups/people-groups-base.php:201
 msgid "Locations"
 msgstr "Konum(lar)"
 
 #: dt-contacts/dmm-module.php:212
 #: dt-groups/base-setup.php:404
-#: dt-people-groups/people-groups-post-type.php:132
+#: dt-people-groups/people-groups-base.php:85
+#: dt-people-groups/people-groups-base.php:95
 msgid "People Groups"
 msgstr "İnsan Grupları"
 
-#: dt-contacts/base-setup.php:324
+#: dt-contacts/base-setup.php:325
 msgid "Age"
 msgstr "Yaş"
 
-#: dt-contacts/access-module.php:1294
-#: dt-contacts/base-setup.php:313
-#: dt-users/template-new-user.php:172
+#: dt-contacts/access-module.php:1297
+#: dt-contacts/base-setup.php:314
+#: dt-users/template-new-user.php:193
 #: dt-users/template-user-management.php:363
-#: template-settings.php:650
+#: template-settings.php:653
 msgid "Gender"
 msgstr "Cinsiyet"
 
@@ -353,8 +340,8 @@ msgstr "Cinsiyet"
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
-#: dt-posts/custom-post-type.php:147
-#: template-settings.php:133
+#: dt-posts/custom-post-type.php:149
+#: template-settings.php:136
 msgid "Name"
 msgstr "Ad"
 
@@ -378,7 +365,7 @@ msgstr "Son değiştirilmiş"
 msgid "Least recently modified"
 msgstr "İlk değiştirilmiş"
 
-#: dt-contacts/access-module.php:125
+#: dt-contacts/access-module.php:128
 #: dt-metrics/contacts/seeker-path.php:25
 #: dt-metrics/contacts/seeker-path.php:62
 msgid "Seeker Path"
@@ -407,8 +394,8 @@ msgstr "Grup Koçu / Kilise Kurucu"
 
 #: dt-groups/base-setup.php:258
 #: dt-users/template-user-management.php:324
-#: template-settings.php:423
-#: template-settings.php:442
+#: template-settings.php:426
+#: template-settings.php:445
 msgid "Start Date"
 msgstr "Başlama Tarihi"
 
@@ -418,8 +405,8 @@ msgstr "Kilise Başlama Tarihi"
 
 #: dt-groups/base-setup.php:275
 #: dt-users/template-user-management.php:325
-#: template-settings.php:429
-#: template-settings.php:443
+#: template-settings.php:432
+#: template-settings.php:446
 msgid "End Date"
 msgstr "Bitiş Tarihi"
 
@@ -456,21 +443,21 @@ msgstr "Yorumu Sil:"
 
 #: dt-assets/parts/loop-activity-comment.php:153
 #: dt-assets/parts/loop-activity-comment.php:200
-#: dt-assets/parts/merge-details.php:28
+#: dt-assets/parts/merge-details.php:26
 #: dt-assets/parts/modals/modal-help.php:155
 #: dt-assets/parts/modals/modal-help.php:205
 #: dt-assets/parts/modals/modal-revert.php:15
 #: dt-assets/parts/modals/modal-share.php:50
 #: dt-assets/parts/modals/modal-tasks.php:46
-#: dt-contacts/dmm-module.php:522
-#: dt-groups/base-setup.php:609
-#: dt-users/template-new-user.php:278
+#: dt-contacts/dmm-module.php:523
+#: dt-groups/base-setup.php:618
+#: dt-users/template-new-user.php:299
 msgid "Close"
 msgstr "Kapat"
 
 #: dt-assets/parts/loop-activity-comment.php:163
 #: dt-assets/parts/loop-activity-comment.php:210
-#: template-merge-details.php:380
+#: template-merge-post-details.php:95
 msgid "Sorry, something went wrong"
 msgstr "Üzgünüm, bir yanlışlık oldu"
 
@@ -492,11 +479,11 @@ msgstr "Güncelle"
 msgid "The comment could not be updated."
 msgstr "Yorum güncellenemedi."
 
-#: dt-assets/parts/merge-details.php:8
+#: dt-assets/parts/merge-details.php:9
 msgid "Duplicate Contacts"
 msgstr "Kopyası Olan Kişiler"
 
-#: dt-assets/parts/merge-details.php:10
+#: dt-assets/parts/merge-details.php:11
 msgid "Original Contact"
 msgstr "Asıl Kişi"
 
@@ -504,7 +491,7 @@ msgstr "Asıl Kişi"
 msgid "Possible Duplicates"
 msgstr "Kopyası Olması Muhtemel"
 
-#: dt-assets/parts/merge-details.php:16
+#: dt-assets/parts/merge-details.php:15
 msgid "Dismiss All"
 msgstr "Tümünü Yoksay"
 
@@ -530,7 +517,7 @@ msgstr "Filtreyi Sil"
 msgid "Group Status"
 msgstr "Grup Durumu"
 
-#: dt-core/global-functions.php:629
+#: dt-core/global-functions.php:475
 #: single-template.php:340
 #: template-new-bulk-post.php:285
 #: template-new-post.php:138
@@ -575,12 +562,12 @@ msgstr "Bu kişinin paylaşıldığı kullanıcılar:"
 msgid "Add New"
 msgstr "Yeni Ekle"
 
-#: dt-contacts/access-module.php:171
+#: dt-contacts/access-module.php:174
 msgid "New Contact"
 msgstr "Yeni Kişi"
 
 #: dt-assets/functions/menu.php:51
-#: template-settings.php:51
+#: template-settings.php:54
 msgid "Profile"
 msgstr "Profil"
 
@@ -588,13 +575,14 @@ msgstr "Profil"
 msgid "Help"
 msgstr "Yardım"
 
-#: dt-contacts/access-module.php:150
+#: dt-contacts/access-module.php:153
 #: dt-metrics/counter.php:140
 msgid "Ongoing Meetings"
 msgstr "Devam Eden Buluşmalar"
 
-#: dt-contacts/base-setup.php:339
+#: dt-contacts/base-setup.php:340
 #: dt-groups/base-setup.php:109
+#: dt-people-groups/people-groups-base.php:148
 msgid "Requires Update"
 msgstr "Güncelleme Gerekiyor"
 
@@ -613,52 +601,52 @@ msgstr "Vaftiz Tarihi"
 msgid "Baptism Generation"
 msgstr "Vaftiz Nesli"
 
-#: dt-contacts/access-module.php:322
+#: dt-contacts/access-module.php:325
 #: dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:536
 msgid "Sources"
 msgstr "Kaynaklar"
 
-#: dt-posts/custom-post-type.php:193
+#: dt-posts/custom-post-type.php:195
 msgid "Un-Follow"
 msgstr "Takibi Bırak"
 
-#: dt-contacts/base-setup.php:204
-#: template-settings.php:166
+#: dt-contacts/base-setup.php:205
+#: template-settings.php:169
 msgid "Phone"
 msgstr "Telefon"
 
-#: dt-core/configuration/config-site-defaults.php:550
+#: dt-core/configuration/config-site-defaults.php:539
 msgid "Work"
 msgstr "İş"
 
-#: dt-core/configuration/config-site-defaults.php:549
+#: dt-core/configuration/config-site-defaults.php:538
 msgid "Home"
 msgstr "Ev"
 
-#: dt-contacts/base-setup.php:491
-#: dt-core/configuration/config-site-defaults.php:551
-#: dt-groups/base-setup.php:634
-#: template-settings.php:199
+#: dt-contacts/base-setup.php:489
+#: dt-core/configuration/config-site-defaults.php:540
+#: dt-groups/base-setup.php:642
+#: template-settings.php:202
 msgid "Other"
 msgstr "Diğer"
 
-#: dt-contacts/base-setup.php:229
-#: dt-core/configuration/config-site-defaults.php:349
-#: dt-users/template-new-user.php:97
-#: dt-users/template-new-user.php:98
+#: dt-contacts/base-setup.php:230
+#: dt-core/configuration/config-site-defaults.php:338
+#: dt-users/template-new-user.php:118
+#: dt-users/template-new-user.php:119
 #: dt-users/template-user-management.php:355
-#: template-settings.php:153
+#: template-settings.php:156
 msgid "Email"
 msgstr "E-posta"
 
-#: dt-contacts/access-module.php:299
-#: dt-contacts/base-setup.php:276
+#: dt-contacts/access-module.php:302
+#: dt-contacts/base-setup.php:277
 msgid "Facebook"
 msgstr "Facebook"
 
-#: dt-contacts/access-module.php:303
-#: dt-contacts/base-setup.php:284
+#: dt-contacts/access-module.php:306
+#: dt-contacts/base-setup.php:285
 msgid "Twitter"
 msgstr "Twitter"
 
@@ -729,7 +717,7 @@ msgstr "Kişi siteden aktarıldı"
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr "DİKKAT: Bir önceki aktarımdan kişi kopyalanmış olabilir."
 
-#: dt-contacts/duplicates-merging.php:473
+#: dt-contacts/duplicates-merging.php:422
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(Kopyasından): %s"
@@ -764,47 +752,47 @@ msgstr "Kayıtlı"
 msgid "Subscriber"
 msgstr "Abone"
 
-#: dt-core/configuration/config-site-defaults.php:357
+#: dt-core/configuration/config-site-defaults.php:346
 msgid "Newly Assigned Contact"
 msgstr "Yeni Atanmış Kişi"
 
-#: dt-core/configuration/config-site-defaults.php:362
+#: dt-core/configuration/config-site-defaults.php:351
 msgid "@Mentions"
 msgstr "@Mentions"
 
-#: dt-core/configuration/config-site-defaults.php:377
+#: dt-core/configuration/config-site-defaults.php:366
 msgid "Contact Info Changed"
 msgstr "Kişinin Bilgisi Değişti"
 
-#: dt-core/configuration/config-site-defaults.php:382
+#: dt-core/configuration/config-site-defaults.php:371
 #: dt-core/migrations/0012-typo-rename.php:8
 msgid "Contact Milestones and Group Health metrics"
 msgstr "Kişinin İman Adımları ve Grup Sağlığı ölçümleri"
 
-#: dt-core/configuration/config-site-defaults.php:407
+#: dt-core/configuration/config-site-defaults.php:396
 msgid "This contact is active but there is no record of anybody contacting them. Please do contact them."
 msgstr "Bu kişi etkin fakat onunla iletişime geçen kimse yok. Lütfen onunla iletişime geç."
 
-#: dt-core/configuration/config-site-defaults.php:413
+#: dt-core/configuration/config-site-defaults.php:402
 msgid "Please try connecting with this contact again."
 msgstr "Lütfen bu kişiyle tekrar iletişime geçmeyi dene."
 
-#: dt-core/configuration/config-site-defaults.php:419
-#: dt-core/configuration/config-site-defaults.php:425
-#: dt-core/configuration/config-site-defaults.php:431
-#: dt-core/configuration/config-site-defaults.php:437
-#: dt-core/configuration/config-site-defaults.php:443
+#: dt-core/configuration/config-site-defaults.php:408
+#: dt-core/configuration/config-site-defaults.php:414
+#: dt-core/configuration/config-site-defaults.php:420
+#: dt-core/configuration/config-site-defaults.php:426
+#: dt-core/configuration/config-site-defaults.php:432
 msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
 msgstr "Bu kişiden bir süredir haber almadık. Bu kişi için bir güncelleme var mı?"
 
-#: dt-core/configuration/config-site-defaults.php:453
+#: dt-core/configuration/config-site-defaults.php:442
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "Bu gruptan bir süredir haber almadık. Bu grup için bir güncelleme var mı?"
 
-#: dt-assets/functions/details-bar.php:75
-#: dt-assets/functions/details-bar.php:124
-#: dt-assets/functions/details-bar.php:246
-#: dt-assets/functions/details-bar.php:287
+#: dt-assets/functions/details-bar.php:83
+#: dt-assets/functions/details-bar.php:132
+#: dt-assets/functions/details-bar.php:254
+#: dt-assets/functions/details-bar.php:295
 #: dt-core/configuration/dt-configuration.php:75
 msgctxt "either rtl or ltr"
 msgid "ltr"
@@ -829,7 +817,7 @@ msgid "To reset your password, visit the following address:"
 msgstr "Şifreni değiştirmek için bu adresi ziyaret et:"
 
 #: dt-users/template-user-management.php:414
-#: template-settings.php:146
+#: template-settings.php:149
 msgid "Roles"
 msgstr "Roller"
 
@@ -1000,43 +988,43 @@ msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
 msgstr "%s ile bağlantısı kaldırıldı"
 
-#: dt-posts/posts.php:387
+#: dt-posts/posts.php:395
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
 msgstr "Atanılan kullanıcı: %s"
 
-#: dt-posts/posts.php:387
+#: dt-posts/posts.php:395
 msgid "Nobody"
 msgstr "Hiçkimse"
 
-#: dt-posts/posts.php:405
-#: dt-posts/posts.php:416
+#: dt-posts/posts.php:413
+#: dt-posts/posts.php:424
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s, %2$s dan kaldırıldı"
 
-#: dt-posts/posts.php:408
-#: dt-posts/posts.php:419
+#: dt-posts/posts.php:416
+#: dt-posts/posts.php:427
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
 msgstr "%1$s, %2$s e eklendi"
 
-#: dt-posts/posts.php:520
+#: dt-posts/posts.php:545
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
 msgstr "%1$s eklendi: %2$s"
 
-#: dt-posts/posts.php:522
+#: dt-posts/posts.php:547
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
 msgstr "%1$s, %2$s den %3$s e güncellendi"
 
-#: dt-posts/posts.php:524
+#: dt-posts/posts.php:549
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "%1$s silindi: %2$s"
 
-#: dt-posts/dt-posts.php:1392
+#: dt-posts/dt-posts.php:1490
 msgid "Post already shared with user."
 msgstr "Gönderi zaten bu kullanıcıyla paylaşıldı."
 
@@ -1135,8 +1123,8 @@ msgstr "Vaftizler"
 msgid "Baptizers"
 msgstr "Vaftiz Edenler"
 
-#: dt-contacts/access-module.php:291
-#: dt-contacts/base-setup.php:580
+#: dt-contacts/access-module.php:294
+#: dt-contacts/base-setup.php:575
 #: dt-metrics/metrics.php:86
 #: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
@@ -1227,7 +1215,7 @@ msgstr "Proje Genel Bakışı"
 msgid "Outreach"
 msgstr "Müjdeleme"
 
-#: dt-contacts/access-module.php:403
+#: dt-contacts/access-module.php:406
 #: dt-metrics/combined/critical-path.php:77
 msgid "Follow Up"
 msgstr "Takipçilik"
@@ -1257,16 +1245,16 @@ msgstr "Takımlar"
 msgid "generations"
 msgstr "nesiller"
 
-#: dt-contacts/access-module.php:608
+#: dt-contacts/access-module.php:611
 #: dt-users/template-user-management.php:78
 msgid "Multipliers"
 msgstr "Çoğaltanlar"
 
-#: dt-notifications/notifications-email.php:138
+#: dt-notifications/notifications-email.php:125
 msgid "Click here to view or reply"
 msgstr "Görüntülemek ya da yanıt vermek için buraya tıkla"
 
-#: dt-notifications/notifications-email.php:144
+#: dt-notifications/notifications-email.php:131
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
 msgstr "%1$s #%2$s de güncelleme"
@@ -1325,19 +1313,20 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s, %2$s nin atanmasını reddetti."
 
-#: dt-people-groups/people-groups-post-type.php:131
+#: dt-people-groups/people-groups-base.php:84
+#: dt-people-groups/people-groups-base.php:94
 msgid "People Group"
 msgstr "İnsan Grubu"
 
-#: dt-people-groups/people-groups-post-type.php:282
+#: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
 msgstr "İnsan Grubu Ekle/Güncelle"
 
-#: dt-people-groups/people-groups-post-type.php:283
+#: dt-people-groups/people-groups-post-type.php:205
 msgid "People Group Details"
 msgstr "İnsan Grubu Detayları"
 
-#: dt-people-groups/people-groups-post-type.php:590
+#: dt-people-groups/people-groups-post-type.php:512
 msgid "Enter the People Group title here"
 msgstr "İnsan Grubunun adını buraya gir"
 
@@ -1361,14 +1350,6 @@ msgstr "Kişiyle Eşleşiyor"
 #: dt-users/user-hooks-and-config.php:374
 msgid "View contact record"
 msgstr "Kişinin kaydını görüntüle"
-
-#: functions.php:514
-msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
-msgstr "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
-
-#: functions.php:516
-msgid "Please upgrade PHP or uninstall this theme"
-msgstr "Please upgrade PHP or uninstall this theme"
 
 #: header.php:78
 msgid "Javascript must be enabled for this site to function correctly."
@@ -1403,7 +1384,7 @@ msgstr "Etiket"
 msgid "Create and apply tag"
 msgstr "Etiket oluştur ve uygula"
 
-#: dt-users/template-new-user.php:95
+#: dt-users/template-new-user.php:116
 #: dt-users/template-user-management.php:87
 #: dt-users/template-user-management.php:358
 msgid "Display Name"
@@ -1413,13 +1394,13 @@ msgstr "Görünen Ad"
 msgid "Link this contact to an existing user"
 msgstr "Bu kişiyi varolan kullanıcıya bağla"
 
-#: dt-assets/parts/merge-details.php:65
+#: dt-assets/parts/merge-details.php:60
 msgid "Click merge to continue."
 msgstr "Devam etmek için birleştire tıkla."
 
 #: dt-groups/base-setup.php:295
-#: dt-groups/base-setup.php:580
-#: dt-groups/base-setup.php:624
+#: dt-groups/base-setup.php:589
+#: dt-groups/base-setup.php:633
 msgid "Member List"
 msgstr "Üye Listesi"
 
@@ -1435,162 +1416,141 @@ msgstr "Eş Nesil Grubu"
 msgid "Save and continue editing"
 msgstr "Kaydet ve düzenlemeye devam et"
 
-#: template-merge-details.php:111
-msgid "Merge Duplicate Contacts"
-msgstr "Kopyası Olan Kişileri Birleştir"
-
-#: template-merge-details.php:112
-msgid "When you merge, the master record is updated with the values you choose, and relationships to other items are shifted to the master record"
-msgstr "Birleştirdiğinde, asıl kayıt seçtiğin değerlerle güncellenir ve diğer öğelerle ilişkileri asıl kayda geçirilir"
-
-#: template-merge-details.php:131
-#: template-merge-details.php:149
-msgid "Status:"
-msgstr "Durum:"
-
 #: template-merge-details.php:133
 #: template-merge-details.php:151
 msgid "Select All"
 msgstr "Hepsini Seç"
 
-#: template-merge-details.php:159
-msgid "Master Record"
-msgstr "Asıl Kayıt"
-
-#: template-merge-details.php:166
-#: template-merge-details.php:170
-msgid "Use as master"
-msgstr "Asıl kayıt olarak kullan"
-
-#: dt-assets/parts/nav-topbar.php:286
+#: dt-assets/parts/nav-topbar.php:287
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "Okunmamış"
 
-#: dt-assets/parts/nav-topbar.php:312
+#: dt-assets/parts/nav-topbar.php:313
 #: template-notifications.php:72
 msgid "Mark All"
 msgstr "Hepsini İşaretle"
 
 #: dt-users/template-user-management.php:307
-#: template-settings.php:56
-#: template-settings.php:410
+#: template-settings.php:59
+#: template-settings.php:413
 msgid "Availability"
 msgstr "Uygunluk Durumu"
 
 #: dt-assets/parts/modals/modal-help.php:95
-#: template-settings.php:114
+#: template-settings.php:117
 msgid "Your Profile"
 msgstr "Profilin"
 
-#: dt-users/template-new-user.php:100
-#: dt-users/template-new-user.php:101
-#: template-settings.php:127
-#: template-settings.php:583
+#: dt-users/template-new-user.php:121
+#: dt-users/template-new-user.php:122
+#: template-settings.php:130
+#: template-settings.php:586
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
-#: dt-users/template-new-user.php:96
-#: template-settings.php:140
-#: template-settings.php:618
+#: dt-users/template-new-user.php:117
+#: template-settings.php:143
+#: template-settings.php:621
 msgid "Nickname (Display Name)"
 msgstr "Rumuz (Görünen Ad)"
 
-#: template-settings.php:188
+#: template-settings.php:191
 msgid "Social"
 msgstr "Sosyal Ağlar"
 
-#: dt-contacts/access-module.php:1293
-#: dt-users/template-new-user.php:115
+#: dt-contacts/access-module.php:1296
+#: dt-users/template-new-user.php:136
 #: dt-users/template-user-management.php:91
-#: template-settings.php:213
+#: template-settings.php:216
 msgid "Language"
 msgstr "Dil"
 
-#: template-settings.php:219
+#: template-settings.php:222
 msgid "English"
 msgstr "İngilizce"
 
-#: dt-users/template-new-user.php:205
-#: dt-users/template-new-user.php:209
+#: dt-users/template-new-user.php:226
+#: dt-users/template-new-user.php:230
 #: dt-users/template-user-management.php:395
 #: dt-users/template-user-management.php:402
-#: template-settings.php:223
-#: template-settings.php:642
+#: template-settings.php:226
+#: template-settings.php:645
 msgid "Biography"
 msgstr "Özgeçmiş"
 
-#: template-settings.php:490
+#: template-settings.php:493
 msgid "Type of Notification"
 msgstr "Bildirim Türü"
 
-#: dt-contacts/access-module.php:295
-#: dt-core/configuration/config-site-defaults.php:352
+#: dt-contacts/access-module.php:298
+#: dt-core/configuration/config-site-defaults.php:341
 msgid "Web"
 msgstr "Web"
 
-#: template-settings.php:503
+#: template-settings.php:506
 msgid "required"
 msgstr "zorunlu"
 
-#: template-settings.php:526
+#: template-settings.php:529
 msgid "Follow all contacts"
 msgstr "Tüm kişileri takibe al"
 
-#: template-settings.php:290
-#: template-settings.php:533
+#: template-settings.php:293
+#: template-settings.php:536
 msgid "Enable"
 msgstr "Etkinleştir"
 
-#: template-settings.php:577
+#: template-settings.php:580
 msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
 msgstr "Disciple Tools Sistemi resimleri hafızasında tutmaz. Profil resimleri için Gravatar (Globally Recognized Avatar) kullanıyoruz. Güvenlik sorunların varsa, kişisel fotoğrafını kullanamamanı öneririz, bunun yerine seni temsil eden bir çizim, soyut bir resim ya da başka bir fotoğraf kullanabilirsin."
 
-#: template-settings.php:578
+#: template-settings.php:581
 msgid "edit image on gravatar.com"
 msgstr "gravatar.com'da resmi düzenle"
 
-#: template-settings.php:584
-#: template-settings.php:585
+#: template-settings.php:587
+#: template-settings.php:588
 msgid "Username cannot be changed"
 msgstr "Kullanıcı adı değiştirilemez"
 
-#: template-settings.php:156
-#: template-settings.php:589
+#: dt-users/users.php:1185
+#: template-settings.php:159
+#: template-settings.php:592
 msgid "System Email"
 msgstr "Sistem E-postası"
 
-#: template-settings.php:590
+#: template-settings.php:593
 msgid "User email can be changed by site administrator."
 msgstr "Kullanıcı e-posta adresi site yöneticisi tarafından değiştirilebilir."
 
-#: dt-users/template-new-user.php:102
-#: dt-users/template-new-user.php:103
-#: template-settings.php:597
+#: dt-users/template-new-user.php:123
+#: dt-users/template-new-user.php:124
+#: template-settings.php:600
 msgid "Password"
 msgstr "Şifre"
 
-#: template-settings.php:598
+#: template-settings.php:601
 msgid "Use this email reset form to create a new password."
 msgstr "Yeni bir şifre oluşturmak için bu e-posta sıfırlama formunu kullan."
 
-#: template-settings.php:600
+#: template-settings.php:603
 msgid "go to password change form"
 msgstr "şifre değiştirme formuna git"
 
-#: dt-users/template-new-user.php:165
-#: dt-users/template-new-user.php:167
-#: template-settings.php:607
+#: dt-users/template-new-user.php:186
+#: dt-users/template-new-user.php:188
+#: template-settings.php:610
 msgid "First Name"
 msgstr "Ad"
 
-#: dt-users/template-new-user.php:169
-#: dt-users/template-new-user.php:170
-#: template-settings.php:613
+#: dt-users/template-new-user.php:190
+#: dt-users/template-new-user.php:191
+#: template-settings.php:616
 msgid "Last Name"
 msgstr "Soyad"
 
-#: dt-notifications/notifications-email.php:148
+#: dt-notifications/notifications-email.php:135
 msgid "Do not reply directly to this email."
 msgstr "Bu e-postayı yanıtlamayın."
 
@@ -1675,6 +1635,7 @@ msgid "Mapping"
 msgstr "Haritalama"
 
 #: dt-mapping/mapping.php:304
+#: dt-people-groups/people-groups-base.php:281
 msgid "Population"
 msgstr "Nufus"
 
@@ -1689,18 +1650,18 @@ msgstr "Dünya"
 
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90
-#: dt-posts/custom-post-type.php:128
+#: dt-posts/custom-post-type.php:129
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "Yeni %s"
 
-#: dt-posts/posts.php:452
-#: dt-posts/posts.php:469
+#: dt-posts/posts.php:460
+#: dt-posts/posts.php:477
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "%1$s konumlara eklendi"
 
-#: dt-groups/base-setup.php:629
+#: dt-groups/base-setup.php:637
 msgid "Four Fields"
 msgstr "Dört Alanı"
 
@@ -1718,42 +1679,37 @@ msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@%1$s, %2$s hakkında güncellenme istenilir."
 
-#: dt-core/configuration/config-site-defaults.php:560
+#: dt-core/configuration/config-site-defaults.php:549
 msgid "Accepting new contacts"
 msgstr "Yeni kişileri kabul ediyor"
 
-#: dt-core/configuration/config-site-defaults.php:564
+#: dt-core/configuration/config-site-defaults.php:553
 msgid "I'm only investing in existing contacts"
 msgstr "Sadece var olan kişilerle ilgileniyorum"
 
-#: dt-core/configuration/config-site-defaults.php:568
+#: dt-core/configuration/config-site-defaults.php:557
 msgid "I have too many contacts"
 msgstr "Fazla kişilerim var"
 
-#: template-settings.php:413
+#: template-settings.php:416
 msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
 msgstr "Seyahatta olacağın veya müsait olmayacağın tarihlerini bildir ki Kişi Atayan yeni kişileri almak için uygunluk durumunu bilsin"
 
-#: template-settings.php:417
+#: template-settings.php:420
 msgid "Schedule Travel or Dates Unavailable"
 msgstr "Seyahat veya Ulaşılmaz Tarihleri Planla"
 
-#: template-settings.php:434
+#: template-settings.php:437
 msgid "Add Unavailable dates"
 msgstr "Ulaşılmaz Tarihleri Ekle"
 
-#: template-settings.php:448
+#: template-settings.php:451
 msgid "No Travel Scheduled"
 msgstr "Seyahat Planlanmamıştır"
 
-#: template-settings.php:528
+#: template-settings.php:531
 msgid "You will receive a notification for any update that happens in the system."
 msgstr "Sistemdeki herhangi bir güncellenme olursa bir bildiri alacaksın."
-
-#: dt-assets/parts/modals/modal-help.php:353 template-contacts-new.php:132
-#: template-contacts-new.php:136
-msgid "Initial Comment"
-msgstr "İlk yorum"
 
 #: dt-metrics/combined/critical-path.php:212
 msgid "Any new created contact"
@@ -1812,7 +1768,7 @@ msgstr "Sana atanan: %1$s."
 msgid "Child Group"
 msgstr "Alt Nesil Gruplar"
 
-#: dt-contacts/access-module.php:176
+#: dt-contacts/access-module.php:179
 msgid "Not Ready"
 msgstr "Hazır Değil"
 
@@ -1830,203 +1786,203 @@ msgstr "Aralık sonu"
 msgid "Locations you are responsible for"
 msgstr "Sorumlu olduğun yerler"
 
-#: dt-contacts/access-module.php:172
+#: dt-contacts/access-module.php:175
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
 msgstr "Bu kişi sistemde yeni."
 
-#: dt-contacts/access-module.php:177
+#: dt-contacts/access-module.php:180
 msgctxt "Contact Status field description"
 msgid "There is not enough information to move forward with the contact at this time."
 msgstr "Bu kişiyle devam etmek için şu anda yeterince bilgi yok."
 
-#: dt-contacts/access-module.php:182
+#: dt-contacts/access-module.php:185
 msgctxt "Contact Status field description"
 msgid "This contact needs to be assigned to a multiplier."
 msgstr "Bu kişinin bir çoğaltana atanması gerekiyor."
 
-#: dt-contacts/access-module.php:187
+#: dt-contacts/access-module.php:190
 msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
 msgstr "Bu kişi birisine atanmış, fakat o kullanıcı tarafından henüz kabul edilmemiş."
 
-#: dt-contacts/base-setup.php:351
+#: dt-contacts/base-setup.php:352
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "Bu kişi ilerliyor ve/veya sürekli güncelleniyor."
 
-#: dt-contacts/access-module.php:193
+#: dt-contacts/access-module.php:196
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "Bu kişi şimdilik durduruldu (ör. tatilde ya da cevap vermiyor)."
 
-#: dt-contacts/base-setup.php:357
+#: dt-contacts/base-setup.php:358
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
 msgstr "Bu kişi devam etmek istemediğini bildirdi ya da sen onunla devam etmek istemediğine karar verdin."
 
-#: dt-contacts/access-module.php:126
+#: dt-contacts/access-module.php:129
 msgctxt "Seeker Path field description"
 msgid "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
 msgstr "Bu kişi ile iletişim statünü ayarla. Bu statüler bir kişinin ilerlenmesini sağlayan muayyen sırası olan adımlardır."
 
-#: dt-contacts/access-module.php:244
+#: dt-contacts/access-module.php:247
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
 msgstr "Kişi Tatilde"
 
-#: dt-contacts/access-module.php:245
+#: dt-contacts/access-module.php:248
 msgctxt "Reason Paused label"
 msgid "Contact not responding"
 msgstr "Kişi cevaplamıyor"
 
-#: dt-contacts/access-module.php:246
+#: dt-contacts/access-module.php:249
 msgctxt "Reason Paused label"
 msgid "Contact not available"
 msgstr "Bu kişi müsait değil"
 
-#: dt-contacts/access-module.php:247
+#: dt-contacts/access-module.php:250
 msgctxt "Reason Paused label"
 msgid "Contact has little interest/hunger"
 msgstr "Bu kişi az ilgili"
 
-#: dt-contacts/access-module.php:248
+#: dt-contacts/access-module.php:251
 msgctxt "Reason Paused label"
 msgid "Contact shows no initiative"
 msgstr "Bu kişi inisiyatif almıyor"
 
-#: dt-contacts/access-module.php:249
+#: dt-contacts/access-module.php:252
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
 msgstr "Bu kişi kötü niyetli olabilir"
 
-#: dt-contacts/access-module.php:250
+#: dt-contacts/access-module.php:253
 msgctxt "Reason Paused label"
 msgid "Ball is in the contact's court"
 msgstr "İletişim kurmaya sira onlarda"
 
-#: dt-contacts/access-module.php:251
+#: dt-contacts/access-module.php:254
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr "Bu kişi otomatik SMS mesajlarına nasıl tepki verdiğini görmek isteriz"
 
-#: dt-contacts/access-module.php:263
+#: dt-contacts/access-module.php:266
 msgctxt "Reason Closed label"
 msgid "Duplicate"
 msgstr "Kopya"
 
-#: dt-contacts/access-module.php:264
+#: dt-contacts/access-module.php:267
 msgctxt "Reason Closed label"
 msgid "Insufficient contact info"
 msgstr "Yetersiz kişi bilgisi"
 
-#: dt-contacts/access-module.php:265
+#: dt-contacts/access-module.php:268
 msgctxt "Reason Closed label"
 msgid "Denies submitting contact request"
 msgstr "İletişim talebini inkar ediyor"
 
-#: dt-contacts/access-module.php:267
+#: dt-contacts/access-module.php:270
 msgctxt "Reason Closed label"
 msgid "Only wants to argue or debate"
 msgstr "Sadece tartışmak ya da kavga etmek istiyor"
 
-#: dt-contacts/access-module.php:268
+#: dt-contacts/access-module.php:271
 msgctxt "Reason Closed label"
 msgid "Just wanted media or book"
 msgstr "Sadece kitap ya da başka materyal istedi"
 
-#: dt-contacts/access-module.php:269
+#: dt-contacts/access-module.php:272
 msgctxt "Reason Closed label"
 msgid "No longer interested"
 msgstr "Artık ilgilenmiyor"
 
-#: dt-contacts/access-module.php:270
+#: dt-contacts/access-module.php:273
 msgctxt "Reason Closed label"
 msgid "No longer responding"
 msgstr "Artık cevap vermiyor"
 
-#: dt-contacts/access-module.php:271
+#: dt-contacts/access-module.php:274
 msgctxt "Reason Closed label"
 msgid "Already in church or connected with others"
 msgstr "Zaten kilisede ya da diğer kişilerle iletişimde"
 
-#: dt-contacts/access-module.php:272
+#: dt-contacts/access-module.php:275
 msgctxt "Reason Closed label"
 msgid "Transferred contact to partner"
 msgstr "Bir ortağa aktarıldı"
 
-#: dt-contacts/access-module.php:273
+#: dt-contacts/access-module.php:276
 msgctxt "Reason Closed label"
 msgid "Martyred"
 msgstr "İnancı Yüzünden Öldürüldü"
 
-#: dt-contacts/access-module.php:274
+#: dt-contacts/access-module.php:277
 msgctxt "Reason Closed label"
 msgid "Moved or relocated"
 msgstr "Taşındı ya da yer değiştirdi"
 
-#: dt-contacts/access-module.php:276
+#: dt-contacts/access-module.php:279
 msgctxt "Reason Closed label"
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: dt-core/configuration/config-site-defaults.php:484
+#: dt-core/configuration/config-site-defaults.php:473
 msgid "Personal Phone"
 msgstr "Kişisel"
 
-#: dt-core/configuration/config-site-defaults.php:487
+#: dt-core/configuration/config-site-defaults.php:476
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "Kişisel cep numaraları sadece ekibimiz içindir. Dağıtılmayacaktır."
 
-#: dt-core/configuration/config-site-defaults.php:491
+#: dt-core/configuration/config-site-defaults.php:480
 msgid "Personal Email"
 msgstr "Kişisel"
 
-#: dt-core/configuration/config-site-defaults.php:494
+#: dt-core/configuration/config-site-defaults.php:483
 msgid "Personal email is private to the team, not for distribution."
 msgstr "Kişisel epostaları sadece ekibimiz içindir. Dağıtılmayacaktır."
 
-#: dt-core/configuration/config-site-defaults.php:498
+#: dt-core/configuration/config-site-defaults.php:487
 msgid "Personal Address"
 msgstr "Kişisel"
 
-#: dt-core/configuration/config-site-defaults.php:501
+#: dt-core/configuration/config-site-defaults.php:490
 msgid "Personal address is private to the team, not for distribution."
 msgstr "Kişisel adresleri sadece ekibimiz içindir. Dağıtılmayacaktır."
 
-#: dt-core/configuration/config-site-defaults.php:505
+#: dt-core/configuration/config-site-defaults.php:494
 msgid "Work Phone"
 msgstr "Telefon"
 
-#: dt-core/configuration/config-site-defaults.php:508
+#: dt-core/configuration/config-site-defaults.php:497
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "İş cep numaraları kişilere ve arayanlara vermek içindir."
 
-#: dt-core/configuration/config-site-defaults.php:512
+#: dt-core/configuration/config-site-defaults.php:501
 msgid "Work Email"
 msgstr "E-posta"
 
-#: dt-core/configuration/config-site-defaults.php:515
+#: dt-core/configuration/config-site-defaults.php:504
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "İş eposta kişilere ve arayanlara vermek içindir."
 
-#: dt-core/configuration/config-site-defaults.php:519
+#: dt-core/configuration/config-site-defaults.php:508
 msgid "Work Facebook"
 msgstr "Facebook"
 
-#: dt-core/configuration/config-site-defaults.php:522
+#: dt-core/configuration/config-site-defaults.php:511
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "İş Facebook profilleri kişilere ve arayanlara vermek içindir."
 
-#: dt-core/configuration/config-site-defaults.php:526
+#: dt-core/configuration/config-site-defaults.php:515
 msgid "Work WhatsApp"
 msgstr "İş WhatsApp"
 
-#: dt-core/configuration/config-site-defaults.php:529
+#: dt-core/configuration/config-site-defaults.php:518
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "İş WhatsApp numaraları kişilere ve arayanlara vermek içindir."
 
-#: dt-contacts/access-module.php:307
+#: dt-contacts/access-module.php:310
 msgid "Transfer"
 msgstr "Aktarım Robotu"
 
@@ -2045,69 +2001,69 @@ msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "Bu grup düzenli görüşüyor."
 
-#: dt-posts/posts.php:449
-#: dt-posts/posts.php:462
+#: dt-posts/posts.php:457
+#: dt-posts/posts.php:470
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
 msgstr "%1$s konumlardan kaldırıldı"
 
-#: dt-posts/posts.php:490
+#: dt-posts/posts.php:515
 msgctxt "message"
 msgid "verified"
 msgstr "doğrulandı"
 
-#: dt-posts/posts.php:490
+#: dt-posts/posts.php:515
 msgctxt "message"
 msgid "not verified"
 msgstr "doğrulanmadı"
 
-#: dt-posts/posts.php:493
+#: dt-posts/posts.php:518
 msgctxt "message"
 msgid "invalidated"
 msgstr "geçersiz kılındı"
 
-#: dt-posts/posts.php:493
+#: dt-posts/posts.php:518
 msgctxt "message"
 msgid "not invalidated"
 msgstr "geçersiz kılınmadı"
 
-#: dt-posts/posts.php:528
+#: dt-posts/posts.php:553
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "Adı şuna değiştirildi: %s"
 
-#: dt-posts/posts.php:530
+#: dt-posts/posts.php:555
 msgctxt "message"
 msgid "Created from Demo Plugin"
 msgstr "Demo Plugin tarafından oluşturuldu"
 
-#: dt-posts/posts.php:537
+#: dt-posts/posts.php:562
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "%s atanmayı reddetti"
 
-#: dt-posts/posts.php:537
-#: dt-posts/posts.php:540
+#: dt-posts/posts.php:562
+#: dt-posts/posts.php:565
 msgctxt "message"
 msgid "A user"
 msgstr "Bir kullanıcı"
 
-#: dt-posts/posts.php:540
+#: dt-posts/posts.php:565
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "%s atanmayı kabul etti"
 
-#: dt-posts/posts.php:545
+#: dt-posts/posts.php:570
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "%s ile paylaşıldı"
 
-#: dt-posts/posts.php:547
+#: dt-posts/posts.php:572
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "%s ile artık paylaşılmıyor"
 
-#: dt-contacts/dmm-module.php:411
+#: dt-contacts/dmm-module.php:412
 #: dt-metrics/personal/activity-highlights.php:218
 msgid "Quick Actions"
 msgstr "Hızlı işlemler"
@@ -2119,15 +2075,14 @@ msgstr "Aramak için buraya yaz"
 
 #: archive-template.php:385
 #: dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/access-module.php:590
+#: dt-contacts/access-module.php:593
 #: dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:902
+#: dt-core/global-functions.php:815
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Kullanıcı Ara"
 
-#: dt-assets/parts/merge-details.php:49
-#: dt-contacts/dmm-module.php:506
+#: dt-contacts/dmm-module.php:507
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "Çoğaltan veya kişi ara"
@@ -2141,13 +2096,13 @@ msgstr "Buraya yorum ya da not yaz"
 #: archive-template.php:36
 #: archive-template.php:126
 #: archive-template.php:461
-#: dt-core/global-functions.php:731
-#: dt-core/global-functions.php:759
-#: dt-core/global-functions.php:820
-#: dt-core/global-functions.php:864
-#: dt-people-groups/people-groups-post-type.php:133
+#: dt-assets/parts/merge-details.php:45
+#: dt-core/global-functions.php:580
+#: dt-core/global-functions.php:608
+#: dt-core/global-functions.php:733
+#: dt-core/global-functions.php:777
 #: dt-posts/custom-post-type.php:18
-#: template-settings.php:378
+#: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "%s Ara"
@@ -2157,25 +2112,15 @@ msgstr "%s Ara"
 msgid "This is displaying only the contacts with an 'active' status right now."
 msgstr "Şuan sadece etkin durum olan kişiler gösterilmekte."
 
-#: dt-posts/posts.php:392
-#: dt-posts/posts.php:397
+#: dt-posts/posts.php:400
+#: dt-posts/posts.php:405
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "%1$s, %2$s e değiştirildi"
 
-#: dt-contacts/dmm-module.php:492
+#: dt-contacts/dmm-module.php:493
 msgid "Who was this contact baptized by and when?"
 msgstr "Bu kişi kimin tarafından vaftiz edildi ve ne zaman oldu?"
-
-#: dt-contacts/user-module.php:96
-msgctxt "Make user modal"
-msgid "Make User From Contact"
-msgstr "Bu kişiyi bir kullanıcı yap"
-
-#: dt-contacts/user-module.php:99
-msgctxt "Make user modal"
-msgid "This contact is already connected to a user."
-msgstr "Bu kişi zaten bir kullanıcı."
 
 #: dt-contacts/user-module.php:124
 msgid "This contact already represents a user."
@@ -2191,25 +2136,17 @@ msgctxt "Step 2 of link user"
 msgid "To finish the linking, merge this contact with the existing user details."
 msgstr "Bağlamanın tamamlanması için varolan kullanıcı detaylarıyla bu kişiyi birleştir."
 
-#: dt-assets/parts/merge-details.php:39
-msgid "Merge Contact"
-msgstr "Yeni Kişi"
-
-#: dt-assets/parts/merge-details.php:40
-msgid "Merge this contact with another contact."
-msgstr "Bu kişiyi başka bir kişiyle birleştir."
-
-#: dt-assets/parts/merge-details.php:64
+#: dt-assets/parts/merge-details.php:59
 msgctxt "added to the end of a sentence"
 msgid "selected."
 msgstr "seçildi."
 
-#: dt-groups/base-setup.php:599
+#: dt-groups/base-setup.php:608
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Varolan kişilerden üye ekle"
 
-#: dt-people-groups/people-groups-post-type.php:284
+#: dt-people-groups/people-groups-post-type.php:206
 msgid "Translations"
 msgstr "Çeviriler"
 
@@ -2223,7 +2160,7 @@ msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "Artık %s de ikincil atanılmış değil."
 
-#: dt-groups/base-setup.php:593
+#: dt-groups/base-setup.php:602
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "Yeni üyeleri eklemek için \"Oluştur\" veya \"Seç\" tıklayınız."
 
@@ -2232,33 +2169,29 @@ msgid "Filters"
 msgstr "Filtreler"
 
 #: archive-template.php:607
-#: dt-assets/functions/enqueue-scripts.php:348
+#: dt-assets/functions/enqueue-scripts.php:349
 msgid "Load More"
 msgstr "Daha Yükle"
 
-#: archive-template.php:619
+#: archive-template.php:785
 msgid "Filter Name"
 msgstr "Filtre Adı"
 
 #: 403.php:55
 #: archive-template.php:777
-#: dt-assets/parts/merge-details.php:70
+#: dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:502
-#: dt-contacts/access-module.php:533
-#: dt-contacts/access-module.php:561
-#: dt-contacts/base-setup.php:429
-#: dt-contacts/base-setup.php:464
+#: dt-contacts/access-module.php:505
+#: dt-contacts/access-module.php:536
+#: dt-contacts/access-module.php:564
+#: dt-contacts/base-setup.php:427
+#: dt-contacts/base-setup.php:462
 #: dt-contacts/user-module.php:159
 #: single-template.php:345
 #: single-template.php:362
-#: template-merge-details.php:102
-#: template-merge-details.php:125
-#: template-merge-details.php:143
-#: template-merge-details.php:192
 #: template-new-bulk-post.php:229
 #: template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290
@@ -2267,21 +2200,23 @@ msgstr "Filtre Adı"
 msgid "Cancel"
 msgstr "İptal"
 
-#: archive-template.php:782
+#: archive-template.php:790
 msgid "Filter Records"
 msgstr "Kayıtlar Filtrele"
 
-#: dt-assets/functions/details-bar.php:144
+#: dt-assets/functions/details-bar.php:152
 #: dt-assets/parts/modals/modal-tasks.php:7
-#: dt-posts/custom-post-type.php:199
+#: dt-posts/custom-post-type.php:201
 msgid "Tasks"
 msgstr "Görevler"
 
 #: dt-assets/functions/enqueue-scripts.php:114
+#: template-merge-post-details.php:93
 msgid "Regions of Focus"
 msgstr "Hedef Bölgeler"
 
 #: dt-assets/functions/enqueue-scripts.php:115
+#: template-merge-post-details.php:94
 msgid "All Locations"
 msgstr "Tüm Konumlar"
 
@@ -2302,21 +2237,23 @@ msgstr "Filtre yok, aşağıda birisi oluştur"
 msgid "No records found matching your filter."
 msgstr "Filtreye eşleşen bir kaydı bulunmamaktadır."
 
-#: dt-assets/parts/nav-topbar.php:282
+#: dt-assets/parts/nav-topbar.php:283
+#: dt-people-groups/people-groups-base.php:342
+#: dt-people-groups/people-groups-base.php:351
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "Tüm"
 
-#: dt-contacts/access-module.php:1132
-#: dt-contacts/access-module.php:1133
+#: dt-contacts/access-module.php:1135
+#: dt-contacts/access-module.php:1136
 msgid "Subassigned only"
 msgstr "Yalnız ikincil atanılan"
 
-#: dt-contacts/dmm-module.php:372
-#: dt-contacts/dmm-module.php:382
-#: dt-contacts/dmm-module.php:392
+#: dt-contacts/dmm-module.php:373
+#: dt-contacts/dmm-module.php:383
 #: dt-contacts/dmm-module.php:393
+#: dt-contacts/dmm-module.php:394
 msgid "Coached by me"
 msgstr "Tarafımdan koçluk yapılıyor"
 
@@ -2328,7 +2265,7 @@ msgstr "Zaman aralığının sonunda etkin gruplar"
 msgid "Churches active at the end of the time range"
 msgstr "Zaman aralığının sonunda etkin kiliseler"
 
-#: dt-users/users.php:602
+#: dt-users/users.php:609
 msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "Özel Filtreler"
@@ -2352,8 +2289,8 @@ msgid "No note set"
 msgstr "Hiçbir şey belirtilmedi"
 
 #: dt-assets/functions/enqueue-scripts.php:305
-#: dt-contacts/base-setup.php:539
-#: dt-groups/base-setup.php:1058
+#: dt-contacts/base-setup.php:537
+#: dt-groups/base-setup.php:1066
 msgctxt "All records"
 msgid "All %s"
 msgstr "Tüm %s"
@@ -2363,10 +2300,11 @@ msgid "Disciple.Tools"
 msgstr "Disciple Tools"
 
 #: dt-assets/functions/enqueue-scripts.php:216
-#: dt-assets/parts/merge-details.php:76
+#: dt-assets/parts/merge-details.php:72
 #: dt-contacts/user-module.php:165
-#: dt-users/template-new-user.php:280
-#: template-merge-details.php:214
+#: dt-users/template-new-user.php:301
+#: template-merge-post-details.php:121
+#: template-merge-post-details.php:178
 msgid "Merge"
 msgstr "Birleştir"
 
@@ -2388,7 +2326,7 @@ msgstr "Örneğin, 'Cevap Yok' butona 4 sefer tıklarsanız bu kişiyle 4 sefer 
 "\n"
 "Bu eylem 'Arayanın Yolu' statüsünü de 'İletişim Denendi' olarak değiştirecektir."
 
-#: dt-groups/base-setup.php:630
+#: dt-groups/base-setup.php:638
 msgctxt "Optional Documentation"
 msgid "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
 msgstr "Dört Alan diyagramında 5 kare vardır. Sol üst kadranda başlayıp saat yönünde ilerleyerek ve beşinci ortada olmak üzere, bunlar:"
@@ -2580,7 +2518,7 @@ msgstr "Görev Oluştur"
 msgid "Existing tasks for this record:"
 msgstr "Bu kaydın var olan görevleri:"
 
-#: dt-assets/parts/nav-topbar.php:164
+#: dt-assets/parts/nav-topbar.php:165
 msgid "Theme Update Available!"
 msgstr "Tema Güncellenme Hazır!"
 
@@ -2593,45 +2531,45 @@ msgstr "Tema Güncellenme Hazır!"
 msgid "Users"
 msgstr "Kullanıcı"
 
-#: dt-contacts/access-module.php:115
+#: dt-contacts/access-module.php:118
 msgid "Select the main person who is responsible for reporting on this contact."
 msgstr "Bu kişi hakkında bildirme yapan ana sorumlu kişi veya kullanıcıyı seç."
 
-#: dt-contacts/access-module.php:166
-#: dt-contacts/base-setup.php:345
+#: dt-contacts/access-module.php:169
+#: dt-contacts/base-setup.php:346
 msgid "Contact Status"
 msgstr "Kişinin Durumu"
 
-#: dt-contacts/access-module.php:181
+#: dt-contacts/access-module.php:184
 msgid "Dispatch Needed"
 msgstr "Atanma Gerekiyor"
 
-#: dt-contacts/access-module.php:192
+#: dt-contacts/access-module.php:195
 msgid "Paused"
 msgstr "Durdurulmuş"
 
-#: dt-contacts/access-module.php:130
+#: dt-contacts/access-module.php:133
 msgid "Contact Attempt Needed"
 msgstr "İletişime Geçmek Gerekiyor"
 
-#: dt-contacts/access-module.php:134
+#: dt-contacts/access-module.php:137
 msgid "Contact Attempted"
 msgstr "İletişim Denendi"
 
-#: dt-contacts/access-module.php:138
-#: dt-contacts/dmm-module.php:231
+#: dt-contacts/access-module.php:141
+#: dt-contacts/dmm-module.php:232
 msgid "Contact Established"
 msgstr "Kişiyle İletişime Geçildi"
 
-#: dt-contacts/access-module.php:142
+#: dt-contacts/access-module.php:145
 msgid "First Meeting Scheduled"
 msgstr "İlk Buluşma Planlandı"
 
-#: dt-contacts/access-module.php:146
+#: dt-contacts/access-module.php:149
 msgid "First Meeting Complete"
 msgstr "İlk Buluşma Gerçekleşti"
 
-#: dt-contacts/access-module.php:154
+#: dt-contacts/access-module.php:157
 msgid "Being Coached"
 msgstr "Koçluk Yapılıyor"
 
@@ -2672,110 +2610,106 @@ msgstr "Kilisede/Grupta"
 msgid "Starting Churches"
 msgstr "Kilise Başlatıyor"
 
-#: dt-contacts/base-setup.php:316
+#: dt-contacts/base-setup.php:317
 #: dt-users/template-user-management.php:367
 msgid "Male"
 msgstr "Erkek"
 
-#: dt-contacts/base-setup.php:317
+#: dt-contacts/base-setup.php:318
 #: dt-users/template-user-management.php:368
 msgid "Female"
 msgstr "Kadın"
 
-#: dt-contacts/base-setup.php:328
+#: dt-contacts/base-setup.php:329
 msgid "Under 18 years old"
 msgstr "18 yaşın altında"
 
-#: dt-contacts/base-setup.php:329
+#: dt-contacts/base-setup.php:330
 msgid "18-25 years old"
 msgstr "18-25 yaş arasında"
 
-#: dt-contacts/base-setup.php:330
+#: dt-contacts/base-setup.php:331
 msgid "26-40 years old"
 msgstr "26-40 yaş arasında"
 
-#: dt-contacts/base-setup.php:331
+#: dt-contacts/base-setup.php:332
 msgid "Over 40 years old"
 msgstr "40 yaşın üstünde"
 
-#: dt-contacts/access-module.php:208
+#: dt-contacts/access-module.php:211
 msgid "Reason Not Ready"
 msgstr "Hazır Olmama Sebebi"
 
-#: dt-contacts/access-module.php:209
+#: dt-contacts/access-module.php:212
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr "Bu kişinin bir çoğaltana atanması gerekiyor."
 
-#: dt-contacts/access-module.php:216
+#: dt-contacts/access-module.php:219
 msgid "Insufficient Contact Information"
 msgstr "Yetersiz Kişi Bilgisi"
 
-#: dt-contacts/access-module.php:219
+#: dt-contacts/access-module.php:222
 msgid "Unknown Location"
 msgstr "Bilinmeyen Konum"
 
-#: dt-contacts/access-module.php:222
+#: dt-contacts/access-module.php:225
 msgid "Only wants media"
 msgstr "Sadece medya istiyor"
 
-#: dt-contacts/access-module.php:225
+#: dt-contacts/access-module.php:228
 msgid "Outside Area"
 msgstr "Alanın Dışında"
 
-#: dt-contacts/access-module.php:228
+#: dt-contacts/access-module.php:231
 msgid "Needs Review"
 msgstr "Gözden Geçirilmesi Gerekiyor"
 
-#: dt-contacts/access-module.php:231
+#: dt-contacts/access-module.php:234
 msgid "Waiting for Confirmation"
 msgstr "Onaylanma Bekleniyor"
 
-#: dt-contacts/access-module.php:239
+#: dt-contacts/access-module.php:242
 msgid "Reason Paused"
 msgstr "Durdurulma Sebebi"
 
-#: dt-contacts/access-module.php:240
+#: dt-contacts/access-module.php:243
 msgctxt "Optional Documentation"
 msgid "A paused contact is one you are not currently interacting with but expect to in the future."
 msgstr "Duraklatılmış bağlantı, şu anda etkileşimde bulunmadığınız ama gelecekte etkileşim kurmayı umduğunuz bağlantıdır."
 
-#: dt-contacts/access-module.php:248
-msgid "Reason Closed"
-msgstr "Kapanma Sebebi"
-
-#: dt-contacts/access-module.php:259
+#: dt-contacts/access-module.php:262
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr "Kapalı bir bağlantı, etkileşimde bulunamayacağınız veya istemediğiniz bağlantıdır."
 
-#: dt-contacts/access-module.php:266
+#: dt-contacts/access-module.php:269
 msgctxt "Reason Closed label"
 msgid "Hostile, playing games or self gain"
 msgstr "Saldırgan, oyun oynayan ya da çıkarcı"
 
-#: dt-contacts/access-module.php:283
+#: dt-contacts/access-module.php:286
 msgid "Accepted"
 msgstr "Kabul Edildi"
 
-#: dt-contacts/access-module.php:323
+#: dt-contacts/access-module.php:326
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "Bu kişinin geldiği websitesi etkinlik veya yer."
 
-#: dt-contacts/dmm-module.php:222
+#: dt-contacts/dmm-module.php:223
 msgid "No Answer"
 msgstr "Cevap yok"
 
-#: dt-contacts/dmm-module.php:240
+#: dt-contacts/dmm-module.php:241
 msgid "Meeting Scheduled"
 msgstr "Buluşma Planlandı"
 
-#: dt-contacts/dmm-module.php:249
+#: dt-contacts/dmm-module.php:250
 msgid "Meeting Complete"
 msgstr "Buluşma Gerçekleşti"
 
-#: dt-contacts/dmm-module.php:258
+#: dt-contacts/dmm-module.php:259
 msgid "Meeting No-show"
 msgstr "Buluşmaya Gelmedi"
 
@@ -2792,11 +2726,11 @@ msgstr "Bu kullanıcı ile eşleşen kişi kaydını ekle"
 msgid "User"
 msgstr "Kullanıcı"
 
-#: dt-posts/custom-post-type.php:179
+#: dt-posts/custom-post-type.php:181
 msgid "Tags"
 msgstr "Etiketler"
 
-#: dt-contacts/base-setup.php:302
+#: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Bu kişiyi başka bir kişiyle birleştir."
@@ -2844,8 +2778,10 @@ msgstr "Bu kişinin mensup olduğu grupları"
 msgid "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr "Kişiye takip etmekte Atandığı kullanıcıya yardım eden Kişi yada Kullanıcı."
 
-#: dt-contacts/base-setup.php:239
+#: dt-contacts/base-setup.php:240
 #: dt-groups/base-setup.php:365
+#: dt-people-groups/people-groups-base.php:193
+#: dt-people-groups/people-groups-base.php:203
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "Bu kişinin oturduğu veya olduğu genel konumu."
@@ -2893,7 +2829,7 @@ msgid "Select the main person who is responsible for reporting on this group."
 msgstr "Bu kişi hakkında bildirme yapan ana sorumlu kişi veya kullanıcıyı seç."
 
 #: dt-groups/base-setup.php:197
-#: dt-groups/base-setup.php:625
+#: dt-groups/base-setup.php:634
 msgid "Church Health"
 msgstr "Kilise Sağlığı"
 
@@ -3098,7 +3034,7 @@ msgstr "Bildirimler"
 msgid "User Status"
 msgstr "Durum"
 
-#: dt-users/template-new-user.php:156
+#: dt-users/template-new-user.php:177
 #: dt-users/template-user-management.php:428
 msgid "Click here to see roles documentation"
 msgstr "Belgeleri oku"
@@ -3108,7 +3044,7 @@ msgid "Save Roles"
 msgstr "Kullanıcı Rolleri"
 
 #: dt-users/template-user-management.php:280
-#: template-settings.php:334
+#: template-settings.php:337
 msgid "Search Locations"
 msgstr "Konum Ara"
 
@@ -3147,11 +3083,11 @@ msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "%2$s de, %3$s gün geçtikten sonra, %1$s ile iletişim denendi."
 
-#: dt-users/user-metrics.php:115
+#: dt-users/user-metrics.php:117
 msgid "Logged In"
 msgstr "Oturum Açıldı"
 
-#: dt-users/user-metrics.php:118
+#: dt-users/user-metrics.php:120
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "%s 'nin atanması reddedildi"
@@ -3170,29 +3106,29 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "%1$s için şu görevi belirledin: %2$s"
 
-#: dt-contacts/access-module.php:483
-#: dt-contacts/access-module.php:514
-#: dt-contacts/access-module.php:545
-#: dt-contacts/base-setup.php:443
+#: dt-contacts/access-module.php:486
+#: dt-contacts/access-module.php:517
+#: dt-contacts/access-module.php:548
+#: dt-contacts/base-setup.php:441
 msgid "Choose an option:"
 msgstr "Bir seçeneği seç:"
 
-#: dt-contacts/access-module.php:505
-#: dt-contacts/access-module.php:536
-#: dt-contacts/access-module.php:564
-#: dt-contacts/base-setup.php:467
+#: dt-contacts/access-module.php:508
+#: dt-contacts/access-module.php:539
+#: dt-contacts/access-module.php:567
+#: dt-contacts/base-setup.php:465
 msgid "Confirm"
 msgstr "Onayla"
 
-#: dt-groups/base-setup.php:583
+#: dt-groups/base-setup.php:592
 msgid "Create"
 msgstr "Oluştur"
 
-#: dt-groups/base-setup.php:588
+#: dt-groups/base-setup.php:597
 msgid "Select"
 msgstr "Seç"
 
-#: dt-groups/base-setup.php:600
+#: dt-groups/base-setup.php:609
 msgctxt "Add members modal"
 msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
 msgstr "'Üye Listesi\" alanında mevcut olan kişinin adını yazarak onu bu gruba dahil edebilirsin."
@@ -3263,22 +3199,22 @@ msgstr "Tür:"
 msgid "Type of Comment"
 msgstr "Yorumları Görüntüle"
 
-#: dt-contacts/access-module.php:309
+#: dt-contacts/access-module.php:312
 msgid "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr "Kişi aktarma ortaklıkla olan başka bir Disciple.Tools siteden gelen kişiler"
 
 #: dt-mapping/geocode-api/mapbox-api.php:286
 #: dt-mapping/geocode-api/mapbox-api.php:321
 #: dt-users/template-user-management.php:268
-#: template-settings.php:319
+#: template-settings.php:322
 msgid "add"
 msgstr "ekle"
 
-#: dt-posts/posts.php:441
+#: dt-posts/posts.php:449
 msgid "%s removed"
 msgstr "%s kaldırıldı"
 
-#: dt-contacts/access-module.php:1291
+#: dt-contacts/access-module.php:1294
 #: dt-users/template-user-management.php:95
 msgid "Location"
 msgstr "Konum(lar)"
@@ -3369,7 +3305,7 @@ msgid "Inactive Groups Switch"
 msgstr "Etkin Olmayan Gruplar"
 
 #: dt-assets/parts/modals/modal-help.php:129
-#: dt-assets/parts/nav-topbar.php:306
+#: dt-assets/parts/nav-topbar.php:307
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "Hepsini Okunmuş Olarak İşaretle"
@@ -3378,7 +3314,7 @@ msgstr "Hepsini Okunmuş Olarak İşaretle"
 msgid "Task Type"
 msgstr "Görev türü"
 
-#: dt-contacts/base-setup.php:346
+#: dt-contacts/base-setup.php:347
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
 msgstr "Kişinin Durumu kişi ile iletişimdeki süreçini açıklar ilerlemesini gösterir."
@@ -3387,11 +3323,12 @@ msgstr "Kişinin Durumu kişi ile iletişimdeki süreçini açıklar ilerlemesin
 msgid "Contact Type"
 msgstr "Kişi türü"
 
-#: dt-posts/custom-post-type.php:156
+#: dt-people-groups/people-groups-base.php:219
+#: dt-posts/custom-post-type.php:158
 msgid "Last Modified"
 msgstr "Son değiştirilmiş"
 
-#: dt-core/configuration/config-site-defaults.php:367
+#: dt-core/configuration/config-site-defaults.php:356
 msgid "New Comments"
 msgstr "Yeni yorumlar"
 
@@ -3475,7 +3412,7 @@ msgstr "Kilometre Taşları Haritası"
 msgid "Unable to update"
 msgstr "Güncellenemiyor"
 
-#: dt-contacts/access-module.php:275
+#: dt-contacts/access-module.php:278
 msgctxt "Reason Closed label"
 msgid "GDPR request"
 msgstr "GDPR talebi"
@@ -3624,19 +3561,19 @@ msgstr "Kaynaklar Listesi"
 msgid "Save Allowed Sources"
 msgstr "İzin Verilen Kaynakları Kaydet"
 
-#: dt-users/template-new-user.php:61
+#: dt-users/template-new-user.php:82
 msgid "Add New User"
 msgstr "Yeni Kullanıcı Ekle"
 
-#: dt-users/template-new-user.php:69
+#: dt-users/template-new-user.php:90
 msgid "There are some errors in your form."
 msgstr "Formunuzda bazı hatalar var."
 
-#: dt-users/template-new-user.php:75
+#: dt-users/template-new-user.php:96
 msgid "Contact to make a user (optional)"
 msgstr "Kullanıcı oluşturmak için iletişime geçin (isteğe bağlı)"
 
-#: dt-users/template-new-user.php:160
+#: dt-users/template-new-user.php:181
 msgid "Create User"
 msgstr "Kullanıcı Oluştur"
 
@@ -3648,7 +3585,7 @@ msgstr "E-posta adresi zaten kullanıcı olarak sistemde!"
 msgid "Username is already in the system as a user!"
 msgstr "Kullanıcı adı zaten kullanıcı olarak sistemde!"
 
-#: dt-users/template-new-user.php:84
+#: dt-users/template-new-user.php:105
 msgid "Search multipliers and contacts"
 msgstr "Çarpanları ve bağlantıları arayın"
 
@@ -3672,7 +3609,7 @@ msgstr "Koçluk Ağacım"
 msgid "My Groups Tree"
 msgstr "Grup Ağaçlarım"
 
-#: dt-contacts/base-setup.php:404
+#: dt-contacts/base-setup.php:406
 msgid "See duplicates"
 msgstr "Yinelenenleri görün"
 
@@ -3688,7 +3625,7 @@ msgstr "Yinelenenler: %s"
 msgid "No duplicates found."
 msgstr "Yinelenen kişi bulunamadı."
 
-#: dt-contacts/base-setup.php:195
+#: dt-contacts/base-setup.php:196
 msgid "Languages"
 msgstr "Diller"
 
@@ -3696,23 +3633,23 @@ msgstr "Diller"
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "Bu kişi, daha fazla takip için %s'ye aktarıldı."
 
-#: dt-contacts/duplicates-merging.php:573
+#: dt-contacts/duplicates-merging.php:541
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "Bu kayıt bir kopya ve %2$s ile birleştirildi"
 
-#: dt-contacts/access-module.php:1473
-#: dt-contacts/duplicates-merging.php:514
-#: dt-contacts/duplicates-merging.php:577
+#: dt-contacts/access-module.php:1476
+#: dt-contacts/duplicates-merging.php:465
+#: dt-contacts/duplicates-merging.php:545
 msgid "Duplicate Checker"
 msgstr "Yinelenen Denetleyici"
 
-#: dt-contacts/duplicates-merging.php:586
+#: dt-contacts/duplicates-merging.php:554
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s,%2$s'yi bu kayıtla birleştirdi"
 
-#: dt-posts/dt-posts.php:1159
+#: dt-posts/dt-posts.php:1255
 msgid "D.T System"
 msgstr "D.T Sistemi"
 
@@ -3728,30 +3665,30 @@ msgstr "Bu bağlantı zaten bir kullanıcı."
 msgid "View User"
 msgstr "Kullanıcıyı Görüntüle"
 
-#: template-settings.php:55
-#: template-settings.php:311
+#: template-settings.php:58
+#: template-settings.php:314
 msgid "Multiplier Preferences"
 msgstr "Çarpan Tercihleri"
 
-#: template-settings.php:319
-#: template-settings.php:324
+#: template-settings.php:322
+#: template-settings.php:327
 msgid "Locations you are willing to be responsible for"
 msgstr "Sorumlu olmak istediğiniz yerler"
 
 #: dt-users/template-user-management.php:291
-#: template-settings.php:347
+#: template-settings.php:350
 msgid "Languages you are comfortable speaking"
 msgstr "Konuşurken rahat olduğunuz diller"
 
-#: template-settings.php:368
+#: template-settings.php:371
 msgid "People Groups you wish to serve"
 msgstr "Hizmet vermek istediğiniz Kişi Grupları"
 
-#: template-settings.php:391
+#: template-settings.php:394
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "Kişi Atayan görevlisinden kişiler alma uygunluğu"
 
-#: template-settings.php:664
+#: template-settings.php:667
 msgid "System Language"
 msgstr "Sistem Dili"
 
@@ -3801,14 +3738,14 @@ msgid "Share with:"
 msgstr "Şununla Paylaş"
 
 #: archive-template.php:522
-#: dt-users/template-new-user.php:108
-#: dt-users/template-new-user.php:221
+#: dt-users/template-new-user.php:129
+#: dt-users/template-new-user.php:242
 msgid "See More Options"
 msgstr "Daha Seçenek Gör"
 
 #: archive-template.php:523
-#: dt-users/template-new-user.php:111
-#: dt-users/template-new-user.php:224
+#: dt-users/template-new-user.php:132
+#: dt-users/template-new-user.php:245
 msgid "See Fewer Options"
 msgstr "Daha Az Seçenek Gör"
 
@@ -3839,48 +3776,40 @@ msgstr "Kayıt Oluşturuldu"
 msgid "Edit New Record"
 msgstr "Yeni Kayıtı Kaydet"
 
-#: dt-contacts/access-module.php:95
-msgid "Access"
-msgstr "Erişim"
-
-#: dt-contacts/access-module.php:97
-msgid "Someone to follow-up with"
-msgstr "Takip için bir kişi"
-
-#: dt-contacts/access-module.php:109
+#: dt-contacts/access-module.php:112
 msgid "Collaborators"
 msgstr "Ortaklar"
 
-#: dt-contacts/access-module.php:908
-#: dt-contacts/access-module.php:918
+#: dt-contacts/access-module.php:911
+#: dt-contacts/access-module.php:921
 msgid "My Follow-Up"
 msgstr "Takiplerim"
 
-#: dt-contacts/access-module.php:919
-#: dt-contacts/access-module.php:940
-#: dt-contacts/access-module.php:963
-#: dt-contacts/access-module.php:987
-#: dt-groups/base-setup.php:969
+#: dt-contacts/access-module.php:922
+#: dt-contacts/access-module.php:943
+#: dt-contacts/access-module.php:966
+#: dt-contacts/access-module.php:990
+#: dt-groups/base-setup.php:977
 msgid "Assigned to me"
 msgstr "Bana Atananlar"
 
-#: dt-contacts/access-module.php:920
-#: dt-contacts/access-module.php:941
-#: dt-contacts/access-module.php:964
-#: dt-contacts/access-module.php:988
+#: dt-contacts/access-module.php:923
+#: dt-contacts/access-module.php:944
+#: dt-contacts/access-module.php:967
+#: dt-contacts/access-module.php:991
 msgid "Sub-assigned to me"
 msgstr "İkincil olarak atandıklarım"
 
-#: dt-contacts/access-module.php:1024
+#: dt-contacts/access-module.php:1027
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "%s Takibi"
 
-#: dt-contacts/access-module.php:1032
+#: dt-contacts/access-module.php:1035
 msgid "All Follow-Up"
 msgstr "Bütün Takipler"
 
-#: dt-contacts/access-module.php:1467
+#: dt-contacts/access-module.php:1470
 msgid "This record might be a duplicate of: "
 msgstr "Bu Kayır Şunların Kopyası Olabilir"
 
@@ -3909,48 +3838,48 @@ msgstr "Bir Aile, Aile Üyesi veya Tanıdık"
 msgid "Only me"
 msgstr "Sadece Ben"
 
-#: dt-contacts/base-setup.php:247
+#: dt-contacts/base-setup.php:248
 #: dt-groups/base-setup.php:374
 msgid "Locations or Address"
 msgstr "Bölgeler ve Adresler"
 
-#: dt-contacts/base-setup.php:301
+#: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Başka kayıtlara bağlantılar"
 
-#: dt-contacts/base-setup.php:399
+#: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "%s Seçeneği Değiştir"
 
-#: dt-contacts/base-setup.php:533
-#: dt-groups/base-setup.php:1050
+#: dt-contacts/base-setup.php:531
+#: dt-groups/base-setup.php:1058
 msgid "Default Filters"
 msgstr "Standart Filtreler"
 
-#: dt-contacts/base-setup.php:543
+#: dt-contacts/base-setup.php:541
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Görüntüleyebilen tüm %s"
 
-#: dt-contacts/base-setup.php:569
-#: dt-groups/base-setup.php:1079
-#: dt-posts/custom-post-type.php:335
+#: dt-contacts/base-setup.php:564
+#: dt-groups/base-setup.php:1087
+#: dt-posts/custom-post-type.php:337
 msgid "My Recently Viewed"
 msgstr "Son Görüntülemem"
 
-#: dt-contacts/base-setup.php:574
-#: dt-groups/base-setup.php:1084
-#: dt-posts/custom-post-type.php:340
+#: dt-contacts/base-setup.php:569
+#: dt-groups/base-setup.php:1092
+#: dt-posts/custom-post-type.php:342
 msgid "Last 30 viewed"
 msgstr "Son 30 Görüntülemem"
 
-#: dt-contacts/access-module.php:104
+#: dt-contacts/access-module.php:107
 msgid "Connection"
 msgstr "Bağlantı"
 
-#: dt-contacts/access-module.php:106
+#: dt-contacts/access-module.php:109
 #: dt-contacts/dmm-module.php:51
 msgid "Connected to a contact, or generational fruit"
 msgstr "Bir kişiye bağlı yada nesilsel ürün"
@@ -3972,11 +3901,11 @@ msgstr "Bu Kişinin Temsil Ettiği Gruplar"
 msgid "Sub-assigned"
 msgstr "İkincil-atanılan"
 
-#: dt-contacts/dmm-module.php:276
+#: dt-contacts/dmm-module.php:277
 msgid "Faith"
 msgstr "İman"
 
-#: dt-contacts/dmm-module.php:359
+#: dt-contacts/dmm-module.php:360
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "Bağlandı %s"
@@ -3986,10 +3915,12 @@ msgid "Coaches"
 msgstr "Koçlar"
 
 #: dt-mapping/geocode-api/mapbox-api.php:287
+#: template-merge-post-details.php:88
 msgid "Use"
 msgstr "Kullan"
 
 #: dt-mapping/geocode-api/mapbox-api.php:288
+#: template-merge-post-details.php:86
 #: template-new-bulk-post.php:26
 #: template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
@@ -3997,6 +3928,7 @@ msgid "Search Location"
 msgstr "Bölge Ara"
 
 #: dt-mapping/geocode-api/mapbox-api.php:289
+#: template-merge-post-details.php:87
 #: template-new-bulk-post.php:216
 msgid "Delete Location"
 msgstr "Bölge Sil"
@@ -4029,7 +3961,7 @@ msgstr "Kontaklar Haritası"
 msgid "Groups Maps"
 msgstr "Gruplar Haritası"
 
-#: dt-posts/dt-posts.php:1607
+#: dt-posts/dt-posts.php:1733
 #: single-template.php:120
 msgid "Details"
 msgstr "Detaylar"
@@ -4044,8 +3976,8 @@ msgstr "Güncelleme Raporu"
 
 #: dt-assets/functions/enqueue-scripts.php:308
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1288
-#: dt-groups/base-setup.php:977
+#: dt-contacts/access-module.php:1291
+#: dt-groups/base-setup.php:985
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-users/mapbox-coverage-map.php:77
 msgid "All"
@@ -4069,20 +4001,18 @@ msgstr "D.T. Kayıt"
 msgid "This %s needs an update."
 msgstr "Bu %s için bir güncelleme gerekir."
 
-#: dt-assets/functions/details-bar.php:113
-#: dt-assets/functions/details-bar.php:275
+#: dt-assets/functions/details-bar.php:121
+#: dt-assets/functions/details-bar.php:283
 msgid "Record"
 msgstr "Kayıt"
 
 #: dt-assets/functions/enqueue-scripts.php:223
-#: template-merge-details.php:132
-#: template-merge-details.php:150
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "%s de oluşturuldu"
 
-#: dt-assets/functions/details-bar.php:117
-#: dt-assets/functions/details-bar.php:279
+#: dt-assets/functions/details-bar.php:125
+#: dt-assets/functions/details-bar.php:287
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "oluşturan %s"
@@ -4124,27 +4054,27 @@ msgstr "Başla"
 msgid "end"
 msgstr "Son"
 
-#: dt-contacts/base-setup.php:392
-#: dt-contacts/base-setup.php:424
+#: dt-contacts/base-setup.php:393
+#: dt-contacts/base-setup.php:422
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "%s Arşiv"
 
-#: dt-contacts/base-setup.php:425
+#: dt-contacts/base-setup.php:423
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "%s dosyasını arşivlemek istediğinizden emin misiniz?\n"
 ""
 
-#: dt-contacts/base-setup.php:432
+#: dt-contacts/base-setup.php:430
 msgid "Archive"
 msgstr "Arşiv"
 
-#: dt-contacts/base-setup.php:683
+#: dt-contacts/base-setup.php:678
 msgid "This %s is archived"
 msgstr "Bu %s Arşivlendi"
 
-#: dt-contacts/base-setup.php:685
+#: dt-contacts/base-setup.php:680
 msgid "Restore"
 msgstr "Yenile"
 
@@ -4164,7 +4094,7 @@ msgid "Dismiss all matches for %s"
 msgstr "%s İçin Bütün Eşleşmeleri Kaldır"
 
 #: archive-template.php:300
-#: dt-contacts/base-setup.php:355
+#: dt-contacts/base-setup.php:356
 #: dt-users/users.php:437
 msgid "Archived"
 msgstr "Arşivlendi"
@@ -4201,11 +4131,6 @@ msgstr "Disciple Tools"
 msgid "https://github.com/DiscipleTools/disciple-tools-theme"
 msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 
-#. Description of the theme
-#: 
-msgid "Disciple Tools is a coalition management system for disciple making movements."
-msgstr "Disciple Tools, , öğrenci yetiştirme hareketleri için bir koalisyon yönetim sistemidir."
-
 #. Author URI of the theme
 #: 
 msgid "https://github.com/DiscipleTools"
@@ -4230,11 +4155,11 @@ msgstr "Tüm Alanları Ara"
 msgid "Choose which fields to search"
 msgstr "Hangi alanları arayacağını seç"
 
-#: dt-contacts/base-setup.php:292
+#: dt-contacts/base-setup.php:293
 msgid "Other Social Links"
 msgstr "Diğer Sosyal Bağlantılar"
 
-#: dt-assets/parts/nav-topbar.php:293
+#: dt-assets/parts/nav-topbar.php:294
 msgid "See All"
 msgstr "Tümünü Gör"
 
@@ -4252,11 +4177,11 @@ msgstr[1] "%s yıldan fazla zaman önce"
 msgid "Hide fields"
 msgstr "Alanları gizle"
 
-#: dt-core/global-functions.php:733
+#: dt-core/global-functions.php:582
 msgid "Add new tag \"%s\""
 msgstr "Yeni \"%s\" etiketi ekle"
 
-#: dt-core/global-functions.php:734
+#: dt-core/global-functions.php:583
 msgid "Tag \"%s\" is already being used"
 msgstr "\"%s\" etiketi zaten kullanılıyor"
 
@@ -4264,13 +4189,13 @@ msgstr "\"%s\" etiketi zaten kullanılıyor"
 msgid "Leader of Group"
 msgstr "Grubun lideri"
 
-#: dt-assets/functions/details-bar.php:74
-#: dt-assets/functions/details-bar.php:245
+#: dt-assets/functions/details-bar.php:82
+#: dt-assets/functions/details-bar.php:253
 msgid "Previous record"
 msgstr "Önceki kayıt"
 
-#: dt-assets/functions/details-bar.php:123
-#: dt-assets/functions/details-bar.php:286
+#: dt-assets/functions/details-bar.php:131
+#: dt-assets/functions/details-bar.php:294
 msgid "Next record"
 msgstr "Sonraki kayıt"
 
@@ -4314,37 +4239,37 @@ msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s ve %1$s, %2$s emojisi ile tepksi verdi"
 
-#: dt-core/configuration/config-site-defaults.php:536
+#: dt-core/configuration/config-site-defaults.php:525
 msgid "thumbs up"
 msgstr "beğenme"
 
-#: dt-core/configuration/config-site-defaults.php:537
+#: dt-core/configuration/config-site-defaults.php:526
 msgid "heart"
 msgstr "kalp"
 
-#: dt-core/configuration/config-site-defaults.php:538
+#: dt-core/configuration/config-site-defaults.php:527
 msgid "laugh"
 msgstr "gülmek"
 
-#: dt-core/configuration/config-site-defaults.php:539
+#: dt-core/configuration/config-site-defaults.php:528
 msgid "wow"
 msgstr "hayret"
 
-#: dt-core/configuration/config-site-defaults.php:540
+#: dt-core/configuration/config-site-defaults.php:529
 msgid "sad"
 msgstr "üzgün"
 
-#: dt-posts/dt-posts.php:1671
+#: dt-posts/dt-posts.php:1797
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr "@[%1$s](%2$s) - %3$s kullanıcısı, %4$s [%5$s](%6$s)'e erişim talep etti. İstenirse, erişim vermek için kullanıcı ile bu kaydı paylaş."
 
-#: dt-posts/dt-posts.php:1677
+#: dt-posts/dt-posts.php:1803
 msgid "Access Request"
 msgstr "Erişim Talebi"
 
 #: dt-assets/functions/enqueue-scripts.php:262
-#: template-settings.php:282
+#: template-settings.php:285
 msgid "link"
 msgstr "bağlantı"
 
@@ -4360,11 +4285,11 @@ msgstr "Arama Ayarları"
 msgid "Record Hits:"
 msgstr "Rekor Tıklamalar:"
 
-#: dt-contacts/access-module.php:335
+#: dt-contacts/access-module.php:338
 msgid "Campaigns"
 msgstr "Kampanyalar"
 
-#: dt-contacts/access-module.php:336
+#: dt-contacts/access-module.php:339
 msgctxt "Optional Documentation"
 msgid "Marketing campaigns or access activities that this contact interacted with."
 msgstr "Bu kişinin etkileşimde bulunduğu pazarlama kampanyaları veya erişim etkinlikleri."
@@ -4422,31 +4347,31 @@ msgid "My Group Generation Tree"
 msgstr "Grup Soy Ağacım"
 
 #: dt-reports/magic-url-setup.php:30
-#: template-settings.php:53
+#: template-settings.php:56
 msgid "Apps"
 msgstr "Uygulamalar"
 
-#: template-settings.php:244
+#: template-settings.php:247
 msgid "Your Apps"
 msgstr "Uygulamalarınız"
 
-#: template-settings.php:249
+#: template-settings.php:252
 msgid "App Name"
 msgstr "Uygulama Adı"
 
-#: template-settings.php:250
+#: template-settings.php:253
 msgid "App Description"
 msgstr "Uygulama Açıklaması"
 
-#: template-settings.php:251
+#: template-settings.php:254
 msgid "App Link"
 msgstr "Uygulama Bağlantısı"
 
-#: template-settings.php:252
+#: template-settings.php:255
 msgid "App Activation"
 msgstr "Uygulama Aktivasyonu"
 
-#: template-settings.php:262
+#: template-settings.php:265
 msgid "No apps installed"
 msgstr "Uygulama yüklenmedi"
 
@@ -4463,33 +4388,33 @@ msgstr "%2$s içeren tüm %2$s öğeleri"
 msgid "None Set"
 msgstr "Belirlenmedi"
 
-#: dt-contacts/base-setup.php:557
-#: dt-groups/base-setup.php:1067
-#: dt-posts/custom-post-type.php:320
+#: dt-contacts/base-setup.php:552
+#: dt-groups/base-setup.php:1075
+#: dt-posts/custom-post-type.php:322
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Favori %s"
 
-#: dt-contacts/base-setup.php:563
-#: dt-groups/base-setup.php:1073
-#: dt-posts/custom-post-type.php:171
-#: dt-posts/custom-post-type.php:326
+#: dt-contacts/base-setup.php:558
+#: dt-groups/base-setup.php:1081
+#: dt-posts/custom-post-type.php:173
+#: dt-posts/custom-post-type.php:328
 msgid "Favorite"
 msgstr "Favori"
 
 #: archive-template.php:278
-#: dt-assets/parts/nav-topbar.php:143
+#: dt-assets/parts/nav-topbar.php:144
 #: dt-metrics/personal/activity-log.php:53
 #: dt-users/user-management.php:184
 msgid "More"
 msgstr "Daha"
 
-#: dt-posts/dt-posts.php:1153
+#: dt-posts/dt-posts.php:1249
 msgid "Magic Link Submission"
 msgstr "Magic Link Submission"
 
 #: dt-assets/functions/enqueue-scripts.php:263
-#: template-settings.php:283
+#: template-settings.php:286
 msgid "copy"
 msgstr "kopyala"
 
@@ -4497,7 +4422,7 @@ msgstr "kopyala"
 msgid "User Language"
 msgstr "Kullanıcı Dili"
 
-#: dt-core/configuration/config-site-defaults.php:541
+#: dt-core/configuration/config-site-defaults.php:530
 msgid "prayer"
 msgstr "dua"
 
@@ -4518,7 +4443,7 @@ msgstr "Sayı"
 msgid "No Activity Detected!"
 msgstr "İşlem Bulunmuyor!"
 
-#: dt-posts/custom-post-type.php:180
+#: dt-posts/custom-post-type.php:182
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr "İlgili öğeleri gruplandırmak için faydalı bir işlem."
@@ -4527,7 +4452,7 @@ msgstr "İlgili öğeleri gruplandırmak için faydalı bir işlem."
 msgid "You are registered but an administrator needs to assign you access permissions."
 msgstr "Kayıdınız oluştulmuştur fakat bir admin gerekli yetki izinlerini vermesi gerek."
 
-#: dt-users/template-new-user.php:118
+#: dt-users/template-new-user.php:139
 #: dt-users/template-user-management.php:90
 msgid "Role"
 msgstr "Rol"
@@ -4559,21 +4484,21 @@ msgid "You've been invited to join %1$s at %2$s"
 msgstr "%2$s websitesinde %1$s 'ye katılmaya davet edildiniz."
 
 #: dt-notifications/notifications-scheduler.php:140
-#: template-settings.php:479
+#: template-settings.php:482
 #, fuzzy
 msgid "Hourly Digest"
 msgstr "Saatlik Özeti"
 
 #: dt-notifications/notifications-scheduler.php:143
-#: template-settings.php:483
+#: template-settings.php:486
 msgid "Daily Digest"
 msgstr "Günlük Özeti"
 
-#: template-settings.php:469
+#: template-settings.php:472
 msgid "Email preferences"
 msgstr "Eposta Tercihleri"
 
-#: template-settings.php:475
+#: template-settings.php:478
 msgid "Real time"
 msgstr "Gerçek zamanı"
 
@@ -4597,32 +4522,32 @@ msgid "Communication"
 msgstr "İletişim"
 
 #: dt-assets/parts/nav-offcanvas.php:79
-#: dt-assets/parts/nav-topbar.php:250
+#: dt-assets/parts/nav-topbar.php:251
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "Çıkış Yap"
 
-#: dt-contacts/access-module.php:611
+#: dt-contacts/access-module.php:614
 msgid "Dispatchers"
 msgstr "Kişi Atayanlar"
 
-#: dt-contacts/access-module.php:614
+#: dt-contacts/access-module.php:617
 msgid "Digital Responders"
 msgstr "Sanal Takipçileri"
 
-#: dt-contacts/access-module.php:621
+#: dt-contacts/access-module.php:624
 msgid "Assign To"
 msgstr "Atanılan"
 
-#: dt-contacts/access-module.php:1289
+#: dt-contacts/access-module.php:1292
 msgid "Ready"
 msgstr "Hazır"
 
-#: dt-contacts/access-module.php:1290
+#: dt-contacts/access-module.php:1293
 msgid "Recent"
 msgstr "En Son"
 
-#: dt-contacts/access-module.php:1292
+#: dt-contacts/access-module.php:1295
 msgid "Assign"
 msgstr "Ata"
 
@@ -4640,33 +4565,25 @@ msgstr "Daha Az"
 msgid "View New Contact"
 msgstr "Yeni Kişi Görüntüle"
 
-#: dt-users/user-metrics.php:104
+#: dt-users/user-metrics.php:106
 msgid "Updated fields"
 msgstr "Güncellenmiş Alanlar"
 
-#: dt-users/user-metrics.php:108
+#: dt-users/user-metrics.php:110
 msgid "Made %n comments"
 msgstr "%n yorum yapmıştır"
 
-#: dt-users/user-metrics.php:111
+#: dt-users/user-metrics.php:113
 msgid "Created record"
 msgstr "Oluşturulmuş Kaydı"
 
-#: dt-users/user-metrics.php:114
+#: dt-users/user-metrics.php:116
 msgid "Logged In %n times"
 msgstr "%n defa giriş yapmıştır"
 
-#: template-settings.php:64
+#: template-settings.php:67
 msgid "Invite User"
 msgstr "Kullancı Davet Et"
-
-#: dt-contacts/user-module.php:102
-msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'."
-msgstr "Bu işlem, bu kişiyi sisteme kullanıcı olmaya davet eder. Varsayılan olarak \"Çoğaltan\" rolu bu kişiye verilecektir."
-
-#: dt-contacts/user-module.php:111
-msgid "Can be changed later"
-msgstr "Daha sonra değiştirilebilir"
 
 #: archive-template.php:479
 msgid "Update %s"
@@ -4676,11 +4593,11 @@ msgstr "%s güncelle"
 msgid "User Profile"
 msgstr "Kullanıcı Profil"
 
-#: dt-users/template-new-user.php:165
-#: dt-users/template-new-user.php:169
-#: dt-users/template-new-user.php:172
-#: dt-users/template-new-user.php:191
-#: dt-users/template-new-user.php:205
+#: dt-users/template-new-user.php:186
+#: dt-users/template-new-user.php:190
+#: dt-users/template-new-user.php:193
+#: dt-users/template-new-user.php:212
+#: dt-users/template-new-user.php:226
 msgid "optional"
 msgstr "zorunlu olmayan"
 
@@ -4689,7 +4606,7 @@ msgstr "zorunlu olmayan"
 msgid "Disciple.Tools is a coalition management system for disciple making movements."
 msgstr "Disciple.Tools Çoğalan Oğrenci Yetiştirme haraketleri için bir koalisyon yönetim sistemdir."
 
-#: dt-contacts/access-module.php:258
+#: dt-contacts/access-module.php:261
 msgid "Reason Archived"
 msgstr "Neden Arşivlendi"
 
@@ -4711,7 +4628,7 @@ msgstr "Arayan Yolu Şuan Mevcut Değil"
 
 #: dt-contacts/contacts-transfer.php:124
 msgid "Remote Contact Summary"
-msgstr ""
+msgstr "Uzaktan İletişim Özeti"
 
 #: dt-contacts/contacts-transfer.php:164
 msgid "Write your comment or note here"
@@ -4765,50 +4682,50 @@ msgstr "Veri Mevcut Değil"
 msgid "Mentions"
 msgstr "Mentionlar/Menşınlar"
 
-#: dt-reports/magic-url-bulk-send.php:18
+#: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
 msgstr "Çoklu Gönder Uygulması"
 
 #. What is the context for this?
 #: archive-template.php:560
 #: dt-assets/functions/enqueue-scripts.php:310
-#: dt-reports/magic-url-bulk-send.php:71
+#: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
-msgstr ""
+msgstr "Seçimleri Aşağıdan Yap"
+
+#: dt-reports/magic-url-bulk-send.php:38
+msgid "Select all the %1$s to whom you want to send app links."
+msgstr "Uygulama bağlantılarını göndermek istediğiniz tüm %1$s kişileri seçin."
 
 #: dt-reports/magic-url-bulk-send.php:41
-msgid "Select all the %1$s to whom you want to send app links."
-msgstr ""
-
-#: dt-reports/magic-url-bulk-send.php:44
 msgid "Add optional greeting"
-msgstr ""
+msgstr "Opsiyonel selamlama ekle"
+
+#: dt-reports/magic-url-bulk-send.php:42
+msgid "Add short greeting to be added above the app link."
+msgstr "Uygulama bağlantısının üstüne gelece kısa bir selamlama ekleyin."
 
 #: dt-reports/magic-url-bulk-send.php:45
-msgid "Add short greeting to be added above the app link."
-msgstr ""
-
-#: dt-reports/magic-url-bulk-send.php:48
 msgid "Select app to email"
-msgstr ""
+msgstr "E-posta atılacak uygulamayı seç"
 
-#: dt-reports/magic-url-bulk-send.php:49
+#: dt-reports/magic-url-bulk-send.php:46
 msgid "You must select an app"
-msgstr ""
+msgstr "Bir uygulama seçmelisiniz"
 
-#: dt-reports/magic-url-bulk-send.php:66
+#: dt-reports/magic-url-bulk-send.php:63
 msgid "Send to selected records"
-msgstr ""
+msgstr "Seçili kayıtlara gönder"
+
+#: dt-reports/magic-url-bulk-send.php:64
+msgid "You must select at least one record"
+msgstr "En az bir kayıt seçmelisiniz"
 
 #: dt-reports/magic-url-bulk-send.php:67
-msgid "You must select at least one record"
-msgstr ""
-
-#: dt-reports/magic-url-bulk-send.php:70
 msgid "Send"
 msgstr "Gönder"
 
-#: dt-reports/magic-url-bulk-send.php:70
+#: dt-reports/magic-url-bulk-send.php:67
 msgid "Links"
 msgstr "Bağlantılar"
 
@@ -4824,32 +4741,24 @@ msgstr "gönderilmemiş (geçersiz eposta olabilir)"
 
 #: dt-reports/magic-url-setup.php:31
 msgid "Apps available on this record."
-msgstr ""
-
-#: dt-reports/magic-url-setup.php:113
-msgid "Send a link via email through the system."
-msgstr "Sistem aracılığıyla bir bağlantı mail olarak gönder."
+msgstr "Bu kayıtta bulunan uygulamalar."
 
 #: dt-reports/magic-url-setup.php:114
 msgid "Send email with link"
 msgstr "Bağlantı içeren maili gönder"
 
-#: dt-reports/magic-url-setup.php:150
-msgid "QR codes are useful for passing the coaching links to mobile devices."
-msgstr ""
-
 #: dt-reports/magic-url-setup.php:155
 msgid "Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
-msgstr ""
+msgstr "Güvenlik kodunu sıfırlayın. Hiçbir veri silinmez. Yalnızca erişim kalkar. Önceki bağlantı devre dışı bırakılacak ve başka bir bağlantı oluşturulacaktır."
 
 #: dt-reports/magic-url-setup.php:156
 msgid "Delete and replace the app link"
-msgstr ""
+msgstr "Uygulama bağlantısını sil ve değiştir"
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
 msgid "Activity Highlights"
-msgstr ""
+msgstr "Etkinlik Öne Çıkanları"
 
 #. What is the context
 #: dt-metrics/personal/activity-highlights.php:59
@@ -4860,12 +4769,12 @@ msgstr "Hiçbiri"
 #. What is the context?
 #: dt-metrics/personal/activity-highlights.php:60
 msgid "%1$s I Changed"
-msgstr ""
+msgstr "%1$s I Değişti"
 
 #. What is the context for this?
 #: dt-metrics/personal/activity-highlights.php:61
 msgid "%1$s I Made"
-msgstr ""
+msgstr "%1$s I Oluşturuldu"
 
 #. İs this contacts İ baptised or a vertical line "|" separating the words
 #: dt-metrics/personal/activity-highlights.php:62
@@ -4874,34 +4783,34 @@ msgstr "Vaftiz Ettiğim Kişiler"
 
 #: dt-metrics/personal/activity-highlights.php:63
 msgid "%1$s changed by others on my %2$s"
-msgstr ""
+msgstr "%1$s, %2$s cihazımda başkası tarafından değiştirildi"
 
 #: dt-metrics/personal/activity-highlights.php:64
 msgid "Baptisms by others on my contacts"
-msgstr ""
+msgstr "Başkası tarafından kişilerimde yapılan vaftizler"
 
 #: dt-metrics/personal/activity-highlights.php:65
 msgid "Comments I Reacted To"
-msgstr ""
+msgstr "Etkileşimde Bulunduğum I Yorumlar"
 
 #: dt-metrics/personal/activity-highlights.php:66
 msgid "Comments I Posted"
-msgstr ""
+msgstr "Paylaştığım I Yorumlar"
 
 #. what is the context for this?
 #: dt-metrics/personal/activity-highlights.php:176
 msgid "%1$d %2$s created"
-msgstr ""
+msgstr "%1$d %2$s oluşturuldu"
 
-#: dt-contacts/access-module.php:95
+#: dt-contacts/access-module.php:98
 msgid "Standard Contact"
 msgstr "Standart Kişi"
 
-#: dt-contacts/access-module.php:97
+#: dt-contacts/access-module.php:100
 msgid "A contact to collaborate on"
 msgstr "Birlikte yetiştirilip takip edilen bir kişi"
 
-#: dt-contacts/access-module.php:98
+#: dt-contacts/access-module.php:101
 msgid "Me and project leadership"
 msgstr "Proje liderleri ile ben"
 
@@ -4926,36 +4835,36 @@ msgid "This contact represents a user."
 msgstr "Bu kişi bir kullanıcıyı temsil eder."
 
 #. what is the context for this?
-#: dt-users/template-new-user.php:244
+#: dt-users/template-new-user.php:265
 #, fuzzy
 msgid "Upgrading a contact"
 msgstr "Kişi üst seviyeye geçiriliyor"
 
-#: dt-users/template-new-user.php:247
+#: dt-users/template-new-user.php:268
 msgid "The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
 msgstr "Yeni kullanıcı bu kaydındaki tüm yorumlar ve alanlara ulaşma yetkisi olacaktır. Hasas veri içeren yorumları arşivlemeni tavsiye ederiz."
 
-#: dt-users/template-new-user.php:254
+#: dt-users/template-new-user.php:275
 msgid "Continue and archive comments"
 msgstr "Devam et ve yorumları arşivle"
 
-#: dt-users/template-new-user.php:255
+#: dt-users/template-new-user.php:276
 msgid "Continue, keeping comments"
 msgstr "Devam et, yorumlar kalsın"
 
-#: dt-users/template-new-user.php:264
+#: dt-users/template-new-user.php:285
 msgid "Merge Contact Details"
 msgstr "Kişi Detayları Birleştir"
 
-#: dt-users/template-new-user.php:266
+#: dt-users/template-new-user.php:287
 msgid "A new contact record has been created."
 msgstr "Yeni bir kişi kaydı oluşturulmuştur."
 
-#: dt-users/template-new-user.php:269
+#: dt-users/template-new-user.php:290
 msgid "The old one is now closed."
 msgstr "Eski olanı artık kapatılmıştır."
 
-#: dt-users/template-new-user.php:272
+#: dt-users/template-new-user.php:293
 msgid "Do you wish to merge fields from the old record to the new one?"
 msgstr "Eski kaydından verileri yeni olana birleştirmek ister misin?"
 
@@ -4963,20 +4872,12 @@ msgstr "Eski kaydından verileri yeni olana birleştirmek ister misin?"
 msgid "Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
 msgstr "%1$s hoşgeldiniz, bu senin özel kişi kaydın. Veri alanları günceleyebilir veya bana yada başka kullanıcılara @mention olarak etiketlersen bizi dahil edebilirsiniz - güle güle kullan"
 
-#: dt-users/users.php:437
-msgid "archived"
-msgstr "arşivlendi"
-
 #: dt-users/users.php:447
 msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
 msgstr "%1$s için arşivlenmiş yorumlar"
 
-#: template-merge-details.php:207
-msgid "Copy comments to master record"
-msgstr "Ana kayıda yorumları kopyala"
-
-#: template-settings.php:74
+#: template-settings.php:77
 msgid "View Contact Record"
 msgstr "Kişi Kaydı Görüntüle"
 
@@ -4984,15 +4885,15 @@ msgstr "Kişi Kaydı Görüntüle"
 msgid "Open With"
 msgstr "Aracıyla Aç"
 
-#: dt-contacts/base-setup.php:212
+#: dt-contacts/base-setup.php:213
 msgid "Signal"
 msgstr "Signal"
 
-#: dt-contacts/base-setup.php:217
+#: dt-contacts/base-setup.php:218
 msgid "Viber"
 msgstr "Viber"
 
-#: dt-contacts/base-setup.php:222
+#: dt-contacts/base-setup.php:223
 msgid "Whatsapp"
 msgstr "Whatsapp"
 
@@ -5015,37 +4916,206 @@ msgstr "Özel filtre oluştur"
 
 #: dt-reports/magic-url-setup.php:113
 msgid "Send the link via email."
-msgstr ""
+msgstr "Bağlantıyı e-posta ile gönderin."
 
 #: dt-reports/magic-url-setup.php:113
 msgid "Add email address"
-msgstr ""
+msgstr "E-posta adresi ekle"
 
 #: dt-reports/magic-url-setup.php:114
 msgid "Add a note"
-msgstr ""
+msgstr "Not ekle"
 
 #: template-new-bulk-post.php:85
 msgid "New Bulk %s"
-msgstr ""
+msgstr "Yeni Toplu %s"
 
 #: template-new-bulk-post.php:98
 msgid "Choose which fields to display across new bulk records"
-msgstr ""
+msgstr "Yeni toplu kayıtlarda hangi alanların görüntüleneceğini seç"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
-msgstr ""
+msgstr "Yeni Satır Ekle"
 
 #: template-new-bulk-post.php:264
 msgid "Add Records"
-msgstr ""
+msgstr "Kayıt Ekle"
 
 #: template-new-post.php:45
 msgid "Add Bulk Records?"
-msgstr ""
+msgstr "Toplu Kayıt Eklensin mi?"
 
 #: dt-reports/magic-url-setup.php:150
 msgid "Scan the QR code to open the magic link on a mobile device."
+msgstr "Bir mobil cihazda bağlantıyı açmak için QR kodunu tarayın."
+
+#: dt-assets/functions/details-bar.php:66
+msgctxt "Merge with another record"
+msgid "Merge with another %s"
+msgstr "Başka bir %s ile birleştir"
+
+#: dt-assets/parts/merge-details.php:36
+msgctxt "Merge Contacts"
+msgid "Merge %s"
+msgstr "%s'i birleştir"
+
+#: dt-assets/parts/merge-details.php:37
+msgctxt "Merge this contact with another contact"
+msgid "Merge this %1$s with another %2$s"
+msgstr "Bu %1$s'i başka bir %2$s ile birleştir"
+
+#: dt-users/template-new-user.php:16
+msgid "Administrator must enable \"Add New Users\" option in multisite settings:"
+msgstr "Yönetici, çoklu site ayarlarında \"Yeni Kullanıcı Ekle\" seçeneğini etkinleştirmelidir:"
+
+#: template-merge-post-details.php:89
+msgid "Open Modal"
+msgstr "Modalı Aç"
+
+#: template-merge-post-details.php:111
+msgid "Merge Duplicate %s"
+msgstr "Mükerrrer %s'i Birleştir"
+
+#: template-merge-post-details.php:113
+msgid "When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
+msgstr "Birleştirmeyi yaptığınızda birincil kayıt, seçtiğiniz değerlerle güncellenir ve diğer ögelerle ilişkiler aşağıdan değiştirilebilen birincil kayda aktarılır."
+
+#: template-merge-post-details.php:116
+msgid "Copy comments to updated primary record"
+msgstr "Yorumları güncellenmiş birincil kayda kopyala"
+
+#: template-merge-post-details.php:132
+msgid "Archiving"
+msgstr "Arşivleniyor"
+
+#: template-merge-post-details.php:140
+msgid "Use as Primary"
+msgstr "Birincil Olarak Kullan"
+
+#: template-merge-post-details.php:153
+msgid "Primary"
+msgstr "Birincil"
+
+#: template-merge-post-details.php:167
+msgid "Updated"
+msgstr "Güncellendi"
+
+#: archive-template.php:619
+msgid "Field Name"
+msgstr "Alan Adı"
+
+#: dt-assets/functions/enqueue-scripts.php:313
+msgid "Exclude Item"
+msgstr "Ögeyi Çıkar"
+
+#: dt-workflows/workflows-triggers.php:63
+msgid "D.T Workflow"
+msgstr "D.T İş Akışı"
+
+#: dt-core/release-notifications.php:43
+msgid "Release Announcement!"
+msgstr "Yayın Duyurusu!"
+
+#: dt-core/release-notifications.php:44
+msgid "Disciple.Tools Theme Version %1$s"
+msgstr "Disciple.Tools Tema Versiyonu %1$s"
+
+#: dt-core/release-notifications.php:49
+msgid "Theme News"
+msgstr "Tema Haberleri"
+
+#: dt-core/release-notifications.php:50
+#: dt-core/release-notifications.php:59
+msgid "Other News"
+msgstr "Diğer Haberler"
+
+#: dt-core/release-notifications.php:51
+msgid "Get Involved"
+msgstr "Katılın"
+
+#: dt-core/release-notifications.php:63
+msgid "Other news not available."
+msgstr "Diğer haberler yok"
+
+#: dt-core/release-notifications.php:78
+msgid "Give"
+msgstr "Verin"
+
+#: dt-core/release-notifications.php:80
+msgid "Make Disciple.Tools better by joining us financially."
+msgstr "Mali olarak bize katılarak Disciple.Tools'u daha iyi hale getirin."
+
+#: dt-core/release-notifications.php:80
+msgid "Join us here"
+msgstr "Bize katılın\n"
+""
+
+#: dt-core/release-notifications.php:86
+msgid "Translate"
+msgstr "Çevirin"
+
+#: dt-core/release-notifications.php:88
+msgid "Translate Disciple.Tools into your language or help make a translation better."
+msgstr "Disciple.Tools'u kendi dilinize çevirin veya bir çevirinin daha iyi olmasına yardımcı olun."
+
+#: dt-core/release-notifications.php:88
+msgid "Click here"
+msgstr "Buraya Tıklayın"
+
+#: dt-core/release-notifications.php:94
+msgid "Build or Document"
+msgstr "Oluştur veya Belgele"
+
+#: dt-core/release-notifications.php:96
+msgid "Make Disciple.Tools better by building a feature or helping us make the documentation better."
+msgstr "Bir özellik oluşturarak veya belgeleri daha iyi hale getirmemize yardımcı olarak Disciple.Tools'u daha iyi hale getirin."
+
+#: dt-core/release-notifications.php:96
+msgid "Find out more"
+msgstr "Daha fazlasını keşfet"
+
+#: dt-people-groups/people-groups-base.php:166
+msgid "Contacts Total"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:185
+msgid "Groups Total"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:288
+msgid "People Group Code"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:295
+msgid "People ID"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:302
+msgid "Primary Language"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:309
+msgid "Country"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:323
+msgid "Connections"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:325
+msgid "Joshua Project"
+msgstr ""
+
+#: dt-people-groups/people-groups.php:275
+msgid "Display Options"
+msgstr ""
+
+#: dt-people-groups/people-groups.php:282
+msgid "Display People Groups Tab in Navigation Bar"
+msgstr ""
+
+#: dt-people-groups/people-groups.php:304
+msgid "Import People Group"
 msgstr ""
 

@@ -5,83 +5,83 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
 "Project-Id-Version: Disciple.Tools\n"
-"Language: tl\n"
-"Plural-Forms: nplurals=2; plural=(n>1);\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: 403.php:22
 #: dt-users/template-new-user.php:14
 msgid "Permission denied"
-msgstr "Tinanggihan ang pahintulot"
+msgstr "Odmowa dostępu"
 
 #: 403.php:35
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "Paumanhin, wala kang pahintulot na tingnan ang %1$s na may id na %2$s."
+msgstr "Przepraszamy, nie masz uprawnień do przeglądania %1$s o identyfikatorze %2$s."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
-msgstr "Humiling ng pahintulot mula sa iyong administrator."
+msgstr "Poproś o dostęp swojego administratora."
 
 #: 403.php:39
 #: dt-users/template-new-user.php:273
 msgid "Back"
-msgstr "Bumalik"
+msgstr "Powrót"
 
 #: 404.php:25
 msgid "Epic 404 - Not Found"
-msgstr "Epic 404 - Hindi Nakita"
+msgstr "Błąd 404 - nie znaleziono"
 
 #: 404.php:29
 msgid "The page you were looking for was not found or was deleted"
-msgstr "Hindi nakita ang pahinang hinahanap mo o tinanggal ito"
+msgstr "Strona której szukasz nie istnieje lub została usunięta"
 
 #: dt-contacts/base-setup.php:351
 #: dt-groups/base-setup.php:125
 #: dt-users/template-user-management.php:94
 #: dt-users/user-management.php:118
 msgid "Active"
-msgstr "Aktibo"
+msgstr "Aktywni"
 
 #: dt-assets/parts/nav-topbar.php:277
 #: template-notifications.php:43
 msgid "New"
-msgstr "Bago"
+msgstr "Nowi"
 
 #: dt-contacts/access-module.php:189
 msgid "Waiting to be accepted"
-msgstr "Naghihintay na matanggap"
+msgstr "Oczekuje na akceptację"
 
 #: dt-contacts/duplicates-merging.php:566
 msgid "View Duplicates"
-msgstr "Tingnan ang mga Duplicate"
+msgstr "Pokaż duplikaty"
 
 #: archive-template.php:63
 #: archive-template.php:150
 msgid "Search"
-msgstr "Hanapin"
+msgstr "Szukaj"
 
 #: dt-contacts/base-setup.php:599
 #: dt-contacts/base-setup.php:607
 #: dt-contacts/base-setup.php:625
 #: dt-contacts/base-setup.php:626
 msgid "Shared with me"
-msgstr "Ibinahagi sa akin"
+msgstr "Udostępniono dla mnie"
 
 #: dt-contacts/access-module.php:117
 #: dt-groups/base-setup.php:142
 #: dt-metrics/groups/tree.php:86
 #: dt-metrics/personal/group-tree.php:87
 msgid "Assigned To"
-msgstr "Itinalaga Kay"
+msgstr "Przypisany do"
 
 #: archive-template.php:703
 #: dt-assets/functions/enqueue-scripts.php:301
 #: dt-posts/custom-post-type.php:166
 msgid "Creation Date"
-msgstr "Petsa ng Paggawa"
+msgstr "Data utworzenia"
 
 #: archive-template.php:694
 msgid "Filter for subassigned OR Assigned To"
-msgstr "Filter para sa subassigned O Assigned To"
+msgstr "Filtruj według przypisanych lub przypisanych do"
 
 #: archive-template.php:731
 #: archive-template.php:732
@@ -90,7 +90,7 @@ msgstr "Filter para sa subassigned O Assigned To"
 #: template-settings.php:295
 #: template-settings.php:538
 msgid "No"
-msgstr "Hindi"
+msgstr "Nie"
 
 #: archive-template.php:738
 #: archive-template.php:739
@@ -99,20 +99,20 @@ msgstr "Hindi"
 #: template-settings.php:294
 #: template-settings.php:537
 msgid "Yes"
-msgstr "Oo"
+msgstr "Tak"
 
 #: archive-template.php:746
 #: archive-template.php:757
 msgctxt "Clear/empty input"
 msgid "Clear"
-msgstr "I-clear"
+msgstr "Wyczyść"
 
 #: archive-template.php:794
 #: dt-assets/functions/enqueue-scripts.php:261
 #: dt-assets/functions/enqueue-scripts.php:296
 #: template-settings.php:681
 msgid "Save"
-msgstr "I-save"
+msgstr "Zapisz"
 
 #: dt-assets/functions/details-bar.php:44
 #: dt-assets/functions/details-bar.php:243
@@ -121,30 +121,30 @@ msgstr "I-save"
 #: dt-workflows/update-required.php:70
 #: dt-workflows/update-required.php:109
 msgid "Update Needed"
-msgstr "Kailangan ng Pag-update"
+msgstr "Potrzebna aktualizacja"
 
 #: dt-contacts/user-module.php:108
 msgid "Make a user from this contact"
-msgstr "Gumawa ng user mula sa contact na ito"
+msgstr "Utwórz użytkownika z tego kontaktu"
 
 #: dt-contacts/user-module.php:115
 msgid "Link to an existing user"
-msgstr "I-link sa umiiral na user"
+msgstr "Połącz z już istniejącym użytkownikiem"
 
 #: dt-assets/functions/details-bar.php:159
 #: dt-assets/functions/details-bar.php:164
 msgid "Following"
-msgstr "Nag-fa-follow"
+msgstr "Obserwuje"
 
 #: archive-template.php:477
 #: dt-assets/functions/details-bar.php:168
 #: dt-posts/custom-post-type.php:189
 msgid "Follow"
-msgstr "I-follow"
+msgstr "Śledź"
 
 #: dt-assets/functions/details-bar.php:178
 msgid "Share"
-msgstr "I-share"
+msgstr "Udostępnij"
 
 #: archive-template.php:46
 #: archive-template.php:494
@@ -152,19 +152,19 @@ msgstr "I-share"
 #: dt-assets/parts/loop-activity-comment.php:177
 #: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
-msgstr "Mga komento"
+msgstr "Komantarze"
 
 #: dt-assets/functions/enqueue-scripts.php:138
 msgid "You don't have any unread notifications"
-msgstr "Wala kang kahit anong notipikasyong hindi nabasa"
+msgstr "Nie masz żadnych nieodebranych powiadomień"
 
 #: dt-assets/functions/enqueue-scripts.php:139
 msgid "You don't have any notifications"
-msgstr "Wala kang kahit anong notipikasyon"
+msgstr "Nie masz żadnych powiadomień"
 
 #: dt-assets/functions/enqueue-scripts.php:220
 msgid "Transfer failed. Check site-to-site configuration."
-msgstr "Hindi nailipat. Tingnan ang site-to-site na konpigurasyon."
+msgstr "Transfer nie powiódł się. Sprawdź konfigurację między lokacjami."
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #: dt-assets/functions/enqueue-scripts.php:175
@@ -172,7 +172,7 @@ msgstr "Hindi nailipat. Tingnan ang site-to-site na konpigurasyon."
 #: template-settings.php:119
 #: template-settings.php:566
 msgid "Edit"
-msgstr "I-edit"
+msgstr "Edytuj"
 
 #: dt-assets/functions/enqueue-scripts.php:176
 #: dt-assets/functions/enqueue-scripts.php:210
@@ -181,20 +181,20 @@ msgstr "I-edit"
 #: dt-assets/parts/loop-activity-comment.php:156
 #: single-template.php:365
 msgid "Delete"
-msgstr "Tanggalin"
+msgstr "Usuń"
 
 #: dt-assets/functions/enqueue-scripts.php:299
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
-msgstr "Ipinapakita ang  _START_ of _TOTAL_"
+msgstr "_START_ of _TOTAL_"
 
 #: dt-assets/functions/enqueue-scripts.php:300
 msgid "Sorting By"
-msgstr "Pinagbubukod-bukod sa Pamamagitan ng"
+msgstr "Sortuj według"
 
 #: dt-assets/functions/enqueue-scripts.php:302
 msgid "Date Modified"
-msgstr "Petsa nang Baguhin"
+msgstr "Data modyfikacji"
 
 #: dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:63
@@ -218,7 +218,7 @@ msgstr "Petsa nang Baguhin"
 #: dt-people-groups/people-groups-base.php:154
 #: dt-users/template-user-management.php:602
 msgid "Contacts"
-msgstr "Mga Contact"
+msgstr "Osoby"
 
 #: dt-groups/base-setup.php:51
 #: dt-groups/base-setup.php:64
@@ -238,13 +238,13 @@ msgstr "Mga Contact"
 #: dt-metrics/personal/overview.php:63
 #: dt-people-groups/people-groups-base.php:173
 msgid "Groups"
-msgstr "Mga grupo"
+msgstr "Grupy"
 
 #. Template Name of the plugin/theme
 #: dt-metrics/combined/daily-activity.php:86
 #: dt-metrics/metrics.php:116
 msgid "Metrics"
-msgstr "Metrics"
+msgstr "Statystyki"
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
@@ -255,7 +255,7 @@ msgstr "Metrics"
 #: template-settings.php:60
 #: template-settings.php:467
 msgid "Notifications"
-msgstr "Mga Notipikasyon"
+msgstr "Powiadomienia"
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:76
@@ -265,28 +265,28 @@ msgstr "Mga Notipikasyon"
 #: dt-assets/parts/nav-topbar.php:309
 #: template-notifications.php:68
 msgid "Settings"
-msgstr "Settings"
+msgstr "Ustawienia"
 
 #: dt-assets/functions/menu.php:88
 msgid "Admin"
-msgstr "Admin"
+msgstr "Administrator"
 
 #: single-template.php:55
 #: single-template.php:63
 msgid "Please provide an update by posting a comment."
-msgstr "Mangyaring magbigay ng update sa pamamagitan ng pagpo-post ng komento."
+msgstr "Proszę podać aktualizację, zamieszczając komentarz."
 
 #: dt-contacts/access-module.php:676
 msgid "This contact has been assigned to you."
-msgstr "Itinalaga sa iyo ang contact na ito."
+msgstr "Ta osoba została przypisana do Ciebie."
 
 #: dt-contacts/access-module.php:677
 msgid "Accept"
-msgstr "Tanggapin"
+msgstr "Akceptuj"
 
 #: dt-contacts/access-module.php:678
 msgid "Decline"
-msgstr "Tanggihan"
+msgstr "Odrzuć"
 
 #: archive-template.php:403
 #: dt-metrics/groups/tree.php:87
@@ -296,18 +296,18 @@ msgstr "Tanggihan"
 #: dt-users/template-user-management.php:520
 #: single-template.php:78
 msgid "Status"
-msgstr "Kalagayan"
+msgstr "Status"
 
 #: dt-contacts/dmm-module.php:134
 msgid "Sub-assigned to"
-msgstr "Naka-sub-assign kay"
+msgstr "Podprzypisane do"
 
 #: dt-contacts/base-setup.php:257
 #: dt-groups/base-setup.php:383
 #: dt-people-groups/people-groups-base.php:211
 #: template-settings.php:180
 msgid "Address"
-msgstr "Address"
+msgstr "Adres"
 
 #: dt-assets/parts/modals/modal-help.php:103
 #: dt-contacts/base-setup.php:239
@@ -315,18 +315,18 @@ msgstr "Address"
 #: dt-people-groups/people-groups-base.php:192
 #: dt-people-groups/people-groups-base.php:201
 msgid "Locations"
-msgstr "Mga lokasyon"
+msgstr "Lokalizacje"
 
 #: dt-contacts/dmm-module.php:212
 #: dt-groups/base-setup.php:404
 #: dt-people-groups/people-groups-base.php:85
 #: dt-people-groups/people-groups-base.php:95
 msgid "People Groups"
-msgstr "Mga Grupo ng Tao"
+msgstr "Grupy osób"
 
 #: dt-contacts/base-setup.php:325
 msgid "Age"
-msgstr "Edad"
+msgstr "Wiek"
 
 #: dt-contacts/access-module.php:1297
 #: dt-contacts/base-setup.php:314
@@ -334,7 +334,7 @@ msgstr "Edad"
 #: dt-users/template-user-management.php:363
 #: template-settings.php:653
 msgid "Gender"
-msgstr "Kasarian"
+msgstr "Płeć"
 
 #: archive-template.php:591
 #: dt-assets/parts/modals/modal-new-contact.php:7
@@ -343,38 +343,38 @@ msgstr "Kasarian"
 #: dt-posts/custom-post-type.php:149
 #: template-settings.php:136
 msgid "Name"
-msgstr "Pangalan"
+msgstr "Imię"
 
 #: archive-template.php:232
 msgid "Sort"
-msgstr "Pagbukud-bukurin"
+msgstr "Sortuj"
 
 #: archive-template.php:236
 msgid "Newest"
-msgstr "Pinakabago"
+msgstr "Najnowsze"
 
 #: archive-template.php:240
 msgid "Oldest"
-msgstr "Pinakaluma"
+msgstr "Najstarsze"
 
 #: archive-template.php:244
 msgid "Most recently modified"
-msgstr "Pinakahuling binago"
+msgstr "Najpóźniej modyfikowane"
 
 #: archive-template.php:248
 msgid "Least recently modified"
-msgstr "Kamakailan lang binago"
+msgstr "Najdawniej modyfikowane"
 
 #: dt-contacts/access-module.php:128
 #: dt-metrics/contacts/seeker-path.php:25
 #: dt-metrics/contacts/seeker-path.php:62
 msgid "Seeker Path"
-msgstr "Landas ng Naghahanap"
+msgstr "Ścieżka poszukiwnia"
 
 #. Could be either Hitos or Pilares
 #: dt-contacts/dmm-module.php:59
 msgid "Faith Milestones"
-msgstr "Makasaysayang Pangyayari sa Pananampalataya"
+msgstr "Kamienie milowe wiary"
 
 #: dt-groups/base-setup.php:51
 #: dt-groups/base-setup.php:63
@@ -382,64 +382,64 @@ msgstr "Makasaysayang Pangyayari sa Pananampalataya"
 #: dt-metrics/personal/activity-highlights.php:58
 #: dt-metrics/personal/group-tree.php:165
 msgid "Group"
-msgstr "Grupo"
+msgstr "Grupa"
 
 #: archive-template.php:602
 msgid "Loading..."
-msgstr "Naglo-load..."
+msgstr "Wczytuję..."
 
 #: dt-groups/base-setup.php:151
 msgid "Group Coach / Church Planter"
-msgstr "Tagapagturo ng Grupo / Tagapagtatag ng Iglesia"
+msgstr "Trener grupowy / założyciel kościoła"
 
 #: dt-groups/base-setup.php:258
 #: dt-users/template-user-management.php:324
 #: template-settings.php:426
 #: template-settings.php:445
 msgid "Start Date"
-msgstr "Petsa ng Simula"
+msgstr "Data rozpoczęcia"
 
 #: dt-groups/base-setup.php:266
 msgid "Church Start Date"
-msgstr "Petsa ng Simula ng Iglesia"
+msgstr "Data założenia Kościoła"
 
 #: dt-groups/base-setup.php:275
 #: dt-users/template-user-management.php:325
 #: template-settings.php:432
 #: template-settings.php:446
 msgid "End Date"
-msgstr "Petsa ng Pagtatapos"
+msgstr "Data zakończenia"
 
 #: dt-assets/parts/loop-activity-comment.php:78
 msgid "Submit comment"
-msgstr "Isumite ang komento"
+msgstr "Zatwierdź komentarz"
 
 #: archive-template.php:482
 #: dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:42
 msgid "Comments and Activity"
-msgstr "Mga Komento at Aktibidad"
+msgstr "Komentarze i aktywność"
 
 #: dt-assets/parts/loop-activity-comment.php:86
 msgid "Showing:"
-msgstr "Ipinapakita:"
+msgstr "Wyświetlam:"
 
 #: dt-assets/parts/loop-activity-comment.php:99
 #: dt-users/template-user-management.php:235
 msgid "Activity"
-msgstr "Aktibidad"
+msgstr "Aktywność"
 
 #: dt-assets/parts/loop-activity-comment.php:133
 msgid "show all"
-msgstr "ipakita lahat"
+msgstr "pokaż wszystkie"
 
 #: dt-assets/parts/loop-activity-comment.php:137
 msgid "hide all"
-msgstr "Huwag ipakita lahat"
+msgstr "ukryj wszystkie"
 
 #: dt-assets/parts/loop-activity-comment.php:149
 msgid "Delete Comment:"
-msgstr "Tanggalin ang Komento:"
+msgstr "Usuń komentarz:"
 
 #: dt-assets/parts/loop-activity-comment.php:153
 #: dt-assets/parts/loop-activity-comment.php:200
@@ -453,69 +453,69 @@ msgstr "Tanggalin ang Komento:"
 #: dt-groups/base-setup.php:618
 #: dt-users/template-new-user.php:299
 msgid "Close"
-msgstr "Isara"
+msgstr "Zamknij"
 
 #: dt-assets/parts/loop-activity-comment.php:163
 #: dt-assets/parts/loop-activity-comment.php:210
 #: template-merge-post-details.php:95
 msgid "Sorry, something went wrong"
-msgstr "Paumanhin, may nangyaring hindi maganda"
+msgstr "Przepraszamy, coś poszło nie tak."
 
 #: dt-assets/parts/loop-activity-comment.php:164
 msgid "The comment could not be deleted."
-msgstr "Hindi matatanggal ang komentong ito."
+msgstr "Nie udało się usunąć komentarza."
 
 #: dt-assets/parts/loop-activity-comment.php:169
 msgid "Edit Comment:"
-msgstr "I-edit ang Komento:"
+msgstr "Edytuj komentarz:"
 
 #: archive-template.php:559
 #: dt-assets/parts/loop-activity-comment.php:203
 #: template-new-bulk-post.php:232
 msgid "Update"
-msgstr "I-update"
+msgstr "Aktualizuj"
 
 #: dt-assets/parts/loop-activity-comment.php:211
 msgid "The comment could not be updated."
-msgstr "Hindi ma-update ang komento."
+msgstr "Nie udało się zaktualizować komentarza."
 
 #: dt-assets/parts/merge-details.php:9
 msgid "Duplicate Contacts"
-msgstr "Kopyahin ang mga Contact"
+msgstr "Duplikaty"
 
 #: dt-assets/parts/merge-details.php:11
 msgid "Original Contact"
-msgstr "Orihinal na Contact"
+msgstr "Pierwotny kontakt"
 
 #: dt-assets/parts/merge-details.php:14
 msgid "Possible Duplicates"
-msgstr "Posibleng mga Kopya"
+msgstr "Prawdopodobne duplikaty"
 
 #: dt-assets/parts/merge-details.php:15
 msgid "Dismiss All"
-msgstr "Balewalain Lahat"
+msgstr "Odrzuć wszystkie"
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Dismiss"
-msgstr "Balewalain"
+msgstr "Odrzuć"
 
 #: dt-assets/parts/modals/modal-filters.php:3
 #: dt-assets/parts/modals/modal-filters.php:12
 msgid "Save Filter"
-msgstr "I-save ang Filter"
+msgstr "Zapisz filtr"
 
 #: dt-assets/parts/modals/modal-filters.php:4
 msgid "What do you want to call this filter?"
-msgstr "Ano ang gusto mong itawag sa filter na ito?"
+msgstr "Jak chcesz nazwać ten filtr?"
 
 #: dt-assets/parts/modals/modal-filters.php:22
 #: dt-assets/parts/modals/modal-filters.php:31
 msgid "Delete Filter"
-msgstr "Tanggalin ang Filter"
+msgstr "Usuń filtr"
 
 #: dt-groups/base-setup.php:120
 msgid "Group Status"
-msgstr "Kalagayan ng Grupo"
+msgstr "Status grupy"
 
 #: dt-core/global-functions.php:475
 #: single-template.php:340
@@ -523,112 +523,112 @@ msgstr "Kalagayan ng Grupo"
 #: template-new-post.php:138
 #: template-new-post.php:174
 msgid "This is required"
-msgstr "Kailangan ito"
+msgstr "Wymagane"
 
 #: dt-assets/parts/modals/modal-revert.php:4
 msgid "Revert Activity"
-msgstr "Ibalik ang Aktibidad"
+msgstr "Odwróć aktywność"
 
 #: dt-assets/parts/modals/modal-revert.php:5
 #: dt-metrics/combined/time-charts.php:108
 msgid "Field"
-msgstr "Field"
+msgstr "Pole"
 
 #: dt-assets/parts/modals/modal-revert.php:8
 msgid "Current Value"
-msgstr "Kasalukuyang Halaga"
+msgstr "Aktualna wartość"
 
 #: dt-assets/parts/modals/modal-revert.php:10
 msgid "Old Value"
-msgstr "Lumang Value"
+msgstr "Poprzednia wartość"
 
 #: dt-assets/parts/modals/modal-revert.php:18
 msgid "Revert to old value?"
-msgstr "Bumalik sa lumang value?"
+msgstr "Przywrócić poprzednią wartość?"
 
 #: dt-assets/parts/modals/modal-share.php:7
 msgid "Share settings"
-msgstr "Ibahagi ang mga setting"
+msgstr "Udostępnij ustawienia"
 
 #: dt-assets/parts/modals/modal-share.php:12
 msgid "This group is shared with:"
-msgstr "Ang grupong ito ay ibinabahagi sa:"
+msgstr "Tę grupę dzielisz z:"
 
 #: dt-assets/parts/modals/modal-share.php:14
 msgid "This contact is shared with:"
-msgstr "Ang contact na ito ay ibinabahagi sa:"
+msgstr "Ten kontakt dzielisz z:"
 
 #: dt-assets/functions/menu.php:63
 msgid "Add New"
-msgstr "Magdagdag ng Bago"
+msgstr "Dodaj nowy"
 
 #: dt-contacts/access-module.php:174
 msgid "New Contact"
-msgstr "Bagong Contact"
+msgstr "Nowy kontakt"
 
 #: dt-assets/functions/menu.php:51
 #: template-settings.php:54
 msgid "Profile"
-msgstr "Profile"
+msgstr "Profil"
 
 #: dt-assets/functions/menu.php:100
 msgid "Help"
-msgstr "Tulong"
+msgstr "Pomoc"
 
 #: dt-contacts/access-module.php:153
 #: dt-metrics/counter.php:140
 msgid "Ongoing Meetings"
-msgstr "Mga Nagaganap na Pulong"
+msgstr "Spotkania w trakcie"
 
 #: dt-contacts/base-setup.php:340
 #: dt-groups/base-setup.php:109
 #: dt-people-groups/people-groups-base.php:148
 msgid "Requires Update"
-msgstr "Nangangailangan ng Update"
+msgstr "Wymaga aktualizacji"
 
 #: dt-contacts/dmm-module.php:89
 #: dt-contacts/dmm-module.php:202
 msgid "Baptized"
-msgstr "Nabinyagan"
+msgstr "Ochrzczony/ochrzczona"
 
 #: dt-contacts/dmm-module.php:169
 msgid "Baptism Date"
-msgstr "Petsa ng Binyag"
+msgstr "Data chrztu"
 
 #: dt-contacts/dmm-module.php:177
 #: dt-metrics/counter.php:157
 msgid "Baptism Generation"
-msgstr "Nagbinyag"
+msgstr "Pokolenie chrztu"
 
 #: dt-contacts/access-module.php:325
 #: dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:536
 msgid "Sources"
-msgstr "Mga Sanggunian"
+msgstr "Źródła"
 
 #: dt-posts/custom-post-type.php:195
 msgid "Un-Follow"
-msgstr "I-Un-Follow"
+msgstr "Przestań obserwować"
 
 #: dt-contacts/base-setup.php:205
 #: template-settings.php:169
 msgid "Phone"
-msgstr "Telepono"
+msgstr "Numer telefonu"
 
 #: dt-core/configuration/config-site-defaults.php:539
 msgid "Work"
-msgstr "Trabaho"
+msgstr "Praca"
 
 #: dt-core/configuration/config-site-defaults.php:538
 msgid "Home"
-msgstr "Bahay"
+msgstr "Strona główna"
 
 #: dt-contacts/base-setup.php:489
 #: dt-core/configuration/config-site-defaults.php:540
 #: dt-groups/base-setup.php:642
 #: template-settings.php:202
 msgid "Other"
-msgstr "Iba pa"
+msgstr "Inne"
 
 #: dt-contacts/base-setup.php:230
 #: dt-core/configuration/config-site-defaults.php:338
@@ -637,7 +637,7 @@ msgstr "Iba pa"
 #: dt-users/template-user-management.php:355
 #: template-settings.php:156
 msgid "Email"
-msgstr "Email"
+msgstr "e-mail"
 
 #: dt-contacts/access-module.php:302
 #: dt-contacts/base-setup.php:277
@@ -651,130 +651,130 @@ msgstr "Twitter"
 
 #: dt-contacts/contacts-transfer.php:31
 msgid "Contact Transfer Both Ways"
-msgstr "Paglilipat ng Contact Sa Parehong Paraan"
+msgstr "Przenieś kontakt w obie strony"
 
 #: dt-contacts/contacts-transfer.php:32
 msgid "Contact Transfer Sending Only"
-msgstr "Paglilipat ng Contact Pagpapadala Lamang"
+msgstr "Przeniesienie kontaktu: tylko wysłanie"
 
 #: dt-contacts/contacts-transfer.php:33
 msgid "Contact Transfer Receiving Only"
-msgstr "Paglilipat ng Contact Pagtanggap Lamang"
+msgstr "Przeniesienie kontaktu: tylko odbiór"
 
 #: dt-contacts/contacts-transfer.php:57
 msgid "This contact has been transferred"
-msgstr "Nailipat na ang contact na ito"
+msgstr "Ten kontakt został przetransferowany"
 
 #: dt-contacts/contacts-transfer.php:59
 msgid "This contact has been transferred to"
-msgstr "Nailipat na ang contact na ito sa"
+msgstr "Ten kontakt został przetransferowany do"
 
 #: dt-contacts/contacts-transfer.php:266
 msgid "another site"
-msgstr "iba pang site"
+msgstr "kolejna strona"
 
 #: dt-contacts/contacts-transfer.php:276
 msgid "Already transfered to %s"
-msgstr "Nailipat na sa %s"
+msgstr "Już przeniesiono do %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
-msgstr "PAALALA: Nailipat mo na ang contact na ito. Kapag inilipat ulit, pwedeng madoble. Gusto mo pa rin bang balewalain ang babalang ito at ituloy ang iyong paglipat?"
+msgstr "UWAGA: już przesłałeś ten kontakt. Ponowne przeniesienie może spowodować utworzenie duplikatów. Czy nadal chcesz pominąć to ostrzeżenie i kontynuować przesyłanie?"
 
 #: dt-contacts/contacts-transfer.php:281
 msgid "Override and Continue"
-msgstr "Balewalain at Magpatuloy"
+msgstr "Mimo to kontynuuj"
 
 #: dt-contacts/contacts-transfer.php:289
 msgid "Transfer this contact to:"
-msgstr "Ilipat ang contact na ito sa:"
+msgstr "Przerzuć kontakt do:"
 
 #: dt-contacts/contacts-transfer.php:304
 msgid "Confirm Transfer"
-msgstr "Kumpirmahin ang Paglipat"
+msgstr "Potwierdź operację"
 
 #: dt-contacts/contacts-transfer.php:381
 msgid "Unknown error."
-msgstr "Hindi alam na error."
+msgstr "Nieznany błąd."
 
 #: dt-contacts/contacts-transfer.php:413
 msgid "Minor transfer error."
-msgstr "Minor na error sa paglipat."
+msgstr "Drobny błąd transferu."
 
 #: dt-contacts/contacts-transfer.php:572
 #: dt-contacts/contacts-transfer.php:587
 #: dt-contacts/contacts-transfer.php:617
 #: dt-contacts/contacts-transfer.php:832
 msgid "Transfer Bot"
-msgstr "Bot ng Paglipat"
+msgstr "Transfer Bot"
 
 #: dt-contacts/contacts-transfer.php:569
 msgid "Contact transferred from site"
-msgstr "Nailipat na ang contact mula sa site"
+msgstr "Kontakt przetransferowany ze strony"
 
 #: dt-contacts/contacts-transfer.php:579
 msgid "ALERT: Possible duplicate contact from a previous transfer."
-msgstr "BABALA: Posibleng nadoble ang contact mula sa dating paglipat."
+msgstr "UWAGA: Możliwy duplikat z poprzedniego transferu."
 
 #: dt-contacts/duplicates-merging.php:422
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(Mula sa Dobleng Kopya): %s"
+msgstr "(Z duplikatu): %s"
 
 #: dt-contacts/base-setup.php:87
 msgid "Strategist"
-msgstr "Estratehista"
+msgstr "Strateg"
 
 #: dt-contacts/access-module.php:72
 msgid "Dispatcher"
-msgstr "Dispatcher"
+msgstr "Dyspozytor"
 
 #: dt-contacts/access-module.php:54
 msgid "Digital Responder"
-msgstr "Digital Responder"
+msgstr "Cyfrowy obiekt odpowiadający"
 
 #: dt-contacts/base-setup.php:99
 msgid "Disciple.Tools Admin"
-msgstr "Disipulo.Admin ng Tools"
+msgstr "Administrator Disciple.Tools"
 
 #: dt-contacts/base-setup.php:81
 #: dt-groups/base-setup.php:76
 msgid "Multiplier"
-msgstr "Multiplier"
+msgstr "Pomnażacz"
 
 #: dt-contacts/base-setup.php:74
 #: dt-core/configuration/class-roles.php:142
 msgid "Registered"
-msgstr "Nakarehistro"
+msgstr "Zarejestrowany/a"
 
 #: dt-core/configuration/class-roles.php:183
 msgid "Subscriber"
-msgstr "Subscriber"
+msgstr "Subskrybent"
 
 #: dt-core/configuration/config-site-defaults.php:346
 msgid "Newly Assigned Contact"
-msgstr "Bagong Talagang Contact"
+msgstr "Nowoprzypisana osoba"
 
 #: dt-core/configuration/config-site-defaults.php:351
 msgid "@Mentions"
-msgstr "@Mentions"
+msgstr "@Wzmianki"
 
 #: dt-core/configuration/config-site-defaults.php:366
 msgid "Contact Info Changed"
-msgstr "Binago ang Impormasyon ng Contact"
+msgstr "Dane kontaktowe uległy zmianie"
 
 #: dt-core/configuration/config-site-defaults.php:371
 #: dt-core/migrations/0012-typo-rename.php:8
 msgid "Contact Milestones and Group Health metrics"
-msgstr "Mga Milestone ng Contact at mga sukatan ng Kalusugan ng Grupo"
+msgstr "Kamienie milowe kontaktu i stan duchowy grupy"
 
 #: dt-core/configuration/config-site-defaults.php:396
 msgid "This contact is active but there is no record of anybody contacting them. Please do contact them."
-msgstr "Aktibo ang contact na ito ngunit walang rekord ng kahit na sinong kumokontak sa kanila. Pakikontak sila."
+msgstr "Ta osoba jest aktywna, ale nikt się z nią dotąd nie kontaktował. Odezwij się do niej."
 
 #: dt-core/configuration/config-site-defaults.php:402
 msgid "Please try connecting with this contact again."
-msgstr "Pakisubukang kumonekta ulit sa contact na ito."
+msgstr "Spróbuj ponownie połączyć się z tą osobą."
 
 #: dt-core/configuration/config-site-defaults.php:408
 #: dt-core/configuration/config-site-defaults.php:414
@@ -782,11 +782,11 @@ msgstr "Pakisubukang kumonekta ulit sa contact na ito."
 #: dt-core/configuration/config-site-defaults.php:426
 #: dt-core/configuration/config-site-defaults.php:432
 msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
-msgstr "Matagal-tagal na kaming hindi nakakarinig mula sa taong ito. May update ba kayo para sa contact na ito?"
+msgstr "Dawno nie słyszeliśmy od tej osoby. Czy masz aktualizację dla tego kontaktu?"
 
 #: dt-core/configuration/config-site-defaults.php:442
 msgid "We haven't heard about this group in a while. Do you have an update?"
-msgstr "Matagal-tagal na kaming hindi nakakarinig mula sa grupong ito. May update ka ba?"
+msgstr "Nie mieliśmy żadnych wieści od tej grupy już od dłuższego czasu. Czy masz nowe informacje?"
 
 #: dt-assets/functions/details-bar.php:83
 #: dt-assets/functions/details-bar.php:132
@@ -795,181 +795,181 @@ msgstr "Matagal-tagal na kaming hindi nakakarinig mula sa grupong ito. May updat
 #: dt-core/configuration/dt-configuration.php:75
 msgctxt "either rtl or ltr"
 msgid "ltr"
-msgstr "ltr"
+msgstr "Od lewej do prawej"
 
 #: dt-core/configuration/restrict-site-access.php:290
 msgid "Someone has requested a password reset for the following account:"
-msgstr "May humiling ng pag-reset ng password para sa sumusunod na account:"
+msgstr "Ktoś poprosił o zresetowanie hasła do tego konta:"
 
 #. translators: %s: user login
 #: dt-core/configuration/restrict-site-access.php:294
 #: dt-users/user-hooks-and-config.php:356
 msgid "Username: %s"
-msgstr "Username: %s"
+msgstr "Nazwa użytkownika: %s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
-msgstr "Kung pagkakamali ito, balewalain lang ang email na ito at walang mangyayari."
+msgstr "Jeśli to pomyłka, zignoruj tę wiadomość."
 
 #: dt-core/configuration/restrict-site-access.php:296
 msgid "To reset your password, visit the following address:"
-msgstr "Upang i-reset ang iyong password, bisitahin ang sumusunod na address:"
+msgstr "Aby zresetować hasło, odwiedź następujący adres:"
 
 #: dt-users/template-user-management.php:414
 #: template-settings.php:149
 msgid "Roles"
-msgstr "Mga Papel"
+msgstr "Role"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
-msgstr "(walang pamagat)"
+msgstr "(brak tytułu)"
 
 #: dt-groups/base-setup.php:242
 #: dt-groups/base-setup.php:305
 msgid "Leaders"
-msgstr "Mga Pinuno"
+msgstr "Liderzy"
 
 #: dt-posts/posts.php:281
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
-msgstr "Bininyagan si %s"
+msgstr "Ochrzcił/a %s"
 
 #: dt-posts/posts.php:282
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
-msgstr "Nabinyagan ni %s"
+msgstr "Ochrzczony/a przez %s"
 
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "Hindi bininyagan si %s"
+msgstr "Nie ochrzcił(a) %s"
 
 #: dt-posts/posts.php:285
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
-msgstr "Hindi bininyagan ni %s"
+msgstr "Nie został(a) ochrzczony/a przez %s"
 
 #: dt-posts/posts.php:289
 msgctxt "contact1 added to members"
 msgid "%s added to members"
-msgstr "Idinagdag si %s sa mga miyembro"
+msgstr "%s dodany/a do grupy"
 
 #: dt-posts/posts.php:290
 msgctxt "Added to group group1"
 msgid "Added to group %s"
-msgstr "Idinagdag sa grupong %s"
+msgstr "Dodano do grupy %s"
 
 #: dt-posts/posts.php:292
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
-msgstr "Inalis si %s mula sa grupo"
+msgstr "Usunięto %s z grupy"
 
 #: dt-posts/posts.php:293
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
-msgstr "Inalis mula sa grupong %s"
+msgstr "Usunięto z grupy %s"
 
 #: dt-posts/posts.php:298
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
-msgstr "Tinuturuan si %s"
+msgstr "Prowadzi %s"
 
 #: dt-posts/posts.php:299
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "Tinuturuan ni %s"
+msgstr "Prowadzony przez %s"
 
 #: dt-posts/posts.php:301
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
-msgstr "Hindi na tinuturuan si %s"
+msgstr "Nie jest już prowadzony przez %s"
 
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
-msgstr "Na-sub assign si %s"
+msgstr "Podprzypisane %s"
 
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "Na-sub-assign sa %s"
+msgstr "Podprzypisane na %s"
 
 #: dt-posts/posts.php:309
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
-msgstr "Tinanggal ang pag-sub-assign kay %s"
+msgstr "Usunięto przypisane podrzędne %s"
 
 #: dt-posts/posts.php:322
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
-msgstr "Idinagdag si %1$s bilang pinuno sa %2$s"
+msgstr "%1$s jest teraz liderem w %2$s"
 
 #: dt-posts/posts.php:323
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "Idinagdag si %s added sa mga pinuno"
+msgstr "%s jest teraz liderem"
 
 #: dt-posts/posts.php:325
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
-msgstr "Tinanggal si %1$s mula sa mga pinuno sa %2$s"
+msgstr "%1$s nie jest już liderem w %2$s"
 
 #: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "Tinanggal si %s mula sa mga pinuno"
+msgstr "%s nie jest już liderem"
 
 #: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
-msgstr "Idinagdag si %1$s bilang coach noong %2$s"
+msgstr "%1$s jest teraz mentorem w %2$s"
 
 #: dt-posts/posts.php:331
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "Idinagdag si %s sa mga coach"
+msgstr "%s jest teraz mentorem"
 
 #: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
-msgstr "Tinanggal si %1$s sa mga coach sa %2$s"
+msgstr "%1$s nie jest już mentorem w %2$s"
 
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "Tinanggal si %s sa mga coach"
+msgstr "%s nie jest już mentorem"
 
 #: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "Idinagdag si %s sa mga grupo ng anak"
+msgstr "Dodano %s do grup podrzędnych"
 
 #: dt-posts/posts.php:339
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "Idinagdag si %s sa mga grupo ng magulang"
+msgstr "Dodano %s do grup nadrzędnych"
 
 #: dt-posts/posts.php:341
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "Tinanggal si %s mula sa mga grupo ng anak"
+msgstr "Usunięto %s z grup podrzędnych"
 
 #: dt-posts/posts.php:342
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "Tinanggal si %s mula sa mga grupo ng magulang"
+msgstr "Usunięto %s z grup nadrzędnych"
 
 #: dt-posts/posts.php:347
 #: dt-posts/posts.php:348
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "Idinagdag si %s sa mga grupo ng kaedad"
+msgstr "Dodano %s do grup porównawczych"
 
 #: dt-posts/posts.php:350
 #: dt-posts/posts.php:351
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "Tinanggal si %s mula sa mga grupo ng kaedad"
+msgstr "Usunięto %s z grup porównawczych"
 
 #: dt-posts/posts.php:355
 #: dt-posts/posts.php:356
@@ -977,7 +977,7 @@ msgstr "Tinanggal si %s mula sa mga grupo ng kaedad"
 #: dt-posts/posts.php:364
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "Naikonekta kay %s"
+msgstr "Połączono z %s"
 
 #: dt-posts/posts.php:358
 #: dt-posts/posts.php:359
@@ -985,63 +985,63 @@ msgstr "Naikonekta kay %s"
 #: dt-posts/posts.php:367
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "Tinanggal ang koneksyon kay %s"
+msgstr "Rozłączono z %s"
 
 #: dt-posts/posts.php:395
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "Itinalaga kay: %s"
+msgstr "Przypisany do: %s"
 
 #: dt-posts/posts.php:395
 msgid "Nobody"
-msgstr "Wala"
+msgstr "Nikt"
 
 #: dt-posts/posts.php:413
 #: dt-posts/posts.php:424
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
-msgstr "Tinanggal si %1$s mula sa %2$s"
+msgstr "Usunięto %1$s z %2$s"
 
 #: dt-posts/posts.php:416
 #: dt-posts/posts.php:427
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
-msgstr "Idinagdag si %1$s sa %2$s"
+msgstr "Dodano %1$s do %2$s "
 
 #: dt-posts/posts.php:545
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
-msgstr "Idinagdag ang %1$s: %2$s"
+msgstr "Dodano %1$s: %2$s"
 
 #: dt-posts/posts.php:547
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
-msgstr "Na-update ang %1$s mula %2$s tungong %3$s"
+msgstr "Zmieniono %1$s z %2$s na %3$s"
 
 #: dt-posts/posts.php:549
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
-msgstr "Binura ang %1$s: %2$s"
+msgstr "Usunięto %1$s: %2$s"
 
 #: dt-posts/dt-posts.php:1490
 msgid "Post already shared with user."
-msgstr "Naibahagi na ang post sa user."
+msgstr "Wpis został już udostępniony temu użytkownikowi."
 
 #: dt-groups/base-setup.php:164
 msgid "Group Type"
-msgstr "Uri ng Grupo"
+msgstr "Rodzaj grupy"
 
 #: dt-groups/base-setup.php:169
 msgid "Pre-Group"
-msgstr "Pre-Group"
+msgstr "Grupa wstępna"
 
 #: dt-groups/base-setup.php:177
 msgid "Church"
-msgstr "Simbahan"
+msgstr "kościół"
 
 #: dt-groups/base-setup.php:286
 msgid "Member Count"
-msgstr "Bilang ng Miyembro"
+msgstr "Ilość członków"
 
 #: dt-mapping/mapping.php:149
 msgid "Map"
@@ -1050,59 +1050,59 @@ msgstr "Mapa"
 #: dt-metrics/combined/critical-path.php:211
 #: dt-metrics/counter.php:130
 msgid "New Contacts"
-msgstr "Mga Bagong Contact"
+msgstr "Nowe kontakty"
 
 #: dt-metrics/counter.php:135
 msgid "First Meetings"
-msgstr "Mga Unang Pulong"
+msgstr "Pierwsze spotkania"
 
 #: dt-metrics/counter.php:145
 msgid "Total Baptisms"
-msgstr "Kabuuang Binyag"
+msgstr "Łączna ilość chrztów"
 
 #: dt-metrics/counter.php:150
 msgid "Total Baptizers"
-msgstr "Kabuuang Tagabinyag"
+msgstr "Łączna ilość chrzcicieli"
 
 #: dt-metrics/counter.php:163
 msgid "Total Churches and Groups"
-msgstr "Kabuuang Simbahan at Grupo"
+msgstr "Razem kościoły i grupy"
 
 #: dt-metrics/combined/critical-path.php:298
 #: dt-metrics/combined/mapbox-maps.php:83
 #: dt-metrics/counter.php:168
 msgid "Active Groups"
-msgstr "Mga Aktibong Grupo"
+msgstr "Aktywne grupy"
 
 #: dt-metrics/combined/critical-path.php:308
 #: dt-metrics/counter.php:173
 msgid "Active Churches"
-msgstr "Mga Aktibong Simbahan"
+msgstr "Aktywne kościoły"
 
 #: dt-metrics/counter.php:180
 msgid "Church Generation"
-msgstr "Henerasyon ng Simbahan"
+msgstr "Pokolenie Kościoła"
 
 #: dt-metrics/combined/critical-path.php:332
 #: dt-metrics/counter.php:186
 msgid "Church Planters"
-msgstr "Mga Tagatanim ng Simbahan"
+msgstr "Założyciele kościołów"
 
 #. This could be either Hitos or Pilares depending on the context.
 #: dt-metrics/contacts/milestones-map.php:65
 #: dt-metrics/contacts/milestones.php:66
 msgid "Milestones"
-msgstr "Mga Milestone"
+msgstr "Kamienie milowe"
 
 #: dt-metrics/combined/critical-path.php:24
 #: dt-metrics/combined/critical-path.php:46
 #: dt-metrics/combined/critical-path.php:79
 msgid "Critical Path"
-msgstr "Kritikal na Landas"
+msgstr "Ścieżka krytyczna"
 
 #: dt-metrics/combined/critical-path.php:221
 msgid "Assigned Contacts"
-msgstr "Mga Itinalagang Contact"
+msgstr "Przypisane osoby"
 
 #: dt-metrics/combined/critical-path.php:230
 #: dt-metrics/combined/mapbox-maps.php:82
@@ -1111,16 +1111,16 @@ msgstr "Mga Itinalagang Contact"
 #: dt-metrics/personal/overview.php:68
 #: dt-users/template-user-management.php:524
 msgid "Active Contacts"
-msgstr "Mga Aktibong Contact"
+msgstr "Aktywne osoby"
 
 #: dt-metrics/combined/critical-path.php:259
 #: dt-metrics/combined/daily-activity.php:91
 msgid "Baptisms"
-msgstr "Mga Binyag"
+msgstr "Chrzty"
 
 #: dt-metrics/combined/critical-path.php:288
 msgid "Baptizers"
-msgstr "Mga Tagabinyag"
+msgstr "Chrzciciele"
 
 #: dt-contacts/access-module.php:294
 #: dt-contacts/base-setup.php:575
@@ -1132,54 +1132,54 @@ msgstr "Mga Tagabinyag"
 #: dt-metrics/personal/group-tree.php:25
 #: dt-metrics/personal/overview.php:23
 msgid "Personal"
-msgstr "Personal"
+msgstr "Moje"
 
 #: dt-metrics/personal/overview.php:59
 msgid "My Overview"
-msgstr "Aking Overview"
+msgstr "Twój ogólny widok"
 
 #: dt-metrics/contacts/overview.php:64
 #: dt-metrics/groups/overview.php:67
 #: dt-metrics/personal/overview.php:60
 msgid "Waiting on Accept"
-msgstr "Hinihintay na Tanggapin"
+msgstr "Oczekiwanie akceptacji"
 
 #: dt-metrics/contacts/overview.php:65
 #: dt-metrics/groups/overview.php:68
 #: dt-metrics/personal/overview.php:61
 msgid "Waiting on Update"
-msgstr "Hinihintay Ang Update"
+msgstr "Oczekiwanie aktualizacji"
 
 #: dt-metrics/contacts/overview.php:66
 #: dt-metrics/groups/overview.php:69
 #: dt-metrics/personal/overview.php:64
 #: dt-metrics/personal/overview.php:69
 msgid "Total Groups"
-msgstr "Kabuuang Grupo"
+msgstr "Całkowita liczba grup"
 
 #: dt-metrics/groups/overview.php:71
 #: dt-metrics/groups/overview.php:78
 #: dt-metrics/personal/overview.php:65
 msgid "Group Types"
-msgstr "Mga Uri ng Grupo"
+msgstr "Rodzaje grup"
 
 #: dt-metrics/groups/overview.php:70
 #: dt-metrics/personal/overview.php:66
 msgid "Group and Church Generations"
-msgstr "Mga Henerasyon ng Grupo at Simbahan"
+msgstr "Pokolenia grupowe i kościelne"
 
 #: dt-metrics/personal/overview.php:67
 msgid "Lead Teams"
-msgstr "Mga Lead Team"
+msgstr "Zespoły liderów"
 
 #: dt-metrics/personal/overview.php:70
 msgid "Follow-up of my active contacts"
-msgstr "Follow-up sa aking mga aktibong contact"
+msgstr "Śledzenie moich aktywnych kontaktów"
 
 #: dt-metrics/groups/overview.php:74
 #: dt-metrics/personal/overview.php:71
 msgid "Active Group Health Metrics"
-msgstr "Sukatan ng Kalusugan ng Aktibong Grupo"
+msgstr "Wskaźniki stanu aktywnych grup"
 
 #: dt-metrics/combined/critical-path.php:25
 #: dt-metrics/combined/daily-activity.php:23
@@ -1190,83 +1190,83 @@ msgstr "Sukatan ng Kalusugan ng Aktibong Grupo"
 #: dt-metrics/combined/time-charts.php:43
 #: dt-metrics/metrics.php:91
 msgid "Project"
-msgstr "Proyekto"
+msgstr "Projekt"
 
 #: dt-metrics/contacts/overview.php:24
 #: dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
 msgid "Overview"
-msgstr "Overview"
+msgstr "Ogólny widok"
 
 #: dt-metrics/contacts/baptism-tree.php:24
 msgid "Baptism Tree"
-msgstr "Puno ng Binyag"
+msgstr "Drzewko chrztów"
 
 #: dt-metrics/contacts/coaching-tree.php:24
 msgid "Coaching Tree"
-msgstr "Puno ng Pagtuturo"
+msgstr "Drzewko coachingowe"
 
 #: dt-metrics/groups/overview.php:61
 msgid "Project Overview"
-msgstr "Overview ng Proyekto"
+msgstr "Przegląd projektu"
 
 #: dt-metrics/combined/critical-path.php:78
 msgid "Outreach"
-msgstr "Outreach"
+msgstr "Zasięgi"
 
 #: dt-contacts/access-module.php:406
 #: dt-metrics/combined/critical-path.php:77
 msgid "Follow Up"
-msgstr "Follow Up"
+msgstr "Sprawdź co nowego"
 
 #: dt-metrics/contacts/overview.php:62
 #: dt-metrics/groups/overview.php:65
 msgid "All Contacts"
-msgstr "Lahat ng Contact"
+msgstr "Wszystkie osoby"
 
 #: dt-metrics/groups/tree.php:81
 msgid "Group Generation Tree"
-msgstr "Tree ng Henerasyon ng Grupo"
+msgstr "Drzewo generowania grup"
 
 #: dt-metrics/contacts/baptism-tree.php:56
 msgid "Baptism Generation Tree"
-msgstr "Tree ng Henerasyon ng Binyag"
+msgstr "Drzewko pokoleń chrztu"
 
 #: dt-metrics/contacts/coaching-tree.php:57
 msgid "Coaching Generation Tree"
-msgstr "Tree ng Henerasyon ng Pagtuturo"
+msgstr "Drzewko pokoleń uczniostwa"
 
 #: dt-metrics/groups/overview.php:72
 msgid "Teams"
-msgstr "Mga Team"
+msgstr "Zespoły"
 
 #: dt-metrics/groups/overview.php:76
 msgid "generations"
-msgstr "mga henerasyon"
+msgstr "pokolenia"
 
 #: dt-contacts/access-module.php:611
 #: dt-users/template-user-management.php:78
 msgid "Multipliers"
-msgstr "Mga Multiplier"
+msgstr "Pomnażacz"
 
 #: dt-notifications/notifications-email.php:125
 msgid "Click here to view or reply"
-msgstr "Mag-click dito upang makita o sumagot"
+msgstr "Kliknij aby zobaczyć lub odpowiedzieć"
 
 #: dt-notifications/notifications-email.php:131
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
-msgstr "Update sa %1$s #%2$s"
+msgstr "Zaktualizuj dane o %1$s #%2$s"
 
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "Ang %s ay ginawa at itinalaga sa iyo."
+msgstr "%s został utworzony i przypisany do Ciebie."
 
 #: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
-msgstr "Itinalaga ni %1$s si %2$s kay %3$s."
+msgstr "%1$s przydzielił %2$s do %3$s."
 
 #: dt-notifications/notifications.php:922
 #: dt-notifications/notifications.php:929
@@ -1275,98 +1275,98 @@ msgstr "Itinalaga ni %1$s si %2$s kay %3$s."
 #: dt-notifications/notifications.php:950
 #: dt-notifications/notifications.php:957
 msgid "System"
-msgstr "Sistema"
+msgstr "System"
 
 #: dt-notifications/notifications.php:923
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
-msgstr "Ibinahagi ni %1$s ang %2$s sa iyo."
+msgstr "%1$s udostępnił Ci %2$s."
 
 #: dt-notifications/notifications.php:930
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
-msgstr "Binanggit ka ni %1$s noong %2$s at sinabing: %3$s"
+msgstr "%1$s wspomniał o Tobie w %2$s: %3$s"
 
 #: dt-notifications/notifications.php:937
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
-msgstr "Nagkomento si %1$s noong %2$s at sinabing: %3$s"
+msgstr "%1$s skomentował %2$s: %3$s"
 
 #: dt-notifications/notifications.php:941
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "Ini-subassign ni %1$s ang %2$s sa iyo."
+msgstr "%1$s przekazał Ci %2$s."
 
 #: dt-notifications/notifications.php:951
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
-msgstr "Idinagdag ni %1$s ang milestone %2$s sa %3$s."
+msgstr "%1$s dodał kamień milowy %2$s na %3$s."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
-msgstr "Binago ni %1$s ang mga detalye ng contact sa %2$s."
+msgstr "%1$s zmodyfikował dane kontaktu dla %2$s."
 
 #: dt-notifications/notifications.php:961
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
-msgstr "Tinanggihan ni %1$s ang pagkakatalag sa: %2$s."
+msgstr "%1$s odrzucił zadanie dnia: %2$s."
 
 #: dt-people-groups/people-groups-base.php:84
 #: dt-people-groups/people-groups-base.php:94
 msgid "People Group"
-msgstr "Grupo ng Mga Tao"
+msgstr "Grupa osób"
 
 #: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
-msgstr "Magdagdag/Mag-update ng Grupo ng Tao"
+msgstr "Dodaj / zaktualizuj grupę osób"
 
 #: dt-people-groups/people-groups-post-type.php:205
 msgid "People Group Details"
-msgstr "Mga Detalye ng Grupo ng Mga Tao"
+msgstr "Szczegóły grupy osób"
 
 #: dt-people-groups/people-groups-post-type.php:512
 msgid "Enter the People Group title here"
-msgstr "Ilagay ang pamagat ng Grupo ng Mga Tao rito"
+msgstr "Wpisz tutaj tytuł grupy osób"
 
 #: dt-users/users.php:122
 msgid "No permissions to assign"
-msgstr "Walang permiso para magtalaga"
+msgstr "Brak uprawnień do przydzielania"
 
 #: dt-users/users.php:281
 msgid "Insufficient permissions"
-msgstr "Hindi sapat ang permiso"
+msgstr "Niewystarczające uprawnienia"
 
 #: dt-users/user-hooks-and-config.php:501
 msgid "Extra Disciple.Tools Information"
-msgstr "Impormasyon sa Dagdag na Disciple.Tools"
+msgstr "Dodatkowe informacje o Disciple.Tools"
 
 #: dt-users/user-hooks-and-config.php:504
 msgid "Corresponds to Contact"
-msgstr "Tumutugma sa Contact"
+msgstr "Odpowiada kontaktowi"
 
 #: dt-users/template-user-management.php:345
 #: dt-users/user-hooks-and-config.php:374
 msgid "View contact record"
-msgstr "Tingnan ang rekord ng contact"
+msgstr "Zobacz historię kontaktu"
 
 #: header.php:78
 msgid "Javascript must be enabled for this site to function correctly."
-msgstr "Dapat i-enable ang Javascript para maayos na gumana ang site na ito."
+msgstr "Ta strona wymaga Javascript do poprawnego działania."
 
 #: header.php:84
 msgid "You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
-msgstr "Mukhang gumagamit ka ng lumang web browser. Kapag wala ang pinakabagong bersyon ng iyong browser, maaaring hindi gumana nang maayos ang site na ito. Pakitandaan na hindi suportado ang Internet Explorer."
+msgstr "Wydaje się, że używasz przestarzałej wersji swojej przeglądarki. Bez najnowszej wersji przeglądarki, strona może nie wyświetlać się poprawnie. Pamiętaj, że strona Disciple.Tools nie jest zoptymalizowana pod kątem współpracy z przeglądarką Internet Explorer."
 
 #: header.php:86
 msgid "See what browser you are using."
-msgstr "Tingnan kung anong ginagamit ng iyong browser."
+msgstr "Sprawdź, jakiej używasz przeglądarki."
 
 #: single-template.php:332
 #: template-new-bulk-post.php:276
 #: template-new-post.php:166
 msgid "Create Tag"
-msgstr "Gumawa ng Tag"
+msgstr "Utwórz tag"
 
 #: single-template.php:337
 #: single-template.php:339
@@ -1375,99 +1375,99 @@ msgstr "Gumawa ng Tag"
 #: template-new-post.php:171
 #: template-new-post.php:173
 msgid "Tag"
-msgstr "Tag"
+msgstr "Utwórz tag"
 
 #: single-template.php:348
 #: template-new-bulk-post.php:293
 #: template-new-post.php:182
 msgid "Create and apply tag"
-msgstr "Gumawa at gamitin ang tag"
+msgstr "Stwórz i przypisz tag"
 
 #: dt-users/template-new-user.php:116
 #: dt-users/template-user-management.php:87
 #: dt-users/template-user-management.php:358
 msgid "Display Name"
-msgstr "Pangalang Ipinakikita"
+msgstr "Wyświetl imię"
 
 #: dt-contacts/user-module.php:121
 msgid "Link this contact to an existing user"
-msgstr "I-link ang contact na ito sa umiiral na user"
+msgstr "Przypisz ten kontakt do istniejącego użytkownika"
 
 #: dt-assets/parts/merge-details.php:60
 msgid "Click merge to continue."
-msgstr "I-click ang pagsanibin upang magpatuloy."
+msgstr "Kliknij połącz aby kontynuować."
 
 #: dt-groups/base-setup.php:295
 #: dt-groups/base-setup.php:589
 #: dt-groups/base-setup.php:633
 msgid "Member List"
-msgstr "Listahan ng Miyembro"
+msgstr "Lista członków"
 
 #: dt-groups/base-setup.php:323
 msgid "Parent Group"
-msgstr "Grupo ng Magulang"
+msgstr "Grupa nadrzędna"
 
 #: dt-groups/base-setup.php:335
 msgid "Peer Group"
-msgstr "Grupo ng Kaedad"
+msgstr "Grupa rówieśnicza"
 
 #: template-new-post.php:154
 msgid "Save and continue editing"
-msgstr "I-save at ituloy ang pag-edit"
+msgstr "Zapisz i kontynuuj edycję"
 
 #: template-merge-details.php:133
 #: template-merge-details.php:151
 msgid "Select All"
-msgstr "Piliin Lahat"
+msgstr "Zaznacz wszystkie"
 
 #: dt-assets/parts/nav-topbar.php:287
 #: template-notifications.php:54
 msgid "Unread"
-msgstr "Hindi pa nababasa"
+msgstr "Nieprzeczytane"
 
 #: dt-assets/parts/nav-topbar.php:313
 #: template-notifications.php:72
 msgid "Mark All"
-msgstr "Markahan Lahat"
+msgstr "Oznacz wszystkie"
 
 #: dt-users/template-user-management.php:307
 #: template-settings.php:59
 #: template-settings.php:413
 msgid "Availability"
-msgstr "Pagiging Available"
+msgstr "Dostępność"
 
 #: dt-assets/parts/modals/modal-help.php:95
 #: template-settings.php:117
 msgid "Your Profile"
-msgstr "Ang Iyong Profile"
+msgstr "Twój profil"
 
 #: dt-users/template-new-user.php:121
 #: dt-users/template-new-user.php:122
 #: template-settings.php:130
 #: template-settings.php:586
 msgid "Username"
-msgstr "Username"
+msgstr "Nazwa użytkownika"
 
 #: dt-users/template-new-user.php:117
 #: template-settings.php:143
 #: template-settings.php:621
 msgid "Nickname (Display Name)"
-msgstr "Palayag (Pangalang Ipinakikita)"
+msgstr "Pseudonim (wyświetl imię)"
 
 #: template-settings.php:191
 msgid "Social"
-msgstr "Social"
+msgstr "Media społecznościowe"
 
 #: dt-contacts/access-module.php:1296
 #: dt-users/template-new-user.php:136
 #: dt-users/template-user-management.php:91
 #: template-settings.php:216
 msgid "Language"
-msgstr "Lingguwahe"
+msgstr "Język"
 
 #: template-settings.php:222
 msgid "English"
-msgstr "Ingles"
+msgstr "Angielski"
 
 #: dt-users/template-new-user.php:226
 #: dt-users/template-new-user.php:230
@@ -1476,116 +1476,116 @@ msgstr "Ingles"
 #: template-settings.php:226
 #: template-settings.php:645
 msgid "Biography"
-msgstr "Biograpiya"
+msgstr "Życiorys"
 
 #: template-settings.php:493
 msgid "Type of Notification"
-msgstr "Uri ng Notipikasyon"
+msgstr "Rodzaj powiadomienia"
 
 #: dt-contacts/access-module.php:298
 #: dt-core/configuration/config-site-defaults.php:341
 msgid "Web"
-msgstr "Web"
+msgstr "Sieć"
 
 #: template-settings.php:506
 msgid "required"
-msgstr "kinakailangan"
+msgstr "wymagane"
 
 #: template-settings.php:529
 msgid "Follow all contacts"
-msgstr "I-follow lahat ng contacts"
+msgstr "Śledź wszystkie kontakty"
 
 #: template-settings.php:293
 #: template-settings.php:536
 msgid "Enable"
-msgstr "I-enable"
+msgstr "Włącz"
 
 #: template-settings.php:580
 msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
-msgstr "Hindi nag-iimbak ng mga imahe ang Disciple Tools System. Para sa mga imahe ng profile, gumagamit kami ng Gravatar (Globally Recognized Avatar). Kung mayroon kang mga alalahanin sa seguridad, iminumungkahi naming huwag gumamit ng personal na larawan, kundi isang cartoon, abstrakto, o alyas na larawang kakatawan sa iyo."
+msgstr "Disciple Tools System nie przechowuje obrazów. Do zdjęć profilowych używamy Gravatara (globalnie rozpoznawanego awatara). Jeśli masz obawy związane z bezpieczeństwem, sugerujemy, aby nie używać osobistego zdjęcia, ale zamiast tego wybrać zdjęcie z kreskówki, losowy obrazek lub pseudonim, które będą Cię reprezentować."
 
 #: template-settings.php:581
 msgid "edit image on gravatar.com"
-msgstr "i-edit ang imahe sa gravatar.com"
+msgstr "edytuj zdjęcie na gravatar.com"
 
 #: template-settings.php:587
 #: template-settings.php:588
 msgid "Username cannot be changed"
-msgstr "Hindi pwedeng baguhin ang username"
+msgstr "Nie można zmienić nazwy użytkownika"
 
 #: dt-users/users.php:1185
 #: template-settings.php:159
 #: template-settings.php:592
 msgid "System Email"
-msgstr "Email ng Sistema"
+msgstr "Poczta e-mail systemu"
 
 #: template-settings.php:593
 msgid "User email can be changed by site administrator."
-msgstr "Maaaring palitan ng tagapangasiwa ng site ang user email."
+msgstr "Adres email użytkownika można zmienić z pomocą administratora strony."
 
 #: dt-users/template-new-user.php:123
 #: dt-users/template-new-user.php:124
 #: template-settings.php:600
 msgid "Password"
-msgstr "Password"
+msgstr "Hasło"
 
 #: template-settings.php:601
 msgid "Use this email reset form to create a new password."
-msgstr "Gamitin ang email reset form na ito upang lumikha ng bagong password."
+msgstr "Użyj formularza resetowania e-maila, aby utworzyć nowe hasło."
 
 #: template-settings.php:603
 msgid "go to password change form"
-msgstr "magpunta sa form ng pagpapalit ng password"
+msgstr "przejdź do formularza zmiany hasła"
 
 #: dt-users/template-new-user.php:186
 #: dt-users/template-new-user.php:188
 #: template-settings.php:610
 msgid "First Name"
-msgstr "Pangalan"
+msgstr "Imię"
 
 #: dt-users/template-new-user.php:190
 #: dt-users/template-new-user.php:191
 #: template-settings.php:616
 msgid "Last Name"
-msgstr "Apelyido"
+msgstr "Nazwisko"
 
 #: dt-notifications/notifications-email.php:135
 msgid "Do not reply directly to this email."
-msgstr "Huwag direktang sumagot sa email na ito."
+msgstr "Nie odpowiadaj na tę wiadomość."
 
 #: dt-core/configuration/restrict-site-access.php:238
 msgid "Reset password"
-msgstr "I-reset ang password"
+msgstr "Resetuj hasło"
 
 #: dt-metrics/contacts/sources.php:91
 msgid "Showing contacts created during"
-msgstr "Ipinakikita ang mga contact na nilikha habang"
+msgstr "Wyświetlanie kontaktów utworzonych w trakcie"
 
 #: dt-metrics/contacts/sources.php:92
 msgid "All contacts, by source and status"
-msgstr "Lahat ng contact, ayon sa pinagmulan at status"
+msgstr "Wszystkie kontakty według pochodzenia i statusu"
 
 #: dt-metrics/contacts/sources.php:93
 msgid "A contact can come from more than one source."
-msgstr "Maaaring magmula sa mahigit isang pinagmulan ang isang contact."
+msgstr "Kontakt może pochodzić z więcej niż jednego źródła."
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
-msgstr "Mga aktibong contact, ayon sa pinagmulan at milestone sa pananampalataya"
+msgstr "Aktywne kontakty według źródła i kamienia milowego wiary"
 
 #: dt-metrics/combined/critical-path.php:80
 msgid "Filter Critical Path fields"
-msgstr "Salain ang mga patlang ng Kritikal na Landas"
+msgstr "Filtruj pola ścieżki krytycznej"
 
 #: dt-metrics/combined/critical-path.php:81
 msgid "Movement Tracking"
-msgstr "Pagsubaybay sa Paggalaw"
+msgstr "Śledzenie ruchu"
 
 #: dt-metrics/contacts/milestones.php:67
 #: dt-metrics/contacts/seeker-path.php:63
 #: dt-metrics/contacts/sources.php:87
 msgid "Filter contacts to date range:"
-msgstr "Salain ang mga contact ayon sa saklaw na petsa:"
+msgstr "Filtruj kontakty według zakresu dat:"
 
 #: dt-metrics/combined/daily-activity.php:72
 #: dt-metrics/contacts/milestones.php:69
@@ -1593,483 +1593,483 @@ msgstr "Salain ang mga contact ayon sa saklaw na petsa:"
 #: dt-metrics/contacts/sources.php:89
 #: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
-msgstr "Salain sa saklaw na petsa"
+msgstr "Filtruj według zakresu dat"
 
 #: dt-metrics/contacts/sources.php:94
 msgid "Active contacts, by source and seeker path"
-msgstr "Mga aktibong contact, ayon sa pinagmulan at landas ng seeker"
+msgstr "Aktywne kontakty według źródła i ścieżki poszukiwania"
 
 #: dt-metrics/contacts/sources.php:98
 msgid "A contact can come from more than one source, and it can have more than one faith milestone at the same time."
-msgstr "Maaaring magmula sa mahigit isang pinagmulan ang isang contact, at maaari itong magkaroon ng mahigit isang milestone sa pananampalataya nang magkasabay."
+msgstr "Kontakt może pochodzić z więcej niż jednego źródła i może mieć więcej niż jeden kamień milowy wiary w tym samym czasie."
 
 #: dt-metrics/groups/overview.php:77
 #: dt-metrics/personal/overview.php:73
 msgid "Generation"
-msgstr "Henerasyon"
+msgstr "Pokolenie"
 
 #: dt-users/user-hooks-and-config.php:514
 msgid "Add the name of the contact record this user corresponds to."
-msgstr "Idagdag ang pangalan ng rekord ng contact kung saan tumutugma ang user na ito."
+msgstr "Dodaj nazwę rekordu kontaktu, który odpowiada temu użytkownikowi."
 
 #: dt-users/user-hooks-and-config.php:515
 msgid "Learn more."
-msgstr "Alamin pa."
+msgstr "Dowiedz się więcej."
 
 #: dt-core/configuration/restrict-site-access.php:239
 msgid "Lost your password"
-msgstr "Nawala ang iyong password"
+msgstr "Nie pamiętasz hasła?"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:218
 #: dt-metrics/combined/locations-list.php:211
 msgid "Churches"
-msgstr "Mga simbahan"
+msgstr "Kościoły"
 
 #: dt-mapping/mapping-module-config.php:74
 #: dt-mapping/mapping.php:147
 #: dt-mapping/mapping.php:302
 msgid "Mapping"
-msgstr "Pagma-map"
+msgstr "Rozmieszczenie na mapie"
 
 #: dt-mapping/mapping.php:304
 #: dt-people-groups/people-groups-base.php:281
 msgid "Population"
-msgstr "Populasyon"
+msgstr "Populacja"
 
 #: dt-mapping/mapping.php:150
 msgid "List"
-msgstr "Listahan"
+msgstr "Lista"
 
 #: dt-mapping/mapping.php:643
 #: dt-mapping/mapping.php:724
 msgid "World"
-msgstr "Mundo"
+msgstr "Świat"
 
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-posts/custom-post-type.php:129
 #: template-new-post.php:38
 msgid "New %s"
-msgstr "Bagong %s"
+msgstr "Aktualności"
 
 #: dt-posts/posts.php:460
 #: dt-posts/posts.php:477
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
-msgstr "Idinagdag ang %1$s sa mga lokasyon"
+msgstr "%1$s zostało dodane do lokalizacji"
 
 #: dt-groups/base-setup.php:637
 msgid "Four Fields"
-msgstr "Four Fields"
+msgstr "Cztery pola"
 
 #: dt-mapping/mapping.php:303
 msgid "Refresh Cached Data"
-msgstr "I-refresh ang Naka-cache na Data"
+msgstr "Odśwież dane w pamięci podręcznej"
 
 #: dt-metrics/contacts/overview.php:68
 #: dt-metrics/groups/overview.php:73
 msgid "Follow-up of all active contacts"
-msgstr "Pag-follow-up ng lahat ng aktibong kontak"
+msgstr "Śledzenie wszystkich aktywnych kontaktów"
 
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@%1$s, may update na ni-request sa %2$s."
+msgstr "@%1$s, żądana jest aktualizacja dla %2$s."
 
 #: dt-core/configuration/config-site-defaults.php:549
 msgid "Accepting new contacts"
-msgstr "Tumatanggap ng mga bagong kontak"
+msgstr "Przyjmowanie nowych kontaktów"
 
 #: dt-core/configuration/config-site-defaults.php:553
 msgid "I'm only investing in existing contacts"
-msgstr "Mag-i-invest lang ako sa mga bagong kontak"
+msgstr "Inwestuję tylko w już posiadane kontakty"
 
 #: dt-core/configuration/config-site-defaults.php:557
 msgid "I have too many contacts"
-msgstr "Napakarami kong mga kontak"
+msgstr "Mam zbyt wiele kontaktów"
 
 #: template-settings.php:416
 msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
-msgstr "I-set ang mga petsa kung kailan ka magbibiyahe o hindi pwede para malaman ng Dispatcher kung kailan ka pwedeng tumanggap ng mga bagong kontak"
+msgstr "Ustaw daty podróży lub niedostępności, aby dyspozytor wiedział o Twojej gotowości do otrzymywania nowych kontaktów"
 
 #: template-settings.php:420
 msgid "Schedule Travel or Dates Unavailable"
-msgstr "Iiskedyul ang Biyahe o mga Petsang Hindi Ka Pwede"
+msgstr "Zaplanowana podróż lub daty niedostępności"
 
 #: template-settings.php:437
 msgid "Add Unavailable dates"
-msgstr "Idagdag ang mga petsang Hindi ka pwede"
+msgstr "Dodaj daty niedostępności"
 
 #: template-settings.php:451
 msgid "No Travel Scheduled"
-msgstr "Walang Nakaiskedyul na Biyahe"
+msgstr "Brak zaplanowanych podróży"
 
 #: template-settings.php:531
 msgid "You will receive a notification for any update that happens in the system."
-msgstr "Makakatanggap ka ng notipikasyon para sa kahit anong update na magaganap sa system."
+msgstr "O każdej zmianie w systemie dowiesz się za pomocą powiadomienia."
 
 #: dt-metrics/combined/critical-path.php:212
 msgid "Any new created contact"
-msgstr "Kahit anong bagong-gawang kontak"
+msgstr "Każdy nowo utworzony kontakt"
 
 #: dt-metrics/combined/critical-path.php:222
 msgid "Number of contacts assigned for a face-to-face visit"
-msgstr "Bilang ng mga kontak na nakatakda para sa harapang pagbisita"
+msgstr "Liczba kontaktów przypisanych do bezpośredniej wizyty"
 
 #: dt-metrics/combined/critical-path.php:231
 msgid "Number of contacts that had the active status"
-msgstr "Bilang ng mga kontak na nagkaroon ng aktibong status"
+msgstr "Liczba kontaktów, które były aktywne"
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "Bilang ng mga kontak sa %s sa katapusan ng saklaw na oras"
+msgstr "Liczba kontaktów w %s na koniec przedziału czasu"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "Bilang ng mga kontak kung saan ang %s ay na-set sa seeker path"
+msgstr "Liczba kontaktów, dla których %s został ustawiony na ścieżce poszukiwań"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid "Number of baptized contact with a baptism date in date range and baptized by connection"
-msgstr "Bilang ng nabautismuhang kontak na may petsa ng bautismo sa saklaw na petsa at nabautismuhan sa pamamagitan ng koneksyon"
+msgstr "Liczba ochrzczonych kontaktów z datą chrztu w zakresie dat i ochrzczonych przez powiązanie"
 
 #: dt-metrics/combined/critical-path.php:277
 msgid "Generation %s Baptisms"
-msgstr "Mga Pagbabautismo ng henerasyon %s"
+msgstr "Chrzty %s pokolenia"
 
 #: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
-msgstr "Bilang ng mga pagbabautismo ng henerasyon %s"
+msgstr "Liczba chrztów w %s pokoleniu"
 
 #: dt-metrics/combined/critical-path.php:289
 msgid "Number of contacts or users who have baptized a contact"
-msgstr "Bilang ng mga kontak o user na may nabautismuhang kontak"
+msgstr "Liczba kontaktów lub użytkowników, którzy ochrzcili jeden z kontaktów"
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "Mga Simbahan ng henerasyon %s"
+msgstr "Kościoły %s pokolenia"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "Bilang ng mga simbahan ng henerasyon %s sa katapusan ng saklaw na oras"
+msgstr "Liczba kościołów pokolenia %s na koniec przedziału czasu"
 
 #: dt-metrics/combined/critical-path.php:333
 msgid "Number of contacts or users who have started a church and are marked as the church coach"
-msgstr "Bilang ng mga kontak o user na nakapagsimula ng simbahan at namarkahan bilang ang tagapagturo ng simbahan"
+msgstr "Liczba kontaktów lub użytkowników, którzy założyli kościół i są oznaczeni jako trenerzy kościoła"
 
 #: dt-notifications/notifications.php:913
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "Ikaw ay naitakda: %1$s."
+msgstr "Zostałeś przydzielony do: %1$s."
 
 #: dt-groups/base-setup.php:347
 msgid "Child Group"
-msgstr "Pambatang Grupo"
+msgstr "Grupa podrzędna"
 
 #: dt-contacts/access-module.php:179
 msgid "Not Ready"
-msgstr "Hindi Handa"
+msgstr "Niegotowy"
 
 #: archive-template.php:743
 msgctxt "The start date of a date range"
 msgid "Range Start"
-msgstr "Simula ng Saklaw"
+msgstr "od"
 
 #: archive-template.php:753
 msgctxt "The end date of a date range"
 msgid "Range End"
-msgstr "Katapusan ng Saklaw"
+msgstr "do"
 
 #: dt-assets/functions/enqueue-scripts.php:259
 msgid "Locations you are responsible for"
-msgstr "Mga lokasyon na ikaw ang may-pananagutan"
+msgstr "Lokalizacje, za które jesteś odpowiedzialny"
 
 #: dt-contacts/access-module.php:175
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
-msgstr "Ang kontak ay bago sa system."
+msgstr "Ta osoba jest nowa w systemie."
 
 #: dt-contacts/access-module.php:180
 msgctxt "Contact Status field description"
 msgid "There is not enough information to move forward with the contact at this time."
-msgstr "Walang sapat na impormasyon para isulong ang kontak sa ngayon."
+msgstr "W tej chwili nie ma wystarczających informacji, aby przejść dalej z kontaktem."
 
 #: dt-contacts/access-module.php:185
 msgctxt "Contact Status field description"
 msgid "This contact needs to be assigned to a multiplier."
-msgstr "Kailangang itakda ang kontak na ito sa isang multiplier."
+msgstr "Tę osobę należy przypisać do pomnażacza."
 
 #: dt-contacts/access-module.php:190
 msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
-msgstr "Itinakda ang kontak na ito sa isang tao, ngunit hindi pa natatanggap ng taong iyon."
+msgstr "Ta osoba została do kogoś przypisana, ale nie uzyskała jeszcze akceptacji."
 
 #: dt-contacts/base-setup.php:352
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
-msgstr "Ang kontak na ito ay sumusulong at/o patuloy na ina-update."
+msgstr "Kontakt postępuje i / lub jest stale aktualizowany."
 
 #: dt-contacts/access-module.php:196
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
-msgstr "Ang kontak na ito ay kasalukuyang nakahinto (ibig sabihin, nakabakasyon o hindi tumutugon)"
+msgstr "Ten kontakt jest zawieszony (np. ma urlop lub nie odpowiada)."
 
 #: dt-contacts/base-setup.php:358
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
-msgstr "Ipinaalam ng kontak na ito na ayaw na niyang magpatuloy o nagpasya kang huwag nang magpatuloy kasama niya."
+msgstr "Ta osoba oznajmiła, że nie chce już kontynuować albo Ty podjąłeś decyzję o niekontynuowaniu kontaktu."
 
 #: dt-contacts/access-module.php:129
 msgctxt "Seeker Path field description"
 msgid "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
-msgstr "Itakda ang status ng iyong pagsulong kasama ang kontak. Ito ang mga hakbang na nagaganap sa nakatakdang pagkakasunod-sunod upang matulungang makapagpatuloy ang isang kontak."
+msgstr "Ustaw status swoich postępów w kontakcie. Są to kroki, które odbywają się w określonej kolejności, aby pomóc tej osobie iść naprzód."
 
 #: dt-contacts/access-module.php:247
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
-msgstr "Nakabakasyon ang kontak"
+msgstr "Osoba na urlopie"
 
 #: dt-contacts/access-module.php:248
 msgctxt "Reason Paused label"
 msgid "Contact not responding"
-msgstr "Hindi tumutugon ang kontak"
+msgstr "Osoba nie odpowiada"
 
 #: dt-contacts/access-module.php:249
 msgctxt "Reason Paused label"
 msgid "Contact not available"
-msgstr "Hindi pwede ang kontak"
+msgstr "Osoba niedostępna"
 
 #: dt-contacts/access-module.php:250
 msgctxt "Reason Paused label"
 msgid "Contact has little interest/hunger"
-msgstr "Kaunti ang interes/pananabik ng kontak"
+msgstr "Osoba wykazująca nikłe zainteresowanie"
 
 #: dt-contacts/access-module.php:251
 msgctxt "Reason Paused label"
 msgid "Contact shows no initiative"
-msgstr "Walang inisyatibong ipinapakita ang kontak"
+msgstr "Osoba nie wykazująca inicjatywy"
 
 #: dt-contacts/access-module.php:252
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
-msgstr "Kaduda-duda ang mga motibo ng kontak"
+msgstr "Osoba o niejasnej motywacji"
 
 #: dt-contacts/access-module.php:253
 msgctxt "Reason Paused label"
 msgid "Ball is in the contact's court"
-msgstr "Nasa kontak na ang bola"
+msgstr "Piłka po stronie osoby"
 
 #: dt-contacts/access-module.php:254
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
-msgstr "Gusto naming makita kung/kung paano tutugon ang kontak sa naka-automate na text message"
+msgstr "Chcemy sprawdzić czy/jak osoba zareaguje na automatyczne wiadomości"
 
 #: dt-contacts/access-module.php:266
 msgctxt "Reason Closed label"
 msgid "Duplicate"
-msgstr "Kopyahin"
+msgstr "Duplikat"
 
 #: dt-contacts/access-module.php:267
 msgctxt "Reason Closed label"
 msgid "Insufficient contact info"
-msgstr "Di-sapat ang impormasyon ng kontak"
+msgstr "Niewystarczające dane do kontaktu"
 
 #: dt-contacts/access-module.php:268
 msgctxt "Reason Closed label"
 msgid "Denies submitting contact request"
-msgstr "Ayaw magsumite ng request sa kontak"
+msgstr "Kontakt odmawia rozmowy"
 
 #: dt-contacts/access-module.php:270
 msgctxt "Reason Closed label"
 msgid "Only wants to argue or debate"
-msgstr "Gusto lang makipag-argumento o makipagdebate"
+msgstr "Osoba zainteresowana jedynie debatą/próbująca wywołać kłótnię"
 
 #: dt-contacts/access-module.php:271
 msgctxt "Reason Closed label"
 msgid "Just wanted media or book"
-msgstr "Gusto lang ng media o libro"
+msgstr "Osoba prosił jedynie o multimedia lub książkę"
 
 #: dt-contacts/access-module.php:272
 msgctxt "Reason Closed label"
 msgid "No longer interested"
-msgstr "Hindi na interesado"
+msgstr "Osoba straciła zainteresowanie"
 
 #: dt-contacts/access-module.php:273
 msgctxt "Reason Closed label"
 msgid "No longer responding"
-msgstr "Hindi na tumutugon"
+msgstr "Osoba przestała odpowiadać"
 
 #: dt-contacts/access-module.php:274
 msgctxt "Reason Closed label"
 msgid "Already in church or connected with others"
-msgstr "Nasa simabahan na o konektado sa iba"
+msgstr "Kontakt dołączył do Kościoła lub został połączony z kimś innym"
 
 #: dt-contacts/access-module.php:275
 msgctxt "Reason Closed label"
 msgid "Transferred contact to partner"
-msgstr "Inilipat ang kontak sa ka-partner"
+msgstr "Kontakt przetransferowany do współpracownika"
 
 #: dt-contacts/access-module.php:276
 msgctxt "Reason Closed label"
 msgid "Martyred"
-msgstr "Nagpakamartir"
+msgstr "Zamęczony"
 
 #: dt-contacts/access-module.php:277
 msgctxt "Reason Closed label"
 msgid "Moved or relocated"
-msgstr "Inilipat o iniba ang lokasyon"
+msgstr "Osoba wyprowadziła się lub zmieniła miejsce pobytu"
 
 #: dt-contacts/access-module.php:279
 msgctxt "Reason Closed label"
 msgid "Unknown"
-msgstr "Di-alam"
+msgstr "Nieznany"
 
 #: dt-core/configuration/config-site-defaults.php:473
 msgid "Personal Phone"
-msgstr "Personal na Telepono"
+msgstr "Prywatny numer telefonu"
 
 #: dt-core/configuration/config-site-defaults.php:476
 msgid "Personal phone is private to the team, not for distribution."
-msgstr "Ang personal na telepono ay pribado para sa pangkat, hindi para sa pagbabahagi."
+msgstr "Prywatny numer telefonu tylko do wiadomości zespołu"
 
 #: dt-core/configuration/config-site-defaults.php:480
 msgid "Personal Email"
-msgstr "Personal na Email"
+msgstr "Prywatny adres mailowy"
 
 #: dt-core/configuration/config-site-defaults.php:483
 msgid "Personal email is private to the team, not for distribution."
-msgstr "Ang personal na email ay pribado para sa pangkat, hindi para sa pagbabahagi."
+msgstr "Prywatny adres mailowy tylko do wiadomości zespołu"
 
 #: dt-core/configuration/config-site-defaults.php:487
 msgid "Personal Address"
-msgstr "Personal na Address"
+msgstr "Adres domowy"
 
 #: dt-core/configuration/config-site-defaults.php:490
 msgid "Personal address is private to the team, not for distribution."
-msgstr "Ang personal na address ay pribado para sa pangkat, hindi para sa pagbabahagi."
+msgstr "Adres domowy tylko do wiadomości zespołu"
 
 #: dt-core/configuration/config-site-defaults.php:494
 msgid "Work Phone"
-msgstr "Telepono sa Trabaho"
+msgstr "Telefon służbowy"
 
 #: dt-core/configuration/config-site-defaults.php:497
 msgid "Work phone is for distribution to contacts and seekers."
-msgstr "Ang telepono sa trabaho ay para sa pamamahagi sa mga kontak at seeker."
+msgstr "Telefon służbowy dostępny dla kontaktów oraz poszukujących"
 
 #: dt-core/configuration/config-site-defaults.php:501
 msgid "Work Email"
-msgstr "Email sa Trabaho"
+msgstr "Służbowy adres mailowy"
 
 #: dt-core/configuration/config-site-defaults.php:504
 msgid "Work email is for distribution to contacts and seekers."
-msgstr "Ang email sa trabaho ay para sa pamamahagi sa mga kontak at seeker."
+msgstr "Służbowy adres mailowy dostępny dla kontaktów oraz poszukujących"
 
 #: dt-core/configuration/config-site-defaults.php:508
 msgid "Work Facebook"
-msgstr "Facebook sa Trabaho"
+msgstr "Służbowy Facebook"
 
 #: dt-core/configuration/config-site-defaults.php:511
 msgid "Work Facebook is for distribution to contacts and seekers."
-msgstr "Ang Facebook sa trabaho ay para sa pamamahagi sa mga kontak at seeker."
+msgstr "Służbowy Facebook dostępny dla kontaktów oraz poszukujących"
 
 #: dt-core/configuration/config-site-defaults.php:515
 msgid "Work WhatsApp"
-msgstr "WhatsApp sa Trabaho"
+msgstr "Służbowy WhatsApp"
 
 #: dt-core/configuration/config-site-defaults.php:518
 msgid "Work WhatsApp is for distribution to contacts and seekers."
-msgstr "Ang WhatsApp sa trabaho ay para sa pamamahagi sa mga kontak at seeker."
+msgstr "Służbowy WhatsApp dostępny dla kontaktów oraz poszukujących"
 
 #: dt-contacts/access-module.php:310
 msgid "Transfer"
-msgstr "Ilipat"
+msgstr "Transfer"
 
 #: dt-groups/base-setup.php:121
 msgctxt "field description"
 msgid "Set the current status of the group."
-msgstr "Itakda ang kasalukuyang status ng grupo."
+msgstr "Zobacz aktualny status grupy"
 
 #: dt-groups/base-setup.php:131
 msgctxt "field description"
 msgid "The group is no longer meeting."
-msgstr "Hindi na nagkikita ang grupo."
+msgstr "Ta grupa już się nie spotyka"
 
 #: dt-groups/base-setup.php:126
 msgctxt "field description"
 msgid "The group is actively meeting."
-msgstr "Aktibong nagkikita ang grupo."
+msgstr "Ta grupa wciąż się spotyka"
 
 #: dt-posts/posts.php:457
 #: dt-posts/posts.php:470
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "Inalis ang %1$s sa mga lokasyon"
+msgstr "Usunięto %1$s z lokalizacji"
 
 #: dt-posts/posts.php:515
 msgctxt "message"
 msgid "verified"
-msgstr "naberipika"
+msgstr "zweryfikowana"
 
 #: dt-posts/posts.php:515
 msgctxt "message"
 msgid "not verified"
-msgstr "hindi naberipika"
+msgstr "niezweryfikowana"
 
 #: dt-posts/posts.php:518
 msgctxt "message"
 msgid "invalidated"
-msgstr "minalian"
+msgstr "unieważniony"
 
 #: dt-posts/posts.php:518
 msgctxt "message"
 msgid "not invalidated"
-msgstr "hindi minalian"
+msgstr "nie unieważniony"
 
 #: dt-posts/posts.php:553
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "Binago ang pangalan sa: %s"
+msgstr "Imię zmienione na: %s"
 
 #: dt-posts/posts.php:555
 msgctxt "message"
 msgid "Created from Demo Plugin"
-msgstr "Nagawa mula sa Demo na Plugin"
+msgstr "Utworzono z wtyczki demo"
 
 #: dt-posts/posts.php:562
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "tinanggihan ni %s ang assignment"
+msgstr "%s odmówił przydzielenia"
 
 #: dt-posts/posts.php:562
 #: dt-posts/posts.php:565
 msgctxt "message"
 msgid "A user"
-msgstr "Isang user"
+msgstr "Użytkownik"
 
 #: dt-posts/posts.php:565
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "tinanggap ni %s ang assignment"
+msgstr "%s przyjął/ęła przydział."
 
 #: dt-posts/posts.php:570
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "Na-share kay %s"
+msgstr "Udostępniono dla %s"
 
 #: dt-posts/posts.php:572
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "In-unshare kay %s"
+msgstr "Cofnięto udostępnienie dla %s"
 
 #: dt-contacts/dmm-module.php:412
 #: dt-metrics/personal/activity-highlights.php:218
 msgid "Quick Actions"
-msgstr "Mga Mabilisang Aksyon"
+msgstr "Akcje"
 
 #: archive-template.php:675
 msgctxt "input field placeholder"
 msgid "Type to search"
-msgstr "Mag-type para maghanap"
+msgstr "Wpisz aby wyszukać"
 
 #: archive-template.php:385
 #: dt-assets/parts/modals/modal-share.php:27
@@ -2078,18 +2078,18 @@ msgstr "Mag-type para maghanap"
 #: dt-core/global-functions.php:815
 msgctxt "input field placeholder"
 msgid "Search Users"
-msgstr "Maghanap ng mga User"
+msgstr "Szukaj użytkowników"
 
 #: dt-contacts/dmm-module.php:507
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
-msgstr "Maghanap ng mga multiplier at kontak"
+msgstr "Szukaj pomnażaczy i kontaktów"
 
 #: archive-template.php:487
 #: dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
-msgstr "Isulat ang iyong komento o tala dito"
+msgstr "Wpisz swój komentarz lub notatkę"
 
 #: archive-template.php:36
 #: archive-template.php:126
@@ -2103,77 +2103,77 @@ msgstr "Isulat ang iyong komento o tala dito"
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
-msgstr "Maghanap ng %s"
+msgstr "Szukaj %s"
 
 #: dt-metrics/contacts/sources.php:95
 #: dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
-msgstr "Ipinapakita lang nito ang mga kontak na may 'aktibong' status sa ngayon."
+msgstr "W tej chwili wyświetlane są tylko kontakty ze statusem „aktywny”."
 
 #: dt-posts/posts.php:400
 #: dt-posts/posts.php:405
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
-msgstr "Binago ang %$s sa %2$s"
+msgstr "%1$s zmienione na %2$s"
 
 #: dt-contacts/dmm-module.php:493
 msgid "Who was this contact baptized by and when?"
-msgstr "Sino ang nagbautismo sa kontak na ito at kailan?"
+msgstr "Przez kogo ta osoba została ochrzczona i kiedy?"
 
 #: dt-contacts/user-module.php:124
 msgid "This contact already represents a user."
-msgstr "Kumakatawan na sa isang user ang kontak na ito."
+msgstr "Ta osoba jest już użytkownikiem."
 
 #: dt-contacts/user-module.php:128
 msgctxt "Step 1 of link user"
 msgid "To link to an existing user, first, find the user using the field below."
-msgstr "Upang mag-link na umiiral nang user, una, hanapin ang user gamit ang blangko sa ibaba."
+msgstr "Aby połączyć z istniejącym użytkownikiem, znajdź użytkownika przy użyciu pola poniżej."
 
 #: dt-contacts/user-module.php:152
 msgctxt "Step 2 of link user"
 msgid "To finish the linking, merge this contact with the existing user details."
-msgstr "Upang tapusin ang pagli-link, isama ang kontak na ito sa mga umiiral na detalye ng user."
+msgstr "Aby zakończyć łączenie, połącz ten kontakt z istniejącymi danymi użytkownika."
 
 #: dt-assets/parts/merge-details.php:59
 msgctxt "added to the end of a sentence"
 msgid "selected."
-msgstr "pinili."
+msgstr "zaznaczony."
 
 #: dt-groups/base-setup.php:608
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
-msgstr "Magdagdag ng mga miyembro mula sa mga kasalukuyang kontak"
+msgstr "Dodaj członków spośród istniejących kontaktów"
 
 #: dt-people-groups/people-groups-post-type.php:206
 msgid "Translations"
-msgstr "Mga Pagsasalin"
+msgstr "Przekłady"
 
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "Hindi na tinuturuan ni %s"
+msgstr "Nie jest już prowadzony przez %s"
 
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "Hindi na pangalawang itinalaga sa %s"
+msgstr "Nie jest już przypisany do %s"
 
 #: dt-groups/base-setup.php:602
 msgid "To add new members, click on 'Create' or 'Select'."
-msgstr "Upang magdagdag ng mga bagong miyembro, mag-click sa 'Gumawa' o 'Pumili'."
+msgstr "Aby dodać nowych członków, kliknij „Utwórz” lub „Wybierz”."
 
 #: archive-template.php:29
 msgid "Filters"
-msgstr "Mga Filter"
+msgstr "Filtry"
 
 #: archive-template.php:607
 #: dt-assets/functions/enqueue-scripts.php:349
 msgid "Load More"
-msgstr "Mag-load ng Higit Pa"
+msgstr "Załaduj więcej"
 
 #: archive-template.php:785
 msgid "Filter Name"
-msgstr "Pangalan ng Filter"
+msgstr "Nazwa filtra"
 
 #: 403.php:55
 #: archive-template.php:777
@@ -2196,44 +2196,44 @@ msgstr "Pangalan ng Filter"
 #: template-new-post.php:153
 #: template-new-post.php:179
 msgid "Cancel"
-msgstr "Kanselahin"
+msgstr "Anuluj"
 
 #: archive-template.php:790
 msgid "Filter Records"
-msgstr "Mag-filter ng mga Rekord"
+msgstr "Historia filtrów"
 
 #: dt-assets/functions/details-bar.php:152
 #: dt-assets/parts/modals/modal-tasks.php:7
 #: dt-posts/custom-post-type.php:201
 msgid "Tasks"
-msgstr "Mga Gawain"
+msgstr "Zadania"
 
 #: dt-assets/functions/enqueue-scripts.php:114
 #: template-merge-post-details.php:93
 msgid "Regions of Focus"
-msgstr "Mga Rehiyong Binibigyang Pokus"
+msgstr "Regiony zainteresowania"
 
 #: dt-assets/functions/enqueue-scripts.php:115
 #: template-merge-post-details.php:94
 msgid "All Locations"
-msgstr "Lahat ng Lokasyon"
+msgstr "Wszystkie lokalizacje"
 
 #: dt-assets/functions/enqueue-scripts.php:116
 msgid "Used Locations"
-msgstr "Mga Lokasyong Ginamit"
+msgstr "Użyte lokalizacje"
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Walang nakitang mga resultang tumutugma sa \"{{query}}\""
+msgstr "Brak wyników dla \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:303
 msgid "No filters, create one below"
-msgstr "Walang mga filter, gumawa ng isa sa ibaba"
+msgstr "Brak filtrów, stwórz filtr poniżej"
 
 #: dt-assets/functions/enqueue-scripts.php:304
 msgid "No records found matching your filter."
-msgstr "Walang nakitang mga rekord na tumutugma sa iyong filter."
+msgstr "Brak wyników dla podanych kryteriów."
 
 #: dt-assets/parts/nav-topbar.php:283
 #: dt-people-groups/people-groups-base.php:342
@@ -2241,61 +2241,61 @@ msgstr "Walang nakitang mga rekord na tumutugma sa iyong filter."
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
-msgstr "Lahat"
+msgstr "Wszystkie"
 
 #: dt-contacts/access-module.php:1135
 #: dt-contacts/access-module.php:1136
 msgid "Subassigned only"
-msgstr "Pangalawang itinalaga lang"
+msgstr "Tylko przypisane"
 
 #: dt-contacts/dmm-module.php:373
 #: dt-contacts/dmm-module.php:383
 #: dt-contacts/dmm-module.php:393
 #: dt-contacts/dmm-module.php:394
 msgid "Coached by me"
-msgstr "Tinuturuan ko"
+msgstr "Prowadzeni przeze mnie"
 
 #: dt-metrics/combined/critical-path.php:299
 msgid "Groups active at the end of the time range"
-msgstr "Mga grupong aktibo sa katapusan ng saklaw ng oras"
+msgstr "od"
 
 #: dt-metrics/combined/critical-path.php:309
 msgid "Churches active at the end of the time range"
-msgstr "Mga simbahang aktibo sa katapusan ng saklaw ng oras"
+msgstr "do"
 
 #: dt-users/users.php:609
 msgctxt "List Filters"
 msgid "Custom Filters"
-msgstr "Nababagong mga Filter"
+msgstr "Własne filtry"
 
 #: archive-template.php:25
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "Gumawa ng Bagong %s"
+msgstr "Utwórz %s"
 
 #: dt-assets/functions/enqueue-scripts.php:212
 msgid "No task created"
-msgstr "Walang gawaing ginawa"
+msgstr "Brak utworzonych zadań"
 
 #: dt-assets/functions/enqueue-scripts.php:213
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
-msgstr "Paalala"
+msgstr "Przypomnienie"
 
 #: dt-assets/functions/enqueue-scripts.php:214
 msgid "No note set"
-msgstr "Walang itinakdang tala"
+msgstr "Brak utworzonych notatek"
 
 #: dt-assets/functions/enqueue-scripts.php:305
 #: dt-contacts/base-setup.php:537
 #: dt-groups/base-setup.php:1066
 msgctxt "All records"
 msgid "All %s"
-msgstr "Lahat ng %s"
+msgstr "Wszystkie %s"
 
 #: dt-assets/functions/menu.php:45
 msgid "Disciple.Tools"
-msgstr "Mga Pantulong.Para Sa Disipulo"
+msgstr "Disciple.Tools"
 
 #: dt-assets/functions/enqueue-scripts.php:216
 #: dt-assets/parts/merge-details.php:72
@@ -2304,220 +2304,220 @@ msgstr "Mga Pantulong.Para Sa Disipulo"
 #: template-merge-post-details.php:121
 #: template-merge-post-details.php:178
 msgid "Merge"
-msgstr "Pagsamahin"
+msgstr "Scal"
 
 #: dt-assets/parts/modals/modal-help.php:28
 msgctxt "Optional Documentation"
 msgid "User workload status icons legend:"
-msgstr "Listahang nagpapaliwanag ng mga icon ng katayuan ng mga gawain ng gumagamit:"
+msgstr "Legenda ikon stanu obciążenia użytkownika:"
 
 #: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid "These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
-msgstr "Ang mga buton ng pangmabilisang aksyon na ito ay narito upang tulungan ka sa pag-update ng rekord ng kontak nang mas mabilis at bilangin kung gaano karaming beses nagawa ang bawa't aksyon."
+msgstr "Te przyciski szybkiej akcji są tutaj, aby pomóc w szybszym aktualizowaniu rekordu kontaktu i zliczaniu, ile razy każda akcja została wykonana."
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid "For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.\n"
 "                This action will also change the 'Seeker Path' to 'Contact Attempted'."
-msgstr "Halimbawa, kung 4 na beses kang nag-click sa buton na 'Walang Sagot', ila-log namin na tinangka mong makipag-ugnayan sa kontak na ito nang 4 na beses, nguni't hindi sila sumagot.\n"
-"                 Papalitan din ng aksyong ito ang 'Landas ng Naghahanap' sa 'Sinubukang Makipag-ugnayan'."
+msgstr "Na przykład, jeśli klikniesz przycisk „Brak odpowiedzi” 4 razy, zarejestrujemy, że próbowałeś skontaktować się z tym kontaktem 4 razy, ale nie odpowiedział.\n"
+"                Ta czynność zmieni również „Ścieżkę poszukiwacza” na „Podjęto próbę kontaktu”."
 
 #: dt-groups/base-setup.php:638
 msgctxt "Optional Documentation"
 msgid "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
-msgstr "Mayroong 5 parisukat sa dayagram na Apat na Field. Simula sa kuwadrante sa kaliwang itaas at paikot na pakanan at ang ikalima ay nasa gitna, ang mga ito ay kumakatawan sa:"
+msgstr "Na diagramie Czterech Pól znajduje się 5 kwadratów. Zaczynając w lewym górnym kwadracie i idąc zgodnie z ruchem wskazówek zegara, a piąty jest w środku, oznaczają:"
 
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
-msgstr "Dito ka maaaring magtala ng mga tala mula sa mga miting at pag-uusap."
+msgstr "Tutaj możesz zapisywać notatki ze spotkań i rozmów."
 
 #: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid "Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
-msgstr "I-type ang @ at ang pangalan ng gumagamit upang banggitin sila sa isang komento. Pagkatapos ay makakatanggap ang gumagamit na ito ng notipikasyon."
+msgstr "Wpisz @ i nazwę użytkownika, aby wspomnieć o nich w komentarzu. Ten użytkownik otrzyma wówczas powiadomienie."
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
 msgid "This section also includes the history of activity, such as when the contact or group status became active etc."
-msgstr "Kasama rin sa seksyong ito ang kasaysayan ng aktibidad, tulad ng kung kailan naging aktibo ang kontak o katayuan ng grupo atbp."
+msgstr "Ta sekcja zawiera również historię aktywności, na przykład kiedy status kontaktu lub grupy stał się aktywny itp."
 
 #: dt-assets/parts/modals/modal-help.php:46
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
-msgstr "Maaari mong i-filter ang seksyong ito ayon sa alinman sa 'Lahat', 'Mga Komento', o 'Aktibidad'."
+msgstr "Możesz filtrować tę sekcję według „Wszystkie”, „Komentarze” lub „Aktywność”."
 
 #: dt-assets/parts/modals/modal-help.php:57
 msgctxt "Optional Documentation"
 msgid "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter."
-msgstr "Gamitin ang mga filter na ito upang magpokus sa mga kontak o grupo na iyong responsibilidad. Kung ang mga default na filter ay hindi angkop sa iyong mga pangangailangan maaari kang gumawa ng iyong sariling nababagong filter."
+msgstr "Użyj tych filtrów, aby skupić się na kontaktach lub grupach, za które jesteś odpowiedzialny. Jeśli domyślne filtry nie odpowiadają Twoim potrzebom, możesz utworzyć własny filtr niestandardowy."
 
 #: dt-assets/parts/modals/modal-help.php:62
 msgctxt "Optional Documentation"
 msgid "Contacts List Tile"
-msgstr "Tile ng Listahan ng mga Kontak"
+msgstr "Kafelki z kontaktami"
 
 #: dt-assets/parts/modals/modal-help.php:63
 msgctxt "Optional Documentation"
 msgid "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more."
-msgstr "Lalabas dito ang iyong listahan ng mga kontak. Sa tuwing pag-filter mo ng mga kontak, mababago rin ang listahan sa seksyong ito. Maaari mong pag-uri-uriin ang iyong mga kontak ayon sa pinakabago, pinakaluma, pinakahuling binago, at pinakamatagal nang binago. Kung mayroon kang mahabang listahan ng mga kontak hindi sabay-sabay na maglo-load ang mga ito, kaya ang pag-click sa buton na 'Mag-load ng Higit Pang mga Kontak' sa ilalim ng listahan ay magpapahintulot sa iyo na mag-load ng higit pa."
+msgstr "Twoja lista kontaktów pojawi się tutaj. Za każdym razem, gdy filtrujesz kontakty, lista również zostanie zmieniona w tej sekcji. Możesz sortować swoje kontakty według najnowszych, najstarszych, ostatnio zmodyfikowanych i najdawniej zmodyfikowanych. Jeśli masz długą listę kontaktów, nie wszystkie zostaną załadowane od razu, więc kliknięcie przycisku „Załaduj więcej kontaktów” u dołu listy pozwoli Ci załadować więcej."
 
 #: dt-assets/parts/modals/modal-help.php:68
 msgctxt "Optional Documentation"
 msgid "Groups List Tile"
-msgstr "Tile ng Listahan ng mga Grupo"
+msgstr "Kafelki z grupami"
 
 #: dt-assets/parts/modals/modal-help.php:69
 msgctxt "Optional Documentation"
 msgid "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more."
-msgstr "Lalabas dito ang iyong listahan ng mga grupo. Sa tuwing pag-filter mo ng mga grupo, mababago rin ang listahan sa seksyong ito. Maaari mong pag-uri-uriin ang iyong mga grupo ayon sa pinakabago, pinakaluma, pinakahuling binago, at pinakamatagal nang binago. Kung mayroon kang mahabang listahan ng mga grupo hindi sabay-sabay na maglo-load ang mga ito, kaya ang pag-click sa buton na 'Mag-load ng Higit Pang mga Grupo' sa ilalim ng listahan ay magpapahintulot sa iyo na mag-load ng higit pa."
+msgstr "Twoja lista grup pojawi się tutaj. Za każdym razem, gdy filtrujesz grupy, lista również zostanie zmieniona w tej sekcji. Możesz sortować swoje grupy według najnowszych, najstarszych, ostatnio zmodyfikowanych i najdawniej zmodyfikowanych. Jeśli masz długą listę grup, nie wszystkie zostaną załadowane od razu, więc kliknięcie przycisku „Wczytaj więcej grup” u dołu listy umożliwi załadowanie kolejnych."
 
 #: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show closed contacts in the list."
-msgstr "Gamitin ang toggle switch na ito upang ipakita o kaya ay hindi ipakita ang mga isinarang kontak sa listahan."
+msgstr "Użyj tego przełącznika, aby pokazać lub nie pokazywać zamkniętych kontaktów na liście."
 
 #: dt-assets/parts/modals/modal-help.php:81
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show inactive groups in the list."
-msgstr "Gamitin ang toggle switch na ito upang ipakita o kaya ay hindi ipakita ang mga hindi aktibong grupo sa listahan."
+msgstr "Użyj tego przełącznika, aby pokazać lub ukryć nieaktywne grupy na liście."
 
 #: dt-assets/parts/modals/modal-help.php:96
 msgctxt "Optional Documentation"
 msgid "In this area you can see your user profile."
-msgstr "Sa lugar na ito maaari mong makita ang iyong profile ng gumagamit."
+msgstr "Tutaj możesz obejrzeć swój profil użytkownika."
 
 #: dt-assets/parts/modals/modal-help.php:97
 msgctxt "Optional Documentation"
 msgid "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
-msgstr "Hindi mo kinakailangang punan ang alinman sa mga profile field na ito. Opsyonal ang mga ito upang matugunan ang mga pangangailangan ng iyong pangkat."
+msgstr "Nie musisz wypełniać żadnego z tych pól profilu. Są opcjonalne, aby spełnić potrzeby Twojego zespołu."
 
 #: dt-assets/parts/modals/modal-help.php:98
 msgctxt "Optional Documentation"
 msgid "By clicking 'Edit', you will be able adjust things like the language that this system operates in."
-msgstr "Sa pamamagitan ng pag-click sa 'I-edit', magagawa mong ayusin ang mga bagay tulad ng wikang gamit sa pagpapatakbo ng sistemang ito."
+msgstr "Klikając „Edytuj”, będziesz mógł dostosować takie rzeczy, jak język, w którym działa ten system."
 
 #: dt-assets/parts/modals/modal-help.php:104
 msgctxt "Optional Documentation"
 msgid "These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
-msgstr "Ito ang mga lugar na iyong responsibilidad. Sa pag-click sa buton na 'Idagdag' ay may lalabas na listahan ng mga lokasyong mapagpipilian."
+msgstr "To są obszary, za które jesteś odpowiedzialny. Kliknięcie przycisku „Dodaj” spowoduje wyświetlenie listy lokalizacji do wyboru."
 
 #: dt-assets/parts/modals/modal-help.php:109
 msgctxt "Optional Documentation"
 msgid "Your Notifications"
-msgstr "Ang Iyong mga Notipikasyon"
+msgstr "Twoje powiadomienia"
 
 #: dt-assets/parts/modals/modal-help.php:110
 msgctxt "Optional Documentation"
 msgid "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
-msgstr "Makakatanggap ka ng mga notipikasyon sa web at mga notipikasyon sa email batay sa iyong mga kagustuhan sa notipikasyon. Upang baguhin ang iyong kagustuhan, i-click ang mga buton ng toggle."
+msgstr "Będziesz otrzymywać powiadomienia internetowe i powiadomienia e-mail zgodnie z preferencjami powiadamiania. Aby zmienić swoje preferencje, kliknij przyciski przełączania."
 
 #: dt-assets/parts/modals/modal-help.php:112
 msgctxt "Optional Documentation"
 msgid "Notifications Turned On: The toggle will appear blue."
-msgstr "Naka-on ang mga Notipikasyon: Ang toggle ay lalabas na asul."
+msgstr "Powiadomienia włączone: przycisk wyświetli się na niebiesko."
 
 #: dt-assets/parts/modals/modal-help.php:113
 msgctxt "Optional Documentation"
 msgid "Notifications Turned Off: The toggle will appear grey."
-msgstr "Naka-off ang mga Notipikasyon: Ang toggle ay lalabas na kulay-abo."
+msgstr "Powiadomienia wyłączone: przycisk wyświetli się na szaro."
 
 #: dt-assets/parts/modals/modal-help.php:115
 msgctxt "Optional Documentation"
 msgid "Some of the types of notifications cannot be adjusted because they are required by the system."
-msgstr "Ang ilan sa mga uri ng notipikasyon ay hindi maaaring ayusin dahil ang mga ito ay kinakailangan ng sistema."
+msgstr "Niektórych typów powiadomień nie można dostosować, ponieważ są wymagane przez system."
 
 #: dt-assets/parts/modals/modal-help.php:116
 msgctxt "Optional Documentation"
 msgid "Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
-msgstr "Isaayos kung gusto mong makakita ng mga notipikasyon tungkol sa mga bagong komento, mga pagbabago sa impormasyon para sa pakikipag-ugnayan, Mahahalagang Pangyayari sa Kontak at sukatan ng Kalusugan ng Grupo, at kung makakatanggap ka ng notipikasyon para sa anumang pag-update na nangyayari sa sistema."
+msgstr "Określ, czy chcesz widzieć powiadomienia o nowych komentarzach, zmianach danych kontaktowych, metrykach dotyczących punktów kontrolnych kontaktów i stanu duchowego grupy oraz czy będziesz otrzymywać powiadomienia o wszelkich aktualizacjach, które mają miejsce w systemie."
 
 #: dt-assets/parts/modals/modal-help.php:124
 msgctxt "Optional Documentation"
 msgid "Notifications Page"
-msgstr "Pahina ng mga Notipikasyon"
+msgstr "Karta powiadomień"
 
 #: dt-assets/parts/modals/modal-help.php:125
 msgctxt "Optional Documentation"
 msgid "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
-msgstr "Ang Pahina ng mga Notipikasyon na ito ay kung saan maaari mong mabasa ang mga update para sa mga gumagamit at grupo. Nagpapakita ito ng mga notipikasyon tungkol sa aktibidad sa iyong mga rekord."
+msgstr "Ta strona powiadomień to miejsce, w którym możesz czytać aktualizacje dla użytkowników i grup. Wyświetla powiadomienia o aktywności na Twoich rekordach."
 
 #: dt-assets/parts/modals/modal-help.php:126
 msgctxt "Optional Documentation"
 msgid "All / Unread"
-msgstr "Lahat / Hindi nabasa"
+msgstr "Wszystkie / Nieprzeczytane"
 
 #: dt-assets/parts/modals/modal-help.php:127
 msgctxt "Optional Documentation"
 msgid "Click the 'All' button to show the full list of all of your notifications."
-msgstr "I-click ang buton na 'Lahat' upang ipakita ang buong listahan ng lahat ng iyong notipikasyon."
+msgstr "Kliknij przycisk \"wszystkie\" aby zobaczyć wszystkie powiadomienia."
 
 #: dt-assets/parts/modals/modal-help.php:128
 msgctxt "Optional Documentation"
 msgid "Click the 'Unread' button to show the list of all of your unread notifications."
-msgstr "I-click ang buton na 'Hindi Nabasa' upang ipakita ang listahan ng lahat ng iyong hindi nabasang notipikasyon."
+msgstr "Kliknij przycisk \"nieprzeczytane\" aby zobaczyć wszystkie nieprzeczytane powiadomienia."
 
 #: dt-assets/parts/modals/modal-help.php:130
 msgctxt "Optional Documentation"
 msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
-msgstr "Kung hindi mo gustong i-click ang bawa't napunan na bilog sa kanang bahagi ng bawa't hanay upang ipahiwatig na nabasa na ang notipikasyon, i-click ang link na 'Markahan Lahat Bilang Nabasa' sa itaas upang mabilis na ayusin ang lahat ng mensahe na ang lahat ng ito ay nabasa na."
+msgstr "Jeśli nie chcesz klikać każdego wypełnionego kółka po prawej stronie każdego wiersza, aby wskazać, że powiadomienie zostało przeczytane, kliknij link „Oznacz wszystkie jako przeczytane” u góry, aby szybko dostosować wszystkie wiadomości, które mają wszystkie zostało przeczytane."
 
 #: dt-assets/parts/modals/modal-help.php:132
 msgctxt "Optional Documentation"
 msgid "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
-msgstr "I-click ang link na 'Mga Setting' upang pumunta sa lugar ng mga setting ng mga notipikasyon at upang ayusin kung gusto mong makakita ng mga notipikasyon tungkol sa mga bagong komento, mga pagbabago sa impormasyon para sa pakikipag-ugnayan, Mahahalagang Pangyayari sa Kontak at sukatan ng Kalusugan ng Grupo, at kung makakatanggap ka ng notipikasyon para sa anumang pag-update na nangyayari sa sistema."
+msgstr "Kliknij link „Ustawienia”, aby przejść do obszaru ustawień powiadomień i dostosować, czy chcesz widzieć powiadomienia o nowych komentarzach, zmianach informacji kontaktowych, metrykach punktów kontrolnych kontaktów i stanu duchowego grupy oraz czy będziesz otrzymywać powiadomienia o wszelkich aktualizacjach, które mają miejsce w system."
 
 #: dt-assets/parts/modals/modal-help.php:137
 msgctxt "Optional Documentation"
 msgid "Duplicate Contact page"
-msgstr "Pahina ng Magkakatulad na Kontak"
+msgstr "Zduplikowana strona kontaktowa"
 
 #: dt-assets/parts/modals/modal-help.php:138
 msgctxt "Optional Documentation"
 msgid "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
-msgstr "Ang Pahina ng Magkakatulad na Kontak na ito ay kung saan maaari mong suriin, tanggihan o pagsamahin ang mga kontak na nakuha ng sistema (sinusuri ayon sa kanilang pangalan, email at telepono) na posibleng mga kopya ng isa pang kasalukuyan nang kontak."
+msgstr "Ta strona umożliwia przeglądanie, odrzucanie lub łączenie kontaktów, które zostały zebrane przez system (sprawdzając ich imię i nazwisko, adres e-mail i telefon) jako prawdopodobnie duplikaty innego już istniejącego kontaktu."
 
 #: dt-assets/parts/modals/modal-help.php:161
 #: dt-assets/parts/modals/modal-help.php:211
 msgctxt "Optional Documentation"
 msgid "Need more help?"
-msgstr "Kailangan mo pa ba ng tulong?"
+msgstr "Potrzebujesz pomocy?"
 
 #: dt-assets/parts/modals/modal-help.php:162
 #: dt-assets/parts/modals/modal-help.php:212
 msgctxt "Optional Documentation"
 msgid "Read the documentation"
-msgstr "Basahin ang dokumentasyon"
+msgstr "Przeczytaj dokumentację"
 
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "Bumalik sa %s"
+msgstr "Wróć do %s"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid "Set a reminder or a task with a note and receive a notification on the due date."
-msgstr "Magtakda ng paalala o gawain na may tala at makatanggap ng notipikasyon sa takdang petsa."
+msgstr "Ustaw przypomnienie lub zadanie z notatką i otrzymaj powiadomienie w terminie."
 
 #: dt-assets/parts/modals/modal-tasks.php:22
 msgid "Custom"
-msgstr "Nababago"
+msgstr "Własne"
 
 #: dt-assets/parts/modals/modal-tasks.php:28
 msgid "Due Date"
-msgstr "Takdang Petsa"
+msgstr "Termin"
 
 #: dt-assets/parts/modals/modal-tasks.php:32
 msgid "Create Task"
-msgstr "Gumawa ng Gawain"
+msgstr "Utwórz zadanie"
 
 #: dt-assets/parts/modals/modal-tasks.php:38
 msgid "Existing tasks for this record:"
-msgstr "Kasalukuyang mga gawain para sa rekord na ito:"
+msgstr "Istniejące zadania dla tego rekordu:"
 
 #: dt-assets/parts/nav-topbar.php:165
 msgid "Theme Update Available!"
-msgstr "May Magagamit na Update sa Tema!"
+msgstr "Dostępna aktualizacja motywu!"
 
 #: dt-assets/functions/menu.php:94
 #: dt-mapping/columns/add-users-column.php:56
@@ -2526,254 +2526,254 @@ msgstr "May Magagamit na Update sa Tema!"
 #: dt-users/template-user-management.php:76
 #: dt-users/user-management.php:108
 msgid "Users"
-msgstr "Mga Gumagamit"
+msgstr "Użytkownicy"
 
 #: dt-contacts/access-module.php:118
 msgid "Select the main person who is responsible for reporting on this contact."
-msgstr "Piliin ang pangunahing taong responsable para sa pag-uulat tungkol sa kontak na ito."
+msgstr "Zaznacz główną osobę odpowiedzianą za raporty związane z tym kontaktem."
 
 #: dt-contacts/access-module.php:169
 #: dt-contacts/base-setup.php:346
 msgid "Contact Status"
-msgstr "Katayuan ng Kontak"
+msgstr "Status kontaktu"
 
 #: dt-contacts/access-module.php:184
 msgid "Dispatch Needed"
-msgstr "Kailangang Ipadala"
+msgstr "Potrzebna dyspozycja"
 
 #: dt-contacts/access-module.php:195
 msgid "Paused"
-msgstr "Sandaling inihinto"
+msgstr "Wstrzymany"
 
 #: dt-contacts/access-module.php:133
 msgid "Contact Attempt Needed"
-msgstr "Kailangang Subukang Makipag-ugnayan"
+msgstr "Potrzebna próba kontaktu"
 
 #: dt-contacts/access-module.php:137
 msgid "Contact Attempted"
-msgstr "Sinubukang Makipag-ugnayan"
+msgstr "Podjęto próbę kontaktu"
 
 #: dt-contacts/access-module.php:141
 #: dt-contacts/dmm-module.php:232
 msgid "Contact Established"
-msgstr "Mayroon Nang Ugnayan"
+msgstr "Kontakt nawiązany"
 
 #: dt-contacts/access-module.php:145
 msgid "First Meeting Scheduled"
-msgstr "Naiskedyul ang Unang Miting"
+msgstr "Pierwsze spotkanie umówione"
 
 #: dt-contacts/access-module.php:149
 msgid "First Meeting Complete"
-msgstr "Nakumpleto ang Unang Miting"
+msgstr "Pierwsze spotkanie zakończone"
 
 #: dt-contacts/access-module.php:157
 msgid "Being Coached"
-msgstr "Kasalukuyang Tinuturuan"
+msgstr "Prowadzony"
 
 #: dt-contacts/dmm-module.php:60
 msgctxt "Optional Documentation"
 msgid "Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
-msgstr "Italaga kung aling mahahalagang pangyayari ang naabot ng kontak sa kanilang paglalakbay sa pananampalataya. Ito ang mga puntos sa espiritwal na paglalakbay ng kontak na nararapat na ipagdiwang nguni't maaaring mangyari sa anumang pagkakasunod-sunod."
+msgstr "Przypisz, które kamienie milowe osiągnął kontakt na swojej drodze wiary. Są to punkty w duchowej podróży kontaktu, które warto celebrować, ale mogą się one zdarzyć w dowolnej kolejności."
 
 #: dt-contacts/dmm-module.php:64
 msgid "Has Bible"
-msgstr "Mayroong Bibliya"
+msgstr "Posiada Biblię"
 
 #: dt-contacts/dmm-module.php:69
 msgid "Reading Bible"
-msgstr "Binabasa ang Bibliya"
+msgstr "Czyta Biblię"
 
 #: dt-contacts/dmm-module.php:74
 msgid "States Belief"
-msgstr "Ipinapahayag ang Paniniwala"
+msgstr "Wyznaje wiarę"
 
 #: dt-contacts/dmm-module.php:79
 msgid "Can Share Gospel/Testimony"
-msgstr "Maaaring Magbahagi ng Ebanghelyo/Testimonya"
+msgstr "Potrafi powiedzieć Ewangelię/świadectwo"
 
 #: dt-contacts/dmm-module.php:84
 msgid "Sharing Gospel/Testimony"
-msgstr "Nagbabahagi ng Ebanghelyo/Testimonya"
+msgstr "Głosi Ewangelię/dzieli się świadectwem"
 
 #: dt-contacts/dmm-module.php:94
 msgid "Baptizing"
-msgstr "Nagbabautismo"
+msgstr "Chrzci"
 
 #: dt-contacts/dmm-module.php:99
 msgid "In Church/Group"
-msgstr "Sa Simbahan/Grupo"
+msgstr "W kościele/grupie"
 
 #: dt-contacts/dmm-module.php:104
 msgid "Starting Churches"
-msgstr "Mga simbahang Nagsisimula"
+msgstr "Zakłada kościoły"
 
 #: dt-contacts/base-setup.php:317
 #: dt-users/template-user-management.php:367
 msgid "Male"
-msgstr "Lalaki"
+msgstr "Mężczyzna"
 
 #: dt-contacts/base-setup.php:318
 #: dt-users/template-user-management.php:368
 msgid "Female"
-msgstr "Babae"
+msgstr "Kobieta"
 
 #: dt-contacts/base-setup.php:329
 msgid "Under 18 years old"
-msgstr "Wala pang 18 taong gulang"
+msgstr "Poniżej 18 roku życia"
 
 #: dt-contacts/base-setup.php:330
 msgid "18-25 years old"
-msgstr "18-25 taong gulang"
+msgstr "18-25 lat"
 
 #: dt-contacts/base-setup.php:331
 msgid "26-40 years old"
-msgstr "26-40 taong gulang"
+msgstr "26-40 lat"
 
 #: dt-contacts/base-setup.php:332
 msgid "Over 40 years old"
-msgstr "Mahigit 40 taong gulang"
+msgstr "Ponad 40 lat"
 
 #: dt-contacts/access-module.php:211
 msgid "Reason Not Ready"
-msgstr "Dahilan Kung Bakit Hindi Handa"
+msgstr "Powód bycia niegotowym"
 
 #: dt-contacts/access-module.php:212
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
-msgstr "Ang pangunahing dahilan kung bakit hindi handang maitakda ang contact sa user"
+msgstr "Główny powód dla którego kontakt nie jest gotowy na powiązanie z użytkownikiem."
 
 #: dt-contacts/access-module.php:219
 msgid "Insufficient Contact Information"
-msgstr "Kulang na Impormasyon ng Contact"
+msgstr "Niewystarczające informacje aby się skontaktować"
 
 #: dt-contacts/access-module.php:222
 msgid "Unknown Location"
-msgstr "Hindi alam ang Lokasyon"
+msgstr "Brak danych o lokalizacji"
 
 #: dt-contacts/access-module.php:225
 msgid "Only wants media"
-msgstr "Gusto lang ng media"
+msgstr "Chce tylko materiałów"
 
 #: dt-contacts/access-module.php:228
 msgid "Outside Area"
-msgstr "Hindi Sakop"
+msgstr "Poza rejonem"
 
 #: dt-contacts/access-module.php:231
 msgid "Needs Review"
-msgstr "Kailangan ng Pagsusuri"
+msgstr "Potrzebna opinia"
 
 #: dt-contacts/access-module.php:234
 msgid "Waiting for Confirmation"
-msgstr "Naghihintay ng Kompirmasyon"
+msgstr "Oczekuje potwierdzenia"
 
 #: dt-contacts/access-module.php:242
 msgid "Reason Paused"
-msgstr "Dahilan kung bakit Naka-pause"
+msgstr "Powód wstrzymania"
 
 #: dt-contacts/access-module.php:243
 msgctxt "Optional Documentation"
 msgid "A paused contact is one you are not currently interacting with but expect to in the future."
-msgstr "Ang naka-pause na contact ay ang hindi mo pakikipag-ugnayan sa kasalukuyan ngunit asahan na gagawin mo sa hinaharap with but expect to in the future."
+msgstr "Kontakt wstrzymany to taki, z którym aktualnie nie masz interakcji ale masz nadzieję na interakcję w przyszłości."
 
 #: dt-contacts/access-module.php:262
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
-msgstr "Ang saradong contact ay ang hindi mo o ayaw mong makipag-ugnayan."
+msgstr "Kontakt zamknięty to taki, z którym nie możesz lub nie chcesz prowadzić interakcji."
 
 #: dt-contacts/access-module.php:269
 msgctxt "Reason Closed label"
 msgid "Hostile, playing games or self gain"
-msgstr "Laban, naglalaro o sariling pakinabang"
+msgstr "Wrogo nastawiony, manipulujący lub skupiony na sobie"
 
 #: dt-contacts/access-module.php:286
 msgid "Accepted"
-msgstr "Tanggap"
+msgstr "Zaakceptowany"
 
 #: dt-contacts/access-module.php:326
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
-msgstr "Ang website, event o lokasyon kung saan nanggaling ang contact na ito."
+msgstr "Strona internetowa, wydarzenie lub lokalizacja, z której pozyskano kontakt."
 
 #: dt-contacts/dmm-module.php:223
 msgid "No Answer"
-msgstr "Walang Sagot"
+msgstr "Brak odpowiedzi"
 
 #: dt-contacts/dmm-module.php:241
 msgid "Meeting Scheduled"
-msgstr "Naiskedyul ang Pagpupulong"
+msgstr "Spotkanie umówione"
 
 #: dt-contacts/dmm-module.php:250
 msgid "Meeting Complete"
-msgstr "Nakumpleto ang Pagpupulong"
+msgstr "Spotkanie zakończone"
 
 #: dt-contacts/dmm-module.php:259
 msgid "Meeting No-show"
-msgstr "Di-dumalo sa Pagpupulong"
+msgstr "Niepojawienie się na spotkaniu"
 
 #: dt-contacts/user-module.php:42
 msgid "Corresponds to user"
-msgstr "Tugon sa user"
+msgstr "Odpowiada użytkownikowi"
 
 #: dt-contacts/user-module.php:43
 msgctxt "Optional Documentation"
 msgid "The id of the user this contact corresponds to"
-msgstr "Ang id ng user kung saan tumugon ang contact na ito"
+msgstr "Identyfikator użytkownika, któremu odpowiada ten kontakt"
 
 #: dt-contacts/base-setup.php:162
 msgid "User"
-msgstr "User"
+msgstr "Użytkownik"
 
 #: dt-posts/custom-post-type.php:181
 msgid "Tags"
-msgstr "Mga tag"
+msgstr "Tagi"
 
 #: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
-msgstr "Kaugnayang mayroon ang contact na ito sa ibang contact na nasa system."
+msgstr "Powiązanie tego kontaktu z innym kontaktem w systemie."
 
 #: dt-contacts/dmm-module.php:182
 msgid "Coached by"
-msgstr "Tinuruan ni"
+msgstr "Prowadzony przez"
 
 #: dt-contacts/dmm-module.php:183
 msgctxt "Optional Documentation"
 msgid "Who is coaching this contact"
-msgstr "Sino ang nagtuturo sa contact na ito"
+msgstr "Kto prowadzi tę osobę"
 
 #: dt-contacts/dmm-module.php:160
 msgctxt "Optional Documentation"
 msgid "Who is this contact coaching"
-msgstr "Sino itong nagtuturo sa contact"
+msgstr "Kto jest przez tę osobę prowadzony"
 
 #: dt-contacts/dmm-module.php:192
 #: dt-metrics/personal/activity-highlights.php:68
 msgid "Baptized by"
-msgstr "Binautismuhan ni"
+msgstr "Ochrzczony przez"
 
 #: dt-contacts/dmm-module.php:193
 msgctxt "Optional Documentation"
 msgid "Who baptized this contact"
-msgstr "Sinong nagbautismo sa contact na ito"
+msgstr "Kto ochrzcił tę osobę"
 
 #: dt-contacts/dmm-module.php:203
 msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
-msgstr "Sinong contact na ito ang nabautismuhan"
+msgstr "Kogo ta osoba ochrzciła"
 
 #: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
-msgstr "Ang mga grupo ng mga tao na kinatawan ng grupong ito."
+msgstr "Grupy osób reprezentowane przez tę grupę."
 
 #: dt-groups/base-setup.php:468
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
-msgstr "Mga grupo kung saan miyembro ang contact na ito."
+msgstr "Grupy, których członkiem jest ta osoba."
 
 #: dt-contacts/dmm-module.php:135
 msgid "Contact or User assisting the Assigned To user to follow up with the contact."
-msgstr "Contact o User na tinutulungan ang Assigned To user na mag-follow up sa contact."
+msgstr "Kontakt lub użytkownik wspomagający użytkownika przydzielonego do kontynuowania kontaktu."
 
 #: dt-contacts/base-setup.php:240
 #: dt-groups/base-setup.php:365
@@ -2781,198 +2781,198 @@ msgstr "Contact o User na tinutulungan ang Assigned To user na mag-follow up sa 
 #: dt-people-groups/people-groups-base.php:203
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
-msgstr "Ang pangkalahatang lokasyon kung saan matatagpuan ang contact na ito."
+msgstr "Ogólna lokalizacja kontaktu."
 
 #: dt-contacts/contacts.php:1759
 msgctxt "My records"
 msgid "My %s"
-msgstr "Ang aking %s"
+msgstr "Moje %s"
 
 #: dt-core/configuration/restrict-site-access.php:234
 msgid "ERROR: Invalid username/password combination."
-msgstr "ERROR: Hindi balidong kombinasyon ng  username/password."
+msgstr "Błąd: Nieprawidłowa nazwa użytkownika lub/i hasło."
 
 #: dt-groups/base-setup.php:130
 #: dt-users/user-management.php:121
 msgid "Inactive"
-msgstr "Hindi aktibo"
+msgstr "Nieaktywny"
 
 #: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
-msgstr "Isang grupong nakararami ang hindi naniniwala."
+msgstr "Grupa składająca się w większości z niewierzących."
 
 #: dt-groups/base-setup.php:174
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
-msgstr "Isang grupo na may 3 o higit pang naniniwala ngunit hindi nagpapakilala bilang iglesia."
+msgstr "Grupa zawierająca 3 lub więcej wierzących, ale nie identyfikująca się jako kościół."
 
 #: dt-groups/base-setup.php:178
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
-msgstr "Isang grupo na may 3 o higit pang naniniwala at nagpapakilala bilang iglesia."
+msgstr "Grupa zawierająca 3 lub więcej wierzących, która identyfikuje się jako kościół."
 
 #: dt-groups/base-setup.php:181
 msgid "Team"
-msgstr "Pangkat"
+msgstr "Zespół"
 
 #: dt-groups/base-setup.php:182
 msgctxt "Optional Documentation"
 msgid "A special group that is not meeting as a church (or trying to become church)."
-msgstr "Isang espesyal na grupo na hindi bilang isang iglesia (o sinusubukang maging iglesia)."
+msgstr "Specjalna grupa, która nie spotyka się jako kościół (ani nie próbuje zostać kościołem)."
 
 #: dt-groups/base-setup.php:143
 msgid "Select the main person who is responsible for reporting on this group."
-msgstr "Piliin ang pangunahing tao na responsable para sa pag-uulat sa grupong ito."
+msgstr "Wybierz główną osobę odpowiedzialną za raportowanie w tej grupie."
 
 #: dt-groups/base-setup.php:197
 #: dt-groups/base-setup.php:634
 msgid "Church Health"
-msgstr "Kalusugan ng Iglesia"
+msgstr "Duchowy stan kościoła"
 
 #: dt-groups/base-setup.php:198
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
-msgstr "Sundan ang progreso at kalusugan ng grupo/iglesia."
+msgstr "Śledź wzrost i stan duchowy grupy/kościoła."
 
 #: dt-groups/base-setup.php:202
 #: dt-metrics/personal/baptism-tree.php:139
 msgid "Baptism"
-msgstr "Bautismo"
+msgstr "Chrzest"
 
 #: dt-groups/base-setup.php:203
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
-msgstr "Nagbabautismo ang grupo."
+msgstr "Ta grupa chrzci."
 
 #: dt-groups/base-setup.php:207
 msgid "Bible Study"
-msgstr "Pag-aaral ng Bibliya"
+msgstr "Studium biblijne"
 
 #: dt-groups/base-setup.php:208
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
-msgstr "Pinag-aaralan ng grupo ang bibliya."
+msgstr "Ta grupa studiuje Biblię."
 
 #: dt-groups/base-setup.php:212
 msgid "Communion"
-msgstr "Komunyon"
+msgstr "Wieczerza"
 
 #: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
-msgstr "Nagsasagawa ng komunyon ang grupo."
+msgstr "Ta grupa praktykuje wieczerzę."
 
 #: dt-groups/base-setup.php:217
 msgid "Fellowship"
-msgstr "Pagsasama-sama"
+msgstr "Wspólnota"
 
 #: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
-msgstr "Nagsasama-sama ang grupo."
+msgstr "Ta grupa praktykuje wspólne aktywności."
 
 #: dt-groups/base-setup.php:222
 msgid "Giving"
-msgstr "Pagbibigay"
+msgstr "Jałmużna"
 
 #: dt-groups/base-setup.php:223
 msgctxt "Optional Documentation"
 msgid "The group is giving."
-msgstr "Namimigay ang grupo."
+msgstr "W tej grupie praktykuje się dawanie."
 
 #: dt-groups/base-setup.php:227
 msgid "Prayer"
-msgstr "Panalangin"
+msgstr "Modlitwa"
 
 #: dt-groups/base-setup.php:228
 msgctxt "Optional Documentation"
 msgid "The group is praying."
-msgstr "Nananalangin ang grupo."
+msgstr "Ta grupa się modli."
 
 #: dt-groups/base-setup.php:232
 msgid "Praise"
-msgstr "Pagpupuri"
+msgstr "Uwielbienie"
 
 #: dt-groups/base-setup.php:233
 msgctxt "Optional Documentation"
 msgid "The group is praising."
-msgstr "Nagpupuri ang grupo."
+msgstr "W tej grupie prowadzi się uwielbienie."
 
 #: dt-groups/base-setup.php:237
 msgid "Sharing the Gospel"
-msgstr "Ibinabahagi ang Ebanghelyo"
+msgstr "Głoszenie Ewangelii"
 
 #: dt-groups/base-setup.php:247
 #: dt-groups/base-setup.php:445
 msgid "Church Commitment"
-msgstr "Obligasyon sa Simbahan"
+msgstr "Zaangażowanie Kościoła"
 
 #: dt-groups/base-setup.php:418
 msgid "Unbelievers"
-msgstr "Mga hindi naniniwala"
+msgstr "Niewierzący"
 
 #: dt-groups/base-setup.php:427
 msgid "Believers"
-msgstr "Mga naniniwala"
+msgstr "Wierzący"
 
 #: dt-groups/base-setup.php:436
 msgid "Accountable"
-msgstr "Nananagot"
+msgstr "Odpowiedzialny"
 
 #: dt-groups/base-setup.php:446
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
-msgstr "Ito ba ay iglesia - oo o hindi?"
+msgstr "Czy to jest kościół - tak czy nie?"
 
 #: dt-groups/base-setup.php:454
 msgid "Multiplying"
-msgstr "Dumarami"
+msgstr "Pomnażanie"
 
 #: dt-groups/base-setup.php:455
 msgctxt "Optional Documentation"
 msgid "Number of people helping start other groups. How many members are multiplying?"
-msgstr "Bilang ng mga taong tumutulong na simulan ang ibang mga grupo. Ilang miyembro ang nagpaparami?"
+msgstr "Liczba osób próbujących tworzyć nowe grupy. Ilu członków grupy pomnaża?"
 
 #: dt-groups/base-setup.php:259
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
-msgstr "Ang petsa kung kailan nagsimulang magpulong ang grupong ito."
+msgstr "Data, od której grupa się spotyka."
 
 #: dt-groups/base-setup.php:267
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
-msgstr "Ang petsa kung kailan unang ipinakilala bilang iglesia ang grupong ito."
+msgstr "Dzień, w którym ta grupa zaczęła się identyfikować jako kościół."
 
 #: dt-groups/base-setup.php:276
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
-msgstr "Ang petsa kung kailan tumigil ng pagpupulong ang grupong ito (kung aplikable)."
+msgstr "Data, od której grupa się już nie spotyka (jeśli ma zastosowanie)."
 
 #: dt-groups/base-setup.php:324
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
-msgstr "Grupong nagtatag ng grupong ito."
+msgstr "Grupa macierzysta, z której ta grupa się wywodzi."
 
 #: dt-groups/base-setup.php:336
 msgctxt "Optional Documentation"
 msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
-msgstr "Isang magka-ugnay na grupo na hindi magulang/anak ang relasyon. Maaaring magpahiwatig ito ng mga grupo na nagtutulungan, malapit nang magsanib, kakahiwalay lang, atbp."
+msgstr "Pokrewna grupa, która nie jest w związku rodzic / dziecko. Może oznaczać, że grupy współpracują, mogą się scalić, niedawno się podzieliły itp."
 
 #: dt-groups/base-setup.php:348
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
-msgstr "Grupong hindi nagmula sa grupong ito."
+msgstr "Grupa, która narodziła się z tej grupy."
 
 #: dt-groups/base-setup.php:296
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
-msgstr "Ang mga contact na miyembro ng grupong ito."
+msgstr "Osoby, będące członkami tej grupy."
 
 #: dt-groups/base-setup.php:152
 msgctxt "Optional Documentation"
 msgid "The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
-msgstr "Ang taong nagtatag at/o nagtuturo sa grupong ito. Isang tao lang ang maaaring italaga sa isang grupo habang maraming tao ang maaaring maging tagapaguro / mga tagapagtatag ng iglesia ng grupong ito."
+msgstr "Osoba, która zasadziła i / lub trenuje tę grupę. Tylko jedna osoba może być przypisana do grupy, podczas gdy wiele osób może być trenerami / założycielami kościołów tej grupy."
 
 #: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/contacts/milestones.php:68
@@ -2981,178 +2981,186 @@ msgstr "Ang taong nagtatag at/o nagtuturo sa grupong ito. Isang tao lang ang maa
 #: dt-metrics/personal/activity-highlights.php:54
 #: dt-users/template-user-management.php:568
 msgid "All Time"
-msgstr "Lahat ng Panahon"
+msgstr "Ogółem"
 
 #: dt-users/template-user-management.php:564
 msgid "This Year"
-msgstr "Sa Taong Ito"
+msgstr "W tym roku"
 
 #: dt-metrics/combined/daily-activity.php:77
 #: dt-users/template-user-management.php:558
 msgid "Last Month"
-msgstr "Nakaraang Buwan"
+msgstr "W zeszłym miesiącu"
 
 #: dt-metrics/combined/daily-activity.php:76
 #: dt-users/template-user-management.php:554
 msgid "This Month"
-msgstr "Buwan na Ito"
+msgstr "W tym miesiącu"
 
 #: dt-users/template-user-management.php:89
 #: dt-users/template-user-management.php:257
 msgid "Workload Status"
-msgstr "Kalagayan ng Workload"
+msgstr "Stan obciążenia"
 
 #: dt-users/template-user-management.php:92
 msgid "Accept Needed"
-msgstr "Kinakailangan ang Pagtanggap"
+msgstr "Potrzebna akceptacja"
 
 #: dt-users/template-user-management.php:96
 msgid "Last Activity"
-msgstr "Huling Aktibidad"
+msgstr "Ostatnia aktywność"
 
 #: dt-users/template-user-management.php:183
 msgid "No activity"
-msgstr "Walang aktibidad"
+msgstr "Brak aktywności"
 
 #: dt-users/template-user-management.php:207
 msgid "Multiplier Name"
-msgstr "Pangalan ng Tagapagparami"
+msgstr "Imię pomnażacza"
 
 #: dt-users/template-user-management.php:536
 msgid "Pending"
-msgstr "Nakabinbin"
+msgstr "Oczekuje"
 
 #: dt-users/template-user-management.php:543
 msgid "Unread Notifications"
-msgstr "Mga Hindi Nabasang Notipikasyon"
+msgstr "Nieprzeczytane powiadomienia"
 
 #: dt-users/mapbox-coverage-map.php:76
 #: dt-users/template-user-management.php:248
 msgid "User Status"
-msgstr "Kalagayan ng User"
+msgstr "Status użytkownika"
 
 #: dt-users/template-new-user.php:177
 #: dt-users/template-user-management.php:428
 msgid "Click here to see roles documentation"
-msgstr "I-click dito para makita ang dokumentasyon ng mga tungkulin"
+msgstr "Kliknij tutaj, aby zobaczyć dokumentację ról"
 
 #: dt-users/template-user-management.php:456
 msgid "Save Roles"
-msgstr "I-save ang mga Tungkulin"
+msgstr "Zapisz role"
 
 #: dt-users/template-user-management.php:280
 #: template-settings.php:337
 msgid "Search Locations"
-msgstr "Hanapin ang Lokasyon"
+msgstr "Szukaj w lokalizacji"
 
 #: dt-users/template-user-management.php:308
 msgid "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
-msgstr "Itakda ang mga petsa kung kailan ka hindi puwede para malaman ng Dispatcher kung kailan ka puwede para makatanggap ng bagong mga contact"
+msgstr "Ustaw daty, w których będziesz niedostępny, aby dyspozytor wiedział o Twojej dostępności do otrzymywania nowych kontaktów"
 
 #: dt-users/template-user-management.php:319
 msgid "Travel or Away Dates"
-msgstr "Mga Petsa ng Biyahe o Wala ka Rito"
+msgstr "Daty podróży lub nieobecności"
 
 #: dt-users/template-user-management.php:229
 msgid "Daily Activity"
-msgstr "Pang-araw-araw ng Aktibidad"
+msgstr "Dzienna aktywność"
 
 #: dt-users/user-management.php:119
 msgid "Away"
-msgstr "Malayo"
+msgstr "Nieobecny"
 
 #: dt-users/user-management.php:120
 msgid "Inconsistent"
-msgstr "Hindi pare-pareho"
+msgstr "Niespójny"
 
 #: dt-users/user-management.php:172
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "%1$s ay tinanggap noong %2$s matapos ang %3$s araw"
+msgstr "%1$s zostało zaakceptowane %2$s po %3$s dniach"
 
 #: dt-users/user-management.php:173
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "%1$s hinihintay ang Contact Attempt sa loob ng %2$s araw"
+msgstr "%1$s czeka na próbę kontaktu od %2$s dni"
 
 #: dt-users/user-management.php:174
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr "Contact kay %1$s ay sinubukan noong %2$s matapos ang %3$s araw"
+msgstr "Próbowano skontaktować się z %1$s %2$s po %3$s dniach"
 
 #: dt-users/user-metrics.php:117
 msgid "Logged In"
-msgstr "Nag-log In"
+msgstr "Zalogowany"
 
 #: dt-users/user-metrics.php:120
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "Tinanggihang gawain sa %s"
+msgstr "Odmówiono przydziału %s"
 
 #: dt-users/user-management.php:289
 msgid "%s days since last update"
-msgstr "%s araw mula huling update"
+msgstr "%s dni od ostatniej aktualizacji"
 
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
-msgstr "Nagtakda ka ng paalala para ngayong araw sa %1$s"
+msgstr "Ustawiłeś na dziś przypomnienie w związku z %1$s"
 
 #: dt-workflows/tasks.php:86
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
-msgstr "Itinakda mo ang gawaing ito noong %1$s: %2$s"
+msgstr "Ustawiłeś zadanie w związku z %1$s: %2$s"
 
 #: dt-contacts/access-module.php:486
 #: dt-contacts/access-module.php:517
 #: dt-contacts/access-module.php:548
 #: dt-contacts/base-setup.php:441
 msgid "Choose an option:"
-msgstr "Pumili ng opsyon:"
+msgstr "Wybierz opcję:"
 
 #: dt-contacts/access-module.php:508
 #: dt-contacts/access-module.php:539
 #: dt-contacts/access-module.php:567
 #: dt-contacts/base-setup.php:465
 msgid "Confirm"
-msgstr "Kompirmahin"
+msgstr "Potwierdź"
 
 #: dt-groups/base-setup.php:592
 msgid "Create"
-msgstr "Gumawa"
+msgstr "Utwórz"
 
 #: dt-groups/base-setup.php:597
 msgid "Select"
-msgstr "Piliin"
+msgstr "Zaznacz"
 
 #: dt-groups/base-setup.php:609
 msgctxt "Add members modal"
 msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
-msgstr "Sa blangkong 'Listahan ng Miyembro', mag-type ng pangalan ng umiiral na kontak para maidagdag siya sa grupong ito."
+msgstr "W polu „Lista członków” wpisz nazwę istniejącego kontaktu, aby dodać go do tej grupy."
 
 #: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "%s minuto ang nakaraan"
-msgstr[1] "%s (na) minuto ang nakakaraan"
+msgstr[0] "%s minutę temu"
+msgstr[1] "%s minut temu"
+msgstr[2] "%s minut temu"
+msgstr[3] "%s minut temu"
 
 #: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "%s oras ang nakakaraan"
-msgstr[1] "%s (na) oras ang nakakaraan"
+msgstr[0] "%s godzinę temu"
+msgstr[1] "%s godzin temu"
+msgstr[2] "%s godzin temu"
+msgstr[3] "%s godzin temu"
 
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "%s araw ang nakakaraan"
-msgstr[1] "%s (na) araw ang nakakaraan"
+msgstr[0] "% s dzień temu"
+msgstr[1] "%s dni temu"
+msgstr[2] "%s dni temu"
+msgstr[3] "%s dni temu"
 
 #: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "%s linggo ang nakakaraan"
-msgstr[1] "%s (na) linggo ang nakakaraan"
+msgstr[0] "%s tydzień temu"
+msgstr[1] "%s tygodni temu"
+msgstr[2] "%s tygodni temu"
+msgstr[3] "%s tygodni temu"
 
 #: dt-metrics/combined/daily-activity.php:78
 #: dt-metrics/combined/daily-activity.php:79
@@ -3162,265 +3170,269 @@ msgstr[1] "%s (na) linggo ang nakakaraan"
 #: dt-notifications/notifications.php:497
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "%s buwan ang nakakaraan"
-msgstr[1] "%s (na) buwan ang nakakaraan"
+msgstr[0] "%s miesiąc temu"
+msgstr[1] "%s miesięcy temu"
+msgstr[2] "%s miesięcy temu"
+msgstr[3] "%s miesięcy temu"
 
 #: dt-notifications/notifications.php:511
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "%s taon ang nakakaraan"
-msgstr[1] "%s (na) taon ang nakakaraan"
+msgstr[0] "%s rok temu"
+msgstr[1] "%s lat temu"
+msgstr[2] "%s lat temu"
+msgstr[3] "%s lat temu"
 
 #: dt-assets/functions/enqueue-scripts.php:177
 msgid "Translate with Google Translate"
-msgstr "Isaling-wika gamit ang Google Translate"
+msgstr "Przetłumacz za pomocą Google Translate"
 
 #: dt-assets/functions/enqueue-scripts.php:178
 msgid "Hide Translation"
-msgstr "Itago ang Saling-wika"
+msgstr "Ukryj tłumaczenie"
 
 #: dt-assets/functions/enqueue-scripts.php:260
 msgid "Add"
-msgstr "Idagdag"
+msgstr "Dodaj"
 
 #: dt-assets/parts/loop-activity-comment.php:46
 msgid "Comment"
-msgstr "Magkomento"
+msgstr "Skomentuj"
 
 #: archive-template.php:502
 #: dt-assets/parts/loop-activity-comment.php:55
 msgid "Type:"
-msgstr "I-type ang:"
+msgstr "Rodzaj:"
 
 #: dt-assets/parts/loop-activity-comment.php:184
 msgid "Type of Comment"
-msgstr "Uri ng Komento"
+msgstr "Rodzaj komentarza"
 
 #: dt-contacts/access-module.php:312
 msgid "Contacts transferred from a partnership with another Disciple.Tools site."
-msgstr "Inilipat ang mga kontak mula sa isang samahan na may katuwang na isa pang Alagad. Lugar ng tools."
+msgstr "Kontakty pozyskane poprzez partnerstwo z inną stroną Disciple.Tools."
 
 #: dt-mapping/geocode-api/mapbox-api.php:286
 #: dt-mapping/geocode-api/mapbox-api.php:321
 #: dt-users/template-user-management.php:268
 #: template-settings.php:322
 msgid "add"
-msgstr "idagdag"
+msgstr "dodaj"
 
 #: dt-posts/posts.php:449
 msgid "%s removed"
-msgstr "inalis ang %s"
+msgstr "Usunięto %s"
 
 #: dt-contacts/access-module.php:1294
 #: dt-users/template-user-management.php:95
 msgid "Location"
-msgstr "Lokasyon"
+msgstr "Lokalizacja"
 
 #: dt-users/template-user-management.php:530
 msgid "Updates Needed"
-msgstr "Kailangan ang mga Update"
+msgstr "Potrzebna aktualizacja"
 
 #: dt-users/template-user-management.php:550
 msgid "Assignments"
-msgstr "Mga assignment"
+msgstr "Przydziały"
 
 #: dt-users/template-user-management.php:582
 msgid "Pace"
-msgstr "Bilis"
+msgstr "Tempo"
 
 #: dt-users/template-user-management.php:583
 msgid "Assigned and not accepted"
-msgstr "Itinakda at hindi tinanggap"
+msgstr "Przypisany i nieprzyjęty"
 
 #: dt-users/template-user-management.php:585
 msgid "Time from assigned to contact accepted for the last 10 contacts"
-msgstr "Oras mula nang pagtatakda hanggang sa pagtanggap sa kontak para sa huling 10 kontak"
+msgstr "Czas od przypisania do zaakceptowania kontaktu dla ostatnich 10 kontaktów"
 
 #: dt-users/template-user-management.php:587
 msgid "Accepted with no contact attempt"
-msgstr "Tinanggap nang walang pagsubok na makipag-uganayan"
+msgstr "Zaakceptowano bez próby kontaktu"
 
 #: dt-users/template-user-management.php:589
 msgid "Oldest 10 update needed"
-msgstr "Kailangan ng update sa pinakanaunang 10"
+msgstr "Wymagana aktualizacja najstarszych 10"
 
 #: dt-users/template-user-management.php:591
 msgid "Time from assigned to contact attempt for the last 10 contacts"
-msgstr "Oras mula nang pagtatakda hanggang sa pagsubok na makipag-ugnayan para sa huling 10 kontak"
+msgstr "Czas od przypisania do próby kontaktu dla ostatnich 10 kontaktów"
 
 #: dt-users/template-user-management.php:268
 #: dt-users/template-user-management.php:271
 msgid "Location Responsibility"
-msgstr "Pananagutan sa Lokasyon"
+msgstr "Odpowiedzialność za lokalizację"
 
 #: dt-users/template-user-management.php:310
 msgid "Schedule Unavailability"
-msgstr "Iiskedyul kung Kailan Hindi Pwede"
+msgstr "Zaplanuj nieobecność"
 
 #: dt-users/user-management.php:110
 msgid "Add User"
-msgstr "Magdagdag ng User"
+msgstr "Dodaj użytkownika"
 
 #: dt-users/users.php:390
 msgid "Email already exists and is a user on this site"
-msgstr "Umiiral na ang email at ito ay user na sa site na ito"
+msgstr "Adres mailowy istnieje w systemie i jest przypisany do użytkownika"
 
 #: dt-users/users.php:396
 msgid "Failed to add user to site."
-msgstr "Hindi naidagdag ang user sa site."
+msgstr "Nie udało się dodać użytkownika do strony."
 
 #: dt-assets/functions/enqueue-scripts.php:211
 msgid "Mark as complete"
-msgstr "Markahan bilang kumpleto na"
+msgstr "Oznacz jako kompletny"
 
 #: dt-assets/parts/modals/modal-help.php:34
 msgid "2 contacts need an update"
-msgstr "2 kontak ang nangangailangan ng update"
+msgstr "2 kontakty wymagają aktualizacji"
 
 #: dt-assets/parts/modals/modal-help.php:13
 msgid "Quick Action Buttons"
-msgstr "Mga Button ng Mabilisang Aksyon"
+msgstr "Skróty klawiszowe"
 
 #: dt-metrics/groups/tree.php:84
 #: dt-metrics/personal/group-tree.php:85
 msgid "Members"
-msgstr "Mga miyembro"
+msgstr "Członkowie"
 
 #: dt-assets/parts/modals/modal-help.php:56
 msgctxt "Optional Documentation"
 msgid "Default and Custom Filters Tile"
-msgstr "Tile ng mga Default at Custom na Filter"
+msgstr "Kafelek filtrów domyślnych i niestandardowych"
 
 #: dt-assets/parts/modals/modal-help.php:74
 msgctxt "Optional Documentation"
 msgid "Closed Contacts Switch"
-msgstr "Switch ng mga Isinarang Kontak"
+msgstr "Przełącznik zamkniętych kontaktów"
 
 #: dt-assets/parts/modals/modal-help.php:80
 msgctxt "Optional Documentation"
 msgid "Inactive Groups Switch"
-msgstr "Switch ng mga Grupong Di-aktibo"
+msgstr "Przełącznik nieaktywnych grup"
 
 #: dt-assets/parts/modals/modal-help.php:129
 #: dt-assets/parts/nav-topbar.php:307
 #: template-notifications.php:66
 msgid "Mark all as read"
-msgstr "Markahan ang lahat bilang nabasa na"
+msgstr "Oznacz wszystkie jako przeczytane"
 
 #: dt-assets/parts/modals/modal-tasks.php:13
 msgid "Task Type"
-msgstr "Uri ng Gawain"
+msgstr "Rodzaj zadania"
 
 #: dt-contacts/base-setup.php:347
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
-msgstr "Inilalarawan ng Status ng Kontak ang pagsulong sa pakikipag-ugnayan sa kontak."
+msgstr "Status kontaktu opisuje postęp w komunikacji z daną osobą."
 
 #: dt-contacts/base-setup.php:158
 msgid "Contact Type"
-msgstr "Uri ng Kontak"
+msgstr "Rodzaj kontaktu"
 
 #: dt-people-groups/people-groups-base.php:219
 #: dt-posts/custom-post-type.php:158
 msgid "Last Modified"
-msgstr "Huling Binago"
+msgstr "Ostatnio zmodyfikowany"
 
 #: dt-core/configuration/config-site-defaults.php:356
 msgid "New Comments"
-msgstr "Mga Bagong Komento"
+msgstr "Nowe komentarze"
 
 #: dt-groups/base-setup.php:238
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
-msgstr "Ibinabahagi ng grupo ang ebanghelyo."
+msgstr "W tej grupie dzielą się Ewangelią."
 
 #: dt-groups/base-setup.php:243
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
-msgstr "May mga lider ang grupo."
+msgstr "Ta grupa posiada liderów."
 
 #: dt-groups/base-setup.php:248
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
-msgstr "Nagtalaga ang grupo na maging Iglesia."
+msgstr "Ta grupa podjęła decyzję o byciu kościołem."
 
 #: dt-groups/base-setup.php:419
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
-msgstr "Bilang ng mga hindi naniniwala sa grupong ito."
+msgstr "Liczba niewierzących w grupie."
 
 #: dt-groups/base-setup.php:428
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
-msgstr "Bilang ng mga naniniwala sa grupong ito."
+msgstr "Liczba wierzących w grupie."
 
 #: dt-groups/base-setup.php:437
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
-msgstr "Bilang ng mga taong may-pananagutan sa grupong ito."
+msgstr "Liczba osób w grupie wsparcia."
 
 #: dt-posts/posts.php:314
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
-msgstr "Idinagdag ang %1$s bilang grupo ng mga tao noong %2$s"
+msgstr "%1$s została dodana jako grupa osób w %2$s"
 
 #: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "Idinagdag ang %s sa mga grupo ng mga tao"
+msgstr "% s zostało dodane do grup osób"
 
 #: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
-msgstr "Inalis ang %1$s mula sa grupo ng mga tao noong %2$s"
+msgstr "%1$s usunięto z grup osób w %2$s"
 
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "Inalis ang %s sa mga grupo ng mga tao"
+msgstr "%s usunięto z grup osób"
 
 #: dt-users/user-hooks-and-config.php:512
 #: dt-users/user-management.php:183
 msgid "View Contact"
-msgstr "Tingnan ang Kontak"
+msgstr "Zobacz kontakt"
 
 #: template-notifications.php:86
 #: template-notifications.php:89
 msgid "Load more notifications"
-msgstr "Mag-load pa ng mga notipikasyon"
+msgstr "Załaduj więcej powiadomień"
 
 #: dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62
 #: dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
-msgstr "Kontak"
+msgstr "Kontakt"
 
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
-msgstr "Nagpapakita ng %s (na) item na tumutugma sa %2$s"
+msgstr "Wyświetlam %1$s elementów pasujących do %2$s"
 
 #: dt-metrics/contacts/milestones-map.php:24
 #: dt-metrics/contacts/milestones-map.php:40
 msgid "Milestones Map"
-msgstr "Mapa ng Mahahalagang Nakamit"
+msgstr "Mapa kamieni milowych"
 
 #: dt-users/user-management.php:175
 msgid "Unable to update"
-msgstr "Hindi ma-update"
+msgstr "Nie można zaktualizować"
 
 #: dt-contacts/access-module.php:278
 msgctxt "Reason Closed label"
 msgid "GDPR request"
-msgstr "GDPR na request"
+msgstr "Żądanie RODO"
 
 #: dt-contacts/dmm-module.php:120
 msgid "Seeker"
-msgstr "Seeker"
+msgstr "Poszukujący"
 
 #: dt-contacts/dmm-module.php:123
 msgid "Believer"
-msgstr "Naniniwala"
+msgstr "Wierzący"
 
 #: dt-contacts/dmm-module.php:126
 msgid "Leader"
@@ -3428,223 +3440,223 @@ msgstr "Lider"
 
 #: dt-contacts/contacts-transfer.php:1149
 msgid "redacted email"
-msgstr "in-edit na email"
+msgstr "zredagowana wiadomość e-mail"
 
 #: dt-contacts/contacts-transfer.php:1150
 msgid "redacted name"
-msgstr "in-edit na pangalan"
+msgstr "zredagowana nazwa"
 
 #: dt-contacts/contacts-transfer.php:1151
 msgid "redacted"
-msgstr "in-edit"
+msgstr "zredagowano"
 
 #: dt-contacts/access-module.php:64
 msgid "Partner"
-msgstr "Ka-partner"
+msgstr "Partner"
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "Pangalan ng DT Site: %"
+msgstr "Nazwa witryny DT: %s"
 
 #: dt-metrics/charts-base.php:132
 msgid "No Results"
-msgstr "Walang mga Resulta"
+msgstr "Brak wyników"
 
 #: dt-metrics/combined/hover-map.php:25
 #: dt-metrics/combined/hover-map.php:65
 #: dt-users/hover-coverage-map.php:52
 msgid "Hover Map"
-msgstr "I-hover ang Mapa"
+msgstr "Najedź na mapę myszką"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
-msgstr "Listahan ng Lokasyon"
+msgstr "Lista lokalizacji"
 
 #: dt-metrics/groups/tree.php:85
 #: dt-metrics/personal/group-tree.php:86
 msgid "View Record"
-msgstr "Tingnan ang Record"
+msgstr "Wyświetl rekord"
 
 #: dt-metrics/contacts/milestones.php:23
 msgid "Milestones Chart"
-msgstr "Chart ng Mahahalagang Nakamit"
+msgstr "Wykres kamieni milowych"
 
 #: dt-metrics/contacts/overview.php:61
 msgid "Contacts Overview"
-msgstr "Buod ng mga Kontak"
+msgstr "Przegląd kontaktów"
 
 #: dt-metrics/contacts/sources.php:24
 msgid "Sources Chart"
-msgstr "Chart ng mga Pinagmumulan"
+msgstr "Wykres źródeł"
 
 #: dt-metrics/groups/overview.php:62
 msgid "Groups Overview"
-msgstr "Buod ng mga Grupo"
+msgstr "Przegląd grup"
 
 #: dt-metrics/groups/tree.php:82
 #: dt-metrics/personal/group-tree.php:83
 msgid "Highlight Active"
-msgstr "Aktibo ang Highlight"
+msgstr "Uwydatnij aktywnych"
 
 #: dt-metrics/groups/tree.php:83
 #: dt-metrics/personal/group-tree.php:84
 msgid "Highlight Churches"
-msgstr "Highlight"
+msgstr "Uwydatnij kościoły"
 
 #: dt-metrics/groups/tree.php:88
 #: dt-metrics/personal/group-tree.php:89
 msgid "Total Members"
-msgstr "Kabuuang Bilang ng mga Miyembro"
+msgstr "W sumie członków"
 
 #: dt-metrics/groups/tree.php:89
 #: dt-metrics/personal/group-tree.php:90
 msgid "View Group"
-msgstr "Tingnan ang Grupo"
+msgstr "Zobacz grupę"
 
 #: dt-metrics/personal/baptism-tree.php:57
 msgid "My Baptism Generation Tree"
-msgstr "Ang Aking Puno ng Henerasyon ng Pagbabautismo"
+msgstr "Moje drzewko chrztu"
 
 #: dt-metrics/personal/coaching-tree.php:143
 msgid "Disciple"
-msgstr "Alagad"
+msgstr "Uczeń"
 
 #: dt-metrics/personal/overview.php:72
 msgid "stats as of"
-msgstr "mga istatistika noong"
+msgstr "statystyki na dzień"
 
 #: dt-users/hover-coverage-map.php:85
 #: dt-users/mapbox-coverage-map.php:55
 msgid "Coverage Map"
-msgstr "Mapa ng Saklaw"
+msgstr "Mapa objętych lokalizacji"
 
 #: dt-users/hover-coverage-map.php:141
 msgid "Locations Covered"
-msgstr "Mga Nasasaklawang Lokasyon"
+msgstr "Objęte lokalizacje"
 
 #: dt-users/hover-coverage-map.php:192
 msgid "Locations with Active Users"
-msgstr "Mga Lokasyon na may Aktibong mga User"
+msgstr "Lokalizacje, w których są aktywni użytkownicy"
 
 #: dt-users/hover-coverage-map.php:243
 msgid "Locations with Inactive Assigned"
-msgstr "Mga Lokasyon na may Nakatakdang Di-aktibo"
+msgstr "Lokalizacje z przypisanymi nieaktywnymi"
 
 #: dt-users/template-user-management.php:464
 msgid "Access by Source"
-msgstr "I-access ayon sa Pinagmumulan"
+msgstr "Dostęp według źródła"
 
 #: dt-users/template-user-management.php:470
 #: dt-users/user-hooks-and-config.php:543
 msgid "All Sources - gives access to all contacts"
-msgstr "Lahat ng Pinagmumulan - nagbibigay ng access sa lahat ng kontak"
+msgstr "Wszystkie źródła - daje dostęp do wszystkich kontaktów"
 
 #: dt-users/template-user-management.php:476
 #: dt-users/user-hooks-and-config.php:550
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
-msgstr "Custom - pag-access sa sariling mga kontak at lahat ng kontak ng napiling mga pingmumulan sa ibaba"
+msgstr "Niestandardowe - dostęp do własnych kontaktów i wszystkich kontaktów z wybranych źródeł poniżej"
 
 #: dt-users/template-user-management.php:482
 #: dt-users/user-hooks-and-config.php:557
 msgid "No Sources - only own contacts"
-msgstr "Walang mga Pinagmumulan - mga sariling kontak lang"
+msgstr "Bez źródeł - tylko własne kontakty"
 
 #: dt-users/template-user-management.php:488
 msgid "Sources List"
-msgstr "Listahan ng mga Pinagmumulan"
+msgstr "Lista źródeł"
 
 #: dt-users/template-user-management.php:500
 msgid "Save Allowed Sources"
-msgstr "I-save ang mga Pinapayagang Pinagmumulan"
+msgstr "Zapisz dozwolone źródeł"
 
 #: dt-users/template-new-user.php:82
 msgid "Add New User"
-msgstr "Magdagdag ng Bagong User"
+msgstr "Dodaj nowego użytkownika"
 
 #: dt-users/template-new-user.php:90
 msgid "There are some errors in your form."
-msgstr "May ilang error sa form mo."
+msgstr "Twój formularz zawiera błędy."
 
 #: dt-users/template-new-user.php:96
 msgid "Contact to make a user (optional)"
-msgstr "Makipag-ugnayan upang magawang user ito (opsyonal)"
+msgstr "Kontakt w celu utworzenia użytkownika (opcjonalnie)"
 
 #: dt-users/template-new-user.php:181
 msgid "Create User"
-msgstr "Gumawa ng User"
+msgstr "Utwórz użytkownika"
 
 #: dt-users/user-management.php:178
 msgid "Email address is already in the system as a user!"
-msgstr "Ang email address ay nasa system na bilang isang user!"
+msgstr "Adres mailowy jest już przypisany do użytkownika!"
 
 #: dt-users/user-management.php:179
 msgid "Username is already in the system as a user!"
-msgstr "Ang username ay nasa system na bilang isang user!"
+msgstr "Nazwa jest już przypisana do użytkownika!"
 
 #: dt-users/template-new-user.php:105
 msgid "Search multipliers and contacts"
-msgstr "Maghanap ng mga  multiplier at kontak"
+msgstr "Szukaj pomnażaczy i osób"
 
 #: dt-users/user-management.php:180
 msgid "Remove"
-msgstr "Alisin"
+msgstr "Usuń"
 
 #: dt-metrics/groups/tree.php:25
 msgid "Groups Tree"
-msgstr "Puno ng mga Grupo"
+msgstr "Drzewko grup"
 
 #: dt-metrics/personal/baptism-tree.php:25
 msgid "My Baptism Tree"
-msgstr "Ang Aking Puno ng Pagbabautismo"
+msgstr "Moje drzewo chrztu"
 
 #: dt-metrics/personal/coaching-tree.php:25
 msgid "My Coaching Tree"
-msgstr "Ang Aking Puno ng Pagtuturo"
+msgstr "Moje drzewo coachingu"
 
 #: dt-metrics/personal/group-tree.php:26
 msgid "My Groups Tree"
-msgstr "Ang Aking Puno ng mga Grupo"
+msgstr "Drzewo moich grup"
 
 #: dt-contacts/base-setup.php:406
 msgid "See duplicates"
-msgstr "Tingnan ang mga kopya"
+msgstr "Pokaż duplikaty"
 
 #: dt-assets/functions/enqueue-scripts.php:218
 msgid "Dismissed Duplicates"
-msgstr "Mga Binalewalang Kopya"
+msgstr "Odrzucone duplikaty"
 
 #: dt-assets/functions/enqueue-scripts.php:219
 msgid "Duplicates on: %s"
-msgstr "Mga kopya sa: %s"
+msgstr "Duplikaty dla kontaktu %s"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
-msgstr "Walang mga kopyang nahanap."
+msgstr "Nie znaleziono duplikatów."
 
 #: dt-contacts/base-setup.php:196
 msgid "Languages"
-msgstr "Mga wika"
+msgstr "Języki"
 
 #: dt-contacts/contacts-transfer.php:435
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "Ang kontak ay inilipat sa %s para sa karagdagang pag-follow-up."
+msgstr "Ten kontakt został przeniesiony do% s w celu dalszej obserwacji."
 
 #: dt-contacts/duplicates-merging.php:541
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
-msgstr "Ang record na ito ay isang kopya at isinama sa %2$s"
+msgstr "Ten rekord jest duplikatem i został scalony z %2$s"
 
 #: dt-contacts/access-module.php:1476
 #: dt-contacts/duplicates-merging.php:465
 #: dt-contacts/duplicates-merging.php:545
 msgid "Duplicate Checker"
-msgstr "Kopyahin ang Checker"
+msgstr "Wyszukaj duplikaty"
 
 #: dt-contacts/duplicates-merging.php:554
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
-msgstr "Isinama ni %1$s si %2$s sa record na ito"
+msgstr "%1$s scalił %2$s z tym rekordem"
 
 #: dt-posts/dt-posts.php:1255
 msgid "D.T System"
@@ -3652,135 +3664,135 @@ msgstr "D.T System"
 
 #: dt-users/user-management.php:176
 msgid "View New User"
-msgstr "Tingnan ang Bagong User"
+msgstr "Wyświetl nowego użytkownika"
 
 #: dt-users/user-management.php:181
 msgid "This contact is already a user."
-msgstr "User na ang kontak na ito."
+msgstr "Ten kontakt jest już użytkownikiem."
 
 #: dt-users/user-management.php:182
 msgid "View User"
-msgstr "Tingnan ang User"
+msgstr "Wyświetl użytkownika"
 
 #: template-settings.php:58
 #: template-settings.php:314
 msgid "Multiplier Preferences"
-msgstr "Mga Preperensya ng Multiplier"
+msgstr "Preferencje dotyczące pomnażacza"
 
 #: template-settings.php:322
 #: template-settings.php:327
 msgid "Locations you are willing to be responsible for"
-msgstr "Mga lokasyon na handa mong panagutan"
+msgstr "Lokalizacje, za które chcesz być odpowiedzialny"
 
 #: dt-users/template-user-management.php:291
 #: template-settings.php:350
 msgid "Languages you are comfortable speaking"
-msgstr "Mga wika na madali para sa iyong gamitin sa pagsasalita"
+msgstr "Języki, którymi dobrze się posługujesz"
 
 #: template-settings.php:371
 msgid "People Groups you wish to serve"
-msgstr "Mga Grupo ng mga Tao na gusto mong paglingkuran"
+msgstr "Grupy osób, którym chcesz służyć"
 
 #: template-settings.php:394
 msgid "Availability to receive contacts from the Dispatcher"
-msgstr "Libreng iskedyul upang makatanggap ng mga kontak mula sa Dispatcher"
+msgstr "Możliwość otrzymywania kontaktów od dyspozytora"
 
 #: template-settings.php:667
 msgid "System Language"
-msgstr "Wika ng System"
+msgstr "Język systemu"
 
 #: archive-template.php:202
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "%s (na) Filter"
+msgstr "Filtry %s"
 
 #: archive-template.php:225
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "%s (na) Listahan"
+msgstr "Lista %s"
 
 #: archive-template.php:258
 #: template-new-bulk-post.php:89
 msgid "Fields"
-msgstr "Mga Field"
+msgstr "Pola"
 
 #: archive-template.php:265
 msgid "Bulk Edit"
-msgstr "Maramihang Pag-edit"
+msgstr "Edycja zbiorcza"
 
 #: archive-template.php:324
 msgid "Choose which fields to display as columns in the list"
-msgstr "Piliin kung aling mga field ang ipapakita bilang mga column sa listahan"
+msgstr "Wybierz, które pola mają być wyświetlane jako kolumny na liście"
 
 #: archive-template.php:106
 #: archive-template.php:193
 #: archive-template.php:358
 #: template-new-bulk-post.php:132
 msgid "Apply"
-msgstr "I-apply"
+msgstr "Zastosuj"
 
 #: archive-template.php:107
 #: archive-template.php:194
 #: archive-template.php:359
 #: template-new-bulk-post.php:134
 msgid "reset to default"
-msgstr "i-reset sa default"
+msgstr "przywróć domyślne"
 
 #: archive-template.php:367
 msgid "Select all the  %1$s you want to update from the list, and update them below"
-msgstr "Piliin ang lahat ng %$s na gusto mong i-update mula sa listahan, at i-update ang mga ito sa ibaba"
+msgstr "Wybierz z listy wszystkie %1$s, które chcesz zaktualizować, i zaktualizuj je poniżej"
 
 #: archive-template.php:449
 msgid "Share with:"
-msgstr "I-share kay:"
+msgstr "Udostępnij:"
 
 #: archive-template.php:522
 #: dt-users/template-new-user.php:129
 #: dt-users/template-new-user.php:242
 msgid "See More Options"
-msgstr "Tumingin ng Iba Pang mga Opsyon"
+msgstr "Więcej opcji"
 
 #: archive-template.php:523
 #: dt-users/template-new-user.php:132
 #: dt-users/template-new-user.php:245
 msgid "See Fewer Options"
-msgstr "Tumingin ng mas Kaunting mga Opsyon"
+msgstr "Mniej opcji"
 
 #: dt-assets/functions/details-bar.php:55
 msgid "Admin Actions"
-msgstr "Mga Aksyon ng Admin"
+msgstr "Działania administratora"
 
 #: dt-assets/functions/details-bar.php:60
 #: single-template.php:357
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "Burahin ang %s"
+msgstr "Usuń %s"
 
 #: dt-assets/functions/enqueue-scripts.php:215
 msgid "Duplicates Detected"
-msgstr "May Nakitang mga Kopya"
+msgstr "Wykryto duplikaty"
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
 msgid "Create Record"
-msgstr "Gumawa ng Tala"
+msgstr "Utwórz rekord"
 
 #: dt-assets/parts/modals/modal-new-contact.php:20
 msgid "Record Created"
-msgstr "Nagawa na ang Tala"
+msgstr "Utworzono rekord"
 
 #: dt-assets/parts/modals/modal-new-contact.php:26
 msgid "Edit New Record"
-msgstr "I-edit ang Bagong Tala"
+msgstr "Edytuj nowy rekord"
 
 #: dt-contacts/access-module.php:112
 msgid "Collaborators"
-msgstr "Mga Tumutulong"
+msgstr "Współpracownicy"
 
 #: dt-contacts/access-module.php:911
 #: dt-contacts/access-module.php:921
 msgid "My Follow-Up"
-msgstr "Ang Follow-Up Ko"
+msgstr "Moja kontynuacja"
 
 #: dt-contacts/access-module.php:922
 #: dt-contacts/access-module.php:943
@@ -3788,31 +3800,31 @@ msgstr "Ang Follow-Up Ko"
 #: dt-contacts/access-module.php:990
 #: dt-groups/base-setup.php:977
 msgid "Assigned to me"
-msgstr "Naka-assign sa akin"
+msgstr "Przydzielony do mnie"
 
 #: dt-contacts/access-module.php:923
 #: dt-contacts/access-module.php:944
 #: dt-contacts/access-module.php:967
 #: dt-contacts/access-module.php:991
 msgid "Sub-assigned to me"
-msgstr "Naka-sub-assign sa akin"
+msgstr "Podprzypisane do mnie"
 
 #: dt-contacts/access-module.php:1027
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "Follow-Up %s"
+msgstr "Kontynuacja %s"
 
 #: dt-contacts/access-module.php:1035
 msgid "All Follow-Up"
-msgstr "Lahat ng Follow-Up"
+msgstr "Wszystkie działania następcze"
 
 #: dt-contacts/access-module.php:1470
 msgid "This record might be a duplicate of: "
-msgstr "Ang talang ito ay maaaring kopya ng:"
+msgstr "Ten rekord może być duplikatem: "
 
 #: dt-contacts/base-setup.php:93
 msgid "User Manager"
-msgstr "User Manager"
+msgstr "Zarządzanie użytkownikiem"
 
 #: dt-contacts/base-setup.php:105
 msgid "Administrator"
@@ -3820,101 +3832,101 @@ msgstr "Administrator"
 
 #: dt-contacts/base-setup.php:151
 msgid "Nickname"
-msgstr "Nickname"
+msgstr "Przezwisko"
 
 #: dt-contacts/base-setup.php:163
 msgid "Representing a User in the system"
-msgstr "Kumakatawan sa isang User sa system"
+msgstr "Reprezentowanie Użytkownika w systemie"
 
 #: dt-contacts/base-setup.php:171
 msgid "A friend, family member or acquaintance"
-msgstr "Isang kaibigan, kamag-anak o kakilala"
+msgstr "Przyjaciel, członek rodziny lub znajomy"
 
 #: dt-contacts/base-setup.php:172
 #: dt-contacts/dmm-module.php:54
 msgid "Only me"
-msgstr "Ako lang"
+msgstr "Tylko ja"
 
 #: dt-contacts/base-setup.php:248
 #: dt-groups/base-setup.php:374
 msgid "Locations or Address"
-msgstr "Mga Lokasyon o Address"
+msgstr "Lokalizacja lub adres"
 
 #: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Mga koneksyon sa ibang %s"
+msgstr "Połączenia z innymi %s"
 
 #: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "Palitan ang Uri ng %s"
+msgstr "Zmień rodzaj %s"
 
 #: dt-contacts/base-setup.php:531
 #: dt-groups/base-setup.php:1058
 msgid "Default Filters"
-msgstr "Mga Default na Filter"
+msgstr "Filtry domyślne"
 
 #: dt-contacts/base-setup.php:541
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "Lahat ng %s na pwede kong matingnan"
+msgstr "Wszystkie %s, które mogę wyświetlić"
 
 #: dt-contacts/base-setup.php:564
 #: dt-groups/base-setup.php:1087
 #: dt-posts/custom-post-type.php:337
 msgid "My Recently Viewed"
-msgstr "Ang Tiningnan Ko Kamakailan"
+msgstr "Ostatnio oglądane przeze mnie"
 
 #: dt-contacts/base-setup.php:569
 #: dt-groups/base-setup.php:1092
 #: dt-posts/custom-post-type.php:342
 msgid "Last 30 viewed"
-msgstr "Huling 30 tiningnan"
+msgstr "30 ostatnio oglądanych"
 
 #: dt-contacts/access-module.php:107
 msgid "Connection"
-msgstr "Koneksyon"
+msgstr "Połączenie"
 
 #: dt-contacts/access-module.php:109
 #: dt-contacts/dmm-module.php:51
 msgid "Connected to a contact, or generational fruit"
-msgstr "Nakakonekta sa isang contact, o bunga (generational fruit)"
+msgstr "Połączony z kontaktem, lub owocem pokoleniowym"
 
 #: dt-contacts/dmm-module.php:115
 msgid "Faith Status"
-msgstr "Kalagayan ng Pananampalataya"
+msgstr "Status wiary"
 
 #: dt-contacts/dmm-module.php:159
 msgid "Is Coaching"
-msgstr "Ay Nagtuturo"
+msgstr "Prowadzi"
 
 #: dt-contacts/dmm-module.php:213
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this contact."
-msgstr "Ang mga grupo ng taong kinakatawan ng contact na ito."
+msgstr "Grupy osób reprezentowane przez ten kontakt."
 
 #: dt-contacts/dmm-module.php:312
 msgid "Sub-assigned"
-msgstr "Naka-sub-assign"
+msgstr "Podprzypisane"
 
 #: dt-contacts/dmm-module.php:277
 msgid "Faith"
-msgstr "Pananampalataya"
+msgstr "Wiara"
 
 #: dt-contacts/dmm-module.php:360
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "Nakakonekta %s"
+msgstr "Połączono %s"
 
 #: dt-groups/base-setup.php:623
 msgid "Coaches"
-msgstr "Mga Tagapagturo"
+msgstr "Trenerzy"
 
 #: dt-mapping/geocode-api/mapbox-api.php:287
 #: template-merge-post-details.php:88
 msgid "Use"
-msgstr "Gamitin"
+msgstr "Posługiwać się"
 
 #: dt-mapping/geocode-api/mapbox-api.php:288
 #: template-merge-post-details.php:86
@@ -3922,54 +3934,54 @@ msgstr "Gamitin"
 #: template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
-msgstr "Hanapin ang Lokasyon"
+msgstr "Wyszukaj lokalizację"
 
 #: dt-mapping/geocode-api/mapbox-api.php:289
 #: template-merge-post-details.php:87
 #: template-new-bulk-post.php:216
 msgid "Delete Location"
-msgstr "Burahin ang Lokasyon"
+msgstr "Usuń lokalizację"
 
 #: dt-mapping/geocode-api/mapbox-api.php:290
 msgid "Open Mapping"
-msgstr "Buksan ang Mapping"
+msgstr "Otwórz mapowanie"
 
 #: dt-metrics/combined/mapbox-maps.php:28
 msgid "Combined Maps"
-msgstr "Mga Pinagsamang mga Mapa"
+msgstr "Połączone mapy"
 
 #: dt-metrics/combined/mapbox-maps.php:84
 msgid "Active Users"
-msgstr "Mga Aktibong User"
+msgstr "Aktywni użytkownicy"
 
 #: dt-metrics/contacts/mapbox-maps.php:30
 msgid "Access Contact Maps"
-msgstr "I-acess ang mga Mapa ng Contact"
+msgstr "Dostęp do map kontaktów"
 
 #: dt-metrics/groups/mapbox-maps.php:30
 msgid "Group Maps"
-msgstr "Mga Mapa ng Grupo"
+msgstr "Mapy grupowe"
 
 #: dt-metrics/personal/mapbox-contacts-maps.php:30
 msgid "Contacts Maps"
-msgstr "Mga Mapa ng Contact"
+msgstr "Mapy kontaktów"
 
 #: dt-metrics/personal/mapbox-groups-maps.php:30
 msgid "Groups Maps"
-msgstr "Mga Mapa ng Grupo"
+msgstr "Mapy grup"
 
 #: dt-posts/dt-posts.php:1733
 #: single-template.php:120
 msgid "Details"
-msgstr "Mga Detalye"
+msgstr "Szczegóły"
 
 #: dt-reports/reports.php:159
 msgid "Added new report"
-msgstr "Magdagdag ng bagong ulat"
+msgstr "Dodano nowy raport"
 
 #: dt-reports/reports.php:252
 msgid "Updated report"
-msgstr "Na-update na ulat"
+msgstr "Zaktualizowany raport"
 
 #: dt-assets/functions/enqueue-scripts.php:308
 #: dt-assets/parts/modals/modal-advanced-search.php:73
@@ -3978,56 +3990,56 @@ msgstr "Na-update na ulat"
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-users/mapbox-coverage-map.php:77
 msgid "All"
-msgstr "Lahat"
+msgstr "Wszystkie"
 
 #: dt-users/mapbox-coverage-map.php:78
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "Idagdag ang user sa: %s"
+msgstr "Dodaj użytkownika do: %s"
 
 #: dt-users/mapbox-coverage-map.php:81
 msgid "Responsibility Coverage"
-msgstr "Saklaw ng Responsibilidad"
+msgstr "Zakres odpowiedzialności"
 
 #: header.php:42
 msgid "D.T Record"
-msgstr "Tala ng D.T"
+msgstr "D.T Record"
 
 #: single-template.php:53
 #: single-template.php:61
 msgid "This %s needs an update."
-msgstr "Kailangan ng update ng %s na ito."
+msgstr "Ten %s wymaga aktualizacji."
 
 #: dt-assets/functions/details-bar.php:121
 #: dt-assets/functions/details-bar.php:283
 msgid "Record"
-msgstr "Tala"
+msgstr "Rekord"
 
 #: dt-assets/functions/enqueue-scripts.php:223
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Ginawa noong %s"
+msgstr "Utworzono %s"
 
 #: dt-assets/functions/details-bar.php:125
 #: dt-assets/functions/details-bar.php:287
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "ni %s"
+msgstr "przez %s"
 
 #: single-template.php:203
 msgid "Edit all details fields"
-msgstr "I-edit ang lahat ng field ng mga detalye"
+msgstr "Edytuj wszystkie pola szczegółów"
 
 #: single-template.php:333
 #: template-new-bulk-post.php:277
 #: template-new-post.php:167
 msgid "Create a tag and apply it to this record."
-msgstr "Gumawa ng tag at i-apply sa talang ito."
+msgstr "Utwórz tag i zastosuj go do tego rekordu."
 
 #: single-template.php:358
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "Sigurado ka bang gusto mong burahin si %s?"
+msgstr "Czy na pewno chcesz usunąć %s?"
 
 #: dt-assets/functions/menu.php:39
 #: template-metrics.php:25
@@ -4037,85 +4049,85 @@ msgstr "Menu"
 #: template-new-bulk-post.php:145
 #: template-new-post.php:57
 msgid "Select the %s type:"
-msgstr "Piliin ang uri ng %s:"
+msgstr "Wybierz typ %s:"
 
 #: template-new-post.php:144
 msgid "Show all fields"
-msgstr "Ipakita ang lahat ng field"
+msgstr "Pokaż wszystkie pola"
 
 #: dt-assets/functions/enqueue-scripts.php:306
 msgid "start"
-msgstr "simula"
+msgstr "początek"
 
 #: dt-assets/functions/enqueue-scripts.php:307
 msgid "end"
-msgstr "katapusan"
+msgstr "koniec"
 
 #: dt-contacts/base-setup.php:393
 #: dt-contacts/base-setup.php:422
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "I-archive si %s"
+msgstr "Archiwizuj %s"
 
 #: dt-contacts/base-setup.php:423
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "Sigurado ka bang gusto mong i-archive si %s?"
+msgstr "Czy na pewno chcesz zarchiwizować %s?"
 
 #: dt-contacts/base-setup.php:430
 msgid "Archive"
-msgstr "I-archive"
+msgstr "Zarchiwizuj"
 
 #: dt-contacts/base-setup.php:678
 msgid "This %s is archived"
-msgstr "Ang %s ay naka-archive na"
+msgstr "Zarchiwizowano %s"
 
 #: dt-contacts/base-setup.php:680
 msgid "Restore"
-msgstr "I-restore"
+msgstr "Przywróć"
 
 #: dt-assets/functions/enqueue-scripts.php:118
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "Ipinapakita ang %s item. Mag-type para makahanap pa."
+msgstr "Pokazywanie %s elementów. Wpisz, aby znaleźć więcej."
 
 #: dt-assets/functions/enqueue-scripts.php:279
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
-msgstr "Mga Nahanap na Ka-match:"
+msgstr "Znaleziono dopasowania:"
 
 #: dt-assets/functions/enqueue-scripts.php:280
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "I-dismiss ang lahat ng ka-match ni %s"
+msgstr "Odrzuć wszystkie dopasowania dla %s"
 
 #: archive-template.php:300
 #: dt-contacts/base-setup.php:356
 #: dt-users/users.php:437
 msgid "Archived"
-msgstr "Naka-archive"
+msgstr "Zaarchiwizowane"
 
 #: dt-groups/base-setup.php:315
 msgid "Leader Count"
-msgstr "Bilang ng Lider"
+msgstr "Lider Count"
 
 #: template-view-duplicates.php:21
 msgid "Duplicate Access Contacts"
-msgstr "Kopyahin ang mga Access Contact"
+msgstr "Zduplikowane kontakty dostępu"
 
 #: template-view-duplicates.php:27
 msgid "Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
-msgstr "Nagsa-scan para sa mga kopyang nagsisimula sa pinakakamakailang nabagong mga contact. Limitado ang mga resulta sa mga may mas mababa sa 10 eksaktong ka-match."
+msgstr "Skanowanie w poszukiwaniu duplikatów, zaczynając od ostatnio zmodyfikowanych kontaktów. Wyniki są ograniczone do tych, które mają mniej niż 10 dokładnych dopasowań."
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"
 msgid "Access contacts scanned:"
-msgstr "Na-scan na mga access contact:"
+msgstr "Uzyskaj dostęp do zeskanowanych kontaktów:"
 
 #: template-view-duplicates.php:31
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
-msgstr "Mga nahanap na kopya:"
+msgstr "Znaleziono duplikaty:"
 
 #. Theme Name of the theme
 #: 
@@ -4139,113 +4151,115 @@ msgstr "https://github.com/DiscipleTools"
 #: dt-assets/functions/menu.php:57
 #: dt-assets/parts/modals/modal-advanced-search.php:2
 msgid "Advanced Search"
-msgstr "Advanced na Paghahanap"
+msgstr "Wyszukiwanie zaawansowane"
 
 #: archive-template.php:76
 #: archive-template.php:163
 msgid "Search All Fields"
-msgstr "Maghanap sa Lahat ng Field"
+msgstr "Przeszukaj wszystkie pola"
 
 #: archive-template.php:67
 #: archive-template.php:154
 msgid "Choose which fields to search"
-msgstr "Piliin kung anong mga field ang paghahanapan"
+msgstr "Wybierz pola do wyszukiwania"
 
 #: dt-contacts/base-setup.php:293
 msgid "Other Social Links"
-msgstr "Iba pang Mga Social Link"
+msgstr "Inne linki społecznościowe"
 
 #: dt-assets/parts/nav-topbar.php:294
 msgid "See All"
-msgstr "Tingnan Lahat"
+msgstr "Zobacz wszystko"
 
 #: dt-contacts/user-module.php:120
 msgid "User Role"
-msgstr "Tungkulin ng User"
+msgstr "Rola użytkownika"
 
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "mahigit sa %s taon na ang nakakaraan"
-msgstr[1] "mahigit sa %s (na) taon na ang nakakaraan"
+msgstr[0] "ponad %s rok temu"
+msgstr[1] "ponad %s lata temu"
+msgstr[2] "ponad %s lata temu"
+msgstr[3] "ponad %s lata temu"
 
 #: template-new-post.php:147
 msgid "Hide fields"
-msgstr "Itago ang mga field"
+msgstr "Ukryj pola"
 
 #: dt-core/global-functions.php:582
 msgid "Add new tag \"%s\""
-msgstr "Idagdag ang bagong tag na \"%s\""
+msgstr "Dodaj nowy tag \"%s\""
 
 #: dt-core/global-functions.php:583
 msgid "Tag \"%s\" is already being used"
-msgstr "Ginagamit na ang tag na \"%s\""
+msgstr "Tag „%s” jest już używany"
 
 #: dt-groups/base-setup.php:480
 msgid "Leader of Group"
-msgstr "Lider ng Grupo"
+msgstr "Lider grupy"
 
 #: dt-assets/functions/details-bar.php:82
 #: dt-assets/functions/details-bar.php:253
 msgid "Previous record"
-msgstr "Dating tala"
+msgstr "Poprzedni rekord"
 
 #: dt-assets/functions/details-bar.php:131
 #: dt-assets/functions/details-bar.php:294
 msgid "Next record"
-msgstr "Susunod na tala"
+msgstr "Następny rekord"
 
 #: dt-contacts/dmm-module.php:146
 msgid "Sub-assigned on other Contacts"
-msgstr "Naka-sub-assign sa ibang Mga Contact"
+msgstr "Przydzielone do innych kontaktów"
 
 #: dt-contacts/dmm-module.php:147
 msgid "Contacts this contacts is subassigned on"
-msgstr "Ang mga contact sa mga contact na ito ay naka-subassign sa"
+msgstr "Kontakty, do których są przypisane te kontakty"
 
 #: 403.php:37
 msgid "Request Record Access Permission"
-msgstr "Mag-request ng Pahintulot para Ma-access ang Tala"
+msgstr "Poproś o pozwolenie na dostęp do rekordu"
 
 #: 403.php:46
 msgid "Request Record Access"
-msgstr "Mag-request na Ma-access sa Tala"
+msgstr "Poproś o dostęp do rekordu"
 
 #: 403.php:49
 msgid "Record owner to be notified of access request. Are you happy to proceed?"
-msgstr "Aabisuhan ang may-ari ng tala ukol sa request sa pag-access. Gusto mo bang magpatuloy?"
+msgstr "Właściciel rekordu zostanie powiadomiony o żądaniu dostępu. Czy chcesz kontynuować?"
 
 #: 403.php:52
 msgid "Submit Request"
-msgstr "Isumite ang Kahilingan"
+msgstr "Złożyć wniosek"
 
 #: archive-template.php:37
 #: archive-template.php:127
 #: dt-mapping/geocode-api/mapbox-api.php:291
 msgid "Clear"
-msgstr "I-clear"
+msgstr "Wyczyść"
 
 #: dt-assets/functions/enqueue-scripts.php:179
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
-msgstr "Nag-react si %1$s nang may emoji na %2$s"
+msgstr "%1$s zareagował emotikonem %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:180
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr "Nag-react sina %3$s at %1$s nang may emoji na %2$s"
+msgstr "%3$s i %1$s zareagowali za pomocą emotikony %2$s"
 
 #: dt-core/configuration/config-site-defaults.php:525
 msgid "thumbs up"
-msgstr "thumbs up"
+msgstr "kciuk w górę"
 
 #: dt-core/configuration/config-site-defaults.php:526
 msgid "heart"
-msgstr "puso"
+msgstr "serduszko"
 
 #: dt-core/configuration/config-site-defaults.php:527
 msgid "laugh"
-msgstr "tumatawa"
+msgstr "śmiechłem"
 
 #: dt-core/configuration/config-site-defaults.php:528
 msgid "wow"
@@ -4253,128 +4267,128 @@ msgstr "wow"
 
 #: dt-core/configuration/config-site-defaults.php:529
 msgid "sad"
-msgstr "malungkot"
+msgstr "smuteczek"
 
 #: dt-posts/dt-posts.php:1797
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
-msgstr "@[%1$s](%2$s) - Nag-request ang user %3$s ng access sa %4$s [%5$s](%6$s). Kung gusto mo, i-share ang talang ito sa user para maibigay ang access."
+msgstr "@ [%1$s] (%2$s) - użytkownik %3$s zażądał dostępu do %4$s [%5$s] (%6$s). W razie potrzeby udostępnij ten rekord użytkownikowi, aby przyznać mu dostęp."
 
 #: dt-posts/dt-posts.php:1803
 msgid "Access Request"
-msgstr "Request sa Pag-access"
+msgstr "Żądanie dostępu"
 
 #: dt-assets/functions/enqueue-scripts.php:262
 #: template-settings.php:285
 msgid "link"
-msgstr "link"
+msgstr "połączyć"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:11
 msgid "Search Query..."
-msgstr "Tanong para sa Paghahanap..."
+msgstr "Wyszukiwana fraza..."
 
 #: dt-assets/parts/modals/modal-advanced-search.php:29
 msgid "Search Settings"
-msgstr "Mga Setting para sa Paghahanap"
+msgstr "Ustawienia wyszukiwania"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:42
 msgid "Record Hits:"
-msgstr "Itala ang mga Hit:"
+msgstr "Ilość wyświetleń rekordu"
 
 #: dt-contacts/access-module.php:338
 msgid "Campaigns"
-msgstr "Mga Kampanya"
+msgstr "Kampanie"
 
 #: dt-contacts/access-module.php:339
 msgctxt "Optional Documentation"
 msgid "Marketing campaigns or access activities that this contact interacted with."
-msgstr "Mga kampanyang pang-marketing o mga aktibidad sa pag-access kung saan nakipag-ugnayan ang kontak na ito."
+msgstr "Kampanie marketingowe lub dostęp do działań, z którymi ten kontakt miał interakcję."
 
 #: dt-groups/base-setup.php:287
 msgctxt "Optional Documentation"
 msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
-msgstr "Ang numero ng mga miyembro sa grupong ito. Awtomatikong maa-update ito kapag may mga bagong miyembro na idinagdag o inalis sa listahan ng mga miyembro. Baguhin ang numerong ito nang mano-mano upang isama ang mga taong maaaring wala sa sistema nguni't miyembro rin ng grupo."
+msgstr "Liczba członków w tej grupie. Zostanie automatycznie zaktualizowany, gdy nowi członkowie zostaną dodani lub usunięci z listy członków. Zmień ten numer ręcznie, aby uwzględnić osoby, które mogą nie znajdować się w systemie, ale są również członkami grupy."
 
 #: dt-metrics/combined/time-charts.php:42
 #: dt-metrics/combined/time-charts.php:106
 msgid "Fields over Time Charts"
-msgstr "Mga Field sa itaas ng mga Time Chart"
+msgstr "Pola na wykresach czasowych"
 
 #: dt-metrics/combined/time-charts.php:107
 msgid "Post Type"
-msgstr "Uri ng Post"
+msgstr "Typ postu"
 
 #: dt-metrics/combined/time-charts.php:109
 msgid "Total"
-msgstr "Kabuuan"
+msgstr "Razem"
 
 #: dt-metrics/combined/time-charts.php:110
 msgid "Added"
-msgstr "Idinagdag"
+msgstr "Dodany"
 
 #: dt-metrics/combined/time-charts.php:111
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "%1$s sa %2$s"
+msgstr "%1$s w %2$s"
 
 #: dt-metrics/combined/time-charts.php:112
 #: dt-metrics/personal/activity-highlights.php:67
 msgid "Date"
-msgstr "Petsa"
+msgstr "Data"
 
 #: dt-metrics/combined/time-charts.php:114
 msgid "All cumulative totals"
-msgstr "Lahat ng mga pinagsama-samang kabuuan"
+msgstr "Wszystkie skumulowane sumy"
 
 #: dt-metrics/combined/time-charts.php:115
 msgid "Single cumulative totals"
-msgstr "Iisang pinagsama-samang kabuuan"
+msgstr "Pojedyncze skumulowane sumy"
 
 #: dt-metrics/combined/time-charts.php:116
 msgid "Number added"
-msgstr "Numerong idinagdag"
+msgstr "Dodano numer"
 
 #: dt-metrics/personal/coaching-tree.php:58
 msgid "My Coaching Generation Tree"
-msgstr "Ang Aking Coaching Generation Tree"
+msgstr "Moje drzewo generacji coachingu"
 
 #: dt-metrics/personal/group-tree.php:82
 msgid "My Group Generation Tree"
-msgstr "Ang Aking Group Generation Tree"
+msgstr "Moje drzewo tworzenia grup"
 
 #: dt-reports/magic-url-setup.php:30
 #: template-settings.php:56
 msgid "Apps"
-msgstr "Mga App"
+msgstr "Aplikacje"
 
 #: template-settings.php:247
 msgid "Your Apps"
-msgstr "Ang Iyong mga App"
+msgstr "Twoje aplikacje"
 
 #: template-settings.php:252
 msgid "App Name"
-msgstr "Pangalan ng App"
+msgstr "Nazwa aplikacji"
 
 #: template-settings.php:253
 msgid "App Description"
-msgstr "Paglalarawan ng App"
+msgstr "Opis aplikacji"
 
 #: template-settings.php:254
 msgid "App Link"
-msgstr "Link sa App"
+msgstr "Link do aplikacji"
 
 #: template-settings.php:255
 msgid "App Activation"
-msgstr "Pagpapagana sa App"
+msgstr "Aktywacja aplikacji"
 
 #: template-settings.php:265
 msgid "No apps installed"
-msgstr "Walang mga app na na-install"
+msgstr "Brak zainstalowanych aplikacji"
 
 #: archive-template.php:684
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "Lahat ng %1$s na may %2$s"
+msgstr "Wszystkie %1$s z %2$s"
 
 #: archive-template.php:710
 #: archive-template.php:717
@@ -4382,209 +4396,209 @@ msgstr "Lahat ng %1$s na may %2$s"
 #: dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76
 msgid "None Set"
-msgstr "Walang Naka-set"
+msgstr "Nie wybrano"
 
 #: dt-contacts/base-setup.php:552
 #: dt-groups/base-setup.php:1075
 #: dt-posts/custom-post-type.php:322
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "Paboritong mga %s"
+msgstr "Ulubiony %s"
 
 #: dt-contacts/base-setup.php:558
 #: dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:173
 #: dt-posts/custom-post-type.php:328
 msgid "Favorite"
-msgstr "Paborito"
+msgstr "Ulubiony"
 
 #: archive-template.php:278
 #: dt-assets/parts/nav-topbar.php:144
 #: dt-metrics/personal/activity-log.php:53
 #: dt-users/user-management.php:184
 msgid "More"
-msgstr "Higit pa"
+msgstr "Więcej"
 
 #: dt-posts/dt-posts.php:1249
 msgid "Magic Link Submission"
-msgstr "Pagsusumite ng Magic na Link"
+msgstr "Magiczne przesyłanie linków"
 
 #: dt-assets/functions/enqueue-scripts.php:263
 #: template-settings.php:286
 msgid "copy"
-msgstr "kopyahin"
+msgstr "kopiuj"
 
 #: dt-users/user-hooks-and-config.php:522
 msgid "User Language"
-msgstr "Wika ng Gumagamit"
+msgstr "Język użytkownika"
 
 #: dt-core/configuration/config-site-defaults.php:530
 msgid "prayer"
-msgstr "panalangin"
+msgstr "modlitwa"
 
 #: dt-metrics/combined/daily-activity.php:22
 #: dt-metrics/combined/daily-activity.php:71
 msgid "Activity by Day"
-msgstr "Aktibidad ayon sa Araw"
+msgstr "Aktywność według dni"
 
 #: dt-metrics/combined/daily-activity.php:75
 msgid "This Week"
-msgstr "Ngayong Linggo"
+msgstr "Ten tydzień"
 
 #: dt-metrics/combined/daily-activity.php:87
 msgid "Count"
-msgstr "Bilang"
+msgstr "Liczba"
 
 #: dt-metrics/combined/daily-activity.php:88
 msgid "No Activity Detected!"
-msgstr "Walang Napapansing Aktibidad!"
+msgstr "Nie wykryto aktywności!"
 
 #: dt-posts/custom-post-type.php:182
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
-msgstr "Isang kapaki-pakinabang na paraan upang pagsama-samahin ang mga nauugnay na item."
+msgstr "Przydatny sposób na grupowanie powiązanych elementów."
 
 #: dt-users/template-no-permission.php:92
 msgid "You are registered but an administrator needs to assign you access permissions."
-msgstr "Ikaw ay nakarehistro nguni't kailangan ng isang administrator na magtalaga sa iyo ng mga pahintulot para sa pag-access."
+msgstr "Jesteś zarejestrowany, ale administrator musi nadać Ci uprawnienia dostępu."
 
 #: dt-users/template-new-user.php:139
 #: dt-users/template-user-management.php:90
 msgid "Role"
-msgstr "Tungkulin"
+msgstr "Rola"
 
 #: dt-users/user-hooks-and-config.php:278
 #: dt-users/user-hooks-and-config.php:316
 msgid "[%s] Login Details"
-msgstr "[%s] Mga Detalye sa Pag-login"
+msgstr "[%s] Szczegóły logowania"
 
 #: dt-users/user-hooks-and-config.php:289
 msgid "To set your password, visit the following address:"
-msgstr "Upang magtakda ng iyong password, bisitahin ang sumusunod na address:"
+msgstr "Aby ustawić swoje hasło, odwiedź następujący adres:"
 
 #: dt-users/user-hooks-and-config.php:312
 msgid "To log in click here: %s"
-msgstr "Upang mag-log in, mag-click dito: %s"
+msgstr "Aby się zalogować kliknij tutaj: %s"
 
 #: dt-users/user-hooks-and-config.php:354
 msgid "Hi %s,"
-msgstr "Kumusta %s,"
+msgstr "Witaj %s,"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid "Click on a timeline day summary to display a detailed list of metrics below."
-msgstr "Mag-click sa isang sumaryo ng araw sa timeline upang magpakita ng detalyadong listahan ng metrics sa ibaba."
+msgstr "Kliknij na podsumowanie dnia osi czasu, aby wyświetlić szczegółową listę metryk poniżej."
 
 #: dt-users/user-hooks-and-config.php:355
 msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
 msgid "You've been invited to join %1$s at %2$s"
-msgstr "Naimbitahan kang sumali sa %1$s sa %2$s"
+msgstr "Zostałeś zaproszony do udziału w %1$s w %2$s"
 
 #: dt-notifications/notifications-scheduler.php:140
 #: template-settings.php:482
 msgid "Hourly Digest"
-msgstr "Pang-oras-oras na Halaw"
+msgstr "Zestawienie godzinowe"
 
 #: dt-notifications/notifications-scheduler.php:143
 #: template-settings.php:486
 msgid "Daily Digest"
-msgstr "Pang-araw-araw na Halaw"
+msgstr "Zestawienie dzienne"
 
 #: template-settings.php:472
 msgid "Email preferences"
-msgstr "Mga kagustuhan sa email"
+msgstr "Preferencje dotyczące poczty elektronicznej"
 
 #: template-settings.php:478
 msgid "Real time"
-msgstr "Totoong oras"
+msgstr "Czas rzeczywisty"
 
 #: archive-template.php:687
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
-msgstr "Lahat ng %1$s na walang %2$s"
+msgstr "Wszystkie %1$s bez %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:309
 msgid "Without"
-msgstr "Wala"
+msgstr "Bez"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:90
 msgid "Names"
-msgstr "Mga Pangalan"
+msgstr "Nazwy"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:102
 msgid "Communication"
-msgstr "Komunikasyon"
+msgstr "Komunikacja"
 
 #: dt-assets/parts/nav-offcanvas.php:79
 #: dt-assets/parts/nav-topbar.php:251
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
-msgstr "Mag-log Out"
+msgstr "Wyloguj się"
 
 #: dt-contacts/access-module.php:614
 msgid "Dispatchers"
-msgstr "Mga Dispatcher"
+msgstr "Dyspozytorzy"
 
 #: dt-contacts/access-module.php:617
 msgid "Digital Responders"
-msgstr "Mga Digital na Responder"
+msgstr "Cyfrowi respondenci"
 
 #: dt-contacts/access-module.php:624
 msgid "Assign To"
-msgstr "Italaga Kay"
+msgstr "Przypisz do"
 
 #: dt-contacts/access-module.php:1292
 msgid "Ready"
-msgstr "Handa"
+msgstr "Gotowe"
 
 #: dt-contacts/access-module.php:1293
 msgid "Recent"
-msgstr "Kamakailan"
+msgstr "Ostatnio"
 
 #: dt-contacts/access-module.php:1295
 msgid "Assign"
-msgstr "Magtalaga"
+msgstr "Przypisz"
 
 #: dt-metrics/personal/activity-log.php:22
 #: dt-metrics/personal/activity-log.php:52
 msgid "Activity Log"
-msgstr "Talaan ng Aktibidad"
+msgstr "Dziennik aktywności"
 
 #: dt-metrics/personal/activity-log.php:54
 #: dt-users/user-management.php:185
 msgid "Less"
-msgstr "Mas Kaunti"
+msgstr "Mniej"
 
 #: dt-users/user-management.php:177
 msgid "View New Contact"
-msgstr "Tingnan ang Bagong Kontak"
+msgstr "Zobacz nowy kontakt"
 
 #: dt-users/user-metrics.php:106
 msgid "Updated fields"
-msgstr "Mga na-update na field"
+msgstr "Zaktualizowane pola"
 
 #: dt-users/user-metrics.php:110
 msgid "Made %n comments"
-msgstr "Gumawa ng %n (na) komento"
+msgstr "Zgłoszono %n uwag"
 
 #: dt-users/user-metrics.php:113
 msgid "Created record"
-msgstr "Gumawa ng rekord"
+msgstr "Utworzono wpis"
 
 #: dt-users/user-metrics.php:116
 msgid "Logged In %n times"
-msgstr "Nag-log in nang %n beses"
+msgstr "Zalogowano się %n razy"
 
 #: template-settings.php:67
 msgid "Invite User"
-msgstr "Mag-imbita ng Gumagamit"
+msgstr "Zaproś użytkownika"
 
 #: archive-template.php:479
 msgid "Update %s"
-msgstr "I-update ang %s"
+msgstr "Aktualizuj %s"
 
 #: dt-users/template-user-management.php:342
 msgid "User Profile"
-msgstr "Profile ng Gumagamit"
+msgstr "Profil użytkownika"
 
 #: dt-users/template-new-user.php:186
 #: dt-users/template-new-user.php:190
@@ -4592,282 +4606,282 @@ msgstr "Profile ng Gumagamit"
 #: dt-users/template-new-user.php:212
 #: dt-users/template-new-user.php:226
 msgid "optional"
-msgstr "opsyonal"
+msgstr "opcjonalne"
 
 #. Description of the theme
 #: 
 msgid "Disciple.Tools is a coalition management system for disciple making movements."
-msgstr "Ang Disciple.Tools ay sistema ng pamamahala ng koalisyon para sa mga kilusang gumagawa ng disipulo."
+msgstr "Disciple.Tools jest systemem zarządzania koalicją dla inicjatyw kościelnych."
 
 #: dt-contacts/access-module.php:261
 msgid "Reason Archived"
-msgstr "Dahilan ng Pagkakalagay sa Artsibo"
+msgstr "Uzasadnienie zarchiwizowane"
 
 #: dt-assets/functions/enqueue-scripts.php:221
 msgid "Transfer update failed. Check site-to-site configuration."
-msgstr "Nabigo ang pag-update sa paglipat. Suriin ang site-to-site na kompigurasyon."
+msgstr "Aktualizacja transferu nie powiodła się. Sprawdź konfigurację połączenia między stronami."
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Transfer update successful."
-msgstr "Matagumpay ang pag-update sa paglipat."
+msgstr "Aktualizacja transferu powiodła się."
 
 #: dt-contacts/contacts-transfer.php:107
 msgid "Status Currently Unavailable"
-msgstr "Kasalukuyang Hindi Makikita ang Estado"
+msgstr "Status obecnie niedostępny"
 
 #: dt-contacts/contacts-transfer.php:113
 msgid "Seeker Path Currently Unavailable"
-msgstr "Kasalukuyang Hindi Magagamit ang Seeker Path"
+msgstr "Ścieżka poszukiwania obecnie niedostępna"
 
 #: dt-contacts/contacts-transfer.php:124
 msgid "Remote Contact Summary"
-msgstr "Sumaryo ng Kontak na nasa Malayo"
+msgstr "Podsumowanie kontaktu zdalnego"
 
 #: dt-contacts/contacts-transfer.php:164
 msgid "Write your comment or note here"
-msgstr "Isulat ang iyong komento o tala dito"
+msgstr "Wpisz tutaj swój komentarz lub uwagę"
 
 #: dt-contacts/contacts-transfer.php:169
 msgid "Submit Update"
-msgstr "Isumite ang Update"
+msgstr "Zgłoś aktualizację"
 
 #: dt-metrics/combined/site-links.php:22
 #: dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
-msgstr "Mga Inilipat na Kontak"
+msgstr "Przekazane kontakty"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
-msgstr "I-filter ayon sa hanay ng petsa at mga magagamit na link sa site"
+msgstr "Filtrowanie według zakresu dat i dostępnych linków do stron"
 
 #: dt-metrics/combined/site-links.php:73
 msgid "Date Ranges"
-msgstr "Mga Hanay ng Petsa"
+msgstr "Zakresy dat"
 
 #: dt-metrics/combined/site-links.php:75
 msgid "Site Links"
-msgstr "Mga Link sa Site"
+msgstr "Linki stron"
 
 #: dt-metrics/combined/site-links.php:77
 msgctxt "Contacts transferred during date range"
 msgid "Contacts transferred during date range"
-msgstr "Mga kontak na inilipat sa panahon ng hanay ng petsa"
+msgstr "Kontakty przenoszone w ramach zakresu dat"
 
 #: dt-metrics/combined/site-links.php:78
 #: dt-metrics/combined/site-links.php:79
 #: dt-metrics/combined/site-links.php:80
 msgctxt "Seeker Path of contacts created in date range"
 msgid "%s of contacts created in date range"
-msgstr "%s (na) kontak na ginawa sa hanay ng petsa"
+msgstr "%s kontaktów utworzonych w zakresie dat"
 
 #: dt-metrics/combined/site-links.php:81
 #: dt-metrics/combined/site-links.php:82
 #: dt-metrics/combined/site-links.php:83
 msgctxt "Seeker Path changes during date range"
 msgid "%s changes during date range"
-msgstr "Pagbabago sa %s sa panahon ng hanay ng petsa"
+msgstr "%s zmian w zakresie dat"
 
 #: dt-metrics/combined/site-links.php:86
 msgid "No Data Available"
-msgstr "Walang Magagamit na Datos"
+msgstr "Brak dostępnych danych"
 
 #: template-notifications.php:58
 msgid "Mentions"
-msgstr "Mga Pagbanggit"
+msgstr "Wzmianki"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
-msgstr "App para sa Maramihang Pagpapadala"
+msgstr "Aplikacja do masowego wysyłania"
 
 #: archive-template.php:560
 #: dt-assets/functions/enqueue-scripts.php:310
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
-msgstr "Mamili sa Ibaba"
+msgstr "Dokonaj wyboru poniżej"
 
 #: dt-reports/magic-url-bulk-send.php:38
 msgid "Select all the %1$s to whom you want to send app links."
-msgstr "Piliin ang lahat ng %1$s kung kanino mo gustong magpadala ng mga link sa app."
+msgstr "Wybierz wszystkich %1$, do których chcesz wysłać linki do aplikacji."
 
 #: dt-reports/magic-url-bulk-send.php:41
 msgid "Add optional greeting"
-msgstr "Magdagdag ng opsyonal na pagbati"
+msgstr "Dodaj opcjonalne powitanie"
 
 #: dt-reports/magic-url-bulk-send.php:42
 msgid "Add short greeting to be added above the app link."
-msgstr "Magdagdag ng maikling pagbati na idaragdag sa itaas ng link ng app."
+msgstr "Dodaj krótkie pozdrowienie, które zostanie dodane nad linkiem do aplikacji."
 
 #: dt-reports/magic-url-bulk-send.php:45
 msgid "Select app to email"
-msgstr "Pumili ng app na ii-email"
+msgstr "Wybierz aplikację do wysłania pocztą elektroniczną"
 
 #: dt-reports/magic-url-bulk-send.php:46
 msgid "You must select an app"
-msgstr "Dapat kang pumili ng isang app"
+msgstr "Musisz wybrać aplikację"
 
 #: dt-reports/magic-url-bulk-send.php:63
 msgid "Send to selected records"
-msgstr "Ipadala sa mga napiling rekord"
+msgstr "Wyślij do wybranych rekordów"
 
 #: dt-reports/magic-url-bulk-send.php:64
 msgid "You must select at least one record"
-msgstr "Dapat kang pumili ng kahit isang rekord"
+msgstr "Musisz wybrać co najmniej jeden rekord"
 
 #: dt-reports/magic-url-bulk-send.php:67
 msgid "Send"
-msgstr "Ipadala"
+msgstr "Wyslij"
 
 #: dt-reports/magic-url-bulk-send.php:67
 msgid "Links"
-msgstr "Mga Link"
+msgstr "Linki"
 
 #: dt-assets/functions/enqueue-scripts.php:311
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "sent"
-msgstr "naipadala"
+msgstr "wysłano"
 
 #: dt-assets/functions/enqueue-scripts.php:312
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
-msgstr "(na) hindi naipadala (malamang na nawawala ang balidong email)"
+msgstr "nie wysłano (prawdopodobnie nieprawidłowy adres e-mail)"
 
 #: dt-reports/magic-url-setup.php:31
 msgid "Apps available on this record."
-msgstr "Mayroong mga app sa rekord na ito."
+msgstr "Aplikacje dostępne na tej rekordzie."
 
 #: dt-reports/magic-url-setup.php:114
 msgid "Send email with link"
-msgstr "Magpadala ng email na may link"
+msgstr "Wyślij e-mail z linkiem"
 
 #: dt-reports/magic-url-setup.php:155
 msgid "Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
-msgstr "I-reset ang code para sa seguridad. Walang inaalis na datos. Pag-access lang. Ang dating link ay hindi na pagaganahin at gagawa ng isa pa."
+msgstr "Zresetuj kod bezpieczeństwa. Żadne dane nie zostaną usunięte. Tylko dostęp. Poprzedni link zostanie wyłączony i utworzony kolejny."
 
 #: dt-reports/magic-url-setup.php:156
 msgid "Delete and replace the app link"
-msgstr "Tanggalin at palitan ang link sa app"
+msgstr "Usuń i zastąp link do aplikacji"
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
 msgid "Activity Highlights"
-msgstr "Mga Tampok ng Aktibidad"
+msgstr "Najważniejsze wydarzenia w aktywności"
 
 #: dt-metrics/personal/activity-highlights.php:59
 msgid "None"
-msgstr "Wala"
+msgstr "Żadne"
 
 #: dt-metrics/personal/activity-highlights.php:60
 msgid "%1$s I Changed"
-msgstr "%1$s Binago Ko"
+msgstr "%1$s I Zmieniono"
 
 #: dt-metrics/personal/activity-highlights.php:61
 msgid "%1$s I Made"
-msgstr "%1$s Ginawa Ko"
+msgstr "%1$s I Zrobiono"
 
 #: dt-metrics/personal/activity-highlights.php:62
 msgid "Contacts I Baptized"
-msgstr "Mga Kontak na Bininyagan ko"
+msgstr "Kontakty I Ochrzczone"
 
 #: dt-metrics/personal/activity-highlights.php:63
 msgid "%1$s changed by others on my %2$s"
-msgstr "%1$s binago ng iba sa aking %2$s"
+msgstr "%1$s zmieniony przez innych na mój %2$s"
 
 #: dt-metrics/personal/activity-highlights.php:64
 msgid "Baptisms by others on my contacts"
-msgstr "Mga binyag na ginagawa ng iba sa aking mga kontak"
+msgstr "Chrzty dokonywane przez innych na moich kontaktach"
 
 #: dt-metrics/personal/activity-highlights.php:65
 msgid "Comments I Reacted To"
-msgstr "Mga Komento Kung Saan Nagbigay Ako ng Reaksyon"
+msgstr "Komentarze I Reakcje na"
 
 #: dt-metrics/personal/activity-highlights.php:66
 msgid "Comments I Posted"
-msgstr "Mga Komento na Aking Nai-post"
+msgstr "Komentarze I Opublikowane"
 
 #: dt-metrics/personal/activity-highlights.php:176
 msgid "%1$d %2$s created"
-msgstr "%1$d %2$s (na) ginawa"
+msgstr "%1$d %2$s utworzono"
 
 #: dt-contacts/access-module.php:98
 msgid "Standard Contact"
-msgstr "Karaniwang Kontak"
+msgstr "Kontakt standardowy"
 
 #: dt-contacts/access-module.php:100
 msgid "A contact to collaborate on"
-msgstr "Isang kontak na makikipagtulungan sa"
+msgstr "Kontakt do współpracy"
 
 #: dt-contacts/access-module.php:101
 msgid "Me and project leadership"
-msgstr "Ako at ang pamunuan ng proyekto"
+msgstr "Ja i kierownictwo projektu"
 
 #: dt-contacts/base-setup.php:169
 msgid "Private Contact"
-msgstr "Pribadong Kontak"
+msgstr "Kontakt prywatny"
 
 #: dt-contacts/dmm-module.php:49
 msgid "Private Connection"
-msgstr "Pribadong Koneksyon"
+msgstr "Prywatne połączenie"
 
 #: dt-contacts/user-module.php:72
 msgid "This contact represents you as a user."
-msgstr "Ang kontak na ito ay kumakatawan sa iyo bilang gumagamit."
+msgstr "Ten kontakt reprezentuje Cię jako użytkownika."
 
 #: dt-contacts/user-module.php:73
 msgid "Please update contact details on your profile page instead of here."
-msgstr "Mangyaring i-update ang mga detalye ng pagkontak sa iyong pahina ng profile sa halip na dito."
+msgstr "Proszę zaktualizować dane kontaktowe na stronie swojego profilu zamiast tutaj."
 
 #: dt-contacts/user-module.php:76
 msgid "This contact represents a user."
-msgstr "Ang kontak na ito ay kumakatawan sa isang gumagamit."
+msgstr "Ten kontakt reprezentuje użytkownika."
 
 #: dt-users/template-new-user.php:265
 msgid "Upgrading a contact"
-msgstr "Pag-a-upgrade ng kontak"
+msgstr "Uaktualnianie kontaktu"
 
 #: dt-users/template-new-user.php:268
 msgid "The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
-msgstr "Ang bagong gumagamit ay magkakaroon ng pag-access sa lahat ng field at komento sa rekord ng kontak na ito. Iminumungkahi naming ilagay sa artsibo ang mga komento kung naglalaman ang mga ito ng sensitibong datos."
+msgstr "Nowy użytkownik będzie miał dostęp do wszystkich pól i komentarzy tego rekordu kontaktu. Sugerujemy archiwizację komentarzy, jeśli zawierają one wrażliwe dane."
 
 #: dt-users/template-new-user.php:275
 msgid "Continue and archive comments"
-msgstr "Magpatuloy at maglagay ng mga komento sa artsibo"
+msgstr "Kontynuacja i archiwizacja komentarzy"
 
 #: dt-users/template-new-user.php:276
 msgid "Continue, keeping comments"
-msgstr "Magpatuloy, pinananatili ang mga komento"
+msgstr "Kontynuuj, zachowując komentarze"
 
 #: dt-users/template-new-user.php:285
 msgid "Merge Contact Details"
-msgstr "Pagsamahin ang Mga Detalye ng Kontak"
+msgstr "Połącz dane kontaktowe"
 
 #: dt-users/template-new-user.php:287
 msgid "A new contact record has been created."
-msgstr "Isang bagong rekord ng kontak ang nagawa."
+msgstr "Utworzono nowy rekord kontaktu."
 
 #: dt-users/template-new-user.php:290
 msgid "The old one is now closed."
-msgstr "Sarado na ngayon ang luma."
+msgstr "Stary jest już zamknięty."
 
 #: dt-users/template-new-user.php:293
 msgid "Do you wish to merge fields from the old record to the new one?"
-msgstr "Gusto mo bang pagsamahin ang mga field mula sa lumang rekord hanggang sa bago?"
+msgstr "Czy chcesz scalić pola ze starego rekordu do nowego?"
 
 #: dt-users/user-hooks-and-config.php:166
 msgid "Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
-msgstr "Maligayang pagdating %1$s, ito ang iyong personal na rekord ng kontak. Huwag mag-atubiling i-update ang mga field at @banggitin ako o iba pang mga gumagamit"
+msgstr "Witaj %1$s, to jest twój osobisty rekord kontaktu. Czuj się swobodnie, aby aktualizować pola i @oznaczać mnie lub innych użytkowników."
 
 #: dt-users/users.php:447
 msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
-msgstr "Ito ay mga komentong nasa artsibo para kay %1$s"
+msgstr "To są zarchiwizowane komentarze dla %1$s"
 
 #: template-settings.php:77
 msgid "View Contact Record"
-msgstr "Tingnan ang Rekord ng Kontak"
+msgstr "Zobacz rekord kontaktu"
 
 #: dt-assets/functions/enqueue-scripts.php:224
 msgid "Open With"
-msgstr "Buksan Gamit Ang"
+msgstr "Otwórz w"
 
 #: dt-contacts/base-setup.php:213
 msgid "Signal"
@@ -4883,119 +4897,119 @@ msgstr "Whatsapp"
 
 #: dt-users/template-user-management.php:350
 msgid "Edit User"
-msgstr "I-edit ang Gumagamit"
+msgstr "Edytuj użytkownika"
 
 #: dt-groups/base-setup.php:490
 msgid "Coach of Group"
-msgstr "Tagapagturo ng Grupo"
+msgstr "Trener grupy"
 
 #: archive-template.php:86
 #: archive-template.php:173
 msgid "Communication Channels"
-msgstr "Mga Paraan ng Komunikasyon"
+msgstr "Kanały komunikacyjne"
 
 #: archive-template.php:213
 msgid "Create custom filter"
-msgstr "Gumawa ng custom na filter"
+msgstr "Utwórz filtr niestandardowy"
 
 #: dt-reports/magic-url-setup.php:113
 msgid "Send the link via email."
-msgstr "Ipadala ang link sa pamamagitan ng email."
+msgstr "Wyślij link wiadomością e-mail"
 
 #: dt-reports/magic-url-setup.php:113
 msgid "Add email address"
-msgstr "Magdagdag ng email address"
+msgstr "Dodaj adres e-mail"
 
 #: dt-reports/magic-url-setup.php:114
 msgid "Add a note"
-msgstr "Magdagdag ng tala"
+msgstr "Dodaj notatkę"
 
 #: template-new-bulk-post.php:85
 msgid "New Bulk %s"
-msgstr "Bagong Maramihang %s"
+msgstr "Nowy zbiorczy %s"
 
 #: template-new-bulk-post.php:98
 msgid "Choose which fields to display across new bulk records"
-msgstr "Piliin kung aling mga field ang ipapakita sa mga bagong maramihang rekord"
+msgstr "Wybierz, które pola mają być wyświetlane w nowych rekordach zbiorczych"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
-msgstr "Magdagdag ng Bagong Hilera"
+msgstr "Dodaj nowy rząd"
 
 #: template-new-bulk-post.php:264
 msgid "Add Records"
-msgstr "Magdagdag ng mga Rekord"
+msgstr "Dodaj rekordy"
 
 #: template-new-post.php:45
 msgid "Add Bulk Records?"
-msgstr "Magdagdag ng mga Maramihang Rekord?"
+msgstr "Dodać rekordy zbiorcze?"
 
 #: dt-reports/magic-url-setup.php:150
 msgid "Scan the QR code to open the magic link on a mobile device."
-msgstr "I-scan ang QR code upang buksan ang magic na link sa isang mobile na device."
+msgstr "Zeskanuj kod QR, aby otworzyć magiczny link na urządzeniu mobilnym."
 
 #: dt-assets/functions/details-bar.php:66
 msgctxt "Merge with another record"
 msgid "Merge with another %s"
-msgstr "Pagsamahin sa isa pang %s"
+msgstr "Połącz z innym %s"
 
 #: dt-assets/parts/merge-details.php:36
 msgctxt "Merge Contacts"
 msgid "Merge %s"
-msgstr "Pagsama-samahin ang %s"
+msgstr "Połącz %s"
 
 #: dt-assets/parts/merge-details.php:37
 msgctxt "Merge this contact with another contact"
 msgid "Merge this %1$s with another %2$s"
-msgstr "Isama itong %1$s sa isa pang %2$s"
+msgstr "Połącz ten %1$s z innym %2$s"
 
 #: dt-users/template-new-user.php:16
 msgid "Administrator must enable \"Add New Users\" option in multisite settings:"
-msgstr "Dapat paganahin ng Administrator ang opsyong \"Magdagdag ng Mga Bagong Gumagamit\" sa mga setting na pang-multisite:"
+msgstr "Administrator musi włączyć opcję \"Dodaj nowych użytkowników\" w ustawieniach serwisu:"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"
-msgstr "Buksan ang Modal"
+msgstr "Otwórz moduł"
 
 #: template-merge-post-details.php:111
 msgid "Merge Duplicate %s"
-msgstr "Pagsamahin ang Kaparehong %s"
+msgstr "Scal duplikat %s"
 
 #: template-merge-post-details.php:113
 msgid "When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
-msgstr "Kapag pinagsama mo, ina-update ang pangunahing rekord sa mga halagang pipiliin mo, at ang mga kaugnayan sa iba pang mga item ay inililipat sa pangunahing rekord; na maaaring palitan sa ibaba."
+msgstr "Podczas scalania, rekord główny jest aktualizowany z wybranymi wartościami, a relacje do innych elementów są przenoszone do rekordu głównego; co można przełączyć poniżej."
 
 #: template-merge-post-details.php:116
 msgid "Copy comments to updated primary record"
-msgstr "Kopyahin ang mga komento sa na-update na pangunahing rekord"
+msgstr "Kopiowanie komentarzy do zaktualizowanego rekordu głównego"
 
 #: template-merge-post-details.php:132
 msgid "Archiving"
-msgstr "Inilalagay sa artsibo"
+msgstr "Archiwizowanie"
 
 #: template-merge-post-details.php:140
 msgid "Use as Primary"
-msgstr "Gamitin bilang Pangunahin"
+msgstr "Użyj jako podstawowy"
 
 #: template-merge-post-details.php:153
 msgid "Primary"
-msgstr "Pangunahin"
+msgstr "Podstawowy"
 
 #: template-merge-post-details.php:167
 msgid "Updated"
-msgstr "Nai-update"
+msgstr "Zaktualizowany"
 
 #: archive-template.php:619
 msgid "Field Name"
-msgstr "Pangalan ng Field"
+msgstr "Nazwa pola"
 
 #: dt-assets/functions/enqueue-scripts.php:313
 msgid "Exclude Item"
-msgstr "Ibukod ang Item"
+msgstr "Wyłączenie pozycji"
 
 #: dt-workflows/workflows-triggers.php:63
 msgid "D.T Workflow"
-msgstr "D.T Workflow"
+msgstr "D.T Przepływ pracy"
 
 #: dt-core/release-notifications.php:43
 msgid "Release Announcement!"
