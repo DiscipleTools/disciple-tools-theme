@@ -40,6 +40,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         dt_theme_enqueue_script( 'dt-settings', 'dt-core/admin/js/dt-settings.js', [], true );
         
         $post_type = self::get_parameter( 'post_type' );
+        if ( !isset( $post_type) || is_null( $post_type) ) {
+            return;
+        }
         $post_settings = DT_Posts::get_post_settings( $post_type );
         
         $translations = [
@@ -75,7 +78,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         wp_enqueue_script( 'jquery' );
     }
 
-    public function content() {       
+    public function content() {     
+        $this->load_styles();  
         $this->load_add_new_field_modal();
         $this->load_edit_field_option_modal();
         self::template( 'begin', 1 );
@@ -95,6 +99,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public static function load_add_new_field_modal() {
         $post_type = self::get_parameter( 'post_type' );
+        if ( !isset( $post_type) || is_null( $post_type) ) {
+            return;
+        }
         $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
         $tile_options = DT_Posts::get_post_tiles( $post_type );
         ?>
@@ -119,6 +126,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public static function load_edit_field_option_modal() {
         $post_type = self::get_parameter( 'post_type' );
+        if ( !isset( $post_type) || is_null( $post_type) ) {
+            return;
+        }
         $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
         $tile_options = DT_Posts::get_post_tiles( $post_type );
         ?>
@@ -476,19 +486,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <?php
     }
 
-    private function tile_preview_box() {
-        $tile = self::filter_tile_settings();
-        if ( !isset( $_GET['post_type'] ) || !isset( $_GET['post_tile_key'] ) ) {
-            esc_html_e( 'Error: missing parameters.', 'disciple_tools' );
-            return;
-        }
-        $post_type = self::get_parameter( 'post_type' );
-        $tile_key = self::get_parameter( 'post_tile_key' );
-        $post_settings = DT_Posts::get_post_settings( $post_type );
-        $tile_label = '';
-        if ( isset( $post_settings['tiles'][$tile_key]['label'] ) ) {
-            $tile_label = $post_settings['tiles'][$tile_key]['label'];
-        }
+    private function load_styles() {
         ?>
         <style>
             .modal-box-title {
@@ -780,6 +778,22 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 padding-left: 12px;
             }
         </style>
+        <?php
+    }
+    private function tile_preview_box() {
+        $tile = self::filter_tile_settings();
+        if ( !isset( $_GET['post_type'] ) || !isset( $_GET['post_tile_key'] ) ) {
+            esc_html_e( 'Error: missing parameters.', 'disciple_tools' );
+            return;
+        }
+        $post_type = self::get_parameter( 'post_type' );
+        $tile_key = self::get_parameter( 'post_tile_key' );
+        $post_settings = DT_Posts::get_post_settings( $post_type );
+        $tile_label = '';
+        if ( isset( $post_settings['tiles'][$tile_key]['label'] ) ) {
+            $tile_label = $post_settings['tiles'][$tile_key]['label'];
+        }
+        ?>
         <div class="dt-tile-preview">
             <div class="section-header">
                 <h3 class="section-header"><?php echo esc_html( $tile_label ); ?></h3>
