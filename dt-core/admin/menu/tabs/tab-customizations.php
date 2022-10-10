@@ -316,8 +316,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 <tr>
                     <td class="fields-table-left"><?php $this->show_tile_settings( $clean_tile ); ?></td>
                     <td class="fields-table-right">
-                        <div id="new-custom-field-box" class="new-custom-field hidden">
-                        </div>
                         <?php $this->tile_preview_box(); ?>
                     </td>
                 </tr>
@@ -372,6 +370,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 }
             }
         }
+        ?>
+        <div class="add-new-field"><a href="#"><?php esc_html_e( 'add new field', 'disciple_tools' ); ?></a></div>
+        <?php
     }
 
     private function tile_preview_box() {
@@ -411,8 +412,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     }
                 });
 
-                $('.add-new-option').on('click', function() {
-                    $('#new-custom-field-box').slideToggle(333, 'swing');
+                $('.add-new-field').on('click', function(){
+                    toggleOverlayVisibility();
                 });
 
                 $('.field-name').hover(
@@ -465,13 +466,14 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             }
             .field-name {
                 width: 100%;
+                margin-top: 0.5em;
                 cursor: pointer;
             }
             .field-element {
                 margin-left: 18px;
             }
-            .add-new-option {
-                margin: 0 0 18px 18px;
+            .add-new-field {
+                margin: 8px 0 0 18px;
             }
             .new-custom-field {
                 display: block;
