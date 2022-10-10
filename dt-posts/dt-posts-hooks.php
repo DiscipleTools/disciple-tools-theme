@@ -187,9 +187,10 @@ class DT_Posts_Hooks {
             }
 
             // Query system for duplicates, based on identified search values and status key.
-            if ( ! empty( $search_values ) && ! empty( $post_settings['status_field']['status_key'] ) ) {
+            if ( ! empty( $search_values ) ) {
+                $status_key = isset( $post_settings['status_field']['status_key'] ) ? $post_settings['status_field']['status_key'] : null;
                 $search_result = DT_Posts::search_viewable_post( $post_type, [
-                    'sort'             => $post_settings['status_field']['status_key'],
+                    'sort'             => !empty( $status_key ) ? $status_key : '-post_date',
                     'fields'           => [ $search_values ],
                     'fields_to_search' => array_keys( $search_values )
                 ], $check_permissions );
