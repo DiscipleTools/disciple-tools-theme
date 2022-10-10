@@ -742,6 +742,9 @@ select.color-select {
   z-index: 1;
   transform: translateX(-15%);
 }
+html[dir="rtl"] .add-link-dropdown__content {
+  transform: translateX(15%);
+}
 
 .add-link-dropdown:hover .add-link-dropdown__content {
     display: block;
