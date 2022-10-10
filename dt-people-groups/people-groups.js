@@ -6,6 +6,31 @@ jQuery(document).ready(function () {
 
 });
 
+function update_setting_options() {
+  let settings = {
+    'settings': {
+      'display_tab': jQuery('#display_people_group_tab').prop('checked')
+    }
+  };
+
+  jQuery.ajax({
+    type: "POST",
+    data: JSON.stringify(settings),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/update_setting_options',
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
+    },
+  }).done(function (data) {
+    console.log(data);
+
+  }).fail(function (err) {
+    console.log("error");
+    console.log(err);
+  })
+}
+
 function group_search() {
     let sval = jQuery('#group-search').val();
     let data = { "s": sval }
