@@ -315,7 +315,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <tbody>
                 <tr>
                     <td class="fields-table-left"><?php $this->show_tile_settings( $clean_tile ); ?></td>
-                    <td style="fields-table-right">
+                    <td class="fields-table-right">
                         <div id="new-custom-field-box" class="new-custom-field hidden">
                         </div>
                         <?php $this->tile_preview_box(); ?>
@@ -345,10 +345,11 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             foreach ( $setting_value as $key => $value ) {
                 if ( $key === 'default' && !empty( $setting_value['default'] ) ) {
                     ?>
-                <div class="field-option">
+                <div class="field-name" data-field-name="<?php echo esc_attr( $setting_key ); ?>">
+                    <div class="field-name-icon-arrow"></div>
                     <b id="<?php echo esc_attr( $setting_key ); ?>"><?php echo esc_html( $setting_value['name'] ); ?></b>
                     <a href="javascript:void(0);" class="edit-option"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
-                </div>
+                    <div class="field-elements-list hidden">
                     <?php
                     foreach ( $value as $v ) {
                         if ( isset( $v['label'] ) ) {
@@ -357,18 +358,17 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                 $label = 'NULL';
                             }
                             ?>
-                            <div class="field-option field-element" style="margin-left: 18px;">
+                            <div class="field-name field-element" style="margin-left: 18px;" data-field-parent="<?php echo esc_attr( $setting_key ); ?>">
                                 └ <?php echo esc_html( $label ); ?>
                                 <a href="javascript:void(0);" class="edit-option"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
                             </div>
                             <?php
                         }
                     }
-                    ?>  
-                    <div class="add-new-option">
-                    └ <a href="javascript:void(0);"><?php esc_html_e( 'add new', 'disciple_tools' ); ?></a>
+                ?>
                     </div>
-                    <?php
+                </div>
+                <?php
                 }
             }
         }
@@ -415,22 +415,47 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     $('#new-custom-field-box').slideToggle(333, 'swing');
                 });
 
-                $('.field-option').hover(
+                $('.field-name').hover(
                     function() {
                         $(this).children('.edit-option').show()
                     },
                     function(){
                         $(this).children('.edit-option').hide()
                     }
-                ); 
+                );
+
+                $('.field-name').on('click', function() {
+                    $(this).find('.field-name-icon-arrow').toggleClass('arrow-expanded');
+                    $(this).find('.field-elements-list').slideToggle(333, 'swing');
+                });
             });
         </script>
         <style>
+            .field-elements-list {
+                margin-bottom: 18px;
+            }
+            .field-name-icon-arrow {
+                border-color: #50575e transparent transparent;
+                border-style: solid;
+                border-width: 6px 6px 0;
+                display: inline-block;
+                height: 0;
+                left: auto;
+                margin-top: -3px;
+                right: 5px;
+                width: 0;
+                transform: rotate(-90deg);
+                transition: transform 0.1s;
+            }
+            .arrow-expanded {
+                transform: none;
+                transition: transform 0.2s;
+            }
             .fields-table-left {
                 border-right: 1px solid #ccc;
                 min-width: auto;
             }
-            .fields-table-right{
+            .fields-table-right {
                 background-color: #f1f1f1;
             }
             .edit-option {
@@ -438,8 +463,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 display: none;
                 position: absolute;
             }
-            .field-option {
+            .field-name {
                 width: 100%;
+                cursor: pointer;
             }
             .field-element {
                 margin-left: 18px;
