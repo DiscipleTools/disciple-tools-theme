@@ -37,10 +37,11 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public function admin_enqueue_scripts() {
         dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+
         wp_enqueue_script( 'jquery' );
     }
 
-    public function content() {
+    public function content() {       
         $this->load_modal_overlay();
         self::template( 'begin', 1 );
             $this->space_between_div_open();
@@ -61,10 +62,15 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         ?>
         <div class="dt-admin-modal-overlay hidden">
             <div class="dt-admin-modal-box hidden">
-                <div class="dt-admin-modal-close-button">×</div>
+                <div class="dt-admin-modal-box-close-button">×</div>
+                <div class="dt-admin-modal-box-content">
+                </div>
             </div>
         </div>
         <style>
+            .dt-admin-modal-box-content {
+                padding: 8px;
+            }
             .dt-admin-modal-overlay {
                 width: 100%;
                 height: 100%;
@@ -84,7 +90,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 left: 25%;
                 z-index: 100001;
             }
-            .dt-admin-modal-close-button {
+            .dt-admin-modal-box-close-button {
                 text-align: right;
                 color: #cacaca;
                 font-weight: 200;
@@ -150,17 +156,18 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $tab = 'general';
         }
 
-        if ( $post_type ) {
-            if ( $tab === 'tiles' ) {
+        switch ( $tab ) {
+            case 'tiles':
                 self::tile_rundown_box();
-                return;
-            }
-            ?>
-            <div class="tab-content">
-                <b>post_type:</b> <?php echo esc_html( $post_type ); ?><br>
-                <b>tab:</b> <?php echo esc_html( $tab ); ?><br>
-            </div>
-            <?php
+                break;
+            default:
+                ?>
+                <div class="tab-content">
+                    <b>post_type:</b> <?php echo esc_html( $post_type ); ?><br>
+                    <b>tab:</b> <?php echo esc_html( $tab ); ?><br>
+                </div>
+                <?php
+                break;
         }
     }
 
@@ -307,11 +314,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             </thead>
             <tbody>
                 <tr>
-                    <td style="border-right: 1px solid #ccc;"><?php $this->show_tile_settings( $clean_tile ); ?></td>
-                    <td style="background-color: #f1f1f1;">
+                    <td class="fields-table-left"><?php $this->show_tile_settings( $clean_tile ); ?></td>
+                    <td style="fields-table-right">
                         <div id="new-custom-field-box" class="new-custom-field hidden">
-                            <h2><?php esc_html_e( 'Create new field', 'disciple_tools' ); ?></h2>
-                            <input type="text" style="width: 100%">
                         </div>
                         <?php $this->tile_preview_box(); ?>
                     </td>
@@ -385,6 +390,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         ?>
         <script>
             jQuery(document).ready(function($) {
+                // let window.post_type_fields = window.new_record_localized.post_type_settings.fields;
+
                 function toggleOverlayVisibility() {
                     $('.dt-admin-modal-overlay').fadeToggle(150, 'swing');
                     $('.dt-admin-modal-box').slideToggle(150, 'swing');
@@ -419,6 +426,13 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             });
         </script>
         <style>
+            .fields-table-left {
+                border-right: 1px solid #ccc;
+                min-width: auto;
+            }
+            .fields-table-right{
+                background-color: #f1f1f1;
+            }
             .edit-option {
                 margin-left: 18px;
                 display: none;
@@ -434,8 +448,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 margin: 0 0 18px 18px;
             }
             .new-custom-field {
+                display: block;
                 width: auto;
-                height: 250px;
+                height: auto;
                 display: none;
                 border: 1px solid #ccc;
                 background-color: #fff;
