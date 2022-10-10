@@ -12,33 +12,30 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 function display_tile( $tile, $post ): bool {
 
     // If nothing, display by default!
-    if ( empty( $tile['displayed'] ) || ( is_array( $tile['displayed'] ) && in_array( 'always', $tile['displayed'] ) ) ) {
+    if ( empty( $tile['display_conditions'] ) || ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'visible' ) ) {
         return true;
     }
 
-    if ( ! is_array( $tile['displayed'] ) ) {
+    if ( ! is_array( $tile['display_conditions'] ) ) {
         return true;
     }
 
-    if ( in_array( 'never', $tile['displayed'] ) ) {
+    if ( $tile['display_conditions']['visibility'] == 'hidden' ) {
         return false;
     }
 
     // Determine if all specified fields must be present & iterate.
     $field_presence      = [];
-    $all_fields_required = isset( $tile['displayed_all_fields'] ) && $tile['displayed_all_fields'];
+    $all_fields_required = isset( $tile['display_conditions']['operator'] ) && $tile['display_conditions']['operator'] == 'and';
     $field_settings      = DT_Posts::get_post_field_settings( get_post_type() );
-    foreach ( $tile['displayed'] as $displayed_entry ) {
+    foreach ( $tile['display_conditions']['conditions'] ?? [] as $condition ) {
 
-        // Extract tile display options.
-        $display_options = explode( '___', $displayed_entry );
-        $field_id        = $display_options[0];
-        $option_id       = $display_options[1];
+        // Extract tile display condition options.
+        $field_id  = $condition['key'];
+        $option_id = $condition['value'];
 
         // Determine if post contains field and corresponding option.
         if ( isset( $post[ $field_id ], $field_settings[ $field_id ] ) ) {
-
-            $field_present = false;
             switch ( $field_settings[ $field_id ]['type'] ) {
                 case 'key_select':
                     $field_presence[] = $post[ $field_id ]['key'] == $option_id;
@@ -301,10 +298,10 @@ function display_tile( $tile, $post ): bool {
                         <div class="grid-x grid-margin-x grid-margin-y grid">
                             <?php
                             foreach ( $tiles as $tile_key => $tile_options ){
-                                if ( ! display_tile( $tile_options, $dt_post ) ) {
+                                if ( in_array( $tile_key, [ 'details', 'status' ] ) ) {
                                     continue;
                                 }
-                                if ( ( isset( $tile_options['hidden'] ) && $tile_options['hidden'] == true ) || in_array( $tile_key, [ 'details', 'status' ] ) ) {
+                                if ( ! display_tile( $tile_options, $dt_post ) ) {
                                     continue;
                                 }
                                 if ( isset( $tile_options['display_for']['type'], $dt_post['type']['key'] ) && !in_array( $dt_post['type']['key'], $tile_options['display_for']['type'] ) ){

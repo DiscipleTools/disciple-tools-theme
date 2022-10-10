@@ -486,4 +486,21 @@ jQuery(document).ready(function ($) {
     return key;
   }
 
+  /**
+   * Tile Display Conditions - [START]
+   */
+
+  $(document).on('click', 'input:radio[name="tile_display_option"]', function (e) {
+    handle_tile_display_condition_selection($(e.currentTarget));
+  });
+
+  function handle_tile_display_condition_selection(display_condition) {
+    let show_custom = display_condition && $(display_condition).val() == 'custom';
+    let custom_elements = $('#tile_display_custom_elements');
+    show_custom ? $(custom_elements).slideDown('slow') : $(custom_elements).slideUp('slow');
+  }
+
+  /**
+   * Tile Display Conditions - [END]
+   */
 })
