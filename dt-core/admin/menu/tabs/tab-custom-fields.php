@@ -1304,7 +1304,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $new_field = [
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'link',
-                    'default'     => [],
+                    'default'     => [
+                        'default' => [
+                            'label' => 'Default',
+                        ],
+                    ],
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private
