@@ -50,7 +50,7 @@ class Disciple_Tools_Notifications_Queue {
      */
     public function schedule_email( stdClass $notification, $schedule_time ) {
         if ( ! $notification ) {
-            throw new Exception( "Notification must be supplied" );
+            throw new Exception( 'Notification must be supplied' );
         }
         if ( $this->verify_schedule_time( $schedule_time ) ) {
             throw new Exception( "Notification Queue schedule $schedule_time not allowed" );

@@ -15,6 +15,15 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
      * @throws \Exception  Got error when creating table $name.
      */
     public function up() {
+        $at_install = get_option( 'dt_at_install' );
+        if ( empty( $at_install ) ){
+            update_option( 'dt_at_install', [
+                'date' => time(),
+                'migration_number' => Disciple_Tools_Migration_Engine::$migration_number,
+                'theme_version' => wp_get_theme()->version,
+            ] );
+        }
+
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
         foreach ( $expected_tables as $name => $table ) {

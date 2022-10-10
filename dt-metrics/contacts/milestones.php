@@ -59,14 +59,14 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
         wp_localize_script(
             'dt_'.$this->slug.'_script', $this->js_object_name, [
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
-                "data" => [
+                'data' => [
                     'milestones' => $this->milestones()
                 ],
                 'translations' => [
-                    'milestones' => __( "Milestones", 'disciple_tools' ),
-                    'filter_contacts_to_date_range' => __( "Filter contacts to date range:", 'disciple_tools' ),
-                    'all_time' => __( "All Time", 'disciple_tools' ),
-                    'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
+                    'milestones' => __( 'Milestones', 'disciple_tools' ),
+                    'filter_contacts_to_date_range' => __( 'Filter contacts to date range:', 'disciple_tools' ),
+                    'all_time' => __( 'All Time', 'disciple_tools' ),
+                    'filter_to_date_range' => __( 'Filter to date range', 'disciple_tools' ),
                 ]
             ]
         );
@@ -87,12 +87,12 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
 
     public function milestones_endpoint( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {
-            return new WP_Error( "milestones", "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( 'milestones', 'Missing Permissions', [ 'status' => 400 ] );
         }
         $params = $request->get_params();
-        if ( isset( $params["start"], $params["end"] ) ){
-            $start = strtotime( $params["start"] );
-            $end = strtotime( $params["end"] );
+        if ( isset( $params['start'], $params['end'] ) ){
+            $start = strtotime( $params['start'] );
+            $end = strtotime( $params['end'] );
             $result = $this->milestones( $start, $end );
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -100,7 +100,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( "milestones", "Missing a valid values", [ 'status' => 400 ] );
+            return new WP_Error( 'milestones', 'Missing a valid values', [ 'status' => 400 ] );
         }
     }
 
@@ -137,23 +137,23 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
             GROUP BY log.meta_value
         ", $start, $end ), ARRAY_A );
 
-        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
-        $milestones_options = $field_settings["milestones"]["default"];
+        $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
+        $milestones_options = $field_settings['milestones']['default'];
         $milestones_data = [];
 
         foreach ( $milestones_options as $option_key => $option_value ){
-            $milestones_data[$option_value["label"]] = 0;
+            $milestones_data[$option_value['label']] = 0;
             foreach ( $res as $r ){
-                if ( $r["milestones"] === $option_key ){
-                    $milestones_data[$option_value["label"]] = $r["value"];
+                if ( $r['milestones'] === $option_key ){
+                    $milestones_data[$option_value['label']] = $r['value'];
                 }
             }
         }
         $return = [];
         foreach ( $milestones_data as $k => $v ){
             $return[] = [
-                "milestones" => $k,
-                "value" => (int) $v
+                'milestones' => $k,
+                'value' => (int) $v
             ];
         }
 

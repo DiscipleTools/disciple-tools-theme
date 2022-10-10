@@ -16,10 +16,10 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
         if ( sizeof( $milestones ) > 0 ){
             $sql = "INSERT INTO $wpdb->postmeta(post_id, meta_key, meta_value) VALUES ";
             foreach ( $milestones as $value ){
-                $sql .= "('" . $value['post_id'] . "', 'milestones', '" .  $value["meta_key"]  . "'),";
+                $sql .= "('" . $value['post_id'] . "', 'milestones', '" .  $value['meta_key']  . "'),";
             }
-            $sql .= ";";
-            $sql = str_replace( ",;", ";", $sql );
+            $sql .= ';';
+            $sql = str_replace( ',;', ';', $sql );
 
             $wpdb->query( $sql ); // @phpcs:ignore
         }
@@ -37,10 +37,10 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
         if ( sizeof( $health_metrics ) > 0 ){
             $sql = "INSERT INTO $wpdb->postmeta(post_id, meta_key, meta_value) VALUES ";
             foreach ( $health_metrics as $value ){
-                $sql .= "('" . $value['post_id'] . "', 'health_metrics', '" .  $value["meta_key"]  . "'),";
+                $sql .= "('" . $value['post_id'] . "', 'health_metrics', '" .  $value['meta_key']  . "'),";
             }
-            $sql .= ";";
-            $sql = str_replace( ",;", ";", $sql );
+            $sql .= ';';
+            $sql = str_replace( ',;', ';', $sql );
 
             $wpdb->query( $sql ); // @phpcs:ignore
         }
@@ -52,40 +52,40 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
 
 
         $contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
-        $custom_field_options = dt_get_option( "dt_field_customizations" );
-        $custom_lists = dt_get_option( "dt_site_custom_lists" );
-        $custom_milestones = $custom_lists["custom_milestones"] ?? [];
+        $custom_field_options = dt_get_option( 'dt_field_customizations' );
+        $custom_lists = dt_get_option( 'dt_site_custom_lists' );
+        $custom_milestones = $custom_lists['custom_milestones'] ?? [];
         foreach ( $custom_milestones as $k => $v ){
-            if ( ! isset( $custom_field_options["contacts"]["milestones"] ) ) {
-                $custom_field_options["contacts"]["milestones"] = [
-                    "default" => []
+            if ( ! isset( $custom_field_options['contacts']['milestones'] ) ) {
+                $custom_field_options['contacts']['milestones'] = [
+                    'default' => []
                 ];
             }
-            if ( !isset( $contact_fields["milestones"]["default"][$k] ) &&
-                 !isset( $custom_field_options["contacts"]["milestones"]["default"][$k] ) ){
-                $custom_field_options["contacts"]["milestones"]["default"][$k] = [
-                    "label" => $v["name"]
+            if ( !isset( $contact_fields['milestones']['default'][$k] ) &&
+                 !isset( $custom_field_options['contacts']['milestones']['default'][$k] ) ){
+                $custom_field_options['contacts']['milestones']['default'][$k] = [
+                    'label' => $v['name']
                 ];
             }
         }
 
-        $group_fields = DT_Posts::get_post_field_settings( "groups" );
-        $custom_church = $custom_lists["custom_church"] ?? [];
+        $group_fields = DT_Posts::get_post_field_settings( 'groups' );
+        $custom_church = $custom_lists['custom_church'] ?? [];
         foreach ( $custom_church as $k => $v ){
-            if ( ! isset( $custom_field_options["groups"]["health_metrics"] ) ) {
-                $custom_field_options["groups"]["health_metrics"] = [
-                    "default" => []
+            if ( ! isset( $custom_field_options['groups']['health_metrics'] ) ) {
+                $custom_field_options['groups']['health_metrics'] = [
+                    'default' => []
                 ];
             }
-            if ( !isset( $group_fields["health_metrics"]["default"][$k] ) &&
-                 !isset( $custom_field_options["groups"]["health_metrics"]["default"][$k] ) ){
-                $custom_field_options["groups"]["health_metrics"]["default"][$k] = [
-                    "label" => $v["name"]
+            if ( !isset( $group_fields['health_metrics']['default'][$k] ) &&
+                 !isset( $custom_field_options['groups']['health_metrics']['default'][$k] ) ){
+                $custom_field_options['groups']['health_metrics']['default'][$k] = [
+                    'label' => $v['name']
                 ];
             }
         }
 
-        update_option( "dt_field_customizations", $custom_field_options );
+        update_option( 'dt_field_customizations', $custom_field_options );
     }
 
     public function down() {

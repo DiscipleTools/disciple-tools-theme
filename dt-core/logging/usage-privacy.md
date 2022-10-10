@@ -11,12 +11,14 @@
 We track these purely numeric stats to better know how Disciple.Tools is being used. We wish to celebrate the parts of Disciple.Tools that are doing well and focus on the pieces that need more work.
 We do not track any personal or non-personal information from the contact and group records or from the users beyond counting the number of each.
 - Total **number of contacts** and active contacts
-- Total **number of groups** and active groups 
-- Total **number of churches** and active churches 
+- Total **number of groups** and active groups
+- Total **number of churches** and active churches
 - Total **number of users** and active users
+- Languages used by users
 
-## Regions of focus
-The locations and mapping system is one that we custom built and we wish to continually improve it. To better understand how it is being used we track if the **region focus** feature is being used and which regions are selected. 
+## Locations
+Country location grid ids are collected for where contacts, groups, and churches are located.
 
 ## Contact Us
 Your questions and feedback are welcome at info@disciple.tools
+These usage statistics can be disabled in the admin area.

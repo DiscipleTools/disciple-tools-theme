@@ -76,7 +76,7 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
 
     public function tree( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
         return $this->get_baptism_generations_tree();
     }
@@ -92,7 +92,7 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
         );
 
         foreach ( $coached_contacts_shared_with_me as $l ){
-            $this->my_list[] = (int) $l["post_id"];
+            $this->my_list[] = (int) $l['post_id'];
         }
 
         $query = dt_queries()->tree( 'multiplying_coaching_only' );
@@ -105,9 +105,9 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
         $contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
         $this->my_list[] = $contact_id;
         $node = [
-            "parent_id" => 0,
-            "id" => $contact_id,
-            "name" => $user->display_name
+            'parent_id' => 0,
+            'id' => $contact_id,
+            'name' => $user->display_name
         ];
         //Stream of baptisms starting with me.
         $query = array_merge( [ $node ], dt_queries()->get_node_descendants( $query, [ $contact_id ] ) );
@@ -138,7 +138,7 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
                 $html .= '<li class="gen-node li-gen-' . esc_html( $gen ) . ' ' . esc_html( $first_section ) . '">';
                 $html .= '(' . esc_html( $gen ) . ') ';
                 if ( in_array( $item_id, $this->my_list ) ) {
-                    $html .= '<strong><a href="' . esc_url( site_url( "/contacts/" ) ) . esc_html( $item_id ) . '">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></strong><br>';
+                    $html .= '<strong><a href="' . esc_url( site_url( '/contacts/' ) ) . esc_html( $item_id ) . '">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></strong><br>';
                 } else {
                     $html .= __( 'Disciple', 'disciple_tools' ) . '<br>';
                 }

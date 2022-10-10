@@ -94,7 +94,7 @@ abstract class DT_Mapping_Module_Migration {
             $expected_table = self::clean_create_query( $expected_table );
             if ( $got_table !== $expected_table ) {
                 error_log( "Got: $got_table\n\nExpected:\n\n$expected_table\n\n" );
-                dt_write_log( __METHOD__ . ": " . $name . ' Failed test' );
+                dt_write_log( __METHOD__ . ': ' . $name . ' Failed test' );
                 throw new DT_Mapping_Module_Migration_Test_Exception( "Table $name not as expected, see error log" );
             }
         }

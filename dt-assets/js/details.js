@@ -479,11 +479,7 @@ jQuery(document).ready(function($) {
           }
         },
         href: function (item) {
-          if (listing_post_type === 'peoplegroups') {
-            return null;
-          } else {
-            return window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`
-          }
+          return window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`
         }
       },
       callback: {

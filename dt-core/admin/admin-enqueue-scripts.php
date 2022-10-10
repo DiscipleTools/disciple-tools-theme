@@ -48,18 +48,20 @@ function dt_people_groups_post_type_scripts() {
             'jquery',
             'jquery-ui-core',
         ], filemtime( get_template_directory() . '/dt-people-groups/people-groups.js' ), true );
-        wp_localize_script(
-            "dt_peoplegroups_scripts", "dtPeopleGroupsAPI", array(
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'current_user_login' => wp_get_current_user()->user_login,
-                'current_user_id' => get_current_user_id(),
-                'theme_uri' => get_template_directory_uri(),
-                'images_uri' => disciple_tools()->admin_img_url,
-            )
-        );
+        wp_localize_script( 'dt_peoplegroups_scripts', 'dtPeopleGroupsAPI', build_people_groups_api_object() );
         wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
     }
+}
+
+function build_people_groups_api_object() {
+    return [
+        'root'               => esc_url_raw( rest_url() ),
+        'nonce'              => wp_create_nonce( 'wp_rest' ),
+        'current_user_login' => wp_get_current_user()->user_login,
+        'current_user_id'    => get_current_user_id(),
+        'theme_uri'          => get_template_directory_uri(),
+        'images_uri'         => disciple_tools()->admin_img_url
+    ];
 }
 
 /**
@@ -74,7 +76,7 @@ function dt_options_scripts() {
 
     $allowed_pages = apply_filters( 'dt_options_script_pages', $allowed_pages );
 
-    if ( isset( $_GET["page"] ) && ( in_array( $_GET["page"], $allowed_pages, true ) ) ) {
+    if ( isset( $_GET['page'] ) && ( in_array( $_GET['page'], $allowed_pages, true ) ) ) {
         wp_enqueue_script( 'dt_options_script', disciple_tools()->admin_js_url . 'dt-options.js', [
             'jquery',
             'jquery-ui-core',
@@ -88,15 +90,16 @@ function dt_options_scripts() {
         dt_theme_enqueue_style( 'material-font-icons-local', 'dt-core/dependencies/mdi/css/materialdesignicons.min.css', array() );
         wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.6.96/css/materialdesignicons.min.css' );
 
-        if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'people-groups' ) {
+        if ( isset( $_GET['tab'] ) && ( ( $_GET['tab'] === 'people-groups' ) || ( $_GET['tab'] === 'general' ) ) ) {
             wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups.js', [
                 'jquery',
                 'jquery-ui-core',
             ], filemtime( get_template_directory() . '/dt-people-groups/people-groups.js' ), true );
+            wp_localize_script( 'dt_peoplegroups_scripts', 'dtPeopleGroupsAPI', build_people_groups_api_object() );
         }
 
         wp_localize_script(
-            "dt_options_script", "dtOptionAPI", array(
+            'dt_options_script', 'dtOptionAPI', array(
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
