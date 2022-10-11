@@ -4,6 +4,11 @@ jQuery(document).ready(function($) {
         $('#add-new-field-modal-box').slideDown(150, 'swing');
     }
     
+    function showAddNewFieldOptionModal() {
+        $('#add-new-field-option-modal-overview').fadeIn(150, 'swing');
+        $('#add-new-field-option-modal-box').slideDown(150, 'swing');
+    }
+    
     function showEditFieldOptionModal() {
         $('#edit-field-option-modal-overview').fadeIn(150, 'swing');
         $('#edit-field-option-modal-box').slideDown(150, 'swing');
@@ -12,6 +17,8 @@ jQuery(document).ready(function($) {
     function closeModals() {
         $('#add-new-field-modal-overview').fadeOut(150, 'swing');
         $('#add-new-field-modal-box').slideUp(150, 'swing');
+        $('#add-new-field-option-modal-overview').fadeOut(150, 'swing');
+        $('#add-new-field-option-modal-box').slideUp(150, 'swing');
         $('#edit-field-option-modal-overview').fadeOut(150, 'swing');
         $('#edit-field-option-modal-box').slideUp(150, 'swing');
     }
@@ -32,6 +39,10 @@ jQuery(document).ready(function($) {
 
     $('.add-new-field').on('click', function(){
             showAddNewFieldModal();
+    });
+
+    $('.add-new-field-option').on('click', function(){
+        showAddNewFieldOptionModal();
     });
 
     $('.field-name').hover(
