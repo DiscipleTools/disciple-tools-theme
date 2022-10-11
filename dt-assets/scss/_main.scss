@@ -173,7 +173,7 @@ NAVIGATION STYLES
             border-color: #fefefe transparent transparent;
         }
         .dropdown.menu #more-menu-button {
-            display: none;
+            display: block;
         }
 
         @media screen and (max-width : 1000px) {
@@ -204,7 +204,8 @@ NAVIGATION STYLES
                 display: none;
             }
         }
-        @media screen and (min-width: 1201px) and (max-width : 1400px) {
+        //..............Deprecated....?
+        /*@media screen and (min-width: 1201px) and (max-width : 1400px) {
             .dropdown.menu>li:nth-child(n+7) {
                 display: none;
             }
@@ -218,8 +219,6 @@ NAVIGATION STYLES
                 display: none;
             }
         }
-
-
         @media screen and (min-width: 1401px) and (max-width : 1600px) {
             .dropdown.menu>li:nth-child(n+9) {
                 display: none;
@@ -233,7 +232,7 @@ NAVIGATION STYLES
             .dropdown.menu #more-menu-button > ul > li:nth-child(-n+8) {
                 display: none;
             }
-        }
+        }*/
     }
 
     .dropdown.menu .is-submenu-item a:hover {

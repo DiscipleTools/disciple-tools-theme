@@ -43,17 +43,50 @@ jQuery(document).ready(function () {
   jQuery('#inner-content ').css('min-height', window.innerHeight)
 })
 
-//Hide Top Menu More button if all items are showing
-document.addEventListener('DOMContentLoaded', top_bar_menu_more_button);
-window.addEventListener('resize', top_bar_menu_more_button);
+jQuery(document).ready($ => {
 
-function top_bar_menu_more_button () {
-  if ( $("#top-bar-menu > div.top-bar-left > ul > li:nth-last-child(2)").is(':visible')) {
-    $("#more-menu-button").hide();
-  } else {
-    $("#more-menu-button").show();
+  // Hide Top Menu More button if all items are showing
+  top_bar_menu_more_button();
+  document.addEventListener('DOMContentLoaded', top_bar_menu_more_button);
+  window.addEventListener('resize', top_bar_menu_more_button);
+
+  function top_bar_menu_more_button() {
+
+    // Identify both main and more menu items
+    let main_menu_items = $("#top-bar-menu > div.top-bar-left > ul.dropdown > li");
+    let more_menu_items = $("#more-menu-button > ul.is-dropdown-submenu > li");
+
+    // To avoid duplicates, remove main items from more sub-menu
+    if (main_menu_items && more_menu_items) {
+
+      // By default, enable all more menu items
+      $(more_menu_items).find('a').show();
+
+      // Now, hide accordingly based on what is currently shown within main menu
+      $(main_menu_items).each(function (main_idx, main_item) {
+
+        // Extract href value to be used for search from visible items
+        let main_item_url = $(main_item).is(':visible') ? $(main_item).find('a').attr('href') : null;
+        if (main_item_url && window.lodash.startsWith(main_item_url, 'http')) {
+
+          // Search and remove from more menu
+          let matched_more_item = $(more_menu_items).find('a[href="' + main_item_url + '"]');
+          if (matched_more_item) {
+            $(matched_more_item).hide();
+          }
+        }
+      });
+
+      // Toggle more menu visibility depending on children count
+      let more_has_visible_items = $(more_menu_items).find('a[style!="display: none;"]');
+      if ($(more_has_visible_items).length > 0) {
+        $('#more-menu-button').show();
+      } else {
+        $('#more-menu-button').hide();
+      }
+    }
   }
-}
+});
 
 /**
  * Ensure correct side menu highlights are maintained

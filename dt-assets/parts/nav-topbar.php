@@ -144,7 +144,9 @@ $dt_nav_tabs = dt_default_menu_array();
                     <li id="more-menu-button"><a href="#"><?php esc_html_e( 'More', 'disciple_tools' ) ?>&nbsp;</a>
                         <ul class="menu vertical nested is-dropdown-submenu">
                             <?php foreach ( $dt_nav_tabs['main'] as $dt_main_tabs_extra ) : ?>
+                                <?php if ( isset( $dt_main_tabs_extra['hidden'] ) && ! $dt_main_tabs_extra['hidden'] ) { ?>
                                     <li><a href="<?php echo esc_url( $dt_main_tabs_extra['link'] ) ?>"><?php echo esc_html( $dt_main_tabs_extra['label'] ) ?>&nbsp;</a>
+                                <?php } ?>
                             <?php endforeach; ?>
                         </ul>
                     </li>

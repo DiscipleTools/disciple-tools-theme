@@ -112,8 +112,11 @@ class Disciple_Tools_Metrics{
         if ( current_user_can( 'access_disciple_tools' ) ) {
             add_filter( 'desktop_navbar_menu_options', function ( $tabs ){
                 $tabs['metrics'] = [
-                    'link' => site_url( '/metrics/' ),
-                    'label' => __( 'Metrics', 'disciple_tools' )
+                    'link'    => site_url( '/metrics/' ),
+                    'label'   => __( 'Metrics', 'disciple_tools' ),
+                    'icon'    => '',
+                    'hidden'  => false,
+                    'submenu' => []
                 ];
                 return $tabs;
             }, 25 );
