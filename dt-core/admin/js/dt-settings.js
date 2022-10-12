@@ -12,9 +12,86 @@ jQuery(document).ready(function($) {
     }
 
     function loadAddFieldContentBox() {
-        $('.modal-box-title').text('Add New Field');
-        $('.field-content-table').append('<tr><td><b>Foo:</b></td><td>Bar</td></tr>');
-        
+        var post_type = window.field_settings.post_type
+        var post_type_label = window.field_settings.post_type_label;
+        var post_type_tiles = window.field_settings.post_type_tiles;
+        var add_field_html_content = `
+        <tr>
+            <th colspan="2">
+                <h3 class="modal-box-title">Add New Field</h3>
+            </th>
+        </tr>
+        <tr>
+            <td><b>Post Type:</b></td>
+            <td>${post_type}</td>
+        </tr>
+        <tr>
+            <td>
+                <b>New Field Name:</b>
+                </td>
+            <td>
+                <input name="new_field_name" id="new_field_name" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Field Type:</b>
+                </td>
+            <td>
+                <select id="new_field_type_select" name="new_field_type" required>
+                    <option></option>
+                    <option value="key_select">Dropdown</option>
+                    <option value="multi_select">Multi Select</option>
+                    <option value="tags">Tags</option>
+                    <option value="text">Text</option>
+                    <option value="textarea">Text Area</option>
+                    <option value="number">Number</option>
+                    <option value="link">Link</option>
+                    <option value="date">Date</option>
+                    <option value="connection">Connection</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Private Field:</b>
+                </td>
+            <td>
+                <input name="new_field_private" id="new_field_private" type="checkbox">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Tile:</b>
+                </td>
+            <td>
+                <select name="new_field_tile">
+                    <option>No tile</option>
+                        <option disabled>---${post_type_label} tiles---</option>`;
+                        
+                        $.each(post_type_tiles, function(k,v){
+                            add_field_html_content += `
+                            <option value="${k}">
+                                ${v['label']}
+                            </option>`;
+                        });
+                        
+                        add_field_html_content += `
+                            <option value="<?php echo esc_html( $option_key ) ?>">
+                                <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
+                            </option>
+                        <?php endforeach; ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit" class="button">Create Field</button>
+            </td>
+        </tr>
+        `;
+
+        $('#field-content-table').html(add_field_html_content);         
     }
 
     function closeModal() {

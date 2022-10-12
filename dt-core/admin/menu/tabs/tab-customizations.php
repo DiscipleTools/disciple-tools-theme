@@ -69,12 +69,15 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         wp_localize_script(
             'dt-settings', 'field_settings', array(
             'post_type' => $post_type,
+            'post_type_label' => DT_Posts::get_label_for_post_type( $post_type ),
             'post_type_settings' => $post_settings,
+            'post_type_tiles' => DT_Posts::get_post_tiles( $post_type ),
             'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
             'translations' => apply_filters( 'dt_list_js_translations', $translations ),
             'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
             )
         );
+
         wp_enqueue_script( 'jquery' );
     }
 
@@ -101,22 +104,13 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         if ( !isset( $post_type ) || is_null( $post_type ) ) {
             return;
         }
-        $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
-        $tile_options = DT_Posts::get_post_tiles( $post_type );
         ?>
         <div class="dt-admin-modal-overlay hidden">
             <div class="dt-admin-modal-box hidden">
                 <div class="dt-admin-modal-box-close-button">×</div>
                 <div class="dt-admin-modal-box-content">
-                    <!-- OVERLAY MODAL : START -->
-                    <table class="field-content-table">
-                        <tr>
-                            <th colspan="2">
-                                <h3 class="modal-box-title"></h3>
-                            </th>
-                        </tr>
+                    <table class="field-content-table" id="field-content-table">
                     </table>
-                    <!-- OVERLAY MODAL : END -->
                 </div>
             </div>
         </div>
@@ -368,6 +362,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 top: 25%;
                 left: 33%;
                 z-index: 100001;
+                min-width: 33%;
             }
             .dt-admin-modal-box-content {
                 padding: 8px;
@@ -388,6 +383,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             .field-name {
                 margin-bottom: 8px;
                 cursor: pointer;
+            }
+            .field-content-table {
+                margin: 6px 10px 10px 10px;
+                line-height: 2.5;
             }
             .field-name-icon-arrow {
                 border-color: #50575e transparent transparent;
