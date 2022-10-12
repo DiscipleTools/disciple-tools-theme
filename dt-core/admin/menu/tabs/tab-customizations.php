@@ -385,6 +385,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             .field-elements-list {
                 margin-bottom: 18px;
             }
+            .field-name {
+                margin-bottom: 8px;
+                cursor: pointer;
+            }
             .field-name-icon-arrow {
                 border-color: #50575e transparent transparent;
                 border-style: solid;
@@ -397,6 +401,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 width: 0;
                 transform: rotate(-90deg);
                 transition: transform 0.1s;
+                cursor: pointer;
             }
             .arrow-expanded {
                 transform: none;
