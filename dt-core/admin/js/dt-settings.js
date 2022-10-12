@@ -1,56 +1,60 @@
 jQuery(document).ready(function($) {
-    function showAddNewFieldModal() {
-        $('#add-new-field-modal-overview').fadeIn(150, 'swing');
-        $('#add-new-field-modal-box').slideDown(150, 'swing');
-    }
-    
-    function showAddNewFieldOptionModal() {
-        $('#add-new-field-option-modal-overview').fadeIn(150, 'swing');
-        $('#add-new-field-option-modal-box').slideDown(150, 'swing');
-    }
-    
-    function showEditFieldOptionModal() {
-        $('#edit-field-option-modal-overview').fadeIn(150, 'swing');
-        $('#edit-field-option-modal-box').slideDown(150, 'swing');
+    function showOverlayModal() {
+        $('.dt-admin-modal-overlay').fadeIn(150, 'swing');
+        $('.dt-admin-modal-box').slideDown(150, 'swing');
     }
 
-    function closeModals() {
-        $('#add-new-field-modal-overview').fadeOut(150, 'swing');
-        $('#add-new-field-modal-box').slideUp(150, 'swing');
-        $('#add-new-field-option-modal-overview').fadeOut(150, 'swing');
-        $('#add-new-field-option-modal-box').slideUp(150, 'swing');
-        $('#edit-field-option-modal-overview').fadeOut(150, 'swing');
-        $('#edit-field-option-modal-box').slideUp(150, 'swing');
+    function showOverlayModalContentBox(modalName) {
+        if ( modalName == 'addNewField' ) {
+            loadAddFieldContentBox();
+        }
+        showOverlayModal();
     }
 
-    $('.edit-option').on('click', function(e) {
-            showEditFieldOptionModal();
+    function loadAddFieldContentBox() {
+        $('.modal-box-title').text('Add New Field');
+        $('.field-content-table').append('<tr><td><b>Foo:</b></td><td>Bar</td></tr>');
+        
+    }
+
+    function closeModal() {
+        $('.dt-admin-modal-overlay').fadeOut(150, 'swing');
+        $('.dt-admin-modal-box').slideUp(150, 'swing');
+    }
+
+    $('.edit-field-option').on('click', function(e) {
+            showModal('edit-field-option');
     });
     
     $('.dt-admin-modal-box-close-button').on('click', function() {
-        closeModals();
+        closeModal();
     });
 
     $('.dt-admin-modal-overlay').on('click', function(e) {
         if (e.target == this) {
-            closeModals();
+            closeModal();
         }
     });
 
     $('.add-new-field').on('click', function(){
-            showAddNewFieldModal();
-    });
-
-    $('.add-new-field-option').on('click', function(){
-        showAddNewFieldOptionModal();
+        showOverlayModalContentBox('addNewField');
     });
 
     $('.field-name').hover(
         function() {
-            $(this).children('.edit-option').show()
+            $(this).children('.edit-field').show()
         },
         function(){
-            $(this).children('.edit-option').hide()
+            $(this).children('.edit-field').hide()
+        }
+    );
+
+    $('.field-option-name').hover(
+        function() {
+            $(this).children('.edit-field-option').show()
+        },
+        function(){
+            $(this).children('.edit-field-option').hide()
         }
     );
 

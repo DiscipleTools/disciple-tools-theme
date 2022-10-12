@@ -80,9 +80,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public function content() {
         $this->load_styles();
-        $this->load_add_new_field_modal();
-        $this->load_add_new_field_option_modal();
-        $this->load_edit_field_option_modal();
+        $this->load_overlay_modal();
         self::template( 'begin', 1 );
             $this->space_between_div_open();
             $this->show_post_type_pills();
@@ -98,7 +96,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         self::template( 'end' );
     }
 
-    public static function load_add_new_field_modal() {
+    public static function load_overlay_modal() {
         $post_type = self::get_parameter( 'post_type' );
         if ( !isset( $post_type ) || is_null( $post_type ) ) {
             return;
@@ -106,468 +104,25 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
         $tile_options = DT_Posts::get_post_tiles( $post_type );
         ?>
-        <div class="dt-admin-modal-overlay hidden" id="add-new-field-modal-overview">
-            <div class="dt-admin-modal-box hidden" id="add-new-field-modal-box">
+        <div class="dt-admin-modal-overlay hidden">
+            <div class="dt-admin-modal-box hidden">
                 <div class="dt-admin-modal-box-close-button">×</div>
                 <div class="dt-admin-modal-box-content">
-                    <!-- ADD NEW FIELD FORM : START -->
-                    <table class="add-new-field-table">
+                    <!-- OVERLAY MODAL : START -->
+                    <table class="field-content-table">
                         <tr>
                             <th colspan="2">
-                                <h3 class="modal-box-title"><?php esc_html_e( 'Add New Field', 'disciple_tools' ); ?></h3>
+                                <h3 class="modal-box-title"></h3>
                             </th>
                         </tr>
-                        <tr>
-                            <td style="vertical-align: middle; min-width:250px">
-                                <label><b><?php esc_html_e( "Post type", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <?php echo esc_html( $post_type_label ); ?>
-                                <input type="hidden" name="post_type" id="current_post_type" value="<?php echo esc_html( $post_type ); ?>">
-                            </td>
-                        <tr>
-                            <td style="vertical-align: middle">
-                                <label for="new_field_name"><b><?php esc_html_e( "New Field Name", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <input name="new_field_name" id="new_field_name" required>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Field type", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <select id="new_field_type_select" name="new_field_type" required>
-                                    <option></option>
-                                    <option value="key_select"><?php esc_html_e( "Dropdown", 'disciple_tools' ) ?></option>
-                                    <option value="multi_select"><?php esc_html_e( "Multi Select", 'disciple_tools' ) ?></option>
-                                    <option value="tags"><?php esc_html_e( "Tags", 'disciple_tools' ) ?></option>
-                                    <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
-                                    <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
-                                    <option value="number"><?php esc_html_e( "Number", 'disciple_tools' ) ?></option>
-                                    <option value="link"><?php esc_html_e( "Link", 'disciple-tools' ) ?></option>
-                                    <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
-                                    <option value="connection"><?php esc_html_e( "Connection", 'disciple_tools' ) ?></option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr class="connection_field_target_row" style="display: none">
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Connected to", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                            <select name="connection_target" id="connection_field_target">
-                                <option></option>
-                                <?php foreach ( $post_types as $post_type_key ) : ?>
-                                    <option value="<?php echo esc_html( $post_type_key ); ?>">
-                                        <?php echo esc_html( $wp_post_types[$post_type_key]->label ); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            </td>
-                        </tr>
-
-
-                        <tr class="same_post_type_row" style="display: none">
-                            <td>
-                                Bi-directional
-                            </td>
-                            <td>
-                                <input type="checkbox" id="multidirectional_checkbox" name="multidirectional" checked>
-                            </td>
-                        </tr>
-                        <tr class="same_post_type_other_field_name" style="display: none">
-                            <td style="vertical-align: middle">
-                                Reverse connection field name
-                                <br>
-                                See connection instructions bellow.
-                            </td>
-                            <td>
-                                <input name="reverse_connection_name" id="connection_field_reverse_name">
-                            </td>
-                        </tr>
-                        <tr class="same_post_type_other_field_name" style="display: none">
-                            <td>
-                                Hide reverse connection field on <span class="connected_post_type"></span>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="disable_reverse_connection">
-                            </td>
-                        </tr>
-
-
-                        <tr class="connection_field_reverse_row" style="display: none">
-                            <td style="vertical-align: middle">
-                                Field name when shown on: <span class="connected_post_type"></span>
-                                <br>
-                                See connection instructions bellow.
-                            </td>
-                            <td>
-                                <input name="other_field_name" id="other_field_name">
-                            </td>
-                        </tr>
-                        <tr class="connection_field_reverse_row" style="display: none">
-                            <td>
-                                Hide field on <span class="connected_post_type"></span>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="disable_other_post_type_field">
-                            </td>
-                        </tr>
-
-                        <tr id="private_field_row">
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Private Field", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <input name="new_field_private" id="new_field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Tile", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <select name="new_field_tile">
-                                    <option><?php esc_html_e( "No tile", 'disciple_tools' ) ?></option>
-                                        <option disabled>---<?php echo esc_html( $post_type_label ); ?> tiles---</option>
-                                        <?php foreach ( $tile_options as $option_key => $option_value ) : ?>
-                                            <option value="<?php echo esc_html( $option_key ) ?>">
-                                                <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle">
-                            </td>
-                            <td>
-                                <button type="submit" class="button" style="margin-bottom: 18px;"><?php esc_html_e( "Create Field", 'disciple_tools' ) ?></button>
-                            </td>
-                        </tr>
                     </table>
-                    <!-- ADD NEW FIELD FORM : END -->
+                    <!-- OVERLAY MODAL : END -->
                 </div>
             </div>
         </div>
         <?php
     }
 
-    public static function load_add_new_field_option_modal() {
-        $post_type = self::get_parameter( 'post_type' );
-        if ( !isset( $post_type ) || is_null( $post_type ) ) {
-            return;
-        }
-        $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
-        $tile_options = DT_Posts::get_post_tiles( $post_type );
-        ?>
-        <div class="dt-admin-modal-overlay hidden" id="add-new-field-option-modal-overview">
-            <div class="dt-admin-modal-box hidden" id="add-new-field-option-modal-box">
-                <div class="dt-admin-modal-box-close-button">×</div>
-                <div class="dt-admin-modal-box-content">
-                    <!-- ADD NEW FIELD FORM : START -->
-                    <table class="add-new-field-table">
-                        <tr>
-                            <th colspan="2">
-                                <h3 class="modal-box-title"><?php esc_html_e( 'Add New Field Option', 'disciple_tools' ); ?></h3>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle; min-width:250px">
-                                <label><b><?php esc_html_e( "Post type", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <?php echo esc_html( $post_type_label ); ?>
-                                <input type="hidden" name="post_type" id="current_post_type" value="<?php echo esc_html( $post_type ); ?>">
-                            </td>
-                        <tr>
-                            <td style="vertical-align: middle">
-                                <label for="new_field_name"><b><?php esc_html_e( "New Field Name", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <input name="new_field_name" id="new_field_name" required>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Field type", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <select id="new_field_type_select" name="new_field_type" required>
-                                    <option></option>
-                                    <option value="key_select"><?php esc_html_e( "Dropdown", 'disciple_tools' ) ?></option>
-                                    <option value="multi_select"><?php esc_html_e( "Multi Select", 'disciple_tools' ) ?></option>
-                                    <option value="tags"><?php esc_html_e( "Tags", 'disciple_tools' ) ?></option>
-                                    <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
-                                    <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
-                                    <option value="number"><?php esc_html_e( "Number", 'disciple_tools' ) ?></option>
-                                    <option value="link"><?php esc_html_e( "Link", 'disciple-tools' ) ?></option>
-                                    <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
-                                    <option value="connection"><?php esc_html_e( "Connection", 'disciple_tools' ) ?></option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr class="connection_field_target_row" style="display: none">
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Connected to", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                            <select name="connection_target" id="connection_field_target">
-                                <option></option>
-                                <?php foreach ( $post_types as $post_type_key ) : ?>
-                                    <option value="<?php echo esc_html( $post_type_key ); ?>">
-                                        <?php echo esc_html( $wp_post_types[$post_type_key]->label ); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            </td>
-                        </tr>
-
-
-                        <tr class="same_post_type_row" style="display: none">
-                            <td>
-                                Bi-directional
-                            </td>
-                            <td>
-                                <input type="checkbox" id="multidirectional_checkbox" name="multidirectional" checked>
-                            </td>
-                        </tr>
-                        <tr class="same_post_type_other_field_name" style="display: none">
-                            <td style="vertical-align: middle">
-                                Reverse connection field name
-                                <br>
-                                See connection instructions bellow.
-                            </td>
-                            <td>
-                                <input name="reverse_connection_name" id="connection_field_reverse_name">
-                            </td>
-                        </tr>
-                        <tr class="same_post_type_other_field_name" style="display: none">
-                            <td>
-                                Hide reverse connection field on <span class="connected_post_type"></span>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="disable_reverse_connection">
-                            </td>
-                        </tr>
-
-
-                        <tr class="connection_field_reverse_row" style="display: none">
-                            <td style="vertical-align: middle">
-                                Field name when shown on: <span class="connected_post_type"></span>
-                                <br>
-                                See connection instructions bellow.
-                            </td>
-                            <td>
-                                <input name="other_field_name" id="other_field_name">
-                            </td>
-                        </tr>
-                        <tr class="connection_field_reverse_row" style="display: none">
-                            <td>
-                                Hide field on <span class="connected_post_type"></span>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="disable_other_post_type_field">
-                            </td>
-                        </tr>
-
-                        <tr id="private_field_row">
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Private Field", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <input name="new_field_private" id="new_field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Tile", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <select name="new_field_tile">
-                                    <option><?php esc_html_e( "No tile", 'disciple_tools' ) ?></option>
-                                        <option disabled>---<?php echo esc_html( $post_type_label ); ?> tiles---</option>
-                                        <?php foreach ( $tile_options as $option_key => $option_value ) : ?>
-                                            <option value="<?php echo esc_html( $option_key ) ?>">
-                                                <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle">
-                            </td>
-                            <td>
-                                <button type="submit" class="button" style="margin-bottom: 18px;"><?php esc_html_e( "Create Field", 'disciple_tools' ) ?></button>
-                            </td>
-                        </tr>
-                    </table>
-                    <!-- ADD NEW FIELD FORM : END -->
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-
-    public static function load_edit_field_option_modal() {
-        $post_type = self::get_parameter( 'post_type' );
-        if ( !isset( $post_type ) || is_null( $post_type ) ) {
-            return;
-        }
-        $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
-        $tile_options = DT_Posts::get_post_tiles( $post_type );
-        ?>
-        <div class="dt-admin-modal-overlay hidden" id="edit-field-option-modal-overview">
-            <div class="dt-admin-modal-box hidden" id="edit-field-option-modal-box">
-                <div class="dt-admin-modal-box-close-button">×</div>
-                <div class="dt-admin-modal-box-content">
-                    <!-- EDIT FIELD OPTION FORM : START -->
-                    <table class="add-new-field-table">
-                        <tr>    
-                            <th colspan="2">
-                                <h3 class="modal-box-title"><?php esc_html_e( 'Edit Field Option', 'disciple_tools' ); ?></h3>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle; min-width:250px">
-                                <label><b><?php esc_html_e( "Post type", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <?php echo esc_html( $post_type_label ); ?>
-                                <input type="hidden" name="post_type" id="current_post_type" value="<?php echo esc_html( $post_type ); ?>">
-                            </td>
-                        <tr>
-                            <td style="vertical-align: middle">
-                                <label for="new_field_name"><b><?php esc_html_e( "New Field Name", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <input name="new_field_name" id="new_field_name" required>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Field type", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <select id="new_field_type_select" name="new_field_type" required>
-                                    <option></option>
-                                    <option value="key_select"><?php esc_html_e( "Dropdown", 'disciple_tools' ) ?></option>
-                                    <option value="multi_select"><?php esc_html_e( "Multi Select", 'disciple_tools' ) ?></option>
-                                    <option value="tags"><?php esc_html_e( "Tags", 'disciple_tools' ) ?></option>
-                                    <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
-                                    <option value="textarea"><?php esc_html_e( "Text Area", 'disciple_tools' ) ?></option>
-                                    <option value="number"><?php esc_html_e( "Number", 'disciple_tools' ) ?></option>
-                                    <option value="link"><?php esc_html_e( "Link", 'disciple-tools' ) ?></option>
-                                    <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
-                                    <option value="connection"><?php esc_html_e( "Connection", 'disciple_tools' ) ?></option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr class="connection_field_target_row" style="display: none">
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Connected to", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                            <select name="connection_target" id="connection_field_target">
-                                <option></option>
-                                <?php foreach ( $post_types as $post_type_key ) : ?>
-                                    <option value="<?php echo esc_html( $post_type_key ); ?>">
-                                        <?php echo esc_html( $wp_post_types[$post_type_key]->label ); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            </td>
-                        </tr>
-
-
-                        <tr class="same_post_type_row" style="display: none">
-                            <td>
-                                Bi-directional
-                            </td>
-                            <td>
-                                <input type="checkbox" id="multidirectional_checkbox" name="multidirectional" checked>
-                            </td>
-                        </tr>
-                        <tr class="same_post_type_other_field_name" style="display: none">
-                            <td style="vertical-align: middle">
-                                Reverse connection field name
-                                <br>
-                                See connection instructions bellow.
-                            </td>
-                            <td>
-                                <input name="reverse_connection_name" id="connection_field_reverse_name">
-                            </td>
-                        </tr>
-                        <tr class="same_post_type_other_field_name" style="display: none">
-                            <td>
-                                Hide reverse connection field on <span class="connected_post_type"></span>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="disable_reverse_connection">
-                            </td>
-                        </tr>
-
-
-                        <tr class="connection_field_reverse_row" style="display: none">
-                            <td style="vertical-align: middle">
-                                Field name when shown on: <span class="connected_post_type"></span>
-                                <br>
-                                See connection instructions bellow.
-                            </td>
-                            <td>
-                                <input name="other_field_name" id="other_field_name">
-                            </td>
-                        </tr>
-                        <tr class="connection_field_reverse_row" style="display: none">
-                            <td>
-                                Hide field on <span class="connected_post_type"></span>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="disable_other_post_type_field">
-                            </td>
-                        </tr>
-
-                        <tr id="private_field_row">
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Private Field", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <input name="new_field_private" id="new_field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? "checked" : '' );?>>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle">
-                                <label><b><?php esc_html_e( "Tile", 'disciple_tools' ) ?></b></label>
-                            </td>
-                            <td>
-                                <select name="new_field_tile">
-                                    <option><?php esc_html_e( "No tile", 'disciple_tools' ) ?></option>
-                                        <option disabled>---<?php echo esc_html( $post_type_label ); ?> tiles---</option>
-                                        <?php foreach ( $tile_options as $option_key => $option_value ) : ?>
-                                            <option value="<?php echo esc_html( $option_key ) ?>">
-                                                <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle">
-                            </td>
-                            <td>
-                                <button type="submit" class="button" style="margin-bottom: 18px;"><?php esc_html_e( "Create Field", 'disciple_tools' ) ?></button>
-                            </td>
-                        </tr>
-                    </table>
-                    <!-- EDIT FIELD OPTION FORM : START -->
-                </div>
-            </div>
-        </div>
-        <?php
-    }
     private function space_between_div_open() {
         ?>
         <div class="top-nav-row">
@@ -745,7 +300,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 <div class="field-name" data-field-name="<?php echo esc_attr( $setting_key ); ?>">
                     <div class="field-name-icon-arrow"></div>
                     <b id="<?php echo esc_attr( $setting_key ); ?>"><?php echo esc_html( $setting_value['name'] ); ?></b>
-                    <a href="javascript:void(0);" class="edit-option"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
+                    <a href="javascript:void(0);" class="edit-field"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
                     <div class="field-elements-list hidden">
                     <?php
                     foreach ( $value as $v ) {
@@ -755,25 +310,25 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                 $label = 'NULL';
                             }
                             ?>
-                            <div class="field-name field-element" style="margin-left: 18px;" data-field-parent="<?php echo esc_attr( $setting_key ); ?>">
+                            <div class="field-option-name field-element" style="margin-left: 18px;" data-field-parent="<?php echo esc_attr( $setting_key ); ?>">
                                 └ <?php echo esc_html( $label ); ?>
-                                <a href="javascript:void(0);" class="edit-option"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
+                                <a href="javascript:void(0);" class="edit-field-option"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
                             </div>
                             <?php
                         }
                     }
                     ?>
-                    <div class="field-name field-element" style="margin-left: 18px;" data-field-parent="<?php echo esc_attr( $setting_key ); ?>">
-                        └ <a href="javascript:void(0);" class="add-new-field-option"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></a>
+                        <div class="field-option-name field-element" style="margin-left: 18px;" data-field-parent="<?php echo esc_attr( $setting_key ); ?>">
+                            └ <a href="javascript:void(0);" class="add-new-field-option"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></a>
+                        </div>
                     </div>
-                                        </div>
                 </div>
                     <?php
                 }
             }
         }
         ?>
-        <div class="add-new-field"><a href="#"><?php esc_html_e( 'add new field', 'disciple_tools' ); ?></a></div>
+        <div class="add-new-field"><a href="javascript:void(0);"><?php esc_html_e( 'add new field', 'disciple_tools' ); ?></a></div>
         <?php
     }
 
@@ -854,12 +409,17 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             .fields-table-right {
                 background-color: #f1f1f1;
             }
-            .edit-option {
+            .edit-field {
                 margin-left: 18px;
                 display: none;
                 position: absolute;
             }
-            .field-name {
+            .edit-field-option {
+                margin-left: 18px;
+                display: none;
+                position: absolute;
+            }
+            .field-container {
                 width: 100%;
                 margin-top: 0.5em;
                 cursor: pointer;
