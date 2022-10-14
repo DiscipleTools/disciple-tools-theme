@@ -38,6 +38,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     public function admin_enqueue_scripts() {
         dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
         dt_theme_enqueue_script( 'dt-settings', 'dt-core/admin/js/dt-settings.js', [], true );
+        dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', [ 'lodash', 'moment' ] );
 
         $post_type = self::get_parameter( 'post_type' );
         if ( !isset( $post_type ) || is_null( $post_type ) ) {
@@ -78,6 +79,24 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             )
         );
 
+        wp_localize_script(
+            'shared-functions', 'wpApiShare', array(
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'site_url' => get_site_url(),
+                'template_dir' => get_template_directory_uri(),
+                'translations' => [
+                    'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
+                    'all_locations' => __( 'All Locations', 'disciple_tools' ),
+                    'used_locations' => __( 'Used Locations', 'disciple_tools' ),
+                    'no_records_found' => _x( 'No results found matching "{{query}}"', "Empty list results. Keep {{query}} as is in english", 'disciple_tools' ),
+                    'showing_x_items' => _x( 'Showing %s items. Type to find more.', 'Showing 30 items', 'disciple_tools' ),
+                    'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
+                    'edit' => __( 'Edit', 'disciple_tools' ),
+                ],
+            ),
+        );
+
         wp_enqueue_script( 'jquery' );
     }
 
@@ -108,10 +127,12 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <div class="dt-admin-modal-overlay hidden">
             <div class="dt-admin-modal-box hidden">
                 <div class="dt-admin-modal-box-close-button">×</div>
-                <div class="dt-admin-modal-box-content">
-                    <table class="field-content-table" id="field-content-table">
-                    </table>
-                </div>
+                    <div class="dt-admin-modal-box-content">
+                        <form id="modal-overlay-form">    
+                            <table class="modal-overlay-content-table" id="modal-overlay-content-table">
+                            </table>
+                        </form>
+                    </div>
             </div>
         </div>
         <?php
@@ -237,7 +258,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
         echo '<br>';
         $this->box( 'top', 'Select a Tile' );
-        $this->show_post_type_settings( $post_type );
+        $this->show_tiles_list( $post_type );
         $this->box( 'bottom' );
     }
 
@@ -384,7 +405,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 margin-bottom: 8px;
                 cursor: pointer;
             }
-            .field-content-table {
+            .modal-overlay-content-table {
                 margin: 6px 10px 10px 10px;
                 line-height: 2.5;
             }
@@ -745,11 +766,13 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <?php
     }
 
-    private function show_post_type_settings( $post_type ) {
+    private function show_tiles_list( $post_type ) {
         $post_tiles = DT_Posts::get_post_tiles( $post_type );
         foreach ( $post_tiles as $key => $value ) : ?>
         <li><a href="admin.php?page=dt_customizations&post_type=<?php echo esc_attr( $post_type ); ?>&tab=tiles&post_tile_key=<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $post_tiles[$key]['label'] ); ?></a></li>
-        <?php endforeach;
+        <?php endforeach; ?>
+        <li><a href="#" id="add-new-tile-link"><?php esc_html_e( 'add new tile', 'disciple_tools' ); ?></a></li>
+        <?php
     }
 
     public function save_settings(){
@@ -766,6 +789,5 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             }
         }
     }
-
 }
 Disciple_Tools_Customizations_Tab::instance();

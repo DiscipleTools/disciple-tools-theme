@@ -55,74 +55,19 @@ class Disciple_Tools_Core_Endpoints {
                 'permission_callback' => '__return_true',
             ]
         );
-    }
 
-    public static function get_post_fields() {
-        $output = [];
-        $post_types = DT_Posts::get_post_types();
-
-        foreach ( $post_types as $post_type ) {
-            $post_label = DT_Posts::get_label_for_post_type( $post_type );
-            $output[] = [
-                'label' => $post_label,
-                'post_type' => $post_type,
-                'post_tile' => null,
-                'post_setting' => null,
-            ];
-
-            $post_tiles = DT_Posts::get_post_tiles( $post_type );
-            foreach ( $post_tiles as $tile_key => $tile_value ) {
-                $output[] = [
-                    'label' => $post_label . ' > ' . $tile_value['label'],
-                    'post_type' => $post_type,
-                    'post_tile' => $tile_key,
-                    'post_setting' => null,
-                ];
-
-                $post_settings = DT_Posts::get_post_settings( $post_type, false );
-                foreach ( $post_settings['fields'] as $setting_key => $setting_value ) {
-                    if ( $setting_value['tile'] === $tile_key ) {
-                        $output[] = [
-                            'label' => $post_label . ' > ' . $tile_value['label'] . ' > ' . $setting_value['name'],
-                            'post_type' => $post_type,
-                            'post_tile' => $tile_key,
-                            'post_setting' => $setting_key,
-                        ];
-                    }
-                }
-            }
-        }
-        header( 'Content-Type" => application/json' );
-        echo json_encode( $output );
+        register_rest_route(
+            $this->namespace, '/create-new-tile', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'create_new_tile' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
     }
 
     /**
      * These are settings available to any logged in user.
      */
-
-    public static function get_post_fields_v3() {
-        $output = [ 'data' => null ];
-        $post_types = DT_Posts::get_post_types();
-
-        foreach ( $post_types as $post_type ) {
-            $post_label = DT_Posts::get_label_for_post_type( $post_type );
-            $output['data'][$post_type][] = [ 'label' => $post_label ];
-
-            $post_tiles = DT_Posts::get_post_tiles( $post_type );
-
-            foreach ( $post_tiles as $tile_key => $tile_value ) {
-                $output['data'][$post_type][] = [ 'label' => $post_label . ' > ' . $tile_value['label'] ];
-
-                $post_settings = DT_Posts::get_post_settings( $post_type, false );
-                foreach ( $post_settings['fields'] as $setting_field ) {
-                    $output['data'][$post_type][] = [ 'label' => $post_label . ' > ' . $tile_value['label'] . ' > ' . $setting_field['name'] ];
-                }
-            }
-        }
-        header( 'Content-Type: application/json' );
-        echo json_encode( $output );
-    }
-
     public static function get_settings() {
         $user = wp_get_current_user();
         if ( !$user ){
@@ -198,4 +143,71 @@ class Disciple_Tools_Core_Endpoints {
         ];
     }
 
+    public static function get_post_fields() {
+        $output = [];
+        $post_types = DT_Posts::get_post_types();
+
+        foreach ( $post_types as $post_type ) {
+            $post_label = DT_Posts::get_label_for_post_type( $post_type );
+            $output[] = [
+                'label' => $post_label,
+                'post_type' => $post_type,
+                'post_tile' => null,
+                'post_setting' => null,
+            ];
+
+            $post_tiles = DT_Posts::get_post_tiles( $post_type );
+            foreach ( $post_tiles as $tile_key => $tile_value ) {
+                $output[] = [
+                    'label' => $post_label . ' > ' . $tile_value['label'],
+                    'post_type' => $post_type,
+                    'post_tile' => $tile_key,
+                    'post_setting' => null,
+                ];
+
+                $post_settings = DT_Posts::get_post_settings( $post_type, false );
+                foreach ( $post_settings['fields'] as $setting_key => $setting_value ) {
+                    if ( $setting_value['tile'] === $tile_key ) {
+                        $output[] = [
+                            'label' => $post_label . ' > ' . $tile_value['label'] . ' > ' . $setting_value['name'],
+                            'post_type' => $post_type,
+                            'post_tile' => $tile_key,
+                            'post_setting' => $setting_key,
+                        ];
+                    }
+                }
+            }
+        }
+        header( 'Content-Type" => application/json' );
+        echo json_encode( $output );
+    }
+
+    public static function create_new_tile( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+
+        if ( isset( $post_submission["new_tile_name"], $post_submission["post_type"] ) ) {
+            $post_type = sanitize_text_field( wp_unslash( $post_submission["post_type"] ) );
+            $new_tile_name = sanitize_text_field( wp_unslash( $post_submission["new_tile_name"] ) );
+            $tile_options = dt_get_option( "dt_custom_tiles" );
+            $post_tiles = DT_Posts::get_post_tiles( $post_type );
+            $tile_key = dt_create_field_key( $new_tile_name );
+            if ( in_array( $tile_key, array_keys( $post_tiles ) ) ){
+                Disciple_Tools_Customizations_Tab::admin_notice( __( "tile already exists", 'disciple_tools' ), "error" );
+                return false;
+            }
+            if ( !isset( $tile_options[$post_type] ) ){
+                $tile_options[$post_type] = [];
+            }
+            $tile_options[$post_type][$tile_key] = [ "label" => $new_tile_name ];
+
+            update_option( "dt_custom_tiles", $tile_options );
+            $created_tile = [
+                'post_type' => $post_type,
+                'key' => $tile_key,
+                'label' => $new_tile_name,
+            ];
+            return $created_tile;
+        }
+        return false;
+    }
 }

@@ -204,7 +204,12 @@ window.API = {
     comment: filters['comment'],
     meta: filters['meta'],
     status: filters['status']
-  }, 'dt-posts/v2/posts/search/')
+  }, 'dt-posts/v2/posts/search/'),
+
+  create_new_tile: (post_type, new_tile_name) => makeRequest("POST", `create-new-tile`, {
+    post_type: post_type,
+    new_tile_name: new_tile_name,
+  }, `dt-core/v1/`),
 };
 
 function handleAjaxError(err) {

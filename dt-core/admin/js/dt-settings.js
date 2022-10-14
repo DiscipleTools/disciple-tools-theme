@@ -1,98 +1,68 @@
 jQuery(document).ready(function($) {
+    $('#add-new-tile-link').on('click', function(event){
+        event.preventDefault();
+        showOverlayModal();
+        showOverlayModalContentBox('addNewTile');
+    });
     function showOverlayModal() {
         $('.dt-admin-modal-overlay').fadeIn(150, 'swing');
         $('.dt-admin-modal-box').slideDown(150, 'swing');
     }
 
     function showOverlayModalContentBox(modalName) {
-        if ( modalName == 'addNewField' ) {
-            loadAddFieldContentBox();
+        if ( modalName == 'addNewTile') {
+            loadAddTileContentBox();
         }
         showOverlayModal();
     }
 
-    function loadAddFieldContentBox() {
-        var post_type = window.field_settings.post_type
-        var post_type_label = window.field_settings.post_type_label;
-        var post_type_tiles = window.field_settings.post_type_tiles;
+    function loadAddTileContentBox() {
+        var post_type = window.field_settings.post_type;
         var add_field_html_content = `
         <tr>
             <th colspan="2">
-                <h3 class="modal-box-title">Add New Field</h3>
+                <h3 class="modal-box-title">Add New Tile</h3>
             </th>
         </tr>
         <tr>
-            <td><b>Post Type:</b></td>
+            <td><label>Post Type:</label></td>
             <td>${post_type}</td>
         </tr>
         <tr>
             <td>
-                <b>New Field Name:</b>
-                </td>
-            <td>
-                <input name="new_field_name" id="new_field_name" required>
+                <label for="new_tile_name">New Tile Name:</label>
             </td>
-        </tr>
-        <tr>
             <td>
-                <b>Field Type:</b>
-                </td>
-            <td>
-                <select id="new_field_type_select" name="new_field_type" required>
-                    <option></option>
-                    <option value="key_select">Dropdown</option>
-                    <option value="multi_select">Multi Select</option>
-                    <option value="tags">Tags</option>
-                    <option value="text">Text</option>
-                    <option value="textarea">Text Area</option>
-                    <option value="number">Number</option>
-                    <option value="link">Link</option>
-                    <option value="date">Date</option>
-                    <option value="connection">Connection</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <b>Private Field:</b>
-                </td>
-            <td>
-                <input name="new_field_private" id="new_field_private" type="checkbox">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <b>Tile:</b>
-                </td>
-            <td>
-                <select name="new_field_tile">
-                    <option>No tile</option>
-                        <option disabled>---${post_type_label} tiles---</option>`;
-                        
-                        $.each(post_type_tiles, function(k,v){
-                            add_field_html_content += `
-                            <option value="${k}">
-                                ${v['label']}
-                            </option>`;
-                        });
-                        
-                        add_field_html_content += `
-                            <option value="<?php echo esc_html( $option_key ) ?>">
-                                <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
-                            </option>
-                        <?php endforeach; ?>
-                </select>
+                <input name="new_tile_name" id="new_tile_name" type="text" required>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <button type="submit" class="button">Create Field</button>
+                <button class="button" type="submit" id="js-create-tile">Create Tile</button>
             </td>
-        </tr>
-        `;
-
-        $('#field-content-table').html(add_field_html_content);         
+        </tr>`;
+        $('#modal-overlay-content-table').html(add_field_html_content);       
     }
+
+    $('#modal-overlay-form').on('submit', function(event){
+        event.preventDefault();
+    });
+
+    $('#modal-overlay-form').on('click', '#js-create-tile', function(e) {
+        var post_type = window.field_settings.post_type;
+        var new_tile_name = $('#new_tile_name').val();
+
+        API.create_new_tile(post_type, new_tile_name).promise().then(function(data) {
+            var tile_key = data['key'];
+            var tile_value = data['label'];
+            closeModal();
+            $('#add-new-tile-link').before(`
+            <li>
+                <a href="admin.php?page=dt_customizations&post_type=${window.field_settings.post_type}&tab=tiles&post_tile_key=${tile_key}">${tile_value}</a>
+            </li>
+            `);
+        });
+    });
 
     function closeModal() {
         $('.dt-admin-modal-overlay').fadeOut(150, 'swing');
@@ -111,10 +81,6 @@ jQuery(document).ready(function($) {
         if (e.target == this) {
             closeModal();
         }
-    });
-
-    $('.add-new-field').on('click', function(){
-        showOverlayModalContentBox('addNewField');
     });
 
     $('.field-name').hover(
