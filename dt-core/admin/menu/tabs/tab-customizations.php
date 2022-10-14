@@ -769,7 +769,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     private function show_tiles_list( $post_type ) {
         $post_tiles = DT_Posts::get_post_tiles( $post_type );
         foreach ( $post_tiles as $key => $value ) : ?>
-        <li><a href="admin.php?page=dt_customizations&post_type=<?php echo esc_attr( $post_type ); ?>&tab=tiles&post_tile_key=<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $post_tiles[$key]['label'] ); ?></a></li>
+        <li class="tile-name">
+            <a href="admin.php?page=dt_customizations&post_type=<?php echo esc_attr( $post_type ); ?>&tab=tiles&post_tile_key=<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $post_tiles[$key]['label'] ); ?></a>
+            <a href="javascript:void(0);" class="edit-field"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
+        </li>
         <?php endforeach; ?>
         <li><a href="#" id="add-new-tile-link"><?php esc_html_e( 'add new tile', 'disciple_tools' ); ?></a></li>
         <?php

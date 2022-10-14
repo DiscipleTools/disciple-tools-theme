@@ -86,11 +86,20 @@ jQuery(document).ready(function($) {
         }
     });
 
+    $('.tile-name').hover(
+        function() {
+            $(this).children('.edit-field').show()
+        },
+        function() {
+            $(this).children('.edit-field').hide()
+        }
+    );
+
     $('.field-name').hover(
         function() {
             $(this).children('.edit-field').show()
         },
-        function(){
+        function() {
             $(this).children('.edit-field').hide()
         }
     );
