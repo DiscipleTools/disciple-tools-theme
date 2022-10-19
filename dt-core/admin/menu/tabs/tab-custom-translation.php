@@ -134,7 +134,7 @@ class Disciple_Tools_Tab_Custom_Translations extends Disciple_Tools_Abstract_Men
             <h2>How to Create a New Project in Google Cloud</h2>
             <ol>
             <li>Go to the bar in the top of the Google Cloud Console and in the drop-down you can see your created projects as well as the option to create a new one by clicking on the <em>New Project</em> button:</li>
-            <li>Now give the new project a name and create it by clicking on the corresponding button, as you can see in the following screenshot:</li>
+            <li>Now give the new project a name and create it by clicking on the corresponding button</li>
             <li>Before you can use a Google API in your project, you have to activate it. Go to the side menu and select the <em>APIs &amp; Services</em> option:</li>
             <li>Click on the upper button <em>Enable APIs and services</em> to continue with the activation process of the API. This takes us to a search box where we have to look for the API we’re interested in. In this case, we want to use the Google Translate API. Type <em>translate</em> in the search box and click on the result <em>Cloud Translate API</em>:</li>
             <li>Click on the Enable button to activate the API in our project</li>
