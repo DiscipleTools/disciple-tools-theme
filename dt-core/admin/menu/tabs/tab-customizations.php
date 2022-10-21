@@ -309,6 +309,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function show_tile_settings( $tile ) {
         foreach ( $tile as $setting_key => $setting_value ) {
+            if ( !isset( $setting_value['default'] ) ) {
+                ?><li><?php echo esc_html( $setting_value['name'] ); ?></li><?php
+            }
             foreach ( $setting_value as $key => $value ) {
                 if ( $key === 'default' && !empty( $setting_value['default'] ) ) {
                     ?>
