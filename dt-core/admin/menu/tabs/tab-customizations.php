@@ -443,6 +443,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             }
             .fields-table-right {
                 background-color: #f1f1f1;
+                max-width: 300px;
             }
             .edit-tile, .edit-field, .edit-field-option {
                 margin-left: 18px;
