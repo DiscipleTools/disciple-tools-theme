@@ -261,17 +261,18 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 </thead>
                 <tbody>
                     <?php foreach ( $fields as $channel_key => $channel_option ) :
-                        if ( $channel_option['type'] !== 'communication_channel' ){
+                        if ( ( ! isset( $channel_option['is_channel'] ) && ( $channel_option['type'] !== 'communication_channel' ) ) || ( isset( $channel_option['is_channel'] ) && ! $channel_option['is_channel'] ) ) {
                             continue;
                         }
 
                         $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
                         $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true;
-                        if ( $channel_key == 'phone' || $channel_key == 'email' || $channel_key == 'address' ){
+                        if ( $channel_key == 'contact_phone' || $channel_key == 'contact_email' || $channel_key == 'contact_address' ){
                             continue;
                         } ?>
 
                     <tr>
+                        <input type="hidden" name="channel_fields[<?php echo esc_html( $channel_key ) ?>]">
                         <td><input type="text" name="channel_label[<?php echo esc_html( $channel_key ) ?>][default]" value="<?php echo esc_html( $channel_option['name'] ?? $channel_key ) ?>"></td>
                         <td><?php echo esc_html( $channel_key ) ?></td>
                         <td>
@@ -330,6 +331,33 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             <div id="add_channel" style="display:none;">
                 <hr>
                 <input type="text" name="add_channel" placeholder="channel" />
+                <select name="add_channel_type">
+                    <?php
+                    $types = [
+                        'communication_channel',
+                        'text',
+                        'textarea',
+                        'date',
+                        'boolean',
+                        'key_select',
+                        'multi_select',
+                        'array',
+                        'connection',
+                        'number',
+                        'link',
+                        'tags',
+                        'user_select',
+                        'task',
+                        'location',
+                        'location_meta'
+                    ];
+                    foreach ( $types as $type ) {
+                        ?>
+                        <option value="<?php echo esc_attr( $type ); ?>"><?php echo esc_attr( $type ); ?></option>
+                        <?php
+                    }
+                    ?>
+                </select>
                 <button type="submit"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></button>
             </div>
         </form>
@@ -344,12 +372,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 return;
             }
 
-            $langs = dt_get_available_languages();
-            $custom_field_options = dt_get_option( 'dt_field_customizations' );
+            $channel_fields        = array_keys( $_POST['channel_fields'] ?? [] );
+            $langs                 = dt_get_available_languages();
+            $custom_field_options  = dt_get_option( 'dt_field_customizations' );
             $custom_contact_fields = $custom_field_options['contacts'];
 
             foreach ( $fields as $field_key => $field_settings ){
-                if ( $field_settings['type'] !== 'communication_channel' ){
+                if ( ! in_array( $field_key, $channel_fields ) ) {
                     continue;
                 }
                 if ( isset( $_POST['channel_label'][$field_key]['default'] ) ){
@@ -394,6 +423,11 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 if ( isset( $_POST['channel_reset_icon'][$field_key] ) ){
                     unset( $custom_contact_fields[$field_key]['icon'] );
                 }
+
+                // Ensure is_channel flag is set
+                if ( ! isset( $custom_contact_fields[ $field_key ]['is_channel'] ) ) {
+                    $custom_contact_fields[ $field_key ]['is_channel'] = true;
+                }
             }
             if ( !empty( $_POST['add_channel'] ) ){
                 $label = sanitize_text_field( wp_unslash( $_POST['add_channel'] ) );
@@ -402,11 +436,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     if ( isset( $custom_contact_fields[$key] ) ){
                         self::admin_notice( __( 'This channel already exists', 'disciple_tools' ), 'error' );
                     } else {
-                        $custom_contact_fields[$key] = [
-                            'name' => $label,
-                            'type' => 'communication_channel',
-                            'tile' => 'details',
-                            'enabled' => true
+                        $custom_contact_fields[ $key ] = [
+                            'name'       => $label,
+                            'type'       => sanitize_text_field( wp_unslash( $_POST['add_channel_type'] ) ) ?? 'communication_channel',
+                            'tile'       => 'details',
+                            'enabled'    => true,
+                            'is_channel' => true
                         ];
                         wp_cache_delete( 'contacts_field_settings' );
                     }

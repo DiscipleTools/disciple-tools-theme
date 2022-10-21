@@ -649,7 +649,7 @@ class DT_Contacts_Base {
         if ( $post_type === 'contacts' ){
             $channels = DT_Posts::get_post_field_settings( $post_type );
             foreach ( $channels as $channel_key => $channel_option ) {
-                if ( $channel_option['type'] !== 'communication_channel' ){
+                if ( ( ! isset( $channel_option['is_channel'] ) && ( $channel_option['type'] !== 'communication_channel' ) ) || ( isset( $channel_option['is_channel'] ) && ! $channel_option['is_channel'] ) ) {
                     continue;
                 }
                 $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
