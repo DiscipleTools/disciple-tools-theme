@@ -309,41 +309,48 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function show_tile_settings( $tile ) {
         foreach ( $tile as $setting_key => $setting_value ) {
-            if ( !isset( $setting_value['default'] ) ) {
-                ?><li><?php echo esc_html( $setting_value['name'] ); ?></li><?php
-            }
-            foreach ( $setting_value as $key => $value ) {
-                if ( $key === 'default' && !empty( $setting_value['default'] ) ) {
+            ?>
+            <div class="field-name" data-field-name="<?php echo esc_attr( $setting_key ); ?>">
+                <?php
+                if ( ! isset( $setting_value['default'] ) ) {
                     ?>
-                <div class="field-name" data-field-name="<?php echo esc_attr( $setting_key ); ?>">
-                    <div class="field-name-icon-arrow"></div>
-                    <b id="<?php echo esc_attr( $setting_key ); ?>"><?php echo esc_html( $setting_value['name'] ); ?></b>
-                    <a href="javascript:void(0);" class="edit-field"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
-                    <div class="field-elements-list hidden">
-                    <?php
-                    foreach ( $value as $v ) {
-                        if ( isset( $v['label'] ) ) {
-                            $label = $v['label'];
-                            if ( is_null( $label ) || empty( $label ) ) {
-                                $label = 'NULL';
-                            }
-                            ?>
-                            <div class="field-option-name field-element" style="margin-left: 18px;" data-field-parent="<?php echo esc_attr( $setting_key ); ?>">
-                                └ <?php echo esc_html( $label ); ?>
-                                <a href="javascript:void(0);" class="edit-field-option"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
-                            </div>
-                            <?php
-                        }
-                    }
-                    ?>
-                        <div class="field-option-name field-element" style="margin-left: 18px;" data-field-parent="<?php echo esc_attr( $setting_key ); ?>">
-                            └ <a href="javascript:void(0);" class="add-new-field-option"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></a>
-                        </div>
-                    </div>
-                </div>
+                    <div class="field-name-icon-arrow disabled" style="border-color: lightgray transparent transparent;"></div>
+                    <b id="<?php echo esc_attr( $setting_key ); ?>" style="color: lightgray;"><?php echo esc_html( $setting_value['name'] ); ?></b>
                     <?php
                 }
-            }
+                foreach ( $setting_value as $key => $value ) {
+                    if ( $key === 'default' && !empty( $setting_value['default'] ) ) {
+                        ?>
+                        <div class="field-name-icon-arrow"></div>
+                            <b id="<?php echo esc_attr( $setting_key ); ?>"><?php echo esc_html( $setting_value['name'] ); ?></b>
+                            <a href="javascript:void(0);" class="edit-field"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
+                            <div class="field-elements-list hidden">
+                            <?php
+                            foreach ( $value as $v ) {
+                                if ( isset( $v['label'] ) ) {
+                                    $label = $v['label'];
+                                    if ( is_null( $label ) || empty( $label ) ) {
+                                        $label = 'NULL';
+                                    }
+                                    ?>
+                                    <div class="field-option-name field-element" style="margin-left: 18px;" data-field-parent="<?php echo esc_attr( $setting_key ); ?>">
+                                        └ <?php echo esc_html( $label ); ?>
+                                        <a href="javascript:void(0);" class="edit-field-option"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
+                                    </div>
+                                    <?php
+                                }
+                            }
+                            ?>
+                                <div class="field-option-name field-element" style="margin-left: 18px;" data-field-parent="<?php echo esc_attr( $setting_key ); ?>">
+                                    └ <a href="javascript:void(0);" class="add-new-field-option"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></a>
+                                </div>
+                            </div>
+                            <?php
+                    }
+                }
+                ?>
+            </div>
+            <?php
         }
         ?>
         <div class="add-new-field"><a href="javascript:void(0);"><?php esc_html_e( 'add new field', 'disciple_tools' ); ?></a></div>

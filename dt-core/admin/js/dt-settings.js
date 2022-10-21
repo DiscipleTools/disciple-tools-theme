@@ -128,7 +128,7 @@ jQuery(document).ready(function($) {
     }
 
     $('.edit-field-option').on('click', function(e) {
-            showModal('edit-field-option');
+            // showModal('edit-field-option');
     });
     
     $('.dt-admin-modal-box-close-button').on('click', function() {
@@ -173,7 +173,7 @@ jQuery(document).ready(function($) {
     });
 
     $('.field-name').on('click', function() {
-            $(this).find('.field-name-icon-arrow').toggleClass('arrow-expanded');
+            $(this).find('.field-name-icon-arrow:not(.disabled)').toggleClass('arrow-expanded');
             $(this).find('.field-elements-list').slideToggle(333, 'swing');
     });
 
