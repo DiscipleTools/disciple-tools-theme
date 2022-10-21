@@ -4,33 +4,36 @@ jQuery(document).ready(function($) {
         showOverlayModal('addNewTile');
     });
 
-    function showOverlayModal(modalName) {
+    function showOverlayModal(modalName, data=null) {
         $('.dt-admin-modal-overlay').fadeIn(150, 'swing');
         $('.dt-admin-modal-box').slideDown(150, 'swing');
-        showOverlayModalContentBox(modalName);
+        showOverlayModalContentBox(modalName, data);
     }
 
-    function showOverlayModalContentBox(modalName) {
+    function showOverlayModalContentBox(modalName, data=null) {
         if ( modalName == 'addNewTile') {
             loadAddTileContentBox();
+        }
+        if ( modalName == 'editTile' ) {
+            loadEditTileContentBox(data);
         }
     }
 
     function loadAddTileContentBox() {
         var post_type = window.field_settings.post_type;
-        var add_field_html_content = `
+        var modal_html_content = `
         <tr>
             <th colspan="2">
                 <h3 class="modal-box-title">Add New Tile</h3>
             </th>
         </tr>
         <tr>
-            <td><label>Post Type:</label></td>
+            <td><label><b>Post Type:</b></label></td>
             <td>${post_type}</td>
         </tr>
         <tr>
             <td>
-                <label for="new_tile_name">New Tile Name:</label>
+                <label for="new_tile_name"><b>New Tile Name:</b></label>
             </td>
             <td>
                 <input name="new_tile_name" id="new_tile_name" type="text" required>
@@ -41,7 +44,49 @@ jQuery(document).ready(function($) {
                 <button class="button" type="submit" id="js-create-tile">Create Tile</button>
             </td>
         </tr>`;
-        $('#modal-overlay-content-table').html(add_field_html_content);       
+        $('#modal-overlay-content-table').html(modal_html_content);
+    }
+
+    function loadEditTileContentBox(tile_key) {
+        var post_type = window.field_settings.post_type;
+        API.get_tile(post_type, tile_key).promise().then(function(data) {
+            var modal_html_content = `
+            <tr>
+                <th colspan="2">
+                    <h3 class="modal-box-title">Edit '${data['label']}' Tile</h3>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <label><b>Post Type:</label></b>
+                </td>
+                <td>
+                    ${post_type}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="new_tile_name"><b>Key:</b></label>
+                </td>
+                <td>
+                    ${tile_key}
+                </td>
+            </tr><tr>
+            <td>
+                <label for="tile_label"><b>Label:</b></label>
+            </td>
+            <td>
+                <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}"required>
+            </td>
+        </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="button" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
+                </td>
+            </tr>`;
+            $('#modal-overlay-content-table').html(modal_html_content);
+            
+        });
     }
 
     $('#modal-overlay-form').on('submit', function(event){
@@ -67,6 +112,16 @@ jQuery(document).ready(function($) {
         });
     });
 
+    $('#modal-overlay-form').on('click', '#js-edit-tile', function(e) {
+        var post_type = window.field_settings.post_type;
+        var tile_key = $(this).data('tile-key');
+        var tile_label = $(`#edit-tile-label-${tile_key}`).val();
+        API.edit_tile(post_type, tile_key, tile_label).promise().then(function() {
+            $(`#tile-key-${tile_key}`).html(tile_label);
+            closeModal();
+        });
+    });
+
     function closeModal() {
         $('.dt-admin-modal-overlay').fadeOut(150, 'swing');
         $('.dt-admin-modal-box').slideUp(150, 'swing');
@@ -88,10 +143,10 @@ jQuery(document).ready(function($) {
 
     $('.tile-name').hover(
         function() {
-            $(this).children('.edit-field').show()
+            $(this).children('.edit-tile').show()
         },
         function() {
-            $(this).children('.edit-field').hide()
+            $(this).children('.edit-tile').hide()
         }
     );
 
@@ -112,12 +167,15 @@ jQuery(document).ready(function($) {
             $(this).children('.edit-field-option').hide()
         }
     );
+    
+    $('.edit-tile').on('click', function() {
+        showOverlayModal('editTile', $(this).data('tile-key'));
+    });
 
-    $('.field-name').on('click', function(e) {
+    $('.field-name').on('click', function() {
             $(this).find('.field-name-icon-arrow').toggleClass('arrow-expanded');
             $(this).find('.field-elements-list').slideToggle(333, 'swing');
     });
-
 
     // *** TYPEAHEAD : START ***
     var input_text = $('.js-typeahead-settings')[0].value;

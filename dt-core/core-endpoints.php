@@ -60,7 +60,23 @@ class Disciple_Tools_Core_Endpoints {
             $this->namespace, '/create-new-tile', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'create_new_tile' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/get-tile', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'get_tile' ],
                 'permission_callback' => '__return_true',
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/edit-tile', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'edit_tile' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
     }
@@ -209,5 +225,53 @@ class Disciple_Tools_Core_Endpoints {
             return $created_tile;
         }
         return false;
+    }
+
+    public static function get_tile( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+        $tile_key = sanitize_text_field( wp_unslash( $params['tile_key'] ) );
+        $tile_options = $tile_options = DT_Posts::get_post_tiles( $post_type, false );
+        return $tile_options[$tile_key];
+    }
+
+    public static function edit_tile( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+
+        $post_type = $post_submission["post_type"];
+        $tile_options = dt_get_option( "dt_custom_tiles" );
+        $tile_key = $post_submission["tile_key"];
+
+        if ( !isset( $tile_options[$post_type][$tile_key] ) ){
+            $tile_options[$post_type][$tile_key] = [];
+        }
+
+        $custom_tile = $tile_options[$post_type][$tile_key];
+
+        if ( isset( $post_submission["tile_label"] ) && $post_submission["tile_label"] != ( $custom_tile["label"] ?? $tile_key ) ){
+            $custom_tile["label"] = $post_submission["tile_label"];
+        }
+        if ( isset( $post_submission["hide_tile"] ) ){
+            $custom_tile["hidden"] = true;
+        }
+        if ( isset( $post_submission["restore_tile"] ) ){
+            $custom_tile["hidden"] = false;
+        }
+        if ( isset( $post_submission["tile_description"] ) && $post_submission["tile_description"] != ( $custom_tile["description"] ?? "" ) ){
+            $custom_tile["description"] = $post_submission["tile_description"];
+        }
+
+        if ( !empty( $custom_tile ) ){
+            $tile_options[$post_type][$tile_key] = $custom_tile;
+        }
+        update_option( "dt_custom_tiles", $tile_options );
+        return true;
+    }
+
+    public function default_permission_check() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return new WP_Error( 'forbidden', 'You are not allowed to do that.', array( 'status' => 403 ) );
+        }
+        return true;
     }
 }

@@ -210,6 +210,17 @@ window.API = {
     post_type: post_type,
     new_tile_name: new_tile_name,
   }, `dt-core/v1/`),
+
+  get_tile: (post_type, tile_key) => makeRequest("POST", `get-tile`, {
+    post_type: post_type,
+    tile_key: tile_key,
+  }, `dt-core/v1`),
+
+  edit_tile: (post_type, tile_key, tile_label) => makeRequest("POST", `edit-tile`, {
+    post_type: post_type,
+    tile_key: tile_key,
+    tile_label: tile_label,
+  }, `dt-core/v1/`),
 };
 
 function handleAjaxError(err) {

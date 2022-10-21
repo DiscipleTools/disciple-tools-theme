@@ -434,12 +434,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             .fields-table-right {
                 background-color: #f1f1f1;
             }
-            .edit-field {
-                margin-left: 18px;
-                display: none;
-                position: absolute;
-            }
-            .edit-field-option {
+            .edit-tile, .edit-field, .edit-field-option {
                 margin-left: 18px;
                 display: none;
                 position: absolute;
@@ -770,8 +765,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $post_tiles = DT_Posts::get_post_tiles( $post_type );
         foreach ( $post_tiles as $key => $value ) : ?>
         <li class="tile-name">
-            <a href="admin.php?page=dt_customizations&post_type=<?php echo esc_attr( $post_type ); ?>&tab=tiles&post_tile_key=<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $post_tiles[$key]['label'] ); ?></a>
-            <a href="javascript:void(0);" class="edit-field"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
+            <a href="admin.php?page=dt_customizations&post_type=<?php echo esc_attr( $post_type ); ?>&tab=tiles&post_tile_key=<?php echo esc_attr( $key ); ?>" id="tile-key-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $post_tiles[$key]['label'] ); ?></a>
+            <a href="javascript:void(0);" class="edit-tile" data-tile-key="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
         </li>
         <?php endforeach; ?>
         <li><a href="#" id="add-new-tile-link"><?php esc_html_e( 'add new tile', 'disciple_tools' ); ?></a></li>
