@@ -22,7 +22,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
         $this->title = __( 'Overview', 'disciple_tools' );
         $this->base_title = __( 'Personal', 'disciple_tools' );
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path || 'metrics' === $url_path || 'metrics/' === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 10 );
         }
@@ -40,6 +40,8 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             'amcharts-charts',
             'lodash'
         ], filemtime( get_theme_file_path() .  $this->js_file_name ), true );
+
+        dt_write_log( "here over" );
 
         wp_localize_script(
             'dt_metrics_personal_script', 'dtMetricsPersonal', [

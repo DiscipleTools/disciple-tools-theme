@@ -18,7 +18,7 @@ abstract class DT_Metrics_Chart_Base
      */
     public function __construct() {
         $this->base_slug = str_replace( ' ', '', trim( strtolower( $this->base_slug ) ) );
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
 
         if ( strpos( $url_path, 'metrics' ) === 0 ) {
             if ( !$this->has_permission() ){

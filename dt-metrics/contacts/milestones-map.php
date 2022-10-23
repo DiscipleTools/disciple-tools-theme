@@ -25,7 +25,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         $this->base_title = __( 'Contacts', 'disciple_tools' );
 
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
             add_action( 'wp_enqueue_scripts', [ $this, 'mapping_scripts' ], 89 );
