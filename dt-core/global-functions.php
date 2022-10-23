@@ -104,6 +104,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 if ( $ignore_query_parameters ){
                     return strtok( $url, '?' ); //allow get parameters
                 }
+                //remove trailing '?'
+                if ( substr( $url, -1 ) === '?' ){
+                    $url = substr( $url, 0, -1 );
+                }
+
                 return $url;
             }
             return '';
