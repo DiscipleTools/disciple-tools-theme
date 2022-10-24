@@ -1329,7 +1329,7 @@ class Disciple_Tools_Mapping_Queries {
         $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT lgm.label as address, p.post_title as name, lgm.post_id as post_id, lgm.lng, lgm.lat, lg.admin0_grid_id as a0, lg.admin1_grid_id as a1
             FROM $wpdb->dt_location_grid_meta as lgm
-            LEFT JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+            JOIN $wpdb->posts as p ON p.ID=lgm.post_id
             LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
             " . $sql["joins_sql"] . "
             WHERE lgm.post_type = %s
