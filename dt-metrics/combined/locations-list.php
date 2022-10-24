@@ -27,7 +27,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
 
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'list_scripts' ], 99 );
 
