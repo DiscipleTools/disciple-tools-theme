@@ -1107,7 +1107,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             'comment_type' => $comment_type
         ];
         $update = wp_update_comment( $comment );
-        if ( $update === 1 ){
+        if ( in_array( $update, [ 0, 1 ] ) ) {
             return $comment_id;
         } else if ( is_wp_error( $update ) ) {
               return $update;
