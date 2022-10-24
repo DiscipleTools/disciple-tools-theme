@@ -372,7 +372,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 return;
             }
 
-            $channel_fields        = array_keys( $_POST['channel_fields'] ?? [] );
+            $channel_fields        = isset( $_POST['channel_fields'] ) ? array_keys( $_POST['channel_fields'] ) : [];
             $langs                 = dt_get_available_languages();
             $custom_field_options  = dt_get_option( 'dt_field_customizations' );
             $custom_contact_fields = $custom_field_options['contacts'];
@@ -438,7 +438,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     } else {
                         $custom_contact_fields[ $key ] = [
                             'name'       => $label,
-                            'type'       => sanitize_text_field( wp_unslash( $_POST['add_channel_type'] ) ) ?? 'communication_channel',
+                            'type'       => isset( $_POST['add_channel_type'] ) ? sanitize_text_field( wp_unslash( $_POST['add_channel_type'] ) ) : 'communication_channel',
                             'tile'       => 'details',
                             'enabled'    => true,
                             'is_channel' => true
