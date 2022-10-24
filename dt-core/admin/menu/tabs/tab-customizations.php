@@ -195,6 +195,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             case 'tiles':
                 self::tile_rundown_box();
                 break;
+            case 'fields':
+                self::fields_rundown_box();
+                break;
             default:
                 ?>
                 <div class="tab-content">
@@ -250,16 +253,106 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function tile_rundown_box() {
         $post_type = self::get_parameter( 'post_type' );
+        if ( self::post_type_exists( $post_type ) ) {
+            echo '<br>';
+            $this->box( 'top', 'Select a Tile' );
+            $this->show_tiles_list( $post_type );
+            $this->box( 'bottom' );
+        }
+    }
+
+    private function show_tiles_list( $post_type ) {
+        $post_tiles = DT_Posts::get_post_tiles( $post_type );
+        foreach ( $post_tiles as $key => $value ) : ?>
+        <li class="tile-name">
+            <a href="admin.php?page=dt_customizations&post_type=<?php echo esc_attr( $post_type ); ?>&tab=tiles&post_tile_key=<?php echo esc_attr( $key ); ?>" id="tile-key-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $post_tiles[$key]['label'] ); ?></a>
+            <a href="javascript:void(0);" class="edit-tile" data-tile-key="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
+        </li>
+        <?php endforeach; ?>
+        <li><a href="#" id="add-new-tile-link"><?php esc_html_e( 'add new tile', 'disciple_tools' ); ?></a></li>
+        <?php
+    }
+
+    private function post_type_exists( $post_type ) {
         $available_post_types = DT_Posts::get_post_types();
         if ( !in_array( $post_type, $available_post_types ) ) {
             esc_html_e( 'Error: unknown post_type.', 'disciple_tools' );
-            return;
+            return false;
+        }
+        return true;
+    }
+
+    private function fields_rundown_box() {
+        $post_type = self::get_parameter( 'post_type' );
+        if ( self::post_type_exists( $post_type ) ) {
+            echo '<br>';
+            $this->box( 'top', __( 'Add new fields or modify existing ones on ', 'disciple_tools' ) . $post_type );
+            $this->field_select( $post_type );
+            $this->box( 'bottom' );
+        }
+    }
+
+    private function field_select( $selected_post_type ){
+        global $wp_post_types;
+        $select_options = [];
+        $selected_post_type = sanitize_text_field( wp_unslash( $selected_post_type ) );
+        $fields = $this->get_post_fields( $selected_post_type );
+        uasort($fields, function( $a, $b ) {
+            return $a['name'] <=> $b['name'];
+        });
+        if ( $fields ){
+            foreach ( $fields as $field_key => $field_value ){
+                if ( ( isset( $field_value["customizable"] ) && $field_value["customizable"] !== false ) || ( !isset( $field_value["customizable"] ) && empty( $field_value["hidden"] ) ) ) {
+                    $select_options[ $field_key ] = $field_value;
+                }
+            }
         }
 
-        echo '<br>';
-        $this->box( 'top', 'Select a Tile' );
-        $this->show_tiles_list( $post_type );
-        $this->box( 'bottom' );
+        ?>
+        <form method="get">
+            <input type="hidden" name="field_select_nonce" id="field_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_select' ) ) ?>" />
+            <input type="hidden" name="page" value="dt_options" />
+            <input type="hidden" name="tab" value="custom-fields" />
+            <input type="hidden" name="post_type" value="<?php echo esc_attr( $selected_post_type ); ?>" />
+            <table>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label for="field-select"><?php esc_html_e( "Modify an existing field", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <select id="field-select" name="field-select">
+                            <option></option>
+                                <option disabled>---<?php echo esc_html( $wp_post_types[$selected_post_type]->label ); ?> Fields---</option>
+                                <?php foreach ( $select_options as $option_key => $option_value ) : ?>
+
+                                <option value="<?php echo esc_html( $selected_post_type . '_' . $option_key ) ?>">
+                                    <?php echo esc_html( $option_value["name"] ?? $option_key ) ?>
+                                    <span> - (<?php echo esc_html( $option_key ) ?>)</span>
+                                </option>
+                                <?php endforeach; ?>
+                        </select>
+                        <button type="submit" class="button" name="field_selected"><?php esc_html_e( "Select", 'disciple_tools' ) ?></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Create a new field", 'disciple_tools' ) ?>
+                    </td>
+                    <td>
+                        <button type="submit" class="button" name="show_add_new_field"><?php esc_html_e( "Create new field", 'disciple_tools' ) ?></button>
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+        </form>
+
+    <?php }
+
+
+
+    private function get_post_fields( $post_type ){
+        return DT_Posts::get_post_field_settings( $post_type, false, true );
     }
 
     private function tile_settings_box() {
@@ -684,7 +777,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <div class="section-body">
             <?php foreach ( $tile as $t ) : ?>
                 <div class="section-subheader">
+                <?php if ( isset( $t['icon'] ) ) : ?>   
                     <img src="<?php echo esc_attr( $t['icon'] );?>" alt="<?php echo esc_attr( $t['name'] ); ?>" class="dt-icon lightgray">
+                <?php endif; ?>
                     <?php echo esc_html( $t['name'] ); ?>
                 </div>
                 <?php
@@ -764,23 +859,16 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 /*** TEXT - END ***/
 
 
+                /*** NUMBER - START ***/
+                if ( $t['type'] === 'number' ) : ?>
+                    <input type="number" class="text-input" value="1" min="" max="">
+                    <?php endif;
+                /*** NUMBER - END ***/
 
                 ?>
             <?php endforeach; ?>
             </div>
         </div>
-        <?php
-    }
-
-    private function show_tiles_list( $post_type ) {
-        $post_tiles = DT_Posts::get_post_tiles( $post_type );
-        foreach ( $post_tiles as $key => $value ) : ?>
-        <li class="tile-name">
-            <a href="admin.php?page=dt_customizations&post_type=<?php echo esc_attr( $post_type ); ?>&tab=tiles&post_tile_key=<?php echo esc_attr( $key ); ?>" id="tile-key-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $post_tiles[$key]['label'] ); ?></a>
-            <a href="javascript:void(0);" class="edit-tile" data-tile-key="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
-        </li>
-        <?php endforeach; ?>
-        <li><a href="#" id="add-new-tile-link"><?php esc_html_e( 'add new tile', 'disciple_tools' ); ?></a></li>
         <?php
     }
 
