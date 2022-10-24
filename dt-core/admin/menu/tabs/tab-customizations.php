@@ -405,7 +405,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             ?>
             <div class="field-name" data-field-name="<?php echo esc_attr( $setting_key ); ?>">
                 <?php
-                if ( ! isset( $setting_value['default'] ) ) {
+                if ( !isset( $setting_value['default'] ) || $setting_value['default'] === '' ) {
                     ?>
                     <div class="field-name-icon-arrow disabled" style="border-color: lightgray transparent transparent;"></div>
                     <b id="<?php echo esc_attr( $setting_key ); ?>" style="color: lightgray;"><?php echo esc_html( $setting_value['name'] ); ?></b>
