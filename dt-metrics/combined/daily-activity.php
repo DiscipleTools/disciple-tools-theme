@@ -22,7 +22,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         $this->title      = __( 'Activity by Day', 'disciple_tools' );
         $this->base_title = __( 'Project', 'disciple_tools' );
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }

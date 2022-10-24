@@ -24,7 +24,7 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         $this->base_title = __( 'Groups', 'disciple_tools' );
         $this->title = __( 'Groups Tree', 'disciple_tools' );
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }

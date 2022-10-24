@@ -21,7 +21,7 @@ class DT_Metrics_Seeker_Path_Chart extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         $this->title = __( 'Seeker Path', 'disciple_tools' );
         $this->base_title = __( 'Contacts', 'disciple_tools' );
 

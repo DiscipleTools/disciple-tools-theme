@@ -23,7 +23,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
         $this->title = __( 'Milestones Chart', 'disciple_tools' );
         $this->base_title = __( 'Contacts', 'disciple_tools' );
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
