@@ -432,13 +432,14 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                     if ( isset( $v['label'] ) || !empty( $v['label'] ) ) {
                                         $label = $v['label'];
                                     }
-                                }
                                 ?>
                                 <div class="field-settings-table-field-option">
                                     <span class="sortable">::</span>
                                     <span class="field-name-content" style="padding-left: 16px;"><?php echo esc_html( $label ); ?></span>
                                 </div>
-                            <?php endif; ?>
+                                <?php
+                                }
+                            endif; ?>
                         <?php endforeach; ?>
                         <div class="field-settings-table-field-option">
                             <span class="sortable">::</span>
@@ -501,13 +502,14 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                 if ( isset( $v['label'] ) || !empty( $v['label'] ) ) {
                                                     $label = $v['label'];
                                                 }
-                                            }
                                             ?>
                                             <div class="field-settings-table-field-option">
                                                 <span class="sortable">::</span>
                                                 <span class="field-name-content" style="padding-left: 16px;"><?php echo esc_html( $label ); ?></span>
                                             </div>
-                                        <?php endif; ?>
+                                            <?php
+                                            }
+                                        endif; ?>
                                     <?php endforeach; ?>
                                     <div class="field-settings-table-field-option">
                                         <span class="sortable">::</span>
