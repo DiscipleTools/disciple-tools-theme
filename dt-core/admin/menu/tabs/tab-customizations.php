@@ -114,7 +114,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $this->show_tabs();
             $this->show_tab_content();
             // $this->save_settings();
-            $this->tile_settings_box();
         self::template( 'end' );
     }
 
@@ -193,7 +192,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
         switch ( $tab ) {
             case 'tiles':
-                self::tile_rundown_box();
+                self::tile_settings_box();
                 break;
             case 'fields':
                 self::fields_rundown_box();
@@ -346,10 +345,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
             <br>
         </form>
-
     <?php }
-
-
 
     private function get_post_fields( $post_type ){
         return DT_Posts::get_post_field_settings( $post_type, false, true );
@@ -359,7 +355,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $post_type = self::get_parameter( 'post_type' );
         $tile_key = self::get_parameter( 'post_tile_key' );
 
-        if ( is_null( $post_type ) || is_null( $tile_key ) ) {
+        if ( is_null( $post_type ) ) {
             return;
         }
 
@@ -368,18 +364,15 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         if ( isset( $post_settings['tiles'][$tile_key]['label'] ) ) {
             $tile_label = $post_settings['tiles'][$tile_key]['label'];
         };
-        $clean_tile = self::filter_tile_settings();
         ?>
-        <table class="widefat">
+        <table class="widefat" style="margin-top: 12px;">
             <thead>
-                <th colspan="2"><?php echo esc_html( $tile_label ); ?> Tile Contains</th>
+                <th colspan="2"><?php echo esc_html( 'Tile Rundown', 'disciple_tools' ); ?></th>
             </thead>
             <tbody>
                 <tr>
-                    <td class="fields-table-left"><?php $this->show_tile_settings( $clean_tile ); ?></td>
-                    <td class="fields-table-right">
-                        <?php $this->tile_preview_box(); ?>
-                    </td>
+                    <td class="fields-table-left"><?php $this->show_tile_settings(); ?></td>
+                    <td class="fields-table-right"></td>
                 </tr>
             </tbody>
         </table>
@@ -400,56 +393,97 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         return $tile_fields;
     }
 
-    private function show_tile_settings( $tile ) {
-        foreach ( $tile as $setting_key => $setting_value ) {
-            ?>
-            <div class="field-name" data-field-name="<?php echo esc_attr( $setting_key ); ?>">
-                <?php
-                if ( !isset( $setting_value['default'] ) || $setting_value['default'] === '' ) {
-                    ?>
-                    <div class="field-name-icon-arrow disabled" style="border-color: lightgray transparent transparent;"></div>
-                    <b id="<?php echo esc_attr( $setting_key ); ?>" style="color: lightgray;"><?php echo esc_html( $setting_value['name'] ); ?></b>
-                    <?php
-                }
-                foreach ( $setting_value as $key => $value ) {
-                    if ( $key === 'default' && !empty( $setting_value['default'] ) ) {
-                        ?>
-                        <div class="field-name-icon-arrow"></div>
-                            <b id="<?php echo esc_attr( $setting_key ); ?>"><?php echo esc_html( $setting_value['name'] ); ?></b>
-                            <a href="javascript:void(0);" class="edit-field"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
-                            <div class="field-elements-list hidden">
-                            <?php
-                            foreach ( $value as $v ) {
-                                if ( isset( $v['label'] ) ) {
-                                    $label = $v['label'];
-                                    if ( is_null( $label ) || empty( $label ) ) {
-                                        $label = 'NULL';
-                                    }
-                                    ?>
-                                    <div class="field-option-name field-element" style="margin-left: 18px;" data-field-parent="<?php echo esc_attr( $setting_key ); ?>">
-                                        └ <?php echo esc_html( $label ); ?>
-                                        <a href="javascript:void(0);" class="edit-field-option"><?php esc_html_e( 'edit', 'disciple_tools' ); ?></a>
-                                    </div>
-                                    <?php
-                                }
-                            }
-                            ?>
-                                <div class="field-option-name field-element" style="margin-left: 18px;" data-field-parent="<?php echo esc_attr( $setting_key ); ?>">
-                                    └ <a href="javascript:void(0);" class="add-new-field-option"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></a>
-                                </div>
-                            </div>
-                            <?php
-                    }
-                }
-                ?>
-            </div>
-            <?php
-        }
+    private function show_tile_settings() {
+        $post_type = self::get_parameter( 'post_type' );
+        $post_tiles = DT_Posts::get_post_settings( $post_type, false );
         ?>
-        <div class="add-new-field"><a href="javascript:void(0);"><?php esc_html_e( 'add new field', 'disciple_tools' ); ?></a></div>
+        <!-- START TABLE -->
+        <div class="field-settings-table">
+            <?php if ( !isset( $post_tiles['tiles'] ) ) : ?>
+                <div>This post type doesn't have tiles.<br>
+                    <b>Todo:</b> add tile-less field display functionality.
+                </div>
+                <?php
+                return;
+                endif; ?>
+            <?php foreach ( $post_tiles['tiles'] as $tile_key => $tile_value ) : ?>
+                <!-- START TILE -->
+                <div class="field-settings-table-tile-name expandable" data-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                    <span class="sortable">::</span>
+                    <span class="expand-icon">+</span>
+                    <?php echo esc_html( $tile_value['label'] ); ?>
+                </div>
+                <!-- END TILE -->
+                <div style="display: none;">
+                    <!-- START TOGGLED FIELD ITEMS -->
+                    <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                        <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) {
+                            if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' ) : ?>
+                                <div class="field-settings-table-field-name">
+                                    <span class="sortable">::</span>
+                                    <span class="field-name-content" data-field-name="<?php echo esc_attr( $field_key ); ?>">    
+                                        <?php echo esc_html( $field_settings['name'] ); ?>
+                                    </span>
+                                </div>
+                            <?php else : ?>
+                                <div class="field-settings-table-field-name expandable" data-field-name="<?php echo esc_attr( $field_key ); ?>">
+                                    <span class="sortable">::</span>
+                                    <span class="expand-icon" style="padding-left: 16px;">+</span>
+                                    <?php echo esc_html( $field_settings['name'] ); ?>
+                                </div>
+
+
+                                <!-- START TOGGLED ITEMS -->
+                                <div class="field-settings-table-child-toggle">
+                                    <?php foreach ( $field_settings as $key => $value ) : ?>
+                                        <?php if ( $key === 'default' && !empty( $field_settings['default'] ) ) : ?>
+                                            <?php foreach ( $value as $v ) {
+                                                $label = 'NULL';
+                                                if ( isset( $v['label'] ) || !empty( $v['label'] ) ) {
+                                                    $label = $v['label'];
+                                                }
+                                            }
+                                            ?>
+                                            <div class="field-settings-table-field-option">
+                                                <span class="sortable">::</span>
+                                                <span class="field-name-content" style="padding-left: 16px;"><?php echo esc_html( $label ); ?></span>
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                    <div class="field-settings-table-field-option">
+                                        <span class="sortable">::</span>
+                                        <span style="margin-left: 32px;"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
+                                    </div>
+                                </div>
+                                <!-- END TOGGLED ITEMS -->
+
+                            <?php endif;
+
+                        } ?>
+                    <?php endforeach; ?>
+                    <!-- END TOGGLED FIELD ITEMS -->
+                    <div class="field-settings-table-field-name expandable">
+                            <span class="sortable">::</span>
+                            <span class="field-name-content" data-field-name="_add_new_field">    
+                                [<?php echo esc_html( 'add new field', 'disciple_tools' ); ?>]
+                            </span>
+                        </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <!-- END TABLE -->
         <?php
     }
-
+    public static function field_option_in_tile( $field_option_name, $tile_name ) {
+        $post_type = self::get_parameter( 'post_type' );
+        $post_tiles = DT_Posts::get_post_settings( $post_type, false );
+        if ( isset( $post_tiles['fields'][$field_option_name]['tile'] ) ) {
+            if ( $post_tiles['fields'][$field_option_name]['tile'] === $tile_name ) {
+                return true;
+            }
+        }
+        return false;
+    }
     private function load_styles() {
         ?>
         <style>
@@ -491,6 +525,40 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             .dt-admin-modal-box-content {
                 padding: 8px;
             }
+            .field-settings-table {
+                display: table;
+                width: 50%;
+            }
+            .field-settings-table-tile-name {
+                font-weight: bold;
+                border: 1px solid #c2e0ff;
+                background: #ecf5fc;
+                cursor: pointer;
+                height: 24px;
+            }
+            .field-settings-table-field-name {
+                border: 1px solid #c2e0ff;
+                background: #ecf5fc;
+                cursor: pointer;
+                height: 24px;
+            }
+            .field-settings-table-field-option {
+                border: 1px solid lightgray;
+                background: #f1f1f1;
+                height: 24px;
+            }
+            .field-name-content {
+                margin-left: 16px;
+                vertical-align:middle;
+            }
+            .field-settings-table-child-toggle {
+                display:none;
+            }
+            .sortable {
+                margin: 0 8px 0 4px;
+                font-weight: bold;
+                cursor: pointer;
+            }
             .dt-admin-modal-box-close-button {
                 text-align: right;
                 color: #cacaca;
@@ -501,38 +569,13 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 padding: 0.5rem;
                 cursor: pointer;
             }
-            .field-elements-list {
-                margin-bottom: 18px;
-            }
-            .field-name {
-                margin-bottom: 8px;
-                cursor: pointer;
-            }
             .modal-overlay-content-table {
                 margin: 6px 10px 10px 10px;
                 line-height: 2.5;
             }
-            .field-name-icon-arrow {
-                border-color: #50575e transparent transparent;
-                border-style: solid;
-                border-width: 6px 6px 0;
-                display: inline-block;
-                height: 0;
-                left: auto;
-                margin-top: -3px;
-                right: 5px;
-                width: 0;
-                transform: rotate(-90deg);
-                transition: transform 0.1s;
-                cursor: pointer;
-            }
-            .arrow-expanded {
-                transform: none;
-                transition: transform 0.2s;
-            }
             .fields-table-left {
                 border-right: 1px solid #ccc;
-                min-width: auto;
+                width: 50%;
             }
             .fields-table-right {
                 background-color: #f1f1f1;
@@ -755,123 +798,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         </style>
         <?php
     }
-    private function tile_preview_box() {
-        $tile = self::filter_tile_settings();
-        if ( !isset( $_GET['post_type'] ) || !isset( $_GET['post_tile_key'] ) ) {
-            esc_html_e( 'Error: missing parameters.', 'disciple_tools' );
-            return;
-        }
-        $post_type = self::get_parameter( 'post_type' );
-        $tile_key = self::get_parameter( 'post_tile_key' );
-        $post_settings = DT_Posts::get_post_settings( $post_type );
-        $tile_label = '';
-        if ( isset( $post_settings['tiles'][$tile_key]['label'] ) ) {
-            $tile_label = $post_settings['tiles'][$tile_key]['label'];
-        }
-        ?>
-        <div class="dt-tile-preview">
-            <div class="section-header">
-                <h3 class="section-header"><?php echo esc_html( $tile_label ); ?></h3>
-                <img src="<?php echo esc_attr( get_template_directory_uri() ); ?>/dt-assets/images/chevron_up.svg" class="chevron">
-            </div>
-            <div class="section-body">
-            <?php foreach ( $tile as $t ) : ?>
-                <div class="section-subheader">
-                <?php if ( isset( $t['icon'] ) ) : ?>   
-                    <img src="<?php echo esc_attr( $t['icon'] );?>" alt="<?php echo esc_attr( $t['name'] ); ?>" class="dt-icon lightgray">
-                <?php endif; ?>
-                    <?php echo esc_html( $t['name'] ); ?>
-                </div>
-                <?php
-
-
-
-                /*** MULTISELECT - START ***/
-                if ( $t['type'] === 'multi_select' ) : ?>
-                <div class="button-group" style="display: inline-flex;">
-                    <?php foreach ( $t['default'] as $multi_select ) : ?>
-                    <button>
-                        <?php if ( isset( $multi_select['icon'] ) && !empty( $multi_select['icon'] ) ) : ?>
-                            <img src="<?php echo esc_attr( $multi_select['icon'] ); ?>" class="dt-icon">
-                        <?php endif; ?>
-                        <?php echo esc_html( $multi_select['label'] ); ?>
-                    </button>
-                    <?php endforeach; ?>
-                </div>
-                <?php endif;
-                /*** MULTISELECT - START ***/
-
-
-
-                /*** CONNECTION - START ***/
-                if ( $t['type'] === 'connection' ) : ?>
-                <div class="typeahead-container">
-                    <input class="typeahead-input" placeholder="Search <?php echo esc_attr( $t['name'] ); ?>">
-                    <button class="typeahead-button">
-                        <img src="<?php echo esc_attr( get_template_directory_uri() ); ?>/dt-assets/images/add-contact.svg">
-                    </button>
-                </div>
-                <?php endif;
-                /*** CONNECTION - END ***/
-
-
-                /*** USER_SELECT - START ***/
-                if ( $t['type'] === 'user_select' ) : ?>
-                    <div class="typeahead-container">
-                        <span class="typeahead-cancel-button">×</span>
-                        <input class="typeahead-input" placeholder="<?php esc_attr_e( 'Search Users', 'disciple_tools' ); ?>">
-                        <button class="typeahead-button">
-                            <img src="<?php echo esc_attr( get_template_directory_uri() ); ?>/dt-assets/images/search.svg">
-                        </button>
-                    </div>
-                    <?php endif;
-                /*** USER_SELECT - END ***/
-
-
-
-                /*** KEY_SELECT - START ***/
-                if ( $t['type'] === 'key_select' ) : ?>
-                <select class="select-field <?php isset( $t['custom_display'] ) ? esc_attr_e( 'color-select' ) : ''; ?>" style="max-width: 100%">
-                    <?php foreach ( $t['default'] as $key => $value ) : ?>
-                        <option><?php echo esc_html( $value['label'] ); ?></option>
-                    <?php endforeach; ?>
-                </select>
-                <?php endif;
-                /*** KEY_SELECT - END ***/
-
-
-
-                /*** DATE - START ***/
-                if ( $t['type'] === 'date' ) : ?>
-                    <div class="typeahead-container">
-                        <input class="typeahead-input">
-                        <button class="typeahead-delete-button">x</button>
-                    </div>
-                    <?php endif;
-                /*** DATE - END ***/
-
-
-
-                /*** TEXT - START ***/
-                if ( in_array( $t['type'], [ 'text', 'communication_channel', 'location', 'location_meta' ] ) ) : ?>
-                    <input type="text" class="text-input">
-                    <?php endif;
-                /*** TEXT - END ***/
-
-
-                /*** NUMBER - START ***/
-                if ( $t['type'] === 'number' ) : ?>
-                    <input type="number" class="text-input" value="1" min="" max="">
-                    <?php endif;
-                /*** NUMBER - END ***/
-
-                ?>
-            <?php endforeach; ?>
-            </div>
-        </div>
-        <?php
-    }
-
     public function save_settings(){
         if ( !empty( $_POST ) ){
             if ( isset( $_POST['security_headers_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['security_headers_nonce'] ), 'security_headers' ) ) {
