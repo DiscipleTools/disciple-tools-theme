@@ -42,7 +42,7 @@ msgstr "Strani, ki ste jo iskali, ni bilo mogoče najti ali pa je bila izbrisana
 msgid "Active"
 msgstr "Aktivno"
 
-#: dt-assets/parts/nav-topbar.php:277
+#: dt-assets/parts/nav-topbar.php:279
 #: template-notifications.php:43
 msgid "New"
 msgstr "Novo"
@@ -249,9 +249,9 @@ msgstr "Statistika"
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
-#: dt-assets/parts/nav-offcanvas.php:48
+#: dt-assets/parts/nav-offcanvas.php:50
 #: dt-assets/parts/nav-topbar.php:98
-#: dt-assets/parts/nav-topbar.php:221
+#: dt-assets/parts/nav-topbar.php:223
 #: template-notifications.php:33
 #: template-settings.php:60
 #: template-settings.php:467
@@ -263,7 +263,7 @@ msgstr "Obvestila"
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:131
 #: dt-assets/parts/nav-topbar.php:106
-#: dt-assets/parts/nav-topbar.php:309
+#: dt-assets/parts/nav-topbar.php:311
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "Nastavitve"
@@ -292,7 +292,7 @@ msgstr "Zavrni"
 #: archive-template.php:403
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1732
+#: dt-posts/dt-posts.php:1789
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520
 #: single-template.php:78
@@ -518,7 +518,7 @@ msgstr "Izbriši filter"
 msgid "Group Status"
 msgstr "Stanje skupine"
 
-#: dt-core/global-functions.php:475
+#: dt-core/global-functions.php:484
 #: single-template.php:340
 #: template-new-bulk-post.php:285
 #: template-new-post.php:138
@@ -1024,7 +1024,7 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "Izbrisano %1$s: %2$s"
 
-#: dt-posts/dt-posts.php:1490
+#: dt-posts/dt-posts.php:1547
 msgid "Post already shared with user."
 msgstr "Objava je že v skupni rabi z uporabnikom."
 
@@ -1421,12 +1421,12 @@ msgstr "Shranite in nadaljujte z urejanjem"
 msgid "Select All"
 msgstr "Izberi vse"
 
-#: dt-assets/parts/nav-topbar.php:287
+#: dt-assets/parts/nav-topbar.php:289
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "Neprebrano"
 
-#: dt-assets/parts/nav-topbar.php:313
+#: dt-assets/parts/nav-topbar.php:315
 #: template-notifications.php:72
 msgid "Mark All"
 msgstr "Označi vse"
@@ -2076,7 +2076,7 @@ msgstr "Vnesi za iskanje"
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593
 #: dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:815
+#: dt-core/global-functions.php:857
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Iskanje uporabnikov"
@@ -2096,10 +2096,10 @@ msgstr "Napišite svoj komentar ali opombo tukaj"
 #: archive-template.php:126
 #: archive-template.php:461
 #: dt-assets/parts/merge-details.php:45
-#: dt-core/global-functions.php:580
-#: dt-core/global-functions.php:608
-#: dt-core/global-functions.php:733
-#: dt-core/global-functions.php:777
+#: dt-core/global-functions.php:630
+#: dt-core/global-functions.php:658
+#: dt-core/global-functions.php:775
+#: dt-core/global-functions.php:819
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
@@ -2236,7 +2236,7 @@ msgstr "Brez filtrov, ustvarite ga spodaj"
 msgid "No records found matching your filter."
 msgstr "Najden ni noben zapis, ki se ujema z vašim filtrom."
 
-#: dt-assets/parts/nav-topbar.php:283
+#: dt-assets/parts/nav-topbar.php:285
 #: dt-people-groups/people-groups-base.php:342
 #: dt-people-groups/people-groups-base.php:351
 #: template-notifications.php:50
@@ -2516,7 +2516,7 @@ msgstr "Ustvari nalogo"
 msgid "Existing tasks for this record:"
 msgstr "Obstoječe naloge za ta zapis:"
 
-#: dt-assets/parts/nav-topbar.php:165
+#: dt-assets/parts/nav-topbar.php:167
 msgid "Theme Update Available!"
 msgstr "Na voljo je posodobitev teme!"
 
@@ -3315,7 +3315,7 @@ msgid "Inactive Groups Switch"
 msgstr "Stikalo neaktivnih skupin"
 
 #: dt-assets/parts/modals/modal-help.php:129
-#: dt-assets/parts/nav-topbar.php:307
+#: dt-assets/parts/nav-topbar.php:309
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "označi vse kot prebrano"
@@ -3659,7 +3659,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s združen v %2$s v ta zapis"
 
-#: dt-posts/dt-posts.php:1255
+#: dt-posts/dt-posts.php:1312
 msgid "D.T System"
 msgstr "Sistem D. T."
 
@@ -3971,7 +3971,7 @@ msgstr "Zemljevidi stikov"
 msgid "Groups Maps"
 msgstr "Zemljevidi za skupine"
 
-#: dt-posts/dt-posts.php:1733
+#: dt-posts/dt-posts.php:1790
 #: single-template.php:120
 msgid "Details"
 msgstr "Podrobnosti"
@@ -4168,7 +4168,7 @@ msgstr "Izberite, katera polja želite iskati"
 msgid "Other Social Links"
 msgstr "Druge socialne povezave"
 
-#: dt-assets/parts/nav-topbar.php:294
+#: dt-assets/parts/nav-topbar.php:296
 msgid "See All"
 msgstr "Poglej vse"
 
@@ -4188,11 +4188,11 @@ msgstr[3] "﻿pred več kot %s leti"
 msgid "Hide fields"
 msgstr "Skrij polja"
 
-#: dt-core/global-functions.php:582
+#: dt-core/global-functions.php:632
 msgid "Add new tag \"%s\""
 msgstr "Dodaj novo oznako \"%s\""
 
-#: dt-core/global-functions.php:583
+#: dt-core/global-functions.php:633
 msgid "Tag \"%s\" is already being used"
 msgstr "Oznaka \"%s\" se že uporablja"
 
@@ -4270,12 +4270,12 @@ msgstr "vau"
 msgid "sad"
 msgstr "žalostno"
 
-#: dt-posts/dt-posts.php:1797
+#: dt-posts/dt-posts.php:1854
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr "@  [%1$s] ( %2$s) - Uporabnik %3$s je zahteval dostop do %4$s [%5$s] (%6$s). Če želite, ta zapis delite z uporabnikom, da omogočite dostop."
 
-#: dt-posts/dt-posts.php:1803
+#: dt-posts/dt-posts.php:1860
 msgid "Access Request"
 msgstr "Zahteva za dostop"
 
@@ -4420,7 +4420,7 @@ msgstr "Najljubši"
 msgid "More"
 msgstr "﻿Več"
 
-#: dt-posts/dt-posts.php:1249
+#: dt-posts/dt-posts.php:1306
 msgid "Magic Link Submission"
 msgstr "﻿Predložitev povezave Magic"
 
@@ -4529,8 +4529,8 @@ msgstr "﻿Imena"
 msgid "Communication"
 msgstr "﻿Komunikacija"
 
-#: dt-assets/parts/nav-offcanvas.php:79
-#: dt-assets/parts/nav-topbar.php:251
+#: dt-assets/parts/nav-offcanvas.php:81
+#: dt-assets/parts/nav-topbar.php:253
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "﻿Odjava"
@@ -5115,5 +5115,9 @@ msgstr ""
 
 #: dt-people-groups/people-groups.php:304
 msgid "Import People Group"
+msgstr ""
+
+#: dt-posts/dt-posts.php:101
+msgid "Updated existing record instead of creating a new record."
 msgstr ""
 
