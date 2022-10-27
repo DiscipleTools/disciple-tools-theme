@@ -1,12 +1,18 @@
 jQuery(document).ready(function($) {
     $('.field-settings-table-tile-name').on('click', function() {
-        var tile_key = $(this).data('tile-key');
+        var tile_key = $(this).data('key');
         show_preview_tile(tile_key);
     });
 
     $('.edit-icon').on('click', function(){
-        var tile_key = $(this).parent().data('tile-key');
-        showOverlayModal('editTile', tile_key)
+        var edit_modal = $(this).parent().data('modal');
+        var data = $(this).parent().data('key');
+        if (edit_modal === 'edit-field') {
+            var data = [];
+            data['tile_key'] = $(this).parent().data('parent-tile-key');
+            data['field_key'] = $(this).parent().data('key');
+        }
+        showOverlayModal(edit_modal, data);
     });
 
     function show_preview_tile(tile_key) {        
@@ -163,8 +169,11 @@ jQuery(document).ready(function($) {
         if ( modalName == 'addNewTile') {
             loadAddTileContentBox();
         }
-        if ( modalName == 'editTile' ) {
+        if ( modalName == 'edit-tile' ) {
             loadEditTileContentBox(data);
+        }
+        if ( modalName == 'edit-field' ) {
+            loadEditFieldContentBox(data);
         }
     }
 
@@ -233,9 +242,121 @@ jQuery(document).ready(function($) {
                     <button class="button" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
                 </td>
             </tr>`;
-            $('#modal-overlay-content-table').html(modal_html_content);
-            
+            $('#modal-overlay-content-table').html(modal_html_content);   
         });
+    }
+
+    function loadEditFieldContentBox(field_data) {
+        var tile_key = field_data['tile_key'];
+        var field_key = field_data['field_key'];
+        var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
+        var number_of_translations = 0; //Todo: softcode this variable
+        
+        var field_icon_image_html = '';
+        if ( field_settings['icon'] ) {
+            field_icon_image_html = `<img src="${field_settings['icon']}">`;
+        }
+
+        var modal_html_content = `
+            <tr>
+                <th colspan="2">
+                    <h3 class="modal-box-title">Edit '${field_settings['name']}' Field Settings</h3>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <label><b>Key</label></b>
+                </td>
+                <td>
+                    ${field_key}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label><b>Default Name</b></label>
+                </td>
+                <td>
+                    ${field_settings['name']}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="edit-field-custom-name"><b>Custom Name</b></label>
+                </td>
+                <td>
+                    <input name="edit-field-custom-name" id="edit-field-custom-name-${field_key}" type="text" value="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="edit-field-private-field"><b>Private Field</b></label>
+                </td>
+                <td>
+                    <input name="edit-field-private-field" id="edit-field-private-field-${field_key}" type="checkbox" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Translation</b>
+                </td>
+                <td>
+                    <button class="button small expand_translations" data-form_name="field-edit-form">
+                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                        (${number_of_translations})
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tile-select"><b>Tile</b></label>
+                </td>
+                <td>
+                    <select name="tile-select">
+                        <option value="no_tile">No tile / hidden</option>`;
+                        $.each(window.field_settings.post_type_tiles, function (k, tile) {
+                            if ( k === tile_key  ) {
+                                modal_html_content += `<option value="${tile_key}" selected>${tile['label']}</option>`;
+                            }
+                            modal_html_content += `<option value="${tile_key}">${tile['label']}</option>`;
+                        });
+                modal_html_content += `
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="edit-field-description"><b>Description</b></label>
+                </td>
+                <td>
+                    <input name="edit-field-description" id="edit-field-description-${field_key}" type="text" value="${field_settings['description']}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Description Translation</b>
+                </td>
+                <td>
+                    <button class="button small expand_translations" data-form_name="field-edit-form">
+                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                        (${number_of_translations})
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="edit-field-custom-name"><b>Icon</b></label>
+                </td>
+                <td>
+                    ${field_icon_image_html}
+                    <input name="edit-field-icon" id="edit-field-icon-${field_key}" type="text" value="${field_settings['icon']}">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="button" type="submit" id="js-edit-tile" data-tile-key="${field_key}">Save</button>
+                </td>
+            </tr>`;
+        $('#modal-overlay-content-table').html(modal_html_content);   
     }
 
     $('#modal-overlay-form').on('submit', function(event){
@@ -263,7 +384,7 @@ jQuery(document).ready(function($) {
 
     $('#modal-overlay-form').on('click', '#js-edit-tile', function(e) {
         var post_type = window.field_settings.post_type;
-        var tile_key = $(this).data('tile-key');
+        var tile_key = $(this).data('key');
         var tile_label = $(`#edit-tile-label-${tile_key}`).val();
         API.edit_tile(post_type, tile_key, tile_label).promise().then(function() {
             $(`#tile-key-${tile_key}`).html(tile_label);
@@ -274,11 +395,8 @@ jQuery(document).ready(function($) {
     function closeModal() {
         $('.dt-admin-modal-overlay').fadeOut(150, 'swing');
         $('.dt-admin-modal-box').slideUp(150, 'swing');
+        $('#modal-overlay-content-table').html('');
     }
-
-    $('.edit-field-option').on('click', function(e) {
-            // showModal('edit-field-option');
-    });
     
     $('.dt-admin-modal-box-close-button').on('click', function() {
         closeModal();
@@ -290,24 +408,6 @@ jQuery(document).ready(function($) {
         }
     });
 
-    $('.tile-name').hover(
-        function() {
-            $(this).children('.edit-tile').show()
-        },
-        function() {
-            $(this).children('.edit-tile').hide()
-        }
-    );
-
-    $('.field-name').hover(
-        function() {
-            $(this).children('.edit-field').show()
-        },
-        function() {
-            $(this).children('.edit-field').hide()
-        }
-    );
-
     $('.field-option-name').hover(
         function() {
             $(this).children('.edit-field-option').show()
@@ -316,10 +416,6 @@ jQuery(document).ready(function($) {
             $(this).children('.edit-field-option').hide()
         }
     );
-    
-    $('.edit-tile').on('click', function() {
-        showOverlayModal('editTile', $(this).data('tile-key'));
-    });
 
     $('.field-name').on('click', function() {
             $(this).find('.field-name-icon-arrow:not(.disabled)').toggleClass('arrow-expanded');
