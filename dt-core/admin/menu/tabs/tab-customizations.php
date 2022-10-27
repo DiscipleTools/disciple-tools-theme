@@ -459,7 +459,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <div class="field-settings-table-field-name expandable">
                 <span class="sortable">⋮⋮</span>
                 <span class="field-name-content" data-field-name="_add_new_field">    
-                    [<?php echo esc_html( 'add new field', 'disciple_tools' ); ?>]
+                    <?php echo esc_html( 'add new field', 'disciple_tools' ); ?>
                 </span>
             </div>
         </div>
@@ -477,9 +477,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 <div class="field-settings-table-tile-name expandable" data-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                     <span class="sortable">⋮⋮</span>
                     <span class="expand-icon">+</span>
-                    <span style="vertical-align: sub;">
+                    <span id="tile-key-<?php echo esc_attr( $tile_key ); ?>" style="vertical-align: sub;">
                         <?php echo esc_html( $tile_value['label'] ); ?>
                     </span>
+                    <span class="edit-icon"></span>
                 </div>
                 <!-- END TILE -->
                 <div style="display: none;">
@@ -536,7 +537,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <div class="field-settings-table-field-name expandable">
                         <span class="sortable">⋮⋮</span>
                         <span class="field-name-content" data-field-name="_add_new_field">    
-                            [<?php echo esc_html( 'add new field', 'disciple_tools' ); ?>]
+                            <?php echo esc_html( 'add new field', 'disciple_tools' ); ?>
                         </span>
                     </div>
                 </div>
@@ -601,6 +602,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 width: 50%;
             }
             .field-settings-table-tile-name {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
                 font-weight: bold;
                 border: 1px solid #c2e0ff;
                 background: #ecf5fc;
@@ -633,6 +637,15 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             }
             .expand-icon {
                 vertical-align: sub;
+                margin-right: 2px;
+            }
+            .edit-icon {
+                width: 18px;
+                height: 18px;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' style='width:24px;height:24px' viewBox='0 0 24 24'%3E%3Cpath fill='%2350575e' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z' /%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                margin-left: auto;
+                margin-right: 8px;
             }
             .dt-admin-modal-box-close-button {
                 text-align: right;

@@ -4,6 +4,11 @@ jQuery(document).ready(function($) {
         show_preview_tile(tile_key);
     });
 
+    $('.edit-icon').on('click', function(){
+        var tile_key = $(this).parent().data('tile-key');
+        showOverlayModal('editTile', tile_key)
+    });
+
     function show_preview_tile(tile_key) {        
         var tile_html = `
             <div class="dt-tile-preview">
