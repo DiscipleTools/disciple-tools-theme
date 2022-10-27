@@ -315,7 +315,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <input type="hidden" name="post_type" value="<?php echo esc_attr( $selected_post_type ); ?>" />
             <table>
                 <tr>
-                    <td style="vertical-align: middle">
+                    <td style="vertical-align: sub">
                         <label for="field-select"><?php esc_html_e( "Modify an existing field", 'disciple_tools' ) ?></label>
                     </td>
                     <td>
@@ -334,7 +334,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     </td>
                 </tr>
                 <tr>
-                    <td style="vertical-align: middle">
+                    <td style="vertical-align: sub">
                         <?php esc_html_e( "Create a new field", 'disciple_tools' ) ?>
                     </td>
                     <td>
@@ -497,7 +497,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                 <div class="field-settings-table-field-name expandable" data-field-name="<?php echo esc_attr( $field_key ); ?>">
                                     <span class="sortable">⋮⋮</span>
                                     <span class="expand-icon" style="padding-left: 16px;">+</span>
-                                    <span style="vertical-align: middle;">
+                                    <span style="vertical-align: sub;">
                                         <?php echo esc_html( $field_settings['name'] ); ?>
                                     </span>
                                 </div>
@@ -611,7 +611,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 border: 1px solid #c2e0ff;
                 background: #ecf5fc;
                 cursor: pointer;
-                height: 24px;
+                height: 32px;
             }
             .field-settings-table-field-option {
                 border: 1px solid lightgray;
@@ -620,7 +620,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             }
             .field-name-content {
                 margin-left: 16px;
-                vertical-align:middle;
+                vertical-align: sub;
             }
             .field-settings-table-child-toggle {
                 display:none;
