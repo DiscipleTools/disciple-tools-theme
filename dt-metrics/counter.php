@@ -703,9 +703,11 @@ class Disciple_Tools_Queries
                 }
                 $node['done'] = true; //lets us look at what nodes where not processed later
                 //continue with children
-                $d = $this->check_circular_logic( $nodes, [ (int) $node['id'] ], array_merge( $parents, [ (int) $node['id'] ] ) );
-                if ( is_numeric( $d ) ){
-                    return $d;
+                if ( !isset( $node['children'] ) || !empty( $node['children'] ) ){
+                    $d = $this->check_circular_logic( $nodes, [ (int) $node['id'] ], array_merge( $parents, [ (int) $node['id'] ] ) );
+                    if ( is_numeric( $d ) ){
+                        return $d;
+                    }
                 }
             }
         }
