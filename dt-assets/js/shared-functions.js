@@ -221,6 +221,14 @@ window.API = {
     tile_key: tile_key,
     tile_label: tile_label,
   }, `dt-core/v1/`),
+
+  new_field: (post_type, new_field_tile, new_field_name, new_field_type, new_field_private) => makeRequest("POST", `new-field`, {
+    post_type: post_type,
+    new_field_tile: new_field_tile,
+    new_field_name: new_field_name,
+    new_field_type: new_field_type,
+    new_field_private: new_field_private,
+  }, `dt-core/v1/`),
 };
 
 function handleAjaxError(err) {

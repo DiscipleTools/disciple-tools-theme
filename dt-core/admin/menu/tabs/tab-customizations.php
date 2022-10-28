@@ -441,7 +441,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <!-- END TOGGLED FIELD ITEMS -->
             <div class="field-settings-table-field-name expandable">
                 <span class="sortable">⋮⋮</span>
-                <span class="field-name-content" data-key="_add_new_field">    
+                <span class="field-name-content add-new-field">
                     <?php echo esc_html( 'add new field', 'disciple_tools' ); ?>
                 </span>
             </div>
@@ -488,7 +488,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                     <span class="edit-icon"></span>
                                 </div>
 
-
                                 <!-- START TOGGLED ITEMS -->
                                 <div class="field-settings-table-child-toggle">
                                     <?php foreach ( $field_settings as $key => $value ) : ?>
@@ -521,7 +520,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <!-- END TOGGLED FIELD ITEMS -->
                     <div class="field-settings-table-field-name expandable">
                         <span class="sortable">⋮⋮</span>
-                        <span class="field-name-content" data-key="_add_new_field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">    
+                        <span class="field-name-content add-new-field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">    
                             <?php echo esc_html( 'add new field', 'disciple_tools' ); ?>
                         </span>
                     </div>
@@ -587,7 +586,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             }
             .field-settings-table {
                 display: table;
-                width: 50%;
+                min-width: 50%;
             }
             .field-settings-table-tile-name {
                 display: flex;
@@ -669,9 +668,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             }
             .field-element {
                 margin-left: 18px;
-            }
-            .add-new-field {
-                margin: 8px 0 0 18px;
             }
             .new-custom-field {
                 display: block;
