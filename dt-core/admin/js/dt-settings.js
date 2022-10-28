@@ -384,7 +384,7 @@ jQuery(document).ready(function($) {
 
     $('#modal-overlay-form').on('click', '#js-edit-tile', function(e) {
         var post_type = window.field_settings.post_type;
-        var tile_key = $(this).data('key');
+        var tile_key = $(this).data('tile-key');
         var tile_label = $(`#edit-tile-label-${tile_key}`).val();
         API.edit_tile(post_type, tile_key, tile_label).promise().then(function() {
             $(`#tile-key-${tile_key}`).html(tile_label);
