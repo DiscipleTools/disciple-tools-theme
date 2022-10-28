@@ -521,12 +521,15 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <!-- END TOGGLED FIELD ITEMS -->
                     <div class="field-settings-table-field-name expandable">
                         <span class="sortable">⋮⋮</span>
-                        <span class="field-name-content" data-key="_add_new_field">    
+                        <span class="field-name-content" data-key="_add_new_field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">    
                             <?php echo esc_html( 'add new field', 'disciple_tools' ); ?>
                         </span>
                     </div>
                 </div>
             <?php endforeach; ?>
+            <div class="add-new-link">
+                <a href="#" id="add-new-tile-link"><?php echo esc_html( 'add new tile', 'disciple_tools' ); ?></a>
+            </div>
         </div>
         <!-- END TABLE -->
         <?php
@@ -633,6 +636,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 background-repeat: no-repeat;
                 margin-left: auto;
                 margin-right: 8px;
+            }
+            .add-new-link {
+                margin: 8px 0 0 8px;
             }
             .dt-admin-modal-box-close-button {
                 text-align: right;
