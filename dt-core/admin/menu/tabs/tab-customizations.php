@@ -69,6 +69,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
         wp_localize_script(
             'dt-settings', 'field_settings', array(
+            'all_post_types' => self::get_all_post_types(),
             'post_type' => $post_type,
             'post_type_label' => DT_Posts::get_label_for_post_type( $post_type ),
             'post_type_settings' => $post_settings,
@@ -115,6 +116,15 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $this->show_tab_content();
             // $this->save_settings();
         self::template( 'end' );
+    }
+
+    public static function get_all_post_types() {
+        $all_post_types = [];
+        $post_type_keys = DT_Posts::get_post_types();
+        foreach ( $post_type_keys as $key ) {
+            $all_post_types[$key] = DT_Posts::get_label_for_post_type( $key );
+        }
+        return $all_post_types;
     }
 
     public static function load_overlay_modal() {

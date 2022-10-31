@@ -260,6 +260,8 @@ jQuery(document).ready(function($) {
 
     function loadAddFieldContentBox(tile_key) {
         post_type = get_post_type();
+        all_post_types = window.field_settings.all_post_types;
+        selected_post_type_label =all_post_types[post_type];
         var modal_html_content = `
             <tr>
                 <th colspan="2">
@@ -273,7 +275,7 @@ jQuery(document).ready(function($) {
                     <label><b>Post Type</label></b>
                 </td>
                 <td>
-                    ${post_type}
+                    ${selected_post_type_label}
                 </td>
             </tr>
 
@@ -303,7 +305,7 @@ jQuery(document).ready(function($) {
                     <label for="tile_label"><b>Field Type</b></label>
                 </td>
                 <td>
-                    <select id="new-field-type-${tile_key}" name="new_field_type" required>
+                    <select id="new-field-type-${tile_key}" name="new-field-type" required>
                         <option></option>
                         <option value="key_select">Dropdown</option>
                         <option value="multi_select">Multi Select</option>
@@ -315,6 +317,43 @@ jQuery(document).ready(function($) {
                         <option value="date">Date</option>
                         <option value="connection">Connection</option>
                     </select>
+                </td>
+            </tr>
+
+            <tr class="connection_field_target_row" style="display: none;">
+                <td><label for="connection-target"><b>Connected To</label></b></td>
+                <td>
+                    <select name="connection-target" id="connection-field-target">
+                        <option></option>`;
+
+                        $.each(all_post_types, function(k,v) {
+                            modal_html_content += `
+                            <option value="${k}">
+                                ${v}
+                            </option>`;
+                        });
+
+                    modal_html_content += `</select>
+                </td>
+            </tr>
+
+            <tr class="same_post_type_row" style="display: none">
+                <td>
+                    Bi-directional
+                </td>
+                <td>
+                        <input type="checkbox" id="multidirectional_checkbox" name="multidirectional" checked>
+                </td>
+            </tr>
+
+
+            <tr class="connection_field_reverse_row" style="display: none;">
+                <td>
+                    Field name when shown on:
+                    <span class="connected_post_type"></span>
+                </td>
+                <td>
+                    <input name="other_field_name" id="other_field_name">
                 </td>
             </tr>
 
@@ -337,6 +376,35 @@ jQuery(document).ready(function($) {
         `;
         $('#modal-overlay-content-table').html(modal_html_content);
     }
+
+    console.log(7);
+
+    // Display 'connected to' dropdown if 'connection' post type field is selected    
+    $('.dt-admin-modal-box').on('change', '[id^=new-field-type-]', function() {
+        if ( $(this).val() === 'connection' ) {
+            $('.connection_field_target_row').show();
+        } else {
+            $('.connection_field_target_row').hide();
+            $('.same_post_type_row').hide();
+            $('.connection_field_reverse_row').hide();
+            $('#connection-field-target option').prop('selected', false);
+        }
+    });
+
+    $('.dt-admin-modal-box').on('change', '#connection-field-target', function() {
+        var selected_field_target = $(this).find(':selected').val();
+        if ( selected_field_target === window.post_type ) {
+            $('.connection_field_reverse_row').hide();
+            $('.same_post_type_row').show();
+        } else {
+            $('.same_post_type_row').hide();
+            $('.connection_field_reverse_row').show();
+            var selected_field_target_label = window.field_settings.all_post_types[selected_field_target];
+            $('.connected_post_type').text(selected_field_target_label);
+        }
+
+
+    });
 
     function loadEditFieldContentBox(field_data) {
         var tile_key = field_data['tile_key'];
