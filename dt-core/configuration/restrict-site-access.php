@@ -209,7 +209,7 @@ function dt_security_headers_insert() {
         header( 'X-XSS-Protection: 1; mode=block' );
     }
     if ( !$referer_disabled ){
-        header( 'Referrer-Policy: same-origin' );
+        header( 'Referrer-Policy: strict-origin-when-cross-origin' );
     }
     if ( !$content_type_disabled ){
         header( 'X-Content-Type-Options: nosniff' );
