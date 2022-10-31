@@ -572,8 +572,10 @@ jQuery(document).ready(function($) {
         var new_field_name = $(`#new-field-name-${new_field_tile}`).val();
         var new_field_type = $(`#new-field-type-${new_field_tile}`).val();
         var new_field_private = $(`#new-field-private-${new_field_tile}`).is(':checked');
+        var connection_target = $('#connection-field-target').val();
+        var multidirectional = $('#multidirectional_checkbox').is(':checked');
 
-        API.new_field(post_type, new_field_tile, new_field_name, new_field_type, new_field_private).promise().then(function(field_key) {
+        API.new_field(post_type, new_field_tile, new_field_name, new_field_type, new_field_private, connection_target, multidirectional).promise().then(function(field_key) {
             window['field_settings']['post_type_settings']['fields'][field_key] = {
                 'name':new_field_name,
                 'private':new_field_private,
