@@ -441,6 +441,10 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 }
             }
             ?>
+            <h1>Better Mapping and Locations Field</h1>
+            <p>Add a mapbox key for better and more detailed maps and better results when selecting a location on a record.</p>
+            <p>See the docs for more information and examples: <a href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/" target="_blank">Geolocation Docs</a></p>
+
             <form method="post">
                 <table class="widefat striped">
                     <thead>
@@ -475,7 +479,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                     </li>
                                     <li>
                                         Register for a new account (<a href="https://account.mapbox.com/auth/signup/">MapBox.com</a>)<br>
-                                        <em>(email required, no credit card required)</em>
+                                        <em>(email required. A credit card is required, though you will likely not go over the free monthly quota.)</em>
                                     </li>
                                     <li>
                                         Once registered, go to your account home page. (<a href="https://account.mapbox.com/">Account Page</a>)<br>
