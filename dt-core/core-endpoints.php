@@ -387,7 +387,7 @@ class Disciple_Tools_Core_Endpoints {
                 // connection field to the same post type
                 if ( $post_type === $post_submission["connection_target"] ){
                     //default direction to "any". If not multidirectional, then from
-                    $direction = ( isset( $post_submission["multidirectional"] ) && $post_submission["multidirectional"] === 1 ) ? "any" : "from";
+                    $direction = ( isset( $post_submission["multidirectional"] ) && $post_submission["multidirectional"] == 1 ) ? "any" : "from";
                     $custom_field_options[$post_type][$field_key] = [
                         'name'        => $post_submission["new_field_name"],
                         'type'        => 'connection',
@@ -434,67 +434,7 @@ class Disciple_Tools_Core_Endpoints {
                         'customizable' => 'all',
                         'hidden' => isset( $post_submission["disable_other_post_type_field"] )
                     ];
-                }
-            } elseif ( $field_type === "connection" ){
-                if ( !$post_submission["connection_target"] ){
-                    self::admin_notice( __( "Please select a connection target", 'disciple_tools' ), "error" );
-                    return false;
-                }
-                $p2p_key = $post_type . "_to_" . $post_submission["connection_target"];
-                if ( p2p_type( $p2p_key ) !== false ){
-                    $p2p_key = dt_create_field_key( $p2p_key, true );
-                }
-
-                // connection field to the same post type
-                if ( $post_type === $post_submission["connection_target"] ){
-                    //default direction to "any". If not multidirectional, then from
-                    $direction = isset( $post_submission["multidirectional"] ) ? "any" : "from";
-                    $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $post_submission["new_field_name"],
-                        'type'        => 'connection',
-                        "post_type" => $post_submission["connection_target"],
-                        "p2p_direction" => $direction,
-                        "p2p_key" => $p2p_key,
-                        'tile'     => $field_tile,
-                        'customizable' => 'all',
-                    ];
-                    //if not multidirectional, create the reverse direction field
-                    if ( !isset( $post_submission["multidirectional"] ) || is_null( $post_submission["multidirectional"] ) ){
-                        $reverse_name = $post_submission["reverse_connection_name"] ?? $post_submission["new_field_name"];
-                        $custom_field_options[$post_type][$field_key . "_reverse"]  = [
-                            'name'        => $reverse_name,
-                            'type'        => 'connection',
-                            "post_type" => $post_type,
-                            "p2p_direction" => "to",
-                            "p2p_key" => $p2p_key,
-                            'tile'     => "other",
-                            'customizable' => 'all',
-                            'hidden' => isset( $post_submission["disable_reverse_connection"] )
-                        ];
-                    }
-                } else {
-                    $direction = "from";
-                    $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $post_submission["new_field_name"],
-                        'type'        => 'connection',
-                        "post_type" => $post_submission["connection_target"],
-                        "p2p_direction" => $direction,
-                        "p2p_key" => $p2p_key,
-                        'tile'     => $field_tile,
-                        'customizable' => 'all',
-                    ];
-                    //create the reverse fields on the connection post type
-                    $reverse_name = $post_submission["other_field_name"] ?? $post_submission["new_field_name"];
-                    $custom_field_options[$post_submission["connection_target"]][$field_key]  = [
-                        'name'        => $reverse_name,
-                        'type'        => 'connection',
-                        "post_type" => $post_type,
-                        "p2p_direction" => "to",
-                        "p2p_key" => $p2p_key,
-                        'tile'     => "other",
-                        'customizable' => 'all',
-                        'hidden' => isset( $post_submission["disable_other_post_type_field"] )
-                    ];
+                    dt_write_log( $custom_field_options );
                 }
             }
             if ( !empty( $new_field ) ){
