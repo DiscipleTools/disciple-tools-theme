@@ -479,7 +479,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                     </li>
                                     <li>
                                         Register for a new account (<a href="https://account.mapbox.com/auth/signup/">MapBox.com</a>)<br>
-                                        <em>(email required. A credit card is required, though you will likely not go over the free monthly quota.)</em>
+                                        <em>(email required. A credit card might be required, though you will likely not go over the free monthly quota.)</em>
                                     </li>
                                     <li>
                                         Once registered, go to your account home page. (<a href="https://account.mapbox.com/">Account Page</a>)<br>
