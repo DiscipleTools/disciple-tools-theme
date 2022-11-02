@@ -248,6 +248,17 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 }
 
                 return $found;
+            case 'location_meta':
+                $found = false;
+                if ( is_array( $field ) ) {
+                    foreach ( $field as $item ) {
+                        if ( ! $found && isset( $item['label'] ) && strval( $item['label'] ) === strval( $value ) ) {
+                            $found = true;
+                        }
+                    }
+                }
+
+                return $found;
             case 'connection':
                 $found = false;
                 if ( is_array( $field ) ) {
@@ -263,7 +274,6 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 return isset( $field['assigned-to'] ) && strval( $field['assigned-to'] ) === strval( $value );
             case 'array':
             case 'task':
-            case 'location_meta':
             case 'post_user_meta':
             case 'datetime_series':
             case 'hash':
@@ -304,6 +314,17 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 }
 
                 return ! $found;
+            case 'location_meta':
+                $found = false;
+                if ( is_array( $field ) ) {
+                    foreach ( $field as $item ) {
+                        if ( ! $found && isset( $item['label'] ) && strval( $item['label'] ) === strval( $value ) ) {
+                            $found = true;
+                        }
+                    }
+                }
+
+                return ! $found;
             case 'connection':
                 $found = false;
                 if ( is_array( $field ) ) {
@@ -319,7 +340,6 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 return isset( $field['assigned-to'] ) && strval( $field['assigned-to'] ) !== strval( $value );
             case 'array':
             case 'task':
-            case 'location_meta':
             case 'post_user_meta':
             case 'datetime_series':
             case 'hash':
@@ -338,6 +358,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'multi_select':
             case 'communication_channel':
             case 'location':
+            case 'location_meta':
             case 'connection':
                 return isset( $field ) && ! empty( $field );
             case 'date':
@@ -348,7 +369,6 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 return isset( $field['assigned-to'] ) && ! empty( $field['assigned-to'] );
             case 'array':
             case 'task':
-            case 'location_meta':
             case 'post_user_meta':
             case 'datetime_series':
             case 'hash':
@@ -367,6 +387,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'multi_select':
             case 'communication_channel':
             case 'location':
+            case 'location_meta':
             case 'connection':
                 return empty( $field );
             case 'date':
@@ -377,7 +398,6 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 return empty( $field['assigned-to'] );
             case 'array':
             case 'task':
-            case 'location_meta':
             case 'post_user_meta':
             case 'datetime_series':
             case 'hash':
@@ -433,6 +453,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
                     case 'key_select':
                     case 'communication_channel':
                     case 'location':
+                    case 'location_meta':
                     case 'connection':
                     case 'user_select':
                         $current_state = self::condition_contains( $field_type, $field, $action->value );
@@ -521,6 +542,41 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'location': // $value to be location id
                 $updated[ $field_id ]['values']   = [];
                 $updated[ $field_id ]['values'][] = [ 'value' => $value ];
+                break;
+            case 'location_meta':
+                $location = null;
+
+                // Lookup location based on configured mapping api.
+                if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
+                    $lookup = DT_Mapbox_API::lookup( $value );
+                    if ( ! empty( $lookup ) && is_array( $lookup['features'] ) && isset( $lookup['features'][0]['center'] ) ) {
+                        $center   = $lookup['features'][0]['center']; // Select top hit!
+                        $location = [
+                            'label' => $value,
+                            'lng'   => $center[0],
+                            'lat'   => $center[1]
+                        ];
+                    }
+                } elseif ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) {
+                    $query = Disciple_Tools_Google_Geocode_API::query_google_api( $value, 'coordinates_only' );
+                    if ( ! empty( $query ) ) {
+                        $location = [
+                            'label' => $value,
+                            'lng'   => $query['lng'],
+                            'lat'   => $query['lat']
+                        ];
+                    }
+                }
+
+                // If valid lookup, then continue with update.
+                if ( ! empty( $location ) ) {
+                    $updated[ $field_id ]['values']   = [];
+                    $updated[ $field_id ]['values'][] = [
+                        'label' => $location['label'],
+                        'lng'   => $location['lng'],
+                        'lat'   => $location['lat']
+                    ];
+                }
                 break;
         }
 

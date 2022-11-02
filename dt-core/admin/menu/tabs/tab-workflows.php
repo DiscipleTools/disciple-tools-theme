@@ -70,11 +70,41 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                     'dt_utilities_workflows_script', 'dt_workflows', array(
                         'workflows_design_section_hidden_post_types'       => $this->fetch_post_types(),
                         'workflows_design_section_hidden_post_field_types' => $this->fetch_post_field_types(),
-                        'workflows_design_section_hidden_custom_actions'   => $this->fetch_custom_actions()
+                        'workflows_design_section_hidden_custom_actions'   => $this->fetch_custom_actions(),
+                        'mappings'                                         => $this->fetch_mapping_config()
                     )
                 );
             }
         }
+    }
+
+    private function fetch_mapping_config() {
+        $config = [
+            'mapbox' => [
+                'enabled'  => false,
+                'endpoint' => 'https://api.mapbox.com/geocoding/v5/mapbox.places/',
+                'settings' => '.json?types=country,region,postcode,district,place,locality,neighborhood,address&limit=6&access_token=',
+                'key'      => ''
+            ],
+            'google' => [
+                'enabled'  => false,
+                'endpoint' => 'https://maps.googleapis.com/maps/api/geocode/json?address=',
+                'settings' => '&key=',
+                'key'      => ''
+            ]
+        ];
+
+        if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
+            $config['mapbox']['enabled'] = true;
+            $config['mapbox']['key']     = DT_Mapbox_API::get_key();
+        }
+
+        if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) {
+            $config['google']['enabled'] = true;
+            $config['google']['key']     = Disciple_Tools_Google_Geocode_API::get_key();
+        }
+
+        return $config;
     }
 
     public function add_tab( $tab ) {
@@ -788,7 +818,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         return [
             'array',
             'task',
-            'location_meta',
             'post_user_meta',
             'datetime_series',
             'hash'

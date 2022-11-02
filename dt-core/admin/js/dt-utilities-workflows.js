@@ -1234,13 +1234,14 @@ jQuery(function ($) {
           return generate_event_value_defaults(field['defaults']);
         case "location":
           return generate_event_value_locations(base_url);
+        case "location_meta":
+          return generate_event_value_location_meta();
         case "connection":
           return generate_event_value_connections(base_url, field);
         case "user_select":
           return generate_event_value_user_select(base_url);
         case "array":
         case "task":
-        case "location_meta":
         case "post_user_meta":
         case "datetime_series":
         case "hash":
@@ -1306,6 +1307,93 @@ jQuery(function ($) {
         return response;
       }
       return null;
+    }
+
+    function generate_event_value_location_meta() {
+      let response = {};
+      response['id'] = Date.now();
+
+      let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
+      html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing a location..." style="min-width: 100%;" id="${window.lodash.escape(response['id'])}">`;
+      html += '</div></div></div>';
+      response['html'] = html;
+
+      // Determine mapping configuration to be used.
+      let config = {};
+      let mappings = window.dt_workflows.mappings;
+
+      // -- Mapbox
+      if (mappings['mapbox']['enabled']) {
+        config['endpoint'] = {
+          'display': ['id', 'place_name'],
+          'template': '<span>{{place_name}}</span>',
+          'url': mappings['mapbox']['endpoint'] + '{{query}}' + mappings['mapbox']['settings'] + mappings['mapbox']['key'],
+          'done': function (response) {
+            return (response['features']) ? response['features'] : [];
+          }
+        };
+
+        config['id_func'] = function (item) {
+          if (item && item['place_name']) {
+            return item['place_name'];
+          }
+          return null;
+        };
+
+      // -- Google
+      } else if (mappings['google']['enabled']) {
+        config['endpoint'] = {
+          'display': ['formatted_address'],
+          'template': '<span>{{formatted_address}}</span>',
+          'url': mappings['google']['endpoint'] + '{{query}}' + mappings['google']['settings'] + mappings['google']['key'],
+          'done': function (response) {
+            return (response['results']) ? response['results'] : [];
+          }
+        };
+
+        config['id_func'] = function (item) {
+          if (item && item['formatted_address']) {
+            return item['formatted_address'];
+          }
+          return null;
+        };
+
+      // -- Default
+      } else {
+        config['endpoint'] = {
+          'display': [],
+          'template': '<span></span>',
+          'url': '',
+          'done': function (response) {
+            return [];
+          }
+        };
+
+        config['id_func'] = function (item) {
+          return null;
+        };
+      }
+
+      // Typeahead object
+      response['typeahead'] = {
+        endpoint: function (wp_nonce) {
+          return {
+            locations: {
+              display: config['endpoint']['display'],
+              template: config['endpoint']['template'],
+              ajax: {
+                url: config['endpoint']['url'],
+                callback: {
+                  done: config['endpoint']['done']
+                }
+              }
+            }
+          }
+        },
+        id_func: config['id_func']
+      };
+
+      return response;
     }
 
     function generate_event_value_locations(base_url) {
