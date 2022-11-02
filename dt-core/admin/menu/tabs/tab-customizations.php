@@ -398,11 +398,11 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function display_field_rundown_without_tiles() {
         $post_type = self::get_parameter( 'post_type' );
-        $post_tiles = DT_Posts::get_post_settings( $post_type, false );
+        $post_fields = DT_Posts::get_post_field_settings( $post_type, false );
         ?>
         <div class="field-settings-table">
             <!-- START TOGGLED FIELD ITEMS -->
-            <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) :
+            <?php foreach ( $post_fields as $field_key => $field_settings ) :
                 if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' ) : ?>
                     <div class="field-settings-table-field-name">
                         <span class="sortable">⋮⋮</span>

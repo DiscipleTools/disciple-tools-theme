@@ -434,7 +434,6 @@ class Disciple_Tools_Core_Endpoints {
                         'customizable' => 'all',
                         'hidden' => isset( $post_submission["disable_other_post_type_field"] )
                     ];
-                    dt_write_log( $custom_field_options );
                 }
             }
             if ( !empty( $new_field ) ){

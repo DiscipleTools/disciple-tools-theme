@@ -5,7 +5,9 @@ jQuery(document).ready(function($) {
 
     $('.field-settings-table').on('click', '.field-settings-table-tile-name', function() {
         var tile_key = $(this).data('key');
-        show_preview_tile(tile_key);
+        if (tile_key) {
+            show_preview_tile(tile_key);
+        }
     });
 
     $('.field-settings-table').on('click', '.edit-icon', function(){
@@ -261,7 +263,11 @@ jQuery(document).ready(function($) {
     function loadAddFieldContentBox(tile_key) {
         post_type = get_post_type();
         all_post_types = window.field_settings.all_post_types;
-        selected_post_type_label =all_post_types[post_type];
+        selected_post_type_label = all_post_types[post_type];
+        var tile_key_label = tile_key;
+        if (!tile_key) {
+            tile_key_label = `<i>This post type doesn't have any tiles</i>`;
+        }
         var modal_html_content = `
             <tr>
                 <th colspan="2">
@@ -285,7 +291,7 @@ jQuery(document).ready(function($) {
                     <label for="new_tile_name"><b>Tile</b></label>
                 </td>
                 <td>
-                    ${tile_key}
+                    ${tile_key_label}
                 </td>
             </tr>
 
@@ -376,8 +382,6 @@ jQuery(document).ready(function($) {
         `;
         $('#modal-overlay-content-table').html(modal_html_content);
     }
-
-    console.log(7);
 
     // Display 'connected to' dropdown if 'connection' post type field is selected    
     $('.dt-admin-modal-box').on('change', '[id^=new-field-type-]', function() {
@@ -621,8 +625,12 @@ jQuery(document).ready(function($) {
             if(['key_select', 'multi_select'].indexOf(new_field_type) > -1) {
                 new_field_html = new_field_expandable_html;
             }
-            $(`.field-name-content.add-new-field[data-parent-tile-key='${new_field_tile}']`).parent().before(new_field_html);
-            show_preview_tile(new_field_tile);
+            if (new_field_tile){
+                $(`.field-name-content.add-new-field[data-parent-tile-key='${new_field_tile}']`).parent().before(new_field_html);
+                show_preview_tile(new_field_tile);
+            } else {
+                $('.field-name-content.add-new-field').parent().before(new_field_html);
+            }
             closeModal();
         });
     });
