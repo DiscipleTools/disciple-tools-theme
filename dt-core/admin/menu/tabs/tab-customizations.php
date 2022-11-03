@@ -161,7 +161,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public function show_post_type_pills() {
         ?>
-        <div>
+        <div id="post-type-buttons">
             <div style="padding-bottom: 8px;"><b><?php esc_html_e( 'Select a post type:', 'disciple_tools' ); ?></b></div>
         <?php
         $post_types = DT_Posts::get_post_types();
@@ -404,14 +404,14 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <!-- START TOGGLED FIELD ITEMS -->
             <?php foreach ( $post_fields as $field_key => $field_settings ) :
                 if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' ) : ?>
-                    <div class="field-settings-table-field-name">
+                    <div class="field-settings-table-field-name" data-field-name="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="null">
                         <span class="sortable">⋮⋮</span>
                         <span class="field-name-content">
                             <?php echo esc_html( $field_settings['name'] ); ?>
                         </span>
                     </div>
                 <?php else : ?>
-                    <div class="field-settings-table-field-name expandable" data-field-name="<?php echo esc_attr( $field_key ); ?>">
+                    <div class="field-settings-table-field-name expandable" data-field-name="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="null">
                         <span class="sortable">⋮⋮</span>
                         <span class="expand-icon" style="padding-left: 16px;">+</span>
                         <span style="vertical-align: sub;">
