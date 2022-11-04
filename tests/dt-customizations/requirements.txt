@@ -1,6 +1,7 @@
 selenium
 webdriver_manager
 sty
+re
 os
 random
 string
