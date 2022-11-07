@@ -1,12 +1,16 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: Disciple.Tools\n"
+"PO-Revision-Date: 2022-10-28 16:25+0000\n"
+"Last-Translator: Prykon <dario@gospelambition.org>\n"
+"Language-Team: Spanish (Latin America) <https://translate.disciple.tools/"
+"projects/disciple-tools/disciple-tools-theme/es_419/>\n"
+"Language: es_419\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Project-Id-Version: Disciple.Tools\n"
-"Language: es-419\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: 403.php:22
 #: dt-users/template-new-user.php:14
@@ -4993,9 +4997,8 @@ msgid "Create custom filter"
 msgstr "Crear filtro personalizado"
 
 #: dt-reports/magic-url-setup.php:113
-#, fuzzy
 msgid "Send the link via email."
-msgstr "Envíe el enlace por correo electrónico."
+msgstr "Enviar el enlace por correo electrónico."
 
 #: dt-reports/magic-url-setup.php:113
 msgid "Add email address"
@@ -5026,9 +5029,9 @@ msgid "Add Bulk Records?"
 msgstr "¿Agregar registros en bulto?"
 
 #: dt-reports/magic-url-setup.php:150
-#, fuzzy
 msgid "Scan the QR code to open the magic link on a mobile device."
-msgstr "Escanee el código QR para abrir el enlace mágico en un dispositivo móvil."
+msgstr ""
+"Escanea el código QR para abrir el enlace mágico en un dispositivo móvil."
 
 #: dt-assets/functions/details-bar.php:66
 msgctxt "Merge with another record"
@@ -5080,4 +5083,3 @@ msgstr "Primario"
 #: template-merge-post-details.php:167
 msgid "Updated"
 msgstr "Actualizado"
-

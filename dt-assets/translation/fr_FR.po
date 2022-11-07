@@ -1,12 +1,16 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: Disciple.Tools\n"
+"PO-Revision-Date: 2022-11-04 15:32+0000\n"
+"Last-Translator: Corsacca <corsacca@gmail.com>\n"
+"Language-Team: French <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/fr_FR/>\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Project-Id-Version: Disciple.Tools\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: 403.php:22
 #: dt-users/template-new-user.php:14
@@ -4551,7 +4555,7 @@ msgstr "Vous êtes invités a rejoinder %1$s sur %2$s"
 #: dt-notifications/notifications-scheduler.php:140
 #: template-settings.php:479
 msgid "Hourly Digest"
-msgstr ""
+msgstr "Résumé horaire"
 
 #: dt-notifications/notifications-scheduler.php:143
 #: template-settings.php:483
@@ -5079,4 +5083,3 @@ msgstr ""
 #: template-merge-post-details.php:167
 msgid "Updated"
 msgstr ""
-
