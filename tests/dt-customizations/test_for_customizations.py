@@ -12,8 +12,23 @@ import random
 import string
 import time
 import re
+import mysql.connector
 
 hostname = 'http://localhost:10089'
+
+def get_my_db():
+	my_db = mysql.connector.connect(
+	  host = 'localhost',
+	  user = 'root',
+	  password = 'root',
+	  unix_socket = '/Users/dariomanoukian/Library/Application Support/Local/run/ofqsoC0Xr/mysql/mysqld.sock',
+	  database = 'local'
+	)
+	return my_db
+
+def get_db_prefix():
+	db_prefix = 'wp_'
+	return db_prefix
 
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
@@ -23,7 +38,7 @@ driver.implicitly_wait(5)
 
 os.system('clear')
 print('Executing script\n\n')
-input('Press any key to start...')
+#input('Press ENTER key to start...')
 
 longest_output = 0
 
@@ -93,6 +108,23 @@ def send_message(message, indent=False):
 	print(output, end='')
 	calculate_longest_output(output)
 
+def refresh_page():
+	driver.refresh()
+	print('*** Page refreshed ***')
+
+
+### DATABASE FUNCTIONS - START ###	
+def delete_dt_field_customizations():
+	my_db = get_my_db()
+	my_cursor = my_db.cursor()
+	db_prefix = get_db_prefix()
+	my_cursor.execute("DELETE FROM `%soptions` WHERE option_name = 'dt_field_customizations';" % db_prefix)
+	my_db.commit()
+	print('*** DT Field Customizations deleted successfully ***')
+
+### DATABASE FUNCTIONS - END ###	
+
+
 def test_click(message, xpath, indent=False):
 	global driver
 	send_message(message, indent)
@@ -149,35 +181,6 @@ def test_add_tile():
 	select_random_contact_from_contacts_page()
 	test_element_presence("Check '%s' tile is present on post type page" % random_tile_name, "//div[@id='%s-tile']" % random_tile_name_key, True)
 
-
-def test_add_field_tileless(field_type=''):
-	if field_type not in ['expandable', 'non-expandable']:
-		test_not_passed("field type must be 'expandable' or 'non-expandable'\n")
-		exit()
-	print(bolded('\n - Add %s new field to tile-less post type' % field_type))
-	global driver
-	test_click('Click "add new field button"', "//span[contains(@class, 'add-new-field')]", True)
-	test_element_presence('Check Tile label = "This post type doesn\'t have any tiles"', '''//table[@class="modal-overlay-content-table"]/tr/td/i[.="This post type doesn't have any tiles"]''', True)
-	time.sleep(1)
-	random_field_name = random_string(10) + ' Field'
-	random_field_name_key = random_field_name.lower().replace(' ', '_')
-	test_send_keys('Add random New Field Name', "//input[@id='new-field-name-null']", random_field_name, True)
-	
-	if field_type == 'non-expandable':
-		field_type_value = 'text'
-		xpath_new_field_added = "//div[@class='field-settings-table-field-name' and contains(., '%s')]" % random_field_name
-		xpath_new_field_added_data_parent_tile_key = "//div[@class='field-settings-table-field-name' and @data-field-name='%s' and @data-parent-tile-key='null']" % random_field_name_key
-	
-	if field_type == 'expandable':
-		field_type_value = 'key_select'
-		xpath_new_field_added = "//div[@class='field-settings-table-field-name expandable' and contains(., '%s')]" % random_field_name
-		xpath_new_field_added_data_parent_tile_key = "//div[@class='field-settings-table-field-name expandable' and @data-field-name='%s' and @data-parent-tile-key='null']" % random_field_name_key
-	
-	Select(driver.find_element(By.XPATH, "//select[@id='new-field-type-null']")).select_by_value(field_type_value)
-	test_click("Click 'Save' button", "//button[@id='js-add-field']", True)
-	test_element_presence("Check New Field '%s' was added to menu" % random_field_name, xpath_new_field_added, True)
-	test_element_presence("Check New Field has data-parent-tile-key = 'null'", xpath_new_field_added_data_parent_tile_key, True )
-
 def go_to_contacts_page(indent=False):
 	send_message('Go to contacts page', True)
 	try:
@@ -223,8 +226,9 @@ def get_all_tile_keys():
 
 def test_adding_all_collapsable_field_types_for_all_tiles():
 	tile_keys = get_all_tile_keys()
-	print(bolded('Create all collapsable field types for "%s" tile'))
 	for tk in tile_keys:
+		print()
+		print(bolded('Create all collapsable field types for "%s" tile') % tk)
 		test_click('Click "%s" tile menu' % tk, "//div[@data-modal='edit-tile' and @data-key='%s']" % tk, True)
 		all_field_type_values_collapsable = ['key_select', 'multi_select']
 		for aftvc in all_field_type_values_collapsable:
@@ -236,14 +240,15 @@ def test_adding_all_collapsable_field_types_for_all_tiles():
 			Select(driver.find_element(By.XPATH, "//select[@name='new-field-type']")).select_by_value(aftvc)
 			test_click('Adding "%s" %s type field' % (random_field_name, aftvc), "//button[@id='js-add-field' and @data-tile-key='%s']" % tk, True)
 			test_element_presence('Check New "%s" type field "%s" was added to "%s" tile' % (aftvc, random_field_name, tk), "//div[@class='field-settings-table-field-name expandable' and @data-field-name='%s' and @data-parent-tile-key='%s']" % (random_field_name_key, tk), True)
-	test_click('Close "%s" tile menu in order to avoid viewport scroll issues' % tk, "//div[@data-modal='edit-tile' and @data-key='%s']" % tk, True)
+		delete_dt_field_customizations()
+		refresh_page()
 	print()
 
 def test_adding_all_non_collapsable_field_types_for_all_tiles():
 	tile_keys = get_all_tile_keys()
-	print(bolded('Create all non-collapsable field types for "%s" tile'))
 	for tk in tile_keys:
-		test_click('Click "%s" tile menu' % tk, "//div[@data-modal='edit-tile' and @data-key='%s']" % tk, True)
+		print()
+		print(bolded('Create all non-collapsable field types for "%s" tile') % tk)
 		all_field_type_values_non_collapsable = ['tags', 'text', 'textarea', 'number', 'link', 'date']
 		for aftvnc in all_field_type_values_non_collapsable:
 			print(bolded('   └ Starting "%s" field type (non-collapsable)' % aftvnc), True)
@@ -254,16 +259,11 @@ def test_adding_all_non_collapsable_field_types_for_all_tiles():
 			Select(driver.find_element(By.XPATH, "//select[@name='new-field-type']")).select_by_value(aftvnc)
 			test_click('Adding "%s" %s type field' % (random_field_name, aftvnc), "//button[@id='js-add-field' and @data-tile-key='%s']" % tk, True)
 			test_element_presence('Check New "%s" type field "%s" was added to "%s" tile' % (aftvnc, random_field_name, tk), "//div[@class='field-settings-table-field-name' and @data-field-name='%s' and @data-parent-tile-key='%s']" % (random_field_name_key, tk), True)
+		delete_dt_field_customizations()
 	test_click('Close "%s" tile menu in order to avoid viewport scroll issues' % tk, "//div[@data-modal='edit-tile' and @data-key='%s']" % tk, True)
 	print()
 
 login('admin', 'admin')
-test_click('Click on "peoplegroups" post_type button', "//div[@id='post-type-buttons']/a[contains(@href,'post_type=peoplegroups')]")
-test_click('Click post_type "Tiles" tab', "//a[contains(@class, 'nav-tab')][2]")
-test_add_field_tileless('non-expandable')
-test_add_field_tileless('expandable')
-print()
-scroll_to_top()
 test_click('Click on "contacts" post_type button', "//div[@id='post-type-buttons']/a[contains(@href,'post_type=contacts')]")
 test_click('Click post_type "Tiles" tab', "//a[contains(@class, 'nav-tab')][2]")
 test_adding_all_collapsable_field_types_for_all_tiles()
