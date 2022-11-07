@@ -203,12 +203,16 @@ $dt_nav_tabs = dt_default_menu_array();
                         <ul class="submenu menu vertical title-bar-right add-new-items-dropdown">
                             <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) : ?>
                                 <?php foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) : ?>
-                                    <li>
-                                        <a class="add-new-menu-item" href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
-                                            <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>" src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri()  . '/dt-assets/images/circle-add-green.svg' ) ?>">
-                                            <?php echo esc_html( $dt_nav_submenu['label'] ); ?>
-                                        </a>
-                                    </li>
+                                    <?php if ( isset( $dt_nav_submenu['hidden'] ) && ! $dt_nav_submenu['hidden'] ) { ?>
+                                        <li>
+                                            <a class="add-new-menu-item"
+                                               href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
+                                                <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>"
+                                                     src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ) ?>">
+                                                <?php echo esc_html( $dt_nav_submenu['label'] ); ?>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </ul>
