@@ -769,15 +769,24 @@ window.SHAREDFUNCTIONS = {
     $(selector).html(elem_text)
   },
   addLink(e) {
-    fieldKey = e.target.dataset['fieldKey']
+    let fieldKey = e.target.dataset['fieldKey']
+    let linkType = e.target.dataset['linkType']
+    let onlyOneOption = e.target.dataset['onlyOneOption']
 
-    linkType = $(this).siblings(".link-type").val()
+    const linkList = document.querySelector(`.link-list-${fieldKey} .link-section--${linkType}`)
 
-    const linkList = $(`.link-list-${fieldKey}`)
+    const template = document.querySelector(`#link-template-${fieldKey}-${linkType}`).querySelector('.input-group')
 
-    const template = $(`#link-template-${fieldKey}-${linkType}`)
+    const newInputGroup = $(template).clone(true);
+    const newInput = newInputGroup[0].querySelector('input')
+    $(linkList).append(newInputGroup)
+    newInput.focus()
 
-    linkList.append(template.clone(true).removeAttr('id').show())
+    if ( onlyOneOption !== '' ) {
+      linkList.querySelector('.section-subheader').style.display = 'block'
+    }
+
+    $(".grid").masonry("layout"); //resize or reorder tile
   }
 };
 

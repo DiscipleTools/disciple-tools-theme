@@ -10,35 +10,35 @@ class DT_Posts_DT_Posts_List_Posts extends WP_UnitTestCase {
         'title'              => 'Bob',
         'overall_status'     => 'active',
         'milestones'         => [
-            "values" => [
-                [ "value" => 'milestone_has_bible' ],
-                [ "value" => "milestone_baptizing" ]
+            'values' => [
+                [ 'value' => 'milestone_has_bible' ],
+                [ 'value' => 'milestone_baptizing' ]
             ]
         ],
-        'baptism_date'       => "2018-12-31",
-        "location_grid"      => [ "values" => [ [ "value" => '100089589' ] ] ],
-        "assigned_to"        => "1",
-        "requires_update"    => true,
-        "nickname"           => "Bob the builder",
-        "contact_phone"      => [ "values" => [ [ "value" => "798456780" ] ] ],
-        "contact_email"      => [ "values" => [ [ "value" => "bob@example.com" ] ] ],
-        "tags"               => [ "values" => [ [ "value" => "tag1" ] ] ],
+        'baptism_date'       => '2018-12-31',
+        'location_grid'      => [ 'values' => [ [ 'value' => '100089589' ] ] ],
+        'assigned_to'        => '1',
+        'requires_update'    => true,
+        'nickname'           => 'Bob the builder',
+        'contact_phone'      => [ 'values' => [ [ 'value' => '798456780' ] ] ],
+        'contact_email'      => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
+        'tags'               => [ 'values' => [ [ 'value' => 'tag1' ] ] ],
         'baptism_generation' => 4
     ];
 
     public static $sample_group = [
         'name'          => 'Bob\'s group',
         'group_type'    => 'church',
-        "location_grid" => [ "values" => [ [ "value" => '100089589' ] ] ],
-        "member_count"  => 5
+        'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
+        'member_count'  => 5
     ];
 
     public static $contact = null;
     public static $group = null;
 
     public static function setupBeforeClass(): void  {
-        self::$contact = DT_Posts::create_post( "contacts", self::$sample_contact, true, false );
-        self::$group   = DT_Posts::create_post( "groups", self::$sample_group, true, false );
+        self::$contact = DT_Posts::create_post( 'contacts', self::$sample_contact, true, false );
+        self::$group   = DT_Posts::create_post( 'groups', self::$sample_group, true, false );
     }
 
     /**

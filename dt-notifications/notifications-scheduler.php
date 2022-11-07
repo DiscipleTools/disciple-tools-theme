@@ -99,8 +99,8 @@ class Disciple_Tools_Notifications_Scheduler {
         $notifications_by_user_by_post = [];
         // sort the notifications by user, and then by record
         foreach ( $unsent_notifications as $notification ) {
-            $user_id = $notification["user_id"];
-            $post_id = $notification["post_id"];
+            $user_id = $notification['user_id'];
+            $post_id = $notification['post_id'];
             if ( ! isset( $notifications_by_user_by_post[$user_id] ) ) {
                 $notifications_by_user_by_post[$user_id] = [];
             }
@@ -137,10 +137,10 @@ class Disciple_Tools_Notifications_Scheduler {
             $subject = '';
             switch ( $time_schedule ) {
                 case 'hourly':
-                    $subject = esc_html__( "Hourly Digest", "disciple_tools" );
+                    $subject = esc_html__( 'Hourly Digest', 'disciple_tools' );
                     break;
                 case 'daily':
-                    $subject = esc_html__( "Daily Digest", "disciple_tools" );
+                    $subject = esc_html__( 'Daily Digest', 'disciple_tools' );
                     break;
                 default:
                     break;
@@ -169,7 +169,7 @@ class Disciple_Tools_Notifications_Scheduler {
         $seconds = $date->format( 's' );
         $minutes = $date->format( 'i' );
         if ( $minutes > 0 ) {
-            $date->modify( "+1 hour" );
+            $date->modify( '+1 hour' );
             $date->modify( '-' . $minutes . ' minutes' );
         }
         $date->modify( "-$seconds seconds" );
@@ -186,7 +186,7 @@ class Disciple_Tools_Notifications_Scheduler {
         $date = new DateTime( $date_string );
         $hours = intval( $date->format( 'G' ) );
         if ( $hours < $scheduled_hour ) {
-            $date->modify( "+1 day" );
+            $date->modify( '+1 day' );
         }
         $date->setTime( $scheduled_hour, 0 );
 

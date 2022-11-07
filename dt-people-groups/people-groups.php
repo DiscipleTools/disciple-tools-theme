@@ -17,15 +17,17 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_People_Groups
 {
+    public static $option_key_settings_display_tab = 'dt_people_groups_display_tab';
+
     /**
      * Get JP csv file contents and return as array.
      * @return array
      */
     public static function get_jp_source() {
         $jp_csv = [];
-        $handle = fopen( __DIR__ . "/csv/jp.csv", "r" );
+        $handle = fopen( __DIR__ . '/csv/jp.csv', 'r' );
         if ( $handle !== false ) {
-            while ( ( $data = fgetcsv( $handle, 0, "," ) ) !== false ) {
+            while ( ( $data = fgetcsv( $handle, 0, ',' ) ) !== false ) {
                 $jp_csv[] = $data;
             }
             fclose( $handle );
@@ -39,9 +41,9 @@ class Disciple_Tools_People_Groups
      */
     public static function get_imb_source() {
         $imb_csv = [];
-        $handle = fopen( __DIR__ . "/csv/imb.csv", "r" );
+        $handle = fopen( __DIR__ . '/csv/imb.csv', 'r' );
         if ( $handle !== false ) {
-            while ( ( $data = fgetcsv( $handle, 0, "," ) ) !== false ) {
+            while ( ( $data = fgetcsv( $handle, 0, ',' ) ) !== false ) {
                 $imb_csv[] = $data;
             }
             fclose( $handle );
@@ -265,33 +267,73 @@ class Disciple_Tools_People_Groups
         }
     }
 
+    public static function admin_display_settings_tab_table( $enabled_on_click = true ) {
+        ?>
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <th colspan="1"><?php echo esc_html( __( 'Display Options', 'disciple_tools' ) ); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <?php
+                    echo esc_html( __( 'Display People Groups Tab in Navigation Bar', 'disciple_tools' ) );
+                    $display_in_tab_html = get_option( self::$option_key_settings_display_tab ) ? 'checked' : '';
+                    $on_click_html       = $enabled_on_click ? 'onclick=update_setting_options();' : '';
+                    ?>
+                    &nbsp;<input type="checkbox" name="display_people_group_tab"
+                                 id="display_people_group_tab" <?php echo esc_html( $on_click_html . ' ' . $display_in_tab_html ); ?>>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <?php
+    }
 
     public static function admin_tab_table() {
         $names = self::get_country_dropdown();
+
+        self::admin_display_settings_tab_table();
         ?>
-        <select id="group-search">
-            <?php foreach ( $names as $name ) :
-                echo '<option value="'.esc_attr( $name ).'">'.esc_attr( $name ).'</option>';
-            endforeach; ?>
-        </select>
-        <button class="button" id="search_button" onclick="group_search()">Get List</button>
         <br><br>
-        <a id="add_all_groups" href="javascript:void(0)" style="display:none;">add all groups</a>
-        <script>
-            function add_all(){
-                jQuery.each(jQuery('#results button'), function(i,v){
-                    console.log(v.id)
-                    task(v.id);
-                })
-                function task(i) {
-                    setTimeout(function() {
-                        console.log(i);
-                        jQuery('#'+i).click()
-                    }, 4000 * i);
-                }
-            }
-        </script>
-        <div id="results"></div>
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <th colspan="1"><?php echo esc_html( __( 'Import People Group', 'disciple_tools' ) ); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <select id="group-search">
+                        <?php foreach ( $names as $name ) :
+                            echo '<option value="'.esc_attr( $name ).'">'.esc_attr( $name ).'</option>';
+                        endforeach; ?>
+                    </select>
+                    <button class="button" id="search_button" onclick="group_search()">Get List</button>
+                    <br><br>
+                    <a id="add_all_groups" href="javascript:void(0)" style="display:none;">add all groups</a>
+                    <script>
+                        function add_all(){
+                            jQuery.each(jQuery('#results button'), function(i,v){
+                                console.log(v.id)
+                                task(v.id);
+                            })
+                            function task(i) {
+                                setTimeout(function() {
+                                    console.log(i);
+                                    jQuery('#'+i).click()
+                                }, 4000 * i);
+                            }
+                        }
+                    </script>
+                    <div id="results"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
         <?php
     }
 
@@ -301,8 +343,8 @@ class Disciple_Tools_People_Groups
      * @return array|WP_Error
      */
     public static function get_people_groups_compact( $search ) {
-        if ( !current_user_can( "access_contacts" ) ){
-            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
+        if ( !current_user_can( 'access_contacts' ) ){
+            return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
         }
         $locale = get_user_locale();
         $query_args = [
@@ -317,16 +359,16 @@ class Disciple_Tools_People_Groups
         $list = [];
         foreach ( $query->posts as $post ) {
             $translation = get_post_meta( $post->ID, $locale, true );
-            if ( $translation !== "" ) {
+            if ( $translation !== '' ) {
                 $label = $translation;
             } else {
                 $label = $post->post_title;
             }
 
             $list[] = [
-            "ID" => $post->ID,
-            "name" => $post->post_title,
-            "label" => $label
+            'ID' => $post->ID,
+            'name' => $post->post_title,
+            'label' => $label
             ];
         }
         $meta_query_args = [
@@ -346,15 +388,15 @@ class Disciple_Tools_People_Groups
         $meta_query = new WP_Query( $meta_query_args );
         foreach ( $meta_query->posts as $post ) {
             $translation = get_post_meta( $post->ID, $locale, true );
-            if ( $translation !== "" ) {
+            if ( $translation !== '' ) {
                 $label = $translation;
             } else {
                 $label = $post->post_title;
             }
             $list[] = [
-            "ID" => $post->ID,
-            "name" => $post->post_title,
-            "label" => $label
+            'ID' => $post->ID,
+            'name' => $post->post_title,
+            'label' => $label
             ];
         }
 
@@ -365,10 +407,16 @@ class Disciple_Tools_People_Groups
         }, $list ) ) );
 
         return [
-        "total" => $total_found_posts,
-        "posts" => $list
+        'total' => $total_found_posts,
+        'posts' => $list
         ];
     }
 
+    public static function update_setting_options( $settings ): array {
+        if ( isset( $settings['display_tab'] ) ) {
+            update_option( self::$option_key_settings_display_tab, ! empty( $settings['display_tab'] ) );
+        }
 
+        return [];
+    }
 }

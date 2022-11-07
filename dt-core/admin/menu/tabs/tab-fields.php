@@ -75,7 +75,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
             <?php wp_nonce_field( 'post_type_select', 'post_type_select_nonce', false, true ) ?>
             <select name="post_type">
             <?php foreach ( $post_types as $post_type ) : ?>
-                <option value="<?php echo esc_html( $post_type ); ?>" <?php echo $post_type === $type ? "selected" : "" ?> ><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></option>
+                <option value="<?php echo esc_html( $post_type ); ?>" <?php echo $post_type === $type ? 'selected' : '' ?> ><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></option>
             <?php endforeach; ?>
             </select>
             <button class="button" type="submit">Select</button>
@@ -92,10 +92,10 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
         <p>Note: Here are this fields available on this Instance. Some are default fields, some are installed by plugins or in the settings page.</p>
         <?php
 
-        $fields = $post_settings["fields"];
+        $fields = $post_settings['fields'];
 
         /* breadcrumb: new-field-type Add field type to field explorer */
-        $types = [ "text", "textarea", "date", 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'number', 'link', 'communication_channel', 'tags', 'user_select', 'task', 'location', 'location_meta' ];
+        $types = [ 'text', 'textarea', 'date', 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'number', 'link', 'communication_channel', 'tags', 'user_select', 'task', 'location', 'location_meta' ];
         foreach ( $types as $type ){
             ?>
             <h3>Field type: <?php echo esc_html( $type ) ?></h3>
@@ -111,7 +111,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
                 </tr>
             <?php
             foreach ( $fields as $field_key => $field_value ){
-                if ( $type === $field_value["type"] ){
+                if ( $type === $field_value['type'] ){
                     ?>
                     <tr>
                         <td>
@@ -125,35 +125,35 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
                                 <button type="submit" class="button" name="field_selected"><?php esc_html_e( 'Edit', 'disciple-tools' ) ?></button>
                             </form>
                         </td>
-                        <td><?php echo esc_html( $field_value["name"] ) ?></td>
+                        <td><?php echo esc_html( $field_value['name'] ) ?></td>
                         <td><?php echo esc_html( $field_key ) ?></td>
-                        <td><?php echo esc_html( $field_value["type"] ) ?></td>
+                        <td><?php echo esc_html( $field_value['type'] ) ?></td>
                         <td style="text-align: center;">
-                            <?php if ( isset( $field_value["icon"] ) ): ?>
+                            <?php if ( isset( $field_value['icon'] ) ): ?>
 
-                                <img style="max-height: 15px; max-width: 15px;" src="<?php echo esc_html( $field_value["icon"] ) ?>" alt="">
+                                <img style="max-height: 15px; max-width: 15px;" src="<?php echo esc_html( $field_value['icon'] ) ?>" alt="">
 
                             <?php endif; ?>
                         </td>
                         <td>
-                            <?php if ( ( $field_value['type'] === "key_select" || $field_value["type"] === "multi_select" || $field_value['type'] === "link" ) && !empty( $field_value["default"] ) ) : ?>
+                            <?php if ( ( $field_value['type'] === 'key_select' || $field_value['type'] === 'multi_select' || $field_value['type'] === 'link' ) && !empty( $field_value['default'] ) ) : ?>
                             Options:
                             <ul style="margin-top:0; list-style: circle; padding-inline-start: 40px;">
-                                <?php foreach ( $field_value["default"] as $option_key => $option_value ) :
-                                    if ( isset( $option_value["label"] ) ) : ?>
+                                <?php foreach ( $field_value['default'] as $option_key => $option_value ) :
+                                    if ( isset( $option_value['label'] ) ) : ?>
                                     <li>
-                                        <?php if ( isset( $option_value["icon"] ) ) : ?>
+                                        <?php if ( isset( $option_value['icon'] ) ) : ?>
 
-                                            <img style="max-height: 15px; max-width: 15px;" src="<?php echo esc_html( $option_value["icon"] ) ?>" alt="">
+                                            <img style="max-height: 15px; max-width: 15px;" src="<?php echo esc_html( $option_value['icon'] ) ?>" alt="">
 
                                         <?php endif; ?>
-                                        <?php echo esc_html( $option_key ) ?> => <?php echo esc_html( $option_value["label"] ) ?></li>
+                                        <?php echo esc_html( $option_key ) ?> => <?php echo esc_html( $option_value['label'] ) ?></li>
                                     <?php endif;
                                 endforeach; ?>
                             </ul>
                             <?php elseif ( $field_value['type'] === 'connection' ): ?>
-                                p2p_key: <?php echo esc_html( $field_value["p2p_key"] ) ?> <br>
-                                p2p_direction: <?php echo esc_html( $field_value["p2p_direction"] ) ?>
+                                p2p_key: <?php echo esc_html( $field_value['p2p_key'] ) ?> <br>
+                                p2p_direction: <?php echo esc_html( $field_value['p2p_direction'] ) ?>
                             <?php endif; ?>
                         </td>
                     </tr>

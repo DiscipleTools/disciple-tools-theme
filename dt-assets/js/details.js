@@ -214,22 +214,25 @@ jQuery(document).ready(function($) {
   // Clicking the plus sign next to the field label
   $('button.add-button').on('click', e => {
     const field = $(e.currentTarget).data('list-class')
-    const fieldType = $(e.currentTarget).data('field-type')
     const $list = $(`#edit-${field}`)
 
-    if (fieldType === 'link') {
-      const addLinkForm = $(`.add-link-${field}`)
-      addLinkForm.show()
+    $list.append(`<div class="input-group">
+          <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
+          <div class="input-group-button">
+          <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
+          </div></div>`)
+   })
 
-      $(`#cancel-link-button-${field}`).on('click', () => addLinkForm.hide())
-    } else {
-      $list.append(`<div class="input-group">
-            <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
-            <div class="input-group-button">
-            <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
-            </div></div>`)
-    }
+  $('.add-link-dropdown[data-only-one-option]').on('click', window.SHAREDFUNCTIONS.addLink)
+
+  $('.add-link__option').on('click', (event) => {
+    SHAREDFUNCTIONS.addLink(event)
+    $(event.target).parent().hide()
+    setTimeout(() => {
+      event.target.parentElement.removeAttribute('style')
+    }, 100)
   })
+
   $(document).on('click', '.channel-delete-button', function(){
     let field = $(this).data('field')
     let key = $(this).data('key')
@@ -258,7 +261,7 @@ jQuery(document).ready(function($) {
     let metaId = $(this).data('meta-id')
     let fieldKey = $(this).data('field-key')
 
-    $(this).closest('.link-section').remove()
+    $(this).closest('.input-group').remove()
 
     if (!metaId || metaId === "") {
       return
@@ -365,7 +368,6 @@ jQuery(document).ready(function($) {
   /**
    * Links
    */
-  $('.add-link-button').on('click', SHAREDFUNCTIONS.addLink)
 
   /**
    * user select typeahead
@@ -477,11 +479,7 @@ jQuery(document).ready(function($) {
           }
         },
         href: function (item) {
-          if (listing_post_type === 'peoplegroups') {
-            return null;
-          } else {
-            return window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`
-          }
+          return window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`
         }
       },
       callback: {

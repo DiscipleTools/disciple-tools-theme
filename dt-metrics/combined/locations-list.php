@@ -27,7 +27,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
 
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'list_scripts' ], 99 );
 
@@ -89,7 +89,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
         register_rest_route(
             $this->namespace, '/data', [
                 [
-                    'methods'  => "GET",
+                    'methods'  => 'GET',
                     'callback' => [ $this, 'system_map_endpoint' ],
                     'permission_callback' => '__return_true',
                 ],
@@ -99,11 +99,11 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
 
     public function system_map_endpoint( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {
-            return new WP_Error( "location_list", "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( 'location_list', 'Missing Permissions', [ 'status' => 400 ] );
         }
         $params = $request->get_params();
 
-        return $this->data( isset( $params["refresh"] ) && $params["refresh"] === "true" );
+        return $this->data( isset( $params['refresh'] ) && $params['refresh'] === 'true' );
     }
 
     public function add_contacts_column( $data ) {
@@ -125,7 +125,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( "contacts", [ "overall_status" => [ "-closed" ], "type" => [ "access" ] ] );
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['count'] > 0 ) { // filter for only contact and positive counts
@@ -170,7 +170,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( "groups", [ "group_type" => [ "group" ] ] );
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'groups', [ 'group_type' => [ 'group' ] ] );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['count'] > 0 ) { // filter for only contact and positive counts
@@ -215,7 +215,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( "groups", [ "group_type" => [ "church" ] ] );
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'groups', [ 'group_type' => [ 'church' ] ] );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['count'] > 0 ) { // filter for only contact and positive counts

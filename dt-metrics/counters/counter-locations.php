@@ -39,9 +39,9 @@ class Disciple_Tools_Counter_Locations extends Disciple_Tools_Counter_Base
             case 'total':
 
                 global $wpdb;
-                $results = $wpdb->get_results( $wpdb->prepare("
+                $results = $wpdb->get_results( $wpdb->prepare('
                     
-                    ",
+                    ',
                     $wpdb->esc_like( $year ) . '%'
                 ), ARRAY_A );
 

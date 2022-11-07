@@ -27,7 +27,7 @@ class Disciple_Tools_Metrics_Menu
     }
 
     public function __construct() {
-        add_action( "admin_menu", [ $this, "add_dt_metrics_menu" ] );
+        add_action( 'admin_menu', [ $this, 'add_dt_metrics_menu' ] );
     }
 
     public function add_dt_metrics_menu() {
@@ -40,7 +40,7 @@ class Disciple_Tools_Metrics_Menu
             wp_die( 'You do not have sufficient permissions to access this page.' );
         }
 
-        $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'list';
+        $tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'list';
 
         ?>
         <div class="wrap">

@@ -12,14 +12,14 @@
     } else {
         $can_update = true;
     }
-    if ( $can_update || isset( $post["assigned_to"]["id"] ) && $post["assigned_to"]["id"] == get_current_user_id() ) {
+    if ( $can_update || isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) {
         $disabled = '';
     }
     ?>
     <div class="grid-y bordered-box">
         <h3 class="section-header">
             <span>
-                <?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?>
+                <?php esc_html_e( 'Comments and Activity', 'disciple_tools' ) ?>
                 <span id="comments-activity-spinner" class="loading-spinner"></span>
             </span>
             <button class="help-button" data-section="comments-activity-help-text">
@@ -36,15 +36,15 @@
         <div class="cell grid-x " id="add-comment-section">
             <div class="auto cell">
                 <textarea class="mention" <?php echo esc_html( $disabled ) ?> dir="auto" id="comment-input"
-                          placeholder="<?php echo esc_html_x( "Write your comment or note here", 'input field placeholder', 'disciple_tools' ) ?>"
+                          placeholder="<?php echo esc_html_x( 'Write your comment or note here', 'input field placeholder', 'disciple_tools' ) ?>"
                 ></textarea>
 
-                <?php if ( is_singular( "contacts" ) ) :
+                <?php if ( is_singular( 'contacts' ) ) :
                      $sections = [
                          [
-                             "key" => "comment",
-                             "label" => __( "Comment", 'disciple_tools' ),
-                             "selected_by_default" => true
+                             'key' => 'comment',
+                             'label' => __( 'Comment', 'disciple_tools' ),
+                             'selected_by_default' => true
                          ]
                      ];
                      $post_type = get_post_type();
@@ -52,16 +52,16 @@
 
                         <div class="grid-x">
                             <div class="section-subheader cell shrink">
-                                <?php esc_html_e( "Type:", 'disciple_tools' ) ?>
+                                <?php esc_html_e( 'Type:', 'disciple_tools' ) ?>
                             </div>
                             <select id="comment_type_selector" class="cell auto">
                                 <?php
                                 $section_keys = [];
                                 foreach ( $sections as $section ) {
-                                    if ( !in_array( $section["key"], $section_keys ) ) {
-                                        $section_keys[] = $section["key"] ?>
-                                        <option value="<?php echo esc_html( $section["key"] ); ?>">
-                                        <?php echo esc_html( $section["label"] );
+                                    if ( !in_array( $section['key'], $section_keys ) ) {
+                                        $section_keys[] = $section['key'] ?>
+                                        <option value="<?php echo esc_html( $section['key'] ); ?>">
+                                        <?php echo esc_html( $section['label'] );
                                     }
                                 } ?>
                             </select>
@@ -75,7 +75,7 @@
             </div>
             <div class="shrink cell" id="add-comment-button-container">
                 <button id="add-comment-button" class="button loader <?php echo esc_html( $disabled ); ?>">
-                    <?php esc_html_e( "Submit comment", 'disciple_tools' ) ?>
+                    <?php esc_html_e( 'Submit comment', 'disciple_tools' ) ?>
                 </button>
             </div>
         </div>
@@ -83,46 +83,46 @@
         <div class="cell">
 
             <div>
-                <span style="display: inline-block; margin-right:5px; vertical-align:top; font-weight: bold"><?php esc_html_e( "Showing:", 'disciple_tools' ) ?></span>
+                <span style="display: inline-block; margin-right:5px; vertical-align:top; font-weight: bold"><?php esc_html_e( 'Showing:', 'disciple_tools' ) ?></span>
                 <ul id="comment-activity-tabs" style="display: inline-block; margin: 0">
 
                     <?php
                     $sections = [
                         [
-                            "key" => "comment",
-                            "label" => __( "Comments", 'disciple_tools' ),
-                            "selected_by_default" => true,
-                            "always_show" => true,
+                            'key' => 'comment',
+                            'label' => __( 'Comments', 'disciple_tools' ),
+                            'selected_by_default' => true,
+                            'always_show' => true,
                         ],
                         [
-                            "key" => "activity",
-                            "label" => __( "Activity", 'disciple_tools' ),
-                            "selected_by_default" => true,
-                            "always_show" => true,
+                            'key' => 'activity',
+                            'label' => __( 'Activity', 'disciple_tools' ),
+                            'selected_by_default' => true,
+                            'always_show' => true,
                         ]
                     ];
                     $post_type = get_post_type();
                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );
                     $section_keys = [];
                     foreach ( $sections as $section ) :
-                        if ( isset( $section["key"] ) && isset( $section["label"] ) && !in_array( $section["key"], $section_keys ) ) :
-                            $section_keys[] = $section["key"];
-                            $always_show = isset( $section["always_show"] ) && $section["always_show"] === true;
+                        if ( isset( $section['key'] ) && isset( $section['label'] ) && !in_array( $section['key'], $section_keys ) ) :
+                            $section_keys[] = $section['key'];
+                            $always_show = isset( $section['always_show'] ) && $section['always_show'] === true;
                             ?>
                             <li
                                 class="tabs-title <?php echo esc_html( $always_show ? '' : 'hide' ) ?>"
                                 data-always-show="<?php echo esc_html( $always_show ? 'true' : 'false' ) ?>"
                             >
-                                <label for="tab-button-<?php echo esc_html( $section["key"] ) ?>">
+                                <label for="tab-button-<?php echo esc_html( $section['key'] ) ?>">
                                     <input type="checkbox"
-                                           name="<?php echo esc_html( $section["key"] ) ?>"
-                                           id="tab-button-<?php echo esc_html( $section["key"] ) ?>"
-                                           data-id="<?php echo esc_html( $section["key"] ) ?>"
+                                           name="<?php echo esc_html( $section['key'] ) ?>"
+                                           id="tab-button-<?php echo esc_html( $section['key'] ) ?>"
+                                           data-id="<?php echo esc_html( $section['key'] ) ?>"
                                            class="tabs-section"
                                            checked
                                     >
                                     <span class="tab-button-label" dir="auto"
-                                          data-id="<?php echo esc_html( $section["key"] ) ?>"> <?php echo esc_html( $section["label"] ) ?></span>
+                                          data-id="<?php echo esc_html( $section['key'] ) ?>"> <?php echo esc_html( $section['label'] ) ?></span>
                                 </label>
 
                             </li>
@@ -130,11 +130,11 @@
                     endforeach; ?>
                     <li class="tabs-title">
                         <button id="show-all-tabs"
-                                class="show-tabs"><?php esc_html_e( "show all", 'disciple_tools' ) ?></button>
+                                class="show-tabs"><?php esc_html_e( 'show all', 'disciple_tools' ) ?></button>
                     </li>
                     <li class="tabs-title">
                         <button id="hide-all-tabs"
-                                class="show-tabs"><?php esc_html_e( "hide all", 'disciple_tools' ) ?></button>
+                                class="show-tabs"><?php esc_html_e( 'hide all', 'disciple_tools' ) ?></button>
                     </li>
                 </ul>
             </div>
@@ -160,8 +160,8 @@
             </button>
         </div>
         <div class="delete-comment callout small alert" style="display: none">
-            <h5><?php esc_html_e( "Sorry, something went wrong", 'disciple_tools' ) ?></h5>
-            <p id="delete-comment-error"><?php esc_html_e( "The comment could not be deleted.", 'disciple_tools' ) ?></p>
+            <h5><?php esc_html_e( 'Sorry, something went wrong', 'disciple_tools' ) ?></h5>
+            <p id="delete-comment-error"><?php esc_html_e( 'The comment could not be deleted.', 'disciple_tools' ) ?></p>
         </div>
     </div>
 
@@ -170,27 +170,27 @@
         <textarea id="comment-to-edit" rows="5" dir="auto"></textarea>
         <div class="grid-x">
             <div class="cell small-12" id="edit_typeOfComment">
-                <?php if ( is_singular( "contacts" ) ) :
+                <?php if ( is_singular( 'contacts' ) ) :
                      $sections = [
                          [
-                             "key" => "comment",
-                             "label" => __( "Comments", 'disciple_tools' ),
-                             "selected_by_default" => true
+                             'key' => 'comment',
+                             'label' => __( 'Comments', 'disciple_tools' ),
+                             'selected_by_default' => true
                          ]
                      ];
                      $post_type = get_post_type();
                      $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
                         <div class="section-subheader">
-                            <?php esc_html_e( "Type of Comment", 'disciple_tools' ) ?>
+                            <?php esc_html_e( 'Type of Comment', 'disciple_tools' ) ?>
                         </div>
                         <select id="edit_comment_type_selector" class="">
                             <?php
                             $section_keys = [];
                             foreach ( $sections as $section ) {
-                                if ( !in_array( $section["key"], $section_keys ) ) {
-                                    $section_keys[] = $section["key"] ?>
-                                    <option value="<?php echo esc_html( $section["key"] ); ?>">
-                                    <?php echo esc_html( $section["label"] );
+                                if ( !in_array( $section['key'], $section_keys ) ) {
+                                    $section_keys[] = $section['key'] ?>
+                                    <option value="<?php echo esc_html( $section['key'] ); ?>">
+                                    <?php echo esc_html( $section['label'] );
                                 }
                             } ?>
                         </select>
@@ -207,8 +207,8 @@
             </button>
         </div>
         <div class="edit-comment callout small alert" style="display: none">
-            <h5><?php esc_html_e( "Sorry, something went wrong", 'disciple_tools' ) ?></h5>
-            <p id="edit-comment-error"><?php esc_html_e( "The comment could not be updated.", 'disciple_tools' ) ?></p>
+            <h5><?php esc_html_e( 'Sorry, something went wrong', 'disciple_tools' ) ?></h5>
+            <p id="edit-comment-error"><?php esc_html_e( 'The comment could not be updated.', 'disciple_tools' ) ?></p>
         </div>
     </div>
 

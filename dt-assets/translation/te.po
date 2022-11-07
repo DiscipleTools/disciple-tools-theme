@@ -1,0 +1,5108 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Disciple.Tools\n"
+"Language: te\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: 403.php:22
+#: dt-users/template-new-user.php:14
+msgid "Permission denied"
+msgstr "అనుమతి నిరాకరించబడింది"
+
+#: 403.php:35
+msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
+msgstr "క్షమించండి,% 1 $ s ని id% 2 $ s తో చూడటానికి మీకు అనుమతి లేదు."
+
+#: 403.php:36
+msgid "Request permission from your administrator."
+msgstr "మీ నిర్వాహకుడి నుండి అనుమతి అభ్యర్థించండి."
+
+#: 403.php:39
+#: dt-users/template-new-user.php:273
+msgid "Back"
+msgstr "తిరిగి"
+
+#: 404.php:25
+msgid "Epic 404 - Not Found"
+msgstr "ఎపిక్ 404 - కనుగొనబడలేదు"
+
+#: 404.php:29
+msgid "The page you were looking for was not found or was deleted"
+msgstr "మీరు వెతుకుతున్న పేజీ కనుగొనబడలేదు లేదా తొలగించబడింది"
+
+#: dt-contacts/base-setup.php:351
+#: dt-groups/base-setup.php:125
+#: dt-users/template-user-management.php:94
+#: dt-users/user-management.php:118
+msgid "Active"
+msgstr "యాక్టివ్"
+
+#: dt-assets/parts/nav-topbar.php:279
+#: template-notifications.php:43
+msgid "New"
+msgstr "క్రొత్తది"
+
+#: dt-contacts/access-module.php:189
+msgid "Waiting to be accepted"
+msgstr "అంగీకరించబడటానికి వేచి ఉంది"
+
+#: dt-contacts/duplicates-merging.php:566
+msgid "View Duplicates"
+msgstr "నకిలీలను చూడండి"
+
+#: archive-template.php:63
+#: archive-template.php:150
+msgid "Search"
+msgstr "వెతకండి"
+
+#: dt-contacts/base-setup.php:599
+#: dt-contacts/base-setup.php:607
+#: dt-contacts/base-setup.php:625
+#: dt-contacts/base-setup.php:626
+msgid "Shared with me"
+msgstr "నాతో పంచుకున్నాడు"
+
+#: dt-contacts/access-module.php:117
+#: dt-groups/base-setup.php:142
+#: dt-metrics/groups/tree.php:86
+#: dt-metrics/personal/group-tree.php:87
+msgid "Assigned To"
+msgstr "కేటాయించిన"
+
+#: archive-template.php:703
+#: dt-assets/functions/enqueue-scripts.php:301
+#: dt-posts/custom-post-type.php:166
+msgid "Creation Date"
+msgstr "సృష్టి తేదీ"
+
+#: archive-template.php:694
+msgid "Filter for subassigned OR Assigned To"
+msgstr "కేటాయించిన లేదా కేటాయించిన వాటి కోసం ఫిల్టర్ చేయండి"
+
+#: archive-template.php:731
+#: archive-template.php:732
+#: dt-metrics/combined/time-charts.php:118
+#: dt-posts/posts.php:441
+#: template-settings.php:295
+#: template-settings.php:538
+msgid "No"
+msgstr "లేదు"
+
+#: archive-template.php:738
+#: archive-template.php:739
+#: dt-metrics/combined/time-charts.php:117
+#: dt-posts/posts.php:439
+#: template-settings.php:294
+#: template-settings.php:537
+msgid "Yes"
+msgstr "అవును"
+
+#: archive-template.php:746
+#: archive-template.php:757
+msgctxt "Clear/empty input"
+msgid "Clear"
+msgstr "క్లియర్"
+
+#: archive-template.php:794
+#: dt-assets/functions/enqueue-scripts.php:261
+#: dt-assets/functions/enqueue-scripts.php:296
+#: template-settings.php:681
+msgid "Save"
+msgstr "సేవ్ చేయండి"
+
+#: dt-assets/functions/details-bar.php:44
+#: dt-assets/functions/details-bar.php:243
+#: dt-core/configuration/config-site-defaults.php:361
+#: dt-users/template-user-management.php:93
+#: dt-workflows/update-required.php:70
+#: dt-workflows/update-required.php:109
+msgid "Update Needed"
+msgstr "నవీకరణ అవసరం"
+
+#: dt-contacts/user-module.php:108
+msgid "Make a user from this contact"
+msgstr "ఈ పరిచయం నుండి వినియోగదారుని చేయండి"
+
+#: dt-contacts/user-module.php:115
+msgid "Link to an existing user"
+msgstr "ఇప్పటికే ఉన్న వినియోగదారుకు లింక్ చేయండి"
+
+#: dt-assets/functions/details-bar.php:159
+#: dt-assets/functions/details-bar.php:164
+msgid "Following"
+msgstr "అనుసరిస్తున్నారు"
+
+#: archive-template.php:477
+#: dt-assets/functions/details-bar.php:168
+#: dt-posts/custom-post-type.php:189
+msgid "Follow"
+msgstr "అనుసరించండి"
+
+#: dt-assets/functions/details-bar.php:178
+msgid "Share"
+msgstr "భాగస్వామ్యం చేయండి"
+
+#: archive-template.php:46
+#: archive-template.php:494
+#: dt-assets/parts/loop-activity-comment.php:93
+#: dt-assets/parts/loop-activity-comment.php:177
+#: dt-assets/parts/modals/modal-advanced-search.php:96
+msgid "Comments"
+msgstr "వ్యాఖ్యలు"
+
+#: dt-assets/functions/enqueue-scripts.php:138
+msgid "You don't have any unread notifications"
+msgstr "మీకు చదవని నోటిఫికేషన్‌లు లేవు"
+
+#: dt-assets/functions/enqueue-scripts.php:139
+msgid "You don't have any notifications"
+msgstr "మీకు నోటిఫికేషన్‌లు లేవు"
+
+#: dt-assets/functions/enqueue-scripts.php:220
+msgid "Transfer failed. Check site-to-site configuration."
+msgstr "బదిలీ విఫలమైంది. సైట్ నుండి సైట్ ఆకృతీకరణను తనిఖీ చేయండి."
+
+#: dt-assets/functions/enqueue-scripts.php:120
+#: dt-assets/functions/enqueue-scripts.php:175
+#: dt-assets/functions/enqueue-scripts.php:297
+#: template-settings.php:119
+#: template-settings.php:566
+msgid "Edit"
+msgstr "సవరించండి"
+
+#: dt-assets/functions/enqueue-scripts.php:176
+#: dt-assets/functions/enqueue-scripts.php:210
+#: dt-assets/functions/enqueue-scripts.php:258
+#: dt-assets/functions/enqueue-scripts.php:298
+#: dt-assets/parts/loop-activity-comment.php:156
+#: single-template.php:365
+msgid "Delete"
+msgstr "తొలగించు"
+
+#: dt-assets/functions/enqueue-scripts.php:299
+msgctxt "just copy as they are: _START_ and _TOTAL_"
+msgid "Showing _START_ of _TOTAL_"
+msgstr "_TOTAL_ యొక్క _START_ ని చూపుతోంది"
+
+#: dt-assets/functions/enqueue-scripts.php:300
+msgid "Sorting By"
+msgstr "ద్వారా క్రమబద్ధీకరించడం"
+
+#: dt-assets/functions/enqueue-scripts.php:302
+msgid "Date Modified"
+msgstr "తేదీ సవరించబడింది"
+
+#: dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:63
+#: dt-contacts/base-setup.php:302
+#: dt-mapping/columns/add-contacts-column.php:59
+#: dt-metrics/combined/daily-activity.php:89
+#: dt-metrics/combined/hover-map.php:128
+#: dt-metrics/combined/locations-list.php:121
+#: dt-metrics/contacts/baptism-tree.php:25
+#: dt-metrics/contacts/coaching-tree.php:25
+#: dt-metrics/contacts/mapbox-maps.php:31
+#: dt-metrics/contacts/milestones-map.php:25
+#: dt-metrics/contacts/milestones.php:24
+#: dt-metrics/contacts/overview.php:23
+#: dt-metrics/contacts/seeker-path.php:26
+#: dt-metrics/contacts/sources.php:25
+#: dt-metrics/groups/overview.php:63
+#: dt-metrics/metrics.php:95
+#: dt-metrics/personal/mapbox-contacts-maps.php:31
+#: dt-metrics/personal/overview.php:62
+#: dt-people-groups/people-groups-base.php:154
+#: dt-users/template-user-management.php:602
+msgid "Contacts"
+msgstr "పరిచయాలు"
+
+#: dt-groups/base-setup.php:51
+#: dt-groups/base-setup.php:64
+#: dt-groups/base-setup.php:467
+#: dt-groups/base-setup.php:641
+#: dt-mapping/columns/add-groups-column.php:57
+#: dt-metrics/combined/daily-activity.php:90
+#: dt-metrics/combined/hover-map.php:173
+#: dt-metrics/combined/locations-list.php:166
+#: dt-metrics/groups/mapbox-maps.php:31
+#: dt-metrics/groups/overview.php:23
+#: dt-metrics/groups/overview.php:64
+#: dt-metrics/groups/overview.php:75
+#: dt-metrics/groups/tree.php:24
+#: dt-metrics/metrics.php:99
+#: dt-metrics/personal/mapbox-groups-maps.php:31
+#: dt-metrics/personal/overview.php:63
+#: dt-people-groups/people-groups-base.php:173
+msgid "Groups"
+msgstr "గుంపులు"
+
+#. Template Name of the plugin/theme
+#: dt-metrics/combined/daily-activity.php:86
+#: dt-metrics/metrics.php:116
+msgid "Metrics"
+msgstr "కొలతలు"
+
+#. Template Name of the plugin/theme
+#: dt-assets/functions/menu.php:70
+#: dt-assets/parts/nav-offcanvas.php:50
+#: dt-assets/parts/nav-topbar.php:98
+#: dt-assets/parts/nav-topbar.php:223
+#: template-notifications.php:33
+#: template-settings.php:60
+#: template-settings.php:467
+msgid "Notifications"
+msgstr "నోటిఫికేషన్‌లు"
+
+#. Template Name of the plugin/theme
+#: dt-assets/functions/menu.php:76
+#: dt-assets/functions/menu.php:82
+#: dt-assets/parts/modals/modal-help.php:131
+#: dt-assets/parts/nav-topbar.php:106
+#: dt-assets/parts/nav-topbar.php:311
+#: template-notifications.php:68
+msgid "Settings"
+msgstr "సెట్టింగులు"
+
+#: dt-assets/functions/menu.php:88
+msgid "Admin"
+msgstr "అడ్మిన్"
+
+#: single-template.php:55
+#: single-template.php:63
+msgid "Please provide an update by posting a comment."
+msgstr "దయచేసి వ్యాఖ్యను పోస్ట్ చేయడం ద్వారా నవీకరణను అందించండి."
+
+#: dt-contacts/access-module.php:676
+msgid "This contact has been assigned to you."
+msgstr "ఈ పరిచయం మీకు కేటాయించబడింది."
+
+#: dt-contacts/access-module.php:677
+msgid "Accept"
+msgstr "అంగీకరించు"
+
+#: dt-contacts/access-module.php:678
+msgid "Decline"
+msgstr "క్షీణత"
+
+#: archive-template.php:403
+#: dt-metrics/groups/tree.php:87
+#: dt-metrics/personal/group-tree.php:88
+#: dt-posts/dt-posts.php:1789
+#: dt-users/template-user-management.php:88
+#: dt-users/template-user-management.php:520
+#: single-template.php:78
+msgid "Status"
+msgstr "స్థితి"
+
+#: dt-contacts/dmm-module.php:134
+msgid "Sub-assigned to"
+msgstr "దీనికి ఉప-కేటాయించబడింది"
+
+#: dt-contacts/base-setup.php:257
+#: dt-groups/base-setup.php:383
+#: dt-people-groups/people-groups-base.php:211
+#: template-settings.php:180
+msgid "Address"
+msgstr "చిరునామా"
+
+#: dt-assets/parts/modals/modal-help.php:103
+#: dt-contacts/base-setup.php:239
+#: dt-groups/base-setup.php:364
+#: dt-people-groups/people-groups-base.php:192
+#: dt-people-groups/people-groups-base.php:201
+msgid "Locations"
+msgstr "స్థానాలు"
+
+#: dt-contacts/dmm-module.php:212
+#: dt-groups/base-setup.php:404
+#: dt-people-groups/people-groups-base.php:85
+#: dt-people-groups/people-groups-base.php:95
+msgid "People Groups"
+msgstr "పీపుల్ గ్రూప్స్"
+
+#: dt-contacts/base-setup.php:325
+msgid "Age"
+msgstr "వయస్సు"
+
+#: dt-contacts/access-module.php:1297
+#: dt-contacts/base-setup.php:314
+#: dt-users/template-new-user.php:193
+#: dt-users/template-user-management.php:363
+#: template-settings.php:653
+msgid "Gender"
+msgstr "లింగం"
+
+#: archive-template.php:591
+#: dt-assets/parts/modals/modal-new-contact.php:7
+#: dt-assets/parts/modals/modal-new-contact.php:9
+#: dt-mapping/mapping.php:305
+#: dt-posts/custom-post-type.php:149
+#: template-settings.php:136
+msgid "Name"
+msgstr "పేరు"
+
+#: archive-template.php:232
+msgid "Sort"
+msgstr "క్రమబద్ధీకరించు"
+
+#: archive-template.php:236
+msgid "Newest"
+msgstr "సరికొత్త"
+
+#: archive-template.php:240
+msgid "Oldest"
+msgstr "పురాతన"
+
+#: archive-template.php:244
+msgid "Most recently modified"
+msgstr "ఇటీవల సవరించబడింది"
+
+#: archive-template.php:248
+msgid "Least recently modified"
+msgstr "తక్కువ ఇటీవల సవరించబడింది"
+
+#: dt-contacts/access-module.php:128
+#: dt-metrics/contacts/seeker-path.php:25
+#: dt-metrics/contacts/seeker-path.php:62
+msgid "Seeker Path"
+msgstr "సీకర్ మార్గం"
+
+#. Could be either Hitos or Pilares
+#: dt-contacts/dmm-module.php:59
+msgid "Faith Milestones"
+msgstr "విశ్వాసం మైలురాళ్ళు"
+
+#: dt-groups/base-setup.php:51
+#: dt-groups/base-setup.php:63
+#: dt-groups/base-setup.php:173
+#: dt-metrics/personal/activity-highlights.php:58
+#: dt-metrics/personal/group-tree.php:165
+msgid "Group"
+msgstr "సమూహం"
+
+#: archive-template.php:602
+msgid "Loading..."
+msgstr "లోడ్..."
+
+#: dt-groups/base-setup.php:151
+msgid "Group Coach / Church Planter"
+msgstr "గ్రూప్ కోచ్ / చర్చి ప్లాంటర్"
+
+#: dt-groups/base-setup.php:258
+#: dt-users/template-user-management.php:324
+#: template-settings.php:426
+#: template-settings.php:445
+msgid "Start Date"
+msgstr "ప్రారంబపు తేది"
+
+#: dt-groups/base-setup.php:266
+msgid "Church Start Date"
+msgstr "చర్చి ప్రారంభ తేదీ"
+
+#: dt-groups/base-setup.php:275
+#: dt-users/template-user-management.php:325
+#: template-settings.php:432
+#: template-settings.php:446
+msgid "End Date"
+msgstr "చివరి తేది"
+
+#: dt-assets/parts/loop-activity-comment.php:78
+msgid "Submit comment"
+msgstr "వ్యాఖ్యను సమర్పించండి"
+
+#: archive-template.php:482
+#: dt-assets/parts/loop-activity-comment.php:22
+#: dt-assets/parts/modals/modal-help.php:42
+msgid "Comments and Activity"
+msgstr "వ్యాఖ్యలు మరియు కార్యాచరణ"
+
+#: dt-assets/parts/loop-activity-comment.php:86
+msgid "Showing:"
+msgstr "చూపుతోంది:"
+
+#: dt-assets/parts/loop-activity-comment.php:99
+#: dt-users/template-user-management.php:235
+msgid "Activity"
+msgstr "కార్యాచరణ"
+
+#: dt-assets/parts/loop-activity-comment.php:133
+msgid "show all"
+msgstr "అన్నీ చూపండి"
+
+#: dt-assets/parts/loop-activity-comment.php:137
+msgid "hide all"
+msgstr "అన్నీ దాచండి"
+
+#: dt-assets/parts/loop-activity-comment.php:149
+msgid "Delete Comment:"
+msgstr "వ్యాఖ్యను తొలగించండి:"
+
+#: dt-assets/parts/loop-activity-comment.php:153
+#: dt-assets/parts/loop-activity-comment.php:200
+#: dt-assets/parts/merge-details.php:26
+#: dt-assets/parts/modals/modal-help.php:155
+#: dt-assets/parts/modals/modal-help.php:205
+#: dt-assets/parts/modals/modal-revert.php:15
+#: dt-assets/parts/modals/modal-share.php:50
+#: dt-assets/parts/modals/modal-tasks.php:46
+#: dt-contacts/dmm-module.php:523
+#: dt-groups/base-setup.php:618
+#: dt-users/template-new-user.php:299
+msgid "Close"
+msgstr "దగ్గరగా"
+
+#: dt-assets/parts/loop-activity-comment.php:163
+#: dt-assets/parts/loop-activity-comment.php:210
+#: template-merge-post-details.php:95
+msgid "Sorry, something went wrong"
+msgstr "క్షమించండి, ఏదో తప్పు జరిగింది"
+
+#: dt-assets/parts/loop-activity-comment.php:164
+msgid "The comment could not be deleted."
+msgstr "వ్యాఖ్య తొలగించబడలేదు."
+
+#: dt-assets/parts/loop-activity-comment.php:169
+msgid "Edit Comment:"
+msgstr "వ్యాఖ్యను సవరించండి:"
+
+#: archive-template.php:559
+#: dt-assets/parts/loop-activity-comment.php:203
+#: template-new-bulk-post.php:232
+msgid "Update"
+msgstr "నవీకరణ"
+
+#: dt-assets/parts/loop-activity-comment.php:211
+msgid "The comment could not be updated."
+msgstr "వ్యాఖ్య నవీకరించబడలేదు."
+
+#: dt-assets/parts/merge-details.php:9
+msgid "Duplicate Contacts"
+msgstr "నకిలీ పరిచయాలు"
+
+#: dt-assets/parts/merge-details.php:11
+msgid "Original Contact"
+msgstr "అసలు పరిచయం"
+
+#: dt-assets/parts/merge-details.php:14
+msgid "Possible Duplicates"
+msgstr "సాధ్యమైన నకిలీలు"
+
+#: dt-assets/parts/merge-details.php:15
+msgid "Dismiss All"
+msgstr "అన్నీ తొలగించండి"
+
+#: dt-assets/functions/enqueue-scripts.php:217
+msgid "Dismiss"
+msgstr "రద్దుచేసే"
+
+#: dt-assets/parts/modals/modal-filters.php:3
+#: dt-assets/parts/modals/modal-filters.php:12
+msgid "Save Filter"
+msgstr "ఫిల్టర్‌ను సేవ్ చేయండి"
+
+#: dt-assets/parts/modals/modal-filters.php:4
+msgid "What do you want to call this filter?"
+msgstr "మీరు ఈ ఫిల్టర్‌ను ఏమని పిలవాలనుకుంటున్నారు?"
+
+#: dt-assets/parts/modals/modal-filters.php:22
+#: dt-assets/parts/modals/modal-filters.php:31
+msgid "Delete Filter"
+msgstr "ఫిల్టర్‌ను తొలగించండి"
+
+#: dt-groups/base-setup.php:120
+msgid "Group Status"
+msgstr "సమూహ స్థితి"
+
+#: dt-core/global-functions.php:484
+#: single-template.php:340
+#: template-new-bulk-post.php:285
+#: template-new-post.php:138
+#: template-new-post.php:174
+msgid "This is required"
+msgstr "ఇది అవసరం"
+
+#: dt-assets/parts/modals/modal-revert.php:4
+msgid "Revert Activity"
+msgstr "కార్యాచరణను మార్చండి"
+
+#: dt-assets/parts/modals/modal-revert.php:5
+#: dt-metrics/combined/time-charts.php:108
+msgid "Field"
+msgstr "ఫీల్డ్"
+
+#: dt-assets/parts/modals/modal-revert.php:8
+msgid "Current Value"
+msgstr "ప్రస్తుత విలువ"
+
+#: dt-assets/parts/modals/modal-revert.php:10
+msgid "Old Value"
+msgstr "పాత విలువ"
+
+#: dt-assets/parts/modals/modal-revert.php:18
+msgid "Revert to old value?"
+msgstr "పాత విలువకు తిరిగి రావాలా?"
+
+#: dt-assets/parts/modals/modal-share.php:7
+msgid "Share settings"
+msgstr "సెట్టింగులను భాగస్వామ్యం చేయండి"
+
+#: dt-assets/parts/modals/modal-share.php:12
+msgid "This group is shared with:"
+msgstr "ఈ గుంపు దీనితో భాగస్వామ్యం చేయబడింది:"
+
+#: dt-assets/parts/modals/modal-share.php:14
+msgid "This contact is shared with:"
+msgstr "ఈ పరిచయం వీటితో భాగస్వామ్యం చేయబడింది:"
+
+#: dt-assets/functions/menu.php:63
+msgid "Add New"
+msgstr "కొత్తది జత పరచండి"
+
+#: dt-contacts/access-module.php:174
+msgid "New Contact"
+msgstr "క్రొత్త పరిచయం"
+
+#: dt-assets/functions/menu.php:51
+#: template-settings.php:54
+msgid "Profile"
+msgstr "ప్రొఫైల్"
+
+#: dt-assets/functions/menu.php:100
+msgid "Help"
+msgstr "సహాయం"
+
+#: dt-contacts/access-module.php:153
+#: dt-metrics/counter.php:140
+msgid "Ongoing Meetings"
+msgstr "కొనసాగుతున్న సమావేశాలు"
+
+#: dt-contacts/base-setup.php:340
+#: dt-groups/base-setup.php:109
+#: dt-people-groups/people-groups-base.php:148
+msgid "Requires Update"
+msgstr "నవీకరణ అవసరం"
+
+#: dt-contacts/dmm-module.php:89
+#: dt-contacts/dmm-module.php:202
+msgid "Baptized"
+msgstr "బాప్తిస్మం తీసుకున్నారు"
+
+#: dt-contacts/dmm-module.php:169
+msgid "Baptism Date"
+msgstr "బాప్టిజం తేదీ"
+
+#: dt-contacts/dmm-module.php:177
+#: dt-metrics/counter.php:157
+msgid "Baptism Generation"
+msgstr "బాప్టిజం తరం"
+
+#: dt-contacts/access-module.php:325
+#: dt-metrics/contacts/sources.php:90
+#: dt-users/user-hooks-and-config.php:536
+msgid "Sources"
+msgstr "మూలాలు"
+
+#: dt-posts/custom-post-type.php:195
+msgid "Un-Follow"
+msgstr "అన్-ఫాలో"
+
+#: dt-contacts/base-setup.php:205
+#: template-settings.php:169
+msgid "Phone"
+msgstr "ఫోన్"
+
+#: dt-core/configuration/config-site-defaults.php:539
+msgid "Work"
+msgstr "పని"
+
+#: dt-core/configuration/config-site-defaults.php:538
+msgid "Home"
+msgstr "హోమ్"
+
+#: dt-contacts/base-setup.php:489
+#: dt-core/configuration/config-site-defaults.php:540
+#: dt-groups/base-setup.php:642
+#: template-settings.php:202
+msgid "Other"
+msgstr "ఇతర"
+
+#: dt-contacts/base-setup.php:230
+#: dt-core/configuration/config-site-defaults.php:338
+#: dt-users/template-new-user.php:118
+#: dt-users/template-new-user.php:119
+#: dt-users/template-user-management.php:355
+#: template-settings.php:156
+msgid "Email"
+msgstr "ఇమెయిల్"
+
+#: dt-contacts/access-module.php:302
+#: dt-contacts/base-setup.php:277
+msgid "Facebook"
+msgstr "ఫేస్బుక్"
+
+#: dt-contacts/access-module.php:306
+#: dt-contacts/base-setup.php:285
+msgid "Twitter"
+msgstr "ట్విట్టర్"
+
+#: dt-contacts/contacts-transfer.php:31
+msgid "Contact Transfer Both Ways"
+msgstr "సంప్రదింపు బదిలీ రెండు మార్గాలు"
+
+#: dt-contacts/contacts-transfer.php:32
+msgid "Contact Transfer Sending Only"
+msgstr "సంప్రదింపు బదిలీ పంపడం మాత్రమే"
+
+#: dt-contacts/contacts-transfer.php:33
+msgid "Contact Transfer Receiving Only"
+msgstr "సంప్రదింపు బదిలీ స్వీకరణ మాత్రమే"
+
+#: dt-contacts/contacts-transfer.php:57
+msgid "This contact has been transferred"
+msgstr "ఈ పరిచయం బదిలీ చేయబడింది"
+
+#: dt-contacts/contacts-transfer.php:59
+msgid "This contact has been transferred to"
+msgstr "ఈ పరిచయం బదిలీ చేయబడింది"
+
+#: dt-contacts/contacts-transfer.php:266
+msgid "another site"
+msgstr "మరొక సైట్"
+
+#: dt-contacts/contacts-transfer.php:276
+msgid "Already transfered to %s"
+msgstr "ఇప్పటికే% s కి బదిలీ చేయబడింది"
+
+#: dt-contacts/contacts-transfer.php:277
+msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
+msgstr "గమనిక: మీరు ఇప్పటికే ఈ పరిచయాన్ని బదిలీ చేసారు. మళ్లీ బదిలీ చేయడం వల్ల నకిలీలు సృష్టించవచ్చు. మీరు ఇంకా ఈ హెచ్చరికను భర్తీ చేసి, మీ బదిలీతో కొనసాగించాలనుకుంటున్నారా?"
+
+#: dt-contacts/contacts-transfer.php:281
+msgid "Override and Continue"
+msgstr "భర్తీ చేయండి మరియు కొనసాగించండి"
+
+#: dt-contacts/contacts-transfer.php:289
+msgid "Transfer this contact to:"
+msgstr "ఈ పరిచయాన్ని దీనికి బదిలీ చేయండి:"
+
+#: dt-contacts/contacts-transfer.php:304
+msgid "Confirm Transfer"
+msgstr "బదిలీని నిర్ధారించండి"
+
+#: dt-contacts/contacts-transfer.php:381
+msgid "Unknown error."
+msgstr "గుర్తించలేని పొరపాటు."
+
+#: dt-contacts/contacts-transfer.php:413
+msgid "Minor transfer error."
+msgstr "చిన్న బదిలీ లోపం."
+
+#: dt-contacts/contacts-transfer.php:572
+#: dt-contacts/contacts-transfer.php:587
+#: dt-contacts/contacts-transfer.php:617
+#: dt-contacts/contacts-transfer.php:832
+msgid "Transfer Bot"
+msgstr "బదిలీ బాట్"
+
+#: dt-contacts/contacts-transfer.php:569
+msgid "Contact transferred from site"
+msgstr "సైట్ నుండి పరిచయం బదిలీ చేయబడింది"
+
+#: dt-contacts/contacts-transfer.php:579
+msgid "ALERT: Possible duplicate contact from a previous transfer."
+msgstr "హెచ్చరిక: మునుపటి బదిలీ నుండి నకిలీ పరిచయం సాధ్యమే."
+
+#: dt-contacts/duplicates-merging.php:422
+msgctxt "duplicate comment"
+msgid "(From Duplicate): %s"
+msgstr "(నకిలీ నుండి):% s"
+
+#: dt-contacts/base-setup.php:87
+msgid "Strategist"
+msgstr "వ్యూహకర్త"
+
+#: dt-contacts/access-module.php:72
+msgid "Dispatcher"
+msgstr "డిస్పాచర్"
+
+#: dt-contacts/access-module.php:54
+msgid "Digital Responder"
+msgstr "డిజిటల్ ప్రతిస్పందన"
+
+#: dt-contacts/base-setup.php:99
+msgid "Disciple.Tools Admin"
+msgstr "శిష్యుడు. టూల్స్ అడ్మిన్"
+
+#: dt-contacts/base-setup.php:81
+#: dt-groups/base-setup.php:76
+msgid "Multiplier"
+msgstr "గుణకం"
+
+#: dt-contacts/base-setup.php:74
+#: dt-core/configuration/class-roles.php:142
+msgid "Registered"
+msgstr "నమోదు చేయబడింది"
+
+#: dt-core/configuration/class-roles.php:183
+msgid "Subscriber"
+msgstr "చందాదారుడు"
+
+#: dt-core/configuration/config-site-defaults.php:346
+msgid "Newly Assigned Contact"
+msgstr "కొత్తగా కేటాయించిన పరిచయం"
+
+#: dt-core/configuration/config-site-defaults.php:351
+msgid "@Mentions"
+msgstr "ప్రస్తావనలు"
+
+#: dt-core/configuration/config-site-defaults.php:366
+msgid "Contact Info Changed"
+msgstr "సంప్రదింపు సమాచారం మార్చబడింది"
+
+#: dt-core/configuration/config-site-defaults.php:371
+#: dt-core/migrations/0012-typo-rename.php:8
+msgid "Contact Milestones and Group Health metrics"
+msgstr "మైలురాళ్ళు మరియు గ్రూప్ హెల్త్ మెట్రిక్‌లను సంప్రదించండి"
+
+#: dt-core/configuration/config-site-defaults.php:396
+msgid "This contact is active but there is no record of anybody contacting them. Please do contact them."
+msgstr "ఈ పరిచయం చురుకుగా ఉంది కాని ఎవరైనా వారిని సంప్రదించినట్లు రికార్డులు లేవు. దయచేసి వారిని సంప్రదించండి."
+
+#: dt-core/configuration/config-site-defaults.php:402
+msgid "Please try connecting with this contact again."
+msgstr "దయచేసి ఈ పరిచయంతో మళ్లీ కనెక్ట్ అవ్వడానికి ప్రయత్నించండి."
+
+#: dt-core/configuration/config-site-defaults.php:408
+#: dt-core/configuration/config-site-defaults.php:414
+#: dt-core/configuration/config-site-defaults.php:420
+#: dt-core/configuration/config-site-defaults.php:426
+#: dt-core/configuration/config-site-defaults.php:432
+msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
+msgstr "మేము ఈ వ్యక్తి గురించి కొంతకాలం వినలేదు. ఈ పరిచయం కోసం మీకు నవీకరణ ఉందా?"
+
+#: dt-core/configuration/config-site-defaults.php:442
+msgid "We haven't heard about this group in a while. Do you have an update?"
+msgstr "మేము కొంతకాలం ఈ గుంపు గురించి వినలేదు. మీకు నవీకరణ ఉందా?"
+
+#: dt-assets/functions/details-bar.php:83
+#: dt-assets/functions/details-bar.php:132
+#: dt-assets/functions/details-bar.php:254
+#: dt-assets/functions/details-bar.php:295
+#: dt-core/configuration/dt-configuration.php:75
+msgctxt "either rtl or ltr"
+msgid "ltr"
+msgstr "ltr"
+
+#: dt-core/configuration/restrict-site-access.php:290
+msgid "Someone has requested a password reset for the following account:"
+msgstr "కింది ఖాతా కోసం ఎవరో పాస్‌వర్డ్ రీసెట్ కోసం అభ్యర్థించారు:"
+
+#. translators: %s: user login
+#: dt-core/configuration/restrict-site-access.php:294
+#: dt-users/user-hooks-and-config.php:356
+msgid "Username: %s"
+msgstr "వినియోగదారు పేరు:% s"
+
+#: dt-core/configuration/restrict-site-access.php:295
+msgid "If this was a mistake, just ignore this email and nothing will happen."
+msgstr "ఇది పొరపాటు అయితే, ఈ ఇమెయిల్‌ను విస్మరించండి మరియు ఏమీ జరగదు."
+
+#: dt-core/configuration/restrict-site-access.php:296
+msgid "To reset your password, visit the following address:"
+msgstr "మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి, కింది చిరునామాను సందర్శించండి:"
+
+#: dt-users/template-user-management.php:414
+#: template-settings.php:149
+msgid "Roles"
+msgstr "పాత్రలు"
+
+#: dt-core/logging/hooks/class-hook-posts.php:32
+msgid "(no title)"
+msgstr "(శీర్షిక లేదు)"
+
+#: dt-groups/base-setup.php:242
+#: dt-groups/base-setup.php:305
+msgid "Leaders"
+msgstr "నాయకులు"
+
+#: dt-posts/posts.php:281
+msgctxt "Baptized contact1"
+msgid "Baptized %s"
+msgstr "బాప్టిజం% s"
+
+#: dt-posts/posts.php:282
+msgctxt "Baptized by contact1"
+msgid "Baptized by %s"
+msgstr "% S చేత బాప్తిస్మం తీసుకున్నారు"
+
+#: dt-posts/posts.php:284
+msgctxt "Did not baptize contact1"
+msgid "Did not baptize %s"
+msgstr "% S బాప్టిజం ఇవ్వలేదు"
+
+#: dt-posts/posts.php:285
+msgctxt "Not baptized by contact1"
+msgid "Not baptized by %s"
+msgstr "% S చేత బాప్టిజం పొందలేదు"
+
+#: dt-posts/posts.php:289
+msgctxt "contact1 added to members"
+msgid "%s added to members"
+msgstr "సభ్యులకు% s జోడించబడింది"
+
+#: dt-posts/posts.php:290
+msgctxt "Added to group group1"
+msgid "Added to group %s"
+msgstr "సమూహం% s కు జోడించబడింది"
+
+#: dt-posts/posts.php:292
+msgctxt "Removed contact1 from group"
+msgid "Removed %s from group"
+msgstr "సమూహం నుండి% s తొలగించబడింది"
+
+#: dt-posts/posts.php:293
+msgctxt "Removed from group group1"
+msgid "Removed from group %s"
+msgstr "సమూహం% s నుండి తొలగించబడింది"
+
+#: dt-posts/posts.php:298
+msgctxt "Coaching contact1"
+msgid "Coaching %s"
+msgstr "కోచింగ్% s"
+
+#: dt-posts/posts.php:299
+msgctxt "Coached by contact1"
+msgid "Coached by %s"
+msgstr "% S చేత శిక్షణ ఇవ్వబడింది"
+
+#: dt-posts/posts.php:301
+msgctxt "No longer coaching contact1"
+msgid "No longer coaching %s"
+msgstr "ఇకపై% s కోచింగ్ లేదు"
+
+#: dt-posts/posts.php:306
+msgctxt "Sub-assigned contact1"
+msgid "Sub-assigned %s"
+msgstr "ఉప-కేటాయించిన% s"
+
+#: dt-posts/posts.php:307
+msgctxt "Sub-assigned on contact1"
+msgid "Sub-assigned on %s"
+msgstr "% S లో ఉప-కేటాయించబడింది"
+
+#: dt-posts/posts.php:309
+msgctxt "Removed sub-assigned contact1"
+msgid "Removed sub-assigned %s"
+msgstr "ఉప-కేటాయించిన% s తొలగించబడింది"
+
+#: dt-posts/posts.php:322
+msgctxt "contact1 added as leader on group1"
+msgid "%1$s added as leader on %2$s"
+msgstr "% 1 $ s% 2 $ s లో నాయకుడిగా జోడించబడింది"
+
+#: dt-posts/posts.php:323
+msgctxt "contact1 added to leaders"
+msgid "%s added to leaders"
+msgstr "నాయకులకు% s జోడించబడింది"
+
+#: dt-posts/posts.php:325
+msgctxt "contact1 removed from leaders on group1"
+msgid "%1$s removed from leaders on %2$s"
+msgstr "% 2 $ s లో నాయకుల నుండి% 1 $ s తొలగించబడింది"
+
+#: dt-posts/posts.php:326
+msgctxt "contact1 removed from leaders"
+msgid "%s removed from leaders"
+msgstr "నాయకుల నుండి% s తొలగించబడింది"
+
+#: dt-posts/posts.php:330
+msgctxt "contact1 added as coach on group1"
+msgid "%1$s added as coach on %2$s"
+msgstr "% 1 $ s ను కోచ్ 2% s లో చేర్చారు"
+
+#: dt-posts/posts.php:331
+msgctxt "contact1 added to coaches"
+msgid "%s added to coaches"
+msgstr "కోచ్‌లకు% s జోడించబడింది"
+
+#: dt-posts/posts.php:333
+msgctxt "contact1 removed from coaches on group2"
+msgid "%1$s removed from coaches on %2$s"
+msgstr "% 2 $ s లో కోచ్‌ల నుండి% 1 $ s తొలగించబడింది"
+
+#: dt-posts/posts.php:334
+msgctxt "contact1 removed from coaches"
+msgid "%s removed from coaches"
+msgstr "కోచ్‌ల నుండి% s తొలగించబడ్డాయి"
+
+#: dt-posts/posts.php:338
+msgctxt "group2 added to child groups"
+msgid "%s added to child groups"
+msgstr "పిల్లల సమూహాలకు% s జోడించబడ్డాయి"
+
+#: dt-posts/posts.php:339
+msgctxt "group1 added to parent groups"
+msgid "%s added to parent groups"
+msgstr "మాతృ సమూహాలకు% s జోడించబడ్డాయి"
+
+#: dt-posts/posts.php:341
+msgctxt "group2 removed from child groups"
+msgid "%s removed from child groups"
+msgstr "పిల్లల సమూహాల నుండి% s తొలగించబడ్డాయి"
+
+#: dt-posts/posts.php:342
+msgctxt "group1 removed from parent groups"
+msgid "%s removed from parent groups"
+msgstr "మాతృ సమూహాల నుండి% s తొలగించబడింది"
+
+#: dt-posts/posts.php:347
+#: dt-posts/posts.php:348
+msgctxt "group1 added to peer groups"
+msgid "%s added to peer groups"
+msgstr "తోటి సమూహాలకు% s జోడించబడ్డాయి"
+
+#: dt-posts/posts.php:350
+#: dt-posts/posts.php:351
+msgctxt "group1 removed from peer groups"
+msgid "%s removed from peer groups"
+msgstr "తోటి సమూహాల నుండి% s తొలగించబడింది"
+
+#: dt-posts/posts.php:355
+#: dt-posts/posts.php:356
+#: dt-posts/posts.php:363
+#: dt-posts/posts.php:364
+msgctxt "Connected to contact1"
+msgid "Connected to %s"
+msgstr "% S కి కనెక్ట్ చేయబడింది"
+
+#: dt-posts/posts.php:358
+#: dt-posts/posts.php:359
+#: dt-posts/posts.php:366
+#: dt-posts/posts.php:367
+msgctxt "Removed connection to contact1"
+msgid "Removed connection to %s"
+msgstr "% S కు కనెక్షన్ తొలగించబడింది"
+
+#: dt-posts/posts.php:395
+msgctxt "Assigned to: User1"
+msgid "Assigned to: %s"
+msgstr "దీనికి కేటాయించబడింది:% s"
+
+#: dt-posts/posts.php:395
+msgid "Nobody"
+msgstr "ఎవరూ"
+
+#: dt-posts/posts.php:413
+#: dt-posts/posts.php:424
+msgctxt "Milestone1 removed from Milestones"
+msgid "%1$s removed from %2$s"
+msgstr "% 1 $ s% 2 $ s నుండి తొలగించబడింది"
+
+#: dt-posts/posts.php:416
+#: dt-posts/posts.php:427
+msgctxt "Milestone1 added to Milestones"
+msgid "%1$s added to %2$s"
+msgstr "% 1 $ s% 2 $ s కు జోడించబడింది"
+
+#: dt-posts/posts.php:545
+msgctxt "Added Facebook: facebook.com/123"
+msgid "Added %1$s: %2$s"
+msgstr "% 1 $ s జోడించబడింది:% 2 $ s"
+
+#: dt-posts/posts.php:547
+msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
+msgid "Updated %1$s from %2$s to %3$s"
+msgstr "% 1 $ s ను% 2 $ s నుండి% 3 $ s కు నవీకరించబడింది"
+
+#: dt-posts/posts.php:549
+msgctxt "Deleted Facebook: facebook.com/123"
+msgid "Deleted %1$s: %2$s"
+msgstr "% 1 $ s తొలగించబడింది:% 2 $ s"
+
+#: dt-posts/dt-posts.php:1547
+msgid "Post already shared with user."
+msgstr "పోస్ట్ ఇప్పటికే వినియోగదారుతో భాగస్వామ్యం చేయబడింది."
+
+#: dt-groups/base-setup.php:164
+msgid "Group Type"
+msgstr "సమూహ రకం"
+
+#: dt-groups/base-setup.php:169
+msgid "Pre-Group"
+msgstr "ప్రీ-గ్రూప్"
+
+#: dt-groups/base-setup.php:177
+msgid "Church"
+msgstr "చర్చి"
+
+#: dt-groups/base-setup.php:286
+msgid "Member Count"
+msgstr "సభ్యుల సంఖ్య"
+
+#: dt-mapping/mapping.php:149
+msgid "Map"
+msgstr "మ్యాప్"
+
+#: dt-metrics/combined/critical-path.php:211
+#: dt-metrics/counter.php:130
+msgid "New Contacts"
+msgstr "క్రొత్త పరిచయాలు"
+
+#: dt-metrics/counter.php:135
+msgid "First Meetings"
+msgstr "మొదటి సమావేశాలు"
+
+#: dt-metrics/counter.php:145
+msgid "Total Baptisms"
+msgstr "మొత్తం బాప్టిజం"
+
+#: dt-metrics/counter.php:150
+msgid "Total Baptizers"
+msgstr "మొత్తం బాప్టిజర్లు"
+
+#: dt-metrics/counter.php:163
+msgid "Total Churches and Groups"
+msgstr "మొత్తం చర్చిలు మరియు గుంపులు"
+
+#: dt-metrics/combined/critical-path.php:298
+#: dt-metrics/combined/mapbox-maps.php:83
+#: dt-metrics/counter.php:168
+msgid "Active Groups"
+msgstr "క్రియాశీల సమూహాలు"
+
+#: dt-metrics/combined/critical-path.php:308
+#: dt-metrics/counter.php:173
+msgid "Active Churches"
+msgstr "క్రియాశీల చర్చిలు"
+
+#: dt-metrics/counter.php:180
+msgid "Church Generation"
+msgstr "చర్చి తరం"
+
+#: dt-metrics/combined/critical-path.php:332
+#: dt-metrics/counter.php:186
+msgid "Church Planters"
+msgstr "చర్చి ప్లాంటర్స్"
+
+#. This could be either Hitos or Pilares depending on the context.
+#: dt-metrics/contacts/milestones-map.php:65
+#: dt-metrics/contacts/milestones.php:66
+msgid "Milestones"
+msgstr "మైలురాళ్ళు"
+
+#: dt-metrics/combined/critical-path.php:24
+#: dt-metrics/combined/critical-path.php:46
+#: dt-metrics/combined/critical-path.php:79
+msgid "Critical Path"
+msgstr "క్లిష్టమైన మార్గం"
+
+#: dt-metrics/combined/critical-path.php:221
+msgid "Assigned Contacts"
+msgstr "కేటాయించిన పరిచయాలు"
+
+#: dt-metrics/combined/critical-path.php:230
+#: dt-metrics/combined/mapbox-maps.php:82
+#: dt-metrics/contacts/overview.php:63
+#: dt-metrics/groups/overview.php:66
+#: dt-metrics/personal/overview.php:68
+#: dt-users/template-user-management.php:524
+msgid "Active Contacts"
+msgstr "క్రియాశీల పరిచయాలు"
+
+#: dt-metrics/combined/critical-path.php:259
+#: dt-metrics/combined/daily-activity.php:91
+msgid "Baptisms"
+msgstr "బాప్టిజం"
+
+#: dt-metrics/combined/critical-path.php:288
+msgid "Baptizers"
+msgstr "బాప్టిజర్స్"
+
+#: dt-contacts/access-module.php:294
+#: dt-contacts/base-setup.php:575
+#: dt-metrics/metrics.php:86
+#: dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/personal/activity-log.php:23
+#: dt-metrics/personal/baptism-tree.php:26
+#: dt-metrics/personal/coaching-tree.php:26
+#: dt-metrics/personal/group-tree.php:25
+#: dt-metrics/personal/overview.php:23
+msgid "Personal"
+msgstr "వ్యక్తిగత"
+
+#: dt-metrics/personal/overview.php:59
+msgid "My Overview"
+msgstr "నా అవలోకనం"
+
+#: dt-metrics/contacts/overview.php:64
+#: dt-metrics/groups/overview.php:67
+#: dt-metrics/personal/overview.php:60
+msgid "Waiting on Accept"
+msgstr "అంగీకరించడం కోసం వేచి ఉంది"
+
+#: dt-metrics/contacts/overview.php:65
+#: dt-metrics/groups/overview.php:68
+#: dt-metrics/personal/overview.php:61
+msgid "Waiting on Update"
+msgstr "నవీకరణపై వేచి ఉంది"
+
+#: dt-metrics/contacts/overview.php:66
+#: dt-metrics/groups/overview.php:69
+#: dt-metrics/personal/overview.php:64
+#: dt-metrics/personal/overview.php:69
+msgid "Total Groups"
+msgstr "మొత్తం గుంపులు"
+
+#: dt-metrics/groups/overview.php:71
+#: dt-metrics/groups/overview.php:78
+#: dt-metrics/personal/overview.php:65
+msgid "Group Types"
+msgstr "సమూహ రకాలు"
+
+#: dt-metrics/groups/overview.php:70
+#: dt-metrics/personal/overview.php:66
+msgid "Group and Church Generations"
+msgstr "సమూహం మరియు చర్చి తరాలు"
+
+#: dt-metrics/personal/overview.php:67
+msgid "Lead Teams"
+msgstr "లీడ్ జట్లు"
+
+#: dt-metrics/personal/overview.php:70
+msgid "Follow-up of my active contacts"
+msgstr "నా క్రియాశీల పరిచయాల అనుసరణ"
+
+#: dt-metrics/groups/overview.php:74
+#: dt-metrics/personal/overview.php:71
+msgid "Active Group Health Metrics"
+msgstr "యాక్టివ్ గ్రూప్ హెల్త్ మెట్రిక్స్"
+
+#: dt-metrics/combined/critical-path.php:25
+#: dt-metrics/combined/daily-activity.php:23
+#: dt-metrics/combined/hover-map.php:26
+#: dt-metrics/combined/locations-list.php:26
+#: dt-metrics/combined/mapbox-maps.php:29
+#: dt-metrics/combined/site-links.php:23
+#: dt-metrics/combined/time-charts.php:43
+#: dt-metrics/metrics.php:91
+msgid "Project"
+msgstr "ప్రాజెక్ట్"
+
+#: dt-metrics/contacts/overview.php:24
+#: dt-metrics/groups/overview.php:24
+#: dt-metrics/personal/overview.php:22
+msgid "Overview"
+msgstr "అవలోకనం"
+
+#: dt-metrics/contacts/baptism-tree.php:24
+msgid "Baptism Tree"
+msgstr "బాప్టిజం చెట్టు"
+
+#: dt-metrics/contacts/coaching-tree.php:24
+msgid "Coaching Tree"
+msgstr "కోచింగ్ ట్రీ"
+
+#: dt-metrics/groups/overview.php:61
+msgid "Project Overview"
+msgstr "ప్రాజెక్టు అవలోకనం"
+
+#: dt-metrics/combined/critical-path.php:78
+msgid "Outreach"
+msgstr "Re ట్రీచ్"
+
+#: dt-contacts/access-module.php:406
+#: dt-metrics/combined/critical-path.php:77
+msgid "Follow Up"
+msgstr "ఫాలో అప్"
+
+#: dt-metrics/contacts/overview.php:62
+#: dt-metrics/groups/overview.php:65
+msgid "All Contacts"
+msgstr "అన్ని పరిచయాలు"
+
+#: dt-metrics/groups/tree.php:81
+msgid "Group Generation Tree"
+msgstr "గ్రూప్ జనరేషన్ ట్రీ"
+
+#: dt-metrics/contacts/baptism-tree.php:56
+msgid "Baptism Generation Tree"
+msgstr "బాప్టిజం జనరేషన్ ట్రీ"
+
+#: dt-metrics/contacts/coaching-tree.php:57
+msgid "Coaching Generation Tree"
+msgstr "కోచింగ్ జనరేషన్ ట్రీ"
+
+#: dt-metrics/groups/overview.php:72
+msgid "Teams"
+msgstr "జట్లు"
+
+#: dt-metrics/groups/overview.php:76
+msgid "generations"
+msgstr "తరాలు"
+
+#: dt-contacts/access-module.php:611
+#: dt-users/template-user-management.php:78
+msgid "Multipliers"
+msgstr "గుణకాలు"
+
+#: dt-notifications/notifications-email.php:125
+msgid "Click here to view or reply"
+msgstr "వీక్షించడానికి లేదా ప్రత్యుత్తరం ఇవ్వడానికి ఇక్కడ క్లిక్ చేయండి"
+
+#: dt-notifications/notifications-email.php:131
+msgctxt "ex: Update on Contact #323"
+msgid "Update on %1$s #%2$s"
+msgstr "% 1 $ s #% 2 $ s లో నవీకరించండి"
+
+#: dt-notifications/notifications.php:911
+msgctxt "%s was created and assigned to you."
+msgid "%s was created and assigned to you."
+msgstr "% s సృష్టించబడింది మరియు మీకు కేటాయించబడింది."
+
+#: dt-notifications/notifications.php:919
+msgctxt "user1 assigned contact1 to user2."
+msgid "%1$s assigned %2$s to %3$s."
+msgstr "% 1 $ s% 2 $ s నుండి% 3 $ s కు కేటాయించబడింది."
+
+#: dt-notifications/notifications.php:922
+#: dt-notifications/notifications.php:929
+#: dt-notifications/notifications.php:936
+#: dt-notifications/notifications.php:940
+#: dt-notifications/notifications.php:950
+#: dt-notifications/notifications.php:957
+msgid "System"
+msgstr "సిస్టమ్"
+
+#: dt-notifications/notifications.php:923
+msgctxt "User1 shared contact1 with you."
+msgid "%1$s shared %2$s with you."
+msgstr "% 1 $ s మీతో% 2 $ s పంచుకున్నారు."
+
+#: dt-notifications/notifications.php:930
+msgctxt "User1 mentioned you on contact1 saying: test"
+msgid "%1$s mentioned you on %2$s saying: %3$s"
+msgstr "% 1 $ లు మిమ్మల్ని% 2 $ s లో పేర్కొన్నారు:% 3 $ s"
+
+#: dt-notifications/notifications.php:937
+msgctxt "User1 commented on contact1 saying: test"
+msgid "%1$s commented on %2$s saying: %3$s"
+msgstr "% 1 $ s% 2 $ s పై వ్యాఖ్యానించారు:% 3 $ s"
+
+#: dt-notifications/notifications.php:941
+msgctxt "User1 subassigned contact1 to you."
+msgid "%1$s subassigned %2$s to you."
+msgstr "% 1 $ s మీకు కేటాయించిన% 2 $ s."
+
+#: dt-notifications/notifications.php:951
+msgctxt "User1 added milestone Baptizing on contact1."
+msgid "%1$s added milestone %2$s on %3$s."
+msgstr "% 1 $ s% 3 $ s లో% 2 $ s మైలురాయిని జోడించారు."
+
+#: dt-notifications/notifications.php:958
+msgctxt "User1 modified contact details on contact1."
+msgid "%1$s modified contact details on %2$s."
+msgstr "% 2 $ s లో% 1 $ s సవరించిన సంప్రదింపు వివరాలు."
+
+#: dt-notifications/notifications.php:961
+msgctxt "User1 declined assignment on: contact1"
+msgid "%1$s declined assignment on: %2$s."
+msgstr "% 1 $ s దీనిపై అసైన్‌మెంట్ తిరస్కరించబడింది:% 2 $ s."
+
+#: dt-people-groups/people-groups-base.php:84
+#: dt-people-groups/people-groups-base.php:94
+msgid "People Group"
+msgstr "పీపుల్ గ్రూప్"
+
+#: dt-people-groups/people-groups-post-type.php:204
+msgid "Add/Update People Group"
+msgstr "వ్యక్తుల సమూహాన్ని జోడించండి / నవీకరించండి"
+
+#: dt-people-groups/people-groups-post-type.php:205
+msgid "People Group Details"
+msgstr "పీపుల్ గ్రూప్ వివరాలు"
+
+#: dt-people-groups/people-groups-post-type.php:512
+msgid "Enter the People Group title here"
+msgstr "పీపుల్ గ్రూప్ శీర్షికను ఇక్కడ నమోదు చేయండి"
+
+#: dt-users/users.php:122
+msgid "No permissions to assign"
+msgstr "కేటాయించడానికి అనుమతులు లేవు"
+
+#: dt-users/users.php:281
+msgid "Insufficient permissions"
+msgstr "తగినంత అనుమతులు లేవు"
+
+#: dt-users/user-hooks-and-config.php:501
+msgid "Extra Disciple.Tools Information"
+msgstr "అదనపు శిష్యుడు.టూల్స్ సమాచారం"
+
+#: dt-users/user-hooks-and-config.php:504
+msgid "Corresponds to Contact"
+msgstr "పరిచయానికి అనుగుణంగా ఉంటుంది"
+
+#: dt-users/template-user-management.php:345
+#: dt-users/user-hooks-and-config.php:374
+msgid "View contact record"
+msgstr "సంప్రదింపు రికార్డును చూడండి"
+
+#: header.php:78
+msgid "Javascript must be enabled for this site to function correctly."
+msgstr "ఈ సైట్ సరిగ్గా పనిచేయడానికి జావాస్క్రిప్ట్ ప్రారంభించబడాలి."
+
+#: header.php:84
+msgid "You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
+msgstr "మీరు పాత వెబ్ బ్రౌజర్‌ను ఉపయోగిస్తున్నట్లు కనిపిస్తోంది. మీ బ్రౌజర్ యొక్క అత్యంత నవీనమైన సంస్కరణ లేకుండా, ఈ సైట్ సరిగ్గా పనిచేయకపోవచ్చు. ఇంటర్నెట్ ఎక్స్‌ప్లోరర్‌కు మద్దతు లేదని దయచేసి గమనించండి."
+
+#: header.php:86
+msgid "See what browser you are using."
+msgstr "మీరు ఏ బ్రౌజర్‌ని ఉపయోగిస్తున్నారో చూడండి."
+
+#: single-template.php:332
+#: template-new-bulk-post.php:276
+#: template-new-post.php:166
+msgid "Create Tag"
+msgstr "ట్యాగ్ సృష్టించండి"
+
+#: single-template.php:337
+#: single-template.php:339
+#: template-new-bulk-post.php:281
+#: template-new-bulk-post.php:283
+#: template-new-post.php:171
+#: template-new-post.php:173
+msgid "Tag"
+msgstr "ట్యాగ్"
+
+#: single-template.php:348
+#: template-new-bulk-post.php:293
+#: template-new-post.php:182
+msgid "Create and apply tag"
+msgstr "ట్యాగ్‌ను సృష్టించండి మరియు వర్తింపజేయండి"
+
+#: dt-users/template-new-user.php:116
+#: dt-users/template-user-management.php:87
+#: dt-users/template-user-management.php:358
+msgid "Display Name"
+msgstr "ప్రదర్శన పేరు"
+
+#: dt-contacts/user-module.php:121
+msgid "Link this contact to an existing user"
+msgstr "ఇప్పటికే ఉన్న వినియోగదారుకు ఈ పరిచయాన్ని లింక్ చేయండి"
+
+#: dt-assets/parts/merge-details.php:60
+msgid "Click merge to continue."
+msgstr "కొనసాగించడానికి విలీనం క్లిక్ చేయండి."
+
+#: dt-groups/base-setup.php:295
+#: dt-groups/base-setup.php:589
+#: dt-groups/base-setup.php:633
+msgid "Member List"
+msgstr "సభ్యుల జాబితా"
+
+#: dt-groups/base-setup.php:323
+msgid "Parent Group"
+msgstr "మాతృ సమూహం"
+
+#: dt-groups/base-setup.php:335
+msgid "Peer Group"
+msgstr "సహచరుల బృందం"
+
+#: template-new-post.php:154
+msgid "Save and continue editing"
+msgstr "సేవ్ చేసి, సవరించడం కొనసాగించండి"
+
+#: template-merge-details.php:133
+#: template-merge-details.php:151
+msgid "Select All"
+msgstr "అన్ని ఎంచుకోండి"
+
+#: dt-assets/parts/nav-topbar.php:289
+#: template-notifications.php:54
+msgid "Unread"
+msgstr "చదవనిది"
+
+#: dt-assets/parts/nav-topbar.php:315
+#: template-notifications.php:72
+msgid "Mark All"
+msgstr "అన్నీ గుర్తించండి"
+
+#: dt-users/template-user-management.php:307
+#: template-settings.php:59
+#: template-settings.php:413
+msgid "Availability"
+msgstr "లభ్యత"
+
+#: dt-assets/parts/modals/modal-help.php:95
+#: template-settings.php:117
+msgid "Your Profile"
+msgstr "మీ ప్రొఫైల్"
+
+#: dt-users/template-new-user.php:121
+#: dt-users/template-new-user.php:122
+#: template-settings.php:130
+#: template-settings.php:586
+msgid "Username"
+msgstr "వినియోగదారు పేరు"
+
+#: dt-users/template-new-user.php:117
+#: template-settings.php:143
+#: template-settings.php:621
+msgid "Nickname (Display Name)"
+msgstr "మారుపేరు (ప్రదర్శన పేరు)"
+
+#: template-settings.php:191
+msgid "Social"
+msgstr "సామాజిక"
+
+#: dt-contacts/access-module.php:1296
+#: dt-users/template-new-user.php:136
+#: dt-users/template-user-management.php:91
+#: template-settings.php:216
+msgid "Language"
+msgstr "భాష"
+
+#: template-settings.php:222
+msgid "English"
+msgstr "ఆంగ్ల"
+
+#: dt-users/template-new-user.php:226
+#: dt-users/template-new-user.php:230
+#: dt-users/template-user-management.php:395
+#: dt-users/template-user-management.php:402
+#: template-settings.php:226
+#: template-settings.php:645
+msgid "Biography"
+msgstr "జీవిత చరిత్ర"
+
+#: template-settings.php:493
+msgid "Type of Notification"
+msgstr "నోటిఫికేషన్ రకం"
+
+#: dt-contacts/access-module.php:298
+#: dt-core/configuration/config-site-defaults.php:341
+msgid "Web"
+msgstr "వెబ్"
+
+#: template-settings.php:506
+msgid "required"
+msgstr "అవసరం"
+
+#: template-settings.php:529
+msgid "Follow all contacts"
+msgstr "అన్ని పరిచయాలను అనుసరించండి"
+
+#: template-settings.php:293
+#: template-settings.php:536
+msgid "Enable"
+msgstr "ప్రారంభించండి"
+
+#: template-settings.php:580
+msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+msgstr "శిష్యుల సాధనాల వ్యవస్థ చిత్రాలను నిల్వ చేయదు. ప్రొఫైల్ చిత్రాల కోసం మేము గ్రావతార్ (ప్రపంచవ్యాప్తంగా గుర్తించబడిన అవతార్) ను ఉపయోగిస్తాము. మీకు భద్రతా సమస్యలు ఉంటే, వ్యక్తిగత ఫోటోను ఉపయోగించవద్దని మేము సూచిస్తున్నాము, బదులుగా మీకు ప్రాతినిధ్యం వహించడానికి కార్టూన్, నైరూప్య లేదా అలియాస్ ఫోటోను ఎంచుకోండి."
+
+#: template-settings.php:581
+msgid "edit image on gravatar.com"
+msgstr "gravatar.com లో చిత్రాన్ని సవరించండి"
+
+#: template-settings.php:587
+#: template-settings.php:588
+msgid "Username cannot be changed"
+msgstr "వినియోగదారు పేరు మార్చబడదు"
+
+#: dt-users/users.php:1185
+#: template-settings.php:159
+#: template-settings.php:592
+msgid "System Email"
+msgstr "సిస్టమ్ ఇమెయిల్"
+
+#: template-settings.php:593
+msgid "User email can be changed by site administrator."
+msgstr "సైట్ నిర్వాహకుడు వినియోగదారు ఇమెయిల్‌ను మార్చవచ్చు."
+
+#: dt-users/template-new-user.php:123
+#: dt-users/template-new-user.php:124
+#: template-settings.php:600
+msgid "Password"
+msgstr "పాస్వర్డ్"
+
+#: template-settings.php:601
+msgid "Use this email reset form to create a new password."
+msgstr "క్రొత్త పాస్‌వర్డ్‌ను సృష్టించడానికి ఈ ఇమెయిల్ రీసెట్ ఫారమ్‌ను ఉపయోగించండి."
+
+#: template-settings.php:603
+msgid "go to password change form"
+msgstr "పాస్వర్డ్ మార్పు ఫారమ్కు వెళ్ళండి"
+
+#: dt-users/template-new-user.php:186
+#: dt-users/template-new-user.php:188
+#: template-settings.php:610
+msgid "First Name"
+msgstr "మొదటి పేరు"
+
+#: dt-users/template-new-user.php:190
+#: dt-users/template-new-user.php:191
+#: template-settings.php:616
+msgid "Last Name"
+msgstr "చివరి పేరు"
+
+#: dt-notifications/notifications-email.php:135
+msgid "Do not reply directly to this email."
+msgstr "ఈ ఇమెయిల్‌కు నేరుగా ప్రత్యుత్తరం ఇవ్వవద్దు."
+
+#: dt-core/configuration/restrict-site-access.php:238
+msgid "Reset password"
+msgstr "రహస్యపదాన్ని మార్చుకోండి"
+
+#: dt-metrics/contacts/sources.php:91
+msgid "Showing contacts created during"
+msgstr "సమయంలో సృష్టించబడిన పరిచయాలను చూపుతోంది"
+
+#: dt-metrics/contacts/sources.php:92
+msgid "All contacts, by source and status"
+msgstr "అన్ని పరిచయాలు, మూలం మరియు స్థితి ప్రకారం"
+
+#: dt-metrics/contacts/sources.php:93
+msgid "A contact can come from more than one source."
+msgstr "పరిచయం ఒకటి కంటే ఎక్కువ మూలాల నుండి రావచ్చు."
+
+#: dt-metrics/contacts/sources.php:96
+msgid "Active contacts, by source and faith milestone"
+msgstr "సక్రియ పరిచయాలు, మూలం మరియు విశ్వాసం మైలురాయి ద్వారా"
+
+#: dt-metrics/combined/critical-path.php:80
+msgid "Filter Critical Path fields"
+msgstr "క్రిటికల్ పాత్ ఫీల్డ్‌లను ఫిల్టర్ చేయండి"
+
+#: dt-metrics/combined/critical-path.php:81
+msgid "Movement Tracking"
+msgstr "ఉద్యమం ట్రాకింగ్"
+
+#: dt-metrics/contacts/milestones.php:67
+#: dt-metrics/contacts/seeker-path.php:63
+#: dt-metrics/contacts/sources.php:87
+msgid "Filter contacts to date range:"
+msgstr "తేదీ పరిధికి పరిచయాలను ఫిల్టర్ చేయండి:"
+
+#: dt-metrics/combined/daily-activity.php:72
+#: dt-metrics/contacts/milestones.php:69
+#: dt-metrics/contacts/seeker-path.php:65
+#: dt-metrics/contacts/sources.php:89
+#: dt-metrics/personal/activity-highlights.php:55
+msgid "Filter to date range"
+msgstr "తేదీ పరిధికి ఫిల్టర్ చేయండి"
+
+#: dt-metrics/contacts/sources.php:94
+msgid "Active contacts, by source and seeker path"
+msgstr "సక్రియ పరిచయాలు, మూలం మరియు అన్వేషకుల మార్గం ద్వారా"
+
+#: dt-metrics/contacts/sources.php:98
+msgid "A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+msgstr "ఒక పరిచయం ఒకటి కంటే ఎక్కువ మూలాల నుండి రావచ్చు మరియు ఇది ఒకే సమయంలో ఒకటి కంటే ఎక్కువ విశ్వాస మైలురాయిని కలిగి ఉంటుంది."
+
+#: dt-metrics/groups/overview.php:77
+#: dt-metrics/personal/overview.php:73
+msgid "Generation"
+msgstr "తరం"
+
+#: dt-users/user-hooks-and-config.php:514
+msgid "Add the name of the contact record this user corresponds to."
+msgstr "ఈ వినియోగదారు అనుగుణంగా ఉన్న కాంటాక్ట్ రికార్డ్ పేరును జోడించండి."
+
+#: dt-users/user-hooks-and-config.php:515
+msgid "Learn more."
+msgstr "ఇంకా నేర్చుకో."
+
+#: dt-core/configuration/restrict-site-access.php:239
+msgid "Lost your password"
+msgstr "మీ పాస్‌వర్డ్ కోల్పోయింది"
+
+#: dt-mapping/columns/add-churches-column.php:57
+#: dt-metrics/combined/hover-map.php:218
+#: dt-metrics/combined/locations-list.php:211
+msgid "Churches"
+msgstr "చర్చిలు"
+
+#: dt-mapping/mapping-module-config.php:74
+#: dt-mapping/mapping.php:147
+#: dt-mapping/mapping.php:302
+msgid "Mapping"
+msgstr "మ్యాపింగ్"
+
+#: dt-mapping/mapping.php:304
+#: dt-people-groups/people-groups-base.php:281
+msgid "Population"
+msgstr "జనాభా"
+
+#: dt-mapping/mapping.php:150
+msgid "List"
+msgstr "జాబితా"
+
+#: dt-mapping/mapping.php:643
+#: dt-mapping/mapping.php:724
+msgid "World"
+msgstr "ప్రపంచం"
+
+#: dt-metrics/combined/daily-activity.php:89
+#: dt-metrics/combined/daily-activity.php:90
+#: dt-posts/custom-post-type.php:129
+#: template-new-post.php:38
+msgid "New %s"
+msgstr "క్రొత్త% s"
+
+#: dt-posts/posts.php:460
+#: dt-posts/posts.php:477
+msgctxt "Location1 added to locations"
+msgid "%1$s added to locations"
+msgstr "స్థానాలకు% 1 $ s జోడించబడ్డాయి"
+
+#: dt-groups/base-setup.php:637
+msgid "Four Fields"
+msgstr "నాలుగు ఫీల్డ్స్"
+
+#: dt-mapping/mapping.php:303
+msgid "Refresh Cached Data"
+msgstr "కాష్ చేసిన డేటాను రిఫ్రెష్ చేయండి"
+
+#: dt-metrics/contacts/overview.php:68
+#: dt-metrics/groups/overview.php:73
+msgid "Follow-up of all active contacts"
+msgstr "అన్ని క్రియాశీల పరిచయాల అనుసరణ"
+
+#: dt-notifications/notifications.php:954
+msgctxt "@Multiplier1, an update is requested on contact1."
+msgid "@%1$s, an update is requested on %2$s."
+msgstr "@% 1 $ s,% 2 $ s లో నవీకరణ అభ్యర్థించబడుతుంది."
+
+#: dt-core/configuration/config-site-defaults.php:549
+msgid "Accepting new contacts"
+msgstr "క్రొత్త పరిచయాలను అంగీకరిస్తోంది"
+
+#: dt-core/configuration/config-site-defaults.php:553
+msgid "I'm only investing in existing contacts"
+msgstr "నేను ఇప్పటికే ఉన్న పరిచయాలలో మాత్రమే పెట్టుబడి పెడుతున్నాను"
+
+#: dt-core/configuration/config-site-defaults.php:557
+msgid "I have too many contacts"
+msgstr "నాకు చాలా పరిచయాలు ఉన్నాయి"
+
+#: template-settings.php:416
+msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+msgstr "మీరు ప్రయాణించే లేదా అందుబాటులో లేని తేదీలను సెట్ చేయండి, అందువల్ల క్రొత్త పరిచయాలను స్వీకరించడానికి మీ లభ్యత డిస్పాచర్‌కు తెలుస్తుంది"
+
+#: template-settings.php:420
+msgid "Schedule Travel or Dates Unavailable"
+msgstr "షెడ్యూల్ ప్రయాణం లేదా తేదీలు అందుబాటులో లేవు"
+
+#: template-settings.php:437
+msgid "Add Unavailable dates"
+msgstr "అందుబాటులో లేని తేదీలను జోడించండి"
+
+#: template-settings.php:451
+msgid "No Travel Scheduled"
+msgstr "ప్రయాణ షెడ్యూల్ లేదు"
+
+#: template-settings.php:531
+msgid "You will receive a notification for any update that happens in the system."
+msgstr "సిస్టమ్‌లో జరిగే ఏదైనా నవీకరణ కోసం మీకు నోటిఫికేషన్ వస్తుంది."
+
+#: dt-metrics/combined/critical-path.php:212
+msgid "Any new created contact"
+msgstr "ఏదైనా క్రొత్తగా సృష్టించబడిన పరిచయం"
+
+#: dt-metrics/combined/critical-path.php:222
+msgid "Number of contacts assigned for a face-to-face visit"
+msgstr "ముఖాముఖి సందర్శన కోసం కేటాయించిన పరిచయాల సంఖ్య"
+
+#: dt-metrics/combined/critical-path.php:231
+msgid "Number of contacts that had the active status"
+msgstr "క్రియాశీల స్థితిని కలిగి ఉన్న పరిచయాల సంఖ్య"
+
+#: dt-metrics/combined/critical-path.php:241
+msgid "Number of contacts on %s at the end of the time range"
+msgstr "సమయ పరిధి చివరిలో% s లో పరిచయాల సంఖ్య"
+
+#: dt-metrics/combined/critical-path.php:243
+msgid "Number of contacts where %s was set on the seeker path"
+msgstr "అన్వేషకుల మార్గంలో% s సెట్ చేయబడిన పరిచయాల సంఖ్య"
+
+#: dt-metrics/combined/critical-path.php:260
+msgid "Number of baptized contact with a baptism date in date range and baptized by connection"
+msgstr "తేదీ పరిధిలో బాప్టిజం తేదీతో బాప్టిజం పొందిన పరిచయం మరియు కనెక్షన్ ద్వారా బాప్టిజం పొందిన సంఖ్య"
+
+#: dt-metrics/combined/critical-path.php:277
+msgid "Generation %s Baptisms"
+msgstr "తరం% s బాప్టిజం"
+
+#: dt-metrics/combined/critical-path.php:278
+msgid "Number of generation %s baptisms"
+msgstr "తరం% s బాప్టిజం సంఖ్య"
+
+#: dt-metrics/combined/critical-path.php:289
+msgid "Number of contacts or users who have baptized a contact"
+msgstr "పరిచయాలను లేదా బాప్టిజం పొందిన వినియోగదారుల సంఖ్య"
+
+#: dt-metrics/combined/critical-path.php:321
+msgid "Generation %s Churches"
+msgstr "తరం% s చర్చిలు"
+
+#: dt-metrics/combined/critical-path.php:322
+msgid "Number of generation %s churches at the end of the time range"
+msgstr "సమయ శ్రేణి చివరిలో తరం% s చర్చిల సంఖ్య"
+
+#: dt-metrics/combined/critical-path.php:333
+msgid "Number of contacts or users who have started a church and are marked as the church coach"
+msgstr "చర్చిని ప్రారంభించిన మరియు చర్చి కోచ్గా గుర్తించబడిన పరిచయాల సంఖ్య లేదా వినియోగదారుల సంఖ్య"
+
+#: dt-notifications/notifications.php:913
+msgctxt "You have been assigned: contact1."
+msgid "You have been assigned: %1$s."
+msgstr "మీకు కేటాయించబడింది:% 1 $ s."
+
+#: dt-groups/base-setup.php:347
+msgid "Child Group"
+msgstr "చైల్డ్ గ్రూప్"
+
+#: dt-contacts/access-module.php:179
+msgid "Not Ready"
+msgstr "సిద్ధంగా లేదు"
+
+#: archive-template.php:743
+msgctxt "The start date of a date range"
+msgid "Range Start"
+msgstr "పరిధి ప్రారంభం"
+
+#: archive-template.php:753
+msgctxt "The end date of a date range"
+msgid "Range End"
+msgstr "రేంజ్ ఎండ్"
+
+#: dt-assets/functions/enqueue-scripts.php:259
+msgid "Locations you are responsible for"
+msgstr "మీరు బాధ్యత వహించే స్థానాలు"
+
+#: dt-contacts/access-module.php:175
+msgctxt "Contact Status field description"
+msgid "The contact is new in the system."
+msgstr "పరిచయం వ్యవస్థలో కొత్తది."
+
+#: dt-contacts/access-module.php:180
+msgctxt "Contact Status field description"
+msgid "There is not enough information to move forward with the contact at this time."
+msgstr "ఈ సమయంలో పరిచయంతో ముందుకు సాగడానికి తగినంత సమాచారం లేదు."
+
+#: dt-contacts/access-module.php:185
+msgctxt "Contact Status field description"
+msgid "This contact needs to be assigned to a multiplier."
+msgstr "ఈ పరిచయాన్ని గుణకానికి కేటాయించాల్సిన అవసరం ఉంది."
+
+#: dt-contacts/access-module.php:190
+msgctxt "Contact Status field description"
+msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
+msgstr "పరిచయం ఎవరికైనా కేటాయించబడింది, కానీ ఆ వ్యక్తి ఇంకా అంగీకరించలేదు."
+
+#: dt-contacts/base-setup.php:352
+msgctxt "Contact Status field description"
+msgid "The contact is progressing and/or continually being updated."
+msgstr "పరిచయం పురోగమిస్తోంది మరియు / లేదా నిరంతరం నవీకరించబడుతోంది."
+
+#: dt-contacts/access-module.php:196
+msgctxt "Contact Status field description"
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
+msgstr "ఈ పరిచయం ప్రస్తుతం నిలిపివేయబడింది (అనగా సెలవులో లేదా ప్రతిస్పందించడం లేదు)."
+
+#: dt-contacts/base-setup.php:358
+msgctxt "Contact Status field description"
+msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+msgstr "ఈ పరిచయం వారు ఇకపై కొనసాగకూడదని లేదా అతనితో / ఆమెతో కొనసాగకూడదని మీరు నిర్ణయించుకున్నారని తెలిసింది."
+
+#: dt-contacts/access-module.php:129
+msgctxt "Seeker Path field description"
+msgid "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
+msgstr "పరిచయంతో మీ పురోగతి యొక్క స్థితిని సెట్ చేయండి. పరిచయం ముందుకు సాగడానికి ఒక నిర్దిష్ట క్రమంలో జరిగే దశలు ఇవి."
+
+#: dt-contacts/access-module.php:247
+msgctxt "Reason Paused label"
+msgid "Contact on vacation"
+msgstr "సెలవులో సంప్రదించండి"
+
+#: dt-contacts/access-module.php:248
+msgctxt "Reason Paused label"
+msgid "Contact not responding"
+msgstr "సంప్రదించడం స్పందించడం లేదు"
+
+#: dt-contacts/access-module.php:249
+msgctxt "Reason Paused label"
+msgid "Contact not available"
+msgstr "పరిచయం అందుబాటులో లేదు"
+
+#: dt-contacts/access-module.php:250
+msgctxt "Reason Paused label"
+msgid "Contact has little interest/hunger"
+msgstr "పరిచయానికి తక్కువ ఆసక్తి / ఆకలి లేదు"
+
+#: dt-contacts/access-module.php:251
+msgctxt "Reason Paused label"
+msgid "Contact shows no initiative"
+msgstr "పరిచయం ఎటువంటి చొరవ చూపదు"
+
+#: dt-contacts/access-module.php:252
+msgctxt "Reason Paused label"
+msgid "Contact has questionable motives"
+msgstr "పరిచయం ప్రశ్నార్థకమైన ఉద్దేశాలను కలిగి ఉంది"
+
+#: dt-contacts/access-module.php:253
+msgctxt "Reason Paused label"
+msgid "Ball is in the contact's court"
+msgstr "బంతి కాంటాక్ట్ కోర్టులో ఉంది"
+
+#: dt-contacts/access-module.php:254
+msgctxt "Reason Paused label"
+msgid "We want to see if/how the contact responds to automated text messages"
+msgstr "స్వయంచాలక వచన సందేశాలకు పరిచయం ఎలా స్పందిస్తుందో చూడాలనుకుంటున్నాము"
+
+#: dt-contacts/access-module.php:266
+msgctxt "Reason Closed label"
+msgid "Duplicate"
+msgstr "నకిలీ"
+
+#: dt-contacts/access-module.php:267
+msgctxt "Reason Closed label"
+msgid "Insufficient contact info"
+msgstr "సంప్రదింపు సమాచారం సరిపోదు"
+
+#: dt-contacts/access-module.php:268
+msgctxt "Reason Closed label"
+msgid "Denies submitting contact request"
+msgstr "సంప్రదింపు అభ్యర్థనను సమర్పించడాన్ని నిరాకరించింది"
+
+#: dt-contacts/access-module.php:270
+msgctxt "Reason Closed label"
+msgid "Only wants to argue or debate"
+msgstr "వాదించడానికి లేదా చర్చించడానికి మాత్రమే కావాలి"
+
+#: dt-contacts/access-module.php:271
+msgctxt "Reason Closed label"
+msgid "Just wanted media or book"
+msgstr "కేవలం మీడియా లేదా పుస్తకం కావాలి"
+
+#: dt-contacts/access-module.php:272
+msgctxt "Reason Closed label"
+msgid "No longer interested"
+msgstr "ఇకపై ఆసక్తి లేదు"
+
+#: dt-contacts/access-module.php:273
+msgctxt "Reason Closed label"
+msgid "No longer responding"
+msgstr "ఇకపై స్పందించడం లేదు"
+
+#: dt-contacts/access-module.php:274
+msgctxt "Reason Closed label"
+msgid "Already in church or connected with others"
+msgstr "ఇప్పటికే చర్చిలో లేదా ఇతరులతో కనెక్ట్ అయ్యారు"
+
+#: dt-contacts/access-module.php:275
+msgctxt "Reason Closed label"
+msgid "Transferred contact to partner"
+msgstr "భాగస్వామికి పరిచయం బదిలీ చేయబడింది"
+
+#: dt-contacts/access-module.php:276
+msgctxt "Reason Closed label"
+msgid "Martyred"
+msgstr "అమరవీరుడు"
+
+#: dt-contacts/access-module.php:277
+msgctxt "Reason Closed label"
+msgid "Moved or relocated"
+msgstr "తరలించబడింది లేదా మార్చబడింది"
+
+#: dt-contacts/access-module.php:279
+msgctxt "Reason Closed label"
+msgid "Unknown"
+msgstr "తెలియదు"
+
+#: dt-core/configuration/config-site-defaults.php:473
+msgid "Personal Phone"
+msgstr "వ్యక్తిగత ఫోన్"
+
+#: dt-core/configuration/config-site-defaults.php:476
+msgid "Personal phone is private to the team, not for distribution."
+msgstr "వ్యక్తిగత ఫోన్ జట్టుకు ప్రైవేట్, పంపిణీ కోసం కాదు."
+
+#: dt-core/configuration/config-site-defaults.php:480
+msgid "Personal Email"
+msgstr "వ్యక్తిగత ఇమెయిల్"
+
+#: dt-core/configuration/config-site-defaults.php:483
+msgid "Personal email is private to the team, not for distribution."
+msgstr "వ్యక్తిగత ఇమెయిల్ జట్టుకు ప్రైవేట్, పంపిణీ కోసం కాదు."
+
+#: dt-core/configuration/config-site-defaults.php:487
+msgid "Personal Address"
+msgstr "వ్యక్తిగత చిరునామా"
+
+#: dt-core/configuration/config-site-defaults.php:490
+msgid "Personal address is private to the team, not for distribution."
+msgstr "వ్యక్తిగత చిరునామా జట్టుకు ప్రైవేట్, పంపిణీ కోసం కాదు."
+
+#: dt-core/configuration/config-site-defaults.php:494
+msgid "Work Phone"
+msgstr "పని ఫోన్"
+
+#: dt-core/configuration/config-site-defaults.php:497
+msgid "Work phone is for distribution to contacts and seekers."
+msgstr "పని ఫోన్ పరిచయాలు మరియు ఉద్యోగార్ధులకు పంపిణీ కోసం."
+
+#: dt-core/configuration/config-site-defaults.php:501
+msgid "Work Email"
+msgstr "పని ఇమెయిల్"
+
+#: dt-core/configuration/config-site-defaults.php:504
+msgid "Work email is for distribution to contacts and seekers."
+msgstr "పని ఇమెయిల్ అనేది పరిచయాలు మరియు ఉద్యోగార్ధులకు పంపిణీ కోసం."
+
+#: dt-core/configuration/config-site-defaults.php:508
+msgid "Work Facebook"
+msgstr "ఫేస్బుక్ పని"
+
+#: dt-core/configuration/config-site-defaults.php:511
+msgid "Work Facebook is for distribution to contacts and seekers."
+msgstr "ఫేస్బుక్ అనేది పరిచయాలు మరియు ఉద్యోగార్ధులకు పంపిణీ కోసం."
+
+#: dt-core/configuration/config-site-defaults.php:515
+msgid "Work WhatsApp"
+msgstr "వాట్సాప్ పని"
+
+#: dt-core/configuration/config-site-defaults.php:518
+msgid "Work WhatsApp is for distribution to contacts and seekers."
+msgstr "పరిచయాలు మరియు అన్వేషకులకు పంపిణీ కోసం వర్క్ వాట్సాప్."
+
+#: dt-contacts/access-module.php:310
+msgid "Transfer"
+msgstr "బదిలీ"
+
+#: dt-groups/base-setup.php:121
+msgctxt "field description"
+msgid "Set the current status of the group."
+msgstr "సమూహం యొక్క ప్రస్తుత స్థితిని సెట్ చేయండి."
+
+#: dt-groups/base-setup.php:131
+msgctxt "field description"
+msgid "The group is no longer meeting."
+msgstr "సమూహం ఇప్పుడు సమావేశం కాదు."
+
+#: dt-groups/base-setup.php:126
+msgctxt "field description"
+msgid "The group is actively meeting."
+msgstr "సమూహం చురుకుగా కలుస్తోంది."
+
+#: dt-posts/posts.php:457
+#: dt-posts/posts.php:470
+msgctxt "Location1 removed from locations"
+msgid "%1$s removed from locations"
+msgstr "స్థానాల నుండి% 1 $ s తొలగించబడ్డాయి"
+
+#: dt-posts/posts.php:515
+msgctxt "message"
+msgid "verified"
+msgstr "ధృవీకరించబడింది"
+
+#: dt-posts/posts.php:515
+msgctxt "message"
+msgid "not verified"
+msgstr "తనిఖీ చెయ్యబడలేదు"
+
+#: dt-posts/posts.php:518
+msgctxt "message"
+msgid "invalidated"
+msgstr "చెల్లదు"
+
+#: dt-posts/posts.php:518
+msgctxt "message"
+msgid "not invalidated"
+msgstr "చెల్లదు"
+
+#: dt-posts/posts.php:553
+msgctxt "message"
+msgid "Name changed to: %s"
+msgstr "పేరు దీనికి మార్చబడింది:% s"
+
+#: dt-posts/posts.php:555
+msgctxt "message"
+msgid "Created from Demo Plugin"
+msgstr "డెమో ప్లగిన్ నుండి సృష్టించబడింది"
+
+#: dt-posts/posts.php:562
+msgctxt "message"
+msgid "%s declined assignment"
+msgstr "% s అసైన్‌మెంట్ తిరస్కరించబడింది"
+
+#: dt-posts/posts.php:562
+#: dt-posts/posts.php:565
+msgctxt "message"
+msgid "A user"
+msgstr "వినియోగదారు"
+
+#: dt-posts/posts.php:565
+msgctxt "message"
+msgid "%s accepted assignment"
+msgstr "% s అంగీకరించిన నియామకం"
+
+#: dt-posts/posts.php:570
+msgctxt "message"
+msgid "Shared with %s"
+msgstr "% S తో భాగస్వామ్యం చేయబడింది"
+
+#: dt-posts/posts.php:572
+msgctxt "message"
+msgid "Unshared with %s"
+msgstr "% S తో భాగస్వామ్యం చేయబడలేదు"
+
+#: dt-contacts/dmm-module.php:412
+#: dt-metrics/personal/activity-highlights.php:218
+msgid "Quick Actions"
+msgstr "శీఘ్ర చర్యలు"
+
+#: archive-template.php:675
+msgctxt "input field placeholder"
+msgid "Type to search"
+msgstr "శోధించడానికి టైప్ చేయండి"
+
+#: archive-template.php:385
+#: dt-assets/parts/modals/modal-share.php:27
+#: dt-contacts/access-module.php:593
+#: dt-contacts/user-module.php:137
+#: dt-core/global-functions.php:857
+msgctxt "input field placeholder"
+msgid "Search Users"
+msgstr "వినియోగదారులను శోధించండి"
+
+#: dt-contacts/dmm-module.php:507
+msgctxt "input field placeholder"
+msgid "Search multipliers and contacts"
+msgstr "మల్టిప్లైయర్‌లు మరియు పరిచయాలను శోధించండి"
+
+#: archive-template.php:487
+#: dt-assets/parts/loop-activity-comment.php:39
+msgctxt "input field placeholder"
+msgid "Write your comment or note here"
+msgstr "మీ వ్యాఖ్య లేదా గమనికను ఇక్కడ వ్రాయండి"
+
+#: archive-template.php:36
+#: archive-template.php:126
+#: archive-template.php:461
+#: dt-assets/parts/merge-details.php:45
+#: dt-core/global-functions.php:630
+#: dt-core/global-functions.php:658
+#: dt-core/global-functions.php:775
+#: dt-core/global-functions.php:819
+#: dt-posts/custom-post-type.php:18
+#: template-settings.php:381
+msgctxt "Search 'something'"
+msgid "Search %s"
+msgstr "% S శోధించండి"
+
+#: dt-metrics/contacts/sources.php:95
+#: dt-metrics/contacts/sources.php:97
+msgid "This is displaying only the contacts with an 'active' status right now."
+msgstr "ఇది ప్రస్తుతం 'యాక్టివ్' స్థితి కలిగిన పరిచయాలను మాత్రమే ప్రదర్శిస్తుంది."
+
+#: dt-posts/posts.php:400
+#: dt-posts/posts.php:405
+msgctxt "field1 changed to 'text'"
+msgid "%1$s changed to %2$s"
+msgstr "% 1 $ s% 2 $ s కు మార్చబడింది"
+
+#: dt-contacts/dmm-module.php:493
+msgid "Who was this contact baptized by and when?"
+msgstr "ఈ పరిచయం ఎవరు మరియు ఎప్పుడు బాప్తిస్మం తీసుకున్నారు?"
+
+#: dt-contacts/user-module.php:124
+msgid "This contact already represents a user."
+msgstr "ఈ పరిచయం ఇప్పటికే వినియోగదారుని సూచిస్తుంది."
+
+#: dt-contacts/user-module.php:128
+msgctxt "Step 1 of link user"
+msgid "To link to an existing user, first, find the user using the field below."
+msgstr "ఇప్పటికే ఉన్న వినియోగదారుకు లింక్ చేయడానికి, మొదట, దిగువ ఫీల్డ్‌ను ఉపయోగించి వినియోగదారుని కనుగొనండి."
+
+#: dt-contacts/user-module.php:152
+msgctxt "Step 2 of link user"
+msgid "To finish the linking, merge this contact with the existing user details."
+msgstr "లింకింగ్ పూర్తి చేయడానికి, ఈ పరిచయాన్ని ఇప్పటికే ఉన్న వినియోగదారు వివరాలతో విలీనం చేయండి."
+
+#: dt-assets/parts/merge-details.php:59
+msgctxt "added to the end of a sentence"
+msgid "selected."
+msgstr "ఎంచుకోబడింది."
+
+#: dt-groups/base-setup.php:608
+msgctxt "Add members modal"
+msgid "Add members from existing contacts"
+msgstr "ఇప్పటికే ఉన్న పరిచయాల నుండి సభ్యులను జోడించండి"
+
+#: dt-people-groups/people-groups-post-type.php:206
+msgid "Translations"
+msgstr "అనువాదాలు"
+
+#: dt-posts/posts.php:302
+msgctxt "No longer coached by contact1"
+msgid "No longer coached by %s"
+msgstr "ఇకపై% s చేత శిక్షణ ఇవ్వబడదు"
+
+#: dt-posts/posts.php:310
+msgctxt "No longer sub-assigned on contact1"
+msgid "No longer sub-assigned on %s"
+msgstr "ఇకపై% s లో ఉప-కేటాయించబడదు"
+
+#: dt-groups/base-setup.php:602
+msgid "To add new members, click on 'Create' or 'Select'."
+msgstr "క్రొత్త సభ్యులను జోడించడానికి, 'సృష్టించు' లేదా 'ఎంచుకోండి' పై క్లిక్ చేయండి."
+
+#: archive-template.php:29
+msgid "Filters"
+msgstr "ఫిల్టర్లు"
+
+#: archive-template.php:607
+#: dt-assets/functions/enqueue-scripts.php:349
+msgid "Load More"
+msgstr "మరిన్ని లోడ్ చేయండి"
+
+#: archive-template.php:785
+msgid "Filter Name"
+msgstr "పేరును ఫిల్టర్ చేయండి"
+
+#: 403.php:55
+#: archive-template.php:777
+#: dt-assets/parts/merge-details.php:64
+#: dt-assets/parts/modals/modal-advanced-search.php:62
+#: dt-assets/parts/modals/modal-filters.php:9
+#: dt-assets/parts/modals/modal-filters.php:28
+#: dt-assets/parts/modals/modal-new-contact.php:14
+#: dt-contacts/access-module.php:505
+#: dt-contacts/access-module.php:536
+#: dt-contacts/access-module.php:564
+#: dt-contacts/base-setup.php:427
+#: dt-contacts/base-setup.php:462
+#: dt-contacts/user-module.php:159
+#: single-template.php:345
+#: single-template.php:362
+#: template-new-bulk-post.php:229
+#: template-new-bulk-post.php:262
+#: template-new-bulk-post.php:290
+#: template-new-post.php:153
+#: template-new-post.php:179
+msgid "Cancel"
+msgstr "రద్దు చేయండి"
+
+#: archive-template.php:790
+msgid "Filter Records"
+msgstr "రికార్డులను ఫిల్టర్ చేయండి"
+
+#: dt-assets/functions/details-bar.php:152
+#: dt-assets/parts/modals/modal-tasks.php:7
+#: dt-posts/custom-post-type.php:201
+msgid "Tasks"
+msgstr "పనులు"
+
+#: dt-assets/functions/enqueue-scripts.php:114
+#: template-merge-post-details.php:93
+msgid "Regions of Focus"
+msgstr "ఫోకస్ యొక్క ప్రాంతాలు"
+
+#: dt-assets/functions/enqueue-scripts.php:115
+#: template-merge-post-details.php:94
+msgid "All Locations"
+msgstr "అన్ని స్థానాలు"
+
+#: dt-assets/functions/enqueue-scripts.php:116
+msgid "Used Locations"
+msgstr "ఉపయోగించిన స్థానాలు"
+
+#: dt-assets/functions/enqueue-scripts.php:117
+msgctxt "Empty list results. Keep {{query}} as is in english"
+msgid "No results found matching \"{{query}}\""
+msgstr "\"{{ప్రశ్న}}\" కు సరిపోయే ఫలితాలు కనుగొనబడలేదు"
+
+#: dt-assets/functions/enqueue-scripts.php:303
+msgid "No filters, create one below"
+msgstr "ఫిల్టర్లు లేవు, క్రింద ఒకదాన్ని సృష్టించండి"
+
+#: dt-assets/functions/enqueue-scripts.php:304
+msgid "No records found matching your filter."
+msgstr "మీ ఫిల్టర్‌కు సరిపోయే రికార్డులు ఏవీ కనుగొనబడలేదు."
+
+#: dt-assets/parts/nav-topbar.php:285
+#: dt-people-groups/people-groups-base.php:342
+#: dt-people-groups/people-groups-base.php:351
+#: template-notifications.php:50
+msgctxt "List Filters"
+msgid "All"
+msgstr "అన్నీ"
+
+#: dt-contacts/access-module.php:1135
+#: dt-contacts/access-module.php:1136
+msgid "Subassigned only"
+msgstr "సబ్‌సైగ్డ్ మాత్రమే"
+
+#: dt-contacts/dmm-module.php:373
+#: dt-contacts/dmm-module.php:383
+#: dt-contacts/dmm-module.php:393
+#: dt-contacts/dmm-module.php:394
+msgid "Coached by me"
+msgstr "నాకు కోచ్"
+
+#: dt-metrics/combined/critical-path.php:299
+msgid "Groups active at the end of the time range"
+msgstr "సమయ పరిధి చివరిలో క్రియాశీల సమూహాలు"
+
+#: dt-metrics/combined/critical-path.php:309
+msgid "Churches active at the end of the time range"
+msgstr "సమయ శ్రేణి చివరిలో చర్చిలు చురుకుగా ఉంటాయి"
+
+#: dt-users/users.php:609
+msgctxt "List Filters"
+msgid "Custom Filters"
+msgstr "అనుకూల ఫిల్టర్లు"
+
+#: archive-template.php:25
+msgctxt "Create New record"
+msgid "Create New %s"
+msgstr "క్రొత్త% s ను సృష్టించండి"
+
+#: dt-assets/functions/enqueue-scripts.php:212
+msgid "No task created"
+msgstr "ఏ పని సృష్టించబడలేదు"
+
+#: dt-assets/functions/enqueue-scripts.php:213
+#: dt-assets/parts/modals/modal-tasks.php:17
+msgid "Reminder"
+msgstr "రిమైండర్"
+
+#: dt-assets/functions/enqueue-scripts.php:214
+msgid "No note set"
+msgstr "గమనిక సెట్ చేయబడలేదు"
+
+#: dt-assets/functions/enqueue-scripts.php:305
+#: dt-contacts/base-setup.php:537
+#: dt-groups/base-setup.php:1066
+msgctxt "All records"
+msgid "All %s"
+msgstr "అన్ని% s"
+
+#: dt-assets/functions/menu.php:45
+msgid "Disciple.Tools"
+msgstr "శిష్యుడు"
+
+#: dt-assets/functions/enqueue-scripts.php:216
+#: dt-assets/parts/merge-details.php:72
+#: dt-contacts/user-module.php:165
+#: dt-users/template-new-user.php:301
+#: template-merge-post-details.php:121
+#: template-merge-post-details.php:178
+msgid "Merge"
+msgstr "విలీనం"
+
+#: dt-assets/parts/modals/modal-help.php:28
+msgctxt "Optional Documentation"
+msgid "User workload status icons legend:"
+msgstr "వినియోగదారు పనిభారం స్థితి చిహ్నాల పురాణం:"
+
+#: dt-assets/parts/modals/modal-help.php:14
+msgctxt "Optional Documentation"
+msgid "These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
+msgstr "కాంటాక్ట్ రికార్డ్‌ను వేగంగా అప్‌డేట్ చేయడంలో మీకు సహాయపడటానికి మరియు ప్రతి చర్య ఎన్నిసార్లు జరిగిందో లెక్కించడానికి ఈ శీఘ్ర చర్య బటన్లు ఇక్కడ ఉన్నాయి."
+
+#: dt-assets/parts/modals/modal-help.php:15
+msgctxt "Optional Documentation"
+msgid "For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.\n"
+"                This action will also change the 'Seeker Path' to 'Contact Attempted'."
+msgstr "ఉదాహరణకు, మీరు 'సమాధానం లేదు' బటన్‌ను 4 సార్లు క్లిక్ చేస్తే, మీరు ఈ పరిచయాన్ని 4 సార్లు చేరుకోవడానికి ప్రయత్నించారని మేము లాగిన్ చేస్తాము, కాని వారు సమాధానం ఇవ్వలేదు.\n"
+"                ఈ చర్య 'సీకర్ మార్గం' ను 'సంప్రదింపు ప్రయత్నం' గా మారుస్తుంది."
+
+#: dt-groups/base-setup.php:638
+msgctxt "Optional Documentation"
+msgid "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
+msgstr "ఫోర్ ఫీల్డ్స్ రేఖాచిత్రంలో 5 చతురస్రాలు ఉన్నాయి. ఎగువ ఎడమ క్వాడ్రంట్‌లో ప్రారంభించి సవ్యదిశలో వెళుతుంది మరియు ఐదవ మధ్యలో ఉంటుంది, అవి దీని కోసం నిలుస్తాయి:"
+
+#: dt-assets/parts/modals/modal-help.php:43
+msgctxt "Optional Documentation"
+msgid "This is where you can record notes from meetings and conversations."
+msgstr "సమావేశాలు మరియు సంభాషణల నుండి మీరు గమనికలను రికార్డ్ చేయవచ్చు."
+
+#: dt-assets/parts/modals/modal-help.php:44
+msgctxt "Optional Documentation"
+msgid "Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+msgstr "వ్యాఖ్యలో పేర్కొనడానికి @ మరియు వినియోగదారు పేరును టైప్ చేయండి. ఈ వినియోగదారు అప్పుడు నోటిఫికేషన్‌ను అందుకుంటారు."
+
+#: dt-assets/parts/modals/modal-help.php:45
+msgctxt "Optional Documentation"
+msgid "This section also includes the history of activity, such as when the contact or group status became active etc."
+msgstr "పరిచయం లేదా సమూహ స్థితి క్రియాశీలమైనప్పుడు వంటి కార్యాచరణ చరిత్రను కూడా ఈ విభాగం కలిగి ఉంటుంది."
+
+#: dt-assets/parts/modals/modal-help.php:46
+msgctxt "Optional Documentation"
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgstr "మీరు ఈ విభాగాన్ని 'అన్నీ', 'వ్యాఖ్యలు' లేదా 'కార్యాచరణ' ద్వారా ఫిల్టర్ చేయవచ్చు."
+
+#: dt-assets/parts/modals/modal-help.php:57
+msgctxt "Optional Documentation"
+msgid "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter."
+msgstr "మీరు బాధ్యత వహించే పరిచయాలు లేదా సమూహాలపై దృష్టి పెట్టడానికి ఈ ఫిల్టర్‌లను ఉపయోగించండి. డిఫాల్ట్ ఫిల్టర్లు మీ అవసరాలకు సరిపోకపోతే మీరు మీ స్వంత కస్టమ్ ఫిల్టర్‌ను సృష్టించవచ్చు."
+
+#: dt-assets/parts/modals/modal-help.php:62
+msgctxt "Optional Documentation"
+msgid "Contacts List Tile"
+msgstr "పరిచయాల జాబితా టైల్"
+
+#: dt-assets/parts/modals/modal-help.php:63
+msgctxt "Optional Documentation"
+msgid "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more."
+msgstr "మీ పరిచయాల జాబితా ఇక్కడ కనిపిస్తుంది. మీరు పరిచయాలను ఫిల్టర్ చేసినప్పుడల్లా, ఈ విభాగంలో కూడా జాబితా మార్చబడుతుంది. మీరు మీ పరిచయాలను సరికొత్త, పురాతనమైన, ఇటీవల సవరించిన మరియు ఇటీవల సవరించిన వాటి ద్వారా క్రమబద్ధీకరించవచ్చు. మీకు సుదీర్ఘమైన పరిచయాల జాబితా ఉంటే అవి ఒకేసారి లోడ్ కావు, కాబట్టి జాబితా దిగువన ఉన్న 'మరిన్ని పరిచయాలను లోడ్ చేయి' బటన్‌ను క్లిక్ చేయడం ద్వారా మీరు మరింత లోడ్ చేయడానికి అనుమతిస్తుంది."
+
+#: dt-assets/parts/modals/modal-help.php:68
+msgctxt "Optional Documentation"
+msgid "Groups List Tile"
+msgstr "గుంపుల జాబితా టైల్"
+
+#: dt-assets/parts/modals/modal-help.php:69
+msgctxt "Optional Documentation"
+msgid "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more."
+msgstr "మీ సమూహాల జాబితా ఇక్కడ చూపబడుతుంది. మీరు సమూహాలను ఫిల్టర్ చేసినప్పుడల్లా, ఈ విభాగంలో కూడా జాబితా మార్చబడుతుంది. మీరు మీ సమూహాలను సరికొత్త, పురాతనమైన, ఇటీవల సవరించిన మరియు ఇటీవల సవరించిన వాటి ద్వారా క్రమబద్ధీకరించవచ్చు. మీకు సమూహాల యొక్క పొడవైన జాబితా ఉంటే, అవి ఒకేసారి లోడ్ కావు, కాబట్టి జాబితా దిగువన ఉన్న 'మరిన్ని సమూహాలను లోడ్ చేయి' బటన్‌ను క్లిక్ చేయడం ద్వారా మీరు మరింత లోడ్ చేయడానికి అనుమతిస్తుంది."
+
+#: dt-assets/parts/modals/modal-help.php:75
+msgctxt "Optional Documentation"
+msgid "Use this toggle switch to either show or not show closed contacts in the list."
+msgstr "జాబితాలో క్లోజ్డ్ పరిచయాలను చూపించడానికి లేదా చూపించడానికి ఈ టోగుల్ స్విచ్‌ను ఉపయోగించండి."
+
+#: dt-assets/parts/modals/modal-help.php:81
+msgctxt "Optional Documentation"
+msgid "Use this toggle switch to either show or not show inactive groups in the list."
+msgstr "జాబితాలో నిష్క్రియాత్మక సమూహాలను చూపించడానికి లేదా చూపించడానికి ఈ టోగుల్ స్విచ్‌ను ఉపయోగించండి."
+
+#: dt-assets/parts/modals/modal-help.php:96
+msgctxt "Optional Documentation"
+msgid "In this area you can see your user profile."
+msgstr "ఈ ప్రాంతంలో మీరు మీ యూజర్ ప్రొఫైల్ చూడవచ్చు."
+
+#: dt-assets/parts/modals/modal-help.php:97
+msgctxt "Optional Documentation"
+msgid "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
+msgstr "మీరు ఈ ప్రొఫైల్ ఫీల్డ్‌లను పూరించాల్సిన అవసరం లేదు. మీ బృందం అవసరాలను తీర్చడానికి అవి ఐచ్ఛికం."
+
+#: dt-assets/parts/modals/modal-help.php:98
+msgctxt "Optional Documentation"
+msgid "By clicking 'Edit', you will be able adjust things like the language that this system operates in."
+msgstr "'సవరించు' క్లిక్ చేయడం ద్వారా, ఈ సిస్టమ్ పనిచేసే భాష వంటి వాటిని మీరు సర్దుబాటు చేయగలరు."
+
+#: dt-assets/parts/modals/modal-help.php:104
+msgctxt "Optional Documentation"
+msgid "These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+msgstr "ఇవి మీకు బాధ్యత వహించే ప్రాంతాలు. 'జోడించు' బటన్‌ను క్లిక్ చేస్తే ఎంచుకోవడానికి స్థానాల జాబితా వస్తుంది."
+
+#: dt-assets/parts/modals/modal-help.php:109
+msgctxt "Optional Documentation"
+msgid "Your Notifications"
+msgstr "మీ నోటిఫికేషన్‌లు"
+
+#: dt-assets/parts/modals/modal-help.php:110
+msgctxt "Optional Documentation"
+msgid "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
+msgstr "మీ నోటిఫికేషన్ ప్రాధాన్యతల ఆధారంగా మీరు వెబ్ నోటిఫికేషన్‌లు మరియు ఇమెయిల్ నోటిఫికేషన్‌లను స్వీకరిస్తారు. మీ ప్రాధాన్యతను మార్చడానికి, టోగుల్ బటన్లను క్లిక్ చేయండి."
+
+#: dt-assets/parts/modals/modal-help.php:112
+msgctxt "Optional Documentation"
+msgid "Notifications Turned On: The toggle will appear blue."
+msgstr "నోటిఫికేషన్‌లు ఆన్ చేయబడ్డాయి: టోగుల్ నీలం రంగులో కనిపిస్తుంది."
+
+#: dt-assets/parts/modals/modal-help.php:113
+msgctxt "Optional Documentation"
+msgid "Notifications Turned Off: The toggle will appear grey."
+msgstr "నోటిఫికేషన్‌లు ఆపివేయబడ్డాయి: టోగుల్ బూడిద రంగులో కనిపిస్తుంది."
+
+#: dt-assets/parts/modals/modal-help.php:115
+msgctxt "Optional Documentation"
+msgid "Some of the types of notifications cannot be adjusted because they are required by the system."
+msgstr "కొన్ని రకాల నోటిఫికేషన్‌లు సర్దుబాటు చేయబడవు ఎందుకంటే అవి సిస్టమ్‌కు అవసరం."
+
+#: dt-assets/parts/modals/modal-help.php:116
+msgctxt "Optional Documentation"
+msgid "Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+msgstr "మీరు క్రొత్త వ్యాఖ్యలు, సంప్రదింపు సమాచార మార్పులు, మైలురాళ్ళు మరియు గ్రూప్ హెల్త్ మెట్రిక్‌ల గురించి నోటిఫికేషన్‌లను చూడాలనుకుంటున్నారా మరియు సిస్టమ్‌లో జరిగే ఏదైనా నవీకరణ కోసం మీకు నోటిఫికేషన్ అందుతుందా అని సర్దుబాటు చేయండి."
+
+#: dt-assets/parts/modals/modal-help.php:124
+msgctxt "Optional Documentation"
+msgid "Notifications Page"
+msgstr "నోటిఫికేషన్ల పేజీ"
+
+#: dt-assets/parts/modals/modal-help.php:125
+msgctxt "Optional Documentation"
+msgid "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
+msgstr "ఈ నోటిఫికేషన్ల పేజీ మీరు వినియోగదారులకు మరియు సమూహాలకు నవీకరణలను చదవగల ప్రదేశం. ఇది మీ రికార్డుల్లో కార్యాచరణ గురించి నోటిఫికేషన్‌లను ప్రదర్శిస్తుంది."
+
+#: dt-assets/parts/modals/modal-help.php:126
+msgctxt "Optional Documentation"
+msgid "All / Unread"
+msgstr "అన్నీ / చదవనివి"
+
+#: dt-assets/parts/modals/modal-help.php:127
+msgctxt "Optional Documentation"
+msgid "Click the 'All' button to show the full list of all of your notifications."
+msgstr "మీ అన్ని నోటిఫికేషన్ల పూర్తి జాబితాను చూపించడానికి 'అన్నీ' బటన్ క్లిక్ చేయండి."
+
+#: dt-assets/parts/modals/modal-help.php:128
+msgctxt "Optional Documentation"
+msgid "Click the 'Unread' button to show the list of all of your unread notifications."
+msgstr "మీ చదవని అన్ని నోటిఫికేషన్‌ల జాబితాను చూపించడానికి 'చదవని' బటన్‌ను క్లిక్ చేయండి."
+
+#: dt-assets/parts/modals/modal-help.php:130
+msgctxt "Optional Documentation"
+msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+msgstr "నోటిఫికేషన్ చదివినట్లు సూచించడానికి ప్రతి అడ్డు వరుస యొక్క కుడి వైపున నింపిన ప్రతి సర్కిల్‌ను మీరు క్లిక్ చేయకూడదనుకుంటే, ఆపై ఉన్న అన్ని సందేశాలను త్వరగా సర్దుబాటు చేయడానికి ఎగువన ఉన్న 'అన్నీ చదవండి అని గుర్తు చేయండి' లింక్‌పై క్లిక్ చేయండి చదవబడింది."
+
+#: dt-assets/parts/modals/modal-help.php:132
+msgctxt "Optional Documentation"
+msgid "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+msgstr "క్రొత్త వ్యాఖ్యలు, సంప్రదింపు సమాచార మార్పులు, మైలురాళ్లను సంప్రదించండి మరియు గ్రూప్ హెల్త్ మెట్రిక్‌ల గురించి నోటిఫికేషన్‌లు చూడాలనుకుంటున్నారా, మరియు ఏదైనా నవీకరణ కోసం మీకు నోటిఫికేషన్ అందుతుందా అని సర్దుబాటు చేయడానికి నోటిఫికేషన్‌ల సెట్టింగ్ ప్రాంతానికి వెళ్లడానికి 'సెట్టింగులు' లింక్‌పై క్లిక్ చేయండి. వ్యవస్థ."
+
+#: dt-assets/parts/modals/modal-help.php:137
+msgctxt "Optional Documentation"
+msgid "Duplicate Contact page"
+msgstr "సంప్రదింపు పేజీ నకిలీ"
+
+#: dt-assets/parts/modals/modal-help.php:138
+msgctxt "Optional Documentation"
+msgid "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
+msgstr "ఈ డూప్లికేట్ కాంటాక్ట్ పేజ్, మీరు సిస్టమ్ ద్వారా తీసుకోబడిన పరిచయాలను సమీక్షించవచ్చు, తిరస్కరించవచ్చు లేదా విలీనం చేయవచ్చు (వారి పేరు, ఇమెయిల్ మరియు ఫోన్‌కు వ్యతిరేకంగా తనిఖీ చేయడం) ఇప్పటికే ఉన్న మరొక పరిచయం యొక్క నకిలీలుగా ఉండవచ్చు."
+
+#: dt-assets/parts/modals/modal-help.php:161
+#: dt-assets/parts/modals/modal-help.php:211
+msgctxt "Optional Documentation"
+msgid "Need more help?"
+msgstr "మరింత సహాయం కావాలా?"
+
+#: dt-assets/parts/modals/modal-help.php:162
+#: dt-assets/parts/modals/modal-help.php:212
+msgctxt "Optional Documentation"
+msgid "Read the documentation"
+msgstr "డాక్యుమెంటేషన్ చదవండి"
+
+#: dt-assets/parts/modals/modal-new-contact.php:30
+msgctxt "back to record"
+msgid "Back to %s"
+msgstr "% S కి తిరిగి వెళ్ళు"
+
+#: dt-assets/parts/modals/modal-tasks.php:12
+msgid "Set a reminder or a task with a note and receive a notification on the due date."
+msgstr "గమనికతో రిమైండర్ లేదా పనిని సెట్ చేయండి మరియు నిర్ణీత తేదీన నోటిఫికేషన్‌ను స్వీకరించండి."
+
+#: dt-assets/parts/modals/modal-tasks.php:22
+msgid "Custom"
+msgstr "కస్టమ్"
+
+#: dt-assets/parts/modals/modal-tasks.php:28
+msgid "Due Date"
+msgstr "గడువు తేది"
+
+#: dt-assets/parts/modals/modal-tasks.php:32
+msgid "Create Task"
+msgstr "టాస్క్ సృష్టించండి"
+
+#: dt-assets/parts/modals/modal-tasks.php:38
+msgid "Existing tasks for this record:"
+msgstr "ఈ రికార్డ్ కోసం ఇప్పటికే ఉన్న పనులు:"
+
+#: dt-assets/parts/nav-topbar.php:167
+msgid "Theme Update Available!"
+msgstr "థీమ్ నవీకరణ అందుబాటులో ఉంది!"
+
+#: dt-assets/functions/menu.php:94
+#: dt-mapping/columns/add-users-column.php:56
+#: dt-metrics/combined/hover-map.php:265
+#: dt-metrics/combined/locations-list.php:258
+#: dt-users/template-user-management.php:76
+#: dt-users/user-management.php:108
+msgid "Users"
+msgstr "వినియోగదారులు"
+
+#: dt-contacts/access-module.php:118
+msgid "Select the main person who is responsible for reporting on this contact."
+msgstr "ఈ పరిచయాన్ని నివేదించడానికి బాధ్యత వహించే ప్రధాన వ్యక్తిని ఎంచుకోండి."
+
+#: dt-contacts/access-module.php:169
+#: dt-contacts/base-setup.php:346
+msgid "Contact Status"
+msgstr "సంప్రదింపు స్థితి"
+
+#: dt-contacts/access-module.php:184
+msgid "Dispatch Needed"
+msgstr "పంపకం అవసరం"
+
+#: dt-contacts/access-module.php:195
+msgid "Paused"
+msgstr "పాజ్ చేయబడింది"
+
+#: dt-contacts/access-module.php:133
+msgid "Contact Attempt Needed"
+msgstr "సంప్రదింపు ప్రయత్నం అవసరం"
+
+#: dt-contacts/access-module.php:137
+msgid "Contact Attempted"
+msgstr "సంప్రదించడానికి ప్రయత్నించారు"
+
+#: dt-contacts/access-module.php:141
+#: dt-contacts/dmm-module.php:232
+msgid "Contact Established"
+msgstr "సంప్రదింపులు స్థాపించబడ్డాయి"
+
+#: dt-contacts/access-module.php:145
+msgid "First Meeting Scheduled"
+msgstr "మొదటి సమావేశం షెడ్యూల్"
+
+#: dt-contacts/access-module.php:149
+msgid "First Meeting Complete"
+msgstr "మొదటి సమావేశం పూర్తయింది"
+
+#: dt-contacts/access-module.php:157
+msgid "Being Coached"
+msgstr "కోచ్‌గా ఉండటం"
+
+#: dt-contacts/dmm-module.php:60
+msgctxt "Optional Documentation"
+msgid "Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
+msgstr "వారి విశ్వాస ప్రయాణంలో పరిచయం ఏ మైలురాళ్లను చేరుకుందో కేటాయించండి. సంపర్కం యొక్క ఆధ్యాత్మిక ప్రయాణంలో ఇవి జరుపుకునే విలువైనవి, కానీ ఏ క్రమంలోనైనా జరగవచ్చు."
+
+#: dt-contacts/dmm-module.php:64
+msgid "Has Bible"
+msgstr "బైబిల్ ఉంది"
+
+#: dt-contacts/dmm-module.php:69
+msgid "Reading Bible"
+msgstr "బైబిల్ చదవడం"
+
+#: dt-contacts/dmm-module.php:74
+msgid "States Belief"
+msgstr "స్టేట్స్ నమ్మకం"
+
+#: dt-contacts/dmm-module.php:79
+msgid "Can Share Gospel/Testimony"
+msgstr "సువార్త / సాక్ష్యాన్ని పంచుకోవచ్చు"
+
+#: dt-contacts/dmm-module.php:84
+msgid "Sharing Gospel/Testimony"
+msgstr "సువార్త / సాక్ష్యం పంచుకోవడం"
+
+#: dt-contacts/dmm-module.php:94
+msgid "Baptizing"
+msgstr "బాప్తిస్మం"
+
+#: dt-contacts/dmm-module.php:99
+msgid "In Church/Group"
+msgstr "చర్చి / సమూహంలో"
+
+#: dt-contacts/dmm-module.php:104
+msgid "Starting Churches"
+msgstr "చర్చిలను ప్రారంభిస్తోంది"
+
+#: dt-contacts/base-setup.php:317
+#: dt-users/template-user-management.php:367
+msgid "Male"
+msgstr "పురుషుడు"
+
+#: dt-contacts/base-setup.php:318
+#: dt-users/template-user-management.php:368
+msgid "Female"
+msgstr "స్త్రీ"
+
+#: dt-contacts/base-setup.php:329
+msgid "Under 18 years old"
+msgstr "18 ఏళ్లలోపు"
+
+#: dt-contacts/base-setup.php:330
+msgid "18-25 years old"
+msgstr "18-25 సంవత్సరాలు"
+
+#: dt-contacts/base-setup.php:331
+msgid "26-40 years old"
+msgstr "26-40 సంవత్సరాలు"
+
+#: dt-contacts/base-setup.php:332
+msgid "Over 40 years old"
+msgstr "40 ఏళ్లు పైబడిన వారు"
+
+#: dt-contacts/access-module.php:211
+msgid "Reason Not Ready"
+msgstr "కారణం సిద్ధంగా లేదు"
+
+#: dt-contacts/access-module.php:212
+msgctxt "Optional Documentation"
+msgid "The main reason the contact is not ready to be assigned to a user."
+msgstr "పరిచయం వినియోగదారుకు కేటాయించటానికి సిద్ధంగా లేదు."
+
+#: dt-contacts/access-module.php:219
+msgid "Insufficient Contact Information"
+msgstr "తగినంత సంప్రదింపు సమాచారం"
+
+#: dt-contacts/access-module.php:222
+msgid "Unknown Location"
+msgstr "తెలియని స్థానం"
+
+#: dt-contacts/access-module.php:225
+msgid "Only wants media"
+msgstr "మీడియా మాత్రమే కావాలి"
+
+#: dt-contacts/access-module.php:228
+msgid "Outside Area"
+msgstr "వెలుపల ప్రాంతం"
+
+#: dt-contacts/access-module.php:231
+msgid "Needs Review"
+msgstr "సమీక్ష అవసరం"
+
+#: dt-contacts/access-module.php:234
+msgid "Waiting for Confirmation"
+msgstr "నిర్ధారణ కోసం వేచి ఉంది"
+
+#: dt-contacts/access-module.php:242
+msgid "Reason Paused"
+msgstr "కారణం పాజ్ చేయబడింది"
+
+#: dt-contacts/access-module.php:243
+msgctxt "Optional Documentation"
+msgid "A paused contact is one you are not currently interacting with but expect to in the future."
+msgstr "పాజ్ చేయబడిన పరిచయం మీరు ప్రస్తుతం సంభాషించనిది కాని భవిష్యత్తులో ఆశించేది."
+
+#: dt-contacts/access-module.php:262
+msgctxt "Optional Documentation"
+msgid "A closed contact is one you can't or don't wish to interact with."
+msgstr "క్లోజ్డ్ కాంటాక్ట్ అంటే మీరు ఇంటరాక్ట్ చేయలేరు లేదా ఇష్టపడరు."
+
+#: dt-contacts/access-module.php:269
+msgctxt "Reason Closed label"
+msgid "Hostile, playing games or self gain"
+msgstr "శత్రుత్వం, ఆటలు ఆడటం లేదా స్వయం లాభం"
+
+#: dt-contacts/access-module.php:286
+msgid "Accepted"
+msgstr "ఆమోదించబడిన"
+
+#: dt-contacts/access-module.php:326
+msgctxt "Optional Documentation"
+msgid "The website, event or location this contact came from."
+msgstr "ఈ పరిచయం నుండి వచ్చిన వెబ్‌సైట్, ఈవెంట్ లేదా స్థానం."
+
+#: dt-contacts/dmm-module.php:223
+msgid "No Answer"
+msgstr "జవాబు లేదు"
+
+#: dt-contacts/dmm-module.php:241
+msgid "Meeting Scheduled"
+msgstr "సమావేశం షెడ్యూల్"
+
+#: dt-contacts/dmm-module.php:250
+msgid "Meeting Complete"
+msgstr "సమావేశం పూర్తయింది"
+
+#: dt-contacts/dmm-module.php:259
+msgid "Meeting No-show"
+msgstr "సమావేశం నో-షో"
+
+#: dt-contacts/user-module.php:42
+msgid "Corresponds to user"
+msgstr "వినియోగదారుకు అనుగుణంగా ఉంటుంది"
+
+#: dt-contacts/user-module.php:43
+msgctxt "Optional Documentation"
+msgid "The id of the user this contact corresponds to"
+msgstr "ఈ పరిచయం వినియోగదారు యొక్క ఐడి అనుగుణంగా ఉంటుంది"
+
+#: dt-contacts/base-setup.php:162
+msgid "User"
+msgstr "వినియోగదారు"
+
+#: dt-posts/custom-post-type.php:181
+msgid "Tags"
+msgstr "టాగ్లు"
+
+#: dt-contacts/base-setup.php:303
+msgctxt "Optional Documentation"
+msgid "Relationship this contact has with another contact in the system."
+msgstr "ఈ పరిచయం సిస్టమ్‌లోని మరొక పరిచయంతో కలిగి ఉన్న సంబంధం."
+
+#: dt-contacts/dmm-module.php:182
+msgid "Coached by"
+msgstr "కోచ్"
+
+#: dt-contacts/dmm-module.php:183
+msgctxt "Optional Documentation"
+msgid "Who is coaching this contact"
+msgstr "ఈ పరిచయానికి ఎవరు కోచింగ్ ఇస్తున్నారు"
+
+#: dt-contacts/dmm-module.php:160
+msgctxt "Optional Documentation"
+msgid "Who is this contact coaching"
+msgstr "ఈ కాంటాక్ట్ కోచింగ్ ఎవరు"
+
+#: dt-contacts/dmm-module.php:192
+#: dt-metrics/personal/activity-highlights.php:68
+msgid "Baptized by"
+msgstr "బాప్తిస్మం తీసుకున్నారు"
+
+#: dt-contacts/dmm-module.php:193
+msgctxt "Optional Documentation"
+msgid "Who baptized this contact"
+msgstr "ఈ పరిచయాన్ని ఎవరు బాప్తిస్మం తీసుకున్నారు"
+
+#: dt-contacts/dmm-module.php:203
+msgctxt "Optional Documentation"
+msgid "Who this contact has baptized"
+msgstr "ఈ పరిచయం ఎవరు బాప్తిస్మం తీసుకున్నారు"
+
+#: dt-groups/base-setup.php:405
+msgctxt "Optional Documentation"
+msgid "The people groups represented by this group."
+msgstr "ఈ గుంపు ప్రాతినిధ్యం వహిస్తున్న ప్రజల సమూహాలు."
+
+#: dt-groups/base-setup.php:468
+msgctxt "Optional Documentation"
+msgid "Groups this contact is a member of."
+msgstr "ఈ పరిచయం సభ్యుల సమూహాలు."
+
+#: dt-contacts/dmm-module.php:135
+msgid "Contact or User assisting the Assigned To user to follow up with the contact."
+msgstr "సంప్రదింపులను అనుసరించడానికి వినియోగదారుని కేటాయించిన వినియోగదారుని సంప్రదించండి లేదా సహాయం చేయండి."
+
+#: dt-contacts/base-setup.php:240
+#: dt-groups/base-setup.php:365
+#: dt-people-groups/people-groups-base.php:193
+#: dt-people-groups/people-groups-base.php:203
+msgctxt "Optional Documentation"
+msgid "The general location where this contact is located."
+msgstr "ఈ పరిచయం ఉన్న సాధారణ స్థానం."
+
+#: dt-contacts/contacts.php:1759
+msgctxt "My records"
+msgid "My %s"
+msgstr "నా ఎస్"
+
+#: dt-core/configuration/restrict-site-access.php:234
+msgid "ERROR: Invalid username/password combination."
+msgstr "లోపం: చెల్లని వినియోగదారు పేరు / పాస్‌వర్డ్ కలయిక."
+
+#: dt-groups/base-setup.php:130
+#: dt-users/user-management.php:121
+msgid "Inactive"
+msgstr "క్రియారహితం"
+
+#: dt-groups/base-setup.php:170
+msgctxt "Optional Documentation"
+msgid "A group predominantly of non-believers."
+msgstr "ప్రధానంగా విశ్వాసులు కాని సమూహం."
+
+#: dt-groups/base-setup.php:174
+msgctxt "Optional Documentation"
+msgid "A group having 3 or more believers but not identifying as church."
+msgstr "3 లేదా అంతకంటే ఎక్కువ మంది విశ్వాసులను కలిగి ఉన్న సమూహం కాని చర్చిగా గుర్తించలేదు."
+
+#: dt-groups/base-setup.php:178
+msgctxt "Optional Documentation"
+msgid "A group having 3 or more believers and identifying as church."
+msgstr "3 లేదా అంతకంటే ఎక్కువ మంది విశ్వాసులను కలిగి ఉన్న సమూహం మరియు చర్చిగా గుర్తించడం."
+
+#: dt-groups/base-setup.php:181
+msgid "Team"
+msgstr "జట్టు"
+
+#: dt-groups/base-setup.php:182
+msgctxt "Optional Documentation"
+msgid "A special group that is not meeting as a church (or trying to become church)."
+msgstr "చర్చిగా కలవని ప్రత్యేక సమూహం (లేదా చర్చిగా మారడానికి ప్రయత్నిస్తుంది)."
+
+#: dt-groups/base-setup.php:143
+msgid "Select the main person who is responsible for reporting on this group."
+msgstr "ఈ గుంపుపై నివేదించడానికి బాధ్యత వహించే ప్రధాన వ్యక్తిని ఎంచుకోండి."
+
+#: dt-groups/base-setup.php:197
+#: dt-groups/base-setup.php:634
+msgid "Church Health"
+msgstr "చర్చి ఆరోగ్యం"
+
+#: dt-groups/base-setup.php:198
+msgctxt "Optional Documentation"
+msgid "Track the progress and health of a group/church."
+msgstr "సమూహం / చర్చి యొక్క పురోగతి మరియు ఆరోగ్యాన్ని ట్రాక్ చేయండి."
+
+#: dt-groups/base-setup.php:202
+#: dt-metrics/personal/baptism-tree.php:139
+msgid "Baptism"
+msgstr "బాప్టిజం"
+
+#: dt-groups/base-setup.php:203
+msgctxt "Optional Documentation"
+msgid "The group is baptising."
+msgstr "సమూహం బాప్తిస్మం తీసుకుంటుంది."
+
+#: dt-groups/base-setup.php:207
+msgid "Bible Study"
+msgstr "బైబిలు అధ్యయనం"
+
+#: dt-groups/base-setup.php:208
+msgctxt "Optional Documentation"
+msgid "The group is studying the bible."
+msgstr "సమూహం బైబిల్ అధ్యయనం చేస్తోంది."
+
+#: dt-groups/base-setup.php:212
+msgid "Communion"
+msgstr "కమ్యూనియన్"
+
+#: dt-groups/base-setup.php:213
+msgctxt "Optional Documentation"
+msgid "The group is practicing communion."
+msgstr "ఈ బృందం సమాజ సాధన చేస్తోంది."
+
+#: dt-groups/base-setup.php:217
+msgid "Fellowship"
+msgstr "ఫెలోషిప్"
+
+#: dt-groups/base-setup.php:218
+msgctxt "Optional Documentation"
+msgid "The group is fellowshiping."
+msgstr "సమూహం ఫెలోషిప్ చేస్తోంది."
+
+#: dt-groups/base-setup.php:222
+msgid "Giving"
+msgstr "ఇవ్వడం"
+
+#: dt-groups/base-setup.php:223
+msgctxt "Optional Documentation"
+msgid "The group is giving."
+msgstr "సమూహం ఇస్తోంది."
+
+#: dt-groups/base-setup.php:227
+msgid "Prayer"
+msgstr "ప్రార్థన"
+
+#: dt-groups/base-setup.php:228
+msgctxt "Optional Documentation"
+msgid "The group is praying."
+msgstr "గుంపు ప్రార్థిస్తోంది."
+
+#: dt-groups/base-setup.php:232
+msgid "Praise"
+msgstr "ప్రశంసలు"
+
+#: dt-groups/base-setup.php:233
+msgctxt "Optional Documentation"
+msgid "The group is praising."
+msgstr "ఈ బృందం ప్రశంసలు కురిపిస్తోంది."
+
+#: dt-groups/base-setup.php:237
+msgid "Sharing the Gospel"
+msgstr "సువార్తను పంచుకోవడం"
+
+#: dt-groups/base-setup.php:247
+#: dt-groups/base-setup.php:445
+msgid "Church Commitment"
+msgstr "చర్చి నిబద్ధత"
+
+#: dt-groups/base-setup.php:418
+msgid "Unbelievers"
+msgstr "అవిశ్వాసులు"
+
+#: dt-groups/base-setup.php:427
+msgid "Believers"
+msgstr "నమ్మినవారు"
+
+#: dt-groups/base-setup.php:436
+msgid "Accountable"
+msgstr "జవాబుదారీతనం"
+
+#: dt-groups/base-setup.php:446
+msgctxt "Optional Documentation"
+msgid "Is this a church - yes or no?"
+msgstr "ఇది చర్చి - అవును లేదా కాదు?"
+
+#: dt-groups/base-setup.php:454
+msgid "Multiplying"
+msgstr "గుణించడం"
+
+#: dt-groups/base-setup.php:455
+msgctxt "Optional Documentation"
+msgid "Number of people helping start other groups. How many members are multiplying?"
+msgstr "ఇతర సమూహాలను ప్రారంభించడానికి సహాయపడే వ్యక్తుల సంఖ్య. ఎంత మంది సభ్యులు గుణిస్తున్నారు?"
+
+#: dt-groups/base-setup.php:259
+msgctxt "Optional Documentation"
+msgid "The date this group began meeting."
+msgstr "ఈ గుంపు సమావేశం ప్రారంభించిన తేదీ."
+
+#: dt-groups/base-setup.php:267
+msgctxt "Optional Documentation"
+msgid "The date this group first identified as being a church."
+msgstr "ఈ గుంపు మొదట చర్చిగా గుర్తించిన తేదీ."
+
+#: dt-groups/base-setup.php:276
+msgctxt "Optional Documentation"
+msgid "The date this group stopped meeting (if applicable)."
+msgstr "ఈ గుంపు సమావేశం ఆగిపోయిన తేదీ (వర్తిస్తే)."
+
+#: dt-groups/base-setup.php:324
+msgctxt "Optional Documentation"
+msgid "A group that founded this group."
+msgstr "ఈ సమూహాన్ని స్థాపించిన సమూహం."
+
+#: dt-groups/base-setup.php:336
+msgctxt "Optional Documentation"
+msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+msgstr "సంబంధంలో తల్లిదండ్రులు / పిల్లలు లేని సంబంధిత సమూహం. ఇది సహకరించే, విలీనం కానున్న, ఇటీవల విడిపోయిన సమూహాలను సూచిస్తుంది."
+
+#: dt-groups/base-setup.php:348
+msgctxt "Optional Documentation"
+msgid "A group that has been birthed out of this group."
+msgstr "ఈ గుంపు నుండి బర్త్ చేయబడిన సమూహం."
+
+#: dt-groups/base-setup.php:296
+msgctxt "Optional Documentation"
+msgid "The contacts who are members of this group."
+msgstr "ఈ గుంపులో సభ్యులైన పరిచయాలు."
+
+#: dt-groups/base-setup.php:152
+msgctxt "Optional Documentation"
+msgid "The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
+msgstr "ఈ సమూహానికి నాటిన మరియు / లేదా కోచింగ్ ఇచ్చిన వ్యక్తి. ఒక సమూహానికి ఒక వ్యక్తిని మాత్రమే కేటాయించవచ్చు, అయితే బహుళ మంది ఈ గుంపుకు కోచ్‌లు / చర్చి రైతులు కావచ్చు."
+
+#: dt-metrics/combined/time-charts.php:113
+#: dt-metrics/contacts/milestones.php:68
+#: dt-metrics/contacts/seeker-path.php:64
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-users/template-user-management.php:568
+msgid "All Time"
+msgstr "అన్ని సమయంలో"
+
+#: dt-users/template-user-management.php:564
+msgid "This Year"
+msgstr "ఈ సంవత్సరం"
+
+#: dt-metrics/combined/daily-activity.php:77
+#: dt-users/template-user-management.php:558
+msgid "Last Month"
+msgstr "పోయిన నెల"
+
+#: dt-metrics/combined/daily-activity.php:76
+#: dt-users/template-user-management.php:554
+msgid "This Month"
+msgstr "ఈ నెల"
+
+#: dt-users/template-user-management.php:89
+#: dt-users/template-user-management.php:257
+msgid "Workload Status"
+msgstr "పనిభారం స్థితి"
+
+#: dt-users/template-user-management.php:92
+msgid "Accept Needed"
+msgstr "అవసరం అంగీకరించండి"
+
+#: dt-users/template-user-management.php:96
+msgid "Last Activity"
+msgstr "చివరి కార్యాచరణ"
+
+#: dt-users/template-user-management.php:183
+msgid "No activity"
+msgstr "కార్యాచరణ లేదు"
+
+#: dt-users/template-user-management.php:207
+msgid "Multiplier Name"
+msgstr "గుణకం పేరు"
+
+#: dt-users/template-user-management.php:536
+msgid "Pending"
+msgstr "పెండింగ్‌లో ఉంది"
+
+#: dt-users/template-user-management.php:543
+msgid "Unread Notifications"
+msgstr "చదవని నోటిఫికేషన్‌లు"
+
+#: dt-users/mapbox-coverage-map.php:76
+#: dt-users/template-user-management.php:248
+msgid "User Status"
+msgstr "వినియోగదారు స్థితి"
+
+#: dt-users/template-new-user.php:177
+#: dt-users/template-user-management.php:428
+msgid "Click here to see roles documentation"
+msgstr "పాత్రల డాక్యుమెంటేషన్ చూడటానికి ఇక్కడ క్లిక్ చేయండి"
+
+#: dt-users/template-user-management.php:456
+msgid "Save Roles"
+msgstr "పాత్రలను సేవ్ చేయండి"
+
+#: dt-users/template-user-management.php:280
+#: template-settings.php:337
+msgid "Search Locations"
+msgstr "స్థానాలను శోధించండి"
+
+#: dt-users/template-user-management.php:308
+msgid "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+msgstr "మీరు అందుబాటులో లేని తేదీలను సెట్ చేయండి, అందువల్ల క్రొత్త పరిచయాలను స్వీకరించడానికి మీ లభ్యత డిస్పాచర్‌కు తెలుస్తుంది"
+
+#: dt-users/template-user-management.php:319
+msgid "Travel or Away Dates"
+msgstr "ప్రయాణ లేదా దూరంగా తేదీలు"
+
+#: dt-users/template-user-management.php:229
+msgid "Daily Activity"
+msgstr "రోజువారీ కార్యాచరణ"
+
+#: dt-users/user-management.php:119
+msgid "Away"
+msgstr "దూరంగా"
+
+#: dt-users/user-management.php:120
+msgid "Inconsistent"
+msgstr "అస్థిరమైనది"
+
+#: dt-users/user-management.php:172
+msgctxt "Bob was accepted on Jul 8 after 10 days"
+msgid "%1$s was accepted on %2$s after %3$s days"
+msgstr "% 1 $ s% 3 $ s రోజుల తర్వాత% 2 $ s లో అంగీకరించబడింది"
+
+#: dt-users/user-management.php:173
+msgctxt "Bob waiting for contact for 10 days"
+msgid "%1$s waiting for Contact Attempt for %2$s days"
+msgstr "% 1 $ s సంప్రదింపు ప్రయత్నం కోసం% 2 $ s రోజులు వేచి ఉన్నాయి"
+
+#: dt-users/user-management.php:174
+msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
+msgid "Contact with %1$s was attempted on %2$s after %3$s days"
+msgstr "% 1 $ s తో పరిచయం% 3 $ s రోజుల తర్వాత% 2 $ s లో ప్రయత్నించారు"
+
+#: dt-users/user-metrics.php:117
+msgid "Logged In"
+msgstr "లాగిన్ అయ్యారు"
+
+#: dt-users/user-metrics.php:120
+msgctxt "Declined assignment on Bob"
+msgid "Declined assignment on %s"
+msgstr "% S లో అసైన్మెంట్ క్షీణించింది"
+
+#: dt-users/user-management.php:289
+msgid "%s days since last update"
+msgstr "చివరి నవీకరణ నుండి% s రోజులు"
+
+#: dt-workflows/tasks.php:82
+msgctxt "You set a reminder for today on contact1"
+msgid "You set a reminder for today on %1$s"
+msgstr "మీరు ఈ రోజు రిమైండర్‌ను% 1 $ s లో సెట్ చేసారు"
+
+#: dt-workflows/tasks.php:86
+msgctxt "You set this task on contact1: task note"
+msgid "You set this task on %1$s: %2$s"
+msgstr "మీరు ఈ పనిని% 1 $ s:% 2 $ s లో సెట్ చేసారు"
+
+#: dt-contacts/access-module.php:486
+#: dt-contacts/access-module.php:517
+#: dt-contacts/access-module.php:548
+#: dt-contacts/base-setup.php:441
+msgid "Choose an option:"
+msgstr "ఒక ఎంపికను ఎంచుకోండి:"
+
+#: dt-contacts/access-module.php:508
+#: dt-contacts/access-module.php:539
+#: dt-contacts/access-module.php:567
+#: dt-contacts/base-setup.php:465
+msgid "Confirm"
+msgstr "నిర్ధారించండి"
+
+#: dt-groups/base-setup.php:592
+msgid "Create"
+msgstr "సృష్టించండి"
+
+#: dt-groups/base-setup.php:597
+msgid "Select"
+msgstr "ఎంచుకోండి"
+
+#: dt-groups/base-setup.php:609
+msgctxt "Add members modal"
+msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
+msgstr "'సభ్యుల జాబితా' ఫీల్డ్‌లో, ఈ గుంపుకు జోడించడానికి ఇప్పటికే ఉన్న పరిచయం పేరును టైప్ చేయండి."
+
+#: dt-notifications/notifications.php:477
+msgid "%s minute ago"
+msgid_plural "%s minutes ago"
+msgstr[0] "% s నిమిషం క్రితం"
+msgstr[1] ""
+
+#: dt-notifications/notifications.php:482
+msgid "%s hour ago"
+msgid_plural "%s hours ago"
+msgstr[0] "% s గంట క్రితం"
+msgstr[1] ""
+
+#: dt-notifications/notifications.php:487
+msgid "%s day ago"
+msgid_plural "%s days ago"
+msgstr[0] "% s రోజు క్రితం"
+msgstr[1] ""
+
+#: dt-notifications/notifications.php:492
+msgid "%s week ago"
+msgid_plural "%s weeks ago"
+msgstr[0] "% s వారం క్రితం"
+msgstr[1] ""
+
+#: dt-metrics/combined/daily-activity.php:78
+#: dt-metrics/combined/daily-activity.php:79
+#: dt-metrics/combined/daily-activity.php:80
+#: dt-metrics/combined/daily-activity.php:81
+#: dt-metrics/combined/daily-activity.php:82
+#: dt-notifications/notifications.php:497
+msgid "%s month ago"
+msgid_plural "%s months ago"
+msgstr[0] "% s నెల క్రితం"
+msgstr[1] ""
+
+#: dt-notifications/notifications.php:511
+msgid "%s year ago"
+msgid_plural "%s years ago"
+msgstr[0] "% s సంవత్సరం క్రితం"
+msgstr[1] ""
+
+#: dt-assets/functions/enqueue-scripts.php:177
+msgid "Translate with Google Translate"
+msgstr "Google అనువాదంతో అనువదించండి"
+
+#: dt-assets/functions/enqueue-scripts.php:178
+msgid "Hide Translation"
+msgstr "అనువాదం దాచు"
+
+#: dt-assets/functions/enqueue-scripts.php:260
+msgid "Add"
+msgstr "జోడించు"
+
+#: dt-assets/parts/loop-activity-comment.php:46
+msgid "Comment"
+msgstr "వ్యాఖ్య"
+
+#: archive-template.php:502
+#: dt-assets/parts/loop-activity-comment.php:55
+msgid "Type:"
+msgstr "రకం:"
+
+#: dt-assets/parts/loop-activity-comment.php:184
+msgid "Type of Comment"
+msgstr "వ్యాఖ్య రకం"
+
+#: dt-contacts/access-module.php:312
+msgid "Contacts transferred from a partnership with another Disciple.Tools site."
+msgstr "పరిచయాలు మరొక శిష్యుడితో భాగస్వామ్యం నుండి బదిలీ చేయబడ్డాయి. టూల్స్ సైట్."
+
+#: dt-mapping/geocode-api/mapbox-api.php:286
+#: dt-mapping/geocode-api/mapbox-api.php:321
+#: dt-users/template-user-management.php:268
+#: template-settings.php:322
+msgid "add"
+msgstr "జోడించు"
+
+#: dt-posts/posts.php:449
+msgid "%s removed"
+msgstr "% s తొలగించబడింది"
+
+#: dt-contacts/access-module.php:1294
+#: dt-users/template-user-management.php:95
+msgid "Location"
+msgstr "స్థానం"
+
+#: dt-users/template-user-management.php:530
+msgid "Updates Needed"
+msgstr "నవీకరణలు అవసరం"
+
+#: dt-users/template-user-management.php:550
+msgid "Assignments"
+msgstr "అసైన్‌మెంట్‌లు"
+
+#: dt-users/template-user-management.php:582
+msgid "Pace"
+msgstr "పేస్"
+
+#: dt-users/template-user-management.php:583
+msgid "Assigned and not accepted"
+msgstr "కేటాయించబడింది మరియు అంగీకరించబడలేదు"
+
+#: dt-users/template-user-management.php:585
+msgid "Time from assigned to contact accepted for the last 10 contacts"
+msgstr "చివరి 10 పరిచయాలకు అంగీకరించిన సమయం నుండి అంగీకరించబడింది"
+
+#: dt-users/template-user-management.php:587
+msgid "Accepted with no contact attempt"
+msgstr "సంప్రదింపు ప్రయత్నం లేకుండా అంగీకరించబడింది"
+
+#: dt-users/template-user-management.php:589
+msgid "Oldest 10 update needed"
+msgstr "పాత 10 నవీకరణ అవసరం"
+
+#: dt-users/template-user-management.php:591
+msgid "Time from assigned to contact attempt for the last 10 contacts"
+msgstr "చివరి 10 పరిచయాల కోసం సంప్రదింపు ప్రయత్నానికి కేటాయించిన సమయం"
+
+#: dt-users/template-user-management.php:268
+#: dt-users/template-user-management.php:271
+msgid "Location Responsibility"
+msgstr "స్థాన బాధ్యత"
+
+#: dt-users/template-user-management.php:310
+msgid "Schedule Unavailability"
+msgstr "షెడ్యూల్ లభ్యత"
+
+#: dt-users/user-management.php:110
+msgid "Add User"
+msgstr "వినియోగదారుని జోడించండి"
+
+#: dt-users/users.php:390
+msgid "Email already exists and is a user on this site"
+msgstr "ఇమెయిల్ ఇప్పటికే ఉంది మరియు ఈ సైట్‌లోని వినియోగదారు"
+
+#: dt-users/users.php:396
+msgid "Failed to add user to site."
+msgstr "సైట్కు వినియోగదారుని జోడించడంలో విఫలమైంది."
+
+#: dt-assets/functions/enqueue-scripts.php:211
+msgid "Mark as complete"
+msgstr "పూర్తయినట్లు గుర్తించండి"
+
+#: dt-assets/parts/modals/modal-help.php:34
+msgid "2 contacts need an update"
+msgstr "2 పరిచయాలకు నవీకరణ అవసరం"
+
+#: dt-assets/parts/modals/modal-help.php:13
+msgid "Quick Action Buttons"
+msgstr "త్వరిత చర్య బటన్లు"
+
+#: dt-metrics/groups/tree.php:84
+#: dt-metrics/personal/group-tree.php:85
+msgid "Members"
+msgstr "సభ్యులు"
+
+#: dt-assets/parts/modals/modal-help.php:56
+msgctxt "Optional Documentation"
+msgid "Default and Custom Filters Tile"
+msgstr "డిఫాల్ట్ మరియు అనుకూల ఫిల్టర్లు టైల్"
+
+#: dt-assets/parts/modals/modal-help.php:74
+msgctxt "Optional Documentation"
+msgid "Closed Contacts Switch"
+msgstr "క్లోజ్డ్ కాంటాక్ట్స్ స్విచ్"
+
+#: dt-assets/parts/modals/modal-help.php:80
+msgctxt "Optional Documentation"
+msgid "Inactive Groups Switch"
+msgstr "నిష్క్రియాత్మక గుంపులు మారండి"
+
+#: dt-assets/parts/modals/modal-help.php:129
+#: dt-assets/parts/nav-topbar.php:309
+#: template-notifications.php:66
+msgid "Mark all as read"
+msgstr "అన్నీచదివినట్లుగా సూచించు"
+
+#: dt-assets/parts/modals/modal-tasks.php:13
+msgid "Task Type"
+msgstr "టాస్క్ రకం"
+
+#: dt-contacts/base-setup.php:347
+msgctxt "Contact Status field description"
+msgid "The Contact Status describes the progress in communicating with the contact."
+msgstr "సంప్రదింపు స్థితి పరిచయంతో కమ్యూనికేట్ చేయడంలో పురోగతిని వివరిస్తుంది."
+
+#: dt-contacts/base-setup.php:158
+msgid "Contact Type"
+msgstr "సంప్రదింపు రకం"
+
+#: dt-people-groups/people-groups-base.php:219
+#: dt-posts/custom-post-type.php:158
+msgid "Last Modified"
+msgstr "చివరిసారిగా మార్పు చేయబడిన"
+
+#: dt-core/configuration/config-site-defaults.php:356
+msgid "New Comments"
+msgstr "క్రొత్త వ్యాఖ్యలు"
+
+#: dt-groups/base-setup.php:238
+msgctxt "Optional Documentation"
+msgid "The group is sharing the gospel."
+msgstr "సమూహం సువార్తను పంచుకుంటుంది."
+
+#: dt-groups/base-setup.php:243
+msgctxt "Optional Documentation"
+msgid "The group has leaders."
+msgstr "ఈ బృందానికి నాయకులు ఉన్నారు."
+
+#: dt-groups/base-setup.php:248
+msgctxt "Optional Documentation"
+msgid "The group has committed to be church."
+msgstr "ఈ బృందం చర్చిగా ఉండటానికి కట్టుబడి ఉంది."
+
+#: dt-groups/base-setup.php:419
+msgctxt "Optional Documentation"
+msgid "Number of unbelievers in this group."
+msgstr "ఈ గుంపులో అవిశ్వాసుల సంఖ్య."
+
+#: dt-groups/base-setup.php:428
+msgctxt "Optional Documentation"
+msgid "Number of believers in this group."
+msgstr "ఈ గుంపులో విశ్వాసుల సంఖ్య."
+
+#: dt-groups/base-setup.php:437
+msgctxt "Optional Documentation"
+msgid "Number of people in accountability group."
+msgstr "జవాబుదారీతనం సమూహంలోని వ్యక్తుల సంఖ్య."
+
+#: dt-posts/posts.php:314
+msgctxt "Shaikh added as people group on contact1"
+msgid "%1$s added as people group on %2$s"
+msgstr "% 1 $ s% 2 $ s లో ప్రజల సమూహంగా జోడించబడింది"
+
+#: dt-posts/posts.php:315
+msgctxt "Shaikh added to people groups"
+msgid "%s added to people groups"
+msgstr "ప్రజల సమూహాలకు% s జోడించబడ్డాయి"
+
+#: dt-posts/posts.php:317
+msgctxt "Shaikh removed from people groups on contact1"
+msgid "%1$s removed from people groups on %2$s"
+msgstr "% 2 $ s లో ప్రజల సమూహాల నుండి% 1 $ s తొలగించబడింది"
+
+#: dt-posts/posts.php:318
+msgctxt "Shaikh removed from people groups"
+msgid "%s removed from people groups"
+msgstr "ప్రజల సమూహాల నుండి% s తొలగించబడింది"
+
+#: dt-users/user-hooks-and-config.php:512
+#: dt-users/user-management.php:183
+msgid "View Contact"
+msgstr "పరిచయాన్ని చూడండి"
+
+#: template-notifications.php:86
+#: template-notifications.php:89
+msgid "Load more notifications"
+msgstr "మరిన్ని నోటిఫికేషన్‌లను లోడ్ చేయండి"
+
+#: dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:62
+#: dt-metrics/personal/activity-highlights.php:57
+msgid "Contact"
+msgstr "సంప్రదించండి"
+
+#: dt-assets/functions/enqueue-scripts.php:119
+msgctxt "Showing 30 items matching bob"
+msgid "Showing %1$s items matching %2$s"
+msgstr "% 2 $ s కు సరిపోయే% 1 $ s అంశాలను చూపుతోంది"
+
+#: dt-metrics/contacts/milestones-map.php:24
+#: dt-metrics/contacts/milestones-map.php:40
+msgid "Milestones Map"
+msgstr "మైలురాళ్ల మ్యాప్"
+
+#: dt-users/user-management.php:175
+msgid "Unable to update"
+msgstr "నవీకరించడం సాధ్యం కాలేదు"
+
+#: dt-contacts/access-module.php:278
+msgctxt "Reason Closed label"
+msgid "GDPR request"
+msgstr "GDPR అభ్యర్థన"
+
+#: dt-contacts/dmm-module.php:120
+msgid "Seeker"
+msgstr "సీకర్"
+
+#: dt-contacts/dmm-module.php:123
+msgid "Believer"
+msgstr "నమ్మిన"
+
+#: dt-contacts/dmm-module.php:126
+msgid "Leader"
+msgstr "నాయకుడు"
+
+#: dt-contacts/contacts-transfer.php:1149
+msgid "redacted email"
+msgstr "తిరిగి మార్చబడిన ఇమెయిల్"
+
+#: dt-contacts/contacts-transfer.php:1150
+msgid "redacted name"
+msgstr "మార్చబడిన పేరు"
+
+#: dt-contacts/contacts-transfer.php:1151
+msgid "redacted"
+msgstr "తిరిగి మార్చబడింది"
+
+#: dt-contacts/access-module.php:64
+msgid "Partner"
+msgstr "భాగస్వామి"
+
+#. translators: %s: Site name.
+#: dt-core/configuration/restrict-site-access.php:292
+msgid "DT Site Name: %s"
+msgstr "DT సైట్ పేరు:% s"
+
+#: dt-metrics/charts-base.php:132
+msgid "No Results"
+msgstr "ఫలితాలు లేవు"
+
+#: dt-metrics/combined/hover-map.php:25
+#: dt-metrics/combined/hover-map.php:65
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "హోవర్ మ్యాప్"
+
+#: dt-metrics/combined/locations-list.php:25
+msgid "Locations List"
+msgstr "స్థానాల జాబితా"
+
+#: dt-metrics/groups/tree.php:85
+#: dt-metrics/personal/group-tree.php:86
+msgid "View Record"
+msgstr "రికార్డ్ చూడండి"
+
+#: dt-metrics/contacts/milestones.php:23
+msgid "Milestones Chart"
+msgstr "మైలురాళ్ళు చార్ట్"
+
+#: dt-metrics/contacts/overview.php:61
+msgid "Contacts Overview"
+msgstr "పరిచయాల అవలోకనం"
+
+#: dt-metrics/contacts/sources.php:24
+msgid "Sources Chart"
+msgstr "సోర్సెస్ చార్ట్"
+
+#: dt-metrics/groups/overview.php:62
+msgid "Groups Overview"
+msgstr "గుంపుల అవలోకనం"
+
+#: dt-metrics/groups/tree.php:82
+#: dt-metrics/personal/group-tree.php:83
+msgid "Highlight Active"
+msgstr "హైలైట్ యాక్టివ్"
+
+#: dt-metrics/groups/tree.php:83
+#: dt-metrics/personal/group-tree.php:84
+msgid "Highlight Churches"
+msgstr "చర్చిలను హైలైట్ చేయండి"
+
+#: dt-metrics/groups/tree.php:88
+#: dt-metrics/personal/group-tree.php:89
+msgid "Total Members"
+msgstr "మొత్తం సభ్యులు"
+
+#: dt-metrics/groups/tree.php:89
+#: dt-metrics/personal/group-tree.php:90
+msgid "View Group"
+msgstr "సమూహాన్ని వీక్షించండి"
+
+#: dt-metrics/personal/baptism-tree.php:57
+msgid "My Baptism Generation Tree"
+msgstr "నా బాప్టిజం జనరేషన్ ట్రీ"
+
+#: dt-metrics/personal/coaching-tree.php:143
+msgid "Disciple"
+msgstr "శిష్యుడు"
+
+#: dt-metrics/personal/overview.php:72
+msgid "stats as of"
+msgstr "గణాంకాలు"
+
+#: dt-users/hover-coverage-map.php:85
+#: dt-users/mapbox-coverage-map.php:55
+msgid "Coverage Map"
+msgstr "కవరేజ్ మ్యాప్"
+
+#: dt-users/hover-coverage-map.php:141
+msgid "Locations Covered"
+msgstr "స్థానాలు కవర్"
+
+#: dt-users/hover-coverage-map.php:192
+msgid "Locations with Active Users"
+msgstr "క్రియాశీల వినియోగదారులతో స్థానాలు"
+
+#: dt-users/hover-coverage-map.php:243
+msgid "Locations with Inactive Assigned"
+msgstr "క్రియారహితంగా కేటాయించిన స్థానాలు"
+
+#: dt-users/template-user-management.php:464
+msgid "Access by Source"
+msgstr "మూలం ద్వారా ప్రాప్యత"
+
+#: dt-users/template-user-management.php:470
+#: dt-users/user-hooks-and-config.php:543
+msgid "All Sources - gives access to all contacts"
+msgstr "అన్ని వనరులు - అన్ని పరిచయాలకు ప్రాప్తిని ఇస్తుంది"
+
+#: dt-users/template-user-management.php:476
+#: dt-users/user-hooks-and-config.php:550
+msgid "Custom - Access own contacts and all the contacts of the selected sources below"
+msgstr "అనుకూల - స్వంత పరిచయాలను మరియు క్రింద ఎంచుకున్న మూలాల యొక్క అన్ని పరిచయాలను యాక్సెస్ చేయండి"
+
+#: dt-users/template-user-management.php:482
+#: dt-users/user-hooks-and-config.php:557
+msgid "No Sources - only own contacts"
+msgstr "మూలాలు లేవు - సొంత పరిచయాలు మాత్రమే"
+
+#: dt-users/template-user-management.php:488
+msgid "Sources List"
+msgstr "మూలాల జాబితా"
+
+#: dt-users/template-user-management.php:500
+msgid "Save Allowed Sources"
+msgstr "అనుమతించిన మూలాలను సేవ్ చేయండి"
+
+#: dt-users/template-new-user.php:82
+msgid "Add New User"
+msgstr "క్రొత్త వినియోగదారుని జోడించండి"
+
+#: dt-users/template-new-user.php:90
+msgid "There are some errors in your form."
+msgstr "మీ రూపంలో కొన్ని లోపాలు ఉన్నాయి."
+
+#: dt-users/template-new-user.php:96
+msgid "Contact to make a user (optional)"
+msgstr "వినియోగదారుని చేయడానికి సంప్రదించండి (ఐచ్ఛికం)"
+
+#: dt-users/template-new-user.php:181
+msgid "Create User"
+msgstr "వినియోగదారుని సృష్టించండి"
+
+#: dt-users/user-management.php:178
+msgid "Email address is already in the system as a user!"
+msgstr "ఇమెయిల్ చిరునామా ఇప్పటికే వినియోగదారుగా సిస్టమ్‌లో ఉంది!"
+
+#: dt-users/user-management.php:179
+msgid "Username is already in the system as a user!"
+msgstr "వినియోగదారు పేరు ఇప్పటికే సిస్టమ్‌లో ఉంది!"
+
+#: dt-users/template-new-user.php:105
+msgid "Search multipliers and contacts"
+msgstr "మల్టిప్లైయర్‌లు మరియు పరిచయాలను శోధించండి"
+
+#: dt-users/user-management.php:180
+msgid "Remove"
+msgstr "తొలగించండి"
+
+#: dt-metrics/groups/tree.php:25
+msgid "Groups Tree"
+msgstr "గుంపులు చెట్టు"
+
+#: dt-metrics/personal/baptism-tree.php:25
+msgid "My Baptism Tree"
+msgstr "నా బాప్టిజం చెట్టు"
+
+#: dt-metrics/personal/coaching-tree.php:25
+msgid "My Coaching Tree"
+msgstr "నా కోచింగ్ ట్రీ"
+
+#: dt-metrics/personal/group-tree.php:26
+msgid "My Groups Tree"
+msgstr "నా గుంపులు చెట్టు"
+
+#: dt-contacts/base-setup.php:406
+msgid "See duplicates"
+msgstr "నకిలీలను చూడండి"
+
+#: dt-assets/functions/enqueue-scripts.php:218
+msgid "Dismissed Duplicates"
+msgstr "తొలగించిన నకిలీలు"
+
+#: dt-assets/functions/enqueue-scripts.php:219
+msgid "Duplicates on: %s"
+msgstr "నకిలీలు:% s"
+
+#: dt-assets/parts/merge-details.php:19
+msgid "No duplicates found."
+msgstr "నకిలీలు కనుగొనబడలేదు."
+
+#: dt-contacts/base-setup.php:196
+msgid "Languages"
+msgstr "భాషలు"
+
+#: dt-contacts/contacts-transfer.php:435
+msgid "This contact was transferred to %s for further follow-up."
+msgstr "తదుపరి అనుసరణ కోసం ఈ పరిచయం% s కు బదిలీ చేయబడింది."
+
+#: dt-contacts/duplicates-merging.php:541
+msgctxt "This record duplicated and was merged into Contact2"
+msgid "This record is a duplicate and was merged into %2$s"
+msgstr "ఈ రికార్డ్ నకిలీ మరియు ఇది% 2 $ s లో విలీనం చేయబడింది"
+
+#: dt-contacts/access-module.php:1476
+#: dt-contacts/duplicates-merging.php:465
+#: dt-contacts/duplicates-merging.php:545
+msgid "Duplicate Checker"
+msgstr "నకిలీ చెకర్"
+
+#: dt-contacts/duplicates-merging.php:554
+msgctxt "User1 merged Contact1 into this record"
+msgid "%1$s merged %2$s into this record"
+msgstr "% 1 $ s ఈ రికార్డులో% 2 $ s ని విలీనం చేసింది"
+
+#: dt-posts/dt-posts.php:1312
+msgid "D.T System"
+msgstr "D.T వ్యవస్థ"
+
+#: dt-users/user-management.php:176
+msgid "View New User"
+msgstr "క్రొత్త వినియోగదారుని చూడండి"
+
+#: dt-users/user-management.php:181
+msgid "This contact is already a user."
+msgstr "ఈ పరిచయం ఇప్పటికే వినియోగదారు."
+
+#: dt-users/user-management.php:182
+msgid "View User"
+msgstr "వినియోగదారుని చూడండి"
+
+#: template-settings.php:58
+#: template-settings.php:314
+msgid "Multiplier Preferences"
+msgstr "గుణక ప్రాధాన్యతలు"
+
+#: template-settings.php:322
+#: template-settings.php:327
+msgid "Locations you are willing to be responsible for"
+msgstr "మీరు బాధ్యత వహించడానికి సిద్ధంగా ఉన్న స్థానాలు"
+
+#: dt-users/template-user-management.php:291
+#: template-settings.php:350
+msgid "Languages you are comfortable speaking"
+msgstr "మీరు మాట్లాడే సౌకర్యవంతమైన భాషలు"
+
+#: template-settings.php:371
+msgid "People Groups you wish to serve"
+msgstr "మీరు సేవ చేయాలనుకుంటున్న వ్యక్తుల సమూహాలు"
+
+#: template-settings.php:394
+msgid "Availability to receive contacts from the Dispatcher"
+msgstr "డిస్పాచర్ నుండి పరిచయాలను స్వీకరించడానికి లభ్యత"
+
+#: template-settings.php:667
+msgid "System Language"
+msgstr "సిస్టమ్ భాష"
+
+#: archive-template.php:202
+msgctxt "Contacts Filters"
+msgid "%s Filters"
+msgstr "% s ఫిల్టర్లు"
+
+#: archive-template.php:225
+msgctxt "Contacts List"
+msgid "%s List"
+msgstr "% s జాబితా"
+
+#: archive-template.php:258
+#: template-new-bulk-post.php:89
+msgid "Fields"
+msgstr "క్షేత్రాలు"
+
+#: archive-template.php:265
+msgid "Bulk Edit"
+msgstr "బల్క్ ఎడిట్"
+
+#: archive-template.php:324
+msgid "Choose which fields to display as columns in the list"
+msgstr "జాబితాలో నిలువు వరుసలుగా ప్రదర్శించాల్సిన ఫీల్డ్‌లను ఎంచుకోండి"
+
+#: archive-template.php:106
+#: archive-template.php:193
+#: archive-template.php:358
+#: template-new-bulk-post.php:132
+msgid "Apply"
+msgstr "వర్తించు"
+
+#: archive-template.php:107
+#: archive-template.php:194
+#: archive-template.php:359
+#: template-new-bulk-post.php:134
+msgid "reset to default"
+msgstr "డిఫాల్ట్ రీసెట్"
+
+#: archive-template.php:367
+msgid "Select all the  %1$s you want to update from the list, and update them below"
+msgstr "మీరు జాబితా నుండి అప్‌డేట్ చేయదలిచిన అన్ని% 1 $ s ని ఎంచుకోండి మరియు వాటిని క్రింద నవీకరించండి"
+
+#: archive-template.php:449
+msgid "Share with:"
+msgstr "తో పంచు:"
+
+#: archive-template.php:522
+#: dt-users/template-new-user.php:129
+#: dt-users/template-new-user.php:242
+msgid "See More Options"
+msgstr "మరిన్ని ఎంపికలు చూడండి"
+
+#: archive-template.php:523
+#: dt-users/template-new-user.php:132
+#: dt-users/template-new-user.php:245
+msgid "See Fewer Options"
+msgstr "తక్కువ ఎంపికలు చూడండి"
+
+#: dt-assets/functions/details-bar.php:55
+msgid "Admin Actions"
+msgstr "నిర్వాహక చర్యలు"
+
+#: dt-assets/functions/details-bar.php:60
+#: single-template.php:357
+msgctxt "Delete Contact"
+msgid "Delete %s"
+msgstr "% S ను తొలగించండి"
+
+#: dt-assets/functions/enqueue-scripts.php:215
+msgid "Duplicates Detected"
+msgstr "నకిలీలు కనుగొనబడ్డాయి"
+
+#: dt-assets/parts/modals/modal-new-contact.php:3
+#: dt-assets/parts/modals/modal-new-contact.php:12
+msgid "Create Record"
+msgstr "రికార్డ్ సృష్టించండి"
+
+#: dt-assets/parts/modals/modal-new-contact.php:20
+msgid "Record Created"
+msgstr "రికార్డ్ సృష్టించబడింది"
+
+#: dt-assets/parts/modals/modal-new-contact.php:26
+msgid "Edit New Record"
+msgstr "క్రొత్త రికార్డ్‌ను సవరించండి"
+
+#: dt-contacts/access-module.php:112
+msgid "Collaborators"
+msgstr "సహకారులు"
+
+#: dt-contacts/access-module.php:911
+#: dt-contacts/access-module.php:921
+msgid "My Follow-Up"
+msgstr "నా ఫాలో-అప్"
+
+#: dt-contacts/access-module.php:922
+#: dt-contacts/access-module.php:943
+#: dt-contacts/access-module.php:966
+#: dt-contacts/access-module.php:990
+#: dt-groups/base-setup.php:977
+msgid "Assigned to me"
+msgstr "నాకు కేటాయించబడింది"
+
+#: dt-contacts/access-module.php:923
+#: dt-contacts/access-module.php:944
+#: dt-contacts/access-module.php:967
+#: dt-contacts/access-module.php:991
+msgid "Sub-assigned to me"
+msgstr "నాకు ఉప-కేటాయించబడింది"
+
+#: dt-contacts/access-module.php:1027
+msgctxt "All records"
+msgid "Follow-Up %s"
+msgstr "ఫాలో-అప్% s"
+
+#: dt-contacts/access-module.php:1035
+msgid "All Follow-Up"
+msgstr "అన్ని ఫాలో-అప్"
+
+#: dt-contacts/access-module.php:1470
+msgid "This record might be a duplicate of: "
+msgstr "ఈ రికార్డ్ దీని నకిలీ కావచ్చు: "
+
+#: dt-contacts/base-setup.php:93
+msgid "User Manager"
+msgstr "యూజర్ మేనేజర్"
+
+#: dt-contacts/base-setup.php:105
+msgid "Administrator"
+msgstr "నిర్వాహకుడు"
+
+#: dt-contacts/base-setup.php:151
+msgid "Nickname"
+msgstr "మారుపేరు"
+
+#: dt-contacts/base-setup.php:163
+msgid "Representing a User in the system"
+msgstr "సిస్టమ్‌లోని వినియోగదారుని సూచిస్తుంది"
+
+#: dt-contacts/base-setup.php:171
+msgid "A friend, family member or acquaintance"
+msgstr "ఒక స్నేహితుడు, కుటుంబ సభ్యుడు లేదా పరిచయస్తుడు"
+
+#: dt-contacts/base-setup.php:172
+#: dt-contacts/dmm-module.php:54
+msgid "Only me"
+msgstr "నేనొక్కడినే"
+
+#: dt-contacts/base-setup.php:248
+#: dt-groups/base-setup.php:374
+msgid "Locations or Address"
+msgstr "స్థానాలు లేదా చిరునామా"
+
+#: dt-contacts/base-setup.php:302
+msgctxt "connections to other records"
+msgid "Connections to other %s"
+msgstr "ఇతర% s కు కనెక్షన్లు"
+
+#: dt-contacts/base-setup.php:400
+msgctxt "Change Record Type"
+msgid "Change %s Type"
+msgstr "% S రకాన్ని మార్చండి"
+
+#: dt-contacts/base-setup.php:531
+#: dt-groups/base-setup.php:1058
+msgid "Default Filters"
+msgstr "డిఫాల్ట్ ఫిల్టర్లు"
+
+#: dt-contacts/base-setup.php:541
+msgctxt "All records I can view"
+msgid "All %s I can view"
+msgstr "నేను చూడగలిగే అన్ని% s"
+
+#: dt-contacts/base-setup.php:564
+#: dt-groups/base-setup.php:1087
+#: dt-posts/custom-post-type.php:337
+msgid "My Recently Viewed"
+msgstr "నా ఇటీవల వీక్షించారు"
+
+#: dt-contacts/base-setup.php:569
+#: dt-groups/base-setup.php:1092
+#: dt-posts/custom-post-type.php:342
+msgid "Last 30 viewed"
+msgstr "చివరి 30 మంది వీక్షించారు"
+
+#: dt-contacts/access-module.php:107
+msgid "Connection"
+msgstr "కనెక్షన్"
+
+#: dt-contacts/access-module.php:109
+#: dt-contacts/dmm-module.php:51
+msgid "Connected to a contact, or generational fruit"
+msgstr "పరిచయం లేదా తరాల పండ్లకు కనెక్ట్ చేయబడింది"
+
+#: dt-contacts/dmm-module.php:115
+msgid "Faith Status"
+msgstr "విశ్వాస స్థితి"
+
+#: dt-contacts/dmm-module.php:159
+msgid "Is Coaching"
+msgstr "కోచింగ్"
+
+#: dt-contacts/dmm-module.php:213
+msgctxt "Optional Documentation"
+msgid "The people groups represented by this contact."
+msgstr "ఈ పరిచయం ద్వారా ప్రాతినిధ్యం వహిస్తున్న వ్యక్తుల సమూహాలు."
+
+#: dt-contacts/dmm-module.php:312
+msgid "Sub-assigned"
+msgstr "ఉప-కేటాయించబడింది"
+
+#: dt-contacts/dmm-module.php:277
+msgid "Faith"
+msgstr "విశ్వాసం"
+
+#: dt-contacts/dmm-module.php:360
+msgctxt "Personal records"
+msgid "Connected %s"
+msgstr "% S కనెక్ట్ చేయబడింది"
+
+#: dt-groups/base-setup.php:623
+msgid "Coaches"
+msgstr "కోచ్‌లు"
+
+#: dt-mapping/geocode-api/mapbox-api.php:287
+#: template-merge-post-details.php:88
+msgid "Use"
+msgstr "వా డు"
+
+#: dt-mapping/geocode-api/mapbox-api.php:288
+#: template-merge-post-details.php:86
+#: template-new-bulk-post.php:26
+#: template-new-bulk-post.php:203
+#: template-new-bulk-post.php:208
+msgid "Search Location"
+msgstr "శోధన స్థానం"
+
+#: dt-mapping/geocode-api/mapbox-api.php:289
+#: template-merge-post-details.php:87
+#: template-new-bulk-post.php:216
+msgid "Delete Location"
+msgstr "స్థానాన్ని తొలగించండి"
+
+#: dt-mapping/geocode-api/mapbox-api.php:290
+msgid "Open Mapping"
+msgstr "ఓపెన్ మ్యాపింగ్"
+
+#: dt-metrics/combined/mapbox-maps.php:28
+msgid "Combined Maps"
+msgstr "సంయుక్త పటాలు"
+
+#: dt-metrics/combined/mapbox-maps.php:84
+msgid "Active Users"
+msgstr "క్రియాశీల వినియోగదారులు"
+
+#: dt-metrics/contacts/mapbox-maps.php:30
+msgid "Access Contact Maps"
+msgstr "సంప్రదింపు మ్యాప్‌లను ప్రాప్యత చేయండి"
+
+#: dt-metrics/groups/mapbox-maps.php:30
+msgid "Group Maps"
+msgstr "సమూహ పటాలు"
+
+#: dt-metrics/personal/mapbox-contacts-maps.php:30
+msgid "Contacts Maps"
+msgstr "పరిచయాల మ్యాప్స్"
+
+#: dt-metrics/personal/mapbox-groups-maps.php:30
+msgid "Groups Maps"
+msgstr "గుంపులు పటాలు"
+
+#: dt-posts/dt-posts.php:1790
+#: single-template.php:120
+msgid "Details"
+msgstr "వివరాలు"
+
+#: dt-reports/reports.php:159
+msgid "Added new report"
+msgstr "క్రొత్త నివేదిక జోడించబడింది"
+
+#: dt-reports/reports.php:252
+msgid "Updated report"
+msgstr "నివేదిక నవీకరించబడింది"
+
+#: dt-assets/functions/enqueue-scripts.php:308
+#: dt-assets/parts/modals/modal-advanced-search.php:73
+#: dt-contacts/access-module.php:1291
+#: dt-groups/base-setup.php:985
+#: dt-metrics/personal/activity-highlights.php:56
+#: dt-users/mapbox-coverage-map.php:77
+msgid "All"
+msgstr "అన్నీ"
+
+#: dt-users/mapbox-coverage-map.php:78
+msgctxt "Add user to: France"
+msgid "Add user to: %s"
+msgstr "దీనికి వినియోగదారుని జోడించండి:% s"
+
+#: dt-users/mapbox-coverage-map.php:81
+msgid "Responsibility Coverage"
+msgstr "బాధ్యత కవరేజ్"
+
+#: header.php:42
+msgid "D.T Record"
+msgstr "D.T రికార్డ్"
+
+#: single-template.php:53
+#: single-template.php:61
+msgid "This %s needs an update."
+msgstr "ఈ% s కి నవీకరణ అవసరం."
+
+#: dt-assets/functions/details-bar.php:121
+#: dt-assets/functions/details-bar.php:283
+msgid "Record"
+msgstr "రికార్డ్"
+
+#: dt-assets/functions/enqueue-scripts.php:223
+msgctxt "Created on the 21st of August"
+msgid "Created on %s"
+msgstr "% S లో సృష్టించబడింది"
+
+#: dt-assets/functions/details-bar.php:125
+#: dt-assets/functions/details-bar.php:287
+msgctxt "(record created) by multiplier1"
+msgid "by %s"
+msgstr "% s ద్వారా"
+
+#: single-template.php:203
+msgid "Edit all details fields"
+msgstr "అన్ని వివరాల ఫీల్డ్‌లను సవరించండి"
+
+#: single-template.php:333
+#: template-new-bulk-post.php:277
+#: template-new-post.php:167
+msgid "Create a tag and apply it to this record."
+msgstr "ట్యాగ్‌ను సృష్టించి, ఈ రికార్డుకు వర్తింపజేయండి."
+
+#: single-template.php:358
+msgctxt "Are you sure you want to delete name?"
+msgid "Are you sure you want to delete %s?"
+msgstr "మీరు ఖచ్చితంగా% s ను తొలగించాలనుకుంటున్నారా?"
+
+#: dt-assets/functions/menu.php:39
+#: template-metrics.php:25
+msgid "Menu"
+msgstr "మెను"
+
+#: template-new-bulk-post.php:145
+#: template-new-post.php:57
+msgid "Select the %s type:"
+msgstr "% S రకాన్ని ఎంచుకోండి:"
+
+#: template-new-post.php:144
+msgid "Show all fields"
+msgstr "అన్ని ఫీల్డ్‌లను చూపించు"
+
+#: dt-assets/functions/enqueue-scripts.php:306
+msgid "start"
+msgstr "ప్రారంభం"
+
+#: dt-assets/functions/enqueue-scripts.php:307
+msgid "end"
+msgstr "ముగింపు"
+
+#: dt-contacts/base-setup.php:393
+#: dt-contacts/base-setup.php:422
+msgctxt "Archive Contact"
+msgid "Archive %s"
+msgstr "ఆర్కైవ్% s"
+
+#: dt-contacts/base-setup.php:423
+msgctxt "Are you sure you want to archive name?"
+msgid "Are you sure you want to archive %s?"
+msgstr "మీరు ఖచ్చితంగా% s ను ఆర్కైవ్ చేయాలనుకుంటున్నారా?"
+
+#: dt-contacts/base-setup.php:430
+msgid "Archive"
+msgstr "ఆర్కైవ్"
+
+#: dt-contacts/base-setup.php:678
+msgid "This %s is archived"
+msgstr "ఈ% s ఆర్కైవ్ చేయబడింది"
+
+#: dt-contacts/base-setup.php:680
+msgid "Restore"
+msgstr "పునరుద్ధరించు"
+
+#: dt-assets/functions/enqueue-scripts.php:118
+msgctxt "Showing 30 items"
+msgid "Showing %s items. Type to find more."
+msgstr "% S అంశాలను చూపుతోంది. మరింత కనుగొనడానికి టైప్ చేయండి."
+
+#: dt-assets/functions/enqueue-scripts.php:279
+msgctxt "Matches for duplicate contacts found: 230"
+msgid "Matches Found:"
+msgstr "సరిపోలికలు కనుగొనబడ్డాయి:"
+
+#: dt-assets/functions/enqueue-scripts.php:280
+msgctxt "Dismiss all duplicate matches for Bob"
+msgid "Dismiss all matches for %s"
+msgstr "% S కోసం అన్ని మ్యాచ్‌లను తొలగించండి"
+
+#: archive-template.php:300
+#: dt-contacts/base-setup.php:356
+#: dt-users/users.php:437
+msgid "Archived"
+msgstr "ఆర్కైవ్ చేయబడింది"
+
+#: dt-groups/base-setup.php:315
+msgid "Leader Count"
+msgstr "లీడర్ కౌంట్"
+
+#: template-view-duplicates.php:21
+msgid "Duplicate Access Contacts"
+msgstr "నకిలీ యాక్సెస్ పరిచయాలు"
+
+#: template-view-duplicates.php:27
+msgid "Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
+msgstr "ఇటీవల సవరించిన పరిచయాలతో ప్రారంభమయ్యే నకిలీల కోసం స్కాన్ చేస్తోంది. ఫలితాలు 10 కంటే తక్కువ ఖచ్చితమైన మ్యాచ్‌లను కలిగి ఉన్న వాటికి పరిమితం."
+
+#: template-view-duplicates.php:30
+msgctxt "Access contact scanned: 100"
+msgid "Access contacts scanned:"
+msgstr "ప్రాప్యత పరిచయాలు స్కాన్ చేయబడ్డాయి:"
+
+#: template-view-duplicates.php:31
+msgctxt "Duplicate contacts found: 100"
+msgid "Duplicates found:"
+msgstr "నకిలీలు కనుగొనబడ్డాయి:"
+
+#. Theme Name of the theme
+#: 
+msgid "Disciple Tools"
+msgstr "శిష్యుల సాధనాలు"
+
+#. Theme URI of the theme
+#: 
+msgid "https://github.com/DiscipleTools/disciple-tools-theme"
+msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
+
+#. Author URI of the theme
+#: 
+msgid "https://github.com/DiscipleTools"
+msgstr "https://github.com/DiscipleTools"
+
+#: archive-template.php:41
+#: archive-template.php:42
+#: archive-template.php:131
+#: archive-template.php:132
+#: dt-assets/functions/menu.php:57
+#: dt-assets/parts/modals/modal-advanced-search.php:2
+msgid "Advanced Search"
+msgstr "అధునాతన శోధన"
+
+#: archive-template.php:76
+#: archive-template.php:163
+msgid "Search All Fields"
+msgstr "అన్ని ఫీల్డ్‌లను శోధించండి"
+
+#: archive-template.php:67
+#: archive-template.php:154
+msgid "Choose which fields to search"
+msgstr "ఏ ఫీల్డ్‌లను శోధించాలో ఎంచుకోండి"
+
+#: dt-contacts/base-setup.php:293
+msgid "Other Social Links"
+msgstr "ఇతర సామాజిక లింకులు"
+
+#: dt-assets/parts/nav-topbar.php:296
+msgid "See All"
+msgstr "అన్నింటిని చూడు"
+
+#: dt-contacts/user-module.php:120
+msgid "User Role"
+msgstr "వినియోగదారు పాత్ర"
+
+#: dt-notifications/notifications.php:515
+msgid "over %s year ago"
+msgid_plural "over %s years ago"
+msgstr[0] "సంవత్సరం క్రితం% s కంటే ఎక్కువ"
+msgstr[1] ""
+
+#: template-new-post.php:147
+msgid "Hide fields"
+msgstr "ఫీల్డ్‌లను దాచండి"
+
+#: dt-core/global-functions.php:632
+msgid "Add new tag \"%s\""
+msgstr "క్రొత్త ట్యాగ్ \"% s\" ను జోడించండి"
+
+#: dt-core/global-functions.php:633
+msgid "Tag \"%s\" is already being used"
+msgstr "ట్యాగ్ \"% s\" ఇప్పటికే ఉపయోగించబడుతోంది"
+
+#: dt-groups/base-setup.php:480
+msgid "Leader of Group"
+msgstr "గ్రూప్ లీడర్"
+
+#: dt-assets/functions/details-bar.php:82
+#: dt-assets/functions/details-bar.php:253
+msgid "Previous record"
+msgstr "మునుపటి రికార్డ్"
+
+#: dt-assets/functions/details-bar.php:131
+#: dt-assets/functions/details-bar.php:294
+msgid "Next record"
+msgstr "తదుపరి రికార్డ్"
+
+#: dt-contacts/dmm-module.php:146
+msgid "Sub-assigned on other Contacts"
+msgstr "ఇతర పరిచయాలలో ఉప-కేటాయించబడింది"
+
+#: dt-contacts/dmm-module.php:147
+msgid "Contacts this contacts is subassigned on"
+msgstr "ఈ పరిచయాలు ఉపసమయం చేయబడ్డాయి"
+
+#: 403.php:37
+msgid "Request Record Access Permission"
+msgstr "రికార్డ్ యాక్సెస్ అనుమతి కోసం అభ్యర్థించండి"
+
+#: 403.php:46
+msgid "Request Record Access"
+msgstr "రికార్డ్ ప్రాప్యతను అభ్యర్థించండి"
+
+#: 403.php:49
+msgid "Record owner to be notified of access request. Are you happy to proceed?"
+msgstr "ప్రాప్యత అభ్యర్థన గురించి యజమానికి తెలియజేయమని రికార్డ్ చేయండి. మీరు కొనసాగడం సంతోషంగా ఉందా?"
+
+#: 403.php:52
+msgid "Submit Request"
+msgstr "అభ్యర్థనను సమర్పించండి"
+
+#: archive-template.php:37
+#: archive-template.php:127
+#: dt-mapping/geocode-api/mapbox-api.php:291
+msgid "Clear"
+msgstr "క్లియర్"
+
+#: dt-assets/functions/enqueue-scripts.php:179
+msgctxt "Bob reacted with heart emoji"
+msgid "%1$s reacted with %2$s emoji"
+msgstr "% 1 $ s% 2 $ s ఎమోజీలతో స్పందించారు"
+
+#: dt-assets/functions/enqueue-scripts.php:180
+msgctxt "Bob, Bill and Ben reacted with heart emoji"
+msgid "%3$s and %1$s reacted with %2$s emoji"
+msgstr "% 3 $ s మరియు% 1 $ s% 2 $ s ఎమోజీలతో ప్రతిస్పందించాయి"
+
+#: dt-core/configuration/config-site-defaults.php:525
+msgid "thumbs up"
+msgstr "బ్రొటనవేళ్లు"
+
+#: dt-core/configuration/config-site-defaults.php:526
+msgid "heart"
+msgstr "గుండె"
+
+#: dt-core/configuration/config-site-defaults.php:527
+msgid "laugh"
+msgstr "నవ్వు"
+
+#: dt-core/configuration/config-site-defaults.php:528
+msgid "wow"
+msgstr "వావ్"
+
+#: dt-core/configuration/config-site-defaults.php:529
+msgid "sad"
+msgstr "విచారంగా"
+
+#: dt-posts/dt-posts.php:1854
+msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
+msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
+msgstr "@ [% 1 $ s] (% 2 $ s) -% 3 $ s వినియోగదారు% 4 $ s [% 5 $ s] (% 6 $ s) కు ప్రాప్యత అభ్యర్థించారు. కావాలనుకుంటే, ప్రాప్యతను మంజూరు చేయడానికి ఈ రికార్డ్‌ను వినియోగదారుతో పంచుకోండి."
+
+#: dt-posts/dt-posts.php:1860
+msgid "Access Request"
+msgstr "ప్రాప్యత అభ్యర్థన"
+
+#: dt-assets/functions/enqueue-scripts.php:262
+#: template-settings.php:285
+msgid "link"
+msgstr "లింక్"
+
+#: dt-assets/parts/modals/modal-advanced-search.php:11
+msgid "Search Query..."
+msgstr "శోధన ప్రశ్న ..."
+
+#: dt-assets/parts/modals/modal-advanced-search.php:29
+msgid "Search Settings"
+msgstr "సెట్టింగులను శోధించండి"
+
+#: dt-assets/parts/modals/modal-advanced-search.php:42
+msgid "Record Hits:"
+msgstr "రికార్డ్ హిట్స్:"
+
+#: dt-contacts/access-module.php:338
+msgid "Campaigns"
+msgstr "ప్రచారాలు"
+
+#: dt-contacts/access-module.php:339
+msgctxt "Optional Documentation"
+msgid "Marketing campaigns or access activities that this contact interacted with."
+msgstr "ఈ పరిచయం సంకర్షణ చేసిన మార్కెటింగ్ ప్రచారాలు లేదా ప్రాప్యత కార్యకలాపాలు."
+
+#: dt-groups/base-setup.php:287
+msgctxt "Optional Documentation"
+msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
+msgstr "ఈ గుంపులోని సభ్యుల సంఖ్య. సభ్యుల జాబితాలో క్రొత్త సభ్యులను చేర్చినప్పుడు లేదా తీసివేసినప్పుడు ఇది స్వయంచాలకంగా నవీకరించబడుతుంది. వ్యవస్థలో ఉండకపోవచ్చు కాని సమూహంలో సభ్యులను కూడా చేర్చడానికి ఈ సంఖ్యను మానవీయంగా మార్చండి."
+
+#: dt-metrics/combined/time-charts.php:42
+#: dt-metrics/combined/time-charts.php:106
+msgid "Fields over Time Charts"
+msgstr "టైమ్ చార్టులలో ఫీల్డ్స్"
+
+#: dt-metrics/combined/time-charts.php:107
+msgid "Post Type"
+msgstr "పోస్ట్ రకం"
+
+#: dt-metrics/combined/time-charts.php:109
+msgid "Total"
+msgstr "మొత్తం"
+
+#: dt-metrics/combined/time-charts.php:110
+msgid "Added"
+msgstr "చేర్చబడింది"
+
+#: dt-metrics/combined/time-charts.php:111
+msgctxt "Total in January"
+msgid "%1$s in %2$s"
+msgstr "% 2 $ s లో% 1 $ s"
+
+#: dt-metrics/combined/time-charts.php:112
+#: dt-metrics/personal/activity-highlights.php:67
+msgid "Date"
+msgstr "తేదీ"
+
+#: dt-metrics/combined/time-charts.php:114
+msgid "All cumulative totals"
+msgstr "అన్ని సంచిత మొత్తాలు"
+
+#: dt-metrics/combined/time-charts.php:115
+msgid "Single cumulative totals"
+msgstr "ఒకే సంచిత మొత్తాలు"
+
+#: dt-metrics/combined/time-charts.php:116
+msgid "Number added"
+msgstr "సంఖ్య జోడించబడింది"
+
+#: dt-metrics/personal/coaching-tree.php:58
+msgid "My Coaching Generation Tree"
+msgstr "నా కోచింగ్ జనరేషన్ ట్రీ"
+
+#: dt-metrics/personal/group-tree.php:82
+msgid "My Group Generation Tree"
+msgstr "నా గ్రూప్ జనరేషన్ ట్రీ"
+
+#: dt-reports/magic-url-setup.php:30
+#: template-settings.php:56
+msgid "Apps"
+msgstr "అనువర్తనాలు"
+
+#: template-settings.php:247
+msgid "Your Apps"
+msgstr "మీ అనువర్తనాలు"
+
+#: template-settings.php:252
+msgid "App Name"
+msgstr "అనువర్తనం పేరు"
+
+#: template-settings.php:253
+msgid "App Description"
+msgstr "అనువర్తన వివరణ"
+
+#: template-settings.php:254
+msgid "App Link"
+msgstr "అనువర్తన లింక్"
+
+#: template-settings.php:255
+msgid "App Activation"
+msgstr "అనువర్తన సక్రియం"
+
+#: template-settings.php:265
+msgid "No apps installed"
+msgstr "అనువర్తనాలు వ్యవస్థాపించబడలేదు"
+
+#: archive-template.php:684
+msgctxt "All Contacts with Is Coaching"
+msgid "All %1$s with %2$s"
+msgstr "% 2 $ s తో అన్ని% 1 $ s"
+
+#: archive-template.php:710
+#: archive-template.php:717
+#: dt-contacts/contacts-transfer.php:157
+#: dt-metrics/combined/site-links.php:74
+#: dt-metrics/combined/site-links.php:76
+msgid "None Set"
+msgstr "ఏదీ సెట్ చేయబడలేదు"
+
+#: dt-contacts/base-setup.php:552
+#: dt-groups/base-setup.php:1075
+#: dt-posts/custom-post-type.php:322
+msgctxt "Favorite Contacts"
+msgid "Favorite %s"
+msgstr "ఇష్టమైన% s"
+
+#: dt-contacts/base-setup.php:558
+#: dt-groups/base-setup.php:1081
+#: dt-posts/custom-post-type.php:173
+#: dt-posts/custom-post-type.php:328
+msgid "Favorite"
+msgstr "ఇష్టమైన"
+
+#: archive-template.php:278
+#: dt-assets/parts/nav-topbar.php:144
+#: dt-metrics/personal/activity-log.php:53
+#: dt-users/user-management.php:184
+msgid "More"
+msgstr "మరింత"
+
+#: dt-posts/dt-posts.php:1306
+msgid "Magic Link Submission"
+msgstr "మ్యాజిక్ లింక్ సమర్పణ"
+
+#: dt-assets/functions/enqueue-scripts.php:263
+#: template-settings.php:286
+msgid "copy"
+msgstr "కాపీ"
+
+#: dt-users/user-hooks-and-config.php:522
+msgid "User Language"
+msgstr "వాడుకరి భాష"
+
+#: dt-core/configuration/config-site-defaults.php:530
+msgid "prayer"
+msgstr "ప్రార్థన"
+
+#: dt-metrics/combined/daily-activity.php:22
+#: dt-metrics/combined/daily-activity.php:71
+msgid "Activity by Day"
+msgstr "రోజు వారీ కార్యాచరణ"
+
+#: dt-metrics/combined/daily-activity.php:75
+msgid "This Week"
+msgstr "ఈ వారం"
+
+#: dt-metrics/combined/daily-activity.php:87
+msgid "Count"
+msgstr "లెక్కించు"
+
+#: dt-metrics/combined/daily-activity.php:88
+msgid "No Activity Detected!"
+msgstr "కార్యాచరణ ఏదీ కనుగొనబడలేదు!"
+
+#: dt-posts/custom-post-type.php:182
+msgctxt "Optional Documentation"
+msgid "A useful way to group related items."
+msgstr "సంబంధిత అంశాలను సమూహపరచడానికి ఉపయోగకరమైన మార్గం."
+
+#: dt-users/template-no-permission.php:92
+msgid "You are registered but an administrator needs to assign you access permissions."
+msgstr "మీరు నమోదు చేసుకున్నారు కానీ నిర్వాహకులు మీకు యాక్సెస్ అనుమతులను కేటాయించాలి."
+
+#: dt-users/template-new-user.php:139
+#: dt-users/template-user-management.php:90
+msgid "Role"
+msgstr "పాత్ర"
+
+#: dt-users/user-hooks-and-config.php:278
+#: dt-users/user-hooks-and-config.php:316
+msgid "[%s] Login Details"
+msgstr "[%s] లాగిన్ వివరాలు"
+
+#: dt-users/user-hooks-and-config.php:289
+msgid "To set your password, visit the following address:"
+msgstr "మీ పాస్‌వర్డ్‌ను సెట్ చేయడానికి, కింది చిరునామాను సందర్శించండి:"
+
+#: dt-users/user-hooks-and-config.php:312
+msgid "To log in click here: %s"
+msgstr "లాగిన్ అవ్వడానికి ఇక్కడ క్లిక్ చేయండి: %s"
+
+#: dt-users/user-hooks-and-config.php:354
+msgid "Hi %s,"
+msgstr "తన,"
+
+#: dt-metrics/combined/daily-activity.php:85
+msgid "Click on a timeline day summary to display a detailed list of metrics below."
+msgstr "దిగువ కొలమానాల వివరణాత్మక జాబితాను ప్రదర్శించడానికి టైమ్‌లైన్ రోజు సారాంశంపై క్లిక్ చేయండి."
+
+#: dt-users/user-hooks-and-config.php:355
+msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
+msgid "You've been invited to join %1$s at %2$s"
+msgstr "మీరు %2$sలో %1$sలో చేరడానికి ఆహ్వానించబడ్డారు"
+
+#: dt-notifications/notifications-scheduler.php:140
+#: template-settings.php:482
+msgid "Hourly Digest"
+msgstr "అవర్లీ డైజెస్ట్"
+
+#: dt-notifications/notifications-scheduler.php:143
+#: template-settings.php:486
+msgid "Daily Digest"
+msgstr "డైలీ డైజెస్ట్"
+
+#: template-settings.php:472
+msgid "Email preferences"
+msgstr "ఇమెయిల్ ప్రాధాన్యతలు"
+
+#: template-settings.php:478
+msgid "Real time"
+msgstr "రియల్ టైమ్"
+
+#: archive-template.php:687
+msgctxt "All Contacts without Is Coaching"
+msgid "All %1$s without %2$s"
+msgstr "%2$s లేకుండా మొత్తం %1$s"
+
+#: dt-assets/functions/enqueue-scripts.php:309
+msgid "Without"
+msgstr "లేకుండా"
+
+#: dt-assets/parts/modals/modal-advanced-search.php:90
+msgid "Names"
+msgstr "పేర్లు"
+
+#: dt-assets/parts/modals/modal-advanced-search.php:102
+msgid "Communication"
+msgstr "కమ్యూనికేషన్"
+
+#: dt-assets/parts/nav-offcanvas.php:81
+#: dt-assets/parts/nav-topbar.php:253
+#: dt-users/template-no-permission.php:94
+msgid "Log Out"
+msgstr "లాగ్ అవుట్ చేయండి"
+
+#: dt-contacts/access-module.php:614
+msgid "Dispatchers"
+msgstr "పంపేవారు"
+
+#: dt-contacts/access-module.php:617
+msgid "Digital Responders"
+msgstr "డిజిటల్ రెస్పాండర్లు"
+
+#: dt-contacts/access-module.php:624
+msgid "Assign To"
+msgstr "కేటాయించిన"
+
+#: dt-contacts/access-module.php:1292
+msgid "Ready"
+msgstr "సిద్ధంగా ఉంది"
+
+#: dt-contacts/access-module.php:1293
+msgid "Recent"
+msgstr "ఇటీవలి"
+
+#: dt-contacts/access-module.php:1295
+msgid "Assign"
+msgstr "కేటాయించవచ్చు"
+
+#: dt-metrics/personal/activity-log.php:22
+#: dt-metrics/personal/activity-log.php:52
+msgid "Activity Log"
+msgstr "కార్యాచరణ లాగ్"
+
+#: dt-metrics/personal/activity-log.php:54
+#: dt-users/user-management.php:185
+msgid "Less"
+msgstr "తక్కువ"
+
+#: dt-users/user-management.php:177
+msgid "View New Contact"
+msgstr "కొత్త పరిచయాన్ని వీక్షించండి"
+
+#: dt-users/user-metrics.php:106
+msgid "Updated fields"
+msgstr "నవీకరించబడిన ఫీల్డ్‌లు"
+
+#: dt-users/user-metrics.php:110
+msgid "Made %n comments"
+msgstr "%n వ్యాఖ్యలు చేసారు"
+
+#: dt-users/user-metrics.php:113
+msgid "Created record"
+msgstr "రికార్డు సృష్టించింది"
+
+#: dt-users/user-metrics.php:116
+msgid "Logged In %n times"
+msgstr "%n సార్లు లాగిన్ చేసారు"
+
+#: template-settings.php:67
+msgid "Invite User"
+msgstr "వినియోగదారుని ఆహ్వానించండి"
+
+#: archive-template.php:479
+msgid "Update %s"
+msgstr "%sని నవీకరించండి"
+
+#: dt-users/template-user-management.php:342
+msgid "User Profile"
+msgstr "వినియోగదారు వివరాలు"
+
+#: dt-users/template-new-user.php:186
+#: dt-users/template-new-user.php:190
+#: dt-users/template-new-user.php:193
+#: dt-users/template-new-user.php:212
+#: dt-users/template-new-user.php:226
+msgid "optional"
+msgstr "ఐచ్ఛికం"
+
+#. Description of the theme
+#: 
+msgid "Disciple.Tools is a coalition management system for disciple making movements."
+msgstr "శిష్యుడు.ఉపకరణాలు అనేది శిష్యుల కదలికల కోసం సంకీర్ణ నిర్వహణ వ్యవస్థ."
+
+#: dt-contacts/access-module.php:261
+msgid "Reason Archived"
+msgstr "కారణం ఆర్కైవ్ చేయబడింది"
+
+#: dt-assets/functions/enqueue-scripts.php:221
+msgid "Transfer update failed. Check site-to-site configuration."
+msgstr "బదిలీ అప్‌డేట్ విఫలమైంది. సైట్-టు-సైట్ కాన్ఫిగరేషన్‌ను తనిఖీ చేయండి."
+
+#: dt-assets/functions/enqueue-scripts.php:222
+msgid "Transfer update successful."
+msgstr "బదిలీ అప్‌డేట్ విజయవంతమైంది."
+
+#: dt-contacts/contacts-transfer.php:107
+msgid "Status Currently Unavailable"
+msgstr "స్థితి ప్రస్తుతం అందుబాటులో లేదు"
+
+#: dt-contacts/contacts-transfer.php:113
+msgid "Seeker Path Currently Unavailable"
+msgstr "సీకర్ పాత్ ప్రస్తుతం అందుబాటులో లేదు"
+
+#: dt-contacts/contacts-transfer.php:124
+msgid "Remote Contact Summary"
+msgstr "రిమోట్ సంప్రదింపు సారాంశం"
+
+#: dt-contacts/contacts-transfer.php:164
+msgid "Write your comment or note here"
+msgstr "మీ వ్యాఖ్య లేదా గమనికను ఇక్కడ వ్రాయండి"
+
+#: dt-contacts/contacts-transfer.php:169
+msgid "Submit Update"
+msgstr "నవీకరణను సమర్పించండి"
+
+#: dt-metrics/combined/site-links.php:22
+#: dt-metrics/combined/site-links.php:71
+msgid "Transferred Contacts"
+msgstr "బదిలీ చేయబడిన పరిచయాలు"
+
+#: dt-metrics/combined/site-links.php:72
+msgid "Filter by date range and available site links"
+msgstr "తేదీ పరిధి మరియు అందుబాటులో ఉన్న సైట్ లింక్‌ల వారీగా ఫిల్టర్ చేయండి"
+
+#: dt-metrics/combined/site-links.php:73
+msgid "Date Ranges"
+msgstr "తేదీ పరిధులు"
+
+#: dt-metrics/combined/site-links.php:75
+msgid "Site Links"
+msgstr "సైట్ లింక్‌లు"
+
+#: dt-metrics/combined/site-links.php:77
+msgctxt "Contacts transferred during date range"
+msgid "Contacts transferred during date range"
+msgstr "తేదీ పరిధిలో పరిచయాలు బదిలీ చేయబడ్డాయి"
+
+#: dt-metrics/combined/site-links.php:78
+#: dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:80
+msgctxt "Seeker Path of contacts created in date range"
+msgid "%s of contacts created in date range"
+msgstr "తేదీ పరిధిలో %s పరిచయాలు సృష్టించబడ్డాయి"
+
+#: dt-metrics/combined/site-links.php:81
+#: dt-metrics/combined/site-links.php:82
+#: dt-metrics/combined/site-links.php:83
+msgctxt "Seeker Path changes during date range"
+msgid "%s changes during date range"
+msgstr "తేదీ పరిధిలో %s మార్పులు"
+
+#: dt-metrics/combined/site-links.php:86
+msgid "No Data Available"
+msgstr "సమాచారం అందుబాటులో లేదు"
+
+#: template-notifications.php:58
+msgid "Mentions"
+msgstr "ప్రస్తావనలు"
+
+#: dt-reports/magic-url-bulk-send.php:17
+msgid "Bulk Send App"
+msgstr "బల్క్ సెండ్ యాప్"
+
+#: archive-template.php:560
+#: dt-assets/functions/enqueue-scripts.php:310
+#: dt-reports/magic-url-bulk-send.php:68
+msgid "Make Selections Below"
+msgstr "దిగువ ఎంపికలు చేయండి"
+
+#: dt-reports/magic-url-bulk-send.php:38
+msgid "Select all the %1$s to whom you want to send app links."
+msgstr "మీరు యాప్ లింక్‌లను పంపాలనుకుంటున్న %1$s అందరినీ ఎంచుకోండి."
+
+#: dt-reports/magic-url-bulk-send.php:41
+msgid "Add optional greeting"
+msgstr "ఐచ్ఛిక శుభాకాంక్షలను జోడించండి"
+
+#: dt-reports/magic-url-bulk-send.php:42
+msgid "Add short greeting to be added above the app link."
+msgstr "యాప్ లింక్ పైన జోడించడానికి చిన్న శుభాకాంక్షలను జోడించండి."
+
+#: dt-reports/magic-url-bulk-send.php:45
+msgid "Select app to email"
+msgstr "ఇమెయిల్ పంపడానికి అనువర్తనాన్ని ఎంచుకోండి"
+
+#: dt-reports/magic-url-bulk-send.php:46
+msgid "You must select an app"
+msgstr "మీరు తప్పనిసరిగా యాప్‌ని ఎంచుకోవాలి"
+
+#: dt-reports/magic-url-bulk-send.php:63
+msgid "Send to selected records"
+msgstr "ఎంచుకున్న రికార్డులకు పంపండి"
+
+#: dt-reports/magic-url-bulk-send.php:64
+msgid "You must select at least one record"
+msgstr "మీరు తప్పనిసరిగా కనీసం ఒక రికార్డ్‌ని ఎంచుకోవాలి"
+
+#: dt-reports/magic-url-bulk-send.php:67
+msgid "Send"
+msgstr "పంపండి"
+
+#: dt-reports/magic-url-bulk-send.php:67
+msgid "Links"
+msgstr "లింకులు"
+
+#: dt-assets/functions/enqueue-scripts.php:311
+msgctxt "Number of emails sent. i.e. 20 sent!"
+msgid "sent"
+msgstr "పంపారు"
+
+#: dt-assets/functions/enqueue-scripts.php:312
+msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
+msgid "not sent (likely missing valid email)"
+msgstr "పంపబడలేదు (చెల్లుబాటు అయ్యే ఇమెయిల్ మిస్ అయ్యే అవకాశం ఉంది)"
+
+#: dt-reports/magic-url-setup.php:31
+msgid "Apps available on this record."
+msgstr "ఈ రికార్డ్‌లో యాప్‌లు అందుబాటులో ఉన్నాయి."
+
+#: dt-reports/magic-url-setup.php:114
+msgid "Send email with link"
+msgstr "లింక్‌తో ఇమెయిల్ పంపండి"
+
+#: dt-reports/magic-url-setup.php:155
+msgid "Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
+msgstr "భద్రతా కోడ్‌ని రీసెట్ చేయండి. డేటా ఏదీ తీసివేయబడలేదు. యాక్సెస్ మాత్రమే. మునుపటి లింక్ నిలిపివేయబడుతుంది మరియు మరొకటి సృష్టించబడుతుంది."
+
+#: dt-reports/magic-url-setup.php:156
+msgid "Delete and replace the app link"
+msgstr "యాప్ లింక్‌ని తొలగించి, భర్తీ చేయండి"
+
+#: dt-metrics/personal/activity-highlights.php:22
+#: dt-metrics/personal/activity-highlights.php:53
+msgid "Activity Highlights"
+msgstr "కార్యాచరణ ముఖ్యాంశాలు"
+
+#: dt-metrics/personal/activity-highlights.php:59
+msgid "None"
+msgstr "ఏదీ లేదు"
+
+#: dt-metrics/personal/activity-highlights.php:60
+msgid "%1$s I Changed"
+msgstr "%1$s నేను మార్చాను"
+
+#: dt-metrics/personal/activity-highlights.php:61
+msgid "%1$s I Made"
+msgstr "%1$s నేను తయారు చేసాను"
+
+#: dt-metrics/personal/activity-highlights.php:62
+msgid "Contacts I Baptized"
+msgstr "నేను బాప్టిజం పొందిన పరిచయాలు"
+
+#: dt-metrics/personal/activity-highlights.php:63
+msgid "%1$s changed by others on my %2$s"
+msgstr "నా %2$sలో %1$sని ఇతరులు మార్చారు"
+
+#: dt-metrics/personal/activity-highlights.php:64
+msgid "Baptisms by others on my contacts"
+msgstr "నా పరిచయాలలో ఇతరులచే బాప్టిజం"
+
+#: dt-metrics/personal/activity-highlights.php:65
+msgid "Comments I Reacted To"
+msgstr "నేను స్పందించిన వ్యాఖ్యలు"
+
+#: dt-metrics/personal/activity-highlights.php:66
+msgid "Comments I Posted"
+msgstr "నేను పోస్ట్ చేసిన వ్యాఖ్యలు"
+
+#: dt-metrics/personal/activity-highlights.php:176
+msgid "%1$d %2$s created"
+msgstr "%1$d %2$s సృష్టించబడింది"
+
+#: dt-contacts/access-module.php:98
+msgid "Standard Contact"
+msgstr "ప్రామాణిక సంప్రదింపు"
+
+#: dt-contacts/access-module.php:100
+msgid "A contact to collaborate on"
+msgstr "సహకరించడానికి ఒక పరిచయం"
+
+#: dt-contacts/access-module.php:101
+msgid "Me and project leadership"
+msgstr "నేను మరియు ప్రాజెక్ట్ నాయకత్వం"
+
+#: dt-contacts/base-setup.php:169
+msgid "Private Contact"
+msgstr "ప్రైవేట్ పరిచయం"
+
+#: dt-contacts/dmm-module.php:49
+msgid "Private Connection"
+msgstr "ప్రైవేట్ కనెక్షన్"
+
+#: dt-contacts/user-module.php:72
+msgid "This contact represents you as a user."
+msgstr "ఈ పరిచయం మిమ్మల్ని వినియోగదారుగా సూచిస్తుంది."
+
+#: dt-contacts/user-module.php:73
+msgid "Please update contact details on your profile page instead of here."
+msgstr "దయచేసి ఇక్కడ కాకుండా మీ ప్రొఫైల్ పేజీలో సంప్రదింపు వివరాలను నవీకరించండి."
+
+#: dt-contacts/user-module.php:76
+msgid "This contact represents a user."
+msgstr "ఈ పరిచయం వినియోగదారుని సూచిస్తుంది."
+
+#: dt-users/template-new-user.php:265
+msgid "Upgrading a contact"
+msgstr "పరిచయాన్ని అప్‌గ్రేడ్ చేస్తోంది"
+
+#: dt-users/template-new-user.php:268
+msgid "The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
+msgstr "కొత్త వినియోగదారు ఈ సంప్రదింపు రికార్డ్‌లోని అన్ని ఫీల్డ్‌లు మరియు వ్యాఖ్యలకు యాక్సెస్‌ను కలిగి ఉంటారు. వ్యాఖ్యలలో సున్నితమైన డేటా ఉంటే వాటిని ఆర్కైవ్ చేయమని మేము సూచిస్తున్నాము."
+
+#: dt-users/template-new-user.php:275
+msgid "Continue and archive comments"
+msgstr "వ్యాఖ్యలను కొనసాగించండి మరియు ఆర్కైవ్ చేయండి"
+
+#: dt-users/template-new-user.php:276
+msgid "Continue, keeping comments"
+msgstr "వ్యాఖ్యలను కొనసాగించండి"
+
+#: dt-users/template-new-user.php:285
+msgid "Merge Contact Details"
+msgstr "సంప్రదింపు వివరాలను విలీనం చేయండి"
+
+#: dt-users/template-new-user.php:287
+msgid "A new contact record has been created."
+msgstr "కొత్త పరిచయ రికార్డు సృష్టించబడింది."
+
+#: dt-users/template-new-user.php:290
+msgid "The old one is now closed."
+msgstr "పాతది ఇప్పుడు మూసివేయబడింది."
+
+#: dt-users/template-new-user.php:293
+msgid "Do you wish to merge fields from the old record to the new one?"
+msgstr "మీరు ఫీల్డ్‌లను పాత రికార్డ్ నుండి కొత్తదానికి విలీనం చేయాలనుకుంటున్నారా?"
+
+#: dt-users/user-hooks-and-config.php:166
+msgid "Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
+msgstr "%1$sకి స్వాగతం, ఇది మీ వ్యక్తిగత పరిచయ రికార్డు. ఫీల్డ్‌లను అప్‌డేట్ చేయడానికి సంకోచించకండి మరియు నన్ను లేదా ఇతర వినియోగదారులను @ప్రస్తావించండి"
+
+#: dt-users/users.php:447
+msgctxt "These are archived comments for contact John Doe"
+msgid "These are archived comments for %1$s"
+msgstr "ఇవి %1$s కోసం ఆర్కైవ్ చేసిన వ్యాఖ్యలు"
+
+#: template-settings.php:77
+msgid "View Contact Record"
+msgstr "సంప్రదింపు రికార్డును వీక్షించండి"
+
+#: dt-assets/functions/enqueue-scripts.php:224
+msgid "Open With"
+msgstr "దీనితో తెరవండి"
+
+#: dt-contacts/base-setup.php:213
+msgid "Signal"
+msgstr "సిగ్నల్"
+
+#: dt-contacts/base-setup.php:218
+msgid "Viber"
+msgstr "Viber"
+
+#: dt-contacts/base-setup.php:223
+msgid "Whatsapp"
+msgstr "Whatsapp"
+
+#: dt-users/template-user-management.php:350
+msgid "Edit User"
+msgstr "వినియోగదారుని సవరించండి"
+
+#: dt-groups/base-setup.php:490
+msgid "Coach of Group"
+msgstr "కోచ్ ఆఫ్ గ్రూప్"
+
+#: archive-template.php:86
+#: archive-template.php:173
+msgid "Communication Channels"
+msgstr "కమ్యూనికేషన్ ఛానెల్‌లు"
+
+#: archive-template.php:213
+msgid "Create custom filter"
+msgstr "అనుకూల ఫిల్టర్‌ని సృష్టించండి"
+
+#: dt-reports/magic-url-setup.php:113
+msgid "Send the link via email."
+msgstr "ఇమెయిల్ ద్వారా లింక్ పంపండి."
+
+#: dt-reports/magic-url-setup.php:113
+msgid "Add email address"
+msgstr "ఇమెయిల్ చిరునామాను జోడించండి"
+
+#: dt-reports/magic-url-setup.php:114
+msgid "Add a note"
+msgstr "గమనికను జోడించండి"
+
+#: template-new-bulk-post.php:85
+msgid "New Bulk %s"
+msgstr "కొత్త బల్క్ %s"
+
+#: template-new-bulk-post.php:98
+msgid "Choose which fields to display across new bulk records"
+msgstr "కొత్త బల్క్ రికార్డ్‌లలో ఏ ఫీల్డ్‌లను ప్రదర్శించాలో ఎంచుకోండి"
+
+#: template-new-bulk-post.php:255
+msgid "Add New Row"
+msgstr "కొత్త అడ్డు వరుసను జోడించండి"
+
+#: template-new-bulk-post.php:264
+msgid "Add Records"
+msgstr "రికార్డులను జోడించండి"
+
+#: template-new-post.php:45
+msgid "Add Bulk Records?"
+msgstr "బల్క్ రికార్డ్‌లను జోడించాలా?"
+
+#: dt-reports/magic-url-setup.php:150
+msgid "Scan the QR code to open the magic link on a mobile device."
+msgstr "మొబైల్ పరికరంలో మ్యాజిక్ లింక్‌ని తెరవడానికి QR కోడ్‌ని స్కాన్ చేయండి."
+
+#: dt-assets/functions/details-bar.php:66
+msgctxt "Merge with another record"
+msgid "Merge with another %s"
+msgstr "మరొక %sతో విలీనం చేయండి"
+
+#: dt-assets/parts/merge-details.php:36
+msgctxt "Merge Contacts"
+msgid "Merge %s"
+msgstr "%sని విలీనం చేయండి"
+
+#: dt-assets/parts/merge-details.php:37
+msgctxt "Merge this contact with another contact"
+msgid "Merge this %1$s with another %2$s"
+msgstr "ఈ %1$sని మరొక %2$sతో విలీనం చేయండి"
+
+#: dt-users/template-new-user.php:16
+msgid "Administrator must enable \"Add New Users\" option in multisite settings:"
+msgstr "అడ్మినిస్ట్రేటర్ తప్పనిసరిగా మల్టీసైట్ సెట్టింగ్‌లలో \"కొత్త వినియోగదారులను జోడించు\" ఎంపికను ప్రారంభించాలి:"
+
+#: template-merge-post-details.php:89
+msgid "Open Modal"
+msgstr "ఓపెన్ మోడల్"
+
+#: template-merge-post-details.php:111
+msgid "Merge Duplicate %s"
+msgstr "%s నకిలీని విలీనం చేయండి"
+
+#: template-merge-post-details.php:113
+msgid "When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
+msgstr "మీరు విలీనం చేసినప్పుడు, మీరు ఎంచుకున్న విలువలతో ప్రాథమిక రికార్డ్ నవీకరించబడుతుంది మరియు ఇతర అంశాలకు సంబంధాలు ప్రాథమిక రికార్డ్‌కి మార్చబడతాయి; దిగువన మార్చవచ్చు."
+
+#: template-merge-post-details.php:116
+msgid "Copy comments to updated primary record"
+msgstr "నవీకరించబడిన ప్రాథమిక రికార్డుకు వ్యాఖ్యలను కాపీ చేయండి"
+
+#: template-merge-post-details.php:132
+msgid "Archiving"
+msgstr "ఆర్కైవ్ చేస్తోంది"
+
+#: template-merge-post-details.php:140
+msgid "Use as Primary"
+msgstr "ప్రాథమికంగా ఉపయోగించండి"
+
+#: template-merge-post-details.php:153
+msgid "Primary"
+msgstr "ప్రాథమిక"
+
+#: template-merge-post-details.php:167
+msgid "Updated"
+msgstr "నవీకరించబడింది"
+
+#: archive-template.php:619
+msgid "Field Name"
+msgstr "క్షేత్రనామం"
+
+#: dt-assets/functions/enqueue-scripts.php:313
+msgid "Exclude Item"
+msgstr "అంశాన్ని మినహాయించండి"
+
+#: dt-workflows/workflows-triggers.php:63
+msgid "D.T Workflow"
+msgstr "D.T వర్క్‌ఫ్లో"
+
+#: dt-core/release-notifications.php:43
+msgid "Release Announcement!"
+msgstr ""
+
+#: dt-core/release-notifications.php:44
+msgid "Disciple.Tools Theme Version %1$s"
+msgstr ""
+
+#: dt-core/release-notifications.php:49
+msgid "Theme News"
+msgstr ""
+
+#: dt-core/release-notifications.php:50
+#: dt-core/release-notifications.php:59
+msgid "Other News"
+msgstr ""
+
+#: dt-core/release-notifications.php:51
+msgid "Get Involved"
+msgstr ""
+
+#: dt-core/release-notifications.php:63
+msgid "Other news not available."
+msgstr ""
+
+#: dt-core/release-notifications.php:78
+msgid "Give"
+msgstr ""
+
+#: dt-core/release-notifications.php:80
+msgid "Make Disciple.Tools better by joining us financially."
+msgstr ""
+
+#: dt-core/release-notifications.php:80
+msgid "Join us here"
+msgstr ""
+
+#: dt-core/release-notifications.php:86
+msgid "Translate"
+msgstr ""
+
+#: dt-core/release-notifications.php:88
+msgid "Translate Disciple.Tools into your language or help make a translation better."
+msgstr ""
+
+#: dt-core/release-notifications.php:88
+msgid "Click here"
+msgstr ""
+
+#: dt-core/release-notifications.php:94
+msgid "Build or Document"
+msgstr ""
+
+#: dt-core/release-notifications.php:96
+msgid "Make Disciple.Tools better by building a feature or helping us make the documentation better."
+msgstr ""
+
+#: dt-core/release-notifications.php:96
+msgid "Find out more"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:166
+msgid "Contacts Total"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:185
+msgid "Groups Total"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:288
+msgid "People Group Code"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:295
+msgid "People ID"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:302
+msgid "Primary Language"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:309
+msgid "Country"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:323
+msgid "Connections"
+msgstr ""
+
+#: dt-people-groups/people-groups-base.php:325
+msgid "Joshua Project"
+msgstr ""
+
+#: dt-people-groups/people-groups.php:275
+msgid "Display Options"
+msgstr ""
+
+#: dt-people-groups/people-groups.php:282
+msgid "Display People Groups Tab in Navigation Bar"
+msgstr ""
+
+#: dt-people-groups/people-groups.php:304
+msgid "Import People Group"
+msgstr ""
+
+#: dt-posts/dt-posts.php:101
+msgid "Updated existing record instead of creating a new record."
+msgstr ""
+
