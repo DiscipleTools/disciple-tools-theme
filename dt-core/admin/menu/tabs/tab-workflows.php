@@ -568,14 +568,15 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                         <h4 class="card-title text-muted">Step: 2</h4>
                         <br>
 
-                        <table border="0">
+                        <table>
                             <tbody>
                             <tr id="workflows_design_section_step2_fields_tr">
                                 <td>
                                     fields:
                                 </td>
-                                <td>
-                                    <select style="min-width: 100%;" id="workflows_design_section_step2_fields">
+                                <!-- Safeguard against overspill -->
+                                <td style="max-width: 100px;">
+                                    <select style="max-width: 100%;" id="workflows_design_section_step2_fields">
                                         <option disabled selected value="">--- select field ---</option>
                                     </select>
                                 </td>
@@ -621,7 +622,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                             </tr>
                             <tr>
                                 <td colspan="3">
-                                    <table style="min-width: 100%;" border="0"
+                                    <table style="min-width: 100%;"
                                            id="workflows_design_section_step2_conditions_table">
                                         <thead>
                                         <tr>
@@ -674,14 +675,15 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                         <h4 class="card-title text-muted">Step: 3</h4>
                         <br>
 
-                        <table border="0">
+                        <table>
                             <tbody>
                             <tr id="workflows_design_section_step3_fields_tr">
                                 <td>
                                     fields:
                                 </td>
-                                <td>
-                                    <select style="min-width: 100%;" id="workflows_design_section_step3_fields">
+                                <!-- Safeguard against overspill -->
+                                <td style="max-width: 100px;">
+                                    <select style="max-width: 100%;" id="workflows_design_section_step3_fields">
                                         <option disabled selected value="">--- select field ---</option>
                                     </select>
                                 </td>
@@ -727,7 +729,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                             </tr>
                             <tr>
                                 <td colspan="3">
-                                    <table style="min-width: 100%;" border="0"
+                                    <table style="min-width: 100%;"
                                            id="workflows_design_section_step3_actions_table">
                                         <thead>
                                         <tr>
@@ -779,7 +781,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                         <div class="float-end">Name your workflow</div>
                         <h4 class="card-title text-muted">Step: 4</h4>
 
-                        <table style="min-width: 100%;" border="0">
+                        <table style="min-width: 100%;">
                             <thead>
                             <tr>
                                 <th></th>

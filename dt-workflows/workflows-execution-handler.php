@@ -500,7 +500,10 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         $updated_fields = self::action_connect( $field_type, $field_id, $value );
                         break;
                     case 'remove':
-                        $updated_fields = self::action_remove( $field_type, $field_id, $value );
+                        $updated_fields = self::action_remove( $field_type, $field_id, $value, $post );
+                        break;
+                    case 'unset':
+                        $updated_fields = self::action_unset( $field_type, $field_id, $value );
                         break;
                     case 'custom':
                         do_action( strval( $value ), $post, $field_id, $value );
@@ -595,9 +598,10 @@ class Disciple_Tools_Workflows_Execution_Handler {
         return $updated;
     }
 
-    private static function action_remove( $field_type, $field_id, $value ): array {
+    private static function action_remove( $field_type, $field_id, $value, $post ): array {
         $updated = [];
         switch ( $field_type ) {
+            case 'tags':
             case 'multi_select':
             case 'connection':
                 $updated[ $field_id ]['values']   = [];
@@ -605,6 +609,84 @@ class Disciple_Tools_Workflows_Execution_Handler {
                     'value'  => $value,
                     'delete' => true
                 ];
+                break;
+            case 'communication_channel':
+                $updated_channels = [];
+
+                // Attempt to locate corresponding value key.
+                if ( isset( $post[ $field_id ] ) ) {
+                    foreach ( $post[ $field_id ] ?? [] as $channel ) {
+                        if ( isset( $channel['value'], $channel['key'] ) ) {
+                            if ( $channel['value'] == $value ) {
+                                $updated_channels[] = [
+                                    'key'    => $channel['key'],
+                                    'delete' => true
+                                ];
+                            }
+                        }
+                    }
+                }
+
+                // Package updates accordingly.
+                if ( ! empty( $updated_channels ) ) {
+                    $updated[ $field_id ] = $updated_channels;
+                }
+                break;
+            case 'location':
+                $updated_locations = [];
+
+                // Attempt to locate corresponding value id.
+                if ( isset( $post[ $field_id ] ) ) {
+                    foreach ( $post[ $field_id ] ?? [] as $location ) {
+                        if ( isset( $location['label'], $location['id'], $location['matched_search'] ) ) {
+                            if ( in_array( $value, [ $location['label'], $location['matched_search'] ] ) ) {
+                                $updated_locations[] = [
+                                    'value'  => $location['id'],
+                                    'delete' => true
+                                ];
+                            }
+                        }
+                    }
+                }
+
+                // Package updates accordingly.
+                if ( ! empty( $updated_locations ) ) {
+                    $updated[ $field_id ]['values'] = $updated_locations;
+                }
+                break;
+            case 'location_meta':
+                $updated_location_metas = [];
+
+                // Attempt to locate corresponding label id.
+                if ( isset( $post[ $field_id ] ) ) {
+                    foreach ( $post[ $field_id ] ?? [] as $meta ) {
+                        if ( isset( $meta['label'], $meta['grid_meta_id'] ) ) {
+                            if ( $meta['label'] == $value ) {
+                                $updated_location_metas[] = [
+                                    'grid_meta_id' => $meta['grid_meta_id'],
+                                    'delete'       => true
+                                ];
+                            }
+                        }
+                    }
+                }
+
+                // Package updates accordingly.
+                if ( ! empty( $updated_location_metas ) ) {
+                    $updated[ $field_id ]['values'] = $updated_location_metas;
+                }
+                break;
+
+        }
+
+        return $updated;
+    }
+
+    private static function action_unset( $field_type, $field_id, $value ): array {
+        $updated = [];
+        switch ( $field_type ) {
+            case 'date':
+                $updated[ $field_id ] = null;
                 break;
         }
 

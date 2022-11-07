@@ -105,8 +105,16 @@ jQuery(function ($) {
         action_value_name = action_value_element.find('option:selected').text();
 
       } else if (action_value_element.hasClass('dt-datepicker')) { // Date Range Picker
-        action_value_id = $('#workflows_design_section_step3_action_value_object_id').val();
-        action_value_name = action_value_id === 'current' ? 'Current' : action_value_element.val();
+
+        // No need for value entry if unset action!
+        if (action_id === 'unset') {
+          action_value_id = '--';
+          action_value_name = '--';
+
+        } else {
+          action_value_id = $('#workflows_design_section_step3_action_value_object_id').val();
+          action_value_name = action_value_id === 'current' ? 'Current' : action_value_element.val();
+        }
 
       } else { // Regular Textfield
         action_value_id = action_value_name = action_value_element.val();
@@ -789,7 +797,6 @@ jQuery(function ($) {
       switch (field_type) {
         case "text":
         case "number":
-        case "date":
         case "boolean":
         case "key_select":
         case "user_select":
@@ -797,6 +804,18 @@ jQuery(function ($) {
             {
               'id': 'update',
               'name': 'Update To'
+            }
+          );
+          break;
+        case "date":
+          actions.push(
+            {
+              'id': 'update',
+              'name': 'Update To'
+            },
+            {
+              'id': 'unset',
+              'name': 'Unset'
             }
           );
           break;
@@ -813,6 +832,10 @@ jQuery(function ($) {
             {
               'id': 'append',
               'name': 'Appended With'
+            },
+            {
+              'id': 'remove',
+              'name': 'Removal Of'
             }
           );
           break;
