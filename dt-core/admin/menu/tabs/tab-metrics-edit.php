@@ -44,8 +44,8 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
 
     public function process_data(){
         if ( !empty( $_POST ) ){
-            dt_write_log( $_POST );
             if ( isset( $_POST['report_edit_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['report_edit_nonce'] ), 'report_edit' ) ) {
+                dt_write_log( $_POST );
 
                 if ( ( isset( $_POST['report'] ) && ! empty( $_POST['report'] ) ) ) {
                     $post_report = dt_recursive_sanitize_array( $_POST['report'] );
