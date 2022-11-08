@@ -80,16 +80,16 @@ class Disciple_Tools_People_Groups_Base {
         }
 
         if ( isset( $navigation_array['admin'], $navigation_array['admin']['add_new'] ) ) {
-            $updated_submenus = [];
-            foreach ( $navigation_array['admin']['add_new']['submenu'] ?? [] as $submenu ) {
+            $submenu_idx = null;
+            foreach ( $navigation_array['admin']['add_new']['submenu'] ?? [] as $idx => $submenu ) {
                 if ( strpos( $submenu['link'], '/' . $this->post_type . '/' ) > 0 ) {
-                    $submenu['hidden'] = $is_hidden;
+                    $submenu_idx = $idx;
                 }
-                $updated_submenus[] = $submenu;
             }
 
-            if ( ! empty( $updated_submenus ) ) {
-                $navigation_array['admin']['add_new']['submenu'] = $updated_submenus;
+            // Assuming we have an index hit; update people groups hidden flag.
+            if ( ! empty( $submenu_idx ) ) {
+                $navigation_array['admin']['add_new']['submenu'][ $submenu_idx ]['hidden'] = $is_hidden;
             }
         }
 
