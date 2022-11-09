@@ -203,7 +203,7 @@ $dt_nav_tabs = dt_default_menu_array();
                         <ul class="submenu menu vertical title-bar-right add-new-items-dropdown">
                             <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) : ?>
                                 <?php foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) : ?>
-                                    <?php if ( isset( $dt_nav_submenu['hidden'] ) && ! $dt_nav_submenu['hidden'] ) { ?>
+                                    <?php if ( ! isset( $dt_nav_submenu['hidden'] ) || ! $dt_nav_submenu['hidden'] ) { ?>
                                         <li>
                                             <a class="add-new-menu-item"
                                                href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
