@@ -73,8 +73,18 @@ class Disciple_Tools_People_Groups_Base {
     }
 
     public function dt_nav_filter( $navigation_array ) {
+        $is_hidden = ! get_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab );
+
         if ( isset( $navigation_array['main'], $navigation_array['main'][ $this->post_type ] ) ) {
-            $navigation_array['main'][ $this->post_type ]['hidden'] = ! get_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab );
+            $navigation_array['main'][ $this->post_type ]['hidden'] = $is_hidden;
+        }
+
+        if ( isset( $navigation_array['admin'], $navigation_array['admin']['add_new'] ) ) {
+            foreach ( $navigation_array['admin']['add_new']['submenu'] ?? [] as $submenu_idx => $submenu ) {
+                if ( strpos( $submenu['link'], '/' . $this->post_type . '/' ) > 0 ) {
+                    $navigation_array['admin']['add_new']['submenu'][ $submenu_idx ]['hidden'] = $is_hidden;
+                }
+            }
         }
 
         return $navigation_array;
