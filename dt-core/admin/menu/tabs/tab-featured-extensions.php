@@ -78,7 +78,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     function (data, status) {
                         location.reload();
                     });
-            }         
+            }
         </script>
         <?php
     }
@@ -225,7 +225,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                                 if ( isset( $plugin->download_url ) && current_user_can( 'install_plugins' ) ) : ?>
                                     <li>
                                         <button class="button" onclick="install('<?php echo esc_attr( $plugin->download_url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
-                                    </li>                               
+                                    </li>
                                 <?php else : ?>
                                     <li>
                                         <span>To install this plugin ask your network administrator</span>
@@ -239,7 +239,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                                 </li>
                                 <?php
                                 if ( current_user_can( 'install_plugins' ) ) {
-                                    ?>    
+                                    ?>
                                     <li>
                                         <button class="button" onclick="uninstall('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Uninstall', 'disciple_tools' ) ?></button>
                                     </li>
@@ -249,14 +249,14 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                                 ?>
                                     <li>
                                         <button class="button" onclick="deactivate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Deactivate', 'disciple_tools' ) ?></button>
-                                    </li>          
+                                    </li>
                                 <?php
                             }
-                            if ( in_array( 'proof-of-concept', explode( ',', $plugin->categories ) ) ): ?>
+                            if ( in_array( 'proof-of-concept', explode( ',', $plugin->categories ?? false ) ) ): ?>
                             <li>
                                 <a class="warning-pill">POC</a>
                             </li>
-                        <?php elseif ( in_array( 'beta', explode( ',', $plugin->categories ) ) ): ?>
+                        <?php elseif ( in_array( 'beta', explode( ',', $plugin->categories ?? false ) ) ): ?>
                             <li>
                                 <a class="warning-pill">BETA</a>
                             </li>
@@ -351,7 +351,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
         $distinct_categories = [];
         foreach ( $plugins as $plugin ) {
-            $plugin_categories = explode( ',', $plugin->categories );
+            $plugin_categories = explode( ',', $plugin->categories ?? false );
             foreach ( $plugin_categories as $plug_cat ) {
                 if ( ! in_array( str_replace( '-', ' ', $plug_cat ), $distinct_categories ) ) {
                     $distinct_categories[] = str_replace( '-', ' ', $plug_cat );
@@ -374,7 +374,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
         $filtered_plugins = [];
         foreach ( $plugins as $plugin ) {
-            $plugin_categories = explode( ',', $plugin->categories );
+            $plugin_categories = explode( ',', $plugin->categories ?? false );
             if ( in_array( $category, $plugin_categories ) ) {
                 $filtered_plugins[] = $plugin;
             }
