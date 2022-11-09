@@ -155,7 +155,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
 
         $total = 0;
         $teams = 0;
-        foreach( $group_types as $stat ){
+        foreach ( $group_types as $stat ){
             $total += (int) $stat['count'];
             if ( $stat['type'] === 'team' ){
                 $teams = (int) $stat['count'];
