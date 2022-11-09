@@ -109,7 +109,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
     public static function get_group_generations( $start, $end, $args = [] ){
         if ( !isset( self::$generations[$start.$end] ) ){
             global $wpdb;
-            $groups_count = $wpdb->get_var("SELECT COUNT(ID) FROM $wpdb->posts where post_type = 'groups'");
+            $groups_count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts where post_type = 'groups'" );
 
             if ( (int) $groups_count > 10000 ){
                 //bail for now because generation counting on a huge number of groups is limited
