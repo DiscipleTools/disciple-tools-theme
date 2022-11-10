@@ -586,6 +586,8 @@ jQuery(document).ready(function($) {
                 'private':new_field_private,
                 'tile':new_field_tile,
                 'type':new_field_type,
+                'connection_target':connection_target,
+                'multidirectional':multidirectional,
                 'other_field_name':other_field_name,
             };
             var new_field_nonexpandable_html = `

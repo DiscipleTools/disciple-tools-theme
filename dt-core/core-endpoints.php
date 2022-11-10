@@ -387,7 +387,10 @@ class Disciple_Tools_Core_Endpoints {
                 // connection field to the same post type
                 if ( $post_type === $post_submission["connection_target"] ){
                     //default direction to "any". If not multidirectional, then from
-                    $direction = ( isset( $post_submission["multidirectional"] ) && $post_submission["multidirectional"] == 1 ) ? "any" : "from";
+                    $direction = 'any';
+                    if ( $post_submission["multidirectional"] != 1 ) {
+                        $direction = 'from';
+                    }
                     $custom_field_options[$post_type][$field_key] = [
                         'name'        => $post_submission["new_field_name"],
                         'type'        => 'connection',
@@ -398,7 +401,7 @@ class Disciple_Tools_Core_Endpoints {
                         'customizable' => 'all',
                     ];
                     //if not multidirectional, create the reverse direction field
-                    if ( !isset( $post_submission["multidirectional"] ) && empty( $post_submission["multidirectional"] ) ){
+                    if ( $post_submission["multidirectional"] != 1 ){
                         $reverse_name = $post_submission["reverse_connection_name"] ?? $post_submission["new_field_name"];
                         $custom_field_options[$post_type][$field_key . "_reverse"]  = [
                             'name'        => $reverse_name,
