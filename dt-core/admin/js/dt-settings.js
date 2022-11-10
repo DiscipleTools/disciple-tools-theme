@@ -329,7 +329,7 @@ jQuery(document).ready(function($) {
             <tr class="connection_field_target_row" style="display: none;">
                 <td><label for="connection-target"><b>Connected To</label></b></td>
                 <td>
-                    <select name="connection-target" id="connection-field-target">
+                    <select name="connection-target" id="connection-field-target" required>
                         <option></option>`;
 
                         $.each(all_post_types, function(k,v) {
