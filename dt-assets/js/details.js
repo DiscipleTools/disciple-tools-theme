@@ -14,6 +14,10 @@ jQuery(document).ready(function($) {
 
 
   window.masonGrid = $('.grid') // responsible for resizing and moving the tiles
+  window.masonGrid.masonry({
+    itemSelector: '.grid-item',
+    percentPosition: true
+  });
 
   const detailsBarCreatedOnElements = document.querySelectorAll('.details-bar-created-on')
   detailsBarCreatedOnElements.forEach((element) => {
@@ -1299,13 +1303,6 @@ jQuery(document).ready(function($) {
     $(document).find('.navigation-next').removeAttr('style').attr('style', 'display: none;');
   }
 
-  //leave at the end of this file
-  masonGrid.masonry({
-    itemSelector: '.grid-item',
-    percentPosition: true
-  });
-  //leave at the end of this file
-
   /**
    * Merging
    */
@@ -1348,6 +1345,59 @@ jQuery(document).ready(function($) {
     })
     $('#merge-with-post-modal').foundation('open');
   });
+
+  /**
+   * Custom Tile Display - [START]
+   */
+
+  $(document).on('click', '#hidden_tiles_section_show_but', function (e) {
+    show_hidden_tile_sections();
+  });
+
+  init_hidden_tiles_section();
+
+  function init_hidden_tiles_section() {
+    let hidden_count = 0;
+    let hidden_tiles_section = $('#hidden_tiles_section');
+    let hidden_tiles_section_count = $('#hidden_tiles_section_count');
+
+    // First, determine the total number of hidden sections.
+    $('.custom-tile-section').each(function (idx, section) {
+      if ($(section).is(':hidden')) {
+
+        // Increment count accordingly, ensuring certain sections are ignored.
+        if (!window.lodash.includes(['details', 'status'], $(section).attr('id'))) {
+          hidden_count++;
+        }
+      }
+    });
+
+    // Display show hidden tiles option accordingly based on count.
+    hidden_tiles_section_count.html((hidden_count > 0) ? hidden_count : 0);
+    if (hidden_count === 0) {
+      hidden_tiles_section.fadeOut('fast');
+
+    } else {
+      hidden_tiles_section.fadeIn('fast');
+    }
+  }
+
+  function show_hidden_tile_sections() {
+    $('.custom-tile-section').each(function (idx, section) {
+      if ($(section).is(':hidden') && !window.lodash.includes(['details', 'status'], $(section).attr('id'))) {
+        $(section).fadeIn('fast', function () {
+          window.masonGrid.masonry('layout');
+        });
+      }
+    });
+
+    // Hide show hidden tiles section.
+    $('#hidden_tiles_section').fadeOut('fast');
+  }
+
+  /**
+   * Custom Tile Display - [END]
+   */
 
 })
 

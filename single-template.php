@@ -292,26 +292,37 @@ function display_tile( $tile, $post ): bool {
 
 
                     <!--
+                        Hidden Tiles Section
+                    -->
+                    <section id="hidden_tiles_section" class="small-12 cell bordered-box"
+                             style="display: none; text-align: center;">
+                        <a id="hidden_tiles_section_show_but"><?php echo esc_html( sprintf( _x( 'Show Hidden Tiles', 'disciple_tools' ) ) ) ?>
+                            ( <span
+                                id="hidden_tiles_section_count"></span> )</a>
+                    </section>
+
+                    <!--
                         Tiles Section
                     -->
                     <div class="cell small-12">
                         <div class="grid-x grid-margin-x grid-margin-y grid">
                             <?php
                             foreach ( $tiles as $tile_key => $tile_options ){
-                                if ( in_array( $tile_key, [ 'details', 'status' ] ) ) {
-                                    continue;
+                                $display_type = 'inline';
+                                if ( ( isset( $tile_options['hidden'] ) && $tile_options['hidden'] ) || in_array( $tile_key, [ 'details', 'status' ] ) ) {
+                                    $display_type = 'none';
                                 }
                                 if ( ! display_tile( $tile_options, $dt_post ) ) {
-                                    continue;
+                                    $display_type = 'none';
                                 }
                                 if ( isset( $tile_options['display_for']['type'], $dt_post['type']['key'] ) && !in_array( $dt_post['type']['key'], $tile_options['display_for']['type'] ) ){
-                                    continue;
+                                    $display_type = 'none';
                                 }
                                 if ( !isset( $tile_options['label'] ) ) {
-                                    continue;
+                                    $display_type = 'none';
                                 }
                                 ?>
-                                <section id="<?php echo esc_html( $tile_key ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
+                                <section id="<?php echo esc_html( $tile_key ) ?>" class="custom-tile-section xlarge-6 large-12 medium-6 cell grid-item" style="display: <?php echo esc_html( $display_type ) ?>;">
                                     <div class="bordered-box" id="<?php echo esc_html( $tile_key ) ?>-tile">
                                         <?php
                                         //setup tile label if see by customizations

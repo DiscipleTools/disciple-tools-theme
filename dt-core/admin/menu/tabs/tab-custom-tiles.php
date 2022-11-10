@@ -502,100 +502,103 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         </label>
         <br><br>
 
-        <label>
-            <h4>Tile Display</h4>
-            <?php if ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'hidden' ): ?>
-                <p><?php esc_html_e( 'Note: This tile is hidden and will not show on the record page', 'disciple_tools' ) ?></p>
-            <?php endif; ?>
-            <table class="widefat striped">
-                <thead>
+        <?php include 'tab-custom-tiles-display-help-dialog.php'; ?>
+        <h4>
+            Tile Display
+            <a class="help-button" style="cursor: pointer;" data-dialog_id="custom_tile_display_help_dialog">
+                <i class="mdi mdi-help-circle help-icon"></i>
+            </a>
+        </h4>
+        <?php if ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'hidden' ): ?>
+            <p><?php esc_html_e( 'Note: This tile is hidden and will not show on the record page', 'disciple_tools' ) ?></p>
+        <?php endif; ?>
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <td><?php esc_html_e( 'Hidden', 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( 'Visible', 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( 'Custom', 'disciple_tools' ) ?></td>
+            </tr>
+            </thead>
+            <tbody>
                 <tr>
-                    <td><?php esc_html_e( 'Hidden', 'disciple_tools' ) ?></td>
-                    <td><?php esc_html_e( 'Visible', 'disciple_tools' ) ?></td>
-                    <td><?php esc_html_e( 'Custom', 'disciple_tools' ) ?></td>
+                    <td><input type="radio" name="tile_display_option" value="hidden" <?php echo ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'hidden' ) ? 'checked' : ''; ?>></td>
+                    <td><input type="radio" name="tile_display_option" value="visible" <?php echo ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'visible' ) || !isset( $tile['display_conditions']['visibility'] ) ? 'checked' : ''; ?>></td>
+                    <td><input type="radio" name="tile_display_option" value="custom" <?php echo ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'custom' ) ? 'checked' : ''; ?>></td>
                 </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="radio" name="tile_display_option" value="hidden" <?php echo ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'hidden' ) ? 'checked' : ''; ?>></td>
-                        <td><input type="radio" name="tile_display_option" value="visible" <?php echo ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'visible' ) || !isset( $tile['display_conditions']['visibility'] ) ? 'checked' : ''; ?>></td>
-                        <td><input type="radio" name="tile_display_option" value="custom" <?php echo ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'custom' ) ? 'checked' : ''; ?>></td>
-                    </tr>
-                </tbody>
-            </table>
-        </label>
+            </tbody>
+        </table>
         <br>
 
         <div id="tile_display_custom_elements" style="<?php echo ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'custom' ) ? '' : 'display: none;'; ?>">
-            <label>
-                <h4>Custom Display Conditions</h4>
-                <select style="min-width: 90%;" name="tile_display_custom_condition" id="tile_display_custom_condition">
-                    <?php
-                    foreach ( $fields as $field_id => $field )
-                        {
-                        if ( in_array( $field['type'], [ 'key_select', 'multi_select', 'tags' ] ) && isset( $field['default'] ) ) {
-                            echo '<optgroup label="'.esc_html( $field['name'] ).'">';
-                            $options = ( $field['type'] == 'tags' ) ? DT_Posts::get_multi_select_options( $post_type, $field_id ) : $field['default'];
-                            foreach ( $options ?? [] as $option_id => $option ) {
-                                $html_val = $field_id.'___'. ( ( $field['type'] == 'tags' ) ? $option : $option_id );
-                                $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'];
-                                ?>
-                                    <option value="<?php echo esc_html( $html_val )?>"><?php echo esc_html( $html_label )?></option>
-                                <?php
-                            }
-                            echo '</optgroup>';
-                        }
-                    }
-                    ?>
-                </select>
-                <span style="float: right;">
-                    <button class="button" type="submit" id="tile_display_custom_condition_select_but" name="tile_display_custom_condition_select_but">Select</button>
-                </span>
-                <br><br>
-                <table class="widefat striped">
-                    <thead>
-                    <tr>
-                        <td><?php esc_html_e( 'Field', 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( 'Option', 'disciple_tools' ) ?></td>
-                        <td></td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if ( !isset( $tile['display_conditions']['conditions'] ) || !is_array( $tile['display_conditions']['conditions'] ) ) {
-                            $tile['display_conditions']['conditions'] = [];
-                        }
-                        foreach ( $tile['display_conditions']['conditions'] ?? [] as $condition ) {
+            <h4>Custom Display Conditions</h4>
+            <label>Select field and field options. The tile will be displayed when these are selected on the record.</label>
+            <br><br>
+            <select style="min-width: 90%;" name="tile_display_custom_condition" id="tile_display_custom_condition">
+                <option value="" disabled selected>--- [ choose a field and option ] ---</option>
+                <?php
+                foreach ( $fields as $field_id => $field )
+                    {
+                    if ( in_array( $field['type'], [ 'key_select', 'multi_select', 'tags' ] ) && isset( $field['default'] ) ) {
+                        echo '<optgroup label="'.esc_html( $field['name'] ).'">';
+                        $options = ( $field['type'] == 'tags' ) ? DT_Posts::get_multi_select_options( $post_type, $field_id ) : $field['default'];
+                        foreach ( $options ?? [] as $option_id => $option ) {
+                            $html_val = $field_id.'___'. ( ( $field['type'] == 'tags' ) ? $option : $option_id );
+                            $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'];
                             ?>
-                            <tr>
-                                <td><?php echo esc_html( $condition['key'] ) ?></td>
-                                <td><?php echo esc_html( $condition['value'] ) ?></td>
-                                <td>
-                                    <span style="float: right;">
-                                        <button class="button" type="submit" id="tile_display_custom_condition_remove_but" name="tile_display_custom_condition_remove_but" value="<?php echo esc_html( $condition['key'].'___'.$condition['value'] ) ?>">Remove</button>
-                                    </span>
-                                </td>
-                            </tr>
+                                <option value="<?php echo esc_html( $html_val )?>"><?php echo esc_html( $html_label )?></option>
                             <?php
                         }
+                        echo '</optgroup>';
+                    }
+                }
+                ?>
+            </select>
+            <span style="float: right;">
+                <button class="button" type="submit" id="tile_display_custom_condition_select_but" name="tile_display_custom_condition_select_but">Select</button>
+            </span>
+            <br><br>
+            <table class="widefat striped">
+                <thead>
+                <tr>
+                    <td><?php esc_html_e( 'Field', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Option', 'disciple_tools' ) ?></td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ( !isset( $tile['display_conditions']['conditions'] ) || !is_array( $tile['display_conditions']['conditions'] ) ) {
+                        $tile['display_conditions']['conditions'] = [];
+                    }
+                    foreach ( $tile['display_conditions']['conditions'] ?? [] as $condition ) {
                         ?>
-                    </tbody>
-                </table>
-
-                <table>
-                    <tbody>
                         <tr>
+                            <td><?php echo esc_html( $condition['key_label'] ) ?></td>
+                            <td><?php echo esc_html( $condition['value_label'] ) ?></td>
                             <td>
-                                <label>Displayed if all specified fields are present</label>
-                            </td>
-                            <td>
-                                <input name="tile_display_custom_condition_all_fields" id="tile_display_custom_condition_all_fields" type="checkbox" <?php echo ( isset( $tile['display_conditions']['operator'] ) && $tile['display_conditions']['operator'] == 'and' ) ? 'checked' : '' ?>>
+                                <span style="float: right;">
+                                    <button class="button" type="submit" id="tile_display_custom_condition_remove_but" name="tile_display_custom_condition_remove_but" value="<?php echo esc_html( $condition['key'].'___'.$condition['value'] ) ?>">Remove</button>
+                                </span>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-
-            </label>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <label>Require all selected condition to be true</label>
+                        </td>
+                        <td>
+                            <input name="tile_display_custom_condition_all_fields" id="tile_display_custom_condition_all_fields" type="checkbox" <?php echo ( isset( $tile['display_conditions']['operator'] ) && $tile['display_conditions']['operator'] == 'and' ) ? 'checked' : '' ?>>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <br>
         </div>
 
@@ -652,10 +655,26 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         $option_id       = $condition_parts[1];
 
                         // Append latest entry, ensuring uniqueness.
-                        $custom_tile['display_conditions']['conditions'][$field_id.'___'.$option_id] = [
-                            'key' => $field_id,
-                            'value' => $option_id
-                        ];
+                        if ( isset( $field_id, $option_id ) ) {
+                            $field_id_label = $field_id;
+                            $option_id_label = $option_id;
+
+                            // Determine respective labels.
+                            if ( isset( $post_fields[ $field_id ] ) ) {
+                                $field_id_label = $post_fields[ $field_id ]['name'] ?? $field_id;
+                                if ( isset( $post_fields[ $field_id ]['default'], $post_fields[ $field_id ]['default'][ $option_id ] ) ) {
+                                    $option_id_label = $post_fields[ $field_id ]['default'][ $option_id ]['label'] ?? $option_id;
+                                }
+                            }
+
+                            // Package and return....
+                            $custom_tile['display_conditions']['conditions'][$field_id.'___'.$option_id] = [
+                                'key' => $field_id,
+                                'key_label' => $field_id_label,
+                                'value' => $option_id,
+                                'value_label' => $option_id_label
+                            ];
+                        }
                     }
                 }
 

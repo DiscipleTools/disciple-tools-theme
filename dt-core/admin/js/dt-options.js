@@ -503,4 +503,51 @@ jQuery(document).ready(function ($) {
   /**
    * Tile Display Conditions - [END]
    */
+
+  /**
+   * Tile Display Help Modal - [START]
+   */
+
+  $(document).on('click', '.help-button', function (e) {
+    handle_tile_display_help_modal($(e.currentTarget));
+  });
+
+  function handle_tile_display_help_modal(help_button) {
+    let dialog = $('#' + $(help_button).data('dialog_id'));
+    if (dialog) {
+
+      // Refresh help dialog config
+      dialog.dialog({
+        modal: true,
+        autoOpen: false,
+        hide: 'fade',
+        show: 'fade',
+        height: 600,
+        width: 450,
+        resizable: true,
+        title: 'Help Dialog',
+        buttons: [
+          {
+            text: 'OK',
+            icon: 'ui-icon-check',
+            click: function () {
+              $(this).dialog('close');
+            }
+          }
+        ],
+        open: function (event, ui) {
+        }
+      });
+
+      // Display help dialog
+      dialog.dialog('open');
+
+    } else {
+      console.log('Unable to reference a valid: [dialog]');
+    }
+  }
+
+  /**
+   * Tile Display Help Modal - [END]
+   */
 })
