@@ -41,7 +41,7 @@ msgstr "तुम्ही शोधत असलेले पेज आढळ�
 msgid "Active"
 msgstr "अॅक्टिव्ह"
 
-#: dt-assets/parts/nav-topbar.php:277
+#: dt-assets/parts/nav-topbar.php:286
 #: template-notifications.php:43
 msgid "New"
 msgstr "नवीन"
@@ -215,7 +215,7 @@ msgstr "बदल केल्याची दिनांक"
 #: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
-#: dt-people-groups/people-groups-base.php:154
+#: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
 msgid "Contacts"
 msgstr "संपर्क"
@@ -236,7 +236,7 @@ msgstr "संपर्क"
 #: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
-#: dt-people-groups/people-groups-base.php:173
+#: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
 msgstr "गट"
 
@@ -248,9 +248,9 @@ msgstr "मेट्रिक्स"
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
-#: dt-assets/parts/nav-offcanvas.php:48
-#: dt-assets/parts/nav-topbar.php:98
-#: dt-assets/parts/nav-topbar.php:221
+#: dt-assets/parts/nav-offcanvas.php:50
+#: dt-assets/parts/nav-topbar.php:101
+#: dt-assets/parts/nav-topbar.php:230
 #: template-notifications.php:33
 #: template-settings.php:60
 #: template-settings.php:467
@@ -261,8 +261,8 @@ msgstr "सूचना"
 #: dt-assets/functions/menu.php:76
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:131
-#: dt-assets/parts/nav-topbar.php:106
-#: dt-assets/parts/nav-topbar.php:309
+#: dt-assets/parts/nav-topbar.php:109
+#: dt-assets/parts/nav-topbar.php:318
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "सेटिंग्ज"
@@ -291,7 +291,7 @@ msgstr "नाकारा"
 #: archive-template.php:403
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1732
+#: dt-posts/dt-posts.php:1789
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520
 #: single-template.php:78
@@ -304,7 +304,7 @@ msgstr "यांना सब-असाइन केले"
 
 #: dt-contacts/base-setup.php:257
 #: dt-groups/base-setup.php:383
-#: dt-people-groups/people-groups-base.php:211
+#: dt-people-groups/people-groups-base.php:221
 #: template-settings.php:180
 msgid "Address"
 msgstr "पत्ता"
@@ -312,15 +312,15 @@ msgstr "पत्ता"
 #: dt-assets/parts/modals/modal-help.php:103
 #: dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364
-#: dt-people-groups/people-groups-base.php:192
-#: dt-people-groups/people-groups-base.php:201
+#: dt-people-groups/people-groups-base.php:202
+#: dt-people-groups/people-groups-base.php:211
 msgid "Locations"
 msgstr "स्थाने"
 
 #: dt-contacts/dmm-module.php:212
 #: dt-groups/base-setup.php:404
-#: dt-people-groups/people-groups-base.php:85
 #: dt-people-groups/people-groups-base.php:95
+#: dt-people-groups/people-groups-base.php:105
 msgid "People Groups"
 msgstr "लोकांचे गट"
 
@@ -517,7 +517,7 @@ msgstr "फिल्टर हटवा"
 msgid "Group Status"
 msgstr "गट"
 
-#: dt-core/global-functions.php:475
+#: dt-core/global-functions.php:484
 #: single-template.php:340
 #: template-new-bulk-post.php:285
 #: template-new-post.php:138
@@ -582,7 +582,7 @@ msgstr "सुरू असलेल्या मिटींग्ज"
 
 #: dt-contacts/base-setup.php:340
 #: dt-groups/base-setup.php:109
-#: dt-people-groups/people-groups-base.php:148
+#: dt-people-groups/people-groups-base.php:158
 msgid "Requires Update"
 msgstr "अपडेट करणे आवश्यक आहे"
 
@@ -1023,7 +1023,7 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "काढून टाकलेला %1$s: %2$s"
 
-#: dt-posts/dt-posts.php:1490
+#: dt-posts/dt-posts.php:1547
 msgid "Post already shared with user."
 msgstr "पोस्ट आधीच यूजरसोबत सामाईक केली आहे."
 
@@ -1312,8 +1312,8 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s यावर नियुक्ती नाकारली: %2$s."
 
-#: dt-people-groups/people-groups-base.php:84
 #: dt-people-groups/people-groups-base.php:94
+#: dt-people-groups/people-groups-base.php:104
 msgid "People Group"
 msgstr "लोक गट"
 
@@ -1420,12 +1420,12 @@ msgstr "सेव्ह करा आणि एडिट करणे सुर�
 msgid "Select All"
 msgstr "सर्व सिलेक्ट करा"
 
-#: dt-assets/parts/nav-topbar.php:287
+#: dt-assets/parts/nav-topbar.php:296
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "न वाचलेले"
 
-#: dt-assets/parts/nav-topbar.php:313
+#: dt-assets/parts/nav-topbar.php:322
 #: template-notifications.php:72
 msgid "Mark All"
 msgstr "सर्वांवर खूण करा"
@@ -1633,7 +1633,7 @@ msgid "Mapping"
 msgstr "नकाशा"
 
 #: dt-mapping/mapping.php:304
-#: dt-people-groups/people-groups-base.php:281
+#: dt-people-groups/people-groups-base.php:291
 msgid "Population"
 msgstr "लोकसंख्या"
 
@@ -2076,7 +2076,7 @@ msgstr "शोधण्यासाठी टंकलिखित करा"
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593
 #: dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:815
+#: dt-core/global-functions.php:857
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "वापरकर्ते शोधा"
@@ -2096,10 +2096,10 @@ msgstr "तुमची टिप्पणी किंवा सूचना �
 #: archive-template.php:126
 #: archive-template.php:461
 #: dt-assets/parts/merge-details.php:45
-#: dt-core/global-functions.php:580
-#: dt-core/global-functions.php:608
-#: dt-core/global-functions.php:733
-#: dt-core/global-functions.php:777
+#: dt-core/global-functions.php:630
+#: dt-core/global-functions.php:658
+#: dt-core/global-functions.php:775
+#: dt-core/global-functions.php:819
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
@@ -2236,9 +2236,9 @@ msgstr "चाळण्या (फिल्टर्स) नाहीत, खा
 msgid "No records found matching your filter."
 msgstr "तुमच्या फिल्टरशी जुळणारी कोणतीही नोंद आढळली नाही."
 
-#: dt-assets/parts/nav-topbar.php:283
-#: dt-people-groups/people-groups-base.php:342
-#: dt-people-groups/people-groups-base.php:351
+#: dt-assets/parts/nav-topbar.php:292
+#: dt-people-groups/people-groups-base.php:352
+#: dt-people-groups/people-groups-base.php:361
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
@@ -2520,7 +2520,7 @@ msgstr "कार्य निर्माण करा"
 msgid "Existing tasks for this record:"
 msgstr "या नोंदीसाठी सध्याची कार्ये :"
 
-#: dt-assets/parts/nav-topbar.php:165
+#: dt-assets/parts/nav-topbar.php:170
 msgid "Theme Update Available!"
 msgstr "संकल्पना अपडेट उपलब्ध आहे!"
 
@@ -2783,8 +2783,8 @@ msgstr "मदत करत असलेला काँटॅक्ट कि�
 
 #: dt-contacts/base-setup.php:240
 #: dt-groups/base-setup.php:365
-#: dt-people-groups/people-groups-base.php:193
 #: dt-people-groups/people-groups-base.php:203
+#: dt-people-groups/people-groups-base.php:213
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "हा काँटॅक्ट कुठे आहे, त्याचे सामान्य ठिकाण."
@@ -3308,7 +3308,7 @@ msgid "Inactive Groups Switch"
 msgstr "अक्रिय ग्रुप स्वीच"
 
 #: dt-assets/parts/modals/modal-help.php:129
-#: dt-assets/parts/nav-topbar.php:307
+#: dt-assets/parts/nav-topbar.php:316
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "सर्व वाचलेले म्हणून चिन्हित करा"
@@ -3326,7 +3326,7 @@ msgstr "संपर्क स्थिती ही संपर्कासह
 msgid "Contact Type"
 msgstr "संपर्क प्रकार"
 
-#: dt-people-groups/people-groups-base.php:219
+#: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:158
 msgid "Last Modified"
 msgstr "शेवटी बदलेले"
@@ -3652,7 +3652,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s ने %2$s ला या नोंदीत विलीन केले आहे."
 
-#: dt-posts/dt-posts.php:1255
+#: dt-posts/dt-posts.php:1312
 msgid "D.T System"
 msgstr "D.T सिस्टिम"
 
@@ -3964,7 +3964,7 @@ msgstr "काँटॅक्ट नकाशे"
 msgid "Groups Maps"
 msgstr "गट नकाशे"
 
-#: dt-posts/dt-posts.php:1733
+#: dt-posts/dt-posts.php:1790
 #: single-template.php:120
 msgid "Details"
 msgstr "तपशील"
@@ -4162,7 +4162,7 @@ msgstr "सर्च करण्याचे क्षेत्र निवड
 msgid "Other Social Links"
 msgstr "अन्य सामाजिक लिंक"
 
-#: dt-assets/parts/nav-topbar.php:294
+#: dt-assets/parts/nav-topbar.php:303
 msgid "See All"
 msgstr "सर्व पाहा"
 
@@ -4180,11 +4180,11 @@ msgstr[1] "%s हून अधिक वर्षांपूर्वी"
 msgid "Hide fields"
 msgstr "क्षेत्रे लपवा"
 
-#: dt-core/global-functions.php:582
+#: dt-core/global-functions.php:632
 msgid "Add new tag \"%s\""
 msgstr "\"%s\" नवीन टॅग अॅड करा"
 
-#: dt-core/global-functions.php:583
+#: dt-core/global-functions.php:633
 msgid "Tag \"%s\" is already being used"
 msgstr "\"%s\" हा टॅग याआधीच वापरला जात आहे"
 
@@ -4263,12 +4263,12 @@ msgstr "आश्चर्य"
 msgid "sad"
 msgstr "दुःखी"
 
-#: dt-posts/dt-posts.php:1797
+#: dt-posts/dt-posts.php:1854
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr "@[%1$s](%2$s) -  %3$s या वापरकर्त्याने  %4$s [%5$s](%6$s) पाहण्यासाठी विनंती केली आहे. इच्छित असल्यास, पाहण्याची परवानगी देण्यासाठी ही नोंद वापरकर्त्यासोबत शेअर करा."
 
-#: dt-posts/dt-posts.php:1803
+#: dt-posts/dt-posts.php:1860
 msgid "Access Request"
 msgstr "पाहण्याची विनंती"
 
@@ -4407,13 +4407,13 @@ msgid "Favorite"
 msgstr "आवडते"
 
 #: archive-template.php:278
-#: dt-assets/parts/nav-topbar.php:144
+#: dt-assets/parts/nav-topbar.php:147
 #: dt-metrics/personal/activity-log.php:53
 #: dt-users/user-management.php:184
 msgid "More"
 msgstr "अधिक"
 
-#: dt-posts/dt-posts.php:1249
+#: dt-posts/dt-posts.php:1306
 msgid "Magic Link Submission"
 msgstr "मॅजिक लिंक सादरीकरण"
 
@@ -4522,8 +4522,8 @@ msgstr "नावे"
 msgid "Communication"
 msgstr "संवाद"
 
-#: dt-assets/parts/nav-offcanvas.php:79
-#: dt-assets/parts/nav-topbar.php:251
+#: dt-assets/parts/nav-offcanvas.php:81
+#: dt-assets/parts/nav-topbar.php:260
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "लॉग आउट करा"
@@ -5066,35 +5066,35 @@ msgstr ""
 msgid "Find out more"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:166
+#: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:185
+#: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:288
+#: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:295
+#: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:302
+#: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:309
+#: dt-people-groups/people-groups-base.php:319
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:323
+#: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
 msgstr ""
 
@@ -5108,5 +5108,9 @@ msgstr ""
 
 #: dt-people-groups/people-groups.php:304
 msgid "Import People Group"
+msgstr ""
+
+#: dt-posts/dt-posts.php:101
+msgid "Updated existing record instead of creating a new record."
 msgstr ""
 

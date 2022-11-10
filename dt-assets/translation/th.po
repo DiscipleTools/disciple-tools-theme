@@ -41,7 +41,7 @@ msgstr "ไม่พบเพจที่คุณกำลังค้นหา
 msgid "Active"
 msgstr "คล่องแคล่ว"
 
-#: dt-assets/parts/nav-topbar.php:277
+#: dt-assets/parts/nav-topbar.php:286
 #: template-notifications.php:43
 msgid "New"
 msgstr "ใหม่"
@@ -215,7 +215,7 @@ msgstr "วันที่แก้ไข"
 #: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
-#: dt-people-groups/people-groups-base.php:154
+#: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
 msgid "Contacts"
 msgstr "ผู้ติดต่อ"
@@ -236,7 +236,7 @@ msgstr "ผู้ติดต่อ"
 #: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
-#: dt-people-groups/people-groups-base.php:173
+#: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
 msgstr "กลุ่ม"
 
@@ -248,9 +248,9 @@ msgstr "เมตริก"
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
-#: dt-assets/parts/nav-offcanvas.php:48
-#: dt-assets/parts/nav-topbar.php:98
-#: dt-assets/parts/nav-topbar.php:221
+#: dt-assets/parts/nav-offcanvas.php:50
+#: dt-assets/parts/nav-topbar.php:101
+#: dt-assets/parts/nav-topbar.php:230
 #: template-notifications.php:33
 #: template-settings.php:60
 #: template-settings.php:467
@@ -261,8 +261,8 @@ msgstr "การแจ้งเตือน"
 #: dt-assets/functions/menu.php:76
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:131
-#: dt-assets/parts/nav-topbar.php:106
-#: dt-assets/parts/nav-topbar.php:309
+#: dt-assets/parts/nav-topbar.php:109
+#: dt-assets/parts/nav-topbar.php:318
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "การตั้งค่า"
@@ -291,7 +291,7 @@ msgstr "ลดลง"
 #: archive-template.php:403
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1732
+#: dt-posts/dt-posts.php:1789
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520
 #: single-template.php:78
@@ -304,7 +304,7 @@ msgstr "กำหนดย่อยให้กับ"
 
 #: dt-contacts/base-setup.php:257
 #: dt-groups/base-setup.php:383
-#: dt-people-groups/people-groups-base.php:211
+#: dt-people-groups/people-groups-base.php:221
 #: template-settings.php:180
 msgid "Address"
 msgstr "ที่อยู่"
@@ -312,15 +312,15 @@ msgstr "ที่อยู่"
 #: dt-assets/parts/modals/modal-help.php:103
 #: dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364
-#: dt-people-groups/people-groups-base.php:192
-#: dt-people-groups/people-groups-base.php:201
+#: dt-people-groups/people-groups-base.php:202
+#: dt-people-groups/people-groups-base.php:211
 msgid "Locations"
 msgstr "สถานที่"
 
 #: dt-contacts/dmm-module.php:212
 #: dt-groups/base-setup.php:404
-#: dt-people-groups/people-groups-base.php:85
 #: dt-people-groups/people-groups-base.php:95
+#: dt-people-groups/people-groups-base.php:105
 msgid "People Groups"
 msgstr "กลุ่มคน"
 
@@ -517,7 +517,7 @@ msgstr "ลบตัวกรอง"
 msgid "Group Status"
 msgstr "สถานะกลุ่ม"
 
-#: dt-core/global-functions.php:475
+#: dt-core/global-functions.php:484
 #: single-template.php:340
 #: template-new-bulk-post.php:285
 #: template-new-post.php:138
@@ -582,7 +582,7 @@ msgstr "การประชุมที่กำลังดำเนินอ
 
 #: dt-contacts/base-setup.php:340
 #: dt-groups/base-setup.php:109
-#: dt-people-groups/people-groups-base.php:148
+#: dt-people-groups/people-groups-base.php:158
 msgid "Requires Update"
 msgstr "ต้องมีการอัปเดต"
 
@@ -1023,7 +1023,7 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "ลบ %1$s: %2$s"
 
-#: dt-posts/dt-posts.php:1490
+#: dt-posts/dt-posts.php:1547
 msgid "Post already shared with user."
 msgstr "โพสต์แชร์กับผู้ใช้แล้ว"
 
@@ -1312,8 +1312,8 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s ปฏิเสธงานเมื่อ: %2$s"
 
-#: dt-people-groups/people-groups-base.php:84
 #: dt-people-groups/people-groups-base.php:94
+#: dt-people-groups/people-groups-base.php:104
 msgid "People Group"
 msgstr "กลุ่มคน"
 
@@ -1420,12 +1420,12 @@ msgstr "บันทึกและแก้ไขต่อ"
 msgid "Select All"
 msgstr "เลือกทั้งหมด"
 
-#: dt-assets/parts/nav-topbar.php:287
+#: dt-assets/parts/nav-topbar.php:296
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "ยังไม่ได้อ่าน"
 
-#: dt-assets/parts/nav-topbar.php:313
+#: dt-assets/parts/nav-topbar.php:322
 #: template-notifications.php:72
 msgid "Mark All"
 msgstr "ทำเครื่องหมายทั้งหมด"
@@ -1633,7 +1633,7 @@ msgid "Mapping"
 msgstr "การทำแผนที่"
 
 #: dt-mapping/mapping.php:304
-#: dt-people-groups/people-groups-base.php:281
+#: dt-people-groups/people-groups-base.php:291
 msgid "Population"
 msgstr "ประชากร"
 
@@ -2075,7 +2075,7 @@ msgstr "พิมพ์เพื่อค้นหา"
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593
 #: dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:815
+#: dt-core/global-functions.php:857
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "ค้นหาผู้ใช้"
@@ -2095,10 +2095,10 @@ msgstr "เขียนความคิดเห็นหรือบันท
 #: archive-template.php:126
 #: archive-template.php:461
 #: dt-assets/parts/merge-details.php:45
-#: dt-core/global-functions.php:580
-#: dt-core/global-functions.php:608
-#: dt-core/global-functions.php:733
-#: dt-core/global-functions.php:777
+#: dt-core/global-functions.php:630
+#: dt-core/global-functions.php:658
+#: dt-core/global-functions.php:775
+#: dt-core/global-functions.php:819
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
@@ -2235,9 +2235,9 @@ msgstr "ไม่มีตัวกรองสร้างตัวกรอง
 msgid "No records found matching your filter."
 msgstr "ไม่พบบันทึกที่ตรงกับตัวกรองของคุณ"
 
-#: dt-assets/parts/nav-topbar.php:283
-#: dt-people-groups/people-groups-base.php:342
-#: dt-people-groups/people-groups-base.php:351
+#: dt-assets/parts/nav-topbar.php:292
+#: dt-people-groups/people-groups-base.php:352
+#: dt-people-groups/people-groups-base.php:361
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
@@ -2515,7 +2515,7 @@ msgstr "สร้างงาน"
 msgid "Existing tasks for this record:"
 msgstr "งานที่มีอยู่สำหรับบันทึกนี้:"
 
-#: dt-assets/parts/nav-topbar.php:165
+#: dt-assets/parts/nav-topbar.php:170
 msgid "Theme Update Available!"
 msgstr "มีการอัปเดตธีม!"
 
@@ -2777,8 +2777,8 @@ msgstr "ผู้ติดต่อหรือผู้ใช้ที่ให
 
 #: dt-contacts/base-setup.php:240
 #: dt-groups/base-setup.php:365
-#: dt-people-groups/people-groups-base.php:193
 #: dt-people-groups/people-groups-base.php:203
+#: dt-people-groups/people-groups-base.php:213
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "ตำแหน่งทั่วไปที่ผู้ติดต่อนี้ตั้งอยู่"
@@ -3296,7 +3296,7 @@ msgid "Inactive Groups Switch"
 msgstr "สวิตช์กลุ่มที่ไม่ใช้งาน"
 
 #: dt-assets/parts/modals/modal-help.php:129
-#: dt-assets/parts/nav-topbar.php:307
+#: dt-assets/parts/nav-topbar.php:316
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "ทำเครื่องหมายทั้งหมดว่าอ่านแล้ว"
@@ -3314,7 +3314,7 @@ msgstr "สถานะการติดต่ออธิบายความ
 msgid "Contact Type"
 msgstr "ประเภทการติดต่อ"
 
-#: dt-people-groups/people-groups-base.php:219
+#: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:158
 msgid "Last Modified"
 msgstr "แก้ไขล่าสุด"
@@ -3640,7 +3640,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s รวม %2$s เข้ากับเรกคอร์ดนี้"
 
-#: dt-posts/dt-posts.php:1255
+#: dt-posts/dt-posts.php:1312
 msgid "D.T System"
 msgstr "ระบบ D.T"
 
@@ -3952,7 +3952,7 @@ msgstr "แผนที่ผู้ติดต่อ"
 msgid "Groups Maps"
 msgstr "แผนที่กลุ่ม"
 
-#: dt-posts/dt-posts.php:1733
+#: dt-posts/dt-posts.php:1790
 #: single-template.php:120
 msgid "Details"
 msgstr "รายละเอียด"
@@ -4149,7 +4149,7 @@ msgstr "เลือกฟิลด์ที่จะค้นหา"
 msgid "Other Social Links"
 msgstr "ลิงก์โซเชียลอื่น ๆ"
 
-#: dt-assets/parts/nav-topbar.php:294
+#: dt-assets/parts/nav-topbar.php:303
 msgid "See All"
 msgstr "ดูทั้งหมด"
 
@@ -4166,11 +4166,11 @@ msgstr[0] "กว่า %s ปีที่แล้ว"
 msgid "Hide fields"
 msgstr "ซ่อนฟิลด์"
 
-#: dt-core/global-functions.php:582
+#: dt-core/global-functions.php:632
 msgid "Add new tag \"%s\""
 msgstr "เพิ่มแท็กใหม่ \"%s\""
 
-#: dt-core/global-functions.php:583
+#: dt-core/global-functions.php:633
 msgid "Tag \"%s\" is already being used"
 msgstr "มีการใช้แท็ก \"%s\" แล้ว"
 
@@ -4248,12 +4248,12 @@ msgstr "ว้าว"
 msgid "sad"
 msgstr "เศร้า"
 
-#: dt-posts/dt-posts.php:1797
+#: dt-posts/dt-posts.php:1854
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr "@[%1$s](%2$s) - ผู้ใช้ที่ชื่อ %3$s ร้องขอเข้าถึง %4$s [%5$s](%6$s) หากยินดี ให้แชร์บันทึกนี้กับผู้ใช้เพื่อให้สิทธิ์การเข้าถึง"
 
-#: dt-posts/dt-posts.php:1803
+#: dt-posts/dt-posts.php:1860
 msgid "Access Request"
 msgstr "ร้องขอเข้าถึง"
 
@@ -4392,13 +4392,13 @@ msgid "Favorite"
 msgstr "รายการโปรด"
 
 #: archive-template.php:278
-#: dt-assets/parts/nav-topbar.php:144
+#: dt-assets/parts/nav-topbar.php:147
 #: dt-metrics/personal/activity-log.php:53
 #: dt-users/user-management.php:184
 msgid "More"
 msgstr "เพิ่มเติม"
 
-#: dt-posts/dt-posts.php:1249
+#: dt-posts/dt-posts.php:1306
 msgid "Magic Link Submission"
 msgstr "การส่งลิงก์วิเศษ"
 
@@ -4507,8 +4507,8 @@ msgstr "ชื่อ"
 msgid "Communication"
 msgstr "การสื่อสาร"
 
-#: dt-assets/parts/nav-offcanvas.php:79
-#: dt-assets/parts/nav-topbar.php:251
+#: dt-assets/parts/nav-offcanvas.php:81
+#: dt-assets/parts/nav-topbar.php:260
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "ออกจากระบบ"
@@ -5051,35 +5051,35 @@ msgstr ""
 msgid "Find out more"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:166
+#: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:185
+#: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:288
+#: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:295
+#: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:302
+#: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:309
+#: dt-people-groups/people-groups-base.php:319
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:323
+#: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
 msgstr ""
 
@@ -5093,5 +5093,9 @@ msgstr ""
 
 #: dt-people-groups/people-groups.php:304
 msgid "Import People Group"
+msgstr ""
+
+#: dt-posts/dt-posts.php:101
+msgid "Updated existing record instead of creating a new record."
 msgstr ""
 

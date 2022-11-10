@@ -41,7 +41,7 @@ msgstr "Stránka, kterou jste hledali, nebyla nalezena nebo byla odstraněna"
 msgid "Active"
 msgstr "Aktivní"
 
-#: dt-assets/parts/nav-topbar.php:279
+#: dt-assets/parts/nav-topbar.php:286
 #: template-notifications.php:43
 msgid "New"
 msgstr "Nový"
@@ -216,7 +216,7 @@ msgstr "Datum změny"
 #: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
-#: dt-people-groups/people-groups-base.php:154
+#: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
 msgid "Contacts"
 msgstr "Kontakty"
@@ -237,7 +237,7 @@ msgstr "Kontakty"
 #: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
-#: dt-people-groups/people-groups-base.php:173
+#: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
 msgstr "Skupiny"
 
@@ -250,8 +250,8 @@ msgstr "Měření"
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
 #: dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:98
-#: dt-assets/parts/nav-topbar.php:223
+#: dt-assets/parts/nav-topbar.php:101
+#: dt-assets/parts/nav-topbar.php:230
 #: template-notifications.php:33
 #: template-settings.php:60
 #: template-settings.php:467
@@ -262,8 +262,8 @@ msgstr "Oznámení"
 #: dt-assets/functions/menu.php:76
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:131
-#: dt-assets/parts/nav-topbar.php:106
-#: dt-assets/parts/nav-topbar.php:311
+#: dt-assets/parts/nav-topbar.php:109
+#: dt-assets/parts/nav-topbar.php:318
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "Nastavení"
@@ -305,7 +305,7 @@ msgstr "Přiřazeno"
 
 #: dt-contacts/base-setup.php:257
 #: dt-groups/base-setup.php:383
-#: dt-people-groups/people-groups-base.php:211
+#: dt-people-groups/people-groups-base.php:221
 #: template-settings.php:180
 msgid "Address"
 msgstr "Adresa"
@@ -313,15 +313,15 @@ msgstr "Adresa"
 #: dt-assets/parts/modals/modal-help.php:103
 #: dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364
-#: dt-people-groups/people-groups-base.php:192
-#: dt-people-groups/people-groups-base.php:201
+#: dt-people-groups/people-groups-base.php:202
+#: dt-people-groups/people-groups-base.php:211
 msgid "Locations"
 msgstr "Místa"
 
 #: dt-contacts/dmm-module.php:212
 #: dt-groups/base-setup.php:404
-#: dt-people-groups/people-groups-base.php:85
 #: dt-people-groups/people-groups-base.php:95
+#: dt-people-groups/people-groups-base.php:105
 msgid "People Groups"
 msgstr "Skupiny lidí"
 
@@ -584,7 +584,7 @@ msgstr "Probíhající setkání"
 
 #: dt-contacts/base-setup.php:340
 #: dt-groups/base-setup.php:109
-#: dt-people-groups/people-groups-base.php:148
+#: dt-people-groups/people-groups-base.php:158
 msgid "Requires Update"
 msgstr "Vyžaduje aktualizaci"
 
@@ -1319,8 +1319,8 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s odmítl úkol: %2$s."
 
-#: dt-people-groups/people-groups-base.php:84
 #: dt-people-groups/people-groups-base.php:94
+#: dt-people-groups/people-groups-base.php:104
 msgid "People Group"
 msgstr "Skupina lidí"
 
@@ -1428,12 +1428,12 @@ msgstr "Uložte a pokračujte v úpravách"
 msgid "Select All"
 msgstr "Vybrat vše"
 
-#: dt-assets/parts/nav-topbar.php:289
+#: dt-assets/parts/nav-topbar.php:296
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "Nepřečtený"
 
-#: dt-assets/parts/nav-topbar.php:315
+#: dt-assets/parts/nav-topbar.php:322
 #: template-notifications.php:72
 msgid "Mark All"
 msgstr "Označit vše"
@@ -1641,7 +1641,7 @@ msgid "Mapping"
 msgstr "Mapování"
 
 #: dt-mapping/mapping.php:304
-#: dt-people-groups/people-groups-base.php:281
+#: dt-people-groups/people-groups-base.php:291
 msgid "Population"
 msgstr "Populace"
 
@@ -2243,9 +2243,9 @@ msgstr "Žádné filtry, vytvořte jeden níže"
 msgid "No records found matching your filter."
 msgstr "Nebyly nalezeny žádné záznamy odpovídající vašemu filtru."
 
-#: dt-assets/parts/nav-topbar.php:285
-#: dt-people-groups/people-groups-base.php:342
-#: dt-people-groups/people-groups-base.php:351
+#: dt-assets/parts/nav-topbar.php:292
+#: dt-people-groups/people-groups-base.php:352
+#: dt-people-groups/people-groups-base.php:361
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
@@ -2523,7 +2523,7 @@ msgstr "Vytvořit úkol"
 msgid "Existing tasks for this record:"
 msgstr "Existující úkoly pro tento záznam:"
 
-#: dt-assets/parts/nav-topbar.php:167
+#: dt-assets/parts/nav-topbar.php:170
 msgid "Theme Update Available!"
 msgstr "Aktualizace motivu k dispozici!"
 
@@ -2785,8 +2785,8 @@ msgstr "Kontakt nebo Uživatel pomáhající Přiřazenému uživateli při kont
 
 #: dt-contacts/base-setup.php:240
 #: dt-groups/base-setup.php:365
-#: dt-people-groups/people-groups-base.php:193
 #: dt-people-groups/people-groups-base.php:203
+#: dt-people-groups/people-groups-base.php:213
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "Obecné umístění, kde se tento kontakt nachází."
@@ -3316,7 +3316,7 @@ msgid "Inactive Groups Switch"
 msgstr "Přepínač neaktivních skupin"
 
 #: dt-assets/parts/modals/modal-help.php:129
-#: dt-assets/parts/nav-topbar.php:309
+#: dt-assets/parts/nav-topbar.php:316
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "označit vše jako přečtené"
@@ -3334,7 +3334,7 @@ msgstr "Stav kontaktu popisuje postup při komunikaci s kontaktem."
 msgid "Contact Type"
 msgstr "Typ kontaktu"
 
-#: dt-people-groups/people-groups-base.php:219
+#: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:158
 msgid "Last Modified"
 msgstr "Naposledy změněno"
@@ -4169,7 +4169,7 @@ msgstr "Vyberte pole, která chcete prohledat"
 msgid "Other Social Links"
 msgstr "Další společenské vazby"
 
-#: dt-assets/parts/nav-topbar.php:296
+#: dt-assets/parts/nav-topbar.php:303
 msgid "See All"
 msgstr "Vidět vše"
 
@@ -4414,7 +4414,7 @@ msgid "Favorite"
 msgstr "Oblíbený"
 
 #: archive-template.php:278
-#: dt-assets/parts/nav-topbar.php:144
+#: dt-assets/parts/nav-topbar.php:147
 #: dt-metrics/personal/activity-log.php:53
 #: dt-users/user-management.php:184
 msgid "More"
@@ -4530,7 +4530,7 @@ msgid "Communication"
 msgstr "Sdělení"
 
 #: dt-assets/parts/nav-offcanvas.php:81
-#: dt-assets/parts/nav-topbar.php:253
+#: dt-assets/parts/nav-topbar.php:260
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "Odhlásit se"
@@ -5073,35 +5073,35 @@ msgstr "Vylepšete Disciple.Tools tím, že vytvoříte funkci nebo vylepšením
 msgid "Find out more"
 msgstr "Zjistěte více"
 
-#: dt-people-groups/people-groups-base.php:166
+#: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
 msgstr "Všechny kontakty"
 
-#: dt-people-groups/people-groups-base.php:185
+#: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
 msgstr "Všechny skupiny"
 
-#: dt-people-groups/people-groups-base.php:288
+#: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
 msgstr "Skupinový kód"
 
-#: dt-people-groups/people-groups-base.php:295
+#: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
 msgstr "ID osoby"
 
-#: dt-people-groups/people-groups-base.php:302
+#: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
 msgstr "Primární jazyk"
 
-#: dt-people-groups/people-groups-base.php:309
+#: dt-people-groups/people-groups-base.php:319
 msgid "Country"
 msgstr "Země"
 
-#: dt-people-groups/people-groups-base.php:323
+#: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
 msgstr "Spojení"
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
 msgstr "Projekt Joshua"
 

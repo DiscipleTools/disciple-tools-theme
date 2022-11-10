@@ -41,7 +41,7 @@ msgstr "ໜ້າ ທີ່ທ່ານ ກຳ ລັງຊອກຫາບໍ່
 msgid "Active"
 msgstr "ຫ້າວຫັນ"
 
-#: dt-assets/parts/nav-topbar.php:279
+#: dt-assets/parts/nav-topbar.php:286
 #: template-notifications.php:43
 msgid "New"
 msgstr "ໃຫມ່"
@@ -215,7 +215,7 @@ msgstr "ວັນທີດັດແກ້"
 #: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
-#: dt-people-groups/people-groups-base.php:154
+#: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
 msgid "Contacts"
 msgstr "ລາຍຊື່ຜູ້ຕິດຕໍ່"
@@ -236,7 +236,7 @@ msgstr "ລາຍຊື່ຜູ້ຕິດຕໍ່"
 #: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
-#: dt-people-groups/people-groups-base.php:173
+#: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
 msgstr "ກຸ່ມ"
 
@@ -249,8 +249,8 @@ msgstr "ວັດແທກ"
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
 #: dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:98
-#: dt-assets/parts/nav-topbar.php:223
+#: dt-assets/parts/nav-topbar.php:101
+#: dt-assets/parts/nav-topbar.php:230
 #: template-notifications.php:33
 #: template-settings.php:60
 #: template-settings.php:467
@@ -261,8 +261,8 @@ msgstr "ແຈ້ງການ"
 #: dt-assets/functions/menu.php:76
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:131
-#: dt-assets/parts/nav-topbar.php:106
-#: dt-assets/parts/nav-topbar.php:311
+#: dt-assets/parts/nav-topbar.php:109
+#: dt-assets/parts/nav-topbar.php:318
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "ການຕັ້ງຄ່າ"
@@ -304,7 +304,7 @@ msgstr "ມອບ ໝາຍ ໃຫ້"
 
 #: dt-contacts/base-setup.php:257
 #: dt-groups/base-setup.php:383
-#: dt-people-groups/people-groups-base.php:211
+#: dt-people-groups/people-groups-base.php:221
 #: template-settings.php:180
 msgid "Address"
 msgstr "ທີ່ຢູ່"
@@ -312,15 +312,15 @@ msgstr "ທີ່ຢູ່"
 #: dt-assets/parts/modals/modal-help.php:103
 #: dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364
-#: dt-people-groups/people-groups-base.php:192
-#: dt-people-groups/people-groups-base.php:201
+#: dt-people-groups/people-groups-base.php:202
+#: dt-people-groups/people-groups-base.php:211
 msgid "Locations"
 msgstr "ສະຖານທີ່ຕ່າງໆ"
 
 #: dt-contacts/dmm-module.php:212
 #: dt-groups/base-setup.php:404
-#: dt-people-groups/people-groups-base.php:85
 #: dt-people-groups/people-groups-base.php:95
+#: dt-people-groups/people-groups-base.php:105
 msgid "People Groups"
 msgstr "ກຸ່ມຄົນ"
 
@@ -582,7 +582,7 @@ msgstr "ກອງປະຊຸມທີ່ ກຳ ລັງ ດຳ ເນີນ�
 
 #: dt-contacts/base-setup.php:340
 #: dt-groups/base-setup.php:109
-#: dt-people-groups/people-groups-base.php:148
+#: dt-people-groups/people-groups-base.php:158
 msgid "Requires Update"
 msgstr "ຮຽກຮ້ອງໃຫ້ມີການປັບປຸງ"
 
@@ -1312,8 +1312,8 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "% 1 $ s ປະຕິເສດການມອບ ໝາຍ ທີ່:% 2 $ s."
 
-#: dt-people-groups/people-groups-base.php:84
 #: dt-people-groups/people-groups-base.php:94
+#: dt-people-groups/people-groups-base.php:104
 msgid "People Group"
 msgstr "ກຸ່ມຄົນ"
 
@@ -1420,12 +1420,12 @@ msgstr "ບັນທຶກແລະສືບຕໍ່ແກ້ໄຂ"
 msgid "Select All"
 msgstr "ເລືອກ​ທັງ​ຫມົດ"
 
-#: dt-assets/parts/nav-topbar.php:289
+#: dt-assets/parts/nav-topbar.php:296
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "ຍັງບໍ່ໄດ້ອ່ານ"
 
-#: dt-assets/parts/nav-topbar.php:315
+#: dt-assets/parts/nav-topbar.php:322
 #: template-notifications.php:72
 msgid "Mark All"
 msgstr "ໝາຍ ທັງ ໝົດ"
@@ -1633,7 +1633,7 @@ msgid "Mapping"
 msgstr "ການສ້າງແຜນທີ່"
 
 #: dt-mapping/mapping.php:304
-#: dt-people-groups/people-groups-base.php:281
+#: dt-people-groups/people-groups-base.php:291
 msgid "Population"
 msgstr "ປະຊາກອນ"
 
@@ -2235,9 +2235,9 @@ msgstr "ບໍ່ມີຕົວກອງ, ສ້າງ ໜຶ່ງ ລຸ່�
 msgid "No records found matching your filter."
 msgstr "ບໍ່ພົບບັນທຶກທີ່ກົງກັບຕົວກອງຂອງທ່ານ."
 
-#: dt-assets/parts/nav-topbar.php:285
-#: dt-people-groups/people-groups-base.php:342
-#: dt-people-groups/people-groups-base.php:351
+#: dt-assets/parts/nav-topbar.php:292
+#: dt-people-groups/people-groups-base.php:352
+#: dt-people-groups/people-groups-base.php:361
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
@@ -2515,7 +2515,7 @@ msgstr "ສ້າງ Task"
 msgid "Existing tasks for this record:"
 msgstr "ວຽກທີ່ມີຢູ່ ສຳ ລັບບັນທຶກນີ້:"
 
-#: dt-assets/parts/nav-topbar.php:167
+#: dt-assets/parts/nav-topbar.php:170
 msgid "Theme Update Available!"
 msgstr "ມີການປັບປຸງຫົວຂໍ້!"
 
@@ -2777,8 +2777,8 @@ msgstr "ຕິດຕໍ່ຫຼືຜູ້ໃຊ້ທີ່ໃຫ້ການ
 
 #: dt-contacts/base-setup.php:240
 #: dt-groups/base-setup.php:365
-#: dt-people-groups/people-groups-base.php:193
 #: dt-people-groups/people-groups-base.php:203
+#: dt-people-groups/people-groups-base.php:213
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "ສະຖານທີ່ທົ່ວໄປທີ່ຕິດຕໍ່ພົວພັນນີ້."
@@ -3296,7 +3296,7 @@ msgid "Inactive Groups Switch"
 msgstr "ກຸ່ມທີ່ບໍ່ມີປະໂຫຍດປ່ຽນ"
 
 #: dt-assets/parts/modals/modal-help.php:129
-#: dt-assets/parts/nav-topbar.php:309
+#: dt-assets/parts/nav-topbar.php:316
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "ໝາຍ ທຸກຢ່າງທີ່ອ່ານແລ້ວ"
@@ -3314,7 +3314,7 @@ msgstr "ສະຖານະການຕິດຕໍ່ອະທິບາຍເຖ
 msgid "Contact Type"
 msgstr "ປະເພດຕິດຕໍ່"
 
-#: dt-people-groups/people-groups-base.php:219
+#: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:158
 msgid "Last Modified"
 msgstr "ແກ້ໄຂສຸດທ້າຍ"
@@ -4149,7 +4149,7 @@ msgstr "ເລືອກເອົາຊ່ອງຂໍ້ມູນໃດທີ່
 msgid "Other Social Links"
 msgstr "ການເຊື່ອມຕໍ່ທາງສັງຄົມອື່ນໆ"
 
-#: dt-assets/parts/nav-topbar.php:296
+#: dt-assets/parts/nav-topbar.php:303
 msgid "See All"
 msgstr "ເບິ່ງທັງ ໝົດ"
 
@@ -4392,7 +4392,7 @@ msgid "Favorite"
 msgstr "ມັກ"
 
 #: archive-template.php:278
-#: dt-assets/parts/nav-topbar.php:144
+#: dt-assets/parts/nav-topbar.php:147
 #: dt-metrics/personal/activity-log.php:53
 #: dt-users/user-management.php:184
 msgid "More"
@@ -4508,7 +4508,7 @@ msgid "Communication"
 msgstr "ການສື່ສານ"
 
 #: dt-assets/parts/nav-offcanvas.php:81
-#: dt-assets/parts/nav-topbar.php:253
+#: dt-assets/parts/nav-topbar.php:260
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "ອອກ​ຈາກ​ລະ​ບົບ"
@@ -5051,35 +5051,35 @@ msgstr ""
 msgid "Find out more"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:166
+#: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:185
+#: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:288
+#: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:295
+#: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:302
+#: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:309
+#: dt-people-groups/people-groups-base.php:319
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:323
+#: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
 msgstr ""
 

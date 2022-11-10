@@ -41,7 +41,7 @@ msgstr "찾고 있던 페이지가 없거나 삭제되었습니다."
 msgid "Active"
 msgstr "활성화"
 
-#: dt-assets/parts/nav-topbar.php:277
+#: dt-assets/parts/nav-topbar.php:286
 #: template-notifications.php:43
 msgid "New"
 msgstr "신규"
@@ -215,7 +215,7 @@ msgstr "수정 날짜"
 #: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
-#: dt-people-groups/people-groups-base.php:154
+#: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
 msgid "Contacts"
 msgstr "연락처"
@@ -236,7 +236,7 @@ msgstr "연락처"
 #: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
-#: dt-people-groups/people-groups-base.php:173
+#: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
 msgstr "그룹"
 
@@ -248,9 +248,9 @@ msgstr "지표"
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
-#: dt-assets/parts/nav-offcanvas.php:48
-#: dt-assets/parts/nav-topbar.php:98
-#: dt-assets/parts/nav-topbar.php:221
+#: dt-assets/parts/nav-offcanvas.php:50
+#: dt-assets/parts/nav-topbar.php:101
+#: dt-assets/parts/nav-topbar.php:230
 #: template-notifications.php:33
 #: template-settings.php:60
 #: template-settings.php:467
@@ -261,8 +261,8 @@ msgstr "알림"
 #: dt-assets/functions/menu.php:76
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:131
-#: dt-assets/parts/nav-topbar.php:106
-#: dt-assets/parts/nav-topbar.php:309
+#: dt-assets/parts/nav-topbar.php:109
+#: dt-assets/parts/nav-topbar.php:318
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "설정"
@@ -291,7 +291,7 @@ msgstr "거절"
 #: archive-template.php:403
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1732
+#: dt-posts/dt-posts.php:1789
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520
 #: single-template.php:78
@@ -304,7 +304,7 @@ msgstr "하위 할당 대상"
 
 #: dt-contacts/base-setup.php:257
 #: dt-groups/base-setup.php:383
-#: dt-people-groups/people-groups-base.php:211
+#: dt-people-groups/people-groups-base.php:221
 #: template-settings.php:180
 msgid "Address"
 msgstr "주소"
@@ -312,15 +312,15 @@ msgstr "주소"
 #: dt-assets/parts/modals/modal-help.php:103
 #: dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364
-#: dt-people-groups/people-groups-base.php:192
-#: dt-people-groups/people-groups-base.php:201
+#: dt-people-groups/people-groups-base.php:202
+#: dt-people-groups/people-groups-base.php:211
 msgid "Locations"
 msgstr "위치"
 
 #: dt-contacts/dmm-module.php:212
 #: dt-groups/base-setup.php:404
-#: dt-people-groups/people-groups-base.php:85
 #: dt-people-groups/people-groups-base.php:95
+#: dt-people-groups/people-groups-base.php:105
 msgid "People Groups"
 msgstr "민족"
 
@@ -517,7 +517,7 @@ msgstr "필터 삭제"
 msgid "Group Status"
 msgstr "그룹 상태"
 
-#: dt-core/global-functions.php:475
+#: dt-core/global-functions.php:484
 #: single-template.php:340
 #: template-new-bulk-post.php:285
 #: template-new-post.php:138
@@ -582,7 +582,7 @@ msgstr "진행중인 모임"
 
 #: dt-contacts/base-setup.php:340
 #: dt-groups/base-setup.php:109
-#: dt-people-groups/people-groups-base.php:148
+#: dt-people-groups/people-groups-base.php:158
 msgid "Requires Update"
 msgstr "업데이트가 필요합니다"
 
@@ -1023,7 +1023,7 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "%1$s을(를) 삭제함: %2$s"
 
-#: dt-posts/dt-posts.php:1490
+#: dt-posts/dt-posts.php:1547
 msgid "Post already shared with user."
 msgstr "사용자에게 이미 공유된 게시물"
 
@@ -1312,8 +1312,8 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s 이/가 다음 과제를 거절했습니다: %2$s."
 
-#: dt-people-groups/people-groups-base.php:84
 #: dt-people-groups/people-groups-base.php:94
+#: dt-people-groups/people-groups-base.php:104
 msgid "People Group"
 msgstr "사람 그룹"
 
@@ -1420,12 +1420,12 @@ msgstr "저장하고 편집 계속하기"
 msgid "Select All"
 msgstr "전체 선택"
 
-#: dt-assets/parts/nav-topbar.php:287
+#: dt-assets/parts/nav-topbar.php:296
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "읽지 않음"
 
-#: dt-assets/parts/nav-topbar.php:313
+#: dt-assets/parts/nav-topbar.php:322
 #: template-notifications.php:72
 msgid "Mark All"
 msgstr "모두 표시하기"
@@ -1633,7 +1633,7 @@ msgid "Mapping"
 msgstr "매핑"
 
 #: dt-mapping/mapping.php:304
-#: dt-people-groups/people-groups-base.php:281
+#: dt-people-groups/people-groups-base.php:291
 msgid "Population"
 msgstr "인구"
 
@@ -2075,7 +2075,7 @@ msgstr "검색할 유형"
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593
 #: dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:815
+#: dt-core/global-functions.php:857
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "사용자 검색"
@@ -2095,10 +2095,10 @@ msgstr "여기에 댓글이나 메모를 남기세요"
 #: archive-template.php:126
 #: archive-template.php:461
 #: dt-assets/parts/merge-details.php:45
-#: dt-core/global-functions.php:580
-#: dt-core/global-functions.php:608
-#: dt-core/global-functions.php:733
-#: dt-core/global-functions.php:777
+#: dt-core/global-functions.php:630
+#: dt-core/global-functions.php:658
+#: dt-core/global-functions.php:775
+#: dt-core/global-functions.php:819
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
@@ -2235,9 +2235,9 @@ msgstr "필터가 없습니다. 아래에서 만드세요"
 msgid "No records found matching your filter."
 msgstr "필터에 일치하는 기록이 없습니다."
 
-#: dt-assets/parts/nav-topbar.php:283
-#: dt-people-groups/people-groups-base.php:342
-#: dt-people-groups/people-groups-base.php:351
+#: dt-assets/parts/nav-topbar.php:292
+#: dt-people-groups/people-groups-base.php:352
+#: dt-people-groups/people-groups-base.php:361
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
@@ -2515,7 +2515,7 @@ msgstr "작업 생성"
 msgid "Existing tasks for this record:"
 msgstr "이 기록의 기존 작업:"
 
-#: dt-assets/parts/nav-topbar.php:165
+#: dt-assets/parts/nav-topbar.php:170
 msgid "Theme Update Available!"
 msgstr "테마 업데이트를 사용하실 수 있습니다!"
 
@@ -2777,8 +2777,8 @@ msgstr "연락처를 배정받은 사용자가 연락처에 이어 연락하기�
 
 #: dt-contacts/base-setup.php:240
 #: dt-groups/base-setup.php:365
-#: dt-people-groups/people-groups-base.php:193
 #: dt-people-groups/people-groups-base.php:203
+#: dt-people-groups/people-groups-base.php:213
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "이 연락처가 보통 위치한 장소."
@@ -3296,7 +3296,7 @@ msgid "Inactive Groups Switch"
 msgstr "비활성 그룹 전환"
 
 #: dt-assets/parts/modals/modal-help.php:129
-#: dt-assets/parts/nav-topbar.php:307
+#: dt-assets/parts/nav-topbar.php:316
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "모두 읽음으로 표시"
@@ -3314,7 +3314,7 @@ msgstr "연락처 상태에서는 해당 연락처와 연락 진행 상황이 �
 msgid "Contact Type"
 msgstr "연락처 유형"
 
-#: dt-people-groups/people-groups-base.php:219
+#: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:158
 msgid "Last Modified"
 msgstr "마지막으로 수정됨"
@@ -3640,7 +3640,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s이(가) %2$s와(과) 이 레코드로 병홥되었습니다"
 
-#: dt-posts/dt-posts.php:1255
+#: dt-posts/dt-posts.php:1312
 msgid "D.T System"
 msgstr "D.T 시스템"
 
@@ -3952,7 +3952,7 @@ msgstr "연락처 맵"
 msgid "Groups Maps"
 msgstr "그룹 맵"
 
-#: dt-posts/dt-posts.php:1733
+#: dt-posts/dt-posts.php:1790
 #: single-template.php:120
 msgid "Details"
 msgstr "상세정보"
@@ -4149,7 +4149,7 @@ msgstr "어떤 필드를 검색할지 선택하세요"
 msgid "Other Social Links"
 msgstr "기타 소셜 링크"
 
-#: dt-assets/parts/nav-topbar.php:294
+#: dt-assets/parts/nav-topbar.php:303
 msgid "See All"
 msgstr "모두 보기"
 
@@ -4166,11 +4166,11 @@ msgstr[0] "%s년 더 이전"
 msgid "Hide fields"
 msgstr "필드 숨기기"
 
-#: dt-core/global-functions.php:582
+#: dt-core/global-functions.php:632
 msgid "Add new tag \"%s\""
 msgstr "새 태그 \"%s\" 추가"
 
-#: dt-core/global-functions.php:583
+#: dt-core/global-functions.php:633
 msgid "Tag \"%s\" is already being used"
 msgstr "태그 \"%s\"이(가) 이미 사용 중입니다"
 
@@ -4248,12 +4248,12 @@ msgstr "와우"
 msgid "sad"
 msgstr "슬픔"
 
-#: dt-posts/dt-posts.php:1797
+#: dt-posts/dt-posts.php:1854
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr "@[%1$s](%2$s) - 사용자 %3$s님이 %4$s [%5$s](%6$s)에 대한 액세스를 요청했습니다. 원하신다면,"
 
-#: dt-posts/dt-posts.php:1803
+#: dt-posts/dt-posts.php:1860
 msgid "Access Request"
 msgstr "액세스 요청"
 
@@ -4392,13 +4392,13 @@ msgid "Favorite"
 msgstr "자주 사용하는"
 
 #: archive-template.php:278
-#: dt-assets/parts/nav-topbar.php:144
+#: dt-assets/parts/nav-topbar.php:147
 #: dt-metrics/personal/activity-log.php:53
 #: dt-users/user-management.php:184
 msgid "More"
 msgstr "더 많이"
 
-#: dt-posts/dt-posts.php:1249
+#: dt-posts/dt-posts.php:1306
 msgid "Magic Link Submission"
 msgstr "매직 링크 제출"
 
@@ -4507,8 +4507,8 @@ msgstr "이름"
 msgid "Communication"
 msgstr "연락"
 
-#: dt-assets/parts/nav-offcanvas.php:79
-#: dt-assets/parts/nav-topbar.php:251
+#: dt-assets/parts/nav-offcanvas.php:81
+#: dt-assets/parts/nav-topbar.php:260
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "로그아웃"
@@ -5051,35 +5051,35 @@ msgstr ""
 msgid "Find out more"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:166
+#: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:185
+#: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:288
+#: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:295
+#: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:302
+#: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:309
+#: dt-people-groups/people-groups-base.php:319
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:323
+#: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
 msgstr ""
 
@@ -5093,5 +5093,9 @@ msgstr ""
 
 #: dt-people-groups/people-groups.php:304
 msgid "Import People Group"
+msgstr ""
+
+#: dt-posts/dt-posts.php:101
+msgid "Updated existing record instead of creating a new record."
 msgstr ""
 

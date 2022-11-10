@@ -41,7 +41,7 @@ msgstr "صفحة الويب هذه غير موجودة أو تمّ حذفها"
 msgid "Active"
 msgstr "ناشط"
 
-#: dt-assets/parts/nav-topbar.php:277
+#: dt-assets/parts/nav-topbar.php:286
 #: template-notifications.php:43
 msgid "New"
 msgstr "جديد"
@@ -215,7 +215,7 @@ msgstr "تغيير التاريخ"
 #: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
-#: dt-people-groups/people-groups-base.php:154
+#: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
 msgid "Contacts"
 msgstr "جهات الاتصالل"
@@ -236,7 +236,7 @@ msgstr "جهات الاتصالل"
 #: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
-#: dt-people-groups/people-groups-base.php:173
+#: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
 msgstr "المجموعات"
 
@@ -248,9 +248,9 @@ msgstr "المقاييس"
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
-#: dt-assets/parts/nav-offcanvas.php:48
-#: dt-assets/parts/nav-topbar.php:98
-#: dt-assets/parts/nav-topbar.php:221
+#: dt-assets/parts/nav-offcanvas.php:50
+#: dt-assets/parts/nav-topbar.php:101
+#: dt-assets/parts/nav-topbar.php:230
 #: template-notifications.php:33
 #: template-settings.php:60
 #: template-settings.php:467
@@ -261,8 +261,8 @@ msgstr "إشعارات"
 #: dt-assets/functions/menu.php:76
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:131
-#: dt-assets/parts/nav-topbar.php:106
-#: dt-assets/parts/nav-topbar.php:309
+#: dt-assets/parts/nav-topbar.php:109
+#: dt-assets/parts/nav-topbar.php:318
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "الإعدادات"
@@ -291,7 +291,7 @@ msgstr "رفض"
 #: archive-template.php:403
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1732
+#: dt-posts/dt-posts.php:1789
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520
 #: single-template.php:78
@@ -304,7 +304,7 @@ msgstr "معيّن فرعيّا إلى"
 
 #: dt-contacts/base-setup.php:257
 #: dt-groups/base-setup.php:383
-#: dt-people-groups/people-groups-base.php:211
+#: dt-people-groups/people-groups-base.php:221
 #: template-settings.php:180
 msgid "Address"
 msgstr "العنوان"
@@ -312,15 +312,15 @@ msgstr "العنوان"
 #: dt-assets/parts/modals/modal-help.php:103
 #: dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364
-#: dt-people-groups/people-groups-base.php:192
-#: dt-people-groups/people-groups-base.php:201
+#: dt-people-groups/people-groups-base.php:202
+#: dt-people-groups/people-groups-base.php:211
 msgid "Locations"
 msgstr "المواقع"
 
 #: dt-contacts/dmm-module.php:212
 #: dt-groups/base-setup.php:404
-#: dt-people-groups/people-groups-base.php:85
 #: dt-people-groups/people-groups-base.php:95
+#: dt-people-groups/people-groups-base.php:105
 msgid "People Groups"
 msgstr "مجموعات بشرية"
 
@@ -517,7 +517,7 @@ msgstr "مسح الفلتر"
 msgid "Group Status"
 msgstr "حالة المجموعة"
 
-#: dt-core/global-functions.php:475
+#: dt-core/global-functions.php:484
 #: single-template.php:340
 #: template-new-bulk-post.php:285
 #: template-new-post.php:138
@@ -582,7 +582,7 @@ msgstr "اجتماعات متواصلة"
 
 #: dt-contacts/base-setup.php:340
 #: dt-groups/base-setup.php:109
-#: dt-people-groups/people-groups-base.php:148
+#: dt-people-groups/people-groups-base.php:158
 msgid "Requires Update"
 msgstr "يحتاج إلى تحديث"
 
@@ -1024,7 +1024,7 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "تمت إزالة %1$s:  %2$s "
 
-#: dt-posts/dt-posts.php:1490
+#: dt-posts/dt-posts.php:1547
 msgid "Post already shared with user."
 msgstr "تمت مشاركة المنشور مع المستخدم"
 
@@ -1313,8 +1313,8 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s رفض تعيينه لمتابعة %2$s"
 
-#: dt-people-groups/people-groups-base.php:84
 #: dt-people-groups/people-groups-base.php:94
+#: dt-people-groups/people-groups-base.php:104
 msgid "People Group"
 msgstr "مجموعة بشرية"
 
@@ -1421,12 +1421,12 @@ msgstr "حفظ واستكمال التعديل"
 msgid "Select All"
 msgstr "اختر الكل"
 
-#: dt-assets/parts/nav-topbar.php:287
+#: dt-assets/parts/nav-topbar.php:296
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "غير مقروء"
 
-#: dt-assets/parts/nav-topbar.php:313
+#: dt-assets/parts/nav-topbar.php:322
 #: template-notifications.php:72
 msgid "Mark All"
 msgstr "حدد الكل"
@@ -1634,7 +1634,7 @@ msgid "Mapping"
 msgstr "تعيين"
 
 #: dt-mapping/mapping.php:304
-#: dt-people-groups/people-groups-base.php:281
+#: dt-people-groups/people-groups-base.php:291
 msgid "Population"
 msgstr "تعداد السكان"
 
@@ -2076,7 +2076,7 @@ msgstr "اكتب للبحث"
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593
 #: dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:815
+#: dt-core/global-functions.php:857
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "البحث عن مستخدمين"
@@ -2096,10 +2096,10 @@ msgstr "اكتب تعليقك أو ملاحظتك هنا"
 #: archive-template.php:126
 #: archive-template.php:461
 #: dt-assets/parts/merge-details.php:45
-#: dt-core/global-functions.php:580
-#: dt-core/global-functions.php:608
-#: dt-core/global-functions.php:733
-#: dt-core/global-functions.php:777
+#: dt-core/global-functions.php:630
+#: dt-core/global-functions.php:658
+#: dt-core/global-functions.php:775
+#: dt-core/global-functions.php:819
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
@@ -2236,9 +2236,9 @@ msgstr "لا يوجد تصفيات ، قم بإنشاء واحد أدناه"
 msgid "No records found matching your filter."
 msgstr "لا توجد سجلات مطابقة التصفية الخاص بك."
 
-#: dt-assets/parts/nav-topbar.php:283
-#: dt-people-groups/people-groups-base.php:342
-#: dt-people-groups/people-groups-base.php:351
+#: dt-assets/parts/nav-topbar.php:292
+#: dt-people-groups/people-groups-base.php:352
+#: dt-people-groups/people-groups-base.php:361
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
@@ -2516,7 +2516,7 @@ msgstr "إنشاء مستخدم"
 msgid "Existing tasks for this record:"
 msgstr "المهام الحالية لهذا السجل:"
 
-#: dt-assets/parts/nav-topbar.php:165
+#: dt-assets/parts/nav-topbar.php:170
 msgid "Theme Update Available!"
 msgstr "تحديث الثيم متاح!"
 
@@ -2778,8 +2778,8 @@ msgstr "جهة اتصال أو مستخدم يساعد المستخدم المع
 
 #: dt-contacts/base-setup.php:240
 #: dt-groups/base-setup.php:365
-#: dt-people-groups/people-groups-base.php:193
 #: dt-people-groups/people-groups-base.php:203
+#: dt-people-groups/people-groups-base.php:213
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "من فضلك محاولة الاتصال مرة اخرى"
@@ -3328,7 +3328,7 @@ msgid "Inactive Groups Switch"
 msgstr "المجموعات غير الناشطة"
 
 #: dt-assets/parts/modals/modal-help.php:129
-#: dt-assets/parts/nav-topbar.php:307
+#: dt-assets/parts/nav-topbar.php:316
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "اجعل الكل مقروء"
@@ -3346,7 +3346,7 @@ msgstr "تصف حالة الاتصال تقدمنا في التواصل مع ج�
 msgid "Contact Type"
 msgstr "نوع جهة الاتصال"
 
-#: dt-people-groups/people-groups-base.php:219
+#: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:158
 msgid "Last Modified"
 msgstr "اخر تعديل"
@@ -3672,7 +3672,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "المستخدم 1 دَمَجَ جهة الإتصال1 في هذا السجل"
 
-#: dt-posts/dt-posts.php:1255
+#: dt-posts/dt-posts.php:1312
 msgid "D.T System"
 msgstr "نظام D.T"
 
@@ -3984,7 +3984,7 @@ msgstr "خرائط جهات الاتصال"
 msgid "Groups Maps"
 msgstr "خرائط المجموعات"
 
-#: dt-posts/dt-posts.php:1733
+#: dt-posts/dt-posts.php:1790
 #: single-template.php:120
 msgid "Details"
 msgstr "التفاصيل"
@@ -4181,7 +4181,7 @@ msgstr "اختر حقول للبحث"
 msgid "Other Social Links"
 msgstr "روابط اجتماعية أخرى"
 
-#: dt-assets/parts/nav-topbar.php:294
+#: dt-assets/parts/nav-topbar.php:303
 msgid "See All"
 msgstr "اعرض الكل"
 
@@ -4203,11 +4203,11 @@ msgstr[5] "منذ أكثر من %s عام"
 msgid "Hide fields"
 msgstr "أخف الحقول"
 
-#: dt-core/global-functions.php:582
+#: dt-core/global-functions.php:632
 msgid "Add new tag \"%s\""
 msgstr "أضف بطاقة شعار جديدة \"%s\""
 
-#: dt-core/global-functions.php:583
+#: dt-core/global-functions.php:633
 msgid "Tag \"%s\" is already being used"
 msgstr "بطاقة شعار  \"%s\" مستخدمة مسبقًا"
 
@@ -4286,12 +4286,12 @@ msgstr "مندهش"
 msgid "sad"
 msgstr "حزين"
 
-#: dt-posts/dt-posts.php:1797
+#: dt-posts/dt-posts.php:1854
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr "@[%1$s](%2$s) - User %3$s طلب الوصول إلى  %4$s [%5$s](%6$s). إذا كنت ترغب، شارك هذا التسجيل مع المستخدم لضمان الوصول."
 
-#: dt-posts/dt-posts.php:1803
+#: dt-posts/dt-posts.php:1860
 msgid "Access Request"
 msgstr "طلب الوصول"
 
@@ -4430,13 +4430,13 @@ msgid "Favorite"
 msgstr "المُفضل"
 
 #: archive-template.php:278
-#: dt-assets/parts/nav-topbar.php:144
+#: dt-assets/parts/nav-topbar.php:147
 #: dt-metrics/personal/activity-log.php:53
 #: dt-users/user-management.php:184
 msgid "More"
 msgstr "المزيد"
 
-#: dt-posts/dt-posts.php:1249
+#: dt-posts/dt-posts.php:1306
 msgid "Magic Link Submission"
 msgstr "إرسال الرابط السحري"
 
@@ -4545,8 +4545,8 @@ msgstr "الأسماء"
 msgid "Communication"
 msgstr "التواصل"
 
-#: dt-assets/parts/nav-offcanvas.php:79
-#: dt-assets/parts/nav-topbar.php:251
+#: dt-assets/parts/nav-offcanvas.php:81
+#: dt-assets/parts/nav-topbar.php:260
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "تسجيل الخروج"
@@ -5089,35 +5089,35 @@ msgstr ""
 msgid "Find out more"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:166
+#: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:185
+#: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:288
+#: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:295
+#: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:302
+#: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:309
+#: dt-people-groups/people-groups-base.php:319
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:323
+#: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
 msgstr ""
 
@@ -5131,5 +5131,9 @@ msgstr ""
 
 #: dt-people-groups/people-groups.php:304
 msgid "Import People Group"
+msgstr ""
+
+#: dt-posts/dt-posts.php:101
+msgid "Updated existing record instead of creating a new record."
 msgstr ""
 

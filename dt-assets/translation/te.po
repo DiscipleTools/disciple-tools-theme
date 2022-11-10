@@ -41,7 +41,7 @@ msgstr "మీరు వెతుకుతున్న పేజీ కనుగ
 msgid "Active"
 msgstr "యాక్టివ్"
 
-#: dt-assets/parts/nav-topbar.php:279
+#: dt-assets/parts/nav-topbar.php:286
 #: template-notifications.php:43
 msgid "New"
 msgstr "క్రొత్తది"
@@ -215,7 +215,7 @@ msgstr "తేదీ సవరించబడింది"
 #: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
-#: dt-people-groups/people-groups-base.php:154
+#: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
 msgid "Contacts"
 msgstr "పరిచయాలు"
@@ -236,7 +236,7 @@ msgstr "పరిచయాలు"
 #: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
-#: dt-people-groups/people-groups-base.php:173
+#: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
 msgstr "గుంపులు"
 
@@ -249,8 +249,8 @@ msgstr "కొలతలు"
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
 #: dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:98
-#: dt-assets/parts/nav-topbar.php:223
+#: dt-assets/parts/nav-topbar.php:101
+#: dt-assets/parts/nav-topbar.php:230
 #: template-notifications.php:33
 #: template-settings.php:60
 #: template-settings.php:467
@@ -261,8 +261,8 @@ msgstr "నోటిఫికేషన్‌లు"
 #: dt-assets/functions/menu.php:76
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:131
-#: dt-assets/parts/nav-topbar.php:106
-#: dt-assets/parts/nav-topbar.php:311
+#: dt-assets/parts/nav-topbar.php:109
+#: dt-assets/parts/nav-topbar.php:318
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "సెట్టింగులు"
@@ -304,7 +304,7 @@ msgstr "దీనికి ఉప-కేటాయించబడింది"
 
 #: dt-contacts/base-setup.php:257
 #: dt-groups/base-setup.php:383
-#: dt-people-groups/people-groups-base.php:211
+#: dt-people-groups/people-groups-base.php:221
 #: template-settings.php:180
 msgid "Address"
 msgstr "చిరునామా"
@@ -312,15 +312,15 @@ msgstr "చిరునామా"
 #: dt-assets/parts/modals/modal-help.php:103
 #: dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364
-#: dt-people-groups/people-groups-base.php:192
-#: dt-people-groups/people-groups-base.php:201
+#: dt-people-groups/people-groups-base.php:202
+#: dt-people-groups/people-groups-base.php:211
 msgid "Locations"
 msgstr "స్థానాలు"
 
 #: dt-contacts/dmm-module.php:212
 #: dt-groups/base-setup.php:404
-#: dt-people-groups/people-groups-base.php:85
 #: dt-people-groups/people-groups-base.php:95
+#: dt-people-groups/people-groups-base.php:105
 msgid "People Groups"
 msgstr "పీపుల్ గ్రూప్స్"
 
@@ -582,7 +582,7 @@ msgstr "కొనసాగుతున్న సమావేశాలు"
 
 #: dt-contacts/base-setup.php:340
 #: dt-groups/base-setup.php:109
-#: dt-people-groups/people-groups-base.php:148
+#: dt-people-groups/people-groups-base.php:158
 msgid "Requires Update"
 msgstr "నవీకరణ అవసరం"
 
@@ -1312,8 +1312,8 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "% 1 $ s దీనిపై అసైన్‌మెంట్ తిరస్కరించబడింది:% 2 $ s."
 
-#: dt-people-groups/people-groups-base.php:84
 #: dt-people-groups/people-groups-base.php:94
+#: dt-people-groups/people-groups-base.php:104
 msgid "People Group"
 msgstr "పీపుల్ గ్రూప్"
 
@@ -1420,12 +1420,12 @@ msgstr "సేవ్ చేసి, సవరించడం కొనసాగ�
 msgid "Select All"
 msgstr "అన్ని ఎంచుకోండి"
 
-#: dt-assets/parts/nav-topbar.php:289
+#: dt-assets/parts/nav-topbar.php:296
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "చదవనిది"
 
-#: dt-assets/parts/nav-topbar.php:315
+#: dt-assets/parts/nav-topbar.php:322
 #: template-notifications.php:72
 msgid "Mark All"
 msgstr "అన్నీ గుర్తించండి"
@@ -1633,7 +1633,7 @@ msgid "Mapping"
 msgstr "మ్యాపింగ్"
 
 #: dt-mapping/mapping.php:304
-#: dt-people-groups/people-groups-base.php:281
+#: dt-people-groups/people-groups-base.php:291
 msgid "Population"
 msgstr "జనాభా"
 
@@ -2235,9 +2235,9 @@ msgstr "ఫిల్టర్లు లేవు, క్రింద ఒకద�
 msgid "No records found matching your filter."
 msgstr "మీ ఫిల్టర్‌కు సరిపోయే రికార్డులు ఏవీ కనుగొనబడలేదు."
 
-#: dt-assets/parts/nav-topbar.php:285
-#: dt-people-groups/people-groups-base.php:342
-#: dt-people-groups/people-groups-base.php:351
+#: dt-assets/parts/nav-topbar.php:292
+#: dt-people-groups/people-groups-base.php:352
+#: dt-people-groups/people-groups-base.php:361
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
@@ -2515,7 +2515,7 @@ msgstr "టాస్క్ సృష్టించండి"
 msgid "Existing tasks for this record:"
 msgstr "ఈ రికార్డ్ కోసం ఇప్పటికే ఉన్న పనులు:"
 
-#: dt-assets/parts/nav-topbar.php:167
+#: dt-assets/parts/nav-topbar.php:170
 msgid "Theme Update Available!"
 msgstr "థీమ్ నవీకరణ అందుబాటులో ఉంది!"
 
@@ -2777,8 +2777,8 @@ msgstr "సంప్రదింపులను అనుసరించడా�
 
 #: dt-contacts/base-setup.php:240
 #: dt-groups/base-setup.php:365
-#: dt-people-groups/people-groups-base.php:193
 #: dt-people-groups/people-groups-base.php:203
+#: dt-people-groups/people-groups-base.php:213
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "ఈ పరిచయం ఉన్న సాధారణ స్థానం."
@@ -3302,7 +3302,7 @@ msgid "Inactive Groups Switch"
 msgstr "నిష్క్రియాత్మక గుంపులు మారండి"
 
 #: dt-assets/parts/modals/modal-help.php:129
-#: dt-assets/parts/nav-topbar.php:309
+#: dt-assets/parts/nav-topbar.php:316
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "అన్నీచదివినట్లుగా సూచించు"
@@ -3320,7 +3320,7 @@ msgstr "సంప్రదింపు స్థితి పరిచయంత�
 msgid "Contact Type"
 msgstr "సంప్రదింపు రకం"
 
-#: dt-people-groups/people-groups-base.php:219
+#: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:158
 msgid "Last Modified"
 msgstr "చివరిసారిగా మార్పు చేయబడిన"
@@ -4155,7 +4155,7 @@ msgstr "ఏ ఫీల్డ్‌లను శోధించాలో ఎంచ
 msgid "Other Social Links"
 msgstr "ఇతర సామాజిక లింకులు"
 
-#: dt-assets/parts/nav-topbar.php:296
+#: dt-assets/parts/nav-topbar.php:303
 msgid "See All"
 msgstr "అన్నింటిని చూడు"
 
@@ -4399,7 +4399,7 @@ msgid "Favorite"
 msgstr "ఇష్టమైన"
 
 #: archive-template.php:278
-#: dt-assets/parts/nav-topbar.php:144
+#: dt-assets/parts/nav-topbar.php:147
 #: dt-metrics/personal/activity-log.php:53
 #: dt-users/user-management.php:184
 msgid "More"
@@ -4515,7 +4515,7 @@ msgid "Communication"
 msgstr "కమ్యూనికేషన్"
 
 #: dt-assets/parts/nav-offcanvas.php:81
-#: dt-assets/parts/nav-topbar.php:253
+#: dt-assets/parts/nav-topbar.php:260
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "లాగ్ అవుట్ చేయండి"
@@ -5058,35 +5058,35 @@ msgstr ""
 msgid "Find out more"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:166
+#: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:185
+#: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:288
+#: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:295
+#: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:302
+#: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:309
+#: dt-people-groups/people-groups-base.php:319
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:323
+#: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
 msgstr ""
 

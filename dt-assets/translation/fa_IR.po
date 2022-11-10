@@ -41,7 +41,7 @@ msgstr "صفحۀ مورد نظر شما پیدا نشد و یا پاک شده ا
 msgid "Active"
 msgstr "فعال"
 
-#: dt-assets/parts/nav-topbar.php:279
+#: dt-assets/parts/nav-topbar.php:286
 #: template-notifications.php:43
 msgid "New"
 msgstr "جدید"
@@ -216,7 +216,7 @@ msgstr "تاریخ اصلاح"
 #: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
-#: dt-people-groups/people-groups-base.php:154
+#: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
 msgid "Contacts"
 msgstr "مخاطبین"
@@ -237,7 +237,7 @@ msgstr "مخاطبین"
 #: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
-#: dt-people-groups/people-groups-base.php:173
+#: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
 msgstr "گروه‌ها"
 
@@ -250,8 +250,8 @@ msgstr "گزارشات"
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
 #: dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:98
-#: dt-assets/parts/nav-topbar.php:223
+#: dt-assets/parts/nav-topbar.php:101
+#: dt-assets/parts/nav-topbar.php:230
 #: template-notifications.php:33
 #: template-settings.php:60
 #: template-settings.php:467
@@ -262,8 +262,8 @@ msgstr "اعلانات"
 #: dt-assets/functions/menu.php:76
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:131
-#: dt-assets/parts/nav-topbar.php:106
-#: dt-assets/parts/nav-topbar.php:311
+#: dt-assets/parts/nav-topbar.php:109
+#: dt-assets/parts/nav-topbar.php:318
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "تنظیمات"
@@ -305,7 +305,7 @@ msgstr "واگذار شده به"
 
 #: dt-contacts/base-setup.php:257
 #: dt-groups/base-setup.php:383
-#: dt-people-groups/people-groups-base.php:211
+#: dt-people-groups/people-groups-base.php:221
 #: template-settings.php:180
 msgid "Address"
 msgstr "نشانی"
@@ -313,15 +313,15 @@ msgstr "نشانی"
 #: dt-assets/parts/modals/modal-help.php:103
 #: dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364
-#: dt-people-groups/people-groups-base.php:192
-#: dt-people-groups/people-groups-base.php:201
+#: dt-people-groups/people-groups-base.php:202
+#: dt-people-groups/people-groups-base.php:211
 msgid "Locations"
 msgstr "مکان‌ها"
 
 #: dt-contacts/dmm-module.php:212
 #: dt-groups/base-setup.php:404
-#: dt-people-groups/people-groups-base.php:85
 #: dt-people-groups/people-groups-base.php:95
+#: dt-people-groups/people-groups-base.php:105
 msgid "People Groups"
 msgstr "قومیت‌ها"
 
@@ -583,7 +583,7 @@ msgstr "جلسات در حال برگزاری"
 
 #: dt-contacts/base-setup.php:340
 #: dt-groups/base-setup.php:109
-#: dt-people-groups/people-groups-base.php:148
+#: dt-people-groups/people-groups-base.php:158
 msgid "Requires Update"
 msgstr "نیاز به به‌روزرسانی"
 
@@ -1314,8 +1314,8 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "‫%1$s درخواست پیگیری %2$s را رد کرد."
 
-#: dt-people-groups/people-groups-base.php:84
 #: dt-people-groups/people-groups-base.php:94
+#: dt-people-groups/people-groups-base.php:104
 msgid "People Group"
 msgstr "قومیت"
 
@@ -1422,12 +1422,12 @@ msgstr "ذخیره سازی و ادامۀ ویرایش"
 msgid "Select All"
 msgstr "انتخاب همۀ موارد"
 
-#: dt-assets/parts/nav-topbar.php:289
+#: dt-assets/parts/nav-topbar.php:296
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "خوانده نشده"
 
-#: dt-assets/parts/nav-topbar.php:315
+#: dt-assets/parts/nav-topbar.php:322
 #: template-notifications.php:72
 msgid "Mark All"
 msgstr "علامت گذاری همۀ موارد"
@@ -1635,7 +1635,7 @@ msgid "Mapping"
 msgstr "نقشه برداری"
 
 #: dt-mapping/mapping.php:304
-#: dt-people-groups/people-groups-base.php:281
+#: dt-people-groups/people-groups-base.php:291
 msgid "Population"
 msgstr "جمعیت"
 
@@ -2237,9 +2237,9 @@ msgstr "دسته‌بندی خاصی موجود نیست. یک دسته‌بند
 msgid "No records found matching your filter."
 msgstr "هیچ‌گونه سوابقی مطابق با دسته‌بندی ارائه شده، یافت نشد."
 
-#: dt-assets/parts/nav-topbar.php:285
-#: dt-people-groups/people-groups-base.php:342
-#: dt-people-groups/people-groups-base.php:351
+#: dt-assets/parts/nav-topbar.php:292
+#: dt-people-groups/people-groups-base.php:352
+#: dt-people-groups/people-groups-base.php:361
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
@@ -2523,7 +2523,7 @@ msgstr "ذخیره سازی یادآوری"
 msgid "Existing tasks for this record:"
 msgstr "یادآوری‌های ذخیره شده:"
 
-#: dt-assets/parts/nav-topbar.php:167
+#: dt-assets/parts/nav-topbar.php:170
 msgid "Theme Update Available!"
 msgstr "برای تم سایت به‌روزرسانی وجود دارد!"
 
@@ -2785,8 +2785,8 @@ msgstr "مخاطب یا کاربری که برای همکاری در پیگیر�
 
 #: dt-contacts/base-setup.php:240
 #: dt-groups/base-setup.php:365
-#: dt-people-groups/people-groups-base.php:193
 #: dt-people-groups/people-groups-base.php:203
+#: dt-people-groups/people-groups-base.php:213
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "مکان عمومی‌ای که این مخاطب در آن قرار دارد."
@@ -3304,7 +3304,7 @@ msgid "Inactive Groups Switch"
 msgstr "تعویض مخاطبین غیرفعال شود"
 
 #: dt-assets/parts/modals/modal-help.php:129
-#: dt-assets/parts/nav-topbar.php:309
+#: dt-assets/parts/nav-topbar.php:316
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "نشانه‌گذاری همه به‌عنوان خوانده شده"
@@ -3322,7 +3322,7 @@ msgstr "‫وضعیت مخاطب، پیشرفت در برقراری ارتباط
 msgid "Contact Type"
 msgstr "نوع ‫مخاطب"
 
-#: dt-people-groups/people-groups-base.php:219
+#: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:158
 msgid "Last Modified"
 msgstr "آخرین تغییر"
@@ -4157,7 +4157,7 @@ msgstr "انتخاب کنید که کدام حوزه جستجو شود"
 msgid "Other Social Links"
 msgstr "سایر پیوندهای اجتماعی"
 
-#: dt-assets/parts/nav-topbar.php:296
+#: dt-assets/parts/nav-topbar.php:303
 msgid "See All"
 msgstr "همه را ببینید"
 
@@ -4400,7 +4400,7 @@ msgid "Favorite"
 msgstr "مورد علاقه"
 
 #: archive-template.php:278
-#: dt-assets/parts/nav-topbar.php:144
+#: dt-assets/parts/nav-topbar.php:147
 #: dt-metrics/personal/activity-log.php:53
 #: dt-users/user-management.php:184
 msgid "More"
@@ -4516,7 +4516,7 @@ msgid "Communication"
 msgstr "ارتباط"
 
 #: dt-assets/parts/nav-offcanvas.php:81
-#: dt-assets/parts/nav-topbar.php:253
+#: dt-assets/parts/nav-topbar.php:260
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "خروج"
@@ -5060,35 +5060,35 @@ msgstr ""
 msgid "Find out more"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:166
+#: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:185
+#: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:288
+#: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:295
+#: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:302
+#: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:309
+#: dt-people-groups/people-groups-base.php:319
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:323
+#: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
 msgstr ""
 

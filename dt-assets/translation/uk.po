@@ -41,7 +41,7 @@ msgstr "Сторінка, яку ви шукали не знайдена або 
 msgid "Active"
 msgstr "Активний"
 
-#: dt-assets/parts/nav-topbar.php:277
+#: dt-assets/parts/nav-topbar.php:286
 #: template-notifications.php:43
 msgid "New"
 msgstr "Новий"
@@ -222,7 +222,7 @@ msgstr "Дата змін"
 #: dt-metrics/metrics.php:95
 #: dt-metrics/personal/mapbox-contacts-maps.php:31
 #: dt-metrics/personal/overview.php:62
-#: dt-people-groups/people-groups-base.php:154
+#: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
 msgid "Contacts"
 msgstr "Контакти"
@@ -243,7 +243,7 @@ msgstr "Контакти"
 #: dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-groups-maps.php:31
 #: dt-metrics/personal/overview.php:63
-#: dt-people-groups/people-groups-base.php:173
+#: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
 msgstr "Групи"
 
@@ -255,9 +255,9 @@ msgstr "Показники"
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:70
-#: dt-assets/parts/nav-offcanvas.php:48
-#: dt-assets/parts/nav-topbar.php:98
-#: dt-assets/parts/nav-topbar.php:221
+#: dt-assets/parts/nav-offcanvas.php:50
+#: dt-assets/parts/nav-topbar.php:101
+#: dt-assets/parts/nav-topbar.php:230
 #: template-notifications.php:33
 #: template-settings.php:60
 #: template-settings.php:467
@@ -269,8 +269,8 @@ msgstr "Сповіщення\n"
 #: dt-assets/functions/menu.php:76
 #: dt-assets/functions/menu.php:82
 #: dt-assets/parts/modals/modal-help.php:131
-#: dt-assets/parts/nav-topbar.php:106
-#: dt-assets/parts/nav-topbar.php:309
+#: dt-assets/parts/nav-topbar.php:109
+#: dt-assets/parts/nav-topbar.php:318
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "Налаштування\n"
@@ -303,7 +303,7 @@ msgstr "Відхилити"
 #: archive-template.php:403
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1732
+#: dt-posts/dt-posts.php:1789
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520
 #: single-template.php:78
@@ -316,7 +316,7 @@ msgstr "Підпризначений"
 
 #: dt-contacts/base-setup.php:257
 #: dt-groups/base-setup.php:383
-#: dt-people-groups/people-groups-base.php:211
+#: dt-people-groups/people-groups-base.php:221
 #: template-settings.php:180
 msgid "Address"
 msgstr "Адреса"
@@ -324,15 +324,15 @@ msgstr "Адреса"
 #: dt-assets/parts/modals/modal-help.php:103
 #: dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364
-#: dt-people-groups/people-groups-base.php:192
-#: dt-people-groups/people-groups-base.php:201
+#: dt-people-groups/people-groups-base.php:202
+#: dt-people-groups/people-groups-base.php:211
 msgid "Locations"
 msgstr "Розташування"
 
 #: dt-contacts/dmm-module.php:212
 #: dt-groups/base-setup.php:404
-#: dt-people-groups/people-groups-base.php:85
 #: dt-people-groups/people-groups-base.php:95
+#: dt-people-groups/people-groups-base.php:105
 msgid "People Groups"
 msgstr "Групи людей\n"
 ""
@@ -544,7 +544,7 @@ msgid "Group Status"
 msgstr "Статус групи\n"
 ""
 
-#: dt-core/global-functions.php:475
+#: dt-core/global-functions.php:484
 #: single-template.php:340
 #: template-new-bulk-post.php:285
 #: template-new-post.php:138
@@ -612,7 +612,7 @@ msgstr "Постійні зустрічі"
 
 #: dt-contacts/base-setup.php:340
 #: dt-groups/base-setup.php:109
-#: dt-people-groups/people-groups-base.php:148
+#: dt-people-groups/people-groups-base.php:158
 msgid "Requires Update"
 msgstr "Потребує оновлення"
 
@@ -1053,7 +1053,7 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "Видалено %1$s: %2$s"
 
-#: dt-posts/dt-posts.php:1490
+#: dt-posts/dt-posts.php:1547
 msgid "Post already shared with user."
 msgstr "Користувач уже поділився публікацією."
 
@@ -1342,8 +1342,8 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s відхилив призначення: %2$s."
 
-#: dt-people-groups/people-groups-base.php:84
 #: dt-people-groups/people-groups-base.php:94
+#: dt-people-groups/people-groups-base.php:104
 msgid "People Group"
 msgstr "Група людей"
 
@@ -1450,12 +1450,12 @@ msgstr "Зберегти і продовжити редагування"
 msgid "Select All"
 msgstr "Вибрати все"
 
-#: dt-assets/parts/nav-topbar.php:287
+#: dt-assets/parts/nav-topbar.php:296
 #: template-notifications.php:54
 msgid "Unread"
 msgstr "Непрочитано"
 
-#: dt-assets/parts/nav-topbar.php:313
+#: dt-assets/parts/nav-topbar.php:322
 #: template-notifications.php:72
 msgid "Mark All"
 msgstr "Позначити все"
@@ -1664,7 +1664,7 @@ msgid "Mapping"
 msgstr "Позначення на карті"
 
 #: dt-mapping/mapping.php:304
-#: dt-people-groups/people-groups-base.php:281
+#: dt-people-groups/people-groups-base.php:291
 msgid "Population"
 msgstr "Населення"
 
@@ -2106,7 +2106,7 @@ msgstr "Введіть для пошуку"
 #: dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593
 #: dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:815
+#: dt-core/global-functions.php:857
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Пошук користувачів"
@@ -2126,10 +2126,10 @@ msgstr "Напишіть свій коментар або примітку ту�
 #: archive-template.php:126
 #: archive-template.php:461
 #: dt-assets/parts/merge-details.php:45
-#: dt-core/global-functions.php:580
-#: dt-core/global-functions.php:608
-#: dt-core/global-functions.php:733
-#: dt-core/global-functions.php:777
+#: dt-core/global-functions.php:630
+#: dt-core/global-functions.php:658
+#: dt-core/global-functions.php:775
+#: dt-core/global-functions.php:819
 #: dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
@@ -2266,9 +2266,9 @@ msgstr "Немає фільтрів, створіть його нижче"
 msgid "No records found matching your filter."
 msgstr "Не знайдено записів, що відповідають вашому фільтру."
 
-#: dt-assets/parts/nav-topbar.php:283
-#: dt-people-groups/people-groups-base.php:342
-#: dt-people-groups/people-groups-base.php:351
+#: dt-assets/parts/nav-topbar.php:292
+#: dt-people-groups/people-groups-base.php:352
+#: dt-people-groups/people-groups-base.php:361
 #: template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
@@ -2546,7 +2546,7 @@ msgstr "Створити завдання"
 msgid "Existing tasks for this record:"
 msgstr "Існуючі завдання для цього запису:"
 
-#: dt-assets/parts/nav-topbar.php:165
+#: dt-assets/parts/nav-topbar.php:170
 msgid "Theme Update Available!"
 msgstr "Доступне оновлення теми!"
 
@@ -2808,8 +2808,8 @@ msgstr "Контакт або користувач, який допомагає 
 
 #: dt-contacts/base-setup.php:240
 #: dt-groups/base-setup.php:365
-#: dt-people-groups/people-groups-base.php:193
 #: dt-people-groups/people-groups-base.php:203
+#: dt-people-groups/people-groups-base.php:213
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "Загальне місце розташування цього контакту."
@@ -3345,7 +3345,7 @@ msgid "Inactive Groups Switch"
 msgstr "Неактивний перемикач груп"
 
 #: dt-assets/parts/modals/modal-help.php:129
-#: dt-assets/parts/nav-topbar.php:307
+#: dt-assets/parts/nav-topbar.php:316
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "Позначити все як прочитане"
@@ -3363,7 +3363,7 @@ msgstr "Статус контакту описує прогрес у спілк�
 msgid "Contact Type"
 msgstr "Тип контакту"
 
-#: dt-people-groups/people-groups-base.php:219
+#: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:158
 msgid "Last Modified"
 msgstr "Остання зміна"
@@ -3689,7 +3689,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s об’єднав %2$s з цим записом"
 
-#: dt-posts/dt-posts.php:1255
+#: dt-posts/dt-posts.php:1312
 msgid "D.T System"
 msgstr "Система D.T"
 
@@ -4001,7 +4001,7 @@ msgstr "Мапи контактів"
 msgid "Groups Maps"
 msgstr "Групові карти"
 
-#: dt-posts/dt-posts.php:1733
+#: dt-posts/dt-posts.php:1790
 #: single-template.php:120
 msgid "Details"
 msgstr "Деталі"
@@ -4198,7 +4198,7 @@ msgstr "Вибір поля для пошуку"
 msgid "Other Social Links"
 msgstr "Інші соціальні посилання"
 
-#: dt-assets/parts/nav-topbar.php:294
+#: dt-assets/parts/nav-topbar.php:303
 msgid "See All"
 msgstr "Переглянути все"
 
@@ -4218,11 +4218,11 @@ msgstr[3] "інше"
 msgid "Hide fields"
 msgstr "Приховати  поля"
 
-#: dt-core/global-functions.php:582
+#: dt-core/global-functions.php:632
 msgid "Add new tag \"%s\""
 msgstr "Додати новий тег \"%s\""
 
-#: dt-core/global-functions.php:583
+#: dt-core/global-functions.php:633
 msgid "Tag \"%s\" is already being used"
 msgstr "Тег \"%s\" вже використовується"
 
@@ -4300,12 +4300,12 @@ msgstr "вау"
 msgid "sad"
 msgstr "сумний"
 
-#: dt-posts/dt-posts.php:1797
+#: dt-posts/dt-posts.php:1854
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr "@[%1$s](%2$s) – користувач %3$s запитав доступ до %4$s [%5$s](%6$s). При бажанні поділіться цим записом з користувачем, щоб надати доступ."
 
-#: dt-posts/dt-posts.php:1803
+#: dt-posts/dt-posts.php:1860
 msgid "Access Request"
 msgstr "Запит на доступ"
 
@@ -4445,13 +4445,13 @@ msgid "Favorite"
 msgstr "Улюблений"
 
 #: archive-template.php:278
-#: dt-assets/parts/nav-topbar.php:144
+#: dt-assets/parts/nav-topbar.php:147
 #: dt-metrics/personal/activity-log.php:53
 #: dt-users/user-management.php:184
 msgid "More"
 msgstr "Більше"
 
-#: dt-posts/dt-posts.php:1249
+#: dt-posts/dt-posts.php:1306
 msgid "Magic Link Submission"
 msgstr "Надсилання магічного посилання"
 
@@ -4560,8 +4560,8 @@ msgstr "Імена"
 msgid "Communication"
 msgstr "Комунікація"
 
-#: dt-assets/parts/nav-offcanvas.php:79
-#: dt-assets/parts/nav-topbar.php:251
+#: dt-assets/parts/nav-offcanvas.php:81
+#: dt-assets/parts/nav-topbar.php:260
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "Вийти"
@@ -5105,35 +5105,35 @@ msgstr ""
 msgid "Find out more"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:166
+#: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:185
+#: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:288
+#: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:295
+#: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:302
+#: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:309
+#: dt-people-groups/people-groups-base.php:319
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:323
+#: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
 msgstr ""
 
@@ -5147,5 +5147,9 @@ msgstr ""
 
 #: dt-people-groups/people-groups.php:304
 msgid "Import People Group"
+msgstr ""
+
+#: dt-posts/dt-posts.php:101
+msgid "Updated existing record instead of creating a new record."
 msgstr ""
 
