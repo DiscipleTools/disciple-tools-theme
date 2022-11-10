@@ -111,7 +111,7 @@ def delete_dt_field_customizations():
 	db_prefix = get_db_prefix()
 	my_cursor.execute("DELETE FROM `%soptions` WHERE option_name = 'dt_field_customizations';" % db_prefix)
 	my_db.commit()
-	print('*** DT Field Customizations deleted successfully ***')
+	print(' - [DT Field Customizations deleted successfully]')
 
 ### DATABASE FUNCTIONS - END ###	
 
@@ -262,8 +262,9 @@ def add_connection_fields(tile_key):
 	
 	for pt in post_types:
 		if current_post_type == pt:
-			add_connection_field_same_post_type_bidirectional(tile_key)
-			add_connection_field_same_post_type_non_bidirectional(tile_key)
+			continue
+			#add_connection_field_same_post_type_bidirectional(tile_key)
+			#add_connection_field_same_post_type_non_bidirectional(tile_key)
 		if current_post_type != pt:
 			add_connection_field_different_post_type(tile_key, pt)
 			
@@ -298,7 +299,7 @@ def get_all_post_types_from_connection_target_dropdown():
 def add_connection_field_same_post_type_bidirectional(tile_key):
 	post_type = get_post_type_from_wp_admin()
 	Select(driver.find_element(By.XPATH, "//select[@name='connection-target']")).select_by_value(post_type)
-	current_dt_customization_url = driver.execute_script('return window.location.href;')
+	dt_customization_url = driver.execute_script('return window.location.href;')
 	print(bolded('   └ \nAdding "%s -> %s" connection (bi-directinal)' % (post_type, post_type)))
 	random_field_name = random_string(10) + ' Field'
 	random_field_name_key = random_field_name.lower().replace(' ', '_')
@@ -320,7 +321,7 @@ def add_connection_field_same_post_type_bidirectional(tile_key):
 	time.sleep(1)
 	test_element_present("Check for random contact's presence in target connection field", "//div[@id='%s_connection']//span[@class='typeahead__label']/a[@href='%s']" % (random_field_name_key, random_contact_url[:-1]), True)
 	#Go back to DT Customization screen and continue testing other fields
-	driver.get(current_dt_customization_url)
+	driver.get(dt_customization_url)
 	test_click('Click "%s" tile menu' % tile_key, "//div[@data-modal='edit-tile' and @data-key='%s']" % tile_key, True)
 	test_click('Click "add new field" in "%s" tile' % tile_key, "//span[@data-parent-tile-key='%s']" % tile_key, True)
 	time.sleep(1)
@@ -330,15 +331,14 @@ def add_connection_field_same_post_type_bidirectional(tile_key):
 def add_connection_field_same_post_type_non_bidirectional(tile_key):
 	post_type = get_post_type_from_wp_admin()
 	Select(driver.find_element(By.XPATH, "//select[@name='connection-target']")).select_by_value(post_type)
-	current_dt_customization_url = driver.execute_script('return window.location.href;')
+	dt_customization_url = driver.execute_script('return window.location.href;')
 	print(bolded('   └ \nAdding "%s -> %s" connection (non bi-directional)' % (post_type, post_type)))
 	random_field_name = random_string(10) + ' Field'
 	random_field_name_key = random_field_name.lower().replace(' ', '_')
 	test_send_keys('Add random new field name', "//input[@name='edit-tile-label']", random_field_name, True)
 	test_checkbox_checked('Check that "bidirectional" checkbox is originally checked', "//input[@id='multidirectional_checkbox']", True)
 	test_click('Uncheck the "bidirectional" checkbox', "//input[@id='multidirectional_checkbox']", True)
-	input('press enter to continue')
-	test_click('Adding "%s" bidirectional connection type field' % random_field_name, "//button[@id='js-add-field' and @data-tile-key='%s']" % tile_key, True)
+	test_click('Adding "%s" non-bidirectional connection type field' % random_field_name, "//button[@id='js-add-field' and @data-tile-key='%s']" % tile_key, True)
 	test_element_present('Check New "bidirectional connection" type field "%s" was added to "%s" tile' % (random_field_name, tile_key), "//div[@class='field-settings-table-field-name' and @data-field-name='%s' and @data-parent-tile-key='%s']" % (random_field_name_key, tile_key), True)
 	go_to_contacts_page()
 	select_random_contact_from_contacts_page()
@@ -353,9 +353,8 @@ def add_connection_field_same_post_type_non_bidirectional(tile_key):
 	test_click('Clicking the record link assigned to the connection field', "//div[@id='%s_connection']//span[@class='typeahead__label']/a" % random_field_name_key, True)
 	time.sleep(1)
 	test_element_not_present("Check for random contact's lack of presence in target connection field", "//div[@id='%s_connection']//span[@class='typeahead__label']/a[@href='%s']" % (random_field_name_key, random_contact_url[:-1]), True)
-	input('paused. press enter to continue')
 	#Go back to DT Customization screen and continue testing other fields
-	driver.get(current_dt_customization_url)
+	driver.get(dt_customization_url)
 	test_click('Click "%s" tile menu' % tile_key, "//div[@data-modal='edit-tile' and @data-key='%s']" % tile_key, True)
 	test_click('Click "add new field" in "%s" tile' % tile_key, "//span[@data-parent-tile-key='%s']" % tile_key, True)
 	time.sleep(1)
@@ -365,10 +364,9 @@ def add_connection_field_same_post_type_non_bidirectional(tile_key):
 def add_connection_field_different_post_type(tile_key, target_post_type):
 	post_type = get_post_type_from_wp_admin()
 	Select(driver.find_element(By.XPATH, "//select[@name='connection-target']")).select_by_value(post_type)
-	current_dt_customization_url = driver.execute_script('return window.location.href;')
+	dt_customization_url = driver.execute_script('return window.location.href;')
 	print(bolded('   └ \nAdding "%s -> %s" connection' % (post_type, target_post_type)))
 	print('add_connection_field_different_post_type: %s -> %s' % (post_type, target_post_type))
-	input('press enter to continue')
 	random_field_name = random_string(10) + ' Field'
 	random_field_name_key = random_field_name.lower().replace(' ', '_')
 	test_send_keys('Add random new field name', "//input[@name='edit-tile-label']", random_field_name, True)
@@ -382,9 +380,13 @@ def add_connection_field_different_post_type(tile_key, target_post_type):
 	test_click('Assigning bidirectional connection to the first contact on the typeahead', "//input[contains(@class,'js-typeahead-%s')]" % random_field_name_key , True)
 	test_click('Clicking the first element on the list', "//li[@class='typeahead__item typeahead__group-contacts' and @data-index=0]", True)
 	test_click('Clicking the contact link assigned to the connection field', "//div[@id='%s_connection']//span[@class='typeahead__label']/a" % random_field_name_key, True)
-	test_element_attribute_matches("Checking if new record is present and matches target connection field", "//div[@id='%s_connection']//span[@class='typeahead__label']/a" % random_field_name_key, 'href', random_contact_url, True)
+	input('press enter to continue...')
+	test_element_attribute_matches("Checking if new record is present and matches target connection field", "//div[@id='%s_connection']//span[@class='typeahead__label']/a" % random_field_name_key, 'href', random_contact_url[:-1], True)
+	
+	input('press enter to continue...')
 	#Go back to DT Customization screen and continue testing other fields
-	driver.get(current_dt_customization_url)
+	driver.get(dt_customization_url)
+	wait_until_load()
 	test_click('Click "%s" tile menu' % tile_key, "//div[@data-modal='edit-tile' and @data-key='%s']" % tile_key, True)
 	test_click('Click "add new field" in "%s" tile' % tile_key, "//span[@data-parent-tile-key='%s']" % tile_key, True)
 	time.sleep(1)
