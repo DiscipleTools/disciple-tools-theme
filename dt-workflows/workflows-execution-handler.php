@@ -408,7 +408,6 @@ class Disciple_Tools_Workflows_Execution_Handler {
     }
 
     public static function exec_actions( $workflow, $post, $post_type_settings ) {
-
         // Ensure to check action updates have not already been executed, as part of infinite post update loops!
         if ( ! empty( $workflow ) && isset( $workflow->actions ) && ! self::already_executed_actions( $workflow->actions, $post, $post_type_settings ) ) {
 
@@ -432,7 +431,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
 
     private static function already_executed_actions( $actions, $post, $post_type_settings ): bool {
 
-        $already_executed = false;
+        $already_executed = [];
         foreach ( $actions as $action ) {
 
             // Determine current field state
@@ -466,23 +465,19 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 case 'update':
                 case 'append':
                 case 'connect':
-                    if ( $current_state ) {
-                        $already_executed = true;
-                    }
+                    $already_executed[] = $current_state;
                     break;
                 case 'remove':
-                    if ( ! $current_state ) {
-                        $already_executed = true;
-                    }
+                    $already_executed[] = ! $current_state;
                     break;
             }
         }
 
-        return $already_executed;
+        // Still continue with execution if any fields are still in need of updating.
+        return ! in_array( false, $already_executed );
     }
 
     private static function process_action( $field_id, $action, $value, $post, $post_type_settings ) {
-
         if ( ! empty( $field_id ) && ! empty( $action ) && ! empty( $value ) ) {
 
             if ( isset( $post_type_settings['fields'][ $field_id ]['type'] ) ) {

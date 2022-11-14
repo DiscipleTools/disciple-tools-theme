@@ -1348,6 +1348,7 @@ jQuery(function ($) {
       // -- Mapbox
       if (mappings['mapbox']['enabled']) {
         config['endpoint'] = {
+          'filter': false,
           'display': ['id', 'place_name'],
           'template': '<span>{{place_name}}</span>',
           'url': mappings['mapbox']['endpoint'] + '{{query}}' + mappings['mapbox']['settings'] + mappings['mapbox']['key'],
@@ -1366,6 +1367,7 @@ jQuery(function ($) {
       // -- Google
       } else if (mappings['google']['enabled']) {
         config['endpoint'] = {
+          'filter': false,
           'display': ['formatted_address'],
           'template': '<span>{{formatted_address}}</span>',
           'url': mappings['google']['endpoint'] + '{{query}}' + mappings['google']['settings'] + mappings['google']['key'],
@@ -1384,6 +1386,7 @@ jQuery(function ($) {
       // -- Default
       } else {
         config['endpoint'] = {
+          'filter': false,
           'display': [],
           'template': '<span></span>',
           'url': '',
@@ -1402,6 +1405,7 @@ jQuery(function ($) {
         endpoint: function (wp_nonce) {
           return {
             locations: {
+              filter: config['endpoint']['filter'],
               display: config['endpoint']['display'],
               template: config['endpoint']['template'],
               ajax: {
