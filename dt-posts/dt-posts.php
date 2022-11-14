@@ -80,6 +80,12 @@ class DT_Posts extends Disciple_Tools_Posts {
             $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
             if ( ! empty( $duplicate_post_ids ) && count( $duplicate_post_ids ) > 0 ) {
 
+                $name = $fields['name'] ?? $fields['title'];
+
+                $fields['notes'] = isset( $fields['notes'] ) ? $fields['notes'] : [];
+                if ( is_array( $fields['notes'] ) ){
+                    $fields['notes']['name'] = 'Name: ' . $name;
+                }
                 //No need to update title or name.
                 unset( $fields['title'], $fields['name'] );
 
