@@ -175,7 +175,7 @@ class DT_Posts_Hooks {
                             $fields_array = ( $field_type == 'communication_channel' ) ? $fields[ $search_field ] : $fields[ $search_field ]['values'];
                             foreach ( $fields_array ?? [] as $value ) {
                                 if ( isset( $value['value'] ) ) {
-                                    $values[] = $value['value'];
+                                    $values[] = '^' . $value['value'];
                                 }
                             }
                             if ( ! empty( $values ) ) {
