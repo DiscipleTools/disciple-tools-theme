@@ -191,7 +191,7 @@ class DT_Posts_Hooks {
                 $status_key = isset( $post_settings['status_field']['status_key'] ) ? $post_settings['status_field']['status_key'] : null;
                 $search_result = DT_Posts::search_viewable_post( $post_type, [
                     'sort'             => !empty( $status_key ) ? $status_key : '-post_date',
-                    'fields'           => [ $search_values ],
+                    'fields'           => [ $search_values, [ 'type' => [ '-personal', '-placeholder' ] ] ],
                     'fields_to_search' => array_keys( $search_values )
                 ], $check_permissions );
 
