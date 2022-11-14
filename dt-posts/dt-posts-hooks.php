@@ -193,7 +193,7 @@ class DT_Posts_Hooks {
                     'sort'             => !empty( $status_key ) ? $status_key : '-post_date',
                     'fields'           => [ $search_values, [ 'type' => [ '-personal', '-placeholder' ] ] ],
                     'fields_to_search' => array_keys( $search_values )
-                ], $check_permissions );
+                ], false );
 
                 // Package identified duplicates.
                 if ( ! empty( $search_result ) && ! is_wp_error( $search_result ) && isset( $search_result['posts'] ) ) {
