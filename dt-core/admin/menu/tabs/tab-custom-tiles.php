@@ -534,7 +534,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <h4>Custom Display Conditions</h4>
             <label>Select field and field options. The tile will be displayed when these are selected on the record.</label>
             <br><br>
-            <select style="min-width: 90%;" name="tile_display_custom_condition" id="tile_display_custom_condition">
+            <select name="tile_display_custom_condition" id="tile_display_custom_condition">
                 <option value="" disabled selected>--- [ choose a field and option ] ---</option>
                 <?php
                 foreach ( $fields as $field_id => $field )
@@ -554,8 +554,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 }
                 ?>
             </select>
-            <span style="float: right;">
-                <button class="button" type="submit" id="tile_display_custom_condition_select_but" name="tile_display_custom_condition_select_but">Select</button>
+            <span>
+                <button class="button" type="submit" id="tile_display_custom_condition_select_but" name="tile_display_custom_condition_select_but">Add</button>
             </span>
             <br><br>
             <table class="widefat striped">
