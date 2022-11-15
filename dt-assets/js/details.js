@@ -16,6 +16,7 @@ jQuery(document).ready(function($) {
   window.masonGrid = $('.grid') // responsible for resizing and moving the tiles
   window.masonGrid.masonry({
     itemSelector: '.grid-item',
+    columnWidth: '.grid-item:not(.hidden-grid-item)',
     percentPosition: true
   });
 
@@ -1351,7 +1352,11 @@ jQuery(document).ready(function($) {
    */
 
   $(document).on('click', '#hidden_tiles_section_show_but', function (e) {
-    show_hidden_tile_sections();
+    $('.hidden-grid-item').removeClass('hidden-grid-item')
+    window.masonGrid.masonry('layout');
+
+    // Hide show hidden tiles section.
+    $('#hidden_tiles_section').fadeOut('fast');
   });
 
   init_hidden_tiles_section();
@@ -1380,19 +1385,6 @@ jQuery(document).ready(function($) {
     } else {
       hidden_tiles_section.fadeIn('fast');
     }
-  }
-
-  function show_hidden_tile_sections() {
-    $('.custom-tile-section').each(function (idx, section) {
-      if ($(section).is(':hidden') && !window.lodash.includes(['details', 'status'], $(section).attr('id'))) {
-        $(section).fadeIn('fast', function () {
-          window.masonGrid.masonry('layout');
-        });
-      }
-    });
-
-    // Hide show hidden tiles section.
-    $('#hidden_tiles_section').fadeOut('fast');
   }
 
   /**
