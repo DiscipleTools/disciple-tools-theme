@@ -1405,6 +1405,11 @@ jQuery(function ($) {
         endpoint: function (wp_nonce) {
           return {
             locations: {
+              minLength: 0,
+              accent: true,
+              searchOnFocus: true,
+              dynamic: true,
+              hint: true,
               filter: config['endpoint']['filter'],
               display: config['endpoint']['display'],
               template: config['endpoint']['template'],
