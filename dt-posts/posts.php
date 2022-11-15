@@ -2617,7 +2617,7 @@ class Disciple_Tools_Posts
                         $fields[$field_key]['formatted'] = $formatted_date;
 
                     } else if ( $field_settings[$field_key]['type'] === 'number' ){
-                        $fields[$field_key] = $m['meta_value'] + 0;
+                        $fields[$field_key] = ( empty( $m['meta_value'] ) ? 0 : $m['meta_value'] ) + 0;
 
                     } else if ( $field_settings[$field_key]['type'] === 'boolean' ){
                         if ( $m['meta_value'] === '1' || $m['meta_value'] === 'yes' || $m['meta_value'] === 'true' ){
