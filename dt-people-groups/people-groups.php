@@ -17,6 +17,8 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_People_Groups
 {
+    public static $option_key_settings_display_tab = 'dt_people_groups_display_tab';
+
     /**
      * Get JP csv file contents and return as array.
      * @return array
@@ -265,33 +267,73 @@ class Disciple_Tools_People_Groups
         }
     }
 
+    public static function admin_display_settings_tab_table( $enabled_on_click = true ) {
+        ?>
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <th colspan="1"><?php echo esc_html( __( 'Display Options', 'disciple_tools' ) ); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <?php
+                    echo esc_html( __( 'Display People Groups Tab in Navigation Bar', 'disciple_tools' ) );
+                    $display_in_tab_html = get_option( self::$option_key_settings_display_tab ) ? 'checked' : '';
+                    $on_click_html       = $enabled_on_click ? 'onclick=update_setting_options();' : '';
+                    ?>
+                    &nbsp;<input type="checkbox" name="display_people_group_tab"
+                                 id="display_people_group_tab" <?php echo esc_html( $on_click_html . ' ' . $display_in_tab_html ); ?>>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <?php
+    }
 
     public static function admin_tab_table() {
         $names = self::get_country_dropdown();
+
+        self::admin_display_settings_tab_table();
         ?>
-        <select id="group-search">
-            <?php foreach ( $names as $name ) :
-                echo '<option value="'.esc_attr( $name ).'">'.esc_attr( $name ).'</option>';
-            endforeach; ?>
-        </select>
-        <button class="button" id="search_button" onclick="group_search()">Get List</button>
         <br><br>
-        <a id="add_all_groups" href="javascript:void(0)" style="display:none;">add all groups</a>
-        <script>
-            function add_all(){
-                jQuery.each(jQuery('#results button'), function(i,v){
-                    console.log(v.id)
-                    task(v.id);
-                })
-                function task(i) {
-                    setTimeout(function() {
-                        console.log(i);
-                        jQuery('#'+i).click()
-                    }, 4000 * i);
-                }
-            }
-        </script>
-        <div id="results"></div>
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <th colspan="1"><?php echo esc_html( __( 'Import People Group', 'disciple_tools' ) ); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <select id="group-search">
+                        <?php foreach ( $names as $name ) :
+                            echo '<option value="'.esc_attr( $name ).'">'.esc_attr( $name ).'</option>';
+                        endforeach; ?>
+                    </select>
+                    <button class="button" id="search_button" onclick="group_search()">Get List</button>
+                    <br><br>
+                    <a id="add_all_groups" href="javascript:void(0)" style="display:none;">add all groups</a>
+                    <script>
+                        function add_all(){
+                            jQuery.each(jQuery('#results button'), function(i,v){
+                                console.log(v.id)
+                                task(v.id);
+                            })
+                            function task(i) {
+                                setTimeout(function() {
+                                    console.log(i);
+                                    jQuery('#'+i).click()
+                                }, 4000 * i);
+                            }
+                        }
+                    </script>
+                    <div id="results"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
         <?php
     }
 
@@ -370,5 +412,11 @@ class Disciple_Tools_People_Groups
         ];
     }
 
+    public static function update_setting_options( $settings ): array {
+        if ( isset( $settings['display_tab'] ) ) {
+            update_option( self::$option_key_settings_display_tab, ! empty( $settings['display_tab'] ) );
+        }
 
+        return [];
+    }
 }

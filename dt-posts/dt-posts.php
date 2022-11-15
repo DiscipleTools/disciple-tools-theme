@@ -61,7 +61,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return array|WP_Error
      */
-    public static function create_post( string $post_type, array $fields, bool $silent = false, bool $check_permissions = true ){
+    public static function create_post( string $post_type, array $fields, bool $silent = false, bool $check_permissions = true, $args = [] ){
         if ( $check_permissions && !self::can_create( $post_type ) ){
             return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
         }
@@ -73,6 +73,39 @@ class DT_Posts extends Disciple_Tools_Posts {
         $continue = apply_filters( 'dt_create_post_check_proceed', true, $fields );
         if ( !$continue ){
             return new WP_Error( __FUNCTION__, 'Could not create this post. Maybe it already exists', [ 'status' => 409 ] );
+        }
+
+        //if specified, check for actual duplicates.
+        if ( isset( $args['check_for_duplicates'] ) && is_array( $args['check_for_duplicates'] ) && ! empty( $args['check_for_duplicates'] ) ) {
+            $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
+            if ( ! empty( $duplicate_post_ids ) && count( $duplicate_post_ids ) > 0 ) {
+
+                //No need to update title or name.
+                unset( $fields['title'], $fields['name'] );
+
+                //Avoid further duplication of pre-existing values.
+                $filtered_fields = [];
+                $duplicate_post   = self::get_post( $post_type, $duplicate_post_ids[0], false, $check_permissions );
+                foreach ( $fields as $field_id => $value ) {
+                    if ( ! self::post_contains_field_value( $post_settings['fields'], $duplicate_post, $field_id, $value ) ) {
+                        $filtered_fields[ $field_id ] = $value;
+                    }
+                }
+
+                //update most recently created matched post.
+                $updated_post = self::update_post( $post_type, $duplicate_post['ID'], $filtered_fields, $silent, $check_permissions );
+                if ( is_wp_error( $updated_post ) ){
+                    return $updated_post;
+                }
+                //if update successful, comment and return.
+                $update_comment = __( 'Updated existing record instead of creating a new record.', 'disciple_tools' );
+                if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
+                    $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
+                }
+                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false );
+
+                return $updated_post;
+            }
         }
 
         //get extra fields and defaults
@@ -368,6 +401,14 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $fields;
         }
 
+        $notes = null;
+        if ( isset( $fields['notes'] ) ) {
+            if ( is_array( $fields['notes'] ) ) {
+                $notes = $fields['notes'];
+                unset( $fields['notes'] );
+            }
+        }
+
         $allowed_fields = apply_filters( 'dt_post_update_allow_fields', [], $post_type );
         $bad_fields = self::check_for_invalid_post_fields( $post_settings, $fields, $allowed_fields );
         if ( !empty( $bad_fields ) ) {
@@ -483,6 +524,22 @@ class DT_Posts extends Disciple_Tools_Posts {
                         update_post_meta( $post_id, $field_key, $field_value );
                     }
                 }
+            }
+        }
+
+        if ( ! empty( $notes ) ) {
+            if ( ! is_array( $notes ) ) {
+                return new WP_Error( 'notes_not_array', 'Notes must be an array' );
+            }
+            $error = new WP_Error();
+            foreach ( $notes as $note ) {
+                $potential_error = self::add_post_comment( $post_type, $post_id, $note, 'comment', [], false, true );
+                if ( is_wp_error( $potential_error ) ) {
+                    $error->add( 'comment_fail', $potential_error->get_error_message() );
+                }
+            }
+            if ( count( $error->get_error_messages() ) > 0 ) {
+                return $error;
             }
         }
 
@@ -1050,7 +1107,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             'comment_type' => $comment_type
         ];
         $update = wp_update_comment( $comment );
-        if ( $update === 1 ){
+        if ( in_array( $update, [ 0, 1 ] ) ) {
             return $comment_id;
         } else if ( is_wp_error( $update ) ) {
               return $update;
@@ -1987,6 +2044,62 @@ class DT_Posts extends Disciple_Tools_Posts {
             'total'     => $post_hits_count,
             'offset'    => intval( $offset ) + intval( $post_hits_count ) + 1
         ];
+    }
+
+    /**
+     * Determine if post record contains specified field value.
+     *
+     * @param array $field_settings
+     * @param array $post
+     * @param string $field_id
+     * @param mixed $value
+     *
+     * @return bool
+     */
+
+    public static function post_contains_field_value( $field_settings, $post, $field_id, $value ): bool {
+        if ( empty( $post ) || is_wp_error( $post ) ) {
+            return false;
+        }
+
+        // Determine if post contains specified field and value.
+        if ( isset( $field_settings[ $field_id ], $post[ $field_id ] ) ) {
+            $field_type = $field_settings[ $field_id ]['type'];
+            switch ( $field_type ) {
+                case 'text':
+                case 'textarea':
+                case 'boolean':
+                case 'key_select':
+                case 'date':
+                case 'user_select':
+                case 'number':
+                    return $post[ $field_id ] == $value;
+                case 'multi_select':
+                case 'links':
+                case 'tags':
+                case 'location':
+                case 'location_meta':
+                case 'connection':
+                case 'communication_channel':
+                    $value_array = ( $field_type == 'communication_channel' ) ? $post[ $field_id ] : ( $post[ $field_id ]['values'] ?? [] );
+                    foreach ( $value_array ?? [] as $entry ) {
+                        if ( isset( $entry['value'] ) ) {
+
+                            // Attempt to find match within incoming value array.
+                            if ( ! empty( $value ) && is_array( $value ) ) {
+                                foreach ( $value as $val ) {
+                                    if ( $entry['value'] == $val['value'] ) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
+        return false;
     }
 }
 

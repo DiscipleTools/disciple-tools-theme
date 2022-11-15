@@ -19,7 +19,6 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
  */
 $dt_nav_tabs = dt_default_menu_array();
 
-
 ?>
 
 <script>
@@ -78,16 +77,19 @@ $dt_nav_tabs = dt_default_menu_array();
                             <img title="<?php esc_html( $dt_nav_tabs['admin']['add_new']['label'] ?? '' ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['add_new']['icon'] ?? '' ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ) ?>" style="width:24px;">
                         </button>
                         <ul class="submenu menu vertical add-new-items-dropdown is-dropdown-submenu" style="text-align:left;">
-                            <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) : ?>
-                                <?php foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) : ?>
+                            <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) :
+                                foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) :
+                                    if ( !isset( $dt_nav_submenu['hidden'] ) || empty( $dt_nav_submenu['hidden'] ) ) : ?>
                                     <li>
                                         <a class="add-new-menu-item" href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
-                                            <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>" src="<?php echo esc_url( $logo_url ) ?>">
+                                            <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>"
+                                                 src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri()  . '/dt-assets/images/circle-add-green.svg' ) ?>">
                                             <?php echo esc_html( $dt_nav_submenu['label'] ); ?>
                                         </a>
                                     </li>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                                    <?php endif;
+                                endforeach;
+                            endif; ?>
                         </ul>
                     </li>
                 </ul>
@@ -122,6 +124,7 @@ $dt_nav_tabs = dt_default_menu_array();
         <div class="top-bar-left">
             <ul class="dropdown menu" data-dropdown-menu>
                 <?php foreach ( $dt_nav_tabs['main'] as $dt_main_tabs ) : ?>
+                    <?php if ( ! ( isset( $dt_main_tabs['hidden'] ) && $dt_main_tabs['hidden'] ) ) { ?>
                         <li><a href="<?php echo esc_url( $dt_main_tabs['link'] ) ?>"><?php echo esc_html( $dt_main_tabs['label'] ) ?>&nbsp;</a>
                             <?php
                             if ( isset( $dt_main_tabs['submenu'] ) && ! empty( $dt_main_tabs['submenu'] ) ) {
@@ -139,11 +142,14 @@ $dt_nav_tabs = dt_default_menu_array();
                                 <?php
                             }
                             ?></li>
+                    <?php } ?>
                 <?php endforeach; ?>
                     <li id="more-menu-button"><a href="#"><?php esc_html_e( 'More', 'disciple_tools' ) ?>&nbsp;</a>
                         <ul class="menu vertical nested is-dropdown-submenu">
                             <?php foreach ( $dt_nav_tabs['main'] as $dt_main_tabs_extra ) : ?>
+                                <?php if ( ! ( isset( $dt_main_tabs_extra['hidden'] ) && $dt_main_tabs_extra['hidden'] ) ) { ?>
                                     <li><a href="<?php echo esc_url( $dt_main_tabs_extra['link'] ) ?>"><?php echo esc_html( $dt_main_tabs_extra['label'] ) ?>&nbsp;</a>
+                                <?php } ?>
                             <?php endforeach; ?>
                         </ul>
                     </li>
@@ -200,12 +206,16 @@ $dt_nav_tabs = dt_default_menu_array();
                         <ul class="submenu menu vertical title-bar-right add-new-items-dropdown">
                             <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) : ?>
                                 <?php foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) : ?>
-                                    <li>
-                                        <a class="add-new-menu-item" href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
-                                            <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>" src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri()  . '/dt-assets/images/circle-add-green.svg' ) ?>">
-                                            <?php echo esc_html( $dt_nav_submenu['label'] ); ?>
-                                        </a>
-                                    </li>
+                                    <?php if ( ! isset( $dt_nav_submenu['hidden'] ) || ! $dt_nav_submenu['hidden'] ) { ?>
+                                        <li>
+                                            <a class="add-new-menu-item"
+                                               href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
+                                                <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>"
+                                                     src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ) ?>">
+                                                <?php echo esc_html( $dt_nav_submenu['label'] ); ?>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </ul>

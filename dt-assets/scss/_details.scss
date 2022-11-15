@@ -719,6 +719,66 @@ select.color-select {
     margin-bottom:15px;
 }
 
+// link field
+.add-link-dropdown {
+    position: absolute;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.add-link-dropdown::before {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 25px;
+    transform: translate(-18px, -3px);
+    cursor: pointer;
+}
+
+.add-link-dropdown__content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  border: solid 1px #cacaca;
+  z-index: 1;
+  transform: translateX(-15%);
+}
+html[dir="rtl"] .add-link-dropdown__content {
+  transform: translateX(15%);
+}
+
+.add-link-dropdown:hover .add-link-dropdown__content {
+    display: block;
+}
+
+.add-link-dropdown__content:hover {
+    display: block;
+}
+
+.add-link__option {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.add-link__option:hover {
+    background-color: #3f729b;
+    color: #fff;
+}
+
+.link-section .section-subheader {
+    display: none;
+}
+
+.link-section .section-subheader:has(+ div) {
+    display: block;
+}
+
+.link-section .input-group {
+    margin-bottom: 5px;
+}
+
 //assign to modal
 #assigned_to_user_modal #filter-tabs img {
     height: 20px;

@@ -1304,7 +1304,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $new_field = [
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'link',
-                    'default'     => [],
+                    'default'     => [
+                        'default' => [
+                            'label' => 'Default',
+                        ],
+                    ],
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private
@@ -1358,7 +1362,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         'customizable' => 'all',
                     ];
                     //create the reverse fields on the connection post type
-                    $reverse_name = $post_submission['other_field_name'] ?? $post_submission['new_field_name'];
+                    $reverse_name = empty( $post_submission['other_field_name'] ) ? $post_submission['new_field_name'] : $post_submission['other_field_name'];
                     $custom_field_options[$post_submission['connection_target']][$field_key]  = [
                         'name'        => $reverse_name,
                         'type'        => 'connection',

@@ -113,6 +113,17 @@ class Disciple_Tools_Magic_Endpoints
         $errors = [];
         $success = [];
 
+        /**
+         * Bulk Field Filter
+         *
+         * This filter allows for targeting a specific contact connection field to loop through and send emails.
+         * The default field name is 'reporter', but this can be overwritten and pointed towards assigned_to, subassigned_to,
+         * coaching, or another custom contact connection field.
+         *
+         * @param (string)
+         */
+        $target_field = apply_filters( 'dt_bulk_email_connection_field', null, $params['post_type'], $params );
+
         foreach ( $params['post_ids'] as $post_id ) {
             $post_record = DT_Posts::get_post( $params['post_type'], $post_id, true, true );
             if ( is_wp_error( $post_record ) || empty( $post_record ) ){
@@ -121,7 +132,24 @@ class Disciple_Tools_Magic_Endpoints
             }
 
             // check if email exists to send to
-            if ( ! isset( $post_record['contact_email'][0] ) && empty( $params['email'] ) ) {
+            $emails = [];
+            if ( isset( $params['email'] ) && ! empty( $params['email'] ) ){
+                $emails[]   = $params['email'];
+            }
+            else if ( isset( $post_record['contact_email'][0] ) ) {
+                $emails[]  = $post_record['contact_email'][0]['value'];
+            }
+            else if ( $target_field && isset( $post_record[$target_field] ) && ! empty( $post_record[$target_field] ) ) {
+                foreach ( $post_record[$target_field] as $reporter ) {
+                    $contact_post = DT_Posts::get_post( 'contacts', $reporter['ID'], true, false );
+                    if ( isset( $contact_post['contact_email'] ) && ! empty( $contact_post['contact_email'] ) ) {
+                        foreach ( $contact_post['contact_email'] as $contact_email ) {
+                            $emails[]  = $contact_email['value'];
+                        }
+                    }
+                }
+            }
+            else {
                 $errors[ $post_id ] = 'no email';
                 continue;
             }
@@ -141,35 +169,28 @@ class Disciple_Tools_Magic_Endpoints
                 $note = $params['note'];
             }
 
-            // build email
-            $email   = $params['email'] ?? $post_record['contact_email'][0]['value'];
-
-            // final email format sanity check
-            if ( ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
-                $errors[ $post_id ] = 'invalid email format';
-                continue;
-            }
-
             $subject = $name;
             $message_plain_text = $note . '
 
 '           . $name . ': ' . $link;
 
             // send email
-            $sent = dt_send_email( $email, $subject, $message_plain_text );
-            if ( is_wp_error( $sent ) || ! $sent ) {
-                $errors[$post_id] = $sent;
-            }
-            else {
-                $success[$post_id] = $sent;
-                dt_activity_insert( [
-                    'action'            => 'sent_app_link',
-                    'object_type'       => $params['post_type'],
-                    'object_subtype'    => 'email',
-                    'object_id'         => $post_id,
-                    'object_name'       => $post_record['title'],
-                    'object_note'       => $name . ' (app) sent to ' . $email,
-                ] );
+            foreach ( $emails as $email ) {
+                $sent = dt_send_email( $email, $subject, $message_plain_text );
+                if ( is_wp_error( $sent ) || ! $sent ) {
+                    $errors[$post_id] = $sent;
+                }
+                else {
+                    $success[$post_id] = $sent;
+                    dt_activity_insert( [
+                        'action'            => 'sent_app_link',
+                        'object_type'       => $params['post_type'],
+                        'object_subtype'    => 'email',
+                        'object_id'         => $post_id,
+                        'object_name'       => $post_record['title'],
+                        'object_note'       => $name . ' (app) sent to ' . $email,
+                    ] );
+                }
             }
         }
 
