@@ -363,13 +363,14 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             if ( empty( $current_migration ) || intval( $current_migration ) < 40 ){
                 return;
             }
+            $url = ( isset( $_SERVER['HTTP_HOST'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '' ) . ( isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '' );
             $activity = [
                 'action'         => 'error_log',
                 'object_type'    => '',
                 'object_subtype' => '',
                 'object_id'      => 0,
                 'object_name'    => '',
-                'object_note'    => $message,
+                'object_note'    => $message . ( empty( $url ) ? '' : ' From: ' . $url ),
                 'meta_id'        => '',
                 'meta_key'       => $code,
                 'meta_value'     => maybe_serialize( $data ),
