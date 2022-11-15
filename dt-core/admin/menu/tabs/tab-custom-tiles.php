@@ -636,6 +636,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         // Requested Visibility State.
         if ( isset( $post_submission['tile_display_option'] ) && in_array( $post_submission['tile_display_option'], [ 'hidden','visible','custom' ] ) ){
             $custom_tile['display_conditions']['visibility'] = $post_submission['tile_display_option'];
+            $custom_tile['hidden'] = in_array( $post_submission['tile_display_option'], [ 'hidden' ] );
 
             // Custom Visibility.
             if ( $post_submission['tile_display_option'] == 'custom' ) {
