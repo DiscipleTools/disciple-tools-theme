@@ -9,7 +9,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     exit();
 }
 
-function display_tile( $tile, $post ): bool {
+function dt_display_tile( $tile, $post ): bool {
 
     // If nothing, display by default!
     if ( empty( $tile['display_conditions'] ) || ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'visible' ) ) {
@@ -305,7 +305,7 @@ function display_tile( $tile, $post ): bool {
                                 if ( ( isset( $tile_options['hidden'] ) && $tile_options['hidden'] ) ) {
                                     $class = 'hidden-grid-item';
                                 }
-                                if ( ! display_tile( $tile_options, $dt_post ) ) {
+                                if ( !dt_display_tile( $tile_options, $dt_post ) ) {
                                     $class = 'hidden-grid-item';
                                 }
                                 if ( isset( $tile_options['display_for']['type'], $dt_post['type']['key'] ) && !in_array( $dt_post['type']['key'], $tile_options['display_for']['type'] ) ){
