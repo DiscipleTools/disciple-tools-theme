@@ -9,6 +9,57 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     exit();
 }
 
+function dt_display_tile( $tile, $post ): bool {
+
+    // If nothing, display by default!
+    if ( empty( $tile['display_conditions'] ) || ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'visible' ) ) {
+        return true;
+    }
+
+    if ( ! is_array( $tile['display_conditions'] ) ) {
+        return true;
+    }
+
+    if ( $tile['display_conditions']['visibility'] == 'hidden' ) {
+        return false;
+    }
+
+    // Determine if all specified fields must be present & iterate.
+    $field_presence      = [];
+    $all_fields_required = isset( $tile['display_conditions']['operator'] ) && $tile['display_conditions']['operator'] == 'and';
+    $field_settings      = DT_Posts::get_post_field_settings( get_post_type() );
+    foreach ( $tile['display_conditions']['conditions'] ?? [] as $condition ) {
+
+        // Extract tile display condition options.
+        $field_id  = $condition['key'];
+        $option_id = $condition['value'];
+
+        // Determine if post contains field and corresponding option.
+        if ( isset( $post[ $field_id ], $field_settings[ $field_id ] ) ) {
+            switch ( $field_settings[ $field_id ]['type'] ) {
+                case 'key_select':
+                    $field_presence[] = $post[ $field_id ]['key'] == $option_id;
+                    break;
+
+                case 'tags':
+                case 'multi_select':
+                    $field_presence[] = in_array( $option_id, $post[ $field_id ] );
+                    break;
+            }
+        }
+    }
+
+    // Determine if fields required conditions were met.
+    if ( $all_fields_required && ! in_array( false, $field_presence ) ) {
+        return true;
+
+    } elseif ( ! $all_fields_required && in_array( true, $field_presence ) ) {
+        return true;
+    }
+
+    return false;
+}
+
 ( function () {
     $post_type = get_post_type();
     $post_id = get_the_ID();
@@ -247,17 +298,24 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         <div class="grid-x grid-margin-x grid-margin-y grid">
                             <?php
                             foreach ( $tiles as $tile_key => $tile_options ){
-                                if ( ( isset( $tile_options['hidden'] ) && $tile_options['hidden'] == true ) || in_array( $tile_key, [ 'details', 'status' ] ) ) {
+                                $class = '';
+                                if ( in_array( $tile_key, [ 'details', 'status' ] ) ){
                                     continue;
+                                }
+                                if ( ( isset( $tile_options['hidden'] ) && $tile_options['hidden'] ) ) {
+                                    $class = 'hidden-grid-item';
+                                }
+                                if ( !dt_display_tile( $tile_options, $dt_post ) ) {
+                                    $class = 'hidden-grid-item';
                                 }
                                 if ( isset( $tile_options['display_for']['type'], $dt_post['type']['key'] ) && !in_array( $dt_post['type']['key'], $tile_options['display_for']['type'] ) ){
-                                    continue;
+                                    $class = 'hidden-grid-item';
                                 }
                                 if ( !isset( $tile_options['label'] ) ) {
-                                    continue;
+                                    $class = 'hidden-grid-item';
                                 }
                                 ?>
-                                <section id="<?php echo esc_html( $tile_key ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
+                                <section id="<?php echo esc_html( $tile_key ) ?>" class="custom-tile-section xlarge-6 large-12 medium-6 cell grid-item <?php echo esc_html( $class ); ?>">
                                     <div class="bordered-box" id="<?php echo esc_html( $tile_key ) ?>-tile">
                                         <?php
                                         //setup tile label if see by customizations
@@ -311,6 +369,14 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         </div>
                     </div>
                     <?php do_action( 'dt_record_bottom_below_tiles', $post_type, $dt_post ); ?>
+
+                    <!--
+                       Hidden Tiles Section
+                   -->
+                    <section id="hidden_tiles_section" class="small-12 cell bordered-box" style="display: none; text-align: center;">
+                        <a id="hidden_tiles_section_show_but"><?php echo esc_html( __( 'Show Hidden Tiles', 'disciple_tools' ) ) ?>
+                            (<span id="hidden_tiles_section_count"></span>)</a>
+                    </section>
                 </div>
             </main>
 
