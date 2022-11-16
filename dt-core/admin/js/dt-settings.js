@@ -672,16 +672,15 @@ jQuery(document).ready(function($) {
         var field_option_name = $('.new-field-option-name').val();
         API.new_field_option(post_type, tile_key, field_key, field_option_name).promise().then(function() {
             var new_field_option_html = `
-            <div class="field-settings-table-field-name" data-field-name="${field_key}" data-parent-tile-key="${tile_key}">
+            <div class="field-settings-table-field-option">
                 <span class="sortable">⋮⋮</span>
-                <span class="field-name-content">
-                    ${field_option_name}
+                <span class="field-name-content" style="padding-left: 16px;">${field_option_name}
                     <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
                         <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
                     </svg>
                 </span>
             </div>`;
-            $(`.new-field-option[data-field-key="${field_key}"]`).parent().lastElement.prepend(new_field_option_html);
+            $(`.new-field-option[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"]`).before(new_field_option_html);
             closeModal();
         });
         
@@ -717,7 +716,7 @@ jQuery(document).ready(function($) {
             $(this).find('.field-elements-list').slideToggle(333, 'swing');
     });
 
-    $('.new-field-option').on('click', function() {
+    $('.field-settings-table').on('click', '.new-field-option', function() {
         var data = [];
         data['tile_key'] = $(this).data('parent-tile-key');
         data['field_key'] = $(this).data('field-key');
