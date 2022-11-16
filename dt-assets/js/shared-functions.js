@@ -232,6 +232,13 @@ window.API = {
     multidirectional: multidirectional,
     other_field_name: other_field_name,
   }, `dt-core/v1/`),
+
+  new_field_option: (post_type, tile_key, field_key, field_option_name) => makeRequest("POST", `new-field-option`, {
+    post_type: post_type,
+    tile_key: tile_key,
+    field_key: field_key,
+    field_option_name: field_option_name,
+  }, `dt-core/v1/`),
 };
 
 function handleAjaxError(err) {

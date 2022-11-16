@@ -189,6 +189,9 @@ jQuery(document).ready(function($) {
         if ( modalName == 'edit-field' ) {
             loadEditFieldContentBox(data);
         }
+        if ( modalName == 'new-field-option') {
+            loadAddFieldOptionBox(data);
+        }
     }
 
     function loadAddTileContentBox() {
@@ -523,6 +526,31 @@ jQuery(document).ready(function($) {
         $('#modal-overlay-content-table').html(modal_html_content);   
     }
 
+    function loadAddFieldOptionBox(data) {
+        var tile_key = data['tile_key'];
+        var field_key = data['field_key'];
+        var modal_html_content = `
+        <tr>
+            <th colspan="2">
+                <h3 class="modal-box-title">Add New Field Option</h3>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <label for="new_field_option_name"><b>Label</label></b>
+            </td>
+            <td>
+                <input type="text" name="new_field_option_name" class="new-field-option-name" data-tile-key="${tile_key}" data-field-key="${field_key}" required>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button class="button" style="margin-top: 12px;" type="submit" id="js-add-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}">Add</button>
+            </td>
+        </tr>`;
+        $('#modal-overlay-content-table').html(modal_html_content);
+    }
+
     $('#modal-overlay-form').on('submit', function(event){
         event.preventDefault();
     });
@@ -616,7 +644,7 @@ jQuery(document).ready(function($) {
                 </div>
                 <!-- START TOGGLED ITEMS -->
                 <div class="field-settings-table-child-toggle">
-                    <div class="field-settings-table-field-option">
+                    <div class="field-settings-table-field-option new-field-option">
                         <span class="sortable">⋮⋮</span>
                         <span style="margin-left: 32px;">new field option</span>
                     </div>
@@ -635,6 +663,28 @@ jQuery(document).ready(function($) {
             }
             closeModal();
         });
+    });
+
+    $('#modal-overlay-form').on('click', '#js-add-field-option', function(e) {
+        var post_type = get_post_type();
+        var tile_key = $(this).data('tile-key');
+        var field_key = $(this).data('field-key');
+        var field_option_name = $('.new-field-option-name').val();
+        API.new_field_option(post_type, tile_key, field_key, field_option_name).promise().then(function() {
+            var new_field_option_html = `
+            <div class="field-settings-table-field-name" data-field-name="${field_key}" data-parent-tile-key="${tile_key}">
+                <span class="sortable">⋮⋮</span>
+                <span class="field-name-content">
+                    ${field_option_name}
+                    <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
+                        <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
+                    </svg>
+                </span>
+            </div>`;
+            $(`.new-field-option[data-field-key="${field_key}"]`).parent().lastElement.prepend(new_field_option_html);
+            closeModal();
+        });
+        
     });
 
     function closeModal() {
@@ -665,6 +715,13 @@ jQuery(document).ready(function($) {
     $('.field-name').on('click', function() {
             $(this).find('.field-name-icon-arrow:not(.disabled)').toggleClass('arrow-expanded');
             $(this).find('.field-elements-list').slideToggle(333, 'swing');
+    });
+
+    $('.new-field-option').on('click', function() {
+        var data = [];
+        data['tile_key'] = $(this).data('parent-tile-key');
+        data['field_key'] = $(this).data('field-key');
+        showOverlayModal('new-field-option', data);
     });
 
     // *** TYPEAHEAD : START ***

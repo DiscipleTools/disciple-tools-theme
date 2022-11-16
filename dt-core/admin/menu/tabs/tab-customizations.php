@@ -389,77 +389,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     private function show_tile_settings() {
         $post_type = self::get_parameter( 'post_type' );
         $post_tiles = DT_Posts::get_post_settings( $post_type, false );
-        if ( !isset( $post_tiles['tiles'] ) ) {
-            self::display_field_rundown_without_tiles();
-            return;
-        }
-        self::display_field_rundown_with_tiles();
+        self::display_field_rundown();
     }
 
-    private function display_field_rundown_without_tiles() {
-        $post_type = self::get_parameter( 'post_type' );
-        $post_fields = DT_Posts::get_post_field_settings( $post_type, false );
-        ?>
-        <div class="field-settings-table">
-            <!-- START TOGGLED FIELD ITEMS -->
-            <?php foreach ( $post_fields as $field_key => $field_settings ) :
-                if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' ) : ?>
-                    <div class="field-settings-table-field-name" data-field-name="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="null">
-                        <span class="sortable">⋮⋮</span>
-                        <span class="field-name-content">
-                            <?php echo esc_html( $field_settings['name'] ); ?>
-                        </span>
-                    </div>
-                <?php else : ?>
-                    <div class="field-settings-table-field-name expandable" data-field-name="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="null">
-                        <span class="sortable">⋮⋮</span>
-                        <span class="expand-icon" style="padding-left: 16px;">+</span>
-                        <span style="vertical-align: sub;">
-                            <?php echo esc_html( $field_settings['name'] ); ?>
-                        </span>
-                    </div>
-                    <!-- START TOGGLED ITEMS -->
-                    <div class="field-settings-table-child-toggle">
-                        <?php foreach ( $field_settings as $key => $value ) : ?>
-                            <?php if ( $key === 'default' && !empty( $field_settings['default'] ) ) : ?>
-                                <?php foreach ( $value as $v ) {
-                                    $label = 'NULL';
-                                    if ( isset( $v['label'] ) || !empty( $v['label'] ) ) {
-                                        $label = $v['label'];
-                                    }
-                                    ?>
-                                <div class="field-settings-table-field-option">
-                                    <span class="sortable">⋮⋮</span>
-                                    <span class="field-name-content" style="padding-left: 16px;">
-                                        <?php echo esc_html( $label ); ?>
-                                    </span>
-                                </div>
-                                    <?php
-                                }
-                            endif; ?>
-                        <?php endforeach; ?>
-                        <div class="field-settings-table-field-option">
-                            <span class="sortable">⋮⋮</span>
-                            <span style="margin-left: 32px;vertical-align: sub;">
-                                <?php echo esc_html( 'new field option', 'disciple_tools' ); ?>
-                            </span>
-                        </div>
-                    </div>
-                    <!-- END TOGGLED ITEMS -->
-                <?php endif; ?>
-            <?php endforeach; ?>
-            <!-- END TOGGLED FIELD ITEMS -->
-            <div class="field-settings-table-field-name expandable">
-                <span class="sortable">⋮⋮</span>
-                <span class="field-name-content add-new-field">
-                    <?php echo esc_html( 'add new field', 'disciple_tools' ); ?>
-                </span>
-            </div>
-        </div>
-        <?php
-    }
-
-    private function display_field_rundown_with_tiles() {
+    private function display_field_rundown() {
         $post_type = self::get_parameter( 'post_type' );
         $post_tiles = DT_Posts::get_post_settings( $post_type, false );
         ?>
@@ -481,7 +414,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                         <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) {
                             if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' ) : ?>
-                                <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>"  data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                     <span class="sortable">⋮⋮</span>
                                     <span class="field-name-content">
                                         <?php echo esc_html( $field_settings['name'] ); ?>
@@ -489,7 +422,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                     <span class="edit-icon"></span>
                                 </div>
                             <?php else : ?>
-                                <div class="field-settings-table-field-name expandable" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>"  data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                <div class="field-settings-table-field-name expandable" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                     <span class="sortable">⋮⋮</span>
                                     <span class="expand-icon" style="padding-left: 16px;">+</span>
                                     <span style="vertical-align: sub;">
@@ -516,7 +449,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                             }
                                         endif; ?>
                                     <?php endforeach; ?>
-                                    <div class="field-settings-table-field-option">
+                                    <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
                                         <span class="sortable">⋮⋮</span>
                                         <span style="margin-left: 32px;"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
                                     </div>
@@ -690,6 +623,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 padding: 1rem;
                 overflow: hidden;
                 scroll-behavior: smooth;
+            }
+            .new-field-option {
+                color: #3f729b;
+                cursor: pointer;
             }
             .dt-tile-preview {
                 width: auto;

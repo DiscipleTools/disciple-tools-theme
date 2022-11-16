@@ -87,6 +87,14 @@ class Disciple_Tools_Core_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/new-field-option', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'new_field_option' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
     }
 
     /**
@@ -223,7 +231,6 @@ class Disciple_Tools_Core_Endpoints {
                 $tile_options[$post_type] = [];
             }
             $tile_options[$post_type][$tile_key] = [ "label" => $new_tile_name ];
-
             update_option( "dt_custom_tiles", $tile_options );
             $created_tile = [
                 'post_type' => $post_type,
@@ -445,6 +452,21 @@ class Disciple_Tools_Core_Endpoints {
             update_option( "dt_field_customizations", $custom_field_options );
             wp_cache_delete( $post_type . "_field_settings" );
             return $field_key;
+        }
+        return false;
+    }
+
+    public static function new_field_option( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+        if ( isset( $post_submission["post_type"], $post_submission["tile_key"], $post_submission["field_key"], $post_submission["field_option_name"]) ) {
+            $new_field_option = $post_submission["field_option_name"];
+            $new_field_option_key = dt_create_field_key( $new_field_option );
+            $field_key = $post_submission["field_key"];
+            $post_type = $post_submission["post_type"];
+
+            $custom_field_options = dt_get_option( 'dt_field_customizations' );
+            $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key] = ['label' => $new_field_option ];
+            update_option( 'dt_field_customizations', $custom_field_options );
         }
         return false;
     }
