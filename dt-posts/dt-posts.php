@@ -80,12 +80,18 @@ class DT_Posts extends Disciple_Tools_Posts {
             $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
             if ( ! empty( $duplicate_post_ids ) && count( $duplicate_post_ids ) > 0 ) {
 
+                $name = $fields['name'] ?? $fields['title'];
+
+                $fields['notes'] = isset( $fields['notes'] ) ? $fields['notes'] : [];
+                if ( is_array( $fields['notes'] ) ){
+                    $fields['notes']['name'] = 'Name: ' . $name;
+                }
                 //No need to update title or name.
                 unset( $fields['title'], $fields['name'] );
 
                 //Avoid further duplication of pre-existing values.
                 $filtered_fields = [];
-                $duplicate_post   = self::get_post( $post_type, $duplicate_post_ids[0], false, $check_permissions );
+                $duplicate_post   = self::get_post( $post_type, $duplicate_post_ids[0], false, false );
                 foreach ( $fields as $field_id => $value ) {
                     if ( ! self::post_contains_field_value( $post_settings['fields'], $duplicate_post, $field_id, $value ) ) {
                         $filtered_fields[ $field_id ] = $value;
@@ -93,7 +99,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
 
                 //update most recently created matched post.
-                $updated_post = self::update_post( $post_type, $duplicate_post['ID'], $filtered_fields, $silent, $check_permissions );
+                $updated_post = self::update_post( $post_type, $duplicate_post['ID'], $filtered_fields, $silent, false );
                 if ( is_wp_error( $updated_post ) ){
                     return $updated_post;
                 }
@@ -104,7 +110,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
                 self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false );
 
-                return $updated_post;
+                if ( $check_permissions && !self::can_view( $post_type, $updated_post['ID'] ) ){
+                    return [ 'ID' => $updated_post['ID'] ];
+                } else {
+                    return $updated_post;
+                }
             }
         }
 
