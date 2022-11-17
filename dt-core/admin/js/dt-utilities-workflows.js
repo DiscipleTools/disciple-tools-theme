@@ -1179,8 +1179,7 @@ jQuery(function ($) {
 
         // Instantiate the typeahead element
         let dynamic_field = $('#' + field['id']);
-        dynamic_field.typeahead({
-          order: "asc",
+        let config = {
           accent: true,
           minLength: 0,
           maxItem: 10,
@@ -1195,7 +1194,18 @@ jQuery(function ($) {
               }
             }
           }
-        });
+        };
+
+        // Determine which item results ordering is to be adopted; if any.
+        if (typeahead['general'] && typeahead['general']['order'] && !window.lodash.isEmpty(typeahead['general']['order'])) {
+          config['order'] = typeahead['general']['order'];
+
+        } else if ((typeahead['general'] === undefined) || (typeahead['general']['order'] === undefined)) {
+          config['order'] = 'asc';
+        }
+
+        // Instantiate...!
+        dynamic_field.typeahead(config);
       }
     }
 
@@ -1349,7 +1359,7 @@ jQuery(function ($) {
       if (mappings['mapbox']['enabled']) {
         config['endpoint'] = {
           'filter': false,
-          'display': ['id', 'place_name'],
+          'display': ['place_name', 'id'],
           'template': '<span>{{place_name}}</span>',
           'url': mappings['mapbox']['endpoint'] + '{{query}}' + mappings['mapbox']['settings'] + mappings['mapbox']['key'],
           'done': function (response) {
@@ -1362,6 +1372,10 @@ jQuery(function ($) {
             return item['place_name'];
           }
           return null;
+        };
+
+        config['general'] = {
+          'order': ''
         };
 
       // -- Google
@@ -1383,6 +1397,10 @@ jQuery(function ($) {
           return null;
         };
 
+        config['general'] = {
+          'order': ''
+        };
+
       // -- Default
       } else {
         config['endpoint'] = {
@@ -1398,6 +1416,10 @@ jQuery(function ($) {
         config['id_func'] = function (item) {
           return null;
         };
+
+        config['general'] = {
+          'order': ''
+        };
       }
 
       // Typeahead object
@@ -1405,11 +1427,6 @@ jQuery(function ($) {
         endpoint: function (wp_nonce) {
           return {
             locations: {
-              minLength: 0,
-              accent: true,
-              searchOnFocus: true,
-              dynamic: true,
-              hint: true,
               filter: config['endpoint']['filter'],
               display: config['endpoint']['display'],
               template: config['endpoint']['template'],
@@ -1422,7 +1439,8 @@ jQuery(function ($) {
             }
           }
         },
-        id_func: config['id_func']
+        id_func: config['id_func'],
+        general: config['general']
       };
 
       return response;
