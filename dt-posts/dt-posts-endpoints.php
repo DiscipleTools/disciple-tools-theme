@@ -433,6 +433,15 @@ class Disciple_Tools_Posts_Endpoints {
                 'permission_callback' => '__return_true',
             ]
         );
+
+        //Check if a field value exists in the database, given the post type and field key
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/check_field_value_exists', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'check_field_value_exists' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
     }
 
     /**
@@ -668,4 +677,19 @@ class Disciple_Tools_Posts_Endpoints {
             'status'  => $status
         ] );
     }
+
+    public function check_field_value_exists( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params['post_type'] ) && isset( $params['communication_channel'] ) && isset( $params['field_value'] ) ) {
+            global $wpdb;
+            $result = $wpdb->get_results( $wpdb->prepare(
+                "SELECT `post_id`
+                    FROM `{$wpdb->prefix}postmeta`
+                    WHERE meta_key LIKE CONCAT('%s', '_%')
+                    AND meta_value = '%s';", $params['communication_channel'], $params['field_value'] ) );
+            return $result;
+        }
+        return [];
+        
+    } 
 }

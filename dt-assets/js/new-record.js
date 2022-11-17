@@ -1375,6 +1375,40 @@ jQuery(function($) {
     }
   }
 
+  // Check for email duplication
+  $('input[data-field="contact_email"]').after(`<span id="email-spinner" class="loading-spinner" style="margin: 0.5rem;"></span>`);
+  $('#edit-contact_email').append('<div id="duplicate-email-notice" class="hidden" style="color: red;font-style: italic;margin: -12px 0 12px 0;display:none;">email already exists in system</div>')
+  
+  function check_email_exists(email) {
+    $('#email-spinner').attr('class','loading-spinner active');
+    if (!email) {
+      $('#duplicate-email-notice').hide();
+      $('#email-spinner').attr('class','loading-spinner');
+      return;
+    }
+    var post_type = window.wpApiShare.post_type;
+    var data = {"communication_channel": "contact_email", "field_value": email,}
+    jQuery.ajax({
+      type: "POST",
+      data: JSON.stringify(data),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: window.wpApiShare.root + `dt-posts/v2/${post_type}/check_field_value_exists`,
+    }).then(result => {
+      $('#email-spinner').attr('class','loading-spinner');
+      if (!$.isEmptyObject(result)) {
+        $('#duplicate-email-notice').show();
+      } else {
+        $('#duplicate-email-notice').hide();
+      }
+    });
+  }
+
+  $('input[data-field="contact_email"]').on('change', function() {
+    var email = $(this).val();
+    check_email_exists(email)
+  });
+
   /**
    * ============== [ BULK RECORD ADDING FUNCTIONALITY ] ==============
    */

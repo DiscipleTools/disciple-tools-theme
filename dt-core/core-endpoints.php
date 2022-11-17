@@ -47,6 +47,7 @@ class Disciple_Tools_Core_Endpoints {
                 'permission_callback' => '__return_true',
             ]
         );
+
     }
 
 
@@ -127,5 +128,4 @@ class Disciple_Tools_Core_Endpoints {
             'logged' => true
         ];
     }
-
 }
