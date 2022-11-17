@@ -1377,7 +1377,7 @@ jQuery(function($) {
 
   // Check for email duplication
   $('input[data-field="contact_email"]').after(`<span id="email-spinner" class="loading-spinner" style="margin: 0.5rem;"></span>`);
-  $('#edit-contact_email').append('<div id="duplicate-email-notice" class="hidden" style="color: red;font-style: italic;margin: -12px 0 12px 0;display:none;">email already exists in system</div>')
+  $('#edit-contact_email').append('<div id="duplicate-email-notice" class="hidden" style="color: red;font-style: italic;margin: -12px 0 12px 0;display:none;">email already exists: <span id="duplicate-email-ids" style="color: #3f729b;"></span></div>')
   
   function check_email_exists(email) {
     $('#email-spinner').attr('class','loading-spinner active');
@@ -1395,12 +1395,22 @@ jQuery(function($) {
       dataType: "json",
       url: window.wpApiShare.root + `dt-posts/v2/${post_type}/check_field_value_exists`,
     }).then(result => {
-      $('#email-spinner').attr('class','loading-spinner');
       if (!$.isEmptyObject(result)) {
+        console.log(result);
+        var duplicate_ids_html = '';
+        $.each(result, function(k,v) {
+          if (k >0) {
+            duplicate_ids_html += ', ';
+          }
+          duplicate_ids_html += `<a href="/${post_type}/${v.post_id}" target="_blank">contact_${v.post_id}</a>`;
+        });
+        $('#duplicate-email-ids').html(duplicate_ids_html);
         $('#duplicate-email-notice').show();
       } else {
         $('#duplicate-email-notice').hide();
+        $('#duplicate-email-ids').html('');
       }
+      $('#email-spinner').attr('class','loading-spinner');
     });
   }
 
