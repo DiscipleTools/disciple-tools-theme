@@ -307,12 +307,37 @@ function base_dt_user_list_filters( $filters, $post_type ){
     $tab_names = array_map( function ( $f ){
         return $f['key'];
     }, $filters['tabs'] );
+
+    if ( !in_array( 'all', $tab_names ) && !in_array( 'default', $tab_names ) ){
+        $filters['tabs'][] = [
+            'key' => 'all',
+            'label' => __( 'Default Filters', 'disciple_tools' ),
+            'query' => [
+                'sort' => '-post_date'
+            ],
+            'order' => 10
+        ];
+        $tab_names[] = 'all';
+    }
+
     if ( in_array( 'all', $tab_names, true ) ){
 
         $filter_ids = array_map( function ( $f ){
             return $f['ID'];
         }, $filters['filters'] );
 
+        // add favorite posts filter to all abb
+        if ( !in_array( 'default', $filter_ids ) && !in_array( 'all', $filter_ids ) ){
+            $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
+            $filters['filters'][] = [
+                'ID' => 'all',
+                'tab' => 'all',
+                'name' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_label_plural ),
+                'query' => [
+                    'sort' => '-post_date'
+                ],
+            ];
+        }
         // add favorite posts filter to all abb
         if ( !in_array( 'favorite', $filter_ids ) ){
             $post_type_settings = DT_Posts::get_post_settings( $post_type );
