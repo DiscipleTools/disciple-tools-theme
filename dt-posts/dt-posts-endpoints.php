@@ -439,7 +439,7 @@ class Disciple_Tools_Posts_Endpoints {
             $this->namespace, '/(?P<post_type>\w+)/check_field_value_exists', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'check_field_value_exists' ],
-                'permission_callback' => [ $this, 'custom_permission_check'],
+                'permission_callback' => [ $this, 'custom_permission_check' ],
             ]
         );
     }
@@ -694,11 +694,10 @@ class Disciple_Tools_Posts_Endpoints {
             $result = $wpdb->get_results( $wpdb->prepare(
                 "SELECT `post_id`
                     FROM `{$wpdb->prefix}postmeta`
-                    WHERE meta_key LIKE CONCAT('%s', '_%')
-                    AND meta_value = '%s';", $params['communication_channel'], $params['field_value'] ) );
+                    WHERE meta_key LIKE CONCAT(%s, '_%')
+                    AND meta_value = %s;", $params['communication_channel'], $params['field_value'] ) );
             return $result;
         }
         return [];
-        
     } 
 }
