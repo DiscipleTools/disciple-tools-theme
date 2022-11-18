@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
         showOverlayModal(edit_modal, data);
     });
 
-    function show_preview_tile(tile_key) {        
+    function show_preview_tile(tile_key) {
         var tile_html = `
             <div class="dt-tile-preview">
                 <div class="section-header">
@@ -29,7 +29,7 @@ jQuery(document).ready(function($) {
                     <img src="${window.wpApiShare.template_dir}/dt-assets/images/chevron_up.svg" class="chevron">
                 </div>
                 <div class="section-body">`;
-        
+
         var all_fields = window.field_settings.post_type_settings.fields;
         $.each(all_fields, function(key, field) {
             if( field['tile'] === tile_key ) {
@@ -195,16 +195,11 @@ jQuery(document).ready(function($) {
     }
 
     function loadAddTileContentBox() {
-        var post_type = get_post_type();
         var modal_html_content = `
         <tr>
             <th colspan="2">
                 <h3 class="modal-box-title">Add New Tile</h3>
             </th>
-        </tr>
-        <tr>
-            <td><label><b>Post Type:</b></label></td>
-            <td>${post_type}</td>
         </tr>
         <tr>
             <td>
@@ -277,18 +272,6 @@ jQuery(document).ready(function($) {
                     <h3 class="modal-box-title">Add New Field</h3>
                 </th>
             </tr>
-
-
-            <tr>
-                <td>
-                    <label><b>Post Type</label></b>
-                </td>
-                <td>
-                    ${selected_post_type_label}
-                </td>
-            </tr>
-
-
             <tr>
                 <td>
                     <label for="new_tile_name"><b>Tile</b></label>
@@ -297,8 +280,6 @@ jQuery(document).ready(function($) {
                     ${tile_key_label}
                 </td>
             </tr>
-
-
             <tr>
                 <td>
                     <label for="tile_label"><b>New Field Name</b></label>
@@ -307,8 +288,6 @@ jQuery(document).ready(function($) {
                     <input name="edit-tile-label" id="new-field-name-${tile_key}" type="text" value=""required>
                 </td>
             </tr>
-
-
             <tr>
                 <td>
                     <label for="tile_label"><b>Field Type</b></label>
@@ -328,11 +307,10 @@ jQuery(document).ready(function($) {
                     </select>
                 </td>
             </tr>
-
             <tr class="connection_field_target_row" style="display: none;">
                 <td><label for="connection-target"><b>Connected To</label></b></td>
                 <td>
-                    <select name="connection-target" id="connection-field-target" required>
+                    <select name="connection-target" id="connection-field-target">
                         <option></option>`;
 
                         $.each(all_post_types, function(k,v) {
@@ -345,7 +323,6 @@ jQuery(document).ready(function($) {
                     modal_html_content += `</select>
                 </td>
             </tr>
-
             <tr class="same_post_type_row" style="display: none">
                 <td>
                     Bi-directional
@@ -354,8 +331,6 @@ jQuery(document).ready(function($) {
                     <input type="checkbox" id="multidirectional_checkbox" name="multidirectional" checked>
                 </td>
             </tr>
-
-
             <tr class="connection_field_reverse_row" style="display: none;">
                 <td>
                     Field name when shown on:
@@ -365,8 +340,6 @@ jQuery(document).ready(function($) {
                     <input name="other_field_name" id="other_field_name">
                 </td>
             </tr>
-
-
             <tr>
                 <td>
                     <label for="new_tile_name"><b>Private Field</b></label>
@@ -375,8 +348,6 @@ jQuery(document).ready(function($) {
                     <input name="new_field_private" id="new-field-private-${tile_key}" type="checkbox">
                 </td>
             </tr>
-
-
             <tr>
                 <td colspan="2">
                     <button class="button" type="submit" id="js-add-field" data-tile-key="${tile_key}">Save</button>
@@ -523,7 +494,7 @@ jQuery(document).ready(function($) {
                     <button class="button" type="submit" id="js-edit-tile" data-tile-key="${field_key}">Save</button>
                 </td>
             </tr>`;
-        $('#modal-overlay-content-table').html(modal_html_content);   
+        $('#modal-overlay-content-table').html(modal_html_content);
     }
 
     function loadAddFieldOptionBox(data) {
