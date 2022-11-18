@@ -551,7 +551,7 @@ jQuery(document).ready(function($) {
                 <div class="field-settings-table-field-name">
                     <span class="sortable">⋮⋮</span>
                     <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
-                        add new field
+                        <a>add new field</a>
                     </span>
                 </div>
             </div>

@@ -388,7 +388,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <div class="field-settings-table-field-name expandable">
                         <span class="sortable">⋮⋮</span>
                         <span class="field-name-content add-new-field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">    
-                            <?php echo esc_html( 'add new field', 'disciple_tools' ); ?>
+                            <a><?php echo esc_html( 'add new field', 'disciple_tools' ); ?></a>
                         </span>
                     </div>
                 </div>
