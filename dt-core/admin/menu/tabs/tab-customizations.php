@@ -337,7 +337,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <!-- START TOGGLED FIELD ITEMS -->
                     <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                         <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) {
-                            if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' ) : ?>
+                            if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' || $field_settings['type'] === 'tags' ): ?>
                                 <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                     <span class="sortable">⋮⋮</span>
                                     <span class="field-name-content">
