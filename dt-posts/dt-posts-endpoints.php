@@ -699,5 +699,5 @@ class Disciple_Tools_Posts_Endpoints {
             return $result;
         }
         return [];
-    } 
+    }
 }
