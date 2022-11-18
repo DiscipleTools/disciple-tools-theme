@@ -327,11 +327,12 @@ function base_dt_user_list_filters( $filters, $post_type ){
         }, $filters['filters'] );
 
         // add favorite posts filter to all abb
-        if ( !in_array( 'default', $filter_ids ) ){
+        if ( !in_array( 'default', $filter_ids ) && !in_array( 'all', $filter_ids ) ){
+            $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
             $filters['filters'][] = [
-                'ID' => 'default',
+                'ID' => 'all',
                 'tab' => 'all',
-                'name' => __( 'All', 'disciple_tools' ),
+                'name' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_label_plural ),
                 'query' => [
                     'sort' => '-post_date'
                 ],
