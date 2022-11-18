@@ -1394,12 +1394,15 @@ jQuery(function($) {
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       url: window.wpApiShare.root + `dt-posts/v2/${post_type}/check_field_value_exists`,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader("X-WP-Nonce", window.wpApiShare.nonce);
+      },
     }).then(result => {
       if (!$.isEmptyObject(result)) {
         console.log(result);
         var duplicate_ids_html = '';
         $.each(result, function(k,v) {
-          if (k >0) {
+          if ( k > 0 ) {
             duplicate_ids_html += ', ';
           }
           duplicate_ids_html += `<a href="/${post_type}/${v.post_id}" target="_blank">contact_${v.post_id}</a>`;
