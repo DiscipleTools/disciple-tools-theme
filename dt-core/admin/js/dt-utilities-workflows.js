@@ -1204,6 +1204,12 @@ jQuery(function ($) {
           config['order'] = 'asc';
         }
 
+        // Determine search on focus setting.
+        if (typeahead['general']) {
+          config['searchOnFocus'] = typeahead['general']['search_on_focus'];
+          config['minLength'] = 2;
+        }
+
         // Instantiate...!
         dynamic_field.typeahead(config);
       }
@@ -1328,9 +1334,7 @@ jQuery(function ($) {
 
         // Iterate over field defaults...
         for (const [key, value] of Object.entries(defaults)) {
-          //if (value['label']) { // As an empty label string is actually a valid entry!
           html += `<option value="${window.lodash.escape(key)}">${window.lodash.escape(value['label'])}</option>`;
-          //}
         }
 
         html += '</select>';
@@ -1355,31 +1359,8 @@ jQuery(function ($) {
       let config = {};
       let mappings = window.dt_workflows.mappings;
 
-      // -- Mapbox
-      if (mappings['mapbox']['enabled']) {
-        config['endpoint'] = {
-          'filter': false,
-          'display': ['place_name', 'id'],
-          'template': '<span>{{place_name}}</span>',
-          'url': mappings['mapbox']['endpoint'] + '{{query}}' + mappings['mapbox']['settings'] + mappings['mapbox']['key'],
-          'done': function (response) {
-            return (response['features']) ? response['features'] : [];
-          }
-        };
-
-        config['id_func'] = function (item) {
-          if (item && item['place_name']) {
-            return item['place_name'];
-          }
-          return null;
-        };
-
-        config['general'] = {
-          'order': ''
-        };
-
       // -- Google
-      } else if (mappings['google']['enabled']) {
+      if (mappings['google']['enabled']) {
         config['endpoint'] = {
           'filter': false,
           'display': ['formatted_address'],
@@ -1398,7 +1379,32 @@ jQuery(function ($) {
         };
 
         config['general'] = {
-          'order': ''
+          'order': '',
+          'search_on_focus': false
+        };
+
+      // -- Mapbox
+      } else if (mappings['mapbox']['enabled']) {
+        config['endpoint'] = {
+          'filter': false,
+          'display': ['place_name', 'id'],
+          'template': '<span>{{place_name}}</span>',
+          'url': mappings['mapbox']['endpoint'] + '{{query}}' + mappings['mapbox']['settings'] + mappings['mapbox']['key'],
+          'done': function (response) {
+            return (response['features']) ? response['features'] : [];
+          }
+        };
+
+        config['id_func'] = function (item) {
+          if (item && item['place_name']) {
+            return item['place_name'];
+          }
+          return null;
+        };
+
+        config['general'] = {
+          'order': '',
+          'search_on_focus': true
         };
 
       // -- Default
@@ -1418,7 +1424,8 @@ jQuery(function ($) {
         };
 
         config['general'] = {
-          'order': ''
+          'order': '',
+          'search_on_focus': true
         };
       }
 

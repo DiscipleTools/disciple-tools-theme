@@ -545,23 +545,25 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 $location = null;
 
                 // Lookup location based on configured mapping api.
-                if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
+                if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) {
+                    $query = Disciple_Tools_Google_Geocode_API::query_google_api( $value, 'coordinates_only' );
+                    if ( ! empty( $query ) ) {
+                        $location = [
+                            'label' => $value,
+                            'lng'   => $query['lng'],
+                            'lat'   => $query['lat'],
+                            'level' => Disciple_Tools_Google_Geocode_API::parse_raw_result( $query['raw'], 'types' )
+                        ];
+                    }
+                } elseif ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
                     $lookup = DT_Mapbox_API::lookup( $value );
                     if ( ! empty( $lookup ) && is_array( $lookup['features'] ) && isset( $lookup['features'][0]['center'] ) ) {
                         $center   = $lookup['features'][0]['center']; // Select top hit!
                         $location = [
                             'label' => $value,
                             'lng'   => $center[0],
-                            'lat'   => $center[1]
-                        ];
-                    }
-                } elseif ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) {
-                    $query = Disciple_Tools_Google_Geocode_API::query_google_api( $value, 'coordinates_only' );
-                    if ( ! empty( $query ) ) {
-                        $location = [
-                            'label' => $value,
-                            'lng'   => $query['lng'],
-                            'lat'   => $query['lat']
+                            'lat'   => $center[1],
+                            'level' => ! empty( $lookup['features'][0]['place_type'] ) ? $lookup['features'][0]['place_type'][0] : null
                         ];
                     }
                 }
@@ -572,7 +574,8 @@ class Disciple_Tools_Workflows_Execution_Handler {
                     $updated[ $field_id ]['values'][] = [
                         'label' => $location['label'],
                         'lng'   => $location['lng'],
-                        'lat'   => $location['lat']
+                        'lat'   => $location['lat'],
+                        'level' => $location['level'] ?? null
                     ];
                 }
                 break;
