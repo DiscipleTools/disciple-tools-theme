@@ -95,6 +95,14 @@ class Disciple_Tools_Core_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/edit-field', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'edit_field' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+                ]
+        );
     }
 
     /**
@@ -217,21 +225,21 @@ class Disciple_Tools_Core_Endpoints {
     public static function create_new_tile( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
 
-        if ( isset( $post_submission["new_tile_name"], $post_submission["post_type"] ) ) {
-            $post_type = sanitize_text_field( wp_unslash( $post_submission["post_type"] ) );
-            $new_tile_name = sanitize_text_field( wp_unslash( $post_submission["new_tile_name"] ) );
-            $tile_options = dt_get_option( "dt_custom_tiles" );
+        if ( isset( $post_submission['new_tile_name'], $post_submission['post_type'] ) ) {
+            $post_type = sanitize_text_field( wp_unslash( $post_submission['post_type'] ) );
+            $new_tile_name = sanitize_text_field( wp_unslash( $post_submission['new_tile_name'] ) );
+            $tile_options = dt_get_option( 'dt_custom_tiles' );
             $post_tiles = DT_Posts::get_post_tiles( $post_type );
             $tile_key = dt_create_field_key( $new_tile_name );
             if ( in_array( $tile_key, array_keys( $post_tiles ) ) ){
-                Disciple_Tools_Customizations_Tab::admin_notice( __( "tile already exists", 'disciple_tools' ), "error" );
+                Disciple_Tools_Customizations_Tab::admin_notice( __( 'tile already exists', 'disciple_tools' ), 'error' );
                 return false;
             }
             if ( !isset( $tile_options[$post_type] ) ){
                 $tile_options[$post_type] = [];
             }
-            $tile_options[$post_type][$tile_key] = [ "label" => $new_tile_name ];
-            update_option( "dt_custom_tiles", $tile_options );
+            $tile_options[$post_type][$tile_key] = [ 'label' => $new_tile_name ];
+            update_option( 'dt_custom_tiles', $tile_options );
             $created_tile = [
                 'post_type' => $post_type,
                 'key' => $tile_key,
@@ -253,9 +261,9 @@ class Disciple_Tools_Core_Endpoints {
     public static function edit_tile( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
 
-        $post_type = $post_submission["post_type"];
-        $tile_options = dt_get_option( "dt_custom_tiles" );
-        $tile_key = $post_submission["tile_key"];
+        $post_type = $post_submission['post_type'];
+        $tile_options = dt_get_option( 'dt_custom_tiles' );
+        $tile_key = $post_submission['tile_key'];
 
         if ( !isset( $tile_options[$post_type][$tile_key] ) ){
             $tile_options[$post_type][$tile_key] = [];
@@ -263,41 +271,41 @@ class Disciple_Tools_Core_Endpoints {
 
         $custom_tile = $tile_options[$post_type][$tile_key];
 
-        if ( isset( $post_submission["tile_label"] ) && $post_submission["tile_label"] != ( $custom_tile["label"] ?? $tile_key ) ){
-            $custom_tile["label"] = $post_submission["tile_label"];
+        if ( isset( $post_submission['tile_label'] ) && $post_submission['tile_label'] != ( $custom_tile['label'] ?? $tile_key ) ){
+            $custom_tile['label'] = $post_submission['tile_label'];
         }
-        if ( isset( $post_submission["hide_tile"] ) ){
-            $custom_tile["hidden"] = true;
+        if ( isset( $post_submission['hide_tile'] ) ){
+            $custom_tile['hidden'] = true;
         }
-        if ( isset( $post_submission["restore_tile"] ) ){
-            $custom_tile["hidden"] = false;
+        if ( isset( $post_submission['restore_tile'] ) ){
+            $custom_tile['hidden'] = false;
         }
-        if ( isset( $post_submission["tile_description"] ) && $post_submission["tile_description"] != ( $custom_tile["description"] ?? "" ) ){
-            $custom_tile["description"] = $post_submission["tile_description"];
+        if ( isset( $post_submission['tile_description'] ) && $post_submission['tile_description'] != ( $custom_tile['description'] ?? '' ) ){
+            $custom_tile['description'] = $post_submission['tile_description'];
         }
 
         if ( !empty( $custom_tile ) ){
             $tile_options[$post_type][$tile_key] = $custom_tile;
         }
-        update_option( "dt_custom_tiles", $tile_options );
+        update_option( 'dt_custom_tiles', $tile_options );
         return true;
     }
 
     public static function new_field( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
-        if ( isset( $post_submission["new_field_name"], $post_submission["new_field_type"], $post_submission["post_type"] ) ){
-            $post_type = $post_submission["post_type"];
-            $field_type = $post_submission["new_field_type"];
-            $field_tile = $post_submission["new_field_tile"] ?? '';
-            $field_key = dt_create_field_key( $post_submission["new_field_name"] );
-            $custom_field_options = dt_get_option( "dt_field_customizations" );
+        if ( isset( $post_submission['new_field_name'], $post_submission['new_field_type'], $post_submission['post_type'] ) ){
+            $post_type = $post_submission['post_type'];
+            $field_type = $post_submission['new_field_type'];
+            $field_tile = $post_submission['new_field_tile'] ?? '';
+            $field_key = dt_create_field_key( $post_submission['new_field_name'] );
+            $custom_field_options = dt_get_option( 'dt_field_customizations' );
 
             if ( !$field_key ){
                 return false;
             }
 
             //field privacy
-            if ( isset( $post_submission["new_field_private"] ) && $post_submission["new_field_private"] ) {
+            if ( isset( $post_submission['new_field_private'] ) && $post_submission['new_field_private'] ) {
                 $field_private = true;
             } else {
                 $field_private = false;
@@ -305,67 +313,67 @@ class Disciple_Tools_Core_Endpoints {
 
             $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
             if ( isset( $post_fields[ $field_key ] ) ){
-                self::admin_notice( __( "Field already exists", 'disciple_tools' ), "error" );
+                self::admin_notice( __( 'Field already exists', 'disciple_tools' ), 'error' );
                 return false;
             }
             $new_field = [];
-            if ( $field_type === "key_select" ){
+            if ( $field_type === 'key_select' ){
                 $new_field = [
-                    'name' => $post_submission["new_field_name"],
+                    'name' => $post_submission['new_field_name'],
                     'default' => [],
                     'type' => 'key_select',
                     'tile' => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
-            } elseif ( $field_type === "multi_select" ){
+            } elseif ( $field_type === 'multi_select' ){
                 $new_field = [
-                    'name' => $post_submission["new_field_name"],
+                    'name' => $post_submission['new_field_name'],
                     'default' => [],
                     'type' => 'multi_select',
                     'tile' => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private,
                 ];
-            } elseif ( $field_type === "tags" ){
+            } elseif ( $field_type === 'tags' ){
                 $new_field = [
-                    'name' => $post_submission["new_field_name"],
+                    'name' => $post_submission['new_field_name'],
                     'default' => [],
                     'type' => 'tags',
                     'tile' => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
-            } elseif ( $field_type === "date" ){
+            } elseif ( $field_type === 'date' ){
                 $new_field = [
-                    'name'        => $post_submission["new_field_name"],
+                    'name'        => $post_submission['new_field_name'],
                     'type'        => 'date',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
-            } elseif ( $field_type === "text" ){
+            } elseif ( $field_type === 'text' ){
                 $new_field = [
-                    'name'        => $post_submission["new_field_name"],
+                    'name'        => $post_submission['new_field_name'],
                     'type'        => 'text',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
-            } elseif ( $field_type === "textarea" ){
+            } elseif ( $field_type === 'textarea' ){
                 $new_field = [
-                    'name'        => $post_submission["new_field_name"],
+                    'name'        => $post_submission['new_field_name'],
                     'type'        => 'textarea',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
-            } elseif ( $field_type === "number" ){
+            } elseif ( $field_type === 'number' ){
                 $new_field = [
-                    'name'        => $post_submission["new_field_name"],
+                    'name'        => $post_submission['new_field_name'],
                     'type'        => 'number',
                     'default'     => '',
                     'tile'     => $field_tile,
@@ -374,83 +382,83 @@ class Disciple_Tools_Core_Endpoints {
                 ];
             } elseif ( $field_type === 'link' ) {
                 $new_field = [
-                    'name'        => $post_submission["new_field_name"],
+                    'name'        => $post_submission['new_field_name'],
                     'type'        => 'link',
                     'default'     => [],
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
-            } elseif ( $field_type === "connection" ){
-                if ( !$post_submission["connection_target"] ){
-                    self::admin_notice( __( "Please select a connection target", 'disciple_tools' ), "error" );
+            } elseif ( $field_type === 'connection' ){
+                if ( !$post_submission['connection_target'] ){
+                    self::admin_notice( __( 'Please select a connection target', 'disciple_tools' ), 'error' );
                     return false;
                 }
-                $p2p_key = $post_type . "_to_" . $post_submission["connection_target"];
+                $p2p_key = $post_type . '_to_' . $post_submission['connection_target'];
                 if ( p2p_type( $p2p_key ) !== false ){
                     $p2p_key = dt_create_field_key( $p2p_key, true );
                 }
 
                 // connection field to the same post type
-                if ( $post_type === $post_submission["connection_target"] ){
+                if ( $post_type === $post_submission['connection_target'] ){
                     //default direction to "any". If not multidirectional, then from
                     $direction = 'any';
-                    if ( $post_submission["multidirectional"] != 1 ) {
+                    if ( $post_submission['multidirectional'] != 1 ) {
                         $direction = 'from';
                     }
                     $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $post_submission["new_field_name"],
+                        'name'        => $post_submission['new_field_name'],
                         'type'        => 'connection',
-                        "post_type" => $post_submission["connection_target"],
-                        "p2p_direction" => $direction,
-                        "p2p_key" => $p2p_key,
+                        'post_type' => $post_submission['connection_target'],
+                        'p2p_direction' => $direction,
+                        'p2p_key' => $p2p_key,
                         'tile'     => $field_tile,
                         'customizable' => 'all',
                     ];
                     //if not multidirectional, create the reverse direction field
-                    if ( $post_submission["multidirectional"] != 1 ){
-                        $reverse_name = $post_submission["reverse_connection_name"] ?? $post_submission["new_field_name"];
-                        $custom_field_options[$post_type][$field_key . "_reverse"]  = [
+                    if ( $post_submission['multidirectional'] != 1 ){
+                        $reverse_name = $post_submission['reverse_connection_name'] ?? $post_submission['new_field_name'];
+                        $custom_field_options[$post_type][$field_key . '_reverse']  = [
                             'name'        => $reverse_name,
                             'type'        => 'connection',
-                            "post_type" => $post_type,
-                            "p2p_direction" => "to",
-                            "p2p_key" => $p2p_key,
-                            'tile'     => "other",
+                            'post_type' => $post_type,
+                            'p2p_direction' => 'to',
+                            'p2p_key' => $p2p_key,
+                            'tile'     => 'other',
                             'customizable' => 'all',
-                            'hidden' => isset( $post_submission["disable_reverse_connection"] )
+                            'hidden' => isset( $post_submission['disable_reverse_connection'] )
                         ];
                     }
                 } else {
-                    $direction = "from";
+                    $direction = 'from';
                     $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $post_submission["new_field_name"],
+                        'name'        => $post_submission['new_field_name'],
                         'type'        => 'connection',
-                        "post_type" => $post_submission["connection_target"],
-                        "p2p_direction" => $direction,
-                        "p2p_key" => $p2p_key,
+                        'post_type' => $post_submission['connection_target'],
+                        'p2p_direction' => $direction,
+                        'p2p_key' => $p2p_key,
                         'tile'     => $field_tile,
                         'customizable' => 'all',
                     ];
                     //create the reverse fields on the connection post type
-                    $reverse_name = $post_submission["other_field_name"] ?? $post_submission["new_field_name"];
-                    $custom_field_options[$post_submission["connection_target"]][$field_key]  = [
+                    $reverse_name = $post_submission['other_field_name'] ?? $post_submission['new_field_name'];
+                    $custom_field_options[$post_submission['connection_target']][$field_key]  = [
                         'name'        => $reverse_name,
                         'type'        => 'connection',
-                        "post_type" => $post_type,
-                        "p2p_direction" => "to",
-                        "p2p_key" => $p2p_key,
-                        'tile'     => "other",
+                        'post_type' => $post_type,
+                        'p2p_direction' => 'to',
+                        'p2p_key' => $p2p_key,
+                        'tile'     => 'other',
                         'customizable' => 'all',
-                        'hidden' => isset( $post_submission["disable_other_post_type_field"] )
+                        'hidden' => isset( $post_submission['disable_other_post_type_field'] )
                     ];
                 }
             }
             if ( !empty( $new_field ) ){
                 $custom_field_options[$post_type][$field_key] = $new_field;
             }
-            update_option( "dt_field_customizations", $custom_field_options );
-            wp_cache_delete( $post_type . "_field_settings" );
+            update_option( 'dt_field_customizations', $custom_field_options );
+            wp_cache_delete( $post_type . '_field_settings' );
             return $field_key;
         }
         return false;
@@ -458,17 +466,46 @@ class Disciple_Tools_Core_Endpoints {
 
     public static function new_field_option( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
-        if ( isset( $post_submission["post_type"], $post_submission["tile_key"], $post_submission["field_key"], $post_submission["field_option_name"]) ) {
-            $new_field_option = $post_submission["field_option_name"];
+        if ( isset( $post_submission['post_type'], $post_submission['tile_key'], $post_submission['field_key'], $post_submission['field_option_name'] ) ) {
+            $new_field_option = $post_submission['field_option_name'];
             $new_field_option_key = dt_create_field_key( $new_field_option );
-            $field_key = $post_submission["field_key"];
-            $post_type = $post_submission["post_type"];
+            $field_key = $post_submission['field_key'];
+            $post_type = $post_submission['post_type'];
 
             $custom_field_options = dt_get_option( 'dt_field_customizations' );
-            $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key] = ['label' => $new_field_option ];
+            $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key] = [ 'label' => $new_field_option ];
             update_option( 'dt_field_customizations', $custom_field_options );
         }
         return false;
+    }
+
+    public static function edit_field( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+        $post_type = $post_submission['post_type'];
+        $field_key = $post_submission['field_key'];
+        $tile_key = $post_submission['tile_key'];
+        $custom_name = $post_submission['custom_name'];
+
+        $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
+        $field_customizations = dt_get_option( 'dt_field_customizations' );
+
+        if ( isset( $post_fields[$field_key] ) ) {
+            if ( !isset( $field_customizations[$post_type][$field_key] ) ){
+                $field_customizations[$post_type][$field_key] = [];
+            }
+            $custom_field = $field_customizations[$post_type][$field_key];
+            $field = $post_fields[$field_key];
+
+            //update name
+            if ( isset( $post_submission['custom_name'] ) ){
+                $custom_field['name'] = $post_submission['custom_name'];
+            }
+            $field_customizations[$post_type][$field_key] = $custom_field;
+            update_option( 'dt_field_customizations', $field_customizations );
+            wp_cache_delete( $post_type . '_field_settings' );
+            return true;
+        }
+        return new WP_Error( 'error', 'Something went wrong', [ 'status' => 500 ] );
     }
 
     public function default_permission_check() {

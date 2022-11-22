@@ -56,7 +56,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             'date_modified' => __( 'Date Modified', 'disciple_tools' ),
             'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
             'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
-            'filter_all' => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), $post_settings["label_plural"] ),
+            'filter_all' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_settings['label_plural'] ),
             'range_start' => __( 'start', 'disciple_tools' ),
             'range_end' => __( 'end', 'disciple_tools' ),
             'all' => __( 'All', 'disciple_tools' ),
@@ -90,7 +90,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
                     'all_locations' => __( 'All Locations', 'disciple_tools' ),
                     'used_locations' => __( 'Used Locations', 'disciple_tools' ),
-                    'no_records_found' => _x( 'No results found matching "{{query}}"', "Empty list results. Keep {{query}} as is in english", 'disciple_tools' ),
+                    'no_records_found' => _x( 'No results found matching "{{query}}"', 'Empty list results. Keep {{query}} as is in english', 'disciple_tools' ),
                     'showing_x_items' => _x( 'Showing %s items. Type to find more.', 'Showing 30 items', 'disciple_tools' ),
                     'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
                     'edit' => __( 'Edit', 'disciple_tools' ),
@@ -340,7 +340,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                             if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' || $field_settings['type'] === 'tags' ): ?>
                                 <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                     <span class="sortable">⋮⋮</span>
-                                    <span class="field-name-content">
+                                    <span class="field-name-content" style="margin-left: 16px;" data-parent-tile="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
                                         <?php echo esc_html( $field_settings['name'] ); ?>
                                     </span>
                                     <span class="edit-icon"></span>
@@ -349,7 +349,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                 <div class="field-settings-table-field-name expandable" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                     <span class="sortable">⋮⋮</span>
                                     <span class="expand-icon" style="padding-left: 16px;">+</span>
-                                    <span style="vertical-align: sub;">
+                                    <span class="field-name-content" style="vertical-align: sub;" data-parent-tile="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
                                         <?php echo esc_html( $field_settings['name'] ); ?>
                                     </span>
                                     <span class="edit-icon"></span>
@@ -375,7 +375,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                     <?php endforeach; ?>
                                     <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
                                         <span class="sortable">⋮⋮</span>
-                                        <span style="margin-left: 32px;"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
+                                        <span style="margin-left: 16px;"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
                                     </div>
                                 </div>
                                 <!-- END TOGGLED ITEMS -->
@@ -479,7 +479,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 height: 24px;
             }
             .field-name-content {
-                margin-left: 16px;
                 vertical-align: sub;
             }
             .field-settings-table-child-toggle {
@@ -744,14 +743,14 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     public function save_settings(){
         if ( !empty( $_POST ) ){
             if ( isset( $_POST['security_headers_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['security_headers_nonce'] ), 'security_headers' ) ) {
-                update_option( "dt_disable_header_xss", isset( $_POST["xss"] ) ? "0" : "1" );
-                update_option( "dt_disable_header_referer", isset( $_POST["referer"] ) ? "0" : "1" );
-                update_option( "dt_disable_header_content_type", isset( $_POST["content_type"] ) ? "0" : "1" );
-                update_option( "dt_disable_header_strict_transport", isset( $_POST["strict_transport"] ) ? "0" : "1" );
+                update_option( 'dt_disable_header_xss', isset( $_POST['xss'] ) ? '0' : '1' );
+                update_option( 'dt_disable_header_referer', isset( $_POST['referer'] ) ? '0' : '1' );
+                update_option( 'dt_disable_header_content_type', isset( $_POST['content_type'] ) ? '0' : '1' );
+                update_option( 'dt_disable_header_strict_transport', isset( $_POST['strict_transport'] ) ? '0' : '1' );
             }
 
             if ( isset( $_POST['usage_data_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['usage_data_nonce'] ), 'usage_data' ) ) {
-                update_option( 'dt_disable_usage_data', isset( $_POST["usage"] ) ? "1" : "0" );
+                update_option( 'dt_disable_usage_data', isset( $_POST['usage'] ) ? '1' : '0' );
             }
         }
     }

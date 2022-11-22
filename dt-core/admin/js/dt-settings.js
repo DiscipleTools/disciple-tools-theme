@@ -357,7 +357,7 @@ jQuery(document).ready(function($) {
         $('#modal-overlay-content-table').html(modal_html_content);
     }
 
-    // Display 'connected to' dropdown if 'connection' post type field is selected    
+    // Display 'connected to' dropdown if 'connection' post type field is selected
     $('.dt-admin-modal-box').on('change', '[id^=new-field-type-]', function() {
         if ( $(this).val() === 'connection' ) {
             $('.connection_field_target_row').show();
@@ -389,10 +389,9 @@ jQuery(document).ready(function($) {
         var field_key = field_data['field_key'];
         var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
         var number_of_translations = 0; //Todo: softcode this variable
-        
         var field_icon_image_html = '';
         if ( field_settings['icon'] ) {
-            field_icon_image_html = `<img src="${field_settings['icon']}">`;
+            field_icon_image_html = `<img src="${field_settings['icon']}" style="width: 30px;height: 30px;">`;
         }
 
         var modal_html_content = `
@@ -422,7 +421,7 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-custom-name"><b>Custom Name</b></label>
                 </td>
                 <td>
-                    <input name="edit-field-custom-name" id="edit-field-custom-name-${field_key}" type="text" value="">
+                    <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="">
                 </td>
             </tr>
             <tr>
@@ -430,7 +429,7 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-private-field"><b>Private Field</b></label>
                 </td>
                 <td>
-                    <input name="edit-field-private-field" id="edit-field-private-field-${field_key}" type="checkbox" disabled>
+                    <input name="edit-field-private-field" id="edit-field-private-field" type="checkbox">
                 </td>
             </tr>
             <tr>
@@ -449,7 +448,7 @@ jQuery(document).ready(function($) {
                     <label for="tile-select"><b>Tile</b></label>
                 </td>
                 <td>
-                    <select name="tile-select">
+                    <select name="tile-select" id="new-field-type">
                         <option value="no_tile">No tile / hidden</option>`;
                         $.each(window.field_settings.post_type_tiles, function (k, tile) {
                             if ( k === tile_key  ) {
@@ -466,7 +465,7 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-description"><b>Description</b></label>
                 </td>
                 <td>
-                    <input name="edit-field-description" id="edit-field-description-${field_key}" type="text" value="${field_settings['description']}">
+                    <input name="edit-field-description" id="edit-field-description" type="text" value="${field_settings['description']}">
                 </td>
             </tr>
             <tr>
@@ -486,12 +485,12 @@ jQuery(document).ready(function($) {
                 </td>
                 <td>
                     ${field_icon_image_html}
-                    <input name="edit-field-icon" id="edit-field-icon-${field_key}" type="text" value="${field_settings['icon']}">
+                    <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_settings['icon']}">
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <button class="button" type="submit" id="js-edit-tile" data-tile-key="${field_key}">Save</button>
+                    <button class="button" type="submit" id="js-edit-field" data-tile-key="${tile_key}" data-field-key="${field_key}">Save</button>
                 </td>
             </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -590,9 +589,9 @@ jQuery(document).ready(function($) {
                 'other_field_name':other_field_name,
             };
             var new_field_nonexpandable_html = `
-                <div class="field-settings-table-field-name" data-field-name="${field_key}" data-parent-tile-key="${new_field_tile}">
+                <div class="field-settings-table-field-name" data-parent-tile-key="${new_field_tile}" data-field-name="${field_key}">
                     <span class="sortable">⋮⋮</span>
-                    <span class="field-name-content">
+                    <span class="field-name-content" style="margin-left: 16px;" data-parent-tile="${new_field_tile}" data-key="${field_key}">
                         ${new_field_name}
                         <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
                             <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
@@ -605,7 +604,7 @@ jQuery(document).ready(function($) {
                 <div class="field-settings-table-field-name expandable" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
                     <span class="sortable">⋮⋮</span>
                     <span class="expand-icon" style="padding-left: 16px;">+</span>
-                    <span style="vertical-align: sub;">
+                    <span class="field-name-content" data-parent-tile="${new_field_tile}" data-key="${field_key}">
                         ${new_field_name}
                         <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
                             <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
@@ -617,7 +616,7 @@ jQuery(document).ready(function($) {
                 <div class="field-settings-table-child-toggle">
                     <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="${new_field_tile}" data-field-key="${field_key}">
                         <span class="sortable">⋮⋮</span>
-                        <span style="margin-left: 32px;">new field option</span>
+                        <span style="margin-left: 16px;">new field option</span>
                     </div>
                 </div>
                 <!-- END TOGGLED ITEMS -->
@@ -636,6 +635,19 @@ jQuery(document).ready(function($) {
         });
     });
 
+    $('#modal-overlay-form').on('click', '#js-edit-field', function() {
+        var post_type = get_post_type();
+        var tile_key = $(this).data('tile-key');
+        var field_key = $(this).data('field-key');
+        var field_key = $(this).data('field-key');
+        var custom_name = $('#edit-field-custom-name').val();
+        API.edit_field(post_type, tile_key, field_key, custom_name).promise().then(function(){
+            $(`.field-name-content[data-parent-tile="${tile_key}"][data-key="${field_key}"]`)[0].innerText = custom_name;
+            closeModal();
+        });
+        return;
+    });
+
     $('#modal-overlay-form').on('click', '#js-add-field-option', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
@@ -645,7 +657,7 @@ jQuery(document).ready(function($) {
             var new_field_option_html = `
             <div class="field-settings-table-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}">
                 <span class="sortable">⋮⋮</span>
-                <span style="margin-left: 32px;">${field_option_name}
+                <span style="margin-left: 16px;">${field_option_name}
                 <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
                     <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
                 </svg>
@@ -654,7 +666,7 @@ jQuery(document).ready(function($) {
             $(`.new-field-option[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"]`).before(new_field_option_html);
             closeModal();
         });
-        
+
     });
 
     function closeModal() {
@@ -662,7 +674,7 @@ jQuery(document).ready(function($) {
         $('.dt-admin-modal-box').slideUp(150, 'swing');
         $('#modal-overlay-content-table').html('');
     }
-    
+
     $('.dt-admin-modal-box-close-button').on('click', function() {
         closeModal();
     });
@@ -672,15 +684,6 @@ jQuery(document).ready(function($) {
             closeModal();
         }
     });
-
-    $('.field-option-name').hover(
-        function() {
-            $(this).children('.edit-field-option').show()
-        },
-        function(){
-            $(this).children('.edit-field-option').hide()
-        }
-    );
 
     $('.field-name').on('click', function() {
             $(this).find('.field-name-icon-arrow:not(.disabled)').toggleClass('arrow-expanded');
