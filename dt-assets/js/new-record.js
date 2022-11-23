@@ -1399,7 +1399,6 @@ jQuery(function($) {
       },
     }).then(result => {
       if (!$.isEmptyObject(result)) {
-        console.log(result);
         var duplicate_ids_html = '';
         $.each(result, function(k,v) {
           if ( k > 0 ) {
