@@ -426,10 +426,10 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="edit-field-private-field"><b>Private Field</b></label>
+                    <label for="edit-field-private"><b>Private Field</b></label>
                 </td>
                 <td>
-                    <input name="edit-field-private-field" id="edit-field-private-field" type="checkbox">
+                    <input name="edit-field-private" id="edit-field-private" type="checkbox">
                 </td>
             </tr>
             <tr>
@@ -641,8 +641,13 @@ jQuery(document).ready(function($) {
         var field_key = $(this).data('field-key');
         var field_key = $(this).data('field-key');
         var custom_name = $('#edit-field-custom-name').val();
-        API.edit_field(post_type, tile_key, field_key, custom_name).promise().then(function(){
-            $(`.field-name-content[data-parent-tile="${tile_key}"][data-key="${field_key}"]`)[0].innerText = custom_name;
+        var field_private = $('#edit-field-private').is(':checked');
+        API.edit_field(post_type, tile_key, field_key, custom_name, field_private).promise().then(function(result){
+            window['field_settings']['post_type_settings']['fields'][field_key] = result;
+            show_preview_tile(tile_key);
+            if (custom_name != '' ) {
+                $(`.field-name-content[data-parent-tile="${tile_key}"][data-key="${field_key}"]`)[0].innerText = custom_name;
+            }
             closeModal();
         });
         return;
@@ -653,7 +658,8 @@ jQuery(document).ready(function($) {
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
         var field_option_name = $('.new-field-option-name').val();
-        API.new_field_option(post_type, tile_key, field_key, field_option_name).promise().then(function() {
+
+        API.new_field_option(post_type, tile_key, field_key, field_option_name, field_private).promise().then(function() {
             var new_field_option_html = `
             <div class="field-settings-table-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}">
                 <span class="sortable">⋮⋮</span>

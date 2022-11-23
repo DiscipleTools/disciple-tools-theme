@@ -485,6 +485,7 @@ class Disciple_Tools_Core_Endpoints {
         $field_key = $post_submission['field_key'];
         $tile_key = $post_submission['tile_key'];
         $custom_name = $post_submission['custom_name'];
+        $field_private = $post_submission['field_private'];
 
         $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
         $field_customizations = dt_get_option( 'dt_field_customizations' );
@@ -497,13 +498,21 @@ class Disciple_Tools_Core_Endpoints {
             $field = $post_fields[$field_key];
 
             //update name
-            if ( isset( $post_submission['custom_name'] ) ){
+            if ( isset( $post_submission['custom_name'] ) && !empty( $post_submission['custom_name'] ) ) {
                 $custom_field['name'] = $post_submission['custom_name'];
             }
+
+            //field privacy
+            $custom_field['private'] = false;
+            if ( isset( $post_submission['field_private'] ) && $post_submission['field_private'] ) {
+                dt_write_log( 'private is true' );
+                $custom_field['private'] = true;
+            }
+
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( 'dt_field_customizations', $field_customizations );
             wp_cache_delete( $post_type . '_field_settings' );
-            return true;
+            return $custom_field;
         }
         return new WP_Error( 'error', 'Something went wrong', [ 'status' => 500 ] );
     }
