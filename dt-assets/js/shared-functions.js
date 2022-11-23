@@ -672,11 +672,8 @@ window.SHAREDFUNCTIONS = {
           if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
             url = match
           }
-          else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
+          else if (match.indexOf("http") === -1) {
             url = "http://" + match
-          }
-          else if (match.indexOf("www.") === -1) {
-            url = "http://www." + match
           }
           return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
         }
