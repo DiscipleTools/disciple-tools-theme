@@ -439,18 +439,16 @@ class Disciple_Tools_Posts_Endpoints {
             $this->namespace, '/(?P<post_type>\w+)/check_field_value_exists', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'check_field_value_exists' ],
-                'permission_callback' => [ $this, 'custom_permission_check' ],
+                'args'     => [
+                    'post_type' => $arg_schemas['post_type'],
+                ],
+                'permission_callback' => function ( WP_REST_Request $request ){
+                    $params = $request->get_params();
+                    $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+                    return DT_Posts::can_create( $post_type );
+                },
             ]
         );
-    }
-
-    public function custom_permission_check( WP_REST_Request $request ){
-        $params = $request->get_params();
-        if ( !isset( $params['post_type'] ) ) {
-            return false;
-        }
-        $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
-        return DT_Posts::can_create( $post_type );
     }
 
     /**
