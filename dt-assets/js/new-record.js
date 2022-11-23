@@ -1377,7 +1377,7 @@ jQuery(function($) {
 
   // Check for email duplication
   $('input[data-field="contact_email"]').after(`<span id="email-spinner" class="loading-spinner" style="margin: 0.5rem;"></span>`);
-  $('#edit-contact_email').append('<div id="duplicate-email-notice" class="hidden" style="color: red;font-style: italic;margin: -12px 0 12px 0;display:none;">email already exists: <span id="duplicate-email-ids" style="color: #3f729b;"></span></div>')
+  $('#edit-contact_email').append('<div id="duplicate-email-notice" class="communication-channel-error" style="display: none;">email already exists: <span id="duplicate-email-ids" style="color: #3f729b;"></span></div>')
   
   function check_email_exists(email) {
     $('#email-spinner').attr('class','loading-spinner active');
