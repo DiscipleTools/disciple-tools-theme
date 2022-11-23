@@ -691,7 +691,7 @@ class Disciple_Tools_Posts_Endpoints {
             global $wpdb;
             $result = $wpdb->get_results( $wpdb->prepare(
                 "SELECT `post_id`
-                    FROM `{$wpdb->prefix}postmeta`
+                    FROM $wpdb->postmeta
                     WHERE meta_key LIKE %s
                     AND meta_value = %s;", $params['communication_channel'] . '_%', $params['field_value'] ) );
             return $result;
