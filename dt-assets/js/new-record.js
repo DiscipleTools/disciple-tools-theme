@@ -1405,7 +1405,7 @@ jQuery(function($) {
           if ( k > 0 ) {
             duplicate_ids_html += ', ';
           }
-          duplicate_ids_html += `<a href="/${post_type}/${v.post_id}" target="_blank">contact_${v.post_id}</a>`;
+          duplicate_ids_html += `<a href="/${post_type}/${v.post_id}" target="_blank">Contact #${v.post_id}</a>`;
         });
         $('#duplicate-email-ids').html(duplicate_ids_html);
         $('#duplicate-email-notice').show();
