@@ -687,6 +687,10 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function check_field_value_exists( WP_REST_Request $request ) {
         $params = $request->get_params();
+        $communication_channels = DT_Posts::get_field_settings_by_type( $params['post_type'], 'communication_channel' );
+        if ( in_array( $params['post_type'], $communication_channels ) ) {
+            return new WP_Error( __METHOD__, 'Invalid communication_channel' );
+        }
         if ( isset( $params['post_type'] ) && isset( $params['communication_channel'] ) && isset( $params['field_value'] ) ) {
             global $wpdb;
             $result = $wpdb->get_results( $wpdb->prepare(
