@@ -42,7 +42,7 @@ jQuery(function($) {
     const listClass = $(e.currentTarget).data('list-class')
     const $list = $(`#edit-${listClass}`)
     const field = $(e.currentTarget).data('list-class')
-    const fieldName = field.replace('_', ' ')
+    const fieldName = window.new_record_localized.post_type_settings.fields[field].name
     const fieldType = $(e.currentTarget).data('field-type')
     var elementCount = $(`input[data-${field}-count]`).length
 
@@ -1387,8 +1387,8 @@ jQuery(function($) {
 
   // Check for phone and email duplication
   non_duplicable_fields = ['contact_phone', 'contact_email'];
-  $.each(non_duplicable_fields, function(key,field_type){
-    var field_name = field_type.replace('_', ' ');
+  $.each(non_duplicable_fields, function(field_key, field_type){
+    var field_name = window.new_record_localized.post_type_settings.fields[field_type].name
     $(`input[data-field="${field_type}"]`).attr(`data-${field_type}-count`, '0');
     $(`input[data-field="${field_type}"]`).after(`<span class="loading-spinner" data-${field_type}-count="0" style="margin: 0.5rem;"></span>`);
     $(`input[data-field="${field_type}"]`).parent().after(`
