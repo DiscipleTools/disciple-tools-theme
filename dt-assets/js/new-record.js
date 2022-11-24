@@ -44,7 +44,7 @@ jQuery(function($) {
     const field = $(e.currentTarget).data('list-class')
     const fieldName = window.new_record_localized.post_type_settings.fields[field].name
     const fieldType = $(e.currentTarget).data('field-type')
-    var elementCount = $(`input[data-${field}-count]`).length
+    var elementIndex = $(`input[data-${field}-index]`).length
 
     if (fieldType === 'link') {
       const addLinkForm = $(`.add-link-${field}`)
@@ -53,15 +53,15 @@ jQuery(function($) {
       $(`#cancel-link-button-${field}`).on('click', () => addLinkForm.hide())
     } else {
       $list.append(`<li style="display: flex">
-                <input type="text" class="dt-communication-channel" data-field="${window.lodash.escape( listClass )}" data-${field}-count="${window.lodash.escape( elementCount )}"/>
-                <button class="button clear delete-button new-${window.lodash.escape( listClass )}" type="button" data-${field}-count="${elementCount}">
+                <input type="text" class="dt-communication-channel" data-field="${window.lodash.escape( listClass )}" data-${field}-index="${window.lodash.escape( elementIndex )}"/>
+                <button class="button clear delete-button new-${window.lodash.escape( listClass )}" type="button" data-${field}-index="${elementIndex}">
                     <img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
                 </button>
-                <span class="loading-spinner" data-${field}-count="${window.lodash.escape( elementCount )}" style="margin: 0.5rem;"></span>
+                <span class="loading-spinner" data-${field}-index="${window.lodash.escape( elementIndex )}" style="margin: 0.5rem;"></span>
               </li>
-              <div class="communication-channel-error" data-${field}-count="${window.lodash.escape( elementCount )}" style="display: none;">
+              <div class="communication-channel-error" data-${field}-index="${window.lodash.escape( elementIndex )}" style="display: none;">
                 ${fieldName} already exists:
-                <span class="duplicate-ids" data-${field}-count="${window.lodash.escape( elementCount )}" style="color: #3f729b;"></span>
+                <span class="duplicate-ids" data-${field}-index="${window.lodash.escape( elementIndex )}" style="color: #3f729b;"></span>
               </div>`)
     }
   })
@@ -1389,21 +1389,21 @@ jQuery(function($) {
   non_duplicable_fields = ['contact_phone', 'contact_email'];
   $.each(non_duplicable_fields, function(field_key, field_type){
     var field_name = window.new_record_localized.post_type_settings.fields[field_type].name
-    $(`input[data-field="${field_type}"]`).attr(`data-${field_type}-count`, '0');
-    $(`input[data-field="${field_type}"]`).after(`<span class="loading-spinner" data-${field_type}-count="0" style="margin: 0.5rem;"></span>`);
+    $(`input[data-field="${field_type}"]`).attr(`data-${field_type}-index`, '0');
+    $(`input[data-field="${field_type}"]`).after(`<span class="loading-spinner" data-${field_type}-index="0" style="margin: 0.5rem;"></span>`);
     $(`input[data-field="${field_type}"]`).parent().after(`
-      <div class="communication-channel-error" data-${field_type}-count="0" style="display: none;">
+      <div class="communication-channel-error" data-${field_type}-index="0" style="display: none;">
         ${field_name} already exists: 
-        <span class="duplicate-ids" data-${field_type}-count="0" style="color: #3f729b;"></span>
+        <span class="duplicate-ids" data-${field_type}-index="0" style="color: #3f729b;"></span>
         </div>`);
   })
   
-  function check_field_value_exists(field_type, element_count) {
-    var email = $(`input[data-${field_type}-count="${element_count}"]`).val();
-    $(`.loading-spinner[data-${field_type}-count="${element_count}"]`).attr('class','loading-spinner active');
+  function check_field_value_exists(field_type, element_index) {
+    var email = $(`input[data-${field_type}-index="${element_index}"]`).val();
+    $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr('class','loading-spinner active');
     if (!email) {
-      $(`.communication-channel-error[data-${field_type}-count="${element_count}"]`).hide();
-      $(`.loading-spinner[data-${field_type}-count="${element_count}"]`).attr('class','loading-spinner');
+      $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).hide();
+      $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr('class','loading-spinner');
       return;
     }
     var post_type = window.wpApiShare.post_type;
@@ -1426,20 +1426,20 @@ jQuery(function($) {
           }
           duplicate_ids_html += `<a href="/${post_type}/${v.post_id}" target="_blank">Contact #${v.post_id}</a>`;
         });
-        $(`.duplicate-ids[data-${field_type}-count="${element_count}"]`).html(duplicate_ids_html);
-        $(`.communication-channel-error[data-${field_type}-count="${element_count}"]`).show();
+        $(`.duplicate-ids[data-${field_type}-index="${element_index}"]`).html(duplicate_ids_html);
+        $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).show();
       } else {
-        $(`.communication-channel-error[data-${field_type}-count="${element_count}"]`).hide();
-        $(`.duplicate-ids[data-${field_type}-count="${element_count}"]`).html('');
+        $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).hide();
+        $(`.duplicate-ids[data-${field_type}-index="${element_index}"]`).html('');
       }
-      $(`.loading-spinner[data-${field_type}-count="${element_count}"]`).attr('class','loading-spinner');
+      $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr('class','loading-spinner');
     });
   }
 
   $('.form-fields').on('change', 'input[data-field^="contact_"]', function() {
     var post_type = $(this).data('field');
-    var element_count = $(this).data(`${post_type}-count`);
-    check_field_value_exists(post_type, element_count)
+    var element_index = $(this).data(`${post_type}-index`);
+    check_field_value_exists(post_type, element_index)
   });
 
   /**
