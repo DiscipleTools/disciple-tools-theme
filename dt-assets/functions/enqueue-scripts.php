@@ -330,6 +330,10 @@ function dt_site_scripts() {
 
     if ( $is_new_post || $is_new_bulk_post ){
         $post_settings = DT_Posts::get_post_settings( $post_type );
+        $translations = [
+            'contact' => __( 'Contact', 'disciple_tools' ),
+            'value_already_exists' => _x( '%s already exists', 'disciple_tools' ),
+        ];
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){
             DT_Mapbox_API::load_mapbox_search_widget();
@@ -340,6 +344,7 @@ function dt_site_scripts() {
         wp_localize_script( 'new-record', 'new_record_localized', array(
             'post_type'          => $post_type,
             'post_type_settings' => $post_settings,
+            'translations'       => apply_filters( 'value_already_exists', $translations ),
         ) );
     }
 

@@ -60,7 +60,7 @@ jQuery(function($) {
                 <span class="loading-spinner" data-${field}-index="${window.lodash.escape( elementIndex )}" style="margin: 0.5rem;"></span>
               </li>
               <div class="communication-channel-error" data-${field}-index="${window.lodash.escape( elementIndex )}" style="display: none;">
-                ${fieldName} already exists:
+                ${window.new_record_localized.translations.value_already_exists.replace('%s', fieldName)}: 
                 <span class="duplicate-ids" data-${field}-index="${window.lodash.escape( elementIndex )}" style="color: #3f729b;"></span>
               </div>`)
     }
@@ -1393,7 +1393,7 @@ jQuery(function($) {
     $(`input[data-field="${field_type}"]`).after(`<span class="loading-spinner" data-${field_type}-index="0" style="margin: 0.5rem;"></span>`);
     $(`input[data-field="${field_type}"]`).parent().after(`
       <div class="communication-channel-error" data-${field_type}-index="0" style="display: none;">
-        ${field_name} already exists: 
+        ${window.new_record_localized.translations.value_already_exists.replace('%s', field_name)}: 
         <span class="duplicate-ids" data-${field_type}-index="0" style="color: #3f729b;"></span>
         </div>`);
   })
@@ -1424,7 +1424,7 @@ jQuery(function($) {
           if ( k > 0 ) {
             duplicate_ids_html += ', ';
           }
-          duplicate_ids_html += `<a href="/${post_type}/${v.post_id}" target="_blank">Contact #${v.post_id}</a>`;
+          duplicate_ids_html += `<a href="/${post_type}/${v.post_id}" target="_blank">${window.new_record_localized.translations.contact} #${v.post_id}</a>`;
         });
         $(`.duplicate-ids[data-${field_type}-index="${element_index}"]`).html(duplicate_ids_html);
         $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).show();
