@@ -249,10 +249,11 @@ class Disciple_Tools_Workflows_Execution_Handler {
 
                 return $found;
             case 'location_meta':
-                $found = false;
-                if ( is_array( $field ) ) {
+                $found        = false;
+                $location_pkg = json_decode( str_replace( "'", '"', $value ), true );
+                if ( is_array( $field ) && isset( $location_pkg, $location_pkg['label'] ) ) {
                     foreach ( $field as $item ) {
-                        if ( ! $found && isset( $item['label'] ) && strval( $item['label'] ) === strval( $value ) ) {
+                        if ( ! $found && isset( $item['label'] ) && strval( $item['label'] ) === strval( $location_pkg['label'] ) ) {
                             $found = true;
                         }
                     }
@@ -315,10 +316,11 @@ class Disciple_Tools_Workflows_Execution_Handler {
 
                 return ! $found;
             case 'location_meta':
-                $found = false;
-                if ( is_array( $field ) ) {
+                $found        = false;
+                $location_pkg = json_decode( str_replace( "'", '"', $value ), true );
+                if ( is_array( $field ) && isset( $location_pkg, $location_pkg['label'] ) ) {
                     foreach ( $field as $item ) {
-                        if ( ! $found && isset( $item['label'] ) && strval( $item['label'] ) === strval( $value ) ) {
+                        if ( ! $found && isset( $item['label'] ) && strval( $item['label'] ) === strval( $location_pkg['label'] ) ) {
                             $found = true;
                         }
                     }
@@ -544,28 +546,15 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'location_meta':
                 $location = null;
 
-                // Lookup location based on configured mapping api.
-                if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) {
-                    $query = Disciple_Tools_Google_Geocode_API::query_google_api( $value, 'coordinates_only' );
-                    if ( ! empty( $query ) ) {
-                        $location = [
-                            'label' => $value,
-                            'lng'   => $query['lng'],
-                            'lat'   => $query['lat'],
-                            'level' => Disciple_Tools_Google_Geocode_API::parse_raw_result( $query['raw'], 'types' )
-                        ];
-                    }
-                } elseif ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
-                    $lookup = DT_Mapbox_API::lookup( $value );
-                    if ( ! empty( $lookup ) && is_array( $lookup['features'] ) && isset( $lookup['features'][0]['center'] ) ) {
-                        $center   = $lookup['features'][0]['center']; // Select top hit!
-                        $location = [
-                            'label' => $value,
-                            'lng'   => $center[0],
-                            'lat'   => $center[1],
-                            'level' => ! empty( $lookup['features'][0]['place_type'] ) ? $lookup['features'][0]['place_type'][0] : null
-                        ];
-                    }
+                // Extract required location values from packaged json string.
+                $location_pkg = json_decode( str_replace( "'", '"', $value ), true );
+                if ( isset( $location_pkg, $location_pkg['label'], $location_pkg['level'], $location_pkg['lat'], $location_pkg['lng'] ) ) {
+                    $location = [
+                        'label' => $location_pkg['label'],
+                        'lng'   => $location_pkg['lng'],
+                        'lat'   => $location_pkg['lat'],
+                        'level' => $location_pkg['level']
+                    ];
                 }
 
                 // If valid lookup, then continue with update.
@@ -656,10 +645,11 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 $updated_location_metas = [];
 
                 // Attempt to locate corresponding label id.
-                if ( isset( $post[ $field_id ] ) ) {
+                $location_pkg = json_decode( str_replace( "'", '"', $value ), true );
+                if ( isset( $post[ $field_id ], $location_pkg, $location_pkg['label'] ) ) {
                     foreach ( $post[ $field_id ] ?? [] as $meta ) {
                         if ( isset( $meta['label'], $meta['grid_meta_id'] ) ) {
-                            if ( $meta['label'] == $value ) {
+                            if ( $meta['label'] == $location_pkg['label'] ) {
                                 $updated_location_metas[] = [
                                     'grid_meta_id' => $meta['grid_meta_id'],
                                     'delete'       => true

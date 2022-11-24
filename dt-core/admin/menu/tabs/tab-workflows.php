@@ -58,14 +58,22 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                 wp_enqueue_style( 'daterangepicker-css' );
                 wp_enqueue_script( 'daterangepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.js', [ 'moment' ], '3.1.0', true );
 
-                wp_enqueue_script( 'dt_utilities_workflows_script', disciple_tools()->admin_js_url . 'dt-utilities-workflows.js', [
+                $script_dependencies = [
                     'moment',
                     'jquery',
                     'lodash',
                     'typeahead-jquery',
                     'daterangepicker-js',
-                ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-workflows.js' ), true );
+                ];
 
+                // Unique handling of Google API
+                if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) {
+                    $api_key = Disciple_Tools_Google_Geocode_API::get_key();
+                    wp_enqueue_script( 'google-api-js', 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' . $api_key, [ 'jquery' ], '1', true );
+                    $script_dependencies[] = 'google-api-js';
+                }
+
+                wp_enqueue_script( 'dt_utilities_workflows_script', disciple_tools()->admin_js_url . 'dt-utilities-workflows.js', $script_dependencies, filemtime( disciple_tools()->admin_js_path . 'dt-utilities-workflows.js' ), true );
                 wp_localize_script(
                     'dt_utilities_workflows_script', 'dt_workflows', array(
                         'workflows_design_section_hidden_post_types'       => $this->fetch_post_types(),
@@ -88,8 +96,8 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             ],
             'google' => [
                 'enabled'  => false,
-                'endpoint' => 'https://maps.googleapis.com/maps/api/geocode/json?address=',
-                'settings' => '&key=',
+                'endpoint' => '',
+                'settings' => '',
                 'key'      => ''
             ]
         ];

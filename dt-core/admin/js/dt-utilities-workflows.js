@@ -1143,7 +1143,7 @@ jQuery(function ($) {
           if (field['id'] === field_id) {
 
             // Once field id has been found, determine value field state to be adopted
-            let event_value_field = fetch_event_value_field(post_type['base_url'], field);
+            let event_value_field = fetch_event_value_field(post_type['base_url'], field, event_value_object_id);
             if (event_value_field) {
 
               // Capture generated event value field's id; to be used during event add request
@@ -1204,12 +1204,6 @@ jQuery(function ($) {
           config['order'] = 'asc';
         }
 
-        // Determine search on focus setting.
-        if (typeahead['general']) {
-          config['searchOnFocus'] = typeahead['general']['search_on_focus'];
-          config['minLength'] = 2;
-        }
-
         // Instantiate...!
         dynamic_field.typeahead(config);
       }
@@ -1257,7 +1251,7 @@ jQuery(function ($) {
       })
     }
 
-    function fetch_event_value_field(base_url, field) {
+    function fetch_event_value_field(base_url, field, event_value_object_id) {
       switch (field['type']) {
         case "text":
         case "number":
@@ -1274,7 +1268,7 @@ jQuery(function ($) {
         case "location":
           return generate_event_value_locations(base_url);
         case "location_meta":
-          return generate_event_value_location_meta();
+          return generate_event_value_location_meta(event_value_object_id);
         case "connection":
           return generate_event_value_connections(base_url, field);
         case "user_select":
@@ -1346,7 +1340,7 @@ jQuery(function ($) {
       return null;
     }
 
-    function generate_event_value_location_meta() {
+    function generate_event_value_location_meta(event_value_object_id) {
       let response = {};
       response['id'] = Date.now();
 
@@ -1360,27 +1354,103 @@ jQuery(function ($) {
       let mappings = window.dt_workflows.mappings;
 
       // -- Google
+      let google_predictions = [];
       if (mappings['google']['enabled']) {
         config['endpoint'] = {
           'filter': false,
-          'display': ['formatted_address'],
-          'template': '<span>{{formatted_address}}</span>',
-          'url': mappings['google']['endpoint'] + '{{query}}' + mappings['google']['settings'] + mappings['google']['key'],
-          'done': function (response) {
-            return (response['results']) ? response['results'] : [];
+          'display': ['description'],
+          'template': '<span>{{description}}</span>',
+          'by_ajax': false,
+          'ajax': null,
+          'by_data': true,
+          'data': function () {
+
+            // Obtain handle to input locations search field.
+            let input = $('#' + response['id']);
+            if (input) {
+
+              // Execute predictions google api search.
+              let auto_complete_service = new google.maps.places.AutocompleteService();
+              let promise = auto_complete_service.getPlacePredictions({'input': input.val()}, function (predictions, status) {
+                if (status === 'OK') {
+                  google_predictions = predictions;
+                }
+              });
+            }
+
+            // Return current location predictions.
+            return google_predictions;
           }
         };
 
         config['id_func'] = function (item) {
-          if (item && item['formatted_address']) {
-            return item['formatted_address'];
+          if (item && item['place_id']) {
+
+            // Geocode item place details, for further information extraction; E.g. Lat/Lng.
+            let geocode_service = new google.maps.Geocoder()
+            geocode_service.geocode({'placeId': item['place_id']}, function (results, status) {
+              if (status === 'OK' && results && results.length > 0) {
+
+                // Ensure we can get a handle on lat/lng values.
+                if (results[0]['geometry']['location']) {
+                  let location = results[0]['geometry']['location'];
+                  let lat = location['lat']();
+                  let lng = location['lng']();
+                  let label = results[0]['formatted_address'];
+                  let level = results[0]['types'][0];
+
+                  /**
+                   * Convert first type to appropriate level.
+                   * NB: Keep following switch-block in sync with
+                   *  mapbox-users-search-widget.js -> convert_level()
+                   */
+
+                  switch (level) {
+                    case 'administrative_area_level_0':
+                      level = 'admin0';
+                      break;
+                    case 'administrative_area_level_1':
+                      level = 'admin1';
+                      break;
+                    case 'administrative_area_level_2':
+                      level = 'admin2';
+                      break;
+                    case 'administrative_area_level_3':
+                      level = 'admin3';
+                      break;
+                    case 'administrative_area_level_4':
+                      level = 'admin4';
+                      break;
+                    case 'administrative_area_level_5':
+                      level = 'admin5';
+                      break;
+                  }
+
+                  // Package findings within json object, for downstream processing.
+                  let location_pkg = {
+                    'label': label,
+                    'level': level,
+                    'lat': lat,
+                    'lng': lng
+                  };
+
+                  // Stringify and persist location package.
+                  event_value_object_id.val(JSON.stringify(location_pkg).replaceAll("\"", "'"));
+                }
+              }
+            });
           }
+
+          /**
+           * Return null, to halt flow; as actual update will occur within geocode service callback
+           * function.
+           */
+
           return null;
         };
 
         config['general'] = {
-          'order': '',
-          'search_on_focus': false
+          'order': ''
         };
 
       // -- Mapbox
@@ -1389,22 +1459,38 @@ jQuery(function ($) {
           'filter': false,
           'display': ['place_name', 'id'],
           'template': '<span>{{place_name}}</span>',
-          'url': mappings['mapbox']['endpoint'] + '{{query}}' + mappings['mapbox']['settings'] + mappings['mapbox']['key'],
-          'done': function (response) {
-            return (response['features']) ? response['features'] : [];
-          }
+          'by_ajax': true,
+          'ajax': {
+            url: mappings['mapbox']['endpoint'] + '{{query}}' + mappings['mapbox']['settings'] + mappings['mapbox']['key'],
+            callback: {
+              done: function (response) {
+                return (response['features']) ? response['features'] : [];
+              }
+            }
+          },
+          'by_data': false,
+          'data': null
         };
 
         config['id_func'] = function (item) {
-          if (item && item['place_name']) {
-            return item['place_name'];
+          if (item && item['place_name'] && item['place_type'] && item['center']) {
+
+            // Package findings within json object, for downstream processing.
+            let location_pkg = {
+              'label': item['place_name'],
+              'level': item['place_type'][0],
+              'lat': item['center'][1],
+              'lng': item['center'][0]
+            };
+
+            // Stringify and persist location package.
+            return JSON.stringify(location_pkg).replaceAll("\"", "'");
           }
           return null;
         };
 
         config['general'] = {
-          'order': '',
-          'search_on_focus': true
+          'order': ''
         };
 
       // -- Default
@@ -1413,10 +1499,10 @@ jQuery(function ($) {
           'filter': false,
           'display': [],
           'template': '<span></span>',
-          'url': '',
-          'done': function (response) {
-            return [];
-          }
+          'by_ajax': false,
+          'ajax': null,
+          'by_data': false,
+          'data': null
         };
 
         config['id_func'] = function (item) {
@@ -1424,27 +1510,31 @@ jQuery(function ($) {
         };
 
         config['general'] = {
-          'order': '',
-          'search_on_focus': true
+          'order': ''
         };
       }
 
       // Typeahead object
       response['typeahead'] = {
         endpoint: function (wp_nonce) {
-          return {
+          let source = {
             locations: {
               filter: config['endpoint']['filter'],
               display: config['endpoint']['display'],
-              template: config['endpoint']['template'],
-              ajax: {
-                url: config['endpoint']['url'],
-                callback: {
-                  done: config['endpoint']['done']
-                }
-              }
+              template: config['endpoint']['template']
             }
           }
+
+          // Determine additional bolt-ons.
+          if (config['endpoint']['by_ajax']) {
+            source['locations']['ajax'] = config['endpoint']['ajax'];
+          }
+          if (config['endpoint']['by_data']) {
+            source['locations']['data'] = config['endpoint']['data'];
+          }
+
+          // Return final source config shape.
+          return source;
         },
         id_func: config['id_func'],
         general: config['general']
