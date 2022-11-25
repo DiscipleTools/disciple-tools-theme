@@ -509,6 +509,16 @@ class Disciple_Tools_Core_Endpoints {
                 $custom_field['private'] = true;
             }
 
+            //field tile
+            if ( isset( $post_submission['tile_select'] ) ) {
+                $custom_field['tile'] = $post_submission['tile_select'];
+            }
+
+            //field description
+            if ( isset( $post_submission['field_description'] ) && $post_submission['field_description'] != ( $custom_field['description'] ?? '' ) ){
+                $custom_field['description'] = $post_submission['field_description'];
+            }
+
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( 'dt_field_customizations', $field_customizations );
             wp_cache_delete( $post_type . '_field_settings' );

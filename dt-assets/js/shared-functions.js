@@ -233,12 +233,14 @@ window.API = {
     other_field_name: other_field_name,
   }, `dt-core/v1/`),
 
-  edit_field: (post_type, tile_key, field_key, custom_name, field_private) => makeRequest("POST", `edit-field`, {
+  edit_field: (post_type, tile_key, field_key, custom_name, field_private, tile_select, description) => makeRequest("POST", `edit-field`, {
     post_type: post_type,
     tile_key: tile_key,
     field_key: field_key,
     custom_name: custom_name,
     field_private: field_private,
+    tile_select: tile_select,
+    description: description,
   }, `dt-core/v1/`),
 
   new_field_option: (post_type, tile_key, field_key, field_option_name) => makeRequest("POST", `new-field-option`, {
@@ -314,7 +316,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
       ) {
         let field_name = `<h2>${window.lodash.escape(field.name)}</h2>`;
         if ( window.wpApiShare.can_manage_dt ){
-          let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_options&tab=new-settings-ui&post_type=${window.wpApiShare.post_type}&tile=${field.tile}#${field_key}`
+          let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${field.tile}#${field_key}`
           field_name = `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
         }
         html += field_name

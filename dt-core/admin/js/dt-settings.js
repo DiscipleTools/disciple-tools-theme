@@ -228,14 +228,6 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label><b>Post Type</label></b>
-                </td>
-                <td>
-                    ${post_type}
-                </td>
-            </tr>
-            <tr>
-                <td>
                     <label for="new_tile_name"><b>Key</b></label>
                 </td>
                 <td>
@@ -448,13 +440,14 @@ jQuery(document).ready(function($) {
                     <label for="tile-select"><b>Tile</b></label>
                 </td>
                 <td>
-                    <select name="tile-select" id="new-field-type">
+                    <select name="tile-select" id="tile_select">
                         <option value="no_tile">No tile / hidden</option>`;
                         $.each(window.field_settings.post_type_tiles, function (k, tile) {
                             if ( k === tile_key  ) {
-                                modal_html_content += `<option value="${tile_key}" selected>${tile['label']}</option>`;
+                                modal_html_content += `<option value="${k}" selected>${tile['label']}</option>`;
+                            } else {
+                                modal_html_content += `<option value="${k}">${tile['label']}</option>`;
                             }
-                            modal_html_content += `<option value="${tile_key}">${tile['label']}</option>`;
                         });
                 modal_html_content += `
                     </select>
@@ -639,19 +632,52 @@ jQuery(document).ready(function($) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
-        var field_key = $(this).data('field-key');
         var custom_name = $('#edit-field-custom-name').val();
         var field_private = $('#edit-field-private').is(':checked');
-        API.edit_field(post_type, tile_key, field_key, custom_name, field_private).promise().then(function(result){
+        var tile_select = $('#tile_select').val();
+        var description = $('#edit-field-description').val();
+        API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, description).promise().then(function(result){
             window['field_settings']['post_type_settings']['fields'][field_key] = result;
             show_preview_tile(tile_key);
             if (custom_name != '' ) {
                 $(`.field-name-content[data-parent-tile="${tile_key}"][data-key="${field_key}"]`)[0].innerText = custom_name;
             }
+
+            //check if rundown element and sub element need to be moved to another tile
+            if ( tile_key != tile_select ) {
+                var edited_field_menu_element = $(`.field-settings-table-field-name[data-key="${field_key}"]`);
+                var edited_field_submenu_element = $(`.field-settings-table-child-toggle[data-key="${field_key}"]`);
+                var target_tile_menu = $(`.field-settings-table-tile-name[data-key="${tile_select}"]`);
+                var target_tile_submenu = $(`.tile-rundown-elements[data-parent-tile-key="${tile_select}"]`);
+
+                if ( edited_field_submenu_element.is(':visible') ) {
+                    edited_field_submenu_element.trigger('click');
+                }
+
+                if ( target_tile_submenu.not(':visible') ) {
+                    target_tile_menu.trigger('click');
+                }
+
+                edited_field_menu_element.attr('style', 'border:1px dashed #0073aa;');
+                edited_field_submenu_element.attr('style', 'border:1px dashed #0073aa;');
+
+                target_tile_submenu.prepend(edited_field_menu_element);
+                edited_field_menu_element.after(edited_field_submenu_element);
+                edited_field_menu_element.children('.expand-icon').text('+');
+
+                scrollTo(target_tile_menu, -32);
+                edited_field_submenu_element.trigger('click');
+            }
             closeModal();
         });
         return;
     });
+
+    function scrollTo(target_element, offset = 0) {
+        $([document.documentElement, document.body]).animate({
+            scrollTop: target_element.offset().top + offset
+        }, 500);
+    }
 
     $('#modal-overlay-form').on('click', '#js-add-field-option', function(e) {
         var post_type = get_post_type();
@@ -704,7 +730,6 @@ jQuery(document).ready(function($) {
     });
 
     // *** TYPEAHEAD : START ***
-    var input_text = $('.js-typeahead-settings')[0].value;
     $.typeahead({
         input: '.js-typeahead-settings',
         order: "desc",

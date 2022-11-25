@@ -333,7 +333,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <span class="edit-icon"></span>
                 </div>
                 <!-- END TILE -->
-                <div style="display: none;">
+                <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
                     <!-- START TOGGLED FIELD ITEMS -->
                     <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                         <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) {
@@ -356,7 +356,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                 </div>
 
                                 <!-- START TOGGLED ITEMS -->
-                                <div class="field-settings-table-child-toggle">
+                                <div class="field-settings-table-child-toggle" data-key="<?php echo esc_attr( $field_key ); ?>">
                                     <?php foreach ( $field_settings as $key => $value ) : ?>
                                         <?php if ( $key === 'default' && !empty( $field_settings['default'] ) ) : ?>
                                             <?php foreach ( $value as $v ) {
@@ -375,7 +375,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                     <?php endforeach; ?>
                                     <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
                                         <span class="sortable">⋮⋮</span>
-                                        <span style="margin-left: 16px;"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
+                                        <span style="margin-left: 16px;vertical-align: sub;"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
                                     </div>
                                 </div>
                                 <!-- END TOGGLED ITEMS -->
@@ -387,7 +387,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <!-- END TOGGLED FIELD ITEMS -->
                     <div class="field-settings-table-field-name expandable">
                         <span class="sortable">⋮⋮</span>
-                        <span class="field-name-content add-new-field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">    
+                        <span class="field-name-content add-new-field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                             <a><?php echo esc_html( 'add new field', 'disciple_tools' ); ?></a>
                         </span>
                     </div>
@@ -416,6 +416,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             .modal-box-title {
                 text-align: left;
                 margin-bottom: 28px;
+            }
+            .add-new-field a {
+                margin-left: 16px;
             }
             .add-new-field-table {
                 padding: 18px;
@@ -548,7 +551,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 scroll-behavior: smooth;
             }
             .new-field-option {
-                color: #3f729b;
+                color: #0073aa;
                 cursor: pointer;
             }
             .dt-tile-preview {
