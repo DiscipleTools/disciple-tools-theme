@@ -1,12 +1,16 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: Disciple.Tools\n"
+"PO-Revision-Date: 2022-11-24 10:32+0000\n"
+"Last-Translator: Corsacca <corsacca@gmail.com>\n"
+"Language-Team: French <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/fr_FR/>\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Project-Id-Version: Disciple.Tools\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: 403.php:22
 #: dt-users/template-new-user.php:14
@@ -422,7 +426,7 @@ msgstr "Commentaires et activités"
 
 #: dt-assets/parts/loop-activity-comment.php:86
 msgid "Showing:"
-msgstr "Affichant:"
+msgstr "Affichant :"
 
 #: dt-assets/parts/loop-activity-comment.php:99
 #: dt-users/template-user-management.php:235
@@ -439,7 +443,7 @@ msgstr "cacher tout"
 
 #: dt-assets/parts/loop-activity-comment.php:149
 msgid "Delete Comment:"
-msgstr "Supprimer le commentaire:"
+msgstr "Supprimer le commentaire :"
 
 #: dt-assets/parts/loop-activity-comment.php:153
 #: dt-assets/parts/loop-activity-comment.php:200
@@ -679,7 +683,10 @@ msgstr "Déjà transféré vers %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
-msgstr "Remarque: vous avez déjà transféré ce contact.  Transférer une autre fois peut créer des doublons. Voulez-vous ignorer cet avertissement et continuer votre transfert?"
+msgstr ""
+"Remarque: Vous avez déjà transféré ce contact. Transférer une autre fois "
+"peut créer des doublons. Voulez-vous ignorer cet avertissement et continuer "
+"votre transfert ?"
 
 #: dt-contacts/contacts-transfer.php:281
 msgid "Override and Continue"
@@ -1585,7 +1592,7 @@ msgstr "Suivi de mouvement"
 #: dt-metrics/contacts/seeker-path.php:63
 #: dt-metrics/contacts/sources.php:87
 msgid "Filter contacts to date range:"
-msgstr "Filtrer les contacts pour une intervalle>"
+msgstr "Filtrer les contacts pour une intervalle :"
 
 #: dt-metrics/combined/daily-activity.php:72
 #: dt-metrics/contacts/milestones.php:69
@@ -1593,7 +1600,7 @@ msgstr "Filtrer les contacts pour une intervalle>"
 #: dt-metrics/contacts/sources.php:89
 #: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
-msgstr "Filtrer sur sur une 'intervalle"
+msgstr "Filtrer sur une intervalle"
 
 #: dt-metrics/contacts/sources.php:94
 msgid "Active contacts, by source and seeker path"
@@ -2117,12 +2124,13 @@ msgid "%1$s changed to %2$s"
 msgstr "%1$s modifié pour %2$s"
 
 #: dt-contacts/dmm-module.php:493
+#, fuzzy
 msgid "Who was this contact baptized by and when?"
 msgstr "Ce contact a été transféré"
 
 #: dt-contacts/user-module.php:124
 msgid "This contact already represents a user."
-msgstr "Ce contact représente déjà un utilisateur"
+msgstr "Ce contact représente déjà un utilisateur."
 
 #: dt-contacts/user-module.php:128
 msgctxt "Step 1 of link user"
@@ -2160,7 +2168,8 @@ msgstr "N'est plus sous-assigné à %s"
 
 #: dt-groups/base-setup.php:602
 msgid "To add new members, click on 'Create' or 'Select'."
-msgstr "Pour ajouter des membres cliquez sur 'Créer' ou 'Sélectioner'"
+msgstr ""
+"Pour ajouter de nouveaux membres, cliquez sur 'Créer' ou 'Sélectionner'."
 
 #: archive-template.php:29
 msgid "Filters"
@@ -2275,7 +2284,7 @@ msgstr "Créé un nouveau %s"
 
 #: dt-assets/functions/enqueue-scripts.php:212
 msgid "No task created"
-msgstr "Contact créé"
+msgstr "Tâche non-créée"
 
 #: dt-assets/functions/enqueue-scripts.php:213
 #: dt-assets/parts/modals/modal-tasks.php:17
@@ -2857,7 +2866,7 @@ msgstr "Le groupe étudie la Bible."
 #. In Church heath metrics
 #: dt-groups/base-setup.php:212
 msgid "Communion"
-msgstr "Communion"
+msgstr "Cène"
 
 #: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
@@ -2896,6 +2905,7 @@ msgid "Praise"
 msgstr "Louange"
 
 #: dt-groups/base-setup.php:233
+#, fuzzy
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "Le groupe loue"
@@ -3243,7 +3253,7 @@ msgstr "Accepté sans tentative de contact"
 
 #: dt-users/template-user-management.php:589
 msgid "Oldest 10 update needed"
-msgstr "Les 10 mises à jour nécessaires les plus ancienne."
+msgstr "Les 10 plus anciennes mises à jour nécessaires"
 
 #: dt-users/template-user-management.php:591
 msgid "Time from assigned to contact attempt for the last 10 contacts"
@@ -3573,7 +3583,7 @@ msgstr "Le contact à rendre un utilisateur (optionnel)"
 
 #: dt-users/template-new-user.php:181
 msgid "Create User"
-msgstr "Create "
+msgstr "Créer un Utilisateur"
 
 #: dt-users/user-management.php:178
 msgid "Email address is already in the system as a user!"
@@ -4167,7 +4177,7 @@ msgstr "Rôle d'utilisateur"
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "il y a plus de %s ans"
+msgstr[0] "il y a plus d'un an"
 msgstr[1] "il y a plus de %s ans"
 
 #: template-new-post.php:147
@@ -4461,7 +4471,7 @@ msgstr "[%s] Détails de connection"
 
 #: dt-users/user-hooks-and-config.php:289
 msgid "To set your password, visit the following address:"
-msgstr "Pour créer votre mot de passe, rendez-vous à l'adresse suivante:"
+msgstr "Pour créer votre mot de passe, rendez-vous à l'adresse suivante :"
 
 #: dt-users/user-hooks-and-config.php:312
 msgid "To log in click here: %s"
@@ -5038,7 +5048,7 @@ msgstr ""
 
 #: dt-core/release-notifications.php:86
 msgid "Translate"
-msgstr ""
+msgstr "Traduire"
 
 #: dt-core/release-notifications.php:88
 msgid "Translate Disciple.Tools into your language or help make a translation better."
@@ -5046,7 +5056,7 @@ msgstr ""
 
 #: dt-core/release-notifications.php:88
 msgid "Click here"
-msgstr ""
+msgstr "Cliquez ici"
 
 #: dt-core/release-notifications.php:94
 msgid "Build or Document"
@@ -5082,7 +5092,7 @@ msgstr ""
 
 #: dt-people-groups/people-groups-base.php:319
 msgid "Country"
-msgstr ""
+msgstr "Pays"
 
 #: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
@@ -5107,4 +5117,3 @@ msgstr ""
 #: dt-posts/dt-posts.php:101
 msgid "Updated existing record instead of creating a new record."
 msgstr ""
-
