@@ -58,23 +58,61 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                 wp_enqueue_style( 'daterangepicker-css' );
                 wp_enqueue_script( 'daterangepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.js', [ 'moment' ], '3.1.0', true );
 
-                wp_enqueue_script( 'dt_utilities_workflows_script', disciple_tools()->admin_js_url . 'dt-utilities-workflows.js', [
+                $script_dependencies = [
                     'moment',
                     'jquery',
                     'lodash',
                     'typeahead-jquery',
                     'daterangepicker-js',
-                ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-workflows.js' ), true );
+                ];
 
+                // Unique handling of Google API
+                if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) {
+                    $api_key = Disciple_Tools_Google_Geocode_API::get_key();
+                    wp_enqueue_script( 'google-api-js', 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' . $api_key, [ 'jquery' ], '1', true );
+                    $script_dependencies[] = 'google-api-js';
+                }
+
+                wp_enqueue_script( 'dt_utilities_workflows_script', disciple_tools()->admin_js_url . 'dt-utilities-workflows.js', $script_dependencies, filemtime( disciple_tools()->admin_js_path . 'dt-utilities-workflows.js' ), true );
                 wp_localize_script(
                     'dt_utilities_workflows_script', 'dt_workflows', array(
                         'workflows_design_section_hidden_post_types'       => $this->fetch_post_types(),
                         'workflows_design_section_hidden_post_field_types' => $this->fetch_post_field_types(),
-                        'workflows_design_section_hidden_custom_actions'   => $this->fetch_custom_actions()
+                        'workflows_design_section_hidden_custom_actions'   => $this->fetch_custom_actions(),
+                        'mappings'                                         => $this->fetch_mapping_config()
                     )
                 );
             }
         }
+    }
+
+    private function fetch_mapping_config() {
+        $config = [
+            'mapbox' => [
+                'enabled'  => false,
+                'endpoint' => 'https://api.mapbox.com/geocoding/v5/mapbox.places/',
+                'settings' => '.json?types=country,region,postcode,district,place,locality,neighborhood,address&limit=6&access_token=',
+                'key'      => ''
+            ],
+            'google' => [
+                'enabled'  => false,
+                'endpoint' => '',
+                'settings' => '',
+                'key'      => ''
+            ]
+        ];
+
+        if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
+            $config['mapbox']['enabled'] = true;
+            $config['mapbox']['key']     = DT_Mapbox_API::get_key();
+        }
+
+        if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) {
+            $config['google']['enabled'] = true;
+            $config['google']['key']     = Disciple_Tools_Google_Geocode_API::get_key();
+        }
+
+        return $config;
     }
 
     public function add_tab( $tab ) {
@@ -538,14 +576,15 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                         <h4 class="card-title text-muted">Step: 2</h4>
                         <br>
 
-                        <table border="0">
+                        <table>
                             <tbody>
                             <tr id="workflows_design_section_step2_fields_tr">
                                 <td>
                                     fields:
                                 </td>
-                                <td>
-                                    <select style="min-width: 100%;" id="workflows_design_section_step2_fields">
+                                <!-- Safeguard against overspill -->
+                                <td style="max-width: 100px;">
+                                    <select style="max-width: 100%;" id="workflows_design_section_step2_fields">
                                         <option disabled selected value="">--- select field ---</option>
                                     </select>
                                 </td>
@@ -591,7 +630,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                             </tr>
                             <tr>
                                 <td colspan="3">
-                                    <table style="min-width: 100%;" border="0"
+                                    <table style="min-width: 100%;"
                                            id="workflows_design_section_step2_conditions_table">
                                         <thead>
                                         <tr>
@@ -644,14 +683,15 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                         <h4 class="card-title text-muted">Step: 3</h4>
                         <br>
 
-                        <table border="0">
+                        <table>
                             <tbody>
                             <tr id="workflows_design_section_step3_fields_tr">
                                 <td>
                                     fields:
                                 </td>
-                                <td>
-                                    <select style="min-width: 100%;" id="workflows_design_section_step3_fields">
+                                <!-- Safeguard against overspill -->
+                                <td style="max-width: 100px;">
+                                    <select style="max-width: 100%;" id="workflows_design_section_step3_fields">
                                         <option disabled selected value="">--- select field ---</option>
                                     </select>
                                 </td>
@@ -697,7 +737,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                             </tr>
                             <tr>
                                 <td colspan="3">
-                                    <table style="min-width: 100%;" border="0"
+                                    <table style="min-width: 100%;"
                                            id="workflows_design_section_step3_actions_table">
                                         <thead>
                                         <tr>
@@ -749,7 +789,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                         <div class="float-end">Name your workflow</div>
                         <h4 class="card-title text-muted">Step: 4</h4>
 
-                        <table style="min-width: 100%;" border="0">
+                        <table style="min-width: 100%;">
                             <thead>
                             <tr>
                                 <th></th>
@@ -788,7 +828,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         return [
             'array',
             'task',
-            'location_meta',
             'post_user_meta',
             'datetime_series',
             'hash'
