@@ -413,6 +413,24 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     private function load_styles() {
         ?>
         <style>
+            .menu-highlight {
+                -webkit-animation: menu-highlight-fadeout 1s ease-in alternate;
+                -moz-animation: menu-highlight-fadeout 1s ease-in alternate;
+                animation: menu-highlight-fadeout 1s ease-in alternate;
+            }
+            .submenu-highlight {
+                -webkit-animation: submenu-highlight-fadeout 1s ease-in alternate;
+                -moz-animation: submenu-highlight-fadeout 1s ease-in alternate;
+                animation: submenu-highlight-fadeout 1s ease-in alternate;
+            }
+            @keyframes menu-highlight-fadeout {
+                from { background: #3f729b; }
+                to { background: #c2e0ff; }
+            }
+            @keyframes submenu-highlight-fadeout {
+                from { background: #3f729b; }
+                to { background: #d3d3d3; }
+            }
             .modal-box-title {
                 text-align: left;
                 margin-bottom: 28px;

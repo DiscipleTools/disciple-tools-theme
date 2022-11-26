@@ -651,8 +651,8 @@ jQuery(document).ready(function($) {
 
             var edited_field_menu_name_element = edited_field_menu_element.children('.field-name-content');
 
-            edited_field_menu_element.attr('style', 'border:1px dashed #0073aa;');
-            edited_field_submenu_element.attr('style', 'border:1px dashed #0073aa;');
+            edited_field_menu_element.addClass('menu-highlight');
+            edited_field_submenu_element.children('.field-settings-table-field-option').addClass('submenu-highlight');
 
             if ( custom_name != '' ) {
                 edited_field_menu_name_element[0].innerText = custom_name;
