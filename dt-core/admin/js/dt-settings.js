@@ -25,7 +25,7 @@ jQuery(document).ready(function($) {
         var tile_html = `
             <div class="dt-tile-preview">
                 <div class="section-header">
-                    <h3 class="section-header">${window['field_settings']['post_type_tiles'][tile_key]['label']}</h3>
+                    <h3 class="section-header">${window.field_settings.post_type_tiles[tile_key]['label']}</h3>
                     <img src="${window.wpApiShare.template_dir}/dt-assets/images/chevron_up.svg" class="chevron">
                 </div>
                 <div class="section-body">`;
@@ -151,12 +151,14 @@ jQuery(document).ready(function($) {
         $('.fields-table-right').html(tile_html);
     }
 
-    $('.field-settings-table').on('click', "div[class*='expandable']", function() {
-        $(this).next().slideToggle(333, 'swing');
-        if ($(this).children('.expand-icon').text() === '+'){
-            $(this).children('.expand-icon').text('-');
-        } else {
-            $(this).children('.expand-icon').text('+');
+    $('.field-settings-table').on('click', "div[class*='expandable']", function(event) {
+        if ( event.target.className != 'edit-icon' ) {
+            $(this).next().slideToggle(333, 'swing');
+            if ($(this).children('.expand-icon').text() === '+'){
+                $(this).children('.expand-icon').text('-');
+            } else {
+                $(this).children('.expand-icon').text('+');
+            }
         }
     });
 
@@ -379,7 +381,7 @@ jQuery(document).ready(function($) {
     function loadEditFieldContentBox(field_data) {
         var tile_key = field_data['tile_key'];
         var field_key = field_data['field_key'];
-        var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
+        var field_settings = window.field_settings.post_type_settings.fields[field_key];
         var number_of_translations = 0; //Todo: softcode this variable
         var field_icon_image_html = '';
         if ( field_settings['icon'] ) {
@@ -525,7 +527,7 @@ jQuery(document).ready(function($) {
         API.create_new_tile(post_type, new_tile_name).promise().then(function(data) {
             var tile_key = data['key'];
             var tile_label = data['label'];
-            window['field_settings']['post_type_tiles'][tile_key] = {'label':tile_label};
+            window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
             closeModal();
             $('#add-new-tile-link').parent().before(`
             <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="${tile_key}">
@@ -572,7 +574,7 @@ jQuery(document).ready(function($) {
         var other_field_name = $('#other_field_name').val();
 
         API.new_field(post_type, new_field_tile, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name ).promise().then(function(field_key) {
-            window['field_settings']['post_type_settings']['fields'][field_key] = {
+            window.field_settings.post_type_settings.fields[field_key] = {
                 'name':new_field_name,
                 'private':new_field_private,
                 'tile':new_field_tile,
@@ -637,36 +639,42 @@ jQuery(document).ready(function($) {
         var tile_select = $('#tile_select').val();
         var description = $('#edit-field-description').val();
         API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, description).promise().then(function(result){
-            window['field_settings']['post_type_settings']['fields'][field_key] = result;
-            show_preview_tile(tile_key);
-            if (custom_name != '' ) {
-                $(`.field-name-content[data-parent-tile="${tile_key}"][data-key="${field_key}"]`)[0].innerText = custom_name;
+            window.field_settings.post_type_settings.fields[field_key] = result;
+
+            var edited_field_menu_element = $('.field-settings-table-field-name').filter(function() {
+                return $(this).data('parent-tile-key') == tile_key && $(this).data('key') == field_key;
+            });
+
+            var edited_field_submenu_element = $('.field-settings-table-child-toggle').filter(function(){
+                return $(this).data('parent-tile-key') == tile_key && $(this).data('key') == field_key;
+            });
+
+            var edited_field_menu_name_element = edited_field_menu_element.children('.field-name-content');
+
+            edited_field_menu_element.attr('style', 'border:1px dashed #0073aa;');
+            edited_field_submenu_element.attr('style', 'border:1px dashed #0073aa;');
+
+            if ( custom_name != '' ) {
+                edited_field_menu_name_element[0].innerText = custom_name;
             }
 
             //check if rundown element and sub element need to be moved to another tile
             if ( tile_key != tile_select ) {
-                var edited_field_menu_element = $(`.field-settings-table-field-name[data-key="${field_key}"]`);
-                var edited_field_submenu_element = $(`.field-settings-table-child-toggle[data-key="${field_key}"]`);
                 var target_tile_menu = $(`.field-settings-table-tile-name[data-key="${tile_select}"]`);
                 var target_tile_submenu = $(`.tile-rundown-elements[data-parent-tile-key="${tile_select}"]`);
 
-                if ( edited_field_submenu_element.is(':visible') ) {
-                    edited_field_submenu_element.trigger('click');
-                }
-
-                if ( target_tile_submenu.not(':visible') ) {
+                if ( target_tile_submenu.is(':visible') === false ) {
                     target_tile_menu.trigger('click');
                 }
 
-                edited_field_menu_element.attr('style', 'border:1px dashed #0073aa;');
-                edited_field_submenu_element.attr('style', 'border:1px dashed #0073aa;');
-
                 target_tile_submenu.prepend(edited_field_menu_element);
                 edited_field_menu_element.after(edited_field_submenu_element);
-                edited_field_menu_element.children('.expand-icon').text('+');
 
                 scrollTo(target_tile_menu, -32);
-                edited_field_submenu_element.trigger('click');
+
+                edited_field_menu_element.data('parent-tile-key', tile_select);
+                edited_field_menu_name_element.data('parent-tile-key', tile_select);
+                edited_field_submenu_element.data('parent-tile-key', tile_select);
             }
             closeModal();
         });

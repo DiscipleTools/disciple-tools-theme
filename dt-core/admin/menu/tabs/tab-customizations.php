@@ -340,7 +340,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                             if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' || $field_settings['type'] === 'tags' ): ?>
                                 <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                     <span class="sortable">⋮⋮</span>
-                                    <span class="field-name-content" style="margin-left: 16px;" data-parent-tile="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
+                                    <span class="field-name-content" style="margin-left: 16px;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
                                         <?php echo esc_html( $field_settings['name'] ); ?>
                                     </span>
                                     <span class="edit-icon"></span>
@@ -349,14 +349,14 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                 <div class="field-settings-table-field-name expandable" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                     <span class="sortable">⋮⋮</span>
                                     <span class="expand-icon" style="padding-left: 16px;">+</span>
-                                    <span class="field-name-content" style="vertical-align: sub;" data-parent-tile="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
+                                    <span class="field-name-content" style="vertical-align: sub;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
                                         <?php echo esc_html( $field_settings['name'] ); ?>
                                     </span>
                                     <span class="edit-icon"></span>
                                 </div>
 
                                 <!-- START TOGGLED ITEMS -->
-                                <div class="field-settings-table-child-toggle" data-key="<?php echo esc_attr( $field_key ); ?>">
+                                <div class="field-settings-table-child-toggle" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
                                     <?php foreach ( $field_settings as $key => $value ) : ?>
                                         <?php if ( $key === 'default' && !empty( $field_settings['default'] ) ) : ?>
                                             <?php foreach ( $value as $v ) {
