@@ -649,7 +649,7 @@ class DT_Contacts_Base {
         if ( $post_type === 'contacts' ){
             $channels = DT_Posts::get_post_field_settings( $post_type );
             foreach ( $channels as $channel_key => $channel_option ) {
-                if ( ( ! isset( $channel_option['is_channel'] ) && ( $channel_option['type'] !== 'communication_channel' ) ) || ( isset( $channel_option['is_channel'] ) && ! $channel_option['is_channel'] ) ) {
+                if ( $channel_option['type'] !== 'communication_channel' ) {
                     continue;
                 }
                 $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
@@ -660,6 +660,29 @@ class DT_Contacts_Base {
                     'key' => $channel_key,
                     'label' => esc_html( $channel_option['name'] ?? $channel_key )
                 ];
+            }
+
+            // Extract custom comment types.
+            $custom_field_options  = dt_get_option( 'dt_field_customizations' );
+            $custom_contact_fields = $custom_field_options[ $post_type ];
+            foreach ( $custom_contact_fields ?? [] as $key => $field ) {
+                if ( isset( $field['is_comment_type'] ) && $field['is_comment_type'] ) {
+
+                    // Ensure label adopts the correct name translation.
+                    $label = ( isset( $field['translations'] ) && ! empty( $field['translations'][ determine_locale() ] ) ) ? $field['translations'][ determine_locale() ] : ( $field['name'] ?? $key );
+                    if ( empty( $label ) ) {
+                        $label = $key;
+                    }
+
+                    // Package custom comment type.
+                    $sections[] = [
+                        'key'             => $key,
+                        'label'           => esc_html( $label ),
+                        'enabled'         => $field['enabled'],
+                        'is_comment_type' => $field['is_comment_type'],
+                        'translations'    => $field['translations'] ?? []
+                    ];
+                }
             }
         }
         return $sections;

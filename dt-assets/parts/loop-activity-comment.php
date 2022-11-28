@@ -58,10 +58,10 @@
                                 <?php
                                 $section_keys = [];
                                 foreach ( $sections as $section ) {
-                                    if ( !in_array( $section['key'], $section_keys ) ) {
+                                    if ( ! in_array( $section['key'], $section_keys ) && ( ! isset( $section['is_comment_type'] ) || ( isset( $section['enabled'] ) && $section['enabled'] ) ) ) {
                                         $section_keys[] = $section['key'] ?>
                                         <option value="<?php echo esc_html( $section['key'] ); ?>">
-                                        <?php echo esc_html( $section['label'] );
+                                            <?php echo esc_html( $section['label'] );
                                     }
                                 } ?>
                             </select>
