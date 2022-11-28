@@ -84,8 +84,9 @@ jQuery(function($) {
 
   $('.js-create-post').on('click', '.delete-button', function () {
     var field_type = $(this).prev('input').data('field')
-    var element_count = $(this).data(`${field_type}-count`)
-    $(`.communication-channel-error[data-${field_type}-count="${element_count}"]`).remove()
+    var element_index = $(this).data(`${field_type}-index`)
+    console.log(field_type, element_index)
+    $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).remove()
     $(this).parent().remove()
   })
 
