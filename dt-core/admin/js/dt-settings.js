@@ -1,7 +1,44 @@
 jQuery(document).ready(function($) {
+    function autonavigate_to_menu() {
+        var tile_key = get_tile_from_uri();
+        var field_key = get_field_from_uri();
+        click_tile(tile_key);
+        click_field(field_key);
+    }
+
+    function get_tile_from_uri() {
+        var tile = window.location.search.match('post_tile_key=(.*)');
+        if ( tile !== null ) {
+            return tile[1];
+        }
+        return;
+    }
+
+    function get_field_from_uri() {
+        var field = window.location.hash;
+        field = field.replace('#','');
+        return field;
+    }
+
+    function click_tile(tile_key) {
+        $(`.field-settings-table-tile-name[data-key="${tile_key}"]`).ready(function() {
+            $(`.field-settings-table-tile-name[data-key="${tile_key}"]`).addClass('menu-highlight');
+            $(`.field-settings-table-tile-name[data-key="${tile_key}"]`).trigger('click');
+        });
+    }
+
+    function click_field(field_key) {
+        $(`.field-settings-table-field-name[data-key="${field_key}"]`).ready(function() {
+            $(`.field-settings-table-field-name[data-key="${field_key}"]`).addClass('menu-highlight');
+            $(`.field-settings-table-field-name[data-key="${field_key}"]`).trigger('click');
+        });
+    }
+
     function get_post_type() {
         return window.field_settings.post_type;
     }
+
+    autonavigate_to_menu();
 
     $('.field-settings-table').on('click', '.field-settings-table-tile-name', function() {
         var tile_key = $(this).data('key');
@@ -681,7 +718,7 @@ jQuery(document).ready(function($) {
         return;
     });
 
-    function scrollTo(target_element, offset = 0) {
+    function scrollTo(target_element, offset=0) {
         $([document.documentElement, document.body]).animate({
             scrollTop: target_element.offset().top + offset
         }, 500);
