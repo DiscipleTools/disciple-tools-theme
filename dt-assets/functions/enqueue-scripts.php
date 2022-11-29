@@ -332,7 +332,7 @@ function dt_site_scripts() {
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $translations = [
             'contact' => __( 'Contact', 'disciple_tools' ),
-            'value_already_exists' => _x( '%s already exists', 'disciple_tools' ),
+            'value_already_exists' => _x( '%s already exists', 'Communication channel already exists', 'disciple_tools' ),
         ];
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){
