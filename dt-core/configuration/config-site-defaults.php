@@ -959,7 +959,7 @@ function dt_get_global_languages_list() {
         'rm_CH' => [ 'label' => 'Romansh (Switzerland)', 'native_name' => 'Romontsch (Switzerland)', 'flag' => '🇨🇭', 'rtl' => false ],
         'ro' => [ 'label' => 'Romanian', 'native_name' => 'Limba Română', 'flag' => '🇷🇴', 'rtl' => false ],
         'ro_MD' => [ 'label' => 'Romanian (Moldova)', 'native_name' => 'Лимба Молдовеняскэ (Moldova)', 'flag' => '🇲🇩', 'rtl' => false ],
-        'ro_RO' => [ 'label' => 'Romanian (Romania)', 'native_name' => 'Лимба Молдовенѣскъ (România)', 'flag' => '🇷🇴', 'rtl' => false ],
+        'ro_RO' => [ 'label' => 'Romanian (Romania)', 'native_name' => 'Română', 'flag' => '🇷🇴', 'rtl' => false ],
         'rof' => [ 'label' => 'Rombo', 'native_name' => 'Kirombo', 'flag' => '🇹🇿', 'rtl' => false ],
         'rof_TZ' => [ 'label' => 'Rombo (Tanzania)', 'native_name' => 'Kirombo (Tanzania)', 'flag' => '🇹🇿', 'rtl' => false ],
         'ru' => [ 'label' => 'Russian', 'native_name' => 'Русский Язык', 'flag' => '🇷🇺', 'rtl' => false ],
