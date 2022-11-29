@@ -132,11 +132,11 @@ if ( isset( $post_settings['fields']['type'] ) && sizeof( $post_settings['fields
                             <!-- hide the fields that were not selected to be displayed by default in the create form -->
                             <div <?php echo esc_html( !$show_field ? 'style=display:none' : '' ); ?>
                                 class="form-field <?php echo esc_html( $classes ); ?>">
-                            <?php
-                            render_field_for_display( $field_key, $post_settings['fields'], [] );
-                            if ( isset( $field_settings['required'] ) && $field_settings['required'] === true ) { ?>
-                                <p class="help-text" id="name-help-text"><?php esc_html_e( 'This is required', 'disciple_tools' ); ?></p>
-                            <?php } ?>
+                                <?php
+                                render_field_for_display( $field_key, $post_settings['fields'], [] );
+                                if ( isset( $field_settings['required'] ) && $field_settings['required'] === true ) { ?>
+                                    <p class="help-text" id="name-help-text"><?php esc_html_e( 'This is required', 'disciple_tools' ); ?></p>
+                                <?php } ?>
                             </div>
                         <?php } ?>
                         <div id="show-shield-banner" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">

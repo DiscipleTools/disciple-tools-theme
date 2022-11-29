@@ -1765,6 +1765,17 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $fields;
     }
 
+    public static function get_field_settings_by_type( $post_type, $field_key ) {
+        $field_settings = self::get_post_field_settings( $post_type );
+        $output = [];
+        foreach ( $field_settings as $field_settings_key => $field_setting ) {
+            if ( $field_setting['type'] === $field_key ) {
+                $output[] = $field_settings_key;
+            }
+        }
+        return $output;
+    }
+
     public static function get_default_list_column_order( $post_type ){
         $fields = self::get_post_field_settings( $post_type );
         $columns = [];
