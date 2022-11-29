@@ -567,7 +567,7 @@ jQuery(document).ready(function($) {
             window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
             closeModal();
             $('#add-new-tile-link').parent().before(`
-            <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="${tile_key}">
+            <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="${tile_key}" style="border-bottom: 1px solid lightgray;border-top: 0;">
                 <span class="sortable">⋮⋮</span>
                 <span class="expand-icon">+</span>
                 <span id="tile-key-${tile_key}" style="vertical-align: sub;">
@@ -579,7 +579,7 @@ jQuery(document).ready(function($) {
                 <span class="edit-icon"></span>
             </div>
             <div style="display: none;">
-                <div class="field-settings-table-field-name">
+                <div class="field-settings-table-field-name inset-shadow" style="border-bottom: 1px solid lightgray;">
                     <span class="sortable">⋮⋮</span>
                     <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
                         <a>add new field</a>
@@ -620,6 +620,8 @@ jQuery(document).ready(function($) {
                 'multidirectional':multidirectional,
                 'other_field_name':other_field_name,
             };
+
+            jQuery(`.field-settings-table-tile-name[data-key="${new_field_tile}"]`).next().children().first().addClass('inset-shadow');
             var new_field_nonexpandable_html = `
                 <div class="field-settings-table-field-name" data-parent-tile-key="${new_field_tile}" data-field-name="${field_key}">
                     <span class="sortable">⋮⋮</span>
@@ -732,7 +734,7 @@ jQuery(document).ready(function($) {
 
         API.new_field_option(post_type, tile_key, field_key, field_option_name, field_private).promise().then(function() {
             var new_field_option_html = `
-            <div class="field-settings-table-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}">
+            <div class="field-settings-table-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}" style="border-top: 0;">
                 <span class="sortable">⋮⋮</span>
                 <span style="margin-left: 16px;">${field_option_name}
                 <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">

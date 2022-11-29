@@ -324,7 +324,11 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <div class="field-settings-table">
             <?php foreach ( $post_tiles['tiles'] as $tile_key => $tile_value ) : ?>
                 <!-- START TILE -->
-                <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>">
+                <?php if ( $tile_key === array_key_last( $post_tiles['tiles'] ) ) : ?>
+                    <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>" style="border-bottom: 1px solid lightgray;">
+                <?php else : ?>
+                    <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>">
+                <?php endif; ?>
                     <span class="sortable">⋮⋮</span>
                     <span class="expand-icon">+</span>
                     <span id="tile-key-<?php echo esc_attr( $tile_key ); ?>" style="vertical-align: sub;">
@@ -335,10 +339,12 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 <!-- END TILE -->
                 <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
                     <!-- START TOGGLED FIELD ITEMS -->
-                    <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                    <?php
+                    $first_tile_element = true;
+                    foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                         <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) {
                             if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' || $field_settings['type'] === 'tags' ): ?>
-                                <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                <div class="field-settings-table-field-name<?php if ( $first_tile_element ) { esc_attr_e( ' inset-shadow' ); $first_tile_element = false; }?>" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                     <span class="sortable">⋮⋮</span>
                                     <span class="field-name-content" style="margin-left: 16px;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
                                         <?php echo esc_html( $field_settings['name'] ); ?>
@@ -346,7 +352,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                     <span class="edit-icon"></span>
                                 </div>
                             <?php else : ?>
-                                <div class="field-settings-table-field-name expandable" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                <div class="field-settings-table-field-name expandable<?php if ( $first_tile_element ) { esc_attr_e( ' inset-shadow' ); $first_tile_element = false; }?>" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                     <span class="sortable">⋮⋮</span>
                                     <span class="expand-icon" style="padding-left: 16px;">+</span>
                                     <span class="field-name-content" style="vertical-align: sub;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
@@ -357,7 +363,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
                                 <!-- START TOGGLED ITEMS -->
                                 <div class="field-settings-table-child-toggle" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
-                                    <?php foreach ( $field_settings as $key => $value ) : ?>
+                                    <?php
+                                    $first_field_element = true;
+                                    foreach ( $field_settings as $key => $value ) : ?>
                                         <?php if ( $key === 'default' && !empty( $field_settings['default'] ) ) : ?>
                                             <?php foreach ( $value as $v ) {
                                                 $label = 'NULL';
@@ -365,7 +373,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                     $label = $v['label'];
                                                 }
                                                 ?>
-                                            <div class="field-settings-table-field-option">
+                                            <div class="field-settings-table-field-option<?php if ( $first_field_element ) { esc_attr_e( ' inset-shadow' ); $first_field_element = false; }?>">
                                                 <span class="sortable">⋮⋮</span>
                                                 <span class="field-name-content" style="padding-left: 16px;"><?php echo esc_html( $label ); ?></span>
                                             </div>
@@ -373,7 +381,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                             }
                                         endif; ?>
                                     <?php endforeach; ?>
-                                    <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
+                                    <div class="field-settings-table-field-option new-field-option<?php if ( $first_field_element ) { esc_attr_e( ' inset-shadow' ); $first_field_element = false; }?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
                                         <span class="sortable">⋮⋮</span>
                                         <span style="margin-left: 16px;vertical-align: sub;"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
                                     </div>
@@ -385,7 +393,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         } ?>
                     <?php endforeach; ?>
                     <!-- END TOGGLED FIELD ITEMS -->
-                    <div class="field-settings-table-field-name expandable">
+                    <div class="field-settings-table-field-name expandable<?php if ( $first_field_element ) { esc_attr_e( ' inset-shadow' ); $first_field_element = false; }?>">
                         <span class="sortable">⋮⋮</span>
                         <span class="field-name-content add-new-field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                             <a><?php echo esc_html( 'add new field', 'disciple_tools' ); ?></a>
@@ -475,35 +483,44 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             .field-settings-table {
                 display: table;
                 min-width: 50%;
+                margin: auto;
             }
             .field-settings-table-tile-name {
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
                 font-weight: bold;
-                border: 1px solid #c2e0ff;
-                background: #ecf5fc;
+                border: 1px solid lightgray;
+                border-bottom: 0;
+                background: #eaeaea;
                 cursor: pointer;
                 height: 32px;
             }
             .field-settings-table-field-name {
+                height: 32px;
                 display: flex;
                 align-items: center;
-                border: 1px solid #c2e0ff;
-                background: #ecf5fc;
+                border: 1px solid lightgray;
+                border-bottom: 0;
+                background: #f6f6f6;
                 cursor: pointer;
-                height: 32px;
+                box-shadow: inset -5px 0px 5px -2px #0000001a;
             }
             .field-settings-table-field-option {
-                border: 1px solid lightgray;
-                background: #f1f1f1;
                 height: 24px;
+                border: 1px solid lightgray;
+                border-bottom: 0;
+                background: #fff;
+                box-shadow: inset -5px 0px 5px -2px #0000001a;
             }
             .field-name-content {
                 vertical-align: sub;
             }
             .field-settings-table-child-toggle {
                 display:none;
+            }
+            .inset-shadow {
+                box-shadow: inset -5px 5px 5px -2px #0000001a;
             }
             .sortable {
                 color: #000;
@@ -541,8 +558,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 line-height: 2.5;
             }
             .fields-table-left {
-                border-right: 1px solid #ccc;
                 width: 50%;
+                background: #f1f1f1;
             }
             .fields-table-right {
                 background-color: #f1f1f1;
