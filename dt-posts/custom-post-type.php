@@ -203,6 +203,12 @@ class Disciple_Tools_Post_Type_Template {
             'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-clock.svg',
             'private' => true
         ];
+        //notes field used for adding comments when creating a record
+        $fields['notes'] = [
+            'name' => 'Notes',
+            'type' => 'array',
+            'hidden' => true
+        ];
         return $fields;
     }
 

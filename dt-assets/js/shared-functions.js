@@ -222,7 +222,7 @@ jQuery(document)
   .ajaxComplete((event, xhr, settings) => {
     if ( xhr && xhr.responseJSON && settings.type === "POST" ) {
       // Event that a contact record has been updated, check to make sure the post type that is being updated is the same as the current page post type.
-      if ( xhr.responseJSON.ID && xhr.responseJSON.post_type &&  xhr.responseJSON.post_type === window.detailsSettings.post_type ) {
+      if ( xhr.responseJSON.ID && xhr.responseJSON.post_type &&  xhr.responseJSON.post_type === window.detailsSettings?.post_type ) {
         let request = settings.data ? JSON.parse(settings.data) : {};
         $(document).trigger("dt_record_updated", [xhr.responseJSON, request]);
       }
