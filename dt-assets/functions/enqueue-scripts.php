@@ -344,7 +344,7 @@ function dt_site_scripts() {
         wp_localize_script( 'new-record', 'new_record_localized', array(
             'post_type'          => $post_type,
             'post_type_settings' => $post_settings,
-            'translations'       => apply_filters( 'value_already_exists', $translations ),
+            'translations'       => $translations,
         ) );
     }
 
