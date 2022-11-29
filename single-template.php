@@ -279,7 +279,7 @@ function dt_display_tile( $tile, $post ): bool {
 
                                     if ( isset( $field['tile'] ) && $field['tile'] === 'details' ){ ?>
                                         <div class="cell small-12 medium-6">
-                                            <?php render_field_for_display( $field_key, $post_settings['fields'], $dt_post ); ?>
+                                            <?php render_field_for_display( $field_key, $post_settings['fields'], $dt_post, true ); ?>
                                         </div>
                                     <?php }
                                 }
