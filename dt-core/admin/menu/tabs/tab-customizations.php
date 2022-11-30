@@ -324,7 +324,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <div class="field-settings-table">
             <?php foreach ( $post_tiles['tiles'] as $tile_key => $tile_value ) : ?>
                 <!-- START TILE -->
-                <?php if ( $tile_key === array_key_last( $post_tiles['tiles'] ) ) : ?>
+                <?php if ( $tile_value === end( $post_tiles['tiles'] ) ) : ?>
                     <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>" style="border-bottom: 1px solid lightgray;">
                 <?php else : ?>
                     <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>">
