@@ -4,12 +4,12 @@
 
     <form class="js-create-record hide-after-record-create">
         <label for="title">
-            <?php esc_html_e( "Name", "disciple_tools" ); ?>
+            <?php esc_html_e( 'Name', 'disciple_tools' ); ?>
         </label>
-        <input name="title" type="text" placeholder="<?php echo esc_html__( "Name", 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
+        <input name="title" type="text" placeholder="<?php echo esc_html__( 'Name', 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
 
         <div>
-            <button class="button loader js-create-record-button" type="submit"><?php echo esc_html__( "Create Record", 'disciple_tools' ); ?></button>
+            <button class="button loader js-create-record-button" type="submit"><?php echo esc_html__( 'Create Record', 'disciple_tools' ); ?></button>
             <button class="button button-cancel clear hide-after-record-create" data-close aria-label="Close reveal" type="button">
                 <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
             </button>
@@ -17,7 +17,7 @@
         <p style="color: red" class="error-text"></p>
     </form>
 
-    <p class="reveal-after-record-create" style="display: none"><?php esc_html_e( "Record Created", 'disciple_tools' ) ?>: <span id="new-record-link"></span></p>
+    <p class="reveal-after-record-create" style="display: none"><?php esc_html_e( 'Record Created', 'disciple_tools' ) ?>: <span id="new-record-link"></span></p>
 
 
     <hr class="reveal-after-group-create" style="display: none">
@@ -27,7 +27,7 @@
         </a>
         <button class="button reveal-after-record-create button-cancel clear" data-close type="button" id="create-record-return" style="display: none">
             <?php
-                echo esc_html( sprintf( _x( "Back to %s", "back to record", 'disciple_tools' ), DT_Posts::get_label_for_post_type( get_post_type( get_the_ID() ), true ) ) );
+                echo esc_html( sprintf( _x( 'Back to %s', 'back to record', 'disciple_tools' ), DT_Posts::get_label_for_post_type( get_post_type( get_the_ID() ), true ) ) );
             ?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">

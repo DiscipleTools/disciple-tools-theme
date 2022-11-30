@@ -96,7 +96,7 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
      * JWT token authentication is also open on the Disciple.Tools use of WP REST API
      */
     $path = dt_get_url_path();
-    if ( $path == "wp-json/jwt-auth/v1/token" || $path == "wp-json/jwt-auth/v1/token/validate" ) {
+    if ( $path == 'wp-json/jwt-auth/v1/token' || $path == 'wp-json/jwt-auth/v1/token/validate' ) {
         $authorized = true;
     }
 
@@ -107,9 +107,9 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
     if ( !$authorized && !is_user_logged_in() ){
         if ( isset( $_SERVER['HTTP_AUTHORIZATION'] ) ){
             $auth_token = sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) );
-        } elseif ( function_exists( "apache_request_headers" ) && isset( apache_request_headers()['Authorization'] ) ){
+        } elseif ( function_exists( 'apache_request_headers' ) && isset( apache_request_headers()['Authorization'] ) ){
             $auth_token = sanitize_text_field( wp_unslash( apache_request_headers()['Authorization'] ) );
-        }  elseif ( function_exists( "apache_request_headers" ) && isset( apache_request_headers()['authorization'] ) ){
+        }  elseif ( function_exists( 'apache_request_headers' ) && isset( apache_request_headers()['authorization'] ) ){
             $auth_token = sanitize_text_field( wp_unslash( apache_request_headers()['authorization'] ) );
         }
         if ( $auth_token ) {

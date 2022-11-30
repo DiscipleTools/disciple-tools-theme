@@ -43,13 +43,13 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 global $dt_write_log_microtime;
                 $now = microtime( true );
                 if ( $dt_write_log_microtime > 0 ) {
-                    $elapsed_log = sprintf( "[elapsed:%5dms]", ( $now - $dt_write_log_microtime ) * 1000 );
+                    $elapsed_log = sprintf( '[elapsed:%5dms]', ( $now - $dt_write_log_microtime ) * 1000 );
                 } else {
-                    $elapsed_log = "[elapsed:-------]";
+                    $elapsed_log = '[elapsed:-------]';
                 }
                 $dt_write_log_microtime = $now;
                 if ( is_array( $log ) || is_object( $log ) ) {
-                    error_log( $elapsed_log . " " . print_r( $log, true ) );
+                    error_log( $elapsed_log . ' ' . print_r( $log, true ) );
                 } else {
                     error_log( "$elapsed_log $log" );
                 }
@@ -94,16 +94,25 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      */
     if ( ! function_exists( 'dt_get_url_path' ) ) {
         function dt_get_url_path( $ignore_query_parameters = false ) {
-            if ( isset( $_SERVER["HTTP_HOST"] ) ) {
-                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
-                if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-                    $url .= esc_url_raw( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+            if ( isset( $_SERVER['HTTP_HOST'] ) ) {
+                $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
+                if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+                    $url .= esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
                 }
                 //remove the domain part. Ex: https://example.com/
-                $url = trim( str_replace( get_site_url(), "", $url ), '/' );
+                $url = trim( str_replace( get_site_url(), '', $url ), '/' );
+
+                //remove query parameters
                 if ( $ignore_query_parameters ){
-                    return strtok( $url, '?' ); //allow get parameters
+                    $url = strtok( $url, '?' ); //allow get parameters
                 }
+                //remove trailing '?'
+                if ( substr( $url, -1 ) === '?' ){
+                    $url = substr( $url, 0, -1 );
+                }
+                // remove trailing '/'
+                $url = untrailingslashit( $url );
+
                 return $url;
             }
             return '';
@@ -184,7 +193,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
     if ( ! function_exists( 'dt_get_year_from_timestamp' ) ) {
         function dt_get_year_from_timestamp( int $time ) {
-            return gmdate( "Y", $time );
+            return gmdate( 'Y', $time );
         }
     }
 
@@ -255,7 +264,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             foreach ( $available_language_codes as $code ){
                 if ( isset( $translations[$code] ) ){
                     $translations[$code]['site_default'] = $site_default_locale === $code;
-                    $translations[$code]['english_name'] = $translations[$code]["label"];
+                    $translations[$code]['english_name'] = $translations[$code]['label'];
                     $translations[$code]['language'] = $code;
                     if ( !$code_as_key ){
                         $available_translations[] = $translations[$code];
@@ -279,8 +288,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <select name="locale">
                 <?php foreach ( $languages as $language ){ ?>
                     <option
-                        value="<?php echo esc_html( $language["language"] ); ?>" <?php selected( $dt_user_locale === $language["language"] ) ?>>
-                        <?php echo esc_html( ! empty( $language["flag"] ) ? $language["flag"] . ' ' : '' ); ?> <?php echo esc_html( $language["native_name"] ); ?>
+                        value="<?php echo esc_html( $language['language'] ); ?>" <?php selected( $dt_user_locale === $language['language'] ) ?>>
+                        <?php echo esc_html( ! empty( $language['flag'] ) ? $language['flag'] . ' ' : '' ); ?> <?php echo esc_html( $language['native_name'] ); ?>
                     </option>
                 <?php } ?>
             </select>
@@ -288,7 +297,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
-    if ( !function_exists( "dt_create_field_key" ) ){
+    if ( !function_exists( 'dt_create_field_key' ) ){
         function dt_create_field_key( $s, $with_hash = false ){
             //note we don't limit to alhpa_numeric because it would strip out all non latin based languages
             $s = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
@@ -302,21 +311,21 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             return $s;
         }
     }
-    if ( !function_exists( "dt_render_field_icon" ) ){
+    if ( !function_exists( 'dt_render_field_icon' ) ){
         function dt_render_field_icon( $field, $class = 'dt-icon', $default_to_name = false ){
             $icon_rendered = false;
-            if ( isset( $field["icon"] ) && !empty( $field["icon"] ) ){
+            if ( isset( $field['icon'] ) && !empty( $field['icon'] ) ){
                 $icon_rendered = true;
-                if ( isset( $field["name"] ) ) {
-                    $alt_tag = $field["name"];
-                } else if ( isset( $field["label"] ) ) {
-                    $alt_tag = $field["label"];
+                if ( isset( $field['name'] ) ) {
+                    $alt_tag = $field['name'];
+                } else if ( isset( $field['label'] ) ) {
+                    $alt_tag = $field['label'];
                 } else {
-                    $alt_tag = "";
+                    $alt_tag = '';
                 }
                 ?>
 
-                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field["icon"] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>">
+                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>">
 
                 <?php
             } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
@@ -326,7 +335,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>"></i>
 
                 <?php
-            } else if ( $default_to_name && !empty( $field["name"] ) ){
+            } else if ( $default_to_name && !empty( $field['name'] ) ){
                 ?>
 
                 <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
@@ -416,15 +425,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     function dt_field_enabled_for_record_type( $field, $post ){
-        if ( !isset( $post["type"]["key"] ) ){
+        if ( !isset( $post['type']['key'] ) ){
             return true;
         }
         // if only_for_type is not set, then the field is available on all types
-        if ( !isset( $field["only_for_types"] ) ){
+        if ( !isset( $field['only_for_types'] ) ){
             return true;
-        } else if ( $field["only_for_types"] === true ){
+        } else if ( $field['only_for_types'] === true ){
             return true;
-        } else if ( is_array( $field["only_for_types"] ) && in_array( $post["type"]["key"], $field["only_for_types"], true ) ){
+        } else if ( is_array( $field['only_for_types'] ) && in_array( $post['type']['key'], $field['only_for_types'], true ) ){
             //if the type is in the "only_for_types"
             return true;
         }
@@ -435,44 +444,44 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         $post_settings = DT_Posts::get_post_settings( $dt_post_type );
         $selected_type = null;
 
-        foreach ( $post_settings["fields"] as $field_key => $field_settings ) {
-            if ( ! empty( $field_settings["hidden"] ) && empty( $field_settings["custom_display"] ) ) {
+        foreach ( $post_settings['fields'] as $field_key => $field_settings ) {
+            if ( ! empty( $field_settings['hidden'] ) && empty( $field_settings['custom_display'] ) ) {
                 continue;
             }
-            if ( isset( $field_settings["in_create_form"] ) && $field_settings["in_create_form"] === false ) {
+            if ( isset( $field_settings['in_create_form'] ) && $field_settings['in_create_form'] === false ) {
                 continue;
             }
-            if ( ! isset( $field_settings["tile"] ) ) {
+            if ( ! isset( $field_settings['tile'] ) ) {
                 continue;
             }
-            $classes    = "";
+            $classes    = '';
             $show_field = false;
             //add types the field should show up on as classes
             if ( ! empty( $field_settings['in_create_form'] ) ) {
                 if ( is_array( $field_settings['in_create_form'] ) ) {
                     foreach ( $field_settings['in_create_form'] as $type_key ) {
-                        $classes .= $type_key . " ";
+                        $classes .= $type_key . ' ';
                         if ( $type_key === $selected_type ) {
                             $show_field = true;
                         }
                     }
                 } elseif ( $field_settings['in_create_form'] === true ) {
-                    $classes    = "all";
+                    $classes    = 'all';
                     $show_field = true;
                 }
             } else {
-                $classes = "other-fields";
+                $classes = 'other-fields';
             }
 
             ?>
             <!-- hide the fields that were not selected to be displayed by default in the create form -->
-            <div <?php echo esc_html( ! $show_field ? "style=display:none" : "" ); ?>
+            <div <?php echo esc_html( ! $show_field ? 'style=display:none' : '' ); ?>
                 class="form-field <?php echo esc_html( $classes ); ?>">
                 <?php
                 render_field_for_display( $field_key, $post_settings['fields'], [] );
-                if ( isset( $field_settings["required"] ) && $field_settings["required"] === true ) { ?>
+                if ( isset( $field_settings['required'] ) && $field_settings['required'] === true ) { ?>
                     <p class="help-text"
-                       id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+                       id="name-help-text"><?php esc_html_e( 'This is required', 'disciple_tools' ); ?></p>
                 <?php } ?>
             </div>
             <?php
@@ -498,17 +507,17 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         } else {
             $can_update = true;
         }
-        if ( $can_update || isset( $post["assigned_to"]["id"] ) && $post["assigned_to"]["id"] == get_current_user_id() ) {
+        if ( $can_update || isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) {
             $disabled = '';
         }
-        $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
-        $field_type = isset( $fields[$field_key]["type"] ) ? $fields[$field_key]["type"] : null;
-        $is_private = isset( $fields[$field_key]["private"] ) && $fields[$field_key]["private"] === true;
+        $required_tag = ( isset( $fields[$field_key]['required'] ) && $fields[$field_key]['required'] === true ) ? 'required' : '';
+        $field_type = isset( $fields[$field_key]['type'] ) ? $fields[$field_key]['type'] : null;
+        $is_private = isset( $fields[$field_key]['private'] ) && $fields[$field_key]['private'] === true;
         $display_field_id = $field_key;
         if ( !empty( $field_id_prefix ) ) {
             $display_field_id = $field_id_prefix . $field_key;
         }
-        if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
+        if ( isset( $fields[$field_key]['type'] ) && empty( $fields[$field_key]['custom_display'] ) && empty( $fields[$field_key]['hidden'] ) ) {
             /* breadrcrumb: new-field-type Add allowed field types */
             $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
@@ -523,51 +532,92 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <div class="section-subheader">
                 <?php dt_render_field_icon( $fields[$field_key] );
 
-                echo esc_html( $fields[$field_key]["name"] );
+                echo esc_html( $fields[$field_key]['name'] );
                 ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
                 <?php if ( $is_private ) : ?>
                     <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
                 <?php endif;
-                if ( $field_type === "communication_channel" || $field_type === "link" ) : ?>
+                if ( $field_type === 'communication_channel' ) : ?>
                     <button data-field-type="<?php echo esc_html( $field_type ) ?>" data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button" <?php echo esc_html( $disabled ); ?>>
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 <?php endif ?>
+                <?php if ( $field_type === 'link' ) : ?>
+
+                    <?php $only_one_option = count( $fields[$field_key]['default'] ) === 1 ? esc_attr( array_keys( $fields[$field_key]['default'] )[0] ) : '' ?>
+
+                    <div class="add-link-dropdown"
+                        <?php echo !empty( $only_one_option ) ? 'data-only-one-option' : '' ?>
+                        data-link-type="<?php echo esc_attr( $only_one_option ) ?>"
+                        data-field-key="<?php echo esc_attr( $field_key ) ?>">
+                        <button
+                            class="add-button add-link-dropdown__button"
+                            type="button"
+                            data-field-type="<?php echo esc_html( $field_type ) ?>"
+                            data-list-class="<?php echo esc_html( $display_field_id ); ?>"
+                            <?php echo esc_html( $disabled ); ?>
+                        >
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                        </button>
+
+                        <div class="add-link-dropdown__content add-link-<?php echo esc_attr( $display_field_id ) ?>"
+                            style="<?php echo count( $fields[$field_key]['default'] ) < 2 ? 'display: none' : '' ?>">
+                            <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ): ?>
+
+                                <?php if ( isset( $option_value['deleted'] ) && $option_value['deleted'] === true ) {
+                                    continue;
+                                } ?>
+
+                                <div
+                                    class="add-link__option"
+                                    <?php echo !empty( $only_one_option ) ? 'data-only-one-option' : '' ?>
+                                    data-link-type="<?php echo esc_attr( $option_key ) ?>"
+                                    data-field-key="<?php echo esc_attr( $field_key ) ?>"
+                                >
+                                    <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
+                                    <?php echo esc_html( $option_value['label'] ) ?>
+                                </div>
+
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                <?php endif; ?>
                 <!-- location add -->
-                <?php if ( ( $field_type === "location" || "location_meta" === $field_type ) && DT_Mapbox_API::get_key() && ! empty( $post ) ) : ?>
+                <?php if ( ( $field_type === 'location' || 'location_meta' === $field_type ) && DT_Mapbox_API::get_key() && ! empty( $post ) ) : ?>
                     <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button" <?php echo esc_html( $disabled ); ?>>
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 <?php endif ?>
             </div>
             <?php
-            if ( $field_type === "key_select" ) :
+            if ( $field_type === 'key_select' ) :
                 $color_select = false;
-                $active_color = "";
-                if ( isset( $fields[$field_key]["default_color"] ) ) {
+                $active_color = '';
+                if ( isset( $fields[$field_key]['default_color'] ) ) {
                     $color_select = true;
-                    $active_color = $fields[$field_key]["default_color"];
-                    $current_key = $post[$field_key]["key"] ?? "";
-                    if ( isset( $fields[$field_key]["default"][ $current_key ]["color"] ) ){
-                        $active_color = $fields[$field_key]["default"][ $current_key ]["color"];
+                    $active_color = $fields[$field_key]['default_color'];
+                    $current_key = $post[$field_key]['key'] ?? '';
+                    if ( isset( $fields[$field_key]['default'][ $current_key ]['color'] ) ){
+                        $active_color = $fields[$field_key]['default'][ $current_key ]['color'];
                     }
                 }
                 ?>
-                <select class="select-field <?php echo esc_html( $color_select ? "color-select" : "" ); ?>" id="<?php echo esc_html( $display_field_id ); ?>" style="<?php echo esc_html( $color_select ? ( "background-color: " . $active_color ) : "" ); ?>" <?php echo esc_html( $required_tag ) ?> <?php echo esc_html( $disabled ); ?>>
-                    <?php if ( !isset( $fields[$field_key]["default"]["none"] ) && empty( $fields[$field_key]["select_cannot_be_empty"] ) ) : ?>
-                        <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: "selected" ) ?>></option>
+                <select class="select-field <?php echo esc_html( $color_select ? 'color-select' : '' ); ?>" id="<?php echo esc_html( $display_field_id ); ?>" style="<?php echo esc_html( $color_select ? ( 'background-color: ' . $active_color ) : '' ); ?>" <?php echo esc_html( $required_tag ) ?> <?php echo esc_html( $disabled ); ?>>
+                    <?php if ( !isset( $fields[$field_key]['default']['none'] ) && empty( $fields[$field_key]['select_cannot_be_empty'] ) ) : ?>
+                        <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: 'selected' ) ?>></option>
                     <?php endif; ?>
-                    <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ):
-                        if ( !$show_hidden && isset( $option_value["hidden"] ) && $option_value["hidden"] === true ){
+                    <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ):
+                        if ( !$show_hidden && isset( $option_value['hidden'] ) && $option_value['hidden'] === true ){
                             continue;
                         }
-                        $selected = isset( $post[$field_key]["key"] ) && $post[$field_key]["key"] === strval( $option_key ); ?>
-                        <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
-                            <?php echo esc_html( $option_value["label"] ) ?>
+                        $selected = isset( $post[$field_key]['key'] ) && $post[$field_key]['key'] === strval( $option_key ); ?>
+                        <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? 'selected' : '' )?>>
+                            <?php echo esc_html( $option_value['label'] ) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
-            <?php elseif ( $field_type === "tags" ) : ?>
+            <?php elseif ( $field_type === 'tags' ) : ?>
                 <div id="<?php echo esc_html( $display_field_id ); ?>" class="tags">
                     <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
                     <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
@@ -577,7 +627,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                     <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
                                            data-field="<?php echo esc_html( $field_key );?>"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]"
-                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                                           placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                            autocomplete="off"
                                            data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
                                            data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>" <?php echo esc_html( $disabled ); ?>>
@@ -593,8 +643,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
                     </div>
                 </div>
-            <?php elseif ( $field_type === "multi_select" ) :
-                if ( isset( $fields[$field_key]["display"] ) && $fields[$field_key]["display"] === "typeahead" ){
+            <?php elseif ( $field_type === 'multi_select' ) :
+                if ( isset( $fields[$field_key]['display'] ) && $fields[$field_key]['display'] === 'typeahead' ){
                     ?>
                     <div class="multi_select" id="<?php echo esc_html( $display_field_id ); ?>" >
                         <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
@@ -605,7 +655,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                         <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
                                                data-field="<?php echo esc_html( $field_key );?>"
                                                name="<?php echo esc_html( $display_field_id ); ?>[query]"
-                                               placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                                               placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                                autocomplete="off" <?php echo esc_html( $disabled ); ?>>
                                     </span>
                                 </div>
@@ -614,111 +664,103 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
                 <?php } else { ?>
                     <div class="small button-group" style="display: inline-block">
-                        <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+                        <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ): ?>
                             <?php
                             $haystack = $post[ $field_key ] ?? [];
                             if ( ! is_array( $haystack ) ) {
                                 $haystack = explode( ' ', $haystack );
                             }
                             $class = ( in_array( $option_key, $haystack ) ) ?
-                                "selected-select-button" : "empty-select-button"; ?>
+                                'selected-select-button' : 'empty-select-button'; ?>
                             <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $field_key ); ?>"
                                     class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button" <?php echo esc_html( $disabled ); ?>>
                                 <?php
                                 dt_render_field_icon( $option_value );
-                                echo esc_html( $option_value["label"] );
+                                echo esc_html( $option_value['label'] );
                                 ?>
                             </button>
                         <?php endforeach; ?>
                     </div>
                 <?php } ?>
-            <?php elseif ( $field_type === "text" ) :?>
+            <?php elseif ( $field_type === 'text' ) :?>
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="text" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
-                       value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>" <?php echo esc_html( $disabled ); ?>/>
-            <?php elseif ( $field_type === "textarea" ) :?>
+                       value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?>/>
+            <?php elseif ( $field_type === 'textarea' ) :?>
                 <textarea id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $required_tag ) ?>
-                       class="textarea dt_textarea" <?php echo esc_html( $disabled ); ?>><?php echo esc_html( $post[$field_key] ?? "" ) ?></textarea>
-            <?php elseif ( $field_type === "number" ) :?>
+                       class="textarea dt_textarea" <?php echo esc_html( $disabled ); ?>><?php echo esc_html( $post[$field_key] ?? '' ) ?></textarea>
+            <?php elseif ( $field_type === 'number' ) :?>
                 <input id="<?php echo esc_html( $display_field_id ); ?>" type="number" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
-                       value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>" <?php echo esc_html( $disabled ); ?>
-                       min="<?php echo esc_html( $fields[$field_key]["min_option"] ?? "" ) ?>"
-                       max="<?php echo esc_html( $fields[$field_key]["max_option"] ?? "" ) ?>"
+                       value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?>
+                       min="<?php echo esc_html( $fields[$field_key]['min_option'] ?? '' ) ?>"
+                       max="<?php echo esc_html( $fields[$field_key]['max_option'] ?? '' ) ?>"
                 />
-            <?php elseif ( $field_type === "link" ) : ?>
+            <?php elseif ( $field_type === 'link' ) : ?>
 
                 <div class="link-group">
 
-                    <div class="add-link-<?php echo esc_html( $display_field_id ) ?>" style="display:none">
-                        <div class="add-link-form" style="display: flex; align-items: center;">
-                            <select class="link-type">
-                                <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
-
-                                    <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) {
-                                        continue;
-                                    } ?>
-
-                                    <option style="display:flex; align-items: center;" value="<?php echo esc_html( $option_key ) ?>">
-                                    <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
-                                    <?php echo esc_html( $option_value['label'] ) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <button
-                                type="button"
-                                class="button add-link-button"
-                                data-field-key="<?php echo esc_attr( $field_key ) ?>"
-                            >
-                                <?php esc_html_e( 'Add', 'disciple-tools' ) ?>
-                            </button>
-                            <button type="button" id="cancel-link-button-<?php echo esc_html( $display_field_id ) ?>" class="button hollow alert">
-                                x
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="link-list-<?php echo esc_html( $field_key ) ?>">
+                    <div class="link-list-<?php echo esc_attr( $field_key ) ?>">
 
                         <?php
+                        $links_sorted_by_type = [];
                         foreach ( $post[$field_key] ?? [] as $link_item ) {
-                            if ( !isset( $link_item["type"] ) ) {
+                            if ( !isset( $link_item['type'] ) ) {
                                 continue;
                             }
-                            $option_type = $link_item["type"];
-                            $option_value = $fields[$field_key]["default"][$option_type];
-                            $meta_id = $link_item["meta_id"];
-                            $meta_value = $link_item["value"];
-
-                            render_link_field( $field_key, $option_type, $option_value, $meta_value, $display_field_id, $meta_id, $required_tag, $disabled );
+                            $link_type = $link_item['type'];
+                            if ( !isset( $links_sorted_by_type[$link_type] ) ) {
+                                $links_sorted_by_type[$link_type] = [];
+                            }
+                            $links_sorted_by_type[$link_type][] = $link_item;
                         }
-                        ?>
+
+                        $only_one_option = count( $fields[$field_key]['default'] ) === 1;
+                        foreach ( $fields[$field_key]['default'] as $link_type => $link_value ) : ?>
+
+                            <div class="link-section link-section--<?php echo esc_attr( $link_type ) ?>">
+                                <div class="section-subheader" <?php echo $only_one_option ? 'style="display: none"' : '' ?> >
+                                    <?php dt_render_field_icon( $link_value ) ?>
+                                    <?php echo esc_html( $link_value['label'] ); ?>
+                                </div>
+
+                                    <?php if ( isset( $links_sorted_by_type[$link_type] ) ) : ?>
+                                        <?php foreach ( $links_sorted_by_type[$link_type] as $link_item ) : ?>
+
+                                            <?php render_link_field( $field_key, $link_type, $link_item['value'], $display_field_id, $link_item['meta_id'], $required_tag, $disabled ); ?>
+
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+
+                            </div>
+
+                        <?php endforeach; ?>
 
                     </div>
 
-                    <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+                    <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ): ?>
 
-                        <?php if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ) {
+                        <?php if ( isset( $option_value['deleted'] ) && $option_value['deleted'] === true ) {
                             continue;
                         } ?>
 
                         <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
-                            <?php render_link_field( $field_key, $option_key, $option_value, "", $display_field_id, "", $required_tag, $disabled ) ?>
+                            <?php render_link_field( $field_key, $option_key, '', $display_field_id, '', $required_tag, $disabled ) ?>
                         </div>
 
                     <?php endforeach; ?>
 
                 </div>
 
-                <?php elseif ( $field_type === "date" ) :?>
+                <?php elseif ( $field_type === 'date' ) :?>
                 <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
                     <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
-                           value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?> >
+                           value="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?> >
                     <div class="input-group-button">
                         <button id="<?php echo esc_html( $display_field_id ); ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $display_field_id ); ?>" title="Delete Date" type="button" <?php echo esc_html( $disabled ); ?>>x</button>
                     </div>
                 </div>
-            <?php elseif ( $field_type === "connection" ) :?>
+            <?php elseif ( $field_type === 'connection' ) :?>
                 <div id="<?php echo esc_attr( $display_field_id . '_connection' ) ?>" class="dt_typeahead <?php echo esc_html( $disabled ) ?>">
                     <span id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></span>
                     <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-<?php echo esc_html( $display_field_id ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
@@ -727,16 +769,16 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
                                            data-field="<?php echo esc_html( $field_key ); ?>"
-                                           data-post_type="<?php echo esc_html( $fields[$field_key]["post_type"] ) ?>"
+                                           data-post_type="<?php echo esc_html( $fields[$field_key]['post_type'] ) ?>"
                                            data-field_type="connection"
                                            name="<?php echo esc_html( $display_field_id ); ?>[query]"
-                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                                           placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                            autocomplete="off" <?php echo esc_html( $disabled ); ?>>
                                 </span>
                                 <?php if ( $show_extra_controls ) : ?>
                                 <span class="typeahead__button">
                                     <button type="button" data-connection-key="<?php echo esc_html( $display_field_id ); ?>" class="create-new-record typeahead__image_button input-height" <?php echo esc_html( $disabled ); ?>>
-                                        <?php $icon = isset( $fields[$field_key]["create-icon"] ) ? $fields[$field_key]["create-icon"] : get_template_directory_uri() . '/dt-assets/images/add-contact.svg'; ?>
+                                        <?php $icon = isset( $fields[$field_key]['create-icon'] ) ? $fields[$field_key]['create-icon'] : get_template_directory_uri() . '/dt-assets/images/add-contact.svg'; ?>
                                         <img src="<?php echo esc_html( $icon ) ?>"/>
                                     </button>
                                 </span>
@@ -745,7 +787,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
                     </div>
                 </div>
-            <?php elseif ( $field_type === "location_meta" ) : ?>
+            <?php elseif ( $field_type === 'location_meta' ) : ?>
                 <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
                     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
                         <input id="mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto" <?php echo esc_html( $disabled ); ?>/>
@@ -763,7 +805,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>
                     <div id="mapbox-wrapper"></div>
                 <?php endif; ?>
-            <?php elseif ( $field_type === "location" ) :?>
+            <?php elseif ( $field_type === 'location' ) :?>
                 <div class="dt_location_grid" data-id="<?php echo esc_html( $field_key ); ?>">
                     <var id="<?php echo esc_html( $field_key ); ?>-result-container" class="result-container"></var>
                     <div id="<?php echo esc_html( $field_key ); ?>_t" name="form-<?php echo esc_html( $field_key ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
@@ -774,24 +816,24 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            data-field="<?php echo esc_html( $field_key ); ?>"
                                            data-field_type="location"
                                            name="<?php echo esc_html( $field_key ); ?>[query]"
-                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                                           placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                            autocomplete="off" <?php echo esc_html( $disabled ); ?>/>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-            <?php elseif ( $field_type === "communication_channel" ) : ?>
+            <?php elseif ( $field_type === 'communication_channel' ) : ?>
                 <div id="edit-<?php echo esc_html( $field_key ) ?>" >
                     <?php foreach ( $post[$field_key] ?? [] as $field_value ) : ?>
                         <div class="input-group">
-                            <input id="<?php echo esc_html( $field_value["key"] ) ?>"
+                            <input id="<?php echo esc_html( $field_value['key'] ) ?>"
                                    type="text"
                                    data-field="<?php echo esc_html( $field_key ); ?>"
-                                   value="<?php echo esc_html( $field_value["value"] ) ?>"
+                                   value="<?php echo esc_html( $field_value['value'] ) ?>"
                                    class="dt-communication-channel input-group-field" dir="auto"<?php echo esc_html( $disabled ); ?>/>
                             <div class="input-group-button">
-                                <button class="button alert input-height delete-button-style channel-delete-button delete-button new-<?php echo esc_html( $field_key ); ?>" data-field="<?php echo esc_html( $field_key ); ?>" data-key="<?php echo esc_html( $field_value["key"] ); ?>" <?php echo esc_html( $disabled ); ?>>&times;</button>
+                                <button class="button alert input-height delete-button-style channel-delete-button delete-button new-<?php echo esc_html( $field_key ); ?>" data-field="<?php echo esc_html( $field_key ); ?>" data-key="<?php echo esc_html( $field_value['key'] ); ?>" <?php echo esc_html( $disabled ); ?>>&times;</button>
                             </div>
                         </div>
                     <?php endforeach;
@@ -804,7 +846,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
                     <?php endif ?>
                 </div>
-            <?php elseif ( $field_type === "user_select" ) : ?>
+            <?php elseif ( $field_type === 'user_select' ) : ?>
                 <div id="<?php echo esc_html( $field_key ); ?>" class="<?php echo esc_html( $display_field_id ); ?> dt_user_select">
                     <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container <?php echo esc_html( $display_field_id ); ?>-result-container"></var>
                     <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-<?php echo esc_html( $display_field_id ); ?>" class="scrollable-typeahead">
@@ -812,7 +854,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" dir="auto"
-                                           name="<?php echo esc_html( $display_field_id ); ?>[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                                           name="<?php echo esc_html( $display_field_id ); ?>[query]" placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
                                            data-field_type="user_select"
                                            data-field="<?php echo esc_html( $field_key ); ?>"
                                            autocomplete="off" <?php echo esc_html( $disabled ); ?>>
@@ -831,34 +873,28 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id );
     }
 
-    function render_link_field( $field_key, $option_key, $option_value, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
+    function render_link_field( $field_key, $option_key, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
         ?>
 
-        <div class="link-section">
-            <div class="section-subheader">
-                <?php dt_render_field_icon( $option_value ) ?>
-                <?php echo esc_html( $option_value["label"] ); ?>
-            </div>
-            <div class="input-group">
-                <input
-                    type="text"
-                    class="link-input input-group-field"
-                    value="<?php echo esc_html( $value ) ?>"
+        <div class="input-group">
+            <input
+                type="text"
+                class="link-input input-group-field"
+                value="<?php echo esc_html( $value ) ?>"
+                data-meta-id="<?php echo esc_html( $meta_id ) ?>"
+                data-field-key="<?php echo esc_html( $display_field_id ) ?>"
+                data-type="<?php echo esc_html( $option_key ) ?>"
+                <?php echo esc_html( $required_tag ) ?>
+                <?php echo esc_html( $disabled ) ?>
+            >
+            <div class="input-group-button">
+                <button
+                    class="button alert delete-button-style input-height link-delete-button delete-button"
                     data-meta-id="<?php echo esc_html( $meta_id ) ?>"
-                    data-field-key="<?php echo esc_html( $display_field_id ) ?>"
-                    data-type="<?php echo esc_html( $option_key ) ?>"
-                    <?php echo esc_html( $required_tag ) ?>
-                    <?php echo esc_html( $disabled ) ?>
+                    data-field-key="<?php echo esc_html( $field_key ) ?>"
                 >
-                <div class="input-group-button">
-                    <button
-                        class="button alert delete-button-style input-height link-delete-button delete-button"
-                        data-meta-id="<?php echo esc_html( $meta_id ) ?>"
-                        data-field-key="<?php echo esc_html( $field_key ) ?>"
-                    >
-                        &times;
-                    </button>
-                </div>
+                    &times;
+                </button>
             </div>
         </div>
 
@@ -872,7 +908,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         $var += (int) $val;
     }
 
-    function dt_get_keys_map( $array, $key = "ID" ){
+    function dt_get_keys_map( $array, $key = 'ID' ){
         return array_map(  function ( $a ) use ( $key ) {
             if ( isset( $a[$key] ) ){
                 return $a[$key];
@@ -887,11 +923,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      */
     if ( ! function_exists( 'dt_is_module_enabled' ) ) {
         function dt_is_module_enabled( string $module_key, $check_prereqs = false ) : bool {
-            $modules = dt_get_option( "dt_post_type_modules" );
-            $module_enabled = isset( $modules[$module_key]["enabled"] ) && !empty( $modules[$module_key]["enabled"] );
+            $modules = dt_get_option( 'dt_post_type_modules' );
+            $module_enabled = isset( $modules[$module_key]['enabled'] ) && !empty( $modules[$module_key]['enabled'] );
             if ( $module_enabled && $check_prereqs ){
-                foreach ( $modules[$module_key]["prerequisites"] as $prereq ){
-                    $prereq_enabled = isset( $modules[$prereq]["enabled"] ) ? $modules[$prereq]["enabled"] : false;
+                foreach ( $modules[$module_key]['prerequisites'] as $prereq ){
+                    $prereq_enabled = isset( $modules[$prereq]['enabled'] ) ? $modules[$prereq]['enabled'] : false;
                     if ( !$prereq_enabled ){
                         return false;
                     }
@@ -951,7 +987,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     if ( !function_exists( 'dt_label_from_slug' ) ) {
         function dt_label_from_slug( $slug ) {
             $string = preg_replace( '/^' . preg_quote( 'dt_', '/' ) . '/', '', $slug );
-            $string = str_replace( "_", ' ', $string );
+            $string = str_replace( '_', ' ', $string );
 
             /* Words that should be entirely lower-case */
             $articles_conjunctions_prepositions = [

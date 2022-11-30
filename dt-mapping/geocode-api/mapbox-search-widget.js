@@ -379,7 +379,10 @@ function mapbox_autocomplete(address){
   let key = dtMapbox.map_key
   let url = root + encodeURI( address ) + settings + key
 
-  jQuery.get( url, function( data ) {
+  fetch( url, {
+    referrerPolicy: "strict-origin-when-cross-origin"
+  }).then(response => response.json())
+  .then( data => {
     if( data.features.length < 1 ) {
       // destroy lists
       console.log('no results')

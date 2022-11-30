@@ -96,7 +96,7 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
 
     private function display_settings() {
 
-        $this->box( 'top', 'Logging Settings', [ "col_span" => 4 ] );
+        $this->box( 'top', 'Logging Settings', [ 'col_span' => 4 ] );
 
         ?>
         <form method="POST">
@@ -134,7 +134,7 @@ class Disciple_Tools_Tab_Logs extends Disciple_Tools_Abstract_Menu_Base {
             </table>
             <br>
             <span style="float:right;"><button type="submit"
-                                               class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button></span>
+                                               class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button></span>
         </form>
         <?php
 
@@ -153,7 +153,7 @@ WHERE (act.action = 'error_log')
 ORDER BY act.hist_time
 DESC LIMIT %d", $this->fetch_display_count() ) );
 
-        $this->box( 'top', 'Error Logs', [ "col_span" => 4 ] );
+        $this->box( 'top', 'Error Logs', [ 'col_span' => 4 ] );
 
         ?>
         <table class="widefat striped">
@@ -168,7 +168,7 @@ DESC LIMIT %d", $this->fetch_display_count() ) );
         if ( ! empty( $logs ) ) {
             foreach ( $logs as $log ) {
                 echo '<tr>';
-                echo '<td>' . esc_attr( gmdate( "Y-m-d h:i:sa", esc_attr( $log->hist_time ) ) ) . '</td>';
+                echo '<td>' . esc_attr( gmdate( 'Y-m-d h:i:sa', esc_attr( $log->hist_time ) ) ) . '</td>';
                 echo '<td>' . esc_attr( $log->user ) . '</td>';
                 echo '<td>' . esc_attr( $log->meta_key ) . '</td>';
                 echo '<td>' . esc_attr( $this->format_meta_value( maybe_unserialize( $log->meta_value ) ) ) . '</td>';
@@ -185,10 +185,10 @@ DESC LIMIT %d", $this->fetch_display_count() ) );
             $key_value = array();
 
             foreach ( array_keys( $meta_value ) as $key ) {
-                array_push( $key_value, $key . ": " . $this->format_meta_value( $meta_value[ $key ] ) );
+                array_push( $key_value, $key . ': ' . $this->format_meta_value( $meta_value[ $key ] ) );
             }
 
-            return implode( ", ", $key_value );
+            return implode( ', ', $key_value );
         }
 
         return $meta_value ?? '';

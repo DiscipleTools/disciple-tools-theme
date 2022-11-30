@@ -273,16 +273,16 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
                 wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox-search-widget.js', [ 'jquery', 'mapbox-gl' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox-search-widget.js' ), true );
                 wp_localize_script(
-                    "mapbox-search-widget", "dtMapbox", array(
+                    'mapbox-search-widget', 'dtMapbox', array(
                         'post_type' => get_post_type(),
-                        "post_id" => $post->ID ?? 0,
-                        "post" => $post_record ?? false,
-                        "map_key" => self::get_key(),
-                        "mirror_source" => dt_get_location_grid_mirror( true ),
-                        "google_map_key" => ( Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
-                        "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
-                        "theme_uri" => get_stylesheet_directory_uri(),
-                        "translations" => array(
+                        'post_id' => $post->ID ?? 0,
+                        'post' => $post_record ?? false,
+                        'map_key' => self::get_key(),
+                        'mirror_source' => dt_get_location_grid_mirror( true ),
+                        'google_map_key' => ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
+                        'spinner_url' => get_stylesheet_directory_uri() . '/spinner.svg',
+                        'theme_uri' => get_stylesheet_directory_uri(),
+                        'translations' => array(
                             'add' => __( 'add', 'disciple_tools' ),
                             'use' => __( 'Use', 'disciple_tools' ),
                             'search_location' => __( 'Search Location', 'disciple_tools' ),
@@ -295,7 +295,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
 
                 // load Google Geocoder if key is present.
-                if ( Disciple_Tools_Google_Geocode_API::get_key() ){
+                if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ){
                     Disciple_Tools_Google_Geocode_API::load_google_geocoding_scripts();
                 }
             }
@@ -309,15 +309,15 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
                 wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox-users-search-widget.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox-users-search-widget.js' ), true );
                 wp_localize_script(
-                    "mapbox-search-widget", "dtMapbox", array(
+                    'mapbox-search-widget', 'dtMapbox', array(
                         'post_type' => 'user',
-                        "user_id" => get_current_user_id(),
-                        "user_location" => Disciple_Tools_Users::get_user_location( get_current_user_id() ),
-                        "map_key" => self::get_key(),
-                        "google_map_key" => ( Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
-                        "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
-                        "theme_uri" => get_stylesheet_directory_uri(),
-                        "translations" => array(
+                        'user_id' => get_current_user_id(),
+                        'user_location' => Disciple_Tools_Users::get_user_location( get_current_user_id() ),
+                        'map_key' => self::get_key(),
+                        'google_map_key' => ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
+                        'spinner_url' => get_stylesheet_directory_uri() . '/spinner.svg',
+                        'theme_uri' => get_stylesheet_directory_uri(),
+                        'translations' => array(
                             'add' => __( 'add', 'disciple_tools' )
                         )
                     )
@@ -382,11 +382,11 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         }
 
         public static function load_header() {
-            add_action( "enqueue_scripts", [ 'DT_Mapbox_API', 'load_mapbox_header_scripts' ] );
+            add_action( 'enqueue_scripts', [ 'DT_Mapbox_API', 'load_mapbox_header_scripts' ] );
         }
 
         public static function load_admin_header() {
-            add_action( "admin_enqueue_scripts", [ 'DT_Mapbox_API', 'load_mapbox_header_scripts' ] );
+            add_action( 'admin_enqueue_scripts', [ 'DT_Mapbox_API', 'load_mapbox_header_scripts' ] );
         }
 
         public static function is_active_mapbox_key() : array {
@@ -441,6 +441,10 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 }
             }
             ?>
+            <h1>Better Mapping and Locations Field</h1>
+            <p>Add a mapbox key for better and more detailed maps and better results when selecting a location on a record.</p>
+            <p>See the docs for more information and examples: <a href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/" target="_blank">Geolocation Docs</a></p>
+
             <form method="post">
                 <table class="widefat striped">
                     <thead>
@@ -475,7 +479,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                     </li>
                                     <li>
                                         Register for a new account (<a href="https://account.mapbox.com/auth/signup/">MapBox.com</a>)<br>
-                                        <em>(email required, no credit card required)</em>
+                                        <em>(email required. A credit card might be required, though you will likely not go over the free monthly quota.)</em>
                                     </li>
                                     <li>
                                         Once registered, go to your account home page. (<a href="https://account.mapbox.com/">Account Page</a>)<br>
@@ -522,7 +526,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             }
 
             // main theme check
-            $is_theme_dt = class_exists( "Disciple_Tools" );
+            $is_theme_dt = class_exists( 'Disciple_Tools' );
             if ( $is_theme_dt ) {
                 return true;
             }

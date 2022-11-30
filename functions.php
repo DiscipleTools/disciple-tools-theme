@@ -59,7 +59,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             require_once( 'dt-core/configuration/class-migration-engine.php' );
             Disciple_Tools_Migration_Engine::migrate( Disciple_Tools_Migration_Engine::$migration_number );
         } catch ( Throwable $e ) {
-            new WP_Error( 'migration_error', 'Migration engine failed to migrate.', [ "message" => $e->getMessage() ] );
+            new WP_Error( 'migration_error', 'Migration engine failed to migrate.', [ 'message' => $e->getMessage() ] );
         }
     } );
 
@@ -143,7 +143,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.31.0';
+            $this->version = '1.33.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -217,7 +217,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
                     if ( $template_filename ) {
                         exit(); // just exit if template was found and loaded
                     } else {
-                        throw new Error( "Expected to find template " . $template_for_url[ $url_path ] );
+                        throw new Error( 'Expected to find template ' . $template_for_url[ $url_path ] );
                     }
                 }
             } );
@@ -291,13 +291,18 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             /**
              * dt-people-groups
              */
+            require_once( 'dt-people-groups/people-groups.php' );
+            require_once( 'dt-people-groups/people-groups-base.php' );
+            new Disciple_Tools_People_Groups_Base();
+
             require_once( 'dt-people-groups/people-groups-post-type.php' );
             $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
-            require_once( 'dt-people-groups/people-groups.php' );
+
             if ( strpos( $url_path, 'people-groups' ) !== false ){
                 require_once( 'dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
                 $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
             }
+
             /**
              * dt-metrics
              */

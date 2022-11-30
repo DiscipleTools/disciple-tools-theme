@@ -24,7 +24,7 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         $this->base_title = __( 'Groups', 'disciple_tools' );
         $this->title = __( 'Groups Tree', 'disciple_tools' );
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
@@ -51,7 +51,7 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
 
     public function tree( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
         return $this->get_group_generations_tree();
     }
@@ -82,11 +82,11 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
                 'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
                 'highlight_churches' => __( 'Highlight Churches', 'disciple_tools' ),
                 'members' => __( 'Members', 'disciple_tools' ),
-                'view_record' => __( "View Record", "disciple_tools" ),
-                'assigned_to' => __( "Assigned To", "disciple_tools" ),
-                'status' => __( "Status", "disciple_tools" ),
-                'total_members' => __( "Total Members", "disciple_tools" ),
-                'view_group' => __( "View Group", "disciple_tools" ),
+                'view_record' => __( 'View Record', 'disciple_tools' ),
+                'assigned_to' => __( 'Assigned To', 'disciple_tools' ),
+                'status' => __( 'Status', 'disciple_tools' ),
+                'total_members' => __( 'Total Members', 'disciple_tools' ),
+                'view_group' => __( 'View Group', 'disciple_tools' ),
 
             ],
             'group_generation_tree' => $this->get_group_generations_tree(),
