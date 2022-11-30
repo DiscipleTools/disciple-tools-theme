@@ -45,6 +45,7 @@ jQuery(document).ready(function($) {
         if (tile_key) {
             show_preview_tile(tile_key);
         }
+        render_element_shadows();
     });
 
     $('.field-settings-table').on('click', '.edit-icon', function(){
@@ -127,7 +128,7 @@ jQuery(document).ready(function($) {
                         </div>
                 `;
                }
-               /*** USER_SELECT - END ***/ 
+               /*** USER_SELECT - END ***/
 
 
 
@@ -197,6 +198,7 @@ jQuery(document).ready(function($) {
                 $(this).children('.expand-icon').text('+');
             }
         }
+        render_element_shadows();
     });
 
     $('#add-new-tile-link').on('click', function(event){
@@ -567,7 +569,7 @@ jQuery(document).ready(function($) {
             window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
             closeModal();
             $('#add-new-tile-link').parent().before(`
-            <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="${tile_key}" style="border-bottom: 1px solid lightgray;border-top: 0;">
+            <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="${tile_key}" style="border-bottom: 1px solid lightgray;">
                 <span class="sortable">⋮⋮</span>
                 <span class="expand-icon">+</span>
                 <span id="tile-key-${tile_key}" style="vertical-align: sub;">
@@ -579,7 +581,7 @@ jQuery(document).ready(function($) {
                 <span class="edit-icon"></span>
             </div>
             <div style="display: none;">
-                <div class="field-settings-table-field-name inset-shadow" style="border-bottom: 1px solid lightgray;">
+                <div class="field-settings-table-field-name" style="border-bottom: 1px solid lightgray;">
                     <span class="sortable">⋮⋮</span>
                     <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
                         <a>add new field</a>
@@ -587,6 +589,7 @@ jQuery(document).ready(function($) {
                 </div>
             </div>
             `);
+            $(`.field-settings-table-tile-name`).eq(-2).attr('style', 'border-bottom: 0;');
         });
     });
 
@@ -621,7 +624,6 @@ jQuery(document).ready(function($) {
                 'other_field_name':other_field_name,
             };
 
-            jQuery(`.field-settings-table-tile-name[data-key="${new_field_tile}"]`).next().children().first().addClass('inset-shadow');
             var new_field_nonexpandable_html = `
                 <div class="field-settings-table-field-name" data-parent-tile-key="${new_field_tile}" data-field-name="${field_key}">
                     <span class="sortable">⋮⋮</span>
@@ -665,6 +667,7 @@ jQuery(document).ready(function($) {
             } else {
                 $('.field-name-content.add-new-field').parent().before(new_field_html);
             }
+            render_element_shadows();
             closeModal();
         });
     });
@@ -732,9 +735,9 @@ jQuery(document).ready(function($) {
         var field_key = $(this).data('field-key');
         var field_option_name = $('.new-field-option-name').val();
 
-        API.new_field_option(post_type, tile_key, field_key, field_option_name, field_private).promise().then(function() {
+        API.new_field_option(post_type, tile_key, field_key, field_option_name).promise().then(function() {
             var new_field_option_html = `
-            <div class="field-settings-table-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}" style="border-top: 0;">
+            <div class="field-settings-table-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}">
                 <span class="sortable">⋮⋮</span>
                 <span style="margin-left: 16px;">${field_option_name}
                 <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
@@ -775,6 +778,14 @@ jQuery(document).ready(function($) {
         data['field_key'] = $(this).data('field-key');
         showOverlayModal('new-field-option', data);
     });
+
+    function render_element_shadows() {
+        $('.field-settings-table-tile-name').next().children().removeClass('inset-shadow');
+        $('.tile-rundown-elements > div:first-child').addClass('inset-shadow');
+        $('.field-settings-table-field-name.expandable').next().children().removeClass('inset-shadow');
+        $('.field-settings-table-field-option:first-child').addClass('inset-shadow');
+
+    }
 
     // *** TYPEAHEAD : START ***
     $.typeahead({

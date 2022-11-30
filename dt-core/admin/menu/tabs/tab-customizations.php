@@ -344,7 +344,11 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                         <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) {
                             if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' || $field_settings['type'] === 'tags' ): ?>
-                                <div class="field-settings-table-field-name<?php if ( $first_tile_element ) { esc_attr_e( ' inset-shadow' ); $first_tile_element = false; }?>" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                <?php if ( $tile_value === end( $post_tiles['tiles'] ) && $first_tile_element ) : ?>
+                                    <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="border-top: 0;">
+                                <?php else: ?>
+                                    <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                <?php endif; ?>
                                     <span class="sortable">⋮⋮</span>
                                     <span class="field-name-content" style="margin-left: 16px;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
                                         <?php echo esc_html( $field_settings['name'] ); ?>
@@ -352,7 +356,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                     <span class="edit-icon"></span>
                                 </div>
                             <?php else : ?>
-                                <div class="field-settings-table-field-name expandable<?php if ( $first_tile_element ) { esc_attr_e( ' inset-shadow' ); $first_tile_element = false; }?>" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                <div class="field-settings-table-field-name expandable" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                     <span class="sortable">⋮⋮</span>
                                     <span class="expand-icon" style="padding-left: 16px;">+</span>
                                     <span class="field-name-content" style="vertical-align: sub;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
@@ -373,7 +377,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                     $label = $v['label'];
                                                 }
                                                 ?>
-                                            <div class="field-settings-table-field-option<?php if ( $first_field_element ) { esc_attr_e( ' inset-shadow' ); $first_field_element = false; }?>">
+                                            <div class="field-settings-table-field-option">
                                                 <span class="sortable">⋮⋮</span>
                                                 <span class="field-name-content" style="padding-left: 16px;"><?php echo esc_html( $label ); ?></span>
                                             </div>
@@ -381,7 +385,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                             }
                                         endif; ?>
                                     <?php endforeach; ?>
-                                    <div class="field-settings-table-field-option new-field-option<?php if ( $first_field_element ) { esc_attr_e( ' inset-shadow' ); $first_field_element = false; }?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
+                                    <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
                                         <span class="sortable">⋮⋮</span>
                                         <span style="margin-left: 16px;vertical-align: sub;"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
                                     </div>
@@ -393,7 +397,11 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         } ?>
                     <?php endforeach; ?>
                     <!-- END TOGGLED FIELD ITEMS -->
-                    <div class="field-settings-table-field-name expandable<?php if ( $first_field_element ) { esc_attr_e( ' inset-shadow' ); $first_field_element = false; }?>">
+                    <?php if ( $tile_value === end( $post_tiles['tiles'] ) ) : ?>
+                        <div class="field-settings-table-field-name expandable" style="border-bottom: 1px solid lightgray;">
+                    <?php else: ?>
+                        <div class="field-settings-table-field-name expandable">
+                    <?php endif; ?>
                         <span class="sortable">⋮⋮</span>
                         <span class="field-name-content add-new-field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                             <a><?php echo esc_html( 'add new field', 'disciple_tools' ); ?></a>
