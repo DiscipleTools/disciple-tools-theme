@@ -569,7 +569,7 @@ jQuery(document).ready(function($) {
             window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
             closeModal();
             $('#add-new-tile-link').parent().before(`
-            <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="${tile_key}" style="border-bottom: 1px solid lightgray;">
+            <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="${tile_key}">
                 <span class="sortable">⋮⋮</span>
                 <span class="expand-icon">+</span>
                 <span id="tile-key-${tile_key}" style="vertical-align: sub;">
@@ -581,7 +581,7 @@ jQuery(document).ready(function($) {
                 <span class="edit-icon"></span>
             </div>
             <div>
-                <div class="field-settings-table-field-name inset-shadow" style="border-top: 0;border-bottom: 1px solid lightgray;">
+                <div class="field-settings-table-field-name inset-shadow">
                     <span class="sortable">⋮⋮</span>
                     <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
                         <a>add new field</a>
@@ -650,6 +650,10 @@ jQuery(document).ready(function($) {
                 </div>
                 <!-- START TOGGLED ITEMS -->
                 <div class="field-settings-table-child-toggle">
+                    <div class="field-settings-table-field-option inset-shadow">
+                        <span class="sortable">⋮⋮</span>
+                        <span class="field-name-content" style="padding-left: 16px;"></span>
+                    </div>
                     <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="${new_field_tile}" data-field-key="${field_key}">
                         <span class="sortable">⋮⋮</span>
                         <span style="margin-left: 16px;">new field option</span>

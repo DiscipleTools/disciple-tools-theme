@@ -324,11 +324,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <div class="field-settings-table">
             <?php foreach ( $post_tiles['tiles'] as $tile_key => $tile_value ) : ?>
                 <!-- START TILE -->
-                <?php if ( $tile_value === end( $post_tiles['tiles'] ) ) : ?>
-                    <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>" style="border-bottom: 1px solid lightgray;">
-                <?php else : ?>
-                    <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>">
-                <?php endif; ?>
+                <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>">
                     <span class="sortable">⋮⋮</span>
                     <span class="expand-icon">+</span>
                     <span id="tile-key-<?php echo esc_attr( $tile_key ); ?>" style="vertical-align: sub;">
@@ -345,7 +341,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) {
                             if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' || $field_settings['type'] === 'tags' ): ?>
                                 <?php if ( $tile_value === end( $post_tiles['tiles'] ) && $first_tile_element ) : ?>
-                                    <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="border-top: 0;">
+                                    <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                 <?php else: ?>
                                     <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                 <?php endif; ?>
@@ -398,7 +394,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <?php endforeach; ?>
                     <!-- END TOGGLED FIELD ITEMS -->
                     <?php if ( $tile_value === end( $post_tiles['tiles'] ) ) : ?>
-                        <div class="field-settings-table-field-name expandable" style="border-bottom: 1px solid lightgray;">
+                        <div class="field-settings-table-field-name expandable">
                     <?php else: ?>
                         <div class="field-settings-table-field-name expandable">
                     <?php endif; ?>
@@ -488,6 +484,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             .dt-admin-modal-box-content {
                 padding: 8px;
             }
+            .tile-rundown-elements {
+                margin-top: -1px;
+            }
             .field-settings-table {
                 display: table;
                 min-width: 50%;
@@ -499,27 +498,27 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 align-items: center;
                 font-weight: bold;
                 border: 1px solid lightgray;
-                border-bottom: 0;
                 background: #eaeaea;
                 cursor: pointer;
                 height: 32px;
+                margin-top: -1px;
             }
             .field-settings-table-field-name {
                 height: 32px;
                 display: flex;
                 align-items: center;
                 border: 1px solid lightgray;
-                border-bottom: 0;
                 background: #f6f6f6;
                 cursor: pointer;
                 box-shadow: inset -5px 0px 5px -2px #0000001a;
+                margin-top: -1px;
             }
             .field-settings-table-field-option {
                 height: 24px;
                 border: 1px solid lightgray;
-                border-bottom: 0;
                 background: #fff;
                 box-shadow: inset -5px 0px 5px -2px #0000001a;
+                margin-top: -1px;
             }
             .field-name-content {
                 vertical-align: sub;
