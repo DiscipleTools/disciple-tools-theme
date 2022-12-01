@@ -51,7 +51,7 @@ jQuery(document).ready(function($) {
     $('.field-settings-table').on('click', '.edit-icon', function(){
         var edit_modal = $(this).parent().data('modal');
         var data = $(this).parent().data('key');
-        if (edit_modal === 'edit-field') {
+        if (edit_modal === 'edit-field' || edit_modal === 'edit-field-option') {
             var data = [];
             data['tile_key'] = $(this).parent().data('parent-tile-key');
             data['field_key'] = $(this).parent().data('key');
@@ -683,8 +683,9 @@ jQuery(document).ready(function($) {
         var custom_name = $('#edit-field-custom-name').val();
         var field_private = $('#edit-field-private').is(':checked');
         var tile_select = $('#tile_select').val();
-        var description = $('#edit-field-description').val();
-        API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, description).promise().then(function(result){
+        var field_description = $('#edit-field-description').val();
+        var field_icon = $('#edit-field-icon').val();
+        API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon).promise().then(function(result){
             window.field_settings.post_type_settings.fields[field_key] = result;
 
             var edited_field_menu_element = $('.field-settings-table-field-name').filter(function() {

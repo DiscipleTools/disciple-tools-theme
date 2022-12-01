@@ -233,14 +233,15 @@ window.API = {
     other_field_name: other_field_name,
   }, `dt-core/v1/`),
 
-  edit_field: (post_type, tile_key, field_key, custom_name, field_private, tile_select, description) => makeRequest("POST", `edit-field`, {
+  edit_field: (post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon) => makeRequest("POST", `edit-field`, {
     post_type: post_type,
     tile_key: tile_key,
     field_key: field_key,
     custom_name: custom_name,
     field_private: field_private,
     tile_select: tile_select,
-    description: description,
+    field_description: field_description,
+    field_icon: field_icon,
   }, `dt-core/v1/`),
 
   new_field_option: (post_type, tile_key, field_key, field_option_name) => makeRequest("POST", `new-field-option`, {

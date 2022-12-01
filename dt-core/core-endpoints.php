@@ -486,6 +486,7 @@ class Disciple_Tools_Core_Endpoints {
         $tile_key = $post_submission['tile_key'];
         $custom_name = $post_submission['custom_name'];
         $field_private = $post_submission['field_private'];
+        $field_icon = $post_submission['field_icon'];
 
         $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
         $field_customizations = dt_get_option( 'dt_field_customizations' );
@@ -497,26 +498,34 @@ class Disciple_Tools_Core_Endpoints {
             $custom_field = $field_customizations[$post_type][$field_key];
             $field = $post_fields[$field_key];
 
-            //update name
+            // update name
             if ( isset( $post_submission['custom_name'] ) && !empty( $post_submission['custom_name'] ) ) {
                 $custom_field['name'] = $post_submission['custom_name'];
             }
 
-            //field privacy
+            // field privacy
             $custom_field['private'] = false;
             if ( isset( $post_submission['field_private'] ) && $post_submission['field_private'] ) {
-                dt_write_log( 'private is true' );
                 $custom_field['private'] = true;
             }
 
-            //field tile
+            // field tile
             if ( isset( $post_submission['tile_select'] ) ) {
                 $custom_field['tile'] = $post_submission['tile_select'];
             }
 
-            //field description
+            // field description
             if ( isset( $post_submission['field_description'] ) && $post_submission['field_description'] != ( $custom_field['description'] ?? '' ) ){
                 $custom_field['description'] = $post_submission['field_description'];
+            }
+
+            // field icon
+            if ( isset( $post_submission['field_icon'] ) ) {
+                $field_icon                           = $post_submission['field_icon'];
+                $field_icon_key                       = ( ! empty( $field_icon ) && strpos( $field_icon, 'mdi mdi-' ) === 0 ) ? 'font-icon' : 'icon';
+                $field_null_icon_key                  = ( $field_icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
+                $custom_field[ $field_icon_key ]      = $field_icon;
+                $custom_field[ $field_null_icon_key ] = null;
             }
 
             $field_customizations[$post_type][$field_key] = $custom_field;
