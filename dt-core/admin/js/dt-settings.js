@@ -580,8 +580,8 @@ jQuery(document).ready(function($) {
                 </span>
                 <span class="edit-icon"></span>
             </div>
-            <div style="display: none;">
-                <div class="field-settings-table-field-name" style="border-bottom: 1px solid lightgray;">
+            <div>
+                <div class="field-settings-table-field-name inset-shadow" style="border-top: 0;border-bottom: 1px solid lightgray;">
                     <span class="sortable">⋮⋮</span>
                     <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
                         <a>add new field</a>
