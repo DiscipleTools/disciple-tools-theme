@@ -36,7 +36,7 @@ class DT_Contacts_Base {
         add_filter( 'dt_post_update_fields', [ $this, 'update_post_field_hook' ], 10, 3 );
         add_filter( 'dt_post_updated', [ $this, 'dt_post_updated' ], 10, 5 );
         add_filter( 'dt_post_create_fields', [ $this, 'dt_post_create_fields' ], 20, 2 );
-        add_filter( 'dt_comments_additional_sections', [ $this, 'add_comm_channel_comment_section' ], 10, 2 );
+        add_filter( 'dt_comments_additional_sections', [ $this, 'add_comm_channel_comment_section' ], 100, 2 );
 
 
         //list
@@ -665,27 +665,69 @@ class DT_Contacts_Base {
             // Extract custom comment types.
             $custom_field_options  = dt_get_option( 'dt_field_customizations' );
             $custom_contact_fields = $custom_field_options[ $post_type ];
-            foreach ( $custom_contact_fields ?? [] as $key => $field ) {
-                if ( isset( $field['is_comment_type'] ) && $field['is_comment_type'] ) {
+            foreach ( $custom_contact_fields ?? [] as $key => $field ){
+                if ( isset( $field['is_comment_type'] ) && $field['is_comment_type'] ){
 
                     // Ensure label adopts the correct name translation.
-                    $label = ( isset( $field['translations'] ) && ! empty( $field['translations'][ determine_locale() ] ) ) ? $field['translations'][ determine_locale() ] : ( $field['name'] ?? $key );
-                    if ( empty( $label ) ) {
+                    $label = ( isset( $field['translations'] ) && !empty( $field['translations'][determine_locale()] ) ) ? $field['translations'][determine_locale()] : ( $field['name'] ?? $key );
+                    if ( empty( $label ) ){
                         $label = $key;
                     }
 
-                    // Package custom comment type.
-                    $sections[] = [
-                        'key'             => $key,
-                        'label'           => esc_html( $label ),
-                        'enabled'         => $field['enabled'],
-                        'is_comment_type' => $field['is_comment_type'],
-                        'translations'    => $field['translations'] ?? []
-                    ];
+                    // Safeguard against duplicates.
+                    $already_assigned = $this->comm_channel_comment_section_already_assigned( $sections, $key );
+                    if ( $already_assigned === false ){
+
+                        // Package custom comment type.
+                        $packaged_field = $field;
+                        $packaged_field['key'] = $key;
+                        $packaged_field['label'] = esc_html( $label );
+                        $sections[] = $packaged_field;
+
+                    } else {
+
+                        // Update pre-existing custom comment types.
+                        $sections[$already_assigned] = $field;
+                        $sections[$already_assigned]['key'] = $key;
+                        $sections[$already_assigned]['label'] = esc_html( $label );
+
+                    }
+                }
+            }
+
+            // Handle default comment types, only adding if not already assigned.
+            $default_types = [
+                [
+                    'key' => 'activity',
+                    'label' => __( 'Activity', 'disciple_tools' ),
+                    'selected_by_default' => true,
+                    'always_show' => true,
+                ],
+                [
+                    'key' => 'comment',
+                    'label' => __( 'Comment', 'disciple_tools' ),
+                    'selected_by_default' => true
+                ]
+            ];
+            foreach ( $default_types as $type ){
+                if ( $this->comm_channel_comment_section_already_assigned( $sections, $type['key'] ) === false ){
+                    array_unshift( $sections, $type );
                 }
             }
         }
+
         return $sections;
+    }
+
+    private function comm_channel_comment_section_already_assigned( $sections, $key ){
+        $found = false;
+        foreach ( $sections ?? [] as $idx => $section ){
+            if ( isset( $section['key'] ) && $section['key'] == $key ){
+                $found = $idx;
+            }
+        }
+
+        return $found;
     }
 
     public function dt_record_notifications_section( $post_type, $dt_post ){

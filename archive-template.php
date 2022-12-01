@@ -488,14 +488,7 @@ dt_please_log_in();
                                         ></textarea>
 
                                         <?php if ( $post_type == 'contacts' ) :
-                                            $sections = [
-                                                [
-                                                    'key' => 'comment',
-                                                    'label' => __( 'Comments', 'disciple_tools' ),
-                                                    'selected_by_default' => true
-                                                ],
-                                            ];
-                                            $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+                                            $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );?>
 
                                                 <div class="grid-x">
                                                     <div class="section-subheader cell shrink">
