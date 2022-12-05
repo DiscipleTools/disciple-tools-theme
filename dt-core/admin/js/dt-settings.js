@@ -60,7 +60,6 @@ jQuery(document).ready(function($) {
     });
 
     $('.field-settings-table').on('click', '.edit-icon[data-modal="edit-field-option"]', function() {
-        console.log('foobar clicked');
         var edit_modal = $(this).data('modal');
         if (edit_modal === 'edit-field-option') {
             var data = [];
@@ -410,6 +409,10 @@ jQuery(document).ready(function($) {
         var field_key = data['field_key'];
         var field_option_key = data['option_key'];
         var option_label = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['label'];
+        var option_description = '';
+        if ( 'description' in window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] ) {
+            option_description = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description'];
+        }
         var modal_html_content = `
         <tr>
             <th colspan="2">
@@ -430,6 +433,14 @@ jQuery(document).ready(function($) {
             </td>
             <td>
             <input name="edit-option-label" id="new-option-name-${field_option_key}" type="text" value="${option_label}" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label><b>Description:</b></label>
+            </td>
+            <td>
+            <input name="edit-option-description" id="new-option-description-${field_option_key}" type="text" value="${option_description}">
             </td>
         </tr>
         <tr>
@@ -791,7 +802,9 @@ jQuery(document).ready(function($) {
         var field_option_name = $('.new-field-option-name').val();
 
         API.new_field_option(post_type, tile_key, field_key, field_option_name).promise().then(function(new_field_option_key) {
-            window.field_settings.post_type_settings.fields[field_key]['default'][new_field_option_key] = {'label':field_option_name};
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
+                'label':field_option_name
+            };
             var new_field_option_html = `
             <div class="field-settings-table-field-option">
                 <span class="sortable">⋮⋮</span>
@@ -814,7 +827,13 @@ jQuery(document).ready(function($) {
         var field_key = $(this).data('field-key');
         var field_option_key = $(this).data('field-option-key');
         var new_field_option_label = $(`#new-option-name-${field_option_key}`).val();
-        API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label).promise().then(function() {
+        var new_field_option_description = $(`#new-option-description-${field_option_key}`).val();
+
+        API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description).promise().then(function() {
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] = {
+                'label': new_field_option_label,
+                'description': new_field_option_description,
+            }
             var edited_field_option_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`);
             edited_field_option_element[0].innerText = new_field_option_label;
             closeModal();
