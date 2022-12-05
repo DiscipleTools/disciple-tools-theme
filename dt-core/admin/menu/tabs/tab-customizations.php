@@ -373,7 +373,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                             <div class="field-settings-table-field-option">
                                                 <span class="sortable">⋮⋮</span>
                                                 <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" style="padding-left: 16px;"><?php echo esc_html( $label ); ?></span>
-                                                <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>" data-option-key="<?php echo esc_attr( $k ); ?>"></span>
+                                                <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>"></span>
                                             </div>
                                                 <?php
                                             }

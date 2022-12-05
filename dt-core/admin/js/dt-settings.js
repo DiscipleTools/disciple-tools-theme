@@ -48,10 +48,10 @@ jQuery(document).ready(function($) {
         render_element_shadows();
     });
 
-    $('.field-settings-table').on('click', '.edit-icon', function(){
+    $('.field-settings-table').on('click', '.edit-icon', function() {
         var edit_modal = $(this).parent().data('modal');
         var data = $(this).parent().data('key');
-        if (edit_modal === 'edit-field' || edit_modal === 'edit-field-option') {
+        if (edit_modal === 'edit-field') {
             var data = [];
             data['tile_key'] = $(this).parent().data('parent-tile-key');
             data['field_key'] = $(this).parent().data('key');
@@ -59,13 +59,14 @@ jQuery(document).ready(function($) {
         showOverlayModal(edit_modal, data);
     });
 
-    $('.field-settings-table').on('click', '.edit-icon[data-modal="edit-field-option"]', function(){
+    $('.field-settings-table').on('click', '.edit-icon[data-modal="edit-field-option"]', function() {
+        console.log('foobar clicked');
         var edit_modal = $(this).data('modal');
         if (edit_modal === 'edit-field-option') {
             var data = [];
-            data['tile_key'] = $(this).data('parentTileKey');
-            data['field_key'] = $(this).data('key');
-            data['option_key'] = $(this).data('option-key');
+            data['tile_key'] = $(this).data('parent-tile-key');
+            data['field_key'] = $(this).data('field-key');
+            data['option_key'] = $(this).data('field-option-key');
         }
         showOverlayModal(edit_modal, data);
     });
@@ -790,20 +791,21 @@ jQuery(document).ready(function($) {
         var field_option_name = $('.new-field-option-name').val();
 
         API.new_field_option(post_type, tile_key, field_key, field_option_name).promise().then(function(new_field_option_key) {
+            window.field_settings.post_type_settings.fields[field_key]['default'][new_field_option_key] = {'label':field_option_name};
             var new_field_option_html = `
             <div class="field-settings-table-field-option">
                 <span class="sortable">⋮⋮</span>
-                <span style="margin-left: 16px;">${field_option_name}
-                <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
-                    <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
-                </svg>
+                <span class="field-name-content" data-parent-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${new_field_option_key}" style="margin-left: 16px;">
+                    ${field_option_name}
+                    <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
+                        <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
+                    </svg>
                 </span>
-                <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-option-key="${new_field_option_key}"></span>
+                <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${new_field_option_key}"></span>
             </div>`;
             $(`.new-field-option[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"]`).before(new_field_option_html);
             closeModal();
         });
-
     });
 
     $('#modal-overlay-form').on('click', '#js-edit-field-option', function(e) {
@@ -813,13 +815,6 @@ jQuery(document).ready(function($) {
         var field_option_key = $(this).data('field-option-key');
         var new_field_option_label = $(`#new-option-name-${field_option_key}`).val();
         API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label).promise().then(function() {
-            var edit_field_option_html = `
-            <div class="field-settings-table-field-option submenu-highlight">
-                <span class="sortable">⋮⋮</span>
-                <span style="margin-left: 16px;">${new_field_option_label}</span>
-                <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-option-key="${field_option_key}"></span>
-            </div>
-            `;
             var edited_field_option_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`);
             edited_field_option_element[0].innerText = new_field_option_label;
             closeModal();
