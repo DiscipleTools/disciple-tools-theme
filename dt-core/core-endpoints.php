@@ -89,6 +89,14 @@ class Disciple_Tools_Core_Endpoints {
         );
 
         register_rest_route(
+            $this->namespace, '/edit-field', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'edit_field' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+                ]
+        );
+
+        register_rest_route(
             $this->namespace, '/new-field-option', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'new_field_option' ],
@@ -97,11 +105,11 @@ class Disciple_Tools_Core_Endpoints {
         );
 
         register_rest_route(
-            $this->namespace, '/edit-field', [
+            $this->namespace, '/edit-field-option', [
                 'methods' => 'POST',
-                'callback' => [ $this, 'edit_field' ],
+                'callback' => [ $this, 'edit_field_option' ],
                 'permission_callback' => [ $this, 'default_permission_check' ],
-                ]
+            ]
         );
     }
 
@@ -475,6 +483,26 @@ class Disciple_Tools_Core_Endpoints {
             $custom_field_options = dt_get_option( 'dt_field_customizations' );
             $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key] = [ 'label' => $new_field_option ];
             update_option( 'dt_field_customizations', $custom_field_options );
+            return $new_field_option_key;
+        }
+        return false;
+    }
+
+    public static function edit_field_option( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+        if ( isset( $post_submission['post_type'], $post_submission['tile_key'], $post_submission['field_key'], $post_submission['field_option_key'], $post_submission['new_field_option_label'] ) ) {
+            $field_key = $post_submission['field_key'];
+            $post_type = $post_submission['post_type'];
+            $field_option_key = $post_submission['field_option_key'];
+            $new_field_option_label = $post_submission['new_field_option_label'];
+
+            $custom_field_options = dt_get_option( 'dt_field_customizations' );
+            $custom_field_options[$post_type][$field_key]['default'][$field_option_key] = [
+                'label' => $new_field_option_label,
+            ];
+            update_option( 'dt_field_customizations', $custom_field_options );
+            dt_write_log($custom_field_options[$post_type][$field_key]['default'][$field_option_key]);
+            return $custom_field_options[$post_type][$field_key]['default'][$field_option_key];
         }
         return false;
     }

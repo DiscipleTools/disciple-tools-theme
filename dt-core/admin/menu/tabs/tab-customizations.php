@@ -335,9 +335,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 <!-- END TILE -->
                 <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
                     <!-- START TOGGLED FIELD ITEMS -->
-                    <?php
-                    $first_tile_element = true;
-                    foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                    <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                         <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) {
                             if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' || $field_settings['type'] === 'tags' ): ?>
                                 <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
@@ -358,21 +356,24 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                 </div>
 
                                 <!-- START TOGGLED ITEMS -->
-                                <div class="field-settings-table-child-toggle" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
-                                    <?php
-                                    $first_field_element = true;
-                                    foreach ( $field_settings as $key => $value ) : ?>
+                                <div class="field-settings-table-child-toggle">
+                                    <?php foreach ( $field_settings as $key => $value ) : ?>
                                         <?php if ( $key === 'default' && !empty( $field_settings['default'] ) ) : ?>
-                                            <?php foreach ( $value as $v ) {
+                                            <?php foreach ( $value as $k => $v ) {
                                                 $label = 'NULL';
                                                 if ( isset( $v['label'] ) || !empty( $v['label'] ) ) {
+                                                    // $option_key = $value;
                                                     $label = $v['label'];
                                                 }
+
+                                                if ( isset( $v['default'] ) || !empty( $v['default'] ) ) {
+                                                    $option_key = $v['default'];
+                                                }
                                                 ?>
-                                            <div class="field-settings-table-field-option" data-modal="edit-tile">
+                                            <div class="field-settings-table-field-option">
                                                 <span class="sortable">⋮⋮</span>
-                                                <span class="field-name-content" style="padding-left: 16px;"><?php echo esc_html( $label ); ?></span>
-                                                <span class="edit-icon"></span>
+                                                <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" style="padding-left: 16px;"><?php echo esc_html( $label ); ?></span>
+                                                <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>" data-option-key="<?php echo esc_attr( $k ); ?>"></span>
                                             </div>
                                                 <?php
                                             }
@@ -512,6 +513,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 align-items: center;
                 border: 1px solid lightgray;
                 background: #fff;
+                cursor: pointer;
                 box-shadow: inset -5px 0px 5px -2px #0000001a;
                 margin-top: -1px;
             }
