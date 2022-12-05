@@ -501,7 +501,7 @@ class Disciple_Tools_Core_Endpoints {
                 'label' => $new_field_option_label,
             ];
             update_option( 'dt_field_customizations', $custom_field_options );
-            dt_write_log($custom_field_options[$post_type][$field_key]['default'][$field_option_key]);
+            dt_write_log( $custom_field_options[$post_type][$field_key]['default'][$field_option_key] );
             return $custom_field_options[$post_type][$field_key]['default'][$field_option_key];
         }
         return false;
