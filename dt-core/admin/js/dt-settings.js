@@ -56,7 +56,7 @@ jQuery(document).ready(function($) {
             data['tile_key'] = $(this).parent().data('parent-tile-key');
             data['field_key'] = $(this).parent().data('key');
         }
-        $('.dt-admin-modal-box-inner').removeClass('flip-card');
+        unflip_card();
         showOverlayModal(edit_modal, data);
     });
 
@@ -248,6 +248,14 @@ jQuery(document).ready(function($) {
         if ( modalName == 'new-field-option') {
             loadAddFieldOptionBox(data);
         }
+    }
+
+    function flip_card() {
+        $('.dt-admin-modal-box-inner').addClass('flip-card');
+    }
+
+    function unflip_card() {
+        $('.dt-admin-modal-box-inner').removeClass('flip-card');
     }
 
     function closeModal() {
@@ -875,10 +883,11 @@ jQuery(document).ready(function($) {
 
     // Translation for Tiles
     $('.dt-admin-modal-box').on('click', '.expand_tile_translations', function() {
-        $('.dt-admin-modal-box-inner').addClass('flip-card');
+        flip_card();
     });
+
     $('.dt-admin-modal-translations-box-close-button').on('click', function() {
-        $('.dt-admin-modal-box-inner').removeClass('flip-card');
+        unflip_card();
     });
 
     $('.dt-admin-modal-box-close-button').on('click', function() {
