@@ -74,17 +74,17 @@ jQuery(document).ready(function($) {
         var tile_html = `
             <div class="dt-tile-preview">
                 <div class="section-header">
-                    <h3 class="section-header">${window.field_settings.post_type_tiles[tile_key]['label']}</h3>
+                    <h3 class="section-header">${window['field_settings']['post_type_tiles'][tile_key]['label']}</h3>
                     <img src="${window.wpApiShare.template_dir}/dt-assets/images/chevron_up.svg" class="chevron">
                 </div>
                 <div class="section-body">`;
 
-        var all_fields = window.field_settings.post_type_settings.fields;
+        var all_fields = window['field_settings']['post_type_settings']['fields'];
         $.each(all_fields, function(key, field) {
             if( field['tile'] === tile_key ) {
                 var icon_html = '';
                 if ( field['icon'] ) {
-                    icon_html = `<img src="${field['icon']}" alt="${field['name']}" class="dt-icon lightgray"></img>`
+                    icon_html = `<img src="${field['icon']}" class="dt-icon lightgray"></img>`
                 }
 
                 tile_html += `
@@ -275,6 +275,7 @@ jQuery(document).ready(function($) {
     function loadEditTileContentBox(tile_key) {
         var post_type = get_post_type();
         API.get_tile(post_type, tile_key).promise().then(function(data) {
+
             var hide_tile = '';
             if (data['hidden']) {
                 hide_tile = 'checked';
@@ -497,9 +498,15 @@ jQuery(document).ready(function($) {
         var field_key = field_data['field_key'];
         var field_settings = window.field_settings.post_type_settings.fields[field_key];
         var number_of_translations = 0; //Todo: softcode this variable
+
         var field_icon_image_html = '';
         if ( field_settings['icon'] ) {
-            field_icon_image_html = `<img src="${field_settings['icon']}" style="width: 30px;height: 30px;">`;
+            field_icon_image_html = `<img src="${field_settings['icon']}" class="field-icon">`;
+        }
+
+        var private_field = '';
+        if ( field_settings['private'] ) {
+            private_field = 'checked';
         }
 
         var modal_html_content = `
@@ -537,7 +544,7 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-private"><b>Private Field</b></label>
                 </td>
                 <td>
-                    <input name="edit-field-private" id="edit-field-private" type="checkbox">
+                    <input name="edit-field-private" id="edit-field-private" type="checkbox" ${private_field}>
                 </td>
             </tr>
             <tr>
@@ -590,7 +597,7 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="edit-field-custom-name"><b>Icon</b></label>
+                    <label for="edit-field-icon"><b>Icon</b></label>
                 </td>
                 <td>
                     ${field_icon_image_html}

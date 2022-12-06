@@ -577,6 +577,11 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             .field-element {
                 margin-left: 18px;
             }
+            .field-icon {
+                width: 30px;
+                height: 30px;
+                vertical-align: top;
+            }
             .new-custom-field {
                 display: block;
                 width: auto;
