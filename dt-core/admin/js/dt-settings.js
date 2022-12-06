@@ -641,7 +641,7 @@ jQuery(document).ready(function($) {
             $('#add-new-tile-link').parent().before(`
             <div class="field-settings-table-tile-name expandable menu-highlight" data-modal="edit-tile" data-key="${tile_key}">
                 <span class="sortable">⋮⋮</span>
-                <span class="expand-icon">-</span>
+                <span class="expand-icon">+</span>
                 <span id="tile-key-${tile_key}" style="vertical-align: sub;">
                     ${tile_label}
                     <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
@@ -650,7 +650,7 @@ jQuery(document).ready(function($) {
                 </span>
                 <span class="edit-icon"></span>
             </div>
-            <div>
+            <div class="hidden">
                 <div class="field-settings-table-field-name inset-shadow">
                     <span class="sortable">⋮⋮</span>
                     <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
@@ -669,9 +669,12 @@ jQuery(document).ready(function($) {
         var tile_key = $(this).data('tile-key');
         var tile_label = $(`#edit-tile-label-${tile_key}`).val();
         var hide_tile = $(`#hide-tile-${tile_key}`).is(':checked');
-        API.edit_tile(post_type, tile_key, tile_label, hide_tile).promise().then(function() {
+        API.edit_tile(post_type, tile_key, tile_label, hide_tile).promise().then(function(response) {
+            window['field_settings']['post_type_tiles'][tile_key] = response;
             $(`#tile-key-${tile_key}`).html(tile_label);
+            show_preview_tile(tile_key);
             closeModal();
+            $(`#tile-key-${tile_key}`).parent().addClass('menu-highlight');
         });
     });
 
@@ -686,9 +689,9 @@ jQuery(document).ready(function($) {
         var multidirectional = $('#multidirectional_checkbox').is(':checked');
         var other_field_name = $('#other_field_name').val();
 
-        API.new_field(post_type, new_field_tile, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name ).promise().then(function(result) {
-            var field_key = result['key'];
-            window['field_settings']['post_type_settings']['fields'][field_key] = result;
+        API.new_field(post_type, new_field_tile, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name ).promise().then(function(response) {
+            var field_key = response['key'];
+            window['field_settings']['post_type_settings']['fields'][field_key] = response;
             var new_field_nonexpandable_html = `
                 <div class="field-settings-table-field-name submenu-highlight" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
                     <span class="sortable">⋮⋮</span>
@@ -790,6 +793,7 @@ jQuery(document).ready(function($) {
                 edited_field_menu_name_element.data('parent-tile-key', tile_select);
                 edited_field_submenu_element.data('parent-tile-key', tile_select);
             }
+            show_preview_tile(tile_key);
             closeModal();
         });
         return;

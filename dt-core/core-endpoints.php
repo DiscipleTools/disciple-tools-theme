@@ -302,7 +302,7 @@ class Disciple_Tools_Core_Endpoints {
             $tile_options[$post_type][$tile_key] = $custom_tile;
         }
         update_option( 'dt_custom_tiles', $tile_options );
-        return true;
+        return $tile_options[$post_type][$tile_key];
     }
 
     public static function new_field( WP_REST_Request $request ) {
