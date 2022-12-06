@@ -56,6 +56,7 @@ jQuery(document).ready(function($) {
             data['tile_key'] = $(this).parent().data('parent-tile-key');
             data['field_key'] = $(this).parent().data('key');
         }
+        $('.dt-admin-modal-box-inner').removeClass('flip-card');
         showOverlayModal(edit_modal, data);
     });
 
@@ -312,7 +313,7 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="tile_label"><b>Label</b></label>
+                    <label for="edit-tile-label"><b>Label</b></label>
                 </td>
                 <td>
                     <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}" required>
@@ -874,7 +875,10 @@ jQuery(document).ready(function($) {
 
     // Translation for Tiles
     $('.dt-admin-modal-box').on('click', '.expand_tile_translations', function() {
-        
+        $('.dt-admin-modal-box-inner').addClass('flip-card');
+    });
+    $('.dt-admin-modal-translations-box-close-button').on('click', function() {
+        $('.dt-admin-modal-box-inner').removeClass('flip-card');
     });
 
     $('.dt-admin-modal-box-close-button').on('click', function() {

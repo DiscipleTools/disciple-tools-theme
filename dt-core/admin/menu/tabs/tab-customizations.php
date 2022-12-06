@@ -135,12 +135,29 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         ?>
         <div class="dt-admin-modal-overlay hidden">
             <div class="dt-admin-modal-box hidden">
-                <div class="dt-admin-modal-box-close-button">×</div>
-                <div class="dt-admin-modal-box-content">
-                        <form id="modal-overlay-form">
-                        <table class="modal-overlay-content-table" id="modal-overlay-content-table">
-                        </table>
-                    </form>
+                <div class="dt-admin-modal-box-inner">
+                    <div class="modal-front">
+                        <div class="dt-admin-modal-box-close-button">×</div>
+                        <div class="dt-admin-modal-box-content">
+                                <form id="modal-overlay-form">
+                                <table class="modal-overlay-content-table" id="modal-overlay-content-table">
+                                    <!-- DYNAMIC CONTENT: START -->
+                                    <!-- DYNAMIC CONTENT: END -->
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-back">
+                        <div class="dt-admin-modal-translations-box-close-button">×</div>
+                        <div class="dt-admin-modal-translations-box-content">
+                                <form id="modal-translations-overlay-form">
+                                <table class="modal-translations-overlay-content-table" id="modal-translations-overlay-content-table">
+                                    <!-- DYNAMIC CONTENT: START -->
+                                    <!-- DYNAMIC CONTENT: END -->
+                                </table>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -463,15 +480,32 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 z-index: 100000;
             }
             .dt-admin-modal-box {
+                z-index: 100001;
+                perspective: 1000px;
+            }
+            .dt-admin-modal-box-inner {
+                margin-top: 15%;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                transition: transform 0.5s;
+                transform-style: preserve-3d;
+            }
+            .flip-card {
+                transform: rotateY(180deg);
+            }
+            .modal-front, .modal-back {
+                position: absolute;
                 width: auto;
                 height: auto;
+                min-width: 33%;
                 background: #fefefe;
                 border: 1px solid #cacaca;
-                position: fixed;
-                top: 25%;
-                left: 33%;
-                z-index: 100001;
-                min-width: 33%;
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+            .modal-back {
+                transform: rotateY(180deg);
             }
             .dt-admin-modal-box-content {
                 padding: 8px;
@@ -546,6 +580,16 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 margin: 8px 0 0 8px;
             }
             .dt-admin-modal-box-close-button {
+                text-align: right;
+                color: #cacaca;
+                font-weight: 200;
+                font-size: 1.75rem;
+                position: absolute;
+                right: 0;
+                padding: 0.5rem;
+                cursor: pointer;
+            }
+            .dt-admin-modal-translations-box-close-button {
                 text-align: right;
                 color: #cacaca;
                 font-weight: 200;
