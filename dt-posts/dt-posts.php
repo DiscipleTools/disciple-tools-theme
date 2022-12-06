@@ -1430,10 +1430,234 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $activities;
     }
 
+    public static function new_revert_post_activity_history( string $post_type, int $post_id, array $args = [] ){
+        if ( !self::can_view( $post_type, $post_id ) ){
+            return new WP_Error( __FUNCTION__, 'No permissions to read: ' . $post_type, [ 'status' => 403 ] );
+        }
+
+        $post = self::get_post( $post_type, $post_id, false );
+        $post_type_fields = self::get_post_field_settings( $post_type, false );
+
+        /**
+         * First, identify all activity records; which took place on specified revert date.
+         * Start/End points to encompass entire day!
+         */
+
+        // Default to current time if no start point specified!
+        $revert_epoch = $args['ts_start'] ?? time();
+        $revert_date = new DateTime( "@$revert_epoch" );
+        $revert_date->setTime( 0, 0, 0, 0 );
+        $args['ts_start'] = $revert_date->format( 'U' );
+        $revert_date->setTime( 23, 59, 0, 0 );
+        $args['ts_end'] = $revert_date->format( 'U' );
+        $args['result_order'] = 'DESC';
+        $revert_activities = self::get_post_activity_history( $post_type, $post_id, $args );
+
+        dt_write_log( $args );
+        //dt_write_log( $revert_activities );
+
+        /**
+         * Next, uniquely identify the most recent revert date activities and their respective
+         * states, to be adopted.
+         */
+
+        $revert_unique_activities = self::revert_post_activity_history_unique_activities( $post_type_fields, $revert_activities );
+        dt_write_log( $revert_unique_activities );
+
+        /**
+         * Next, identify all activity; which took place leading up to specified revert date.
+         */
+
+        $previous_epoch_end = strtotime( '-1 day', $revert_epoch );
+        $previous_activity_date_end = new DateTime( "@$previous_epoch_end" );
+        $args['ts_end'] = $previous_activity_date_end->setTime( 23, 59, 0, 0 )->format( 'U' );
+        $args['ts_start'] = 0;
+        $args['result_order'] = 'DESC';
+        $previous_activities = self::get_post_activity_history( $post_type, $post_id, $args );
+
+        dt_write_log( $args );
+        //dt_write_log( $previous_activities );
+
+        /**
+         * Next, uniquely identify the most recent previous activities and their respective
+         * states, to be either maintained, or removed.
+         */
+
+        $previous_unique_activities = self::revert_post_activity_history_unique_activities( $post_type_fields, $previous_activities );
+        dt_write_log( $previous_unique_activities );
+
+        /**
+         * TODO $revert_unique_activities and compare against $previous_unique_activities,
+         *  if the same field id appears in both arrays, then use $revert_unique_activities
+         *  settings. Otherwise, process accordingly based on $previous_unique_activities
+         *  settings.
+         */
+
+        /**
+         * Package revert date activities.
+         */
+
+        $post_updates = self::revert_post_activity_history_post_updates( [], $revert_unique_activities );
+
+        /**
+         * Package previous activities.
+         */
+
+        $post_updates = self::revert_post_activity_history_post_updates( $post_updates, $previous_unique_activities );
+        dt_write_log( $post_updates );
+    }
+
+    public static function revert_post_activity_history_post_updates( $post_updates, $activities ): array{
+        foreach ( $activities as $field_key => $activity ){
+            switch ( $activity['type'] ){
+                case 'connection to':
+                case 'connection from':
+                    // TODO:..
+                    break;
+                case 'tags':
+                case 'location':
+                case 'multi_select':
+                case 'location_meta':
+                case 'communication_channel':
+                    if ( !isset( $post_updates[$field_key] ) ){
+                        if ( !$activity['is_deleted'] ){
+                            $post_updates[$field_key] = [
+                                'values' => [
+                                    [
+                                        'value' => $activity['value']
+                                    ]
+                                ]
+                            ];
+                        } else {
+                            if ( isset( $post[$field_key] ) && is_array( $post[$field_key] ) ){
+                                foreach ( $post[$field_key] as $option ){
+
+                                    // Determine id to be used, based on field type
+                                    if ( $activity['type'] == 'location' ){
+                                        $id = $option['id'];
+
+                                    } elseif ( $activity['type'] == 'location_meta' ){
+                                        $id = $option['grid_meta_id'];
+
+                                    } elseif ( $activity['type'] == 'communication_channel' ){
+                                        $id = $option['key'];
+
+                                    } else {
+                                        $id = $option;
+                                    }
+
+                                    // If id needle hit, then flag for deletion
+                                    if ( $id == $activity['old_value'] ){
+
+                                        $key = 'value';
+                                        if ( $activity['type'] == 'location_meta' ){
+                                            $key = 'grid_meta_id';
+
+                                        } elseif ( $activity['type'] == 'communication_channel' ){
+                                            $key = 'key';
+                                        }
+
+                                        // Package values to be updated
+                                        $post_updates[$field_key] = [
+                                            'values' => [
+                                                [
+                                                    $key => $id,
+                                                    'delete' => true
+                                                ]
+                                            ]
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 'date':
+                    // TODO:
+                    break;
+                case 'text':
+                case 'number':
+                case 'boolean':
+                case 'textarea':
+                case 'key_select':
+                case 'user_select':
+                    if ( !isset( $post_updates[$field_key] ) ){
+                        $post_updates[$field_key] = $activity['value'] ?? '';
+                    }
+                    break;
+            }
+        }
+
+        return $post_updates;
+    }
+
+    public static function revert_post_activity_history_unique_activities( $field_settings, $activities ): array{
+        $unique_activities = [];
+        foreach ( $activities ?? [] as &$activity ){
+            $field_action = $activity->action;
+            $field_type = $activity->field_type;
+            $field_key = $activity->meta_key;
+            $field_value = $activity->meta_value;
+            $field_old_value = $activity->old_value;
+            $is_deleted = strtolower( trim( $field_value ) ) == 'value_deleted';
+
+            // Ensure to accommodate special case field types.
+            if ( in_array( $field_type, [ 'connection to', 'connection from' ] ) ){
+
+                // Determine actual field key to be used.
+                $field_setting = self::get_post_field_settings_by_p2p( $field_settings, $field_key, ( $field_type == 'connection from' ) ? 'from' : 'to' );
+                if ( !empty( $field_setting ) ){
+                    $field_key = $field_setting['key'];
+
+                } else {
+                    $field_key = null;
+                    $field_type = null;
+                }
+            } elseif ( empty( $field_type ) && substr( $field_key, 0, strlen( 'contact_' ) ) == 'contact_' ){
+                $field_type = 'communication_channel';
+                $field_key = substr( $field_key, 0, strpos( $field_key, '_', strlen( 'contact_' ) ) );
+
+                // Void if key is empty.
+                if ( empty( $field_key ) ){
+                    $field_key = null;
+                    $field_type = null;
+                }
+            }
+
+            // Uniquely capture most recent activities.
+            if ( !empty( $field_key ) && !empty( $field_type ) && !isset( $unique_activities[$field_key] ) ){
+
+                // Ensure to accommodate special case is deleted flags.
+                switch ( $field_type ){
+                    case 'connection to':
+                    case 'connection from':
+                        $is_deleted = strtolower( trim( $field_action ) ) == 'disconnected from';
+                        break;
+                }
+
+                // Package findings.
+                $unique_activities[$field_key] = [
+                    'key' => $field_key,
+                    'type' => $field_type,
+                    'action' => $field_action,
+                    'value' => $field_value,
+                    'old_value' => $field_old_value,
+                    'is_deleted' => $is_deleted
+                ];
+            }
+        }
+
+        return $unique_activities;
+    }
+
     public static function revert_post_activity_history( string $post_type, int $post_id, array $args = [] ) {
         if ( ! self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'No permissions to read: ' . $post_type, [ 'status' => 403 ] );
         }
+
+        //----- TEST NEW
+        self::new_revert_post_activity_history( $post_type, $post_id, $args );
+        //-----
 
         $post_type_fields = self::get_post_field_settings( $post_type, false );
 
@@ -1651,7 +1875,9 @@ class DT_Posts extends Disciple_Tools_Posts {
         $current_user->display_name = __( 'Revert Bot', 'disciple_tools' );
 
         // Update post based on reverted values.
-        $updated_post = self::update_post( $post_type, $post_id, $post_updates );
+        //....$updated_post = self::update_post( $post_type, $post_id, $post_updates );
+        //.....dt_write_log($post_updates);
+        $updated_post = [];
 
         // Revert back to previous user and return.
         wp_set_current_user( $current_user_id );

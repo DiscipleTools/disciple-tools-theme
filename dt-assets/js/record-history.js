@@ -3,6 +3,7 @@ jQuery(document).ready(function ($) {
   // Global Variables
   const date_format_short = 'YYYY-MM-DD';
   const date_format_long = 'MMMM Do, YYYY, hh:mm:ss A';
+  const date_format_pretty_short = 'MMMM Do, YYYY';
   const post = window.record_history_settings.post;
   const post_settings = window.record_history_settings.post_settings;
 
@@ -11,7 +12,7 @@ jQuery(document).ready(function ($) {
     init_record_history_modal();
   });
 
-  $(document).on('click', '.record-history-activity-block', function () {
+  $(document).on('click', '.record-history-activity-block-controls', function () {
     handle_revert_request($(this).find('#record_history_activity_block_timestamp').val());
   });
 
@@ -19,45 +20,53 @@ jQuery(document).ready(function ($) {
     handle_show_all_activities();
   });
 
-  // Helper Funcstions
+  // Helper Functions
   function init_record_history_modal() {
+    let record_history_calendar = $('#record_history_calendar');
 
-    // Remove any previously instantiated litepicker instances
-    $('#record_history_modal').find('.litepicker').remove();
+    // Fetch initial corresponding activities, to be used to alter daterangepicker.
+    handle_activity_history_refresh({result_order: 'DESC'}, function (activities) {
 
-    // Refresh activity based on default current month
-    handle_activity_history_refresh({}, function (activities) {
-
-      // First, convert and extract activity unix timestamps to usable date formats
-      let dates_of_interest = extract_activity_timestamps_as_formatted_dates(activities);
-
-      // Instantiate date picker, based on DoI
-      let lite_picker = new Litepicker({
-        element: $('#record_history_calendar')[0],
-        inlineMode: true,
-        singleMode: true,
-        highlightedDays: dates_of_interest,
-        lockDaysFilter: (date_start, date_end, picked_dates) => {
-          return !dates_of_interest.includes(date_start.format(date_format_short));
+      // Create initial shape of daterangepicker config-settings.
+      let date_range_picker_config = {
+        'singleDatePicker': true,
+        'timePicker': true,
+        'locale': {
+          'format': date_format_pretty_short,
+          'separator': ' - ',
+          'daysOfWeek': window.SHAREDFUNCTIONS.get_days_of_the_week_initials(),
+          'monthNames': window.SHAREDFUNCTIONS.get_months_labels(),
         },
-        setup: (picker) => {
-          picker.on('selected', (date_start, date_end) => {
-            handle_selected_activity_date(date_start, handle_activities_display);
-            reset_show_all_activities_switch();
-          });
-          picker.on('change:month', (date, calendar_idx) => {
-            handle_changed_month(date, picker);
-          });
-        }
+        'opens': 'center',
+        'drops': 'down',
+        'showCustomRangeLabel': false
+      };
+
+      // Specify a date range.
+      let date_range = {}
+      $.each(activities, function (idx, activity) {
+        let hist_time = moment.unix(parseInt(activity['hist_time']));
+
+        // Default to midnight.
+        hist_time.second(0);
+        hist_time.minute(0);
+        hist_time.hour(0);
+
+        let activity_date = hist_time.format(date_format_short);
+        date_range[activity_date] = [hist_time, hist_time];
+      });
+      date_range_picker_config['ranges'] = date_range;
+
+      // Activate history calendar widget.
+      record_history_calendar.daterangepicker(date_range_picker_config);
+      record_history_calendar.on('apply.daterangepicker', function (ev, picker) {
+        handle_selected_activity_date(picker.startDate.toDate(), handle_activities_display);
+        reset_show_all_activities_switch();
       });
 
-      // If checked, show all activities; otherwise default to most recent updates, assuming valid dates of interest
+      // If selected, show all-time activities.
       if (is_show_all_activities_switch_checked()) {
         handle_show_all_activities();
-
-      } else if (dates_of_interest.length > 0) {
-        lite_picker.gotoDate(dates_of_interest[0]);
-        lite_picker.setDate(dates_of_interest[0]);
       }
     });
   }
@@ -103,61 +112,11 @@ jQuery(document).ready(function ($) {
     return window.lodash.uniq(formatted_dates);
   }
 
-  function handle_changed_month(date, picker) {
-
-    // Proceed as normal for a selected date
-    handle_selected_activity_date(date, function (activities) {
-
-      // Assuming valid activities returned, update picker options state
-      if (activities && activities.length > 0) {
-
-        // Convert and extract activity unix timestamps to usable date formats
-        let dates_of_interest = extract_activity_timestamps_as_formatted_dates(activities);
-
-        // Determine month & year changed to
-        let changed_month = '' + (date.getMonth() + 1);
-        changed_month = (changed_month.length < 2) ? '0' + changed_month : changed_month;
-        let changed_year = date.getFullYear();
-
-        // Determine if returned dates of interest contain any changed month activities
-        let changed_month_dates = window.lodash.filter(dates_of_interest, function (d) {
-          // TODO: Update logic if date format is changed...!
-          return window.lodash.includes(d, changed_year + '-' + changed_month + '-');
-        });
-
-        // Only adjust picker options if we have new dates for changed month
-        if (changed_month_dates.length > 0) {
-
-          picker.setOptions({
-            highlightedDays: changed_month_dates,
-            lockDaysFilter: (date_start, date_end, picked_dates) => {
-              return !changed_month_dates.includes(date_start.format(date_format_short));
-            }
-          });
-
-          // Set month based on first identified changed date
-          picker.gotoDate(changed_month_dates[0]);
-
-        }
-
-      }
-    });
-
-  }
-
   function handle_selected_activity_date(date, callback) {
 
-    // Adjust selected date's time to span a single day
-    date.setHours(0, 0, 0, 0);
-    let start = date.getTime() / 1000;
-
-    date.setHours(23, 59, 59, 0);
-    let end = date.getTime() / 1000;
-
-    // Retrieve activities from current point to selected date, as point of starting interest
+    // Retrieve activities from current point to date.
     handle_activity_history_refresh({
-      ts_start: start,
-      ts_end: end,
+      ts_start: date.getTime() / 1000,
       result_order: 'DESC',
       extra_meta: true
 
@@ -166,49 +125,38 @@ jQuery(document).ready(function ($) {
   }
 
   function handle_activities_display(activities) {
-    $('#record_history_activities').fadeOut('fast', function () {
+    let record_history_activities = $('#record_history_activities');
+    record_history_activities.fadeOut('fast', function () {
 
       // Clear-down existing activities list
-      $('#record_history_activities').empty();
+      record_history_activities.empty();
 
-      // Iterate and display latest list
+      // Iterate and display the latest list
       $.each(activities, function (idx, activity) {
 
         // Extract/Format values of interest
-        let activity_heading = activity['object_note'];
+        let activity_heading = window.lodash.unescape(activity['object_note']);
         let field_label = '---';
         let revert_but_tooltip = window.record_history_settings.translations.revert_but_tooltip;
         let activity_date = moment.unix(parseInt(activity['hist_time'])).format(date_format_long);
-        let owner_name = (activity['name']) ? activity['name'] : '';
+        let owner_name = (activity['name']) ? window.lodash.unescape(activity['name']):'';
         let owner_gravatar = (activity['gravatar']) ? `<img src="${activity['gravatar']}"/>` : `<span class="mdi mdi-robot-confused-outline" style="font-size: 20px;"></span>`
+
+        // Enable activity heading url links.
+        let urls = activity_heading.match(/(((ftp|https?):\/\/)[\-\w@:%_\+.~#?,&\/\/=]+)/g);
+        if (urls!=null) {
+          $.each(urls, function (url_idx, url) {
+            activity_heading = window.lodash.replace(activity_heading, new RegExp(url, 'g'), `<a href="${window.lodash.escape(url)}" target="_blank">${window.lodash.escape(url)}</a>`);
+          });
+        }
 
         // Field label to be sourced accordingly, based on incoming field type.
         if (window.lodash.includes(['connection to', 'connection from'], activity['field_type'])) {
           field_label = 'connection';
 
         } else if (window.lodash.isEmpty(activity['field_type']) && window.lodash.startsWith(activity['meta_key'], 'contact_')) {
-          if (window.lodash.startsWith(activity['meta_key'], 'contact_phone_')) {
-            field_label = 'contact_phone';
-
-          } else if (window.lodash.startsWith(activity['meta_key'], 'contact_email_')) {
-            field_label = 'contact_email';
-
-          } else if (window.lodash.startsWith(activity['meta_key'], 'contact_address_')) {
-            field_label = 'contact_address';
-
-          } else if (window.lodash.startsWith(activity['meta_key'], 'contact_facebook_')) {
-            field_label = 'contact_facebook';
-
-          } else if (window.lodash.startsWith(activity['meta_key'], 'contact_twitter_')) {
-            field_label = 'contact_twitter';
-
-          } else if (window.lodash.startsWith(activity['meta_key'], 'contact_other_')) {
-            field_label = 'contact_other';
-
-          } else {
-            field_label = 'communication_channel';
-
-          }
+          let meta_key = activity['meta_key'];
+          field_label = meta_key.substring(0, meta_key.indexOf('_', 'contact_'.length));
 
         } else if (!window.lodash.isEmpty(post_settings['fields'][activity['meta_key']])) {
           field_label = post_settings['fields'][activity['meta_key']]['name'];
@@ -217,34 +165,40 @@ jQuery(document).ready(function ($) {
         // Build activity block html
         let html = `
             <div class="grid-container record-history-activity-block">
-                <input type="hidden" id="record_history_activity_block_timestamp" value="${activity['hist_time']}"/>
                 <div class="grid-x">
                     <div class="cell small-11 record-history-activity-block-body">
-                        <span class="record-history-activity-heading">${window.lodash.escape(activity_heading)} (<span style="color: #989898;">${window.lodash.escape(field_label)}</span>)</span><br>
+                        <span class="record-history-activity-heading">${activity_heading} (<span style="color: #989898;">${window.lodash.escape(field_label)}</span>)</span><br>
                         <span class="record-history-activity-gravatar">
                             ${owner_gravatar}
-                            <span class="record-history-activity-owner" style="margin-right: 10px;">${window.lodash.escape(owner_name)}</span>
+                            <span class="record-history-activity-owner" style="margin-right: 10px;">${owner_name}</span>
                             <span class="record-history-activity-date">${window.lodash.escape(activity_date)}</span>
                         </span>
                     </div>
                     <div class="cell small-1 record-history-activity-block-controls">
+                        <input type="hidden" id="record_history_activity_block_timestamp" value="${activity['hist_time']}"/>
                         <button class="button record-history-activity-block-controls-revert-but" title="${window.lodash.escape(revert_but_tooltip)}"><span class="mdi mdi-history" style="font-size: 20px;"></span></button>
                     </div>
                 </div>
             </div>`;
 
-        $('#record_history_activities').append(html);
+        record_history_activities.append(html);
 
       });
 
-      // Display latest shape
-      $('#record_history_activities').fadeIn('fast');
+      // Inform user if no activities found!
+      if (window.lodash.isEmpty(activities)) {
+        record_history_activities.empty();
+        record_history_activities.append(`<div style="text-align: center;"><span style="font-size: 50px;"><i class="mdi mdi-clock-remove-outline"/></span></div>`);
+      }
+
+      // Display the latest shape
+      record_history_activities.fadeIn('fast');
 
     });
   }
 
   function handle_revert_request(timestamp) {
-    let timestamp_formatted = moment.unix(parseInt(timestamp)).format(date_format_long);
+    let timestamp_formatted = moment.unix(parseInt(timestamp)).format(date_format_pretty_short);
     let confirm_text = window.lodash.escape(window.record_history_settings.translations.revert_confirm_text).replace('%s', timestamp_formatted);
     if (confirm(confirm_text)) {
 

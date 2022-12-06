@@ -9,13 +9,13 @@ global $post;
     <div class="grid-container">
         <div class="grid-x">
             <div class="cell small-4">
-                <div>
-                    <input type="hidden" id="record_history_calendar"/>
-                </div>
-                <br>
-
-                <table style="border: none;  max-width: 200px;">
+                <table style="border: none;  max-width: 300px;">
                     <tbody style="border: none;">
+                    <tr>
+                        <td colspan="2">
+                            <input type="text" id="record_history_calendar"/>
+                        </td>
+                    </tr>
                     <tr style="border: none;">
                         <td style="vertical-align: top;">
                             <span><?php echo esc_html( _x( 'Show All', 'Show All', 'disciple_tools' ) ) ?></span>

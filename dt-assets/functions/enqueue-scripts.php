@@ -354,11 +354,8 @@ function dt_site_scripts() {
         'fetch_more_text' => __( 'Load More', 'disciple_tools' ) // Support translations
     ) );
 
-    wp_register_script( 'litepicker', 'https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js', false );
-    wp_enqueue_style( 'litepicker-css', 'https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css', array() );
     dt_theme_enqueue_script( 'dt-record-history', 'dt-assets/js/record-history.js', [
         'jquery',
-        'litepicker',
         'lodash',
         'moment'
     ], true );
