@@ -249,6 +249,7 @@ jQuery(document).ready(function($) {
         }
     }
 
+    // Add Tile Modal
     function loadAddTileContentBox() {
         var modal_html_content = `
         <tr>
@@ -272,6 +273,7 @@ jQuery(document).ready(function($) {
         $('#modal-overlay-content-table').html(modal_html_content);
     }
 
+    // Edit Tile Modal
     function loadEditTileContentBox(tile_key) {
         var post_type = get_post_type();
         API.get_tile(post_type, tile_key).promise().then(function(data) {
@@ -320,6 +322,7 @@ jQuery(document).ready(function($) {
         });
     }
 
+    // Add Field Modal
     function loadAddFieldContentBox(tile_key) {
         post_type = get_post_type();
         all_post_types = window.field_settings.all_post_types;
@@ -419,80 +422,7 @@ jQuery(document).ready(function($) {
         $('#modal-overlay-content-table').html(modal_html_content);
     }
 
-    function loadEditFieldOptionContentBox(data) {
-        var tile_key = data['tile_key'];
-        var field_key = data['field_key'];
-        var field_option_key = data['option_key'];
-        var option_label = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['label'];
-        var option_description = '';
-        if ( 'description' in window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] ) {
-            option_description = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description'];
-        }
-        var modal_html_content = `
-        <tr>
-            <th colspan="2">
-                <h3 class="modal-box-title">Edit Field Option</h3>
-            </th>
-        </tr>
-        <tr>
-            <td>
-                <label><b>Key:</b></label>
-            </td>
-            <td>
-                ${field_option_key}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label><b>Custom Label:</b></label>
-            </td>
-            <td>
-            <input name="edit-option-label" id="new-option-name-${field_option_key}" type="text" value="${option_label}" required>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label><b>Description:</b></label>
-            </td>
-            <td>
-            <input name="edit-option-description" id="new-option-description-${field_option_key}" type="text" value="${option_description}">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button class="button" type="submit" id="js-edit-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
-            </td>
-        </tr>`;
-        $('#modal-overlay-content-table').html(modal_html_content);
-    }
-
-    // Display 'connected to' dropdown if 'connection' post type field is selected
-    $('.dt-admin-modal-box').on('change', '[id^=new-field-type-]', function() {
-        if ( $(this).val() === 'connection' ) {
-            $('.connection_field_target_row').show();
-        } else {
-            $('.connection_field_target_row').hide();
-            $('.same_post_type_row').hide();
-            $('.connection_field_reverse_row').hide();
-            $('#connection-field-target option').prop('selected', false);
-        }
-    });
-
-    $('.dt-admin-modal-box').on('change', '#connection-field-target', function() {
-        var selected_field_target = $(this).find(':selected').val();
-        if ( selected_field_target === window.post_type ) {
-            $('.connection_field_reverse_row').hide();
-            $('.same_post_type_row').show();
-        } else {
-            $('.same_post_type_row').hide();
-            $('.connection_field_reverse_row').show();
-            var selected_field_target_label = window.field_settings.all_post_types[selected_field_target];
-            $('.connected_post_type').text(selected_field_target_label);
-        }
-
-
-    });
-
+    // Edit Field Modal
     function loadEditFieldContentBox(field_data) {
         var tile_key = field_data['tile_key'];
         var field_key = field_data['field_key'];
@@ -620,6 +550,7 @@ jQuery(document).ready(function($) {
         $('#modal-overlay-content-table').html(modal_html_content);
     }
 
+    // Add Field Option Modal
     function loadAddFieldOptionBox(data) {
         var tile_key = data['tile_key'];
         var field_key = data['field_key'];
@@ -645,11 +576,59 @@ jQuery(document).ready(function($) {
         $('#modal-overlay-content-table').html(modal_html_content);
     }
 
+    // Edit Field Option Modal
+    function loadEditFieldOptionContentBox(data) {
+        var tile_key = data['tile_key'];
+        var field_key = data['field_key'];
+        var field_option_key = data['option_key'];
+        var option_label = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['label'];
+        var option_description = '';
+        if ( 'description' in window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] ) {
+            option_description = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description'];
+        }
+        var modal_html_content = `
+        <tr>
+            <th colspan="2">
+                <h3 class="modal-box-title">Edit Field Option</h3>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <label><b>Key:</b></label>
+            </td>
+            <td>
+                ${field_option_key}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label><b>Custom Label:</b></label>
+            </td>
+            <td>
+            <input name="edit-option-label" id="new-option-name-${field_option_key}" type="text" value="${option_label}" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label><b>Description:</b></label>
+            </td>
+            <td>
+            <input name="edit-option-description" id="new-option-description-${field_option_key}" type="text" value="${option_description}">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button class="button" type="submit" id="js-edit-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
+            </td>
+        </tr>`;
+        $('#modal-overlay-content-table').html(modal_html_content);
+    }
+
     $('#modal-overlay-form').on('submit', function(event){
         event.preventDefault();
     });
 
-    // Add Tile
+    // Process Add Tile
     $('#modal-overlay-form').on('click', '#js-add-tile', function(e) {
         var post_type = get_post_type();
         var new_tile_name = $('#new_tile_name').val();
@@ -660,9 +639,9 @@ jQuery(document).ready(function($) {
             window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
             closeModal();
             $('#add-new-tile-link').parent().before(`
-            <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="${tile_key}">
+            <div class="field-settings-table-tile-name expandable menu-highlight" data-modal="edit-tile" data-key="${tile_key}">
                 <span class="sortable">⋮⋮</span>
-                <span class="expand-icon">+</span>
+                <span class="expand-icon">-</span>
                 <span id="tile-key-${tile_key}" style="vertical-align: sub;">
                     ${tile_label}
                     <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
@@ -684,7 +663,7 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Edit Tile
+    // Process Edit Tile
     $('#modal-overlay-form').on('click', '#js-edit-tile', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
@@ -696,7 +675,7 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Add Field
+    // Process Add Field
     $('#modal-overlay-form').on('click', '#js-add-field', function(e) {
         var post_type = get_post_type();
         var new_field_tile = $(this).data('tile-key');
@@ -719,7 +698,7 @@ jQuery(document).ready(function($) {
             };
 
             var new_field_nonexpandable_html = `
-                <div class="field-settings-table-field-name" data-parent-tile-key="${new_field_tile}" data-field-name="${field_key}">
+                <div class="field-settings-table-field-name submenu-highlight" data-parent-tile-key="${new_field_tile}" data-field-name="${field_key}">
                     <span class="sortable">⋮⋮</span>
                     <span class="field-name-content" style="margin-left: 16px;" data-parent-tile="${new_field_tile}" data-key="${field_key}">
                         ${new_field_name}
@@ -731,7 +710,7 @@ jQuery(document).ready(function($) {
             `;
 
             var new_field_expandable_html = `
-                <div class="field-settings-table-field-name expandable" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
+                <div class="field-settings-table-field-name expandable submenu-highlight" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
                     <span class="sortable">⋮⋮</span>
                     <span class="expand-icon" style="padding-left: 16px;">+</span>
                     <span class="field-name-content" data-parent-tile="${new_field_tile}" data-key="${field_key}">
@@ -770,7 +749,7 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Edit Field
+    // Process Edit Field
     $('#modal-overlay-form').on('click', '#js-edit-field', function() {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
@@ -823,13 +802,7 @@ jQuery(document).ready(function($) {
         return;
     });
 
-    function scrollTo(target_element, offset=0) {
-        $([document.documentElement, document.body]).animate({
-            scrollTop: target_element.offset().top + offset
-        }, 500);
-    }
-
-    // Add Field Option
+    // Process Add Field Option
     $('#modal-overlay-form').on('click', '#js-add-field-option', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
@@ -856,7 +829,7 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Edit Field Option
+    // Process Edit Field Option
     $('#modal-overlay-form').on('click', '#js-edit-field-option', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
@@ -883,6 +856,12 @@ jQuery(document).ready(function($) {
         $('#modal-overlay-content-table').html('');
     }
 
+    function scrollTo(target_element, offset=0) {
+        $([document.documentElement, document.body]).animate({
+            scrollTop: target_element.offset().top + offset
+        }, 500);
+    }
+
     $('.dt-admin-modal-box-close-button').on('click', function() {
         closeModal();
     });
@@ -903,6 +882,31 @@ jQuery(document).ready(function($) {
         data['tile_key'] = $(this).data('parent-tile-key');
         data['field_key'] = $(this).data('field-key');
         showOverlayModal('new-field-option', data);
+    });
+
+    // Display 'connected to' dropdown if 'connection' post type field is selected
+    $('.dt-admin-modal-box').on('change', '[id^=new-field-type-]', function() {
+        if ( $(this).val() === 'connection' ) {
+            $('.connection_field_target_row').show();
+        } else {
+            $('.connection_field_target_row').hide();
+            $('.same_post_type_row').hide();
+            $('.connection_field_reverse_row').hide();
+            $('#connection-field-target option').prop('selected', false);
+        }
+    });
+
+    $('.dt-admin-modal-box').on('change', '#connection-field-target', function() {
+        var selected_field_target = $(this).find(':selected').val();
+        if ( selected_field_target === window.post_type ) {
+            $('.connection_field_reverse_row').hide();
+            $('.same_post_type_row').show();
+        } else {
+            $('.same_post_type_row').hide();
+            $('.connection_field_reverse_row').show();
+            var selected_field_target_label = window.field_settings.all_post_types[selected_field_target];
+            $('.connected_post_type').text(selected_field_target_label);
+        }
     });
 
     function render_element_shadows() {
