@@ -34,11 +34,11 @@ jQuery(document).ready(function($) {
         });
     }
 
+    autonavigate_to_menu();
+
     function get_post_type() {
         return window.field_settings.post_type;
     }
-
-    autonavigate_to_menu();
 
     $('.field-settings-table').on('click', '.field-settings-table-tile-name', function() {
         var tile_key = $(this).data('key');
@@ -68,6 +68,28 @@ jQuery(document).ready(function($) {
             data['option_key'] = $(this).data('field-option-key');
         }
         showOverlayModal(edit_modal, data);
+    });
+
+    $('.field-settings-table').on('click', "div[class*='expandable']", function(event) {
+        if ( event.target.className != 'edit-icon' ) {
+            $(this).next().slideToggle(333, 'swing');
+            if ($(this).children('.expand-icon').text() === '+'){
+                $(this).children('.expand-icon').text('-');
+            } else {
+                $(this).children('.expand-icon').text('+');
+            }
+        }
+        render_element_shadows();
+    });
+
+    $('#add-new-tile-link').on('click', function(event){
+        event.preventDefault();
+        showOverlayModal('add-new-tile');
+    });
+
+    $('.field-settings-table').on('click', '.add-new-field', function() {
+        var tile_key = $(this).data('parent-tile-key');
+        showOverlayModal('add-new-field', tile_key);
     });
 
     function show_preview_tile(tile_key) {
@@ -200,28 +222,6 @@ jQuery(document).ready(function($) {
         $('.fields-table-right').html(tile_html);
     }
 
-    $('.field-settings-table').on('click', "div[class*='expandable']", function(event) {
-        if ( event.target.className != 'edit-icon' ) {
-            $(this).next().slideToggle(333, 'swing');
-            if ($(this).children('.expand-icon').text() === '+'){
-                $(this).children('.expand-icon').text('-');
-            } else {
-                $(this).children('.expand-icon').text('+');
-            }
-        }
-        render_element_shadows();
-    });
-
-    $('#add-new-tile-link').on('click', function(event){
-        event.preventDefault();
-        showOverlayModal('add-new-tile');
-    });
-
-    $('.field-settings-table').on('click', '.add-new-field', function() {
-        var tile_key = $(this).data('parent-tile-key');
-        showOverlayModal('add-new-field', tile_key);
-    });
-
     function showOverlayModal(modalName, data=null) {
         $('.dt-admin-modal-overlay').fadeIn(150, 'swing');
         $('.dt-admin-modal-box').slideDown(150, 'swing');
@@ -247,6 +247,18 @@ jQuery(document).ready(function($) {
         if ( modalName == 'new-field-option') {
             loadAddFieldOptionBox(data);
         }
+    }
+
+    function closeModal() {
+        $('.dt-admin-modal-overlay').fadeOut(150, 'swing');
+        $('.dt-admin-modal-box').slideUp(150, 'swing');
+        $('#modal-overlay-content-table').html('');
+    }
+
+    function scrollTo(target_element, offset=0) {
+        $([document.documentElement, document.body]).animate({
+            scrollTop: target_element.offset().top + offset
+        }, 500);
     }
 
     // Add Tile Modal
@@ -624,6 +636,7 @@ jQuery(document).ready(function($) {
         $('#modal-overlay-content-table').html(modal_html_content);
     }
 
+
     $('#modal-overlay-form').on('submit', function(event){
         event.preventDefault();
     });
@@ -847,18 +860,6 @@ jQuery(document).ready(function($) {
         });
     });
 
-    function closeModal() {
-        $('.dt-admin-modal-overlay').fadeOut(150, 'swing');
-        $('.dt-admin-modal-box').slideUp(150, 'swing');
-        $('#modal-overlay-content-table').html('');
-    }
-
-    function scrollTo(target_element, offset=0) {
-        $([document.documentElement, document.body]).animate({
-            scrollTop: target_element.offset().top + offset
-        }, 500);
-    }
-
     $('.dt-admin-modal-box-close-button').on('click', function() {
         closeModal();
     });
@@ -914,7 +915,7 @@ jQuery(document).ready(function($) {
 
     }
 
-    // *** TYPEAHEAD : START ***
+    // Typeahead
     $.typeahead({
         input: '.js-typeahead-settings',
         order: "desc",
@@ -941,5 +942,4 @@ jQuery(document).ready(function($) {
             }
         }
     });
-    // *** TYPEAHEAD : END ***
 });
