@@ -216,10 +216,11 @@ window.API = {
     tile_key: tile_key,
   }, `dt-core/v1`),
 
-  edit_tile: (post_type, tile_key, tile_label) => makeRequest("POST", `edit-tile`, {
+  edit_tile: (post_type, tile_key, tile_label, hide_tile) => makeRequest("POST", `edit-tile`, {
     post_type: post_type,
     tile_key: tile_key,
     tile_label: tile_label,
+    hide_tile: hide_tile,
   }, `dt-core/v1/`),
 
   new_field: (post_type, new_field_tile, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name) => makeRequest("POST", `new-field`, {

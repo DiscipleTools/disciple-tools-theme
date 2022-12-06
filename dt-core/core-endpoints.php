@@ -282,12 +282,18 @@ class Disciple_Tools_Core_Endpoints {
         if ( isset( $post_submission['tile_label'] ) && $post_submission['tile_label'] != ( $custom_tile['label'] ?? $tile_key ) ){
             $custom_tile['label'] = $post_submission['tile_label'];
         }
+
+        $custom_tile['hidden'] = false;
         if ( isset( $post_submission['hide_tile'] ) ){
-            $custom_tile['hidden'] = true;
+            if ( $post_submission['hide_tile'] ) {
+                $custom_tile['hidden'] = true;
+            }
         }
+
         if ( isset( $post_submission['restore_tile'] ) ){
             $custom_tile['hidden'] = false;
         }
+
         if ( isset( $post_submission['tile_description'] ) && $post_submission['tile_description'] != ( $custom_tile['description'] ?? '' ) ){
             $custom_tile['description'] = $post_submission['tile_description'];
         }

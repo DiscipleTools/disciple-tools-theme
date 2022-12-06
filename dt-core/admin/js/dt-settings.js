@@ -275,6 +275,11 @@ jQuery(document).ready(function($) {
     function loadEditTileContentBox(tile_key) {
         var post_type = get_post_type();
         API.get_tile(post_type, tile_key).promise().then(function(data) {
+            var hide_tile = '';
+            if (data['hidden']) {
+                hide_tile = 'checked';
+            }
+
             var modal_html_content = `
             <tr>
                 <th colspan="2">
@@ -288,14 +293,23 @@ jQuery(document).ready(function($) {
                 <td>
                     ${tile_key}
                 </td>
-            </tr><tr>
-            <td>
-                <label for="tile_label"><b>Label</b></label>
-            </td>
-            <td>
-                <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}"required>
-            </td>
-        </tr>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tile_label"><b>Label</b></label>
+                </td>
+                <td>
+                    <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="hide_tile"><b>Hide tile on page</b></label>
+                </td>
+                <td>
+                    <input name="hide-tile" id="hide-tile-${tile_key}" type="checkbox" ${hide_tile}>
+                </td>
+            </tr>
             <tr>
                 <td colspan="2">
                     <button class="button" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
@@ -658,7 +672,8 @@ jQuery(document).ready(function($) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
         var tile_label = $(`#edit-tile-label-${tile_key}`).val();
-        API.edit_tile(post_type, tile_key, tile_label).promise().then(function() {
+        var hide_tile = $(`#hide-tile-${tile_key}`).is(':checked');
+        API.edit_tile(post_type, tile_key, tile_label, hide_tile).promise().then(function() {
             $(`#tile-key-${tile_key}`).html(tile_label);
             closeModal();
         });
