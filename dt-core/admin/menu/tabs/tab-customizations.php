@@ -152,9 +152,22 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <div class="dt-admin-modal-translations-box-content">
                                 <form id="modal-translations-overlay-form">
                                 <table class="modal-translations-overlay-content-table" id="modal-translations-overlay-content-table">
-                                    <!-- DYNAMIC CONTENT: START -->
-                                    <!-- DYNAMIC CONTENT: END -->
+                                    <tr>
+                                        <th colspan="2">Translations</th>
+                                    </tr>
+                                    <?php
+                                    $languages = dt_get_available_languages(true);
+                                    foreach( $languages as $lang => $val) : ?>
+                                    <tr>
+                                        <td><label for="tile_label_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
+                                        <td><input name="tile_label_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $tile['translations'][$val['language']] ?? '' );?>"/></td>
+                                    </tr>
+                                    <?php endforeach; ?>
                                 </table>
+                                <div class="translations-save-row">
+                                    <button class="button cancel-translations-button"><?php esc_html_e('Cancel'); ?></button>
+                                    <button class="button button-primary"><?php esc_html_e('Save'); ?></button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -456,6 +469,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 text-align: left;
                 margin-bottom: 28px;
             }
+            .modal-translations-box-title{
+                text-align: left;
+                background: #e9e9e9;
+            }
             .add-new-field a {
                 margin-left: 16px;
             }
@@ -599,9 +616,21 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 padding: 0.5rem;
                 cursor: pointer;
             }
-            .modal-overlay-content-table {
+            .modal-overlay-content-table, .modal-translations-overlay-content-table {
                 margin: 6px 10px 10px 10px;
                 line-height: 2.5;
+                max-height: 75%;
+            }
+            .modal-translations-overlay-content-table {
+                height: 40em;
+                overflow: auto;
+                justify-content: center;
+                display: flex;
+            }
+            .translations-save-row {
+                padding: 18px;
+                text-align: right;
+                border-top: 1px solid lightgray;
             }
             .fields-table-left {
                 width: 50%;

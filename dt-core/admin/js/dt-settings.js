@@ -884,9 +884,15 @@ jQuery(document).ready(function($) {
     // Translation for Tiles
     $('.dt-admin-modal-box').on('click', '.expand_tile_translations', function() {
         flip_card();
+        // $('#modal-translations-overlay-content').html(translation_modal_html);
     });
 
     $('.dt-admin-modal-translations-box-close-button').on('click', function() {
+        unflip_card();
+    });
+
+    $('.cancel-translations-button').on('click', function() {
+        event.preventDefault();
         unflip_card();
     });
 
