@@ -136,12 +136,12 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <div class="dt-admin-modal-overlay hidden">
             <div class="dt-admin-modal-box hidden">
                 <div class="dt-admin-modal-box-close-button">×</div>
-                    <div class="dt-admin-modal-box-content">
-                        <form id="modal-overlay-form">    
-                            <table class="modal-overlay-content-table" id="modal-overlay-content-table">
-                            </table>
-                        </form>
-                    </div>
+                <div class="dt-admin-modal-box-content">
+                        <form id="modal-overlay-form">
+                        <table class="modal-overlay-content-table" id="modal-overlay-content-table">
+                        </table>
+                    </form>
+                </div>
             </div>
         </div>
         <?php
@@ -385,9 +385,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                     </div>
                                 </div>
                                 <!-- END TOGGLED ITEMS -->
-
                             <?php endif;
-
                         } ?>
                     <?php endforeach; ?>
                     <!-- END TOGGLED FIELD ITEMS -->

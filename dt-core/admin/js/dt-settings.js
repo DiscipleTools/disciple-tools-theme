@@ -295,6 +295,7 @@ jQuery(document).ready(function($) {
                 hide_tile = 'checked';
             }
 
+            var translations_count = 0;
             var modal_html_content = `
             <tr>
                 <th colspan="2">
@@ -323,6 +324,17 @@ jQuery(document).ready(function($) {
                 </td>
                 <td>
                     <input name="hide-tile" id="hide-tile-${tile_key}" type="checkbox" ${hide_tile}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="hide_tile"><b>Translation</b></label>
+                </td>
+                <td>
+                    <button class="button expand_tile_translations" data-tile="${tile_key}">
+                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                        (${translations_count})
+                    </button>
                 </td>
             </tr>
             <tr>
@@ -858,6 +870,11 @@ jQuery(document).ready(function($) {
             closeModal();
             edited_field_option_element.parent().addClass('submenu-highlight');
         });
+    });
+
+    // Translation for Tiles
+    $('.dt-admin-modal-box').on('click', '.expand_tile_translations', function() {
+        
     });
 
     $('.dt-admin-modal-box-close-button').on('click', function() {
