@@ -509,6 +509,14 @@ jQuery(document).ready(function($) {
             private_field = 'checked';
         }
 
+        if ( !field_settings['description'] ) {
+            field_settings['description'] = '';
+        }
+
+        if ( !field_settings['icon'] ) {
+            field_settings['icon'] = '';
+        }
+
         var modal_html_content = `
             <tr>
                 <th colspan="2">
@@ -641,6 +649,7 @@ jQuery(document).ready(function($) {
         event.preventDefault();
     });
 
+    // Add Tile
     $('#modal-overlay-form').on('click', '#js-add-tile', function(e) {
         var post_type = get_post_type();
         var new_tile_name = $('#new_tile_name').val();
@@ -675,6 +684,7 @@ jQuery(document).ready(function($) {
         });
     });
 
+    // Edit Tile
     $('#modal-overlay-form').on('click', '#js-edit-tile', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
@@ -686,6 +696,7 @@ jQuery(document).ready(function($) {
         });
     });
 
+    // Add Field
     $('#modal-overlay-form').on('click', '#js-add-field', function(e) {
         var post_type = get_post_type();
         var new_field_tile = $(this).data('tile-key');
@@ -759,6 +770,7 @@ jQuery(document).ready(function($) {
         });
     });
 
+    // Edit Field
     $('#modal-overlay-form').on('click', '#js-edit-field', function() {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
@@ -817,6 +829,7 @@ jQuery(document).ready(function($) {
         }, 500);
     }
 
+    // Add Field Option
     $('#modal-overlay-form').on('click', '#js-add-field-option', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
@@ -843,6 +856,7 @@ jQuery(document).ready(function($) {
         });
     });
 
+    // Edit Field Option
     $('#modal-overlay-form').on('click', '#js-edit-field-option', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
