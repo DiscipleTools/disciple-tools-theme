@@ -473,7 +473,8 @@ class Disciple_Tools_Core_Endpoints {
             }
             update_option( 'dt_field_customizations', $custom_field_options );
             wp_cache_delete( $post_type . '_field_settings' );
-            return $field_key;
+            $custom_field_options[$post_type][$field_key]['key'] = $field_key; // Key added for reference in js callback function
+            return $custom_field_options[$post_type][$field_key];
         }
         return false;
     }

@@ -686,17 +686,9 @@ jQuery(document).ready(function($) {
         var multidirectional = $('#multidirectional_checkbox').is(':checked');
         var other_field_name = $('#other_field_name').val();
 
-        API.new_field(post_type, new_field_tile, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name ).promise().then(function(field_key) {
-            window.field_settings.post_type_settings.fields[field_key] = {
-                'name':new_field_name,
-                'private':new_field_private,
-                'tile':new_field_tile,
-                'type':new_field_type,
-                'connection_target':connection_target,
-                'multidirectional':multidirectional,
-                'other_field_name':other_field_name,
-            };
-
+        API.new_field(post_type, new_field_tile, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name ).promise().then(function(result) {
+            var field_key = result['key'];
+            window['field_settings']['post_type_settings']['fields'][field_key] = result;
             var new_field_nonexpandable_html = `
                 <div class="field-settings-table-field-name submenu-highlight" data-parent-tile-key="${new_field_tile}" data-field-name="${field_key}">
                     <span class="sortable">⋮⋮</span>
