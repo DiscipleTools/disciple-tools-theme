@@ -297,6 +297,11 @@ jQuery(document).ready(function($) {
     // Edit Tile Modal
     function loadEditTileContentBox(tile_key) {
         var post_type = get_post_type();
+        var translations_count = 0;
+        if (window['field_settings']['post_type_tiles'][tile_key]['translations']) {
+            translations_count = Object.values(window['field_settings']['post_type_tiles'][tile_key]['translations']).filter(function(t) {return t;}).length;
+        }
+
         API.get_tile(post_type, tile_key).promise().then(function(data) {
 
             var hide_tile = '';
@@ -304,7 +309,6 @@ jQuery(document).ready(function($) {
                 hide_tile = 'checked';
             }
 
-            var translations_count = 0;
             var modal_html_content = `
             <tr>
                 <th colspan="2">
@@ -337,10 +341,10 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="hide_tile"><b>Translation</b></label>
+                    <label for="hide_tile"><b>Translations</b></label>
                 </td>
                 <td>
-                    <button class="button expand_tile_translations" data-tile="${tile_key}">
+                    <button class="button expand_tile_translations" data-post-type="${post_type}" data-tile-key="${tile_key}">
                         <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
                     </button>
@@ -459,8 +463,11 @@ jQuery(document).ready(function($) {
     function loadEditFieldContentBox(field_data) {
         var tile_key = field_data['tile_key'];
         var field_key = field_data['field_key'];
-        var field_settings = window.field_settings.post_type_settings.fields[field_key];
-        var number_of_translations = 0; //Todo: softcode this variable
+        var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
+        var translations_count = 0;
+        if (window['field_settings']['post_type_settings']['fields'][field_key]['translations']) {
+            translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['translations']).filter(function(t){return t;}).length;
+        }
 
         var field_icon_image_html = '';
         if ( field_settings['icon'] ) {
@@ -520,12 +527,12 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <b>Translation</b>
+                    <b>Translations</b>
                 </td>
                 <td>
                     <button class="button small expand_translations" data-form_name="field-edit-form">
                         <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
-                        (${number_of_translations})
+                        (${translations_count})
                     </button>
                 </td>
             </tr>
@@ -557,12 +564,12 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <b>Description Translation</b>
+                    <b>Description Translations</b>
                 </td>
                 <td>
                     <button class="button small expand_translations" data-form_name="field-edit-form">
                         <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
-                        (${number_of_translations})
+                        (${translations_count})
                     </button>
                 </td>
             </tr>
@@ -883,17 +890,66 @@ jQuery(document).ready(function($) {
 
     // Translation for Tiles
     $('.dt-admin-modal-box').on('click', '.expand_tile_translations', function() {
+        var post_type = $(this).data('post-type');
+        var tile_key = $(this).data('tile-key');
+        var languages = window['field_settings']['languages'];
+        var available_translations = window['field_settings']['post_type_tiles'][tile_key]['translations'];
+        tile_translations_html = `
+        <table class="modal-translations-overlay-content-table" id="modal-translations-overlay-content-table">
+            <tr>
+                <th colspan="2">Translations</th>
+            </tr>
+            <?php
+            $languages = dt_get_available_languages(true);`;
+            $.each( languages, function(key, lang) {
+                available_translations[key] ? current_translation = available_translations[key] : current_translation = '';
+                tile_translations_html += `
+                <tr>
+                    <td><label for="tile_label_translation-${key}">${lang['native_name']}</label></td>
+                    <td><input name="tile_label_translation-${key}" type="text" data-translation-key="${key}" value="${current_translation}"/></td>
+                </tr>`
+            });
+        tile_translations_html += `
+        </table>
+        <div class="translations-save-row">
+            <button class="button cancel-translations-button">Cancel</button>
+            <button class="button button-primary save-translations-button" data-post-type="${post_type}" data-tile-key="${tile_key}">Save</button>
+        </div>`;
+        $('#modal-translations-overlay-form').html(tile_translations_html);
         flip_card();
-        // $('#modal-translations-overlay-content').html(translation_modal_html);
+
     });
 
     $('.dt-admin-modal-translations-box-close-button').on('click', function() {
         unflip_card();
     });
 
-    $('.cancel-translations-button').on('click', function() {
+    $('#modal-translations-overlay-form').on('click', '.cancel-translations-button', function() {
         event.preventDefault();
         unflip_card();
+    });
+
+    $('#modal-translations-overlay-form').on('click', '.save-translations-button', function() {
+        event.preventDefault();
+        var post_type = $(this).data('post-type');
+        var tile_key = $(this).data('tile-key');
+        var translations = {};
+        var translation_inputs = $('#modal-translations-overlay-form input');
+        $.each(translation_inputs, function(key, t) {
+            var translation_value = $(t).val();
+            var translation_key = $(t).data('translation-key');
+            translations[translation_key] = translation_value;
+        });
+        translations = JSON.stringify(translations);
+        API.edit_tile_translations(post_type, tile_key, translations).promise().then(function(response) {
+            window['field_settings']['post_type_tiles'][tile_key]['translations'] = response;
+            var translations_count = Object.values(window['field_settings']['post_type_tiles'][tile_key]['translations']).filter(function(t) {return t;}).length;
+            $('.expand_tile_translations').html(`
+            <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                        (${translations_count})
+            `);
+            unflip_card();
+        });
     });
 
     $('.dt-admin-modal-box-close-button').on('click', function() {

@@ -81,6 +81,14 @@ class Disciple_Tools_Core_Endpoints {
         );
 
         register_rest_route(
+            $this->namespace, '/edit-tile-translations', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'edit_tile_translations' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
             $this->namespace, '/new-field', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'new_field' ],
@@ -303,6 +311,30 @@ class Disciple_Tools_Core_Endpoints {
         }
         update_option( 'dt_custom_tiles', $tile_options );
         return $tile_options[$post_type][$tile_key];
+    }
+
+    public static function edit_tile_translations( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+        if ( isset( $post_submission['post_type'] ) && isset( $post_submission['tile_key'] ) && isset( $post_submission['translations'] ) ) {
+            $post_type = sanitize_text_field( wp_unslash( $post_submission['post_type'] ) );
+            $tile_key = sanitize_text_field( wp_unslash( $post_submission['tile_key'] ) );
+            $translations = $post_submission['translations'];
+            $translations = json_decode( $translations, true );
+            $tile_options = dt_get_option( 'dt_custom_tiles' );
+            $custom_tile = $tile_options[$post_type][$tile_key];
+            $langs = dt_get_available_languages();
+            foreach ( $langs as $lang => $val ) {
+                if ( $translations[$langcode] === '' ) {
+                    $translations[$langcode] = null;
+                }
+                $langcode = $val['language'];
+                $custom_tile['translations'][$langcode] = $translations[$langcode];
+            }
+            $tile_options[$post_type][$tile_key] = $custom_tile;
+            update_option( 'dt_custom_tiles', $tile_options );
+            return $translations;
+        }
+        return false;
     }
 
     public static function new_field( WP_REST_Request $request ) {

@@ -77,6 +77,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
             'translations' => apply_filters( 'dt_list_js_translations', $translations ),
             'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
+            'languages' => dt_get_available_languages( true ),
             )
         );
 
@@ -150,24 +151,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <div class="modal-back">
                         <div class="dt-admin-modal-translations-box-close-button">×</div>
                         <div class="dt-admin-modal-translations-box-content">
-                                <form id="modal-translations-overlay-form">
-                                <table class="modal-translations-overlay-content-table" id="modal-translations-overlay-content-table">
-                                    <tr>
-                                        <th colspan="2">Translations</th>
-                                    </tr>
-                                    <?php
-                                    $languages = dt_get_available_languages(true);
-                                    foreach( $languages as $lang => $val) : ?>
-                                    <tr>
-                                        <td><label for="tile_label_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                        <td><input name="tile_label_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $tile['translations'][$val['language']] ?? '' );?>"/></td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                </table>
-                                <div class="translations-save-row">
-                                    <button class="button cancel-translations-button"><?php esc_html_e('Cancel'); ?></button>
-                                    <button class="button button-primary"><?php esc_html_e('Save'); ?></button>
-                                </div>
+                            <form id="modal-translations-overlay-form">
                             </form>
                         </div>
                     </div>
