@@ -893,7 +893,10 @@ jQuery(document).ready(function($) {
         var post_type = $(this).data('post-type');
         var tile_key = $(this).data('tile-key');
         var languages = window['field_settings']['languages'];
-        var available_translations = window['field_settings']['post_type_tiles'][tile_key]['translations'];
+        var available_translations = {};
+        if ( window['field_settings']['post_type_tiles'][tile_key]['translations'] ) {
+            available_translations = window['field_settings']['post_type_tiles'][tile_key]['translations'];
+        };
         tile_translations_html = `
         <table class="modal-translations-overlay-content-table" id="modal-translations-overlay-content-table">
             <tr>
