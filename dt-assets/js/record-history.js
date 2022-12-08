@@ -150,6 +150,16 @@ jQuery(document).ready(function ($) {
           });
         }
 
+        // Convert activity heading epoch timestamps to readable dates.
+        if (activity['field_type']==='date') {
+          let timestamps = activity_heading.match(/\d{10}/g);
+          if (timestamps!=null) {
+            $.each(timestamps, function (ts_idx, ts) {
+              activity_heading = window.lodash.replace(activity_heading, new RegExp(ts, 'g'), moment.unix(parseInt(ts)).format(date_format_pretty_short));
+            });
+          }
+        }
+
         // Field label to be sourced accordingly, based on incoming field type.
         if (window.lodash.includes(['connection to', 'connection from'], activity['field_type'])) {
           field_label = 'connection';
@@ -198,7 +208,7 @@ jQuery(document).ready(function ($) {
   }
 
   function handle_revert_request(timestamp) {
-    let timestamp_formatted = moment.unix(parseInt(timestamp)).format(date_format_pretty_short);
+    let timestamp_formatted = moment.unix(parseInt(timestamp)).format(date_format_long);
     let confirm_text = window.lodash.escape(window.record_history_settings.translations.revert_confirm_text).replace('%s', timestamp_formatted);
     if (confirm(confirm_text)) {
 

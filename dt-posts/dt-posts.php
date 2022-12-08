@@ -1430,7 +1430,396 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $activities;
     }
 
-    public static function new_revert_post_activity_history( string $post_type, int $post_id, array $args = [] ){
+    public static function three_revert_post_activity_history( string $post_type, int $post_id, array $args = [] ){
+        if ( !self::can_view( $post_type, $post_id ) ){
+            return new WP_Error( __FUNCTION__, 'No permissions to read: ' . $post_type, [ 'status' => 403 ] );
+        }
+
+        /**
+         * Fetch all associated activities from current time to specified revert
+         * date. Ensure most recent activities are first in line.
+         */
+
+        $args['result_order'] = 'DESC';
+        //dt_write_log( $args );
+        $activities = self::get_post_activity_history( $post_type, $post_id, $args );
+        //dt_write_log( $activities );
+
+        /**
+         * March back in time to revert date, adjusting fields accordingly.
+         */
+
+        $reverted_start_ts = $args['ts_start'];
+        $reverted_updates = [];
+        $post_type_fields = self::get_post_field_settings( $post_type, false );
+        foreach ( $activities ?? [] as &$activity ) {
+            $timestamp = $activity->hist_time;
+            $field_action = $activity->action;
+            $field_type = $activity->field_type;
+            $field_key = $activity->meta_key;
+            $field_value = $activity->meta_value;
+            $field_old_value = $activity->old_value;
+            $is_deleted = strtolower( trim( $field_value ) ) == 'value_deleted';
+
+            // Ensure to accommodate special case field types.
+            if ( in_array( $field_action, [ 'connected to', 'disconnected from' ] ) ) {
+
+                // Determine actual field key to be used.
+                $field_setting = self::get_post_field_settings_by_p2p( $post_type_fields, $field_key, ( $field_action == 'disconnected from' ) ? [ 'from', 'any' ] : [ 'to', 'any' ] );
+                if ( ! empty( $field_setting ) ) {
+                    $field_key = $field_setting['key'];
+                    $field_type = $field_action;
+
+                } else {
+                    $field_key  = null;
+                    $field_type = null;
+                }
+            } elseif ( empty( $field_type ) && substr( $field_key, 0, strlen( 'contact_' ) ) == 'contact_' ) {
+                $field_type = 'communication_channel';
+                $field_key = substr( $field_key, 0, strpos( $field_key, '_', strlen( 'contact_' ) ) );
+
+                // Void if key is empty.
+                if ( empty( $field_key ) ){
+                    $field_key = null;
+                    $field_type = null;
+                }
+            }
+
+            // If needed, prepare reverted updates array element.
+            if ( ! empty( $field_key ) && ! empty( $field_type ) && ! isset( $reverted_updates[ $field_key ] ) ) {
+                $reverted_updates[ $field_key ] = [
+                    'field_type' => $field_type,
+                    'values'     => []
+                ];
+            }
+
+            /**
+             * As we walk back in time, need to operate in the inverse; so, delete is
+             * actually an add and add, is actually, delete!
+             * Also, ensure inverse logic is not carried out once we've reached our
+             * specified revert start point.
+             */
+
+            switch ( $field_type ) {
+                case 'connected to':
+                case 'disconnected from':
+                    if ( $timestamp > $reverted_start_ts ){
+                        $is_deleted = strtolower( trim( $field_action ) ) == 'disconnected from';
+
+                        $reverted_updates[$field_key]['values'][$field_value] = [
+                            'value' => $field_value,
+                            'keep' => $is_deleted
+                        ];
+
+                        //-----
+
+                        /*if ( $is_deleted ){
+                            $reverted_updates[$field_key]['values'][$field_value] = [
+                                'value' => $field_value,
+                                'remove' => false
+                            ];
+                        } elseif ( array_key_exists( $field_value, $reverted_updates[$field_key]['values'] ) ){
+                            unset( $reverted_updates[$field_key]['values'][$field_value] );
+                        }*/
+
+                        //-----
+
+                        /*
+                        if ( $is_deleted && in_array( $field_value, $reverted_updates[$field_key]['values'] ) ){
+                            $field_value_key = array_search( $field_value, $reverted_updates[$field_key]['values'] );
+                            if ( $field_value_key !== false ){
+                                unset( $reverted_updates[$field_key]['values'][$field_value_key] );
+                            }
+                        } elseif ( !$is_deleted && !in_array( $field_value, $reverted_updates[$field_key]['values'] ) ){
+                            $reverted_updates[$field_key]['values'][] = $field_value;
+                        }*/
+                    }
+                    break;
+                case 'tags':
+                case 'date':
+                case 'location':
+                case 'multi_select':
+                case 'location_meta':
+                case 'communication_channel':
+                    if ( $timestamp > $reverted_start_ts ){
+
+                        /*if ( $is_deleted ){
+                            $reverted_updates[$field_key]['values'][$field_old_value] = [
+                                'value' => $field_old_value,
+                                'keep' => true
+                            ];
+                        } elseif ( array_key_exists( $field_value, $reverted_updates[$field_key]['values'] ) ){
+                            //unset( $reverted_updates[$field_key]['values'][$field_value] );
+                            $reverted_updates[$field_key]['values'][$field_value]['keep'] = false;
+
+                            // Ensure any detected old values are reinstated!
+                            if ( !empty( $field_old_value ) ){
+                                $reverted_updates[$field_key]['values'][$field_old_value] = [
+                                    'value' => $field_old_value,
+                                    'keep' => false
+                                ];
+                            }
+                        }*/
+
+                        $value = $is_deleted ? $field_old_value : $field_value;
+                        $reverted_updates[$field_key]['values'][$value] = [
+                            'value' => $value,
+                            'keep' => $is_deleted
+                        ];
+
+                        // Ensure any detected old values are reinstated!
+                        if ( !$is_deleted && !empty( $field_old_value ) ){
+                            unset( $reverted_updates[$field_key]['values'][$field_value] );
+
+                            $reverted_updates[$field_key]['values'][$field_old_value] = [
+                                'value' => $field_old_value,
+                                'keep' => true
+                            ];
+                        }
+
+                        //-----
+
+                        /*if ( $is_deleted ){
+                            $reverted_updates[$field_key]['values'][$field_old_value] = [
+                                'value' => $field_old_value
+                            ];
+                        } elseif ( array_key_exists( $field_value, $reverted_updates[$field_key]['values'] ) ){
+                            unset( $reverted_updates[$field_key]['values'][$field_value] );
+
+                            // Ensure any detected old values are reinstated!
+                            if ( !empty( $field_old_value ) ){
+                                $reverted_updates[$field_key]['values'][$field_old_value] = [
+                                    'value' => $field_old_value
+                                ];
+                            }
+                        }*/
+                    }
+                    //-----
+                    /*if ( $is_deleted && array_key_exists( $field_old_value, $reverted_updates[ $field_key ]['values'] ) ) {
+                        unset( $reverted_updates[ $field_key ]['values'][ $field_old_value ] );
+                    } elseif ( ! $is_deleted && ! array_key_exists( $field_value, $reverted_updates[ $field_key ]['values'] ) ) {
+
+                        // Ensure new value is not already linked to a previous entry; as an old value.
+                        $linked_entry = null;
+                        foreach ( $reverted_updates[$field_key]['values'] as $field_update_key => $field_update_values ){
+                            if ( $field_value == $field_update_values['old'] ){
+                                $linked_entry = $field_update_key;
+                            }
+                        }
+
+                        // Adjust values array accordingly, based on previous linked entry.
+                        if ( !empty( $linked_entry ) ){
+                            unset( $reverted_updates[$field_key]['values'][$linked_entry] );
+                        }
+
+                        // Freely capture new value.
+                        $reverted_updates[$field_key]['values'][$field_value] = [
+                            'new' => $field_value,
+                            'old' => $field_old_value
+                        ];
+                    }*/
+                    break;
+                case 'text':
+                case 'number':
+                case 'boolean':
+                case 'textarea':
+                case 'key_select':
+                case 'user_select':
+                    if ( $timestamp > $reverted_start_ts ){
+                        $reverted_updates[$field_key]['values'][0] = $field_old_value;
+                    }
+                    break;
+            }
+        }
+
+        dt_write_log( $reverted_updates );
+
+        /**
+         * Package revert findings ahead of final post update; ensuring to remove any
+         * field values not present within reverted updates.
+         */
+
+        $post_updates = [];
+        $post = self::get_post( $post_type, $post_id, false );
+        dt_write_log( $post );
+        foreach ( $reverted_updates as $field_key => $reverted ) {
+            switch ( $reverted['field_type'] ){
+                case 'connected to':
+                case 'disconnected from':
+                    $values = [];
+                    foreach ( $reverted['values'] as $revert_key => $revert_obj ){
+
+                        // Keep existing values or add if needed.
+                        if ( $revert_obj['keep'] ){
+                            $found_existing_option = false;
+                            if ( isset( $post[$field_key] ) && is_array( $post[$field_key] ) ){
+                                foreach ( $post[$field_key] as $option ){
+                                    if ( $revert_key == $option['ID'] ){
+                                        $found_existing_option = true;
+                                    }
+                                }
+                            }
+
+                            if ( !$found_existing_option ){
+                                $values[] = [
+                                    'value' => $revert_obj['value']
+                                ];
+                            }
+                        }elseif ( isset( $post[$field_key] ) && is_array( $post[$field_key] ) ){
+
+                            // Remove any flagged existing values.
+                            foreach ( $post[$field_key] as $option ){
+                                $id = $option['ID'];
+                                if ( $revert_key == $id ){
+                                    $values[] = [
+                                        'value' => $id,
+                                        'delete' => true
+                                    ];
+                                }
+                            }
+                        }
+                    }
+
+                    // Package any available values to be updated.
+                    if ( !empty( $values ) ){
+                        $post_updates[$field_key] = [
+                            'values' => $values
+                        ];
+                    }
+                    break;
+                case 'tags':
+                case 'location':
+                case 'multi_select':
+                case 'location_meta':
+                case 'communication_channel':
+                    $values = [];
+                    foreach ( $reverted['values'] as $revert_key => $revert_obj ){
+
+                        // Keep existing values or add if needed.
+                        if ( $revert_obj['keep'] ){
+                            $found_existing_option = false;
+                            if ( isset( $post[$field_key] ) && is_array( $post[$field_key] ) ){
+                                foreach ( $post[$field_key] as $option ){
+
+                                    // Determine id to be used, based on field type
+                                    if ( $reverted['field_type'] == 'location' ) {
+                                        $id = $option['id'];
+
+                                    } elseif ( $reverted['field_type'] == 'location_meta' ) {
+                                        $id = $option['grid_meta_id'];
+
+                                    } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                        $id = $option['key'];
+
+                                    } else {
+                                        $id = $option;
+                                    }
+
+                                    if ( $revert_key == $id ){
+                                        $found_existing_option = true;
+                                    }
+                                }
+                            }
+
+                            if ( !$found_existing_option ){
+                                $values[] = [
+                                    'value' => $revert_obj['value']
+                                ];
+                            }
+                        }elseif ( isset( $post[$field_key] ) && is_array( $post[$field_key] ) ){
+
+                            // Remove any flagged existing values.
+                            foreach ( $post[$field_key] as $option ){
+
+                                // Determine id to be used, based on field type
+                                if ( $reverted['field_type'] == 'location' ) {
+                                    $id = $option['id'];
+
+                                } elseif ( $reverted['field_type'] == 'location_meta' ) {
+                                    $id = $option['grid_meta_id'];
+
+                                } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                    $id = $option['key'];
+
+                                } else {
+                                    $id = $option;
+                                }
+
+                                if ( $revert_key == $id ){
+
+                                    // Determine correct value label to be used.
+                                    if ( $reverted['field_type'] == 'location_meta' ) {
+                                        $key = 'grid_meta_id';
+
+                                    } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                        $key = 'key';
+                                    } else {
+                                        $key = 'value';
+                                    }
+
+                                    // Package....
+                                    $values[] = [
+                                        $key => $id,
+                                        'delete' => true
+                                    ];
+                                }
+                            }
+                        }
+                    }
+
+                    // Package any available values to be updated.
+                    if ( !empty( $values ) ){
+                        $post_updates[$field_key] = [
+                            'values' => $values
+                        ];
+                    }
+                    break;
+                case 'date':
+                    $revert_obj = array_values( $reverted['values'] )[0] ?? null;
+                    $post_updates[$field_key] = ( !empty( $revert_obj ) && $revert_obj['keep'] ) ? $revert_obj['value'] : '';
+                    break;
+                case 'number':
+                    // TODO: Better handling of min/max bounds; so as to avoid exceptions!
+                    $post_updates[$field_key] = !empty( $reverted['values'][0] ) ? $reverted['values'][0] : 0;
+                    break;
+                case 'text':
+                case 'boolean':
+                case 'textarea':
+                case 'key_select':
+                case 'user_select':
+                    $post_updates[$field_key] = $reverted['values'][0] ?? '';
+                    break;
+            }
+        }
+
+        /**
+         * Final home-straight - Submit updates to revert post back to specified state.
+         * Simply return blank, if no updates are to be made.
+         */
+
+        dt_write_log( $post_updates );
+        if ( empty( $post_updates ) ){
+            return [];
+        }
+
+        // Ensure revert activity carried out by Revert Bot.
+        $current_user_id = get_current_user_id();
+        wp_set_current_user( 0 );
+        $current_user = wp_get_current_user();
+        $current_user->add_cap( 'activity_revert' );
+        $current_user->add_cap( 'dt_all_access_contacts' );
+        $current_user->display_name = __( 'Revert Bot', 'disciple_tools' );
+
+        // Update post based on reverted values.
+        $updated_post = self::update_post( $post_type, $post_id, $post_updates );
+        dt_write_log( $updated_post );
+
+        // Revert back to previous user and return.
+        wp_set_current_user( $current_user_id );
+        return $updated_post;
+    }
+
+    public static function two_revert_post_activity_history( string $post_type, int $post_id, array $args = [] ){
         if ( !self::can_view( $post_type, $post_id ) ){
             return new WP_Error( __FUNCTION__, 'No permissions to read: ' . $post_type, [ 'status' => 403 ] );
         }
@@ -1656,7 +2045,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         //----- TEST NEW
-        self::new_revert_post_activity_history( $post_type, $post_id, $args );
+        //self::two_revert_post_activity_history( $post_type, $post_id, $args );
+        return self::three_revert_post_activity_history( $post_type, $post_id, $args );
         //-----
 
         $post_type_fields = self::get_post_field_settings( $post_type, false );
@@ -1887,9 +2277,9 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     public static function get_post_field_settings_by_p2p( $fields, $p2p_key, $p2p_direction ): array {
         foreach ( $fields as $key => $field ) {
-            if ( isset( $field['p2p_key'], $field['p2p_direction'] ) && $field['p2p_key'] == $p2p_key && $field['p2p_direction'] == $p2p_direction ) {
+            if ( isset( $field['p2p_key'], $field['p2p_direction'] ) && $field['p2p_key'] == $p2p_key && in_array( $field['p2p_direction'], $p2p_direction ) ){
                 return [
-                    'key'      => $key,
+                    'key' => $key,
                     'settings' => $field
                 ];
             }
