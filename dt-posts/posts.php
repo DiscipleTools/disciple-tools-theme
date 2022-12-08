@@ -2791,7 +2791,7 @@ class Disciple_Tools_Posts
                         } else if ( ( $field_value['p2p_direction'] === 'to' || $field_value['p2p_direction'] === 'any' ) && $p2p_record['p2p_from'] != $record['ID'] ){
                             $connection_id = $p2p_record['p2p_from'];
                         }
-                        if ( $connection_id ){
+                        if ( $connection_id && isset( $connected_posts_mapped[$connection_id] ) ){
                             $connection_post = $connected_posts_mapped[$connection_id];
                             $connection_meta = [];
                             foreach ( $all_p2p_meta as $meta ){
