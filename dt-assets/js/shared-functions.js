@@ -223,10 +223,12 @@ window.API = {
     hide_tile: hide_tile,
   }, `dt-core/v1/`),
 
-  edit_tile_translations: (post_type, tile_key, translations) => makeRequest("POST", `edit-tile-translations`, {
+  edit_translations: (translation_type, post_type, tile_key, translations, field_key=null) => makeRequest("POST", `edit-translations`, {
+    translation_type: translation_type,
     post_type: post_type,
     tile_key: tile_key,
     translations: translations,
+    field_key: field_key,
   }, `dt-core/v1`),
 
   new_field: (post_type, new_field_tile, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name) => makeRequest("POST", `new-field`, {

@@ -344,7 +344,7 @@ jQuery(document).ready(function($) {
                     <label for="hide_tile"><b>Translations</b></label>
                 </td>
                 <td>
-                    <button class="button expand_tile_translations" data-post-type="${post_type}" data-tile-key="${tile_key}">
+                    <button class="button expand_translations" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
                         <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
                     </button>
@@ -461,6 +461,7 @@ jQuery(document).ready(function($) {
 
     // Edit Field Modal
     function loadEditFieldContentBox(field_data) {
+        var post_type = get_post_type();
         var tile_key = field_data['tile_key'];
         var field_key = field_data['field_key'];
         var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
@@ -530,7 +531,7 @@ jQuery(document).ready(function($) {
                     <b>Translations</b>
                 </td>
                 <td>
-                    <button class="button small expand_translations" data-form_name="field-edit-form">
+                    <button class="button small expand_translations" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
                         <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
                     </button>
@@ -567,7 +568,7 @@ jQuery(document).ready(function($) {
                     <b>Description Translations</b>
                 </td>
                 <td>
-                    <button class="button small expand_translations" data-form_name="field-edit-form">
+                    <button class="button small expand_translations" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
                         <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
                     </button>
@@ -889,36 +890,52 @@ jQuery(document).ready(function($) {
     });
 
     // Translation for Tiles
-    $('.dt-admin-modal-box').on('click', '.expand_tile_translations', function() {
+    $('.dt-admin-modal-box').on('click', '.expand_translations', function() {
+        var translation_type = $(this).data('translation-type');
         var post_type = $(this).data('post-type');
         var tile_key = $(this).data('tile-key');
+        var field_key = $(this).data('field-key');
         var languages = window['field_settings']['languages'];
         var available_translations = {};
-        if ( window['field_settings']['post_type_tiles'][tile_key]['translations'] ) {
-            available_translations = window['field_settings']['post_type_tiles'][tile_key]['translations'];
-        };
-        tile_translations_html = `
+
+        var translations_html = `
         <table class="modal-translations-overlay-content-table" id="modal-translations-overlay-content-table">
             <tr>
                 <th colspan="2">Translations</th>
-            </tr>
-            <?php
-            $languages = dt_get_available_languages(true);`;
-            $.each( languages, function(key, lang) {
-                available_translations[key] ? current_translation = available_translations[key] : current_translation = '';
-                tile_translations_html += `
-                <tr>
-                    <td><label for="tile_label_translation-${key}">${lang['native_name']}</label></td>
-                    <td><input name="tile_label_translation-${key}" type="text" data-translation-key="${key}" value="${current_translation}"/></td>
-                </tr>`
-            });
-        tile_translations_html += `
+            </tr>`;
+
+        if ( translation_type === 'tile-label' ) {
+            if ( window['field_settings']['post_type_tiles'][tile_key]['translations'] ) {
+                available_translations = window['field_settings']['post_type_tiles'][tile_key]['translations']
+            }
+        }
+
+        if ( translation_type === 'field-label' ) {
+            if ( field_key === 'undefined' ) {
+                return;
+            }
+            if ( window['field_settings']['post_type_settings']['fields'][field_key]['translations'] ) {
+                available_translations = window['field_settings']['post_type_settings']['fields'][field_key]['translations'];
+            }
+        }
+
+        $.each( languages, function(key, lang) {
+            available_translations[key] ? current_translation = available_translations[key] : current_translation = '';
+        translations_html += `
+            <tr>
+                <td><label for="tile_label_translation-${key}">${lang['native_name']}</label></td>
+                <td><input name="tile_label_translation-${key}" type="text" data-translation-key="${key}" value="${current_translation}"/></td>
+            </tr>`
+        });
+
+        translations_html += `
         </table>
         <div class="translations-save-row">
             <button class="button cancel-translations-button">Cancel</button>
-            <button class="button button-primary save-translations-button" data-post-type="${post_type}" data-tile-key="${tile_key}">Save</button>
+            <button class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">Save</button>
         </div>`;
-        $('#modal-translations-overlay-form').html(tile_translations_html);
+
+        $('#modal-translations-overlay-form').html(translations_html);
         flip_card();
 
     });
@@ -934,8 +951,11 @@ jQuery(document).ready(function($) {
 
     $('#modal-translations-overlay-form').on('click', '.save-translations-button', function() {
         event.preventDefault();
+        var translation_type = $(this).data('translation-type');
         var post_type = $(this).data('post-type');
         var tile_key = $(this).data('tile-key');
+        var field_key = $(this).data('field-key');
+
         var translations = {};
         var translation_inputs = $('#modal-translations-overlay-form input');
         $.each(translation_inputs, function(key, t) {
@@ -943,11 +963,20 @@ jQuery(document).ready(function($) {
             var translation_key = $(t).data('translation-key');
             translations[translation_key] = translation_value;
         });
+
         translations = JSON.stringify(translations);
-        API.edit_tile_translations(post_type, tile_key, translations).promise().then(function(response) {
-            window['field_settings']['post_type_tiles'][tile_key]['translations'] = response;
-            var translations_count = Object.values(window['field_settings']['post_type_tiles'][tile_key]['translations']).filter(function(t) {return t;}).length;
-            $('.expand_tile_translations').html(`
+        API.edit_translations(translation_type, post_type, tile_key, translations, field_key).promise().then(function(response) {
+            if ( translation_type === 'tile-label' ) {
+                window['field_settings']['post_type_tiles'][tile_key]['translations'] = response;
+                var translations_count = Object.values(window['field_settings']['post_type_tiles'][tile_key]['translations']).filter(function(t) {return t;}).length;
+            }
+
+            if ( translation_type === 'field-label' ) {
+                window['field_settings']['post_type_settings']['fields'][field_key]['translations'] = response;
+                var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['translations']).filter(function(t) {return t;}).length;
+            }
+
+            $('.expand_translations').html(`
             <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
             `);

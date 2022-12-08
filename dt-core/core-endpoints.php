@@ -81,9 +81,9 @@ class Disciple_Tools_Core_Endpoints {
         );
 
         register_rest_route(
-            $this->namespace, '/edit-tile-translations', [
+            $this->namespace, '/edit-translations', [
                 'methods' => 'POST',
-                'callback' => [ $this, 'edit_tile_translations' ],
+                'callback' => [ $this, 'edit_translations' ],
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
@@ -313,25 +313,48 @@ class Disciple_Tools_Core_Endpoints {
         return $tile_options[$post_type][$tile_key];
     }
 
-    public static function edit_tile_translations( WP_REST_Request $request ) {
+    public static function edit_translations( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
-        if ( isset( $post_submission['post_type'] ) && isset( $post_submission['tile_key'] ) && isset( $post_submission['translations'] ) ) {
+        if ( isset( $post_submission['translation_type'] ) && isset( $post_submission['post_type'] ) && isset( $post_submission['tile_key'] ) && isset( $post_submission['translations'] ) ) {
             $post_type = sanitize_text_field( wp_unslash( $post_submission['post_type'] ) );
             $tile_key = sanitize_text_field( wp_unslash( $post_submission['tile_key'] ) );
-            $translations = $post_submission['translations'];
-            $translations = json_decode( $translations, true );
+            $translations = json_decode( $post_submission['translations'], true );
+
             $tile_options = dt_get_option( 'dt_custom_tiles' );
-            $custom_tile = $tile_options[$post_type][$tile_key];
+            $field_customizations = dt_get_option( 'dt_field_customizations' );
             $langs = dt_get_available_languages();
+
+            switch ( $post_submission['translation_type'] ) {
+                case 'tile-label':
+                    $translated_element = $tile_options[$post_type][$tile_key];
+                    break;
+                case 'field-label':
+                    if ( !isset( $post_submission['field_key'] ) ) {
+                        return false;
+                    }
+                    $field_key = $post_submission['field_key'];
+                    $translated_element = $field_customizations[$post_type][$field_key];
+                    break;
+            }
+
             foreach ( $langs as $lang => $val ) {
+                $langcode = $val['language'];
                 if ( $translations[$langcode] === '' ) {
                     $translations[$langcode] = null;
                 }
-                $langcode = $val['language'];
-                $custom_tile['translations'][$langcode] = $translations[$langcode];
+                $translated_element['translations'][$langcode] = $translations[$langcode];
             }
-            $tile_options[$post_type][$tile_key] = $custom_tile;
-            update_option( 'dt_custom_tiles', $tile_options );
+
+            switch ( $post_submission['translation_type'] ) {
+                case 'tile-label':
+                    $tile_options[$post_type][$tile_key] = $translated_element;
+                    update_option( 'dt_custom_tiles', $tile_options );
+                    break;
+                case 'field-label':
+                    $field_customizations[$post_type][$field_key] = $translated_element;
+                    update_option( 'dt_field_customizations', $field_customizations );
+                    break;
+            }
             return $translations;
         }
         return false;
