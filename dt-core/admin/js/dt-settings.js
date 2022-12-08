@@ -56,7 +56,6 @@ jQuery(document).ready(function($) {
             data['tile_key'] = $(this).parent().data('parent-tile-key');
             data['field_key'] = $(this).parent().data('key');
         }
-        unflip_card();
         showOverlayModal(edit_modal, data);
     });
 
@@ -224,6 +223,7 @@ jQuery(document).ready(function($) {
     }
 
     function showOverlayModal(modalName, data=null) {
+        unflip_card();
         $('.dt-admin-modal-overlay').fadeIn(150, 'swing');
         $('.dt-admin-modal-box').slideDown(150, 'swing');
         showOverlayModalContentBox(modalName, data);
@@ -341,10 +341,10 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="hide_tile"><b>Translations</b></label>
+                    <label for="translate-tile-label-button"><b>Translations</b></label>
                 </td>
                 <td>
-                    <button class="button expand_translations" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
+                    <button class="button expand_translations" name="translate-tile-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
                         <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
                     </button>
@@ -528,10 +528,10 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <b>Translations</b>
+                    <label for="translate-field-option-label-button"><b>Translations</b></label>
                 </td>
                 <td>
-                    <button class="button small expand_translations" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                    <button class="button small expand_translations" name="translate-field-option-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
                         <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
                     </button>
@@ -619,6 +619,7 @@ jQuery(document).ready(function($) {
 
     // Edit Field Option Modal
     function loadEditFieldOptionContentBox(data) {
+        var post_type = get_post_type();
         var tile_key = data['tile_key'];
         var field_key = data['field_key'];
         var field_option_key = data['option_key'];
@@ -626,6 +627,11 @@ jQuery(document).ready(function($) {
         var option_description = '';
         if ( 'description' in window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] ) {
             option_description = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description'];
+        }
+
+        var translations_count = 0;
+        if (window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']) {
+            translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']).filter(function(t) {return t; }).length;
         }
         var modal_html_content = `
         <tr>
@@ -647,6 +653,17 @@ jQuery(document).ready(function($) {
             </td>
             <td>
             <input name="edit-option-label" id="new-option-name-${field_option_key}" type="text" value="${option_label}" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="translate-field-option-label-button"><b>Translations</b></label>
+            </td>
+            <td>
+                <button class="button expand_translations" name="translate-field-option-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                    <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                    (${translations_count})
+                </button>
             </td>
         </tr>
         <tr>
@@ -895,6 +912,7 @@ jQuery(document).ready(function($) {
         var post_type = $(this).data('post-type');
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
+        var field_option_key = $(this).data('field-option-key');
         var languages = window['field_settings']['languages'];
         var available_translations = {};
 
@@ -919,6 +937,15 @@ jQuery(document).ready(function($) {
             }
         }
 
+        if ( translation_type === 'field-option-label' ) {
+            if( field_key === 'undefined' || field_option_key === 'undefined' ) {
+                return;
+            }
+            if ( window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations'] ) {
+                available_translations = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations'];
+            }
+        }
+
         $.each( languages, function(key, lang) {
             available_translations[key] ? current_translation = available_translations[key] : current_translation = '';
         translations_html += `
@@ -932,7 +959,7 @@ jQuery(document).ready(function($) {
         </table>
         <div class="translations-save-row">
             <button class="button cancel-translations-button">Cancel</button>
-            <button class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">Save</button>
+            <button class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
         </div>`;
 
         $('#modal-translations-overlay-form').html(translations_html);
@@ -955,6 +982,7 @@ jQuery(document).ready(function($) {
         var post_type = $(this).data('post-type');
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
+        var field_option_key = $(this).data('field-option-key');
 
         var translations = {};
         var translation_inputs = $('#modal-translations-overlay-form input');
@@ -965,7 +993,7 @@ jQuery(document).ready(function($) {
         });
 
         translations = JSON.stringify(translations);
-        API.edit_translations(translation_type, post_type, tile_key, translations, field_key).promise().then(function(response) {
+        API.edit_translations(translation_type, post_type, tile_key, translations, field_key, field_option_key).promise().then(function(response) {
             if ( translation_type === 'tile-label' ) {
                 window['field_settings']['post_type_tiles'][tile_key]['translations'] = response;
                 var translations_count = Object.values(window['field_settings']['post_type_tiles'][tile_key]['translations']).filter(function(t) {return t;}).length;
@@ -974,6 +1002,11 @@ jQuery(document).ready(function($) {
             if ( translation_type === 'field-label' ) {
                 window['field_settings']['post_type_settings']['fields'][field_key]['translations'] = response;
                 var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['translations']).filter(function(t) {return t;}).length;
+            }
+
+            if ( translation_type === 'field-option-label' ) {
+                window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations'] = response;
+                var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']).filter(function(t) {return t;}).length;
             }
 
             $('.expand_translations').html(`

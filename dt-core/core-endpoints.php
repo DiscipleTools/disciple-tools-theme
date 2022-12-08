@@ -335,6 +335,15 @@ class Disciple_Tools_Core_Endpoints {
                     $field_key = $post_submission['field_key'];
                     $translated_element = $field_customizations[$post_type][$field_key];
                     break;
+
+                case 'field-option-label':
+                    if ( !isset( $post_submission['field_key'] ) || !isset( $post_submission['field_option_key'] ) ) {
+                        return false;
+                    }
+                    $field_key = $post_submission['field_key'];
+                    $field_option_key = $post_submission['field_option_key'];
+                    $translated_element = $field_customizations[$post_type][$field_key]['default'][$field_option_key];
+                    break;
             }
 
             foreach ( $langs as $lang => $val ) {
@@ -354,7 +363,12 @@ class Disciple_Tools_Core_Endpoints {
                     $field_customizations[$post_type][$field_key] = $translated_element;
                     update_option( 'dt_field_customizations', $field_customizations );
                     break;
+                case 'field-option-label':
+                    $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $translated_element;
+                    update_option( 'dt_field_customizations', $field_customizations );
+                    break;
             }
+            dt_write_log( $translations );
             return $translations;
         }
         return false;
