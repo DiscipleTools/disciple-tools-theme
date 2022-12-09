@@ -329,6 +329,10 @@ jQuery(document).ready(function($) {
                 </td>
                 <td>
                     <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}" required>
+                    <button class="button expand_translations" name="translate-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
+                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                        (${translations_count})
+                    </button>
                 </td>
             </tr>
             <tr>
@@ -337,17 +341,6 @@ jQuery(document).ready(function($) {
                 </td>
                 <td>
                     <input name="hide-tile" id="hide-tile-${tile_key}" type="checkbox" ${hide_tile}>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="translate-label-button"><b>Translations</b></label>
-                </td>
-                <td>
-                    <button class="button expand_translations" name="translate-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
-                        (${translations_count})
-                    </button>
                 </td>
             </tr>
             <tr>
@@ -521,6 +514,22 @@ jQuery(document).ready(function($) {
                 </td>
                 <td>
                     <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="">
+                    <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                        (${translations_count})
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="edit-field-description"><b>Description</b></label>
+                </td>
+                <td>
+                    <input name="edit-field-description" id="edit-field-description" type="text" value="${field_settings['description']}">
+                    <button class="button small expand_translations" name="translate-description-button" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                        (${description_translations_count})
+                    </button>
                 </td>
             </tr>
             <tr>
@@ -529,17 +538,6 @@ jQuery(document).ready(function($) {
                 </td>
                 <td>
                     <input name="edit-field-private" id="edit-field-private" type="checkbox" ${private_field}>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="translate-label-button"><b>Translations</b></label>
-                </td>
-                <td>
-                    <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
-                        (${translations_count})
-                    </button>
                 </td>
             </tr>
             <tr>
@@ -558,25 +556,6 @@ jQuery(document).ready(function($) {
                         });
                 modal_html_content += `
                     </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="edit-field-description"><b>Description</b></label>
-                </td>
-                <td>
-                    <input name="edit-field-description" id="edit-field-description" type="text" value="${field_settings['description']}">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="translate-description-button"><b>Description Translations</b></label>
-                </td>
-                <td>
-                    <button class="button small expand_translations" name="translate-description-button" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
-                        (${description_translations_count})
-                    </button>
                 </td>
             </tr>
             <tr>
@@ -662,14 +641,7 @@ jQuery(document).ready(function($) {
                 <label><b>Custom Label:</b></label>
             </td>
             <td>
-            <input name="edit-option-label" id="new-option-name-${field_option_key}" type="text" value="${option_label}" required>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="translate-label-button"><b>Translations</b></label>
-            </td>
-            <td>
+                <input name="edit-option-label" id="new-option-name-${field_option_key}" type="text" value="${option_label}" required>
                 <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
                     <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                     (${translations_count})
@@ -681,14 +653,7 @@ jQuery(document).ready(function($) {
                 <label><b>Description:</b></label>
             </td>
             <td>
-            <input name="edit-option-description" id="new-option-description-${field_option_key}" type="text" value="${option_description}">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="translate-description-button"><b>Translations</b></label>
-            </td>
-            <td>
+                <input name="edit-option-description" id="new-option-description-${field_option_key}" type="text" value="${option_description}">
                 <button class="button expand_translations" name="translate-description-button" data-translation-type="field-option-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
                     <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                     (${description_translations_count})
