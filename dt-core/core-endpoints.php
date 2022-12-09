@@ -353,6 +353,15 @@ class Disciple_Tools_Core_Endpoints {
                     $field_option_key = $post_submission['field_option_key'];
                     $translated_element = $field_customizations[$post_type][$field_key]['default'][$field_option_key];
                     break;
+
+                case 'field-option-description':
+                    if ( !isset( $post_submission['field_key'] ) || !isset( $post_submission['field_option_key'] ) ) {
+                        return false;
+                    }
+                    $field_key = $post_submission['field_key'];
+                    $field_option_key = $post_submission['field_option_key'];
+                    $translated_element = $field_customizations[$post_type][$field_key]['default'][$field_option_key];
+                    break;
             }
 
             // Check if translation is a description
@@ -386,6 +395,11 @@ class Disciple_Tools_Core_Endpoints {
                     break;
 
                 case 'field-option-label':
+                    $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $translated_element;
+                    update_option( 'dt_field_customizations', $field_customizations );
+                    break;
+
+                case 'field-option-description':
                     $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $translated_element;
                     update_option( 'dt_field_customizations', $field_customizations );
                     break;

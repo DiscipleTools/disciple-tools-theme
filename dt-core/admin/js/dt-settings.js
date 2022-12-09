@@ -636,7 +636,12 @@ jQuery(document).ready(function($) {
 
         var translations_count = 0;
         if (window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']) {
-            translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']).filter(function(t) {return t; }).length;
+            translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']).filter(function(t) {return t;}).length;
+        }
+
+        var description_translations_count = 0;
+        if (window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description_translations']) {
+            description_translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description_translations']).filter(function(t) {return t;}).length;
         }
         var modal_html_content = `
         <tr>
@@ -677,6 +682,17 @@ jQuery(document).ready(function($) {
             </td>
             <td>
             <input name="edit-option-description" id="new-option-description-${field_option_key}" type="text" value="${option_description}">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="translate-description-button"><b>Translations</b></label>
+            </td>
+            <td>
+                <button class="button expand_translations" name="translate-description-button" data-translation-type="field-option-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                    <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                    (${description_translations_count})
+                </button>
             </td>
         </tr>
         <tr>
@@ -1032,13 +1048,17 @@ jQuery(document).ready(function($) {
                 window['field_settings']['post_type_settings']['fields'][field_key]['description_translations'] = response;
                 var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['description_translations']).filter(function(t) {return t;}).length;
                 element_button_selector = $('.expand_translations[name="translate-description-button"]');
-                console.log(translations_count);
-                console.log(element_button_selector);
             }
 
             if ( translation_type === 'field-option-label' ) {
                 window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations'] = response;
                 var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']).filter(function(t) {return t;}).length;
+            }
+
+            if ( translation_type === 'field-option-description' ) {
+                window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description_translations'] = response;
+                var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description_translations']).filter(function(t) {return t;}).length;
+                element_button_selector = $('.expand_translations[name="translate-description-button"]');
             }
 
             $(element_button_selector).html(`
