@@ -916,10 +916,9 @@ jQuery(document).ready(function($) {
         var new_field_option_description = $(`#new-option-description-${field_option_key}`).val();
 
         API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description).promise().then(function() {
-            window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] = {
-                'label': new_field_option_label,
-                'description': new_field_option_description,
-            }
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['label'] = new_field_option_label;
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description'] = new_field_option_description;
+
             var edited_field_option_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`);
             edited_field_option_element[0].innerText = new_field_option_label;
             closeModal();
