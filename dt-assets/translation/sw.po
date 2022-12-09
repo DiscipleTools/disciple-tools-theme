@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2022-11-25T15:36:32+00:00\n"
+"POT-Creation-Date: 2022-12-09T10:38:52+00:00\n"
 "Language: sw\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -220,7 +220,7 @@ msgid "Search Users"
 msgstr "Tafuta Watumiaji"
 
 #: archive-template.php:403 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1799
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1810
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520 single-template.php:129
 msgid "Status"
@@ -231,7 +231,7 @@ msgid "Share with:"
 msgstr "Shiriki na:"
 
 #: archive-template.php:477 dt-assets/functions/details-bar.php:168
-#: dt-posts/custom-post-type.php:189
+#: dt-posts/custom-post-type.php:190
 msgid "Follow"
 msgstr "Fuata"
 
@@ -271,7 +271,7 @@ msgstr "Fanya Machaguo Hapo Chini"
 
 #: archive-template.php:591 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-posts/custom-post-type.php:149 template-settings.php:136
+#: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "Jina"
 
@@ -279,7 +279,7 @@ msgstr "Jina"
 msgid "Loading..."
 msgstr "Inapakia..."
 
-#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:349
+#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:354
 msgid "Load More"
 msgstr "Pakia vikundi vingine"
 
@@ -307,7 +307,7 @@ msgid "Filter for subassigned OR Assigned To"
 msgstr "Kichujio: Waliopewa AU Waliopewa na Mwingine"
 
 #: archive-template.php:703 dt-assets/functions/enqueue-scripts.php:301
-#: dt-posts/custom-post-type.php:166
+#: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "Tarehe ya Kuundwa"
 
@@ -411,7 +411,7 @@ msgid "Next record"
 msgstr "Rekodi inayofuata"
 
 #: dt-assets/functions/details-bar.php:152
-#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:201
+#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:202
 msgid "Tasks"
 msgstr "Kazi"
 
@@ -603,7 +603,7 @@ msgid "No records found matching your filter."
 msgstr "Hakuna rekodi zilizopatikana zinazofanana na kichujio chako."
 
 #: dt-assets/functions/enqueue-scripts.php:305 dt-contacts/base-setup.php:537
-#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:335
+#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:372
 msgctxt "All records"
 msgid "All %s"
 msgstr "%s Yote"
@@ -641,6 +641,16 @@ msgstr "haijatumwa (huenda ikakosekana barua pepe halali)"
 #: dt-assets/functions/enqueue-scripts.php:313
 msgid "Exclude Item"
 msgstr "Ondoa Kipengee"
+
+#: dt-assets/functions/enqueue-scripts.php:334 dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
+msgid "Contact"
+msgstr "Mwasiliani"
+
+#: dt-assets/functions/enqueue-scripts.php:335
+msgctxt "Communication channel already exists"
+msgid "%s already exists"
+msgstr ""
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:25
 msgid "Menu"
@@ -1736,11 +1746,6 @@ msgstr "Rekodi hii inaweza kuwa nakala ya: "
 msgid "Duplicate Checker"
 msgstr "Kikagua nakala"
 
-#: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:62
-#: dt-metrics/personal/activity-highlights.php:57
-msgid "Contact"
-msgstr "Mwasiliani"
-
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:302 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
@@ -1956,7 +1961,7 @@ msgid "Other"
 msgstr "Nyingine"
 
 #: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1058
-#: dt-posts/custom-post-type.php:314
+#: dt-posts/custom-post-type.php:351
 msgid "Default Filters"
 msgstr "Vichujio Chaguo-msingi"
 
@@ -1966,23 +1971,23 @@ msgid "All %s I can view"
 msgstr "%s zote naweza kuona"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
-#: dt-posts/custom-post-type.php:347
+#: dt-posts/custom-post-type.php:384
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "%s inayopendwa"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
-#: dt-posts/custom-post-type.php:173 dt-posts/custom-post-type.php:353
+#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:390
 msgid "Favorite"
 msgstr "Unayopenda"
 
 #: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:362
+#: dt-posts/custom-post-type.php:399
 msgid "My Recently Viewed"
 msgstr "Yangu Yaliyotazamwa Hivi Karibuni"
 
 #: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1092
-#: dt-posts/custom-post-type.php:367
+#: dt-posts/custom-post-type.php:404
 msgid "Last 30 viewed"
 msgstr "Mara 30 zilizotazamwa"
 
@@ -3276,7 +3281,7 @@ msgid "No Activity Detected!"
 msgstr "Hakuna Shughuli Iliyogunduliwa!"
 
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:129
+#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:130
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "%s mpya"
@@ -3815,7 +3820,7 @@ msgid "Groups Total"
 msgstr ""
 
 #: dt-people-groups/people-groups-base.php:229
-#: dt-posts/custom-post-type.php:158
+#: dt-posts/custom-post-type.php:159
 msgid "Last Modified"
 msgstr "Kurekebishwa mara ya mwisho"
 
@@ -3871,16 +3876,16 @@ msgstr ""
 msgid "Import People Group"
 msgstr ""
 
-#: dt-posts/custom-post-type.php:181
+#: dt-posts/custom-post-type.php:182
 msgid "Tags"
 msgstr "Lebo"
 
-#: dt-posts/custom-post-type.php:182
+#: dt-posts/custom-post-type.php:183
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr "Njia muhimu ya kupanga vitu vinavyohusiana."
 
-#: dt-posts/custom-post-type.php:195
+#: dt-posts/custom-post-type.php:196
 msgid "Un-Follow"
 msgstr "Usifuate"
 
@@ -3900,11 +3905,11 @@ msgstr "Mfumo wa D.T"
 msgid "Post already shared with user."
 msgstr "Chapisho ilishirikishwa tayari na mtumiaji."
 
-#: dt-posts/dt-posts.php:1800 single-template.php:171
+#: dt-posts/dt-posts.php:1811 single-template.php:171
 msgid "Details"
 msgstr "Maelezo"
 
-#: dt-posts/dt-posts.php:1864
+#: dt-posts/dt-posts.php:1875
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -3916,7 +3921,7 @@ msgstr ""
 "@  [%1$s] ( %2$s) - Mtumiaji %3$s ameomba idhini ya kufikia %4$s [%5$s] "
 "(%6$s). Ikiwa inataka, shiriki rekodi hii na mtumiaji ili upe ufikiaji."
 
-#: dt-posts/dt-posts.php:1870
+#: dt-posts/dt-posts.php:1881
 msgid "Access Request"
 msgstr "Ombi la Ufikiaji"
 

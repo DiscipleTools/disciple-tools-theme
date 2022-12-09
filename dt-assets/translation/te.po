@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2022-11-25T15:36:32+00:00\n"
+"POT-Creation-Date: 2022-12-09T10:38:52+00:00\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -216,7 +216,7 @@ msgid "Search Users"
 msgstr "వినియోగదారులను శోధించండి"
 
 #: archive-template.php:403 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1799
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1810
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520 single-template.php:129
 msgid "Status"
@@ -227,7 +227,7 @@ msgid "Share with:"
 msgstr "తో పంచు:"
 
 #: archive-template.php:477 dt-assets/functions/details-bar.php:168
-#: dt-posts/custom-post-type.php:189
+#: dt-posts/custom-post-type.php:190
 msgid "Follow"
 msgstr "అనుసరించండి"
 
@@ -267,7 +267,7 @@ msgstr "దిగువ ఎంపికలు చేయండి"
 
 #: archive-template.php:591 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-posts/custom-post-type.php:149 template-settings.php:136
+#: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "పేరు"
 
@@ -275,7 +275,7 @@ msgstr "పేరు"
 msgid "Loading..."
 msgstr "లోడ్..."
 
-#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:349
+#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:354
 msgid "Load More"
 msgstr "మరిన్ని లోడ్ చేయండి"
 
@@ -303,7 +303,7 @@ msgid "Filter for subassigned OR Assigned To"
 msgstr "కేటాయించిన లేదా కేటాయించిన వాటి కోసం ఫిల్టర్ చేయండి"
 
 #: archive-template.php:703 dt-assets/functions/enqueue-scripts.php:301
-#: dt-posts/custom-post-type.php:166
+#: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "సృష్టి తేదీ"
 
@@ -407,7 +407,7 @@ msgid "Next record"
 msgstr "తదుపరి రికార్డ్"
 
 #: dt-assets/functions/details-bar.php:152
-#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:201
+#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:202
 msgid "Tasks"
 msgstr "పనులు"
 
@@ -599,7 +599,7 @@ msgid "No records found matching your filter."
 msgstr "మీ ఫిల్టర్‌కు సరిపోయే రికార్డులు ఏవీ కనుగొనబడలేదు."
 
 #: dt-assets/functions/enqueue-scripts.php:305 dt-contacts/base-setup.php:537
-#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:335
+#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:372
 msgctxt "All records"
 msgid "All %s"
 msgstr "అన్ని% s"
@@ -637,6 +637,16 @@ msgstr "పంపబడలేదు (చెల్లుబాటు అయ్య
 #: dt-assets/functions/enqueue-scripts.php:313
 msgid "Exclude Item"
 msgstr "అంశాన్ని మినహాయించండి"
+
+#: dt-assets/functions/enqueue-scripts.php:334 dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
+msgid "Contact"
+msgstr "సంప్రదించండి"
+
+#: dt-assets/functions/enqueue-scripts.php:335
+msgctxt "Communication channel already exists"
+msgid "%s already exists"
+msgstr ""
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:25
 msgid "Menu"
@@ -1705,11 +1715,6 @@ msgstr "ఈ రికార్డ్ దీని నకిలీ కావచ�
 msgid "Duplicate Checker"
 msgstr "నకిలీ చెకర్"
 
-#: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:62
-#: dt-metrics/personal/activity-highlights.php:57
-msgid "Contact"
-msgstr "సంప్రదించండి"
-
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:302 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
@@ -1925,7 +1930,7 @@ msgid "Other"
 msgstr "ఇతర"
 
 #: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1058
-#: dt-posts/custom-post-type.php:314
+#: dt-posts/custom-post-type.php:351
 msgid "Default Filters"
 msgstr "డిఫాల్ట్ ఫిల్టర్లు"
 
@@ -1935,23 +1940,23 @@ msgid "All %s I can view"
 msgstr "నేను చూడగలిగే అన్ని% s"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
-#: dt-posts/custom-post-type.php:347
+#: dt-posts/custom-post-type.php:384
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "ఇష్టమైన% s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
-#: dt-posts/custom-post-type.php:173 dt-posts/custom-post-type.php:353
+#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:390
 msgid "Favorite"
 msgstr "ఇష్టమైన"
 
 #: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:362
+#: dt-posts/custom-post-type.php:399
 msgid "My Recently Viewed"
 msgstr "నా ఇటీవల వీక్షించారు"
 
 #: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1092
-#: dt-posts/custom-post-type.php:367
+#: dt-posts/custom-post-type.php:404
 msgid "Last 30 viewed"
 msgstr "చివరి 30 మంది వీక్షించారు"
 
@@ -3222,7 +3227,7 @@ msgid "No Activity Detected!"
 msgstr "కార్యాచరణ ఏదీ కనుగొనబడలేదు!"
 
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:129
+#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:130
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "క్రొత్త% s"
@@ -3761,7 +3766,7 @@ msgid "Groups Total"
 msgstr ""
 
 #: dt-people-groups/people-groups-base.php:229
-#: dt-posts/custom-post-type.php:158
+#: dt-posts/custom-post-type.php:159
 msgid "Last Modified"
 msgstr "చివరిసారిగా మార్పు చేయబడిన"
 
@@ -3817,16 +3822,16 @@ msgstr ""
 msgid "Import People Group"
 msgstr ""
 
-#: dt-posts/custom-post-type.php:181
+#: dt-posts/custom-post-type.php:182
 msgid "Tags"
 msgstr "టాగ్లు"
 
-#: dt-posts/custom-post-type.php:182
+#: dt-posts/custom-post-type.php:183
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr "సంబంధిత అంశాలను సమూహపరచడానికి ఉపయోగకరమైన మార్గం."
 
-#: dt-posts/custom-post-type.php:195
+#: dt-posts/custom-post-type.php:196
 msgid "Un-Follow"
 msgstr "అన్-ఫాలో"
 
@@ -3846,11 +3851,11 @@ msgstr "D.T వ్యవస్థ"
 msgid "Post already shared with user."
 msgstr "పోస్ట్ ఇప్పటికే వినియోగదారుతో భాగస్వామ్యం చేయబడింది."
 
-#: dt-posts/dt-posts.php:1800 single-template.php:171
+#: dt-posts/dt-posts.php:1811 single-template.php:171
 msgid "Details"
 msgstr "వివరాలు"
 
-#: dt-posts/dt-posts.php:1864
+#: dt-posts/dt-posts.php:1875
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -3862,7 +3867,7 @@ msgstr ""
 "@ [% 1 $ s] (% 2 $ s) -% 3 $ s వినియోగదారు% 4 $ s [% 5 $ s] (% 6 $ s) కు ప్రాప్యత "
 "అభ్యర్థించారు. కావాలనుకుంటే, ప్రాప్యతను మంజూరు చేయడానికి ఈ రికార్డ్‌ను వినియోగదారుతో పంచుకోండి."
 
-#: dt-posts/dt-posts.php:1870
+#: dt-posts/dt-posts.php:1881
 msgid "Access Request"
 msgstr "ప్రాప్యత అభ్యర్థన"
 

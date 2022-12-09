@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2022-11-25T15:36:32+00:00\n"
+"POT-Creation-Date: 2022-12-09T10:38:52+00:00\n"
 "Language: my\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -221,7 +221,7 @@ msgid "Search Users"
 msgstr "အသုံးပြုသူများကိုရှာပါ"
 
 #: archive-template.php:403 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1799
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1810
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520 single-template.php:129
 msgid "Status"
@@ -232,7 +232,7 @@ msgid "Share with:"
 msgstr "နှင့်မျှဝေပါ"
 
 #: archive-template.php:477 dt-assets/functions/details-bar.php:168
-#: dt-posts/custom-post-type.php:189
+#: dt-posts/custom-post-type.php:190
 msgid "Follow"
 msgstr "နောက်လိုက်ပါ"
 
@@ -272,7 +272,7 @@ msgstr "အောက်တွင် ရွေးချယ်မှုမျာ�
 
 #: archive-template.php:591 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-posts/custom-post-type.php:149 template-settings.php:136
+#: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "နာမည်"
 
@@ -280,7 +280,7 @@ msgstr "နာမည်"
 msgid "Loading..."
 msgstr "ဖတ်နေသည် ..."
 
-#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:349
+#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:354
 msgid "Load More"
 msgstr "နောက်ထပ်တင်ပါ"
 
@@ -309,7 +309,7 @@ msgid "Filter for subassigned OR Assigned To"
 msgstr "subassigned OR မှ Assigned များအတွက် filter"
 
 #: archive-template.php:703 dt-assets/functions/enqueue-scripts.php:301
-#: dt-posts/custom-post-type.php:166
+#: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "ဖန်တီးသည့်ရက်စွဲ"
 
@@ -413,7 +413,7 @@ msgid "Next record"
 msgstr "နောက်မှတ်တမ်း"
 
 #: dt-assets/functions/details-bar.php:152
-#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:201
+#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:202
 msgid "Tasks"
 msgstr "လုပ်ငန်းတာဝန်များ"
 
@@ -608,7 +608,7 @@ msgid "No records found matching your filter."
 msgstr "သင့် filter နှင့်လိုက်ဖက်သောမှတ်တမ်းများမရှိပါ။"
 
 #: dt-assets/functions/enqueue-scripts.php:305 dt-contacts/base-setup.php:537
-#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:335
+#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:372
 msgctxt "All records"
 msgid "All %s"
 msgstr "%s အားလုံး"
@@ -646,6 +646,16 @@ msgstr "မပို့ပါ (တရားဝင်အီးမေးလ် ပ
 #: dt-assets/functions/enqueue-scripts.php:313
 msgid "Exclude Item"
 msgstr "ပစ္စည်းကို ဖယ်ထုတ်ပါ။"
+
+#: dt-assets/functions/enqueue-scripts.php:334 dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
+msgid "Contact"
+msgstr "အဆက်အသွယ်"
+
+#: dt-assets/functions/enqueue-scripts.php:335
+msgctxt "Communication channel already exists"
+msgid "%s already exists"
+msgstr ""
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:25
 msgid "Menu"
@@ -1737,11 +1747,6 @@ msgstr "ဤမှတ်တမ်းသည် - :၏ပုံတူပွား�
 msgid "Duplicate Checker"
 msgstr "ပုံတူပွား စစ်ဆေးသူ"
 
-#: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:62
-#: dt-metrics/personal/activity-highlights.php:57
-msgid "Contact"
-msgstr "အဆက်အသွယ်"
-
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:302 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
@@ -1958,7 +1963,7 @@ msgid "Other"
 msgstr "အခြား"
 
 #: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1058
-#: dt-posts/custom-post-type.php:314
+#: dt-posts/custom-post-type.php:351
 #, fuzzy
 msgid "Default Filters"
 msgstr "ပုံမှန် filter များ"
@@ -1969,23 +1974,23 @@ msgid "All %s I can view"
 msgstr "%s အားလုံးကျွန်ုပ်ကြည့်နိုင်သည်"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
-#: dt-posts/custom-post-type.php:347
+#: dt-posts/custom-post-type.php:384
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "အကြိုက်ဆုံး% s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
-#: dt-posts/custom-post-type.php:173 dt-posts/custom-post-type.php:353
+#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:390
 msgid "Favorite"
 msgstr "အကြိုက်ဆုံး"
 
 #: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:362
+#: dt-posts/custom-post-type.php:399
 msgid "My Recently Viewed"
 msgstr "မကြာသေးမီကကျွနုပ်၏ကြည့်ရှုမှု"
 
 #: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1092
-#: dt-posts/custom-post-type.php:367
+#: dt-posts/custom-post-type.php:404
 msgid "Last 30 viewed"
 msgstr "နောက်ဆုံး ကြည့်ရှုခဲ့သော ၃၀ ခု"
 
@@ -3273,7 +3278,7 @@ msgid "No Activity Detected!"
 msgstr "လုပ်ဆောင်ချက် မတွေ့ပါ။"
 
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:129
+#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:130
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "%s အသစ်"
@@ -3818,7 +3823,7 @@ msgid "Groups Total"
 msgstr ""
 
 #: dt-people-groups/people-groups-base.php:229
-#: dt-posts/custom-post-type.php:158
+#: dt-posts/custom-post-type.php:159
 msgid "Last Modified"
 msgstr "နောက်ဆုံးပြင်ဆင်ထားသော"
 
@@ -3875,17 +3880,17 @@ msgstr ""
 msgid "Import People Group"
 msgstr ""
 
-#: dt-posts/custom-post-type.php:181
+#: dt-posts/custom-post-type.php:182
 #, fuzzy
 msgid "Tags"
 msgstr "အမှတ်အသားများ (Tags)"
 
-#: dt-posts/custom-post-type.php:182
+#: dt-posts/custom-post-type.php:183
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr "ဆက်စပ်ပစ္စည်းများကို အုပ်စုဖွဲ့ရန် အသုံးဝင်သောနည်းလမ်း။"
 
-#: dt-posts/custom-post-type.php:195
+#: dt-posts/custom-post-type.php:196
 msgid "Un-Follow"
 msgstr "နောက်မလိုက်တော့ပါ"
 
@@ -3905,11 +3910,11 @@ msgstr "D.T စနစ်"
 msgid "Post already shared with user."
 msgstr "ပို့စ်ကိုအသုံးပြုသူနှင့်မျှဝေပြီးပါပြီ။"
 
-#: dt-posts/dt-posts.php:1800 single-template.php:171
+#: dt-posts/dt-posts.php:1811 single-template.php:171
 msgid "Details"
 msgstr "အသေးစိတ်"
 
-#: dt-posts/dt-posts.php:1864
+#: dt-posts/dt-posts.php:1875
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -3921,7 +3926,7 @@ msgstr ""
 "@ [% 1 $ s] (% 2 $ s) - သုံးစွဲသူ% 3 $ s က% 4 $ s [% 5 $ s] (% 6 $ s) "
 "ကိုဝင်ရောက်ခွင့်တောင်းခံထားတယ်။ လိုချင်ပါကအသုံးပြုရန်ခွင့်ပြုရန်အသုံးပြုသူနှင့်ဤမှတ်တမ်းကိုမျှဝေပါ။"
 
-#: dt-posts/dt-posts.php:1870
+#: dt-posts/dt-posts.php:1881
 msgid "Access Request"
 msgstr "အသုံးပြုခွင့်တောင်းဆိုမှု"
 

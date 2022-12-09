@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2022-11-25T15:36:32+00:00\n"
+"POT-Creation-Date: 2022-12-09T10:38:52+00:00\n"
 "Language: yo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -221,7 +221,7 @@ msgid "Search Users"
 msgstr "Wa Awọn olumulo"
 
 #: archive-template.php:403 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1799
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1810
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520 single-template.php:129
 msgid "Status"
@@ -232,7 +232,7 @@ msgid "Share with:"
 msgstr "Pin pẹlu:"
 
 #: archive-template.php:477 dt-assets/functions/details-bar.php:168
-#: dt-posts/custom-post-type.php:189
+#: dt-posts/custom-post-type.php:190
 msgid "Follow"
 msgstr "Tẹle"
 
@@ -272,7 +272,7 @@ msgstr "Ṣe Awọn aṣayan ni isalẹ"
 
 #: archive-template.php:591 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-posts/custom-post-type.php:149 template-settings.php:136
+#: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "Orukọ"
 
@@ -280,7 +280,7 @@ msgstr "Orukọ"
 msgid "Loading..."
 msgstr "Nkojọpọ ..."
 
-#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:349
+#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:354
 msgid "Load More"
 msgstr "Fifuye Diẹ sii"
 
@@ -308,7 +308,7 @@ msgid "Filter for subassigned OR Assigned To"
 msgstr "Àlẹmọ fun ipin-iṣẹ TABI Ti Firanṣẹ si"
 
 #: archive-template.php:703 dt-assets/functions/enqueue-scripts.php:301
-#: dt-posts/custom-post-type.php:166
+#: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "Ọjọ Ẹda"
 
@@ -412,7 +412,7 @@ msgid "Next record"
 msgstr "Igbasilẹ atẹle"
 
 #: dt-assets/functions/details-bar.php:152
-#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:201
+#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:202
 msgid "Tasks"
 msgstr "Awọn iṣẹ-ṣiṣe"
 
@@ -604,7 +604,7 @@ msgid "No records found matching your filter."
 msgstr "Ko si awọn igbasilẹ ti a rii ni ibamu pẹlu àlẹmọ rẹ."
 
 #: dt-assets/functions/enqueue-scripts.php:305 dt-contacts/base-setup.php:537
-#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:335
+#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:372
 msgctxt "All records"
 msgid "All %s"
 msgstr "Gbogbo% s"
@@ -642,6 +642,16 @@ msgstr "ko firanṣẹ (ṣee ṣe nsọnu imeeli to wulo)"
 #: dt-assets/functions/enqueue-scripts.php:313
 msgid "Exclude Item"
 msgstr "Yasọtọ Nkan"
+
+#: dt-assets/functions/enqueue-scripts.php:334 dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
+msgid "Contact"
+msgstr "Kan si"
+
+#: dt-assets/functions/enqueue-scripts.php:335
+msgctxt "Communication channel already exists"
+msgid "%s already exists"
+msgstr ""
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:25
 msgid "Menu"
@@ -1738,11 +1748,6 @@ msgstr "Igbasilẹ yii le jẹ ẹda ti: "
 msgid "Duplicate Checker"
 msgstr "Àdáwòkọ àdáwòkọ"
 
-#: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:62
-#: dt-metrics/personal/activity-highlights.php:57
-msgid "Contact"
-msgstr "Kan si"
-
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:302 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
@@ -1959,7 +1964,7 @@ msgid "Other"
 msgstr "Omiiran"
 
 #: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1058
-#: dt-posts/custom-post-type.php:314
+#: dt-posts/custom-post-type.php:351
 msgid "Default Filters"
 msgstr "Awọn Ajọ Aifọwọyi"
 
@@ -1969,23 +1974,23 @@ msgid "All %s I can view"
 msgstr "Gbogbo% s Mo le wo"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
-#: dt-posts/custom-post-type.php:347
+#: dt-posts/custom-post-type.php:384
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Ayanfẹ% s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
-#: dt-posts/custom-post-type.php:173 dt-posts/custom-post-type.php:353
+#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:390
 msgid "Favorite"
 msgstr "Ayanfẹ"
 
 #: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:362
+#: dt-posts/custom-post-type.php:399
 msgid "My Recently Viewed"
 msgstr "Wiwo Mi Laipe"
 
 #: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1092
-#: dt-posts/custom-post-type.php:367
+#: dt-posts/custom-post-type.php:404
 msgid "Last 30 viewed"
 msgstr "30 kẹhin ti wo"
 
@@ -3277,7 +3282,7 @@ msgid "No Activity Detected!"
 msgstr "Ko si Iṣẹ-ṣiṣe ti a rii!"
 
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:129
+#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:130
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "Titun% s"
@@ -3816,7 +3821,7 @@ msgid "Groups Total"
 msgstr ""
 
 #: dt-people-groups/people-groups-base.php:229
-#: dt-posts/custom-post-type.php:158
+#: dt-posts/custom-post-type.php:159
 msgid "Last Modified"
 msgstr "Atunse Ikẹhin"
 
@@ -3872,16 +3877,16 @@ msgstr ""
 msgid "Import People Group"
 msgstr ""
 
-#: dt-posts/custom-post-type.php:181
+#: dt-posts/custom-post-type.php:182
 msgid "Tags"
 msgstr "Awọn afi"
 
-#: dt-posts/custom-post-type.php:182
+#: dt-posts/custom-post-type.php:183
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr "Ọna ti o wulo lati ṣe akojọpọ awọn nkan ti o jọmọ."
 
-#: dt-posts/custom-post-type.php:195
+#: dt-posts/custom-post-type.php:196
 msgid "Un-Follow"
 msgstr "Un-Tẹle"
 
@@ -3901,11 +3906,11 @@ msgstr "Eto D.T"
 msgid "Post already shared with user."
 msgstr "Ti firanṣẹ ifiweranṣẹ tẹlẹ pẹlu olumulo."
 
-#: dt-posts/dt-posts.php:1800 single-template.php:171
+#: dt-posts/dt-posts.php:1811 single-template.php:171
 msgid "Details"
 msgstr "Awọn alaye"
 
-#: dt-posts/dt-posts.php:1864
+#: dt-posts/dt-posts.php:1875
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -3917,7 +3922,7 @@ msgstr ""
 "@ [% 1 $ s] (% 2 $ s) - Olumulo% 3 $ s ti beere wiwọle si% 4 $ s [% 5 $ s] "
 "(% 6 $ s). Ti o ba fẹ, pin igbasilẹ yii pẹlu olumulo lati fun iraye si."
 
-#: dt-posts/dt-posts.php:1870
+#: dt-posts/dt-posts.php:1881
 msgid "Access Request"
 msgstr "Beere Wiwọle"
 

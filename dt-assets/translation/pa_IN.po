@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2022-11-25T15:36:32+00:00\n"
+"POT-Creation-Date: 2022-12-09T10:38:52+00:00\n"
 "Language: pa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -216,7 +216,7 @@ msgid "Search Users"
 msgstr "ਖੋਜਕਰਤਾ"
 
 #: archive-template.php:403 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1799
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1810
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520 single-template.php:129
 msgid "Status"
@@ -227,7 +227,7 @@ msgid "Share with:"
 msgstr "ਇਸ ਨਾਲ ਸਾਂਝਾ ਕਰੋ:"
 
 #: archive-template.php:477 dt-assets/functions/details-bar.php:168
-#: dt-posts/custom-post-type.php:189
+#: dt-posts/custom-post-type.php:190
 msgid "Follow"
 msgstr "ਅਨੁਸਰਣ ਕਰੋ"
 
@@ -267,7 +267,7 @@ msgstr "ਹੇਠਾਂ ਚੋਣ ਕਰੋ"
 
 #: archive-template.php:591 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-posts/custom-post-type.php:149 template-settings.php:136
+#: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "ਨਾਮ"
 
@@ -275,7 +275,7 @@ msgstr "ਨਾਮ"
 msgid "Loading..."
 msgstr "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ ..."
 
-#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:349
+#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:354
 msgid "Load More"
 msgstr "ਹੋਰ ਲੋਡ ਕਰ"
 
@@ -303,7 +303,7 @@ msgid "Filter for subassigned OR Assigned To"
 msgstr "ਫਿਲਟਰ ਅਧੀਨ ਜਾਂ ਨਿਰਧਾਰਤ ਕਰਨ ਲਈ"
 
 #: archive-template.php:703 dt-assets/functions/enqueue-scripts.php:301
-#: dt-posts/custom-post-type.php:166
+#: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "ਬਣਾਉਣ ਦੀ ਮਿਤੀ"
 
@@ -407,7 +407,7 @@ msgid "Next record"
 msgstr "ਅਗਲਾ ਰਿਕਾਰਡ"
 
 #: dt-assets/functions/details-bar.php:152
-#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:201
+#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:202
 msgid "Tasks"
 msgstr "ਕੰਮ"
 
@@ -600,7 +600,7 @@ msgid "No records found matching your filter."
 msgstr "ਤੁਹਾਡੇ ਫਿਲਟਰ ਨਾਲ ਮੇਲ ਖਾਂਦਾ ਕੋਈ ਰਿਕਾਰਡ ਨਹੀਂ ਮਿਲਿਆ."
 
 #: dt-assets/functions/enqueue-scripts.php:305 dt-contacts/base-setup.php:537
-#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:335
+#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:372
 msgctxt "All records"
 msgid "All %s"
 msgstr "ਸਾਰੇ$s"
@@ -638,6 +638,16 @@ msgstr "ਨਹੀਂ ਭੇਜਿਆ ਗਿਆ (ਸੰਭਾਵਤ ਤੌਰ '�
 #: dt-assets/functions/enqueue-scripts.php:313
 msgid "Exclude Item"
 msgstr "ਆਈਟਮ ਨੂੰ ਬਾਹਰ ਕੱਢੋ"
+
+#: dt-assets/functions/enqueue-scripts.php:334 dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
+msgid "Contact"
+msgstr "ਸੰਪਰਕ"
+
+#: dt-assets/functions/enqueue-scripts.php:335
+msgctxt "Communication channel already exists"
+msgid "%s already exists"
+msgstr ""
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:25
 msgid "Menu"
@@ -1720,11 +1730,6 @@ msgstr "ਇਹ ਰਿਕਾਰਡ ਇਸਦਾ ਡੁਪਲੀਕੇਟ ਹੋ �
 msgid "Duplicate Checker"
 msgstr "ਡੁਪਲਿਕੇਟ ਚੈਕਰ"
 
-#: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:62
-#: dt-metrics/personal/activity-highlights.php:57
-msgid "Contact"
-msgstr "ਸੰਪਰਕ"
-
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:302 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
@@ -1941,7 +1946,7 @@ msgid "Other"
 msgstr "ਹੋਰ"
 
 #: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1058
-#: dt-posts/custom-post-type.php:314
+#: dt-posts/custom-post-type.php:351
 msgid "Default Filters"
 msgstr "ਮੂਲ ਫਿਲਟਰ"
 
@@ -1951,23 +1956,23 @@ msgid "All %s I can view"
 msgstr "ਸਾਰੇ$s ਮੈਂ ਵੇਖ ਸਕਦਾ ਹਾਂ"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
-#: dt-posts/custom-post-type.php:347
+#: dt-posts/custom-post-type.php:384
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "ਮਨਪਸੰਦ$s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
-#: dt-posts/custom-post-type.php:173 dt-posts/custom-post-type.php:353
+#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:390
 msgid "Favorite"
 msgstr "ਮਨਪਸੰਦ"
 
 #: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:362
+#: dt-posts/custom-post-type.php:399
 msgid "My Recently Viewed"
 msgstr "ਮੇਰਾ ਹਾਲ ਹੀ ਵਿੱਚ ਵੇਖਿਆ ਗਿਆ"
 
 #: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1092
-#: dt-posts/custom-post-type.php:367
+#: dt-posts/custom-post-type.php:404
 msgid "Last 30 viewed"
 msgstr "ਪਿਛਲੇ 30 ਵਾਰ ਵੇਖਿਆ ਗਿਆ"
 
@@ -3247,7 +3252,7 @@ msgid "No Activity Detected!"
 msgstr "ਕੋਈ ਗਤੀਵਿਧੀ ਨਹੀਂ ਮਿਲੀ!"
 
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:129
+#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:130
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "ਨਵਾਂ$s"
@@ -3786,7 +3791,7 @@ msgid "Groups Total"
 msgstr ""
 
 #: dt-people-groups/people-groups-base.php:229
-#: dt-posts/custom-post-type.php:158
+#: dt-posts/custom-post-type.php:159
 msgid "Last Modified"
 msgstr "ਆਖਰੀ ਵਾਰ ਸੰਸ਼ੋਧਿਤ"
 
@@ -3842,16 +3847,16 @@ msgstr ""
 msgid "Import People Group"
 msgstr ""
 
-#: dt-posts/custom-post-type.php:181
+#: dt-posts/custom-post-type.php:182
 msgid "Tags"
 msgstr "ਟੈਗਸ"
 
-#: dt-posts/custom-post-type.php:182
+#: dt-posts/custom-post-type.php:183
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr "ਸੰਬੰਧਿਤ ਆਈਟਮਾਂ ਨੂੰ ਸਮੂਹ ਕਰਨ ਦਾ ਇੱਕ ਉਪਯੋਗੀ ਤਰੀਕਾ।"
 
-#: dt-posts/custom-post-type.php:195
+#: dt-posts/custom-post-type.php:196
 msgid "Un-Follow"
 msgstr "ਅਨ-ਫਾਲੋ"
 
@@ -3871,11 +3876,11 @@ msgstr "ਡੀ.ਟੀ."
 msgid "Post already shared with user."
 msgstr "ਪੋਸਟ ਪਹਿਲਾਂ ਹੀ ਉਪਭੋਗਤਾ ਨਾਲ ਸਾਂਝੀ ਕੀਤੀ ਗਈ ਹੈ."
 
-#: dt-posts/dt-posts.php:1800 single-template.php:171
+#: dt-posts/dt-posts.php:1811 single-template.php:171
 msgid "Details"
 msgstr "ਵੇਰਵਾ"
 
-#: dt-posts/dt-posts.php:1864
+#: dt-posts/dt-posts.php:1875
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -3887,7 +3892,7 @@ msgstr ""
 "@  [%1$s] ( %2$s) - ਉਪਭੋਗਤਾ %3$s ਨੇ %4$s [%5$s] (%6$s) ਤੱਕ ਪਹੁੰਚ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਹੈ. "
 "ਜੇ ਲੋੜੀਂਦਾ ਹੈ, ਤਾਂ ਇਸ ਰਿਕਾਰਡ ਨੂੰ ਉਪਭੋਗਤਾ ਨਾਲ ਸਾਂਝਾ ਕਰਨ ਲਈ ਪਹੁੰਚ ਦਿਓ."
 
-#: dt-posts/dt-posts.php:1870
+#: dt-posts/dt-posts.php:1881
 msgid "Access Request"
 msgstr "ਪਹੁੰਚ ਦੀ ਬੇਨਤੀ"
 
