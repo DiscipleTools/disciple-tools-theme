@@ -935,11 +935,37 @@ jQuery(document).ready(function($) {
         var field_option_key = $(this).data('field-option-key');
         var languages = window['field_settings']['languages'];
         var available_translations = {};
+        
+        var element_type = '';
+        if ( translation_type === 'tile-label' ) {
+            element_type = 'Tile Label';
+            element_key = tile_key;
+        }
+
+        if ( translation_type === 'field-label' ) {
+            element_type = 'Field Label';
+            element_key = field_key;
+        }
+
+        if ( translation_type === 'field-description' ) {
+            element_type = 'Field Description';
+            element_key = field_key;
+        }
+
+        if ( translation_type === 'field-option-label' ) {
+            element_type = 'Field Option Label';
+            element_key = field_option_key;
+        }
+
+        if ( translation_type === 'field-option-description' ) {
+            element_type = 'Field Option Description';
+            element_key = field_option_key;
+        }
 
         var translations_html = `
         <table class="modal-translations-overlay-content-table" id="modal-translations-overlay-content-table">
             <tr>
-                <th colspan="2">Translations</th>
+                <th colspan="2">Translate "${element_key}" ${element_type}</th>
             </tr>`;
 
         if ( translation_type === 'tile-label' ) {
