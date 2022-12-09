@@ -341,10 +341,10 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="translate-tile-label-button"><b>Translations</b></label>
+                    <label for="translate-label-button"><b>Translations</b></label>
                 </td>
                 <td>
-                    <button class="button expand_translations" name="translate-tile-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
+                    <button class="button expand_translations" name="translate-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
                         <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
                     </button>
@@ -470,6 +470,11 @@ jQuery(document).ready(function($) {
             translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['translations']).filter(function(t){return t;}).length;
         }
 
+        var description_translations_count = 0;
+        if ( window['field_settings']['post_type_settings']['fields'][field_key]['description_translations'] ) {
+            description_translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['description_translations']).filter(function(t){return t;}).length;
+        }
+
         var field_icon_image_html = '';
         if ( field_settings['icon'] ) {
             field_icon_image_html = `<img src="${field_settings['icon']}" class="field-icon">`;
@@ -528,10 +533,10 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="translate-field-option-label-button"><b>Translations</b></label>
+                    <label for="translate-label-button"><b>Translations</b></label>
                 </td>
                 <td>
-                    <button class="button small expand_translations" name="translate-field-option-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                    <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
                         <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
                     </button>
@@ -565,12 +570,12 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <b>Description Translations</b>
+                    <label for="translate-description-button"><b>Description Translations</b></label>
                 </td>
                 <td>
-                    <button class="button small expand_translations" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                    <button class="button small expand_translations" name="translate-description-button" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
                         <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
-                        (${translations_count})
+                        (${description_translations_count})
                     </button>
                 </td>
             </tr>
@@ -657,10 +662,10 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <label for="translate-field-option-label-button"><b>Translations</b></label>
+                <label for="translate-label-button"><b>Translations</b></label>
             </td>
             <td>
-                <button class="button expand_translations" name="translate-field-option-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
                     <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                     (${translations_count})
                 </button>
@@ -937,12 +942,30 @@ jQuery(document).ready(function($) {
             }
         }
 
+        if ( translation_type === 'field-description' ) {
+            if ( field_key === 'undefined' ) {
+                return;
+            }
+            if ( window['field_settings']['post_type_settings']['fields'][field_key]['description_translations'] ) {
+                available_translations = window['field_settings']['post_type_settings']['fields'][field_key]['description_translations'];
+            }
+        }
+
         if ( translation_type === 'field-option-label' ) {
             if( field_key === 'undefined' || field_option_key === 'undefined' ) {
                 return;
             }
             if ( window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations'] ) {
                 available_translations = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations'];
+            }
+        }
+
+        if ( translation_type === 'field-option-description' ) {
+            if ( field_key === 'undefined' ) {
+                return;
+            }
+            if ( window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description_translations'] ) {
+                available_translations = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description_translations'];
             }
         }
 
@@ -993,6 +1016,7 @@ jQuery(document).ready(function($) {
         });
 
         translations = JSON.stringify(translations);
+        var element_button_selector = $('.expand_translations[name="translate-label-button"]');
         API.edit_translations(translation_type, post_type, tile_key, translations, field_key, field_option_key).promise().then(function(response) {
             if ( translation_type === 'tile-label' ) {
                 window['field_settings']['post_type_tiles'][tile_key]['translations'] = response;
@@ -1004,12 +1028,20 @@ jQuery(document).ready(function($) {
                 var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['translations']).filter(function(t) {return t;}).length;
             }
 
+            if ( translation_type === 'field-description' ) {
+                window['field_settings']['post_type_settings']['fields'][field_key]['description_translations'] = response;
+                var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['description_translations']).filter(function(t) {return t;}).length;
+                element_button_selector = $('.expand_translations[name="translate-description-button"]');
+                console.log(translations_count);
+                console.log(element_button_selector);
+            }
+
             if ( translation_type === 'field-option-label' ) {
                 window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations'] = response;
                 var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']).filter(function(t) {return t;}).length;
             }
 
-            $('.expand_translations').html(`
+            $(element_button_selector).html(`
             <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
             `);

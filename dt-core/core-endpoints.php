@@ -328,6 +328,7 @@ class Disciple_Tools_Core_Endpoints {
                 case 'tile-label':
                     $translated_element = $tile_options[$post_type][$tile_key];
                     break;
+
                 case 'field-label':
                     if ( !isset( $post_submission['field_key'] ) ) {
                         return false;
@@ -335,6 +336,14 @@ class Disciple_Tools_Core_Endpoints {
                     $field_key = $post_submission['field_key'];
                     $translated_element = $field_customizations[$post_type][$field_key];
                     break;
+
+                case 'field-description':
+                    if ( !isset( $post_submission['field_key'] ) ) {
+                        return false;
+                    }
+                    $field_key = $post_submission['field_key'];
+                    $translated_element = $field_customizations[$post_type][$field_key];
+                        break;
 
                 case 'field-option-label':
                     if ( !isset( $post_submission['field_key'] ) || !isset( $post_submission['field_option_key'] ) ) {
@@ -346,12 +355,18 @@ class Disciple_Tools_Core_Endpoints {
                     break;
             }
 
+            // Check if translation is a description
+            $translations_element_key = 'translations';
+            if ( strpos( $post_submission['translation_type'], 'description' ) ) {
+                $translations_element_key = 'description_translations';
+            }
+
             foreach ( $langs as $lang => $val ) {
                 $langcode = $val['language'];
                 if ( $translations[$langcode] === '' ) {
                     $translations[$langcode] = null;
                 }
-                $translated_element['translations'][$langcode] = $translations[$langcode];
+                $translated_element[$translations_element_key][$langcode] = $translations[$langcode];
             }
 
             switch ( $post_submission['translation_type'] ) {
@@ -359,16 +374,22 @@ class Disciple_Tools_Core_Endpoints {
                     $tile_options[$post_type][$tile_key] = $translated_element;
                     update_option( 'dt_custom_tiles', $tile_options );
                     break;
+
                 case 'field-label':
                     $field_customizations[$post_type][$field_key] = $translated_element;
                     update_option( 'dt_field_customizations', $field_customizations );
                     break;
+
+                case 'field-description':
+                    $field_customizations[$post_type][$field_key] = $translated_element;
+                    update_option( 'dt_field_customizations', $field_customizations );
+                    break;
+
                 case 'field-option-label':
                     $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $translated_element;
                     update_option( 'dt_field_customizations', $field_customizations );
                     break;
             }
-            dt_write_log( $translations );
             return $translations;
         }
         return false;
