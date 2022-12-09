@@ -224,6 +224,16 @@ jQuery(document).ready(function ($) {
           // Refresh record view
           window.location = window.record_history_settings.site_url + post['post_type'] + '/' + post['ID'];
 
+        }).fail(failure => {
+          console.log(failure);
+
+          // Display detected exception text before returning back to post type record.
+          if (failure['responseText']) {
+            alert(failure['responseText']);
+          }
+
+          // Refresh record view
+          window.location = window.record_history_settings.site_url + post['post_type'] + '/' + post['ID'];
         });
       }
     }
