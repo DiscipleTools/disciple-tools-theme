@@ -977,11 +977,11 @@ jQuery(document).ready(function($) {
 
         $.each( languages, function(key, lang) {
             available_translations[key] ? current_translation = available_translations[key] : current_translation = '';
-        translations_html += `
-            <tr>
-                <td><label for="tile_label_translation-${key}">${lang['native_name']}</label></td>
-                <td><input name="tile_label_translation-${key}" type="text" data-translation-key="${key}" value="${current_translation}"/></td>
-            </tr>`
+            translations_html += `
+                <tr>
+                    <td><label for="tile_label_translation-${key}">${lang['flag']} ${lang['native_name']}</label></td>
+                    <td><input name="tile_label_translation-${key}" type="text" data-translation-key="${key}" value="${current_translation}"/></td>
+                </tr>`;
         });
 
         translations_html += `
