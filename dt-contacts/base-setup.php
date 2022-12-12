@@ -713,6 +713,26 @@ class DT_Contacts_Base {
                 if ( $this->comm_channel_comment_section_already_assigned( $sections, $type['key'] ) === false ){
                     array_unshift( $sections, $type );
                 }
+
+                // Force default comment types to top spots!
+                $type_idx = $this->comm_channel_comment_section_already_assigned( $sections, $type['key'] );
+                if ( $type_idx !== false ){
+                    $unshift_type = $sections[$type_idx];
+                    unset( $sections[$type_idx] );
+                    array_unshift( $sections, $unshift_type );
+                }
+            }
+
+            // Finally, move all original custom comment types to bottom spots!
+            foreach ( $sections ?? [] as $section ){
+                if ( isset( $section['is_comment_type'] ) && $section['is_comment_type'] && ( substr( $section['key'], 0, strlen( $section['key_prefix'] ) ) === $section['key_prefix'] ) ){
+                    $section_idx = $this->comm_channel_comment_section_already_assigned( $sections, $section['key'] );
+                    if ( $section_idx !== false ){
+                        $unshift_section = $sections[$section_idx];
+                        unset( $sections[$section_idx] );
+                        $sections[] = $unshift_section;
+                    }
+                }
             }
         }
 

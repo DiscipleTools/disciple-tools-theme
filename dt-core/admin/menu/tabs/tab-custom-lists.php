@@ -250,6 +250,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
     public function process_comment_types_box() {
         if ( isset( $_POST['comment_types_box_nonce'] ) ) {
+            $custom_key_prefix = 'cmt_type_';
+
             if ( ! wp_verify_nonce( sanitize_key( $_POST['comment_types_box_nonce'] ), 'comment_types_box' ) ) {
                 self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
 
@@ -283,8 +285,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         $custom_contact_fields[$type]['name'] = sanitize_text_field( wp_unslash( $_POST['type_labels'][$type]['default'] ) );
                     }
 
-                    // Type Enabled
-                    $custom_contact_fields[$type]['enabled'] = isset( $_POST['type_enabled'][$type] );
+                    // Type Enabled - Only apply if it's an original custom type.
+                    if ( substr( $type, 0, strlen( $custom_key_prefix ) ) === $custom_key_prefix ){
+                        $custom_contact_fields[$type]['enabled'] = isset( $_POST['type_enabled'][$type] );
+                    }
 
                     // Type Translations
                     foreach ( $langs as $lang => $val ){
@@ -296,21 +300,25 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             }
                         }
                     }
+
+                    // Persist key prefix.
+                    $custom_contact_fields[$type]['key_prefix'] = $custom_key_prefix;
                 }
             }
 
             // Handle the adding of new comment types.
             if ( ! empty( $_POST['add_type'] ) ) {
                 $label = sanitize_text_field( wp_unslash( $_POST['add_type'] ) );
-                $key   = mb_strimwidth( dt_create_field_key( 'cmt_type_' . $label ), 0, 20 );
+                $key   = mb_strimwidth( dt_create_field_key( $custom_key_prefix . $label ), 0, 20 );
                 if ( ! empty( $key ) ) {
                     if ( isset( $custom_contact_fields[ $key ] ) ) {
                         self::admin_notice( __( 'This comment type already exists', 'disciple_tools' ), 'error' );
                     } else {
-                        $custom_contact_fields[ $key ] = [
-                            'name'            => $label,
-                            'enabled'         => true,
-                            'is_comment_type' => true
+                        $custom_contact_fields[$key] = [
+                            'name' => $label,
+                            'enabled' => true,
+                            'is_comment_type' => true,
+                            'key_prefix' => $custom_key_prefix
                         ];
                         wp_cache_delete( 'contacts_field_settings' );
                     }
@@ -345,15 +353,18 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 foreach ( $comment_types ?? [] as $type ) {
                     if ( ( isset( $type['is_comment_type'] ) && $type['is_comment_type'] ) || ( strpos( $type['key'], 'contact_' ) === false ) ){
                         $enabled = ! isset( $type['enabled'] ) || $type['enabled'] !== false;
+                        $supported_key_prefixes = substr( $type['key'], 0, strlen( $type['key_prefix'] ) ) === $type['key_prefix'];
                         ?>
                         <tr>
                             <input type="hidden" name="type_keys[<?php echo esc_html( $type['key'] ) ?>]">
                             <td><input type="text" name="type_labels[<?php echo esc_html( $type['key'] ) ?>][default]"
-                                       value="<?php echo esc_html( $type['label'] ?? $type['key'] ) ?>"></td>
+                                       value="<?php echo esc_html( $type['name'] ?? $type['key'] ) ?>"></td>
                             <td><?php echo esc_html( $type['key'] ) ?></td>
                             <td>
                                 <input name="type_enabled[<?php echo esc_html( $type['key'] ) ?>]"
-                                       type="checkbox" <?php echo esc_html( $enabled ? 'checked' : '' ) ?> />
+                                       type="checkbox" <?php echo esc_html( $enabled ? 'checked' : '' ) ?>
+                                    <?php echo esc_html( !$supported_key_prefixes ? 'disabled' : '' ) ?>
+                                />
                             </td>
                             <td>
                                 <?php $langs = dt_get_available_languages(); ?>
