@@ -1745,11 +1745,16 @@ class DT_Posts extends Disciple_Tools_Posts {
                         $post_updates[$field_key] = $number;
                     }
                     break;
+                case 'user_select':
+                    $user_select_value = $reverted['values'][0];
+                    if ( !empty( $user_select_value ) && ( $user_select_value != 'user-' ) ){
+                        $post_updates[$field_key] = $user_select_value;
+                    }
+                    break;
                 case 'text':
                 case 'boolean':
                 case 'textarea':
                 case 'key_select':
-                case 'user_select':
                     $post_updates[$field_key] = $reverted['values'][0] ?? '';
                     break;
             }
