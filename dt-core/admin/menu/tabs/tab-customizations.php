@@ -411,6 +411,29 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     </div>
                 </div>
             <?php endforeach; ?>
+            <!-- START UNTILED FIELDS -->
+            <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="no-tile-hidden">
+                <span class="sortable">⋮⋮</span>
+                <span class="expand-icon">+</span>
+                <span id="tile-key-untiled" style="vertical-align: sub;">
+                    <?php echo esc_html_e( 'No Tile / Hidden', 'disciple-tools' ); ?>
+                </span>
+                <span class="edit-icon"></span>
+            </div>
+            <div class="tile-rundown-elements" data-parent-tile-key="no-tile-hidden" style="display: none;">
+                <?php foreach( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                    <?php if ( ( !array_key_exists( 'tile', $field_settings ) || $field_settings['tile'] === 'no_tile' ) && ( !isset( $field_settings['customizable'] ) || $field_settings['customizable'] !== false ) && empty( $field_settings['hidden'] ) ) : ?>
+                    <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="no-tile-hidden">
+                        <span class="sortable">⋮⋮</span>
+                        <span class="field-name-content" style="margin-left: 16px;" data-parent-tile-key="no-tile-hidden" data-key="<?php echo esc_attr( $field_key ); ?>">
+                            <?php echo esc_html( $field_settings['name'] ); ?>
+                        </span>
+                        <span class="edit-icon"></span>
+                    </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+                <!-- END UNTILED FIELDS -->
             <div class="add-new-link">
                 <a href="#" id="add-new-tile-link"><?php echo esc_html( 'add new tile', 'disciple_tools' ); ?></a>
             </div>

@@ -42,9 +42,11 @@ jQuery(document).ready(function($) {
 
     $('.field-settings-table').on('click', '.field-settings-table-tile-name', function() {
         var tile_key = $(this).data('key');
-        if (tile_key) {
-            show_preview_tile(tile_key);
+        if (!tile_key || tile_key === 'no-tile-hidden') {
+            hide_preview_tile();
+            return;
         }
+            show_preview_tile(tile_key);
         render_element_shadows();
     });
 
@@ -220,6 +222,10 @@ jQuery(document).ready(function($) {
                 </div>
             </div>`;
         $('.fields-table-right').html(tile_html);
+    }
+
+    function hide_preview_tile() {
+        $('.fields-table-right').html('');
     }
 
     function showOverlayModal(modalName, data=null) {
