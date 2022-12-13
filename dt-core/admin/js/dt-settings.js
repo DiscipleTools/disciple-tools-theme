@@ -40,7 +40,10 @@ jQuery(document).ready(function($) {
         return window.field_settings.post_type;
     }
 
+    $('.field-settings-table').sortable();
+
     $('.field-settings-table').on('click', '.field-settings-table-tile-name', function() {
+
         var tile_key = $(this).data('key');
         if (!tile_key || tile_key === 'no-tile-hidden') {
             hide_preview_tile();

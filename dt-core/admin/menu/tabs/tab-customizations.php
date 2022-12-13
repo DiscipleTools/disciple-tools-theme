@@ -338,100 +338,104 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <div class="field-settings-table">
             <?php foreach ( $post_tiles['tiles'] as $tile_key => $tile_value ) : ?>
                 <!-- START TILE -->
-                <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>">
-                    <span class="sortable">⋮⋮</span>
-                    <span class="expand-icon">+</span>
-                    <span id="tile-key-<?php echo esc_attr( $tile_key ); ?>" style="vertical-align: sub;">
-                        <?php echo esc_html( $tile_value['label'] ); ?>
-                    </span>
-                    <span class="edit-icon"></span>
-                </div>
-                <!-- END TILE -->
-                <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
-                    <!-- START TOGGLED FIELD ITEMS -->
-                    <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
-                        <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) {
-                            if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' || $field_settings['type'] === 'tags' ): ?>
-                                <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
-                                    <span class="sortable">⋮⋮</span>
-                                    <span class="field-name-content" style="margin-left: 16px;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
-                                        <?php echo esc_html( $field_settings['name'] ); ?>
-                                    </span>
-                                    <span class="edit-icon"></span>
-                                </div>
-                            <?php else : ?>
-                                <div class="field-settings-table-field-name expandable" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
-                                    <span class="sortable">⋮⋮</span>
-                                    <span class="expand-icon" style="padding-left: 16px;">+</span>
-                                    <span class="field-name-content" style="vertical-align: sub;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
-                                        <?php echo esc_html( $field_settings['name'] ); ?>
-                                    </span>
-                                    <span class="edit-icon"></span>
-                                </div>
-
-                                <!-- START TOGGLED ITEMS -->
-                                <div class="field-settings-table-child-toggle">
-                                    <?php foreach ( $field_settings as $key => $value ) : ?>
-                                        <?php if ( $key === 'default' && !empty( $field_settings['default'] ) ) : ?>
-                                            <?php foreach ( $value as $k => $v ) {
-                                                $label = 'NULL';
-                                                if ( isset( $v['label'] ) || !empty( $v['label'] ) ) {
-                                                    // $option_key = $value;
-                                                    $label = $v['label'];
-                                                }
-
-                                                if ( isset( $v['default'] ) || !empty( $v['default'] ) ) {
-                                                    $option_key = $v['default'];
-                                                }
-                                                ?>
-                                            <div class="field-settings-table-field-option">
-                                                <span class="sortable">⋮⋮</span>
-                                                <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" style="padding-left: 16px;"><?php echo esc_html( $label ); ?></span>
-                                                <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>"></span>
-                                            </div>
-                                                <?php
-                                            }
-                                        endif; ?>
-                                    <?php endforeach; ?>
-                                    <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
-                                        <span class="sortable">⋮⋮</span>
-                                        <span style="margin-left: 16px;vertical-align: sub;"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
-                                    </div>
-                                </div>
-                                <!-- END TOGGLED ITEMS -->
-                            <?php endif;
-                        } ?>
-                    <?php endforeach; ?>
-                    <!-- END TOGGLED FIELD ITEMS -->
-                    <div class="field-settings-table-field-name expandable">
+                <div class="sortable-tile">
+                    <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>">
                         <span class="sortable">⋮⋮</span>
-                        <span class="field-name-content add-new-field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
-                            <a><?php echo esc_html( 'add new field', 'disciple_tools' ); ?></a>
+                        <span class="expand-icon">+</span>
+                        <span id="tile-key-<?php echo esc_attr( $tile_key ); ?>" style="vertical-align: sub;">
+                            <?php echo esc_html( $tile_value['label'] ); ?>
                         </span>
+                        <span class="edit-icon"></span>
+                    </div>
+                    <!-- END TILE -->
+                    <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
+                        <!-- START TOGGLED FIELD ITEMS -->
+                        <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                            <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) {
+                                if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' || $field_settings['type'] === 'tags' ): ?>
+                                    <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                        <span class="sortable">⋮⋮</span>
+                                        <span class="field-name-content" style="margin-left: 16px;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
+                                            <?php echo esc_html( $field_settings['name'] ); ?>
+                                        </span>
+                                        <span class="edit-icon"></span>
+                                    </div>
+                                <?php else : ?>
+                                    <div class="field-settings-table-field-name expandable" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                        <span class="sortable">⋮⋮</span>
+                                        <span class="expand-icon" style="padding-left: 16px;">+</span>
+                                        <span class="field-name-content" style="vertical-align: sub;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
+                                            <?php echo esc_html( $field_settings['name'] ); ?>
+                                        </span>
+                                        <span class="edit-icon"></span>
+                                    </div>
+
+                                    <!-- START TOGGLED ITEMS -->
+                                    <div class="field-settings-table-child-toggle">
+                                        <?php foreach ( $field_settings as $key => $value ) : ?>
+                                            <?php if ( $key === 'default' && !empty( $field_settings['default'] ) ) : ?>
+                                                <?php foreach ( $value as $k => $v ) {
+                                                    $label = 'NULL';
+                                                    if ( isset( $v['label'] ) || !empty( $v['label'] ) ) {
+                                                        // $option_key = $value;
+                                                        $label = $v['label'];
+                                                    }
+
+                                                    if ( isset( $v['default'] ) || !empty( $v['default'] ) ) {
+                                                        $option_key = $v['default'];
+                                                    }
+                                                    ?>
+                                                <div class="field-settings-table-field-option">
+                                                    <span class="sortable">⋮⋮</span>
+                                                    <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" style="padding-left: 16px;"><?php echo esc_html( $label ); ?></span>
+                                                    <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>"></span>
+                                                </div>
+                                                    <?php
+                                                }
+                                            endif; ?>
+                                        <?php endforeach; ?>
+                                        <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
+                                            <span class="sortable">⋮⋮</span>
+                                            <span style="margin-left: 16px;vertical-align: sub;"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
+                                        </div>
+                                    </div>
+                                    <!-- END TOGGLED ITEMS -->
+                                <?php endif;
+                            } ?>
+                        <?php endforeach; ?>
+                        <!-- END TOGGLED FIELD ITEMS -->
+                        <div class="field-settings-table-field-name expandable">
+                            <span class="sortable">⋮⋮</span>
+                            <span class="field-name-content add-new-field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                <a><?php echo esc_html( 'add new field', 'disciple_tools' ); ?></a>
+                            </span>
+                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>
             <!-- START UNTILED FIELDS -->
-            <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="no-tile-hidden">
-                <span class="sortable">⋮⋮</span>
-                <span class="expand-icon">+</span>
-                <span id="tile-key-untiled" style="vertical-align: sub;">
-                    <?php echo esc_html_e( 'No Tile / Hidden', 'disciple-tools' ); ?>
-                </span>
-                <span class="edit-icon"></span>
-            </div>
-            <div class="tile-rundown-elements" data-parent-tile-key="no-tile-hidden" style="display: none;">
-                <?php foreach( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
-                    <?php if ( ( !array_key_exists( 'tile', $field_settings ) || $field_settings['tile'] === 'no_tile' ) && ( !isset( $field_settings['customizable'] ) || $field_settings['customizable'] !== false ) && empty( $field_settings['hidden'] ) ) : ?>
-                    <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="no-tile-hidden">
-                        <span class="sortable">⋮⋮</span>
-                        <span class="field-name-content" style="margin-left: 16px;" data-parent-tile-key="no-tile-hidden" data-key="<?php echo esc_attr( $field_key ); ?>">
-                            <?php echo esc_html( $field_settings['name'] ); ?>
-                        </span>
-                        <span class="edit-icon"></span>
-                    </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+            <div class="sortable-tile">
+                <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="no-tile-hidden">
+                    <span class="sortable">⋮⋮</span>
+                    <span class="expand-icon">+</span>
+                    <span id="tile-key-untiled" style="vertical-align: sub;">
+                        <?php echo esc_html_e( 'No Tile / Hidden', 'disciple-tools' ); ?>
+                    </span>
+                    <span class="edit-icon"></span>
+                </div>
+                <div class="tile-rundown-elements" data-parent-tile-key="no-tile-hidden" style="display: none;">
+                    <?php foreach( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                        <?php if ( ( !array_key_exists( 'tile', $field_settings ) || $field_settings['tile'] === 'no_tile' ) && ( !isset( $field_settings['customizable'] ) || $field_settings['customizable'] !== false ) && empty( $field_settings['hidden'] ) ) : ?>
+                        <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="no-tile-hidden">
+                            <span class="sortable">⋮⋮</span>
+                            <span class="field-name-content" style="margin-left: 16px;" data-parent-tile-key="no-tile-hidden" data-key="<?php echo esc_attr( $field_key ); ?>">
+                                <?php echo esc_html( $field_settings['name'] ); ?>
+                            </span>
+                            <span class="edit-icon"></span>
+                        </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
             </div>
                 <!-- END UNTILED FIELDS -->
             <div class="add-new-link">
