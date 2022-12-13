@@ -663,13 +663,13 @@ class DT_Contacts_Base {
             }
 
             // Extract custom comment types.
-            $custom_field_options  = dt_get_option( 'dt_field_customizations' );
-            $custom_contact_fields = $custom_field_options[ $post_type ];
-            foreach ( $custom_contact_fields ?? [] as $key => $field ){
-                if ( isset( $field['is_comment_type'] ) && $field['is_comment_type'] ){
+            $comment_type_options  = dt_get_option( 'dt_comment_types' );
+            $comment_type_fields = $comment_type_options[ $post_type ];
+            foreach ( $comment_type_fields ?? [] as $key => $type ){
+                if ( isset( $type['is_comment_type'] ) && $type['is_comment_type'] ){
 
                     // Ensure label adopts the correct name translation.
-                    $label = ( isset( $field['translations'] ) && !empty( $field['translations'][determine_locale()] ) ) ? $field['translations'][determine_locale()] : ( $field['name'] ?? $key );
+                    $label = ( isset( $type['translations'] ) && !empty( $type['translations'][determine_locale()] ) ) ? $type['translations'][determine_locale()] : ( $type['name'] ?? $key );
                     if ( empty( $label ) ){
                         $label = $key;
                     }
@@ -679,15 +679,15 @@ class DT_Contacts_Base {
                     if ( $already_assigned === false ){
 
                         // Package custom comment type.
-                        $packaged_field = $field;
-                        $packaged_field['key'] = $key;
-                        $packaged_field['label'] = esc_html( $label );
-                        $sections[] = $packaged_field;
+                        $packaged_type = $type;
+                        $packaged_type['key'] = $key;
+                        $packaged_type['label'] = esc_html( $label );
+                        $sections[] = $packaged_type;
 
                     } else {
 
                         // Update pre-existing custom comment types.
-                        $sections[$already_assigned] = $field;
+                        $sections[$already_assigned] = $type;
                         $sections[$already_assigned]['key'] = $key;
                         $sections[$already_assigned]['label'] = esc_html( $label );
 
@@ -702,11 +702,13 @@ class DT_Contacts_Base {
                     'label' => __( 'Activity', 'disciple_tools' ),
                     'selected_by_default' => true,
                     'always_show' => true,
+                    'enabled' => true
                 ],
                 [
                     'key' => 'comment',
                     'label' => __( 'Comment', 'disciple_tools' ),
-                    'selected_by_default' => true
+                    'selected_by_default' => true,
+                    'enabled' => true
                 ]
             ];
             foreach ( $default_types as $type ){
@@ -718,6 +720,13 @@ class DT_Contacts_Base {
                 $type_idx = $this->comm_channel_comment_section_already_assigned( $sections, $type['key'] );
                 if ( $type_idx !== false ){
                     $unshift_type = $sections[$type_idx];
+
+                    // Adjust enabled state accordingly; defaulting to configured, if not specified.
+                    if ( !isset( $unshift_type['enabled'] ) ){
+                        $unshift_type['enabled'] = $type['enabled'];
+                    }
+
+                    // Proceed with element unshift.
                     unset( $sections[$type_idx] );
                     array_unshift( $sections, $unshift_type );
                 }

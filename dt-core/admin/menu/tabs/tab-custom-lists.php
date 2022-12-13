@@ -259,35 +259,35 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
 
             $langs                 = dt_get_available_languages();
-            $custom_field_options  = dt_get_option( 'dt_field_customizations' );
-            $custom_contact_fields = $custom_field_options['contacts'];
+            $comment_type_options  = dt_get_option( 'dt_comment_types' );
+            $comment_type_fields = $comment_type_options['contacts'];
             $comment_types         = isset( $_POST['type_keys'] ) ? array_keys( dt_recursive_sanitize_array( $_POST['type_keys'] ) ) : [];
 
             // Handle general updates.
             foreach ( $comment_types as $type ){
 
                 // Ensure 3rd party custom comment type extra parameters are also persisted.
-                if ( !isset( $custom_contact_fields[$type] ) ){
+                if ( !isset( $comment_type_fields[$type] ) ){
                     $filtered_types = apply_filters( 'dt_comments_additional_sections', [], 'contacts' );
                     foreach ( $filtered_types ?? [] as $filtered_type ){
                         if ( $filtered_type['key'] == $type ){
-                            $custom_contact_fields[$type] = $filtered_type;
-                            $custom_contact_fields[$type]['is_comment_type'] = true;
+                            $comment_type_fields[$type] = $filtered_type;
+                            $comment_type_fields[$type]['is_comment_type'] = true;
                         }
                     }
                 }
 
                 // Proceed with type updating.
-                if ( isset( $custom_contact_fields[$type] ) ){
+                if ( isset( $comment_type_fields[$type] ) ){
 
                     // Type Name
                     if ( isset( $_POST['type_labels'][$type]['default'] ) ){
-                        $custom_contact_fields[$type]['name'] = sanitize_text_field( wp_unslash( $_POST['type_labels'][$type]['default'] ) );
+                        $comment_type_fields[$type]['name'] = sanitize_text_field( wp_unslash( $_POST['type_labels'][$type]['default'] ) );
                     }
 
                     // Type Enabled - Only apply if it's an original custom type.
                     if ( substr( $type, 0, strlen( $custom_key_prefix ) ) === $custom_key_prefix ){
-                        $custom_contact_fields[$type]['enabled'] = isset( $_POST['type_enabled'][$type] );
+                        $comment_type_fields[$type]['enabled'] = isset( $_POST['type_enabled'][$type] );
                     }
 
                     // Type Translations
@@ -295,39 +295,38 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         $langcode = $val['language'];
                         if ( isset( $_POST['type_labels'][$type][$langcode] ) ){
                             $translated_label = sanitize_text_field( wp_unslash( $_POST['type_labels'][$type][$langcode] ) );
-                            if ( ( empty( $translated_label ) && !empty( $custom_contact_fields[$type]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
-                                $custom_contact_fields[$type]['translations'][$langcode] = $translated_label;
+                            if ( ( empty( $translated_label ) && !empty( $comment_type_fields[$type]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
+                                $comment_type_fields[$type]['translations'][$langcode] = $translated_label;
                             }
                         }
                     }
 
                     // Persist key prefix.
-                    $custom_contact_fields[$type]['key_prefix'] = $custom_key_prefix;
+                    $comment_type_fields[$type]['key_prefix'] = $custom_key_prefix;
                 }
             }
 
             // Handle the adding of new comment types.
             if ( ! empty( $_POST['add_type'] ) ) {
                 $label = sanitize_text_field( wp_unslash( $_POST['add_type'] ) );
-                $key   = mb_strimwidth( dt_create_field_key( $custom_key_prefix . $label ), 0, 20 );
+                $key   = substr( dt_create_field_key( $custom_key_prefix . $label ), 0, 20 );
                 if ( ! empty( $key ) ) {
-                    if ( isset( $custom_contact_fields[ $key ] ) ) {
+                    if ( isset( $comment_type_fields[ $key ] ) ) {
                         self::admin_notice( __( 'This comment type already exists', 'disciple_tools' ), 'error' );
                     } else {
-                        $custom_contact_fields[$key] = [
+                        $comment_type_fields[$key] = [
                             'name' => $label,
                             'enabled' => true,
                             'is_comment_type' => true,
                             'key_prefix' => $custom_key_prefix
                         ];
-                        wp_cache_delete( 'contacts_field_settings' );
                     }
                 }
             }
 
-            // Update and persist custom field options.
-            $custom_field_options['contacts'] = $custom_contact_fields;
-            update_option( 'dt_field_customizations', $custom_field_options );
+            // Update and persist custom comment type options.
+            $comment_type_options['contacts'] = $comment_type_fields;
+            update_option( 'dt_comment_types', $comment_type_options );
         }
     }
 
@@ -353,7 +352,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 foreach ( $comment_types ?? [] as $type ) {
                     if ( ( isset( $type['is_comment_type'] ) && $type['is_comment_type'] ) || ( strpos( $type['key'], 'contact_' ) === false ) ){
                         $enabled = ! isset( $type['enabled'] ) || $type['enabled'] !== false;
-                        $supported_key_prefixes = substr( $type['key'], 0, strlen( $type['key_prefix'] ) ) === $type['key_prefix'];
+                        $supported_key_prefixes = isset( $type['key_prefix'] ) && substr( $type['key'], 0, strlen( $type['key_prefix'] ) ) === $type['key_prefix'];
                         ?>
                         <tr>
                             <input type="hidden" name="type_keys[<?php echo esc_html( $type['key'] ) ?>]">
@@ -445,10 +444,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         }
 
                         $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
-                        $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true;
-                        if ( $channel_key == 'contact_phone' || $channel_key == 'contact_email' || $channel_key == 'contact_address' ){
-                            continue;
-                        } ?>
+                        $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true; ?>
 
                     <tr>
                         <input type="hidden" name="channel_fields[<?php echo esc_html( $channel_key ) ?>]">
