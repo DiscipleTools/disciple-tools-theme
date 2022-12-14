@@ -60,7 +60,7 @@ function dt_dra_disable_via_filters() {
  * Disable the built in Wordpress API because it opens all users and contacts to anyone who is logged in.
  */
 add_filter( 'rest_endpoints', function( $endpoints ){
-    $allowed_wp_v2_paths = apply_filters( 'allowed_wp_v2_paths', [] ); // enable wp/v2 endpoints in certain circumstances
+    $allowed_wp_v2_paths = apply_filters( 'allowed_wp_v2_paths', [ '/wp/v2/users/me' ] ); // enable wp/v2 endpoints in certain circumstances
     foreach ( $endpoints as $path => $endpoint ){
         if ( strpos( $path, 'wp/v2' ) !== false ){
             $allowed = false;

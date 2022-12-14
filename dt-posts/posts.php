@@ -1091,9 +1091,10 @@ class Disciple_Tools_Posts
         $post_query = '';
 
         if ( !empty( $search ) ){
-            $other_search_fields = apply_filters( 'dt_search_extra_post_meta_fields', [] );
 
+            $other_search_fields = [];
             if ( empty( $fields_to_search ) ) {
+                $other_search_fields = apply_filters( 'dt_search_extra_post_meta_fields', [] );
                 $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
                     OR p.ID IN ( SELECT post_id
                                 FROM $wpdb->postmeta
@@ -1129,7 +1130,7 @@ class Disciple_Tools_Posts
                     $user_id = get_current_user_id();
                     $post_query .= "p.ID IN ( SELECT comment_post_ID
                     FROM $wpdb->comments
-                    WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                    WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
                     ) OR p.ID IN ( SELECT post_id
                     FROM $wpdb->postmeta
                     WHERE meta_value LIKE '%" . esc_sql( $search ) . "%'
@@ -1145,11 +1146,13 @@ class Disciple_Tools_Posts
                         }
                         $post_query .= " p.ID IN ( SELECT comment_post_ID
                         FROM $wpdb->comments
-                        WHERE comment_content LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                        WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
                         ) ";
                     }
                     foreach ( $fields_to_search as $field ) {
-                        array_push( $other_search_fields, $field );
+                        if ( $field !== 'comment' ){
+                            array_push( $other_search_fields, $field );
+                        }
                     }
                 }
             }
@@ -2788,7 +2791,7 @@ class Disciple_Tools_Posts
                         } else if ( ( $field_value['p2p_direction'] === 'to' || $field_value['p2p_direction'] === 'any' ) && $p2p_record['p2p_from'] != $record['ID'] ){
                             $connection_id = $p2p_record['p2p_from'];
                         }
-                        if ( $connection_id ){
+                        if ( $connection_id && isset( $connected_posts_mapped[$connection_id] ) ){
                             $connection_post = $connected_posts_mapped[$connection_id];
                             $connection_meta = [];
                             foreach ( $all_p2p_meta as $meta ){

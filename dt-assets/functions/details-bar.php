@@ -268,7 +268,7 @@ function dt_print_details_bar(
                 </div>
                 <div class="cell small-10 center">
                     <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
-                        $type_color = isset( $dt_post['type'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
+                        $type_color = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
                     if ( !empty( $picture ) ) : ?>
                         <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                     <?php else : ?>

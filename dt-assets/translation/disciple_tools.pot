@@ -2,16 +2,16 @@
 # This file is distributed under the GPL-2.0 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disciple Tools 1.33.0\n"
+"Project-Id-Version: Disciple Tools 1.34.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-theme\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-25T15:36:32+00:00\n"
+"POT-Creation-Date: 2022-12-09T10:38:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: disciple_tools\n"
 
 #. Theme Name of the theme
@@ -251,7 +251,7 @@ msgstr ""
 #: archive-template.php:403
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:1799
+#: dt-posts/dt-posts.php:1810
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520
 #: single-template.php:129
@@ -264,7 +264,7 @@ msgstr ""
 
 #: archive-template.php:477
 #: dt-assets/functions/details-bar.php:168
-#: dt-posts/custom-post-type.php:189
+#: dt-posts/custom-post-type.php:190
 msgid "Follow"
 msgstr ""
 
@@ -313,7 +313,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
-#: dt-posts/custom-post-type.php:149
+#: dt-posts/custom-post-type.php:150
 #: template-settings.php:136
 msgid "Name"
 msgstr ""
@@ -323,7 +323,7 @@ msgid "Loading..."
 msgstr ""
 
 #: archive-template.php:607
-#: dt-assets/functions/enqueue-scripts.php:349
+#: dt-assets/functions/enqueue-scripts.php:354
 msgid "Load More"
 msgstr ""
 
@@ -352,7 +352,7 @@ msgstr ""
 
 #: archive-template.php:703
 #: dt-assets/functions/enqueue-scripts.php:301
-#: dt-posts/custom-post-type.php:166
+#: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr ""
 
@@ -470,7 +470,7 @@ msgstr ""
 
 #: dt-assets/functions/details-bar.php:152
 #: dt-assets/parts/modals/modal-tasks.php:7
-#: dt-posts/custom-post-type.php:201
+#: dt-posts/custom-post-type.php:202
 msgid "Tasks"
 msgstr ""
 
@@ -670,7 +670,7 @@ msgstr ""
 #: dt-assets/functions/enqueue-scripts.php:305
 #: dt-contacts/base-setup.php:537
 #: dt-groups/base-setup.php:1066
-#: dt-posts/custom-post-type.php:335
+#: dt-posts/custom-post-type.php:372
 msgctxt "All records"
 msgid "All %s"
 msgstr ""
@@ -708,6 +708,18 @@ msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:313
 msgid "Exclude Item"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:334
+#: dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:62
+#: dt-metrics/personal/activity-highlights.php:57
+msgid "Contact"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:335
+msgctxt "Communication channel already exists"
+msgid "%s already exists"
 msgstr ""
 
 #: dt-assets/functions/menu.php:39
@@ -1719,12 +1731,6 @@ msgid "Duplicate Checker"
 msgstr ""
 
 #: dt-contacts/base-setup.php:50
-#: dt-contacts/base-setup.php:62
-#: dt-metrics/personal/activity-highlights.php:57
-msgid "Contact"
-msgstr ""
-
-#: dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:302
 #: dt-mapping/columns/add-contacts-column.php:59
@@ -1958,7 +1964,7 @@ msgstr ""
 
 #: dt-contacts/base-setup.php:531
 #: dt-groups/base-setup.php:1058
-#: dt-posts/custom-post-type.php:314
+#: dt-posts/custom-post-type.php:351
 msgid "Default Filters"
 msgstr ""
 
@@ -1969,27 +1975,27 @@ msgstr ""
 
 #: dt-contacts/base-setup.php:552
 #: dt-groups/base-setup.php:1075
-#: dt-posts/custom-post-type.php:347
+#: dt-posts/custom-post-type.php:384
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr ""
 
 #: dt-contacts/base-setup.php:558
 #: dt-groups/base-setup.php:1081
-#: dt-posts/custom-post-type.php:173
-#: dt-posts/custom-post-type.php:353
+#: dt-posts/custom-post-type.php:174
+#: dt-posts/custom-post-type.php:390
 msgid "Favorite"
 msgstr ""
 
 #: dt-contacts/base-setup.php:564
 #: dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:362
+#: dt-posts/custom-post-type.php:399
 msgid "My Recently Viewed"
 msgstr ""
 
 #: dt-contacts/base-setup.php:569
 #: dt-groups/base-setup.php:1092
-#: dt-posts/custom-post-type.php:367
+#: dt-posts/custom-post-type.php:404
 msgid "Last 30 viewed"
 msgstr ""
 
@@ -3253,7 +3259,7 @@ msgstr ""
 
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90
-#: dt-posts/custom-post-type.php:129
+#: dt-posts/custom-post-type.php:130
 #: template-new-post.php:38
 msgid "New %s"
 msgstr ""
@@ -3815,7 +3821,7 @@ msgid "Groups Total"
 msgstr ""
 
 #: dt-people-groups/people-groups-base.php:229
-#: dt-posts/custom-post-type.php:158
+#: dt-posts/custom-post-type.php:159
 msgid "Last Modified"
 msgstr ""
 
@@ -3871,16 +3877,16 @@ msgstr ""
 msgid "Import People Group"
 msgstr ""
 
-#: dt-posts/custom-post-type.php:181
+#: dt-posts/custom-post-type.php:182
 msgid "Tags"
 msgstr ""
 
-#: dt-posts/custom-post-type.php:182
+#: dt-posts/custom-post-type.php:183
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr ""
 
-#: dt-posts/custom-post-type.php:195
+#: dt-posts/custom-post-type.php:196
 msgid "Un-Follow"
 msgstr ""
 
@@ -3900,17 +3906,17 @@ msgstr ""
 msgid "Post already shared with user."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1800
+#: dt-posts/dt-posts.php:1811
 #: single-template.php:171
 msgid "Details"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1864
+#: dt-posts/dt-posts.php:1875
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1870
+#: dt-posts/dt-posts.php:1881
 msgid "Access Request"
 msgstr ""
 
