@@ -13,37 +13,26 @@ jQuery(document).ready(function ($) {
   });
 
   $(document).on('click', '.record-history-activity-block-controls', function () {
-    handle_revert_request($(this).find('#record_history_activity_block_timestamp').val());
+    handle_revert_request($(this).find('#record_history_activity_block_timestamp_id').val(), $(this).find('#record_history_activity_block_timestamp').val());
   });
 
   $(document).on('click', '#record_history_all_activities_switch', function () {
     handle_show_all_activities();
   });
 
+  $(document).on('change', '#record_history_calendar', function () {
+    handle_filtered_date_selection();
+  });
+
   // Helper Functions
   function init_record_history_modal() {
-    let record_history_calendar = $('#record_history_calendar');
+    let record_history_select = $('#record_history_calendar');
 
-    // Fetch initial corresponding activities, to be used to alter daterangepicker.
+    // Fetch initial corresponding activities, to be used in date filter select.
     handle_activity_history_refresh({result_order: 'DESC'}, function (activities) {
 
-      // Create initial shape of daterangepicker config-settings.
-      let date_range_picker_config = {
-        'singleDatePicker': true,
-        'timePicker': true,
-        'locale': {
-          'format': date_format_pretty_short,
-          'separator': ' - ',
-          'daysOfWeek': window.SHAREDFUNCTIONS.get_days_of_the_week_initials(),
-          'monthNames': window.SHAREDFUNCTIONS.get_months_labels(),
-        },
-        'opens': 'center',
-        'drops': 'down',
-        'showCustomRangeLabel': false
-      };
-
-      // Specify a date range.
-      let date_range = {}
+      // Package filtered dates.
+      let filtered_dates = {};
       $.each(activities, function (idx, activity) {
         let hist_time = moment.unix(parseInt(activity['hist_time']));
 
@@ -52,23 +41,26 @@ jQuery(document).ready(function ($) {
         hist_time.minute(0);
         hist_time.hour(0);
 
-        let activity_date = hist_time.format(date_format_short);
-        date_range[activity_date] = [hist_time, hist_time];
-      });
-      date_range_picker_config['ranges'] = date_range;
-
-      // Activate history calendar widget.
-      record_history_calendar.daterangepicker(date_range_picker_config);
-      record_history_calendar.on('apply.daterangepicker', function (ev, picker) {
-        handle_selected_activity_date(picker.startDate.toDate(), handle_activities_display);
-        reset_show_all_activities_switch();
+        filtered_dates[hist_time.format(date_format_pretty_short)] = hist_time;
       });
 
-      // If selected, show all-time activities.
-      if (is_show_all_activities_switch_checked()) {
-        handle_show_all_activities();
-      }
+      // Populate history select widget.
+      $.each(filtered_dates, function (idx, filtered_date) {
+        record_history_select.append(`<option value="${filtered_date.unix()}">${idx}</option>`);
+      });
     });
+
+    // By default, and if selected, show all-time activities.
+    handle_show_all_activities();
+  }
+
+  function handle_filtered_date_selection() {
+    let record_history_select = $('#record_history_calendar');
+
+    if (record_history_select.val()) {
+      handle_selected_activity_date(record_history_select.val(), handle_activities_display);
+      reset_show_all_activities_switch();
+    }
   }
 
   function is_show_all_activities_switch_checked() {
@@ -87,6 +79,9 @@ jQuery(document).ready(function ($) {
         extra_meta: true
 
       }, handle_activities_display);
+
+      // Default filter select widget.
+      $('#record_history_calendar').val('');
     }
   }
 
@@ -103,20 +98,11 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  function extract_activity_timestamps_as_formatted_dates(activities = []) {
-    let formatted_dates = window.lodash.map(activities, function (activity) {
-      return moment.unix(parseInt(activity['hist_time'])).format(date_format_short);
-    });
+  function handle_selected_activity_date(ts_start, callback) {
 
-    // Return formatted dates array, duplicate free...!
-    return window.lodash.uniq(formatted_dates);
-  }
-
-  function handle_selected_activity_date(date, callback) {
-
-    // Retrieve activities from current point to date.
+    // Retrieve activities from specified starting point to current date.
     handle_activity_history_refresh({
-      ts_start: date.getTime() / 1000,
+      ts_start: ts_start,
       result_order: 'DESC',
       extra_meta: true
 
@@ -146,7 +132,17 @@ jQuery(document).ready(function ($) {
         let urls = activity_heading.match(/(((ftp|https?):\/\/)[\-\w@:%_\+.~#?,&\/\/=]+)/g);
         if (urls!=null) {
           $.each(urls, function (url_idx, url) {
-            activity_heading = window.lodash.replace(activity_heading, new RegExp(url, 'g'), `<a href="${window.lodash.escape(url)}" target="_blank">${window.lodash.escape(url)}</a>`);
+
+            // Identify first associated link label.
+            let url_labels = activity_heading.match(/\[(.*?)\]/);
+
+            // Replace raw link with converted html link.
+            if (url_labels!=null) {
+              let raw_link = url_labels[0] + '(' + url + ')';
+              activity_heading = window.lodash.replace(activity_heading, raw_link, `<a href="${window.lodash.escape(url)}" target="_blank">${window.lodash.escape(url_labels[1])}</a>`);
+            } else {
+              activity_heading = window.lodash.replace(activity_heading, new RegExp(url, 'g'), `<a href="${window.lodash.escape(url)}" target="_blank">${window.lodash.escape(url)}</a>`);
+            }
           });
         }
 
@@ -185,6 +181,7 @@ jQuery(document).ready(function ($) {
                         </span>
                     </div>
                     <div class="cell small-1 record-history-activity-block-controls">
+                        <input type="hidden" id="record_history_activity_block_timestamp_id" value="${activity['histid']}"/>
                         <input type="hidden" id="record_history_activity_block_timestamp" value="${activity['hist_time']}"/>
                         <button class="button record-history-activity-block-controls-revert-but" title="${window.lodash.escape(revert_but_tooltip)}"><span class="mdi mdi-history" style="font-size: 20px;"></span></button>
                     </div>
@@ -207,7 +204,7 @@ jQuery(document).ready(function ($) {
     });
   }
 
-  function handle_revert_request(timestamp) {
+  function handle_revert_request(start_id, timestamp) {
     let timestamp_formatted = moment.unix(parseInt(timestamp)).format(date_format_long);
     let confirm_text = window.lodash.escape(window.record_history_settings.translations.revert_confirm_text).replace('%s', timestamp_formatted);
     if (confirm(confirm_text)) {
@@ -215,6 +212,7 @@ jQuery(document).ready(function ($) {
       // On confirmation, start revert process
       if (post && post['post_type'] && post['ID']) {
         window.API.revert_activity_history(post['post_type'], post['ID'], {
+          ts_start_id: start_id,
           ts_start: timestamp,
           result_order: 'DESC',
           extra_meta: false

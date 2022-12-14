@@ -3,7 +3,7 @@ global $post;
 ?>
 
 <div class="large reveal" id="record_history_modal" data-reveal data-reset-on-close style="padding-bottom: 50px;">
-    <h3><?php echo esc_html( sprintf( _x( '%s Record History', 'Record History', 'disciple_tools' ), $post->post_title ) ); ?></h3>
+    <h2><?php echo esc_html( sprintf( _x( '%s Record History', 'Record History', 'disciple_tools' ), $post->post_title ) ); ?></h2>
     <hr>
 
     <div class="grid-container">
@@ -13,7 +13,14 @@ global $post;
                     <tbody style="border: none;">
                     <tr>
                         <td colspan="2">
-                            <input type="text" id="record_history_calendar"/>
+                            <h4><?php esc_html_e( 'Filter To Date', 'disciple_tools' ) ?></h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <select id="record_history_calendar">
+                                <option value="" selected disabled>--- <?php esc_html_e( 'select date to filter by', 'disciple_tools' ) ?> ---</option>
+                            </select>
                         </td>
                     </tr>
                     <tr style="border: none;">

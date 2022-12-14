@@ -1448,11 +1448,13 @@ class DT_Posts extends Disciple_Tools_Posts {
          * March back in time to revert date, adjusting fields accordingly.
          */
 
-        $reverted_start_ts = $args['ts_start'];
+        $reverted_start_ts_id = $args['ts_start_id'] ?? 0;
+        $reverted_start_ts_found = false;
+
         $reverted_updates = [];
         $post_type_fields = self::get_post_field_settings( $post_type, false );
         foreach ( $activities ?? [] as &$activity ) {
-            $timestamp = $activity->hist_time;
+            $activity_id = $activity->histid;
             $field_action = $activity->action;
             $field_type = $activity->field_type;
             $field_key = $activity->meta_key;
@@ -1465,7 +1467,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( in_array( $field_action, [ 'connected to', 'disconnected from' ] ) ) {
 
                 // Determine actual field key to be used.
-                $field_setting = self::get_post_field_settings_by_p2p( $post_type_fields, $field_key, ( $field_action == 'disconnected from' ) ? [ 'from', 'any' ] : [ 'to', 'any' ] );
+                $field_setting = self::get_post_field_settings_by_p2p( $post_type_fields, $field_key, ( $field_action == 'disconnected from' ) ? [ 'from', 'to', 'any' ] : [ 'to', 'from', 'any' ] );
                 if ( ! empty( $field_setting ) ) {
                     $field_key = $field_setting['key'];
                     $field_type = $field_action;
@@ -1485,40 +1487,48 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
             }
 
-            // If needed, prepare reverted updates array element.
-            if ( ! empty( $field_key ) && ! empty( $field_type ) && ! isset( $reverted_updates[ $field_key ] ) ) {
-                $reverted_updates[ $field_key ] = [
-                    'field_type' => $field_type,
-                    'values'     => []
-                ];
-            }
-
             /**
-             * As we walk back in time, need to operate in the inverse; so, delete is
-             * actually an add and add, is actually, delete!
-             * Also, ensure inverse logic is not carried out once we've reached our
-             * specified revert start point.
+             * Ensure processing is halted once target start activity id has
+             * been found.
              */
 
-            switch ( $field_type ) {
-                case 'connected to':
-                case 'disconnected from':
-                    if ( $timestamp > $reverted_start_ts ){
+            if ( $reverted_start_ts_id === $activity_id ){
+                $reverted_start_ts_found = true;
+            }
+
+            if ( !$reverted_start_ts_found ){
+
+                // If needed, prepare reverted updates array element.
+                if ( ! empty( $field_key ) && ! empty( $field_type ) && ! isset( $reverted_updates[ $field_key ] ) ) {
+                    $reverted_updates[ $field_key ] = [
+                        'field_type' => $field_type,
+                        'values'     => []
+                    ];
+                }
+
+                /**
+                 * As we walk back in time, need to operate in the inverse; so, delete is
+                 * actually an add and add, is actually, delete!
+                 * Also, ensure inverse logic is not carried out once we've reached our
+                 * specified revert start point.
+                 */
+
+                switch ( $field_type ){
+                    case 'connected to':
+                    case 'disconnected from':
                         $is_deleted = strtolower( trim( $field_action ) ) == 'disconnected from';
 
                         $reverted_updates[$field_key]['values'][$field_value] = [
                             'value' => $field_value,
                             'keep' => $is_deleted
                         ];
-                    }
-                    break;
-                case 'tags':
-                case 'date':
-                case 'location':
-                case 'multi_select':
-                case 'location_meta':
-                case 'communication_channel':
-                    if ( $timestamp > $reverted_start_ts ){
+                        break;
+                    case 'tags':
+                    case 'date':
+                    case 'location':
+                    case 'multi_select':
+                    case 'location_meta':
+                    case 'communication_channel':
                         $value = $is_deleted ? $field_old_value : $field_value;
                         $reverted_updates[$field_key]['values'][$value] = [
                             'value' => $value,
@@ -1536,18 +1546,16 @@ class DT_Posts extends Disciple_Tools_Posts {
                                 'note' => $field_note_raw
                             ];
                         }
-                    }
-                    break;
-                case 'text':
-                case 'number':
-                case 'boolean':
-                case 'textarea':
-                case 'key_select':
-                case 'user_select':
-                    if ( $timestamp > $reverted_start_ts ){
+                        break;
+                    case 'text':
+                    case 'number':
+                    case 'boolean':
+                    case 'textarea':
+                    case 'key_select':
+                    case 'user_select':
                         $reverted_updates[$field_key]['values'][0] = $field_old_value;
-                    }
-                    break;
+                        break;
+                }
             }
         }
 
@@ -1769,12 +1777,19 @@ class DT_Posts extends Disciple_Tools_Posts {
             return [];
         }
 
-        // Ensure revert activity carried out by Revert Bot.
+        // Ensure revert activity carried out by Revert Bot, with sufficient permissions.
         $current_user_id = get_current_user_id();
         wp_set_current_user( 0 );
         $current_user = wp_get_current_user();
         $current_user->add_cap( 'activity_revert' );
         $current_user->add_cap( 'dt_all_access_contacts' );
+        $current_user->add_cap( 'dt_all_access_groups' );
+        $current_user->add_cap( 'access_peoplegroups' );
+
+        if ( !in_array( $post_type, [ 'contacts', 'groups', 'peoplegroups' ] ) ){
+            $current_user->add_cap( 'dt_all_access_' . $post_type );
+        }
+
         $current_user->display_name = __( 'Revert Bot', 'disciple_tools' );
 
         // Update post based on reverted values.
