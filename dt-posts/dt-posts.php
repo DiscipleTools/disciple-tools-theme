@@ -1807,8 +1807,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $tile_options = dt_get_option( 'dt_custom_tiles' );
         $default = [
-            'status' => [ 'label' => __( 'Status', 'disciple_tools' ), 'tile_priority' => 10 ],
-            'details' => [ 'label' => __( 'Details', 'disciple_tools' ), 'tile_priority' => 20 ]
+            'status' => [ 'default_label' => __( 'Status', 'disciple_tools' ), 'tile_priority' => 10 ],
+            'details' => [ 'default_label' => __( 'Details', 'disciple_tools' ), 'tile_priority' => 20 ]
         ];
         $sections = apply_filters( 'dt_details_additional_tiles', $default, $post_type );
         if ( !isset( $tile_options[$post_type] ) ){
