@@ -42,6 +42,8 @@ jQuery(document).ready(function($) {
 
     $('.field-settings-table').sortable();
 
+    $('.tile-rundown-elements').sortable();
+
     $('.field-settings-table').on('click', '.field-settings-table-tile-name', function() {
 
         var tile_key = $(this).data('key');
