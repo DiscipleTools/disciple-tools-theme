@@ -247,9 +247,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields[ $field_key ] );
             }
             if ( $field_type === 'number' && (
-                isset( $post_settings['fields'][$field_key]['min_option'] ) &&
+                isset( $post_settings['fields'][$field_key]['min_option'] ) && ( !empty( $post_settings['fields'][$field_key]['min_option'] ) || $post_settings['fields'][$field_key]['min_option'] === 0 ) &&
                 $field_value < $post_settings['fields'][$field_key]['min_option'] ||
-                isset( $post_settings['fields'][$field_key]['max_option'] ) &&
+                isset( $post_settings['fields'][$field_key]['max_option'] ) && ( !empty( $post_settings['fields'][$field_key]['max_option'] ) || $post_settings['fields'][$field_key]['max_option'] === 0 ) &&
                 $field_value > $post_settings['fields'][$field_key]['max_option']
                 )
             ) {
@@ -509,9 +509,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
 
                 if ( $field_type === 'number' && (
-                    isset( $post_settings['fields'][$field_key]['min_option'] ) &&
+                    isset( $post_settings['fields'][$field_key]['min_option'] ) && ( !empty( $post_settings['fields'][$field_key]['min_option'] ) || $post_settings['fields'][$field_key]['min_option'] === 0 ) &&
                     $field_value < $post_settings['fields'][$field_key]['min_option'] ||
-                    isset( $post_settings['fields'][$field_key]['max_option'] ) &&
+                    isset( $post_settings['fields'][$field_key]['max_option'] ) && ( !empty( $post_settings['fields'][$field_key]['max_option'] ) || $post_settings['fields'][$field_key]['max_option'] === 0 ) &&
                     $field_value > $post_settings['fields'][$field_key]['max_option']
                     )
                 ) {
