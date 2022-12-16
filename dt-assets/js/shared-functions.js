@@ -269,6 +269,12 @@ window.API = {
     new_field_option_label: new_field_option_label,
     new_field_option_description: new_field_option_description,
   }, `dt-core/v1/`),
+
+  update_tile_and_fields_order: (post_type, dt_custom_tiles_ordered, dt_field_customizations_ordered) => makeRequest("POST", `update-tile-and-fields-order`, {
+    post_type: post_type,
+    dt_custom_tiles_ordered: dt_custom_tiles_ordered,
+    dt_field_customizations_ordered: dt_field_customizations_ordered,
+  }, `dt-core/v1/`),
 };
 
 function handleAjaxError(err) {

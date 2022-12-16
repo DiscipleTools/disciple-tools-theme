@@ -40,32 +40,82 @@ jQuery(document).ready(function($) {
         return window.field_settings.post_type;
     }
 
+
     $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable({
         update: function(event,ui) {
-            var post_type = get_post_type();
-            var tile_and_fields_order = {};
-
-            tile_and_fields_order[post_type] = [];
-
-            var tiles = $('.field-settings-table').sortable('toArray');
-            tiles.pop();
-            $.each(tiles, function(tile_index, tile_key){
-                if ( tile_key === '' ) {
-                    tile_key = 'no_tile';
-                }
-                var tile_fields = $(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
-                var ordered_fields = [];
-                $.each(tile_fields, function(field_key, field_value){
-                    if (field_value.id !== '' ) {
-                        ordered_fields.push(field_value.id);
-                    }
-                });
-                tile_and_fields_order[post_type].push({'key':tile_key, 'fields':ordered_fields});
-            });
-            tile_and_fields_order = JSON.stringify(tile_and_fields_order);
-            API.update_tile_and_fields_order(post_type, tile_and_fields_order).promise().then(function(data) {});
+            post_type = get_post_type();
+            dt_custom_tiles_ordered = get_dt_custom_tiles_ordered();
+            dt_field_customizations_ordered = get_dt_field_customizations_ordered();
+            API.update_tile_and_fields_order(post_type, dt_custom_tiles_ordered, dt_field_customizations_ordered).promise().then(function(data) {});
         },
     });
+
+    function get_dt_custom_tiles_ordered() {
+        var dt_custom_tiles_ordered = {};
+
+        var tiles = jQuery('.field-settings-table').sortable('toArray');
+        var tile_priority = 10;
+        tiles.pop(); // remove the 'add new tile' link
+
+        jQuery.each(tiles, function(tile_index, tile_key) {
+            if (tile_key === '' ) {
+                tile_key = 'no_tile';
+            }
+            dt_custom_tiles_ordered[tile_key] = {};
+            var tile_label = jQuery(`#tile-key-${tile_key}`).prop('innerText');
+
+            var fields = jQuery(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
+            var field_order = [];
+            jQuery.each(fields, function(field_index, field_element) {
+                var field_key = field_element.id;
+                field_order.push(field_key);
+            });
+
+            dt_custom_tiles_ordered[tile_key]['label'] = tile_label;
+            dt_custom_tiles_ordered[tile_key]['order'] = field_order;
+            dt_custom_tiles_ordered[tile_key]['tile_priority'] = tile_priority;
+            tile_priority += 10;
+        });
+        dt_custom_tiles_ordered = JSON.stringify(dt_custom_tiles_ordered);
+        return dt_custom_tiles_ordered;
+    }
+
+    function get_dt_field_customizations_ordered() {
+        var dt_field_customizations_ordered = {};
+
+        var tiles = jQuery('.field-settings-table').sortable('toArray');
+        tiles.pop(); // remove the 'add new tile' link
+
+        jQuery.each(tiles, function(tile_index, tile_key) {
+            if (tile_key === '' ) {
+                tile_key = 'no_tile';
+            }
+            var fields = jQuery(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
+            jQuery.each(fields, function(field_item, field_element) {
+                var field_key = field_element.id;
+                var field_label = jQuery(`.field-name-content[data-parent-tile-key="${tile_key}"][data-key="${field_key}"]`).prop('innerText').trim();
+                var field_options_default = get_field_defaults(tile_key, field_key);
+
+                dt_field_customizations_ordered[field_key] = {};
+                dt_field_customizations_ordered[field_key]['name'] = field_label;
+                dt_field_customizations_ordered[field_key]['default'] = field_options_default;
+                dt_field_customizations_ordered[field_key]['tile'] = tile_key;
+            });
+        });
+        dt_field_customizations_ordered = JSON.stringify(dt_field_customizations_ordered);
+        return dt_field_customizations_ordered;
+    }
+
+    function get_field_defaults(tile_key, field_key) {
+        var field_options = jQuery(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"]`);
+        var field_default = [];
+        jQuery.each(field_options, function(field_index, field_element){
+            var field_option_key = jQuery(field_element).data('field-option-key');
+            var field_option_label = jQuery(field_element).prop('innerText');
+            field_default[field_option_key] = {'label': field_option_label};
+        });
+        return field_default;
+    }
 
     $('.field-settings-table').on('click', '.field-settings-table-tile-name', function() {
 
