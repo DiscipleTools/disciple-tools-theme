@@ -19,8 +19,7 @@ function write_results_box() {
           <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>
-    `)
+        </div>`)
 
   let lgm_results = jQuery('#location-grid-meta-results')
 
@@ -140,8 +139,7 @@ function load_modal( lng, lat, level, label, grid_id ){
                     <div id='map'>${spinner}</div>
                 </div>
             </div>
-           </div>
-        `)
+           </div>`)
 
   let zoom = 15
   if ( 'admin0' === level ){
@@ -192,8 +190,7 @@ window.write_input_widget = function write_input_widget() {
             <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ window.lodash.escape( dtMapbox.translations.clear ) /*Delete Location*/}" style="display:none;">&times;</button>
         </div>
         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
-    </div>
-  `)
+    </div>`)
   }
 
   let mapbox_search = jQuery('#mapbox-search')
@@ -309,6 +306,9 @@ function clear_timer() {
 
 // main processor and router for selection of autocomplete results
 function close_all_lists(selection_id) {
+  if ( typeof selection_id === 'undefined' || selection_id === null) {
+    return
+  }
   /* if Geocoding overridden, and plain text address selected */
   if( 'address' === selection_id ) {
     jQuery('#mapbox-autocomplete-list').empty()
