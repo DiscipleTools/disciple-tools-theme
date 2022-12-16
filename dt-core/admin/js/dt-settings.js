@@ -40,9 +40,32 @@ jQuery(document).ready(function($) {
         return window.field_settings.post_type;
     }
 
-    $('.field-settings-table').sortable();
+    $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable({
+        update: function(event,ui) {
+            var post_type = get_post_type();
+            var tile_and_fields_order = {};
 
-    $('.tile-rundown-elements').sortable();
+            tile_and_fields_order[post_type] = [];
+
+            var tiles = $('.field-settings-table').sortable('toArray');
+            tiles.pop();
+            $.each(tiles, function(tile_index, tile_key){
+                if ( tile_key === '' ) {
+                    tile_key = 'no_tile';
+                }
+                var tile_fields = $(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
+                var ordered_fields = [];
+                $.each(tile_fields, function(field_key, field_value){
+                    if (field_value.id !== '' ) {
+                        ordered_fields.push(field_value.id);
+                    }
+                });
+                tile_and_fields_order[post_type].push({'key':tile_key, 'fields':ordered_fields});
+            });
+            tile_and_fields_order = JSON.stringify(tile_and_fields_order);
+            API.update_tile_and_fields_order(post_type, tile_and_fields_order).promise().then(function(data) {});
+        },
+    });
 
     $('.field-settings-table').on('click', '.field-settings-table-tile-name', function() {
 
@@ -695,23 +718,25 @@ jQuery(document).ready(function($) {
             window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
             closeModal();
             $('#add-new-tile-link').parent().before(`
-            <div class="field-settings-table-tile-name expandable menu-highlight" data-modal="edit-tile" data-key="${tile_key}">
-                <span class="sortable">⋮⋮</span>
-                <span class="expand-icon">+</span>
-                <span id="tile-key-${tile_key}" style="vertical-align: sub;">
-                    ${tile_label}
-                    <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
-                        <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
-                    </svg>
-                </span>
-                <span class="edit-icon"></span>
-            </div>
-            <div class="hidden">
-                <div class="field-settings-table-field-name inset-shadow">
+            <div class="sortable-tile" id="${tile_key}">
+                <div class="field-settings-table-tile-name expandable menu-highlight" data-modal="edit-tile" data-key="${tile_key}">
                     <span class="sortable">⋮⋮</span>
-                    <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
-                        <a>add new field</a>
+                    <span class="expand-icon">+</span>
+                    <span id="tile-key-${tile_key}" style="vertical-align: sub;">
+                        ${tile_label}
+                        <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
+                            <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
+                        </svg>
                     </span>
+                    <span class="edit-icon"></span>
+                </div>
+                <div class="hidden">
+                    <div class="field-settings-table-field-name inset-shadow">
+                        <span class="sortable">⋮⋮</span>
+                        <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
+                            <a>add new field</a>
+                        </span>
+                    </div>
                 </div>
             </div>
             `);
@@ -749,20 +774,23 @@ jQuery(document).ready(function($) {
             var field_key = response['key'];
             window['field_settings']['post_type_settings']['fields'][field_key] = response;
             var new_field_nonexpandable_html = `
-                <div class="field-settings-table-field-name submenu-highlight" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
-                    <span class="sortable">⋮⋮</span>
-                    <span class="field-name-content" style="margin-left: 16px;" data-parent-tile="${new_field_tile}" data-key="${field_key}">
-                        ${new_field_name}
-                        <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
-                            <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
-                        </svg>
-                    </span>
-                    <span class="edit-icon"></span>
+                <div class="sortable-fields" id="${field_key}">
+                    <div class="field-settings-table-field-name submenu-highlight" id="${field_key}" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
+                        <span class="sortable">⋮⋮</span>
+                        <span class="field-name-content" style="margin-left: 16px;" data-parent-tile="${new_field_tile}" data-key="${field_key}">
+                            ${new_field_name}
+                            <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
+                                <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
+                            </svg>
+                        </span>
+                        <span class="edit-icon"></span>
+                    </div>
                 </div>
             `;
 
             var new_field_expandable_html = `
-                <div class="field-settings-table-field-name expandable submenu-highlight" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
+            <div class="sortable-fields" id="${field_key}">
+                <div class="field-settings-table-field-name expandable submenu-highlight" id="${field_key}" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
                     <span class="sortable">⋮⋮</span>
                     <span class="expand-icon" style="padding-left: 16px;">+</span>
                     <span class="field-name-content" data-parent-tile="${new_field_tile}" data-key="${field_key}">
@@ -785,6 +813,7 @@ jQuery(document).ready(function($) {
                     </div>
                 </div>
                 <!-- END TOGGLED ITEMS -->
+            </div>
             `;
             var new_field_html = new_field_nonexpandable_html;
             if(['key_select', 'multi_select'].indexOf(new_field_type) > -1) {
@@ -911,7 +940,7 @@ jQuery(document).ready(function($) {
         var field_option_key = $(this).data('field-option-key');
         var languages = window['field_settings']['languages'];
         var available_translations = {};
-        
+
         var element_type = '';
         if ( translation_type === 'tile-label' ) {
             element_type = 'Tile Label';
