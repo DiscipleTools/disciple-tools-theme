@@ -756,6 +756,13 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
                     <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
                            value="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?> >
+
+                    <?php if ( isset( $fields[$field_key]['enable_time_picker'] ) && $fields[$field_key]['enable_time_picker'] === 'on' ) : ?>
+
+                        <input type="time" class="input-group-field" id="<?php echo esc_html( $display_field_id ) . '_time_picker'; ?>">
+
+                    <?php endif; ?>
+
                     <div class="input-group-button">
                         <button id="<?php echo esc_html( $display_field_id ); ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $display_field_id ); ?>" title="Delete Date" type="button" <?php echo esc_html( $disabled ); ?>>x</button>
                     </div>

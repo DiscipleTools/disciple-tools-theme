@@ -498,6 +498,30 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         <?php endif; ?>
 
+        <?php if ( $field['type'] === 'date' ) : ?>
+
+            <?php
+                $custom_fields = dt_get_option( 'dt_field_customizations' );
+                $custom_field = $custom_fields[$post_type][$field_key] ?? [];
+            ?>
+
+            <h3><?php esc_html_e( 'Field Options', 'disciple_tools' ) ?></h3>
+            <table id="date_options">
+                <tr>
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( 'Enable Time picker', 'disciple_tools' ) ?>
+                    </td>
+                    <td>
+                        <input type="checkbox" name="enable_time_picker" <?php echo isset( $custom_field['enable_time_picker'] ) && $custom_field['enable_time_picker'] === 'on' ? 'checked' : '' ?> />
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+            <button type="submit" class="button"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
+
+        <?php endif; ?>
+
         <?php if ( $field['type'] === 'key_select' || $field['type'] === 'multi_select' || $field['type'] === 'link' ){
             if ( in_array( $field_key, $core_fields ) ){
                 ?>
@@ -896,6 +920,13 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
                 if ( isset( $post_submission['max_option'] ) ) {
                     $custom_field['max_option'] = $post_submission['max_option'];
+                }
+            }
+            if ( $field['type'] === 'date' ) {
+                if ( isset( $post_submission['enable_time_picker'] ) ) {
+                    $custom_field['enable_time_picker'] = $post_submission['enable_time_picker'];
+                } else {
+                    $custom_field['enable_time_picker'] = 'off';
                 }
             }
 
