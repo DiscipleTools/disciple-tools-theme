@@ -302,7 +302,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             </thead>
             <tbody>
                 <tr>
-                    <td class="fields-table-left"><?php $this->show_tile_settings(); ?></td>
+                    <td class="fields-table-left"><?php $this->display_field_rundown(); ?></td>
                     <td class="fields-table-right"></td>
                 </tr>
             </tbody>
@@ -324,12 +324,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         return $tile_fields;
     }
 
-    private function show_tile_settings() {
-        $post_type = self::get_parameter( 'post_type' );
-        $post_tiles = DT_Posts::get_post_settings( $post_type, false );
-        self::display_field_rundown();
-    }
-
     private function display_field_rundown() {
         $post_type = self::get_parameter( 'post_type' );
         $post_tiles = DT_Posts::get_post_settings( $post_type, false );
@@ -338,7 +332,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <div class="field-settings-table">
             <?php foreach ( $post_tiles['tiles'] as $tile_key => $tile_value ) : ?>
                 <!-- START TILE -->
-                <div class="sortable-tile" id="<?php echo esc_attr($tile_key); ?>">
+                <div class="sortable-tile" id="<?php echo esc_attr( $tile_key ); ?>">
                     <div class="field-settings-table-tile-name expandable"data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>">
                         <span class="sortable">⋮⋮</span>
                         <span class="expand-icon">+</span>
@@ -426,7 +420,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <span class="edit-icon"></span>
                 </div>
                 <div class="tile-rundown-elements" data-parent-tile-key="no-tile-hidden" style="display: none;">
-                    <?php foreach( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                    <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                         <?php if ( ( !array_key_exists( 'tile', $field_settings ) || $field_settings['tile'] === 'no_tile' ) && ( !isset( $field_settings['customizable'] ) || $field_settings['customizable'] !== false ) && empty( $field_settings['hidden'] ) ) : ?>
                         <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="no-tile-hidden">
                             <span class="sortable">⋮⋮</span>
