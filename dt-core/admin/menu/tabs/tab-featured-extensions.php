@@ -97,6 +97,13 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     public function content( $tab ) {
         ?>
         <style>
+            #the-list {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .extension-buttons {
+                display: content;
+            }
             .plugin-author-img {
                 height: 28px;
                 width: 28px;
@@ -184,119 +191,17 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         ?>
         <div class="wp-filter">
         <ul class="filter-links">
-            <li class="plugin-install">
-                <a href="javascript:void(0);" class="current" data-category="featured">Featured</a>
-            </li>
-            <li class="plugin-install">
-                <a href="javascript:void(0);" data-category="all_plugins">All Plugins</a>
-            </li>
             <?php
             $all_plugin_categories = $this->get_all_plugin_categories();
             foreach ( $all_plugin_categories as $plugin_category ) : ?>
-                <?php if ( $plugin_category !== 'featured' ) : ?>
-                    <li class="plugin-install">
-                        <a href="javascript:void(0);" data-category="<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>"><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
-                    </li>
-                <?php endif; ?>
+                <li class="plugin-install">
+                    <a href="javascript:void(0);" data-category="<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>"><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
+                </li>
             <?php endforeach; ?>
         </ul>
         </div>
         <p>Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.</p>
-        <div id="the-list">
-            <?php return;
-            // Print plugin cards
-            foreach ( $plugins as $plugin ) {
-                ?>
-            <div class="plugin-card plugin-card-classic-editor">
-                            <div class="plugin-card-top">
-                    <div class="name column-name">
-                        <h3>
-                            <a href="<?php echo esc_html( $plugin->permalink ); ?>" target="_blank">
-                                <?php echo esc_html( $plugin->name ); ?>
-                            <img src="<?php echo esc_attr( $plugin->icon ); ?>" class="plugin-icon" alt="<?php echo esc_attr( $plugin->name ); ?>">
-                            </a>
-                        </h3>
-                    </div>
-                    <div class="action-links">
-                        <ul class="plugin-action-buttons">
-                            <?php
-                            $result_name = $this->partial_array_search( $all_plugins, $plugin->slug );
-                            if ( $result_name == -1 ) {
-                                if ( isset( $plugin->download_url ) && current_user_can( 'install_plugins' ) ) : ?>
-                                    <li>
-                                        <button class="button" onclick="install('<?php echo esc_attr( $plugin->download_url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
-                                    </li>
-                                <?php else : ?>
-                                    <li>
-                                        <span>To install this plugin ask your network administrator</span>
-                                    </li>
-                                <?php endif;
-
-                            } elseif ( $this->partial_array_search( $active_plugins, $plugin->slug ) == -1 && isset( $_POST['activate'] ) == false ) {
-                                ?>
-                                <li>
-                                    <button class="button" onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
-                                </li>
-                                <?php
-                                if ( current_user_can( 'install_plugins' ) ) {
-                                    ?>
-                                    <li>
-                                        <button class="button" onclick="uninstall('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Uninstall', 'disciple_tools' ) ?></button>
-                                    </li>
-                                    <?php
-                                }
-                            } else {
-                                ?>
-                                    <li>
-                                        <button class="button" onclick="deactivate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Deactivate', 'disciple_tools' ) ?></button>
-                                    </li>
-                                <?php
-                            }
-                            if ( in_array( 'proof-of-concept', explode( ',', $plugin->categories ?? false ) ) ): ?>
-                            <li>
-                                <a class="warning-pill">POC</a>
-                            </li>
-                        <?php elseif ( in_array( 'beta', explode( ',', $plugin->categories ?? false ) ) ): ?>
-                            <li>
-                                <a class="warning-pill">BETA</a>
-                            </li>
-                    <?php endif;?>
-
-                        </ul>
-                    </div>
-                    <div class="desc column-description">
-                        <p><?php echo esc_html( $plugin->description ); ?></p>
-                        <p class="authors"> <cite>By <a href="<?php echo esc_attr( $plugin->author_homepage ); ?>"><?php echo esc_html( $plugin->author ); ?><img src="https://avatars.githubusercontent.com/<?php echo esc_attr( $plugin->author_github_username ); ?>?size=28" class="plugin-author-img"></a></cite></p>
-                    </div>
-                </div>
-                <div class="plugin-card-bottom">
-                    <!--
-                    <div class="vers column-rating">
-                        <div class="star-rating">
-                            <span class="screen-reader-text">5.0 rating based on 1,000 ratings</span>
-                            <div class="star star-full" aria-hidden="true"></div>
-                            <div class="star star-full" aria-hidden="true"></div>
-                            <div class="star star-full" aria-hidden="true"></div>
-                            <div class="star star-full" aria-hidden="true"></div>
-                            <div class="star star-full" aria-hidden="true"></div>
-                        </div>
-                        <span class="num-ratings" aria-hidden="true">(1,000)</span>
-                    </div>
-                    -->
-                    <div class="column-updated">
-                        <strong>Last Updated:</strong>
-                        <?php echo esc_html( $plugin->last_updated ); ?>
-                    </div>
-                    <div class="column-downloaded"><?php echo esc_html( $plugin->active_installs ); ?> active installations</div>
-                    <!-- <div class="column-compatibility">
-                        <span class="compatibility-compatible"><strong>Compatible</strong> with your version of WordPress</span>
-                    </div> -->
-                </div>
-            </div>
-                <?php
-            }
-            ?>
-        </div>
+        <div id="the-list"></div>
         <?php
     }
 
@@ -349,7 +254,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     // Returns an array of all distinct plugin categories
     public function get_all_plugin_categories() {
         $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
-        $distinct_categories = [];
+        $distinct_categories = [ 'featured', 'all plugins' ];
         foreach ( $plugins as $plugin ) {
             $plugin_categories = explode( ',', $plugin->categories ?? false );
             foreach ( $plugin_categories as $plug_cat ) {
