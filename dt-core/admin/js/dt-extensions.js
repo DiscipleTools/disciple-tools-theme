@@ -86,6 +86,11 @@ jQuery(function($){
     load_all_plugin_cards();
 
     function filter_plugin_cards(category='all-plugins') {
+        if ( category === 'all-plugins' ) {
+            $('.plugin-card').fadeIn();
+            return;
+        }
+
         $('.plugin-card').fadeOut(50);
 
         let all_plugins = window.plugins.all_plugins;
