@@ -20,11 +20,22 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     public function __construct() {
-        add_action( 'dt_extensions_tab_menu', [ $this, 'add_tab' ], 10, 1 ); // use the priority setting to control load order
+        add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ], 9, 1 );
+        add_action( 'dt_extensions_tab_menu', [ $this, 'add_tab' ], 10, 1 );
         add_action( 'dt_extensions_tab_content', [ $this, 'content' ], 99, 1 );
 
         parent::__construct();
-    } // End __construct()
+    }
+
+    public function admin_enqueue_scripts() {
+        dt_theme_enqueue_script( 'dt-extensions', 'dt-core/admin/js/dt-extensions.js', [], true );
+
+        wp_localize_script(
+            'dt-extensions', 'plugins', array(
+                'all_plugins' => self::get_dt_plugins(),
+            )
+        );
+    }
 
     public function add_tab( $tab ) {
         $nonce = wp_create_nonce( 'portal-nonce' );
@@ -165,7 +176,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         }
 
         //get plugin data
-        $plugins = $this->get_plugins( $tab );
+        $plugins = $this->get_dt_plugins();
         // Page content goes here
 
         // Assign the 'current' class to the selected tab
@@ -174,38 +185,27 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         <div class="wp-filter">
         <ul class="filter-links">
             <li class="plugin-install">
-                <a href="?page=dt_extensions&tab=featured" <?php if ( ! isset( $_GET['tab'] ) || $tab === 'featured' ) { echo 'class="current"'; } ?>>Featured</a>
+                <a href="javascript:void(0);" class="current" data-category="featured">Featured</a>
             </li>
             <li class="plugin-install">
-                <a href="?page=dt_extensions&tab=all_plugins" <?php if ( $tab === 'all_plugins' ) { echo 'class="current"'; } ?>>All Plugins</a>
+                <a href="javascript:void(0);" data-category="all_plugins">All Plugins</a>
             </li>
             <?php
             $all_plugin_categories = $this->get_all_plugin_categories();
-            foreach ( $all_plugin_categories as $plugin_category ) {
-                if ( $plugin_category !== 'featured' ) {
-                    ?>
-                <li class="plugin-install">
-                    <a href="?page=dt_extensions&tab=<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>" <?php if ( isset( $_GET['tab'] ) && $_GET['tab'] == $plugin_category ) { echo 'class="current"'; } ?>><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
-                </li>
-                    <?php
-                }
-            }
-            ?>
+            foreach ( $all_plugin_categories as $plugin_category ) : ?>
+                <?php if ( $plugin_category !== 'featured' ) : ?>
+                    <li class="plugin-install">
+                        <a href="javascript:void(0);" data-category="<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>"><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </ul>
         </div>
         <p>Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.</p>
         <div id="the-list">
-            <?php
+            <?php return;
             // Print plugin cards
             foreach ( $plugins as $plugin ) {
-                $plugin->slug = explode( '/', $plugin->homepage )[4];
-                $plugin->blog_url = 'https://disciple.tools/plugins/' . $plugin->slug;
-                $plugin->folder_name = get_home_path() . 'wp-content/plugins/' . $plugin->slug;
-                $plugin->author_github_username = explode( '/', $plugin->homepage )[3];
-                $plugin->description = count_chars( $plugin->description ) > 128 ? trim( substr( $plugin->description, 0, 128 ) ) . '...' : $plugin->description; // Shorten descriptions to 88 chars
-                $plugin->icon = ! isset( $plugin->icon ) ? 'https://s.w.org/plugins/geopattern-icon/' . $plugin->slug . '.svg' : $plugin->icon;
-                $plugin->name = str_replace( 'Disciple Tools - ', '', $plugin->name );
-                $plugin->name = str_replace( 'Disciple.Tools - ', '', $plugin->name );
                 ?>
             <div class="plugin-card plugin-card-classic-editor">
                             <div class="plugin-card-top">
@@ -362,24 +362,45 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     //this function gets the plugin list data
-    public function get_plugins( $category = 'featured' ) {
+    public function get_dt_plugins() {
+        $all_plugins = get_plugins();
         $plugins = get_transient( 'dt_plugins_feed' );
         if ( empty( $plugins ) ){
             $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
             set_transient( 'dt_plugins_feed', $plugins, HOUR_IN_SECONDS );
         }
-        if ( $category === 'all_plugins' ) {
-            return $plugins;
+
+        $network_active_plugins = get_site_option( 'active_sitewide_plugins', [] );
+        $active_plugins = get_option( 'active_plugins', [] );
+
+        foreach ( $network_active_plugins as $plugin => $time ){
+            $active_plugins[] = $plugin;
         }
 
-        $filtered_plugins = [];
         foreach ( $plugins as $plugin ) {
-            $plugin_categories = explode( ',', $plugin->categories ?? false );
-            if ( in_array( $category, $plugin_categories ) ) {
-                $filtered_plugins[] = $plugin;
+            $plugin->slug = explode( '/', $plugin->homepage )[4];
+            $plugin->blog_url = 'https://disciple.tools/plugins/' . $plugin->slug;
+            $plugin->folder_name = get_home_path() . 'wp-content/plugins/' . $plugin->slug;
+            $plugin->author_github_username = explode( '/', $plugin->homepage )[3];
+            $plugin->description = count_chars( $plugin->description ) > 128 ? trim( substr( $plugin->description, 0, 128 ) ) . '...' : $plugin->description; // Shorten descriptions to 88 chars
+            $plugin->icon = ! isset( $plugin->icon ) ? 'https://s.w.org/plugins/geopattern-icon/' . $plugin->slug . '.svg' : $plugin->icon;
+            $plugin->name = str_replace( 'Disciple Tools - ', '', $plugin->name );
+            $plugin->name = str_replace( 'Disciple.Tools - ', '', $plugin->name );
+            $plugin->installed = false;
+            $plugin->active = false;
+            $plugin->activation_path = '';
+
+            if ( $this->partial_array_search( $all_plugins, $plugin->slug ) !== -1 ) {
+                $plugin->installed = true;
+            }
+
+            if ( $this->partial_array_search( $active_plugins, $plugin->slug ) !== -1 ) {
+                $plugin->active = true;
+                $plugin->activation_path = $this->partial_array_search( $active_plugins, $plugin->slug );
             }
         }
-        return $filtered_plugins;
+
+        return $plugins;
     }
 
     /**
