@@ -14,7 +14,7 @@ jQuery(function($){
         var is_beta = plugin_is_in_category(plugin, 'beta');
         var plugin_description = shorten_description(plugin['description']);
         var plugin_card_html = `
-        <div class="plugin-card plugin-card-classic-editor" style="height: 275px;" data-category="${plugin['categories']}">
+        <div class="plugin-card plugin-card-classic-editor" style="height: 275px;" data-category="${plugin['categories']}" style="display: none;">
             <div class="plugin-card-top">
                 <div class="name column-name">
                     <h3>
@@ -80,7 +80,6 @@ jQuery(function($){
                 </div>
             </div>`;
 
-            $('.loading').hide();
             $('#the-list').append(plugin_card_html);
         });
     }
