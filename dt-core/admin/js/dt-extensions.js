@@ -272,7 +272,7 @@ jQuery(function($){
                 $('.current').removeClass('current');
                 $.each(matches, function(match_index,plugin) {
                     $('#the-list').prepend($(`.plugin-card[data-slug="${plugin.slug}"]`));
-                    $(`.plugin-card[data-slug="${plugin.slug}"]`).show();
+                    $(`.plugin-card[data-slug="${plugin.slug}"]`).fadeIn();
                 });
             },
         }
