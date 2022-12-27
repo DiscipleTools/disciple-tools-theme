@@ -85,6 +85,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             }
             .plugin-card {
                 display: flex;
+                height: 275px;
                 flex-wrap: wrap;
                 justify-content: center;
                 align-items: flex-start;
@@ -183,10 +184,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         // Assign the 'current' class to the selected tab
             $class_current_tab = '';
         ?>
-        <style>
-            .js-typeahead-extensions {
-            }
-        </style>
         <div>
             <p>Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.</p>
         </div>

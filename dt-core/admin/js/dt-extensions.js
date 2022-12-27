@@ -20,7 +20,7 @@ jQuery(function($){
         var is_beta = plugin_is_in_category(plugin, 'beta');
         var plugin_description = shorten_description(plugin['description']);
         var plugin_card_html = `
-            <div class="plugin-card plugin-card-classic-editor" style="height: 275px;" data-category="${plugin['categories']}" data-slug="${plugin['slug']}" style="display: none;">
+            <div class="plugin-card plugin-card-classic-editor" data-category="${plugin['categories']}" data-slug="${plugin['slug']}" style="display: none;">
                 <div class="plugin-card-top card-front">
                     <div class="name column-name">
                         <h3>
@@ -113,6 +113,7 @@ jQuery(function($){
                 }
             }
         });
+        $('#the-list').append($('#no-typeahead-results'));
     }
 
     filter_plugin_cards('featured');
@@ -275,25 +276,26 @@ jQuery(function($){
 
             },
             onResult: function(i, query, matches) {
-                if (query.length == 0) {
-                    return;
+                if (query.length < 3) {
+                    return matches;
                 }
                 $('.plugin-card').hide();
                 $('.current').removeClass('current');
+                $('#no-typeahead-results').hide();
                 if (matches.length == 0) {
-                    $('#no-typeahead-results').fadeIn();
+                    $('#no-typeahead-results').fadeIn(100);
                     return;
                 } else {
-                    $('#no-typeahead-results').hide();
                     $.each(matches, function(match_index,plugin) {
+                        $('#no-typeahead-results').hide();
                         $('#the-list').prepend($(`.plugin-card[data-slug="${plugin.slug}"]`));
                         $(`.plugin-card[data-slug="${plugin.slug}"]`).fadeIn();
                     });
-                    return;
                 }
+                return;
             },
         }
-    });
+    })
 
     $('.plugin-install > a[data-category="featured"]').addClass('current');
 });
