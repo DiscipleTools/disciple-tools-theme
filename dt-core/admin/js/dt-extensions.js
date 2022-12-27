@@ -259,24 +259,41 @@ jQuery(function($){
 
     $.typeahead({
         input: '.js-typeahead-extensions',
+        minLength: 3,
         order: "desc",
         cancelButton: false,
         dynamic: false,
-        emptyTemplate: '<em style="padding-left:12px;">No results for "{{query}}"</em>',
-        template: '<span hidden>{{name}}</span>',
+        emptyTemplate: '{{query}}',
+        template: '{{name}}',
         correlativeTemplate: true,
         source: window.plugins.all_plugins,
         callback: {
-            onResult: function(i, k, matches) {
+            onCancel: function() {
+                $('#no-typeahead-results').hide();
+                $('.plugin-card').fadeIn();
+                $('.plugin-install > a[data-category="all-plugins"]').addClass('current');
+
+            },
+            onResult: function(i, query, matches) {
+                if (query.length == 0) {
+                    return;
+                }
                 $('.plugin-card').hide();
                 $('.current').removeClass('current');
-                $.each(matches, function(match_index,plugin) {
-                    $('#the-list').prepend($(`.plugin-card[data-slug="${plugin.slug}"]`));
-                    $(`.plugin-card[data-slug="${plugin.slug}"]`).fadeIn();
-                });
+                if (matches.length == 0) {
+                    $('#no-typeahead-results').fadeIn();
+                    return;
+                } else {
+                    $('#no-typeahead-results').hide();
+                    $.each(matches, function(match_index,plugin) {
+                        $('#the-list').prepend($(`.plugin-card[data-slug="${plugin.slug}"]`));
+                        $(`.plugin-card[data-slug="${plugin.slug}"]`).fadeIn();
+                    });
+                    return;
+                }
             },
         }
     });
 
-    jQuery('.plugin-install > a[data-category="featured"]').addClass('current')
+    $('.plugin-install > a[data-category="featured"]').addClass('current');
 });

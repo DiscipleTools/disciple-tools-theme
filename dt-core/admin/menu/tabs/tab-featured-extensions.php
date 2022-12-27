@@ -66,6 +66,13 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             .flip-card {
                 transform: rotateY(180deg);
             }
+            .filter-links {
+                display: flex;
+                justify-content: space-evenly;
+                align-items: baseline;
+                flex-wrap: wrap;
+                margin: -1px;
+            }
             .card-front, .card-back {
                 -webkit-backface-visibility: hidden;
                 backface-visibility: hidden;
@@ -96,6 +103,25 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 height: 20px;
                 display: block;
                 margin: 10px auto;
+            }
+            .dt-typeahead-extensions {
+                width: 100%;
+                padding: 0.5rem 0.75rem;
+                border: 1.5px solid #ccc;
+                border-radius: 2px 0 0 2px;
+                appearance: none;
+                box-sizing: border-box;
+                overflow: visible;
+                padding-right: 32px;
+                margin-bottom: 12px;
+            }
+            #no-typeahead-results {
+                width:100%;
+                text-align: center;
+                display: none;
+            }
+            .typeahead__result {
+                display: none;
             }
         </style>
         <?php
@@ -161,6 +187,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             .js-typeahead-extensions {
             }
         </style>
+        <div>
+            <p>Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.</p>
+        </div>
         <div class="wp-filter">
             <ul class="filter-links">
                 <?php
@@ -170,23 +199,32 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <a href="javascript:void(0);" data-category="<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>"><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
                     </li>
                 <?php endforeach; ?>
+                <li>
+                    <div class="typeahead-div">
+                        <form id="form-field_settings_search" name="form-field_settings_search">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
+                                    <div class="typeahead__query">
+                                        <span class="typeahead__query">
+                                            <input id="settings[query]" name="settings[query]" class="js-typeahead-extensions dt-typeahead-extensions" autocomplete="off" placeholder="<?php esc_attr_e( 'Search plugins', 'disciple_tools' ); ?>">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
             </ul>
         </div>
-        <div class="typeahead-div">
-            <form id="form-field_settings_search" name="form-field_settings_search">
-                <div class="typeahead__container">
-                    <div class="typeahead__field">
-                        <div class="typeahead__query">
-                            <span class="typeahead__query">
-                                <input id="settings[query]" name="settings[query]" class="js-typeahead-extensions" autocomplete="off" placeholder="<?php esc_attr_e( 'Search', 'disciple_tools' ); ?>">
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </form>
+        <div id="the-list">
+            <div id="no-typeahead-results">
+                <em>
+                    No plugins found.
+                    <br>
+                    Please try another search term.
+                </em>
+            </div>
         </div>
-        <p>Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.</p>
-        <div id="the-list"></div>
         <?php
     }
 
