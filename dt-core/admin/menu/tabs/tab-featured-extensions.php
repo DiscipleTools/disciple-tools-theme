@@ -21,7 +21,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     public function __construct() {
         add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ], 9, 1 );
-        add_action( 'dt_extensions_tab_menu', [ $this, 'add_tab' ], 10, 1 );
         add_action( 'dt_extensions_tab_content', [ $this, 'content' ], 99, 1 );
 
         parent::__construct();
@@ -35,63 +34,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 'all_plugins' => self::get_dt_plugins(),
             )
         );
-    }
-
-    public function add_tab( $tab ) {
-        $nonce = wp_create_nonce( 'portal-nonce' );
-        ?>
-        <script type="text/javascript">
-            function install(plug) {
-                jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'installing', 'disciple_tools' ); ?>...</p>");
-
-                jQuery.post("",
-                    {
-                        install: plug,
-                        _ajax_nonce: "<?php echo esc_attr( $nonce ); ?>"
-                    },
-                    function (data, status) {
-                        location.reload();
-                    });
-            }
-
-            function uninstall(plug) {
-                    jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'uninstalling', 'disciple_tools' ); ?>...</p>");
-
-                jQuery.post("",
-                    {
-                        uninstall: plug,
-                        _ajax_nonce: "<?php echo esc_attr( $nonce ); ?>"
-                    },
-                    function (data, status) {
-                        location.reload();
-                    });
-            }
-
-            function deactivate(plug) {
-                jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'deactivating', 'disciple_tools' ); ?>...</p>");
-                jQuery.post("",
-                    {
-                        deactivate: plug,
-                        _ajax_nonce: "<?php echo esc_attr( $nonce ); ?>"
-                    },
-                    function (data, status) {
-                        location.reload();
-                    });
-            }
-
-            function activate(plug) {
-                jQuery('#wpbody-content').replaceWith("<p><?php esc_html_e( 'activating', 'disciple_tools' ); ?>...</p>");
-                jQuery.post("",
-                    {
-                        activate: plug,
-                        _ajax_nonce: "<?php echo esc_attr( $nonce ); ?>"
-                    },
-                    function (data, status) {
-                        location.reload();
-                    });
-            }
-        </script>
-        <?php
     }
 
     public function content( $tab ) {
@@ -122,6 +64,44 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 margin: 1rem 0 0 1rem;
                 padding: .5em .5em;
                 text-align: center;
+            }
+            .flip-card {
+                transform: rotateY(180deg);
+            }
+            .card-front, .card-back {
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+            .card-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: flex-start;
+                transition: transform 0.5s;
+                transform-style: preserve-3d;
+            }
+            .card-back {
+                transform: rotateY(180deg);
+                /* margin-top: -120px; */
+            }
+            .plugin-card-content-back {
+                margin-top: 58%;
+            }
+            .plugin-card {
+                display: inline-block;
+                position: relative;
+            }
+            .plugin-card-top {
+                position: absolute;
+            }
+            .loading {
+                background: url('images/spinner.gif') no-repeat;
+                background-size: 20px 20px;
+                opacity: .7;
+                width: 20px;
+                height: 20px;
+                display: block;
+                margin: 10px auto;
             }
         </style>
         <?php

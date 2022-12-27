@@ -48,6 +48,39 @@ class Disciple_Tools_Core_Endpoints {
             ]
         );
 
+        //todo: add permission checks
+        register_rest_route(
+            $this->namespace, '/plugin-install', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_install' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/plugin-uninstall', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_uninstall' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/plugin-activate', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_activate' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/plugin-deactivate', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_deactivate' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+
     }
 
 
@@ -127,5 +160,52 @@ class Disciple_Tools_Core_Endpoints {
         return [
             'logged' => true
         ];
+    }
+
+    public function plugin_install( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        $params = $request->get_params();
+        $download_url = sanitize_text_field( wp_unslash( $params['download_url'] ) );
+        set_time_limit( 0 );
+        $folder_name = explode( '/', $download_url );
+        $folder_name = get_home_path() . 'wp-content/plugins/' . $folder_name[4] . '.zip';
+        if ( $folder_name != '' ) {
+            //download the zip file to plugins
+            file_put_contents( $folder_name, file_get_contents( $download_url ) );
+            // get the absolute path to $file
+            $folder_name = realpath( $folder_name );
+            //unzip
+            WP_Filesystem();
+            $unzip = unzip_file( $folder_name, realpath( get_home_path() . 'wp-content/plugins/' ) );
+            //remove the file
+            unlink( $folder_name );
+        }
+        return true;
+    }
+
+    public function plugin_uninstall( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+        $params = $request->get_params();
+        $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
+        delete_plugins( [ $plugin_slug ] );
+        return true;
+    }
+
+    public function plugin_activate( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+        $params = $request->get_params();
+        $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
+        activate_plugin( ABSPATH . PLUGINDIR  . $plugin_slug );
+        return true;
+    }
+
+    public function plugin_deactivate( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+        $params = $request->get_params();
+        $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
+        deactivate_plugins( ABSPATH . PLUGINDIR . $plugin_slug );
+        return true;
     }
 }
