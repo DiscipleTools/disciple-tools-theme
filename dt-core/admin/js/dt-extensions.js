@@ -1,4 +1,10 @@
 jQuery(function($){
+    function remove_2_column_template() {
+        $('#post-body').attr('class', 'metabox-holder');
+    }
+
+    remove_2_column_template();
+
     $('.plugin-install > a').on('click', function() {
         $('.plugin-install > a').removeClass('current');
         $(this).addClass('current');
@@ -250,4 +256,6 @@ jQuery(function($){
         });
         return;
     }
+
+    jQuery('.plugin-install > a[data-category="featured"]').addClass('current')
 });

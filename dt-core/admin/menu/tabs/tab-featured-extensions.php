@@ -15,20 +15,17 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
-
         return self::$_instance;
     }
 
     public function __construct() {
         add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ], 9, 1 );
         add_action( 'dt_extensions_tab_content', [ $this, 'content' ], 99, 1 );
-
         parent::__construct();
     }
 
     public function admin_enqueue_scripts() {
         dt_theme_enqueue_script( 'dt-extensions', 'dt-core/admin/js/dt-extensions.js', [], true );
-
         wp_localize_script(
             'dt-extensions', 'plugins', array(
                 'all_plugins' => self::get_dt_plugins(),
@@ -111,8 +108,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
         // end columns template
         $this->template( 'end' );
-
-        $this->modify_css();
     }
 
     //main page
@@ -152,11 +147,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         foreach ( $network_active_plugins as $plugin => $time ){
             $active_plugins[] = $plugin;
         }
-        $all_plugins = get_plugins();
-        $tab = 'featured';
-        if ( isset( $_GET['tab'] ) ) {
-            $tab = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
-        }
+
 
         //get plugin data
         $plugins = $this->get_dt_plugins();
@@ -209,7 +200,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         return -1;
     }
 
-    //this function will install a plugin with a name
     public function install_plugin( $download_url ) {
         set_time_limit( 0 );
         $folder_name = explode( '/', $download_url );
@@ -227,7 +217,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         }
     }
 
-    // Returns an array of all distinct plugin categories
     public function get_all_plugin_categories() {
         $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
         $distinct_categories = [ 'featured', 'all plugins' ];
@@ -242,7 +231,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         return $distinct_categories;
     }
 
-    //this function gets the plugin list data
     public function get_dt_plugins() {
         $all_plugins = get_plugins();
         $plugins = get_transient( 'dt_plugins_feed' );
@@ -280,18 +268,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 $plugin->activation_path = $this->partial_array_search( $active_plugins, $plugin->slug );
             }
         }
-
         return $plugins;
-    }
-
-    /**
-     * Remove the 'columns-2' class from #post-body
-     * in order to make the most of the screen's width
-     */
-    private function modify_css() {
-        ?>
-        <script>jQuery('#post-body').attr('class', 'metabox-holder');</script>
-            <?php
     }
 }
 

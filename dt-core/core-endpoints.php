@@ -193,8 +193,6 @@ class Disciple_Tools_Core_Endpoints {
     }
 
     public function plugin_activate( WP_REST_Request $request ) {
-        return true;
-        require_once( ABSPATH . 'wp-admin/includes/file.php' );
         require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
         $params = $request->get_params();
         $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
