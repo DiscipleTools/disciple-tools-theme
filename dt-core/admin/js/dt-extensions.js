@@ -1,5 +1,5 @@
 jQuery(function($){
-    $('.plugin-install > a').on('click', function(){
+    $('.plugin-install > a').on('click', function() {
         $('.plugin-install > a').removeClass('current');
         $(this).addClass('current');
         var clicked_category = $(this).data('category');
@@ -9,13 +9,12 @@ jQuery(function($){
     function load_all_plugin_cards() {
         let all_plugins = window.plugins.all_plugins;
 
-        $.each(all_plugins, function(index, plugin){
+        $.each(all_plugins, function(index, plugin) {
         var is_proof_of_concept = plugin_is_in_category(plugin, 'proof-of-concept');
         var is_beta = plugin_is_in_category(plugin, 'beta');
         var plugin_description = shorten_description(plugin['description']);
         var plugin_card_html = `
-        <div class="plugin-card plugin-card-classic-editor" style="height: 275px;" data-category="${plugin['categories']}" data-slug="${plugin['slug']}" style="display: none;">
-            <div class="card-container">
+            <div class="plugin-card plugin-card-classic-editor" style="height: 275px;" data-category="${plugin['categories']}" data-slug="${plugin['slug']}" style="display: none;">
                 <div class="plugin-card-top card-front">
                     <div class="name column-name">
                         <h3>
@@ -83,8 +82,7 @@ jQuery(function($){
                         <div class="plugin-card-content-back">
                         </div>
                     </div>
-                </div>
-            </div>`;
+                </div>`;
 
             $('#the-list').append(plugin_card_html);
         });
@@ -130,7 +128,7 @@ jQuery(function($){
     }
 
     $('.plugin-card').on('click', '.button', function() {
-        $(this).parent().closest('.card-container').addClass('flip-card');
+        $(this).parent().closest('.plugin-card').addClass('flip-card');
         var action = $(this).data('action');
         var plugin_slug = $(this).data('plugin-slug');
         var card_back = $(this).parent().closest('.plugin-card').find('.plugin-card-content-back');
@@ -195,7 +193,7 @@ jQuery(function($){
     function get_plugin_download_url(plugin_slug) {
         const all_plugins = window.plugins.all_plugins;
         var download_url = false;
-        $.each(all_plugins, function(i, plugin) {
+        $.each(all_plugins, function(index, plugin) {
             if (plugin.slug === plugin_slug) {
                 download_url = plugin.download_url;
             }
@@ -206,49 +204,49 @@ jQuery(function($){
     function plugin_install(plugin_slug) {
         var download_url = get_plugin_download_url(plugin_slug);
         window.API.plugin_install(download_url).promise().then(function() {
-            $(`.plugin-card[data-slug="${plugin_slug}"] > .card-container > .card-front > .action-links > .plugin-action-buttons`).html(`
+            $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
                 <button class="button" data-action="uninstall">Uninstall</button>
             </li>
             <li>
                 <button class="button" data-action="activate">Activate</button>
             </li>`);
-            $(`.plugin-card[data-slug="${plugin_slug}"] > .flip-card`).removeClass('flip-card');
+            $(`.plugin-card[data-slug="${plugin_slug}"]`).removeClass('flip-card');
         });
         return;
     }
 
     function plugin_uninstall(plugin_slug) {
         window.API.plugin_uninstall(plugin_slug).promise().then(function() {
-            $(`.plugin-card[data-slug="${plugin_slug}"] > .card-container > .card-front > .action-links > .plugin-action-buttons`).html(`
+            $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
                 <button class="button" data-action="install">Install</button>
             </li>`);
-            $(`.plugin-card[data-slug="${plugin_slug}"] > .flip-card`).removeClass('flip-card');
+            $(`.plugin-card[data-slug="${plugin_slug}"]`).removeClass('flip-card');
         });
         return;
     }
 
     function plugin_activate(plugin_slug) {
         window.API.plugin_activate(plugin_slug).promise().then(function() {
-            $(`.plugin-card[data-slug="${plugin_slug}"] > .card-container > .card-front > .action-links > .plugin-action-buttons`).html(`
+            $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
                 <button class="button" data-action="deactivate">Deactivate</button>
             </li>`);
-            $(`.plugin-card[data-slug="${plugin_slug}"] > .flip-card`).removeClass('flip-card');
+            $(`.plugin-card[data-slug="${plugin_slug}"]`).removeClass('flip-card');
         });
         return;
     }
     function plugin_deactivate(plugin_slug) {
         window.API.plugin_deactivate(plugin_slug).promise().then(function() {
-            $(`.plugin-card[data-slug="${plugin_slug}"] > .card-container > .card-front > .action-links > .plugin-action-buttons`).html(`
+            $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
                 <button class="button" data-action="uninstall">Uninstall</button>
             </li>
             <li>
                 <button class="button" data-action="activate">Activate</button>
             </li>`);
-            $(`.plugin-card[data-slug="${plugin_slug}"] > .flip-card`).removeClass('flip-card');
+            $(`.plugin-card[data-slug="${plugin_slug}"]`).removeClass('flip-card');
         });
         return;
     }
