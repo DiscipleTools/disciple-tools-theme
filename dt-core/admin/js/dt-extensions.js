@@ -257,5 +257,26 @@ jQuery(function($){
         return;
     }
 
+    $.typeahead({
+        input: '.js-typeahead-extensions',
+        order: "desc",
+        cancelButton: false,
+        dynamic: false,
+        emptyTemplate: '<em style="padding-left:12px;">No results for "{{query}}"</em>',
+        template: '<span hidden>{{name}}</span>',
+        correlativeTemplate: true,
+        source: window.plugins.all_plugins,
+        callback: {
+            onResult: function(i, k, matches) {
+                $('.plugin-card').hide();
+                $('.current').removeClass('current');
+                $.each(matches, function(match_index,plugin) {
+                    $('#the-list').prepend($(`.plugin-card[data-slug="${plugin.slug}"]`));
+                    $(`.plugin-card[data-slug="${plugin.slug}"]`).show();
+                });
+            },
+        }
+    });
+
     jQuery('.plugin-install > a[data-category="featured"]').addClass('current')
 });

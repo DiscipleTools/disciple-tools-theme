@@ -26,6 +26,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     public function admin_enqueue_scripts() {
         dt_theme_enqueue_script( 'dt-extensions', 'dt-core/admin/js/dt-extensions.js', [], true );
+        dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
         wp_localize_script(
             'dt-extensions', 'plugins', array(
                 'all_plugins' => self::get_dt_plugins(),
@@ -156,16 +157,33 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         // Assign the 'current' class to the selected tab
             $class_current_tab = '';
         ?>
+        <style>
+            .js-typeahead-extensions {
+            }
+        </style>
         <div class="wp-filter">
-        <ul class="filter-links">
-            <?php
-            $all_plugin_categories = $this->get_all_plugin_categories();
-            foreach ( $all_plugin_categories as $plugin_category ) : ?>
-                <li class="plugin-install">
-                    <a href="javascript:void(0);" data-category="<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>"><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
+            <ul class="filter-links">
+                <?php
+                $all_plugin_categories = $this->get_all_plugin_categories();
+                foreach ( $all_plugin_categories as $plugin_category ) : ?>
+                    <li class="plugin-install">
+                        <a href="javascript:void(0);" data-category="<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>"><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+        <div class="typeahead-div">
+            <form id="form-field_settings_search" name="form-field_settings_search">
+                <div class="typeahead__container">
+                    <div class="typeahead__field">
+                        <div class="typeahead__query">
+                            <span class="typeahead__query">
+                                <input id="settings[query]" name="settings[query]" class="js-typeahead-extensions" autocomplete="off" placeholder="<?php esc_attr_e( 'Search', 'disciple_tools' ); ?>">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
         <p>Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.</p>
         <div id="the-list"></div>
