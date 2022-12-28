@@ -271,7 +271,11 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     public function get_all_plugin_categories() {
-        $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
+        $plugins = get_transient( 'dt_plugins_feed' );
+        if ( empty( $plugins ) ){
+                $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
+                set_transient( 'dt_plugins_feed', $plugins, HOUR_IN_SECONDS );
+        }
         $distinct_categories = [ 'featured', 'all plugins' ];
         foreach ( $plugins as $plugin ) {
             $plugin_categories = explode( ',', $plugin->categories ?? false );
@@ -288,8 +292,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         $all_plugins = get_plugins();
         $plugins = get_transient( 'dt_plugins_feed' );
         if ( empty( $plugins ) ){
-            $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
-            set_transient( 'dt_plugins_feed', $plugins, HOUR_IN_SECONDS );
+                $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
+                set_transient( 'dt_plugins_feed', $plugins, HOUR_IN_SECONDS );
         }
 
         $network_active_plugins = get_site_option( 'active_sitewide_plugins', [] );

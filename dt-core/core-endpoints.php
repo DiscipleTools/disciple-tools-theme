@@ -58,9 +58,9 @@ class Disciple_Tools_Core_Endpoints {
         );
 
         register_rest_route(
-            $this->namespace, '/plugin-uninstall', [
+            $this->namespace, '/plugin-delete', [
                 'methods'  => 'POST',
-                'callback' => [ $this, 'plugin_uninstall' ],
+                'callback' => [ $this, 'plugin_delete' ],
                 'permission_callback' => '__return_true',
             ]
         );
@@ -183,30 +183,47 @@ class Disciple_Tools_Core_Endpoints {
         return true;
     }
 
-    public function plugin_uninstall( WP_REST_Request $request ) {
-        return true;
+    public function plugin_delete( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
         require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
         $params = $request->get_params();
         $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
-        delete_plugins( [ $plugin_slug ] );
-        return true;
+        $installed_plugins = get_plugins();
+        foreach ( $installed_plugins as $index => $plugin ) {
+            if ( $plugin['TextDomain'] === $plugin_slug ) {
+                delete_plugins( [ $index ] );
+                dt_write_log( $index );
+                return true;
+            }
+        }
+        return false;
     }
 
     public function plugin_activate( WP_REST_Request $request ) {
         require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
         $params = $request->get_params();
         $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
-        activate_plugin( ABSPATH . PLUGINDIR  . $plugin_slug );
-        return true;
+        $installed_plugins = get_plugins();
+        foreach ( $installed_plugins as $index => $plugin ) {
+            if ( $plugin['TextDomain'] === $plugin_slug ) {
+                activate_plugin( $index );
+                return true;
+            }
+        }
+        return false;
     }
 
     public function plugin_deactivate( WP_REST_Request $request ) {
-        return true;
-        require_once( ABSPATH . 'wp-admin/includes/file.php' );
         require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
         $params = $request->get_params();
         $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
-        deactivate_plugins( ABSPATH . PLUGINDIR . $plugin_slug );
-        return true;
+        $installed_plugins = get_plugins();
+        foreach ( $installed_plugins as $index => $plugin ) {
+            if ( $plugin['TextDomain'] === $plugin_slug ) {
+                deactivate_plugins( $index );
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -42,25 +42,24 @@ jQuery(function($){
 
 
             if ( plugin['installed'] & !plugin['active'] ) {
-                installation_button_html = `<li>
-                                                <button class="button" data-action="uninstall" data-plugin-slug="${plugin['slug']}">Uninstall</button>
-                                            </li>`;
-
                 activation_button_html =   `<li>
                                                 <button class="button" data-action="activate" data-plugin-slug="${plugin['slug']}">Activate</button>
+                                            </li>`;
+                                            installation_button_html = `<li>
+                                                <button class="button" data-action="delete" data-plugin-slug="${plugin['slug']}">Delete</button>
                                             </li>`;
             }
 
 
             if ( plugin['active'] ) {
-                installation_button_html = '';
                 activation_button_html = `<li>
                                         <button class="button" data-action="deactivate" data-plugin-slug="${plugin['slug']}">Deactivate</button>
                                     </li>`;
+                installation_button_html = '';
             }
 
-            plugin_card_html += installation_button_html;
             plugin_card_html += activation_button_html;
+            plugin_card_html += installation_button_html;
 
 
             if ( is_proof_of_concept ) {
@@ -144,9 +143,9 @@ jQuery(function($){
             card_back.html('Installing...');
             plugin_install(plugin_slug);
         }
-        if ( action === 'uninstall') {
-            card_back.html('Uninstalling...');
-            plugin_uninstall(plugin_slug);
+        if ( action === 'delete') {
+            card_back.html('Deleting...');
+            plugin_delete(plugin_slug);
         }
         if ( action === 'activate') {
             card_back.html('Activating...');
@@ -184,9 +183,9 @@ jQuery(function($){
                 download_url: download_url
             }, `dt-core/v1/`),
 
-        plugin_uninstall: (plugin_slug) => makeRequest("POST", `plugin-uninstall`, {
-                plugin_slug: plugin_slug
-            }, `dt-core/v1/`),
+        plugin_delete: (plugin_slug) => makeRequest("POST", `plugin-delete`, {
+            plugin_slug: plugin_slug
+        }, `dt-core/v1/`),
 
         plugin_activate: (plugin_slug) => makeRequest("POST", `plugin-activate`, {
                 plugin_slug: plugin_slug
@@ -213,18 +212,18 @@ jQuery(function($){
         window.API.plugin_install(download_url).promise().then(function() {
             $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
-                <button class="button" data-action="uninstall">Uninstall</button>
+                <button class="button" data-action="activate">Activate</button>
             </li>
             <li>
-                <button class="button" data-action="activate">Activate</button>
+                <button class="button" data-action="deletee">Delete</button>
             </li>`);
             $(`.plugin-card[data-slug="${plugin_slug}"]`).removeClass('flip-card');
         });
         return;
     }
 
-    function plugin_uninstall(plugin_slug) {
-        window.API.plugin_uninstall(plugin_slug).promise().then(function() {
+    function plugin_delete(plugin_slug) {
+        window.API.plugin_delete(plugin_slug).promise().then(function() {
             $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
                 <button class="button" data-action="install">Install</button>
@@ -248,10 +247,10 @@ jQuery(function($){
         window.API.plugin_deactivate(plugin_slug).promise().then(function() {
             $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
-                <button class="button" data-action="uninstall">Uninstall</button>
+                <button class="button" data-action="activate">Activate</button>
             </li>
             <li>
-                <button class="button" data-action="activate">Activate</button>
+                <button class="button" data-action="delete">Delete</button>
             </li>`);
             $(`.plugin-card[data-slug="${plugin_slug}"]`).removeClass('flip-card');
         });
