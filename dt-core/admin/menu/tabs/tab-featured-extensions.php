@@ -31,6 +31,28 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             'dt-extensions', 'plugins', array(
                 'all_plugins' => self::get_dt_plugins(),
                 'is_multisite' => is_multisite(),
+                'translations' => [
+                    'install' => __( 'Install', 'disciple_tools' ),
+                    'delete' => __( 'Delete', 'disciple_tools' ),
+                    'activate' => __( 'Activate', 'disciple_tools' ),
+                    'deactivate' => __( 'Deactivate', 'disciple_tools' ),
+                    'multisite_install' => __( 'Multisite Install', 'disciple_tools' ),
+                    'multisite_delete' => __( 'Multisite Delete', 'disciple_tools' ),
+                    'multisite_activate' => __( 'Multisite Activate', 'disciple_tools' ),
+                    'multisite_deactivate' => __( 'Multisite Dectivate', 'disciple_tools' ),
+                    'featured' => __( 'Featured', 'disciple_tools' ),
+                    'all_plugins' => __( 'All Plugins', 'disciple_tools' ),
+                    'integrations' => __( 'Integrations', 'disciple_tools' ),
+                    'metrics' => __( 'Metrics', 'disciple_tools' ),
+                    'utilities' => __( 'Utilities', 'disciple_tools' ),
+                    'multisite' => __( 'Multisite', 'disciple_tools' ),
+                    'expansions' => __( 'Expansions', 'disciple_tools' ),
+                    'developer_tools' => __( 'Developer Tools', 'disciple_tools' ),
+                    'beta' => __( 'Beta', 'disciple_tools' ),
+                    'proof_of_concept' => __( 'Proof Of Concept', 'disciple_tools' ),
+                    'community' => __( 'Community', 'disciple_tools' ),
+                    'plugin_by' => __( 'By %s', 'disciple_tools' ),
+                ],
             )
         );
     }
@@ -186,7 +208,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             $class_current_tab = '';
         ?>
         <div>
-            <p>Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.</p>
+            <p><?php esc_html_e( 'Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.', 'disciple_tools' ); ?></p>
         </div>
         <div class="wp-filter">
             <ul class="filter-links">
@@ -194,7 +216,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 $all_plugin_categories = $this->get_all_plugin_categories();
                 foreach ( $all_plugin_categories as $plugin_category ) : ?>
                     <li class="plugin-install">
-                        <a href="javascript:void(0);" data-category="<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>"><?php echo esc_html( ucwords( $plugin_category ) ); ?></a>
+                        <a href="javascript:void(0);" data-category="<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>">
+                            <?php echo esc_html__( ucwords( $plugin_category ), 'disciple_tools' ); ?>
+                        </a>
                     </li>
                 <?php endforeach; ?>
                 <li>

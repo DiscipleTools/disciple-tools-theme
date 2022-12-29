@@ -14,83 +14,105 @@ jQuery(function($){
 
     function load_all_plugin_cards() {
         let all_plugins = window.plugins.all_plugins;
+        var translations = window.plugins.translations;
+        var install_text = window.lodash.escape(translations.install);
+        var delete_text = window.lodash.escape(translations.delete);
+        var activate_text = window.lodash.escape(translations.activate);
+        var deactivate_text = window.lodash.escape(translations.deactivate);
+        var plugin_by_text = window.lodash.escape(translations.plugin_by);
+
+        if (window.plugins.is_multisite) {
+            var install_text = window.lodash.escape(translations.multisite_install);
+            var delete_text = window.lodash.escape(translations.multisite_delete);
+            var activate_text = window.lodash.escape(translations.multisite_activate);
+            var deactivate_text = window.lodash.escape(translations.multisite_deactivate);
+        }
 
         $.each(all_plugins, function(index, plugin) {
-        var is_proof_of_concept = plugin_is_in_category(plugin, 'proof-of-concept');
-        var is_beta = plugin_is_in_category(plugin, 'beta');
-        var plugin_description = shorten_description(plugin['description']);
-        var plugin_card_html = `
-            <div class="plugin-card plugin-card-classic-editor" data-category="${plugin['categories']}" data-slug="${plugin['slug']}" style="display: none;">
-                <div class="plugin-card-top card-front">
-                    <div class="name column-name">
-                        <h3>
-                            <a href="${plugin['permalink']}" target="_blank">
-                                ${plugin['name']}
-                            <img src="${plugin['icon']}" class="plugin-icon" alt="${plugin['name']}">
-                            </a>
-                        </h3>
-                    </div>
-                    <div class="action-links">
-                        <ul class="plugin-action-buttons">`;
-
-
-            var installation_button_html =  `<li>
-                                                <button class="button" data-action="install" data-plugin-slug="${plugin['slug']}">Install</button>
-                                            </li>`;
-            var activation_button_html = '';
-
-
-
-            if ( plugin['installed'] & !plugin['active'] ) {
-                activation_button_html =   `<li>
-                                                <button class="button" data-action="activate" data-plugin-slug="${plugin['slug']}">Activate</button>
-                                            </li>`;
-                                            installation_button_html = `<li>
-                                                <button class="button" data-action="delete" data-plugin-slug="${plugin['slug']}">Delete</button>
-                                            </li>`;
-            }
-
-
-            if ( plugin['active'] ) {
-                activation_button_html = `<li>
-                                        <button class="button" data-action="deactivate" data-plugin-slug="${plugin['slug']}">Deactivate</button>
-                                    </li>`;
-                installation_button_html = '';
-            }
-
-            plugin_card_html += activation_button_html;
-            plugin_card_html += installation_button_html;
-
-
-            if ( is_proof_of_concept ) {
-                plugin_card_html += `
-                <li>
-                    <a class="warning-pill">POC</a>
-                </li>`;
-            }
-            if ( is_beta ) {
-                plugin_card_html += `
-                <li>
-                    <a class="warning-pill">BETA</a>
-                </li>`;
-            }
-            plugin_card_html += `</ul>
+            var is_proof_of_concept = plugin_is_in_category(plugin, 'proof-of-concept');
+            var is_beta = plugin_is_in_category(plugin, 'beta');
+            var plugin_description = shorten_description(plugin['description']);
+            var plugin_card_html = `
+                <div class="plugin-card plugin-card-classic-editor" data-category="${plugin['categories']}" data-slug="${plugin['slug']}" style="display: none;">
+                    <div class="plugin-card-top card-front">
+                        <div class="name column-name">
+                            <h3>
+                                <a href="${plugin['permalink']}" target="_blank">
+                                    ${plugin['name']}
+                                <img src="${plugin['icon']}" class="plugin-icon" alt="${plugin['name']}">
+                                </a>
+                            </h3>
                         </div>
-                        <div class="extension-buttons">
+                        <div class="action-links">
+                            <ul class="plugin-action-buttons">`;
+
+
+                var installation_button_html =  `
+                    <li>
+                        <button class="button" data-action="install" data-plugin-slug="${plugin['slug']}">${install_text}</button>
+                    </li>`;
+                var activation_button_html = '';
+
+
+
+                if ( plugin['installed'] & !plugin['active'] ) {
+                    activation_button_html =   `
+                    <li>
+                        <button class="button" data-action="activate" data-plugin-slug="${plugin['slug']}">${activate_text}</button>
+                    </li>`;
+                    installation_button_html = `<li>
+                        <button class="button" data-action="delete" data-plugin-slug="${plugin['slug']}">${delete_text}</button>
+                    </li>`;
+                }
+
+
+                if ( plugin['active'] ) {
+                    activation_button_html = `
+                        <li>
+                            <button class="button" data-action="deactivate" data-plugin-slug="${plugin['slug']}">${deactivate_text}</button>
+                        </li>`;
+                    installation_button_html = '';
+                }
+
+                plugin_card_html += activation_button_html;
+                plugin_card_html += installation_button_html;
+
+
+                if ( is_proof_of_concept ) {
+                    plugin_card_html += `
+                        <li>
+                            <a class="warning-pill">POC</a>
+                        </li>`;
+                }
+                if ( is_beta ) {
+                    plugin_card_html += `
+                        <li>
+                            <a class="warning-pill">BETA</a>
+                        </li>`;
+                }
+                plugin_card_html += `
+                    </ul>
                         </div>
+                        <div class="extension-buttons"></div>
                         <div class="desc column-description">
                             <p>${plugin_description}</p>
-                            <p class="authors"> <cite>By <a href="${plugin['author_homepage']}">${plugin['author']}<img src="https://avatars.githubusercontent.com/${plugin['author_github_username']}?size=28" class="plugin-author-img"></a></cite></p>
+                            <p class="authors">
+                                <cite>${plugin_by_text.replace('%s', `
+                                    <a href="${plugin['author_homepage']}">
+                                        ${plugin['author']}
+                                        <img src="https://avatars.githubusercontent.com/${plugin['author_github_username']}?size=28" class="plugin-author-img">
+                                    </a>
+                                `)}
+                                </cite>
+                            </p>
                         </div>
                     </div>
                     <div class="card-back">
-                        <div class="plugin-card-content-back">
-                        </div>
+                        <div class="plugin-card-content-back"></div>
                     </div>
                 </div>`;
-
-            $('#the-list').append(plugin_card_html);
-        });
+                $('#the-list').append(plugin_card_html);
+            });
     }
     load_all_plugin_cards();
 
