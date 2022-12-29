@@ -30,6 +30,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         wp_localize_script(
             'dt-extensions', 'plugins', array(
                 'all_plugins' => self::get_dt_plugins(),
+                'is_multisite' => is_multisite(),
             )
         );
     }
@@ -272,7 +273,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     public function get_all_plugin_categories() {
         $plugins = get_transient( 'dt_plugins_feed' );
-        if ( empty( $plugins ) ){
+        if ( empty( $plugins ) ) {
                 $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
                 set_transient( 'dt_plugins_feed', $plugins, HOUR_IN_SECONDS );
         }

@@ -53,7 +53,7 @@ class Disciple_Tools_Core_Endpoints {
             $this->namespace, '/plugin-install', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'plugin_install' ],
-                'permission_callback' => '__return_true',
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
             ]
         );
 
@@ -61,7 +61,7 @@ class Disciple_Tools_Core_Endpoints {
             $this->namespace, '/plugin-delete', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'plugin_delete' ],
-                'permission_callback' => '__return_true',
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
             ]
         );
 
@@ -69,7 +69,7 @@ class Disciple_Tools_Core_Endpoints {
             $this->namespace, '/plugin-activate', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'plugin_activate' ],
-                'permission_callback' => '__return_true',
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
             ]
         );
 
@@ -77,10 +77,9 @@ class Disciple_Tools_Core_Endpoints {
             $this->namespace, '/plugin-deactivate', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'plugin_deactivate' ],
-                'permission_callback' => '__return_true',
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
             ]
         );
-
     }
 
 
@@ -183,6 +182,13 @@ class Disciple_Tools_Core_Endpoints {
         return true;
     }
 
+    public function plugin_permission_check() {
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            return new WP_Error( 'forbidden', 'You are not allowed to do that.', array( 'status' => 403 ) );
+        }
+        return true;
+    }
+
     public function plugin_delete( WP_REST_Request $request ) {
         require_once( ABSPATH . 'wp-admin/includes/file.php' );
         require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -192,7 +198,6 @@ class Disciple_Tools_Core_Endpoints {
         foreach ( $installed_plugins as $index => $plugin ) {
             if ( $plugin['TextDomain'] === $plugin_slug ) {
                 delete_plugins( [ $index ] );
-                dt_write_log( $index );
                 return true;
             }
         }
