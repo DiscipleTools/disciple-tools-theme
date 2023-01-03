@@ -1042,16 +1042,16 @@ class Disciple_Tools_Users
             $location_grid = get_user_meta( $user_id, $wpdb->prefix . 'location_grid_meta' );
             if ( ! empty( $location_grid ) ) {
                 $grid['location_grid_meta'] = [];
-                foreach ($location_grid as $meta) {
-                    $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id($meta);
-                    if ($location_grid_meta) {
+                foreach ( $location_grid as $meta ) {
+                    $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta );
+                    if ( $location_grid_meta ) {
                         $grid['location_grid_meta'][] = $location_grid_meta;
                     }
                 }
                 $grid['location_grid'] = [];
-                foreach ($grid['location_grid_meta'] as $meta) {
+                foreach ( $grid['location_grid_meta'] as $meta ) {
                     $grid['location_grid'][] = [
-                        'id' => (int)$meta['grid_id'],
+                        'id' => (int) $meta['grid_id'],
                         'label' => $meta['label']
                     ];
                 }
