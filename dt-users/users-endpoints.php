@@ -420,6 +420,9 @@ class Disciple_Tools_Users_Endpoints
             return $info;
 
         } else {
+            wp_destroy_current_session();
+            wp_clear_auth_cookie();
+            wp_set_current_user( 0 );
             return new WP_Error( 'get_my_info', 'Something went wrong. Are you a user?', [ 'status' => 400 ] );
         }
     }
