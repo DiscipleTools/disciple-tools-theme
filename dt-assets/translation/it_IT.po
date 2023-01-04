@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2022-12-09T10:38:52+00:00\n"
-"PO-Revision-Date: 2023-01-04 15:10+0000\n"
+"PO-Revision-Date: 2023-01-05 17:13+0000\n"
 "Last-Translator: Kyle Koval <kyle.koval@gmail.com>\n"
 "Language-Team: Italian <https://translate.disciple.tools/projects/"
 "disciple-tools/disciple-tools-theme/it_IT/>\n"
@@ -54,7 +54,6 @@ msgid "Request Record Access Permission"
 msgstr "Richiedi Permesso di Accesso al Record"
 
 #: 403.php:39 dt-users/template-new-user.php:273
-#, fuzzy
 msgid "Back"
 msgstr "Indietro"
 
@@ -85,12 +84,10 @@ msgstr "Invia Richiesta"
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:153
 #: template-new-post.php:179
-#, fuzzy
 msgid "Cancel"
 msgstr "Annulla"
 
 #: 404.php:25
-#, fuzzy
 msgid "Epic 404 - Not Found"
 msgstr "Epic 404 - Non trovato"
 
@@ -283,7 +280,6 @@ msgstr "Effettua le selezioni qui sotto"
 #: archive-template.php:591 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:150 template-settings.php:136
-#, fuzzy
 msgid "Name"
 msgstr "Nome"
 
@@ -485,7 +481,6 @@ msgstr "Non sono presenti notifiche"
 #: dt-assets/functions/enqueue-scripts.php:258
 #: dt-assets/functions/enqueue-scripts.php:298
 #: dt-assets/parts/loop-activity-comment.php:156 single-template.php:431
-#, fuzzy
 msgid "Delete"
 msgstr "Elimina"
 
@@ -665,7 +660,7 @@ msgstr "Contatto"
 #: dt-assets/functions/enqueue-scripts.php:335
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
-msgstr ""
+msgstr "%s già esiste"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:25
 msgid "Menu"
@@ -762,7 +757,7 @@ msgstr "Spiacenti, qualcosa non ha funzionato"
 
 #: dt-assets/parts/loop-activity-comment.php:164
 msgid "The comment could not be deleted."
-msgstr "Non è stato possibile eliminare il commento"
+msgstr "Non è stato possibile eliminare il commento."
 
 #: dt-assets/parts/loop-activity-comment.php:169
 msgid "Edit Comment:"
@@ -1687,7 +1682,6 @@ msgstr "Scegli un'opzione:"
 
 #: dt-contacts/access-module.php:508 dt-contacts/access-module.php:539
 #: dt-contacts/access-module.php:567 dt-contacts/base-setup.php:465
-#, fuzzy
 msgid "Confirm"
 msgstr "Conferma"
 
@@ -1776,7 +1770,7 @@ msgstr "Genere"
 
 #: dt-contacts/access-module.php:1470
 msgid "This record might be a duplicate of: "
-msgstr "Questa voce potrebbe essere un duplicato di:"
+msgstr "Questa voce potrebbe essere un duplicato di: "
 
 #: dt-contacts/access-module.php:1476 dt-contacts/duplicates-merging.php:465
 #: dt-contacts/duplicates-merging.php:545
@@ -1878,7 +1872,6 @@ msgstr "Whatsapp"
 #: dt-core/configuration/config-site-defaults.php:338
 #: dt-users/template-new-user.php:118 dt-users/template-new-user.php:119
 #: dt-users/template-user-management.php:355 template-settings.php:156
-#, fuzzy
 msgid "Email"
 msgstr "Email"
 
@@ -2117,7 +2110,7 @@ msgstr "Conferma trasferimento"
 
 #: dt-contacts/contacts-transfer.php:381
 msgid "Unknown error."
-msgstr "Errore sconosciuto"
+msgstr "Errore sconosciuto."
 
 #: dt-contacts/contacts-transfer.php:413
 msgid "Minor transfer error."
@@ -2552,7 +2545,7 @@ msgstr "preghiera"
 
 #: dt-core/configuration/config-site-defaults.php:538
 msgid "Home"
-msgstr "Casa"
+msgstr "Home"
 
 #: dt-core/configuration/config-site-defaults.php:539
 msgid "Work"
@@ -2627,67 +2620,71 @@ msgstr "(nessun titolo)"
 
 #: dt-core/release-notifications.php:43
 msgid "Release Announcement!"
-msgstr ""
+msgstr "Annuncio di Lancio!"
 
 #: dt-core/release-notifications.php:44
 msgid "Disciple.Tools Theme Version %1$s"
-msgstr ""
+msgstr "Disciple.Tools Tema Versione %1$s"
 
 #: dt-core/release-notifications.php:49
 msgid "Theme News"
-msgstr ""
+msgstr "Notizie del Tema"
 
 #: dt-core/release-notifications.php:50 dt-core/release-notifications.php:59
 msgid "Other News"
-msgstr ""
+msgstr "Altre Notizie"
 
 #: dt-core/release-notifications.php:51
 msgid "Get Involved"
-msgstr ""
+msgstr "Prendi Parte"
 
 #: dt-core/release-notifications.php:63
 msgid "Other news not available."
-msgstr ""
+msgstr "Altre notizie non sono disponibili."
 
 #: dt-core/release-notifications.php:78
 msgid "Give"
-msgstr ""
+msgstr "Dona"
 
 #: dt-core/release-notifications.php:80
 msgid "Make Disciple.Tools better by joining us financially."
-msgstr ""
+msgstr "Rendi Disciple.Tools migliore unendoti ai nostri sostenitori."
 
 #: dt-core/release-notifications.php:80
 msgid "Join us here"
-msgstr ""
+msgstr "Unisciti a noi qui"
 
 #: dt-core/release-notifications.php:86
 msgid "Translate"
-msgstr ""
+msgstr "Traduci"
 
 #: dt-core/release-notifications.php:88
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
 msgstr ""
+"Traduci Disciple.Tools nella tua lingua o aiuta a rendere migliore una "
+"traduzione esistente."
 
 #: dt-core/release-notifications.php:88
 msgid "Click here"
-msgstr ""
+msgstr "Clicca qui"
 
 #: dt-core/release-notifications.php:94
 msgid "Build or Document"
-msgstr ""
+msgstr "Creazione o Documento"
 
 #: dt-core/release-notifications.php:96
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
+"Rendi Disciple.Tools migliore attraverso la creazione di una funzionalità o "
+"aiutandoci a migliorare la documentazione."
 
 #: dt-core/release-notifications.php:96
 msgid "Find out more"
-msgstr ""
+msgstr "Scopri di più"
 
 #: dt-groups/base-setup.php:51 dt-groups/base-setup.php:63
 #: dt-groups/base-setup.php:173 dt-metrics/personal/activity-highlights.php:58
@@ -3054,9 +3051,8 @@ msgid "Create"
 msgstr "Crea"
 
 #: dt-groups/base-setup.php:597
-#, fuzzy
 msgid "Select"
-msgstr "Selezionare"
+msgstr "Seleziona"
 
 #: dt-groups/base-setup.php:602
 msgid "To add new members, click on 'Create' or 'Select'."
@@ -3871,11 +3867,11 @@ msgstr "Gruppo di persone"
 
 #: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
-msgstr ""
+msgstr "Numero Totale di Contatti"
 
 #: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
-msgstr ""
+msgstr "Numero Totale di Gruppi"
 
 #: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:159
@@ -3884,27 +3880,27 @@ msgstr "Ultima modifica"
 
 #: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
-msgstr ""
+msgstr "Codice Identificativo del Gruppo Etnico"
 
 #: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
-msgstr ""
+msgstr "ID Gruppo Etnico"
 
 #: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
-msgstr ""
+msgstr "Lingua Primaria"
 
 #: dt-people-groups/people-groups-base.php:319
 msgid "Country"
-msgstr ""
+msgstr "Paese"
 
 #: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
-msgstr ""
+msgstr "Collegamenti"
 
 #: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
-msgstr ""
+msgstr "Joshua Project"
 
 #: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
@@ -3924,15 +3920,15 @@ msgstr "Inserisci qui il titolo del Gruppo di persone"
 
 #: dt-people-groups/people-groups.php:275
 msgid "Display Options"
-msgstr ""
+msgstr "Opzione di Visualizzazione"
 
 #: dt-people-groups/people-groups.php:282
 msgid "Display People Groups Tab in Navigation Bar"
-msgstr ""
+msgstr "Mostra la Scheda dei Gruppi Etnici nella Barra di Navigazione"
 
 #: dt-people-groups/people-groups.php:304
 msgid "Import People Group"
-msgstr ""
+msgstr "Importare un Gruppo Etnico"
 
 #: dt-posts/custom-post-type.php:182
 msgid "Tags"
@@ -3949,7 +3945,7 @@ msgstr "Non seguire più"
 
 #: dt-posts/dt-posts.php:107
 msgid "Updated existing record instead of creating a new record."
-msgstr ""
+msgstr "Aggiorna un registro esistente invece di crearne uno nuovo."
 
 #: dt-posts/dt-posts.php:1316
 msgid "Magic Link Submission"
@@ -4116,7 +4112,7 @@ msgstr "%s è stato aggiunto ai coach"
 #: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
-msgstr "% 1$s è stato rimosso dai coach il %2$s"
+msgstr "%1$s è stato rimosso dai coach il %2$s"
 
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
@@ -4196,7 +4192,7 @@ msgstr "%s eliminato"
 #: dt-posts/posts.php:457 dt-posts/posts.php:470
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "%1$s removed from locations"
+msgstr "%1$s è stato rimosso dalle località"
 
 #: dt-posts/posts.php:460 dt-posts/posts.php:477
 msgctxt "Location1 added to locations"
@@ -4352,7 +4348,7 @@ msgstr ""
 
 #: dt-reports/magic-url-setup.php:156
 msgid "Delete and replace the app link"
-msgstr "Elimina e sostituiscili il link dell'app."
+msgstr "Elimina e sostituisci il link dell'app"
 
 #: dt-reports/reports.php:159
 msgid "Added new report"
@@ -4677,7 +4673,7 @@ msgid ""
 "fields and @mention me or other users"
 msgstr ""
 "Benvenuto %1$s, questo è il tuo record di contatto personale. Aggiorna pure "
-"i campi e @menziona me o gli altri utenti."
+"i campi e @menziona me o altri utenti"
 
 #: dt-users/user-hooks-and-config.php:278
 #: dt-users/user-hooks-and-config.php:316
@@ -4748,7 +4744,7 @@ msgstr "%1$s è stato accettato il %2$s dopo %3$s giorni"
 #: dt-users/user-management.php:173
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "%1$s in attesa di tentativo di contatto da  %2$s giorni"
+msgstr "%1$s in attesa di tentativo di contatto da %2$s giorni"
 
 #: dt-users/user-management.php:174
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
@@ -4789,7 +4785,7 @@ msgstr "Visualizza Utente"
 
 #: dt-users/user-management.php:289
 msgid "%s days since last update"
-msgstr "%s  giorni dall'ultimo aggiornamento"
+msgstr "%s giorni dall'ultimo aggiornamento"
 
 #: dt-users/user-metrics.php:106
 msgid "Updated fields"
@@ -4898,7 +4894,7 @@ msgstr "Modifica tutti i campi dei dettagli"
 
 #: single-template.php:377
 msgid "Show Hidden Tiles"
-msgstr ""
+msgstr "Mostra i Pannelli Nascosti"
 
 #: single-template.php:398 template-new-bulk-post.php:276
 #: template-new-post.php:166
