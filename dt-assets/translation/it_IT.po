@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2022-12-09T10:38:52+00:00\n"
-"Language: it\n"
+"PO-Revision-Date: 2023-01-04 15:10+0000\n"
+"Last-Translator: Kyle Koval <kyle.koval@gmail.com>\n"
+"Language-Team: Italian <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/it_IT/>\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -50,6 +54,7 @@ msgid "Request Record Access Permission"
 msgstr "Richiedi Permesso di Accesso al Record"
 
 #: 403.php:39 dt-users/template-new-user.php:273
+#, fuzzy
 msgid "Back"
 msgstr "Indietro"
 
@@ -80,10 +85,12 @@ msgstr "Invia Richiesta"
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:153
 #: template-new-post.php:179
+#, fuzzy
 msgid "Cancel"
 msgstr "Annulla"
 
 #: 404.php:25
+#, fuzzy
 msgid "Epic 404 - Not Found"
 msgstr "Epic 404 - Non trovato"
 
@@ -276,6 +283,7 @@ msgstr "Effettua le selezioni qui sotto"
 #: archive-template.php:591 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:150 template-settings.php:136
+#, fuzzy
 msgid "Name"
 msgstr "Nome"
 
@@ -477,6 +485,7 @@ msgstr "Non sono presenti notifiche"
 #: dt-assets/functions/enqueue-scripts.php:258
 #: dt-assets/functions/enqueue-scripts.php:298
 #: dt-assets/parts/loop-activity-comment.php:156 single-template.php:431
+#, fuzzy
 msgid "Delete"
 msgstr "Elimina"
 
@@ -1678,6 +1687,7 @@ msgstr "Scegli un'opzione:"
 
 #: dt-contacts/access-module.php:508 dt-contacts/access-module.php:539
 #: dt-contacts/access-module.php:567 dt-contacts/base-setup.php:465
+#, fuzzy
 msgid "Confirm"
 msgstr "Conferma"
 
@@ -1868,6 +1878,7 @@ msgstr "Whatsapp"
 #: dt-core/configuration/config-site-defaults.php:338
 #: dt-users/template-new-user.php:118 dt-users/template-new-user.php:119
 #: dt-users/template-user-management.php:355 template-settings.php:156
+#, fuzzy
 msgid "Email"
 msgstr "Email"
 
@@ -3043,8 +3054,9 @@ msgid "Create"
 msgstr "Crea"
 
 #: dt-groups/base-setup.php:597
+#, fuzzy
 msgid "Select"
-msgstr "Seleziona"
+msgstr "Selezionare"
 
 #: dt-groups/base-setup.php:602
 msgid "To add new members, click on 'Create' or 'Select'."
