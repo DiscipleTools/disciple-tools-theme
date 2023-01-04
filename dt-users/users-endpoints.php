@@ -403,7 +403,7 @@ class Disciple_Tools_Users_Endpoints
 
     public function get_my_info( WP_REST_Request $request ) {
         $user = wp_get_current_user();
-        if ( $user ) {
+        if ( isset( $user->ID ) && !empty( $user->ID )) {
             $info = [
                 'ID'           => $user->ID,
                 'user_email'   => $user->user_email,
