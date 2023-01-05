@@ -39,7 +39,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
          * @param $log
          */
         function dt_write_log( $log ) {
-            if ( true === WP_DEBUG ) {
+            if ( !defined( 'DT_WRITE_LOG' ) ) {
+                define( 'DT_WRITE_LOG', false );
+            }
+
+            if ( true === WP_DEBUG || true === DT_WRITE_LOG ) {
                 global $dt_write_log_microtime;
                 $now = microtime( true );
                 if ( $dt_write_log_microtime > 0 ) {
