@@ -202,6 +202,12 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         if ( ! empty( $fields ) && isset( $fields[ $meta_key ]['type'] ) ) {
             $field_type = $fields[ $meta_key ]['type'];
+        } elseif ( empty( $field_type ) && ( !empty( $fields ) && ( strpos( $meta_key, 'contact_' ) !== false ) ) ){
+            foreach ( $fields as $field_key => $field ){
+                if ( ( strpos( $field_key, 'contact_' ) !== false ) && ( strpos( $meta_key, $field_key ) !== false ) ){
+                    $field_type = $field['type'];
+                }
+            }
         }
 
         if ( ! empty( $fields ) && ! $object_note ) { // Build object note if contact, group, location, else ignore object note
