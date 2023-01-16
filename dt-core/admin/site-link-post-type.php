@@ -658,25 +658,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                                 echo '</td><tr/>' . "\n";
                                 break;
 
-                            case 'bearer':
-                                $predict_span_id = $k . '_predict_span_id';
-                                $linked_fields = $v['linked_fields'];
-                                $time_value = $linked_fields['time_value'];
-                                $time_unit = $linked_fields['time_unit'];
-
-                                echo '<tr><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
-                                    <td><input class="type-bearer" name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" readonly value="' . esc_attr( $data ) . '"
-                                    data-predict_span_id="' . esc_attr( $predict_span_id ) . '"
-                                    data-time_value="' . esc_attr( $time_value ) . '"
-                                    data-time_unit="' . esc_attr( $time_unit ) . '"/>';
-
-                                echo '&nbsp;<a href="#" onClick="refresh_bearer_key(event, \'' . esc_attr( $k ) . '\')">refresh</a><br><br>';
-                                echo '<span style="font-style: italic; font-size: 12px; color: #9a9797;">' . esc_attr( __( 'Predicted Expiration' ) ) . ': <span id="' . esc_attr( $predict_span_id ) . '">---</span></span>';
-
-                                echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
-                                echo '</td><tr/>' . "\n";
-                                break;
-
                             case 'number':
                                 echo '<tr><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
                                     <td><input name="' . esc_attr( $k ) . '" type="number" id="' . esc_attr( $k ) . '" value="' . esc_attr( $data ) . '" />';
@@ -731,10 +712,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     delete_post_meta( $post_id, 'site_key' );
                     delete_post_meta( $post_id, 'approved_ip_address' );
                     delete_post_meta( $post_id, 'dev_key' );
-                    delete_post_meta( $post_id, 'bearer_enabled' );
-                    delete_post_meta( $post_id, 'bearer_base_ts' );
-                    delete_post_meta( $post_id, 'bearer_time_value' );
-                    delete_post_meta( $post_id, 'bearer_time_unit' );
+                    delete_post_meta( $post_id, 'token_as_transfer_key' );
 
                     $this->build_cached_option(); // rebuilds cache for options
 
@@ -745,8 +723,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $field_data = $this->meta_box_custom_fields_settings();
             $fields = array_keys( $field_data );
 
-            if ( !isset( $_POST['bearer_enabled'] ) ){
-                delete_post_meta( $post_id, 'bearer_enabled' );
+            if ( !isset( $_POST['token_as_transfer_key'] ) ){
+                delete_post_meta( $post_id, 'token_as_transfer_key' );
             }
 
             foreach ( $fields as $f ) {
@@ -798,6 +776,13 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'default'     => self::generate_token(),
                 'section'     => 'site',
             ];
+            $fields['token_as_transfer_key'] = [
+                'name' => __( 'Token As Transfer Key' ),
+                'description' => __( 'Enable if you wish to use default token as bearer transfer key within API calls.' ),
+                'type' => 'boolean',
+                'default' => false,
+                'section' => 'site'
+            ];
 
             $fields['site1'] = [
                 'name'        => __( 'Site 1' ),
@@ -846,44 +831,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'type'        => 'text',
                 'default'     => '',
                 'section'     => 'non_wp',
-            ];
-
-            $fields['bearer_enabled'] = [
-                'name' => __( 'Bearer Enabled' ),
-                'description' => __( 'Enable bearer based long lived transfer tokens.' ),
-                'type' => 'boolean',
-                'default' => false,
-                'section' => 'site'
-            ];
-            $fields['bearer_base_ts'] = [
-                'name' => __( 'Bearer Key' ),
-                'description' => __( 'Refreshable bearer key, used to generate long lived transfer tokens.' ),
-                'type' => 'bearer',
-                'default' => time(),
-                'section' => 'site',
-                'linked_fields' => [
-                    'time_value' => 'bearer_time_value',
-                    'time_unit' => 'bearer_time_unit'
-                ]
-            ];
-            $fields['bearer_time_value'] = [
-                'name' => __( 'Bearer Time Value' ),
-                'description' => __( 'Bearer time value used with unit, to calculate bearer key expiration; based on recent refreshed point.' ),
-                'type' => 'number',
-                'default' => 1,
-                'section' => 'site'
-            ];
-            $fields['bearer_time_unit'] = [
-                'name' => __( 'Bearer Time Unit' ),
-                'description' => __( 'Bearer time unit used to calculate bearer key expiry point.' ),
-                'type' => 'key_select',
-                'default' => [
-                    'hours' => __( 'Hours' ),
-                    'days' => __( 'Days' ),
-                    'weeks' => __( 'Weeks' ),
-                    'months' => __( 'Months' )
-                ],
-                'section' => 'site'
             ];
 
             // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
@@ -1072,37 +1019,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         }
                     });
                 }
-
-                function refresh_bearer_key( e, key ) {
-                    if ( e ) {
-                        console.log('preventing default');
-                        e.preventDefault();
-                    }
-                    console.log('refreshing bearer key: ' + key);
-                    jQuery('#'+key).val(Math.round(Date.now() / 1000));
-
-                    // Update predicted bearer key expiry point.
-                    predict_bearer_key_expiry_point(key);
-                }
-
-                function predict_bearer_key_expiry_point(key) {
-                    let bearer_key_field = jQuery('#'+key);
-                    let predict_span_id = bearer_key_field.data('predict_span_id');
-                    let time_value = jQuery('#'+bearer_key_field.data('time_value')).val();
-                    let time_unit = jQuery('#'+bearer_key_field.data('time_unit')).val();
-
-                    if(predict_span_id && time_value && time_unit) {
-                        let predicted_expiry_point = moment.unix(bearer_key_field.val()).add(time_value, time_unit).format('dddd, MMMM Do YYYY, h:mm:ss A');
-                        jQuery('#'+predict_span_id).html(predicted_expiry_point);
-                    }
-                }
-
-                jQuery('document').ready(function (){
-                    // Generate expiry predictions for all identified bearer fields.
-                    jQuery('.type-bearer').each(function (idx, bearer){
-                        predict_bearer_key_expiry_point(jQuery(bearer).attr('id'));
-                    });
-                });
                 </script>";
 
                 echo '<style>
@@ -1219,10 +1135,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                   meta1.meta_value as site_key,
                   meta5.meta_value as approved_ip_address,
                   meta6.meta_value as dev_key,
-                  meta7.meta_value as bearer_enabled,
-                  meta8.meta_value as bearer_base_ts,
-                  meta9.meta_value as bearer_time_value,
-                  meta10.meta_value as bearer_time_unit
+                  meta7.meta_value as token_as_transfer_key
                 FROM $wpdb->posts as post
                   JOIN $wpdb->postmeta as meta1 ON post.ID=meta1.post_id AND meta1.meta_key = 'site_key'
                   JOIN $wpdb->postmeta as meta2 ON post.ID=meta2.post_id AND meta2.meta_key = 'token'
@@ -1230,10 +1143,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                   JOIN $wpdb->postmeta as meta4 ON post.ID=meta4.post_id AND meta4.meta_key = 'site2'
                   LEFT JOIN $wpdb->postmeta as meta5 ON post.ID=meta5.post_id AND meta5.meta_key = 'approved_ip_address'
                   LEFT JOIN $wpdb->postmeta as meta6 ON post.ID=meta6.post_id AND meta6.meta_key = 'dev_key'
-                  LEFT JOIN $wpdb->postmeta as meta7 ON post.ID=meta7.post_id AND meta7.meta_key = 'bearer_enabled'
-                  LEFT JOIN $wpdb->postmeta as meta8 ON post.ID=meta8.post_id AND meta8.meta_key = 'bearer_base_ts'
-                  LEFT JOIN $wpdb->postmeta as meta9 ON post.ID=meta9.post_id AND meta9.meta_key = 'bearer_time_value'
-                  LEFT JOIN $wpdb->postmeta as meta10 ON post.ID=meta10.post_id AND meta10.meta_key = 'bearer_time_unit'
+                  LEFT JOIN $wpdb->postmeta as meta7 ON post.ID=meta7.post_id AND meta7.meta_key = 'token_as_transfer_key'
                 WHERE post.post_status = 'publish' AND post.post_type = 'site_link_system'
             ", ARRAY_A  );
 
@@ -1247,10 +1157,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     'site2'     => $result['site2'],
                     'approved_ip_address' => $result['approved_ip_address'],
                     'dev_key' => $result['dev_key'],
-                    'bearer_enabled' => $result['bearer_enabled'],
-                    'bearer_base_ts' => $result['bearer_base_ts'],
-                    'bearer_time_value' => $result['bearer_time_value'],
-                    'bearer_time_unit' => $result['bearer_time_unit']
+                    'token_as_transfer_key' => $result['token_as_transfer_key']
                 ];
             }
 
@@ -1494,21 +1401,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                  * to support long-lived tokens.
                  */
 
-                if ( isset( $array['bearer_enabled'], $array['bearer_base_ts'], $array['bearer_time_value'], $array['bearer_time_unit'] ) && $array['bearer_enabled'] ){
-                    $base_ts = $array['bearer_base_ts'];
-                    $time_value = $array['bearer_time_value'];
-                    $time_unit = $array['bearer_time_unit'];
-                    $expiry_point = strtotime( '+' . $time_value . ' ' . $time_unit, $base_ts );
-
-                    // Determine if bearer token life has now expired.
-                    if ( $expiry_point < time() ){
-                        return false;
-
-                    } else {
-                        $expected_token = md5( $key . $base_ts );
-                        if ( $expected_token == $transfer_token ){
-                            return $key;
-                        }
+                if ( isset( $array['token'], $array['token_as_transfer_key'] ) && $array['token_as_transfer_key'] ){
+                    if ( $array['token'] == $transfer_token ){
+                        return $key;
                     }
                 } else {
                     $current_hour = md5( $key . current_time( 'Y-m-dH', 1 ) );
