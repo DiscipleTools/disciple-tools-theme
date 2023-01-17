@@ -1,4 +1,4 @@
-<dialog id="dt_icon_selector_dialog">
+<dialog id="dt_icon_selector_dialog" style="overflow: hidden;">
     <table>
         <tbody>
         <tr>
