@@ -200,7 +200,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             /**
              * URL loader
              */
-            add_action( 'init', function() {
+            add_action( 'wp_loaded', function() {
                 $template_for_url = [
                     'metrics'               => 'template-metrics.php',
                     'settings'              => 'template-settings.php',
@@ -220,7 +220,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
                         throw new Error( 'Expected to find template ' . $template_for_url[ $url_path ] );
                     }
                 }
-            } );
+            }, 10000 );
             /**
              * Set the locale for the user
              * must be loaded after most files
