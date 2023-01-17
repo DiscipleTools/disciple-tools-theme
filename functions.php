@@ -200,7 +200,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             /**
              * URL loader
              */
-            add_action( 'wp', function() {
+            add_action( 'wp_loaded', function() {
                 $template_for_url = [
                     'metrics'               => 'template-metrics.php',
                     'settings'              => 'template-settings.php',
