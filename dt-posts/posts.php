@@ -226,7 +226,7 @@ class Disciple_Tools_Posts
         //don't create activity on connection fields that are hidden
         foreach ( $fields as $field ){
             if ( isset( $field['p2p_key'] ) && $field['p2p_key'] === $activity->meta_key ){
-                if ( $activity->field_type === 'connection to' && $field['p2p_direction'] === 'to' || $activity->field_type === 'connection to' && $field['p2p_direction'] !== 'to' ){
+                if ( $activity->object_note === 'connection to' && $field['p2p_direction'] === 'to' || $activity->object_note === 'connection to' && $field['p2p_direction'] !== 'to' ){
                     if ( isset( $field['hidden'] ) && !empty( $field['hidden'] ) ){
                         return '';
                     }
@@ -235,11 +235,11 @@ class Disciple_Tools_Posts
         }
 
         if ( !$p2p_record ){
-            if ( $activity->field_type === 'connection from' ){
+            if ( $activity->object_note === 'connection from' ){
                 $from = get_post( $activity->object_id );
                 $to = get_post( $activity->meta_value );
                 $to_title = '#' . $activity->meta_value;
-            } elseif ( $activity->field_type === 'connection to' ){
+            } elseif ( $activity->object_note === 'connection to' ){
                 $to = get_post( $activity->object_id );
                 $from = get_post( $activity->meta_value );
                 $from_title = '#' . $activity->meta_value;
@@ -368,7 +368,7 @@ class Disciple_Tools_Posts
             }
         }
 
-        if ( $activity->field_type === 'connection from' ){
+        if ( $activity->object_note === 'connection from' ){
             return $object_note_from;
         } else {
             return $object_note_to;

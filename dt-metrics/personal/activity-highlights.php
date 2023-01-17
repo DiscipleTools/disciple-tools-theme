@@ -412,8 +412,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             JOIN $wpdb->posts as p
                 ON a1.object_id = p.ID
             JOIN $wpdb->p2p as p2p
-                ON p2p.p2p_from = IF(a2.field_type = 'connection to', a2.meta_value, a2.object_id)
-                AND p2p.p2p_to = IF(a2.field_type = 'connection to', a2.object_id, a2.meta_value)
+                ON p2p.p2p_from = IF(a2.object_note = 'connection to', a2.meta_value, a2.object_id)
+                AND p2p.p2p_to = IF(a2.object_note = 'connection to', a2.object_id, a2.meta_value)
                 AND p2p.p2p_type = 'baptizer_to_baptized'
             WHERE
                 a1.action = 'field_update'
