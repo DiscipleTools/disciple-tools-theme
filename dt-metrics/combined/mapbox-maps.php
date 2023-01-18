@@ -18,9 +18,6 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
     public $namespace = 'dt-metrics/combined';
 
     public function __construct() {
-        if ( ! DT_Mapbox_API::get_key() ) {
-            return;
-        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
@@ -62,6 +59,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
                 'translations' => [],
                 'settings' => [
                     'map_key' => DT_Mapbox_API::get_key(),
+                    'no_key_html_msg' => sprintf( __( 'To view this map, a mapbox key is needed; click <a href="%s">here</a> to add.', 'disciple_tools' ), site_url( '/wp-admin/admin.php?page=dt_mapping_module&tab=geocoding' ) ),
                     'map_mirror' => dt_get_location_grid_mirror( true ),
                     'menu_slug' => $this->base_slug,
                     'post_type' => 'contacts',

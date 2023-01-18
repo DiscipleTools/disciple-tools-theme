@@ -11,7 +11,14 @@ let mapbox_library_api = {
     if ( this.container_set_up ){ return; }
     if ( typeof window.dt_mapbox_metrics.settings === 'undefined' ) { return; }
 
-    let chart = jQuery('#chart')
+    let chart = jQuery('#chart');
+
+    // Ensure a valid mapbox key has been specified.
+    if (!window.dt_mapbox_metrics.settings.map_key) {
+      chart.empty();
+      chart.empty().html(window.dt_mapbox_metrics.settings.no_key_html_msg);
+      return;
+    }
 
     chart.empty().html(spinner_html)
 
