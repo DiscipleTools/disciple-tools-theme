@@ -52,7 +52,7 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
             'dt_mapbox_script', 'dt_mapbox_metrics', [
                 'settings' => [
                     'map_key' => DT_Mapbox_API::get_key(),
-                    'no_key_html_msg' => sprintf( __( 'To view this map, a mapbox key is needed; click <a href="%s">here</a> to add.', 'disciple_tools' ), site_url( '/wp-admin/admin.php?page=dt_mapping_module&tab=geocoding' ) ),
+                    'no_map_key_msg' => _x( 'To view this map, a mapbox key is needed; click here to add.', 'install mapbox key to view map', 'disciple_tools' ),
                     'map_mirror' => dt_get_location_grid_mirror( true ),
                     'menu_slug' => $this->base_slug,
                     'post_type' => 'groups',

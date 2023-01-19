@@ -16,7 +16,9 @@ let mapbox_library_api = {
     // Ensure a valid mapbox key has been specified.
     if (!window.dt_mapbox_metrics.settings.map_key) {
       chart.empty();
-      chart.empty().html(window.dt_mapbox_metrics.settings.no_key_html_msg);
+      let mapping_settings_url = window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_mapping_module&tab=geocoding';
+      chart.empty().html(`<a href="${window.lodash.escape(mapping_settings_url)}">${window.lodash.escape(window.dt_mapbox_metrics.settings.no_map_key_msg)}</a>`);
+
       return;
     }
 
