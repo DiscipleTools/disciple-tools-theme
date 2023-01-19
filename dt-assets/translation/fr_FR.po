@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2022-12-09T10:38:52+00:00\n"
+"POT-Creation-Date: 2023-01-19T10:50:15+00:00\n"
 "PO-Revision-Date: 2022-11-24 10:32+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: French <https://translate.disciple.tools/projects/disciple-"
@@ -4858,7 +4858,7 @@ msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "Filtres personnalisés"
 
-#: dt-users/users.php:1185 template-settings.php:159 template-settings.php:592
+#: dt-users/users.php:1187 template-settings.php:159 template-settings.php:592
 msgid "System Email"
 msgstr "Email sur le système"
 
