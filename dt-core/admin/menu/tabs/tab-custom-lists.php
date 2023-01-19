@@ -350,7 +350,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 // Display comment types, ignoring contact_ communication channel fields.
                 $comment_types  = apply_filters( 'dt_comments_additional_sections', [], 'contacts' );
                 foreach ( $comment_types ?? [] as $type ) {
-                    if ( ( isset( $type['is_comment_type'] ) && $type['is_comment_type'] ) || ( strpos( $type['key'], 'contact_' ) === false ) ){
+                    if ( ( ( isset( $type['is_comment_type'] ) && $type['is_comment_type'] ) || ( strpos( $type['key'], 'contact_' ) === false ) ) && !in_array( $type['key'], [ 'activity' ] ) ){
                         $enabled = ! isset( $type['enabled'] ) || $type['enabled'] !== false;
                         $supported_key_prefixes = isset( $type['key_prefix'] ) && substr( $type['key'], 0, strlen( $type['key_prefix'] ) ) === $type['key_prefix'];
                         ?>
