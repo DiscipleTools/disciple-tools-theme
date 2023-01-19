@@ -41,4 +41,4 @@ DT_Contacts_DMM::instance();
 require_once 'access-module.php';
 DT_Contacts_Access::instance();
 
-
+require_once 'contacts-utils.php';
