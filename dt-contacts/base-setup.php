@@ -664,7 +664,7 @@ class DT_Contacts_Base {
 
             // Extract custom comment types.
             $comment_type_options  = dt_get_option( 'dt_comment_types' );
-            $comment_type_fields = $comment_type_options[ $post_type ];
+            $comment_type_fields = $comment_type_options[ $post_type ] ?? [];
             foreach ( $comment_type_fields ?? [] as $key => $type ){
                 if ( isset( $type['is_comment_type'] ) && $type['is_comment_type'] ){
 
