@@ -105,7 +105,13 @@ jQuery(document).ready(function($) {
   let commentTemplate = window.lodash.template(`
   <div class="activity-block">
     <div>
-        <span class="gravatar"><img src="<%- gravatar  %>"/></span>
+        <span class="gravatar">
+        <% if( $.trim( gravatar ) ) { %>
+            <img src="<%- gravatar  %>"/>
+        <% } else { %>
+            <i class="mdi mdi-robot-outline"></i>
+        <% } %>
+        </span>
         <span><strong><%- name %></strong></span>
         <span class="comment-date"> <%- date %> </span>
       </div>
