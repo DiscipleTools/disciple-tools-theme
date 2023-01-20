@@ -17,9 +17,6 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
     public $namespace = 'user-management/v1';
 
     public function __construct() {
-        if ( ! DT_Mapbox_API::get_key() ) {
-            return;
-        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
@@ -81,6 +78,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
                     'title' => __( 'Responsibility Coverage', 'disciple_tools' ),
                     'menu_slug' => $this->base_slug,
                     'map_key'            => DT_Mapbox_API::get_key(),
+                    'no_map_key_msg' => _x( 'To view this map, a mapbox key is needed; click here to add.', 'install mapbox key to view map', 'disciple_tools' ),
                     'map_mirror'         => trailingslashit( dt_get_location_grid_mirror( true ) ),
                     'url_path'           => dt_get_url_path(),
                     'totals_rest_url' => 'user_grid_totals',
