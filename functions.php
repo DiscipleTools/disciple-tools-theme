@@ -63,6 +63,17 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
         }
     } );
 
+    /** Setup key for JWT authentication */
+    if ( !defined( 'JWT_AUTH_SECRET_KEY' ) ) {
+        if ( get_option( "my_jwt_key" ) ) {
+            define( 'JWT_AUTH_SECRET_KEY', get_option( "my_jwt_key" ) );
+        } else {
+            $iv = password_hash( random_bytes( 16 ), PASSWORD_DEFAULT );
+            update_option( 'my_jwt_key', $iv );
+            define( 'JWT_AUTH_SECRET_KEY', $iv );
+        }
+    }
+
     /**
      * Returns the main instance of Disciple_Tools to prevent the need to use globals.
      *
