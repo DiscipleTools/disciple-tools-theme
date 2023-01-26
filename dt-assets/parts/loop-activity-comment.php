@@ -49,7 +49,7 @@
                             </div>
                             <select id="comment_type_selector" class="cell auto">
                                 <?php
-                                $section_keys = [];
+                                $section_keys = [ 'activity' ];
                                 foreach ( $sections as $section ) {
                                     if ( ! in_array( $section['key'], $section_keys ) && ( ! isset( $section['is_comment_type'] ) || ( isset( $section['enabled'] ) && $section['enabled'] ) ) ) {
                                         $section_keys[] = $section['key'] ?>
