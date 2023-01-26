@@ -449,6 +449,20 @@ class Disciple_Tools_Posts_Endpoints {
                 },
             ]
         );
+
+        // Post creation endpoint for make.com request payloads.
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/make_post_create', [
+                [
+                    'methods'  => 'POST',
+                    'callback' => [ $this, 'make_post_create' ],
+                    'args' => [
+                        'post_type' => $arg_schemas['post_type'],
+                    ],
+                    'permission_callback' => '__return_true'
+                ]
+            ]
+        );
     }
 
     /**
@@ -701,5 +715,13 @@ class Disciple_Tools_Posts_Endpoints {
             return $result;
         }
         return [];
+    }
+
+    public function make_post_create( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        if ( !( DT_Posts::can_access( $url_params['post_type'] ) || DT_Posts::can_create( $url_params['post_type'] ) ) ){
+            return new WP_Error( __FUNCTION__, 'No permissions to read ' . $url_params['post_type'], [ 'status' => 403 ] );
+        }
+        return DT_Posts::make_post_create( $url_params['post_type'], $request->get_params() );
     }
 }

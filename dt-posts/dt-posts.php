@@ -2122,6 +2122,127 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         return false;
     }
+
+    /**
+     * Create new posts, based on incoming Make.com payload shapes. Endpoint introduced whilst interfacing with Make.com platform;
+     * which typically produces the following output shapes:
+     *
+     * {
+        "age": ">41",
+        "name": "Make Contact 1",
+        "tags": [
+        "item-1",
+        "item-2"
+        ],
+        "type": "access",
+        "gender": "male",
+        "sources": [
+        "web"
+        ],
+        "nickname": "Makes-Stuff",
+        "campaigns": [
+        "camp-1",
+        "camp-2",
+        "camp-3"
+        ],
+        "languages": [
+        "en"
+        ],
+        "milestones": [
+        "milestone_has_bible",
+        "milestone_reading_bible"
+        ],
+        "seeker_path": "attempted",
+        "baptism_date": "2023-01-24T11:09:00.000Z",
+        "faith_status": "believer",
+        "contact_email": "makes@make.com",
+        "contact_other": "@other",
+        "contact_phone": "1234567890",
+        "reason_closed": "none",
+        "reason_paused": "none",
+        "overall_status": "new",
+        "contact_address": "123 Make Street",
+        "contact_twitter": "@twitter",
+        "requires_update": true,
+        "contact_facebook": "@facebook",
+        "baptism_generation": 1,
+        "reason_unassignable": "needs_review",
+        "quick_button_no_show": 6,
+        "quick_button_no_answer": 2,
+        "quick_button_meeting_complete": 5,
+        "quick_button_meeting_scheduled": 4,
+        "quick_button_contact_established": 3
+        }
+     *
+     * @param string $post_type
+     * @param array $fields
+     *
+     * @return array|WP_Error
+     *
+     * TODO:
+     *  Explore the usage of conversion-schemas, to introduce a more generic interface; supporting different incoming
+     *  request payload shapes!
+     */
+
+    public static function make_post_create( string $post_type, array $fields = [] ): array{
+        $field_settings = self::get_post_field_settings( $post_type, false );
+        $ignore_field_keys = [ 'post_type' ];
+        $updates = [];
+
+        // Simply convert make request payload to D.T. shape and submit to existing create function.
+        foreach ( $fields ?? [] as $field_key => $field ){
+            if ( !in_array( $field_key, $ignore_field_keys ) && isset( $field_settings[$field_key] ) ){
+                $field_setting = $field_settings[$field_key];
+                switch ( $field_setting['type'] ){
+                    case 'number':
+                    case 'textarea':
+                    case 'text':
+                    case 'boolean':
+                    case 'key_select':
+                        $updates[$field_key] = $field;
+                        break;
+                    case 'date':
+                        // Convert iso date to epoch timestamp.
+                        $updates[$field_key] = strtotime( $field );
+                        break;
+                    case 'communication_channel':
+                        $updates[$field_key] = [
+                            [
+                                'value' => $field
+                            ]
+                        ];
+                        break;
+                    case 'tags':
+                    case 'multi_select':
+                        if ( is_array( $field ) ){
+                            $options = [];
+                            foreach ( $field as $option ){
+                                $options[] = [
+                                    'value' => $option
+                                ];
+                            }
+
+                            $updates[$field_key] = [
+                                'values' => $options
+                            ];
+                        }
+                        break;
+                    case 'link':
+                    case 'array':
+                    case 'connection':
+                    case 'user_select':
+                    case 'task':
+                    case 'location':
+                    case 'location_meta':
+                        // TODO...
+                        break;
+                }
+            }
+        }
+
+        dt_write_log( $updates );
+        return self::create_post( $post_type, $updates );
+    }
 }
 
 
