@@ -168,6 +168,11 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             $url_path = dt_get_url_path();
             require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
             require_once( 'dt-core/libraries/wp-queue/wp-queue.php' ); //w
+
+            if ( !class_exists( 'Jwt_Auth' ) ) {
+                require_once( 'dt-core/libraries/wp-api-jwt-auth/jwt-auth.php' );
+            }
+
             require_once( 'dt-core/configuration/config-site-defaults.php' ); // Force required site configurations
             require_once( 'dt-core/wp-async-request.php' ); // Async Task Processing
             require_once( 'dt-core/configuration/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
