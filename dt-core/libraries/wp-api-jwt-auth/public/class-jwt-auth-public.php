@@ -428,7 +428,7 @@ class Jwt_Auth_Public {
 	 */
 	private static function get_algorithm() {
 		$algorithm = apply_filters( 'jwt_auth_algorithm', 'HS256' );
-		if ( ! in_array( $algorithm, self::supported_algorithms ) ) {
+		if ( ! in_array( $algorithm, self::$supported_algorithms ) ) {
 			return false;
 		}
 
