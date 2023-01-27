@@ -1389,6 +1389,24 @@ jQuery(document).ready(function($) {
    * Custom Tile Display - [END]
    */
 
+  /**
+   * Number Input Field Scrolling - [START]
+   */
+
+  $(document).on('focus', 'input[type=number]', function (e) {
+    $(this).on('wheel.disableScroll', function (e) {
+      e.preventDefault();
+    })
+  });
+
+  $(document).on('blur', 'input[type=number]', function (e) {
+    $(this).off('wheel.disableScroll');
+  });
+
+  /**
+   * Number Input Field Scrolling - [END]
+   */
+
 })
 
 
