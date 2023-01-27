@@ -32,7 +32,7 @@ class Jwt_Auth {
 	 *
 	 * @var Jwt_Auth_Loader Maintains and registers all hooks for the plugin.
 	 */
-	protected Jwt_Auth_Loader $loader;
+	protected $loader; // Jwt_Auth_Loader type hint removed as a few systems are still running 7.0/7.2
 
 	/**
 	 * The unique identifier of this plugin.
