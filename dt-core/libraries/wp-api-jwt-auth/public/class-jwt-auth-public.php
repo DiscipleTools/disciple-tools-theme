@@ -21,7 +21,7 @@ class Jwt_Auth_Public {
 	 *
 	 * @var string The ID of this plugin.
 	 */
-	private string $plugin_name;
+	private $plugin_name;
 
 	/**
 	 * The version of this plugin.
@@ -30,21 +30,21 @@ class Jwt_Auth_Public {
 	 *
 	 * @var string The current version of this plugin.
 	 */
-	private string $version;
+	private $version;
 
 	/**
 	 * The namespace to add to the api calls.
 	 *
 	 * @var string The namespace to add to the api call
 	 */
-	private string $namespace;
+	private $namespace;
 
 	/**
 	 * Store errors to display if the JWT is wrong
 	 *
 	 * @var WP_Error|null
 	 */
-	private ?WP_Error $jwt_error = null;
+	private $jwt_error = null;
 
 	/**
 	 * Supported algorithms to sign the token.
@@ -53,7 +53,7 @@ class Jwt_Auth_Public {
 	 * @since 1.3.1
 	 * @see https://www.rfc-editor.org/rfc/rfc7518#section-3
 	 */
-	private static array $supported_algorithms = [ 'HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512', 'PS256', 'PS384', 'PS512' ];
+	private static $supported_algorithms = [ 'HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512', 'PS256', 'PS384', 'PS512' ];
 
 	/**
 	 * Initialize the class and set its properties.

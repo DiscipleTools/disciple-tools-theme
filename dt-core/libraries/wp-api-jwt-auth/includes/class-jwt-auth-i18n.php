@@ -28,7 +28,7 @@ class Jwt_Auth_i18n {
 	 *
 	 * @var string The domain identifier for this plugin.
 	 */
-	private string $domain;
+	private $domain;
 
 	/**
 	 * Load the plugin text domain for translation.

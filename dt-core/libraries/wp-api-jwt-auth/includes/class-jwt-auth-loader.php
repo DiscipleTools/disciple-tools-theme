@@ -24,7 +24,7 @@ class Jwt_Auth_Loader {
 	 *
 	 * @var array The actions registered with WordPress to fire when the plugin loads.
 	 */
-	protected array $actions;
+	protected $actions;
 
 	/**
 	 * The array of filters registered with WordPress.
@@ -33,7 +33,7 @@ class Jwt_Auth_Loader {
 	 *
 	 * @var array The filters registered with WordPress to fire when the plugin loads.
 	 */
-	protected array $filters;
+	protected $filters;
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
