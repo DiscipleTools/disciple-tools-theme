@@ -272,7 +272,7 @@ class Jwt_Auth_Public {
 	 * @param WP_REST_Request $request
 	 * @param bool|string $custom_token
 	 *
-	 * @return WP_Error | Object | Array
+	 * @return WP_Error|object|array|bool
 	 */
 	public function validate_token( WP_REST_Request $request, $custom_token = false ) {
 		/*
