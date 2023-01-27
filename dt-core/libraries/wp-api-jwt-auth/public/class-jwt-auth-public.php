@@ -53,7 +53,7 @@ class Jwt_Auth_Public {
 	 * @since 1.3.1
 	 * @see https://www.rfc-editor.org/rfc/rfc7518#section-3
 	 */
-	private array $supported_algorithms = [ 'HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512', 'PS256', 'PS384', 'PS512' ];
+	private static array $supported_algorithms = [ 'HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512', 'PS256', 'PS384', 'PS512' ];
 
 	/**
 	 * Initialize the class and set its properties.
@@ -98,6 +98,16 @@ class Jwt_Auth_Public {
 		}
 	}
 
+	public static function generate_token_static( $username, $password ) {
+		$request = new WP_REST_Request( 'POST', 'wp-json/jwt-auth/v1/token' );
+		$request->set_query_params( [
+			'username' => $username,
+			'password' => $password,
+		] );
+
+	return self::generate_token( $request );
+	}
+
 	/**
 	 * Get the user and password in the request body and generate a JWT
 	 *
@@ -105,7 +115,7 @@ class Jwt_Auth_Public {
 	 *
 	 * @return mixed|WP_Error|null
 	 */
-	public function generate_token( WP_REST_Request $request ) {
+	public static function generate_token( WP_REST_Request $request ) {
 		$secret_key = defined( 'JWT_AUTH_SECRET_KEY' ) ? JWT_AUTH_SECRET_KEY : false;
 		$username   = $request->get_param( 'username' );
 		$password   = $request->get_param( 'password' );
@@ -154,7 +164,7 @@ class Jwt_Auth_Public {
 		];
 
 		/** Let the user modify the token data before the sign. */
-		$algorithm = $this->get_algorithm();
+		$algorithm = self::get_algorithm();
 
 		if ( $algorithm === false ) {
 			return new WP_Error(
@@ -416,9 +426,9 @@ class Jwt_Auth_Public {
 	 *
 	 * @return false|mixed|null
 	 */
-	private function get_algorithm() {
+	private static function get_algorithm() {
 		$algorithm = apply_filters( 'jwt_auth_algorithm', 'HS256' );
-		if ( ! in_array( $algorithm, $this->supported_algorithms ) ) {
+		if ( ! in_array( $algorithm, self::supported_algorithms ) ) {
 			return false;
 		}
 
