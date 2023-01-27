@@ -274,7 +274,7 @@ class Jwt_Auth_Public {
 	 *
 	 * @return WP_Error|object|array|bool
 	 */
-	public function validate_token( WP_REST_Request $request, $custom_token = false ) {
+	public static function validate_token( WP_REST_Request $request, $custom_token = false ) {
 		/*
 		 * Looking for the Authorization header
 		 *
@@ -343,7 +343,7 @@ class Jwt_Auth_Public {
 
 		/** Try to decode the token */
 		try {
-			$algorithm = $this->get_algorithm();
+			$algorithm = self::get_algorithm();
 			if ( $algorithm === false ) {
 				return new WP_Error(
 					'jwt_auth_unsupported_algorithm',
