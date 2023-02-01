@@ -1593,7 +1593,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 return 'NULL';
             }
             foreach ( $values as &$val ) {
-                if ( '\N' === $val ) {
+                if ( '\N' === $val || empty( $val )) {
                     $val = 'NULL';
                 } else {
                     $val = "'" . esc_sql( trim( $val ) ) . "'";
