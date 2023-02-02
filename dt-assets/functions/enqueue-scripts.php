@@ -375,3 +375,17 @@ function dt_template_scripts( $slug, $name, $templates, $args ) {
     }
 }
 add_action( 'get_template_part', 'dt_template_scripts', 999, 4 );
+
+/**
+ * Log all successfully sent emails
+ */
+function dt_log_sent_emails( $mail_data ){
+    dt_activity_insert( [
+        'action' => 'mail_sent',
+        'meta_key' => $mail_data['subject'] ?? '',
+        'meta_value' => !empty( $mail_data['to'] ) ? json_encode( $mail_data['to'] ) : [],
+        'object_note' => ( strlen( $mail_data['message'] ) > 100 ) ? substr( $mail_data['message'], 0, 100 ) . '...' : $mail_data['message']
+    ] );
+}
+
+add_action( 'wp_mail_succeeded', 'dt_log_sent_emails', 999, 1 );
