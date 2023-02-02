@@ -776,13 +776,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'default'     => self::generate_token(),
                 'section'     => 'site',
             ];
-            $fields['token_as_transfer_key'] = [
-                'name' => __( 'Token As Transfer Key' ),
-                'description' => __( 'Enable if you wish to use default token as bearer transfer key within API calls.' ),
-                'type' => 'boolean',
-                'default' => false,
-                'section' => 'site'
-            ];
 
             $fields['site1'] = [
                 'name'        => __( 'Site 1' ),
@@ -806,6 +799,15 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'default'     => apply_filters( 'site_link_type', $permission = [ '' => '' ] ),
                 'section'     => 'site',
             ];
+
+            $fields['token_as_transfer_key'] = [
+                'name' => __( 'Use Token As API Key' ),
+                'description' => __( 'Enable if you wish to use this key directly for API calls.' ),
+                'type' => 'boolean',
+                'default' => false,
+                'section' => 'site'
+            ];
+
 
             $fields['approved_ip_address'] = [
                 'name'        => __( 'Approved IP Address' ),
