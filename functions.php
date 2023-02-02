@@ -63,6 +63,17 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
         }
     } );
 
+    /** Setup key for JWT authentication */
+    if ( !defined( 'JWT_AUTH_SECRET_KEY' ) ) {
+        if ( get_option( 'my_jwt_key' ) ) {
+            define( 'JWT_AUTH_SECRET_KEY', get_option( 'my_jwt_key' ) );
+        } else {
+            $iv = password_hash( random_bytes( 16 ), PASSWORD_DEFAULT );
+            update_option( 'my_jwt_key', $iv );
+            define( 'JWT_AUTH_SECRET_KEY', $iv );
+        }
+    }
+
     /**
      * Returns the main instance of Disciple_Tools to prevent the need to use globals.
      *
@@ -168,6 +179,9 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             $url_path = dt_get_url_path();
             require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
             require_once( 'dt-core/libraries/wp-queue/wp-queue.php' ); //w
+            if ( !class_exists( 'Jwt_Auth' ) ) {
+                require_once( 'dt-core/libraries/wp-api-jwt-auth/jwt-auth.php' );
+            }
             require_once( 'dt-core/configuration/config-site-defaults.php' ); // Force required site configurations
             require_once( 'dt-core/wp-async-request.php' ); // Async Task Processing
             require_once( 'dt-core/configuration/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
