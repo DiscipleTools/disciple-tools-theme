@@ -651,6 +651,20 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                                 echo '</td><tr/>' . "\n";
                                 break;
 
+                            case 'boolean':
+                                echo '<tr><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
+                                    <td><input name="' . esc_attr( $k ) . '" type="checkbox" id="' . esc_attr( $k ) . '"' . ( $data ? 'checked' : '' ) . '/>';
+                                echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
+                                echo '</td><tr/>' . "\n";
+                                break;
+
+                            case 'number':
+                                echo '<tr><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
+                                    <td><input name="' . esc_attr( $k ) . '" type="number" id="' . esc_attr( $k ) . '" value="' . esc_attr( $data ) . '" />';
+                                echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
+                                echo '</td><tr/>' . "\n";
+                                break;
+
                             default:
                                 break;
                         }
@@ -698,6 +712,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     delete_post_meta( $post_id, 'site_key' );
                     delete_post_meta( $post_id, 'approved_ip_address' );
                     delete_post_meta( $post_id, 'dev_key' );
+                    delete_post_meta( $post_id, 'token_as_transfer_key' );
 
                     $this->build_cached_option(); // rebuilds cache for options
 
@@ -707,6 +722,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             $field_data = $this->meta_box_custom_fields_settings();
             $fields = array_keys( $field_data );
+
+            if ( !isset( $_POST['token_as_transfer_key'] ) ){
+                delete_post_meta( $post_id, 'token_as_transfer_key' );
+            }
 
             foreach ( $fields as $f ) {
                 if ( ! isset( $_POST[ $f ] ) ) {
@@ -780,6 +799,15 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'default'     => apply_filters( 'site_link_type', $permission = [ '' => '' ] ),
                 'section'     => 'site',
             ];
+
+            $fields['token_as_transfer_key'] = [
+                'name' => __( 'Use Token As API Key' ),
+                'description' => __( 'Enable if you wish to use this key directly for API calls.' ),
+                'type' => 'boolean',
+                'default' => false,
+                'section' => 'site'
+            ];
+
 
             $fields['approved_ip_address'] = [
                 'name'        => __( 'Approved IP Address' ),
@@ -1108,7 +1136,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                   meta4.meta_value as site2,
                   meta1.meta_value as site_key,
                   meta5.meta_value as approved_ip_address,
-                  meta6.meta_value as dev_key
+                  meta6.meta_value as dev_key,
+                  meta7.meta_value as token_as_transfer_key
                 FROM $wpdb->posts as post
                   JOIN $wpdb->postmeta as meta1 ON post.ID=meta1.post_id AND meta1.meta_key = 'site_key'
                   JOIN $wpdb->postmeta as meta2 ON post.ID=meta2.post_id AND meta2.meta_key = 'token'
@@ -1116,6 +1145,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                   JOIN $wpdb->postmeta as meta4 ON post.ID=meta4.post_id AND meta4.meta_key = 'site2'
                   LEFT JOIN $wpdb->postmeta as meta5 ON post.ID=meta5.post_id AND meta5.meta_key = 'approved_ip_address'
                   LEFT JOIN $wpdb->postmeta as meta6 ON post.ID=meta6.post_id AND meta6.meta_key = 'dev_key'
+                  LEFT JOIN $wpdb->postmeta as meta7 ON post.ID=meta7.post_id AND meta7.meta_key = 'token_as_transfer_key'
                 WHERE post.post_status = 'publish' AND post.post_type = 'site_link_system'
             ", ARRAY_A  );
 
@@ -1128,7 +1158,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     'site1'     => $result['site1'],
                     'site2'     => $result['site2'],
                     'approved_ip_address' => $result['approved_ip_address'],
-                    'dev_key' => $result['dev_key']
+                    'dev_key' => $result['dev_key'],
+                    'token_as_transfer_key' => $result['token_as_transfer_key']
                 ];
             }
 
@@ -1366,17 +1397,29 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
 
             foreach ( $keys as $key => $array ) {
-                $current_hour = md5( $key . current_time( 'Y-m-dH', 1 ) );
-                $past = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) . '-1 hour' ) );
-                $past_hour = md5( $key . $past );
-                $next = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) .  '+1 hour' ) );
-                $next_hour = md5( $key . $next );
 
-                if ( $current_hour == $transfer_token
-                    || $past_hour == $transfer_token
-                    || $next_hour == $transfer_token ) {
+                /**
+                 * Determine how transfer token is to be examined; in order
+                 * to support long-lived tokens.
+                 */
 
-                    return $key;
+                if ( isset( $array['token'], $array['token_as_transfer_key'] ) && $array['token_as_transfer_key'] ){
+                    if ( $array['token'] == $transfer_token ){
+                        return $key;
+                    }
+                } else {
+                    $current_hour = md5( $key . current_time( 'Y-m-dH', 1 ) );
+                    $past = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) . '-1 hour' ) );
+                    $past_hour = md5( $key . $past );
+                    $next = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) . '+1 hour' ) );
+                    $next_hour = md5( $key . $next );
+
+                    if ( $current_hour == $transfer_token
+                        || $past_hour == $transfer_token
+                        || $next_hour == $transfer_token ){
+
+                        return $key;
+                    }
                 }
             }
 
@@ -1450,21 +1493,29 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         // Adds the type of connection to the site link system
-        public function default_site_link_type( $type ) {
-            $type['create_contacts'] = __( 'Create Contacts', 'disciple_tools' );
-            $type['create_update_contacts'] = __( 'Create and Update Contacts', 'disciple_tools' );
+        public function default_site_link_type( $type ){
+            $post_types = DT_Posts::get_post_types();
+            foreach ( $post_types ?? [] as $post_type ){
+                $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
+
+                $type['create_' . $post_type] = sprintf( __( 'Create %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
+                $type['create_update_' . $post_type] = sprintf( __( 'Create and Update %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
+            }
 
             return $type;
         }
 
         // Add the specific capabilities needed for the site to site linking.
-        public function default_site_link_capabilities( $args ) {
-            if ( 'create_contacts' === $args['connection_type'] ) {
-                $args['capabilities'][] = 'create_contacts';
-            }
-            if ( 'create_update_contacts' === $args['connection_type'] ) {
-                $args['capabilities'][] = 'create_contacts';
-                $args['capabilities'][] = 'update_any_contacts';
+        public function default_site_link_capabilities( $args ){
+            $post_types = DT_Posts::get_post_types();
+            foreach ( $post_types ?? [] as $post_type ){
+                if ( 'create_' . $post_type === $args['connection_type'] ){
+                    $args['capabilities'][] = 'create_' . $post_type;
+                }
+                if ( 'create_update_' . $post_type === $args['connection_type'] ){
+                    $args['capabilities'][] = 'create_' . $post_type;
+                    $args['capabilities'][] = 'update_any_' . $post_type;
+                }
             }
 
             return $args;
