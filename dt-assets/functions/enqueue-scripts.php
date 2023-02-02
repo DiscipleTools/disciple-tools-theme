@@ -382,7 +382,7 @@ add_action( 'get_template_part', 'dt_template_scripts', 999, 4 );
 function dt_log_sent_emails( $mail_data ){
     dt_activity_insert( [
         'action' => 'mail_sent',
-        'meta_key' => $mail_data['subject'] ?? '',
+        'object_name' => $mail_data['subject'] ?? '',
         'meta_value' => !empty( $mail_data['to'] ) ? json_encode( $mail_data['to'] ) : [],
         'object_note' => ( strlen( $mail_data['message'] ) > 100 ) ? substr( $mail_data['message'], 0, 100 ) . '...' : $mail_data['message']
     ] );
