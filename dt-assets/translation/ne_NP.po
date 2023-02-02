@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-01-19T10:50:15+00:00\n"
+"POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
 "Language: ne\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -625,7 +625,7 @@ msgstr "अन्त्य"
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/access-module.php:1291 dt-groups/base-setup.php:985
 #: dt-metrics/personal/activity-highlights.php:56
-#: dt-users/mapbox-coverage-map.php:77
+#: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "सबै"
 
@@ -1748,12 +1748,12 @@ msgstr "नक्कल परीक्षक"
 #: dt-metrics/combined/locations-list.php:121
 #: dt-metrics/contacts/baptism-tree.php:25
 #: dt-metrics/contacts/coaching-tree.php:25
-#: dt-metrics/contacts/mapbox-maps.php:31
+#: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
 #: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:95
-#: dt-metrics/personal/mapbox-contacts-maps.php:31
+#: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
@@ -2653,10 +2653,10 @@ msgstr "समूह "
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
 #: dt-metrics/combined/locations-list.php:166
-#: dt-metrics/groups/mapbox-maps.php:31 dt-metrics/groups/overview.php:23
+#: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
 #: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:99
-#: dt-metrics/personal/mapbox-groups-maps.php:31
+#: dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59
 #: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
@@ -3099,7 +3099,7 @@ msgstr "आलोचनात्मक बाटो "
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:29 dt-metrics/combined/site-links.php:23
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
 #: dt-metrics/combined/time-charts.php:43 dt-metrics/metrics.php:91
 msgid "Project"
 msgstr "आयोजना "
@@ -3133,7 +3133,7 @@ msgid "Number of contacts assigned for a face-to-face visit"
 msgstr "अनुहार-अनुहार भ्रमणका लागि तोकेका सम्पर्कहरूको संख्या"
 
 #: dt-metrics/combined/critical-path.php:230
-#: dt-metrics/combined/mapbox-maps.php:82 dt-metrics/contacts/overview.php:63
+#: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
 #: dt-users/template-user-management.php:524
 msgid "Active Contacts"
@@ -3181,7 +3181,7 @@ msgid "Number of contacts or users who have baptized a contact"
 msgstr "सम्पर्क वा प्रयोगकर्ताहरूको संख्या जसले सम्पर्कमा बप्तिस्मा लिएका छन्"
 
 #: dt-metrics/combined/critical-path.php:298
-#: dt-metrics/combined/mapbox-maps.php:83 dt-metrics/counter.php:168
+#: dt-metrics/combined/mapbox-maps.php:81 dt-metrics/counter.php:168
 msgid "Active Groups"
 msgstr "सक्रिय समूह "
 
@@ -3287,11 +3287,20 @@ msgstr "होभर नक्शा"
 msgid "Locations List"
 msgstr "स्थानहरुको सुची "
 
-#: dt-metrics/combined/mapbox-maps.php:28
+#: dt-metrics/combined/mapbox-maps.php:25
 msgid "Combined Maps"
 msgstr "संयुक्त नक्शा"
 
-#: dt-metrics/combined/mapbox-maps.php:84
+#: dt-metrics/combined/mapbox-maps.php:62
+#: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
+#: dt-metrics/personal/mapbox-contacts-maps.php:60
+#: dt-metrics/personal/mapbox-groups-maps.php:54
+#: dt-users/mapbox-coverage-map.php:81
+msgctxt "install mapbox key to view map"
+msgid "To view this map, a mapbox key is needed; click here to add."
+msgstr ""
+
+#: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
 msgstr "सक्रिय प्रयोगकर्ताहरू"
 
@@ -3395,7 +3404,7 @@ msgstr "प्रशिक्षक रुख "
 msgid "Coaching Generation Tree"
 msgstr "प्रशिक्षक पुस्टा रुख "
 
-#: dt-metrics/contacts/mapbox-maps.php:30
+#: dt-metrics/contacts/mapbox-maps.php:27
 msgid "Access Contact Maps"
 msgstr "सम्पर्क नक्शा पहुँच गर्नुहोस्"
 
@@ -3506,7 +3515,7 @@ msgstr "कुल मन्डलिहरु र समुहहरु "
 msgid "Church Generation"
 msgstr "मण्डली पुस्ता"
 
-#: dt-metrics/groups/mapbox-maps.php:30
+#: dt-metrics/groups/mapbox-maps.php:27
 msgid "Group Maps"
 msgstr "समूह नक्शा"
 
@@ -3653,11 +3662,11 @@ msgstr "मेरो समुहको ट्री"
 msgid "My Group Generation Tree"
 msgstr "मेरो समूह उत्पादन रूख"
 
-#: dt-metrics/personal/mapbox-contacts-maps.php:30
+#: dt-metrics/personal/mapbox-contacts-maps.php:27
 msgid "Contacts Maps"
 msgstr "सम्पर्क नक्शा"
 
-#: dt-metrics/personal/mapbox-groups-maps.php:30
+#: dt-metrics/personal/mapbox-groups-maps.php:27
 msgid "Groups Maps"
 msgstr "समूह नक्शा"
 
@@ -4311,7 +4320,7 @@ msgstr "नयाँ रिपोर्ट थपियो"
 msgid "Updated report"
 msgstr "अद्यावधिक रिपोर्ट"
 
-#: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:55
+#: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
 msgstr "कभरेज नक्शा"
 
@@ -4327,17 +4336,17 @@ msgstr "सक्रिय प्रयोगकर्ताहरूको स�
 msgid "Locations with Inactive Assigned"
 msgstr "निस्क्रिय असाइनमेन्टको साथ स्थानहरू"
 
-#: dt-users/mapbox-coverage-map.php:76
+#: dt-users/mapbox-coverage-map.php:73
 #: dt-users/template-user-management.php:248
 msgid "User Status"
 msgstr "प्रयोग कर्ताको अवस्था "
 
-#: dt-users/mapbox-coverage-map.php:78
+#: dt-users/mapbox-coverage-map.php:75
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
 msgstr "प्रयोगकर्तालाई$s मा थप्नुहोस्"
 
-#: dt-users/mapbox-coverage-map.php:81
+#: dt-users/mapbox-coverage-map.php:78
 msgid "Responsibility Coverage"
 msgstr "उत्तरदायित्व कभरेज"
 

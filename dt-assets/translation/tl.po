@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-01-19T10:50:15+00:00\n"
+"POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
 "Language: tl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -624,7 +624,7 @@ msgstr "katapusan"
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/access-module.php:1291 dt-groups/base-setup.php:985
 #: dt-metrics/personal/activity-highlights.php:56
-#: dt-users/mapbox-coverage-map.php:77
+#: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "Lahat"
 
@@ -1786,12 +1786,12 @@ msgstr "Kopyahin ang Checker"
 #: dt-metrics/combined/locations-list.php:121
 #: dt-metrics/contacts/baptism-tree.php:25
 #: dt-metrics/contacts/coaching-tree.php:25
-#: dt-metrics/contacts/mapbox-maps.php:31
+#: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
 #: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:95
-#: dt-metrics/personal/mapbox-contacts-maps.php:31
+#: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
@@ -2699,10 +2699,10 @@ msgstr "Grupo"
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
 #: dt-metrics/combined/locations-list.php:166
-#: dt-metrics/groups/mapbox-maps.php:31 dt-metrics/groups/overview.php:23
+#: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
 #: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:99
-#: dt-metrics/personal/mapbox-groups-maps.php:31
+#: dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59
 #: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
@@ -3162,7 +3162,7 @@ msgstr "Kritikal na Landas"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:29 dt-metrics/combined/site-links.php:23
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
 #: dt-metrics/combined/time-charts.php:43 dt-metrics/metrics.php:91
 msgid "Project"
 msgstr "Proyekto"
@@ -3196,7 +3196,7 @@ msgid "Number of contacts assigned for a face-to-face visit"
 msgstr "Bilang ng mga kontak na nakatakda para sa harapang pagbisita"
 
 #: dt-metrics/combined/critical-path.php:230
-#: dt-metrics/combined/mapbox-maps.php:82 dt-metrics/contacts/overview.php:63
+#: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
 #: dt-users/template-user-management.php:524
 msgid "Active Contacts"
@@ -3244,7 +3244,7 @@ msgid "Number of contacts or users who have baptized a contact"
 msgstr "Bilang ng mga kontak o user na may nabautismuhang kontak"
 
 #: dt-metrics/combined/critical-path.php:298
-#: dt-metrics/combined/mapbox-maps.php:83 dt-metrics/counter.php:168
+#: dt-metrics/combined/mapbox-maps.php:81 dt-metrics/counter.php:168
 msgid "Active Groups"
 msgstr "Mga Aktibong Grupo"
 
@@ -3352,11 +3352,20 @@ msgstr "I-hover ang Mapa"
 msgid "Locations List"
 msgstr "Listahan ng Lokasyon"
 
-#: dt-metrics/combined/mapbox-maps.php:28
+#: dt-metrics/combined/mapbox-maps.php:25
 msgid "Combined Maps"
 msgstr "Mga Pinagsamang mga Mapa"
 
-#: dt-metrics/combined/mapbox-maps.php:84
+#: dt-metrics/combined/mapbox-maps.php:62
+#: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
+#: dt-metrics/personal/mapbox-contacts-maps.php:60
+#: dt-metrics/personal/mapbox-groups-maps.php:54
+#: dt-users/mapbox-coverage-map.php:81
+msgctxt "install mapbox key to view map"
+msgid "To view this map, a mapbox key is needed; click here to add."
+msgstr ""
+
+#: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
 msgstr "Mga Aktibong User"
 
@@ -3460,7 +3469,7 @@ msgstr "Puno ng Pagtuturo"
 msgid "Coaching Generation Tree"
 msgstr "Tree ng Henerasyon ng Pagtuturo"
 
-#: dt-metrics/contacts/mapbox-maps.php:30
+#: dt-metrics/contacts/mapbox-maps.php:27
 msgid "Access Contact Maps"
 msgstr "I-acess ang mga Mapa ng Contact"
 
@@ -3574,7 +3583,7 @@ msgstr "Kabuuang Simbahan at Grupo"
 msgid "Church Generation"
 msgstr "Henerasyon ng Simbahan"
 
-#: dt-metrics/groups/mapbox-maps.php:30
+#: dt-metrics/groups/mapbox-maps.php:27
 msgid "Group Maps"
 msgstr "Mga Mapa ng Grupo"
 
@@ -3721,11 +3730,11 @@ msgstr "Ang Aking Puno ng mga Grupo"
 msgid "My Group Generation Tree"
 msgstr "Ang Aking Group Generation Tree"
 
-#: dt-metrics/personal/mapbox-contacts-maps.php:30
+#: dt-metrics/personal/mapbox-contacts-maps.php:27
 msgid "Contacts Maps"
 msgstr "Mga Mapa ng Contact"
 
-#: dt-metrics/personal/mapbox-groups-maps.php:30
+#: dt-metrics/personal/mapbox-groups-maps.php:27
 msgid "Groups Maps"
 msgstr "Mga Mapa ng Grupo"
 
@@ -4367,7 +4376,7 @@ msgstr "Magdagdag ng bagong ulat"
 msgid "Updated report"
 msgstr "Na-update na ulat"
 
-#: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:55
+#: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
 msgstr "Mapa ng Saklaw"
 
@@ -4383,17 +4392,17 @@ msgstr "Mga Lokasyon na may Aktibong mga User"
 msgid "Locations with Inactive Assigned"
 msgstr "Mga Lokasyon na may Nakatakdang Di-aktibo"
 
-#: dt-users/mapbox-coverage-map.php:76
+#: dt-users/mapbox-coverage-map.php:73
 #: dt-users/template-user-management.php:248
 msgid "User Status"
 msgstr "Kalagayan ng User"
 
-#: dt-users/mapbox-coverage-map.php:78
+#: dt-users/mapbox-coverage-map.php:75
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
 msgstr "Idagdag ang user sa: %s"
 
-#: dt-users/mapbox-coverage-map.php:81
+#: dt-users/mapbox-coverage-map.php:78
 msgid "Responsibility Coverage"
 msgstr "Saklaw ng Responsibilidad"
 

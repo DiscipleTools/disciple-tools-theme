@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-01-19T10:50:15+00:00\n"
+"POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -621,7 +621,7 @@ msgstr "konec"
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/access-module.php:1291 dt-groups/base-setup.php:985
 #: dt-metrics/personal/activity-highlights.php:56
-#: dt-users/mapbox-coverage-map.php:77
+#: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "Všechno"
 
@@ -1756,12 +1756,12 @@ msgstr "Kontrola duplikátů"
 #: dt-metrics/combined/locations-list.php:121
 #: dt-metrics/contacts/baptism-tree.php:25
 #: dt-metrics/contacts/coaching-tree.php:25
-#: dt-metrics/contacts/mapbox-maps.php:31
+#: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
 #: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:95
-#: dt-metrics/personal/mapbox-contacts-maps.php:31
+#: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:164
 #: dt-users/template-user-management.php:602
@@ -2658,10 +2658,10 @@ msgstr "Skupina"
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
 #: dt-metrics/combined/locations-list.php:166
-#: dt-metrics/groups/mapbox-maps.php:31 dt-metrics/groups/overview.php:23
+#: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
 #: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:99
-#: dt-metrics/personal/mapbox-groups-maps.php:31
+#: dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59
 #: dt-people-groups/people-groups-base.php:183
 msgid "Groups"
@@ -3113,7 +3113,7 @@ msgstr "Kritická cesta"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:29 dt-metrics/combined/site-links.php:23
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
 #: dt-metrics/combined/time-charts.php:43 dt-metrics/metrics.php:91
 msgid "Project"
 msgstr "Projekt"
@@ -3147,7 +3147,7 @@ msgid "Number of contacts assigned for a face-to-face visit"
 msgstr "Počet kontaktů přiřazených k osobní návštěvě"
 
 #: dt-metrics/combined/critical-path.php:230
-#: dt-metrics/combined/mapbox-maps.php:82 dt-metrics/contacts/overview.php:63
+#: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
 #: dt-users/template-user-management.php:524
 msgid "Active Contacts"
@@ -3194,7 +3194,7 @@ msgid "Number of contacts or users who have baptized a contact"
 msgstr "Počet kontaktů nebo uživatelů, kteří pokřtili kontakt"
 
 #: dt-metrics/combined/critical-path.php:298
-#: dt-metrics/combined/mapbox-maps.php:83 dt-metrics/counter.php:168
+#: dt-metrics/combined/mapbox-maps.php:81 dt-metrics/counter.php:168
 msgid "Active Groups"
 msgstr "Aktivní skupiny"
 
@@ -3302,11 +3302,20 @@ msgstr "Umístěte kurzor na mapu"
 msgid "Locations List"
 msgstr "Seznam lokalit"
 
-#: dt-metrics/combined/mapbox-maps.php:28
+#: dt-metrics/combined/mapbox-maps.php:25
 msgid "Combined Maps"
 msgstr "Kombinované mapy"
 
-#: dt-metrics/combined/mapbox-maps.php:84
+#: dt-metrics/combined/mapbox-maps.php:62
+#: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
+#: dt-metrics/personal/mapbox-contacts-maps.php:60
+#: dt-metrics/personal/mapbox-groups-maps.php:54
+#: dt-users/mapbox-coverage-map.php:81
+msgctxt "install mapbox key to view map"
+msgid "To view this map, a mapbox key is needed; click here to add."
+msgstr ""
+
+#: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
 msgstr "Aktivní uživatelé"
 
@@ -3410,7 +3419,7 @@ msgstr "Mapa koučovaných"
 msgid "Coaching Generation Tree"
 msgstr "Generační mapa koučovaných"
 
-#: dt-metrics/contacts/mapbox-maps.php:30
+#: dt-metrics/contacts/mapbox-maps.php:27
 msgid "Access Contact Maps"
 msgstr "Otevřete Mapy kontaktů"
 
@@ -3521,7 +3530,7 @@ msgstr "Celkem církví a skupin"
 msgid "Church Generation"
 msgstr "Generace církví"
 
-#: dt-metrics/groups/mapbox-maps.php:30
+#: dt-metrics/groups/mapbox-maps.php:27
 msgid "Group Maps"
 msgstr "Skupinové mapy"
 
@@ -3668,11 +3677,11 @@ msgstr "Strom mých skupin"
 msgid "My Group Generation Tree"
 msgstr "Můj skupinový generační strom"
 
-#: dt-metrics/personal/mapbox-contacts-maps.php:30
+#: dt-metrics/personal/mapbox-contacts-maps.php:27
 msgid "Contacts Maps"
 msgstr "Mapy kontaktů"
 
-#: dt-metrics/personal/mapbox-groups-maps.php:30
+#: dt-metrics/personal/mapbox-groups-maps.php:27
 msgid "Groups Maps"
 msgstr "Skupinové mapy"
 
@@ -4316,7 +4325,7 @@ msgstr "Přidán nový přehled"
 msgid "Updated report"
 msgstr "Aktualizovaný přehled"
 
-#: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:55
+#: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
 msgstr "Mapa pokrytí"
 
@@ -4332,17 +4341,17 @@ msgstr "Místa s aktivními uživateli"
 msgid "Locations with Inactive Assigned"
 msgstr "Místa s neaktivními přiřazenými"
 
-#: dt-users/mapbox-coverage-map.php:76
+#: dt-users/mapbox-coverage-map.php:73
 #: dt-users/template-user-management.php:248
 msgid "User Status"
 msgstr "Stav uživatele"
 
-#: dt-users/mapbox-coverage-map.php:78
+#: dt-users/mapbox-coverage-map.php:75
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
 msgstr "Přidat uživatele do: %s"
 
-#: dt-users/mapbox-coverage-map.php:81
+#: dt-users/mapbox-coverage-map.php:78
 msgid "Responsibility Coverage"
 msgstr "Rozsah odpovědnosti"
 
