@@ -60,11 +60,13 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
 
         $link = 'admin.php?page=dt_options&tab='.$this->token.'&sub_tab=';
 
-        if ( isset( $_GET["sub_tab"] ) ) {
-            $tab = sanitize_key( wp_unslash( $_GET["sub_tab"] ) );
+        if ( isset( $_GET['sub_tab'] ) ) {
+            $tab = sanitize_key( wp_unslash( $_GET['sub_tab'] ) );
         } else {
             $tab = 'general';
         }
+
+        /* TODO: restrict access of firebase config to only Super Admins (network admins on multisites) */
 
         $vars = $this->process_postback();
         $is_dt = class_exists( 'Disciple_Tools' );
