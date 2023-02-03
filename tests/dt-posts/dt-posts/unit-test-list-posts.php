@@ -64,7 +64,7 @@ class DT_Posts_DT_Posts_List_Posts extends WP_UnitTestCase {
         return [
             'match on contact name'                  => [
                 'contacts',
-                [ 'Bob List' ],
+                [ 'name' => [ 'Bob List' ] ],
                 1,
                 [
                     'idx'   => 0,
