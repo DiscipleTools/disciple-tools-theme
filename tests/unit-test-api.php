@@ -16,13 +16,6 @@ class SiteLinkTest extends WP_UnitTestCase {
         'location_grid' => [ 'values' => [ [ 'value' => '3017382' ] ] ]
     ];
 
-    public function setupBeforeClass(): void  {
-        $user_id = wp_create_user( 'noperm', 'test', 'noperm@example.com' );
-        $user = get_user_by( 'id', $user_id );
-        $user->set_role( 'dispatcher' );
-        $this->sample_contact['assigned_to'] = $user_id;
-    }
-
 
     public function test_create(){
         //set up site link with create permissions
@@ -143,8 +136,6 @@ class SiteLinkTest extends WP_UnitTestCase {
     }
 
 
-
-
     public static function create_site_link( $type = 'create_update_contacts' ) {
 //        $current_site = get_current_site();
         $site1 = 'localhost/dt';
@@ -169,7 +160,11 @@ class SiteLinkTest extends WP_UnitTestCase {
 
     }
 
-    public static function setUpBeforeClass(): void {
+    public function setUpBeforeClass(): void {
         self::create_site_link();
+        $user_id = wp_create_user( 'noperm', 'test', 'noperm@example.com' );
+        $user = get_user_by( 'id', $user_id );
+        $user->set_role( 'dispatcher' );
+        $this->sample_contact['assigned_to'] = $user_id;
     }
 }
