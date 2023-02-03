@@ -67,7 +67,7 @@ class DT_Login_Endpoints {
             return new WP_Error( 'bad_token', $th->getMessage(), [ 'status' => 401 ] );
         }
 
-        $user_manager = new DT_Firebase_User_Manager( $payload );
+        $user_manager = new DT_Login_User_Manager( $payload );
 
         try {
             $response = $user_manager->login();
@@ -95,7 +95,7 @@ class DT_Login_Endpoints {
      */
     public function check_auth( WP_REST_Request $request ) {
 
-        $login_method = DT_Login_Fields::get( 'login_method' ) || DT_Login_Methods::WORDPRESS;
+        $login_method = DT_Login_Fields::get( 'login_method' );
 
         if ( DT_Login_Methods::WORDPRESS === $login_method && is_user_logged_in() ) {
             return new WP_REST_Response( [
@@ -127,7 +127,7 @@ class DT_Login_Endpoints {
      * @return mixed
      */
     public function get_user( WP_REST_Request $request ) {
-        $login_method = dt_sso_login_field( 'login_method' );
+        $login_method = DT_Login_Fields::get( 'login_method' );
 
         if ( DT_Login_Methods::WORDPRESS === $login_method && is_user_logged_in() ) {
             $user_id = get_current_user_id();
@@ -157,9 +157,9 @@ class DT_Login_Endpoints {
      * @return array
      */
     private function verify_firebase_token( string $token ) {
-        $project_id = dt_sso_login_field( 'firebase_project_id' );
+        $project_id = DT_Login_Fields::get( 'firebase_project_id' );
 
-        $payload = ( new DT_Firebase_Token( $token ) )->verify( $project_id );
+        $payload = ( new DT_Login_Firebase_Token( $token ) )->verify( $project_id );
 
         return $payload;
     }

@@ -366,9 +366,12 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             /**
              * dt-login
              */
+            require_once( 'dt-login/login-methods.php' );
+            require_once( 'dt-login/login-firebase-token.php' );
+            require_once( 'dt-login/login-user-manager.php' );
             require_once( 'dt-login/login-fields.php' );
-            require_once( 'dt-login/login-endpoints.php' );
             require_once( 'dt-login/login-shortcodes.php' );
+            require_once( 'dt-login/login-endpoints.php' );
 
             /**
              * Logging
