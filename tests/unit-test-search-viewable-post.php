@@ -409,9 +409,9 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          */
         $group = DT_Posts::create_post( 'groups', [ 'name' => 'this_is_a_group1' ], true, false );
         $this->assertNotWPError( $group );
-        $c1 = DT_Posts::create_post( 'contacts', [ 'name' => 'this_is_a_test1', 'assigned_to' => 1, 'gender' => 'male', 'groups' => [ 'values' => [ [ 'value' => $group['ID'] ] ] ] ], true, false );
+        $c1 = DT_Posts::create_post( 'contacts', [ 'name' => 'this_is_a_test1', 'assigned_to' => self::$sample_contact['assigned_to'], 'gender' => 'male', 'groups' => [ 'values' => [ [ 'value' => $group['ID'] ] ] ] ], true, false );
         $this->assertNotWPError( $c1 );
-        $c2 = DT_Posts::create_post( 'contacts', [ 'name' => 'this_is_a_test2', 'assigned_to' => 1, 'gender' => 'male', 'groups' => [ 'values' => [ [ 'value' => $group['ID'] ] ] ] ], true, false );
+        $c2 = DT_Posts::create_post( 'contacts', [ 'name' => 'this_is_a_test2', 'assigned_to' => self::$sample_contact['assigned_to'], 'gender' => 'male', 'groups' => [ 'values' => [ [ 'value' => $group['ID'] ] ] ] ], true, false );
         $this->assertNotWPError( $c2 );
         //name1 and name 2
         $res1 = DT_Posts::search_viewable_post( 'contacts', [ [ 'name' => [ 'this_is_a_test1' ] ], [ 'name' => [ 'this_is_a_test2' ] ] ], false );
