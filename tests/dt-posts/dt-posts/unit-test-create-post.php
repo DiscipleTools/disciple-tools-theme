@@ -28,6 +28,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
     public static function setupBeforeClass(): void  {
         $user_id = wp_create_user( 'dispatcher1', 'test', 'test2@example.com' );
+        update_option( 'dt_base_user', $user_id, false );
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
