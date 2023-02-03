@@ -54,6 +54,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     public function test_create_on_custom_fields(){
         $user_id = wp_create_user( 'dispatcher3', 'test', 'test3@example.com' );
         wp_set_current_user( $user_id );
+        $current_user = wp_get_current_user();
+        $current_user->set_role( 'dispatcher' );
         $create_values = dt_test_get_sample_record_fields();
         $result = DT_Posts::create_post( 'contacts', $create_values, true, false );
         $this->assertNotWPError( $result );
@@ -87,6 +89,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
      */
     public function test_user_select_field(){
         $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        $user = get_user_by( 'ID', $user_id );
+        $user->set_role( 'multiplier' );
         $contact_fields = $this->sample_contact;
         $contact_fields['assigned_to'] = $user_id;
         $contact = DT_Posts::create_post( 'contacts', $contact_fields, true, false );
@@ -110,6 +114,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         //test contact update
         $user_2 = wp_create_user( 'multiplier_user_select2', 'test', 'multiplier_user_select2@example.com' );
+        $user2 = get_user_by( 'ID', $user_2 );
+        $user2->set_role( 'multiplier' );
         $update = DT_Posts::update_post( 'contacts', $contact['ID'], [ 'assigned_to' => $user_2 ], true, false );
         $this->assertNotWPError( $update );
         $contact_shared_with = DT_Posts::get_shared_with( 'contacts', $contact['ID'], false );
