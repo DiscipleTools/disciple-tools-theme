@@ -8,7 +8,7 @@
 
 class PostsTest extends WP_UnitTestCase {
 
-    public $sample_contact = [
+    public static $sample_contact = [
         'title' => 'Bob',
         'overall_status' => 'active',
         'milestones' => [ 'values' => [ [ 'value' => 'milestone_has_bible' ], [ 'value' => 'milestone_baptizing' ] ] ],
@@ -29,11 +29,11 @@ class PostsTest extends WP_UnitTestCase {
         'member_count' => 5
     ];
 
-    public function setupBeforeClass(): void  {
+    public static function setupBeforeClass(): void  {
         $user_id = wp_create_user( 'testcontactgroup', 'test', 'testcontactgroup@example.com' );
         $user = get_user_by( 'id', $user_id );
         $user->set_role( 'dispatcher' );
-        $this->sample_contact['assigned_to'] = $user_id;
+        self::$sample_contact['assigned_to'] = $user_id;
         update_option( 'dt_base_user', $user_id );
     }
 
@@ -43,7 +43,7 @@ class PostsTest extends WP_UnitTestCase {
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
 
-        $contact1 = DT_Posts::create_post( 'contacts', $this->sample_contact );
+        $contact1 = DT_Posts::create_post( 'contacts', self::$sample_contact );
         //create group with contact1 as member
         $group1 = DT_Posts::create_post( 'groups', [
             'title'   => 'group1',

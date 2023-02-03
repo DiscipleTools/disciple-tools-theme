@@ -8,7 +8,7 @@
 
 class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
 
-    public $sample_contact = [
+    public static $sample_contact = [
         'title' => 'Bob',
         'overall_status' => 'active',
         'milestones' => [ 'values' => [ [ 'value' => 'milestone_has_bible' ], [ 'value' => 'milestone_baptizing' ] ] ],
@@ -36,11 +36,11 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         }, $posts );
     }
 
-    public function setupBeforeClass(): void  {
+    public static function setupBeforeClass(): void  {
         $user_id = wp_create_user( 'unittestsearch', 'test', 'unittestsearch@example.com' );
         $user = get_user_by( 'id', $user_id );
         $user->set_role( 'dispatcher' );
-        $this->sample_contact['assigned_to'] = $user_id;
+        self::$sample_contact['assigned_to'] = $user_id;
     }
 
     public function test_search_fields_structure(){
@@ -48,7 +48,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $this->assertNotWPError( $group1 );
         $group2 = DT_Posts::create_post( 'groups', $this->sample_group, true, false );
         $this->assertNotWPError( $group2 );
-        $sample_contact = DT_Posts::create_post( 'contacts', $this->sample_contact, true, false );
+        $sample_contact = DT_Posts::create_post( 'contacts', self::$sample_contact, true, false );
         $this->assertNotWPError( $sample_contact );
         $contact1 = DT_Posts::create_post( 'contacts', [ 'name' => 'a', 'groups' => [ 'values' => [ [ 'value' => $group1['ID'] ] ] ] ], true, false );
         $this->assertNotWPError( $contact1 );
