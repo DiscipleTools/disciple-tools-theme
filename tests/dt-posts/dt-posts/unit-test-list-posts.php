@@ -7,7 +7,7 @@ require_once( get_template_directory() . '/tests/dt-posts/tests-setup.php' );
 class DT_Posts_DT_Posts_List_Posts extends WP_UnitTestCase {
 
     public static $sample_contact = [
-        'title'              => 'Bob',
+        'title'              => 'Bob List',
         'overall_status'     => 'active',
         'milestones'         => [
             'values' => [
@@ -64,12 +64,12 @@ class DT_Posts_DT_Posts_List_Posts extends WP_UnitTestCase {
         return [
             'match on contact name'                  => [
                 'contacts',
-                [ 'Bob' ],
+                [ 'Bob List' ],
                 1,
                 [
                     'idx'   => 0,
                     'key'   => 'name',
-                    'value' => 'Bob'
+                    'value' => 'Bob List'
                 ]
             ],
             'match on contact milestone'             => [

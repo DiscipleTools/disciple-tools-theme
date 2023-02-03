@@ -37,7 +37,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
-        $update_values = dt_test_get_sample_record_fields();
+        $update_values = dt_test_get_sample_record_fields( $user_id );
         $result = DT_Posts::update_post( 'contacts', self::$contact['ID'], $update_values, true, false );
         $this->assertNotWPError( $result );
 

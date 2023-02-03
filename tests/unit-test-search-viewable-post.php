@@ -41,6 +41,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $user = get_user_by( 'id', $user_id );
         $user->set_role( 'dispatcher' );
         self::$sample_contact['assigned_to'] = $user_id;
+        update_option( 'dt_base_user', $user_id );
     }
 
     public function test_search_fields_structure(){
