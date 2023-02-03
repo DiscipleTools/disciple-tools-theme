@@ -37,6 +37,11 @@ class DT_Posts_DT_Posts_List_Posts extends WP_UnitTestCase {
     public static $group = null;
 
     public static function setupBeforeClass(): void  {
+        $user_id = wp_create_user( 'dispatcher4', 'test', 'testdisp4@example.com' );
+        $user = get_user_by( 'id', $user_id );
+        $user->set_role( 'dispatcher' );
+        self::$sample_contact['assigned_to'] = $user_id;
+
         self::$contact = DT_Posts::create_post( 'contacts', self::$sample_contact, true, false );
         self::$group   = DT_Posts::create_post( 'groups', self::$sample_group, true, false );
     }

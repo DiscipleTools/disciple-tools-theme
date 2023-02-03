@@ -27,6 +27,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
+        self::$sample_contact['assigned_to'] = $user_id;
 
         self::$contact = DT_Posts::create_post( 'contacts', self::$sample_contact, true, false );
     }
