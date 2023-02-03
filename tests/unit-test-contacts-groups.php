@@ -34,6 +34,7 @@ class PostsTest extends WP_UnitTestCase {
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
+        $this->sample_contact['assigned_to'] = $user_id;
 
         $contact1 = DT_Posts::create_post( 'contacts', $this->sample_contact );
         //create group with contact1 as member

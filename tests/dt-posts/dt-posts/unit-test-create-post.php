@@ -58,7 +58,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
-        $create_values = dt_test_get_sample_record_fields();
+        $create_values = dt_test_get_sample_record_fields( get_option( 'dt_base_user' ) );
         $result = DT_Posts::create_post( 'contacts', $create_values, true, false );
         $this->assertNotWPError( $result );
 
