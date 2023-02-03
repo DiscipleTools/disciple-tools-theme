@@ -38,6 +38,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
      * @testdox Expected fields
      */
     public function test_expected_fields() {
+        $this->sample_contact['assigned_to'] = get_option( 'dt_base_user' );
         $group1 = DT_Posts::create_post( 'groups', $this->sample_group );
         $this->sample_contact['groups'] = [ 'values' => [ [ 'value' => $group1['ID'] ] ] ];
         $contact1 = DT_Posts::create_post( 'contacts', $this->sample_contact );
