@@ -187,6 +187,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             require_once( 'dt-core/configuration/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
             require_once( 'dt-core/configuration/restrict-site-access.php' ); // protect against DDOS attacks.
             require_once( 'dt-core/configuration/dt-configuration.php' ); //settings and configuration to alter default WP
+            require_once( 'dt-core/dt-route.php' ); // utility class wrapping registering rest routes
             require_once( 'dt-reports/magic-url-class.php' );
             require_once( 'dt-reports/magic-url-base.php' );
             require_once( 'dt-reports/magic-url-endpoints.php' );
@@ -361,6 +362,12 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             require_once( 'dt-notifications/notifications-queue.php' );
             require_once( 'dt-notifications/notifications-scheduler.php' );
             $this->notifications_scheduler = new Disciple_Tools_Notifications_Scheduler( Disciple_Tools_Notifications::instance() );
+
+            /**
+             * dt-login
+             */
+            require_once( 'dt-login/login-endpoints.php' );
+
 
             /**
              * Logging
