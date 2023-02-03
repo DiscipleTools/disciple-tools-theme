@@ -366,6 +366,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             /**
              * dt-login
              */
+            require_once( 'dt-login/login-fields.php' );
             require_once( 'dt-login/login-endpoints.php' );
             require_once( 'dt-login/login-shortcodes.php' );
 

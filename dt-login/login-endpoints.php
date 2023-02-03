@@ -95,7 +95,7 @@ class DT_Login_Endpoints {
      */
     public function check_auth( WP_REST_Request $request ) {
 
-        $login_method = dt_sso_login_field( 'login_method' );
+        $login_method = DT_Login_Fields::get( 'login_method' ) || DT_Login_Methods::WORDPRESS;
 
         if ( DT_Login_Methods::WORDPRESS === $login_method && is_user_logged_in() ) {
             return new WP_REST_Response( [
