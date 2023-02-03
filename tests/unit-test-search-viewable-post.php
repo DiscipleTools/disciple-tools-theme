@@ -36,6 +36,13 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         }, $posts );
     }
 
+    public function setupBeforeClass(): void  {
+        $user_id = wp_create_user( 'unittestsearch', 'test', 'unittestsearch@example.com' );
+        $user = get_user_by( 'id', $user_id );
+        $user->set_role( 'dispatcher' );
+        $this->sample_contact['assigned_to'] = $user_id;
+    }
+
     public function test_search_fields_structure(){
         $group1 = DT_Posts::create_post( 'groups', $this->sample_group, true, false );
         $this->assertNotWPError( $group1 );

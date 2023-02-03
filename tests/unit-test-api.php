@@ -16,6 +16,12 @@ class SiteLinkTest extends WP_UnitTestCase {
         'location_grid' => [ 'values' => [ [ 'value' => '3017382' ] ] ]
     ];
 
+    public function setupBeforeClass(): void  {
+        $user_id = wp_create_user( 'noperm', 'test', 'noperm@example.com' );
+        $user = get_user_by( 'id', $user_id );
+        $user->set_role( 'dispatcher' );
+        $this->sample_contact['assigned_to'] = $user_id;
+    }
 
 
     public function test_create(){

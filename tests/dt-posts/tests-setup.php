@@ -170,7 +170,7 @@ function dt_test_get_sample_record_fields( $assigned_to = null ){
         'text_test_private' => 'Some Random Private Text',
         'contact_communication_channel_test' => [ 'values' => [ [ 'value' => 'haha, you would love to contact me' ] ] ],
 //        'communication_channel_test1' => [ "values" => [ [ "value" => "haha, you would love to contact me" ] ] ],
-        'user_select_test' => $assigned_to ?: '1',
+        'user_select_test' => (string) $assigned_to ?: '1',
         'array_test' => [ 'test' => 'test array', 'key' => 'some funny key' ],
         'location_test' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
         'date_test' => '2018-12-31',

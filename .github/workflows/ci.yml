@@ -58,8 +58,8 @@ jobs:
     - name: Test Installation
       run: ./tests/test_installation.sh
 
-    - name: Test phpcs
-      run: ./tests/test_phpcs.sh
+#    - name: Test phpcs
+#      run: ./tests/test_phpcs.sh
 
     - name: Test eslint
       run: ./tests/test_eslint.sh

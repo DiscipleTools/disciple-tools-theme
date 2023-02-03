@@ -38,7 +38,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
      * @testdox Expected fields
      */
     public function test_expected_fields() {
-        $this->sample_contact['assigned_to'] = get_option( 'dt_base_user' );
+        $base_user = get_option( 'dt_base_user' );
+        $this->sample_contact['assigned_to'] = $base_user;
         $group1 = DT_Posts::create_post( 'groups', $this->sample_group );
         $this->sample_contact['groups'] = [ 'values' => [ [ 'value' => $group1['ID'] ] ] ];
         $contact1 = DT_Posts::create_post( 'contacts', $this->sample_contact );
@@ -48,7 +49,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertSame( 'France', $contact1['location_grid'][0]['label'] );
         $this->assertSame( (int) '1546214400', (int) $contact1['baptism_date']['timestamp'] );
         $this->assertSame( '798456780', $contact1['contact_phone'][0]['value'] );
-        $this->assertSame( '1', $contact1['assigned_to']['id'] );
+        $this->assertSame( $base_user, $contact1['assigned_to']['id'] );
         $this->assertSame( "Bob's group", $contact1['groups'][0]['post_title'] );
         $this->assertSame( 'tag1', $contact1['tags'][0] );
     }
