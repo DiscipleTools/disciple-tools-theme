@@ -17,6 +17,7 @@ function dt_firebase_login_ui( $attr ) {
 
     ?>
 
+    <?php //phpcs:disable ?>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
     <script>
@@ -36,6 +37,7 @@ function dt_firebase_login_ui( $attr ) {
     </script>
     <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+    <?php //phpcs:enable ?>
 
     <script>
         const ui = new firebaseui.auth.AuthUI(firebase.auth());

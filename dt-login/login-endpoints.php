@@ -63,7 +63,7 @@ class DT_Login_Endpoints {
 
         try {
             $payload = $this->verify_firebase_token( $token );
-        } catch (\Throwable $th) {
+        } catch ( \Throwable $th ) {
             return new WP_Error( 'bad_token', $th->getMessage(), [ 'status' => 401 ] );
         }
 
@@ -71,7 +71,7 @@ class DT_Login_Endpoints {
 
         try {
             $response = $user_manager->login();
-        } catch (\Throwable $th) {
+        } catch ( \Throwable $th ) {
             return new WP_Error( $th->getCode(), $th->getMessage(), [ 'status' => 401 ] );
         }
 

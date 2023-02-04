@@ -54,7 +54,7 @@ class DT_Login_Firebase_Token {
 
         $keys = json_decode( $body, true );
 
-        foreach ($keys as $kid => $cert) {
+        foreach ( $keys as $kid => $cert ) {
             $keys[$kid] = new Key( $cert, 'RS256' );
         }
 
