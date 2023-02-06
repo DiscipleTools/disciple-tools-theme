@@ -7,7 +7,7 @@
  */
 class DT_Login_User_Manager {
 
-    private array $firebase_auth;
+    private $firebase_auth;
 
     const DEFAULT_AUTH_SERVICE_ENDPOINT = 'wp-json/jwt-auth/v1/token';
 

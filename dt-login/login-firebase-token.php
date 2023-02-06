@@ -8,7 +8,7 @@ use Firebase\JWT\Key;
  */
 class DT_Login_Firebase_Token {
 
-    private string $token;
+    private $token;
 
     const PUBLIC_KEYS_CACHE = 'pg_login_public_keys';
 
