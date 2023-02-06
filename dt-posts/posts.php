@@ -2540,6 +2540,9 @@ class Disciple_Tools_Posts
             }
             foreach ( $meta_fields as $key => $value ){
                 if ( strpos( $key, 'contact_address' ) === 0 && strpos( $key, '_details' ) === false ){
+                    if ( is_array( $value ) ){
+                        $value = $value[0];
+                    }
                     $fields['location_grid_meta'][] = [ 'label' => $value, 'key' => $key ];
                 }
             }
