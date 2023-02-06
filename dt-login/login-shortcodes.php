@@ -15,12 +15,38 @@ function dt_firebase_login_ui( $attr ) {
         $app_id = DT_Login_Fields::get( 'firebase_app_id' );
         $invalid_settings = empty( $api_key ) || empty( $project_id ) || empty( $app_id ) ? 1 : 0;
 
+        $sign_in_options = [];
+        $sign_in_options['google'] = DT_Login_Fields::get( 'identity_providers_google' ) === 'on' ? true : false;
+        $sign_in_options['facebook'] = DT_Login_Fields::get( 'identity_providers_facebook' ) === 'on' ? true : false;
+        $sign_in_options['email'] = DT_Login_Fields::get( 'identity_providers_email' ) === 'on' ? true : false;
+        $sign_in_options['github'] = DT_Login_Fields::get( 'identity_providers_github' ) === 'on' ? true : false;
+        $sign_in_options['twitter'] = DT_Login_Fields::get( 'identity_providers_twitter' ) === 'on' ? true : false;
+
     ?>
 
     <?php //phpcs:disable ?>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
     <script>
+
+        const signInOptions = []
+
+        if ( <?php echo $sign_in_options['google'] ? 'true' : 'false' ?> ) {
+            signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID)
+        }
+        if ( <?php echo $sign_in_options['facebook'] ? 'true' : 'false' ?> ) {
+            signInOptions.push(firebase.auth.FacebookAuthProvider.PROVIDER_ID)
+        }
+        if ( <?php echo $sign_in_options['email'] ? 'true' : 'false' ?> ) {
+            signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID)
+        }
+        if ( <?php echo $sign_in_options['github'] ? 'true' : 'false' ?> ) {
+            signInOptions.push(firebase.auth.GithubAuthProvider.PROVIDER_ID)
+        }
+        if ( <?php echo $sign_in_options['twitter'] ? 'true' : 'false' ?> ) {
+            signInOptions.push(firebase.auth.TwitterAuthProvider.PROVIDER_ID)
+        }
+
         const firebaseConfig = {
             apiKey: "<?php echo esc_js( $api_key ) ?>",
             authDomain: "<?php echo esc_js( $project_id ) ?>.firebaseapp.com",
@@ -104,11 +130,7 @@ function dt_firebase_login_ui( $attr ) {
             // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
             signInFlow: 'popup',
             // signInSuccessUrl: 'https://prayer.global',
-            signInOptions: [
-                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-                firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            ],
+            signInOptions: signInOptions,
             tosUrl: '/content_app/tos',
             privacyPolicyUrl: '/content_app/privacy'
         }

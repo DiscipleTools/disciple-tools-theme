@@ -135,22 +135,10 @@ class DT_Login_Fields {
                     'off' => 'off',
                 ],
             ],
-            'identity_providers_microsoft' => [
+            'identity_providers_github' => [
                 'tab' => 'identity_providers',
-                'key' => 'identity_providers_microsoft',
-                'label' => 'Microsoft',
-                'description' => '',
-                'value' => 'off',
-                'type' => 'select',
-                'default' => [
-                    'on' => 'on',
-                    'off' => 'off',
-                ],
-            ],
-            'identity_providers_apple' => [
-                'tab' => 'identity_providers',
-                'key' => 'identity_providers_apple',
-                'label' => 'Apple',
+                'key' => 'identity_providers_github',
+                'label' => 'Github',
                 'description' => '',
                 'value' => 'off',
                 'type' => 'select',
