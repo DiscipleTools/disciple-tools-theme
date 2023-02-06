@@ -37,7 +37,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
 
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'SSO Login', 'disciple_tools' ), __( 'SSO Login', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=security', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'SSO Login', 'disciple_tools' ), __( 'SSO Login', 'disciple_tools' ), 'manage_dt', 'dt_options&tab='.$this->token, [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {

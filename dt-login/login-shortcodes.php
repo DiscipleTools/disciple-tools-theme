@@ -11,7 +11,7 @@ add_shortcode( 'dt_firebase_login_ui', 'dt_firebase_login_ui' );
  */
 function dt_firebase_login_ui( $attr ) {
         $api_key = DT_Login_Fields::get( 'firebase_api_key' );
-        $project_id = DT_Login_Fields::get( 'firebase_api_key' );
+        $project_id = DT_Login_Fields::get( 'firebase_project_id' );
         $app_id = DT_Login_Fields::get( 'firebase_app_id' );
         $invalid_settings = empty( $api_key ) || empty( $project_id ) || empty( $app_id ) ? 1 : 0;
 
@@ -61,8 +61,8 @@ function dt_firebase_login_ui( $attr ) {
             console.log(error)
         }
     </script>
-    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.css" />
     <?php //phpcs:enable ?>
 
     <script>
@@ -127,7 +127,6 @@ function dt_firebase_login_ui( $attr ) {
             },
             // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
             signInFlow: 'popup',
-            // signInSuccessUrl: 'https://prayer.global',
             signInOptions: signInOptions,
             tosUrl: '/content_app/tos',
             privacyPolicyUrl: '/content_app/privacy'
