@@ -417,6 +417,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
                 require_once( 'dt-core/admin/menu/tabs/tab-scripts.php' );
 
                 require_once( 'dt-core/admin/menu/tabs/tab-gdpr.php' );
+                require_once( 'dt-core/admin/menu/tabs/tab-email-logs.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-error-logs.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-workflows.php' );
 

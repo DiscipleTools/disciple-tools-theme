@@ -380,12 +380,15 @@ add_action( 'get_template_part', 'dt_template_scripts', 999, 4 );
  * Log all successfully sent emails
  */
 function dt_log_sent_emails( $mail_data ){
-    dt_activity_insert( [
-        'action' => 'mail_sent',
-        'object_name' => $mail_data['subject'] ?? '',
-        'meta_value' => !empty( $mail_data['to'] ) ? json_encode( $mail_data['to'] ) : [],
-        'object_note' => ( strlen( $mail_data['message'] ) > 100 ) ? substr( $mail_data['message'], 0, 100 ) . '...' : $mail_data['message']
-    ] );
+    $dt_email_logs_enabled = get_option( 'dt_email_logs_enabled' );
+    if ( isset( $dt_email_logs_enabled ) && $dt_email_logs_enabled ){
+        dt_activity_insert( [
+            'action' => 'mail_sent',
+            'object_name' => $mail_data['subject'] ?? '',
+            'meta_value' => !empty( $mail_data['to'] ) ? json_encode( $mail_data['to'] ) : [],
+            'object_note' => ( strlen( $mail_data['message'] ) > 100 ) ? substr( $mail_data['message'], 0, 100 ) . '...' : $mail_data['message']
+        ] );
+    }
 }
 
 add_action( 'wp_mail_succeeded', 'dt_log_sent_emails', 999, 1 );
