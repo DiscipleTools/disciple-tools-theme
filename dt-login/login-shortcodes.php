@@ -78,8 +78,6 @@ function dt_firebase_login_ui( $attr ) {
                     // User successfully signed in.
                     // Return type determines whether we continue the redirect automatically
                     // or whether we leave that to developer to handle.
-                    //
-                    // and can perform the handshake with the PG API to
 
                     showLoader()
 
