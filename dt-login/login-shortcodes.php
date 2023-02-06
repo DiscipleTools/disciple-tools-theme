@@ -10,10 +10,10 @@ add_shortcode( 'dt_firebase_login_ui', 'dt_firebase_login_ui' );
  * @return void
  */
 function dt_firebase_login_ui( $attr ) {
-        $fields = get_option( 'dt_sso_login_fields' );
-        $invalid_settings = empty( $fields['firebase_api_key']['value'] ) ||
-                            empty( $fields['firebase_project_id']['value'] ) ||
-                            empty( $fields['firebase_app_id']['value'] ) ? 1 : 0;
+        $api_key = DT_Login_Fields::get( 'firebase_api_key' );
+        $project_id = DT_Login_Fields::get( 'firebase_api_key' );
+        $app_id = DT_Login_Fields::get( 'firebase_app_id' );
+        $invalid_settings = empty( $api_key ) || empty( $project_id ) || empty( $app_id ) ? 1 : 0;
 
     ?>
 
@@ -22,10 +22,10 @@ function dt_firebase_login_ui( $attr ) {
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
     <script>
         const firebaseConfig = {
-            apiKey: "<?php echo esc_js( $fields['firebase_api_key']['value'] ) ?>",
-            authDomain: "<?php echo esc_js( $fields['firebase_project_id']['value'] ) ?>.firebaseapp.com",
-            projectId: "<?php echo esc_js( $fields['firebase_project_id']['value'] ) ?>",
-            appId: "<?php echo esc_js( $fields['firebase_app_id']['value'] ) ?>",
+            apiKey: "<?php echo esc_js( $api_key ) ?>",
+            authDomain: "<?php echo esc_js( $project_id ) ?>.firebaseapp.com",
+            projectId: "<?php echo esc_js( $project_id ) ?>",
+            appId: "<?php echo esc_js( $app_id ) ?>",
         };
 
         try {
