@@ -164,13 +164,13 @@ class DT_Login_Fields {
 
         $defaults_count = count( $defaults );
 
-        $saved_fields = get_option( 'dt_sso_login_fields', [] );
+        $saved_fields = get_site_option( 'dt_sso_login_fields', [] );
         $saved_count = count( $saved_fields );
 
         $fields = wp_parse_args( $saved_fields, $defaults );
 
         if ( $defaults_count !== $saved_count ) {
-            update_option( 'dt_sso_login_fields', $fields, true );
+            update_site_option( 'dt_sso_login_fields', $fields );
         }
 
         return $fields;
