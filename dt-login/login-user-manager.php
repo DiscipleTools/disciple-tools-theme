@@ -139,7 +139,7 @@ class DT_Login_User_Manager {
         }
 
         require_once( get_template_directory() . '/dt-core/libraries/wp-api-jwt-auth/public/class-jwt-auth-public.php' );
-        $token = Jwt_Auth_Public::generate_token_static( $this->uid, 'dummy-password' );
+        $token = Jwt_Auth_Public::generate_token_static( $this->email, 'dummy-password' );
 
         remove_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10 );
 

@@ -105,7 +105,7 @@ class Jwt_Auth_Public {
 			'password' => $password,
 		] );
 
-	return self::generate_token( $request );
+		return self::generate_token( $request );
 	}
 
 	/**
