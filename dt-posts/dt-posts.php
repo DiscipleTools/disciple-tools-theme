@@ -681,6 +681,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( isset( $search_and_filter_query['dt_recent'] ) ){
             $data = self::get_recently_viewed_posts( $post_type );
         } else {
+
+            // Support wildcard searching between string tokens.
+            if ( !empty( $search_and_filter_query['text'] ) && !is_numeric( $search_and_filter_query['text'] ) ){
+                $search_and_filter_query['text'] = str_replace( ' ', '%', $search_and_filter_query['text'] );
+            }
             $data = self::search_viewable_post( $post_type, $search_and_filter_query, $check_permissions );
         }
         if ( is_wp_error( $data ) ) {
@@ -1972,7 +1977,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         // Prepare sql and execute search query
-        $esc_like_search_sql = "'%" . esc_sql( $search ) . "%'";
+        $esc_like_search_sql = "'%" . str_replace( ' ', '%', esc_sql( $search ) ) . "%'";
         $extra_fields = '';
         $extra_joins  = '';
         $extra_where = '';
