@@ -8,11 +8,19 @@
 class DT_Login_User_Manager {
 
     private $firebase_auth;
+    private $uid;
+    private $email;
+    private $name;
+    private $identities;
 
     const DEFAULT_AUTH_SERVICE_ENDPOINT = 'wp-json/jwt-auth/v1/token';
 
     public function __construct( array $firebase_auth ) {
         $this->firebase_auth = $firebase_auth;
+        $this->uid = $this->firebase_auth['user_id'];
+        $this->email = $this->firebase_auth['email'];
+        $this->name = $this->firebase_auth['name'];
+        $this->identities = (array) $this->firebase_auth['firebase']->identities;
         add_filter( 'dt_allow_rest_access', [ $this, 'authorize_url' ], 10, 1 );
     }
 
@@ -32,6 +40,8 @@ class DT_Login_User_Manager {
     public function login() {
         if ( !$this->user_exists() ) {
             $this->create_user();
+        } else {
+            $this->update_user();
         }
 
         /* Login the user using the desired method. */
@@ -49,33 +59,38 @@ class DT_Login_User_Manager {
     }
 
     private function user_exists() {
-        $user = get_user_by( 'email', $this->firebase_auth['email'] );
+        $user = get_user_by( 'email', $this->email );
 
         return $user ? true : false;
     }
 
     private function create_user() {
-        $uid = $this->firebase_auth['user_id'];
-        $email = $this->firebase_auth['email'];
-        $display_name = $this->firebase_auth['name'];
         $password = wp_generate_password();
 
-        $identities = (array) $this->firebase_auth['firebase']->identities;
-
         $userdata = [
-            'user_email' => $email,
-            'user_login' => $uid,
+            'user_email' => $this->email,
+            'user_login' => $this->uid,
             'user_pass' => $password,
-            'display_name' => $display_name,
-            'nickname' => $display_name,
+            'display_name' => $this->name,
+            'nickname' => $this->name,
         ];
 
         /* setup roles */
 
         $user_id = wp_insert_user( $userdata );
 
-        add_user_meta( $user_id, 'firebase_uid', $uid );
-        add_user_meta( $user_id, 'firebase_identities', $identities );
+        $this->update_user_meta( $user_id );
+    }
+
+    private function update_user() {
+        $user = get_user_by( 'email', $this->email );
+
+        $this->update_user_meta( $user->ID );
+    }
+
+    private function update_user_meta( int $user_id ) {
+        add_user_meta( $user_id, 'firebase_uid', $this->uid );
+        add_user_meta( $user_id, 'firebase_identities', $this->identities );
     }
 
     /**
@@ -89,9 +104,9 @@ class DT_Login_User_Manager {
 
         add_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10, 3 );    // hook in earlier than other callbacks to short-circuit them
 
-        $user = wp_signon( array( 'user_login' => $this->firebase_auth['user_id'] ) );
+        $user = wp_signon( array( 'user_login' => $this->email ) );
 
-        remove_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10, 3 );
+        remove_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10 );
 
         if ( is_a( $user, 'WP_User' ) ) {
             wp_set_current_user( $user->ID, $user->user_login );
@@ -107,6 +122,10 @@ class DT_Login_User_Manager {
         return false;
     }
 
+    /**
+     * Login the user by returning a valid JWT token
+     * @return array|bool
+     */
     private function mobile_login() {
         /* Force logout of any logged in admin user with WP cookies set */
         wp_logout();
@@ -120,9 +139,9 @@ class DT_Login_User_Manager {
         }
 
         require_once( get_template_directory() . '/dt-core/libraries/wp-api-jwt-auth/public/class-jwt-auth-public.php' );
-        $token = Jwt_Auth_Public::generate_token_static( $this->firebase_auth['user_id'], 'dummy-password' );
+        $token = Jwt_Auth_Public::generate_token_static( $this->uid, 'dummy-password' );
 
-        remove_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10, 3 );
+        remove_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10 );
 
         if ( $token ) {
             return [
@@ -141,12 +160,12 @@ class DT_Login_User_Manager {
      * and unhooked immediately after it fires.
      *
      * @param WP_User $user
-     * @param string $username
+     * @param string $user_identifier
      * @param string $password
      * @return bool|WP_User a WP_User object if the username matched an existing user, or false if it didn't
      */
-    public function allow_programmatic_login( $user, $username, $password ) {
-        $user = get_user_by( 'login', $username );
+    public function allow_programmatic_login( $user, $user_identifier, $password ) {
+        $user = get_user_by( 'email', $user_identifier );
         return $user;
     }
 }
