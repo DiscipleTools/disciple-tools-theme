@@ -260,7 +260,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
             $langs                 = dt_get_available_languages();
             $comment_type_options  = dt_get_option( 'dt_comment_types' );
-            $comment_type_fields = $comment_type_options['contacts'];
+            $comment_type_fields = $comment_type_options['contacts'] ?? [];
             $comment_types         = isset( $_POST['type_keys'] ) ? array_keys( dt_recursive_sanitize_array( $_POST['type_keys'] ) ) : [];
 
             // Handle general updates.
@@ -357,7 +357,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         <tr>
                             <input type="hidden" name="type_keys[<?php echo esc_html( $type['key'] ) ?>]">
                             <td><input type="text" name="type_labels[<?php echo esc_html( $type['key'] ) ?>][default]"
-                                       value="<?php echo esc_html( $type['name'] ?? $type['key'] ) ?>"></td>
+                                       value="<?php echo esc_html( $type['name'] ?? ( $type['label'] ?? $type['key'] ) ) ?>">
+                            </td>
                             <td><?php echo esc_html( $type['key'] ) ?></td>
                             <td>
                                 <input name="type_enabled[<?php echo esc_html( $type['key'] ) ?>]"
