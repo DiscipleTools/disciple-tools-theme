@@ -11,6 +11,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
 {
     private $token = 'sso-login';
     private $tab_title = 'SSO Login';
+    private $is_site_admin;
 
     private static $_instance = null;
     public static function instance() {
@@ -31,6 +32,9 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
 
+        $user_id = get_current_user_id();
+
+        $this->is_site_admin = is_super_admin( $user_id );
 
         parent::__construct();
     } // End __construct()
@@ -124,6 +128,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function tab( $args ) {
+        $must_have_super_admin_rights = isset( $args['auth_level'] ) && $args['auth_level'] === 'superadmin';
         switch ( $args['type'] ) {
             case 'text':
                 ?>
@@ -132,7 +137,13 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                        <strong><?php echo esc_html( $args['label'] ) ?></strong>
                     </td>
                     <td>
-                        <input type="text" name="<?php echo esc_attr( $args['key'] ) ?>" value="<?php echo esc_attr( $args['value'] ) ?>" /> <?php echo esc_attr( $args['description'] ) ?>
+                        <input
+                            type="text"
+                            name="<?php echo esc_attr( $args['key'] ) ?>"
+                            value="<?php echo esc_attr( $args['value'] ) ?>"
+                            disabled="<?php echo $must_have_super_admin_rights && !$this->is_site_admin ? 'true' : 'false' ?>"
+                        />
+                        <?php echo esc_attr( $args['description'] ) ?>
                     </td>
                 </tr>
                 <?php
@@ -144,7 +155,10 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                        <strong><?php echo esc_html( $args['label'] ) ?></strong>
                     </td>
                     <td>
-                        <select name="<?php echo esc_attr( $args['key'] ) ?>">
+                        <select
+                            name="<?php echo esc_attr( $args['key'] ) ?>"
+                            disabled="<?php echo $must_have_super_admin_rights && !$this->is_site_admin ? 'true' : 'false' ?>"
+                        >
                             <option></option>
                             <?php
                             foreach ( $args['default'] as $item_key => $item_value ) {

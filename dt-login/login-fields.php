@@ -32,7 +32,6 @@ class DT_Login_Fields {
                 'description' => 'Url to redirect the user to after successful login',
                 'value' => '/',
                 'type' => 'text',
-
             ],
 
             'shortcode_firebase_logon_buttons' => [
@@ -73,6 +72,7 @@ class DT_Login_Fields {
                 'description' => '',
                 'value' => '',
                 'type' => 'text',
+                'auth_level' => 'superadmin',
             ],
             'firebase_project_id' => [
                 'tab' => 'firebase',
@@ -81,6 +81,7 @@ class DT_Login_Fields {
                 'description' => '',
                 'value' => '',
                 'type' => 'text',
+                'auth_level' => 'superadmin',
             ],
             'firebase_app_id' => [
                 'tab' => 'firebase',
@@ -89,6 +90,7 @@ class DT_Login_Fields {
                 'description' => '',
                 'value' => '',
                 'type' => 'text',
+                'auth_level' => 'superadmin',
             ],
 
             'identity_providers' => [
