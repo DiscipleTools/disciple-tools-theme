@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
-"Language: es\n"
+"PO-Revision-Date: 2023-02-08 13:57+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"Language-Team: Spanish <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/es_ES/>\n"
+"Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -150,7 +154,7 @@ msgstr "Aplicar"
 #: archive-template.php:107 archive-template.php:194 archive-template.php:359
 #: template-new-bulk-post.php:134
 msgid "reset to default"
-msgstr "reestablecer valores "
+msgstr "reestablecer valores"
 
 #: archive-template.php:202
 msgctxt "Contacts Filters"
@@ -658,7 +662,7 @@ msgstr "Contacto"
 #: dt-assets/functions/enqueue-scripts.php:335
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
-msgstr ""
+msgstr "%s ya existe"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:25
 msgid "Menu"
@@ -1767,7 +1771,7 @@ msgstr "Género"
 
 #: dt-contacts/access-module.php:1470
 msgid "This record might be a duplicate of: "
-msgstr "Este registro puede ser un duplicado de:"
+msgstr "Este registro puede ser un duplicado de: "
 
 #: dt-contacts/access-module.php:1476 dt-contacts/duplicates-merging.php:465
 #: dt-contacts/duplicates-merging.php:545
@@ -1811,7 +1815,7 @@ msgstr "Administrador de usuario"
 
 #: dt-contacts/base-setup.php:99
 msgid "Disciple.Tools Admin"
-msgstr "Disciple.Tools Admin"
+msgstr "Administración de Disciple.Tools"
 
 #: dt-contacts/base-setup.php:105
 msgid "Administrator"
@@ -2622,27 +2626,27 @@ msgstr "(sin título)"
 
 #: dt-core/release-notifications.php:43
 msgid "Release Announcement!"
-msgstr ""
+msgstr "¡Anuncio de lanzamiento!"
 
 #: dt-core/release-notifications.php:44
 msgid "Disciple.Tools Theme Version %1$s"
-msgstr ""
+msgstr "Versión %1$s del tema de Disciple.tools"
 
 #: dt-core/release-notifications.php:49
 msgid "Theme News"
-msgstr ""
+msgstr "Noticias temáticas"
 
 #: dt-core/release-notifications.php:50 dt-core/release-notifications.php:59
 msgid "Other News"
-msgstr ""
+msgstr "Otras noticias"
 
 #: dt-core/release-notifications.php:51
 msgid "Get Involved"
-msgstr ""
+msgstr "Involucrarse"
 
 #: dt-core/release-notifications.php:63
 msgid "Other news not available."
-msgstr ""
+msgstr "Otras noticias no disponibles."
 
 #: dt-core/release-notifications.php:78
 msgid "Give"
@@ -3802,9 +3806,7 @@ msgstr[1] "hace %s años"
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] ""
-"Hace más de %s año\n"
-"Hace más de %s años"
+msgstr[0] "Hace más de %s año"
 msgstr[1] "Hace más de %s años"
 
 #: dt-notifications/notifications.php:911
@@ -3952,7 +3954,7 @@ msgstr "Una forma útil de agrupar artículos relacionados."
 
 #: dt-posts/custom-post-type.php:196
 msgid "Un-Follow"
-msgstr "Dejar de Seguir"
+msgstr "Dejar de seguir"
 
 #: dt-posts/dt-posts.php:107
 msgid "Updated existing record instead of creating a new record."
@@ -4360,7 +4362,7 @@ msgid ""
 "will be disabled and another one created."
 msgstr ""
 "Reiniciar el código de país. Ningún dato es quitado. Sólo el acceso. El "
-"enlace previo va a ser desactivado y se creará uno nuevo.\n"
+"enlace previo va a ser desactivado y se creará uno nuevo."
 
 #: dt-reports/magic-url-setup.php:156
 msgid "Delete and replace the app link"
@@ -4911,7 +4913,7 @@ msgstr "Editar todos los campos de detalles"
 
 #: single-template.php:377
 msgid "Show Hidden Tiles"
-msgstr ""
+msgstr "Mostrar azulejos ocultos"
 
 #: single-template.php:398 template-new-bulk-post.php:276
 #: template-new-post.php:166
