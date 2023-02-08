@@ -141,7 +141,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                             type="text"
                             name="<?php echo esc_attr( $args['key'] ) ?>"
                             value="<?php echo esc_attr( $args['value'] ) ?>"
-                            disabled="<?php echo $must_have_super_admin_rights && !$this->is_site_admin ? 'true' : 'false' ?>"
+                            <?php echo $must_have_super_admin_rights && !$this->is_site_admin ? 'disabled' : '' ?>
                         />
                         <?php echo esc_attr( $args['description'] ) ?>
                     </td>
@@ -157,7 +157,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                         <select
                             name="<?php echo esc_attr( $args['key'] ) ?>"
-                            disabled="<?php echo $must_have_super_admin_rights && !$this->is_site_admin ? 'true' : 'false' ?>"
+                            <?php echo $must_have_super_admin_rights && !$this->is_site_admin ? 'disabled' : '' ?>
                         >
                             <option></option>
                             <?php
