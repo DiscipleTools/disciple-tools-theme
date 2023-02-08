@@ -185,7 +185,8 @@ class DT_User_Management
                         'less' => __( 'Less', 'disciple_tools' ),
                     ],
                     'language_dropdown' => dt_get_available_languages(),
-                    'has_permission' => self::has_permission(),
+                    'default_language'=> get_option( 'dt_user_default_language', 'en_US' ),
+                    'has_permission' => self::has_permission()
                 ]
             );
 

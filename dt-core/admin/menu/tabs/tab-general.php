@@ -628,6 +628,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             } else {
                 delete_option( 'dt_user_invite_setting' );
             }
+
+            if ( isset( $_POST['user_default_language'] ) && !empty( $_POST['user_default_language'] ) ){
+                update_option( 'dt_user_default_language', $_POST['user_default_language'] );
+            }
         }
 
     }
@@ -635,6 +639,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function update_user_preferences(){
         $dt_roles = dt_multi_role_get_editable_role_names();
         $user_invite_allowed = get_option( 'dt_user_invite_setting', false );
+        $user_default_language = get_option( 'dt_user_default_language', 'en_US' );
         ?>
         <p><?php esc_html_e( 'User Roles that can view all other Disciple.Tools users names' ) ?></p>
         <form method="post" >
@@ -660,6 +665,24 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             <p>
                 <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role.' ) ?>
                     <input type="checkbox" name="user_invite_check" id="user_invite_check" value="user_invite" <?php echo $user_invite_allowed ? 'checked' : '' ?> />
+                </label>
+            </p>
+
+            <p>
+                <label><?php esc_html_e( 'Default user language' ) ?>
+                    <select id="user_default_language" name="user_default_language">
+                        <?php
+                        $languages = dt_get_available_languages();
+                        foreach ( $languages as $language ){
+                            ?>
+                            <option
+                                value="<?php echo esc_html( $language['language'] ); ?>" <?php selected( $user_default_language === $language['language'] ) ?>>
+                                <?php echo esc_html( !empty( $language['flag'] ) ? $language['flag'] . ' ' : '' ); ?><?php echo esc_html( $language['native_name'] ); ?>
+                            </option>
+                            <?php
+                        }
+                        ?>
+                    </select>
                 </label>
             </p>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
