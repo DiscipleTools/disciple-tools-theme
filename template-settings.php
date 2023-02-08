@@ -669,6 +669,9 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                         <?php
                                         dt_language_select()
                                         ?>
+                                        <br>
+                                        <a href="https://disciple.tools/translation/"
+                                           target="_blank"><?php esc_html_e( 'Update or add new language?', 'disciple_tools' ) ?></a>
                                     </td>
                                 </tr>
 
