@@ -206,9 +206,9 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
             }
 
             if ( isset( $params['delete'] ) ) {
-                delete_site_option( 'dt_sso_login_fields' );
+                DT_Login_Fields::delete();
             } else {
-                update_site_option( 'dt_sso_login_fields', $vars );
+                DT_Login_Fields::update( $vars );
             }
         }
 

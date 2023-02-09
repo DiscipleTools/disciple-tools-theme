@@ -194,4 +194,12 @@ class DT_Login_Fields {
 
         return $value;
     }
+
+    public static function update( $vars ) {
+        update_site_option( 'dt_sso_login_fields', $vars );
+    }
+
+    public static function delete() {
+        delete_site_option( 'dt_sso_login_fields' );
+    }
 }
