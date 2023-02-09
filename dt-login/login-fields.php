@@ -184,10 +184,10 @@ class DT_Login_Fields {
                 'value' => '',
                 'type' => 'label',
             ],
-            'login_redirect_to' => [
+            'success_redirect' => [
                 'tab' => 'general',
-                'key' => 'login_redirect_to',
-                'label' => 'Login Redirect',
+                'key' => 'success_redirect',
+                'label' => 'Success Redirect',
                 'description' => '(when someone successfully logs in, where do they get redirected)',
                 'value' => '/',
                 'type' => 'text',

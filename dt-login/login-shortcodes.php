@@ -15,6 +15,7 @@ function dt_firebase_login_ui( $attr ) {
         $config['api_key'] = DT_Login_Fields::get( 'firebase_api_key' );
         $config['project_id'] = DT_Login_Fields::get( 'firebase_project_id' );
         $config['app_id'] = DT_Login_Fields::get( 'firebase_app_id' );
+        $config['success_redirect'] = DT_Login_Fields::get( 'success_redirect' );
 
         $sign_in_options = [];
         $sign_in_options['google'] = DT_Login_Fields::get( 'identity_providers_google' ) === 'on' ? true : false;
@@ -114,7 +115,7 @@ function dt_firebase_login_ui( $attr ) {
                             }
 
 
-                            window.location = '/user_app/profile'
+                            window.location = config.success_redirect
                         } else {
                             throw new Error(response.body)
                         }
