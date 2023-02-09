@@ -213,7 +213,7 @@ class DT_Login_Fields {
                 'key' => 'ui_smallprint',
                 'label' => 'Login UI smallprint',
                 'description' => 'Do you want the text with the terms and conditions and privacy policy links to show',
-                'value' => 'on',
+                'value' => 'off',
                 'type' => 'select',
                 'default' => [
                     'on' => 'on',
