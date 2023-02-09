@@ -15,7 +15,7 @@ function process_user_initial_setup_language_updates(){
         // Update user settings.
         $args = [
             'ID' => get_current_user_id(),
-            'locale' => $_POST['user_default_language'] ?? get_option( 'dt_user_default_language', 'en_US' )
+            'locale' => sanitize_text_field( wp_unslash( $_POST['user_default_language'] ) ) ?? get_option( 'dt_user_default_language', 'en_US' )
         ];
         $update_result = wp_update_user( $args );
 

@@ -630,7 +630,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
 
             if ( isset( $_POST['user_default_language'] ) && !empty( $_POST['user_default_language'] ) ){
-                update_option( 'dt_user_default_language', $_POST['user_default_language'] );
+                update_option( 'dt_user_default_language', sanitize_text_field( wp_unslash( $_POST['user_default_language'] ) ) );
             }
         }
 
