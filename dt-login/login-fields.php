@@ -175,7 +175,7 @@ class DT_Login_Fields {
         $fields = wp_parse_args( $saved_fields, $defaults );
 
         if ( $defaults_count !== $saved_count ) {
-            self::update( $fields );
+            update_site_option( self::OPTION_NAME, $fields );
         }
 
         return $fields;
@@ -198,7 +198,14 @@ class DT_Login_Fields {
         return $value;
     }
 
-    public static function update( $vars ) {
+    public static function update( $params ) {
+        $vars = self::all();
+
+        foreach ( $params as $key => $param ) {
+            if ( isset( $vars[$key]['value'] ) ) {
+                $vars[$key]['value'] = $param;
+            }
+        }
         update_site_option( self::OPTION_NAME, $vars );
     }
 

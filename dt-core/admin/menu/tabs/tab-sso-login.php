@@ -70,10 +70,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
             $tab = 'general';
         }
 
-        /* TODO: restrict access of firebase config to only Super Admins (network admins on multisites) */
-
         $vars = $this->process_postback();
-        $is_dt = class_exists( 'Disciple_Tools' );
         $tabs = [];
         foreach ( $vars as $val ) {
             $tabs[$val['tab']] = ucwords( str_replace( '_', ' ', $val['tab'] ) );
@@ -192,25 +189,20 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function process_postback(){
-        $vars = DT_Login_Fields::all();
-
         // process POST
         if ( isset( $_POST[$this->token.'_nonce'] )
             && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[$this->token.'_nonce'] ) ), $this->token . get_current_user_id() ) ) {
-            $params = $_POST;
 
-            foreach ( $params as $key => $param ) {
-                if ( isset( $vars[$key]['value'] ) ) {
-                    $vars[$key]['value'] = $param;
-                }
-            }
+            $params = $_POST;
 
             if ( isset( $params['delete'] ) ) {
                 DT_Login_Fields::delete();
             } else {
-                DT_Login_Fields::update( $vars );
+                DT_Login_Fields::update( $params );
             }
         }
+
+        $vars = DT_Login_Fields::all();
 
         return $vars;
     }
