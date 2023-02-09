@@ -1,6 +1,9 @@
 <?php
 
 class DT_Login_Fields {
+
+    const OPTION_NAME = 'dt_sso_login_fields';
+
     public static function all() {
         $defaults = [
 
@@ -166,13 +169,13 @@ class DT_Login_Fields {
 
         $defaults_count = count( $defaults );
 
-        $saved_fields = get_site_option( 'dt_sso_login_fields', [] );
+        $saved_fields = get_site_option( self::OPTION_NAME, [] );
         $saved_count = count( $saved_fields );
 
         $fields = wp_parse_args( $saved_fields, $defaults );
 
         if ( $defaults_count !== $saved_count ) {
-            update_site_option( 'dt_sso_login_fields', $fields );
+            self::update( $fields );
         }
 
         return $fields;
@@ -196,10 +199,10 @@ class DT_Login_Fields {
     }
 
     public static function update( $vars ) {
-        update_site_option( 'dt_sso_login_fields', $vars );
+        update_site_option( self::OPTION_NAME, $vars );
     }
 
     public static function delete() {
-        delete_site_option( 'dt_sso_login_fields' );
+        delete_site_option( self::OPTION_NAME );
     }
 }
