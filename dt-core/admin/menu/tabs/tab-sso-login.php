@@ -125,7 +125,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function tab( $args ) {
-        $must_have_super_admin_rights = isset( $args['auth_level'] ) && $args['auth_level'] === 'superadmin';
+        $must_have_super_admin_rights = isset( $args['multisite_level'] ) && $args['multisite_level'] === true;
         switch ( $args['type'] ) {
             case 'text':
                 ?>
