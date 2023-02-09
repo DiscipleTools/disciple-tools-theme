@@ -87,7 +87,7 @@ class DT_Login_Fields {
         $defaults_count = count( $defaults );
 
         if ( $multisite_level === true ) {
-            $saved_fields =  get_network_option( get_main_network_id(), $option_name, [] );
+            $saved_fields = get_network_option( get_main_network_id(), $option_name, [] );
         } else {
             $saved_fields = get_option( $option_name, [] );
         }
