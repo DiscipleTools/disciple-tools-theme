@@ -338,6 +338,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             require_once( 'dt-users/users-endpoints.php' );
             $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
             require_once( 'dt-users/user-management.php' );
+            require_once( 'dt-users/user-initial-setup.php' );
             require_once( 'dt-users/hover-coverage-map.php' );
             require_once( 'dt-users/mapbox-coverage-map.php' );
             require_once( 'dt-users/template-no-permission.php' );
