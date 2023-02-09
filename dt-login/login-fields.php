@@ -3,7 +3,7 @@
 class DT_Login_Fields {
 
     const OPTION_NAME = 'dt_sso_login_fields';
-    const MULTISITE_OPTION_NAME = 'dt_sso_firebase_config';
+    const MULTISITE_OPTION_NAME = 'dt_sso_login_multisite_fields';
 
     public static function all() {
 
@@ -66,7 +66,7 @@ class DT_Login_Fields {
                 }
             }
 
-            update_site_option( self::MULTISITE_OPTION_NAME, $multisite_vars );
+            update_network_option( get_main_network_id(), self::MULTISITE_OPTION_NAME, $multisite_vars );
 
             update_option( self::OPTION_NAME, $site_vars );
         } else {
@@ -78,24 +78,30 @@ class DT_Login_Fields {
         delete_option( self::OPTION_NAME );
 
         if ( is_multisite() ) {
-            delete_site_option( self::MULTISITE_OPTION_NAME );
+            delete_network_option( get_main_network_id(), self::MULTISITE_OPTION_NAME );
         }
     }
 
     private static function parse_and_save_fields( $defaults, $option_name, $multisite_level = false ) {
 
-        $get_option = $multisite_level ? 'get_site_option' : 'get_option';
-        $update_option = $multisite_level ? 'update_site_option' : 'update_option';
-
         $defaults_count = count( $defaults );
 
-        $saved_fields = $get_option( $option_name, [] );
+        if ( $multisite_level === true ) {
+            $saved_fields =  get_network_option( get_main_network_id(), $option_name, [] );
+        } else {
+            $saved_fields = get_option( $option_name, [] );
+        }
+
         $saved_count = count( $saved_fields );
 
         $fields = wp_parse_args( $saved_fields, $defaults );
 
         if ( $defaults_count !== $saved_count ) {
-            $update_option( $option_name, $fields );
+            if ( $multisite_level === true ) {
+                update_network_option( get_main_network_id(), $option_name, $fields );
+            } else {
+                update_option( $option_name, $fields );
+            }
         }
 
         return $fields;
