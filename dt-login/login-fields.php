@@ -3,10 +3,151 @@
 class DT_Login_Fields {
 
     const OPTION_NAME = 'dt_sso_login_fields';
+    const MULTISITE_OPTION_NAME = 'dt_sso_firebase_config';
 
     public static function all() {
-        $defaults = [
 
+        $multisite_defaults = self::get_multisite_defaults();
+
+        $site_defaults = self::get_site_defaults();
+
+        if ( is_multisite() ) {
+            $defaults = $site_defaults;
+        } else {
+            $defaults = array_merge( $site_defaults, $multisite_defaults );
+        }
+
+        $fields = self::parse_and_save_fields( $defaults, self::OPTION_NAME );
+
+        if ( is_multisite() ) {
+            $firebase_fields = self::parse_and_save_fields( $multisite_defaults, self::MULTISITE_OPTION_NAME, true );
+
+            $fields = array_merge( $fields, $firebase_fields );
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Get the value from the fields array
+     * @param string $field_name
+     * @return mixed
+     */
+    public static function get( string $field_name ) {
+        $fields = self::all();
+
+        if ( !isset( $fields[$field_name] ) ) {
+            return false;
+        }
+
+        $value = $fields[$field_name]['value'];
+
+        return $value;
+    }
+
+    public static function update( $params ) {
+        $vars = self::all();
+
+        foreach ( $params as $key => $param ) {
+            if ( isset( $vars[$key]['value'] ) ) {
+                $vars[$key]['value'] = $param;
+            }
+        }
+
+        if ( is_multisite() ) {
+            $multisite_vars = [];
+            $site_vars = [];
+
+            foreach ( $vars as $key => $param ) {
+                if ( isset( $param['multisite_level'] ) && $param['multisite_level'] === true ) {
+                    $multisite_vars[$key] = $param;
+                } else {
+                    $site_vars[$key] = $param;
+                }
+            }
+
+            update_site_option( self::MULTISITE_OPTION_NAME, $multisite_vars );
+
+            update_option( self::OPTION_NAME, $site_vars );
+        } else {
+            update_option( self::OPTION_NAME, $vars );
+        }
+    }
+
+    public static function delete() {
+        delete_option( self::OPTION_NAME );
+
+        if ( is_multisite() ) {
+            delete_site_option( self::MULTISITE_OPTION_NAME );
+        }
+    }
+
+    private static function parse_and_save_fields( $defaults, $option_name, $multisite_level = false ) {
+
+        $get_option = $multisite_level ? 'get_site_option' : 'get_option';
+        $update_option = $multisite_level ? 'update_site_option' : 'update_option';
+
+        $defaults_count = count( $defaults );
+
+        $saved_fields = $get_option( $option_name, [] );
+        $saved_count = count( $saved_fields );
+
+        $fields = wp_parse_args( $saved_fields, $defaults );
+
+        if ( $defaults_count !== $saved_count ) {
+            $update_option( $option_name, $fields );
+        }
+
+        return $fields;
+    }
+
+    private static function get_multisite_defaults() {
+        $multisite_defaults = [
+            // firebase
+            'firebase_config_label' => [
+                'tab' => 'firebase',
+                'key' => 'firebase_config_label',
+                'label' => 'Where to find the config details',
+                'description' => 'Go to your firebase console and in the project settings get the config details from your webapp https://console.firebase.google.com/',
+                'description_2' => '',
+                'value' => '',
+                'type' => 'label',
+                'multisite_level' => true,
+            ],
+            'firebase_api_key' => [
+                'tab' => 'firebase',
+                'key' => 'firebase_api_key',
+                'label' => 'Firebase API Key',
+                'description' => '',
+                'value' => '',
+                'type' => 'text',
+                'multisite_level' => true,
+            ],
+            'firebase_project_id' => [
+                'tab' => 'firebase',
+                'key' => 'firebase_project_id',
+                'label' => 'Firebase Project ID',
+                'description' => '',
+                'value' => '',
+                'type' => 'text',
+                'multisite_level' => true,
+            ],
+            'firebase_app_id' => [
+                'tab' => 'firebase',
+                'key' => 'firebase_app_id',
+                'label' => 'Firebase App ID',
+                'description' => '',
+                'value' => '',
+                'type' => 'text',
+                'multisite_level' => true,
+            ],
+        ];
+
+        return $multisite_defaults;
+    }
+
+    private static function get_site_defaults() {
+        $site_defaults = [
             // general
             'general_label' => [
                 'tab' => 'general',
@@ -57,44 +198,6 @@ class DT_Login_Fields {
                 'type' => 'label',
             ],
 
-
-            // firebase
-            'firebase_config_label' => [
-                'tab' => 'firebase',
-                'key' => 'firebase_config_label',
-                'label' => 'Where to find the config details',
-                'description' => 'Go to your firebase console and in the project settings get the config details from your webapp https://console.firebase.google.com/',
-                'description_2' => '',
-                'value' => '',
-                'type' => 'label',
-            ],
-            'firebase_api_key' => [
-                'tab' => 'firebase',
-                'key' => 'firebase_api_key',
-                'label' => 'Firebase API Key',
-                'description' => '',
-                'value' => '',
-                'type' => 'text',
-                'auth_level' => 'superadmin',
-            ],
-            'firebase_project_id' => [
-                'tab' => 'firebase',
-                'key' => 'firebase_project_id',
-                'label' => 'Firebase Project ID',
-                'description' => '',
-                'value' => '',
-                'type' => 'text',
-                'auth_level' => 'superadmin',
-            ],
-            'firebase_app_id' => [
-                'tab' => 'firebase',
-                'key' => 'firebase_app_id',
-                'label' => 'Firebase App ID',
-                'description' => '',
-                'value' => '',
-                'type' => 'text',
-                'auth_level' => 'superadmin',
-            ],
 
             'identity_providers' => [
                 'tab' => 'identity_providers',
@@ -167,49 +270,6 @@ class DT_Login_Fields {
 
         ];
 
-        $defaults_count = count( $defaults );
-
-        $saved_fields = get_site_option( self::OPTION_NAME, [] );
-        $saved_count = count( $saved_fields );
-
-        $fields = wp_parse_args( $saved_fields, $defaults );
-
-        if ( $defaults_count !== $saved_count ) {
-            update_site_option( self::OPTION_NAME, $fields );
-        }
-
-        return $fields;
-    }
-
-    /**
-     * Get the value from the fields array
-     * @param string $field_name
-     * @return mixed
-     */
-    public static function get( string $field_name ) {
-        $fields = self::all();
-
-        if ( !isset( $fields[$field_name] ) ) {
-            return false;
-        }
-
-        $value = $fields[$field_name]['value'];
-
-        return $value;
-    }
-
-    public static function update( $params ) {
-        $vars = self::all();
-
-        foreach ( $params as $key => $param ) {
-            if ( isset( $vars[$key]['value'] ) ) {
-                $vars[$key]['value'] = $param;
-            }
-        }
-        update_site_option( self::OPTION_NAME, $vars );
-    }
-
-    public static function delete() {
-        delete_site_option( self::OPTION_NAME );
+        return $site_defaults;
     }
 }
