@@ -175,12 +175,29 @@ class DT_Login_Fields {
                 'value' => 'wordpress',
                 'type' => 'select',
             ],
+
+            'navigation' => [
+                'tab' => 'general',
+                'key' => 'navigation',
+                'label' => 'Navigation',
+                'description' => '',
+                'value' => '',
+                'type' => 'label',
+            ],
             'login_redirect_to' => [
                 'tab' => 'general',
                 'key' => 'login_redirect_to',
                 'label' => 'Login Redirect',
-                'description' => 'Url to redirect the user to after successful login',
+                'description' => '(when someone successfully logs in, where do they get redirected)',
                 'value' => '/',
+                'type' => 'text',
+            ],
+            'login_page' => [
+                'tab' => 'general',
+                'key' => 'login_page',
+                'label' => 'Login Page',
+                'description' => '',
+                'value' => '/login',
                 'type' => 'text',
             ],
 
