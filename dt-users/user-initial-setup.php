@@ -13,9 +13,10 @@ function process_user_initial_setup_language_updates(){
     if ( isset( $_POST['user_initial_setup_language_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['user_initial_setup_language_nonce'] ), 'user_initial_setup_language' . get_current_user_id() ) ){
 
         // Update user settings.
+        $locale = isset( $_POST['user_default_language'] ) ? sanitize_text_field( wp_unslash( $_POST['user_default_language'] ) ) : get_option( 'dt_user_default_language', 'en_US' );
         $args = [
             'ID' => get_current_user_id(),
-            'locale' => sanitize_text_field( wp_unslash( $_POST['user_default_language'] ) ) ?? get_option( 'dt_user_default_language', 'en_US' )
+            'locale' => $locale
         ];
         $update_result = wp_update_user( $args );
 
