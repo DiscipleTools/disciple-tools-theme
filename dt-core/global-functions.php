@@ -695,20 +695,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                        value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?>
                        min="<?php echo esc_html( $fields[$field_key]['min_option'] ?? '' ) ?>"
                        max="<?php echo esc_html( $fields[$field_key]['max_option'] ?? '' ) ?>"
+                       onwheel="return false;"
                 />
-                <script>
-                    jQuery(document).ready(function () {
-                        jQuery(document).on('focus', 'input[id="<?php echo esc_html( $display_field_id ); ?>"]', function (e) {
-                            jQuery(this).on('wheel.disableScroll', function (e) {
-                                e.preventDefault();
-                            })
-                        });
-
-                        jQuery(document).on('blur', 'input[id="<?php echo esc_html( $display_field_id ); ?>"]', function (e) {
-                            jQuery(this).off('wheel.disableScroll');
-                        });
-                    });
-                </script>
             <?php elseif ( $field_type === 'link' ) : ?>
 
                 <div class="link-group">
