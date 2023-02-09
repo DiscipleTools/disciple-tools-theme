@@ -10,10 +10,11 @@ add_shortcode( 'dt_firebase_login_ui', 'dt_firebase_login_ui' );
  * @return void
  */
 function dt_firebase_login_ui( $attr ) {
-        $api_key = DT_Login_Fields::get( 'firebase_api_key' );
-        $project_id = DT_Login_Fields::get( 'firebase_project_id' );
-        $app_id = DT_Login_Fields::get( 'firebase_app_id' );
-        $invalid_settings = empty( $api_key ) || empty( $project_id ) || empty( $app_id ) ? 1 : 0;
+
+        $config = [];
+        $config['api_key'] = DT_Login_Fields::get( 'firebase_api_key' );
+        $config['project_id'] = DT_Login_Fields::get( 'firebase_project_id' );
+        $config['app_id'] = DT_Login_Fields::get( 'firebase_app_id' );
 
         $sign_in_options = [];
         $sign_in_options['google'] = DT_Login_Fields::get( 'identity_providers_google' ) === 'on' ? true : false;
@@ -22,36 +23,39 @@ function dt_firebase_login_ui( $attr ) {
         $sign_in_options['github'] = DT_Login_Fields::get( 'identity_providers_github' ) === 'on' ? true : false;
         $sign_in_options['twitter'] = DT_Login_Fields::get( 'identity_providers_twitter' ) === 'on' ? true : false;
 
+        $config['sign_in_options'] = $sign_in_options;
+
     ?>
 
     <?php //phpcs:disable ?>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
     <script>
+        const config = [<?php echo json_encode( $config ) ?>][0]
 
         const signInOptions = []
 
-        if ( <?php echo $sign_in_options['google'] ? 'true' : 'false' ?> ) {
+        if (config.sign_in_options.google) {
             signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID)
         }
-        if ( <?php echo $sign_in_options['facebook'] ? 'true' : 'false' ?> ) {
+        if (config.sign_in_options.facebook) {
             signInOptions.push(firebase.auth.FacebookAuthProvider.PROVIDER_ID)
         }
-        if ( <?php echo $sign_in_options['email'] ? 'true' : 'false' ?> ) {
+        if (config.sign_in_options.email) {
             signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID)
         }
-        if ( <?php echo $sign_in_options['github'] ? 'true' : 'false' ?> ) {
+        if (config.sign_in_options.github) {
             signInOptions.push(firebase.auth.GithubAuthProvider.PROVIDER_ID)
         }
-        if ( <?php echo $sign_in_options['twitter'] ? 'true' : 'false' ?> ) {
+        if (config.sign_in_options.twitter) {
             signInOptions.push(firebase.auth.TwitterAuthProvider.PROVIDER_ID)
         }
 
         const firebaseConfig = {
-            apiKey: "<?php echo esc_js( $api_key ) ?>",
-            authDomain: "<?php echo esc_js( $project_id ) ?>.firebaseapp.com",
-            projectId: "<?php echo esc_js( $project_id ) ?>",
-            appId: "<?php echo esc_js( $app_id ) ?>",
+            apiKey: config.api_key,
+            authDomain: `${config.project_id}.firebaseapp.com`,
+            projectId: config.project_id,
+            appId: config.app_id,
         };
 
         try {
@@ -72,7 +76,7 @@ function dt_firebase_login_ui( $attr ) {
 
             loaderElement.style.display = show ? 'block' : 'none'
         }
-        const config = {
+        const uiConfig = {
             callbacks: {
                 signInSuccessWithAuthResult: function(authResult, redirectUrl) {
                     // User successfully signed in.
@@ -132,11 +136,11 @@ function dt_firebase_login_ui( $attr ) {
             privacyPolicyUrl: '/content_app/privacy'
         }
 
-        if ( <?php echo esc_js( $invalid_settings ) ?> === 1 ) {
+        if ( !config.api_key || !config.project_id || !config.app_id  ) {
             document.getElementById('loader').style.display = 'none'
             console.error('Missing firebase settings in the admin section')
         } else {
-            ui.start('#firebaseui-auth-container', config);
+            ui.start('#firebaseui-auth-container', uiConfig);
         }
 
     </script>
