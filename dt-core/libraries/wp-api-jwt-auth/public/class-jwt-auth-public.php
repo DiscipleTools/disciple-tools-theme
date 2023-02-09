@@ -436,10 +436,10 @@ class Jwt_Auth_Public {
 	 * @return mixed
 	 */
  	public static function get_auth_header() {
-		$auth_header = $_SERVER['HTTP_AUTHORIZATION'] ? sanitize_text_field( $_SERVER['HTTP_AUTHORIZATION'] ) : false;
+		$auth_header = isset( $_SERVER['HTTP_AUTHORIZATION'] )  ? sanitize_text_field( $_SERVER['HTTP_AUTHORIZATION'] ) : false;
 		/* Double check for different auth header string (server dependent) */
 		if ( ! $auth_header ) {
-			$auth_header = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ? sanitize_text_field( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) : false;
+			$auth_header = isset( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) ? sanitize_text_field( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) : false;
 		}
 
 		return $auth_header;
