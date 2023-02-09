@@ -200,6 +200,26 @@ class DT_Login_Fields {
                 'value' => '/login',
                 'type' => 'text',
             ],
+            'ui_label' => [
+                'tab' => 'general',
+                'key' => 'ui_label',
+                'label' => 'UI',
+                'description' => '',
+                'value' => '',
+                'type' => 'label',
+            ],
+            'ui_smallprint' => [
+                'tab' => 'general',
+                'key' => 'ui_smallprint',
+                'label' => 'Login UI smallprint',
+                'description' => 'Do you want the text with the terms and conditions and privacy policy links to show',
+                'value' => 'on',
+                'type' => 'select',
+                'default' => [
+                    'on' => 'on',
+                    'off' => 'off',
+                ],
+            ],
 
             'shortcode_firebase_logon_buttons' => [
                 'tab' => 'shortcodes',
