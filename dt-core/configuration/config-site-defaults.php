@@ -276,6 +276,9 @@ function dt_get_option( string $name ) {
             $modules = dt_array_merge_recursive_distinct( $modules, $module_options );
             return apply_filters( 'dt_post_type_modules_after', $modules );
 
+        case 'dt_comment_types':
+            return get_option( 'dt_comment_types', [] );
+
         default:
             return false;
             break;
