@@ -204,6 +204,7 @@ window.write_input_widget = function write_input_widget() {
       hide_list_setup = true
       $(document).mouseup(function(e){
         let container = $("#mapbox-autocomplete");
+        container.removeClass('active')
         let list = jQuery('#mapbox-autocomplete-list')
         let isEmpty = !$.trim(list.html());
         // if the target of the click isn't the container nor a descendant of the container
@@ -285,6 +286,12 @@ function validate_timer() {
 
   // set timer
   window.validate_timer_id = setTimeout(function(){
+
+    //add space under the location input and reset tiles so options are not hidden off the page.
+    jQuery('#mapbox-autocomplete').addClass('active');
+    if ( masonGrid ){
+      masonGrid.masonry('layout')
+    }
 
     // call geocoder
     if ( dtMapbox.google_map_key ) {
