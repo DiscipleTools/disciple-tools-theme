@@ -346,6 +346,9 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     /*the container must be positioned relative:*/
                     position: relative;
                 }
+                .mapbox-autocomplete.active{
+                    margin-bottom: 250px;
+                }
                 .mapbox-autocomplete-items {
                     position: absolute;
                     border: 1px solid #e6e6e6;
