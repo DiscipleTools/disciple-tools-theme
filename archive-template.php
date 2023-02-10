@@ -298,7 +298,7 @@ dt_please_log_in();
                             $archived_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['archived_key'] : null;
 
                             $archived_text = $status_key && $archived_key ? $post_settings['fields'][$status_key]['default'][$archived_key]['label'] : __( 'Archived', 'disciple_tools' );
-                            $archived_label = sprintf( _x( 'Show %s', 'disciple_tools' ), $archived_text );
+                            $archived_label = sprintf( _x( 'Show %s', 'Show archived', 'disciple_tools' ), $archived_text );
                         ?>
 
                         <span style="display:<?php echo esc_html( !$status_key || !$archived_key ? 'none' : 'inline-block' ) ?>" class="show-closed-switch">
