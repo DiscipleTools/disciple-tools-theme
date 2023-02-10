@@ -1475,82 +1475,86 @@
       key = 'location_grid_meta';
     }
     if ( !window.Typeahead[`.js-typeahead-${key}`]) {
-      $.typeahead({
-        input: `.js-typeahead-${window.lodash.escape(key)}`,
-        minLength: 0,
-        accent: true,
-        searchOnFocus: true,
-        maxItem: 20,
-        dropdownFilter: [{
-          key: 'group',
-          value: 'used',
-          template: window.lodash.escape(window.wpApiShare.translations.used_locations),
-          all: window.lodash.escape(window.wpApiShare.translations.all_locations)
-        }],
-        source: {
-          used: {
-            display: "name",
-            ajax: {
-              url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
-              data: {
-                s: "{{query}}",
-                filter: function () {
-                  return window.lodash.get(window.Typeahead[`.js-typeahead-${key}`].filters.dropdown, 'value', 'all')
-                }
-              },
-              beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-              },
-              callback: {
-                done: function (data) {
-                  if (typeof typeaheadTotals !== "undefined") {
-                    typeaheadTotals.field = data.total
+
+      // Ensure element is present before proceeding!
+      if ($('.js-typeahead-' + window.lodash.escape(key)).length > 0) {
+        $.typeahead({
+          input: `.js-typeahead-${window.lodash.escape(key)}`,
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          maxItem: 20,
+          dropdownFilter: [{
+            key: 'group',
+            value: 'used',
+            template: window.lodash.escape(window.wpApiShare.translations.used_locations),
+            all: window.lodash.escape(window.wpApiShare.translations.all_locations)
+          }],
+          source: {
+            used: {
+              display: "name",
+              ajax: {
+                url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+                data: {
+                  s: "{{query}}",
+                  filter: function () {
+                    return window.lodash.get(window.Typeahead[`.js-typeahead-${key}`].filters.dropdown, 'value', 'all')
                   }
-                  return data.location_grid
+                },
+                beforeSend: function (xhr) {
+                  xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+                },
+                callback: {
+                  done: function (data) {
+                    if (typeof typeaheadTotals!=="undefined") {
+                      typeaheadTotals.field = data.total
+                    }
+                    return data.location_grid
+                  }
                 }
               }
             }
-          }
-        },
-        display: "name",
-        templateValue: "{{name}}",
-        dynamic: true,
-        multiselect: {
-          matchOn: ["ID"],
-          data: [],
+          },
+          display: "name",
+          templateValue: "{{name}}",
+          dynamic: true,
+          multiselect: {
+            matchOn: ["ID"],
+            data: [],
+            callback: {
+              onCancel: function (node, item) {
+                $(`.current-filter[data-id="${item.ID}"].location_grid`).remove()
+                window.lodash.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
+              }
+            }
+          },
           callback: {
-            onCancel: function (node, item) {
-              $(`.current-filter[data-id="${item.ID}"].location_grid`).remove()
-              window.lodash.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
+            onResult: function (node, query, result, resultCount) {
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $('#location_grid-result-container').html(text);
+            },
+            onReady() {
+              this.filters.dropdown = {
+                key: "group",
+                value: "used",
+                template: window.lodash.escape(window.wpApiShare.translations.used_locations)
+              }
+              this.container
+              .removeClass("filter")
+              .find("." + this.options.selector.filterButton)
+              .html(window.lodash.escape(window.wpApiShare.translations.used_locations));
+            },
+            onHideLayout: function () {
+              $('#location_grid-result-container').html("");
+            },
+            onClick: function (node, a, item) {
+              const {name, newLabel} = create_location_label(key, item.ID, item.name, list_settings)
+              new_filter_labels.push(newLabel)
+              selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape(item.ID)}">${window.lodash.escape(name)}:${window.lodash.escape(item.name)}</span>`)
             }
           }
-        },
-        callback: {
-          onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#location_grid-result-container').html(text);
-          },
-          onReady() {
-            this.filters.dropdown = {
-              key: "group",
-              value: "used",
-              template: window.lodash.escape(window.wpApiShare.translations.used_locations)
-            }
-            this.container
-            .removeClass("filter")
-            .find("." + this.options.selector.filterButton)
-            .html(window.lodash.escape(window.wpApiShare.translations.used_locations));
-          },
-          onHideLayout: function () {
-            $('#location_grid-result-container').html("");
-          },
-          onClick: function (node, a, item) {
-            const { name, newLabel } = create_location_label(key, item.ID, item.name, list_settings)
-            new_filter_labels.push(newLabel)
-            selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( name )}:${window.lodash.escape( item.name )}</span>`)
-          }
-        }
-      });
+        });
+      }
     }
   }
 
