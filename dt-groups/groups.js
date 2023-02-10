@@ -143,7 +143,7 @@ jQuery(document).ready(function($) {
         m.leader = true
       }
     })
-    post.members = window.lodash.sortBy( post.members, ["leader"])
+    post.members = window.lodash.sortBy( post.members, ["post_title"])
     post.members.forEach(member=>{
       let leaderHTML = '';
       let leaderStatus = 'not-leader';
@@ -152,7 +152,7 @@ jQuery(document).ready(function($) {
         leaderStatus = 'leader';
         leaderStyle = 'color:black;';
       }
-      
+
 
       const contactStatusHTML = ( member.data && member.data.overall_status )
         ? `<i class="fi-torso small" style="color: ${window.lodash.escape( member.data.overall_status.color )}" title="${window.lodash.escape( member.data.overall_status.label )}"></i>`
