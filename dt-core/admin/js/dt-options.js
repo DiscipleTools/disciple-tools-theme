@@ -55,9 +55,9 @@ jQuery(document).ready(function ($) {
         autoOpen: false,
         hide: 'fade',
         show: 'fade',
-        height: 600,
-        width: 350,
-        resizable: false,
+        height: 1000,
+        width: 'auto',
+        resizable: true,
         title: 'Translation Dialog',
         buttons: {
           Update: function () {
