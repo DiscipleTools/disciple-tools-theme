@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
-"Language: my\n"
+"PO-Revision-Date: 2023-02-14 09:33+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"Language-Team: Burmese <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/my_MM/>\n"
+"Language: my_MM\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -27,9 +31,7 @@ msgstr "Disciple.Tools သည် တပည့်လှုပ်ရှားမ�
 
 #. Author URI of the theme
 msgid "https://github.com/DiscipleTools"
-msgstr ""
-"\n"
-"https://github.com/DiscipleTools"
+msgstr "https://github.com/DiscipleTools"
 
 #: 403.php:22 dt-users/template-new-user.php:14
 msgid "Permission denied"
