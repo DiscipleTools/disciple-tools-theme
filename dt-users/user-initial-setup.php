@@ -75,7 +75,7 @@ function dt_user_initial_setup_modal(): void{
 
                     </div>
 
-                    <br><hr>
+                    <hr>
                     <p class="center"><button type="button" class="button hollow" data-close>Close</button>
                     <button class="close-button white-button" data-close aria-label="<?php esc_html_e( 'Close Modal', 'disciple_tools' ); ?>" type="button">
                         <span aria-hidden="true">&times;</span>
@@ -115,8 +115,20 @@ function dt_user_default_language_html(): void{
                 }
                 ?>
             </select>
-            <span style="float:right;"><button type="submit" id="user_default_language_update"
-                                               class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button></span>
+            <table style="border: 0px;">
+                <tbody style="border: 0px;">
+                <tr style="border: 0px;">
+                    <td style="vertical-align: top;">
+                        <a href="https://disciple.tools/translation/"
+                           target="_blank"><?php esc_html_e( 'Help translate or add new language', 'disciple_tools' ) ?></a>
+                    </td>
+                    <td>
+                            <span style="float:right;"><button type="submit" id="user_default_language_update"
+                                                               class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </p>
     </form>
     <?php
