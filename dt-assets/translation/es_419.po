@@ -4,8 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
-"PO-Revision-Date: 2023-02-07 15:14+0000\n"
-"Last-Translator: Prykon <dario@gospelambition.org>\n"
+"PO-Revision-Date: 2023-02-14 09:33+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Spanish (Latin America) <https://translate.disciple.tools/"
 "projects/disciple-tools/disciple-tools-theme/es_419/>\n"
 "Language: es_419\n"
@@ -28,7 +28,7 @@ msgid ""
 "Disciple.Tools is a coalition management system for disciple making "
 "movements."
 msgstr ""
-"Disciple Tools es un sistema de administración de coaliciones para "
+"Disciple.Tools es un sistema de administración de coaliciones para "
 "movimientos de formación de discípulos."
 
 #. Author URI of the theme
@@ -114,7 +114,7 @@ msgstr "Buscar %s"
 #: archive-template.php:37 archive-template.php:127
 #: dt-mapping/geocode-api/mapbox-api.php:291
 msgid "Clear"
-msgstr "Claro"
+msgstr "Borrar"
 
 #: archive-template.php:41 archive-template.php:42 archive-template.php:131
 #: archive-template.php:132 dt-assets/functions/menu.php:57
@@ -216,7 +216,7 @@ msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
 "Seleccione todos los %1$s que desea actualizar de la lista y actualícelos a "
-"continuación."
+"continuación"
 
 #: archive-template.php:385 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
@@ -343,7 +343,7 @@ msgstr "Rango desde"
 #: archive-template.php:746 archive-template.php:757
 msgctxt "Clear/empty input"
 msgid "Clear"
-msgstr "Limpiar"
+msgstr "Borrar"
 
 #: archive-template.php:753
 msgctxt "The end date of a date range"
@@ -498,7 +498,7 @@ msgstr "%1$s reaccionó con %2$s emoji"
 #: dt-assets/functions/enqueue-scripts.php:180
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr " %3$s y %1$s reaccionaron con %2$s emoji"
+msgstr "%3$s y %1$s reaccionaron con %2$s emoji"
 
 #: dt-assets/functions/enqueue-scripts.php:211
 msgid "Mark as complete"
@@ -658,7 +658,7 @@ msgstr "Contacto"
 #: dt-assets/functions/enqueue-scripts.php:335
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
-msgstr ""
+msgstr "%s ya existe"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:25
 msgid "Menu"
@@ -1729,7 +1729,7 @@ msgstr "Subasignado a mí"
 #: dt-contacts/access-module.php:1027
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "Seguimientos"
+msgstr "Seguimientos %s"
 
 #: dt-contacts/access-module.php:1035
 msgid "All Follow-Up"
@@ -2620,67 +2620,69 @@ msgstr "(sin título)"
 
 #: dt-core/release-notifications.php:43
 msgid "Release Announcement!"
-msgstr ""
+msgstr "¡Anuncio de lanzamiento!"
 
 #: dt-core/release-notifications.php:44
 msgid "Disciple.Tools Theme Version %1$s"
-msgstr ""
+msgstr "Versión %1$s del tema de Disciple.Tools"
 
 #: dt-core/release-notifications.php:49
 msgid "Theme News"
-msgstr ""
+msgstr "Noticias temáticas"
 
 #: dt-core/release-notifications.php:50 dt-core/release-notifications.php:59
 msgid "Other News"
-msgstr ""
+msgstr "Otras noticias"
 
 #: dt-core/release-notifications.php:51
 msgid "Get Involved"
-msgstr ""
+msgstr "Involucrarse"
 
 #: dt-core/release-notifications.php:63
 msgid "Other news not available."
-msgstr ""
+msgstr "Otras noticias no disponibles."
 
 #: dt-core/release-notifications.php:78
 msgid "Give"
-msgstr ""
+msgstr "Dar"
 
 #: dt-core/release-notifications.php:80
 msgid "Make Disciple.Tools better by joining us financially."
-msgstr ""
+msgstr "Mejora Disciple.Tools uniéndote financieramente."
 
 #: dt-core/release-notifications.php:80
 msgid "Join us here"
-msgstr ""
+msgstr "Únete a nosotros aquí"
 
 #: dt-core/release-notifications.php:86
 msgid "Translate"
-msgstr ""
+msgstr "Traducir"
 
 #: dt-core/release-notifications.php:88
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
-msgstr ""
+msgstr "Traduce Disciple.Tools a su idioma o ayuda a que mejore una traducción."
 
 #: dt-core/release-notifications.php:88
 msgid "Click here"
-msgstr ""
+msgstr "haga clic aquí"
 
 #: dt-core/release-notifications.php:94
 msgid "Build or Document"
-msgstr ""
+msgstr "Construir o documentar"
 
 #: dt-core/release-notifications.php:96
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
+"Mejore Disciple.Tools creando una función o ayudándonos a mejorar la "
+"documentación."
 
 #: dt-core/release-notifications.php:96
 msgid "Find out more"
-msgstr ""
+msgstr "Saber más"
 
 #: dt-groups/base-setup.php:51 dt-groups/base-setup.php:63
 #: dt-groups/base-setup.php:173 dt-metrics/personal/activity-highlights.php:58
@@ -2710,7 +2712,7 @@ msgstr "Estado de grupo"
 #: dt-groups/base-setup.php:121
 msgctxt "field description"
 msgid "Set the current status of the group."
-msgstr "Fijar el estado actual del grupo"
+msgstr "Fijar el estado actual del grupo."
 
 #: dt-groups/base-setup.php:126
 msgctxt "field description"
@@ -2982,7 +2984,7 @@ msgstr "Un grupo que nació de este grupo."
 #: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
-msgstr "Las étnias representadas por este grupo"
+msgstr "Las étnias representadas por este grupo."
 
 #: dt-groups/base-setup.php:418
 msgid "Unbelievers"
@@ -3014,7 +3016,7 @@ msgstr "Cantidad de personas acoyuntadas."
 #: dt-groups/base-setup.php:446
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
-msgstr "¿Esta es una congregación? - Sí o no"
+msgstr "¿Es una iglesia, sí o no?"
 
 #: dt-groups/base-setup.php:454
 msgid "Multiplying"
@@ -3103,7 +3105,7 @@ msgstr "Usar"
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
-msgstr "Ubicación de búsqueda"
+msgstr "Buscar ubicación"
 
 #: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:87
 #: template-new-bulk-post.php:216
@@ -3357,6 +3359,8 @@ msgstr "Mapas combinados"
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
 msgstr ""
+"Para ver este mapa, se necesita una clave de MAPBOX; Haga clic aquí para "
+"agregar."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -3544,7 +3548,7 @@ msgstr ""
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
-msgstr "Contactos activos, por fuente e hito de fe."
+msgstr "Contactos activos, por fuente e hito de fe"
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
@@ -3662,7 +3666,7 @@ msgstr "%1$s Que Hice"
 
 #: dt-metrics/personal/activity-highlights.php:62
 msgid "Contacts I Baptized"
-msgstr "Contactos que Bauticé"
+msgstr "Contactos que bauticé"
 
 #: dt-metrics/personal/activity-highlights.php:63
 msgid "%1$s changed by others on my %2$s"
@@ -3805,7 +3809,7 @@ msgstr[1] "hace más de %s años"
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "%s fue creado y asignado a tí"
+msgstr "%s fue creado y asignado a tí."
 
 #: dt-notifications/notifications.php:913
 msgctxt "You have been assigned: contact1."
@@ -3873,11 +3877,11 @@ msgstr "Étnia"
 
 #: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
-msgstr ""
+msgstr "Total de contactos"
 
 #: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
-msgstr ""
+msgstr "Total de Grupos"
 
 #: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:159
@@ -3886,27 +3890,27 @@ msgstr "Última modificación"
 
 #: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
-msgstr ""
+msgstr "Código de Grupo Étnico"
 
 #: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
-msgstr ""
+msgstr "ID de étnico"
 
 #: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
-msgstr ""
+msgstr "Lenguaje principal"
 
 #: dt-people-groups/people-groups-base.php:319
 msgid "Country"
-msgstr ""
+msgstr "País"
 
 #: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
-msgstr ""
+msgstr "Conexiónes"
 
 #: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
-msgstr ""
+msgstr "Proyecto Joshua"
 
 #: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
@@ -3926,15 +3930,15 @@ msgstr "Escriba el título de la étnia aquí"
 
 #: dt-people-groups/people-groups.php:275
 msgid "Display Options"
-msgstr ""
+msgstr "Opciones de mostrar"
 
 #: dt-people-groups/people-groups.php:282
 msgid "Display People Groups Tab in Navigation Bar"
-msgstr ""
+msgstr "Mostrar Grupos Étnicos en la barra de navegación"
 
 #: dt-people-groups/people-groups.php:304
 msgid "Import People Group"
-msgstr ""
+msgstr "Importar Grupo Étnico"
 
 #: dt-posts/custom-post-type.php:182
 msgid "Tags"
@@ -3951,7 +3955,7 @@ msgstr "Dejar de seguir"
 
 #: dt-posts/dt-posts.php:107
 msgid "Updated existing record instead of creating a new record."
-msgstr ""
+msgstr "Registro existente actualizado en lugar de crear un nuevo registro."
 
 #: dt-posts/dt-posts.php:1316
 msgid "Magic Link Submission"
@@ -3978,9 +3982,8 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@  [%1$s] ( %2$s): el usuario %3$s ha solicitado acceso a %4$s [%5$s] "
-"(%6$s). Si lo desea, comparta este registro con el usuario para otorgar "
-"acceso."
+"@[%1$s](%2$s): el usuario %3$s ha solicitado acceso a %4$s [%5$s] (%6$s). Si "
+"lo desea, comparta este registro con el usuario para otorgar acceso."
 
 #: dt-posts/dt-posts.php:1881
 msgid "Access Request"
@@ -4326,7 +4329,6 @@ msgid "Apps available on this record."
 msgstr "Apps disponibles en este registro."
 
 #: dt-reports/magic-url-setup.php:113
-#, fuzzy
 msgid "Send the link via email."
 msgstr "Envíe el enlace por correo electrónico."
 
@@ -4343,7 +4345,6 @@ msgid "Send email with link"
 msgstr "Enviar email con enlace"
 
 #: dt-reports/magic-url-setup.php:150
-#, fuzzy
 msgid "Scan the QR code to open the magic link on a mobile device."
 msgstr ""
 "Escanee el código QR para abrir el enlace mágico en un dispositivo móvil."
@@ -4374,7 +4375,7 @@ msgstr "Mapa de cubrimiento"
 
 #: dt-users/hover-coverage-map.php:141
 msgid "Locations Covered"
-msgstr "Ubicaciones cubiertas"
+msgstr "Ubicaciones Cubiertas"
 
 #: dt-users/hover-coverage-map.php:192
 msgid "Locations with Active Users"
@@ -4684,7 +4685,7 @@ msgid ""
 "fields and @mention me or other users"
 msgstr ""
 "Bienvenido/a %1$s, este es tu registro de contacto personal. Siéntete en "
-"libertad de actualizar los campos y @mencionarme a mí o a otros usuarios."
+"libertad de actualizar los campos y @mencionarme a mí o a otros usuarios"
 
 #: dt-users/user-hooks-and-config.php:278
 #: dt-users/user-hooks-and-config.php:316
@@ -4750,7 +4751,7 @@ msgstr "Inconsistente"
 #: dt-users/user-management.php:172
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "%1$s fue aceptado en $2$s luego de %3$s días"
+msgstr "%1$s fue aceptado en %2$s luego de %3$s días"
 
 #: dt-users/user-management.php:173
 msgctxt "Bob waiting for contact for 10 days"
@@ -4837,7 +4838,7 @@ msgstr "Este email ya existe y es un usuario en este sitio"
 
 #: dt-users/users.php:396
 msgid "Failed to add user to site."
-msgstr "No se pudo agregar al usuario"
+msgstr "No se pudo agregar al usuario."
 
 #: dt-users/users.php:447
 msgctxt "These are archived comments for contact John Doe"
@@ -4856,7 +4857,7 @@ msgstr "Email del sistema"
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
-msgstr "Has fijado un recordatorio para %1$s para hoy"
+msgstr "Estableció un recordatorio para hoy en %1$s"
 
 #: dt-workflows/tasks.php:86
 msgctxt "You set this task on contact1: task note"
@@ -4869,7 +4870,7 @@ msgstr "Flujo de Trabajo de D.T"
 
 #: header.php:42
 msgid "D.T Record"
-msgstr "D.T Record"
+msgstr "Registro D.T"
 
 #: header.php:78
 msgid "Javascript must be enabled for this site to function correctly."
@@ -4882,9 +4883,9 @@ msgid ""
 "version of your browser, this may site may not function correctly. Please "
 "note that Internet Explorer is not supported."
 msgstr ""
-"Parecería que está utilizando un navegador web desactualizado. Es probable "
-"que este sitio no funcione correctamente sin sin la versión más reciente de "
-"su navegador. Tenga en cuenta que Internet Explorer no es compatible."
+"Parece que está utilizando un navegador web desactualizado. Es probable que "
+"este sitio no funcione correctamente sin la versión más reciente de su "
+"navegador. Tenga en cuenta que Internet Explorer no es compatible."
 
 #: header.php:86
 msgid "See what browser you are using."
@@ -4904,7 +4905,7 @@ msgstr "Editar todos los campos de detalles"
 
 #: single-template.php:377
 msgid "Show Hidden Tiles"
-msgstr ""
+msgstr "Mostrar azulejos ocultos"
 
 #: single-template.php:398 template-new-bulk-post.php:276
 #: template-new-post.php:166
