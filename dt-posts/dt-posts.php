@@ -1972,7 +1972,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         // Prepare sql and execute search query
-        $esc_like_search_sql = "'%" . esc_sql( $search ) . "%'";
+        $esc_like_search_sql = "'%" . str_replace( ' ', '%', esc_sql( $search ) ) . "%'";
         $extra_fields = '';
         $extra_joins  = '';
         $extra_where = '';
