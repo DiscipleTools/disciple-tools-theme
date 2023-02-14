@@ -83,7 +83,7 @@ add_action( 'wp_head', 'dt_user_initial_setup_modal' );
 function dt_user_default_language_html(): void{
     $languages = dt_get_available_languages();
     $current_user = wp_get_current_user();
-    $user_default_language = get_user_locale( $current_user->ID  ) ?? get_option( 'dt_user_default_language', 'en_US' );
+    $user_default_language = get_user_locale( $current_user->ID ) ?? get_option( 'dt_user_default_language', 'en_US' );
     ?>
     <form method="post">
         <?php wp_nonce_field( 'user_' . $current_user->ID . '_update', 'user_update_nonce', false, true ); ?>
