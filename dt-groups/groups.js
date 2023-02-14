@@ -143,7 +143,7 @@ jQuery(document).ready(function($) {
         m.leader = true
       }
     })
-    post.members = window.lodash.sortBy(post.members, ["leader", "post_title"])
+    post.members = window.lodash.sortBy(post.members, ["leader", member => member.post_title.toLowerCase()]);
     post.members.forEach(member=>{
       let leaderHTML = '';
       let leaderStatus = 'not-leader';
