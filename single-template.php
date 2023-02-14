@@ -129,7 +129,7 @@ function dt_display_tile( $tile, $post ): bool {
                             <?php if ( isset( $tiles['status']['label'] ) && !empty( $tiles['status']['label'] ) ) {
                                 echo esc_html( $tiles['status']['label'] );
                             } else {
-                                echo esc_html( $tiles['status']['default_label'] );
+                                echo esc_html__( 'Status', 'disciple_tools' );
                             }?>
                             <button class="help-button-tile" data-tile="status">
                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
@@ -172,11 +172,11 @@ function dt_display_tile( $tile, $post ): bool {
                     -->
                     <section id="details-tile" class="small-12 cell bordered-box collapsed" >
                         <h3 class="section-header">
-                        <?php if ( isset( $tiles['details']['label'] ) && !empty( $tiles['details']['label'] ) ) {
-                            echo esc_html( $tiles['details']['label'] );
-                        } else {
-                            echo esc_html( $tiles['details']['default_label'] );
-                        }?>
+                            <?php if ( isset( $tiles['details']['label'] ) && !empty( $tiles['details']['label'] ) ) {
+                                echo esc_html( $tiles['details']['label'] );
+                            } else {
+                                echo esc_html__( 'Details', 'disciple_tools' );
+                            }?>
                             <button class="help-button-tile" data-tile="details">
                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                             </button>

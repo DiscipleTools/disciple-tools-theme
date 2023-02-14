@@ -403,7 +403,7 @@ dt_please_log_in();
                                             <?php if ( isset( $tiles['status']['label'] ) && !empty( $tiles['status']['label'] ) ) {
                                                 echo esc_html( $tiles['status']['label'] );
                                             } else {
-                                                echo esc_html( $tiles['status']['default_label'] );
+                                                echo esc_html__( 'Status', 'disciple_tools' );
                                             }?>
                                             <button class="help-button-field" data-section="overall_status-help-text">
                                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
