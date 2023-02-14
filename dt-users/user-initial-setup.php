@@ -9,28 +9,12 @@ if ( !defined( 'ABSPATH' ) ){
     exit; // Exit if accessed directly
 }
 
-function process_user_initial_setup_language_updates(){
-    if ( isset( $_POST['user_initial_setup_language_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['user_initial_setup_language_nonce'] ), 'user_initial_setup_language' . get_current_user_id() ) ){
-
-        // Update user settings.
-        $locale = isset( $_POST['user_default_language'] ) ? sanitize_text_field( wp_unslash( $_POST['user_default_language'] ) ) : get_option( 'dt_user_default_language', 'en_US' );
-        $args = [
-            'ID' => get_current_user_id(),
-            'locale' => $locale
-        ];
-        $update_result = wp_update_user( $args );
-
-        if ( is_wp_error( $update_result ) ){
-            return new WP_Error( 'fail_update_user_data', 'Error while updating user data in user table.' );
-        }
-
-        // Update default language flag, to avoid any future prompts and refresh display!
-        update_user_meta( get_current_user_id(), 'dt_user_initial_setup_default_language', $args['locale'] );
-        header( 'Refresh:0;' );
-    }
+/* Process $_POST content */
+// We're not checking the nonce here because update_user_contact_info will
+// phpcs:ignore
+if ( isset( $_POST['user_update_nonce'] ) ){
+    Disciple_Tools_Users::update_user_contact_info();
 }
-
-process_user_initial_setup_language_updates();
 
 function dt_user_initial_setup_modal(): void{
     if ( !is_user_logged_in() ){
@@ -97,13 +81,15 @@ function dt_user_initial_setup_modal(): void{
 add_action( 'wp_head', 'dt_user_initial_setup_modal' );
 
 function dt_user_default_language_html(): void{
-    $user_default_language = get_option( 'dt_user_default_language', 'en_US' );
     $languages = dt_get_available_languages();
+    $current_user = wp_get_current_user();
+    $user_default_language = get_user_locale( $current_user->ID  ) ?? get_option( 'dt_user_default_language', 'en_US' );
     ?>
     <form method="post">
-        <?php wp_nonce_field( 'user_initial_setup_language' . get_current_user_id(), 'user_initial_setup_language_nonce' ) ?>
+        <?php wp_nonce_field( 'user_' . $current_user->ID . '_update', 'user_update_nonce', false, true ); ?>
+
         <p>
-            <select id="user_default_language" name="user_default_language">
+            <select id="locale" name="locale">
                 <?php
                 foreach ( $languages as $language ){
                     ?>
