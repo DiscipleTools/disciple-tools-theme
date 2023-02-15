@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
-"PO-Revision-Date: 2023-02-14 09:33+0000\n"
+"PO-Revision-Date: 2023-02-15 11:03+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Spanish (Latin America) <https://translate.disciple.tools/"
 "projects/disciple-tools/disciple-tools-theme/es_419/>\n"
@@ -1812,7 +1812,7 @@ msgstr "Administrador de usuarios"
 
 #: dt-contacts/base-setup.php:99
 msgid "Disciple.Tools Admin"
-msgstr "Administrador de Disciple.Tools"
+msgstr "Administración de Disciple.Tools"
 
 #: dt-contacts/base-setup.php:105
 msgid "Administrator"
