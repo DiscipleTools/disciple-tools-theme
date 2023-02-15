@@ -98,13 +98,13 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
             ],
             'match all bob references in contacts comments' => [
                 [
-                    'query' => 'bob',
+                    'query' => 'comment for bob',
                     'post_type' => 'contacts',
                     'offset' => 0,
                     'filters' => [
-                        'post' => false,
+                        'post' => true,
                         'comment' => true,
-                        'meta' => false,
+                        'meta' => true,
                         'status' => 'all'
                     ]
                 ],
