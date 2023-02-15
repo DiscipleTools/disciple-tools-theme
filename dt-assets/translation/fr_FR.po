@@ -4,10 +4,10 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
-"PO-Revision-Date: 2022-11-24 10:32+0000\n"
+"PO-Revision-Date: 2023-02-15 11:03+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
-"Language-Team: French <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/fr_FR/>\n"
+"Language-Team: French <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/fr_FR/>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -659,7 +659,7 @@ msgstr "Contact"
 #: dt-assets/functions/enqueue-scripts.php:335
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
-msgstr ""
+msgstr "%s existe déjà"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:25
 msgid "Menu"
@@ -2326,9 +2326,8 @@ msgid "Quick Actions"
 msgstr "Actions rapides"
 
 #: dt-contacts/dmm-module.php:493
-#, fuzzy
 msgid "Who was this contact baptized by and when?"
-msgstr "Ce contact a été transféré"
+msgstr "Par qui ce contact a-t-il été baptisé et quand ?"
 
 #: dt-contacts/dmm-module.php:507
 msgctxt "input field placeholder"
@@ -2639,35 +2638,35 @@ msgstr ""
 
 #: dt-core/release-notifications.php:44
 msgid "Disciple.Tools Theme Version %1$s"
-msgstr ""
+msgstr "Version du thème Disciple.Tools %1$s"
 
 #: dt-core/release-notifications.php:49
 msgid "Theme News"
-msgstr ""
+msgstr "Actualités du thème"
 
 #: dt-core/release-notifications.php:50 dt-core/release-notifications.php:59
 msgid "Other News"
-msgstr ""
+msgstr "Autres nouvelles"
 
 #: dt-core/release-notifications.php:51
 msgid "Get Involved"
-msgstr ""
+msgstr "S'impliquer"
 
 #: dt-core/release-notifications.php:63
 msgid "Other news not available."
-msgstr ""
+msgstr "Autres nouvelles non disponibles."
 
 #: dt-core/release-notifications.php:78
 msgid "Give"
-msgstr ""
+msgstr "Donner"
 
 #: dt-core/release-notifications.php:80
 msgid "Make Disciple.Tools better by joining us financially."
-msgstr ""
+msgstr "Améliorez Disciple.Tools en nous rejoignant financièrement."
 
 #: dt-core/release-notifications.php:80
 msgid "Join us here"
-msgstr ""
+msgstr "Rejoignez-nous ici"
 
 #: dt-core/release-notifications.php:86
 msgid "Translate"
@@ -2678,6 +2677,8 @@ msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
 msgstr ""
+"Traduisez Disciple.Tools dans votre langue ou aidez à améliorer une "
+"traduction."
 
 #: dt-core/release-notifications.php:88
 msgid "Click here"
@@ -2685,17 +2686,19 @@ msgstr "Cliquez ici"
 
 #: dt-core/release-notifications.php:94
 msgid "Build or Document"
-msgstr ""
+msgstr "Créer ou documenter"
 
 #: dt-core/release-notifications.php:96
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
+"Améliorez Disciple.Tools en créant une fonctionnalité ou en nous aidant à "
+"améliorer la documentation."
 
 #: dt-core/release-notifications.php:96
 msgid "Find out more"
-msgstr ""
+msgstr "En savoir plus"
 
 #: dt-groups/base-setup.php:51 dt-groups/base-setup.php:63
 #: dt-groups/base-setup.php:173 dt-metrics/personal/activity-highlights.php:58
@@ -2870,10 +2873,9 @@ msgid "Praise"
 msgstr "Louange"
 
 #: dt-groups/base-setup.php:233
-#, fuzzy
 msgctxt "Optional Documentation"
 msgid "The group is praising."
-msgstr "Le groupe loue"
+msgstr "Le groupe loue."
 
 #: dt-groups/base-setup.php:237
 msgid "Sharing the Gospel"
@@ -3373,6 +3375,8 @@ msgstr "Cartes combinées"
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
 msgstr ""
+"Pour afficher cette carte, une clé mapbox est nécessaire ; cliquez ici pour "
+"ajouter."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -3889,11 +3893,11 @@ msgstr "Groupe ethnique"
 
 #: dt-people-groups/people-groups-base.php:176
 msgid "Contacts Total"
-msgstr ""
+msgstr "Nombre total de contacts"
 
 #: dt-people-groups/people-groups-base.php:195
 msgid "Groups Total"
-msgstr ""
+msgstr "Nombre total de groupes"
 
 #: dt-people-groups/people-groups-base.php:229
 #: dt-posts/custom-post-type.php:159
@@ -3902,15 +3906,15 @@ msgstr "Dernière modification"
 
 #: dt-people-groups/people-groups-base.php:298
 msgid "People Group Code"
-msgstr ""
+msgstr "Code du groupe ethnique"
 
 #: dt-people-groups/people-groups-base.php:305
 msgid "People ID"
-msgstr ""
+msgstr "ID du groupe ethnique"
 
 #: dt-people-groups/people-groups-base.php:312
 msgid "Primary Language"
-msgstr ""
+msgstr "Langue principale"
 
 #: dt-people-groups/people-groups-base.php:319
 msgid "Country"
@@ -3918,11 +3922,11 @@ msgstr "Pays"
 
 #: dt-people-groups/people-groups-base.php:333
 msgid "Connections"
-msgstr ""
+msgstr "Connexions"
 
 #: dt-people-groups/people-groups-base.php:335
 msgid "Joshua Project"
-msgstr ""
+msgstr "Joshua Project"
 
 #: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
@@ -3942,7 +3946,7 @@ msgstr "Entrez le titre du groupe ethnique ici"
 
 #: dt-people-groups/people-groups.php:275
 msgid "Display Options"
-msgstr ""
+msgstr "Option d'affichage"
 
 #: dt-people-groups/people-groups.php:282
 msgid "Display People Groups Tab in Navigation Bar"
