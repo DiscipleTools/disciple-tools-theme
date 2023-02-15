@@ -40,6 +40,7 @@ class Disciple_Tools_Usage {
         $users = new WP_User_Query( [ 'count_total' => true ] );
 
         $site_url = get_site_url( null, '', 'https' );
+        $site_url = str_replace( 'http://', 'https://', $site_url );
 
         //active plugins
         $network_active_plugins = get_site_option( 'active_sitewide_plugins', [] );
