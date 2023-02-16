@@ -373,6 +373,16 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             require_once( 'dt-login/login-shortcodes.php' );
             require_once( 'dt-login/login-endpoints.php' );
 
+            require_once( 'dt-login/pages/base.php' );
+            require_once( 'dt-login/login-functions.php' );
+
+            // pages
+            require_once( 'dt-login/login-page.php' );
+            require_once( 'dt-login/pages/privacy-policy.php' ); // {site}/privacy-policy
+            require_once( 'dt-login/pages/terms-of-service.php' ); // {site}/terms-of-service
+            require_once( 'dt-login/pages/registration-holding.php' ); // {site}/reghold
+
+
             /**
              * Logging
              */
