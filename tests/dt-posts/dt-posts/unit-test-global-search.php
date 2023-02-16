@@ -36,15 +36,10 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
         'member_count' => 5
     ];
 
-    public static $user = null;
     public static $contact = null;
     public static $group = null;
 
     public static function setupBeforeClass(): void{
-        $user_id = wp_create_user( 'dispatcher4', 'test', 'testdisp4@example.com' );
-        self::$user = get_user_by( 'id', $user_id );
-        self::$user->set_role( 'dispatcher' );
-
         self::$contact = DT_Posts::create_post( 'contacts', self::$sample_contact, true, false );
         self::$group = DT_Posts::create_post( 'groups', self::$sample_group, true, false );
     }
@@ -53,7 +48,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
      * @dataProvider provide_global_search_query_data
      */
     public function test_global_searches( $args, $expected ){
-        wp_set_current_user( self::$user->ID );
+        wp_set_current_user( 1 ); // Default to admin user for total coverage
 
         // fwrite( STDERR, print_r( wp_get_current_user(), true ) );
         $result = DT_Posts::advanced_search( $args['query'], $args['post_type'], $args['offset'], $args['filters'], false );
