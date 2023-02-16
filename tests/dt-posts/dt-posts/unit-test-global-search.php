@@ -17,7 +17,6 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
         ],
         'baptism_date' => '2018-12-31',
         'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
-        'assigned_to' => '1',
         'requires_update' => true,
         'nickname' => 'Bob the builder',
         'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
@@ -45,9 +44,9 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
         self::$user = get_user_by( 'id', $user_id );
         self::$user->set_role( 'dispatcher' );
 
-        self::$sample_contact['assigned_to'] = 1;
-        self::$sample_group['assigned_to'] = 1;
-        wp_set_current_user( 1 ); // Default to admin user
+        self::$sample_contact['assigned_to'] = $user_id;
+        self::$sample_group['assigned_to'] = $user_id;
+        wp_set_current_user( $user_id );
 
         self::$contact = DT_Posts::create_post( 'contacts', self::$sample_contact, true, false );
         self::$group = DT_Posts::create_post( 'groups', self::$sample_group, true, false );
@@ -57,7 +56,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
      * @dataProvider provide_global_search_query_data
      */
     public function test_global_searches( $args, $expected ){
-        wp_set_current_user( 1 ); // Default to admin user
+        wp_set_current_user( self::$user->ID );
 
         // fwrite( STDERR, print_r( wp_get_current_user(), true ) );
         $result = DT_Posts::advanced_search( $args['query'], $args['post_type'], $args['offset'], $args['filters'], false );
