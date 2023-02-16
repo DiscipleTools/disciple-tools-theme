@@ -31,15 +31,9 @@ function dt_login_redirect_login_page() {
     }
 }
 // END LOGIN PAGE REDIRECT
-function dt_login_vars() : array {
-    /**
-     * Register variables for login
-     */
-    return apply_filters( 'register_dt_login_vars', $vars = [] );
-}
 
 function dt_login_url( string $name ) : string {
-    $dt_login = dt_login_vars();
+    $dt_login = DT_Login_Fields::all_values();
 
     $login_url = $dt_login['login_url'] ?? '';
     $redirect_url = $dt_login['redirect_url'] ?? '';

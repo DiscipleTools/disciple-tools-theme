@@ -11,13 +11,13 @@
 function dt_sso_login_redirect_if_no_auth() {
     /* Check what the login method is */
     $login_method = DT_Login_Fields::get( 'login_method' );
-    $success_redirect = DT_Login_Fields::get( 'success_redirect' );
-    $login_page = DT_Login_Fields::get( 'login_page' );
+    $success_redirect = DT_Login_Fields::get( 'redirect_url' );
+    $login_page = DT_Login_Fields::get( 'login_url' );
 
     if ( !is_user_logged_in() && DT_Login_Methods::WORDPRESS === $login_method ) {
         $redirect_to = $success_redirect;
 
-        header( "Location: $login_page?redirect_to=$redirect_to" );
+        header( "Location: /$login_page?redirect_to=$redirect_to" );
     }
 
     if ( DT_Login_Methods::MOBILE === $login_method ) {

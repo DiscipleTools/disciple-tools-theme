@@ -2,21 +2,6 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 
-function dt_login_defaults() {
-    $defaults = get_option( 'dt_login_defaults' );
-    if ( empty( $defaults ) ) {
-        $defaults = [
-            'users_can_register' => get_option( 'users_can_register' ),
-            'default_role' => 'registered',
-            'login_url' => 'login',
-            'redirect_url' => 'contacts',
-        ];
-        update_option( 'dt_login_defaults', $defaults, true );
-    }
-    return $defaults;
-}
-
-
 class Disciple_Tools_Login_Base extends DT_Login_Page_Base
 {
     private static $_instance = null;
@@ -30,7 +15,6 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
     public function __construct() {
         parent::__construct();
 
-        add_filter( 'register_dt_login_vars', [ $this, 'register_dt_login_vars' ], 10, 1 );
         if ( is_admin() ) {
             add_action( 'dt_login_admin_fields', [ $this, 'dt_login_admin_fields' ], 5, 1 );
             add_filter( 'dt_login_admin_update_fields', [ $this, 'dt_login_admin_update_fields' ], 10, 1 );
@@ -57,14 +41,6 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
 
-    }
-
-    public function register_dt_login_vars( $vars ) {
-        $defaults = dt_login_defaults();
-        foreach ( $defaults as $k => $v ) {
-            $vars[$k] = $v;
-        }
-        return $vars;
     }
 
     public function dt_login_admin_update_fields( $post_vars ) {

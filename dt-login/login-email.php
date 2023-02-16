@@ -2,20 +2,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-function dt_login_email() {
-    $defaults = get_option( 'dt_login_captcha' );
-    if ( empty( $defaults ) ) {
-        $defaults = [
-            'google_captcha_client_key' => '',
-            'google_captcha_server_secret_key' => '',
-        ];
-        update_option( 'dt_login_captcha', $defaults, true );
-    }
-    return $defaults;
-}
-
-class DT_Login_Email
-{
+class DT_Login_Email {
     private static $_instance = null;
     public static function instance() {
         if ( is_null( self::$_instance ) ){
@@ -26,7 +13,6 @@ class DT_Login_Email
 
     public function __construct() {
         // api vars
-        add_filter( 'register_dt_login_vars', [ $this, 'register_dt_login_vars' ], 10, 1 );
         add_action( 'dt_login_head_bottom', [ $this, 'dt_login_head_bottom' ], 20 );
 
         if ( is_admin() ) {
@@ -35,13 +21,6 @@ class DT_Login_Email
         }
     }
 
-    public function register_dt_login_vars( $vars ) {
-        $defaults = dt_login_email();
-        foreach ( $defaults as $k => $v ) {
-            $vars[$k] = $v;
-        }
-        return $vars;
-    }
     public function dt_login_admin_fields( $dt_login ) {
         ?>
         <tr>
@@ -69,7 +48,7 @@ class DT_Login_Email
     }
 
     public function dt_login_head_bottom() {
-        $dt_login = dt_login_vars();
+        $dt_login = DT_Login_Fields::all_values();
         ?>
         <script>
             var verifyCallback = function(response) {
@@ -109,7 +88,7 @@ class DT_Login_Email
      * @see https://css-tricks.com/password-strength-meter/
      */
     public function custom_registration_function() {
-        $dt_login = dt_login_vars();
+        $dt_login = DT_Login_Fields::all_values();
         $error = new WP_Error();
 
         if ( ! ( isset( $_POST['login_form_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['login_form_nonce'] ) ), 'login_form' ) ) ) {

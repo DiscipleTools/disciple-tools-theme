@@ -28,6 +28,24 @@ class DT_Login_Fields {
         return $fields;
     }
 
+    public static function all_values() {
+        $fields = self::all();
+
+        $all_values = [];
+
+        foreach ( $fields as $key => $field ) {
+            $field_key = $field['key'];
+
+            if ( $field['type'] === 'label' ) {
+                continue;
+            }
+
+            $all_values[$field_key] = $field['value'];
+        }
+
+        return $all_values;
+    }
+
     /**
      * Get the value from the fields array
      * @param string $field_name
@@ -184,20 +202,20 @@ class DT_Login_Fields {
                 'value' => '',
                 'type' => 'label',
             ],
-            'success_redirect' => [
+            'redirect_url' => [
                 'tab' => 'general',
-                'key' => 'success_redirect',
-                'label' => 'Success Redirect',
+                'key' => 'redirect_url',
+                'label' => 'Redirect URL',
                 'description' => '(when someone successfully logs in, where do they get redirected)',
-                'value' => '/',
+                'value' => '',
                 'type' => 'text',
             ],
-            'login_page' => [
+            'login_url' => [
                 'tab' => 'general',
-                'key' => 'login_page',
-                'label' => 'Login Page',
+                'key' => 'login_url',
+                'label' => 'Login URL',
                 'description' => '',
-                'value' => '/login',
+                'value' => 'login',
                 'type' => 'text',
             ],
             'ui_label' => [

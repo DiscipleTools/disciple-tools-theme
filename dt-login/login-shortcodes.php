@@ -15,7 +15,7 @@ function dt_firebase_login_ui( $attr ) {
         $config['api_key'] = DT_Login_Fields::get( 'firebase_api_key' );
         $config['project_id'] = DT_Login_Fields::get( 'firebase_project_id' );
         $config['app_id'] = DT_Login_Fields::get( 'firebase_app_id' );
-        $config['success_redirect'] = DT_Login_Fields::get( 'success_redirect' );
+        $config['redirect_url'] = DT_Login_Fields::get( 'redirect_url' );
         $config['ui_smallprint'] = DT_Login_Fields::get( 'ui_smallprint' );
 
         $sign_in_options = [];
@@ -122,7 +122,7 @@ function dt_firebase_login_ui( $attr ) {
                             }
 
 
-                            window.location = config.success_redirect
+                            window.location = config.redirect_url
                         } else {
                             throw new Error(response.body)
                         }

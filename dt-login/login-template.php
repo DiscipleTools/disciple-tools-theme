@@ -1,5 +1,5 @@
 <?php
-$dt_login = dt_login_vars();
+$dt_login = DT_Login_Fields::all_values();
 
 /**
  * Catch Logout Request and Process Immediately
@@ -340,10 +340,6 @@ switch ( $request_action ) {
                                 <h1 ><?php esc_html_e( 'Register', 'disciple-tools' ) ?></h1>
                             </div>
                             <div class="cell">
-                                <?php
-                                /** Use this action to display additional buttons */
-                                do_action( 'additional_login_buttons', $dt_login )
-                                ?>
 
                                 <hr />
 
@@ -522,10 +518,6 @@ switch ( $request_action ) {
                                     <?php
                                 }
                                 ?>
-                                <?php
-                                    /** Use this action to display additional buttons */
-                                    do_action( 'additional_login_buttons', $dt_login )
-                                ?>
 
                                 <div class="cell" >
                                     <div class="wp_login_form">
@@ -566,7 +558,7 @@ switch ( $request_action ) {
 } // end action switch
 
 function dt_login_form_links() {
-    $dt_login = dt_login_vars();
+    $dt_login = DT_Login_Fields::all_values();
     ?>
     <div class="grid-x grid-padding-x">
         <div class="cell medium-3 large-4"></div>
