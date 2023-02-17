@@ -95,7 +95,7 @@ class DT_Login_Endpoints {
      */
     public function check_auth( WP_REST_Request $request ) {
 
-        $login_method = DT_Login_Fields::get( 'login_method' );
+        $login_method = DT_Login_Fields::get_login_method();
 
         if ( DT_Login_Methods::WORDPRESS === $login_method && is_user_logged_in() ) {
             return new WP_REST_Response( [
@@ -127,7 +127,7 @@ class DT_Login_Endpoints {
      * @return mixed
      */
     public function get_user( WP_REST_Request $request ) {
-        $login_method = DT_Login_Fields::get( 'login_method' );
+        $login_method = DT_Login_Fields::get_login_method();
 
         if ( DT_Login_Methods::WORDPRESS === $login_method && is_user_logged_in() ) {
             $user_id = get_current_user_id();

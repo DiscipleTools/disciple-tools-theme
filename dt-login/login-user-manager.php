@@ -45,7 +45,7 @@ class DT_Login_User_Manager {
         }
 
         /* Login the user using the desired method. */
-        $login_method = DT_Login_Fields::get( 'login_method' );
+        $login_method = DT_Login_Fields::get_login_method();
 
         if ( DT_Login_Methods::MOBILE === $login_method ) {
             /* If mobile app, then do a login using the mobile app plugin */

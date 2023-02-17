@@ -125,6 +125,15 @@ class DT_Login_Fields {
         return $fields;
     }
 
+    /**
+     * Get the login method that the Firebase SSO should use
+     *
+     * @return string
+     */
+    public static function get_login_method() {
+        return apply_filters( 'dt_login_method', DT_Login_Methods::WORDPRESS );
+    }
+
     private static function get_multisite_defaults() {
         $multisite_defaults = [
             // firebase
@@ -181,16 +190,16 @@ class DT_Login_Fields {
                 'value' => '',
                 'type' => 'label',
             ],
-            'login_method' => [
+            'login_enabled' => [
                 'tab' => 'general',
-                'key' => 'login_method',
-                'label' => 'Login Method',
-                'description' => 'Login like Wordpress normally does or like a mobile app.',
+                'key' => 'login_enabled',
+                'label' => 'Enable Custom Login Page',
+                'description' => '',
                 'default' => [
-                    'wordpress' => DT_Login_Methods::WORDPRESS,
-                    'mobile' => DT_Login_Methods::MOBILE,
+                    'on' => 'on',
+                    'off' => 'off',
                 ],
-                'value' => 'wordpress',
+                'value' => 'off',
                 'type' => 'select',
             ],
 

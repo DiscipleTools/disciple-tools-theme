@@ -10,7 +10,7 @@
  */
 function dt_sso_login_redirect_if_no_auth() {
     /* Check what the login method is */
-    $login_method = DT_Login_Fields::get( 'login_method' );
+    $login_method = DT_Login_Fields::get_login_method();
     $success_redirect = DT_Login_Fields::get( 'redirect_url' );
     $login_page = DT_Login_Fields::get( 'login_url' );
 
