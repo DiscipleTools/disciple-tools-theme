@@ -177,7 +177,7 @@ function dt_firebase_login_ui( $attr ) {
 
     <div id="firebaseui-auth-container"></div>
 
-    <div id="error-message-container" style="display: none; background-color: #F006">
+    <div id="error-message-container" style="display: none; background-color: #F006; padding: 5px 10px">
         <p class="message"></p>
     </div>
 

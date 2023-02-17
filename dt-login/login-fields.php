@@ -131,6 +131,14 @@ class DT_Login_Fields {
      * @return string
      */
     public static function get_login_method() {
+
+        /**
+         * Allows the developer to switch the SSO login mode to JWT
+         *
+         * Use the DT_Login_Methods class
+         *
+         * @param string     $login_method The chosen login method. Defaults to 'wordpress'
+         */
         return apply_filters( 'dt_login_method', DT_Login_Methods::WORDPRESS );
     }
 
