@@ -671,7 +671,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                         ?>
                                         <br>
                                         <a href="https://disciple.tools/translation/"
-                                           target="_blank"><?php esc_html_e( 'Help translate or add new language', 'disciple_tools' ) ?></a>
+                                           target="_blank"><?php esc_html_e( 'Translate Disciple.Tools into your language or help make a translation better.', 'disciple_tools' ) ?></a>
                                     </td>
                                 </tr>
 
