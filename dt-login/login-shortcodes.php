@@ -17,6 +17,7 @@ function dt_firebase_login_ui( $attr ) {
         $config['app_id'] = DT_Login_Fields::get( 'firebase_app_id' );
         $config['redirect_url'] = DT_Login_Fields::get( 'redirect_url' );
         $config['ui_smallprint'] = DT_Login_Fields::get( 'ui_smallprint' );
+        $config['disable_sign_up_status'] = !DT_Login_Fields::can_users_register();
 
         $sign_in_options = [];
         $sign_in_options['google'] = DT_Login_Fields::get( 'identity_providers_google' ) === 'on' ? true : false;
@@ -44,7 +45,12 @@ function dt_firebase_login_ui( $attr ) {
             signInOptions.push(firebase.auth.FacebookAuthProvider.PROVIDER_ID)
         }
         if (config.sign_in_options.email) {
-            signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID)
+            signInOptions.push({
+                provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                disableSignUp: {
+                    status: config.disable_sign_up_status,
+                }
+            })
         }
         if (config.sign_in_options.github) {
             signInOptions.push(firebase.auth.GithubAuthProvider.PROVIDER_ID)
@@ -124,7 +130,9 @@ function dt_firebase_login_ui( $attr ) {
 
                             window.location = config.redirect_url
                         } else {
-                            throw new Error(response.body)
+                            showLoader(false)
+                            showErrorMessage(response.message)
+                            startUI()
                         }
                     })
                     .catch(console.error)
@@ -148,13 +156,30 @@ function dt_firebase_login_ui( $attr ) {
             document.getElementById('loader').style.display = 'none'
             console.error('Missing firebase settings in the admin section')
         } else {
+            startUI()
+        }
+
+        function startUI() {
             ui.start('#firebaseui-auth-container', uiConfig);
+        }
+
+        function showErrorMessage(message) {
+            const container = document.getElementById('error-message-container')
+            container.style.display = 'block'
+            container.querySelector('.message').innerHTML = message
+            setTimeout(() => {
+                jQuery(container).fadeOut()
+            }, 4000)
         }
 
     </script>
 
 
     <div id="firebaseui-auth-container"></div>
+
+    <div id="error-message-container" style="display: none; background-color: #F006">
+        <p class="message"></p>
+    </div>
 
     <div id="loader">
         <span class="loading-spinner active"></span>

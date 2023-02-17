@@ -39,6 +39,10 @@ class DT_Login_User_Manager {
      */
     public function login() {
         if ( !$this->user_exists() ) {
+
+            if ( !DT_Login_Fields::can_users_register() ) {
+                throw new Exception( 'You are not registered. Contact the site admin to get a user account.', 999 );
+            }
             $this->create_user();
         } else {
             $this->update_user();

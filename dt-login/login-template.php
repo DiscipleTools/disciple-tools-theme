@@ -583,7 +583,7 @@ function dt_login_form_links() {
                     }
 
                     // registration link
-                    if ( get_option( 'users_can_register' ) && strpos( $dt_url, '?action=register' ) === false ) {
+                    if ( DT_Login_Fields::can_users_register() && strpos( $dt_url, '?action=register' ) === false ) {
                         ?>
                        &nbsp;|&nbsp;
                        <a href="<?php echo esc_url( dt_login_url( 'register' ) ) ?>"><?php esc_html_e( 'Register', 'disciple-tools' ) ?></a>
