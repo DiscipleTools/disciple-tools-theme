@@ -57,5 +57,5 @@ if ( is_multisite() ) {
             return 0;
         }
     }
-    add_filter( 'option_users_can_register', 'dt_multisite_allow_subsite_to_disable_registration', 100 );
+    add_filter( 'option_users_can_register', 'dt_multisite_is_registration_enabled_on_subsite', 100 );
 }
