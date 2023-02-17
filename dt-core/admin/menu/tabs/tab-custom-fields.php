@@ -43,8 +43,39 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
 
+        add_filter( 'dt_export_services', [ $this, 'export_import_services' ], 10, 1 );
+        add_filter( 'dt_export_payload', [ $this, 'export_payload' ], 10, 1 );
+        add_filter( 'dt_import_services', [ $this, 'export_import_services' ], 10, 1 );
+
         parent::__construct();
     } // End __construct()
+
+    private static $export_import_id = 'dt_custom_field_settings';
+    public function export_import_services( $services ){
+        $services[self::$export_import_id] = [
+            'id' => self::$export_import_id,
+            'enabled' => true,
+            'label' => __( 'D.T Custom Field Settings', 'disciple_tools' ),
+            'description' => __( 'Export/Import custom D.T field settings.', 'disciple_tools' )
+        ];
+
+        return $services;
+    }
+
+    public function export_payload( $export_payload ){
+        if ( isset( $export_payload['services'], $export_payload['payload'] ) && in_array( self::$export_import_id, $export_payload['services'] ) ){
+            $payload = [];
+            foreach ( DT_Posts::get_post_types() as $post_type ){
+                $payload[$post_type] = self::get_post_fields( $post_type );
+            }
+
+            if ( !empty( $payload ) ){
+                $export_payload['payload'][self::$export_import_id] = $payload;
+            }
+        }
+
+        return $export_payload;
+    }
 
     public function add_submenu() {
         add_submenu_page( 'dt_options', __( 'Fields', 'disciple_tools' ), __( 'Fields', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-fields', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
