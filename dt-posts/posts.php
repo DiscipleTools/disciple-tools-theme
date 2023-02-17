@@ -1092,6 +1092,11 @@ class Disciple_Tools_Posts
 
         if ( !empty( $search ) ){
 
+            // Support wildcard searching between string tokens.
+            if ( !is_numeric( $search ) ){
+                $search = str_replace( ' ', '%', $search );
+            }
+
             $other_search_fields = [];
             if ( empty( $fields_to_search ) ) {
                 $other_search_fields = apply_filters( 'dt_search_extra_post_meta_fields', [] );
