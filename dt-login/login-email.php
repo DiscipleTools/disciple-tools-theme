@@ -14,37 +14,6 @@ class DT_Login_Email {
     public function __construct() {
         // api vars
         add_action( 'dt_login_head_bottom', [ $this, 'dt_login_head_bottom' ], 20 );
-
-        if ( is_admin() ) {
-            add_action( 'dt_login_admin_fields', [ $this, 'dt_login_admin_fields' ], 20, 1 );
-            add_filter( 'dt_login_admin_update_fields', [ $this, 'dt_login_admin_update_fields' ], 10, 1 );
-        }
-    }
-
-    public function dt_login_admin_fields( $dt_login ) {
-        ?>
-        <tr>
-            <td colspan="2">
-                <strong>Captcha</strong>
-            </td>
-        </tr>
-        <tr>
-            <td style="font-size:1.2em; text-align: center;">
-                <?php
-                if ( empty( $dt_login['google_captcha_client_key'] ) ) {
-                    echo '&#10060;';
-                } else {
-                    echo '&#9989;';
-                }
-                ?>
-            </td>
-            <td>
-                <strong>Google Captcha Key</strong><br>
-                <input class="regular-text" name="google_captcha_client_key" placeholder="Google Captcha Client Key" value="<?php echo esc_attr( $dt_login['google_captcha_client_key'] ) ?>"/><br>
-                <input class="regular-text" name="google_captcha_server_secret_key" placeholder="Google Captcha Server Secret Key" value="<?php echo esc_attr( $dt_login['google_captcha_server_secret_key'] ) ?>"/><br>
-            </td>
-        </tr>
-        <?php
     }
 
     public function dt_login_head_bottom() {
@@ -64,25 +33,6 @@ class DT_Login_Email {
         <?php
     }
 
-    public function dt_login_admin_update_fields( $post_vars ) {
-        if ( isset( $post_vars['google_captcha_client_key'] ) ) {
-            $defaults = dt_login_email();
-            if ( $post_vars['google_captcha_client_key'] !== $defaults['google_captcha_client_key'] ) {
-                $defaults['google_captcha_client_key'] = $post_vars['google_captcha_client_key'];
-                update_option( 'dt_login_captcha', $defaults, true );
-            }
-        }
-        if ( isset( $post_vars['google_captcha_server_secret_key'] ) ) {
-            $defaults = dt_login_email();
-            if ( $post_vars['google_captcha_server_secret_key'] !== $defaults['google_captcha_server_secret_key'] ) {
-                $defaults['google_captcha_server_secret_key'] = $post_vars['google_captcha_server_secret_key'];
-                update_option( 'dt_login_captcha', $defaults, true );
-            }
-        }
-
-        return $post_vars;
-    }
-
     /**
      * @see https://code.tutsplus.com/tutorials/creating-a-custom-wordpress-registration-form-plugin--cms-20968
      * @see https://css-tricks.com/password-strength-meter/
@@ -95,27 +45,27 @@ class DT_Login_Email {
             return 0;
         }
 
-        if ( ! isset( $_POST['g-recaptcha-response'] ) ) {
-            $error->add( __METHOD__, __( 'Missing captcha response. How did you do that?', 'location_grid' ) );
+        /* if ( ! isset( $_POST['g-recaptcha-response'] ) ) {
+            $error->add( __METHOD__, __( 'Missing captcha response. How did you do that?', 'disciple-tools' ) );
             return $error;
         }
         $args = array(
             'method' => 'POST',
             'body' => array(
                 'secret' => $dt_login['google_captcha_server_secret_key'],
-                'response' => trim( sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) ),
+                'response' => isset( $_POST['g-recaptcha-response'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) ) : '',
             )
         );
         $post_result = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', $args );
         $post_body = json_decode( wp_remote_retrieve_body( $post_result ), true );
         if ( ! isset( $post_body['success'] ) || false === $post_body['success'] ) {
-            $error->add( __METHOD__, __( 'Captcha failure. Try again, if you are human.', 'location_grid' ) );
+            $error->add( __METHOD__, __( 'Captcha failure. Try again, if you are human.', 'disciple-tools' ) );
             return $error;
         }
-
+         */
         // validate elements
         if ( empty( $_POST['email'] ) || empty( $_POST['password'] ) ) {
-            $error->add( __METHOD__, __( 'Missing email or password.', 'location_grid' ) );
+            $error->add( __METHOD__, __( 'Missing email or password.', 'disciple-tools' ) );
             return $error;
         }
 
@@ -140,7 +90,7 @@ class DT_Login_Email {
         }
 
         if ( email_exists( $email ) ) {
-            $error->add( __METHOD__, __( 'Sorry. This email is already registered. Try re-setting your password', 'location_grid' ) );
+            $error->add( __METHOD__, __( 'Sorry. This email is already registered. Try re-setting your password', 'disciple-tools' ) );
             return $error;
         }
 
@@ -159,7 +109,7 @@ class DT_Login_Email {
         $user_id = wp_insert_user( $userdata );
 
         if ( is_wp_error( $user_id ) ) {
-            $error->add( __METHOD__, __( 'Something went wrong. Sorry. Could you try again?', 'location_grid' ) );
+            $error->add( __METHOD__, __( 'Something went wrong. Sorry. Could you try again?', 'disciple-tools' ) );
             return $error;
         }
 
@@ -179,7 +129,7 @@ class DT_Login_Email {
             wp_safe_redirect( dt_login_url( 'redirect' ) );
             exit;
         } else {
-            $error->add( __METHOD__, __( 'No new user found.', 'location_grid' ) );
+            $error->add( __METHOD__, __( 'No new user found.', 'disciple-tools' ) );
             return $error;
         }
     }
