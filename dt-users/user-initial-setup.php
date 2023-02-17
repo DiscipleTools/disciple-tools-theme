@@ -81,7 +81,7 @@ function dt_user_initial_setup_modal(): void{
                         <hr>
                         <button type="button" class="button hollow" data-close>Close</button>
                         <button type='submit' id='user_default_language_update' class='button'>
-                            <?php esc_html_e( 'Update', 'disciple_tools' ) ?>
+                            <?php esc_html_e( 'Save', 'disciple_tools' ) ?>
                         </button>
 
                         <button class="close-button white-button" data-close aria-label="<?php esc_html_e( 'Close Modal', 'disciple_tools' ); ?>" type="button">
