@@ -45,14 +45,17 @@ if ( is_multisite() ) {
     }
     add_action( 'activate_wp_head', 'dt_custom_activate_head' );
 
-    function dt_multisite_disable_registration() {
+    function dt_multisite_is_registration_enabled_on_subsite() {
         $registration = get_site_option( 'registration' );
         if ( 'all' === $registration || 'user' === $registration ){
             if ( get_option( 'dt_disable_registration' ) ) {
                 return 0;
+            } else {
+                return 1;
             }
+        } else {
+            return 0;
         }
-        return 1;
     }
-    add_filter( 'option_users_can_register', 'dt_multisite_disable_registration', 100 );
+    add_filter( 'option_users_can_register', 'dt_multisite_allow_subsite_to_disable_registration', 100 );
 }
