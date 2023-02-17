@@ -134,6 +134,28 @@ class DT_Login_Fields {
         return apply_filters( 'dt_login_method', DT_Login_Methods::WORDPRESS );
     }
 
+    /**
+     * Can users register on this site/subsite
+     *
+     * @return bool
+     */
+    public static function can_users_register() {
+
+        if ( is_multisite() ) {
+            $users_can_register = apply_filters( 'option_users_can_register', 0 );
+        } else {
+            $users_can_register = get_option( 'users_can_register' );
+
+            if ( !$users_can_register ) {
+                $users_can_register = 0;
+            }
+        }
+
+        $users_can_register = $users_can_register !== 0;
+
+        return $users_can_register;
+    }
+
     private static function get_multisite_defaults() {
         $multisite_defaults = [
             // firebase
