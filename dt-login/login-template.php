@@ -406,7 +406,7 @@ switch ( $request_action ) {
                                                             <div class="g-recaptcha" id="g-recaptcha"></div><br>
                                                         </div>
                                                         <div class="cell small-12">
-                                                            <input type="submit" class="button button-primary" id="submit"  value="<?php esc_html_e( 'Register', 'disciple-tools' ) ?>" disabled />
+                                                            <input type="submit" class="button button-primary" id="submit"  value="<?php esc_html_e( 'Register', 'disciple-tools' ) ?>"/>
                                                         </div>
                                                     </div>
                                                 </form>
