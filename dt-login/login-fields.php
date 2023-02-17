@@ -282,7 +282,7 @@ class DT_Login_Fields {
                 'key' => 'identity_providers_email',
                 'label' => 'Email and Password',
                 'description' => '',
-                'value' => 'on',
+                'value' => 'off',
                 'type' => 'select',
                 'default' => [
                     'on' => 'on',
@@ -294,7 +294,7 @@ class DT_Login_Fields {
                 'key' => 'identity_providers_google',
                 'label' => 'Google',
                 'description' => '',
-                'value' => 'off',
+                'value' => 'on',
                 'type' => 'select',
                 'default' => [
                     'on' => 'on',

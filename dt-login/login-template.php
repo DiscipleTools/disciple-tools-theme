@@ -519,23 +519,27 @@ switch ( $request_action ) {
                                 }
                                 ?>
 
-                                <div class="cell" >
-                                    <div class="wp_login_form">
-                                        <?php
-                                        $args = array(
-                                            'redirect' => dt_login_url( 'redirect' ),
-                                            'id_username' => 'user',
-                                            'id_password' => 'pass',
-                                            'value_remember' => true,
-                                            'label_username' => __( 'Email Address', 'disciple-tools' ),
-                                            'label_password' => __( 'Password', 'disciple-tools' ),
-                                            'label_remember' => __( 'Remember Me', 'disciple-tools' ),
-                                            'label_log_in' => __( 'Login', 'disciple-tools' ),
-                                            );
-                                            wp_login_form( $args );
-                                        ?>
+                                <?php if ( $dt_login['identity_providers_email'] !== 'on' ): ?>
+
+                                    <div class="cell" >
+                                        <div class="wp_login_form">
+                                            <?php
+                                            $args = array(
+                                                'redirect' => dt_login_url( 'redirect' ),
+                                                'id_username' => 'user',
+                                                'id_password' => 'pass',
+                                                'value_remember' => true,
+                                                'label_username' => __( 'Email Address', 'disciple-tools' ),
+                                                'label_password' => __( 'Password', 'disciple-tools' ),
+                                                'label_remember' => __( 'Remember Me', 'disciple-tools' ),
+                                                'label_log_in' => __( 'Login', 'disciple-tools' ),
+                                                );
+                                                wp_login_form( $args );
+                                            ?>
+                                        </div>
                                     </div>
-                                </div>
+
+                                <?php endif; ?>
 
                                 <div class="cell">
 
