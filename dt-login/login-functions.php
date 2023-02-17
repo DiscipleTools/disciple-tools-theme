@@ -6,8 +6,13 @@
 // LOGIN PAGE REDIRECT
 add_action( 'init', 'dt_login_redirect_login_page' );
 function dt_login_redirect_login_page() {
+
+    $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
+
+    if ( !$login_page_enabled ) {
+        return;
+    }
     if ( isset( $_SERVER['REQUEST_URI'] ) && !empty( $_SERVER['REQUEST_URI'] ) ) {
-        $login_page  = dt_login_url( 'login' );
         $page_viewed = substr( basename( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ), 0, 12 );
 
         if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] === 'rp' ) {
@@ -37,6 +42,11 @@ function dt_login_url( string $name ) : string {
 
     $login_url = $dt_login['login_url'] ?? '';
     $redirect_url = $dt_login['redirect_url'] ?? '';
+    $login_page_enabled = $dt_login['login_enabled'] === 'on';
+
+    if ( !$login_page_enabled ) {
+        $login_url = 'wp-login.php';
+    }
 
     switch ( $name ) {
         case 'home':
@@ -70,7 +80,13 @@ function dt_login_spinner() : string {
 /**
  * Changes the logo link from wordpress.org to your site
  */
-function dt_login_site_url() {
+function dt_login_site_url( $url ) {
+    $login_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
+
+    if ( !$login_enabled ) {
+        return $url;
+    }
+
     return dt_login_url( 'login' );
 }
 add_filter( 'login_headerurl', 'dt_login_site_url' );
@@ -114,6 +130,13 @@ function dt_login_multisite_register_location( $url ) {
 }
 
 add_filter( 'login_url', 'dt_login_login_url', 99, 3 );
-function dt_login_login_url(){
+function dt_login_login_url( $url ){
+
+    $login_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
+
+    if ( !$login_enabled ) {
+        return $url;
+    }
+
     return dt_login_url( 'login' );
 }
