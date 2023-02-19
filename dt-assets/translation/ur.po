@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
+"PO-Revision-Date: 2023-02-20 08:32+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"Language-Team: Urdu <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/ur/>\n"
 "Language: ur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -88,9 +92,10 @@ msgid "The page you were looking for was not found or was deleted"
 msgstr "آپ جس صفحے کو تلاش کر رہے تھے وہ نہیں ملا تھا یا حذف کردیا گیا تھا"
 
 #: archive-template.php:25
+#, fuzzy
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "نیا٪ s بنائیں"
+msgstr "نیا%s بنائیں"
 
 #: archive-template.php:29
 msgid "Filters"
@@ -103,7 +108,7 @@ msgstr "فلٹرز"
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
-msgstr "٪ s تلاش کریں"
+msgstr "%s تلاش کریں"
 
 #: archive-template.php:37 archive-template.php:127
 #: dt-mapping/geocode-api/mapbox-api.php:291
@@ -152,7 +157,7 @@ msgstr "دوبارہ پہلے جیسا کر دو"
 #: archive-template.php:202
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "٪ s فلٹرز"
+msgstr "%s فلٹرز"
 
 #: archive-template.php:213
 msgid "Create custom filter"
@@ -403,7 +408,7 @@ msgstr "ریکارڈ"
 #: dt-assets/functions/details-bar.php:287
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "٪ s کے ذریعہ"
+msgstr "%s کے ذریعہ"
 
 #: dt-assets/functions/details-bar.php:131
 #: dt-assets/functions/details-bar.php:294
@@ -3956,9 +3961,10 @@ msgid "Baptized %s"
 msgstr "بپتسمہ٪ s"
 
 #: dt-posts/posts.php:282
+#, fuzzy
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
-msgstr "٪ s کے ذریعہ بپتسمہ لیا"
+msgstr "%s کے ذریعہ بپتسمہ لیا"
 
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
