@@ -4,8 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
-"PO-Revision-Date: 2023-02-17 08:18+0000\n"
-"Last-Translator: Dmitry <dmitry_cherednikov@wycliffe.ru>\n"
+"PO-Revision-Date: 2023-02-20 08:31+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Russian <https://translate.disciple.tools/projects/"
 "disciple-tools/disciple-tools-theme/ru_RU/>\n"
 "Language: ru_RU\n"
@@ -407,6 +407,7 @@ msgstr "Запись"
 
 #: dt-assets/functions/details-bar.php:125
 #: dt-assets/functions/details-bar.php:287
+#, fuzzy
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "%s"
