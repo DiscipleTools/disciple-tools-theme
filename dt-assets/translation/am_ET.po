@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
-"Language: am\n"
+"PO-Revision-Date: 2023-02-20 08:31+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"Language-Team: Amharic <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/am_ET/>\n"
+"Language: am_ET\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -88,7 +92,7 @@ msgstr "የሚፈልጉት ገጽ አልተገኘም ወይም ተሰር wasል"
 #: archive-template.php:25
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "አዲስ$s ፍጠር"
+msgstr "አዲስ%s ፍጠር"
 
 #: archive-template.php:29
 msgid "Filters"
@@ -397,9 +401,10 @@ msgstr "መዝገብ"
 
 #: dt-assets/functions/details-bar.php:125
 #: dt-assets/functions/details-bar.php:287
+#, fuzzy
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "በ$s"
+msgstr "በ %s"
 
 #: dt-assets/functions/details-bar.php:131
 #: dt-assets/functions/details-bar.php:294
@@ -887,7 +892,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:46
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
-msgstr "ይህንን ክፍል በ ‹ሁሉም› ፣ በአስተያየቶች ወይም በ ‹እንቅስቃሴ› ማጣራት ይችላሉ ፡፡"
+msgstr "ይህንን ክፍል በ ‹ሁሉም› ፣ በአስተያየቶች ወይም በ ‹እንቅስቃሴ› ማጣራት ይችላሉ ፡፡."
 
 #: dt-assets/parts/modals/modal-help.php:56
 msgctxt "Optional Documentation"
@@ -3880,9 +3885,10 @@ msgid "Baptized %s"
 msgstr "ተጠመቀ$s"
 
 #: dt-posts/posts.php:282
+#, fuzzy
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
-msgstr "በ$s ተጠመቀ"
+msgstr "በ %s ተጠመቀ"
 
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
