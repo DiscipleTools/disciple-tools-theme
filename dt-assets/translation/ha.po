@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
+"PO-Revision-Date: 2023-02-20 08:32+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"Language-Team: Hausa <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/ha/>\n"
 "Language: ha\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -89,7 +93,7 @@ msgstr "Ba a samo shafin da kake nema ba ko an share shi"
 #: archive-template.php:25
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "Irƙiri Sabon% s"
+msgstr "Irƙiri Sabon%s"
 
 #: archive-template.php:29
 msgid "Filters"
@@ -100,9 +104,10 @@ msgstr "Matatu"
 #: dt-core/global-functions.php:658 dt-core/global-functions.php:775
 #: dt-core/global-functions.php:819 dt-posts/custom-post-type.php:18
 #: template-settings.php:381
+#, fuzzy
 msgctxt "Search 'something'"
 msgid "Search %s"
-msgstr "Binciko% s"
+msgstr "Binciko %s"
 
 #: archive-template.php:37 archive-template.php:127
 #: dt-mapping/geocode-api/mapbox-api.php:291
@@ -151,7 +156,7 @@ msgstr "sake saitawa zuwa tsoho"
 #: archive-template.php:202
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "Matatun% s"
+msgstr "Matatun %s"
 
 #: archive-template.php:213
 msgid "Create custom filter"
@@ -399,9 +404,10 @@ msgstr "Rikodi"
 
 #: dt-assets/functions/details-bar.php:125
 #: dt-assets/functions/details-bar.php:287
+#, fuzzy
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "ta% s"
+msgstr "ta %s"
 
 #: dt-assets/functions/details-bar.php:131
 #: dt-assets/functions/details-bar.php:294
@@ -3954,9 +3960,10 @@ msgid "Baptized %s"
 msgstr "Baftisma% s"
 
 #: dt-posts/posts.php:282
+#, fuzzy
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
-msgstr "Baftisma da% s"
+msgstr "Baftisma da %s"
 
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
