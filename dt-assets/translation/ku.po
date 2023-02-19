@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
+"PO-Revision-Date: 2023-02-20 08:32+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"Language-Team: Kurdish <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/ku/>\n"
 "Language: ku\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -90,9 +94,10 @@ msgid "The page you were looking for was not found or was deleted"
 msgstr "Rûpela ku hûn lê digerin nehat dîtin an hate jêbirin"
 
 #: archive-template.php:25
+#, fuzzy
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "% S nû çêbikin"
+msgstr "%s nû çêbikin"
 
 #: archive-template.php:29
 msgid "Filters"
@@ -103,9 +108,10 @@ msgstr "Parzûn"
 #: dt-core/global-functions.php:658 dt-core/global-functions.php:775
 #: dt-core/global-functions.php:819 dt-posts/custom-post-type.php:18
 #: template-settings.php:381
+#, fuzzy
 msgctxt "Search 'something'"
 msgid "Search %s"
-msgstr "Li% s bigerin"
+msgstr "Li %s bigerin"
 
 #: archive-template.php:37 archive-template.php:127
 #: dt-mapping/geocode-api/mapbox-api.php:291
@@ -154,7 +160,7 @@ msgstr "ji nû ve vegerin"
 #: archive-template.php:202
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "Parzûnên% s"
+msgstr "Parzûnên %s"
 
 #: archive-template.php:213
 msgid "Create custom filter"
@@ -403,9 +409,10 @@ msgstr "Rekor"
 
 #: dt-assets/functions/details-bar.php:125
 #: dt-assets/functions/details-bar.php:287
+#, fuzzy
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "ji hêla% s ve"
+msgstr "ji hêla %s ve"
 
 #: dt-assets/functions/details-bar.php:131
 #: dt-assets/functions/details-bar.php:294
@@ -3956,9 +3963,10 @@ msgid "Baptized %s"
 msgstr "% S imad kirin"
 
 #: dt-posts/posts.php:282
+#, fuzzy
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
-msgstr "Ji hêla% s ve hat imad kirin"
+msgstr "Ji hêla %s ve hat imad kirin"
 
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
