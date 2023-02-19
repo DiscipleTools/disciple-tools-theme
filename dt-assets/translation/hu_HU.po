@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
-"Language: hu\n"
+"PO-Revision-Date: 2023-02-20 08:31+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"Language-Team: Hungarian <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/hu_HU/>\n"
+"Language: hu_HU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -37,7 +41,7 @@ msgstr "Hozzáférés megtagadva"
 
 #: 403.php:35
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "Sajnáljuk, nincs engedélye megtekinteni a %1$s-t az id %2$s-el "
+msgstr "Sajnáljuk, nincs engedélye megtekinteni a %1$s-t az id %2$s-el."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
@@ -898,10 +902,11 @@ msgstr ""
 "kapcsolat vagy a csoport állapota mikor vált aktívvá stb."
 
 #: dt-assets/parts/modals/modal-help.php:46
+#, fuzzy
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"Szűrheted ezt a részt \"Minden\", \"Megjegyzés\" vagy \"Tevékenység\" által"
+"Szűrheted ezt a részt \"Minden\", \"Megjegyzés\" vagy \"Tevékenység\" által."
 
 #: dt-assets/parts/modals/modal-help.php:56
 msgctxt "Optional Documentation"
