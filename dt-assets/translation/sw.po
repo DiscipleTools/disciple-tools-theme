@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
+"PO-Revision-Date: 2023-02-20 08:32+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"Language-Team: Swahili <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/sw/>\n"
 "Language: sw\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -90,7 +94,7 @@ msgstr "Ukurasa uliotafuta haupatikani au ulifutika"
 #: archive-template.php:25
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "Unda Mpya%s"
+msgstr "Unda Mpya %s"
 
 #: archive-template.php:29
 msgid "Filters"
@@ -403,7 +407,7 @@ msgstr "Rekodi"
 #: dt-assets/functions/details-bar.php:287
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "na%s"
+msgstr "na %s"
 
 #: dt-assets/functions/details-bar.php:131
 #: dt-assets/functions/details-bar.php:294
