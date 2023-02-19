@@ -220,7 +220,7 @@ class DT_Contacts_Base {
                         'icon' => get_template_directory_uri() . '/dt-assets/images/viber.svg'
                     ],
                     'Whatsapp' => [
-                        'name' => __( 'Whatsapp', 'disciple_tools' ),
+                        'name' => __( 'WhatsApp', 'disciple_tools' ),
                         'link' => 'https://api.whatsapp.com/send?phone=PHONE_NUMBER_NO_PLUS',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/signal.svg'
                     ],
