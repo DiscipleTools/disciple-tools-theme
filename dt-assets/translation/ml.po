@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
+"PO-Revision-Date: 2023-02-20 08:32+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"Language-Team: Malayalam <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/ml/>\n"
 "Language: ml\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -87,9 +91,10 @@ msgid "The page you were looking for was not found or was deleted"
 msgstr "നിങ്ങൾ തിരയുന്ന പേജ് കണ്ടെത്തിയില്ല അല്ലെങ്കിൽ ഇല്ലാതാക്കി"
 
 #: archive-template.php:25
+#, fuzzy
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "പുതിയ% s സൃഷ്ടിക്കുക"
+msgstr "പുതിയ%s സൃഷ്ടിക്കുക"
 
 #: archive-template.php:29
 msgid "Filters"
@@ -102,7 +107,7 @@ msgstr "ഫിൽട്ടറുകൾ"
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
-msgstr "% S തിരയുക"
+msgstr "%s തിരയുക"
 
 #: archive-template.php:37 archive-template.php:127
 #: dt-mapping/geocode-api/mapbox-api.php:291
@@ -151,7 +156,7 @@ msgstr "സ്ഥിരസ്ഥിതിയായി പുന reset സജ്�
 #: archive-template.php:202
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "% s ഫിൽട്ടറുകൾ"
+msgstr "%s ഫിൽട്ടറുകൾ"
 
 #: archive-template.php:213
 msgid "Create custom filter"
@@ -402,7 +407,7 @@ msgstr "റെക്കോർഡ്"
 #: dt-assets/functions/details-bar.php:287
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "% s പ്രകാരം"
+msgstr "%s പ്രകാരം"
 
 #: dt-assets/functions/details-bar.php:131
 #: dt-assets/functions/details-bar.php:294
@@ -3931,9 +3936,10 @@ msgid "Baptized %s"
 msgstr "സ്‌നാപനമേറ്റ% s"
 
 #: dt-posts/posts.php:282
+#, fuzzy
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
-msgstr "% S സ്നാനമേറ്റു"
+msgstr "%s സ്നാനമേറ്റു"
 
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
