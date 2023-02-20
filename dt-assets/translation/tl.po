@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
+"PO-Revision-Date: 2023-02-20 08:32+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"Language-Team: Tagalog <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/tl/>\n"
 "Language: tl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -588,7 +592,7 @@ msgstr "I-dismiss ang lahat ng ka-match ni %s"
 #: dt-assets/functions/enqueue-scripts.php:299
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
-msgstr "Ipinapakita ang  _START_ of _TOTAL_"
+msgstr "Ipinapakita ang _START_ of _TOTAL_"
 
 #: dt-assets/functions/enqueue-scripts.php:300
 msgid "Sorting By"
