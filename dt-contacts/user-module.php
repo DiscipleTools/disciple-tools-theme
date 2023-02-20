@@ -70,7 +70,7 @@ class DT_Contacts_User {
                     <?php if ( isset( $dt_post['corresponds_to_user'] ) && (int) $dt_post['corresponds_to_user'] === get_current_user_id() ):
                         ?>
                         <h4><?php esc_html_e( 'This contact represents you as a user.', 'disciple_tools' )?></h4>
-                        <p><?php esc_html_e( 'Please update contact details on your profile page instead of here.', 'disciple_tools' ); ?> <a style="color:white; font-weight: bold" href="<?php echo esc_html( site_url( '/settings' ) ); ?>"><?php echo esc_html( 'Profile Settings' ); ?> <img class="dt-icon dt-white-icon" style="margin:0" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a></p>
+                        <p><?php esc_html_e( 'Please update contact details on your profile page instead of here.', 'disciple_tools' ); ?> <a style="color:white; font-weight: bold" href="<?php echo esc_html( site_url( '/settings' ) ); ?>"><?php esc_html_e( 'Profile Settings', 'disciple_tools' ); ?> <img class="dt-icon dt-white-icon" style="margin:0" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/></a></p>
                     <?php else : ?>
                         <h4>
                         <?php esc_html_e( 'This contact represents a user.', 'disciple_tools' );

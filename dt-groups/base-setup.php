@@ -848,7 +848,7 @@ class DT_Groups_Base extends DT_Module_Base {
             foreach ( $member_data as $meta ) {
                 if ( $meta->meta_key === 'milestones' && in_array( $meta->meta_value, $default_milestone_keys, true ) ) {
                     $data['milestones'][] = $milestone_settings[$meta->meta_value];
-                } elseif ( $meta->meta_key === 'overall_status' ) {
+                } elseif ( $meta->meta_key === 'overall_status' && isset( $overall_status_settings[$meta->meta_value] ) ) {
                     $data['overall_status'] = $overall_status_settings[$meta->meta_value];
                 }
             }

@@ -139,7 +139,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 return 'NULL';
             }
             foreach ( $values as &$val ) {
-                if ( '\N' === $val ) {
+                if ( '\N' === $val || empty( $val ) ) {
                     $val = 'NULL';
                 } else {
                     $val = "'" . esc_sql( trim( $val ) ) . "'";
@@ -676,7 +676,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                     class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button" <?php echo esc_html( $disabled ); ?>>
                                 <?php
                                 dt_render_field_icon( $option_value );
-                                echo esc_html( $option_value['label'] );
+                                echo esc_html( $option_value['label'] ?? $option_key );
                                 ?>
                             </button>
                         <?php endforeach; ?>
@@ -695,6 +695,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                        value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?>
                        min="<?php echo esc_html( $fields[$field_key]['min_option'] ?? '' ) ?>"
                        max="<?php echo esc_html( $fields[$field_key]['max_option'] ?? '' ) ?>"
+                       onwheel="return false;"
                 />
             <?php elseif ( $field_type === 'link' ) : ?>
 

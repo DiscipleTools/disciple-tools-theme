@@ -298,7 +298,7 @@ dt_please_log_in();
                             $archived_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['archived_key'] : null;
 
                             $archived_text = $status_key && $archived_key ? $post_settings['fields'][$status_key]['default'][$archived_key]['label'] : __( 'Archived', 'disciple_tools' );
-                            $archived_label = sprintf( _x( 'Show %s', 'disciple_tools' ), $archived_text );
+                            $archived_label = sprintf( _x( 'Show %s', 'Show archived', 'disciple_tools' ), $archived_text );
                         ?>
 
                         <span style="display:<?php echo esc_html( !$status_key || !$archived_key ? 'none' : 'inline-block' ) ?>" class="show-closed-switch">
@@ -400,7 +400,11 @@ dt_please_log_in();
                                     <div class="cell small-12 medium-4">
                                         <div class="section-subheader">
                                             <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
-                                            <?php esc_html_e( 'Status', 'disciple_tools' ) ?>
+                                            <?php if ( isset( $tiles['status']['label'] ) && !empty( $tiles['status']['label'] ) ) {
+                                                echo esc_html( $tiles['status']['label'] );
+                                            } else {
+                                                echo esc_html__( 'Status', 'disciple_tools' );
+                                            }?>
                                             <button class="help-button-field" data-section="overall_status-help-text">
                                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                             </button>
@@ -488,14 +492,7 @@ dt_please_log_in();
                                         ></textarea>
 
                                         <?php if ( $post_type == 'contacts' ) :
-                                            $sections = [
-                                                [
-                                                    'key' => 'comment',
-                                                    'label' => __( 'Comments', 'disciple_tools' ),
-                                                    'selected_by_default' => true
-                                                ],
-                                            ];
-                                            $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+                                            $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );?>
 
                                                 <div class="grid-x">
                                                     <div class="section-subheader cell shrink">
@@ -503,7 +500,7 @@ dt_please_log_in();
                                                     </div>
                                                     <select id="comment_type_selector" class="cell auto">
                                                         <?php
-                                                        $section_keys = [];
+                                                        $section_keys = [ 'activity' ];
                                                         foreach ( $sections as $section ) {
                                                             if ( !in_array( $section['key'], $section_keys ) ) {
                                                                 $section_keys[] = $section['key'] ?>

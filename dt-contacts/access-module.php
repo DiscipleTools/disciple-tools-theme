@@ -796,7 +796,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                         }
                     }
                 }
-                $fields['assigned_to'] = sprintf( 'user-%d', $base_id );
+                if ( !empty( $base_id ) ){
+                    $fields['assigned_to'] = sprintf( 'user-%d', $base_id );
+                }
             }
         }
         if ( !isset( $fields['overall_status'] ) ){

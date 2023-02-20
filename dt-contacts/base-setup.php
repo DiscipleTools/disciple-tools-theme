@@ -36,7 +36,7 @@ class DT_Contacts_Base {
         add_filter( 'dt_post_update_fields', [ $this, 'update_post_field_hook' ], 10, 3 );
         add_filter( 'dt_post_updated', [ $this, 'dt_post_updated' ], 10, 5 );
         add_filter( 'dt_post_create_fields', [ $this, 'dt_post_create_fields' ], 20, 2 );
-        add_filter( 'dt_comments_additional_sections', [ $this, 'add_comm_channel_comment_section' ], 10, 2 );
+        add_filter( 'dt_comments_additional_sections', [ $this, 'add_comm_channel_comment_section' ], 100, 2 );
 
 
         //list
@@ -220,7 +220,7 @@ class DT_Contacts_Base {
                         'icon' => get_template_directory_uri() . '/dt-assets/images/viber.svg'
                     ],
                     'Whatsapp' => [
-                        'name' => __( 'Whatsapp', 'disciple_tools' ),
+                        'name' => __( 'WhatsApp', 'disciple_tools' ),
                         'link' => 'https://api.whatsapp.com/send?phone=PHONE_NUMBER_NO_PLUS',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/signal.svg'
                     ],
@@ -649,7 +649,7 @@ class DT_Contacts_Base {
         if ( $post_type === 'contacts' ){
             $channels = DT_Posts::get_post_field_settings( $post_type );
             foreach ( $channels as $channel_key => $channel_option ) {
-                if ( $channel_option['type'] !== 'communication_channel' ){
+                if ( $channel_option['type'] !== 'communication_channel' ) {
                     continue;
                 }
                 $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
@@ -661,8 +661,102 @@ class DT_Contacts_Base {
                     'label' => esc_html( $channel_option['name'] ?? $channel_key )
                 ];
             }
+
+            // Extract custom comment types.
+            $comment_type_options  = dt_get_option( 'dt_comment_types' );
+            $comment_type_fields = $comment_type_options[ $post_type ] ?? [];
+            foreach ( $comment_type_fields ?? [] as $key => $type ){
+                if ( isset( $type['is_comment_type'] ) && $type['is_comment_type'] ){
+
+                    // Ensure label adopts the correct name translation.
+                    $label = ( isset( $type['translations'] ) && !empty( $type['translations'][determine_locale()] ) ) ? $type['translations'][determine_locale()] : ( $type['name'] ?? $key );
+                    if ( empty( $label ) ){
+                        $label = $key;
+                    }
+
+                    // Safeguard against duplicates.
+                    $already_assigned = $this->comm_channel_comment_section_already_assigned( $sections, $key );
+                    if ( $already_assigned === false ){
+
+                        // Package custom comment type.
+                        $packaged_type = $type;
+                        $packaged_type['key'] = $key;
+                        $packaged_type['label'] = esc_html( $label );
+                        $sections[] = $packaged_type;
+
+                    } else {
+
+                        // Update pre-existing custom comment types.
+                        $sections[$already_assigned] = $type;
+                        $sections[$already_assigned]['key'] = $key;
+                        $sections[$already_assigned]['label'] = esc_html( $label );
+
+                    }
+                }
+            }
+
+            // Handle default comment types, only adding if not already assigned.
+            $default_types = [
+                [
+                    'key' => 'activity',
+                    'label' => __( 'Activity', 'disciple_tools' ),
+                    'selected_by_default' => true,
+                    'always_show' => true,
+                    'enabled' => true
+                ],
+                [
+                    'key' => 'comment',
+                    'label' => __( 'Comment', 'disciple_tools' ),
+                    'selected_by_default' => true,
+                    'enabled' => true
+                ]
+            ];
+            foreach ( $default_types as $type ){
+                if ( $this->comm_channel_comment_section_already_assigned( $sections, $type['key'] ) === false ){
+                    array_unshift( $sections, $type );
+                }
+
+                // Force default comment types to top spots!
+                $type_idx = $this->comm_channel_comment_section_already_assigned( $sections, $type['key'] );
+                if ( $type_idx !== false ){
+                    $unshift_type = $sections[$type_idx];
+
+                    // Adjust enabled state accordingly; defaulting to configured, if not specified.
+                    if ( !isset( $unshift_type['enabled'] ) ){
+                        $unshift_type['enabled'] = $type['enabled'];
+                    }
+
+                    // Proceed with element unshift.
+                    unset( $sections[$type_idx] );
+                    array_unshift( $sections, $unshift_type );
+                }
+            }
+
+            // Finally, move all original custom comment types to bottom spots!
+            foreach ( $sections ?? [] as $section ){
+                if ( isset( $section['is_comment_type'] ) && $section['is_comment_type'] && ( substr( $section['key'], 0, strlen( $section['key_prefix'] ) ) === $section['key_prefix'] ) ){
+                    $section_idx = $this->comm_channel_comment_section_already_assigned( $sections, $section['key'] );
+                    if ( $section_idx !== false ){
+                        $unshift_section = $sections[$section_idx];
+                        unset( $sections[$section_idx] );
+                        $sections[] = $unshift_section;
+                    }
+                }
+            }
         }
+
         return $sections;
+    }
+
+    private function comm_channel_comment_section_already_assigned( $sections, $key ){
+        $found = false;
+        foreach ( $sections ?? [] as $idx => $section ){
+            if ( isset( $section['key'] ) && $section['key'] == $key ){
+                $found = $idx;
+            }
+        }
+
+        return $found;
     }
 
     public function dt_record_notifications_section( $post_type, $dt_post ){

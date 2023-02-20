@@ -105,7 +105,13 @@ jQuery(document).ready(function($) {
   let commentTemplate = window.lodash.template(`
   <div class="activity-block">
     <div>
-        <span class="gravatar"><img src="<%- gravatar  %>"/></span>
+        <span class="gravatar">
+        <% if( $.trim( gravatar ) ) { %>
+            <img src="<%- gravatar  %>"/>
+        <% } else { %>
+            <i class="mdi mdi-robot-outline"></i>
+        <% } %>
+        </span>
         <span><strong><%- name %></strong></span>
         <span class="comment-date"> <%- date %> </span>
       </div>
@@ -411,8 +417,7 @@ jQuery(document).ready(function($) {
         const entries = Array.from(formDataEntries);
         //event submitter data is not available in Safari/Webkit browsers only in Chrome/Blink browsers. This checks if that data exists and falls back to the formDataEntries data if it doesn't exists.
         const reaction = e.submitter ? e.submitter.value : entries[0][1];
-        const userId = commentsSettings.current_user_id
-        rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction)
+        rest_api.toggle_comment_reaction(postType, postId, commentId, reaction)
       })
       element.appendChild(reactionForm)
     })
@@ -434,9 +439,8 @@ jQuery(document).ready(function($) {
     document.querySelectorAll('.comment-reaction').forEach((element) => {
       element.addEventListener('click', (e) => {
         const commentId = e.target.dataset.commentId
-        const userId = commentsSettings.current_user_id
         const reaction = e.target.dataset.reactionValue
-        rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction)
+        rest_api.toggle_comment_reaction(postType, postId, commentId, reaction)
       })
     })
   }

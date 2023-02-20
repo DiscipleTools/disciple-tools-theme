@@ -20,7 +20,15 @@ jQuery(document).ready(function ($) {
    */
 
   $(document).on('keyup', '#dialog_icon_selector_filter_input', function (e) {
-    execute_icon_selection_filter_query();
+    let code = (e.keyCode || e.which);
+
+    // Only get excited over specific key codes.
+    if ((code===8) ||
+      (code===13) ||
+      ((code >= 48) && (code <= 90))) {
+
+      execute_icon_selection_filter_query();
+    }
   });
 
   $(document).on('click', '.dialog-icon-selector-icon', function (e) {
@@ -47,9 +55,9 @@ jQuery(document).ready(function ($) {
         autoOpen: false,
         hide: 'fade',
         show: 'fade',
-        height: 600,
-        width: 350,
-        resizable: false,
+        height: 1000,
+        width: 'auto',
+        resizable: true,
         title: 'Translation Dialog',
         buttons: {
           Update: function () {
@@ -89,8 +97,8 @@ jQuery(document).ready(function ($) {
         autoOpen: false,
         hide: 'fade',
         show: 'fade',
-        height: 600,
-        width: 750,
+        height: 'auto',
+        width: 'auto',
         resizable: false,
         title: 'Icon Selector Dialog',
         buttons: [

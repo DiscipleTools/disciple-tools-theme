@@ -1092,6 +1092,11 @@ class Disciple_Tools_Posts
 
         if ( !empty( $search ) ){
 
+            // Support wildcard searching between string tokens.
+            if ( !is_numeric( $search ) ){
+                $search = str_replace( ' ', '%', $search );
+            }
+
             $other_search_fields = [];
             if ( empty( $fields_to_search ) ) {
                 $other_search_fields = apply_filters( 'dt_search_extra_post_meta_fields', [] );
@@ -1705,8 +1710,15 @@ class Disciple_Tools_Posts
                 if ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ){
                     return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
-                update_post_meta( $post_id, $field_key, $field_value );
                 $user_id = explode( '-', $field_value )[1];
+                if ( empty( $user_id ) ){
+                    $user_id = dt_get_base_user( true );
+                }
+                $user = get_user_by( 'id', $user_id );
+                if ( !$user || !user_can( $user->ID, 'access_' . $post_type ) ){
+                    return new WP_Error( __FUNCTION__, "user does not have access to $post_type", [ 'status' => 400 ] );
+                }
+                update_post_meta( $post_id, $field_key, $field_value );
                 DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false, false );
             }
         }
@@ -2533,6 +2545,9 @@ class Disciple_Tools_Posts
             }
             foreach ( $meta_fields as $key => $value ){
                 if ( strpos( $key, 'contact_address' ) === 0 && strpos( $key, '_details' ) === false ){
+                    if ( is_array( $value ) ){
+                        $value = $value[0];
+                    }
                     $fields['location_grid_meta'][] = [ 'label' => $value, 'key' => $key ];
                 }
             }
