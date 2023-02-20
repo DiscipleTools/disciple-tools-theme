@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
-"Language: pt-br\n"
+"PO-Revision-Date: 2023-02-20 08:31+0000\n"
+"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"Language-Team: Portuguese (Brazil) <https://translate.disciple.tools/"
+"projects/disciple-tools/disciple-tools-theme/pt_BR/>\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -407,7 +411,7 @@ msgstr "Registro"
 #: dt-assets/functions/details-bar.php:287
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "por%s"
+msgstr "por %s"
 
 #: dt-assets/functions/details-bar.php:131
 #: dt-assets/functions/details-bar.php:294
@@ -1857,7 +1861,7 @@ msgstr "Viber"
 
 #: dt-contacts/base-setup.php:223
 msgid "Whatsapp"
-msgstr "WhatsApp "
+msgstr "WhatsApp"
 
 #: dt-contacts/base-setup.php:230
 #: dt-core/configuration/config-site-defaults.php:338
