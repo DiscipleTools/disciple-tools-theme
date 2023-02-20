@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
-"PO-Revision-Date: 2023-02-15 11:03+0000\n"
+"PO-Revision-Date: 2023-02-20 08:31+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Spanish (Latin America) <https://translate.disciple.tools/"
 "projects/disciple-tools/disciple-tools-theme/es_419/>\n"
@@ -63,8 +63,8 @@ msgstr "Solicitar acceso al registro"
 msgid ""
 "Record owner to be notified of access request. Are you happy to proceed?"
 msgstr ""
-"Propietario del registro para ser notificado de la solicitud de acceso. "
-"¿Estás feliz de continuar?"
+"Propietario del registro para ser notificado de la solicitud de acceso. ¿"
+"Quieres proceder?"
 
 #: 403.php:52
 msgid "Submit Request"
@@ -167,7 +167,7 @@ msgstr "Crear filtro personalizado"
 #: archive-template.php:225
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "Lista %s"
+msgstr "Lista de %s"
 
 #: archive-template.php:232
 msgid "Sort"
@@ -409,7 +409,7 @@ msgstr "Registro"
 #: dt-assets/functions/details-bar.php:287
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
-msgstr "por%s"
+msgstr "por %s"
 
 #: dt-assets/functions/details-bar.php:131
 #: dt-assets/functions/details-bar.php:294
@@ -1896,7 +1896,7 @@ msgstr "Otros enlaces sociales"
 #: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Conexiones a otros%s"
+msgstr "Conexiones a otros %s"
 
 #: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
@@ -2238,7 +2238,7 @@ msgstr "Contactos a los que están subasignados estos contactos"
 
 #: dt-contacts/dmm-module.php:159
 msgid "Is Coaching"
-msgstr "Es coaching"
+msgstr "Es discipulando"
 
 #: dt-contacts/dmm-module.php:160
 msgctxt "Optional Documentation"
@@ -2743,9 +2743,9 @@ msgid ""
 "assigned to a group while multiple people can be coaches / church planters "
 "of this group."
 msgstr ""
-"La persona que plantó y/o está liderando este grupo. Sólo una persona puede "
-"ser asignada a un grupo mientras que múltiples personas pueden ser líderes / "
-"plantadores de iglesias de este grupo."
+"La persona que plantó y/o está discipulando este grupo. Sólo una persona "
+"puede ser asignada a un grupo mientras que múltiples personas pueden ser "
+"líderes / plantadores de iglesias de este grupo."
 
 #: dt-groups/base-setup.php:164
 msgid "Group Type"
@@ -3711,7 +3711,7 @@ msgstr "Mi árbol de discipulado"
 
 #: dt-metrics/personal/coaching-tree.php:58
 msgid "My Coaching Generation Tree"
-msgstr "Mi árbol de generación de coaching"
+msgstr "Mi árbol de generación de discipulado"
 
 #: dt-metrics/personal/coaching-tree.php:143
 msgid "Disciple"
