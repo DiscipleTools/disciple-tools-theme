@@ -313,15 +313,15 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             [
                 'action'         => $action,
                 'object_type'    => $p2p_from['post_type'],
-                'object_subtype' => 'p2p',
+                'object_subtype' => 'connection',
                 'object_id'      => $p2p_from['ID'],
                 'object_name'    => $p2p_from['post_title'],
                 'meta_id'        => $p2p_id,
                 'meta_key'       => $p2p_type,
                 'meta_value'     => $p2p_to['ID'], // i.e. the opposite record of the object in the p2p
                 'meta_parent'    => '',
-                'object_note'    => 'connection from',
-                'field_type'     => 'connection'
+                'object_note'    => '',
+                'field_type'     => 'connection from'
             ]
         );
 
@@ -329,15 +329,15 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             [
                 'action'         => $action,
                 'object_type'    => $p2p_to['post_type'],
-                'object_subtype' => 'p2p',
+                'object_subtype' => 'connection',
                 'object_id'      => $p2p_to['ID'],
                 'object_name'    => $p2p_to['post_title'],
                 'meta_id'        => $p2p_id,
                 'meta_key'       => $p2p_type,
                 'meta_value'     => $p2p_from['ID'], // i.e. the opposite record of the object in the p2p
                 'meta_parent'    => '',
-                'object_note'    => 'connection to',
-                'field_type'     => 'connection',
+                'object_note'    => '',
+                'field_type'     => 'connection to',
             ]
         );
 

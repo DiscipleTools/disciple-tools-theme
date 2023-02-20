@@ -851,7 +851,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         FROM $wpdb->dt_activity_log log
                         INNER JOIN (
                             SELECT max(l.histid) as maxid FROM $wpdb->dt_activity_log l
-                            WHERE l.user_id = %s  AND l.action = %s AND l.object_type = %s AND l.meta_key = %s AND l.object_note = %s
+                            WHERE l.user_id = %s  AND l.action = %s AND l.object_type = %s AND l.meta_key = %s AND l.field_type = %s
                             group by l.object_id
                         ) x on log.histid = x.maxid
                     ORDER BY log.histid desc

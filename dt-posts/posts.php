@@ -226,7 +226,7 @@ class Disciple_Tools_Posts
         //don't create activity on connection fields that are hidden
         foreach ( $fields as $field ){
             if ( isset( $field['p2p_key'] ) && $field['p2p_key'] === $activity->meta_key ){
-                if ( $activity->object_note === 'connection to' && $field['p2p_direction'] === 'to' || $activity->object_note === 'connection to' && $field['p2p_direction'] !== 'to' ){
+                if ( $activity->field_type === 'connection to' && $field['p2p_direction'] === 'to' || $activity->field_type === 'connection to' && $field['p2p_direction'] !== 'to' ){
                     if ( isset( $field['hidden'] ) && !empty( $field['hidden'] ) ){
                         return '';
                     }
@@ -235,11 +235,11 @@ class Disciple_Tools_Posts
         }
 
         if ( !$p2p_record ){
-            if ( $activity->object_note === 'connection from' ){
+            if ( $activity->field_type === 'connection from' ){
                 $from = get_post( $activity->object_id );
                 $to = get_post( $activity->meta_value );
                 $to_title = '#' . $activity->meta_value;
-            } elseif ( $activity->object_note === 'connection to' ){
+            } elseif ( $activity->field_type === 'connection to' ){
                 $to = get_post( $activity->object_id );
                 $from = get_post( $activity->meta_value );
                 $from_title = '#' . $activity->meta_value;
@@ -368,7 +368,7 @@ class Disciple_Tools_Posts
             }
         }
 
-        if ( $activity->object_note === 'connection from' ){
+        if ( $activity->field_type === 'connection from' ){
             return $object_note_from;
         } else {
             return $object_note_to;
@@ -563,7 +563,7 @@ class Disciple_Tools_Posts
         } elseif ( $activity->action === 'assignment_accepted' ){
             $user = get_user_by( 'ID', $activity->user_id );
             $message = sprintf( _x( '%s accepted assignment', 'message', 'disciple_tools' ), $user->display_name ?? _x( 'A user', 'message', 'disciple_tools' ) );
-        } elseif ( $activity->object_subtype === 'p2p' ){
+        } elseif ( $activity->object_subtype === 'connection' ){
             $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action, $post_type_settings['fields'] );
         } elseif ( $activity->object_subtype === 'share' ){
             if ( $activity->action === 'share' ){
