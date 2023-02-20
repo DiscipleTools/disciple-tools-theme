@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
-"PO-Revision-Date: 2023-02-14 09:33+0000\n"
+"PO-Revision-Date: 2023-02-20 08:31+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Spanish <https://translate.disciple.tools/projects/"
 "disciple-tools/disciple-tools-theme/es_ES/>\n"
@@ -1868,7 +1868,7 @@ msgstr "WhatsApp"
 #: dt-users/template-new-user.php:118 dt-users/template-new-user.php:119
 #: dt-users/template-user-management.php:355 template-settings.php:156
 msgid "Email"
-msgstr "Correo"
+msgstr "Correo Electrónico"
 
 #: dt-contacts/base-setup.php:240 dt-groups/base-setup.php:365
 #: dt-people-groups/people-groups-base.php:203
