@@ -272,15 +272,14 @@ class Disciple_Tools_People_Groups
         <table class="widefat striped">
             <thead>
             <tr>
-                <th colspan="1"><?php echo esc_html( __( 'Display Options', 'disciple_tools' ) ); ?></th>
+                <th colspan="1">Display Options</th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td>
-                    <?php
-                    echo esc_html( __( 'Display People Groups Tab in Navigation Bar', 'disciple_tools' ) );
-                    $display_in_tab_html = get_option( self::$option_key_settings_display_tab ) ? 'checked' : '';
+                    Display People Groups Tab in Navigation Bar
+                    <? $display_in_tab_html = get_option( self::$option_key_settings_display_tab ) ? 'checked' : '';
                     $on_click_html       = $enabled_on_click ? 'onclick=update_setting_options();' : '';
                     ?>
                     &nbsp;<input type="checkbox" name="display_people_group_tab"
@@ -301,7 +300,7 @@ class Disciple_Tools_People_Groups
         <table class="widefat striped">
             <thead>
             <tr>
-                <th colspan="1"><?php echo esc_html( __( 'Import People Group', 'disciple_tools' ) ); ?></th>
+                <th colspan="1">Import People Group</th>
             </tr>
             </thead>
             <tbody>
