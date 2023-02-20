@@ -110,6 +110,8 @@ class DT_Login_Fields {
             $saved_fields = get_option( $option_name, [] );
         }
 
+        $saved_fields = self::filter_fields( $defaults, $saved_fields );
+
         $saved_count = count( $saved_fields );
 
         $fields = wp_parse_args( $saved_fields, $defaults );
@@ -162,6 +164,18 @@ class DT_Login_Fields {
         $users_can_register = $users_can_register !== 0;
 
         return $users_can_register;
+    }
+
+    private static function filter_fields( $defaults, $fields ) {
+        $filtered_fields = [];
+
+        foreach ( $fields as $key => $field ) {
+            if ( array_key_exists( $key, $defaults ) ) {
+                $filtered_fields[$key] = $field;
+            }
+        }
+
+        return $filtered_fields;
     }
 
     private static function get_multisite_defaults() {
