@@ -68,6 +68,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
 
     private function process_import(){
         if ( isset( $_POST['dt_import_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_import_nonce'] ) ), 'dt_import_nonce' ) ){
+            dt_write_log( 'TODO IMPORT LOGIC....' );
         }
     }
 
@@ -88,12 +89,12 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                         ?>
                         <tr>
                             <td style="text-align: right;">
-                                <input type="checkbox" name="services[<?php esc_html_e( $service['id'] ) ?>]"/>
+                                <input type="checkbox" name="services[<?php echo esc_attr( $service['id'] ) ?>]"/>
                             </td>
                             <td>
-                                <?php esc_html_e( $service['label'] ) ?><br>
+                                <?php echo esc_attr( $service['label'] ) ?><br>
                                 <span style="font-size: 10px; color: #9a9797;">
-                                    <?php esc_html_e( $service['description'] ?? '' ) ?>
+                                    <?php echo esc_attr( $service['description'] ?? '' ) ?>
                                 </span>
                             </td>
                         </tr>

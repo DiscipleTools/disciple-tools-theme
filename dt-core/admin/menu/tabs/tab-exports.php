@@ -4,32 +4,27 @@ if ( !defined( 'ABSPATH' ) ){
 }
 
 // Determine if export downloadable package is available for processing.
-if ( isset( $_POST, $_POST['dt_export_downloadable_object'] ) ){
+if ( isset( $_POST['dt_export_downloadable_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_export_downloadable_nonce'] ) ), 'dt_export_downloadable_nonce' ) ){
+    if ( isset( $_POST['dt_export_downloadable_object'], $_POST['dt_export_downloadable_filename'] ) ){
 
-    $decoded_base64 = base64_decode( wp_unslash( $_POST['dt_export_downloadable_object'] ) );
-    $decoded_json = json_decode( $decoded_base64 );
+        // Determine filename and extract downloadable content.
+        $filename = wp_unslash( $_POST['dt_export_downloadable_filename'] );
+        $decoded_base64 = base64_decode( wp_unslash( $_POST['dt_export_downloadable_object'] ) );
 
-    $json_file = tmpfile();
+        // Create temporary file to house content.
+        $json_file = tmpfile();
+        $json_file_path = stream_get_meta_data( $json_file )['uri'];
+        $saved_bytes = file_put_contents( $json_file_path, $decoded_base64 );
 
-    $json_file_path = stream_get_meta_data( $json_file )['uri'];
-    dt_write_log( $json_file_path );
-    $saved_bytes = file_put_contents( $json_file_path, $decoded_base64 );
-    dt_write_log( $saved_bytes );
-    dt_write_log( filesize( $json_file_path ) );
+        // Inform browser as to what's coming down the pipeline...!
+        header( 'Content-Type: application/json' );
+        header( 'Content-Length: ' . filesize( $json_file_path ) );
+        header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+        readfile( $json_file_path );
 
-    header( "Content-Type: application/json" );
-    header( "Content-Length: " . filesize( $json_file_path ) );
-    header( 'Content-Disposition: attachment; filename="dt-' . time() . '.json"' );
-    readfile( $json_file_path );
-    //fclose( $json_file );
-
-    //header( 'Content-disposition: attachment; filename=dt-' . time() . '.json' );
-    //header( 'Content-type: application/json' );
-    //echo $decoded_base64;
-
-    // TODO: HHmmm, need to explore different strategies....!
-
-
+        // Ensure no extra header html is downloaded!
+        exit();
+    }
 }
 
 /**
@@ -99,7 +94,8 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
             if ( isset( $_POST['services'] ) ){
 
                 // Extract selected services to be exported.
-                $services = array_keys( dt_sanitize_array( $_POST['services'] ) );
+                $post_services = wp_unslash( $_POST['services'] );
+                $services = array_keys( dt_sanitize_array( $post_services ) );
 
                 // Assuming services have been selected, proceed with export payload generation.
                 if ( !empty( $services ) ){
@@ -145,23 +141,20 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                             'payload' => $export_payload['payload']
                         ];
 
-                        //dt_write_log( $downloadable );
-
-                        // Force export package download.
-                        //header( 'Content-disposition: attachment; filename=dt-' . time() . '.json' );
-                        //header( 'Content-type: application/json' );
-
-                        //echo json_encode( $downloadable );
-
-                        //$_POST['DT-TEST'] = ':)';
-                        //header( 'Refresh: 0' );
-                        //header( 'HTTP/1.1 307 Temporary Redirect' );
-                        //header( 'Location: admin.php?page=dt_utilities&tab=exports' );
-
+                        $dt_export_downloadable_filename = 'dt-' . time() . '.json';
                         ?>
+                        <span>Downloaded: <?php echo esc_attr( $dt_export_downloadable_filename ) ?></span>
                         <form id="dt_export_downloadable_form" method="POST">
+
+                            <input type="hidden" name="dt_export_downloadable_nonce"
+                                   value="<?php echo esc_attr( wp_create_nonce( 'dt_export_downloadable_nonce' ) ) ?>"/>
+
                             <input type="hidden" name="dt_export_downloadable_object"
-                                   value="<?php echo base64_encode( json_encode( $downloadable ) ); ?>">
+                                   value="<?php echo esc_attr( base64_encode( wp_json_encode( $downloadable, JSON_PRETTY_PRINT ) ) ) ?>">
+
+                            <input type="hidden" name="dt_export_downloadable_filename"
+                                   value="<?php echo esc_attr( $dt_export_downloadable_filename ) ?>">
+
                         </form>
                         <script type="text/javascript">
                             document.getElementById('dt_export_downloadable_form').submit();
@@ -190,12 +183,12 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                         ?>
                         <tr>
                             <td style="text-align: right;">
-                                <input type="checkbox" name="services[<?php esc_html_e( $service['id'] ) ?>]"/>
+                                <input type="checkbox" name="services[<?php echo esc_attr( $service['id'] ) ?>]"/>
                             </td>
                             <td>
-                                <?php esc_html_e( $service['label'] ) ?><br>
+                                <?php echo esc_attr( $service['label'] ) ?><br>
                                 <span style="font-size: 10px; color: #9a9797;">
-                                    <?php esc_html_e( $service['description'] ?? '' ) ?>
+                                    <?php echo esc_attr( $service['description'] ?? '' ) ?>
                                 </span>
                             </td>
                         </tr>
