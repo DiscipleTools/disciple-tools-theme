@@ -851,7 +851,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         FROM $wpdb->dt_activity_log log
                         INNER JOIN (
                             SELECT max(l.histid) as maxid FROM $wpdb->dt_activity_log l
-                            WHERE l.user_id = %s  AND l.action = %s AND l.object_type = %s AND l.meta_key = %s AND l.field_type = %s
+                            WHERE l.user_id = %s  AND l.action = %s AND l.object_type = %s AND l.meta_key = %s AND (l.field_type = %s OR l.object_note = %s)
                             group by l.object_id
                         ) x on log.histid = x.maxid
                     ORDER BY log.histid desc
@@ -860,7 +860,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     ON log.object_id = p.ID
                     WHERE p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private')
 
-                ", $current_user->ID, $action, $post_type, $field_settings[$args['field_key']]['p2p_key'], $field_type, $post_type ), OBJECT );
+                ", $current_user->ID, $action, $post_type, $field_settings[$args['field_key']]['p2p_key'], $field_type, $field_type, $post_type ), OBJECT );
 
                 $post_ids = array_map(
                     function( $post ) { return (int) $post->ID; }, $posts
