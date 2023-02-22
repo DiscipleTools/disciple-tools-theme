@@ -39,9 +39,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
 
-        add_filter('dt_export_services', [ $this, 'export_import_services' ], 10, 1);
+        add_filter( 'dt_export_services', [ $this, 'export_import_services' ], 10, 1 );
         add_filter( 'dt_export_payload', [ $this, 'export_payload' ], 10, 1 );
-        add_filter('dt_import_services', [ $this, 'export_import_services' ], 10, 1);
+        add_filter( 'dt_import_services', [ $this, 'export_import_services' ], 10, 1 );
 
         parent::__construct();
     } // End __construct()

@@ -8,8 +8,8 @@ if ( isset( $_POST['dt_export_downloadable_nonce'] ) && wp_verify_nonce( sanitiz
     if ( isset( $_POST['dt_export_downloadable_object'], $_POST['dt_export_downloadable_filename'] ) ){
 
         // Determine filename and extract downloadable content.
-        $filename = wp_unslash( $_POST['dt_export_downloadable_filename'] );
-        $decoded_base64 = base64_decode( wp_unslash( $_POST['dt_export_downloadable_object'] ) );
+        $filename = sanitize_text_field( wp_unslash( $_POST['dt_export_downloadable_filename'] ) );
+        $decoded_base64 = base64_decode( sanitize_text_field( wp_unslash( $_POST['dt_export_downloadable_object'] ) ) );
 
         // Create temporary file to house content.
         $json_file = tmpfile();
@@ -94,7 +94,7 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
             if ( isset( $_POST['services'] ) ){
 
                 // Extract selected services to be exported.
-                $post_services = wp_unslash( $_POST['services'] );
+                $post_services = dt_recursive_sanitize_array( wp_unslash( $_POST['services'] ) );
                 $services = array_keys( dt_sanitize_array( $post_services ) );
 
                 // Assuming services have been selected, proceed with export payload generation.
