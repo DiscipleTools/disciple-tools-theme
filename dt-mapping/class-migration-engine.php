@@ -15,7 +15,7 @@ class DT_Mapping_Module_Migration_Engine
      * Current Migration number for the mapping system
      * @var int
      */
-    public static $migration_number = 16;
+    public static $migration_number = 17;
     /** End Current Migration Number */
 
     protected static $migrations = null;

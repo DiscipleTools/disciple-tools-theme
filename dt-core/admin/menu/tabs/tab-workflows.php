@@ -195,6 +195,28 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                 }
             }
         }
+
+        if ( isset( $_POST['workflows_design_section_delete_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['workflows_design_section_delete_nonce'] ) ), 'workflows_design_section_delete_nonce' ) ){
+            if ( isset( $_POST['workflows_design_section_delete_form_payload'] ) ){
+                $sanitized_delete_payload = filter_var( wp_unslash( $_POST['workflows_design_section_delete_form_payload'] ), FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES );
+                $delete_payload = json_decode( $this->final_post_param_sanitization( $sanitized_delete_payload ) );
+
+                // Only process regular custom workflows.
+                if ( $delete_payload->is_regular_workflow ){
+
+                    // Fetch existing stored workflows for given post type.
+                    $current_post_type_workflow = $this->get_option_workflows( 'dt_workflows_post_types', $delete_payload->post_type_id );
+
+                    // If identified workflow exists, then delete and update changes.
+                    if ( isset( $current_post_type_workflow->workflows, $current_post_type_workflow->workflows->{$delete_payload->workflow_id} ) ){
+                        unset( $current_post_type_workflow->workflows->{$delete_payload->workflow_id} );
+
+                        // Save latest updates
+                        $this->update_option_workflows( 'dt_workflows_post_types', $delete_payload->post_type_id, $current_post_type_workflow );
+                    }
+                }
+            }
+        }
     }
 
     private function get_option_workflows( $option_id, $post_type_id ) {
@@ -480,6 +502,8 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             <br><br>
 
             <span style="float:right;">
+                <a style="display: none;" id="workflows_design_section_delete_but"
+                   class="button float-right"><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></a>
                 <a style="display: none;" id="workflows_design_section_save_but"
                    class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></a>
             </span>
@@ -490,6 +514,15 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
                 <input type="hidden" value="" id="workflows_design_section_form_post_type_workflow"
                        name="workflows_design_section_form_post_type_workflow"/>
+            </form>
+
+            <form method="POST" id="workflows_design_section_delete_form">
+                <input type="hidden" id="workflows_design_section_delete_nonce"
+                       name="workflows_design_section_delete_nonce"
+                       value="<?php echo esc_attr( wp_create_nonce( 'workflows_design_section_delete_nonce' ) ) ?>"/>
+
+                <input type="hidden" value="" id="workflows_design_section_delete_form_payload"
+                       name="workflows_design_section_delete_form_payload"/>
             </form>
 
             <?php

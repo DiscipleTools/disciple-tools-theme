@@ -8,14 +8,13 @@
 
 class SiteLinkTest extends WP_UnitTestCase {
 
-    public $sample_contact = [
+    public static $sample_contact = [
         'title' => 'Bob',
         'overall_status' => 'active',
         'milestones' => [ 'values' => [ [ 'value' => 'milestone_has_bible' ], [ 'value' => 'milestone_baptizing' ] ] ],
         'baptism_date' => '2018-12-31',
         'location_grid' => [ 'values' => [ [ 'value' => '3017382' ] ] ]
     ];
-
 
 
     public function test_create(){
@@ -30,7 +29,7 @@ class SiteLinkTest extends WP_UnitTestCase {
         $this->assertFalse( current_user_can( 'view_any_contacts' ) );
 
         // try creating a contact
-        $create_with_permissions = DT_Posts::create_post( 'contacts', $this->sample_contact );
+        $create_with_permissions = DT_Posts::create_post( 'contacts', self::$sample_contact );
         $this->assertNotWPError( $create_with_permissions );
         $this->assertArrayHasKey( 'ID', $create_with_permissions );
         $this->assertCount( 1, array_keys( $create_with_permissions ) );
@@ -54,7 +53,7 @@ class SiteLinkTest extends WP_UnitTestCase {
         $this->assertFalse( current_user_can( 'view_any_contacts' ) );
 
         // try creating a post
-        $create_with_permissions = DT_Posts::create_post( 'contacts', $this->sample_contact );
+        $create_with_permissions = DT_Posts::create_post( 'contacts', self::$sample_contact );
         $this->assertNotWPError( $create_with_permissions );
 
         // try updating the post
@@ -77,10 +76,10 @@ class SiteLinkTest extends WP_UnitTestCase {
         $this->assertFalse( current_user_can( 'create_contacts' ) );
 
         // try creating a contact with no permissions
-        $create_with_no_permissions = DT_Posts::create_post( 'contacts', $this->sample_contact );
+        $create_with_no_permissions = DT_Posts::create_post( 'contacts', self::$sample_contact );
         $this->assertWPError( $create_with_no_permissions );
 
-        $contact = DT_Posts::create_post( 'contacts', $this->sample_contact, true, false );
+        $contact = DT_Posts::create_post( 'contacts', self::$sample_contact, true, false );
         $contact_id = $contact['ID'];
 
         $contact = DT_Posts::get_post( 'contacts', $contact_id, false, false );
@@ -106,7 +105,7 @@ class SiteLinkTest extends WP_UnitTestCase {
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'multiplier' );
-        $contact1 = DT_Posts::create_post( 'contacts', $this->sample_contact );
+        $contact1 = DT_Posts::create_post( 'contacts', self::$sample_contact );
         $group1 = DT_Posts::create_post( 'groups', [ 'title' => 'group1' ] );
 
         //try getting a comment but with post type: group
@@ -124,7 +123,7 @@ class SiteLinkTest extends WP_UnitTestCase {
         $this->assertWPError( $comment_on_group_as_contact );
 
         //try using a connection with the wrong post type
-        $contact2 = DT_Posts::create_post( 'contacts', $this->sample_contact );
+        $contact2 = DT_Posts::create_post( 'contacts', self::$sample_contact );
         $wrong_connection = DT_Posts::update_post( 'contacts', $contact1['ID'], [
             'groups' => [ 'values' => [ [ 'value' => $contact2['ID'] ] ] ]
         ] );
@@ -135,8 +134,6 @@ class SiteLinkTest extends WP_UnitTestCase {
         $this->assertWPError( $wrong_connection );
         $this->assertNotWPError( $good_connection );
     }
-
-
 
 
     public static function create_site_link( $type = 'create_update_contacts' ) {
@@ -165,5 +162,9 @@ class SiteLinkTest extends WP_UnitTestCase {
 
     public static function setUpBeforeClass(): void {
         self::create_site_link();
+        $user_id = wp_create_user( 'noperm', 'test', 'noperm@example.com' );
+        $user = get_user_by( 'id', $user_id );
+        $user->set_role( 'dispatcher' );
+        self::$sample_contact['assigned_to'] = $user_id;
     }
 }

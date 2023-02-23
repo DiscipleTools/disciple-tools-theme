@@ -851,7 +851,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         FROM $wpdb->dt_activity_log log
                         INNER JOIN (
                             SELECT max(l.histid) as maxid FROM $wpdb->dt_activity_log l
-                            WHERE l.user_id = %s  AND l.action = %s AND l.object_type = %s AND l.meta_key = %s AND l.field_type = %s
+                            WHERE l.user_id = %s  AND l.action = %s AND l.object_type = %s AND l.meta_key = %s AND (l.field_type = %s OR l.object_note = %s)
                             group by l.object_id
                         ) x on log.histid = x.maxid
                     ORDER BY log.histid desc
@@ -860,7 +860,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     ON log.object_id = p.ID
                     WHERE p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private')
 
-                ", $current_user->ID, $action, $post_type, $field_settings[$args['field_key']]['p2p_key'], $field_type, $post_type ), OBJECT );
+                ", $current_user->ID, $action, $post_type, $field_settings[$args['field_key']]['p2p_key'], $field_type, $field_type, $post_type ), OBJECT );
 
                 $post_ids = array_map(
                     function ( $post ) { return (int) $post->ID; }, $posts
@@ -1140,10 +1140,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         return wp_delete_comment( $comment_id );
     }
 
-    public static function toggle_post_comment_reaction( string $post_type, int $post_id, int $comment_id, int $user_id, string $reaction ){
+    public static function toggle_post_comment_reaction( string $post_type, int $post_id, int $comment_id, string $reaction ){
         if ( !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
         }
+        $user_id = get_current_user_id();
         // If the reaction exists for this user, then delete it
         $reactions = get_comment_meta( $comment_id, $reaction );
         foreach ( $reactions as $reaction_user_id ) {
@@ -2367,11 +2368,11 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
 
-    public static function advanced_search( string $query, string $post_type, int $offset, array $filters = [] ): array {
-        return self::advanced_search_query_exec( $query, $post_type, $offset, $filters );
+    public static function advanced_search( string $query, string $post_type, int $offset, array $filters = [], bool $check_permissions = true ): array {
+        return self::advanced_search_query_exec( $query, $post_type, $offset, $filters, $check_permissions );
     }
 
-    private static function advanced_search_query_exec( $query, $post_type, $offset, $filters ): array {
+    private static function advanced_search_query_exec( $query, $post_type, $offset, $filters, $check_permissions ): array {
 
         $query_results = array();
         $total_hits    = 0;
@@ -2386,9 +2387,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                             'text'              => $query,
                             'offset'            => $offset
                         ],
-                        $filters
+                        $filters,
+                        $check_permissions
                     );
-                    if ( ! empty( $type_results ) && ( intval( $type_results['total'] ) > 0 ) ) {
+
+                    if ( !empty( $type_results ) && !is_wp_error( $type_results ) && ( intval( $type_results['total'] ) > 0 ) ){
                         array_push( $query_results, $type_results );
                         $total_hits += intval( $type_results['total'] );
                     }
@@ -2404,8 +2407,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
     }
 
-    private static function advanced_search_by_post( string $post_type, array $query, array $filters ) {
-        if ( ! self::can_access( $post_type ) ) {
+    private static function advanced_search_by_post( string $post_type, array $query, array $filters, bool $check_permissions ) {
+        if ( $check_permissions && ! self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, 'You do not have access to these', [ 'status' => 403 ] );
         }
         $post_types = self::get_post_types();
@@ -2446,7 +2449,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         // Prepare sql and execute search query
-        $esc_like_search_sql = "'%" . esc_sql( $search ) . "%'";
+        $esc_like_search_sql = "'%" . str_replace( ' ', '%', esc_sql( $search ) ) . "%'";
         $extra_fields = '';
         $extra_joins = '';
         $extra_where = '';

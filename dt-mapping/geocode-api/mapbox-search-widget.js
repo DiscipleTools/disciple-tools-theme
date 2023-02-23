@@ -19,8 +19,7 @@ function write_results_box() {
           <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>
-    `)
+        </div>`)
 
   let lgm_results = jQuery('#location-grid-meta-results')
 
@@ -140,8 +139,7 @@ function load_modal( lng, lat, level, label, grid_id ){
                     <div id='map'>${spinner}</div>
                 </div>
             </div>
-           </div>
-        `)
+           </div>`)
 
   let zoom = 15
   if ( 'admin0' === level ){
@@ -192,8 +190,7 @@ window.write_input_widget = function write_input_widget() {
             <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ window.lodash.escape( dtMapbox.translations.clear ) /*Delete Location*/}" style="display:none;">&times;</button>
         </div>
         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
-    </div>
-  `)
+    </div>`)
   }
 
   let mapbox_search = jQuery('#mapbox-search')
@@ -207,6 +204,7 @@ window.write_input_widget = function write_input_widget() {
       hide_list_setup = true
       $(document).mouseup(function(e){
         let container = $("#mapbox-autocomplete");
+        container.removeClass('active')
         let list = jQuery('#mapbox-autocomplete-list')
         let isEmpty = !$.trim(list.html());
         // if the target of the click isn't the container nor a descendant of the container
@@ -289,6 +287,10 @@ function validate_timer() {
   // set timer
   window.validate_timer_id = setTimeout(function(){
 
+    //add space under the location input and reset tiles so options are not hidden off the page.
+    jQuery('#mapbox-autocomplete').addClass('active');
+    reset_tile_spacing()
+
     // call geocoder
     if ( dtMapbox.google_map_key ) {
       google_autocomplete( jQuery('#mapbox-search').val() )
@@ -309,6 +311,9 @@ function clear_timer() {
 
 // main processor and router for selection of autocomplete results
 function close_all_lists(selection_id) {
+  if ( typeof selection_id === 'undefined' || selection_id === null) {
+    return
+  }
   /* if Geocoding overridden, and plain text address selected */
   if( 'address' === selection_id ) {
     jQuery('#mapbox-autocomplete-list').empty()

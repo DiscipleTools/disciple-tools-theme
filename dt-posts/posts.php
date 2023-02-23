@@ -226,7 +226,7 @@ class Disciple_Tools_Posts
         //don't create activity on connection fields that are hidden
         foreach ( $fields as $field ){
             if ( isset( $field['p2p_key'] ) && $field['p2p_key'] === $activity->meta_key ){
-                if ( $activity->field_type === 'connection to' && $field['p2p_direction'] === 'to' || $activity->field_type === 'connection to' && $field['p2p_direction'] !== 'to' ){
+                if ( ( ( $activity->field_type === 'connection to' ) || $activity->object_note === 'connection to' ) && $field['p2p_direction'] === 'to' || ( ( $activity->field_type === 'connection to' ) || $activity->object_note === 'connection to' ) && $field['p2p_direction'] !== 'to' ){
                     if ( isset( $field['hidden'] ) && !empty( $field['hidden'] ) ){
                         return '';
                     }
@@ -235,11 +235,11 @@ class Disciple_Tools_Posts
         }
 
         if ( !$p2p_record ){
-            if ( $activity->field_type === 'connection from' ){
+            if ( ( $activity->field_type === 'connection from' ) || ( $activity->object_note === 'connection from' ) ){
                 $from = get_post( $activity->object_id );
                 $to = get_post( $activity->meta_value );
                 $to_title = '#' . $activity->meta_value;
-            } elseif ( $activity->field_type === 'connection to' ){
+            } elseif ( ( $activity->field_type === 'connection to' ) || ( $activity->object_note === 'connection to' ) ){
                 $to = get_post( $activity->object_id );
                 $from = get_post( $activity->meta_value );
                 $from_title = '#' . $activity->meta_value;
@@ -368,7 +368,7 @@ class Disciple_Tools_Posts
             }
         }
 
-        if ( $activity->field_type === 'connection from' ){
+        if ( ( $activity->field_type === 'connection from' ) || ( $activity->object_note === 'connection from' ) ){
             return $object_note_from;
         } else {
             return $object_note_to;
@@ -563,7 +563,7 @@ class Disciple_Tools_Posts
         } elseif ( $activity->action === 'assignment_accepted' ){
             $user = get_user_by( 'ID', $activity->user_id );
             $message = sprintf( _x( '%s accepted assignment', 'message', 'disciple_tools' ), $user->display_name ?? _x( 'A user', 'message', 'disciple_tools' ) );
-        } elseif ( $activity->object_subtype === 'p2p' ){
+        } elseif ( $activity->object_subtype === 'p2p' || $activity->field_type === 'connection' ){
             $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action, $post_type_settings['fields'] );
         } elseif ( $activity->object_subtype === 'share' ){
             if ( $activity->action === 'share' ){
@@ -1091,6 +1091,11 @@ class Disciple_Tools_Posts
         $post_query = '';
 
         if ( !empty( $search ) ){
+
+            // Support wildcard searching between string tokens.
+            if ( !is_numeric( $search ) ){
+                $search = str_replace( ' ', '%', $search );
+            }
 
             $other_search_fields = [];
             if ( empty( $fields_to_search ) ) {
@@ -1705,8 +1710,15 @@ class Disciple_Tools_Posts
                 if ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ){
                     return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
-                update_post_meta( $post_id, $field_key, $field_value );
                 $user_id = explode( '-', $field_value )[1];
+                if ( empty( $user_id ) ){
+                    $user_id = dt_get_base_user( true );
+                }
+                $user = get_user_by( 'id', $user_id );
+                if ( !$user || !user_can( $user->ID, 'access_' . $post_type ) ){
+                    return new WP_Error( __FUNCTION__, "user does not have access to $post_type", [ 'status' => 400 ] );
+                }
+                update_post_meta( $post_id, $field_key, $field_value );
                 DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false, false );
             }
         }
@@ -2533,6 +2545,9 @@ class Disciple_Tools_Posts
             }
             foreach ( $meta_fields as $key => $value ){
                 if ( strpos( $key, 'contact_address' ) === 0 && strpos( $key, '_details' ) === false ){
+                    if ( is_array( $value ) ){
+                        $value = $value[0];
+                    }
                     $fields['location_grid_meta'][] = [ 'label' => $value, 'key' => $key ];
                 }
             }
