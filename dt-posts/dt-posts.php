@@ -791,7 +791,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error|WP_Query
      */
     public static function get_viewable_compact( string $post_type, string $search_string, array $args = [] ) {
-        if ( !self::can_list_all( $post_type ) ) {
+        if ( !self::can_access( $post_type ) && !self::can_list_all( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( 'You do not have access to these %s', $post_type ), [ 'status' => 403 ] );
         }
         global $wpdb;
