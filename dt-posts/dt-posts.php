@@ -1541,7 +1541,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
                         // Capture any additional metadata, by field type.
                         $meta = [];
-                        if( $field_type === 'communication_channel' ) {
+                        if ( $field_type === 'communication_channel' ) {
                             $meta = [
                                 'meta_key' => $activity->meta_key
                             ];
@@ -1567,7 +1567,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                                 'meta' => $meta
                             ];
                         }
-                    break;
+                        break;
                     case 'text':
                     case 'number':
                     case 'boolean':
@@ -1727,10 +1727,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                                     // Force a match if key is found.
                                     if ( $option['key'] === ( $revert_obj['meta']['meta_key'] ?? '' ) ){
                                         $id = $revert_key;
-                                    }else{
+                                    } else {
                                         $id = '';
                                     }
-
                                 } else {
                                     $id = $option;
                                 }
@@ -1762,7 +1761,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     if ( !empty( $values ) ){
                         if ( $reverted['field_type'] == 'communication_channel' ){
                             $post_updates[$field_key] = $values;
-                        } else{
+                        } else {
                             $post_updates[$field_key] = [
                                 'values' => $values
                             ];
