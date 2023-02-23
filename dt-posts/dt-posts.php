@@ -881,8 +881,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !empty( $search_string ) ){
                 $query['name'] = [ $search_string ];
             }
-            // skip permission check because we checked list_all_ above
-            $posts_list = self::search_viewable_post( $post_type, $query, false );
+            // if user can't list_all_, check permissions so they don't get access to things they shouldn't
+            $check_permissions = !self::can_list_all( $post_type );
+            $posts_list = self::search_viewable_post( $post_type, $query, $check_permissions );
             if ( is_wp_error( $posts_list ) ){
                 return $posts_list;
             }
