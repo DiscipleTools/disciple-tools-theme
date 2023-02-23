@@ -1477,9 +1477,17 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $field_key  = null;
                     $field_type = null;
                 }
-            } elseif ( empty( $field_type ) && substr( $field_key, 0, strlen( 'contact_' ) ) == 'contact_' ) {
+            } elseif ( ( empty( $field_type ) || $field_type === 'communication_channel' ) && substr( $field_key, 0, strlen( 'contact_' ) ) == 'contact_' ){
                 $field_type = 'communication_channel';
-                $field_key = substr( $field_key, 0, strpos( $field_key, '_', strlen( 'contact_' ) ) );
+
+                // Determine actual field key.
+                $determined_field_key = null;
+                foreach ( self::get_field_settings_by_type( $post_type, $field_type ) ?? [] as $potential_field_key ){
+                    if ( strpos( $field_key, $potential_field_key ) ){
+                        $determined_field_key = $potential_field_key;
+                    }
+                }
+                $field_key = $determined_field_key ?? substr( $field_key, 0, strpos( $field_key, '_', strlen( 'contact_' ) ) );
 
                 // Void if key is empty.
                 if ( empty( $field_key ) ){
@@ -1530,11 +1538,22 @@ class DT_Posts extends Disciple_Tools_Posts {
                     case 'multi_select':
                     case 'location_meta':
                     case 'communication_channel':
+
+                        // Capture any additional metadata, by field type.
+                        $meta = [];
+                        if( $field_type === 'communication_channel' ) {
+                            $meta = [
+                                'meta_key' => $activity->meta_key
+                            ];
+                        }
+
+                        // Proceed with capturing reverted updates.
                         $value = $is_deleted ? $field_old_value : $field_value;
                         $reverted_updates[$field_key]['values'][$value] = [
                             'value' => $value,
                             'keep' => $is_deleted,
-                            'note' => $field_note_raw
+                            'note' => $field_note_raw,
+                            'meta' => $meta
                         ];
 
                         // Ensure any detected old values are reinstated!
@@ -1544,10 +1563,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                             $reverted_updates[$field_key]['values'][$field_old_value] = [
                                 'value' => $field_old_value,
                                 'keep' => true,
-                                'note' => $field_note_raw
+                                'note' => $field_note_raw,
+                                'meta' => $meta
                             ];
                         }
-                        break;
+                    break;
                     case 'text':
                     case 'number':
                     case 'boolean':
@@ -1679,6 +1699,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                                             }
                                         }
                                     }
+                                } elseif ( $reverted['field_type'] == 'communication_channel' ){
+                                    $values[] = [
+                                        'key' => $revert_obj['meta']['meta_key'] ?? null,
+                                        'value' => $revert_obj['value']
+                                    ];
                                 } else {
                                     $values[] = [
                                         'value' => $revert_obj['value']
@@ -1698,7 +1723,13 @@ class DT_Posts extends Disciple_Tools_Posts {
                                     $id = $option['grid_meta_id'];
 
                                 } elseif ( $reverted['field_type'] == 'communication_channel' ) {
-                                    $id = $option['value'];
+
+                                    // Force a match if key is found.
+                                    if ( $option['key'] === ( $revert_obj['meta']['meta_key'] ?? '' ) ){
+                                        $id = $revert_key;
+                                    }else{
+                                        $id = '';
+                                    }
 
                                 } else {
                                     $id = $option;
@@ -1712,6 +1743,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
                                     } elseif ( $reverted['field_type'] == 'communication_channel' ) {
                                         $key = 'key';
+                                        $id = $revert_obj['meta']['meta_key'] ?? $revert_key;
                                     } else {
                                         $key = 'value';
                                     }
@@ -1726,11 +1758,15 @@ class DT_Posts extends Disciple_Tools_Posts {
                         }
                     }
 
-                    // Package any available values to be updated.
+                    // Package any available values to be updated, accordingly; by field type.
                     if ( !empty( $values ) ){
-                        $post_updates[$field_key] = [
-                            'values' => $values
-                        ];
+                        if ( $reverted['field_type'] == 'communication_channel' ){
+                            $post_updates[$field_key] = $values;
+                        } else{
+                            $post_updates[$field_key] = [
+                                'values' => $values
+                            ];
+                        }
                     }
                     break;
                 case 'date':
