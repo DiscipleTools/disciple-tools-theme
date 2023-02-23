@@ -289,9 +289,7 @@ function validate_timer() {
 
     //add space under the location input and reset tiles so options are not hidden off the page.
     jQuery('#mapbox-autocomplete').addClass('active');
-    if ( masonGrid ){
-      masonGrid.masonry('layout')
-    }
+    reset_tile_spacing()
 
     // call geocoder
     if ( dtMapbox.google_map_key ) {
