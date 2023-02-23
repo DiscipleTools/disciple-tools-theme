@@ -56,36 +56,102 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
 
             $this->template( 'begin' );
 
-            $this->process_import();
-            $this->display_services();
+            // Determine which import view is to be shown/handled.
+            if ( $this->file_upload_detected_and_correct() ){
 
-            $this->template( 'right_column' );
+                // Convert uploaded file into a usable configuration object.
+                $uploaded_config = [];
+                $uploaded_file_contents = file_get_contents( sanitize_text_field( wp_unslash( $_FILES['dt_import_file_upload_prompt_file']['tmp_name'] ) ) );
+                if ( $uploaded_file_contents ){
+                    $uploaded_config = json_decode( $uploaded_file_contents, true );
+                }
+
+                // Have user select services to be imported, based on state of uploaded config.
+                $this->display_services( $uploaded_config );
+                $this->template( 'right_column' );
+                $this->display_service_details( $uploaded_config );
+
+            } else if ( $this->import_request_detected() ){
+
+                // Process incoming import request for selected services.
+                dt_write_log( 'TODO IMPORT LOGIC....' );
+
+            } else{
+
+                // Default view, prompting user to upload configuration file.
+                $this->display_file_upload_prompt();
+            }
 
             $this->template( 'end' );
 
         endif;
     }
 
-    private function process_import(){
-        if ( isset( $_POST['dt_import_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_import_nonce'] ) ), 'dt_import_nonce' ) ){
-            dt_write_log( 'TODO IMPORT LOGIC....' );
+    private function file_upload_detected_and_correct(): bool{
+        if ( isset( $_POST['dt_import_file_upload_prompt_nonce'], $_FILES['dt_import_file_upload_prompt_file'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_import_file_upload_prompt_nonce'] ) ), 'dt_import_file_upload_prompt_nonce' ) ){
+            if ( isset( $_FILES['dt_import_file_upload_prompt_file']['type'], $_FILES['dt_import_file_upload_prompt_file']['size'] ) ){
+                return ( ( strpos( $_FILES['dt_import_file_upload_prompt_file']['type'], 'json' ) !== false ) && ( $_FILES['dt_import_file_upload_prompt_file']['size'] > 0 ) );
+            }
         }
+
+        return false;
     }
 
-    private function display_services(){
+    private function import_request_detected(): bool{
+        return ( isset( $_POST['dt_import_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_import_nonce'] ) ), 'dt_import_nonce' ) );
+    }
+
+    private function display_file_upload_prompt(){
+        $this->box( 'top', 'Upload D.T Import Configuration File', [ 'col_span' => 4 ] );
+        ?>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="dt_import_file_upload_prompt_nonce" id="dt_import_file_upload_prompt_nonce"
+                   value="<?php echo esc_attr( wp_create_nonce( 'dt_import_file_upload_prompt_nonce' ) ) ?>"/>
+
+            <table class="widefat striped">
+                <tbody>
+                <tr>
+                    <td>
+                        <input type="file" name="dt_import_file_upload_prompt_file"
+                               id="dt_import_file_upload_prompt_file">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+            <span style="float:right;">
+                <button type="submit"
+                        class="button float-right"><?php esc_html_e( 'Upload File', 'disciple_tools' ) ?></button>
+            </span>
+        </form>
+        <?php
+        $this->box( 'bottom' );
+    }
+
+    private function display_services( $uploaded_config ){
 
         $this->box( 'top', 'Available Import Services', [ 'col_span' => 4 ] );
 
         ?>
         <form method="POST">
+
+            <!-- Capture uploaded import configuration, for further downstream processing. -->
+            <div id="dt_import_uploaded_config" style="display: none;">
+                <?php echo esc_attr( base64_encode( wp_json_encode( $uploaded_config, JSON_PRETTY_PRINT ) ) ) ?>
+            </div>
+
             <input type="hidden" name="dt_import_nonce" id="dt_import_nonce"
                    value="<?php echo esc_attr( wp_create_nonce( 'dt_import_nonce' ) ) ?>"/>
+
             <table class="widefat striped">
                 <tbody>
                 <?php
                 $import_services = apply_filters( 'dt_import_services', [] );
+                dt_write_log( $import_services );
                 foreach ( $import_services as $id => $service ){
-                    if ( isset( $service['id'], $service['enabled'], $service['label'] ) && $service['enabled'] ){
+
+                    // Only display enabled services; which are also present within uploaded import configuration.
+                    if ( isset( $service['id'], $service['enabled'], $service['label'], $uploaded_config['payload'], $uploaded_config['payload'][$id] ) && $service['enabled'] ){
                         ?>
                         <tr>
                             <td style="text-align: right;">
@@ -112,6 +178,14 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
         </form>
         <?php
 
+        $this->box( 'bottom' );
+    }
+
+    private function display_service_details( $uploaded_config ){
+        $this->box( 'top', 'Service Details', [ 'col_span' => 3 ] );
+        ?>
+        <div id="service_details_div"></div>
+        <?php
         $this->box( 'bottom' );
     }
 
