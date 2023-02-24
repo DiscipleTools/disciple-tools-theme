@@ -741,6 +741,10 @@ class Disciple_Tools_Users
             }
         }
         if ( !empty( $body['locale'] ) ){
+            if ( empty( get_user_meta( get_current_user_id(), 'dt_user_initial_setup_default_language', true ) ) ){
+                update_user_meta( get_current_user_id(), 'dt_user_initial_setup_default_language', $body['locale'] );
+            }
+
             return self::update_user_locale( $user->ID, $body['locale'] );
         }
         if ( !empty( $body['add_languages'] ) ){
@@ -922,7 +926,7 @@ class Disciple_Tools_Users
         } else {
             $args['locale'] = 'en_US';
         }
-        if ( !empty( $args['locale'] ) ){
+        if ( !empty( $args['locale'] ) && empty( get_user_meta( get_current_user_id(), 'dt_user_initial_setup_default_language', true ) ) ){
             update_user_meta( get_current_user_id(), 'dt_user_initial_setup_default_language', $args['locale'] );
         }
         // _user table defaults

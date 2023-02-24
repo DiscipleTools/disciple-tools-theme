@@ -9,13 +9,6 @@ if ( !defined( 'ABSPATH' ) ){
     exit; // Exit if accessed directly
 }
 
-/* Process $_POST content */
-// We're not checking the nonce here because update_user_contact_info will
-// phpcs:ignore
-if ( isset( $_POST['user_update_nonce'] ) ){
-    Disciple_Tools_Users::update_user_contact_info();
-}
-
 function dt_user_initial_setup_modal(): void{
     if ( !is_user_logged_in() ){
         return;
@@ -79,7 +72,9 @@ function dt_user_initial_setup_modal(): void{
                         </div>
 
                         <hr>
-                        <button type="button" class="button hollow" data-close>Close</button>
+                        <button type="button" class="button hollow" data-close>
+                            <?php esc_html_e( 'Close', 'disciple_tools' ) ?>
+                        </button>
                         <button type='submit' id='user_default_language_update' class='button'>
                             <?php esc_html_e( 'Save', 'disciple_tools' ) ?>
                         </button>
@@ -96,6 +91,29 @@ function dt_user_initial_setup_modal(): void{
             let div = jQuery('#user_notify_modal');
             new Foundation.Reveal(div);
             div.foundation('open');
+
+            // Handle initial user language setup submissions.
+            jQuery('#user_default_language_update').on('click', function (e) {
+                e.preventDefault();
+
+                let modal = jQuery('#user_notify_modal');
+
+                // Post updated language locale.
+                makeRequest("POST", `user/update`, {
+                    'locale': jQuery('#locale').val()
+                }, 'dt/v1/')
+                .done(response => {
+
+                    // Assume all is well in the world, refresh page and close modal!
+                    modal.foundation('close');
+                    location.reload();
+
+                })
+                .catch((e) => {
+                    console.log(e);
+                    modal.foundation('close');
+                });
+            });
         });
     </script>
     <?php
