@@ -42,7 +42,6 @@ jQuery(document).ready(function($) {
 
 
     $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable({
-        items: "div:not(.unsortable-fields)",
         update: function(event,ui) {
             post_type = get_post_type();
             dt_custom_tiles_ordered = get_dt_custom_tiles_ordered();
