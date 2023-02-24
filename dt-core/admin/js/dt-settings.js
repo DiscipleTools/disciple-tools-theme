@@ -42,6 +42,7 @@ jQuery(document).ready(function($) {
 
 
     $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable({
+        items: "div:not(.unsortable-fields)",
         update: function(event,ui) {
             post_type = get_post_type();
             dt_custom_tiles_ordered = get_dt_custom_tiles_ordered();
@@ -82,7 +83,6 @@ jQuery(document).ready(function($) {
 
     function get_dt_field_customizations_ordered() {
         var dt_field_customizations_ordered = {};
-
         var tiles = jQuery('.field-settings-table').sortable('toArray');
         tiles.pop(); // remove the 'add new tile' link
 
@@ -855,7 +855,7 @@ jQuery(document).ready(function($) {
                 <div class="field-settings-table-child-toggle">
                     <div class="field-settings-table-field-option inset-shadow">
                         <span class="sortable">⋮⋮</span>
-                        <span class="field-name-content" style="padding-left: 16px;"></span>
+                        <span class="field-name-content" style="padding-left: 16px;"><i>default blank</i></span>
                     </div>
                     <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="${new_field_tile}" data-field-key="${field_key}">
                         <span class="sortable">⋮⋮</span>
