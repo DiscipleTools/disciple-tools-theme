@@ -75,7 +75,7 @@ function dt_user_initial_setup_modal(): void{
                         <button type="button" class="button hollow" data-close>
                             <?php esc_html_e( 'Close', 'disciple_tools' ) ?>
                         </button>
-                        <button type='submit' id='user_default_language_update' class='button'>
+                        <button type='submit' id='user_default_language_update' class='button' data-initial_locale='<?php echo esc_attr( $user_default_language ) ?>'>
                             <?php esc_html_e( 'Save', 'disciple_tools' ) ?>
                         </button>
 
@@ -97,17 +97,21 @@ function dt_user_initial_setup_modal(): void{
                 e.preventDefault();
 
                 let modal = jQuery('#user_notify_modal');
+                let initial_locale = jQuery('#user_default_language_update').data('initial_locale');
+                let updated_locale = jQuery('#locale').val();
 
                 // Post updated language locale.
                 makeRequest("POST", `user/update`, {
-                    'locale': jQuery('#locale').val()
+                    'locale': updated_locale
                 }, 'dt/v1/')
                 .done(response => {
 
-                    // Assume all is well in the world, refresh page and close modal!
+                    // Assume all is well in the world, refresh page (if any changes) and close modal!
                     modal.foundation('close');
-                    location.reload();
 
+                    if ( initial_locale !== updated_locale ) {
+                        location.reload();
+                    }
                 })
                 .catch((e) => {
                     console.log(e);
