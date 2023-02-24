@@ -114,6 +114,14 @@ class DT_Login_Fields {
 
         $saved_count = count( $saved_fields );
 
+        if ( $saved_count === 0 ) { // this site hasn't saved these options yet, so copy the main site options
+            $saved_fields = get_network_option( get_main_network_id(), $option_name, [] );
+
+            $saved_fields = self::filter_fields( $defaults, $saved_fields );
+
+            $saved_count = count( $saved_fields );
+        }
+
         $fields = wp_parse_args( $saved_fields, $defaults );
 
         if ( $defaults_count !== $saved_count ) {
