@@ -741,8 +741,8 @@ class Disciple_Tools_Users
             }
         }
         if ( !empty( $body['locale'] ) ){
-            if ( empty( get_user_meta( get_current_user_id(), 'dt_user_initial_setup_default_language', true ) ) ){
-                update_user_meta( get_current_user_id(), 'dt_user_initial_setup_default_language', $body['locale'] );
+            if ( empty( get_user_meta( $user->ID, 'dt_user_initial_setup_default_language', true ) ) ){
+                update_user_meta( $user->ID, 'dt_user_initial_setup_default_language', $body['locale'] );
             }
 
             return self::update_user_locale( $user->ID, $body['locale'] );
@@ -926,8 +926,8 @@ class Disciple_Tools_Users
         } else {
             $args['locale'] = 'en_US';
         }
-        if ( !empty( $args['locale'] ) && empty( get_user_meta( get_current_user_id(), 'dt_user_initial_setup_default_language', true ) ) ){
-            update_user_meta( get_current_user_id(), 'dt_user_initial_setup_default_language', $args['locale'] );
+        if ( !empty( $args['locale'] ) && empty( get_user_meta( $current_user->ID, 'dt_user_initial_setup_default_language', true ) ) ){
+            update_user_meta( $current_user->ID, 'dt_user_initial_setup_default_language', $args['locale'] );
         }
         // _user table defaults
         $result = wp_update_user( $args );
