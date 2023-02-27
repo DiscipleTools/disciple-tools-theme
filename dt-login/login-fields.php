@@ -86,14 +86,14 @@ class DT_Login_Fields {
 
             update_network_option( get_main_network_id(), self::MULTISITE_OPTION_NAME, $multisite_vars );
 
-            update_option( self::OPTION_NAME, $site_vars );
+            update_network_option( get_current_blog_id(), self::OPTION_NAME, $site_vars );
         } else {
-            update_option( self::OPTION_NAME, $vars );
+            update_network_option( get_current_blog_id(), self::OPTION_NAME, $vars );
         }
     }
 
     public static function delete() {
-        delete_option( self::OPTION_NAME );
+        delete_network_option( get_current_network_id(), self::OPTION_NAME );
 
         if ( is_multisite() ) {
             delete_network_option( get_main_network_id(), self::MULTISITE_OPTION_NAME );
@@ -107,7 +107,7 @@ class DT_Login_Fields {
         if ( $multisite_level === true ) {
             $saved_fields = get_network_option( get_main_network_id(), $option_name, [] );
         } else {
-            $saved_fields = get_option( $option_name, [] );
+            $saved_fields = get_network_option( get_current_network_id(), $option_name, [] );
         }
 
         $saved_fields = self::filter_fields( $defaults, $saved_fields );
@@ -115,6 +115,7 @@ class DT_Login_Fields {
         $saved_count = count( $saved_fields );
 
         if ( $saved_count === 0 ) { // this site hasn't saved these options yet, so copy the main site options
+
             $saved_fields = get_network_option( get_main_network_id(), $option_name, [] );
 
             $saved_fields = self::filter_fields( $defaults, $saved_fields );
@@ -128,7 +129,7 @@ class DT_Login_Fields {
             if ( $multisite_level === true ) {
                 update_network_option( get_main_network_id(), $option_name, $fields );
             } else {
-                update_option( $option_name, $fields );
+                update_network_option( get_current_blog_id(), $option_name, $fields );
             }
         }
 
