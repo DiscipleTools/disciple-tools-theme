@@ -96,6 +96,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 flex-wrap: wrap;
                 margin: -1px;
             }
+            .filter-links li>a {
+                border-bottom: 0;
+            }
             .card-front, .card-back {
                 -webkit-backface-visibility: hidden;
                 backface-visibility: hidden;
