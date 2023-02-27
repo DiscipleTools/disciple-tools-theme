@@ -71,10 +71,13 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                 $this->template( 'right_column' );
                 $this->display_service_details( $uploaded_config );
 
-            } else if ( $this->import_request_detected() ){
+            } else if ( $this->import_request_detected() && isset( $_POST['dt_import_uploaded_config'], $_POST['dt_import_selected_services'] ) ){
 
-                // Process incoming import request for selected services.
-                dt_write_log( 'TODO IMPORT LOGIC....' );
+                $uploaded_config = json_decode( base64_decode( sanitize_text_field( wp_unslash( $_POST['dt_import_uploaded_config'] ) ) ), true );
+                $selected_services = json_decode( sanitize_text_field( wp_unslash( $_POST['dt_import_selected_services'] ) ), true );
+
+                // Dispatch import request to respective listeners.
+                do_action( 'dt_import_payload', $selected_services, $uploaded_config );
 
             } else{
 
@@ -133,21 +136,23 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
         $this->box( 'top', 'Available Import Services', [ 'col_span' => 4 ] );
 
         ?>
-        <form method="POST">
+        <form id="dt_import_form" method="POST">
 
             <!-- Capture uploaded import configuration, for further downstream processing. -->
-            <div id="dt_import_uploaded_config" style="display: none;">
+            <div id="dt_import_uploaded_config_raw" style="display: none;">
                 <?php echo esc_attr( base64_encode( wp_json_encode( $uploaded_config, JSON_PRETTY_PRINT ) ) ) ?>
             </div>
 
             <input type="hidden" name="dt_import_nonce" id="dt_import_nonce"
                    value="<?php echo esc_attr( wp_create_nonce( 'dt_import_nonce' ) ) ?>"/>
 
-            <table class="widefat striped">
+            <input type="hidden" name="dt_import_uploaded_config" id="dt_import_uploaded_config"/>
+            <input type="hidden" name="dt_import_selected_services" id="dt_import_selected_services"/>
+
+            <table class="widefat striped" id="dt_import_table">
                 <tbody>
                 <?php
                 $import_services = apply_filters( 'dt_import_services', [] );
-                dt_write_log( $import_services );
                 foreach ( $import_services as $id => $service ){
 
                     // Only display enabled services; which are also present within uploaded import configuration.
@@ -155,10 +160,10 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                         ?>
                         <tr>
                             <td style="text-align: right;">
-                                <input type="checkbox" name="services[<?php echo esc_attr( $service['id'] ) ?>]"/>
+                                <input type="checkbox" class="dt-import-service-checkbox" data-service_id="<?php echo esc_attr( $service['id'] ) ?>"/>
                             </td>
                             <td>
-                                <?php echo esc_attr( $service['label'] ) ?><br>
+                                <a href="#" class="dt-import-service" data-service_id="<?php echo esc_attr( $service['id'] ) ?>"><?php echo esc_attr( $service['label'] ) ?></a><br>
                                 <span style="font-size: 10px; color: #9a9797;">
                                     <?php echo esc_attr( $service['description'] ?? '' ) ?>
                                 </span>
@@ -172,7 +177,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
             </table>
             <br>
             <span style="float:right;">
-                <button type="submit"
+                <button id="dt_import_submit_but" type="submit"
                         class="button float-right"><?php esc_html_e( 'Import', 'disciple_tools' ) ?></button>
             </span>
         </form>
@@ -183,9 +188,24 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
 
     private function display_service_details( $uploaded_config ){
         $this->box( 'top', 'Service Details', [ 'col_span' => 3 ] );
-        ?>
-        <div id="service_details_div"></div>
-        <?php
+
+        $import_services_details = apply_filters( 'dt_import_services_details', [], $uploaded_config );
+        foreach ( $import_services_details as $id => $service ){
+            if ( isset( $service['id'], $service['enabled'], $service['html'], $service['html_js_handler_func'] ) && $service['enabled'] ){
+                ?>
+                <div class="dt-import-service-details" data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
+                     style="display: none;">
+                    <?php echo $service['html'] ?>
+                </div>
+                <div class="dt-import-service-details-js-handler-func"
+                     data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
+                     style="display: none;">
+                    <?php echo $service['html_js_handler_func'] ?>
+                </div>
+                <?php
+            }
+        }
+
         $this->box( 'bottom' );
     }
 

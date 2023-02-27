@@ -162,4 +162,57 @@ jQuery(document).ready(function ($) {
     filter.addEventListener('input', showCapsForSource)
     showCapsForSource()
   }
+
+  /**
+   * DT IMPORTS
+   */
+
+  $('.dt-import-service').on('click', function (e) {
+
+    // Determine service id to use for displaying corresponding details view.
+    let service_id = $(e.currentTarget).data('service_id');
+
+    // Ensure all other detail views are first hidden.
+    $('.dt-import-service-details').fadeOut('fast', function () {
+
+      // Display details corresponding to selected service id.
+      let service_details = $('.dt-import-service-details[data-service_id=\'' + service_id + '\']');
+      if (service_details) {
+        $(service_details).fadeIn('fast');
+      }
+    });
+  });
+
+  $('#dt_import_submit_but').on('click', function (e) {
+    e.preventDefault();
+
+    let services = {};
+
+    // Iterate over all selected service checkboxes.
+    $('#dt_import_table').find('.dt-import-service-checkbox:checked').each(function (idx, selected_service) {
+      let service_id = $(selected_service).data('service_id');
+      let service_details = [];
+
+      // Fetch any associated service details.
+      let service_details_js_handler_func = $('.dt-import-service-details-js-handler-func[data-service_id=\'' + service_id + '\']').text();
+      if (service_details_js_handler_func) {
+        service_details = Function(service_details_js_handler_func)();
+      }
+
+      // Package service findings.
+      services[service_id] = {
+        'id': service_id,
+        'details': service_details
+      };
+    });
+
+    // Update import form variables and submit.
+    $('#dt_import_uploaded_config').val($('#dt_import_uploaded_config_raw').text());
+    $('#dt_import_selected_services').val(JSON.stringify(services));
+    $('#dt_import_form').submit();
+  });
+
+  /**
+   * DT IMPORTS
+   */
 })
