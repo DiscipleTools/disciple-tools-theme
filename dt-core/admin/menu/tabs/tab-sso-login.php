@@ -125,7 +125,12 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function tab( $args ) {
-        $must_have_super_admin_rights = isset( $args['multisite_level'] ) && $args['multisite_level'] === true;
+        $must_have_super_admin_rights = isset( $args['multisite_level'] )
+            && $args['multisite_level'] === true
+            && (
+                !$this->is_site_admin
+                || get_current_blog_id() !== get_main_network_id()
+            );
         switch ( $args['type'] ) {
             case 'text':
                 ?>
@@ -138,7 +143,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                             type="text"
                             name="<?php echo esc_attr( $args['key'] ) ?>"
                             value="<?php echo esc_attr( $args['value'] ) ?>"
-                            <?php echo $must_have_super_admin_rights && !$this->is_site_admin ? 'disabled' : '' ?>
+                            <?php echo $must_have_super_admin_rights ? 'disabled' : '' ?>
                         />
                         <?php echo esc_attr( $args['description'] ) ?>
                     </td>
@@ -154,7 +159,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                         <select
                             name="<?php echo esc_attr( $args['key'] ) ?>"
-                            <?php echo $must_have_super_admin_rights && !$this->is_site_admin ? 'disabled' : '' ?>
+                            <?php echo $must_have_super_admin_rights ? 'disabled' : '' ?>
                         >
                             <option></option>
                             <?php
