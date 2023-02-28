@@ -421,7 +421,7 @@ function dt_display_tile( $tile, $post ): bool {
             <button class="button" data-close type="button" id="create-tag-return">
                 <?php esc_html_e( 'Create and apply tag', 'disciple_tools' ); ?>
             </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
+            <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -438,7 +438,7 @@ function dt_display_tile( $tile, $post ): bool {
             <button class="button alert loader" type="button" id="delete-record">
                 <?php esc_html_e( 'Delete', 'disciple_tools' ); ?>
             </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
+            <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>

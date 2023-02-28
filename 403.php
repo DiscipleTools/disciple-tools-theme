@@ -56,7 +56,7 @@ get_header();
                         </button>
                     </form>
 
-                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
 

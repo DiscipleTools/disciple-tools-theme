@@ -51,7 +51,7 @@ class Disciple_Tools_Posts
     }
 
     public static function can_list_all( string $post_type ) {
-        return current_user_can( 'list_' . $post_type );
+        return current_user_can( 'list_all_' . $post_type );
     }
 
     /**
