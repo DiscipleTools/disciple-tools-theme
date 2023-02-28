@@ -618,7 +618,7 @@ class Disciple_Tools_Core_Endpoints {
 
             $custom_field_options = dt_get_option( 'dt_field_customizations' );
             $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['label'] = $new_field_option_label;
-            $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['label'] = $new_field_option_description;
+            $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['description'] = $new_field_option_description;
             update_option( 'dt_field_customizations', $custom_field_options );
             return $custom_field_options[$post_type][$field_key]['default'][$field_option_key];
         }
@@ -628,13 +628,23 @@ class Disciple_Tools_Core_Endpoints {
     public static function update_tile_and_fields_order( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
         $post_type = sanitize_text_field( wp_unslash( $post_submission['post_type'] ) );
-        $dt_custom_tiles_ordered = dt_recursive_sanitize_array( json_decode( sanitize_text_field( wp_unslash( $post_submission['dt_custom_tiles_ordered'] ) ), true ) );
-        $dt_field_customizations_ordered = dt_recursive_sanitize_array( json_decode( sanitize_text_field( wp_unslash( $post_submission['dt_field_customizations_ordered'] ) ), true ) );
+        $dt_custom_tiles_ordered = dt_recursive_sanitize_array( $post_submission['dt_custom_tiles_ordered'] );
+        $dt_field_customizations_ordered = dt_recursive_sanitize_array( $post_submission['dt_field_customizations_ordered'] );
 
         $tile_options = dt_get_option( 'dt_custom_tiles' );
-            if ( !isset( $tile_options[$post_type] ) ) {
-                $tile_options[$post_type] = [];
+
+        if ( !isset( $tile_options[$post_type] ) ) {
+            $tile_options[$post_type] = [];
+        }
+
+        for ( $i=0; $i<count($dt_custom_tiles_ordered); $i++ ) {
+            foreach ( $dt_custom_tiles_ordered as $index => $tile_key ) {
+                if ( !isset( $tile_options[$post_type][$index] ) ){
+                    $tile_options[$post_type][$i] = [];
+                }
+                $tile_options[$post_type][$index]['tile_priority'] = ( $i + 1 ) * 10;
             }
+        }
         $tile_options[$post_type] = $dt_custom_tiles_ordered;
         update_option( 'dt_custom_tiles', $tile_options );
 
