@@ -179,7 +179,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         // Ensure imported config makes reference to corresponding id and has required settings.
         $service_label = __( 'D.T Custom Tile Settings', 'disciple_tools' );
         if ( !isset( $selected_services[self::$export_import_id], $selected_services[self::$export_import_id]['details'], $imported_config['payload'], $imported_config['payload'][self::$export_import_id] ) || empty( $selected_services[self::$export_import_id]['details'] ) ){
-            echo  '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( __( 'Unable to detect suitable configuration settings!', 'disciple_tools' ) ) . '</p>';
+            echo '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( __( 'Unable to detect suitable configuration settings!', 'disciple_tools' ) ) . '</p>';
             return;
         }
 
@@ -221,7 +221,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         }
 
         // Echo tile import summary.
-        echo  '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( sprintf( __( '[%d] Tile(s) Imported.', 'disciple_tools' ), $import_count ) ) . '</p>';
+        echo '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( sprintf( __( '[%d] Tile(s) Imported.', 'disciple_tools' ), $import_count ) ) . '</p>';
     }
 
     public function add_submenu() {

@@ -203,7 +203,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
 
             // Ensure field does not already exist.
-            if( !in_array( $field_id, array_keys( $existing_field_settings[$field_post_type] ) ) ) {
+            if ( !in_array( $field_id, array_keys( $existing_field_settings[$field_post_type] ) ) ) {
 
                 // Fetch corresponding imported field config.
                 if ( isset( $imported_config['payload'][self::$export_import_id][$field_post_type], $imported_config['payload'][self::$export_import_id][$field_post_type][$field_id] ) ) {
@@ -226,7 +226,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
 
         // Echo field import summary.
-        echo  '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( sprintf( __( '[%d] Field(s) Imported.', 'disciple_tools' ), $import_count ) ) . '</p>';
+        echo '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( sprintf( __( '[%d] Field(s) Imported.', 'disciple_tools' ), $import_count ) ) . '</p>';
     }
 
     public function add_submenu() {
