@@ -62,7 +62,6 @@ jQuery(document).ready(function($) {
                 tile_key = 'no_tile';
             }
             dt_custom_tiles_ordered[tile_key] = {};
-            var tile_label = jQuery(`#tile-key-${tile_key}`).prop('innerText');
 
             var fields = jQuery(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
             var field_order = [];
@@ -71,12 +70,10 @@ jQuery(document).ready(function($) {
                 field_order.push(field_key);
             });
 
-            dt_custom_tiles_ordered[tile_key]['label'] = tile_label;
             dt_custom_tiles_ordered[tile_key]['order'] = field_order;
             dt_custom_tiles_ordered[tile_key]['tile_priority'] = tile_priority;
             tile_priority += 10;
         });
-        dt_custom_tiles_ordered = JSON.stringify(dt_custom_tiles_ordered);
         return dt_custom_tiles_ordered;
     }
 
