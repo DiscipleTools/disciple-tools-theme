@@ -84,10 +84,13 @@ class DT_Login_Fields {
                 }
             }
 
+            $multisite_vars = self::dehydrate_fields( $multisite_vars );
             update_network_option( get_main_network_id(), self::MULTISITE_OPTION_NAME, $multisite_vars );
 
+            $site_vars = self::dehydrate_fields( $vars );
             update_network_option( get_current_blog_id(), self::OPTION_NAME, $site_vars );
         } else {
+            $site_vars = self::dehydrate_fields( $vars );
             update_network_option( get_current_blog_id(), self::OPTION_NAME, $vars );
         }
     }
@@ -105,19 +108,21 @@ class DT_Login_Fields {
         $defaults_count = count( $defaults );
 
         if ( $multisite_level === true ) {
-            $saved_fields = get_network_option( get_main_network_id(), $option_name, [] );
+            $saved_values = get_network_option( get_main_network_id(), $option_name, [] );
         } else {
-            $saved_fields = get_network_option( get_current_network_id(), $option_name, [] );
+            $saved_values = get_network_option( get_current_network_id(), $option_name, [] );
         }
 
+        $saved_fields = self::hydrate_values( $defaults, $saved_values );
         $saved_fields = self::filter_fields( $defaults, $saved_fields );
 
         $saved_count = count( $saved_fields );
 
         if ( $saved_count === 0 ) { // this site hasn't saved these options yet, so copy the main site options
 
-            $saved_fields = get_network_option( get_main_network_id(), $option_name, [] );
+            $saved_values = get_network_option( get_main_network_id(), $option_name, [] );
 
+            $saved_fields = self::hydrate_values( $defaults, $saved_values );
             $saved_fields = self::filter_fields( $defaults, $saved_fields );
 
             $saved_count = count( $saved_fields );
@@ -126,10 +131,11 @@ class DT_Login_Fields {
         $fields = wp_parse_args( $saved_fields, $defaults );
 
         if ( $defaults_count !== $saved_count ) {
+            $values = self::dehydrate_fields( $fields );
             if ( $multisite_level === true ) {
-                update_network_option( get_main_network_id(), $option_name, $fields );
+                update_network_option( get_main_network_id(), $option_name, $values );
             } else {
-                update_network_option( get_current_blog_id(), $option_name, $fields );
+                update_network_option( get_current_blog_id(), $option_name, $values );
             }
         }
 
@@ -185,6 +191,30 @@ class DT_Login_Fields {
         }
 
         return $filtered_fields;
+    }
+
+    private static function hydrate_values( $defaults, $values ) {
+        $vars = [];
+
+        foreach ( $defaults as $key => $param ) {
+            if ( isset( $values[$key] ) ) {
+                $param['value'] = $values[$key];
+            }
+
+            $vars[$key] = $param;
+        }
+
+        return $vars;
+    }
+
+    private static function dehydrate_fields( $fields ) {
+        $values = [];
+
+        foreach ( $fields as $key => $param ) {
+            $values[$key] = $param['value'];
+        }
+
+        return $values;
     }
 
     private static function get_multisite_defaults() {
