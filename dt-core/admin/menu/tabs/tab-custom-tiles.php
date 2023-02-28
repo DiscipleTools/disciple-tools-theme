@@ -79,16 +79,16 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     public function import_services_details( $details, $imported_config ){
 
         // Ensure imported config makes reference to corresponding id.
-        if( !isset($imported_config['payload'], $imported_config['payload'][self::$export_import_id]) ){
+        if ( !isset( $imported_config['payload'], $imported_config['payload'][self::$export_import_id] ) ){
             return $details;
         }
 
         // First, construct details html.
         ob_start();
         ?>
-        <p><?php echo __( 'D.T Custom Tile Settings', 'disciple_tools' )?></p>
+        <p><?php echo esc_attr( __( 'D.T Custom Tile Settings', 'disciple_tools' ) ) ?></p>
 
-        <table class="widefat striped" id="<?php echo esc_attr(self::$export_import_id) ?>_details_table">
+        <table class="widefat striped" id="<?php echo esc_attr( self::$export_import_id ) ?>_details_table">
             <tbody>
             <?php
 
@@ -96,33 +96,33 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             $existing_post_types = DT_Posts::get_post_types() ?? [];
 
             // Ensure displayed post types are driven by incoming config.
-            foreach ($imported_config['payload'][self::$export_import_id] ?? [] as $post_type => $tile_config) {
+            foreach ( $imported_config['payload'][self::$export_import_id] ?? [] as $post_type => $tile_config ) {
 
                 // Target instance, must contain corresponding post type, in order for incoming tiles to be set.
-                if(in_array($post_type, $existing_post_types)){
+                if ( in_array( $post_type, $existing_post_types ) ){
 
                     // Fetch existing instance post type settings.
-                    $post_type_settings = DT_Posts::get_post_settings($post_type, false);
+                    $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
 
                     // Display post type heading.
                     ?>
                     <tr>
                         <td colspan="2">
-                        <span style="font-weight: bold;"><?php echo esc_attr($post_type_settings['label_plural']); ?></span>
+                        <span style="font-weight: bold;"><?php echo esc_attr( $post_type_settings['label_plural'] ); ?></span>
                         </td>
                     </tr>
                     <?php
 
                     // Next, display tiles available for import; disabling those already installed within target instance.
-                    foreach ($tile_config ?? [] as $tile_id => $tile) {
-                        $already_has_tile = isset($post_type_settings['tiles'], $post_type_settings['tiles'][$tile_id]);
+                    foreach ( $tile_config ?? [] as $tile_id => $tile ) {
+                        $already_has_tile = isset( $post_type_settings['tiles'], $post_type_settings['tiles'][$tile_id] );
                         ?>
                         <tr>
                             <td style="text-align: right;">
-                                <input type="checkbox" class="details-table-checkbox" data-post_type="<?php echo esc_attr($post_type) ?>" data-tile_id="<?php echo esc_attr($tile_id) ?>" <?php echo $already_has_tile ? 'disabled' : '' ?> />
+                                <input type="checkbox" class="details-table-checkbox" data-post_type="<?php echo esc_attr( $post_type ) ?>" data-tile_id="<?php echo esc_attr( $tile_id ) ?>" <?php echo $already_has_tile ? 'disabled' : '' ?> />
                             </td>
                             <td>
-                                <span><?php echo esc_attr($tile['label'] ?? $tile_id) ?></span>
+                                <span><?php echo esc_attr( $tile['label'] ?? $tile_id ) ?></span>
                             </td>
                         </tr>
                         <?php
@@ -143,7 +143,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         ?>
 
         let tiles = [];
-        jQuery('#<?php echo esc_attr(self::$export_import_id) ?>_details_table').find('.details-table-checkbox:checked').each(function (idx, checkbox) {
+        jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.details-table-checkbox:checked').each(function (idx, checkbox) {
             let post_type = jQuery(checkbox).data('post_type');
             let tile_id = jQuery(checkbox).data('tile_id');
             if(post_type && tile_id) {
@@ -172,14 +172,14 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     public function import_payload( $selected_services, $imported_config ){
 
         // Ensure service has been selected, before proceeding!
-        if( !isset( $selected_services[self::$export_import_id] ) ) {
+        if ( !isset( $selected_services[self::$export_import_id] ) ) {
             return;
         }
 
         // Ensure imported config makes reference to corresponding id and has required settings.
         $service_label = __( 'D.T Custom Tile Settings', 'disciple_tools' );
-        if( !isset($selected_services[self::$export_import_id], $selected_services[self::$export_import_id]['details'], $imported_config['payload'], $imported_config['payload'][self::$export_import_id]) || empty( $selected_services[self::$export_import_id]['details'] ) ){
-            echo  '<p>' . $service_label . ': ' . __( 'Unable to detect suitable configuration settings!', 'disciple_tools' ) . '</p>';
+        if ( !isset( $selected_services[self::$export_import_id], $selected_services[self::$export_import_id]['details'], $imported_config['payload'], $imported_config['payload'][self::$export_import_id] ) || empty( $selected_services[self::$export_import_id]['details'] ) ){
+            echo  '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( __( 'Unable to detect suitable configuration settings!', 'disciple_tools' ) ) . '</p>';
             return;
         }
 
@@ -188,20 +188,20 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         $existing_tile_options = dt_get_option( 'dt_custom_tiles' );
 
         // Process selected service tiles accordingly, based on instance existence.
-        foreach ($selected_services[self::$export_import_id]['details'] as $selected_tile) {
+        foreach ( $selected_services[self::$export_import_id]['details'] as $selected_tile ) {
             $tile_post_type = $selected_tile['post_type'];
             $tile_id = $selected_tile['tile_id'];
 
             // If required, load corresponding post type tile settings.
-            if( !isset( $existing_tile_settings[$tile_post_type] ) ) {
+            if ( !isset( $existing_tile_settings[$tile_post_type] ) ) {
                 $existing_tile_settings[$tile_post_type] = DT_Posts::get_post_tiles( $tile_post_type );
             }
 
             // Ensure tile does not already exist.
-            if( !in_array($tile_id, array_keys($existing_tile_settings[$tile_post_type])) ) {
+            if ( !in_array( $tile_id, array_keys( $existing_tile_settings[$tile_post_type] ) ) ) {
 
                 // Fetch corresponding imported tile config.
-                if(isset($imported_config['payload'][self::$export_import_id][$tile_post_type], $imported_config['payload'][self::$export_import_id][$tile_post_type][$tile_id])) {
+                if ( isset( $imported_config['payload'][self::$export_import_id][$tile_post_type], $imported_config['payload'][self::$export_import_id][$tile_post_type][$tile_id] ) ) {
 
                     // Make tile options provision if needed, before committing.
                     if ( !isset( $existing_tile_options[$tile_post_type] ) ){
@@ -216,12 +216,12 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         }
 
         // Only update options if valid imports have taken place.
-        if( $import_count > 0 ) {
+        if ( $import_count > 0 ) {
             update_option( 'dt_custom_tiles', $existing_tile_options );
         }
 
         // Echo tile import summary.
-        echo  '<p>' . $service_label . ': ' .  sprintf( __( '[%d] Tile(s) Imported.', 'disciple_tools' ), $import_count ) . '</p>';
+        echo  '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( sprintf( __( '[%d] Tile(s) Imported.', 'disciple_tools' ), $import_count ) ) . '</p>';
     }
 
     public function add_submenu() {

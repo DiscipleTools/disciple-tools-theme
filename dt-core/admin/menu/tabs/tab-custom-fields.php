@@ -89,7 +89,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         // First, construct details html.
         ob_start();
         ?>
-        <p><?php echo __( 'D.T Custom Field Settings', 'disciple_tools' ) ?></p>
+        <p><?php echo esc_attr( __( 'D.T Custom Field Settings', 'disciple_tools' ) ) ?></p>
 
         <table class="widefat striped" id="<?php echo esc_attr( self::$export_import_id ) ?>_details_table">
             <tbody>
@@ -177,14 +177,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     public function import_payload( $selected_services, $imported_config ){
 
         // Ensure service has been selected, before proceeding!
-        if( !isset( $selected_services[self::$export_import_id] ) ) {
+        if ( !isset( $selected_services[self::$export_import_id] ) ) {
             return;
         }
 
         // Ensure imported config makes reference to corresponding id and has required settings.
         $service_label = __( 'D.T Custom Field Settings', 'disciple_tools' );
         if ( !isset( $selected_services[self::$export_import_id], $selected_services[self::$export_import_id]['details'], $imported_config['payload'], $imported_config['payload'][self::$export_import_id] ) || empty( $selected_services[self::$export_import_id]['details'] ) ){
-            echo '<p>' . $service_label . ': ' . __( 'Unable to detect suitable configuration settings!', 'disciple_tools' ) . '</p>';
+            echo '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( __( 'Unable to detect suitable configuration settings!', 'disciple_tools' ) ) . '</p>';
             return;
         }
 
@@ -193,20 +193,20 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $existing_field_options = dt_get_option( 'dt_field_customizations' );
 
         // Process selected service fields accordingly, based on instance existence.
-        foreach ($selected_services[self::$export_import_id]['details'] as $selected_field) {
+        foreach ( $selected_services[self::$export_import_id]['details'] as $selected_field ) {
             $field_post_type = $selected_field['post_type'];
             $field_id = $selected_field['field_id'];
 
             // If required, load corresponding post type field settings.
-            if( !isset( $existing_field_settings[$field_post_type] ) ) {
+            if ( !isset( $existing_field_settings[$field_post_type] ) ) {
                 $existing_field_settings[$field_post_type] = DT_Posts::get_post_field_settings( $field_post_type, false );
             }
 
             // Ensure field does not already exist.
-            if( !in_array($field_id, array_keys($existing_field_settings[$field_post_type])) ) {
+            if( !in_array( $field_id, array_keys( $existing_field_settings[$field_post_type] ) ) ) {
 
                 // Fetch corresponding imported field config.
-                if(isset($imported_config['payload'][self::$export_import_id][$field_post_type], $imported_config['payload'][self::$export_import_id][$field_post_type][$field_id])) {
+                if ( isset( $imported_config['payload'][self::$export_import_id][$field_post_type], $imported_config['payload'][self::$export_import_id][$field_post_type][$field_id] ) ) {
 
                     // Make field options provision if needed, before committing.
                     if ( !isset( $existing_field_options[$field_post_type] ) ){
@@ -221,12 +221,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
 
         // Only update options if valid imports have taken place.
-        if( $import_count > 0 ) {
+        if ( $import_count > 0 ) {
             update_option( 'dt_field_customizations', $existing_field_options );
         }
 
         // Echo field import summary.
-        echo  '<p>' . $service_label . ': ' .  sprintf( __( '[%d] Field(s) Imported.', 'disciple_tools' ), $import_count ) . '</p>';
+        echo  '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( sprintf( __( '[%d] Field(s) Imported.', 'disciple_tools' ), $import_count ) ) . '</p>';
     }
 
     public function add_submenu() {
