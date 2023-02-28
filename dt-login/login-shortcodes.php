@@ -38,13 +38,16 @@ function dt_firebase_login_ui( $attr ) {
 
         const signInOptions = []
 
-        if (config.sign_in_options.google) {
+        const { google, facebook, email, github, twitter } = config.sign_in_options
+        const hasASignInProvider = google || facebook || email || github || twitter
+
+        if (google) {
             signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID)
         }
-        if (config.sign_in_options.facebook) {
+        if (facebook) {
             signInOptions.push(firebase.auth.FacebookAuthProvider.PROVIDER_ID)
         }
-        if (config.sign_in_options.email) {
+        if (email) {
             signInOptions.push({
                 provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
                 disableSignUp: {
@@ -52,10 +55,10 @@ function dt_firebase_login_ui( $attr ) {
                 }
             })
         }
-        if (config.sign_in_options.github) {
+        if (github) {
             signInOptions.push(firebase.auth.GithubAuthProvider.PROVIDER_ID)
         }
-        if (config.sign_in_options.twitter) {
+        if (twitter) {
             signInOptions.push(firebase.auth.TwitterAuthProvider.PROVIDER_ID)
         }
 
@@ -66,12 +69,17 @@ function dt_firebase_login_ui( $attr ) {
             appId: config.app_id,
         };
 
-        try {
-            const firebaseApp = firebase.initializeApp(firebaseConfig);
-            const auth = firebaseApp.auth();
-        } catch (error) {
-            console.log(error)
+        let firebaseApp
+        let auth
+        if (hasASignInProvider) {
+            try {
+                firebaseApp = firebase.initializeApp(firebaseConfig);
+                auth = firebaseApp.auth();
+            } catch (error) {
+                console.log(error)
+            }
         }
+
     </script>
     <script src="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.css" />
@@ -84,9 +92,16 @@ function dt_firebase_login_ui( $attr ) {
     <?php //phpcs:enable ?>
 
     <script>
-        const ui = new firebaseui.auth.AuthUI(firebase.auth());
+        let ui
+        if (hasASignInProvider) {
+            ui = new firebaseui.auth.AuthUI(firebase.auth());
+            showLoader()
+        }
+
         function showLoader( show = true ) {
             const loaderElement = document.getElementById('loader')
+
+            console.log(loaderElement)
 
             loaderElement.style.display = show ? 'block' : 'none'
         }
@@ -155,6 +170,8 @@ function dt_firebase_login_ui( $attr ) {
         if ( !config.api_key || !config.project_id || !config.app_id  ) {
             document.getElementById('loader').style.display = 'none'
             console.error('Missing firebase settings in the admin section')
+        } else if (!hasASignInProvider) {
+            console.log( 'No sign in provider selected' )
         } else {
             startUI()
         }
@@ -181,7 +198,7 @@ function dt_firebase_login_ui( $attr ) {
         <p class="message"></p>
     </div>
 
-    <div id="loader">
+    <div id="loader" style="display: none">
         <span class="loading-spinner active"></span>
     </div>
 
