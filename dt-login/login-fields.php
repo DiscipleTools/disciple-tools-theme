@@ -254,6 +254,7 @@ class DT_Login_Fields {
                 ],
                 'value' => 'off',
                 'type' => 'select',
+                'multisite_level' => true,
             ],
 
             'navigation' => [
@@ -271,6 +272,7 @@ class DT_Login_Fields {
                 'description' => 'e.g. groups  (when someone successfully logs in, where do they get redirected)',
                 'value' => '',
                 'type' => 'text',
+                'multisite_level' => true,
             ],
             'login_url' => [
                 'tab' => 'general',
@@ -279,6 +281,7 @@ class DT_Login_Fields {
                 'description' => 'e.g. login',
                 'value' => 'login',
                 'type' => 'text',
+                'multisite_level' => true,
             ],
             'ui_label' => [
                 'tab' => 'general',
@@ -299,6 +302,7 @@ class DT_Login_Fields {
                     'on' => 'on',
                     'off' => 'off',
                 ],
+                'multisite_level' => true,
             ],
 
             'shortcode_firebase_logon_buttons' => [
@@ -341,6 +345,7 @@ class DT_Login_Fields {
                     'on' => 'on',
                     'off' => 'off',
                 ],
+                'multisite_level' => true,
             ],
             'identity_providers_google' => [
                 'tab' => 'identity_providers',
@@ -353,6 +358,7 @@ class DT_Login_Fields {
                     'on' => 'on',
                     'off' => 'off',
                 ],
+                'multisite_level' => true,
             ],
             'identity_providers_facebook' => [
                 'tab' => 'identity_providers',
@@ -365,6 +371,7 @@ class DT_Login_Fields {
                     'on' => 'on',
                     'off' => 'off',
                 ],
+                'multisite_level' => true,
             ],
             'identity_providers_github' => [
                 'tab' => 'identity_providers',
@@ -377,6 +384,7 @@ class DT_Login_Fields {
                     'on' => 'on',
                     'off' => 'off',
                 ],
+                'multisite_level' => true,
             ],
             'identity_providers_twitter' => [
                 'tab' => 'identity_providers',
@@ -389,6 +397,7 @@ class DT_Login_Fields {
                     'on' => 'on',
                     'off' => 'off',
                 ],
+                'multisite_level' => true,
             ],
 
         ];
