@@ -87,4 +87,34 @@ class DT_Contacts_Utils {
 
         return true;
     }
+
+
+    /**
+     * Find the best active contact for a given email address
+     * @param string $email_address
+     * @param $check_permissions
+     * @return int|null
+     */
+    public static function find_contact_by_email( string $email_address, $check_permissions = true ){
+        if ( empty( $email_address ) ){
+            return null;
+        }
+
+        $contacts_search = DT_Posts::search_viewable_post( 'contacts',
+            [
+                'sort' => 'overall_status',
+                'fields' => [
+                    'contact_email' => [ $email_address ]
+                ]
+            ],
+            $check_permissions
+        );
+        $contact_id = null;
+        if ( sizeof( $contacts_search['posts'] ) > 1 ){
+            $contact_id = $contacts_search['posts'][0]->ID;
+        } elseif ( sizeof( $contacts_search['posts'] ) === 1 ){
+            $contact_id = $contacts_search['posts'][0]->ID;
+        }
+        return $contact_id;
+    }
 }

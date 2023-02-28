@@ -134,7 +134,7 @@
             <button class="button alert loader" aria-label="confirm" type="button" id="confirm-comment-delete">
                 <?php esc_html_e( 'Delete', 'disciple_tools' ) ?>
             </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
+            <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -174,7 +174,7 @@
             <button class="button loader" aria-label="confirm" type="button" id="confirm-comment-edit">
                 <?php esc_html_e( 'Update', 'disciple_tools' ) ?>
             </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
+            <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>

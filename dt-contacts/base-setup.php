@@ -429,7 +429,7 @@ class DT_Contacts_Base {
                     <button class="button alert loader" type="button" id="archive-record">
                         <?php esc_html_e( 'Archive', 'disciple_tools' ); ?>
                     </button>
-                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -464,7 +464,7 @@ class DT_Contacts_Base {
                 <button class="button loader" type="button" id="confirm-type-close" data-field="closed">
                     <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
                 </button>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
+                <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

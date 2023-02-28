@@ -318,7 +318,7 @@ dt_please_log_in();
                     ?>
 
                     <div id="list_column_picker" class="list_field_picker list_action_section">
-                        <button class="close-button list-action-close-button" data-close="list_column_picker" aria-label="Close modal" type="button">
+                        <button class="close-button list-action-close-button" data-close="list_column_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                             <span aria-hidden="true">×</span>
                         </button>
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
@@ -360,7 +360,7 @@ dt_please_log_in();
                     </div>
 
                     <div id="bulk_edit_picker" class="list_action_section">
-                        <button class="close-button list-action-close-button" data-close="bulk_edit_picker" aria-label="Close modal" type="button">
+                        <button class="close-button list-action-close-button" data-close="bulk_edit_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                             <span aria-hidden="true">×</span>
                         </button>
                         <p style="font-weight:bold"><?php
@@ -795,7 +795,7 @@ dt_please_log_in();
 
             </div>
         </div>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
+        <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>

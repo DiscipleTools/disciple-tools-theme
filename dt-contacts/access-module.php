@@ -507,7 +507,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 <button class="button loader confirm-reason-button" type="button" id="confirm-pause" data-field="paused">
                     <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
                 </button>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
+                <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -538,7 +538,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 <button class="button loader confirm-reason-button" type="button" id="confirm-unassignable" data-field="unassignable">
                     <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
                 </button>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
+                <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -566,7 +566,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 <button class="button loader confirm-reason-button" type="button" id="confirm-close" data-field="closed">
                     <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
                 </button>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
+                <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -657,7 +657,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                         </div>
                     </div>
                 </section>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
+                <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
