@@ -96,9 +96,9 @@ class DT_Login_Fields {
     }
 
     public static function delete() {
-        delete_network_option( get_current_network_id(), self::OPTION_NAME );
+        delete_network_option( get_current_blog_id(), self::OPTION_NAME );
 
-        if ( is_multisite() ) {
+        if ( is_multisite() && is_super_admin() ) {
             delete_network_option( get_main_network_id(), self::MULTISITE_OPTION_NAME );
         }
     }
@@ -110,7 +110,7 @@ class DT_Login_Fields {
         if ( $multisite_level === true ) {
             $saved_values = get_network_option( get_main_network_id(), $option_name, [] );
         } else {
-            $saved_values = get_network_option( get_current_network_id(), $option_name, [] );
+            $saved_values = get_network_option( get_current_blog_id(), $option_name, [] );
         }
 
         $saved_fields = self::hydrate_values( $defaults, $saved_values );
@@ -196,12 +196,12 @@ class DT_Login_Fields {
     private static function hydrate_values( $defaults, $values ) {
         $vars = [];
 
-        foreach ( $defaults as $key => $param ) {
-            if ( isset( $values[$key] ) ) {
-                $param['value'] = $values[$key];
+        foreach ( $values as $key => $param ) {
+            if ( isset( $defaults[$key] ) ) {
+                $var = $defaults[$key];
+                $var['value'] = $param;
+                $vars[$key] = $var;
             }
-
-            $vars[$key] = $param;
         }
 
         return $vars;
