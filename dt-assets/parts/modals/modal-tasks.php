@@ -45,13 +45,13 @@ global $post;
         <button class="button clear" data-close aria-label="Close reveal" type="button">
             <?php echo esc_html__( 'Close', 'disciple_tools' )?>
         </button>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
+        <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 
 
-    <button class="close-button" data-close aria-label="Close modal" type="button">
+    <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
         <span aria-hidden="true">&times;</span>
     </button>
 

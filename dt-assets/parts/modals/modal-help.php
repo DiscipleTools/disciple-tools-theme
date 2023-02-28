@@ -162,7 +162,7 @@
                 <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
             </div>
         </div>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
+        <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -212,7 +212,7 @@
                 <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
             </div>
         </div>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
+        <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
