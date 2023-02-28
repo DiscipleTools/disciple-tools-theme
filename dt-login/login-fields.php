@@ -115,8 +115,12 @@ class DT_Login_Fields {
 
             $saved_fields = self::hydrate_values( $defaults, $saved_values );
             $saved_fields = self::filter_fields( $defaults, $saved_fields );
+        } else if ( $saved_count !== $defaults_count ) {
+            $network_values = get_network_option( get_main_network_id(), $option_name, [] );
 
-            $saved_count = count( $saved_fields );
+            $network_fields = self::hydrate_values( $defaults, $network_values );
+            $network_fields = self::filter_fields( $defaults, $network_fields );
+            $saved_fields = array_merge( $saved_fields, $network_fields );
         }
 
         $fields = wp_parse_args( $saved_fields, $defaults );
