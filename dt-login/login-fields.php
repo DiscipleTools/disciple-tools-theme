@@ -7,23 +7,20 @@ class DT_Login_Fields {
 
     public static function all() {
 
-        $multisite_defaults = self::get_multisite_defaults();
+        $defaults = self::get_defaults();
 
-        $site_defaults = self::get_site_defaults();
+        [ $site_defaults, $multisite_defaults ] = self::split_site_and_multisite_vars( $defaults );
 
         if ( is_multisite() ) {
-            $defaults = $site_defaults;
-        } else {
-            $defaults = array_merge( $site_defaults, $multisite_defaults );
+            $site_fields = self::parse_and_save_fields( $site_defaults, self::OPTION_NAME );
+            $multisite_fields = self::parse_and_save_fields( $multisite_defaults, self::MULTISITE_OPTION_NAME, true );
+
+            $fields = self::merge_site_and_multisite_vars( $site_fields, $multisite_fields );
+
+            return $fields;
         }
 
         $fields = self::parse_and_save_fields( $defaults, self::OPTION_NAME );
-
-        if ( is_multisite() ) {
-            $firebase_fields = self::parse_and_save_fields( $multisite_defaults, self::MULTISITE_OPTION_NAME, true );
-
-            $fields = array_merge( $fields, $firebase_fields );
-        }
 
         return $fields;
     }
@@ -76,13 +73,7 @@ class DT_Login_Fields {
             $multisite_vars = [];
             $site_vars = [];
 
-            foreach ( $vars as $key => $param ) {
-                if ( isset( $param['multisite_level'] ) && $param['multisite_level'] === true ) {
-                    $multisite_vars[$key] = $param;
-                } else {
-                    $site_vars[$key] = $param;
-                }
-            }
+            [ $site_vars, $multisite_vars ] = self::split_site_and_multisite_vars( $vars );
 
             $multisite_vars = self::dehydrate_fields( $multisite_vars );
             update_network_option( get_main_network_id(), self::MULTISITE_OPTION_NAME, $multisite_vars );
@@ -103,11 +94,11 @@ class DT_Login_Fields {
         }
     }
 
-    private static function parse_and_save_fields( $defaults, $option_name, $multisite_level = false ) {
+    private static function parse_and_save_fields( $defaults, $option_name, $is_multisite_vars = false ) {
 
         $defaults_count = count( $defaults );
 
-        if ( $multisite_level === true ) {
+        if ( $is_multisite_vars === true ) {
             $saved_values = get_network_option( get_main_network_id(), $option_name, [] );
         } else {
             $saved_values = get_network_option( get_current_blog_id(), $option_name, [] );
@@ -130,13 +121,11 @@ class DT_Login_Fields {
 
         $fields = wp_parse_args( $saved_fields, $defaults );
 
-        if ( $defaults_count !== $saved_count ) {
-            $values = self::dehydrate_fields( $fields );
-            if ( $multisite_level === true ) {
-                update_network_option( get_main_network_id(), $option_name, $values );
-            } else {
-                update_network_option( get_current_blog_id(), $option_name, $values );
-            }
+        $values = self::dehydrate_fields( $fields );
+        if ( $is_multisite_vars === true ) {
+            update_network_option( get_main_network_id(), $option_name, $values );
+        } else {
+            update_network_option( get_current_blog_id(), $option_name, $values );
         }
 
         return $fields;
@@ -217,8 +206,51 @@ class DT_Login_Fields {
         return $values;
     }
 
-    private static function get_multisite_defaults() {
-        $multisite_defaults = [
+    private static function split_site_and_multisite_vars( $vars ) {
+        $site_vars = [];
+        $multisite_vars = [];
+
+        foreach ( $vars as $key => $param ) {
+            if ( isset( $param['multisite_level'] ) && $param['multisite_level'] === true ) {
+                $multisite_vars[$key] = $param;
+            } else {
+                $site_vars[$key] = $param;
+            }
+        }
+
+        return [
+            $site_vars,
+            $multisite_vars,
+        ];
+    }
+
+    private static function merge_site_and_multisite_vars( $site_fields, $multisite_fields ) {
+
+        $defaults = self::get_defaults();
+
+        $merged_fields = [];
+
+        foreach ( $defaults as $key => $param ) {
+            if ( isset( $param['multisite_level'] ) && $param['multisite_level'] === true ) {
+                if ( isset( $multisite_fields[$key] ) ) {
+                    $merged_fields[$key] = $multisite_fields[$key];
+                } else {
+                    $merged_fields[$key] = $param;
+                }
+            } else {
+                if ( isset( $site_fields[$key] ) ) {
+                    $merged_fields[$key] = $site_fields[$key];
+                } else {
+                    $merged_fields[$key] = $param;
+                }
+            }
+        }
+
+        return $merged_fields;
+    }
+
+    private static function get_defaults() {
+        $defaults = [
             // firebase
             'firebase_config_label' => [
                 'tab' => 'firebase',
@@ -257,13 +289,7 @@ class DT_Login_Fields {
                 'type' => 'text',
                 'multisite_level' => true,
             ],
-        ];
 
-        return $multisite_defaults;
-    }
-
-    private static function get_site_defaults() {
-        $site_defaults = [
             // general
             'general_label' => [
                 'tab' => 'general',
@@ -432,6 +458,6 @@ class DT_Login_Fields {
 
         ];
 
-        return $site_defaults;
+        return $defaults;
     }
 }
