@@ -17,7 +17,7 @@
         <button class="button" aria-label="confirm" type="button" id="confirm-revert">
             <?php esc_html_e( 'Revert to old value?', 'disciple_tools' )?>
         </button>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
+        <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>

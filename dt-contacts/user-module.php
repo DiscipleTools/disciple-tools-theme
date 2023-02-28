@@ -165,7 +165,7 @@ class DT_Contacts_User {
                                  <?php echo esc_html__( 'Merge', 'disciple_tools' )?>
                              </button>
                          </form>
-                         <button class="close-button" data-close aria-label="Close modal" type="button">
+                         <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                              <span aria-hidden="true">&times;</span>
                          </button>
                      </div>

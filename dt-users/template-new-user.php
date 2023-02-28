@@ -275,7 +275,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                  <button class="button clear" id="continue-archive-comments" data-close><?php esc_html_e( 'Continue and archive comments', 'disciple_tools' ); ?></button>
                  <button class="button" id="continue-user-creation" data-close><?php esc_html_e( 'Continue, keeping comments', 'disciple_tools' ); ?></button>
             </div>
-             <button class="close-button" data-close aria-label="Close modal" type="button">
+             <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                  <span aria-hidden="true">&times;</span>
              </button>
          </div>
@@ -300,7 +300,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                  </button>
                 <a class="button" href="" id="merge-new-contact-link" data-close><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></a>
             </div>
-             <button class="close-button" data-close aria-label="Close modal" type="button">
+             <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                  <span aria-hidden="true">&times;</span>
              </button>
          </div>
