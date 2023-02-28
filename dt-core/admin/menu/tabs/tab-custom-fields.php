@@ -46,6 +46,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         add_filter( 'dt_export_services', [ $this, 'export_import_services' ], 10, 1 );
         add_filter( 'dt_export_payload', [ $this, 'export_payload' ], 10, 1 );
         add_filter( 'dt_import_services', [ $this, 'export_import_services' ], 10, 1 );
+        add_filter( 'dt_import_services_details', [ $this, 'import_services_details' ], 10, 2 );
+        add_action( 'dt_import_payload', [ $this, 'import_payload' ], 10, 2 );
 
         parent::__construct();
     } // End __construct()
@@ -75,6 +77,156 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
 
         return $export_payload;
+    }
+
+    public function import_services_details( $details, $imported_config ){
+
+        // Ensure imported config makes reference to corresponding id.
+        if ( !isset( $imported_config['payload'], $imported_config['payload'][self::$export_import_id] ) ){
+            return $details;
+        }
+
+        // First, construct details html.
+        ob_start();
+        ?>
+        <p><?php echo __( 'D.T Custom Field Settings', 'disciple_tools' ) ?></p>
+
+        <table class="widefat striped" id="<?php echo esc_attr( self::$export_import_id ) ?>_details_table">
+            <tbody>
+            <?php
+
+            // Fetch list of existing instance post types.
+            $existing_post_types = DT_Posts::get_post_types() ?? [];
+
+            // Ensure displayed post types are driven by incoming config.
+            foreach ( $imported_config['payload'][self::$export_import_id] ?? [] as $post_type => $field_config ){
+
+                // Target instance, must contain corresponding post type, in order for incoming fields to be set.
+                if ( in_array( $post_type, $existing_post_types ) ){
+
+                    // Fetch existing instance post type settings.
+                    $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
+
+                    // Display post type heading.
+                    ?>
+                    <tr>
+                        <td colspan="2">
+                            <span
+                                style="font-weight: bold;"><?php echo esc_attr( $post_type_settings['label_plural'] ); ?></span>
+                        </td>
+                    </tr>
+                    <?php
+
+                    // Next, display fields available for import; disabling those already installed within target instance.
+                    foreach ( $field_config ?? [] as $field_id => $field ){
+                        $already_has_field = isset( $post_type_settings['fields'], $post_type_settings['fields'][$field_id] );
+                        ?>
+                        <tr>
+                            <td style="text-align: right;">
+                                <input type="checkbox" class="details-table-checkbox"
+                                       data-post_type="<?php echo esc_attr( $post_type ) ?>"
+                                       data-field_id="<?php echo esc_attr( $field_id ) ?>" <?php echo $already_has_field ? 'disabled' : '' ?> />
+                            </td>
+                            <td>
+                                <span><?php echo esc_attr( $field['name'] ?? $field_id ) ?></span>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                }
+            }
+            ?>
+            </tbody>
+        </table>
+        <?php
+
+        // Retrieve all buffered html output.
+        $html = ob_get_clean();
+
+        // Next, capture details handler js function logic.
+        ob_start();
+        ?>
+
+        let fields = [];
+        jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.details-table-checkbox:checked').each(function (idx, checkbox) {
+            let post_type = jQuery(checkbox).data('post_type');
+            let field_id = jQuery(checkbox).data('field_id');
+            if(post_type && field_id) {
+                fields.push({
+                    'post_type' : post_type,
+                    'field_id' : field_id
+                });
+            }
+        });
+        return fields;
+
+        <?php
+        $html_js_handler_func = ob_get_clean();
+
+        // Finally, package detail parts and return.
+        $details[self::$export_import_id] = [
+            'id' => self::$export_import_id,
+            'enabled' => true,
+            'html' => $html,
+            'html_js_handler_func' => $html_js_handler_func
+        ];
+
+        return $details;
+    }
+
+    public function import_payload( $selected_services, $imported_config ){
+
+        // Ensure service has been selected, before proceeding!
+        if( !isset( $selected_services[self::$export_import_id] ) ) {
+            return;
+        }
+
+        // Ensure imported config makes reference to corresponding id and has required settings.
+        $service_label = __( 'D.T Custom Field Settings', 'disciple_tools' );
+        if ( !isset( $selected_services[self::$export_import_id], $selected_services[self::$export_import_id]['details'], $imported_config['payload'], $imported_config['payload'][self::$export_import_id] ) || empty( $selected_services[self::$export_import_id]['details'] ) ){
+            echo '<p>' . $service_label . ': ' . __( 'Unable to detect suitable configuration settings!', 'disciple_tools' ) . '</p>';
+            return;
+        }
+
+        $import_count = 0;
+        $existing_field_settings = [];
+        $existing_field_options = dt_get_option( 'dt_field_customizations' );
+
+        // Process selected service fields accordingly, based on instance existence.
+        foreach ($selected_services[self::$export_import_id]['details'] as $selected_field) {
+            $field_post_type = $selected_field['post_type'];
+            $field_id = $selected_field['field_id'];
+
+            // If required, load corresponding post type field settings.
+            if( !isset( $existing_field_settings[$field_post_type] ) ) {
+                $existing_field_settings[$field_post_type] = DT_Posts::get_post_field_settings( $field_post_type, false );
+            }
+
+            // Ensure field does not already exist.
+            if( !in_array($field_id, array_keys($existing_field_settings[$field_post_type])) ) {
+
+                // Fetch corresponding imported field config.
+                if(isset($imported_config['payload'][self::$export_import_id][$field_post_type], $imported_config['payload'][self::$export_import_id][$field_post_type][$field_id])) {
+
+                    // Make field options provision if needed, before committing.
+                    if ( !isset( $existing_field_options[$field_post_type] ) ){
+                        $existing_field_options[$field_post_type] = [];
+                    }
+                    $existing_field_options[$field_post_type][$field_id] = $imported_config['payload'][self::$export_import_id][$field_post_type][$field_id];
+
+                    // Keep count of number of imported fields.
+                    $import_count++;
+                }
+            }
+        }
+
+        // Only update options if valid imports have taken place.
+        if( $import_count > 0 ) {
+            update_option( 'dt_field_customizations', $existing_field_options );
+        }
+
+        // Echo field import summary.
+        echo  '<p>' . $service_label . ': ' .  sprintf( __( '[%d] Field(s) Imported.', 'disciple_tools' ), $import_count ) . '</p>';
     }
 
     public function add_submenu() {

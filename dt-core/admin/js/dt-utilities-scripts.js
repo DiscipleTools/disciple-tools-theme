@@ -168,20 +168,25 @@ jQuery(document).ready(function ($) {
    */
 
   $('.dt-import-service').on('click', function (e) {
+    display_import_service_details($(e.currentTarget).data('service_id'));
+  });
 
-    // Determine service id to use for displaying corresponding details view.
-    let service_id = $(e.currentTarget).data('service_id');
+  $('.dt-import-service-checkbox').on('click', function (e) {
+    if ($(e.currentTarget).prop('checked')) {
+      display_import_service_details($(e.currentTarget).data('service_id'));
+    }
+  });
 
-    // Ensure all other detail views are first hidden.
+  function display_import_service_details(service_id) {
     $('.dt-import-service-details').fadeOut('fast', function () {
 
       // Display details corresponding to selected service id.
       let service_details = $('.dt-import-service-details[data-service_id=\'' + service_id + '\']');
       if (service_details) {
-        $(service_details).fadeIn('fast');
+        $(service_details).fadeIn('slow');
       }
     });
-  });
+  }
 
   $('#dt_import_submit_but').on('click', function (e) {
     e.preventDefault();

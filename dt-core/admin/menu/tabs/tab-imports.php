@@ -76,9 +76,17 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                 $uploaded_config = json_decode( base64_decode( sanitize_text_field( wp_unslash( $_POST['dt_import_uploaded_config'] ) ) ), true );
                 $selected_services = json_decode( sanitize_text_field( wp_unslash( $_POST['dt_import_selected_services'] ) ), true );
 
-                // Dispatch import request to respective listeners.
-                do_action( 'dt_import_payload', $selected_services, $uploaded_config );
+                // If no services have been selected, then revert back to default upload prompt.
+                if ( !empty( $selected_services ) ){
 
+                    // Dispatch import request to respective listeners.
+                    do_action( 'dt_import_payload', $selected_services, $uploaded_config );
+
+                } else{
+
+                    // Default view, prompting user to upload configuration file.
+                    $this->display_file_upload_prompt();
+                }
             } else{
 
                 // Default view, prompting user to upload configuration file.
