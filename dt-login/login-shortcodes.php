@@ -101,8 +101,9 @@ function dt_firebase_login_ui( $attr ) {
         function showLoader( show = true ) {
             const loaderElement = document.getElementById('loader')
 
-            console.log(loaderElement)
-
+            if (!loaderElement) {
+                return
+            }
             loaderElement.style.display = show ? 'block' : 'none'
         }
         const uiConfig = {
