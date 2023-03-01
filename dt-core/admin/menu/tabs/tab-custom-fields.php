@@ -294,7 +294,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $langs = dt_get_available_languages();
         $form_name = 'field_edit_form';
         ?>
-        <form method="post" name="<?php echo esc_html( $form_name ) ?>">
+        <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="<?php echo esc_html( $form_name ) ?>">
         <input type="hidden" name="field_key" value="<?php echo esc_html( $field_key )?>">
         <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
         <input type="hidden" name="field-select" value="<?php echo esc_html( $post_type . '_' . $field_key )?>">
@@ -473,12 +473,40 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $custom_fields = dt_get_option( 'dt_field_customizations' );
                     $custom_field = $custom_fields[$post_type][$field_key] ?? [];
                     if ( isset( $custom_field['customizable'] ) && $custom_field['customizable'] == 'all' ) : ?>
-                        <button type="submit" name="delete"  class="button"><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></button>
+                        <button type="button" name="delete" id='open-delete-confirm-modal' class="button"><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></button>
                     <?php endif ?>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <div id='dt-delete-field-alert' title='Delete Field'>
+            <p>Are you sure you want to delete this Field?</p>
+            <p>Note: Only user added fields can fully be deleted.</p>
+            <button class='button button-primary' id='confirm-field-delete' name='delete' type='submit'>Delete
+            </button>
+            <button class='button' type='button' id='field-close-delete'>Cancel</button>
+        </div>
+
+
+        <script type='application/javascript'>
+            jQuery(document).ready(function ($) {
+                $('#dt-delete-field-alert').dialog({autoOpen: false});
+
+                $('#open-delete-confirm-modal').click(function () {
+                    $('#dt-delete-field-alert').dialog('open');
+                });
+
+                $('#field-close-delete').click(function () {
+                    $('#dt-delete-field-alert').dialog('close');
+                });
+                $('#confirm-field-delete').click(function () {
+                    let input = $('<input>').attr('type', 'hidden').attr('name', 'delete')
+                    $('#field_edit_form').append(input).submit();
+                });
+            })
+        </script>
+
+
 
         <br>
 
