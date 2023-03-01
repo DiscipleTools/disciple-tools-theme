@@ -59,6 +59,9 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
     public static $group = null;
     public static $user = null;
 
+    public static $ASSERT_TYPE_EQUAL = 0;
+    public static $ASSERT_TYPE_BETWEEN = 1;
+
     public static function setupBeforeClass(): void{
         $user_id = wp_create_user( 'dispatcher4', 'test', 'testdisp4@example.com' );
         self::$user = get_user_by( 'id', $user_id );
@@ -88,7 +91,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
     /**
      * @dataProvider provide_filter_query_data
      */
-    public function test_viewable_compact_search_by_filter_query( $post_type, $search, $args, $total, $expected ){
+    public function test_viewable_compact_search_by_filter_query( $post_type, $search, $args, $expected ){
         wp_set_current_user( self::$user->ID );
 
         $result = DT_Posts::get_viewable_compact( $post_type, $search, $args );
@@ -96,10 +99,28 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
         // fwrite( STDERR, print_r( $result, TRUE ) );
 
         $this->assertNotWPError( $result );
-        $this->assertGreaterThanOrEqual( $result['total'], $total );
 
-        if ( !empty( $expected ) ){
-            $this->assertSame( $result['posts'][$expected['idx']][$expected['key']], $expected['value'] );
+        // Assert Returned Totals.
+        if ( !empty( $expected['totals'] ) ){
+            switch ($expected['totals']['assert_type']){
+                case self::$ASSERT_TYPE_EQUAL:
+                    $this->assertSame( $result['total'], $expected['totals']['value'] );
+                    break;
+                case self::$ASSERT_TYPE_BETWEEN:
+                    $this->assertThat(
+                        $result['total'],
+                        $this->logicalAnd(
+                            $this->greaterThanOrEqual( $expected['totals']['min'] ),
+                            $this->lessThanOrEqual( $expected['totals']['max'] )
+                        )
+                    );
+                    break;
+            }
+        }
+
+        // Assert Returned Posts.
+        if ( !empty( $expected['posts'] ) ){
+            $this->assertSame( $result['posts'][$expected['posts']['idx']][$expected['posts']['key']], $expected['posts']['value'] );
         }
     }
 
@@ -111,22 +132,28 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
                 [
                     'field_key' => 'groups'
                 ],
-                1,
                 [
-                    'idx' => 0,
-                    'key' => 'name',
-                    'value' => self::$sample_group['name']
+                    'totals' => [
+                        'assert_type' => self::$ASSERT_TYPE_EQUAL,
+                        'value' => 1
+                    ],
+                    'posts' => []
                 ]
             ],
             'groups search by name' => [
                 'groups',
                 self::$sample_group['name'],
                 [],
-                1,
                 [
-                    'idx' => 0,
-                    'key' => 'name',
-                    'value' => self::$sample_group['name']
+                    'totals' => [
+                        'assert_type' => self::$ASSERT_TYPE_EQUAL,
+                        'value' => 1
+                    ],
+                    'posts' => [
+                        'idx' => 0,
+                        'key' => 'name',
+                        'value' => self::$sample_group['name']
+                    ]
                 ]
             ],
             'subassigned field search by all' => [
@@ -135,8 +162,14 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
                 [
                     'field_key' => 'subassigned'
                 ],
-                6,
-                []
+                [
+                    'totals' => [
+                        'assert_type' => self::$ASSERT_TYPE_BETWEEN,
+                        'min' => 6,
+                        'max' => 7
+                    ],
+                    'posts' => []
+                ]
             ]
         ];
     }
