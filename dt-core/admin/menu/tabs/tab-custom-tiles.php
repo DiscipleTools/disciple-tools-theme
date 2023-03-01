@@ -544,7 +544,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         $options = ( $field['type'] == 'tags' ) ? DT_Posts::get_multi_select_options( $post_type, $field_id ) : $field['default'];
                         foreach ( $options ?? [] as $option_id => $option ) {
                             $html_val = $field_id.'___'. ( ( $field['type'] == 'tags' ) ? $option : $option_id );
-                            $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'];
+                            $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'] ?? $option_id;
                             ?>
                                 <option value="<?php echo esc_html( $html_val )?>"><?php echo esc_html( $html_label )?></option>
                             <?php
