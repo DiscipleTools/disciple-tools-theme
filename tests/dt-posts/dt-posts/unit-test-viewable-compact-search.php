@@ -59,8 +59,8 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
     public static $group = null;
     public static $user = null;
 
-    public static $ASSERT_TYPE_EQUAL = 0;
-    public static $ASSERT_TYPE_BETWEEN = 1;
+    public static $assert_type_equal = 0;
+    public static $assert_type_between = 1;
 
     public static function setupBeforeClass(): void{
         $user_id = wp_create_user( 'dispatcher4', 'test', 'testdisp4@example.com' );
@@ -102,11 +102,11 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
 
         // Assert Returned Totals.
         if ( !empty( $expected['totals'] ) ){
-            switch ($expected['totals']['assert_type']){
-                case self::$ASSERT_TYPE_EQUAL:
+            switch ( $expected['totals']['assert_type'] ){
+                case self::$assert_type_equal:
                     $this->assertSame( $result['total'], $expected['totals']['value'] );
                     break;
-                case self::$ASSERT_TYPE_BETWEEN:
+                case self::$assert_type_between:
                     $this->assertThat(
                         $result['total'],
                         $this->logicalAnd(
@@ -134,7 +134,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
                 ],
                 [
                     'totals' => [
-                        'assert_type' => self::$ASSERT_TYPE_EQUAL,
+                        'assert_type' => self::$assert_type_equal,
                         'value' => 1
                     ],
                     'posts' => []
@@ -146,7 +146,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
                 [],
                 [
                     'totals' => [
-                        'assert_type' => self::$ASSERT_TYPE_EQUAL,
+                        'assert_type' => self::$assert_type_equal,
                         'value' => 1
                     ],
                     'posts' => [
@@ -164,7 +164,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
                 ],
                 [
                     'totals' => [
-                        'assert_type' => self::$ASSERT_TYPE_BETWEEN,
+                        'assert_type' => self::$assert_type_between,
                         'min' => 6,
                         'max' => 7
                     ],
