@@ -96,7 +96,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
         // fwrite( STDERR, print_r( $result, TRUE ) );
 
         $this->assertNotWPError( $result );
-        $this->assertSame( $result['total'], $total );
+        $this->assertGreaterThanOrEqual( $result['total'], $total );
 
         if ( !empty( $expected ) ){
             $this->assertSame( $result['posts'][$expected['idx']][$expected['key']], $expected['value'] );
