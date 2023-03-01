@@ -217,7 +217,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         });
         if ( $fields ){
             foreach ( $fields as $field_key => $field_value ){
-                if ( ( isset( $field_value['customizable'] ) && $field_value['customizable'] !== false ) || ( !isset( $field_value['customizable'] ) && empty( $field_value['hidden'] ) ) ) {
+                if ( ( isset( $field_value['customizable'] ) && $field_value['customizable'] !== false ) || ( !isset( $field_value['customizable'] ) ) ) {
                     $select_options[ $field_key ] = $field_value;
                 }
             }
@@ -361,14 +361,17 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <th><?php esc_html_e( 'Private Field', 'disciple_tools' ) ?></th>
                     <td>
                         <?php $private_field_disabled = isset( $defaults[$field_key] ) || $field['type'] === 'connection' ?>
-                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? 'checked' : '' );?> <?php echo esc_html( ( $private_field_disabled ) ? 'disabled' : '' ); ?>>
+                        <label>
+                            <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? 'checked' : '' );?> <?php echo esc_html( ( $private_field_disabled ) ? 'disabled' : '' ); ?>>
+                            Values for this field are only able to be seen by the user who entered them.
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <th><?php esc_html_e( 'Tile', 'disciple_tools' ) ?></th>
                     <td>
                         <select name="tile_select">
-                            <option value="no_tile"><?php esc_html_e( 'No tile / hidden', 'disciple_tools' ) ?></option>
+                            <option value="no_tile"><?php esc_html_e( 'No tile', 'disciple_tools' ) ?></option>
                             <?php foreach ( $tile_options as $tile_key => $tile_option ) :
                                 $select = isset( $field['tile'] ) && $field['tile'] === $tile_key;
                                 ?>
@@ -377,6 +380,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 </option>
                             <?php endforeach; ?>
                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php esc_html_e( 'Hidden', 'disciple_tools' ) ?></th>
+                    <td>
+                        <label>
+                            <input name="field_hidden" id="field_hidden" type="checkbox" <?php echo esc_html( ( isset( $field['hidden'] ) && $field['hidden'] ) ? 'checked' : '' );?> >
+                            Hides the field in the list page and list filters and hides the field in the record details pages.
+                        </label>
                     </td>
                 </tr>
                 <tr>
@@ -857,6 +869,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $custom_field['private'] = true;
             } else if ( !isset( $post_submission['field_private'] ) || !$post_submission['field_private'] ) {
                 $custom_field['private'] = false;
+            }
+            //field hidden
+            if ( isset( $post_submission['field_hidden'] ) && $post_submission['field_hidden'] ) {
+                $custom_field['hidden'] = true;
+            } else if ( !isset( $post_submission['field_hidden'] ) || !$post_submission['field_hidden'] ) {
+                $custom_field['hidden'] = false;
             }
             //field description
             if ( isset( $post_submission['field_description'] ) && $post_submission['field_description'] != ( $custom_field['description'] ?? '' ) ){
