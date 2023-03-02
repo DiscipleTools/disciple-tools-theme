@@ -393,10 +393,13 @@ dt_please_log_in();
                             <?php endif; ?>
                                 <?php
                                 if ( $post_type == 'contacts' ) {?>
+                                    <?php if ( isset( $field_options['subassigned'] ) ) : ?>
                                     <div class="cell small-12 medium-4">
-                                    <?php $field_options['subassigned']['custom_display'] = false ?>
-                                    <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_' ); ?>
+                                        <?php $field_options['subassigned']['custom_display'] = false ?>
+                                        <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_' ); ?>
                                     </div>
+                                    <?php endif; ?>
+                                    <?php if ( isset( $field_options['overall_status'] ) ) : ?>
                                     <div class="cell small-12 medium-4">
                                         <div class="section-subheader">
                                             <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
@@ -417,6 +420,8 @@ dt_please_log_in();
                                             <?php } ?>
                                         </select>
                                     </div>
+                                    <?php endif; ?>
+                                    <?php if ( isset( $field_options['reason_paused'] ) ) : ?>
                                     <div class="cell small-12 medium-4" style="display:none">
 
                                         <div class="section-subheader">
@@ -440,6 +445,7 @@ dt_please_log_in();
                                             ?>
                                         </select>
                                     </div>
+                                    <?php endif; ?>
 
                                 <?php } elseif ( $post_type == 'groups' ) {?>
                                     <div class="cell small-12 medium-4">

@@ -438,7 +438,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
         $form_name = 'tile_edit_form';
         ?>
-        <form method="post" name="<?php echo esc_html( $form_name ) ?>" onkeydown="return event.key != 'Enter';">
+        <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="<?php echo esc_html( $form_name ) ?>" onkeydown="return event.key != 'Enter';">
         <input type="hidden" name="tile_key" value="<?php echo esc_html( $tile_key )?>">
         <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
         <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
@@ -544,7 +544,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         $options = ( $field['type'] == 'tags' ) ? DT_Posts::get_multi_select_options( $post_type, $field_id ) : $field['default'];
                         foreach ( $options ?? [] as $option_id => $option ) {
                             $html_val = $field_id.'___'. ( ( $field['type'] == 'tags' ) ? $option : $option_id );
-                            $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'];
+                            $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'] ?? $option_id;
                             ?>
                                 <option value="<?php echo esc_html( $html_val )?>"><?php echo esc_html( $html_label )?></option>
                             <?php
@@ -602,8 +602,36 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <br>
         </div>
 
-        <button class="button" type="submit">Save Settings</button>
+        <div>
+            <button class="button" name="save" type="submit">Save Settings</button>
+            <button type="button" id="open-delete-confirm-modal" class="button button-primary">Delete Customizations</button>
+        </div>
+        </form>
+        <div id='dt-delete-tile-alert' title='Delete Tile'>
+            <p>Are you sure you want to delete this Tile?</p>
+            <p>Note: Only user added tiles can fully be deleted.</p>
+            <button class='button button-primary' id='confirm-tile-delete' name='delete' type="submit">Delete</button>
+            <button class='button' type="button" id='tile-close-delete'>Cancel</button>
+        </div>
 
+
+        <script type="application/javascript">
+            jQuery(document).ready(function ($){
+                $('#dt-delete-tile-alert').dialog({ autoOpen: false });
+
+                $('#open-delete-confirm-modal').click(function(){
+                    $('#dt-delete-tile-alert').dialog('open');
+                });
+
+                $('#tile-close-delete').click(function(){
+                    $('#dt-delete-tile-alert').dialog('close');
+                });
+                $('#confirm-tile-delete').click(function(){
+                    let input = $("<input>").attr("type", "hidden").attr("name", "delete")
+                    $('#tile_edit_form').append(input).submit();
+                });
+            })
+        </script>
     <?php }
 
 
@@ -612,6 +640,13 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         $post_type = $post_submission['post_type'];
         $tile_options = dt_get_option( 'dt_custom_tiles' );
         $tile_key = $post_submission['tile_key'];
+
+        if ( isset( $post_submission['delete'] ) ){
+            unset( $tile_options[$post_type][$tile_key] );
+            update_option( 'dt_custom_tiles', $tile_options );
+            return;
+        }
+
         if ( !isset( $tile_options[$post_type][$tile_key] ) ){
             $tile_options[$post_type][$tile_key] = [];
         }
