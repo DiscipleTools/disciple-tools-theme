@@ -1370,6 +1370,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             'user_select',
             'multi_select',
             'tags',
+            'link',
             'location',
             'location_meta',
             'key_select',
@@ -1496,6 +1497,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $field_key = null;
                     $field_type = null;
                 }
+            } elseif ( $field_type === 'link' ) {
+                foreach ( DT_Posts::get_field_settings_by_type( $post_type, $field_type ) ?? [] as $link_field ) {
+                    if ( strpos( $field_key, $link_field ) !== false ) {
+                        $field_key = $link_field;
+                    }
+                }
             }
 
             /**
@@ -1536,6 +1543,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         break;
                     case 'tags':
                     case 'date':
+                    case 'link':
                     case 'location':
                     case 'multi_select':
                     case 'location_meta':
@@ -1546,6 +1554,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                         if ( $field_type === 'communication_channel' ) {
                             $meta = [
                                 'meta_key' => $activity->meta_key
+                            ];
+                        }elseif ( $field_type === 'link' ) {
+                            $meta = [
+                                'meta_id' => $activity->meta_id
                             ];
                         }
 
@@ -1635,6 +1647,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     }
                     break;
                 case 'tags':
+                case 'link':
                 case 'location':
                 case 'multi_select':
                 case 'location_meta':
@@ -1656,6 +1669,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                                         $id = $option['grid_meta_id'];
 
                                     } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                        $id = $option['value'];
+
+                                    } elseif ( $reverted['field_type'] == 'link' ) {
                                         $id = $option['value'];
 
                                     } else {
@@ -1706,6 +1722,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                                         'key' => $revert_obj['meta']['meta_key'] ?? null,
                                         'value' => $revert_obj['value']
                                     ];
+                                } elseif ( $reverted['field_type'] == 'link' ) {
+                                    $values[] = [
+                                        'meta_id' => $revert_obj['meta']['meta_id'] ?? null,
+                                        'value' => $revert_obj['value']
+                                    ];
                                 } else {
                                     $values[] = [
                                         'value' => $revert_obj['value']
@@ -1732,6 +1753,14 @@ class DT_Posts extends Disciple_Tools_Posts {
                                     } else {
                                         $id = '';
                                     }
+                                } elseif ( $reverted['field_type'] == 'link' ) {
+
+                                    // Force a match if key is found.
+                                    if ( $option['meta_id'] === ( $revert_obj['meta']['meta_id'] ?? '' ) ){
+                                        $id = $revert_key;
+                                    } else {
+                                        $id = '';
+                                    }
                                 } else {
                                     $id = $option;
                                 }
@@ -1745,6 +1774,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                                     } elseif ( $reverted['field_type'] == 'communication_channel' ) {
                                         $key = 'key';
                                         $id = $revert_obj['meta']['meta_key'] ?? $revert_key;
+                                    } elseif ( $reverted['field_type'] == 'link' ) {
+                                        $key = 'meta_id';
+                                        $id = $revert_obj['meta']['meta_id'] ?? $revert_key;
                                     } else {
                                         $key = 'value';
                                     }
