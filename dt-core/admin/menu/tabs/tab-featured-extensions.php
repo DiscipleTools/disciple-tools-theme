@@ -48,7 +48,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     'community' => __( 'Community', 'disciple_tools' ),
                     'plugin_by' => __( 'By %s', 'disciple_tools' ),
                     'magic_links' => __( 'Magic Links', 'disciple_tools' ),
-                    'laboratory' => __('Laboratory', 'disciple_tools' ),
+                    'laboratory' => __( 'Laboratory', 'disciple_tools' ),
                 ],
             )
         );
@@ -140,7 +140,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 margin-bottom: 12px;
             }
             #no-typeahead-results {
-                width:100%;
+                width: 100%;
                 text-align: center;
                 display: none;
             }
@@ -250,9 +250,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         <?php
     }
 
-    //checks for a partial string in an array
     public function partial_array_search( $array, $find ) {
-        //check for null value
         if ( $find == null || !$array || sizeof( $array ) == 0 ) {
             return -1;
         }
@@ -274,7 +272,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 }
             }
         }
-        //false
         return -1;
     }
 
