@@ -1498,7 +1498,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $field_type = null;
                 }
             } elseif ( $field_type === 'link' ) {
-                foreach ( DT_Posts::get_field_settings_by_type( $post_type, $field_type ) ?? [] as $link_field ) {
+                foreach ( self::get_field_settings_by_type( $post_type, $field_type ) ?? [] as $link_field ) {
                     if ( strpos( $field_key, $link_field ) !== false ) {
                         $field_key = $link_field;
                     }
