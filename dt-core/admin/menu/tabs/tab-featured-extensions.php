@@ -30,16 +30,11 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         wp_localize_script(
             'dt-extensions', 'plugins', array(
                 'all_plugins' => self::get_dt_plugins(),
-                'is_multisite' => is_multisite(),
                 'translations' => [
                     'install' => __( 'Install', 'disciple_tools' ),
                     'delete' => __( 'Delete', 'disciple_tools' ),
                     'activate' => __( 'Activate', 'disciple_tools' ),
                     'deactivate' => __( 'Deactivate', 'disciple_tools' ),
-                    'multisite_install' => __( 'Multisite Install', 'disciple_tools' ),
-                    'multisite_delete' => __( 'Multisite Delete', 'disciple_tools' ),
-                    'multisite_activate' => __( 'Multisite Activate', 'disciple_tools' ),
-                    'multisite_deactivate' => __( 'Multisite Dectivate', 'disciple_tools' ),
                     'featured' => __( 'Featured', 'disciple_tools' ),
                     'all_plugins' => __( 'All Plugins', 'disciple_tools' ),
                     'integrations' => __( 'Integrations', 'disciple_tools' ),
@@ -52,6 +47,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     'proof_of_concept' => __( 'Proof Of Concept', 'disciple_tools' ),
                     'community' => __( 'Community', 'disciple_tools' ),
                     'plugin_by' => __( 'By %s', 'disciple_tools' ),
+                    'magic_links' => __( 'Magic Links', 'disciple_tools' ),
+                    'laboratory' => __('Laboratory', 'disciple_tools' ),
                 ],
             )
         );
