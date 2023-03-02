@@ -320,6 +320,12 @@ class Jwt_Auth_Public {
 		 * if the format is not valid return an error.
 		 */
 		if ( ! $token || count( explode('.', $token) ) != 3 ) {
+
+            // Site link uses bearer token. So don't throw an error.
+            if ( count( explode('.', $token) ) === 1 ){
+                return false;
+            }
+
 			return new WP_Error(
 				'jwt_auth_bad_auth_header',
 				'Authorization header malformed.',
