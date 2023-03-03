@@ -164,8 +164,47 @@ jQuery(document).ready(function ($) {
   }
 
   /**
+   * DT EXPORTS
+   */
+
+  $('#dt_export_service_select_all_checkbox').on('click', function (e) {
+    $('.dt-export-service-checkbox').prop('checked', $(e.currentTarget).prop('checked'));
+  });
+
+  /**
+   * DT EXPORTS
+   */
+
+
+  /**
    * DT IMPORTS
    */
+
+  // Adjust panel views accordingly.
+  if (($('#dt_import_form').length > 0) && ($('.dt-import-service-details').length > 0)) {
+    if (($('#post-body-content').length > 0) && ($('#postbox-container-1').length > 0)) {
+      let main = $('#post-body-content');
+      let side = $('#postbox-container-1');
+
+      // Proceed with tweaking panel sizes and positions.
+      $(main).css({
+        'width': '75%',
+        'min-width': '',
+        'float': 'left'
+      });
+
+      $(side).css({
+        'width': '450px',
+        'margin-right': '-300px',
+        'float': 'right'
+      });
+    }
+  }
+
+  // Listen out for specific events.
+  $('#dt_import_service_select_all_checkbox').on('click', function (e) {
+    $('.dt-import-service-checkbox').prop('checked', $(e.currentTarget).prop('checked'));
+  });
 
   $('.dt-import-service').on('click', function (e) {
     display_import_service_details($(e.currentTarget).data('service_id'));

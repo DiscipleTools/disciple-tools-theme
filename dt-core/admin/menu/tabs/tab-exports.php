@@ -171,10 +171,20 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
         $this->box( 'top', 'Available Export Services', [ 'col_span' => 4 ] );
 
         ?>
+        <p>
+            Select services below, to be exported into json configuration file.
+        </p>
         <form method="POST">
             <input type="hidden" name="dt_export_nonce" id="dt_export_nonce"
                    value="<?php echo esc_attr( wp_create_nonce( 'dt_export_nonce' ) ) ?>"/>
             <table class="widefat striped">
+                <thead>
+                    <tr>
+                        <th style="text-align: right; padding-right: 14px;">
+                            <input type="checkbox" id="dt_export_service_select_all_checkbox"/>
+                        </th>
+                        <th></th>
+                    </tr>
                 <tbody>
                 <?php
                 $export_services = apply_filters( 'dt_export_services', [] );
@@ -183,7 +193,7 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                         ?>
                         <tr>
                             <td style="text-align: right;">
-                                <input type="checkbox" name="services[<?php echo esc_attr( $service['id'] ) ?>]"/>
+                                <input type="checkbox" class="dt-export-service-checkbox" name="services[<?php echo esc_attr( $service['id'] ) ?>]"/>
                             </td>
                             <td>
                                 <?php echo esc_attr( $service['label'] ) ?><br>

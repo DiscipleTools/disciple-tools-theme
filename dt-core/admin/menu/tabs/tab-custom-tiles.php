@@ -87,8 +87,18 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         ob_start();
         ?>
         <p><?php echo esc_attr( __( 'D.T Custom Tile Settings', 'disciple_tools' ) ) ?></p>
-
+        <p>
+            Tiles not already installed on the system, will be enabled and available for selection.
+        </p>
         <table class="widefat striped" id="<?php echo esc_attr( self::$export_import_id ) ?>_details_table">
+            <thead>
+                <tr>
+                    <th style="text-align: right; padding-right: 14px;">
+                        <input type="checkbox" id="dt_import_tile_settings_service_select_all_checkbox"/>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
             <tbody>
             <?php
 
@@ -119,7 +129,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         ?>
                         <tr>
                             <td style="text-align: right;">
-                                <input type="checkbox" class="details-table-checkbox" data-post_type="<?php echo esc_attr( $post_type ) ?>" data-tile_id="<?php echo esc_attr( $tile_id ) ?>" <?php echo $already_has_tile ? 'disabled' : '' ?> />
+                                <input type="checkbox" class="dt-import-tile-settings-details-table-checkbox" data-post_type="<?php echo esc_attr( $post_type ) ?>" data-tile_id="<?php echo esc_attr( $tile_id ) ?>" <?php echo $already_has_tile ? 'disabled' : '' ?> />
                             </td>
                             <td>
                                 <span><?php echo esc_attr( $tile['label'] ?? $tile_id ) ?></span>
@@ -132,7 +142,15 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             ?>
             </tbody>
         </table>
-
+        <script>
+            jQuery('#dt_import_tile_settings_service_select_all_checkbox').on('click', function (e) {
+                jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox').each(function (idx, checkbox) {
+                    if( !jQuery(checkbox).attr('disabled') ) {
+                        jQuery('.dt-import-tile-settings-details-table-checkbox').prop('checked', jQuery(e.currentTarget).prop('checked'));
+                    }
+                });
+            });
+        </script>
         <?php
 
         // Retrieve all buffered html output.
@@ -143,7 +161,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         ?>
 
         let tiles = [];
-        jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.details-table-checkbox:checked').each(function (idx, checkbox) {
+        jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox:checked').each(function (idx, checkbox) {
             let post_type = jQuery(checkbox).data('post_type');
             let tile_id = jQuery(checkbox).data('tile_id');
             if(post_type && tile_id) {

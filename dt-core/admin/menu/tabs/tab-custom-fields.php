@@ -90,8 +90,18 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         ob_start();
         ?>
         <p><?php echo esc_attr( __( 'D.T Custom Field Settings', 'disciple_tools' ) ) ?></p>
-
+        <p>
+            Fields not already installed on the system, will be enabled and available for selection.
+        </p>
         <table class="widefat striped" id="<?php echo esc_attr( self::$export_import_id ) ?>_details_table">
+            <thead>
+                <tr>
+                    <th style="text-align: right; padding-right: 14px;">
+                        <input type="checkbox" id="dt_import_field_settings_service_select_all_checkbox"/>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
             <tbody>
             <?php
 
@@ -123,7 +133,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         ?>
                         <tr>
                             <td style="text-align: right;">
-                                <input type="checkbox" class="details-table-checkbox"
+                                <input type="checkbox" class="dt-import-field-settings-details-table-checkbox"
                                        data-post_type="<?php echo esc_attr( $post_type ) ?>"
                                        data-field_id="<?php echo esc_attr( $field_id ) ?>" <?php echo $already_has_field ? 'disabled' : '' ?> />
                             </td>
@@ -138,6 +148,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             ?>
             </tbody>
         </table>
+        <script>
+            jQuery('#dt_import_field_settings_service_select_all_checkbox').on('click', function (e) {
+                jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-field-settings-details-table-checkbox').each(function (idx, checkbox) {
+                    if( !jQuery(checkbox).attr('disabled') ) {
+                        jQuery('.dt-import-field-settings-details-table-checkbox').prop('checked', jQuery(e.currentTarget).prop('checked'));
+                    }
+                });
+            });
+        </script>
         <?php
 
         // Retrieve all buffered html output.
@@ -148,7 +167,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         ?>
 
         let fields = [];
-        jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.details-table-checkbox:checked').each(function (idx, checkbox) {
+        jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-field-settings-details-table-checkbox:checked').each(function (idx, checkbox) {
             let post_type = jQuery(checkbox).data('post_type');
             let field_id = jQuery(checkbox).data('field_id');
             if(post_type && field_id) {

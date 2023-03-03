@@ -115,6 +115,9 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
     private function display_file_upload_prompt(){
         $this->box( 'top', 'Upload D.T Import Configuration File', [ 'col_span' => 4 ] );
         ?>
+        <p>
+            Select a previously exported json configuration file.
+        </p>
         <form method="POST" enctype="multipart/form-data">
             <input type="hidden" name="dt_import_file_upload_prompt_nonce" id="dt_import_file_upload_prompt_nonce"
                    value="<?php echo esc_attr( wp_create_nonce( 'dt_import_file_upload_prompt_nonce' ) ) ?>"/>
@@ -144,6 +147,9 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
         $this->box( 'top', 'Available Import Services', [ 'col_span' => 4 ] );
 
         ?>
+        <p>
+            Select services below, to be imported into current D.T instance. Click on relevant service title to display additional selection details.
+        </p>
         <form id="dt_import_form" method="POST">
 
             <!-- Capture uploaded import configuration, for further downstream processing. -->
@@ -158,6 +164,14 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
             <input type="hidden" name="dt_import_selected_services" id="dt_import_selected_services"/>
 
             <table class="widefat striped" id="dt_import_table">
+                <thead>
+                    <tr>
+                        <th style="text-align: right; padding-right: 14px;">
+                            <input type="checkbox" id="dt_import_service_select_all_checkbox"/>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
                 <tbody>
                 <?php
                 $import_services = apply_filters( 'dt_import_services', [] );
