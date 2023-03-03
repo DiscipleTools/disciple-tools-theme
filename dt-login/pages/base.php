@@ -47,9 +47,7 @@ class DT_Login_Page_Base
                 'map_key' => DT_Mapbox_API::get_key(),
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
-                'translations' => [
-                    'add' => __( 'Add Magic', 'disciple_tools' ),
-                ],
+                'translations' => [],
             ]) ?>][0]
 
             jQuery(document).ready(function(){

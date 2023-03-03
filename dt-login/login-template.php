@@ -86,7 +86,7 @@ switch ( $request_action ) {
                     <div class="cell callout medium-6 large-4">
                         <div class="grid-x grid-padding-x grid-padding-y">
                             <div class="cell center">
-                                <h1 ><?php esc_html_e( 'Get new password', 'disciple_tools' ) ?></h1>
+                                <h1 ><?php esc_html_e( 'Get New Password', 'disciple_tools' ) ?></h1>
                             </div>
                             <?php if ( ! empty( $form_errors->errors ) ) : ?>
                                 <div class="cell alert callout">
@@ -168,7 +168,7 @@ switch ( $request_action ) {
         $form_errors = new WP_Error();
 
         if ( isset( $_POST['pass1'] ) && $_POST['pass1'] != $_POST['pass2'] ) {
-            $form_errors->add( 'password_reset_mismatch', __( 'The passwords do not match.', 'disciple_tools' ) );
+            $form_errors->add( 'password_reset_mismatch', __( 'Passwords do not match. Please, try again.', 'disciple_tools' ) );
         }
 
         /**
@@ -459,7 +459,7 @@ switch ( $request_action ) {
 
     case 'confirmation' :
         if ( ! isset( $_GET['request_id'] ) ) {
-            wp_die( esc_html__( 'Invalid request.', 'disciple_tools' ) );
+            wp_die( 'Invalid request.' );
         }
 
         $request_id = (int) $_GET['request_id'];
@@ -468,7 +468,7 @@ switch ( $request_action ) {
             $key    = sanitize_text_field( wp_unslash( $_GET['confirm_key'] ) );
             $result = wp_validate_user_request_key( $request_id, $key );
         } else {
-            $result = new WP_Error( 'invalid_key', __( 'Invalid key', 'disciple_tools' ) );
+            $result = new WP_Error( 'invalid_key', 'Invalid key' );
         }
 
         if ( is_wp_error( $result ) ) {
