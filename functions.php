@@ -187,6 +187,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             require_once( 'dt-core/configuration/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
             require_once( 'dt-core/configuration/restrict-site-access.php' ); // protect against DDOS attacks.
             require_once( 'dt-core/configuration/dt-configuration.php' ); //settings and configuration to alter default WP
+            require_once( 'dt-core/dt-route.php' ); // utility class wrapping registering rest routes
             require_once( 'dt-reports/magic-url-class.php' );
             require_once( 'dt-reports/magic-url-base.php' );
             require_once( 'dt-reports/magic-url-endpoints.php' );
@@ -362,6 +363,27 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             require_once( 'dt-notifications/notifications-queue.php' );
             require_once( 'dt-notifications/notifications-scheduler.php' );
             $this->notifications_scheduler = new Disciple_Tools_Notifications_Scheduler( Disciple_Tools_Notifications::instance() );
+
+            /**
+             * dt-login
+             */
+            require_once( 'dt-login/login-methods.php' );
+            require_once( 'dt-login/login-firebase-token.php' );
+            require_once( 'dt-login/login-user-manager.php' );
+            require_once( 'dt-login/login-fields.php' );
+            require_once( 'dt-login/login-shortcodes.php' );
+            require_once( 'dt-login/login-endpoints.php' );
+
+            require_once( 'dt-login/pages/base.php' );
+            require_once( 'dt-login/login-functions.php' );
+            require_once( 'dt-login/login-email.php' );
+
+            // pages
+            require_once( 'dt-login/login-page.php' );
+            require_once( 'dt-login/pages/privacy-policy.php' ); // {site}/privacy-policy
+            require_once( 'dt-login/pages/terms-of-service.php' ); // {site}/terms-of-service
+            //require_once( 'dt-login/pages/registration-holding.php' ); // {site}/reghold
+
 
             /**
              * Logging

@@ -105,7 +105,7 @@ class Jwt_Auth_Public {
 			'password' => $password,
 		] );
 
-	return self::generate_token( $request );
+		return self::generate_token( $request );
 	}
 
 	/**
@@ -229,11 +229,7 @@ class Jwt_Auth_Public {
 		/**
 		 * We still need to get the Authorization header and check for the token.
 		 */
-		$auth_header = isset( $_SERVER['HTTP_AUTHORIZATION'] )  ? sanitize_text_field( $_SERVER['HTTP_AUTHORIZATION'] ) : false;
-		/* Double check for different auth header string (server dependent) */
-		if ( ! $auth_header ) {
-			$auth_header = isset( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) ? sanitize_text_field( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) : false;
-		}
+		$auth_header = $this->get_auth_header();
 
 		if ( ! $auth_header ) {
 			return $user;
@@ -439,5 +435,19 @@ class Jwt_Auth_Public {
 		}
 
 		return $algorithm;
+	}
+
+	/**
+	 * Get the Auth header from the $_SERVER
+	 * @return mixed
+	 */
+ 	public static function get_auth_header() {
+		$auth_header = isset( $_SERVER['HTTP_AUTHORIZATION'] )  ? sanitize_text_field( $_SERVER['HTTP_AUTHORIZATION'] ) : false;
+		/* Double check for different auth header string (server dependent) */
+		if ( ! $auth_header ) {
+			$auth_header = isset( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) ? sanitize_text_field( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) : false;
+		}
+
+		return $auth_header;
 	}
 }
