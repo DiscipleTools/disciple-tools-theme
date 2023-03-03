@@ -138,7 +138,7 @@ class Disciple_Tools_Core_Endpoints {
         // If logging for a post, validate user has permission
         if ( isset( $params['object_type'] ) && !empty( $params['object_type'] ) ) {
             $type = $params['object_type'];
-            $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
+            $post_types = DT_Posts::get_post_types();
             if ( array_search( $type, $post_types ) !== false ) {
                 $post_id = isset( $params['object_id'] ) ? $params['object_id'] : null;
 
