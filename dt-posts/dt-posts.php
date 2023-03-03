@@ -22,7 +22,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     );
 
     public static function get_post_types(){
-        return apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
+        return array_unique( apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] ) );
     }
 
     /**
