@@ -46,7 +46,7 @@ class DT_Login_Email {
         }
 
         /* if ( ! isset( $_POST['g-recaptcha-response'] ) ) {
-            $error->add( __METHOD__, __( 'Missing captcha response. How did you do that?', 'disciple-tools' ) );
+            $error->add( __METHOD__, __( 'Missing captcha response. How did you do that?', 'disciple_tools' ) );
             return $error;
         }
         $args = array(
@@ -59,13 +59,13 @@ class DT_Login_Email {
         $post_result = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', $args );
         $post_body = json_decode( wp_remote_retrieve_body( $post_result ), true );
         if ( ! isset( $post_body['success'] ) || false === $post_body['success'] ) {
-            $error->add( __METHOD__, __( 'Captcha failure. Try again, if you are human.', 'disciple-tools' ) );
+            $error->add( __METHOD__, __( 'Captcha failure. Try again, if you are human.', 'disciple_tools' ) );
             return $error;
         }
          */
         // validate elements
         if ( empty( $_POST['email'] ) || empty( $_POST['password'] ) ) {
-            $error->add( __METHOD__, __( 'Missing email or password.', 'disciple-tools' ) );
+            $error->add( __METHOD__, __( 'Missing email or password.', 'disciple_tools' ) );
             return $error;
         }
 
@@ -90,7 +90,7 @@ class DT_Login_Email {
         }
 
         if ( email_exists( $email ) ) {
-            $error->add( __METHOD__, __( 'Sorry. This email is already registered. Try re-setting your password', 'disciple-tools' ) );
+            $error->add( __METHOD__, __( 'Sorry. This email is already registered. Try re-setting your password', 'disciple_tools' ) );
             return $error;
         }
 
@@ -109,7 +109,7 @@ class DT_Login_Email {
         $user_id = wp_insert_user( $userdata );
 
         if ( is_wp_error( $user_id ) ) {
-            $error->add( __METHOD__, __( 'Something went wrong. Sorry. Could you try again?', 'disciple-tools' ) );
+            $error->add( __METHOD__, __( 'Something went wrong. Sorry. Could you try again?', 'disciple_tools' ) );
             return $error;
         }
 
@@ -129,7 +129,7 @@ class DT_Login_Email {
             wp_safe_redirect( dt_login_url( 'redirect' ) );
             exit;
         } else {
-            $error->add( __METHOD__, __( 'No new user found.', 'disciple-tools' ) );
+            $error->add( __METHOD__, __( 'No new user found.', 'disciple_tools' ) );
             return $error;
         }
     }
@@ -138,29 +138,29 @@ class DT_Login_Email {
         $errors = new WP_Error();
 
         if ( ! ( isset( $_POST['retrieve_password_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['retrieve_password_nonce'] ) ), 'retrieve_password' ) ) ) {
-            $errors->add( __METHOD__, __( 'Missing form verification. Refresh and try again.', 'disciple-tools' ) );
+            $errors->add( __METHOD__, __( 'Missing form verification. Refresh and try again.', 'disciple_tools' ) );
             return $errors;
         }
 
         if ( isset( $_POST['user_login'] ) ) {
             $user_login = trim( sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) );
         } else {
-            $errors->add( __METHOD__, __( 'Missing username or email address.', 'disciple-tools' ) );
+            $errors->add( __METHOD__, __( 'Missing username or email address.', 'disciple_tools' ) );
             return $errors;
         }
 
 
         if ( empty( $user_login ) ) {
-            $errors->add( __METHOD__, __( 'ERROR: Enter a username or email address.', 'disciple-tools' ) );
+            $errors->add( __METHOD__, __( 'ERROR: Enter a username or email address.', 'disciple_tools' ) );
         } elseif ( strpos( $user_login, '@' ) ) {
             $user_data = get_user_by( 'email', $user_login );
             if ( empty( $user_data ) ) {
-                $errors->add( __METHOD__, __( 'ERROR: There is no user registered with that email address.', 'disciple-tools' ) );
+                $errors->add( __METHOD__, __( 'ERROR: There is no user registered with that email address.', 'disciple_tools' ) );
             }
         } else {
             $user_data = get_user_by( 'login', $user_login );
             if ( empty( $user_data ) ) {
-                $errors->add( __METHOD__, __( 'ERROR: There is no user registered with that username.', 'disciple-tools' ) );
+                $errors->add( __METHOD__, __( 'ERROR: There is no user registered with that username.', 'disciple_tools' ) );
             }
         }
 
@@ -180,7 +180,7 @@ class DT_Login_Email {
         }
 
         if ( ! $user_data ) {
-            $errors->add( 'invalidcombo', __( 'ERROR: Invalid username or email.', 'disciple-tools' ) );
+            $errors->add( 'invalidcombo', __( 'ERROR: Invalid username or email.', 'disciple_tools' ) );
             return $errors;
         }
 
@@ -235,7 +235,7 @@ class DT_Login_Email {
         $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 
         if ( $message && ! wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
-            wp_die( esc_html__( 'The email could not be sent.' ) . "<br />\n" . esc_html__( 'Possible reason: your host may have disabled the mail() function.', 'disciple-tools' ) );
+            wp_die( esc_html__( 'The email could not be sent.' ) . "<br />\n" . esc_html__( 'Possible reason: your host may have disabled the mail() function.', 'disciple_tools' ) );
         }
 
         return true;
@@ -281,7 +281,7 @@ class DT_Login_Email {
         $allow = apply_filters( 'allow_password_reset', $allow, $user->ID );
 
         if ( ! $allow ) {
-            return new WP_Error( 'no_password_reset', __( 'Password reset is not allowed for this user', 'disciple-tools' ) );
+            return new WP_Error( 'no_password_reset', __( 'Password reset is not allowed for this user', 'disciple_tools' ) );
         } elseif ( is_wp_error( $allow ) ) {
             return $allow;
         }
@@ -308,7 +308,7 @@ class DT_Login_Email {
         $hashed = time() . ':' . $wp_hasher->HashPassword( $key );
         $key_saved = $wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user->user_login ) );
         if ( false === $key_saved ) {
-            return new WP_Error( 'no_password_key_update', __( 'Could not save password reset key to database.', 'disciple-tools' ) );
+            return new WP_Error( 'no_password_key_update', __( 'Could not save password reset key to database.', 'disciple_tools' ) );
         }
 
         return $key;
