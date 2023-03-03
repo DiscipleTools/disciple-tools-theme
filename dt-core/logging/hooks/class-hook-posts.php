@@ -236,6 +236,17 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             $meta_value = 'value_deleted';
         }
 
+        // Ensure the best efforts are made to avoid blank field types.
+        if ( empty( $field_type ) ) {
+
+            // Handle any potential link field types.
+            foreach ( DT_Posts::get_field_settings_by_type( $parent_post['post_type'], 'link' ) ?? [] as $link_field ) {
+                if ( strpos( $meta_key, $link_field ) !== false ) {
+                    $field_type = $fields[$link_field]['type'] ?? '';
+                }
+            }
+        }
+
         dt_activity_insert( // insert activity record
             [
                 'action'         => 'field_update',

@@ -48,6 +48,37 @@ class Disciple_Tools_Core_Endpoints {
             ]
         );
 
+        register_rest_route(
+            $this->namespace, '/plugin-install', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_install' ],
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/plugin-delete', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_delete' ],
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/plugin-activate', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_activate' ],
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/plugin-deactivate', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_deactivate' ],
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
+            ]
+        );
     }
 
 
@@ -127,5 +158,76 @@ class Disciple_Tools_Core_Endpoints {
         return [
             'logged' => true
         ];
+    }
+
+    public function plugin_install( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        $params = $request->get_params();
+        $download_url = sanitize_text_field( wp_unslash( $params['download_url'] ) );
+        set_time_limit( 0 );
+        $folder_name = explode( '/', $download_url );
+        $folder_name = get_home_path() . 'wp-content/plugins/' . $folder_name[4] . '.zip';
+        if ( $folder_name != '' ) {
+            //download the zip file to plugins
+            file_put_contents( $folder_name, file_get_contents( $download_url ) );
+            // get the absolute path to $file
+            $folder_name = realpath( $folder_name );
+            //unzip
+            WP_Filesystem();
+            $unzip = unzip_file( $folder_name, realpath( get_home_path() . 'wp-content/plugins/' ) );
+            //remove the file
+            unlink( $folder_name );
+        }
+        return true;
+    }
+
+    public function plugin_permission_check() {
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            return new WP_Error( 'forbidden', 'You are not allowed to do that.', array( 'status' => 403 ) );
+        }
+        return true;
+    }
+
+    public function plugin_delete( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+        $params = $request->get_params();
+        $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
+        $installed_plugins = get_plugins();
+        foreach ( $installed_plugins as $index => $plugin ) {
+            if ( $plugin['TextDomain'] === $plugin_slug ) {
+                delete_plugins( [ $index ] );
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function plugin_activate( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+        $params = $request->get_params();
+        $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
+        $installed_plugins = get_plugins();
+        foreach ( $installed_plugins as $index => $plugin ) {
+            if ( $plugin['TextDomain'] === $plugin_slug ) {
+                activate_plugin( $index );
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function plugin_deactivate( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+        $params = $request->get_params();
+        $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
+        $installed_plugins = get_plugins();
+        foreach ( $installed_plugins as $index => $plugin ) {
+            if ( $plugin['TextDomain'] === $plugin_slug ) {
+                deactivate_plugins( $index );
+                return true;
+            }
+        }
+        return false;
     }
 }
