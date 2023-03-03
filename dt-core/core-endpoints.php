@@ -48,7 +48,6 @@ class Disciple_Tools_Core_Endpoints {
             ]
         );
 
-        //todo: add permission checks
         register_rest_route(
             $this->namespace, '/plugin-install', [
                 'methods'  => 'POST',
