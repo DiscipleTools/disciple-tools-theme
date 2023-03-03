@@ -187,7 +187,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 foreach ( $all_plugin_categories as $plugin_category ) : ?>
                     <li class="plugin-install">
                         <a href="javascript:void(0);" data-category="<?php echo esc_attr( str_replace( ' ', '-', $plugin_category ) ); ?>">
-                            <?php echo esc_html__( ucwords( $plugin_category ), 'disciple_tools' ); ?>
+                            <?php echo esc_html( ucwords( $plugin_category ) ); ?>
                         </a>
                     </li>
                 <?php endforeach; ?>
