@@ -25,7 +25,7 @@ global $post;
                     </tr>
                     <tr style="border: none;">
                         <td style="vertical-align: top;">
-                            <span><?php echo esc_html( _x( 'Show All', 'Show All', 'disciple_tools' ) ) ?></span>
+                            <span><?php esc_html_e( 'show all', 'disciple_tools' ) ?></span>
                         </td>
                         <td>
                             <div class="switch tiny">
@@ -33,7 +33,7 @@ global $post;
                                        name="record_history_all_activities_switch" checked>
                                 <label class="switch-paddle" for="record_history_all_activities_switch">
                         <span
-                            class="show-for-sr"><?php echo esc_html( _x( 'Show All', 'Show All', 'disciple_tools' ) ) ?></span>
+                            class="show-for-sr"><?php esc_html_e( 'show all', 'disciple_tools' ) ?></span>
                                 </label>
                             </div>
                         </td>
