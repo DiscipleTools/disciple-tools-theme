@@ -228,6 +228,21 @@ function dt_site_scripts() {
             if ( DT_Mapbox_API::get_key() ) {
                 DT_Mapbox_API::load_mapbox_search_widget();
             }
+
+            dt_theme_enqueue_script( 'dt-record-history', 'dt-assets/js/record-history.js', [
+                'jquery',
+                'lodash',
+                'moment'
+            ], true );
+            wp_localize_script( 'dt-record-history', 'record_history_settings', [
+                'post'          => is_singular( $post_types ) ? DT_Posts::get_post( get_post_type(), get_the_ID() ) : [],
+                'post_settings' => is_singular( $post_types ) ? DT_Posts::get_post_settings( get_post_type() ) : [],
+                'site_url'      => get_site_url( null, '/' ),
+                'translations'  => [
+                    'revert_but_tooltip'  => __( 'Revert Record Back To This Point', 'disciple_tools' ),
+                    'revert_confirm_text' => __( 'Are you sure you want to revert record state back to %s?', 'disciple_tools' )
+                ]
+            ] );
         }
     }
 
@@ -354,20 +369,7 @@ function dt_site_scripts() {
         'fetch_more_text' => __( 'Load More', 'disciple_tools' ) // Support translations
     ) );
 
-    dt_theme_enqueue_script( 'dt-record-history', 'dt-assets/js/record-history.js', [
-        'jquery',
-        'lodash',
-        'moment'
-    ], true );
-    wp_localize_script( 'dt-record-history', 'record_history_settings', [
-        'post'          => is_singular( $post_types ) ? DT_Posts::get_post( get_post_type(), get_the_ID() ) : [],
-        'post_settings' => is_singular( $post_types ) ? DT_Posts::get_post_settings( get_post_type() ) : [],
-        'site_url'      => get_site_url( null, '/' ),
-        'translations'  => [
-            'revert_but_tooltip'  => __( 'Revert Record Back To This Point', 'disciple_tools' ),
-            'revert_confirm_text' => __( 'Are you sure you want to revert record state back to %s?', 'disciple_tools' )
-        ]
-    ] );
+
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );
 
