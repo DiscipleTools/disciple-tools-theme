@@ -248,7 +248,7 @@ switch ( $request_action ) {
                                             <label><?php esc_html_e( 'Password Required', 'disciple_tools' ) ?> <strong>*</strong>
                                                 <input type="password" id="pass1" name="pass1" placeholder="yeti4preZ" aria-errormessage="password-error-1" required >
                                                 <span class="form-error" id="password-error-1">
-                                                    <?php esc_html_e( 'Password required', 'disciple_tools' ) ?>
+                                                    <?php esc_html_e( 'Password Required', 'disciple_tools' ) ?>
                                                 </span>
                                             </label>
                                             <meter max="4" id="password-strength-meter" value="0"></meter>
@@ -388,7 +388,7 @@ switch ( $request_action ) {
                                                                 <label><?php esc_html_e( 'Password Required', 'disciple_tools' ) ?> <strong>*</strong>
                                                                     <input type="password" id="password" name="password" placeholder="yeti4preZ" aria-errormessage="password-error-1" required >
                                                                     <span class="form-error" id="password-error-1">
-                                                                        <?php esc_html_e( 'Password required', 'disciple_tools' ) ?>
+                                                                        <?php esc_html_e( 'Password Required', 'disciple_tools' ) ?>
                                                                       </span>
                                                                 </label>
                                                                 <meter max="4" id="password-strength-meter" value="0"></meter>
