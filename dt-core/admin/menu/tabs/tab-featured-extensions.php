@@ -25,33 +25,35 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     public function admin_enqueue_scripts() {
-        dt_theme_enqueue_script( 'dt-extensions', 'dt-core/admin/js/dt-extensions.js', [], true );
-        dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
-        wp_localize_script(
-            'dt-extensions', 'plugins', array(
-                'all_plugins' => self::get_dt_plugins(),
-                'translations' => [
-                    'install' => __( 'Install', 'disciple_tools' ),
-                    'delete' => __( 'Delete', 'disciple_tools' ),
-                    'activate' => __( 'Activate', 'disciple_tools' ),
-                    'deactivate' => __( 'Deactivate', 'disciple_tools' ),
-                    'featured' => __( 'Featured', 'disciple_tools' ),
-                    'all_plugins' => __( 'All Plugins', 'disciple_tools' ),
-                    'integrations' => __( 'Integrations', 'disciple_tools' ),
-                    'metrics' => __( 'Metrics', 'disciple_tools' ),
-                    'utilities' => __( 'Utilities', 'disciple_tools' ),
-                    'multisite' => __( 'Multisite', 'disciple_tools' ),
-                    'expansions' => __( 'Expansions', 'disciple_tools' ),
-                    'developer_tools' => __( 'Developer Tools', 'disciple_tools' ),
-                    'beta' => __( 'Beta', 'disciple_tools' ),
-                    'proof_of_concept' => __( 'Proof Of Concept', 'disciple_tools' ),
-                    'community' => __( 'Community', 'disciple_tools' ),
-                    'plugin_by' => __( 'By %s', 'disciple_tools' ),
-                    'magic_links' => __( 'Magic Links', 'disciple_tools' ),
-                    'laboratory' => __( 'Laboratory', 'disciple_tools' ),
-                ],
-            )
-        );
+        if ( isset( $_GET['page'] ) && $_GET['page'] === 'dt_extensions' ){
+            dt_theme_enqueue_script( 'dt-extensions', 'dt-core/admin/js/dt-extensions.js', [], true );
+            dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+            wp_localize_script(
+                'dt-extensions', 'plugins', array(
+                    'all_plugins' => self::get_dt_plugins(),
+                    'translations' => [
+                        'install' => __( 'Install', 'disciple_tools' ),
+                        'delete' => __( 'Delete', 'disciple_tools' ),
+                        'activate' => __( 'Activate', 'disciple_tools' ),
+                        'deactivate' => __( 'Deactivate', 'disciple_tools' ),
+                        'featured' => __( 'Featured', 'disciple_tools' ),
+                        'all_plugins' => __( 'All Plugins', 'disciple_tools' ),
+                        'integrations' => __( 'Integrations', 'disciple_tools' ),
+                        'metrics' => __( 'Metrics', 'disciple_tools' ),
+                        'utilities' => __( 'Utilities', 'disciple_tools' ),
+                        'multisite' => __( 'Multisite', 'disciple_tools' ),
+                        'expansions' => __( 'Expansions', 'disciple_tools' ),
+                        'developer_tools' => __( 'Developer Tools', 'disciple_tools' ),
+                        'beta' => __( 'Beta', 'disciple_tools' ),
+                        'proof_of_concept' => __( 'Proof Of Concept', 'disciple_tools' ),
+                        'community' => __( 'Community', 'disciple_tools' ),
+                        'plugin_by' => __( 'By %s', 'disciple_tools' ),
+                        'magic_links' => __( 'Magic Links', 'disciple_tools' ),
+                        'laboratory' => __( 'Laboratory', 'disciple_tools' ),
+                    ],
+                )
+            );
+        }
     }
 
     public function content( $tab ) {
