@@ -287,7 +287,7 @@ class Disciple_Tools_Posts_Endpoints {
         register_rest_route(
             $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/revert_activity_history', [
                 [
-                    'methods'  => 'GET',
+                    'methods'  => 'POST',
                     'callback' => [ $this, 'revert_activity_history' ],
                     'args' => [
                         'post_type' => $arg_schemas['post_type'],
@@ -578,8 +578,8 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function revert_activity_history( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
-        $get_params = $request->get_query_params();
-        return DT_Posts::revert_post_activity_history( $url_params['post_type'], $url_params['id'], $get_params );
+        $data = $request->get_json_params() ?? $request->get_body_params();
+        return DT_Posts::revert_post_activity_history( $url_params['post_type'], $url_params['id'], $data );
     }
 
     public function get_single_activity( WP_REST_Request $request ){

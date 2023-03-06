@@ -44,6 +44,9 @@ jQuery(document).ready(function ($) {
         filtered_dates[hist_time.format(date_format_pretty_short)] = hist_time;
       });
 
+      // Clear down any previous entries, apart from the first option.
+      record_history_select.find('option').not(':first').remove();
+
       // Populate history select widget.
       $.each(filtered_dates, function (idx, filtered_date) {
         record_history_select.append(`<option value="${filtered_date.unix()}">${idx}</option>`);

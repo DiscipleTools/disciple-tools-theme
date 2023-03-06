@@ -1486,7 +1486,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 // Determine actual field key.
                 $determined_field_key = null;
                 foreach ( self::get_field_settings_by_type( $post_type, $field_type ) ?? [] as $potential_field_key ){
-                    if ( strpos( $field_key, $potential_field_key ) ){
+                    if ( strpos( $field_key, $potential_field_key ) !== false ){
                         $determined_field_key = $potential_field_key;
                     }
                 }
@@ -1825,8 +1825,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                     break;
                 case 'user_select':
                     $user_select_value = $reverted['values'][0];
-                    if ( !empty( $user_select_value ) && ( $user_select_value != 'user-' ) ){
+                    if ( $user_select_value != 'user-' ){
                         $post_updates[$field_key] = $user_select_value;
+                    } else {
+                        $post_updates[$field_key] = '';
                     }
                     break;
                 case 'text':
@@ -1853,11 +1855,15 @@ class DT_Posts extends Disciple_Tools_Posts {
         $current_user = wp_get_current_user();
         $current_user->add_cap( 'activity_revert' );
         $current_user->add_cap( 'dt_all_access_contacts' );
+        $current_user->add_cap( 'update_any_contacts' );
         $current_user->add_cap( 'dt_all_access_groups' );
-        $current_user->add_cap( 'access_peoplegroups' );
+        $current_user->add_cap( 'update_any_groups' );
+        $current_user->add_cap( 'dt_all_access_peoplegroups' );
+        $current_user->add_cap( 'update_any_peoplegroups' );
 
         if ( !in_array( $post_type, [ 'contacts', 'groups', 'peoplegroups' ] ) ){
             $current_user->add_cap( 'dt_all_access_' . $post_type );
+            $current_user->add_cap( 'update_any_' . $post_type );
         }
 
         $current_user->display_name = __( 'Revert Bot', 'disciple_tools' );
