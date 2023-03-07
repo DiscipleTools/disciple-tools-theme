@@ -446,7 +446,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function get_sortable_class( $tile_key ) {
         $sortable_class = 'sortable-tile';
-        if ( in_array( $tile_key, ['status', 'details', 'no-tile-hidden'] ) ) {
+        if ( in_array( $tile_key, [ 'status', 'details', 'no-tile-hidden' ] ) ) {
             $sortable_class = 'unsortable-tile';
         }
         return $sortable_class;
