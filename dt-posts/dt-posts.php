@@ -1852,21 +1852,21 @@ class DT_Posts extends Disciple_Tools_Posts {
         // Ensure revert activity carried out by Revert Bot, with sufficient permissions.
         $current_user_id = get_current_user_id();
         wp_set_current_user( 0 );
-        $current_user = wp_get_current_user();
-        $current_user->add_cap( 'activity_revert' );
-        $current_user->add_cap( 'dt_all_access_contacts' );
-        $current_user->add_cap( 'update_any_contacts' );
-        $current_user->add_cap( 'dt_all_access_groups' );
-        $current_user->add_cap( 'update_any_groups' );
-        $current_user->add_cap( 'dt_all_access_peoplegroups' );
-        $current_user->add_cap( 'update_any_peoplegroups' );
+        $revert_bot = wp_get_current_user();
+        $revert_bot->add_cap( 'activity_revert' );
+        $revert_bot->add_cap( 'dt_all_access_contacts' );
+        $revert_bot->add_cap( 'update_any_contacts' );
+        $revert_bot->add_cap( 'dt_all_access_groups' );
+        $revert_bot->add_cap( 'update_any_groups' );
+        $revert_bot->add_cap( 'dt_all_access_peoplegroups' );
+        $revert_bot->add_cap( 'update_any_peoplegroups' );
 
         if ( !in_array( $post_type, [ 'contacts', 'groups', 'peoplegroups' ] ) ){
-            $current_user->add_cap( 'dt_all_access_' . $post_type );
-            $current_user->add_cap( 'update_any_' . $post_type );
+            $revert_bot->add_cap( 'dt_all_access_' . $post_type );
+            $revert_bot->add_cap( 'update_any_' . $post_type );
         }
 
-        $current_user->display_name = __( 'Revert Bot', 'disciple_tools' );
+        $revert_bot->display_name = __( 'Revert Bot', 'disciple_tools' );
 
         // Update post based on reverted values.
         $updated_post = self::update_post( $post_type, $post_id, $post_updates );

@@ -61,7 +61,10 @@ jQuery(document).ready(function ($) {
     let record_history_select = $('#record_history_calendar');
 
     if (record_history_select.val()) {
-      handle_selected_activity_date(record_history_select.val(), handle_activities_display);
+      let ts_start = record_history_select.val();
+      let ts_end = moment.unix(record_history_select.val()).add(24, 'hours').unix();
+
+      handle_selected_activity_date(ts_start, ts_end, handle_activities_display);
       reset_show_all_activities_switch();
     }
   }
@@ -101,11 +104,12 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  function handle_selected_activity_date(ts_start, callback) {
+  function handle_selected_activity_date(ts_start, ts_end, callback) {
 
     // Retrieve activities from specified starting point to current date.
     handle_activity_history_refresh({
       ts_start: ts_start,
+      ts_end: ts_end,
       result_order: 'DESC',
       extra_meta: true
 
