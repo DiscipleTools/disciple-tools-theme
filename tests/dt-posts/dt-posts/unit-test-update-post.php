@@ -27,6 +27,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
+        self::$sample_contact['assigned_to'] = $user_id;
 
         self::$contact = DT_Posts::create_post( 'contacts', self::$sample_contact, true, false );
     }
@@ -34,7 +35,9 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     public function test_update_on_custom_fields(){
         $user_id = wp_create_user( 'dispatcher3', 'test', 'test3@example.com' );
         wp_set_current_user( $user_id );
-        $update_values = dt_test_get_sample_record_fields();
+        $current_user = wp_get_current_user();
+        $current_user->set_role( 'dispatcher' );
+        $update_values = dt_test_get_sample_record_fields( $user_id );
         $result = DT_Posts::update_post( 'contacts', self::$contact['ID'], $update_values, true, false );
         $this->assertNotWPError( $result );
 
@@ -139,7 +142,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'multiplier' );
-        $create_values = dt_test_get_sample_record_fields();
+        $create_values = dt_test_get_sample_record_fields( self::$sample_contact['assigned_to'] );
         $result = DT_Posts::create_post( 'contacts', $create_values, true, true );
         $second_id = wp_create_user( 'user_private_2', 'test', 'user_private_2@example.com' );
         wp_set_current_user( $second_id );

@@ -653,6 +653,9 @@ select.color-select {
     }
 
 }
+.hidden-grid-item {
+    display: none
+}
 
 //don't have typeaheads cover other elements
 .typeahead__query {

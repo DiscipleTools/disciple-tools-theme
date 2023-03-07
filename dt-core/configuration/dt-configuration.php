@@ -5,7 +5,7 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Hooks and configurations that customize wordpress for D.T
  */
-
+nocache_headers();
 add_action( 'init', 'dt_set_permalink_structure' );
 add_action( 'update_option_permalink_structure', 'dt_permalink_structure_changed_callback' );
 add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recipients', 10, 2 );
@@ -116,3 +116,22 @@ add_action( 'admin_init', function () {
         exit;
     }
 } );
+
+/**
+ * Log all successfully sent emails
+ */
+function dt_log_sent_emails( $mail_data ){
+    $dt_email_logs_enabled = get_option( 'dt_email_logs_enabled' );
+    if ( isset( $dt_email_logs_enabled ) && $dt_email_logs_enabled ){
+        dt_activity_insert( [
+            'action' => 'mail_sent',
+            'object_name' => $mail_data['subject'] ?? '',
+            'meta_value' => !empty( $mail_data['to'] ) ? json_encode( $mail_data['to'] ) : [],
+            'object_note' => ( strlen( $mail_data['message'] ) > 100 ) ? substr( $mail_data['message'], 0, 100 ) . '...' : $mail_data['message']
+        ] );
+    }
+
+    return $mail_data;
+}
+
+add_filter( 'wp_mail', 'dt_log_sent_emails', 999, 1 );

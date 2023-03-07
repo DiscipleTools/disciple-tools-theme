@@ -49,6 +49,39 @@ class Disciple_Tools_Core_Endpoints {
         );
 
         register_rest_route(
+            $this->namespace, '/plugin-install', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_install' ],
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/plugin-delete', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_delete' ],
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/plugin-activate', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_activate' ],
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/plugin-deactivate', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'plugin_deactivate' ],
+                'permission_callback' => [ $this, 'plugin_permission_check' ],
+            ]
+        );
+    }
+
+        register_rest_route(
             $this->public_namespace, '/get-post-fields', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'get_post_fields' ],
@@ -185,7 +218,7 @@ class Disciple_Tools_Core_Endpoints {
         // If logging for a post, validate user has permission
         if ( isset( $params['object_type'] ) && !empty( $params['object_type'] ) ) {
             $type = $params['object_type'];
-            $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
+            $post_types = DT_Posts::get_post_types();
             if ( array_search( $type, $post_types ) !== false ) {
                 $post_id = isset( $params['object_id'] ) ? $params['object_id'] : null;
 
@@ -413,6 +446,46 @@ class Disciple_Tools_Core_Endpoints {
                     break;
             }
             return $translations;
+
+    public function plugin_install( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        $params = $request->get_params();
+        $download_url = sanitize_text_field( wp_unslash( $params['download_url'] ) );
+        set_time_limit( 0 );
+        $folder_name = explode( '/', $download_url );
+        $folder_name = get_home_path() . 'wp-content/plugins/' . $folder_name[4] . '.zip';
+        if ( $folder_name != '' ) {
+            //download the zip file to plugins
+            file_put_contents( $folder_name, file_get_contents( $download_url ) );
+            // get the absolute path to $file
+            $folder_name = realpath( $folder_name );
+            //unzip
+            WP_Filesystem();
+            $unzip = unzip_file( $folder_name, realpath( get_home_path() . 'wp-content/plugins/' ) );
+            //remove the file
+            unlink( $folder_name );
+        }
+        return true;
+    }
+
+    public function plugin_permission_check() {
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            return new WP_Error( 'forbidden', 'You are not allowed to do that.', array( 'status' => 403 ) );
+        }
+        return true;
+    }
+
+    public function plugin_delete( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+        $params = $request->get_params();
+        $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
+        $installed_plugins = get_plugins();
+        foreach ( $installed_plugins as $index => $plugin ) {
+            if ( $plugin['TextDomain'] === $plugin_slug ) {
+                delete_plugins( [ $index ] );
+                return true;
+            }
         }
         return false;
     }
@@ -621,6 +694,17 @@ class Disciple_Tools_Core_Endpoints {
             $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['description'] = $new_field_option_description;
             update_option( 'dt_field_customizations', $custom_field_options );
             return $custom_field_options[$post_type][$field_key]['default'][$field_option_key];
+
+    public function plugin_activate( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+        $params = $request->get_params();
+        $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
+        $installed_plugins = get_plugins();
+        foreach ( $installed_plugins as $index => $plugin ) {
+            if ( $plugin['TextDomain'] === $plugin_slug ) {
+                activate_plugin( $index );
+                return true;
+            }
         }
         return false;
     }
@@ -711,5 +795,18 @@ class Disciple_Tools_Core_Endpoints {
             return new WP_Error( 'forbidden', 'You are not allowed to do that.', array( 'status' => 403 ) );
         }
         return true;
+
+    public function plugin_deactivate( WP_REST_Request $request ) {
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+        $params = $request->get_params();
+        $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
+        $installed_plugins = get_plugins();
+        foreach ( $installed_plugins as $index => $plugin ) {
+            if ( $plugin['TextDomain'] === $plugin_slug ) {
+                deactivate_plugins( $index );
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -31,7 +31,7 @@ function dt_post_bulk_list_section_apps( $post_type ){
     $dt_magic_apps = DT_Magic_URL::list_bulk_send( $post_type );
     if ( !empty( $dt_magic_apps ) && ( $post_type === 'contacts' || apply_filters( 'dt_bulk_email_connection_field', null, $post_type ) ) ) : ?>
         <div id="bulk_send_app_picker" class="list_action_section">
-            <button class="close-button list-action-close-button" data-close="bulk_send_app_picker" aria-label="Close modal" type="button">
+            <button class="close-button list-action-close-button" data-close="bulk_send_app_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                 <span aria-hidden="true">×</span>
             </button>
             <p style="font-weight:bold"><?php

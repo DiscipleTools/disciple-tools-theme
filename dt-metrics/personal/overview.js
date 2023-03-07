@@ -3,11 +3,16 @@ jQuery(function() {
     my_stats()
   }
 
-  function my_stats() {
+  async function my_stats() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    let sourceData = dtMetricsPersonal.data
-    let translations = dtMetricsPersonal.data.translations
+
+    let sourceData = await fetch(
+      dtMetricsPersonal.rest_url + '/data',
+      { headers: { 'X-WP-Nonce': window.dtMetricsPersonal.nonce } }
+    ).then( response => response.json() )
+
+    let translations = dtMetricsPersonal.translations
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 

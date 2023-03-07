@@ -9,7 +9,7 @@ if ( !isset( $args['token'], $args['app-id'] ) ){
 $api_token = $args['token'];
 $app_id = $args['app-id'];
 
-$updates_newer_than = time() - 3600 * 24 * 30; // last month
+$updates_newer_than = time() - 3600 * 24 * 30 * 3; // last month
 $min_lang_percentage = 70;
 
 /**
