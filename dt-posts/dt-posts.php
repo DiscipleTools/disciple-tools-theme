@@ -1689,6 +1689,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                                 }
                                 if ( is_array( $fields[$key][$custom_option_key] ) ){
                                     $fields[$key][$custom_option_key] = dt_array_merge_recursive_distinct( $fields[$key][$custom_option_key], $custom_option_value );
+                                } else if ( !empty( $custom_option_value ) ){
+                                    $fields[$key][$custom_option_key] = $custom_option_value;
                                 }
                             }
                         }
