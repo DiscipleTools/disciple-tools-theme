@@ -82,7 +82,7 @@ class DT_Login_Fields {
             update_network_option( get_current_blog_id(), self::OPTION_NAME, $site_vars );
         } else {
             $site_vars = self::dehydrate_fields( $vars );
-            update_network_option( get_current_blog_id(), self::OPTION_NAME, $vars );
+            update_network_option( get_current_blog_id(), self::OPTION_NAME, $site_vars );
         }
     }
 
