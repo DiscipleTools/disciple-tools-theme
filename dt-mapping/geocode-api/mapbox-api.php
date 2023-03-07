@@ -279,7 +279,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         'post' => $post_record ?? false,
                         'map_key' => self::get_key(),
                         'mirror_source' => dt_get_location_grid_mirror( true ),
-                        'google_map_key' => ( Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
+                        'google_map_key' => ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
                         'spinner_url' => get_stylesheet_directory_uri() . '/spinner.svg',
                         'theme_uri' => get_stylesheet_directory_uri(),
                         'translations' => array(
@@ -295,7 +295,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
 
                 // load Google Geocoder if key is present.
-                if ( Disciple_Tools_Google_Geocode_API::get_key() ){
+                if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ){
                     Disciple_Tools_Google_Geocode_API::load_google_geocoding_scripts();
                 }
             }
@@ -314,7 +314,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         'user_id' => get_current_user_id(),
                         'user_location' => Disciple_Tools_Users::get_user_location( get_current_user_id() ),
                         'map_key' => self::get_key(),
-                        'google_map_key' => ( Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
+                        'google_map_key' => ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
                         'spinner_url' => get_stylesheet_directory_uri() . '/spinner.svg',
                         'theme_uri' => get_stylesheet_directory_uri(),
                         'translations' => array(
@@ -345,6 +345,9 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 .mapbox-autocomplete {
                     /*the container must be positioned relative:*/
                     position: relative;
+                }
+                .mapbox-autocomplete.active{
+                    margin-bottom: 250px;
                 }
                 .mapbox-autocomplete-items {
                     position: absolute;
@@ -441,6 +444,10 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 }
             }
             ?>
+            <h1>Better Mapping and Locations Field</h1>
+            <p>Add a mapbox key for better and more detailed maps and better results when selecting a location on a record.</p>
+            <p>See the docs for more information and examples: <a href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/" target="_blank">Geolocation Docs</a></p>
+
             <form method="post">
                 <table class="widefat striped">
                     <thead>
@@ -475,7 +482,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                     </li>
                                     <li>
                                         Register for a new account (<a href="https://account.mapbox.com/auth/signup/">MapBox.com</a>)<br>
-                                        <em>(email required, no credit card required)</em>
+                                        <em>(email required. A credit card might be required, though you will likely not go over the free monthly quota.)</em>
                                     </li>
                                     <li>
                                         Once registered, go to your account home page. (<a href="https://account.mapbox.com/">Account Page</a>)<br>

@@ -22,7 +22,7 @@ class Disciple_Tools_People_Groups_Base {
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
 
         //list
-        add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
+        add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 150, 2 );
         add_filter( 'dt_filter_access_permissions', [ $this, 'dt_filter_access_permissions' ], 20, 2 );
 
         //Hooks
@@ -73,8 +73,18 @@ class Disciple_Tools_People_Groups_Base {
     }
 
     public function dt_nav_filter( $navigation_array ) {
+        $is_hidden = ! get_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab );
+
         if ( isset( $navigation_array['main'], $navigation_array['main'][ $this->post_type ] ) ) {
-            $navigation_array['main'][ $this->post_type ]['hidden'] = ! get_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab );
+            $navigation_array['main'][ $this->post_type ]['hidden'] = $is_hidden;
+        }
+
+        if ( isset( $navigation_array['admin'], $navigation_array['admin']['add_new'] ) ) {
+            foreach ( $navigation_array['admin']['add_new']['submenu'] ?? [] as $submenu_idx => $submenu ) {
+                if ( strpos( $submenu['link'], '/' . $this->post_type . '/' ) > 0 ) {
+                    $navigation_array['admin']['add_new']['submenu'][ $submenu_idx ]['hidden'] = $is_hidden;
+                }
+            }
         }
 
         return $navigation_array;
@@ -337,23 +347,19 @@ class Disciple_Tools_People_Groups_Base {
             if ( ! is_wp_error( $listed_posts ) ) {
                 $all_count = $listed_posts['total'] ?? count( $listed_posts['posts'] );
             }
-            $filters['tabs'][] = [
-                'key'   => 'all',
-                'label' => _x( 'All', 'List Filters', 'disciple_tools' ),
-                'count' => $all_count,
-                'order' => 10
-            ];
 
-            // add assigned to me filters
-            $filters['filters'][] = [
-                'ID'    => 'all',
-                'tab'   => 'all',
-                'name'  => _x( 'All', 'List Filters', 'disciple_tools' ),
-                'query' => [
-                    'sort' => '-post_date'
-                ],
-                'count' => $all_count
-            ];
+            //add count to default all tab
+            foreach ( $filters['tabs'] as &$filter_tab ){
+                if ( $filter_tab['key'] === 'all' ){
+                    $filter_tab['count'] = $all_count;
+                }
+            }
+            //add count to default all filter
+            foreach ( $filters['filters'] as &$filter_item ){
+                if ( $filter_item['ID'] === 'all' ){
+                    $filter_item['count'] = $all_count;
+                }
+            }
         }
 
         return $filters;

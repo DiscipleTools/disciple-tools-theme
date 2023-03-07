@@ -162,7 +162,7 @@
                 <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
             </div>
         </div>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
+        <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -177,23 +177,23 @@
         <ul>
             <li>
                 <img alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" />
-                <strong><?php esc_html_e( 'Open the link', 'disciple-tools' ) ?></strong>
+                <strong><?php esc_html_e( 'Open the link', 'disciple_tools' ) ?></strong>
             </li>
             <li>
                 <img alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
-                <strong><?php esc_html_e( 'Copy the link to the clipboard', 'disciple-tools' ) ?></strong>
+                <strong><?php esc_html_e( 'Copy the link to the clipboard', 'disciple_tools' ) ?></strong>
             </li>
             <li>
                 <img alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" />
-                <strong><?php esc_html_e( 'Send the link via email.', 'disciple-tools' ) ?></strong>
+                <strong><?php esc_html_e( 'Send the link via email.', 'disciple_tools' ) ?></strong>
             </li>
             <li>
                 <img alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" />
-                <strong><?php esc_html_e( 'Scan the QR code to open the magic link on a mobile device.', 'disciple-tools' ) ?></strong>
+                <strong><?php esc_html_e( 'Scan the QR code to open the magic link on a mobile device.', 'disciple_tools' ) ?></strong>
             </li>
             <li>
                 <img alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" />
-                <strong><?php esc_html_e( 'Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created.', 'disciple-tools' ) ?></strong>
+                <strong><?php esc_html_e( 'Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created.', 'disciple_tools' ) ?></strong>
             </li>
         </ul>
     </div>
@@ -212,7 +212,7 @@
                 <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
             </div>
         </div>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
+        <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>

@@ -175,7 +175,7 @@ class DT_Posts_Hooks {
                             $fields_array = ( $field_type == 'communication_channel' ) ? $fields[ $search_field ] : $fields[ $search_field ]['values'];
                             foreach ( $fields_array ?? [] as $value ) {
                                 if ( isset( $value['value'] ) ) {
-                                    $values[] = $value['value'];
+                                    $values[] = '^' . $value['value'];
                                 }
                             }
                             if ( ! empty( $values ) ) {
@@ -191,9 +191,9 @@ class DT_Posts_Hooks {
                 $status_key = isset( $post_settings['status_field']['status_key'] ) ? $post_settings['status_field']['status_key'] : null;
                 $search_result = DT_Posts::search_viewable_post( $post_type, [
                     'sort'             => !empty( $status_key ) ? $status_key : '-post_date',
-                    'fields'           => [ $search_values ],
+                    'fields'           => [ $search_values, [ 'type' => [ '-personal', '-placeholder' ] ] ],
                     'fields_to_search' => array_keys( $search_values )
-                ], $check_permissions );
+                ], false );
 
                 // Package identified duplicates.
                 if ( ! empty( $search_result ) && ! is_wp_error( $search_result ) && isset( $search_result['posts'] ) ) {

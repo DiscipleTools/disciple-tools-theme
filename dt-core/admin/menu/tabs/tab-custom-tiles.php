@@ -438,7 +438,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
         $form_name = 'tile_edit_form';
         ?>
-        <form method="post" name="<?php echo esc_html( $form_name ) ?>" onkeydown="return event.key != 'Enter';">
+        <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="<?php echo esc_html( $form_name ) ?>" onkeydown="return event.key != 'Enter';">
         <input type="hidden" name="tile_key" value="<?php echo esc_html( $tile_key )?>">
         <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
         <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
@@ -447,17 +447,11 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         <input type="hidden" name="tile_edit_nonce" id="tile_edit_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_edit' ) ) ?>" />
 
         <h4><?php esc_html_e( 'Tile Settings', 'disciple_tools' ) ?></h4>
-        <?php if ( isset( $tile['hidden'] ) && $tile['hidden'] === true ): ?>
-            <p><?php esc_html_e( 'Note: This tile is hidden and will not show on the record page', 'disciple_tools' ) ?></p>
-        <?php endif; ?>
-
-
         <table class="widefat">
             <thead>
             <tr>
                 <td><?php esc_html_e( 'Key', 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( 'Label', 'disciple_tools' ) ?></td>
-                <td><?php esc_html_e( 'Hide', 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( 'Translation', 'disciple_tools' ) ?></td>
                 <td></td>
             </tr>
@@ -469,13 +463,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <input name="tile_label" type="text" value="<?php echo esc_html( $tile['label'] ?? '' ) ?>"/>
-                    </td>
-                    <td>
-                        <?php if ( isset( $tile['hidden'] ) && $tile['hidden'] === true ): ?>
-                            <button type="submit" name="restore_tile" class="button"><?php esc_html_e( 'Restore tile', 'disciple_tools' ) ?></button>
-                        <?php else : ?>
-                            <button type="submit" name="hide_tile" class="button"><?php esc_html_e( 'Hide tile on page', 'disciple_tools' ) ?></button>
-                        <?php endif; ?>
                     </td>
                     <td>
                         <?php $langs = dt_get_available_languages(); ?>
@@ -510,14 +497,141 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         </table>
         <br>
 
-        <label><strong>Tile Description</strong>
+        <label><h4>Tile Description</h4>
             <input style="width: 100%" type="text" name="tile_description" value="<?php echo esc_html( $tile['description'] ?? '' )?>">
         </label>
-        <button class="button" type="submit">Save Description</button>
+        <br><br>
 
-        <br>
+        <?php include 'tab-custom-tiles-display-help-dialog.php'; ?>
+        <h4>
+            Tile Display
+            <a class="help-button" style="cursor: pointer;" data-dialog_id="custom_tile_display_help_dialog">
+                <i class="mdi mdi-help-circle help-icon"></i>
+            </a>
+        </h4>
+        <?php if ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'hidden' ): ?>
+            <p><?php esc_html_e( 'Note: This tile is hidden and will not show on the record page', 'disciple_tools' ) ?></p>
+        <?php endif; ?>
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <td><?php esc_html_e( 'Hidden', 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( 'Visible', 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( 'Custom', 'disciple_tools' ) ?></td>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="radio" name="tile_display_option" value="hidden" <?php echo ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'hidden' ) ? 'checked' : ''; ?>></td>
+                    <td><input type="radio" name="tile_display_option" value="visible" <?php echo ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'visible' ) || !isset( $tile['display_conditions']['visibility'] ) ? 'checked' : ''; ?>></td>
+                    <td><input type="radio" name="tile_display_option" value="custom" <?php echo ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'custom' ) ? 'checked' : ''; ?>></td>
+                </tr>
+            </tbody>
+        </table>
         <br>
 
+        <div id="tile_display_custom_elements" style="<?php echo ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'custom' ) ? '' : 'display: none;'; ?>">
+            <h4>Custom Display Conditions</h4>
+            <label>Select field and field options. The tile will be displayed when these are selected on the record.</label>
+            <br><br>
+            <select name="tile_display_custom_condition" id="tile_display_custom_condition">
+                <option value="" disabled selected>--- [ choose a field and option ] ---</option>
+                <?php
+                foreach ( $fields as $field_id => $field )
+                    {
+                    if ( in_array( $field['type'], [ 'key_select', 'multi_select', 'tags' ] ) && isset( $field['default'] ) ) {
+                        echo '<optgroup label="'.esc_html( $field['name'] ).'">';
+                        $options = ( $field['type'] == 'tags' ) ? DT_Posts::get_multi_select_options( $post_type, $field_id ) : $field['default'];
+                        foreach ( $options ?? [] as $option_id => $option ) {
+                            $html_val = $field_id.'___'. ( ( $field['type'] == 'tags' ) ? $option : $option_id );
+                            $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'] ?? $option_id;
+                            ?>
+                                <option value="<?php echo esc_html( $html_val )?>"><?php echo esc_html( $html_label )?></option>
+                            <?php
+                        }
+                        echo '</optgroup>';
+                    }
+                }
+                ?>
+            </select>
+            <span>
+                <button class="button" type="submit" id="tile_display_custom_condition_select_but" name="tile_display_custom_condition_select_but">Add</button>
+            </span>
+            <br><br>
+            <table class="widefat striped">
+                <thead>
+                <tr>
+                    <td><?php esc_html_e( 'Field', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Option', 'disciple_tools' ) ?></td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ( !isset( $tile['display_conditions']['conditions'] ) || !is_array( $tile['display_conditions']['conditions'] ) ) {
+                        $tile['display_conditions']['conditions'] = [];
+                    }
+                    foreach ( $tile['display_conditions']['conditions'] ?? [] as $condition ) {
+                        ?>
+                        <tr>
+                            <td><?php echo esc_html( $condition['key_label'] ) ?></td>
+                            <td><?php echo esc_html( $condition['value_label'] ) ?></td>
+                            <td>
+                                <span style="float: right;">
+                                    <button class="button" type="submit" id="tile_display_custom_condition_remove_but" name="tile_display_custom_condition_remove_but" value="<?php echo esc_html( $condition['key'].'___'.$condition['value'] ) ?>">Remove</button>
+                                </span>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <label>Require all selected condition to be true</label>
+                        </td>
+                        <td>
+                            <input name="tile_display_custom_condition_all_fields" id="tile_display_custom_condition_all_fields" type="checkbox" <?php echo ( isset( $tile['display_conditions']['operator'] ) && $tile['display_conditions']['operator'] == 'and' ) ? 'checked' : '' ?>>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+
+        <div>
+            <button class="button" name="save" type="submit">Save Settings</button>
+            <button type="button" id="open-delete-confirm-modal" class="button button-primary">Delete Customizations</button>
+        </div>
+        </form>
+        <div id='dt-delete-tile-alert' title='Delete Tile'>
+            <p>Are you sure you want to delete this Tile?</p>
+            <p>Note: Only user added tiles can fully be deleted.</p>
+            <button class='button button-primary' id='confirm-tile-delete' name='delete' type="submit">Delete</button>
+            <button class='button' type="button" id='tile-close-delete'>Cancel</button>
+        </div>
+
+
+        <script type="application/javascript">
+            jQuery(document).ready(function ($){
+                $('#dt-delete-tile-alert').dialog({ autoOpen: false });
+
+                $('#open-delete-confirm-modal').click(function(){
+                    $('#dt-delete-tile-alert').dialog('open');
+                });
+
+                $('#tile-close-delete').click(function(){
+                    $('#dt-delete-tile-alert').dialog('close');
+                });
+                $('#confirm-tile-delete').click(function(){
+                    let input = $("<input>").attr("type", "hidden").attr("name", "delete")
+                    $('#tile_edit_form').append(input).submit();
+                });
+            })
+        </script>
     <?php }
 
 
@@ -526,6 +640,13 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         $post_type = $post_submission['post_type'];
         $tile_options = dt_get_option( 'dt_custom_tiles' );
         $tile_key = $post_submission['tile_key'];
+
+        if ( isset( $post_submission['delete'] ) ){
+            unset( $tile_options[$post_type][$tile_key] );
+            update_option( 'dt_custom_tiles', $tile_options );
+            return;
+        }
+
         if ( !isset( $tile_options[$post_type][$tile_key] ) ){
             $tile_options[$post_type][$tile_key] = [];
         }
@@ -538,15 +659,78 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $post_submission['tile_label'] ) && $post_submission['tile_label'] != ( $custom_tile['label'] ?? $tile_key ) ){
             $custom_tile['label'] = $post_submission['tile_label'];
         }
-        if ( isset( $post_submission['hide_tile'] ) ){
-            $custom_tile['hidden'] = true;
-        }
-        if ( isset( $post_submission['restore_tile'] ) ){
-            $custom_tile['hidden'] = false;
-        }
         if ( isset( $post_submission['tile_description'] ) && $post_submission['tile_description'] != ( $custom_tile['description'] ?? '' ) ){
             $custom_tile['description'] = $post_submission['tile_description'];
         }
+
+        // Display Conditions.
+        if ( empty( $custom_tile['display_conditions'] ) || !is_array( $custom_tile['display_conditions'] ) ) {
+            $custom_tile['display_conditions'] = [];
+        }
+
+        // Requested Visibility State.
+        if ( isset( $post_submission['tile_display_option'] ) && in_array( $post_submission['tile_display_option'], [ 'hidden','visible','custom' ] ) ){
+            $custom_tile['display_conditions']['visibility'] = $post_submission['tile_display_option'];
+            $custom_tile['hidden'] = in_array( $post_submission['tile_display_option'], [ 'hidden' ] );
+
+            // Custom Visibility.
+            if ( $post_submission['tile_display_option'] == 'custom' ) {
+
+                // Custom - Select Condition.
+                if ( isset( $post_submission['tile_display_custom_condition_select_but'] ) ){
+                    if ( isset( $post_submission['tile_display_custom_condition'] ) && $post_submission['tile_display_custom_condition'] != '' ) {
+
+                        // If needed, initialise conditions array.
+                        if ( empty( $custom_tile['display_conditions']['conditions'] ) || !is_array( $custom_tile['display_conditions']['conditions'] ) ) {
+                            $custom_tile['display_conditions']['conditions'] = [];
+                        }
+
+                        // Extract tile display condition parts.
+                        $condition_parts = explode( '___', $post_submission['tile_display_custom_condition'] );
+                        $field_id        = $condition_parts[0];
+                        $option_id       = $condition_parts[1];
+
+                        // Append latest entry, ensuring uniqueness.
+                        if ( isset( $field_id, $option_id ) ) {
+                            $field_id_label = $field_id;
+                            $option_id_label = $option_id;
+
+                            // Determine respective labels.
+                            if ( isset( $post_fields[ $field_id ] ) ) {
+                                $field_id_label = $post_fields[ $field_id ]['name'] ?? $field_id;
+                                if ( isset( $post_fields[ $field_id ]['default'], $post_fields[ $field_id ]['default'][ $option_id ] ) ) {
+                                    $option_id_label = $post_fields[ $field_id ]['default'][ $option_id ]['label'] ?? $option_id;
+                                }
+                            }
+
+                            // Package and return....
+                            $custom_tile['display_conditions']['conditions'][$field_id.'___'.$option_id] = [
+                                'key' => $field_id,
+                                'key_label' => $field_id_label,
+                                'value' => $option_id,
+                                'value_label' => $option_id_label
+                            ];
+                        }
+                    }
+                }
+
+                // Custom - Remove Condition.
+                if ( isset( $post_submission['tile_display_custom_condition_remove_but'] ) ){
+
+                    // Extract tile display condition parts.
+                    $condition_parts = explode( '___', $post_submission['tile_display_custom_condition_remove_but'] );
+                    $field_id        = $condition_parts[0];
+                    $option_id       = $condition_parts[1];
+
+                    // Remove identified condition, by field id.
+                    unset( $custom_tile['display_conditions']['conditions'][$field_id.'___'.$option_id] );
+                }
+
+                // Custom - Operator.
+                $custom_tile['display_conditions']['operator'] = isset( $post_submission['tile_display_custom_condition_all_fields'] ) ? 'and' : 'or';
+            }
+        }
+
         //update other Translations
         $langs = dt_get_available_languages();
 

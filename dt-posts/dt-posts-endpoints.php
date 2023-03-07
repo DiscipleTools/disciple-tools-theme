@@ -433,6 +433,22 @@ class Disciple_Tools_Posts_Endpoints {
                 'permission_callback' => '__return_true',
             ]
         );
+
+        //Check if a field value exists in the database, given the post type and field key
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/check_field_value_exists', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'check_field_value_exists' ],
+                'args'     => [
+                    'post_type' => $arg_schemas['post_type'],
+                ],
+                'permission_callback' => function ( WP_REST_Request $request ){
+                    $params = $request->get_params();
+                    $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+                    return DT_Posts::can_create( $post_type );
+                },
+            ]
+        );
     }
 
     /**
@@ -603,7 +619,7 @@ class Disciple_Tools_Posts_Endpoints {
     public function toggle_comment_reaction( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $post_params = $request->get_json_params();
-        $result = DT_Posts::toggle_post_comment_reaction( $url_params['post_type'], $url_params['id'], $url_params['comment_id'], $post_params['user_id'], $post_params['reaction'] );
+        $result = DT_Posts::toggle_post_comment_reaction( $url_params['post_type'], $url_params['id'], $url_params['comment_id'], $post_params['reaction'] );
         return $result;
     }
 
@@ -667,5 +683,23 @@ class Disciple_Tools_Posts_Endpoints {
             'meta'    => $meta,
             'status'  => $status
         ] );
+    }
+
+    public function check_field_value_exists( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        $communication_channels = DT_Posts::get_field_settings_by_type( $params['post_type'], 'communication_channel' );
+        if ( in_array( $params['post_type'], $communication_channels ) ) {
+            return new WP_Error( __METHOD__, 'Invalid communication_channel' );
+        }
+        if ( isset( $params['post_type'] ) && isset( $params['communication_channel'] ) && isset( $params['field_value'] ) ) {
+            global $wpdb;
+            $result = $wpdb->get_results( $wpdb->prepare(
+                "SELECT `post_id`
+                    FROM $wpdb->postmeta
+                    WHERE meta_key LIKE %s
+                    AND meta_value = %s;", $params['communication_channel'] . '_%', $params['field_value'] ) );
+            return $result;
+        }
+        return [];
     }
 }

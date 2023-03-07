@@ -298,7 +298,7 @@ dt_please_log_in();
                             $archived_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['archived_key'] : null;
 
                             $archived_text = $status_key && $archived_key ? $post_settings['fields'][$status_key]['default'][$archived_key]['label'] : __( 'Archived', 'disciple_tools' );
-                            $archived_label = sprintf( _x( 'Show %s', 'disciple_tools' ), $archived_text );
+                            $archived_label = sprintf( _x( 'Show %s', 'Show archived', 'disciple_tools' ), $archived_text );
                         ?>
 
                         <span style="display:<?php echo esc_html( !$status_key || !$archived_key ? 'none' : 'inline-block' ) ?>" class="show-closed-switch">
@@ -318,7 +318,7 @@ dt_please_log_in();
                     ?>
 
                     <div id="list_column_picker" class="list_field_picker list_action_section">
-                        <button class="close-button list-action-close-button" data-close="list_column_picker" aria-label="Close modal" type="button">
+                        <button class="close-button list-action-close-button" data-close="list_column_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                             <span aria-hidden="true">×</span>
                         </button>
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
@@ -360,7 +360,7 @@ dt_please_log_in();
                     </div>
 
                     <div id="bulk_edit_picker" class="list_action_section">
-                        <button class="close-button list-action-close-button" data-close="bulk_edit_picker" aria-label="Close modal" type="button">
+                        <button class="close-button list-action-close-button" data-close="bulk_edit_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                             <span aria-hidden="true">×</span>
                         </button>
                         <p style="font-weight:bold"><?php
@@ -393,14 +393,21 @@ dt_please_log_in();
                             <?php endif; ?>
                                 <?php
                                 if ( $post_type == 'contacts' ) {?>
+                                    <?php if ( isset( $field_options['subassigned'] ) ) : ?>
                                     <div class="cell small-12 medium-4">
-                                    <?php $field_options['subassigned']['custom_display'] = false ?>
-                                    <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_' ); ?>
+                                        <?php $field_options['subassigned']['custom_display'] = false ?>
+                                        <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_' ); ?>
                                     </div>
+                                    <?php endif; ?>
+                                    <?php if ( isset( $field_options['overall_status'] ) ) : ?>
                                     <div class="cell small-12 medium-4">
                                         <div class="section-subheader">
                                             <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
-                                            <?php esc_html_e( 'Status', 'disciple_tools' ) ?>
+                                            <?php if ( isset( $tiles['status']['label'] ) && !empty( $tiles['status']['label'] ) ) {
+                                                echo esc_html( $tiles['status']['label'] );
+                                            } else {
+                                                echo esc_html__( 'Status', 'disciple_tools' );
+                                            }?>
                                             <button class="help-button-field" data-section="overall_status-help-text">
                                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                             </button>
@@ -413,6 +420,8 @@ dt_please_log_in();
                                             <?php } ?>
                                         </select>
                                     </div>
+                                    <?php endif; ?>
+                                    <?php if ( isset( $field_options['reason_paused'] ) ) : ?>
                                     <div class="cell small-12 medium-4" style="display:none">
 
                                         <div class="section-subheader">
@@ -436,6 +445,7 @@ dt_please_log_in();
                                             ?>
                                         </select>
                                     </div>
+                                    <?php endif; ?>
 
                                 <?php } elseif ( $post_type == 'groups' ) {?>
                                     <div class="cell small-12 medium-4">
@@ -488,14 +498,7 @@ dt_please_log_in();
                                         ></textarea>
 
                                         <?php if ( $post_type == 'contacts' ) :
-                                            $sections = [
-                                                [
-                                                    'key' => 'comment',
-                                                    'label' => __( 'Comments', 'disciple_tools' ),
-                                                    'selected_by_default' => true
-                                                ],
-                                            ];
-                                            $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+                                            $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );?>
 
                                                 <div class="grid-x">
                                                     <div class="section-subheader cell shrink">
@@ -503,7 +506,7 @@ dt_please_log_in();
                                                     </div>
                                                     <select id="comment_type_selector" class="cell auto">
                                                         <?php
-                                                        $section_keys = [];
+                                                        $section_keys = [ 'activity' ];
                                                         foreach ( $sections as $section ) {
                                                             if ( !in_array( $section['key'], $section_keys ) ) {
                                                                 $section_keys[] = $section['key'] ?>
@@ -798,7 +801,7 @@ dt_please_log_in();
 
             </div>
         </div>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
+        <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>

@@ -77,12 +77,17 @@ function dt_options_scripts() {
     $allowed_pages = apply_filters( 'dt_options_script_pages', $allowed_pages );
 
     if ( isset( $_GET['page'] ) && ( in_array( $_GET['page'], $allowed_pages, true ) ) ) {
+
+        wp_register_script( 'jquery-ui-js', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', [ 'jquery' ], '1.12.1', true );
+        wp_enqueue_script( 'jquery-ui-js' );
+
         wp_enqueue_script( 'dt_options_script', disciple_tools()->admin_js_url . 'dt-options.js', [
             'jquery',
             'jquery-ui-core',
             'jquery-ui-sortable',
             'jquery-ui-dialog',
-            'lodash'
+            'lodash',
+            'jquery-ui-js'
         ], filemtime( disciple_tools()->admin_js_path . 'dt-options.js' ), true );
         wp_register_style( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css' );
         wp_enqueue_style( 'jquery-ui' );

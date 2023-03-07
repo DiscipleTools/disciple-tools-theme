@@ -560,7 +560,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                 ?>
 
                 <div class="reveal" id="edit-profile-modal" data-reveal>
-                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h2><?php esc_html_e( 'Edit', 'disciple_tools' )?></h2>
@@ -669,6 +669,9 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                         <?php
                                         dt_language_select()
                                         ?>
+                                        <br>
+                                        <a href="https://disciple.tools/translation/"
+                                           target="_blank"><?php esc_html_e( 'Translate Disciple.Tools into your language or help make a translation better.', 'disciple_tools' ) ?></a>
                                     </td>
                                 </tr>
 

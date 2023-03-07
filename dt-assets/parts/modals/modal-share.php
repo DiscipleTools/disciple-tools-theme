@@ -5,7 +5,7 @@ global $post;
 <div class="reveal" id="share-contact-modal" data-reveal style="min-height:550px">
 
     <h3><?php esc_html_e( 'Share settings', 'disciple_tools' )?></h3>
-    
+
     <h6>
         <?php
         if ( is_singular( 'groups' ) ){
@@ -53,7 +53,7 @@ global $post;
         </div>
     </div>
 
-    <button class="close-button" data-close aria-label="Close modal" type="button">
+    <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>

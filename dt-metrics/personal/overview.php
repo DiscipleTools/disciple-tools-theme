@@ -21,11 +21,13 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
         parent::__construct();
         $this->title = __( 'Overview', 'disciple_tools' );
         $this->base_title = __( 'Personal', 'disciple_tools' );
+        $this->namespace = 'dt-metrics/personal/overview';
 
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path || 'metrics' === $url_path || 'metrics/' === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 10 );
         }
+        add_action( 'rest_api_init', [ $this, 'rest_api_init' ] );
     }
 
     public function scripts() {
@@ -44,34 +46,46 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
         wp_localize_script(
             'dt_metrics_personal_script', 'dtMetricsPersonal', [
                 'root' => esc_url_raw( rest_url() ),
+                'rest_url' => esc_url_raw( rest_url( $this->namespace ) ),
                 'theme_uri' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'data' => $this->overview(),
+                'translations' => [
+                    'title' => __( 'My Overview', 'disciple_tools' ),
+                    'title_waiting_on_accept' => __( 'Waiting on Accept', 'disciple_tools' ),
+                    'title_waiting_on_update' => __( 'Waiting on Update', 'disciple_tools' ),
+                    'title_contacts' => __( 'Contacts', 'disciple_tools' ),
+                    'title_groups' => __( 'Groups', 'disciple_tools' ),
+                    'title_total_groups' => __( 'Total Groups', 'disciple_tools' ),
+                    'title_group_types' => __( 'Group Types', 'disciple_tools' ),
+                    'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
+                    'title_teams' => __( 'Lead Teams', 'disciple_tools' ),
+                    'label_active_contacts'  => __( 'Active Contacts', 'disciple_tools' ),
+                    'total_groups'    => __( 'Total Groups', 'disciple_tools' ),
+                    'label_my_follow_up_progress' => __( 'Follow-up of my active contacts', 'disciple_tools' ),
+                    'label_group_needing_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
+                    'label_stats_as_of' => strtolower( __( 'stats as of', 'disciple_tools' ) ),
+                    'label_generation' => __( 'Generation', 'disciple_tools' ),
+                ]
+            ]
+        );
+    }
+
+    public function rest_api_init(){
+        register_rest_route(
+            $this->namespace, 'data', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'overview' ],
+                'permission_callback' => function(){
+                    return $this->has_permission();
+                },
             ]
         );
     }
 
     public function overview() {
         $data = [
-            'translations' => [
-                'title' => __( 'My Overview', 'disciple_tools' ),
-                'title_waiting_on_accept' => __( 'Waiting on Accept', 'disciple_tools' ),
-                'title_waiting_on_update' => __( 'Waiting on Update', 'disciple_tools' ),
-                'title_contacts' => __( 'Contacts', 'disciple_tools' ),
-                'title_groups' => __( 'Groups', 'disciple_tools' ),
-                'title_total_groups' => __( 'Total Groups', 'disciple_tools' ),
-                'title_group_types' => __( 'Group Types', 'disciple_tools' ),
-                'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
-                'title_teams' => __( 'Lead Teams', 'disciple_tools' ),
-                'label_active_contacts'  => __( 'Active Contacts', 'disciple_tools' ),
-                'total_groups'    => __( 'Total Groups', 'disciple_tools' ),
-                'label_my_follow_up_progress' => __( 'Follow-up of my active contacts', 'disciple_tools' ),
-                'label_group_needing_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
-                'label_stats_as_of' => strtolower( __( 'stats as of', 'disciple_tools' ) ),
-                'label_generation' => __( 'Generation', 'disciple_tools' ),
-            ],
             'preferences'       => $this->preferences(),
             'hero_stats'        => $this->chart_my_hero_stats(),
             'group_types'       => $this->chart_group_types(),

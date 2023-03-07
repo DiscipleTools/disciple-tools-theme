@@ -1593,7 +1593,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 return 'NULL';
             }
             foreach ( $values as &$val ) {
-                if ( '\N' === $val ) {
+                if ( '\N' === $val || empty( $val ) ) {
                     $val = 'NULL';
                 } else {
                     $val = "'" . esc_sql( trim( $val ) ) . "'";
@@ -2531,7 +2531,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             Migration: <?php echo esc_attr( get_option( 'dt_mapping_module_migration_number', true ) ) ?>
                             <br>
                             Locked Status: <?php
-                            if ( get_option( 'dt_mapping_module_migration_lock', true ) ) {
+                            if ( !empty( get_transient( 'dt_mapping_module_migration_lock' ) ) ){
                                 ?>
                                 Locked!
                                 <a onclick="jQuery('#error-message-raw').toggle();" class="alert">Show error message</a>

@@ -161,7 +161,7 @@ class DT_User_Hooks_And_Configuration {
 
     public function dt_user_created( $user_id ){
         $contact_id = Disciple_Tools_Users::get_contact_for_user( $user_id );
-        if ( !empty( $contact_id ) ){
+        if ( !empty( $contact_id ) && ! is_wp_error( $contact_id ) ){
             $mention = dt_get_user_mention_syntax( $user_id );
             $comment_html = sprintf( __( 'Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users', 'disciple_tools' ), $mention );
             DT_Posts::add_post_comment( 'contacts', $contact_id, $comment_html, 'comment', [], false );

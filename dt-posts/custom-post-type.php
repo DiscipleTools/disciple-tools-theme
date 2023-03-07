@@ -26,6 +26,7 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
         add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
+        add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 100, 1 );
     }
 
     public function register_post_type(){
@@ -203,6 +204,12 @@ class Disciple_Tools_Post_Type_Template {
             'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-clock.svg',
             'private' => true
         ];
+        //notes field used for adding comments when creating a record
+        $fields['notes'] = [
+            'name' => 'Notes',
+            'type' => 'array',
+            'hidden' => true
+        ];
         return $fields;
     }
 
@@ -296,6 +303,36 @@ class Disciple_Tools_Post_Type_Template {
             }
         }
     }
+    /**
+     * Declare Default D.T post roles
+     */
+    public function dt_capabilities( $capabilities ){
+        $capabilities['access_' . $this->post_type] = [
+            'source' => $this->plural,
+            'description' => 'The user can access the UI for ' . $this->plural,
+        ];
+//        $capabilities['update_'  . $this->post_type] = [
+//            'source' => $this->plural,
+//            'description' => 'The user can edit existing ' . $this->plural,
+//        ];
+        $capabilities['create_'  . $this->post_type] = [
+            'source' => $this->plural,
+            'description' => 'The user can create ' . $this->plural
+        ];
+        $capabilities['view_any_'  . $this->post_type] = [
+            'source' => $this->plural,
+            'description' => 'The user can view any ' . $this->singular
+        ];
+        $capabilities['update_any_'  . $this->post_type] = [
+            'source' => $this->plural,
+            'description' => 'The user can update any ' . $this->singular
+        ];
+        $capabilities['delete_any_'  . $this->post_type] = [
+            'source' => $this->plural,
+            'description' => 'The user can delete any ' . $this->singular
+        ];
+        return $capabilities;
+    }
 }
 
 /**
@@ -307,12 +344,37 @@ function base_dt_user_list_filters( $filters, $post_type ){
     $tab_names = array_map( function ( $f ){
         return $f['key'];
     }, $filters['tabs'] );
+
+    if ( !in_array( 'all', $tab_names ) && !in_array( 'default', $tab_names ) ){
+        $filters['tabs'][] = [
+            'key' => 'all',
+            'label' => __( 'Default Filters', 'disciple_tools' ),
+            'query' => [
+                'sort' => '-post_date'
+            ],
+            'order' => 10
+        ];
+        $tab_names[] = 'all';
+    }
+
     if ( in_array( 'all', $tab_names, true ) ){
 
         $filter_ids = array_map( function ( $f ){
             return $f['ID'];
         }, $filters['filters'] );
 
+        // add favorite posts filter to all abb
+        if ( !in_array( 'default', $filter_ids ) && !in_array( 'all', $filter_ids ) ){
+            $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
+            $filters['filters'][] = [
+                'ID' => 'all',
+                'tab' => 'all',
+                'name' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_label_plural ),
+                'query' => [
+                    'sort' => '-post_date'
+                ],
+            ];
+        }
         // add favorite posts filter to all abb
         if ( !in_array( 'favorite', $filter_ids ) ){
             $post_type_settings = DT_Posts::get_post_settings( $post_type );

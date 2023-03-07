@@ -9,7 +9,7 @@ class Disciple_Tools_Usage {
      *
      * @var int
      */
-    public $version = 5;
+    public $version = 6;
 
     public function send_usage() {
         $disable_usage = get_option( 'dt_disable_usage_data' );
@@ -40,6 +40,7 @@ class Disciple_Tools_Usage {
         $users = new WP_User_Query( [ 'count_total' => true ] );
 
         $site_url = get_site_url( null, '', 'https' );
+        $site_url = str_replace( 'http://', 'https://', $site_url );
 
         //active plugins
         $network_active_plugins = get_site_option( 'active_sitewide_plugins', [] );
@@ -92,7 +93,8 @@ class Disciple_Tools_Usage {
                 //DT Usage
                 'active_plugins' => $active_plugins,
                 'using_mapbox' => $using_mapbox,
-                'using_google_geocode' => $using_google_geocode
+                'using_google_geocode' => $using_google_geocode,
+                'is_multisite' => is_multisite(),
             ],
         ];
 
