@@ -79,7 +79,6 @@ class Disciple_Tools_Core_Endpoints {
                 'permission_callback' => [ $this, 'plugin_permission_check' ],
             ]
         );
-    }
 
         register_rest_route(
             $this->public_namespace, '/get-post-fields', [
@@ -446,6 +445,8 @@ class Disciple_Tools_Core_Endpoints {
                     break;
             }
             return $translations;
+        }
+    }
 
     public function plugin_install( WP_REST_Request $request ) {
         require_once( ABSPATH . 'wp-admin/includes/file.php' );
@@ -694,6 +695,8 @@ class Disciple_Tools_Core_Endpoints {
             $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['description'] = $new_field_option_description;
             update_option( 'dt_field_customizations', $custom_field_options );
             return $custom_field_options[$post_type][$field_key]['default'][$field_option_key];
+        }
+    }
 
     public function plugin_activate( WP_REST_Request $request ) {
         require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -795,6 +798,7 @@ class Disciple_Tools_Core_Endpoints {
             return new WP_Error( 'forbidden', 'You are not allowed to do that.', array( 'status' => 403 ) );
         }
         return true;
+    }
 
     public function plugin_deactivate( WP_REST_Request $request ) {
         require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
