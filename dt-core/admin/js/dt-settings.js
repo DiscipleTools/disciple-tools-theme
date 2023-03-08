@@ -1,4 +1,73 @@
 jQuery(document).ready(function($) {
+    window.API.create_new_tile = (post_type, new_tile_name) => makeRequest("POST", `create-new-tile`, {
+        post_type: post_type,
+        new_tile_name: new_tile_name,
+    }, `dt-core/v1/`);
+
+    window.API.get_tile = (post_type, tile_key) => makeRequest("POST", `get-tile`, {
+        post_type: post_type,
+        tile_key: tile_key,
+    }, `dt-core/v1`);
+
+    window.API.edit_tile = (post_type, tile_key, tile_label, hide_tile) => makeRequest("POST", `edit-tile`, {
+        post_type: post_type,
+        tile_key: tile_key,
+        tile_label: tile_label,
+        hide_tile: hide_tile,
+    }, `dt-core/v1/`);
+
+    window.API.edit_translations = (translation_type, post_type, tile_key, translations, field_key=null, field_option_key=null) => makeRequest("POST", `edit-translations`, {
+        translation_type: translation_type,
+        post_type: post_type,
+        tile_key: tile_key,
+        translations: translations,
+        field_key: field_key,
+        field_option_key: field_option_key,
+    }, `dt-core/v1`);
+
+    window.API.new_field = (post_type, new_field_tile, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name) => makeRequest("POST", `new-field`, {
+        post_type: post_type,
+        new_field_tile: new_field_tile,
+        new_field_name: new_field_name,
+        new_field_type: new_field_type,
+        new_field_private: new_field_private,
+        connection_target: connection_target,
+        multidirectional: multidirectional,
+        other_field_name: other_field_name,
+    }, `dt-core/v1/`);
+
+    window.API.edit_field = (post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon) => makeRequest("POST", `edit-field`, {
+        post_type: post_type,
+        tile_key: tile_key,
+        field_key: field_key,
+        custom_name: custom_name,
+        field_private: field_private,
+        tile_select: tile_select,
+        field_description: field_description,
+        field_icon: field_icon,
+    }, `dt-core/v1/`);
+
+    window.API.new_field_option = (post_type, tile_key, field_key, field_option_name) => makeRequest("POST", `new-field-option`, {
+        post_type: post_type,
+        tile_key: tile_key,
+        field_key: field_key,
+        field_option_name: field_option_name,
+    }, `dt-core/v1/`);
+
+    window.API.edit_field_option = (post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description) => makeRequest("POST", `edit-field-option`, {
+        post_type: post_type,
+        tile_key: tile_key,
+        field_key: field_key,
+        field_option_key: field_option_key,
+        new_field_option_label: new_field_option_label,
+        new_field_option_description: new_field_option_description,
+    }, `dt-core/v1/`);
+
+    window.API.update_tile_and_fields_order = (post_type, dt_custom_tiles_and_fields_ordered) => makeRequest("POST", `update-tiles-and-fields-order`, {
+        post_type: post_type,
+        dt_custom_tiles_and_fields_ordered: dt_custom_tiles_and_fields_ordered,
+    }, `dt-core/v1/`);
+
     function autonavigate_to_menu() {
         var tile_key = get_tile_from_uri();
         var field_key = get_field_from_uri();
