@@ -333,7 +333,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <?php foreach ( $post_tiles['tiles'] as $tile_key => $tile_value ) : ?>
                 <?php if ( $tile_key !== 'no_tile' ) : ?>
                 <!-- START TILE -->
-                <div class="<?php echo esc_attr( self::get_sortable_class( $tile_key) ); ?>" id="<?php echo esc_attr( $tile_key ); ?>">
+                <div class="<?php echo esc_attr( self::get_sortable_class( $tile_key ) ); ?>" id="<?php echo esc_attr( $tile_key ); ?>">
                     <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>">
                         <span class="sortable">⋮⋮</span>
                         <span class="expand-icon">+</span>

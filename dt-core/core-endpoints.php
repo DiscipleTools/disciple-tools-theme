@@ -155,7 +155,7 @@ class Disciple_Tools_Core_Endpoints {
         register_rest_route(
             $this->namespace, '/update-tiles-and-fields-order', [
                 'methods' => 'POST',
-                'callback' => [ $this, 'update_tiles_and_fields_order'],
+                'callback' => [ $this, 'update_tiles_and_fields_order' ],
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
@@ -722,7 +722,7 @@ class Disciple_Tools_Core_Endpoints {
             $tile_options[$post_type] = [];
         }
 
-        for ( $i=0; $i<count( $dt_custom_tiles_and_fields_ordered ); $i++ ) {
+        for ( $i =0; $i <count( $dt_custom_tiles_and_fields_ordered ); $i++ ) {
             foreach ( $dt_custom_tiles_and_fields_ordered as $index => $tile_key ) {
                 $tile_options[$post_type][$index]['label'] = '';
                 if ( !isset( $tile_options[$post_type][$index] ) ) {
