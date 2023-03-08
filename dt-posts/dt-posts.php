@@ -1854,22 +1854,10 @@ class DT_Posts extends Disciple_Tools_Posts {
         wp_set_current_user( 0 );
         $revert_bot = wp_get_current_user();
         $revert_bot->add_cap( 'activity_revert' );
-        $revert_bot->add_cap( 'dt_all_access_contacts' );
-        $revert_bot->add_cap( 'update_any_contacts' );
-        $revert_bot->add_cap( 'dt_all_access_groups' );
-        $revert_bot->add_cap( 'update_any_groups' );
-        $revert_bot->add_cap( 'dt_all_access_peoplegroups' );
-        $revert_bot->add_cap( 'update_any_peoplegroups' );
-
-        if ( !in_array( $post_type, [ 'contacts', 'groups', 'peoplegroups' ] ) ){
-            $revert_bot->add_cap( 'dt_all_access_' . $post_type );
-            $revert_bot->add_cap( 'update_any_' . $post_type );
-        }
-
         $revert_bot->display_name = __( 'Revert Bot', 'disciple_tools' );
 
         // Update post based on reverted values.
-        $updated_post = self::update_post( $post_type, $post_id, $post_updates );
+        $updated_post = self::update_post( $post_type, $post_id, $post_updates, false, false );
 
         // Revert back to previous user and return.
         wp_set_current_user( $current_user_id );
