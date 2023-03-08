@@ -168,11 +168,12 @@ jQuery(document).ready(function($) {
 
     $('.field-settings-table').on('click', '.edit-icon', function() {
         var edit_modal = $(this).parent().data('modal');
-        var data = $(this).parent().data('key');
         if (edit_modal === 'edit-field') {
             var data = [];
             data['tile_key'] = $(this).parent().data('parent-tile-key');
             data['field_key'] = $(this).parent().data('key');
+        } else {
+            data = $(this).parent().data('key');
         }
         showOverlayModal(edit_modal, data);
     });
@@ -1152,30 +1153,31 @@ jQuery(document).ready(function($) {
         translations = JSON.stringify(translations);
         var element_button_selector = $('.expand_translations[name="translate-label-button"]');
         API.edit_translations(translation_type, post_type, tile_key, translations, field_key, field_option_key).promise().then(function(response) {
+            var translations_count = 0;
             if ( translation_type === 'tile-label' ) {
                 window['field_settings']['post_type_tiles'][tile_key]['translations'] = response;
-                var translations_count = Object.values(window['field_settings']['post_type_tiles'][tile_key]['translations']).filter(function(t) {return t;}).length;
+                translations_count = Object.values(window['field_settings']['post_type_tiles'][tile_key]['translations']).filter(function(t) {return t;}).length;
             }
 
             if ( translation_type === 'field-label' ) {
                 window['field_settings']['post_type_settings']['fields'][field_key]['translations'] = response;
-                var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['translations']).filter(function(t) {return t;}).length;
+                translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['translations']).filter(function(t) {return t;}).length;
             }
 
             if ( translation_type === 'field-description' ) {
                 window['field_settings']['post_type_settings']['fields'][field_key]['description_translations'] = response;
-                var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['description_translations']).filter(function(t) {return t;}).length;
+                translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['description_translations']).filter(function(t) {return t;}).length;
                 element_button_selector = $('.expand_translations[name="translate-description-button"]');
             }
 
             if ( translation_type === 'field-option-label' ) {
                 window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations'] = response;
-                var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']).filter(function(t) {return t;}).length;
+                translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']).filter(function(t) {return t;}).length;
             }
 
             if ( translation_type === 'field-option-description' ) {
                 window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description_translations'] = response;
-                var translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description_translations']).filter(function(t) {return t;}).length;
+                translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description_translations']).filter(function(t) {return t;}).length;
                 element_button_selector = $('.expand_translations[name="translate-description-button"]');
             }
 
