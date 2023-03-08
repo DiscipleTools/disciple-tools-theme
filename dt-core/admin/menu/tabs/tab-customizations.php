@@ -44,6 +44,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         if ( !isset( $post_type ) || is_null( $post_type ) ) {
             return;
         }
+
         $post_settings = DT_Posts::get_post_settings( $post_type );
 
         $translations = [
@@ -96,7 +97,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
                     'edit' => __( 'Edit', 'disciple_tools' ),
                 ],
-            ),
+            )
         );
 
         wp_enqueue_script( 'jquery' );
