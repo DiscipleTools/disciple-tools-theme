@@ -722,7 +722,8 @@ class Disciple_Tools_Core_Endpoints {
             $tile_options[$post_type] = [];
         }
 
-        for ( $i =0; $i <count( $dt_custom_tiles_and_fields_ordered ); $i++ ) {
+        $ordered_tile_and_fields_count = count( $dt_custom_tiles_and_fields_ordered );
+        for ( $i =0; $i <$ordered_tile_and_fields_count; $i++ ) {
             foreach ( $dt_custom_tiles_and_fields_ordered as $index => $tile_key ) {
                 $tile_options[$post_type][$index]['label'] = '';
                 if ( !isset( $tile_options[$post_type][$index] ) ) {
