@@ -25,9 +25,10 @@ jQuery(document).ready(function($) {
     window.API = {};
 
 
-    window.API.create_new_tile = (post_type, new_tile_name) => makeRequest("POST", `create-new-tile`, {
+    window.API.create_new_tile = (post_type, new_tile_name, new_tile_description) => makeRequest("POST", `create-new-tile`, {
         post_type: post_type,
         new_tile_name: new_tile_name,
+        new_tile_description: new_tile_description,
     }, `dt-core/v1/`);
 
     window.API.get_tile = (post_type, tile_key) => makeRequest("POST", `get-tile`, {
@@ -429,10 +430,18 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <label for="new_tile_name"><b>New Tile Name:</b></label>
+                <label for="new_tile_name"><b>* Name:</b></label>
             </td>
             <td>
                 <input name="new_tile_name" id="new_tile_name" type="text" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="new_tile_description"><b>Description:</b></label>
+            </td>
+            <td>
+                <input name="new_tile_description" id="new_tile_description" type="text">
             </td>
         </tr>
         <tr>
@@ -826,8 +835,9 @@ jQuery(document).ready(function($) {
     $('#modal-overlay-form').on('click', '#js-add-tile', function(e) {
         var post_type = get_post_type();
         var new_tile_name = $('#new_tile_name').val();
+        var new_tile_description = $('#new_tile_description').val();
 
-        API.create_new_tile(post_type, new_tile_name).promise().then(function(data) {
+        API.create_new_tile(post_type, new_tile_name, new_tile_description).promise().then(function(data) {
             var tile_key = data['key'];
             var tile_label = data['label'];
             window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};

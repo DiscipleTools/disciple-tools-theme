@@ -280,26 +280,36 @@ class Disciple_Tools_Core_Endpoints {
 
     public static function create_new_tile( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
-
         if ( isset( $post_submission['new_tile_name'], $post_submission['post_type'] ) ) {
             $post_type = sanitize_text_field( wp_unslash( $post_submission['post_type'] ) );
             $new_tile_name = sanitize_text_field( wp_unslash( $post_submission['new_tile_name'] ) );
+            $tile_key = dt_create_field_key( $new_tile_name );
             $tile_options = dt_get_option( 'dt_custom_tiles' );
             $post_tiles = DT_Posts::get_post_tiles( $post_type );
-            $tile_key = dt_create_field_key( $new_tile_name );
-            if ( in_array( $tile_key, array_keys( $post_tiles ) ) ){
+
+            if ( in_array( $tile_key, array_keys( $post_tiles ) ) ) {
                 Disciple_Tools_Customizations_Tab::admin_notice( __( 'tile already exists', 'disciple_tools' ), 'error' );
                 return false;
             }
-            if ( !isset( $tile_options[$post_type] ) ){
+
+            if ( !isset( $tile_options[$post_type] ) ) {
                 $tile_options[$post_type] = [];
             }
+
             $tile_options[$post_type][$tile_key] = [ 'label' => $new_tile_name ];
+
+            $new_tile_description = null;
+            if ( isset( $post_submission['new_tile_description'] ) ) {
+                $new_tile_description = sanitize_text_field( wp_unslash( $post_submission['new_tile_description'] ) );
+                $tile_options[$post_type][$tile_key]['description'] = $new_tile_description;
+            }
+
             update_option( 'dt_custom_tiles', $tile_options );
             $created_tile = [
                 'post_type' => $post_type,
                 'key' => $tile_key,
                 'label' => $new_tile_name,
+                'description' => $new_tile_description,
             ];
             return $created_tile;
         }
