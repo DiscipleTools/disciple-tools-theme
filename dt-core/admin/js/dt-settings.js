@@ -1,4 +1,30 @@
+function makeRequest(type, url, data, base = "dt/v1/") {
+  //make sure base has a trailing slash if url does not start with one
+  if ( !base.endsWith('/') && !url.startsWith('/')){
+    base += '/'
+  }
+  const options = {
+    type: type,
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: url.startsWith("http") ? url : `${field_settings.root}${base}${url}`,
+    beforeSend: (xhr) => {
+      xhr.setRequestHeader("X-WP-Nonce", field_settings.nonce);
+    },
+  };
+
+  if (data) {
+    options.data = type === "GET" ? data : JSON.stringify(data);
+  }
+
+  return jQuery.ajax(options);
+}
+
 jQuery(document).ready(function($) {
+
+    window.API = {};
+
+
     window.API.create_new_tile = (post_type, new_tile_name) => makeRequest("POST", `create-new-tile`, {
         post_type: post_type,
         new_tile_name: new_tile_name,
@@ -216,7 +242,7 @@ jQuery(document).ready(function($) {
             <div class="dt-tile-preview">
                 <div class="section-header">
                     <h3 class="section-header">${window['field_settings']['post_type_tiles'][tile_key]['label']}</h3>
-                    <img src="${window.wpApiShare.template_dir}/dt-assets/images/chevron_up.svg" class="chevron">
+                    <img src="${window.field_settings.template_dir}/dt-assets/images/chevron_up.svg" class="chevron">
                 </div>
                 <div class="section-body">`;
 
@@ -275,7 +301,7 @@ jQuery(document).ready(function($) {
                             <span class="typeahead-cancel-button">×</span>
                             <input class="typeahead-input" placeholder="Search Users">
                             <button class="typeahead-button">
-                                <img src="${window.wpApiShare.template_dir}/dt-assets/images/search.svg">
+                                <img src="${window.field_settings.template_dir}/dt-assets/images/search.svg">
                             </button>
                         </div>
                 `;
@@ -290,7 +316,7 @@ jQuery(document).ready(function($) {
                         <div class="typeahead-container">
                             <input class="typeahead-input" placeholder="Search ${field['name']}">
                             <button class="typeahead-button">
-                                <img src="${window.wpApiShare.template_dir}/dt-assets/images/add-contact.svg">
+                                <img src="${window.field_settings.template_dir}/dt-assets/images/add-contact.svg">
                             </button>
                         </div>
                     `;
@@ -453,7 +479,7 @@ jQuery(document).ready(function($) {
                 <td>
                     <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}" required>
                     <button class="button expand_translations" name="translate-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
                     </button>
                 </td>
@@ -638,7 +664,7 @@ jQuery(document).ready(function($) {
                 <td>
                     <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="">
                     <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
                     </button>
                 </td>
@@ -650,7 +676,7 @@ jQuery(document).ready(function($) {
                 <td>
                     <input name="edit-field-description" id="edit-field-description" type="text" value="${field_settings['description']}">
                     <button class="button small expand_translations" name="translate-description-button" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
                         (${description_translations_count})
                     </button>
                 </td>
@@ -766,7 +792,7 @@ jQuery(document).ready(function($) {
             <td>
                 <input name="edit-option-label" id="new-option-name-${field_option_key}" type="text" value="${option_label}" required>
                 <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
-                    <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
                     (${translations_count})
                 </button>
             </td>
@@ -778,7 +804,7 @@ jQuery(document).ready(function($) {
             <td>
                 <input name="edit-option-description" id="new-option-description-${field_option_key}" type="text" value="${option_description}">
                 <button class="button expand_translations" name="translate-description-button" data-translation-type="field-option-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
-                    <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
                     (${description_translations_count})
                 </button>
             </td>
@@ -809,7 +835,7 @@ jQuery(document).ready(function($) {
             $('#add-new-tile-link').parent().before(`
             <div class="sortable-tile" id="${tile_key}">
                 <div class="field-settings-table-tile-name expandable menu-highlight" data-modal="edit-tile" data-key="${tile_key}">
-                    <span class="sortable">⋮⋮</span>
+                    <span class="sortable ui-icon ui-icon-arrow-4"></span>
                     <span class="expand-icon">+</span>
                     <span id="tile-key-${tile_key}" style="vertical-align: sub;">
                         ${tile_label}
@@ -821,7 +847,7 @@ jQuery(document).ready(function($) {
                 </div>
                 <div class="hidden">
                     <div class="field-settings-table-field-name inset-shadow">
-                        <span class="sortable">⋮⋮</span>
+                       <span class="sortable ui-icon ui-icon-arrow-4"></span>
                         <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
                             <a>add new field</a>
                         </span>
@@ -865,8 +891,8 @@ jQuery(document).ready(function($) {
             var new_field_nonexpandable_html = `
                 <div class="sortable-fields" id="${field_key}">
                     <div class="field-settings-table-field-name submenu-highlight" id="${field_key}" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
-                        <span class="sortable">⋮⋮</span>
-                        <span class="field-name-content" style="margin-left: 16px;" data-parent-tile="${new_field_tile}" data-key="${field_key}">
+                       <span class="sortable ui-icon ui-icon-arrow-4"></span>
+                        <span class="field-name-content" data-parent-tile="${new_field_tile}" data-key="${field_key}">
                             ${new_field_name}
                             <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
                                 <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
@@ -880,8 +906,8 @@ jQuery(document).ready(function($) {
             var new_field_expandable_html = `
             <div class="sortable-fields" id="${field_key}">
                 <div class="field-settings-table-field-name expandable submenu-highlight" id="${field_key}" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
-                    <span class="sortable">⋮⋮</span>
-                    <span class="expand-icon" style="padding-left: 16px;">+</span>
+                   <span class="sortable ui-icon ui-icon-arrow-4"></span>
+                    <span class="expand-icon">+</span>
                     <span class="field-name-content" data-parent-tile="${new_field_tile}" data-key="${field_key}">
                         ${new_field_name}
                         <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
@@ -893,12 +919,12 @@ jQuery(document).ready(function($) {
                 <!-- START TOGGLED ITEMS -->
                 <div class="field-settings-table-child-toggle">
                     <div class="field-settings-table-field-option inset-shadow">
-                        <span class="sortable">⋮⋮</span>
-                        <span class="field-name-content" style="padding-left: 16px;"><i>default blank</i></span>
+                       <span class="sortable ui-icon ui-icon-arrow-4"></span>
+                        <span class="field-name-content"><i>default blank</i></span>
                     </div>
                     <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="${new_field_tile}" data-field-key="${field_key}">
-                        <span class="sortable">⋮⋮</span>
-                        <span style="margin-left: 16px;">new field option</span>
+                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
+                        <span class="field-name-content">new field option2</span>
                     </div>
                 </div>
                 <!-- END TOGGLED ITEMS -->
@@ -986,8 +1012,8 @@ jQuery(document).ready(function($) {
             };
             var new_field_option_html = `
             <div class="field-settings-table-field-option">
-                <span class="sortable">⋮⋮</span>
-                <span class="field-name-content" data-parent-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${new_field_option_key}" style="margin-left: 16px;">
+               <span class="sortable ui-icon ui-icon-arrow-4"></span>
+                <span class="field-name-content" data-parent-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${new_field_option_key}" >
                     ${field_option_name}
                     <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
                         <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
@@ -1182,7 +1208,7 @@ jQuery(document).ready(function($) {
             }
 
             $(element_button_selector).html(`
-            <img style="height: 15px; vertical-align: middle" src="${window.wpApiShare.template_dir}/dt-assets/images/languages.svg">
+            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
                         (${translations_count})
             `);
             unflip_card();

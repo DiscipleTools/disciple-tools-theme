@@ -36,9 +36,18 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public function admin_enqueue_scripts() {
+        wp_register_script( 'jquery-ui-js', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', [ 'jquery' ], '1.12.1', true );
+        wp_enqueue_script( 'jquery-ui-js' );
+        wp_register_style( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css' );
+        wp_enqueue_style( 'jquery-ui' );
+
         dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
-        dt_theme_enqueue_script( 'dt-settings', 'dt-core/admin/js/dt-settings.js', [], true );
-        dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', [ 'lodash', 'moment' ] );
+        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
+        dt_theme_enqueue_script( 'dt-settings', 'dt-core/admin/js/dt-settings.js', [ 'jquery', 'jquery-ui-js', 'dt_shared_scripts' ], true );
+
+        wp_register_style( 'dt_settings_css', disciple_tools()->admin_css_url . 'dt-settings.css', [], filemtime( disciple_tools()->admin_css_path . 'dt-settings.css' ) );
+        wp_enqueue_style( 'dt_settings_css' );
+
 
         $post_type = self::get_parameter( 'post_type' );
         if ( !isset( $post_type ) || is_null( $post_type ) ) {
@@ -70,15 +79,19 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
         wp_localize_script(
             'dt-settings', 'field_settings', array(
-            'all_post_types' => self::get_all_post_types(),
-            'post_type' => $post_type,
-            'post_type_label' => DT_Posts::get_label_for_post_type( $post_type ),
-            'post_type_settings' => $post_settings,
-            'post_type_tiles' => DT_Posts::get_post_tiles( $post_type ),
-            'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
-            'translations' => apply_filters( 'dt_list_js_translations', $translations ),
-            'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
-            'languages' => dt_get_available_languages( true ),
+                'all_post_types' => self::get_all_post_types(),
+                'post_type' => $post_type,
+                'post_type_label' => DT_Posts::get_label_for_post_type( $post_type ),
+                'post_type_settings' => $post_settings,
+                'post_type_tiles' => DT_Posts::get_post_tiles( $post_type ),
+                'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
+                'translations' => apply_filters( 'dt_list_js_translations', $translations ),
+                'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
+                'languages' => dt_get_available_languages( true ),
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'site_url' => get_site_url(),
+                'template_dir' => get_template_directory_uri(),
             )
         );
 
@@ -104,7 +117,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public function content() {
-        $this->load_styles();
+
         $this->load_overlay_modal();
         self::template( 'begin', 1 );
             $this->space_between_div_open();
@@ -336,7 +349,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 <!-- START TILE -->
                 <div class="<?php echo esc_attr( self::get_sortable_class( $tile_key ) ); ?>" id="<?php echo esc_attr( $tile_key ); ?>">
                     <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>">
-                        <span class="sortable">⋮⋮</span>
+                       <span class="sortable ui-icon ui-icon-arrow-4"></span>
                         <span class="expand-icon">+</span>
                         <span id="tile-key-<?php echo esc_attr( $tile_key ); ?>" style="vertical-align: sub;">
                             <?php echo esc_html( isset( $tile_value['label'] ) ? $tile_value['label'] : $tile_key ); ?>
@@ -349,18 +362,18 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                             <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) : ?>
                                 <div class="sortable-field" id="<?php echo esc_attr( $field_key ); ?>">
-                                <?php if ( !isset( $field_settings['default'] ) || $field_settings['default'] === '' || $field_settings['type'] === 'tags' ): ?>
+                                <?php if ( $field_settings['type'] !== 'key_select' && $field_settings['type'] !== 'multi_select' ): ?>
                                     <div class="field-settings-table-field-name" id="<?php echo esc_attr( $field_key ); ?>" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
-                                        <span class="sortable">⋮⋮</span>
-                                        <span class="field-name-content" style="margin-left: 16px;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
+                                       <span class="sortable ui-icon ui-icon-arrow-4"></span>
+                                        <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
                                             <?php echo esc_html( $field_settings['name'] ); ?>
                                         </span>
                                         <span class="edit-icon"></span>
                                     </div>
                                 <?php else : ?>
                                     <div class="field-settings-table-field-name expandable" id="<?php echo esc_attr( $field_key ); ?>" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
-                                        <span class="sortable">⋮⋮</span>
-                                        <span class="expand-icon" style="padding-left: 16px;">+</span>
+                                       <span class="sortable ui-icon ui-icon-arrow-4"></span>
+                                        <span class="expand-icon">+</span>
                                         <span class="field-name-content" style="vertical-align: sub;" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
                                             <?php echo esc_html( $field_settings['name'] ); ?>
                                         </span>
@@ -382,18 +395,17 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                         $option_key = $v['default'];
                                                     }
                                                     ?>
-                                                <div class="field-settings-table-field-option" id="<?php echo esc_attr( $k ); ?>">
-                                                    <span class="sortable">⋮⋮</span>
-                                                    <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" style="padding-left: 16px;"><?php echo esc_html( $label ); ?></span>
-                                                    <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>"></span>
-                                                </div>
+                                                    <div class="field-settings-table-field-option" id="<?php echo esc_attr( $k ); ?>">
+                                                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
+                                                        <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" ><?php echo esc_html( $label ); ?></span>
+                                                        <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>"></span>
+                                                    </div>
                                                     <?php
                                                 }
                                             endif; ?>
                                         <?php endforeach; ?>
                                         <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
-                                            <span class="sortable">⋮⋮</span>
-                                            <span style="margin-left: 16px;vertical-align: sub;"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
+                                           <span class="add-new-item"><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
                                         </div>
                                     </div>
                                     <!-- END TOGGLED ITEMS -->
@@ -403,7 +415,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <?php endforeach; ?>
                         <!-- END TOGGLED FIELD ITEMS -->
                         <div class="field-settings-table-field-name expandable">
-                            <span class="sortable">⋮⋮</span>
                             <span class="field-name-content add-new-field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                 <a><?php echo esc_html( 'add new field', 'disciple_tools' ); ?></a>
                             </span>
@@ -415,7 +426,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <!-- START UNTILED FIELDS -->
             <div class="sortable-tile">
                 <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="no-tile-hidden">
-                    <span class="sortable">⋮⋮</span>
+                   <span class="sortable ui-icon ui-icon-arrow-4"></span>
                     <span class="expand-icon">+</span>
                     <span id="tile-key-untiled" style="vertical-align: sub;">
                         <?php echo esc_html_e( 'No Tile / Hidden', 'disciple-tools' ); ?>
@@ -426,8 +437,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                         <?php if ( ( !array_key_exists( 'tile', $field_settings ) || $field_settings['tile'] === 'no_tile' ) && ( !isset( $field_settings['customizable'] ) || $field_settings['customizable'] !== false ) && empty( $field_settings['hidden'] ) ) : ?>
                         <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="no-tile-hidden">
-                            <span class="sortable">⋮⋮</span>
-                            <span class="field-name-content" style="margin-left: 16px;" data-parent-tile-key="no-tile-hidden" data-key="<?php echo esc_attr( $field_key ); ?>">
+                           <span class="sortable ui-icon ui-icon-arrow-4"></span>
+                            <span class="field-name-content" data-parent-tile-key="no-tile-hidden" data-key="<?php echo esc_attr( $field_key ); ?>">
                                 <?php echo esc_html( $field_settings['name'] ); ?>
                             </span>
                             <span class="edit-icon"></span>
@@ -455,427 +466,13 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public static function field_option_in_tile( $field_option_name, $tile_name ) {
         $post_type = self::get_parameter( 'post_type' );
-        $post_tiles = DT_Posts::get_post_settings( $post_type, false );
+        $post_tiles = DT_Posts::get_post_settings( $post_type, true );
         if ( isset( $post_tiles['fields'][$field_option_name]['tile'] ) ) {
             if ( $post_tiles['fields'][$field_option_name]['tile'] === $tile_name ) {
                 return true;
             }
         }
         return false;
-    }
-    private function load_styles() {
-        ?>
-        <style>
-            .menu-highlight {
-                -webkit-animation: menu-highlight-fadeout 1s ease-in alternate;
-                -moz-animation: menu-highlight-fadeout 1s ease-in alternate;
-                animation: menu-highlight-fadeout 1s ease-in alternate;
-            }
-            .submenu-highlight {
-                -webkit-animation: submenu-highlight-fadeout 1s ease-in alternate;
-                -moz-animation: submenu-highlight-fadeout 1s ease-in alternate;
-                animation: submenu-highlight-fadeout 1s ease-in alternate;
-            }
-            @keyframes menu-highlight-fadeout {
-                from { background: #3f729b; }
-                to { background: #c2e0ff; }
-            }
-            @keyframes submenu-highlight-fadeout {
-                from { background: #3f729b; }
-                to { background: #d3d3d3; }
-            }
-            .modal-box-title {
-                text-align: left;
-                margin-bottom: 28px;
-            }
-            .modal-translations-box-title{
-                text-align: left;
-                background: #e9e9e9;
-            }
-            .add-new-field a {
-                margin-left: 16px;
-            }
-            .add-new-field-table {
-                padding: 18px;
-            }
-            .add-new-field-table input:not([type='checkbox']) {
-                width: 100%;
-                height: 30px;
-            }
-            .add-new-field-table select {
-                width: 100%;
-                height: 18px;
-            }
-            .dt-admin-modal-overlay {
-                width: 100%;
-                height: 100%;
-                background: #0000008C;
-                position: fixed;
-                top: 0;
-                left: 0;
-                z-index: 100000;
-            }
-            .dt-admin-modal-box {
-                z-index: 100001;
-                perspective: 1000px;
-            }
-            .dt-admin-modal-box-inner {
-                margin-top: 15%;
-                display: flex;
-                justify-content: center;
-                align-items: flex-start;
-                transition: transform 0.5s;
-                transform-style: preserve-3d;
-            }
-            .flip-card {
-                transform: rotateY(180deg);
-            }
-            .modal-front, .modal-back {
-                position: absolute;
-                width: auto;
-                height: auto;
-                min-width: 33%;
-                background: #fefefe;
-                border: 1px solid #cacaca;
-                -webkit-backface-visibility: hidden;
-                backface-visibility: hidden;
-            }
-            .modal-back {
-                transform: rotateY(180deg);
-            }
-            .dt-admin-modal-box-content {
-                padding: 8px;
-            }
-            .tile-rundown-elements {
-                margin-top: -1px;
-            }
-            .field-settings-table {
-                display: table;
-                min-width: 50%;
-                margin: auto;
-            }
-            .field-settings-table-tile-name {
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                font-weight: bold;
-                border: 1px solid lightgray;
-                background: #eaeaea;
-                cursor: pointer;
-                height: 32px;
-                margin-top: -1px;
-            }
-            .field-settings-table-field-name {
-                height: 32px;
-                display: flex;
-                align-items: center;
-                border: 1px solid lightgray;
-                background: #f6f6f6;
-                cursor: pointer;
-                box-shadow: inset -5px 0px 5px -2px #0000001a;
-                margin-top: -1px;
-            }
-            .field-settings-table-field-option {
-                height: 26px;
-                display: flex;
-                align-items: center;
-                border: 1px solid lightgray;
-                background: #fff;
-                cursor: pointer;
-                box-shadow: inset -5px 0px 5px -2px #0000001a;
-                margin-top: -1px;
-            }
-            .field-name-content {
-                vertical-align: sub;
-            }
-            .field-settings-table-child-toggle {
-                display:none;
-            }
-            .inset-shadow {
-                box-shadow: inset -5px 5px 5px -2px #0000001a;
-            }
-            .sortable {
-                color: #000;
-                margin: 0 8px 0 4px;
-                cursor: pointer;
-                vertical-align: -webkit-baseline-middle;
-            }
-            .expand-icon {
-                vertical-align: sub;
-                margin-right: 2px;
-            }
-            .edit-icon {
-                width: 18px;
-                height: 18px;
-                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' style='width:24px;height:24px' viewBox='0 0 24 24'%3E%3Cpath fill='%2350575e' d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z' /%3E%3C/svg%3E");
-                background-repeat: no-repeat;
-                margin-left: auto;
-                margin-right: 8px;
-            }
-            .add-new-link {
-                margin: 8px 0 0 8px;
-            }
-            .dt-admin-modal-box-close-button {
-                text-align: right;
-                color: #cacaca;
-                font-weight: 200;
-                font-size: 1.75rem;
-                position: absolute;
-                right: 0;
-                padding: 0.5rem;
-                cursor: pointer;
-            }
-            .dt-admin-modal-translations-box-close-button {
-                text-align: right;
-                color: #cacaca;
-                font-weight: 200;
-                font-size: 1.75rem;
-                position: absolute;
-                right: 0;
-                padding: 0.5rem;
-                cursor: pointer;
-            }
-            .modal-overlay-content-table, .modal-translations-overlay-content-table {
-                margin: 6px 10px 10px 10px;
-                line-height: 2.5;
-                max-height: 75%;
-            }
-            .modal-translations-overlay-content-table {
-                height: 40em;
-                overflow: auto;
-                justify-content: center;
-                display: flex;
-            }
-            .translations-save-row {
-                padding: 18px;
-                text-align: right;
-                border-top: 1px solid lightgray;
-            }
-            .fields-table-left {
-                width: 50%;
-                background: #f1f1f1;
-            }
-            .fields-table-right {
-                background-color: #f1f1f1;
-                max-width: 300px;
-            }
-            .field-container {
-                width: 100%;
-                margin-top: 0.5em;
-                cursor: pointer;
-            }
-            .field-element {
-                margin-left: 18px;
-            }
-            .field-icon {
-                width: 30px;
-                height: 30px;
-                vertical-align: top;
-            }
-            .new-custom-field {
-                display: block;
-                width: auto;
-                height: auto;
-                display: none;
-                border: 1px solid #ccc;
-                background-color: #fff;
-                margin: 3%;
-                padding: 1rem;
-                overflow: hidden;
-                scroll-behavior: smooth;
-            }
-            .new-field-option {
-                color: #0073aa;
-                cursor: pointer;
-            }
-            .dt-tile-preview {
-                width: auto;
-                background-color: #fefefe;
-                border: 1px solid #e6e6e6;
-                border-radius: 10px;
-                box-shadow: 0 2px 4px rgb(0 0 0 / 25%);
-                padding: 1rem;
-                margin: 3%;
-            }
-            .section-header {
-                display: flex;
-                color: #3f729b;
-                font-size: 1.5rem;
-                font-family: Helvetica,Arial,sans-serif;
-                font-style: normal;
-                font-weight: 300;
-                text-rendering: optimizeLegibility;
-                line-height: 1.4;
-                margin-bottom: 0.5rem;
-                margin-top: 0;
-            }
-            .section-body {
-                width: 100%;
-            }
-            .dt-tile-preview .chevron {
-                height:1.3rem;
-                width:1.3rem;
-                margin-inline-end: 0;
-                margin-inline-start: auto;
-            }
-            .section-subheader {
-                font-size: 14px;
-                font-weight: 700;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                color: #000;
-            }
-            .dt-icon {
-                height: 15px;
-                width: 15px;
-            }
-            .lightgray {
-                filter: invert(18%) sepia(0) saturate(19%) hue-rotate(170deg) brightness(108%) contrast(98%);
-            }
-            .button-group {
-                position: relative;
-                -webkit-box-align: stretch;
-                -webkit-box-flex: 1;
-                align-items: stretch;
-                flex-grow: 1;
-                flex-wrap: wrap;
-                margin-bottom: 1rem;
-                font-size: .75rem;
-            }
-            .button-group>button {
-                font-size: .75rem;
-                background-color: #eee;
-                color: #000;
-                margin: 5px;
-                border: 1px solid transparent;
-                border-radius: 5px;
-                padding: 0.85em 1em;
-            }
-            .typeahead-container {
-                margin-bottom: 10px;
-                width: 100%;
-                min-height: 2.5rem;
-                line-height: 1.5rem;
-                display: inline-flex;
-                position: relative;
-            }
-            .typeahead-input {
-                width: 100%;
-                padding: 0.5rem 0.75rem;
-                border: 1px solid #ccc;
-                border-radius: 2px 0 0 2px;
-                appearance: none;
-                box-sizing: border-box;
-                overflow: visible;
-                padding-right: 32px;
-            }
-            .typeahead-button {
-                color: #555;
-                border: 1px solid #ccc;
-                border-radius: 0 2px 2px 0;
-                background-color: #fff;
-                margin-left: -2px;
-                z-index: 1;
-                padding: 0.5rem 0.75rem;
-                vertical-align: middle;
-            }
-            .typeahead-button>img{
-                width: 20px;
-                height: 20px;
-                min-height: 15px;
-                min-width: 15px;
-            }
-            .typeahead-cancel-button {
-                height: 100%;
-                position: absolute;
-                right: 3rem;
-                padding: 4px 6px !important;
-                color: #555;
-            }
-            .typeahead-delete-button {
-                height: 100%;
-                position: absolute;
-                right: 0;
-                padding: 0.5rem 1.2rem;
-                color: #cc4b37;
-                background-color: #eee;
-                border: 1px solid #ccc;
-                border-radius: 0 2px 2px 0;
-            }
-            .typeahead-delete-button:hover {
-                background-color: #cc4b37;
-                color: #fff;
-            }
-            .dt-tile-preview .select-field {
-                width: 100%;
-            }
-            .select-field.color-select {
-                background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: white'></polygon></svg>");
-                background-size: 9px 6px;
-                font-weight: 700;
-                border: none;
-                border-radius: 10px;
-                color: #fff;
-                background-color: #4caf50;
-                text-shadow: rgb(0 0 0 / 45%) 0 0 6px;
-            }
-            .select-field.color-select:hover{
-                color: #fff;
-            }
-            .select-field:hover{
-                text-decoration: none;
-                cursor: default;
-            }
-            select {
-                background-repeat: no-repeat;
-                margin-bottom: 1rem;
-            }
-            .dt-tile-preview .text-input{
-                border: 1px solid #cacaca;
-                border-radius: 0;
-                display: block;
-                line-height: 1.5;
-                margin: 0 0 1rem;
-                padding: 0.5rem;
-                width:100%;
-                box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
-            }
-            .top-nav-row {
-                display: flex;
-                justify-content: space-between;
-            }
-            .typeahead-div {
-                min-width: 40%;
-                padding: 18px 18px 0 0;
-            }
-            .tab-content {
-                padding: 12px;
-            }
-            .typeahead__container {
-                position: absolute;
-                min-width: 40%;
-            }
-            .typeahead__result {
-                background-color: #fff;
-                border: 1px solid #555;
-            }
-            .typeahead__item>a{
-                color: #000;
-                font-size: medium;
-                font-weight: normal;
-                margin: 12px;
-            }
-            .typeahead__display {
-                line-height: 2.25em;
-            }
-            .js-typeahead-settings {
-                width: 100%;
-                height: 3em;
-                padding-left: 12px;
-            }
-        </style>
-        <?php
     }
     public function save_settings(){
         if ( !empty( $_POST ) ){
