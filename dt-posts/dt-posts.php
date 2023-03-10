@@ -448,6 +448,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     'meta_key'          => 'name',
                     'meta_value'        => $title,
                     'old_value'         => $existing_post['name'],
+                    'field_type' => $post_settings['fields']['name']['type'] ?? 'text' // Always default to text!
                 ] );
             }
             if ( isset( $fields['name'] ) ){
