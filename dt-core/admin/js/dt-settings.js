@@ -36,10 +36,11 @@ jQuery(document).ready(function($) {
         tile_key: tile_key,
     }, `dt-core/v1`);
 
-    window.API.edit_tile = (post_type, tile_key, tile_label, hide_tile) => makeRequest("POST", `edit-tile`, {
+    window.API.edit_tile = (post_type, tile_key, tile_label, tile_description, hide_tile) => makeRequest("POST", `edit-tile`, {
         post_type: post_type,
         tile_key: tile_key,
         tile_label: tile_label,
+        tile_description: tile_description,
         hide_tile: hide_tile,
     }, `dt-core/v1/`);
 
@@ -430,7 +431,7 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <label for="new_tile_name"><b>* Name:</b></label>
+                <label for="new_tile_name"><b>Name:</b></label>
             </td>
             <td>
                 <input name="new_tile_name" id="new_tile_name" type="text" required>
@@ -461,7 +462,10 @@ jQuery(document).ready(function($) {
         }
 
         API.get_tile(post_type, tile_key).promise().then(function(data) {
-
+            var tile_description = '';
+            if ( data['description'] ) {
+                tile_description = data['description'];
+            }
             var hide_tile = '';
             if (data['hidden']) {
                 hide_tile = 'checked';
@@ -492,6 +496,18 @@ jQuery(document).ready(function($) {
                         (${translations_count})
                     </button>
                 </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="edit-tile-description"><b>Description</b></label>
+                </td>
+                <td>
+                <input name="edit-tile-description" id="edit-tile-description-${tile_key}" type="text" value="${tile_description}">
+                <button class="button expand_translations" name="translate-description-button" data-translation-type="tile-description" data-post-type="${post_type}" data-tile-key="${tile_key}">
+                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                    (${translations_count})
+                </button>
+            </td>
             </tr>
             <tr>
                 <td>
@@ -874,8 +890,9 @@ jQuery(document).ready(function($) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
         var tile_label = $(`#edit-tile-label-${tile_key}`).val();
+        var tile_description = $(`#edit-tile-description-${tile_key}`).val();
         var hide_tile = $(`#hide-tile-${tile_key}`).is(':checked');
-        API.edit_tile(post_type, tile_key, tile_label, hide_tile).promise().then(function(response) {
+        API.edit_tile(post_type, tile_key, tile_label, tile_description, hide_tile).promise().then(function(response) {
             window['field_settings']['post_type_tiles'][tile_key] = response;
             $(`#tile-key-${tile_key}`).html(tile_label);
             show_preview_tile(tile_key);

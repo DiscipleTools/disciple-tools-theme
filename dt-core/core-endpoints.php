@@ -337,8 +337,12 @@ class Disciple_Tools_Core_Endpoints {
 
         $custom_tile = $tile_options[$post_type][$tile_key];
 
-        if ( isset( $post_submission['tile_label'] ) && $post_submission['tile_label'] != ( $custom_tile['label'] ?? $tile_key ) ){
+        if ( isset( $post_submission['tile_label'] ) && $post_submission['tile_label'] != ( $custom_tile['label'] ?? $tile_key ) ) {
             $custom_tile['label'] = $post_submission['tile_label'];
+        }
+
+        if ( isset( $post_submission['tile_description'] ) && $post_submission['tile_description'] != ( $custom_tile['description'] ?? $tile_key ) ) {
+            $custom_tile['description'] = $post_submission['tile_description'];
         }
 
         $custom_tile['hidden'] = false;
@@ -352,7 +356,7 @@ class Disciple_Tools_Core_Endpoints {
             $custom_tile['hidden'] = false;
         }
 
-        if ( isset( $post_submission['tile_description'] ) && $post_submission['tile_description'] != ( $custom_tile['description'] ?? '' ) ){
+        if ( isset( $post_submission['tile_description'] ) && $post_submission['tile_description'] != ( $custom_tile['description'] ?? '' ) ) {
             $custom_tile['description'] = $post_submission['tile_description'];
         }
 
