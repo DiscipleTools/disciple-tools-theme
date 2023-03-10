@@ -22,7 +22,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     );
 
     public static function get_post_types(){
-        return apply_filters( 'dt_registered_post_types', [] );
+        return array_unique( apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] ) );
     }
 
     /**
@@ -2194,7 +2194,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $load_from_cache && $cached ){
             return $cached;
         }
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = self::get_post_types();
         $fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, $post_type );
 
@@ -2226,6 +2226,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                                 }
                                 if ( is_array( $fields[$key][$custom_option_key] ) ){
                                     $fields[$key][$custom_option_key] = dt_array_merge_recursive_distinct( $fields[$key][$custom_option_key], $custom_option_value );
+                                } else if ( !empty( $custom_option_value ) ){
+                                    $fields[$key][$custom_option_key] = $custom_option_value;
                                 }
                             }
                         }

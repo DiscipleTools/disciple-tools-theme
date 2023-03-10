@@ -93,14 +93,16 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @return string
      */
     if ( ! function_exists( 'dt_get_url_path' ) ) {
-        function dt_get_url_path( $ignore_query_parameters = false ) {
+        function dt_get_url_path( $ignore_query_parameters = false, $include_host = false ) {
             if ( isset( $_SERVER['HTTP_HOST'] ) ) {
                 $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
                 if ( isset( $_SERVER['REQUEST_URI'] ) ) {
                     $url .= esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
                 }
                 //remove the domain part. Ex: https://example.com/
-                $url = trim( str_replace( get_site_url(), '', $url ), '/' );
+                if ( $include_host === false ) {
+                    $url = trim( str_replace( get_site_url(), '', $url ), '/' );
+                }
 
                 //remove query parameters
                 if ( $ignore_query_parameters ){
