@@ -144,10 +144,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         </table>
         <script>
             jQuery('#dt_import_tile_settings_service_select_all_checkbox').on('click', function (e) {
-                jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox').each(function (idx, checkbox) {
-                    if( !jQuery(checkbox).attr('disabled') ) {
-                        jQuery('.dt-import-tile-settings-details-table-checkbox').prop('checked', jQuery(e.currentTarget).prop('checked'));
-                    }
+                jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox:not(:disabled)').each(function (idx, checkbox) {
+                    jQuery(checkbox).prop('checked', jQuery(e.currentTarget).prop('checked'));
                 });
             });
         </script>
@@ -162,13 +160,15 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
         let tiles = [];
         jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox:checked').each(function (idx, checkbox) {
-            let post_type = jQuery(checkbox).data('post_type');
-            let tile_id = jQuery(checkbox).data('tile_id');
-            if(post_type && tile_id) {
-                tiles.push({
-                    'post_type' : post_type,
-                    'tile_id' : tile_id
-                });
+            if( !jQuery(checkbox).attr('disabled') ) {
+                let post_type = jQuery(checkbox).data('post_type');
+                let tile_id = jQuery(checkbox).data('tile_id');
+                if(post_type && tile_id) {
+                    tiles.push({
+                        'post_type' : post_type,
+                        'tile_id' : tile_id
+                    });
+                }
             }
         });
         return tiles;
@@ -176,12 +176,36 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         <?php
         $html_js_handler_func = ob_get_clean();
 
+        // Next, capture selection handler js function logic.
+        ob_start();
+        ?>
+
+        jQuery('#dt_import_tile_settings_service_select_all_checkbox').prop('checked', (select_type == 'all'));
+        jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox:not(:disabled)').each(function (idx, checkbox) {
+            switch (select_type) {
+                case 'all': {
+                    jQuery(checkbox).prop('checked', true);
+                    break;
+                }
+                case 'some': {
+                    break;
+                }
+                case 'none': {
+                    jQuery(checkbox).prop('checked', false);
+                    break;
+                }
+            }
+        });
+        <?php
+        $html_js_selection_handler_func = ob_get_clean();
+
         // Finally, package detail parts and return.
         $details[self::$export_import_id] = [
             'id' => self::$export_import_id,
             'enabled' => true,
             'html' => $html,
-            'html_js_handler_func' => $html_js_handler_func
+            'html_js_handler_func' => $html_js_handler_func,
+            'html_js_selection_handler_func' => $html_js_selection_handler_func
         ];
 
         return $details;

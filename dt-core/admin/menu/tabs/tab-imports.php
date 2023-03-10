@@ -166,10 +166,29 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
             <table class="widefat striped" id="dt_import_table">
                 <thead>
                     <tr>
-                        <th style="text-align: right; padding-right: 14px;">
-                            <input type="checkbox" id="dt_import_service_select_all_checkbox"/>
-                        </th>
+                        <th style="text-align: right; padding-right: 14px;"></th>
                         <th></th>
+                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
+                            <label for="dt_import_service_select_all">All Assets</label><br>
+                            <input type="radio" id="dt_import_service_select_all"
+                                   name="dt_import_service_select_th_option"
+                                   class="dt-import-service-select-th-option"
+                                   data-select_type="all"/>
+                        </th>
+                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
+                            <label for="dt_import_service_select_some">Choose Assets</label><br>
+                            <input type="radio" id="dt_import_service_select_some"
+                                   name="dt_import_service_select_th_option"
+                                   class="dt-import-service-select-th-option"
+                                   data-select_type="some"/>
+                        </th>
+                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
+                            <label for="dt_import_service_select_none">None</label><br>
+                            <input type="radio" id="dt_import_service_select_none"
+                                   name="dt_import_service_select_th_option" class="dt-import-service-select-th-option"
+                                   data-select_type="none"
+                                   checked/>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -181,14 +200,31 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                     if ( isset( $service['id'], $service['enabled'], $service['label'], $uploaded_config['payload'], $uploaded_config['payload'][$id] ) && $service['enabled'] ){
                         ?>
                         <tr>
-                            <td style="text-align: right;">
-                                <input type="checkbox" class="dt-import-service-checkbox" data-service_id="<?php echo esc_attr( $service['id'] ) ?>"/>
-                            </td>
+                            <td style="text-align: right;"></td>
                             <td>
                                 <a href="#" class="dt-import-service" data-service_id="<?php echo esc_attr( $service['id'] ) ?>"><?php echo esc_attr( $service['label'] ) ?></a><br>
                                 <span style="font-size: 10px; color: #9a9797;">
                                     <?php echo esc_attr( $service['description'] ?? '' ) ?>
                                 </span>
+                            </td>
+                            <td style="text-align: center;">
+                                <input type="radio" class="dt-import-service-select-td-option"
+                                       name="dt_import_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-select_type="all"/>
+                            </td>
+                            <td style="text-align: center;">
+                                <input type="radio" class="dt-import-service-select-td-option"
+                                       name="dt_import_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-select_type="some"/>
+                            </td>
+                            <td style="text-align: center;">
+                                <input type="radio" class="dt-import-service-select-td-option"
+                                       name="dt_import_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-select_type="none"
+                                       checked/>
                             </td>
                         </tr>
                         <?php
@@ -213,7 +249,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
 
         $import_services_details = apply_filters( 'dt_import_services_details', [], $uploaded_config );
         foreach ( $import_services_details as $id => $service ){
-            if ( isset( $service['id'], $service['enabled'], $service['html'], $service['html_js_handler_func'] ) && $service['enabled'] ){
+            if ( isset( $service['id'], $service['enabled'], $service['html'], $service['html_js_handler_func'], $service['html_js_selection_handler_func'] ) && $service['enabled'] ){
                 ?>
                 <div class="dt-import-service-details" data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
                      style="display: none;">
@@ -229,6 +265,15 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                     <?php
                     //phpcs:disable
                     echo $service['html_js_handler_func'];
+                    //phpcs:enable
+                    ?>
+                </div>
+                <div class="dt-import-service-details-js-selection-handler-func"
+                     data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
+                     style="display: none;">
+                    <?php
+                    //phpcs:disable
+                    echo $service['html_js_selection_handler_func'];
                     //phpcs:enable
                     ?>
                 </div>

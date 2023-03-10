@@ -188,43 +188,85 @@ jQuery(document).ready(function ($) {
 
       // Proceed with tweaking panel sizes and positions.
       $(main).css({
-        'width': '75%',
-        'min-width': '',
+        'width': '60%',
         'float': 'left'
       });
 
       $(side).css({
-        'width': '450px',
+        'width': '40%',
         'margin-right': '-300px',
-        'float': 'right'
+        'margin-left': '5px'
       });
+
+      // By default, hide right-side section.
+      $(side).hide();
     }
   }
 
   // Listen out for specific events.
-  $('#dt_import_service_select_all_checkbox').on('click', function (e) {
-    $('.dt-import-service-checkbox').prop('checked', $(e.currentTarget).prop('checked'));
+  $('.dt-import-service-select-td-option').on('click', function (e) {
+    handle_service_selection($(e.currentTarget).data('service_id'), $(e.currentTarget).data('select_type'));
   });
+
+  $('.dt-import-service-select-th-option').on('click', function (e) {
+    let select_type = $(e.currentTarget).data('select_type');
+
+    // Un-select everything.
+    $('.dt-import-service-select-td-option').prop('checked', false);
+
+    // Select all corresponding service type options.
+    $('.dt-import-service-select-td-option[data-select_type="'+ select_type +'"]').prop('checked', true);
+
+    // Iterate over all services and adjust selection states.
+    $('#dt_import_table').find('.dt-import-service').each(function (idx, service) {
+      handle_service_selection($(service).data('service_id'), select_type);
+    });
+  });
+
+  function handle_service_selection(service_id, select_type) {
+    let service_details_js_selection_handler_func = $('.dt-import-service-details-js-selection-handler-func[data-service_id=\'' + service_id + '\']').text();
+
+    // Carry out selection specific display operations.
+    switch (select_type) {
+      case 'all':
+      case 'some': {
+        if (service_id) {
+          display_import_service_details(service_id,function () {
+            Function('select_type', service_details_js_selection_handler_func)(select_type);
+          });
+        }
+        break;
+      }
+      case 'none': {
+        $('.dt-import-service-details').fadeOut('fast', function () {
+          $('#postbox-container-1').fadeOut('fast', function () {
+            Function('select_type', service_details_js_selection_handler_func)(select_type);
+          });
+        });
+        break;
+      }
+    }
+  }
 
   $('.dt-import-service').on('click', function (e) {
-    display_import_service_details($(e.currentTarget).data('service_id'));
-  });
-
-  $('.dt-import-service-checkbox').on('click', function (e) {
-    if ($(e.currentTarget).prop('checked')) {
-      display_import_service_details($(e.currentTarget).data('service_id'));
-    }
-  });
-
-  function display_import_service_details(service_id) {
-    $('.dt-import-service-details').fadeOut('fast', function () {
-
-      // Display details corresponding to selected service id.
-      let service_details = $('.dt-import-service-details[data-service_id=\'' + service_id + '\']');
-      if (service_details) {
-        $(service_details).fadeIn('slow');
-      }
+    display_import_service_details($(e.currentTarget).data('service_id'), function () {
     });
+  });
+
+  function display_import_service_details(service_id, after_details_hide_func) {
+    $('.dt-import-service-details').each(function (idx, details) {
+      $(details).hide();
+    });
+
+    after_details_hide_func();
+
+    // Display details corresponding to selected service id.
+    let service_details = $('.dt-import-service-details[data-service_id=\'' + service_id + '\']');
+    if (service_details) {
+      $(service_details).fadeIn('fast', function () {
+        $('#postbox-container-1').fadeIn('fast');
+      });
+    }
   }
 
   $('#dt_import_submit_but').on('click', function (e) {
@@ -232,22 +274,28 @@ jQuery(document).ready(function ($) {
 
     let services = {};
 
-    // Iterate over all selected service checkboxes.
-    $('#dt_import_table').find('.dt-import-service-checkbox:checked').each(function (idx, selected_service) {
-      let service_id = $(selected_service).data('service_id');
-      let service_details = [];
+    // Iterate over all selected services.
+    $('#dt_import_table').find('.dt-import-service-select-td-option:checked').each(function (idx, selected_service) {
+      switch ($(selected_service).data('select_type')) {
+        case 'all':
+        case 'some': {
+          let service_id = $(selected_service).data('service_id');
+          let service_details = [];
 
-      // Fetch any associated service details.
-      let service_details_js_handler_func = $('.dt-import-service-details-js-handler-func[data-service_id=\'' + service_id + '\']').text();
-      if (service_details_js_handler_func) {
-        service_details = Function(service_details_js_handler_func)();
+          // Fetch any associated service details.
+          let service_details_js_handler_func = $('.dt-import-service-details-js-handler-func[data-service_id=\'' + service_id + '\']').text();
+          if (service_details_js_handler_func) {
+            service_details = Function(service_details_js_handler_func)();
+          }
+
+          // Package service findings.
+          services[service_id] = {
+            'id': service_id,
+            'details': service_details
+          };
+          break;
+        }
       }
-
-      // Package service findings.
-      services[service_id] = {
-        'id': service_id,
-        'details': service_details
-      };
     });
 
     // Update import form variables and submit.
