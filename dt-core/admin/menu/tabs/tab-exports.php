@@ -128,7 +128,7 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
 
                         // Package into a downloadable object.
                         $downloadable = [
-                            'metadata' => [
+                            'site_meta' => [
                                 'timestamp' => time(),
                                 'wp_version' => get_bloginfo( 'version' ),
                                 'php_version' => phpversion(),
@@ -138,7 +138,9 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                                 'multisite' => is_multisite(),
                                 'plugins' => $filtered_plugins
                             ],
-                            'payload' => $export_payload['payload']
+                            'dt_settings' => $export_payload['payload'],
+                            'wp_settings' => [],
+                            'multisite_settings' => []
                         ];
 
                         $dt_export_downloadable_filename = 'dt-' . time() . '.json';

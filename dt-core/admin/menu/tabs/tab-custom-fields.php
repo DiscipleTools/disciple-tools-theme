@@ -53,9 +53,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     } // End __construct()
 
     private static $export_import_id = 'dt_custom_field_settings';
+    private static $import_config_json_id = 'dt_settings';
     public function export_import_services( $services ){
         $services[self::$export_import_id] = [
             'id' => self::$export_import_id,
+            'config_json_id' => self::$import_config_json_id,
             'enabled' => true,
             'label' => __( 'D.T Custom Field Settings', 'disciple_tools' ),
             'description' => __( 'Export/Import custom D.T field settings.', 'disciple_tools' )
@@ -72,7 +74,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
 
             if ( !empty( $payload ) ){
-                $export_payload['payload'][self::$export_import_id] = $payload;
+                $export_payload['payload'][self::$export_import_id]['values'] = $payload;
             }
         }
 
@@ -82,7 +84,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     public function import_services_details( $details, $imported_config ){
 
         // Ensure imported config makes reference to corresponding id.
-        if ( !isset( $imported_config['payload'], $imported_config['payload'][self::$export_import_id] ) ){
+        if ( !isset( $imported_config[self::$import_config_json_id], $imported_config[self::$import_config_json_id][self::$export_import_id] ) ){
             return $details;
         }
 
@@ -97,9 +99,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <thead>
                 <tr>
                     <th style="text-align: right; padding-right: 14px;">
+                        <input type="checkbox" id="dt_import_field_settings_service_enable_overwrite_checkbox"/>
+                    </th>
+                    <th>Enable Overwrite</th>
+                </tr>
+                <tr>
+                    <th style="text-align: right; padding-right: 14px;">
                         <input type="checkbox" id="dt_import_field_settings_service_select_all_checkbox"/>
                     </th>
-                    <th></th>
+                    <th>Select All</th>
                 </tr>
             </thead>
             <tbody>
@@ -109,7 +117,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $existing_post_types = DT_Posts::get_post_types() ?? [];
 
             // Ensure displayed post types are driven by incoming config.
-            foreach ( $imported_config['payload'][self::$export_import_id] ?? [] as $post_type => $field_config ){
+            $existing_fields = [];
+            foreach ( $imported_config[self::$import_config_json_id][self::$export_import_id]['values'] ?? [] as $post_type => $field_config ){
 
                 // Target instance, must contain corresponding post type, in order for incoming fields to be set.
                 if ( in_array( $post_type, $existing_post_types ) ){
@@ -142,6 +151,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             </td>
                         </tr>
                         <?php
+
+                        // Keep a record of pre-existing fields.
+                        if ( $already_has_field ){
+                            if ( !isset( $existing_fields[$post_type] ) ){
+                                $existing_fields[$post_type] = [];
+                            }
+                            $existing_fields[$post_type][] = $field_id;
+                        }
                     }
                 }
             }
@@ -149,6 +166,23 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             </tbody>
         </table>
         <script>
+            let existing_fields = [<?php echo json_encode( $existing_fields ) ?>][0];
+            jQuery('#dt_import_field_settings_service_enable_overwrite_checkbox').on('click', function (e) {
+                if (jQuery(e.currentTarget).prop('checked')) {
+                    jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-field-settings-details-table-checkbox').prop('disabled', false);
+                } else {
+                    jQuery.each(existing_fields, function (post_type, post_type_array) {
+                        jQuery.each(post_type_array, function (idx, field_id) {
+                            let checkbox = jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-field-settings-details-table-checkbox[data-post_type="' + post_type + '"][data-field_id="' + field_id + '"]');
+                            if (checkbox) {
+                                jQuery(checkbox).prop('checked', false);
+                                jQuery(checkbox).prop('disabled', true);
+                            }
+                        });
+                    });
+                }
+            });
+
             jQuery('#dt_import_field_settings_service_select_all_checkbox').on('click', function (e) {
                 jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-field-settings-details-table-checkbox:not(:disabled)').each(function (idx, checkbox) {
                     jQuery(checkbox).prop('checked', jQuery(e.currentTarget).prop('checked'));
@@ -226,7 +260,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         // Ensure imported config makes reference to corresponding id and has required settings.
         $service_label = __( 'D.T Custom Field Settings', 'disciple_tools' );
-        if ( !isset( $selected_services[self::$export_import_id], $selected_services[self::$export_import_id]['details'], $imported_config['payload'], $imported_config['payload'][self::$export_import_id] ) || empty( $selected_services[self::$export_import_id]['details'] ) ){
+        if ( !isset( $selected_services[self::$export_import_id], $selected_services[self::$export_import_id]['details'], $imported_config[self::$import_config_json_id], $imported_config[self::$import_config_json_id][self::$export_import_id] ) || empty( $selected_services[self::$export_import_id]['details'] ) ){
             echo '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( __( 'Unable to detect suitable configuration settings!', 'disciple_tools' ) ) . '</p>';
             return;
         }
@@ -245,21 +279,17 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $existing_field_settings[$field_post_type] = DT_Posts::get_post_field_settings( $field_post_type, false );
             }
 
-            // Ensure field does not already exist.
-            if ( !in_array( $field_id, array_keys( $existing_field_settings[$field_post_type] ) ) ) {
+            // Fetch corresponding imported field config.
+            if ( isset( $imported_config[self::$import_config_json_id][self::$export_import_id]['values'][$field_post_type], $imported_config[self::$import_config_json_id][self::$export_import_id]['values'][$field_post_type][$field_id] ) ) {
 
-                // Fetch corresponding imported field config.
-                if ( isset( $imported_config['payload'][self::$export_import_id][$field_post_type], $imported_config['payload'][self::$export_import_id][$field_post_type][$field_id] ) ) {
-
-                    // Make field options provision if needed, before committing.
-                    if ( !isset( $existing_field_options[$field_post_type] ) ){
-                        $existing_field_options[$field_post_type] = [];
-                    }
-                    $existing_field_options[$field_post_type][$field_id] = $imported_config['payload'][self::$export_import_id][$field_post_type][$field_id];
-
-                    // Keep count of number of imported fields.
-                    $import_count++;
+                // Make field options provision if needed, before committing.
+                if ( !isset( $existing_field_options[$field_post_type] ) ){
+                    $existing_field_options[$field_post_type] = [];
                 }
+                $existing_field_options[$field_post_type][$field_id] = $imported_config[self::$import_config_json_id][self::$export_import_id]['values'][$field_post_type][$field_id];
+
+                // Keep count of number of imported fields.
+                $import_count++;
             }
         }
 

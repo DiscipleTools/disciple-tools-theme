@@ -197,7 +197,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                 foreach ( $import_services as $id => $service ){
 
                     // Only display enabled services; which are also present within uploaded import configuration.
-                    if ( isset( $service['id'], $service['enabled'], $service['label'], $uploaded_config['payload'], $uploaded_config['payload'][$id] ) && $service['enabled'] ){
+                    if ( isset( $service['id'], $service['config_json_id'], $service['enabled'], $service['label'], $uploaded_config[$service['config_json_id']], $uploaded_config[$service['config_json_id']][$id] ) && $service['enabled'] ){
                         ?>
                         <tr>
                             <td style="text-align: right;"></td>
