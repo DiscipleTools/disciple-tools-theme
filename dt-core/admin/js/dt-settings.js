@@ -456,9 +456,15 @@ jQuery(document).ready(function($) {
     // Edit Tile Modal
     function loadEditTileContentBox(tile_key) {
         var post_type = get_post_type();
+
         var translations_count = 0;
         if (window['field_settings']['post_type_tiles'][tile_key]['translations']) {
             translations_count = Object.values(window['field_settings']['post_type_tiles'][tile_key]['translations']).filter(function(t) {return t;}).length;
+        }
+
+        var description_translations_count = 0;
+        if (window['field_settings']['post_type_tiles'][tile_key]['description_translations']) {
+            description_translations_count = Object.values(window['field_settings']['post_type_tiles'][tile_key]['description_translations']).filter(function(t) {return t;}).length;
         }
 
         API.get_tile(post_type, tile_key).promise().then(function(data) {
@@ -505,7 +511,7 @@ jQuery(document).ready(function($) {
                 <input name="edit-tile-description" id="edit-tile-description-${tile_key}" type="text" value="${tile_description}">
                 <button class="button expand_translations" name="translate-description-button" data-translation-type="tile-description" data-post-type="${post_type}" data-tile-key="${tile_key}">
                     <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                    (${translations_count})
+                    (${description_translations_count})
                 </button>
             </td>
             </tr>
@@ -632,6 +638,7 @@ jQuery(document).ready(function($) {
         var tile_key = field_data['tile_key'];
         var field_key = field_data['field_key'];
         var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
+
         var translations_count = 0;
         if (window['field_settings']['post_type_settings']['fields'][field_key]['translations']) {
             translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['translations']).filter(function(t){return t;}).length;
@@ -951,7 +958,7 @@ jQuery(document).ready(function($) {
                     </div>
                     <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="${new_field_tile}" data-field-key="${field_key}">
                         <span class="sortable ui-icon ui-icon-arrow-4"></span>
-                        <span class="field-name-content">new field option2</span>
+                        <span class="field-name-content">new field option</span>
                     </div>
                 </div>
                 <!-- END TOGGLED ITEMS -->
@@ -962,10 +969,10 @@ jQuery(document).ready(function($) {
                 new_field_html = new_field_expandable_html;
             }
             if (new_field_tile){
-                $(`.field-name-content.add-new-field[data-parent-tile-key='${new_field_tile}']`).parent().before(new_field_html);
+                $(`.add-new-field[data-parent-tile-key='${new_field_tile}']`).parent().before(new_field_html); //todo
                 show_preview_tile(new_field_tile);
             } else {
-                $('.field-name-content.add-new-field').parent().before(new_field_html);
+                $('.add-new-field').parent().before(new_field_html);
             }
             render_element_shadows();
             closeModal();
@@ -1089,6 +1096,11 @@ jQuery(document).ready(function($) {
             element_key = tile_key;
         }
 
+        if ( translation_type === 'tile-description' ) {
+            element_type = 'Tile Description';
+            element_key = tile_key;
+        }
+
         if ( translation_type === 'field-label' ) {
             element_type = 'Field Label';
             element_key = field_key;
@@ -1117,7 +1129,13 @@ jQuery(document).ready(function($) {
 
         if ( translation_type === 'tile-label' ) {
             if ( window['field_settings']['post_type_tiles'][tile_key]['translations'] ) {
-                available_translations = window['field_settings']['post_type_tiles'][tile_key]['translations']
+                available_translations = window['field_settings']['post_type_tiles'][tile_key]['translations'];
+            }
+        }
+
+        if ( translation_type === 'tile-description' ) {
+            if ( window['field_settings']['post_type_tiles'][tile_key]['description_translations'] ) {
+                available_translations = window['field_settings']['post_type_tiles'][tile_key]['description_translations'];
             }
         }
 
@@ -1200,7 +1218,9 @@ jQuery(document).ready(function($) {
         $.each(translation_inputs, function(key, t) {
             var translation_value = $(t).val();
             var translation_key = $(t).data('translation-key');
-            translations[translation_key] = translation_value;
+            if (translation_value) {
+                translations[translation_key] = translation_value;
+            }
         });
 
         translations = JSON.stringify(translations);
@@ -1210,11 +1230,19 @@ jQuery(document).ready(function($) {
             if ( translation_type === 'tile-label' ) {
                 window['field_settings']['post_type_tiles'][tile_key]['translations'] = response;
                 translations_count = Object.values(window['field_settings']['post_type_tiles'][tile_key]['translations']).filter(function(t) {return t;}).length;
+                element_button_selector = $('.expand_translations[name="translate-label-button"]');
+            }
+
+            if ( translation_type === 'tile-description' ) {
+                window['field_settings']['post_type_tiles'][tile_key]['description_translations'] = response;
+                translations_count = Object.values(window['field_settings']['post_type_tiles'][tile_key]['description_translations']).filter(function(t) {return t;}).length;
+                element_button_selector = $('.expand_translations[name="translate-description-button"]');
             }
 
             if ( translation_type === 'field-label' ) {
                 window['field_settings']['post_type_settings']['fields'][field_key]['translations'] = response;
                 translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['translations']).filter(function(t) {return t;}).length;
+                element_button_selector = $('.expand_translations[name="translate-label-button"]');
             }
 
             if ( translation_type === 'field-description' ) {
@@ -1226,6 +1254,7 @@ jQuery(document).ready(function($) {
             if ( translation_type === 'field-option-label' ) {
                 window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations'] = response;
                 translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']).filter(function(t) {return t;}).length;
+                element_button_selector = $('.expand_translations[name="translate-label-button"]');
             }
 
             if ( translation_type === 'field-option-description' ) {

@@ -331,7 +331,7 @@ class Disciple_Tools_Core_Endpoints {
         $tile_options = dt_get_option( 'dt_custom_tiles' );
         $tile_key = $post_submission['tile_key'];
 
-        if ( !isset( $tile_options[$post_type][$tile_key] ) ){
+        if ( !isset( $tile_options[$post_type][$tile_key] ) ) {
             $tile_options[$post_type][$tile_key] = [];
         }
 
@@ -346,13 +346,13 @@ class Disciple_Tools_Core_Endpoints {
         }
 
         $custom_tile['hidden'] = false;
-        if ( isset( $post_submission['hide_tile'] ) ){
+        if ( isset( $post_submission['hide_tile'] ) ) {
             if ( $post_submission['hide_tile'] ) {
                 $custom_tile['hidden'] = true;
             }
         }
 
-        if ( isset( $post_submission['restore_tile'] ) ){
+        if ( isset( $post_submission['restore_tile'] ) ) {
             $custom_tile['hidden'] = false;
         }
 
@@ -376,10 +376,13 @@ class Disciple_Tools_Core_Endpoints {
 
             $tile_options = dt_get_option( 'dt_custom_tiles' );
             $field_customizations = dt_get_option( 'dt_field_customizations' );
-            $langs = dt_get_available_languages();
 
             switch ( $post_submission['translation_type'] ) {
                 case 'tile-label':
+                    $translated_element = $tile_options[$post_type][$tile_key];
+                    break;
+
+                case 'tile-description':
                     $translated_element = $tile_options[$post_type][$tile_key];
                     break;
 
@@ -424,16 +427,19 @@ class Disciple_Tools_Core_Endpoints {
                 $translations_element_key = 'description_translations';
             }
 
-            foreach ( $langs as $lang => $val ) {
-                $langcode = $val['language'];
-                if ( $translations[$langcode] === '' ) {
-                    $translations[$langcode] = null;
+            foreach ( $translations as $lang_key => $translation_val ) {
+                if ( $lang_key !== '' || !is_null( $lang_key ) ) {
+                    $translated_element[$translations_element_key][$lang_key] = $translation_val;
                 }
-                $translated_element[$translations_element_key][$langcode] = $translations[$langcode];
             }
 
             switch ( $post_submission['translation_type'] ) {
                 case 'tile-label':
+                    $tile_options[$post_type][$tile_key] = $translated_element;
+                    update_option( 'dt_custom_tiles', $tile_options );
+                    break;
+
+                case 'tile-description':
                     $tile_options[$post_type][$tile_key] = $translated_element;
                     update_option( 'dt_custom_tiles', $tile_options );
                     break;
