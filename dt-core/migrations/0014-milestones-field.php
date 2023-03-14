@@ -4,8 +4,8 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
     public function up() {
-        //skip is this is a new install
-        if ( get_option( 'dt_at_install', [] )['migration_number'] ?? 0 > 14 ){
+        //skip this migration on a new install
+        if ( dt_get_initial_install_meta( 'migration_number' ) > 14 ){
             return;
         }
 

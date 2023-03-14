@@ -14,10 +14,10 @@ class Disciple_Tools_Migration_0046 extends Disciple_Tools_Migration {
         $wpdb->query( "ALTER TABLE $wpdb->dt_reports CHANGE `post_id` `post_id` BIGINT(22) DEFAULT NULL;" );
 
 
-        //skip is this is a new install
-        $dt_at_install = get_option( 'dt_at_install', [] );
+        //skip this migration on a new install
+        $dt_initial_install_meta = get_option( 'dt_initial_install_meta', [] );
 
-        dt_write_log( $dt_at_install );
+        dt_write_log( $dt_initial_install_meta );
         dt_write_log( time() );
     }
 

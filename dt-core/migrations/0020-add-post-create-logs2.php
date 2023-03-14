@@ -27,8 +27,8 @@ class Disciple_Tools_Migration_0020 extends Disciple_Tools_Migration
             $wpdb->query( "ALTER TABLE $wpdb->dt_activity_log ADD INDEX object_id_index (object_id)" );
         }
 
-        //skip is this is a new install
-        if ( get_option( 'dt_at_install', [] )['migration_number'] ?? 0 > 20 ){
+        //skip this migration on a new install
+        if ( dt_get_initial_install_meta( 'migration_number' ) > 20 ){
             return;
         }
 
