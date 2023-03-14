@@ -75,11 +75,12 @@ jQuery(document).ready(function($) {
         field_icon: field_icon,
     }, `dt-core/v1/`);
 
-    window.API.new_field_option = (post_type, tile_key, field_key, field_option_name) => makeRequest("POST", `new-field-option`, {
+    window.API.new_field_option = (post_type, tile_key, field_key, field_option_name, field_option_description) => makeRequest("POST", `new-field-option`, {
         post_type: post_type,
         tile_key: tile_key,
         field_key: field_key,
         field_option_name: field_option_name,
+        field_option_description: field_option_description,
     }, `dt-core/v1/`);
 
     window.API.edit_field_option = (post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description) => makeRequest("POST", `edit-field-option`, {
@@ -799,6 +800,14 @@ jQuery(document).ready(function($) {
             </td>
         </tr>
         <tr>
+            <td>
+                <label><b>Description:</b></label>
+            </td>
+            <td>
+                <input name="new_field_option_description" class="new-field-option-description" type="text">
+            </td>
+        </tr>
+        <tr>
             <td colspan="2">
                 <button class="button" style="margin-top: 12px;" type="submit" id="js-add-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}">Add</button>
             </td>
@@ -1063,11 +1072,20 @@ jQuery(document).ready(function($) {
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
         var field_option_name = $('.new-field-option-name').val();
+        var field_option_description = $('.new-field-option-description').val();
 
-        API.new_field_option(post_type, tile_key, field_key, field_option_name).promise().then(function(new_field_option_key) {
+        API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description).promise().then(function(new_field_option_key) {
             window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
-                'label':field_option_name
+                'label':field_option_name,
             };
+
+            if (field_option_description) {
+                window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
+                    'label':field_option_name,
+                    'description':field_option_description,
+                };
+            }
+
             var new_field_option_html = `
             <div class="field-settings-table-field-option">
                <span class="sortable ui-icon ui-icon-arrow-4"></span>
