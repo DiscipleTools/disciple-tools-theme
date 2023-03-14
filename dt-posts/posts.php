@@ -488,10 +488,10 @@ class Disciple_Tools_Posts
                         if ( isset( $fields[$field_key] ) && $fields[$field_key]['type'] === 'link' ) {
                             if ( $activity->meta_value === 'value_deleted' ) {
                                 $value = $activity->old_value;
-                                $message = sprintf( _x( '%1$s removed from %2$s links', 'link1 removed from Social Links', 'disciple-tools' ), $value, $label ?? $fields[$field_key]['name'] );
+                                $message = sprintf( _x( '%1$s removed from %2$s links', 'link1 removed from Social Links', 'disciple_tools' ), $value, $label ?? $fields[$field_key]['name'] );
                             } else {
                                 $value = $activity->meta_value;
-                                $message = sprintf( _x( '%1$s added to %2$s links', 'link1 added to Social Links', 'disciple-tools' ), $value, $label ?? $fields[$field_key]['name'] );
+                                $message = sprintf( _x( '%1$s added to %2$s links', 'link1 added to Social Links', 'disciple_tools' ), $value, $label ?? $fields[$field_key]['name'] );
                             }
                         }
                     }

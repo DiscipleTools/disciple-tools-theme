@@ -972,29 +972,31 @@ class DT_Contacts_Access extends DT_Module_Base {
                                 'subfilter' => 2
                             ];
                         }
-                        foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ) {
-                            if ( isset( $active_counts[$seeker_path_key] ) ) {
-                                $filters['filters'][] = [
-                                    'ID' => 'my_' . $seeker_path_key,
-                                    'tab' => 'default',
-                                    'name' => $seeker_path_value['label'],
-                                    'query' => [
-                                        'assigned_to' => [ 'me' ],
-                                        'subassigned' => [ 'me' ],
-                                        'combine' => [ 'subassigned' ],
-                                        'overall_status' => [ 'active' ],
-                                        'seeker_path' => [ $seeker_path_key ],
-                                        'type' => [ 'access' ],
-                                        'sort' => 'name'
-                                    ],
-                                    'labels' => [
-                                        [ 'name' => $seeker_path_value['label'] ],
-                                        [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
-                                        [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
-                                    ],
-                                    'count' => $active_counts[$seeker_path_key],
-                                    'subfilter' => 2
-                                ];
+                        if ( isset( $fields['seeker_path']['default'] ) && is_array( $fields['seeker_path']['default'] ) ){
+                            foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ){
+                                if ( isset( $active_counts[$seeker_path_key] ) ){
+                                    $filters['filters'][] = [
+                                        'ID' => 'my_' . $seeker_path_key,
+                                        'tab' => 'default',
+                                        'name' => $seeker_path_value['label'],
+                                        'query' => [
+                                            'assigned_to' => [ 'me' ],
+                                            'subassigned' => [ 'me' ],
+                                            'combine' => [ 'subassigned' ],
+                                            'overall_status' => [ 'active' ],
+                                            'seeker_path' => [ $seeker_path_key ],
+                                            'type' => [ 'access' ],
+                                            'sort' => 'name'
+                                        ],
+                                        'labels' => [
+                                            [ 'name' => $seeker_path_value['label'] ],
+                                            [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
+                                            [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
+                                        ],
+                                        'count' => $active_counts[$seeker_path_key],
+                                        'subfilter' => 2
+                                    ];
+                                }
                             }
                         }
                     }
@@ -1072,21 +1074,23 @@ class DT_Contacts_Access extends DT_Module_Base {
                                     'subfilter' => true
                                 ];
                             }
-                            foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ) {
-                                if ( isset( $all_active_counts[$seeker_path_key] ) ) {
-                                    $filters['filters'][] = [
-                                        'ID' => 'all_' . $seeker_path_key,
-                                        'tab' => 'all_dispatch',
-                                        'name' => $seeker_path_value['label'],
-                                        'query' => [
-                                            'overall_status' => [ 'active' ],
-                                            'seeker_path' => [ $seeker_path_key ],
-                                            'type' => [ 'access' ],
-                                            'sort' => 'name'
-                                        ],
-                                        'count' => $all_active_counts[$seeker_path_key],
-                                        'subfilter' => true
-                                    ];
+                            if ( isset( $fields['seeker_path']['default'] ) && is_array( $fields['seeker_path']['default'] ) ) {
+                                foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ) {
+                                    if ( isset( $all_active_counts[$seeker_path_key] ) ) {
+                                        $filters['filters'][] = [
+                                            'ID' => 'all_' . $seeker_path_key,
+                                            'tab' => 'all_dispatch',
+                                            'name' => $seeker_path_value['label'],
+                                            'query' => [
+                                                'overall_status' => [ 'active' ],
+                                                'seeker_path' => [ $seeker_path_key ],
+                                                'type' => [ 'access' ],
+                                                'sort' => 'name'
+                                            ],
+                                            'count' => $all_active_counts[$seeker_path_key],
+                                            'subfilter' => true
+                                        ];
+                                    }
                                 }
                             }
                         }

@@ -217,7 +217,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         });
         if ( $fields ){
             foreach ( $fields as $field_key => $field_value ){
-                if ( ( isset( $field_value['customizable'] ) && $field_value['customizable'] !== false ) || ( !isset( $field_value['customizable'] ) && empty( $field_value['hidden'] ) ) ) {
+                if ( ( isset( $field_value['customizable'] ) && $field_value['customizable'] !== false ) || ( !isset( $field_value['customizable'] ) ) ) {
                     $select_options[ $field_key ] = $field_value;
                 }
             }
@@ -294,7 +294,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $langs = dt_get_available_languages();
         $form_name = 'field_edit_form';
         ?>
-        <form method="post" name="<?php echo esc_html( $form_name ) ?>">
+        <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="<?php echo esc_html( $form_name ) ?>">
         <input type="hidden" name="field_key" value="<?php echo esc_html( $field_key )?>">
         <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
         <input type="hidden" name="field-select" value="<?php echo esc_html( $post_type . '_' . $field_key )?>">
@@ -306,17 +306,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
             <tbody>
                 <tr>
-                    <th><?php esc_html_e( 'Key', 'disciple_tools' ) ?></th>
+                    <th>Default Name</th>
                     <td>
-                        <?php echo esc_html( $field_key ) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th><?php esc_html_e( 'Default Name', 'disciple_tools' ) ?></th>
-                    <td>
-                        <?php if ( !empty( $defaults[$field_key]['name'] ) ) : ?>
-                            <?php echo esc_html( $defaults[$field_key]['name'] ); ?> <br>
-                        <?php endif; ?>
+                        <?php echo esc_html( $defaults[$field_key]['name'] ?? '' ) ?> <span style="margin-inline-start: 20px">(field key: <?php echo esc_html( $field_key ) ?>)</span>
                     </td>
                 </tr>
                 <tr>
@@ -324,22 +316,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                         <?php $name = ( !isset( $defaults[$field_key] ) || ( isset( $defaults[$field_key]['name'] ) && $field['name'] !== $defaults[$field_key]['name'] ) ) ? $field['name'] : ''; ?>
                         <input name="field_key_<?php echo esc_html( $field_key )?>" type="text" value="<?php echo esc_html( $name ) ?>"/>
+
+                        <!-- Remove Custom Name -->
                         <?php if ( isset( $defaults[$field_key] ) && !empty( $name ) ) : ?>
-                        <button title="submit" class="button" name="delete_custom_label">Remove Label</button>
+                            <button title="submit" class="button" name="delete_custom_label">Remove Custom Name</button>
                         <?php endif; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th><?php esc_html_e( 'Private Field', 'disciple_tools' ) ?></th>
-                    <td>
-                        <?php $private_field_disabled = isset( $defaults[$field_key] ) || $field['type'] === 'connection' ?>
-                        <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? 'checked' : '' );?> <?php echo esc_html( ( $private_field_disabled ) ? 'disabled' : '' ); ?>>
-                    </td>
-                </tr>
-                <tr>
-                    <th><?php esc_html_e( 'Translation', 'disciple_tools' ) ?></th>
-                    <td>
-                        <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
+
+                        <!--Custom Name Translations-->
+                        <button class='button small expand_translations'
+                                data-form_name="<?php echo esc_html( $form_name ) ?>">
                             <?php
                             $number_of_translations = 0;
                             foreach ( $langs as $lang => $val ){
@@ -348,27 +333,45 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 }
                             }
                             ?>
-                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
+                            <img style="height: 15px; vertical-align: middle"
+                                 src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
+                            Custom Name Translations
                             (<?php echo esc_html( $number_of_translations ); ?>)
                         </button>
-                        <div class="translation_container hide">
-                        <table>
+                        <div class='translation_container hide'>
+                            <table>
 
-                            <?php foreach ( $langs as $lang => $val ) : ?>
-                                <tr>
-                                    <td><label for="field_key_<?php echo esc_html( $field_key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                    <td><input name="field_key_<?php echo esc_html( $field_key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $field['translations'][$val['language']] ?? '' );?>"/></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </table>
+                                <?php foreach ( $langs as $lang => $val ) : ?>
+                                    <tr>
+                                        <td><label
+                                                for="field_key_<?php echo esc_html( $field_key ) ?>_translation-<?php echo esc_html( $val['language'] ) ?>"><?php echo esc_html( $val['native_name'] ) ?></label>
+                                        </td>
+                                        <td><input
+                                                name="field_key_<?php echo esc_html( $field_key ) ?>_translation-<?php echo esc_html( $val['language'] ) ?>"
+                                                type="text"
+                                                value="<?php echo esc_html( $field['translations'][$val['language']] ?? '' ); ?>"/>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </table>
                         </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php esc_html_e( 'Private Field', 'disciple_tools' ) ?></th>
+                    <td>
+                        <?php $private_field_disabled = isset( $defaults[$field_key] ) || $field['type'] === 'connection' ?>
+                        <label>
+                            <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? 'checked' : '' );?> <?php echo esc_html( ( $private_field_disabled ) ? 'disabled' : '' ); ?>>
+                            Values for this field are only able to be seen by the user who entered them.
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <th><?php esc_html_e( 'Tile', 'disciple_tools' ) ?></th>
                     <td>
                         <select name="tile_select">
-                            <option value="no_tile"><?php esc_html_e( 'No tile / hidden', 'disciple_tools' ) ?></option>
+                            <option value="no_tile"><?php esc_html_e( 'No tile', 'disciple_tools' ) ?></option>
                             <?php foreach ( $tile_options as $tile_key => $tile_option ) :
                                 $select = isset( $field['tile'] ) && $field['tile'] === $tile_key;
                                 ?>
@@ -380,15 +383,20 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                 </tr>
                 <tr>
-                    <th><?php esc_html_e( 'Description', 'disciple_tools' ) ?></th>
+                    <th><?php esc_html_e( 'Hidden', 'disciple_tools' ) ?></th>
                     <td>
-                        <input style="width: 100%" type="text" name="field_description" value="<?php echo esc_html( $field['description'] ?? '' )?>">
+                        <label>
+                            <input name="field_hidden" id="field_hidden" type="checkbox" <?php echo esc_html( ( isset( $field['hidden'] ) && $field['hidden'] ) ? 'checked' : '' );?> >
+                            Hides the field in the list page and list filters and hides the field in the record details pages.
+                        </label>
                     </td>
                 </tr>
                 <tr>
-                    <th><?php esc_html_e( 'Description Translation', 'disciple_tools' ) ?></th>
-                    <td>
-                        <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
+                    <th><?php esc_html_e( 'Description', 'disciple_tools' ) ?></th>
+                    <td style="display: flex">
+                        <textarea style="flex-grow: 1" type="text" name="field_description" value="<?php echo esc_html( $field['description'] ?? '' )?>"></textarea>
+                        <button class='button small expand_translations'
+                                data-form_name="<?php echo esc_html( $form_name ) ?>">
                             <?php
                             $number_of_translations = 0;
                             foreach ( $langs as $lang => $val ){
@@ -397,15 +405,23 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 }
                             }
                             ?>
-                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
+                            <img style="height: 15px; vertical-align: middle"
+                                 src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
+                            Description Translations
                             (<?php echo esc_html( $number_of_translations ); ?>)
                         </button>
                         <div class="translation_container hide">
                             <table>
                                 <?php foreach ( $langs as $lang => $val ) : ?>
                                     <tr>
-                                        <td><label for="field_description_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                        <td><input name="field_description_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $field['description_translations'][$val['language']] ?? '' );?>"/></td>
+                                        <td><label
+                                                for="field_description_translation-<?php echo esc_html( $val['language'] ) ?>"><?php echo esc_html( $val['native_name'] ) ?></label>
+                                        </td>
+                                        <td><input
+                                                name="field_description_translation-<?php echo esc_html( $val['language'] ) ?>"
+                                                type="text"
+                                                value="<?php echo esc_html( $field['description_translations'][$val['language']] ?? '' ); ?>"/>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </table>
@@ -457,12 +473,40 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $custom_fields = dt_get_option( 'dt_field_customizations' );
                     $custom_field = $custom_fields[$post_type][$field_key] ?? [];
                     if ( isset( $custom_field['customizable'] ) && $custom_field['customizable'] == 'all' ) : ?>
-                        <button type="submit" name="delete"  class="button"><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></button>
+                        <button type="button" name="delete" id='open-delete-confirm-modal' class="button"><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></button>
                     <?php endif ?>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <div id='dt-delete-field-alert' title='Delete Field'>
+            <p>Are you sure you want to delete this Field?</p>
+            <p>Note: Only user added fields can fully be deleted.</p>
+            <button class='button button-primary' id='confirm-field-delete' name='delete' type='submit'>Delete
+            </button>
+            <button class='button' type='button' id='field-close-delete'>Cancel</button>
+        </div>
+
+
+        <script type='application/javascript'>
+            jQuery(document).ready(function ($) {
+                $('#dt-delete-field-alert').dialog({autoOpen: false});
+
+                $('#open-delete-confirm-modal').click(function () {
+                    $('#dt-delete-field-alert').dialog('open');
+                });
+
+                $('#field-close-delete').click(function () {
+                    $('#dt-delete-field-alert').dialog('close');
+                });
+                $('#confirm-field-delete').click(function () {
+                    let input = $('<input>').attr('type', 'hidden').attr('name', 'delete')
+                    $('#field_edit_form').append(input).submit();
+                });
+            })
+        </script>
+
+
 
         <br>
 
@@ -854,6 +898,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             } else if ( !isset( $post_submission['field_private'] ) || !$post_submission['field_private'] ) {
                 $custom_field['private'] = false;
             }
+            //field hidden
+            if ( isset( $post_submission['field_hidden'] ) && $post_submission['field_hidden'] ) {
+                $custom_field['hidden'] = true;
+            } else if ( !isset( $post_submission['field_hidden'] ) || !$post_submission['field_hidden'] ) {
+                $custom_field['hidden'] = false;
+            }
             //field description
             if ( isset( $post_submission['field_description'] ) && $post_submission['field_description'] != ( $custom_field['description'] ?? '' ) ){
                 $custom_field['description'] = $post_submission['field_description'];
@@ -1071,7 +1121,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="text"><?php esc_html_e( 'Text', 'disciple_tools' ) ?></option>
                             <option value="textarea"><?php esc_html_e( 'Text Area', 'disciple_tools' ) ?></option>
                             <option value="number"><?php esc_html_e( 'Number', 'disciple_tools' ) ?></option>
-                            <option value="link"><?php esc_html_e( 'Link', 'disciple-tools' ) ?></option>
+                            <option value="link"><?php esc_html_e( 'Link', 'disciple_tools' ) ?></option>
                             <option value="date"><?php esc_html_e( 'Date', 'disciple_tools' ) ?></option>
                             <option value="connection"><?php esc_html_e( 'Connection', 'disciple_tools' ) ?></option>
                         </select>
@@ -1182,9 +1232,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( 'Tags: A field allowing entry of any custom tags or values', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'Text: This is just a normal text field', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'Text Area: This is just a multi-line text area', 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( 'Number: This is a number text field', 'disciple-tools' ) ?></li>
+            <li><?php esc_html_e( 'Number: This is a number text field', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'Date: A field that uses a date picker to choose dates (like baptism date)', 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( 'Link: Create a collection of links', 'disciple-tools' ) ?></li>
+            <li><?php esc_html_e( 'Link: Create a collection of links', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'Connection: An autocomplete picker to connect to another record.', 'disciple_tools' ) ?></li>
         </ul>
         <strong><?php esc_html_e( 'Private Field:', 'disciple_tools' ) ?></strong>
