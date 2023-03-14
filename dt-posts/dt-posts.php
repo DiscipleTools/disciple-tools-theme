@@ -1858,7 +1858,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $revert_bot->display_name = __( 'Revert Bot', 'disciple_tools' );
 
         // Update post based on reverted values.
-        $updated_post = self::update_post( $post_type, $post_id, $post_updates, false, false );
+        $updated_post = self::update_post( $post_type, $post_id, $post_updates, true, false );
 
         // Revert back to previous user and return.
         wp_set_current_user( $current_user_id );
