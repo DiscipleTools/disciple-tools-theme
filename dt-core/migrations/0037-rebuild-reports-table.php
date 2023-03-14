@@ -10,10 +10,6 @@ class Disciple_Tools_Migration_0037 extends Disciple_Tools_Migration {
      * @throws \Exception  Got error when creating table $name.
      */
     public function up() {
-        //skip this migration on a new install
-        if ( dt_get_initial_install_meta( 'migration_number' ) > 37 ){
-            return;
-        }
         global $wpdb;
         $old_table_data = [];
         $renamed_table = $wpdb->prefix . 'dt_reports_old';
